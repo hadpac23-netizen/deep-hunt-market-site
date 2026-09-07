@@ -54,7 +54,7 @@
           <h3>Opportunity Quick Scan</h3>
           <p>A focused first pass for one market, product or business problem.</p>
           <ul><li>Buyer/demand signals</li><li>Competitor snapshot</li><li>Evidence gaps</li><li>Next-action memo</li></ul>
-          <a class="button ghost package-select" href="#start" data-package="quick_scan">Choose Quick Scan</a>
+          <a class="button ghost" href="https://buy.stripe.com/test_00w9ANbM43O3h1g3kY5wI00">Test Quick Scan Checkout</a>
         </article>
         <article class="price-card featured">
           <div class="badge">MOST USEFUL START</div>
@@ -62,52 +62,29 @@
           <h3>Deep Hunt Sprint</h3>
           <p>A deeper commercial investigation with a stronger Red Team pass.</p>
           <ul><li>Buyer and market scan</li><li>Competitor landscape</li><li>Commercial evidence</li><li>Red Team kill test</li><li>Prioritized action plan</li></ul>
-          <a class="button primary package-select" href="#start" data-package="deep_hunt_sprint">Choose Deep Sprint</a>
+          <a class="button primary" href="https://buy.stripe.com/test_aFabIV5nG2JZfXc9Jm5wI01">Test Deep Sprint Checkout</a>
         </article>
         <article class="price-card">
           <div class="price-top"><span>Pro Hunt</span><strong>$1,500</strong></div>
           <h3>Opportunity Hunt Pro</h3>
           <p>For a serious market decision that needs broader investigation and prioritization.</p>
           <ul><li>Broader source coverage</li><li>Opportunity shortlist</li><li>Commercial gaps</li><li>Red Team review</li><li>Executive action memo</li></ul>
-          <a class="button ghost package-select" href="#start" data-package="opportunity_hunt_pro">Choose Pro Hunt</a>
+          <a class="button ghost" href="https://buy.stripe.com/test_eVq9ANbM4doD6mC2gU5wI02">Test Pro Hunt Checkout</a>
         </article>
       </div>
-      <p class="fine">Pilot prices are service prices, not promises of financial return. Final scope is confirmed before work starts.</p>
+      <p class="fine"><strong>TEST MODE:</strong> Checkout buttons use Stripe sandbox links and do not charge real money. Pilot prices are service prices, not promises of financial return.</p>
     </section>
 
     <section id="start" class="shell section contact">
       <div class="contact-copy">
-        <div class="eyebrow">START A HUNT</div>
-        <h2>Tell us what market or opportunity you want investigated.</h2>
-        <p>Your request is saved securely for review. No payment is taken on this pilot page.</p>
+        <div class="eyebrow">TEST LAUNCH</div>
+        <h2>Checkout flow is ready for sandbox testing.</h2>
+        <p>The three package buttons above open Stripe Test Mode. No real payment is collected on this public preview.</p>
       </div>
-
-      <form
-        name="deep-hunt-lead"
-        method="POST"
-        action="/thanks.html"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-        class="inbound-form"
-      >
-        <input type="hidden" name="form-name" value="deep-hunt-lead">
-        <p class="hidden"><label>Do not fill this out: <input name="bot-field"></label></p>
-        <label>Your name<input name="contact_name" required autocomplete="name"></label>
-        <label>Email<input name="email" type="email" required autocomplete="email"></label>
-        <label>Company / project<input name="company" autocomplete="organization"></label>
-        <label>Website<input name="website" type="url" placeholder="https://"></label>
-        <label>Market / niche<input name="market" required placeholder="e.g. dental clinics in Germany"></label>
-        <label>Package
-          <select name="package_id" id="package-select" required>
-            <option value="quick_scan">Opportunity Quick Scan — $250</option>
-            <option value="deep_hunt_sprint" selected>Deep Hunt Sprint — $600</option>
-            <option value="opportunity_hunt_pro">Opportunity Hunt Pro — $1,500</option>
-          </select>
-        </label>
-        <label class="full">What do you want us to find out?<textarea name="challenge" required placeholder="What decision, problem or opportunity should we investigate?"></textarea></label>
-        <button class="button primary full" type="submit">Send request to Deep Hunt</button>
-        <p class="fine full">Submitting this form does not create a purchase or guarantee any financial outcome.</p>
-      </form>
+      <div>
+        <p class="fine"><strong>Current limitation:</strong> GitHub Pages cannot receive our lead form submissions. The private Money Ops form remains available locally, and the Netlify form bundle is ready for when hosted forms are available again.</p>
+        <a class="button primary" href="#packages">Test a package</a>
+      </div>
     </section>
   </main>
 
