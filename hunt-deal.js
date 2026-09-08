@@ -207,6 +207,82 @@
     $("#hd-commission").textContent = money(commerce.net_confirmed_commission_usd || 0);
   }
 
+  const shelfMeta = {
+    women: ["Women's Fashion", "women"],
+    bags: ["Bags & Totes", "bags"],
+    shoes: ["Women's Shoes", "shoes"],
+    travel: ["Travel Picks", "travel"],
+    home: ["Home Finds", "home"],
+    tech: ["Phone & Tech", "tech"],
+    fitness: ["Fitness", "fitness"],
+    gifts: ["Gift Ideas", "gifts"],
+  };
+
+  function shelfCard(item) {
+    const detailUrl = window.HuntCore
+      ? window.HuntCore.productUrl(item)
+      : `product.html?provider=${encodeURIComponent(item.provider || "Printful")}&id=${encodeURIComponent(item.item_id || "")}`;
+    const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
+      ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
+      : '<div class="hd-shelf-placeholder">◇</div>';
+    return `<article class="hd-shelf-card">
+      <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>LIVE CATALOG</span></a>
+      <div class="hd-shelf-card-body">
+        <small>${esc(item.provider || "Provider")}</small>
+        <a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a>
+        <p>Open for live price, sizes, colors and availability.</p>
+        <a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a>
+      </div>
+    </article>`;
+  }
+
+  function renderLowSourceShelf(products) {
+    const root = $("#hd-shelves-root");
+    if (!root) return;
+    const low = (Array.isArray(products) ? products : [])
+      .filter(item => Number.isFinite(Number(item.price_amount)) && Number(item.price_amount) > 0)
+      .sort((a,b)=>Number(a.price_amount)-Number(b.price_amount))
+      .slice(0,6);
+    if (!low.length) return;
+    const cards = low.map(item => {
+      const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : `product.html?provider=Printful&id=${encodeURIComponent(item.item_id || "")}`;
+      const image = item.image_url?.startsWith("https://") ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">` : '<div class="hd-shelf-placeholder">◇</div>';
+      return `<article class="hd-shelf-card low-cost"><a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>LOW SOURCE COST</span></a><div class="hd-shelf-card-body"><small>${esc(item.provider || "Printful")}</small><a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a><div class="hd-shelf-source-price"><b>${money(item.price_amount,item.currency||"USD")}</b><em>supplier base</em></div><a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a></div></article>`;
+    }).join("");
+    const section = document.createElement("section");
+    section.className = "hd-market-shelf low-source";
+    section.innerHTML = `<div class="hd-market-shelf-head"><div><small>VALUE FIRST</small><h3>Low source cost picks</h3><p>Lowest verified supplier-base costs from the connected live catalog. Not final retail prices.</p></div><a href="#catalog">See live catalog →</a></div><div class="hd-shelf-track">${cards}</div>`;
+    root.prepend(section);
+  }
+
+  async function loadMarketShelves() {
+    const root = $("#hd-shelves-root");
+    const counter = $("#hd-shelf-count");
+    if (!root || !counter) return;
+    try {
+      const res = await fetch(publicApiUrl("hunt-storefront") + "?shelves=1", {
+        cache:"no-store",
+        headers: publicApiHeaders()
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Market shelves unavailable");
+      const shelves = data.shelves || {};
+      const html = Object.entries(shelfMeta).map(([slug,meta]) => {
+        const items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
+        if (!items.length) return "";
+        const cards = items.map(shelfCard).join("");
+        const categoryHref = window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`;
+        return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>LIVE CATEGORY</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track">${cards}</div></section>`;
+      }).join("");
+      root.innerHTML = html || '<div class="hd-shelf-loading glass">No live shelves yet.</div>';
+      counter.textContent = `${Number(data.visible_product_count || 0)} LIVE`;
+      renderLowSourceShelf(catalogItems);
+    } catch (err) {
+      root.innerHTML = `<div class="hd-shelf-loading glass">${esc(err.message || "Market shelves unavailable")}</div>`;
+      counter.textContent = "WAITING";
+    }
+  }
+
   function renderProviderNetwork(providers) {
     const host = $("#hd-provider-badges");
     if (!host) return;
@@ -322,8 +398,12 @@
   });
 
   updateCartCount();
+  loadMarketShelves();
 
-  load().catch(err => {
+  load().then(() => {
+    const root = $("#hd-shelves-root");
+    if (root && !root.querySelector(".hd-market-shelf.low-source")) renderLowSourceShelf(catalogItems);
+  }).catch(err => {
     const empty = $("#hd-empty");
     if (empty) { empty.hidden = false; empty.querySelector("p").textContent = err.message; }
   });
