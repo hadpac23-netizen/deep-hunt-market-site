@@ -26,6 +26,8 @@
     const currencies = new Set(cart.map(x=>x.currency||"USD"));
     const subtotal = cart.reduce((sum,x)=>sum + (Number(x.price_amount)||0)*Math.max(1,Number(x.qty)||1),0);
     $("#hd-checkout-subtotal").textContent = currencies.size === 1 ? money(subtotal,[...currencies][0]) : "MULTI-CURRENCY";
+    const count = cart.reduce((sum,item)=>sum + Math.max(1,Number(item.qty)||1),0);
+    document.querySelectorAll("[data-cart-count]").forEach(el=>el.textContent=String(count));
   }
 
   document.addEventListener("click", event => {

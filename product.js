@@ -130,6 +130,10 @@
     renderBuybox();
     $("#hd-product-add").disabled=true;
     $("#hd-product-add").textContent="Variant feed required before cart";
+    if ($("#hd-mobile-add")) {
+      $("#hd-mobile-add").disabled = true;
+      $("#hd-mobile-add").textContent = "Options pending";
+    }
   }
 
   async function load() {
@@ -166,6 +170,7 @@
   $("#hd-product-add")?.addEventListener("click",addCurrentToCart);
   $("#hd-mobile-add")?.addEventListener("click",addCurrentToCart);
   $("#hd-zoom-open")?.addEventListener("click",openZoom);
+  $("#hd-product-main-image")?.addEventListener("click",openZoom);
   $("#hd-zoom-close")?.addEventListener("click",closeZoom);
   $("#hd-zoom-in")?.addEventListener("click",()=>setZoom(zoomScale + 0.25));
   $("#hd-zoom-out")?.addEventListener("click",()=>setZoom(zoomScale - 0.25));
