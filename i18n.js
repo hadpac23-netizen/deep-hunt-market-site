@@ -46,7 +46,7 @@
         smartPicks: "Smart Deal Picks", smartPicksSub: "Only TEST/SELL candidates can appear here. Empty is better than fabricated.",
         all: "All Deals", tech: "Tech", home: "Home", fashion: "Fashion", travel: "Travel",
         noDeals: "No qualified live deals yet.", noDealsSub: "The engine is ready. Real products appear only after a provider feed and affiliate path are verified.",
-        why: "Why this deal?", redTeam: "Red Team note", retailer: "Check retailer", compare: "Compare", test: "TEST", sell: "SELL",
+        why: "Why this deal?", redTeam: "Red Team note", retailer: "Check retailer", onsiteCheckout: "Buy on HUNT DEAL", onsitePending: "On-site checkout pending", compare: "Compare", test: "TEST", sell: "SELL",
         footerTag: "A BOOM branch · commerce intelligence now, full BOOM later."
       },
       ar: {

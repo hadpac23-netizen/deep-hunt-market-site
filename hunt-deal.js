@@ -2,6 +2,8 @@
   let dict = HuntI18n.start("deal");
   let allDeals = [];
   let activeCategory = "all";
+  let providerCheckout = {};
+  let checkoutPolicy = {mode:"ONSITE_FIRST", public_checkout_enabled:false};
 
   const $ = q => document.querySelector(q);
   const isStaticPublicHost = location.hostname.endsWith(".github.io");
@@ -43,9 +45,14 @@
     const category = categoryFor(deal);
     const verified = (e.verified_signals || []).slice(0,2).join(" · ");
     const gaps = (e.gaps || []).slice(0,1).join(" · ");
-    const href = isStaticPublicHost
-      ? (c.affiliate_url || "#")
-      : (deal.id ? "/out/" + encodeURIComponent(deal.id) : (c.affiliate_url || c.source_url || "#"));
+    const checkout = providerCheckout[c.provider] || {};
+    const canCheckoutHere = checkoutPolicy.public_checkout_enabled === true
+      && checkout.mode === "ONSITE_CAPABLE"
+      && Boolean(deal.id)
+      && !isStaticPublicHost;
+    const cta = canCheckoutHere
+      ? `<a class="hd-retailer" href="/checkout/${encodeURIComponent(deal.id)}">${esc(dict.onsiteCheckout || "Buy on HUNT DEAL")} →</a>`
+      : `<button class="hd-retailer" type="button" disabled title="${esc(checkout.note || checkoutPolicy.rule || "")}">${esc(dict.onsitePending || "On-site checkout pending")}</button>`;
     return `
       <article class="hd-deal-card" data-category="${category}" data-search="${esc((c.title||"")+" "+(c.provider||""))}">
         <div class="hd-deal-top"><span class="hd-verdict ${verdict==="SELL"?"sell":""}">${esc(verdict)}</span><span class="hd-heart">♡</span></div>
@@ -55,7 +62,7 @@
         <div class="hd-provider">${esc(c.provider || "Provider")} · ${m.outbound_clicks||0} clicks · ${m.conversions||0} conversions</div>
         <div class="hd-why"><b>${esc(dict.why || "Why this deal?")}</b>${esc(verified || "Evidence review passed the minimum public gate.")}</div>
         <div class="hd-red-note">● ${esc(dict.redTeam || "Red Team note")}: ${esc(gaps || "No recorded evidence gap.")}</div>
-        <a class="hd-retailer" href="${esc(href)}" rel="sponsored nofollow noreferrer">${esc(dict.retailer || "Check retailer")} →</a>
+        ${cta}
       </article>`;
   }
 
@@ -119,6 +126,8 @@
     const res = await fetch("storefront.json",{cache:"no-store"});
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Storefront unavailable");
+    providerCheckout = data.provider_checkout || {};
+    checkoutPolicy = data.checkout || checkoutPolicy;
     renderMetrics(data);
     renderAdvisor(data);
     renderDeals(data.deals || []);
