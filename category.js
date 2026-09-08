@@ -100,6 +100,7 @@
 
     const data = await H.search(def.query,24);
     rawResults = Array.isArray(data.results) ? data.results : [];
+    window.HuntAnalytics?.category(slug, rawResults.length);
     resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
     rawResults.forEach(p => { try { sessionStorage.setItem(`hunt_product_${productKey(p)}`, JSON.stringify(p)); } catch {} });
     const states = (data.providers || []).filter(x=>x.result_count || x.state === "SEARCHED").map(x=>`${x.provider}: ${x.result_count||0}`).join(" · ");

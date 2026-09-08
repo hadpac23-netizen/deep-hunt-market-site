@@ -148,11 +148,13 @@
       selectedSize=selectedVariant?.size||null;
       H.recordSignal(product,"view");
       renderBuybox();
+      window.HuntAnalytics?.viewItem(product, selectedVariant);
     } catch (err) {
       const cached=cachedProduct();
       if (!cached) throw err;
       H.recordSignal(cached,"view");
       renderFallback(cached);
+      window.HuntAnalytics?.viewItem(cached, null);
     }
     $("#hd-product-loading").hidden=true;
   }

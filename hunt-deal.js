@@ -385,6 +385,10 @@
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Live search unavailable");
+      window.HuntAnalytics?.search({
+        category: window.HuntCore?.slugFromQuery(clean) || "unknown",
+        resultCount: Array.isArray(data.results) ? data.results.length : 0
+      });
       renderLiveSearch(data);
     } catch (err) {
       if (status) status.textContent = err.message || "Live search unavailable";

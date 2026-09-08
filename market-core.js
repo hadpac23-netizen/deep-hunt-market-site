@@ -183,6 +183,7 @@
     else items.push(row);
     saveCart(items);
     recordSignal(product, "cart");
+    window.HuntAnalytics?.addToCart(row, product);
     return items;
   }
   function cartCount() { return cart().reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0); }
@@ -207,6 +208,10 @@
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Live search unavailable");
+    window.HuntAnalytics?.search({
+      category: slugFromQuery(clean),
+      resultCount: Array.isArray(data.results) ? data.results.length : 0
+    });
     return data;
   }
 

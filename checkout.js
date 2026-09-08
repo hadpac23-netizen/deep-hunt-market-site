@@ -9,6 +9,7 @@
   };
   const read = () => { try { const v=JSON.parse(localStorage.getItem(key)||"[]"); return Array.isArray(v)?v:[]; } catch { return []; } };
   const write = cart => localStorage.setItem(key, JSON.stringify(cart));
+  let checkoutTracked = false;
 
   function render() {
     const cart = read();
@@ -28,6 +29,10 @@
     $("#hd-checkout-subtotal").textContent = currencies.size === 1 ? money(subtotal,[...currencies][0]) : "MULTI-CURRENCY";
     const count = cart.reduce((sum,item)=>sum + Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll("[data-cart-count]").forEach(el=>el.textContent=String(count));
+    if (!checkoutTracked && cart.length) {
+      checkoutTracked = true;
+      window.HuntAnalytics?.beginCheckout(cart, $("#hd-checkout-market")?.value || "");
+    }
   }
 
   document.addEventListener("click", event => {
@@ -43,5 +48,8 @@
     write(cart); render();
   });
   $("#hd-clear-cart")?.addEventListener("click",()=>{ write([]); render(); });
+  $("#hd-checkout-market")?.addEventListener("change", event => {
+    window.HuntAnalytics?.checkoutMarket(event.currentTarget.value || "");
+  });
   render();
 })();
