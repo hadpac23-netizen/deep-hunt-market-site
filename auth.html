@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Sign in to HUNT DEAL with email or connected identity providers.">
+  <title>Account — HUNT DEAL</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=market3">
+</head>
+<body class="hd-page">
+  <div class="hd-space"></div>
+  <header class="hd-topbar">
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">ACCOUNT & PERSONALIZATION</div></div>
+    <nav class="hd-nav"><a href="./#hunt-market">Shop</a><a href="category.html?c=women">Women</a><a href="partners.html">Partners</a></nav>
+    <div class="hd-tools"><a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a></div>
+  </header>
+
+  <main class="hd-auth-shell">
+    <section class="hd-auth-intro glass">
+      <div class="hd-kicker">ONE ACCOUNT · SMARTER HUNT</div>
+      <h1>Your HUNT DEAL account.</h1>
+      <p>Sign in for a persistent account. BOOM personalization on this version still learns locally from category visits, product views and cart actions on this device.</p>
+      <div class="hd-auth-benefits"><div><b>◇</b><span><strong>For You</strong><small>Personal category ranking</small></span></div><div><b>◎</b><span><strong>Cart</strong><small>Keep your selected products</small></span></div><div><b>✦</b><span><strong>Truth first</strong><small>No fake discounts or fake popularity</small></span></div></div>
+    </section>
+
+    <section class="hd-auth-card glass">
+      <div id="hd-auth-signed-out">
+        <div class="hd-kicker hd-kicker-small">SIGN IN / CREATE ACCOUNT</div>
+        <h2>Continue with your account</h2>
+        <form id="hd-email-auth" class="hd-email-auth">
+          <label>Email address<input id="hd-auth-email" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+          <button class="hd-btn hd-btn-primary" type="submit">Send secure magic link →</button>
+        </form>
+        <div class="hd-auth-divider"><span>or</span></div>
+        <div class="hd-social-grid">
+          <button type="button" data-oauth="google"><b>G</b><span>Google</span><small>Checking…</small></button>
+          <button type="button" data-oauth="facebook"><b>f</b><span>Facebook</span><small>Checking…</small></button>
+          <button type="button" data-oauth="apple"><b>●</b><span>Apple</span><small>Checking…</small></button>
+          <button type="button" data-oauth="azure"><b>M</b><span>Microsoft</span><small>Checking…</small></button>
+          <button type="button" data-oauth="github"><b>GH</b><span>GitHub</span><small>Checking…</small></button>
+        </div>
+        <p class="hd-auth-note">Social providers only activate after their official OAuth app ID/secret and redirect URLs are configured. HUNT DEAL never asks you to paste provider secrets into this page.</p>
+      </div>
+
+      <div id="hd-auth-signed-in" hidden>
+        <div class="hd-kicker hd-kicker-small">SIGNED IN</div>
+        <div class="hd-account-profile"><div class="hd-account-avatar" id="hd-account-avatar">H</div><div><h2 id="hd-account-name">HUNT user</h2><p id="hd-account-email">—</p></div></div>
+        <div class="hd-account-status"><span>BOOM personalization</span><strong>LOCAL DEVICE SIGNALS</strong></div>
+        <a class="hd-btn hd-btn-primary" href="category.html?c=women">Continue shopping →</a>
+        <button id="hd-sign-out" class="hd-btn" type="button">Sign out</button>
+      </div>
+      <p class="hd-auth-status" id="hd-auth-status" role="status" aria-live="polite"></p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
+  <script src="market-core.js?v=market3"></script>
+  <script src="auth.js?v=market3"></script>
+</body>
+</html>

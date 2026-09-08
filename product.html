@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Inspect live product images, variants, availability and source pricing on HUNT DEAL.">
+  <title>Product — HUNT DEAL</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=market3">
+</head>
+<body class="hd-page">
+  <div class="hd-space"></div>
+  <header class="hd-topbar">
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">PRODUCT INTELLIGENCE</div></div>
+    <nav class="hd-nav"><a href="./#hunt-market">Categories</a><a href="./#catalog">Catalog</a><a href="partners.html">Partners</a></nav>
+    <div class="hd-tools"><a class="hd-account-link" href="auth.html">Account</a><a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a></div>
+  </header>
+
+  <main class="hd-product-shell">
+    <div class="hd-product-breadcrumb"><a href="./">Home</a><span>/</span><a id="hd-product-category-link" href="category.html?c=women">Category</a><span>/</span><strong id="hd-product-breadcrumb">Product</strong></div>
+
+    <section class="hd-product-layout glass" id="hd-product-layout">
+      <div class="hd-product-gallery">
+        <div class="hd-product-main-media"><img id="hd-product-main-image" alt="Product image"></div>
+        <div class="hd-product-thumbs" id="hd-product-thumbs"></div>
+      </div>
+
+      <div class="hd-product-buybox">
+        <div class="hd-product-flags"><span class="hd-status green" id="hd-product-stock">CHECKING</span><span class="hd-source-badge" id="hd-product-provider">PROVIDER</span></div>
+        <h1 id="hd-product-title">Loading product…</h1>
+        <div class="hd-product-price"><strong id="hd-product-price">—</strong><span>supplier base · not final retail</span></div>
+        <div class="hd-boom-product glass"><span>BOOM</span><div><strong>For You</strong><small id="hd-product-boom">Learning from this device.</small></div></div>
+
+        <section class="hd-option-block" id="hd-color-block" hidden><div class="hd-option-head"><strong>Color</strong><span id="hd-selected-color">—</span></div><div class="hd-color-options" id="hd-color-options"></div></section>
+        <section class="hd-option-block" id="hd-size-block" hidden><div class="hd-option-head"><strong>Size</strong><span id="hd-selected-size">—</span></div><div class="hd-size-options" id="hd-size-options"></div></section>
+
+        <div class="hd-product-quantity"><strong>Quantity</strong><div class="hd-qty hd-product-qty"><button type="button" id="hd-qty-minus">−</button><span id="hd-qty-value">1</span><button type="button" id="hd-qty-plus">+</button></div></div>
+        <button class="hd-btn hd-btn-primary hd-product-add" type="button" id="hd-product-add">Add to checkout preview →</button>
+        <p class="hd-product-truth">Checkout remains pre-launch. No payment is collected until retail price, supplier fulfillment and an authorized payment account are active.</p>
+
+        <div class="hd-product-facts" id="hd-product-facts"></div>
+      </div>
+    </section>
+
+    <section class="hd-product-info-grid">
+      <article class="glass"><div class="hd-kicker hd-kicker-small">PRODUCT DETAILS</div><h2>What the source says</h2><p id="hd-product-description">Loading details…</p></article>
+      <article class="glass"><div class="hd-kicker hd-kicker-small">RED TEAM</div><h2>Before purchase</h2><ul id="hd-product-gaps"><li>Checking fulfillment and retail readiness.</li></ul></article>
+    </section>
+
+    <section class="hd-product-loading glass" id="hd-product-loading"><span>◉</span><strong>Loading live product detail…</strong></section>
+    <section class="hd-category-empty glass" id="hd-product-error" hidden><span>◇</span><h2>Product detail is not available yet.</h2><p id="hd-product-error-copy">This provider has not exposed an approved detail feed to HUNT DEAL.</p><a class="hd-btn" href="./">Back to market</a></section>
+  </main>
+
+  <script src="market-core.js?v=market3"></script>
+  <script src="product.js?v=market3"></script>
+</body>
+</html>

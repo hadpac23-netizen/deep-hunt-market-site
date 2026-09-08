@@ -100,10 +100,11 @@
       && Boolean(deal.id)
       && !isStaticPublicHost;
     const previewCart = c.merchant_product === true && Boolean(c.item_id) && Boolean(c.provider);
+    const productHref = previewCart && window.HuntCore ? window.HuntCore.productUrl(c) : "";
     const cta = canCheckoutHere
       ? `<a class="hd-retailer" href="/checkout/${encodeURIComponent(deal.id)}">${esc(dict.onsiteCheckout || "Buy on HUNT DEAL")} →</a>`
       : previewCart
-        ? `<button class="hd-retailer hd-cart-add" type="button" data-cart-provider="${esc(c.provider)}" data-cart-id="${esc(c.item_id)}">Add to checkout preview →</button>`
+        ? `<a class="hd-retailer" href="${esc(productHref)}">View product / choose options →</a>`
         : `<button class="hd-retailer" type="button" disabled title="${esc(checkout.note || checkoutPolicy.rule || "")}">${esc(dict.onsitePending || "On-site checkout pending")}</button>`;
     const productVisual = typeof c.image_url === "string" && c.image_url.startsWith("https://")
       ? `<div class="hd-product-visual has-image"><img src="${esc(c.image_url)}" alt="${esc(c.title || "Product")}" loading="lazy"></div>`
@@ -161,15 +162,16 @@
         : '<div class="hd-catalog-image hd-catalog-placeholder">◇</div>';
       const base = item.price_amount == null ? "—" : money(item.price_amount, item.currency || "USD");
       const gaps = (item.gaps || []).slice(0,2).map(x => `<li>${esc(x)}</li>`).join("");
+      const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : `product.html?provider=${encodeURIComponent(item.provider || "Printful")}&id=${encodeURIComponent(item.item_id || "")}`;
       return `
         <article class="hd-catalog-card glass">
           <div class="hd-catalog-media">${image}<span class="hd-catalog-badge">${esc(item.verdict || "CATALOG")}</span></div>
           <div class="hd-catalog-body">
             <div class="hd-provider">${esc(item.provider || "Provider")} · LIVE CATALOG</div>
-            <h3>${esc(item.title || "Catalog product")}</h3>
+            <h3><a class="hd-catalog-title-link" href="${esc(detailUrl)}">${esc(item.title || "Catalog product")}</a></h3>
             <div class="hd-catalog-price"><small>${esc(dict.catalogBase || "Supplier base")}</small><strong>${base}</strong></div>
             <ul class="hd-catalog-gaps">${gaps}</ul>
-            <button class="hd-retailer hd-cart-add" type="button" data-cart-provider="${esc(item.provider || "")}" data-cart-id="${esc(item.item_id || "")}">Add to checkout preview →</button>
+            <a class="hd-retailer" href="${esc(detailUrl)}">View product / choose options →</a>
           </div>
         </article>`;
     }).join("");
@@ -293,12 +295,9 @@
     btn.addEventListener("click", () => {
       const query = String(btn.dataset.huntQuery || "").trim();
       if (!query) return;
-      const input = $("#hd-search-input");
-      if (input) input.value = query;
-      runLiveSearch(query);
-      window.setTimeout(() => {
-        $("#live-search")?.scrollIntoView({behavior:"smooth", block:"start"});
-      }, 80);
+      const slug = window.HuntCore ? window.HuntCore.slugFromQuery(query) : "women";
+      window.HuntCore?.recordSignal(slug, "category");
+      location.href = window.HuntCore ? window.HuntCore.categoryUrl(slug) : `category.html?c=${encodeURIComponent(slug)}`;
     });
   });
 
