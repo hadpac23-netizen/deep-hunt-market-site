@@ -28,6 +28,19 @@
   let consentGranted = storedConsent();
   window.dataLayer = window.dataLayer || [];
 
+  function sendPayload(payload) {
+    if (hasValidGtm()) {
+      window.dataLayer.push(payload);
+      return true;
+    }
+    if (hasValidGa4() && typeof window.gtag === "function") {
+      const {event, ...params} = payload;
+      window.gtag("event", event, params);
+      return true;
+    }
+    return false;
+  }
+
   function dataLayerPush(event, params = {}) {
     const payload = {
       event,
@@ -39,8 +52,7 @@
       queue.push(payload);
       return false;
     }
-    window.dataLayer.push(payload);
-    return true;
+    return sendPayload(payload);
   }
 
   function loadGtm() {
@@ -69,7 +81,7 @@
 
   function flush() {
     if (!consentGranted || !configured()) return;
-    while (queue.length) window.dataLayer.push(queue.shift());
+    while (queue.length) sendPayload(queue.shift());
   }
 
   function pageView() {
@@ -91,19 +103,61 @@
     return true;
   }
 
+  function dismissConsentBanner() {
+    document.getElementById("hunt-analytics-consent")?.remove();
+  }
+
   function setConsent(granted) {
     consentGranted = granted === true;
     try {
       localStorage.setItem(consentKey, consentGranted ? "granted" : "denied");
     } catch {}
+    dismissConsentBanner();
     if (!consentGranted) {
       queue.length = 0;
+      window.dispatchEvent(new CustomEvent("hunt:analytics-consent", {detail:{granted:false}}));
       return false;
     }
     init();
     flush();
     window.dispatchEvent(new CustomEvent("hunt:analytics-consent", {detail:{granted:true}}));
     return true;
+  }
+
+  function renderConsentBanner() {
+    if (!config.consentRequired || !configured()) return;
+    try {
+      const value = localStorage.getItem(consentKey);
+      if (value === "granted" || value === "denied") return;
+    } catch {}
+    if (document.getElementById("hunt-analytics-consent")) return;
+
+    const style = document.createElement("style");
+    style.id = "hunt-analytics-consent-style";
+    style.textContent = [
+      "#hunt-analytics-consent{position:fixed;z-index:99999;left:50%;bottom:18px;transform:translateX(-50%);width:min(720px,calc(100% - 24px));background:rgba(6,18,32,.96);border:1px solid rgba(120,170,235,.35);box-shadow:0 18px 60px rgba(0,0,0,.38);backdrop-filter:blur(18px);border-radius:16px;padding:15px 16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;color:#eef6ff;font-family:inherit}",
+      "#hunt-analytics-consent strong{display:block;font-size:.86rem;margin-bottom:4px}",
+      "#hunt-analytics-consent p{margin:0;color:#aabed5;font-size:.68rem;line-height:1.45}",
+      "#hunt-analytics-consent .hunt-consent-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}",
+      "#hunt-analytics-consent button{border:1px solid rgba(120,170,235,.35);background:rgba(14,35,59,.92);color:#dbeaff;border-radius:10px;padding:9px 12px;font:inherit;font-size:.68rem;font-weight:800;cursor:pointer}",
+      "#hunt-analytics-consent button[data-consent='accept']{background:#ecf6ff;color:#071424;border-color:#ecf6ff}",
+      "@media(max-width:620px){#hunt-analytics-consent{grid-template-columns:1fr;bottom:10px}.hunt-consent-actions{justify-content:stretch!important}.hunt-consent-actions button{flex:1}}"
+    ].join("");
+    document.head.appendChild(style);
+
+    const banner = document.createElement("aside");
+    banner.id = "hunt-analytics-consent";
+    banner.setAttribute("role", "dialog");
+    banner.setAttribute("aria-label", "Analytics preference");
+    banner.innerHTML =
+      '<div><strong>Help HUNT DEAL improve</strong><p>Allow privacy-conscious analytics so we can understand which products, countries and channels perform best. No payment data is collected here.</p></div>' +
+      '<div class="hunt-consent-actions"><button type="button" data-consent="decline">Decline</button><button type="button" data-consent="accept">Allow analytics</button></div>';
+    banner.addEventListener("click", event => {
+      const button = event.target.closest?.("[data-consent]");
+      if (!button) return;
+      setConsent(button.dataset.consent === "accept");
+    });
+    document.body.appendChild(banner);
   }
 
   function item(product = {}, variant = null, quantity = 1) {
@@ -196,9 +250,13 @@
   };
 
   window.HuntAnalytics = Object.freeze(api);
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init, {once:true});
-  } else {
+  const boot = () => {
     init();
+    renderConsentBanner();
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot, {once:true});
+  } else {
+    boot();
   }
 })();
