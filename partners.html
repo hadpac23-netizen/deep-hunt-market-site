@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Partner with HUNT DEAL — connect your catalog, affiliate program, or approved native checkout flow to an evidence-first shopping intelligence platform.">
+  <link rel="canonical" href="https://hadpac23-netizen.github.io/deep-hunt-market-site/partners.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Partner with HUNT DEAL">
+  <meta property="og:description" content="Brands and merchants can connect catalog, affiliate, and approved native checkout integrations to HUNT DEAL.">
+  <meta property="og:url" content="https://hadpac23-netizen.github.io/deep-hunt-market-site/partners.html">
+  <meta property="og:image" content="https://hadpac23-netizen.github.io/deep-hunt-market-site/earth-night.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Partner with HUNT DEAL</title>
+  <link rel="stylesheet" href="hunt-deal.css">
+  <style>
+    .partner-shell{width:min(1120px,calc(100% - 32px));margin:0 auto;padding:48px 0 72px}
+    .partner-hero{padding:34px;border-radius:20px;margin-bottom:18px}
+    .partner-hero h1{font-size:clamp(2.4rem,7vw,5.5rem);line-height:.95;margin:8px 0 18px}
+    .partner-hero p{max-width:780px;color:#9bb0c8;line-height:1.65}
+    .partner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+    .partner-card{padding:18px;border-radius:14px}
+    .partner-card h3{margin:5px 0 8px}.partner-card p{font-size:.78rem;color:#91a8c3;line-height:1.5}
+    .partner-form{padding:22px;border-radius:18px;display:grid;gap:14px}
+    .partner-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .partner-form label{display:grid;gap:6px;font-size:.7rem;color:#9bb0c8}
+    .partner-form input,.partner-form select,.partner-form textarea{width:100%;border:1px solid rgba(110,165,225,.28);background:rgba(4,16,29,.82);color:#eef6ff;border-radius:9px;padding:11px}
+    .partner-form textarea{min-height:130px;resize:vertical}
+    .partner-note{font-size:.65rem;color:#7f96b2;line-height:1.5}
+    @media(max-width:760px){.partner-grid,.partner-form-grid{grid-template-columns:1fr}.partner-hero{padding:22px}}
+  </style>
+</head>
+<body class="hd-page">
+  <div class="hd-space"></div>
+  <header class="hd-topbar">
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">PARTNER NETWORK</div></div>
+    <nav class="hd-nav"><a href="./">Storefront</a><a href="#apply">Apply</a></nav>
+  </header>
+
+  <main class="partner-shell">
+    <section class="partner-hero glass">
+      <div class="hd-kicker">BRANDS · MERCHANTS · PUBLISHERS · COMMERCE PARTNERS</div>
+      <h1>Bring your products<br><em>into HUNT DEAL.</em></h1>
+      <p>HUNT DEAL is building an evidence-first shopping layer for verified product discovery, price intelligence, affiliate attribution and approved native checkout integrations. We only activate capabilities that are supported by the merchant or platform contract.</p>
+    </section>
+
+    <section class="partner-grid">
+      <article class="partner-card glass"><div class="hd-card-icon blue">◎</div><h3>Catalog connection</h3><p>Connect an official API, product feed, or approved merchant catalog. No fake inventory and no unsupported product claims.</p></article>
+      <article class="partner-card glass"><div class="hd-card-icon green">↗</div><h3>Performance partnership</h3><p>Affiliate, commission, or performance terms can be tracked through an approved network or direct merchant agreement.</p></article>
+      <article class="partner-card glass"><div class="hd-card-icon blue">◇</div><h3>Native checkout</h3><p>For supported merchant platforms, HUNT DEAL can evaluate an approved on-site ordering path. Checkout is never enabled without explicit technical and contractual permission.</p></article>
+    </section>
+
+    <section id="apply" class="partner-form glass">
+      <div>
+        <div class="hd-kicker">PARTNERSHIP APPLICATION</div>
+        <h2>Connect your store or brand.</h2>
+        <p class="partner-note">This form starts a partnership review. It is not a binding contract.</p>
+      </div>
+      <form id="partner-form">
+        <p hidden><label>Do not fill this out: <input name="bot-field" autocomplete="off" tabindex="-1"></label></p>
+        <div class="partner-form-grid">
+          <label>Company / brand<input name="company" required maxlength="120"></label>
+          <label>Authorized contact<input name="contact_name" required maxlength="120"></label>
+          <label>Work email<input type="email" name="email" required maxlength="180"></label>
+          <label>Website<input type="url" name="website" required maxlength="300"></label>
+          <label>Commerce platform
+            <select name="platform">
+              <option>WooCommerce</option>
+              <option>Adobe Commerce / Magento</option>
+              <option>Commerce Layer</option>
+              <option>Affiliate network</option>
+              <option>Direct API / feed</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>Partnership path
+            <select name="partnership_type">
+              <option>Catalog / product feed</option>
+              <option>Affiliate / performance partnership</option>
+              <option>Approved native checkout</option>
+              <option>Sponsored placement / campaign</option>
+              <option>Direct merchant partnership</option>
+            </select>
+          </label>
+          <label>Primary market<input name="market" maxlength="120" placeholder="US, EU, Israel, Global…"></label>
+          <label>Official API or feed available?
+            <select name="api_available"><option>Yes</option><option>No</option><option>Not sure</option></select>
+          </label>
+        </div>
+        <label>Tell us what you want to connect<textarea name="message" required maxlength="3000"></textarea></label>
+        <label><input type="checkbox" name="authorized_to_submit" required> I confirm I am authorized to submit this partnership request for the organization above.</label>
+        <button class="hd-btn hd-btn-primary" type="submit">Submit partnership request →</button>
+        <p class="partner-note" id="partner-form-status" role="status" aria-live="polite"></p>
+        <p class="partner-note">Commercial terms become binding only after review and a signed agreement between authorized representatives. HUNT DEAL does not enable payment or ordering capabilities without an approved contract and technical verification.</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="hd-footer">
+    <div><strong>HUNT DEAL</strong><small>Evidence before promotion.</small></div>
+    <div class="hd-disclosure">Partnership requests are reviewed before activation.</div>
+    <nav><a href="./">Storefront</a></nav>
+  </footer>
+  <script src="partner.js"></script>
+</body>
+</html>
