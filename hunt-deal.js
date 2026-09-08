@@ -4,6 +4,7 @@
   let activeCategory = "all";
 
   const $ = q => document.querySelector(q);
+  const isStaticPublicHost = location.hostname.endsWith(".github.io");
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const money = (value, currency="USD") => {
     if (value === null || value === undefined || Number.isNaN(Number(value))) return "—";
@@ -42,7 +43,9 @@
     const category = categoryFor(deal);
     const verified = (e.verified_signals || []).slice(0,2).join(" · ");
     const gaps = (e.gaps || []).slice(0,1).join(" · ");
-    const href = deal.id ? "/out/" + encodeURIComponent(deal.id) : (c.affiliate_url || c.source_url || "#");
+    const href = isStaticPublicHost
+      ? (c.affiliate_url || "#")
+      : (deal.id ? "/out/" + encodeURIComponent(deal.id) : (c.affiliate_url || c.source_url || "#"));
     return `
       <article class="hd-deal-card" data-category="${category}" data-search="${esc((c.title||"")+" "+(c.provider||""))}">
         <div class="hd-deal-top"><span class="hd-verdict ${verdict==="SELL"?"sell":""}">${esc(verdict)}</span><span class="hd-heart">♡</span></div>
@@ -70,7 +73,11 @@
   }
 
   function renderDeals(deals) {
-    allDeals = deals || [];
+    allDeals = (deals || []).filter(deal => {
+      if (!isStaticPublicHost) return true;
+      const c = candidateOf(deal);
+      return typeof c.affiliate_url === "string" && c.affiliate_url.startsWith("https://");
+    });
     const grid = $("#hd-deal-grid");
     if (!grid) return;
     grid.innerHTML = allDeals.map(renderCard).join("");
