@@ -33,7 +33,10 @@
         </form>
         <div class="hd-auth-divider"><span>or</span></div>
         <div class="hd-social-grid">
-          <button type="button" data-oauth="google"><b>G</b><span>Google</span><small>Checking…</small></button>
+          <div class="hd-google-auth" data-google-auth>
+            <div id="hd-google-signin" aria-label="Sign in with Google"></div>
+            <small id="hd-google-status">Checking…</small>
+          </div>
           <button type="button" data-oauth="facebook"><b>f</b><span>Facebook</span><small>Checking…</small></button>
           <button type="button" data-oauth="apple"><b>●</b><span>Apple</span><small>Checking…</small></button>
           <button type="button" data-oauth="azure"><b>M</b><span>Microsoft</span><small>Checking…</small></button>
@@ -64,6 +67,6 @@
   <script src="market-core.js?v=photo6"></script>
   <script src="analytics-config.js?v=analytics1"></script>
   <script src="analytics.js?v=analytics1"></script>
-  <script src="auth.js?v=photo6"></script>
+  <script src="auth.js?v=google-id1"></script>
 </body>
 </html>
