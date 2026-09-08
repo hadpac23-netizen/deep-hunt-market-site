@@ -11,23 +11,25 @@
   ];
 
   const categoryDefs = {
-    women: {title:"Women's Fashion", query:"women fashion deals", icon:"👗", description:"Dresses, tops, sets, hoodies and everyday fashion."},
-    perfume: {title:"Perfume & Fragrance", query:"women perfume fragrance", icon:"✦", description:"Fragrance and gift sets from approved feeds when available."},
-    jewelry: {title:"Jewelry & Accessories", query:"women jewelry necklace bracelet earrings", icon:"◇", description:"Jewelry, accessories and finishing pieces."},
-    bags: {title:"Bags", query:"women handbags shoulder bags purses", icon:"👜", description:"Handbags, crossbody bags, totes and everyday bags."},
-    shoes: {title:"Shoes", query:"women shoes sneakers heels", icon:"◒", description:"Sneakers, canvas shoes, slides and seasonal styles."},
-    beauty: {title:"Beauty & Skincare", query:"beauty skincare makeup", icon:"✧", description:"Beauty and skincare from approved product feeds."},
-    sunglasses: {title:"Sunglasses", query:"women sunglasses accessories", icon:"◉", description:"Eyewear and fashion accessories."},
-    watches: {title:"Watches", query:"women watches", icon:"⌚", description:"Classic and smart watch discovery."},
-    hair: {title:"Hair", query:"hair beauty tools", icon:"≈", description:"Hair care and styling tools from verified suppliers."},
-    accessories: {title:"Accessories", query:"women wallets belts accessories", icon:"▣", description:"Wallets, belts, hats, cases and everyday accessories."},
-    home: {title:"Home", query:"home decor deals", icon:"⌂", description:"Decor, rugs, pillows and useful home finds."},
-    kitchen: {title:"Kitchen", query:"kitchen home deals", icon:"◫", description:"Kitchen and dining products."},
-    tech: {title:"Phone & Tech", query:"phone accessories electronics", icon:"⌁", description:"Cases, charging and connected accessories."},
-    travel: {title:"Travel", query:"travel accessories luggage", icon:"✈", description:"Luggage, organizers, bags and travel essentials."},
-    fitness: {title:"Fitness", query:"fitness accessories", icon:"△", description:"Athletic apparel and useful fitness accessories."},
-    gifts: {title:"Gifts", query:"gifts for women", icon:"♥", description:"Gift ideas from live approved catalogs."}
+    women: {title:"Women's Fashion", query:"women fashion clothing", icon:"W", description:"Women's apparel, everyday fashion and seasonal styles."},
+    men: {title:"Men's Fashion", query:"men fashion shirts hoodies jackets clothing", icon:"M", description:"Men's and unisex shirts, hoodies, jackets and everyday apparel."},
+    dresses: {title:"Dresses & Skirts", query:"women dresses skirts", icon:"D", description:"Dresses and skirts from the connected live catalog."},
+    tops: {title:"Tops & T-Shirts", query:"shirts tops t-shirts tanks polos", icon:"T", description:"T-shirts, tops, tanks and polos."},
+    hoodies: {title:"Hoodies & Sweatshirts", query:"hoodies sweatshirts", icon:"H", description:"Hoodies, sweatshirts and warm layers."},
+    jackets: {title:"Jackets & Outerwear", query:"jackets outerwear windbreakers bombers", icon:"J", description:"Jackets, windbreakers and outerwear."},
+    activewear: {title:"Activewear", query:"activewear athletic leggings shorts yoga performance", icon:"A", description:"Athletic apparel, leggings, shorts and performance wear."},
+    bags: {title:"Bags", query:"handbags bags totes crossbody backpacks", icon:"B", description:"Crossbody bags, totes, backpacks and everyday bags."},
+    shoes: {title:"Shoes", query:"women shoes sneakers slides", icon:"S", description:"Sneakers, canvas shoes and slides."},
+    accessories: {title:"Accessories", query:"hats caps accessories tags", icon:"X", description:"Hats, caps, tags and everyday accessories."},
+    home: {title:"Home", query:"home decor rugs pillows blankets", icon:"O", description:"Rugs, pillows, blankets and useful home finds."},
+    tech: {title:"Phone & Tech", query:"phone iphone samsung airpods magsafe", icon:"P", description:"Phone cases and connected accessories."},
+    travel: {title:"Travel", query:"travel luggage duffle bags bottles tags", icon:"R", description:"Travel bags, tags, bottles and useful travel items."},
+    gifts: {title:"Gifts", query:"gifts mugs ornaments blankets posters", icon:"G", description:"Gift ideas from live approved catalogs."},
+    perfume: {title:"Perfume & Fragrance", query:"women perfume fragrance", icon:"F", description:"Waiting for an approved fragrance supplier feed."},
+    beauty: {title:"Beauty & Skincare", query:"beauty skincare makeup", icon:"Y", description:"Waiting for an approved beauty supplier feed."},
+    jewelry: {title:"Jewelry", query:"women jewelry necklace bracelet earrings", icon:"Q", description:"Waiting for an approved jewelry supplier feed."}
   };
+
 
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const money = (value, currency="USD") => {
@@ -47,18 +49,19 @@
     if (/(perfume|fragrance)/.test(t)) return "perfume";
     if (/(beauty|skincare|makeup|cosmetic|serum|cream)/.test(t)) return "beauty";
     if (/(jewelry|jewellery|necklace|bracelet|earring|ring)/.test(t)) return "jewelry";
-    if (/(handbag|purse|crossbody|tote|backpack|bag)/.test(t)) return "bags";
-    if (/(shoe|sneaker|canvas shoe|slide|heel)/.test(t)) return "shoes";
-    if (/(sunglass|eyewear)/.test(t)) return "sunglasses";
-    if (/(watch)/.test(t)) return "watches";
-    if (/(hair)/.test(t)) return "hair";
-    if (/(wallet|belt|accessor|hat|cap|case|tag)/.test(t)) return "accessories";
-    if (/(travel|luggage|suitcase|duffle|passport)/.test(t)) return "travel";
-    if (/(fitness|athletic|gym|yoga|legging|shorts)/.test(t)) return "fitness";
-    if (/(kitchen|mug|coffee|cookware)/.test(t)) return "kitchen";
-    if (/(home|rug|pillow|blanket|decor|coaster)/.test(t)) return "home";
+    if (/\b(dress|dresses|skirt|skirts)\b/.test(t)) return "dresses";
+    if (/\b(hoodie|hoodies|sweatshirt|sweatshirts)\b/.test(t)) return "hoodies";
+    if (/\b(jacket|jackets|windbreaker|bomber|letterman)\b/.test(t)) return "jackets";
+    if (/\b(athletic|performance|legging|leggings|sports bra|shorts|yoga|rash guard|joggers|track pants)\b/.test(t)) return "activewear";
+    if (/(handbag|purse|crossbody|tote|backpack|\bbag\b)/.test(t)) return "bags";
+    if (/(shoe|sneaker|slide|heel)/.test(t)) return "shoes";
+    if (/(hat|cap|wallet|belt|accessor|beanie|\btag\b)/.test(t)) return "accessories";
+    if (/(travel|luggage|suitcase|duffle|weekender)/.test(t)) return "travel";
+    if (/(home|rug|pillow|blanket|decor|coaster|poster|canvas)/.test(t)) return "home";
     if (/(phone|iphone|samsung|airpods|magsafe|tech|electronics)/.test(t)) return "tech";
-    if (/(dress|shirt|hoodie|jacket|apparel|fashion|top|skirt|pants|women)/.test(t)) return "women";
+    if (/\b(men(?:'s|s)?|unisex)\b/.test(t)) return "men";
+    if (/\bwomen(?:'s|s)?\b/.test(t)) return "women";
+    if (/\b(shirt|shirts|tee|tees|t-shirt|top|tops|tank|polo)\b/.test(t)) return "tops";
     return "gifts";
   }
 
@@ -66,18 +69,20 @@
     const q = String(query || "").toLowerCase();
     if (/perfume|fragrance/.test(q)) return "perfume";
     if (/jewel|necklace|bracelet|earring|ring/.test(q)) return "jewelry";
-    if (/handbag|purse|bag/.test(q)) return "bags";
-    if (/shoe|sneaker|heel/.test(q)) return "shoes";
     if (/beauty|skincare|makeup/.test(q)) return "beauty";
-    if (/sunglass/.test(q)) return "sunglasses";
-    if (/watch/.test(q)) return "watches";
-    if (/hair/.test(q)) return "hair";
-    if (/wallet|belt|accessor/.test(q)) return "accessories";
-    if (/kitchen/.test(q)) return "kitchen";
-    if (/home|decor/.test(q)) return "home";
-    if (/phone|tech|electronic/.test(q)) return "tech";
-    if (/travel|luggage/.test(q)) return "travel";
-    if (/fitness|gym|athletic/.test(q)) return "fitness";
+    if (/dress|skirt/.test(q)) return "dresses";
+    if (/hoodie|sweatshirt/.test(q)) return "hoodies";
+    if (/jacket|outerwear|windbreaker|bomber/.test(q)) return "jackets";
+    if (/activewear|fitness|gym|athletic|legging|yoga|performance/.test(q)) return "activewear";
+    if (/handbag|purse|crossbody|backpack|\bbag/.test(q)) return "bags";
+    if (/shoe|sneaker|heel|slide/.test(q)) return "shoes";
+    if (/hat|cap|wallet|belt|accessor|beanie/.test(q)) return "accessories";
+    if (/travel|luggage|duffle|weekender/.test(q)) return "travel";
+    if (/home|decor|rug|pillow|blanket/.test(q)) return "home";
+    if (/phone|tech|electronic|airpods|magsafe/.test(q)) return "tech";
+    if (/\bmen\b|men's|mens/.test(q)) return "men";
+    if (/\bwomen\b|women's|womens/.test(q)) return "women";
+    if (/shirt|t-shirt|tops|tank|polo/.test(q)) return "tops";
     if (/gift/.test(q)) return "gifts";
     return "women";
   }

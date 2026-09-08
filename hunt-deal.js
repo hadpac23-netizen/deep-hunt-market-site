@@ -210,12 +210,18 @@
 
   const shelfMeta = {
     women: ["Women's Fashion", "women"],
+    men: ["Men's Fashion", "men"],
+    dresses: ["Dresses & Skirts", "dresses"],
+    tops: ["Tops & T-Shirts", "tops"],
+    hoodies: ["Hoodies & Sweatshirts", "hoodies"],
+    jackets: ["Jackets & Outerwear", "jackets"],
+    activewear: ["Activewear", "activewear"],
     bags: ["Bags & Totes", "bags"],
-    shoes: ["Women's Shoes", "shoes"],
+    shoes: ["Shoes", "shoes"],
+    accessories: ["Accessories", "accessories"],
     travel: ["Travel Picks", "travel"],
     home: ["Home Finds", "home"],
     tech: ["Phone & Tech", "tech"],
-    fitness: ["Fitness", "fitness"],
     gifts: ["Gift Ideas", "gifts"],
   };
 
