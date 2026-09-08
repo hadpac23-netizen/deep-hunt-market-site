@@ -4,6 +4,9 @@
   let activeCategory = "all";
   let providerCheckout = {};
   let checkoutPolicy = {mode:"ONSITE_FIRST", public_checkout_enabled:false};
+  let catalogItems = [];
+  let searchItems = [];
+  const cartKey = "hunt_deal_cart_v1";
 
   const $ = q => document.querySelector(q);
   const isStaticPublicHost = location.hostname.endsWith(".github.io");
@@ -22,6 +25,41 @@
     try { return new Intl.NumberFormat(document.documentElement.lang || "en", {style:"currency",currency}).format(Number(value)); }
     catch { return String(value); }
   };
+
+  function readCart() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(cartKey) || "[]");
+      return Array.isArray(raw) ? raw : [];
+    } catch { return []; }
+  }
+
+  function updateCartCount() {
+    const count = readCart().reduce((sum, item) => sum + Math.max(1, Number(item.qty) || 1), 0);
+    const badge = $("#hd-cart-count");
+    if (badge) badge.textContent = String(count);
+  }
+
+  function addToCart(item) {
+    if (!item || !item.item_id || !item.provider) return;
+    const cart = readCart();
+    const key = String(item.provider) + ":" + String(item.item_id);
+    const existing = cart.find(row => row.key === key);
+    if (existing) existing.qty = Math.min(20, (Number(existing.qty) || 1) + 1);
+    else cart.push({
+      key,
+      provider: String(item.provider),
+      item_id: String(item.item_id),
+      title: String(item.title || "Product"),
+      image_url: typeof item.image_url === "string" ? item.image_url : null,
+      price_amount: item.price_amount == null ? null : Number(item.price_amount),
+      currency: String(item.currency || "USD"),
+      price_basis: String(item.price_basis || "SUPPLIER_BASE"),
+      qty: 1
+    });
+    localStorage.setItem(cartKey, JSON.stringify(cart));
+    updateCartCount();
+    location.href = "checkout.html";
+  }
 
   function categoryFor(deal) {
     const title = String(deal?.title || deal?.evaluation?.candidate?.title || "").toLowerCase();
@@ -61,9 +99,12 @@
       && checkout.mode === "ONSITE_CAPABLE"
       && Boolean(deal.id)
       && !isStaticPublicHost;
+    const previewCart = c.merchant_product === true && Boolean(c.item_id) && Boolean(c.provider);
     const cta = canCheckoutHere
       ? `<a class="hd-retailer" href="/checkout/${encodeURIComponent(deal.id)}">${esc(dict.onsiteCheckout || "Buy on HUNT DEAL")} →</a>`
-      : `<button class="hd-retailer" type="button" disabled title="${esc(checkout.note || checkoutPolicy.rule || "")}">${esc(dict.onsitePending || "On-site checkout pending")}</button>`;
+      : previewCart
+        ? `<button class="hd-retailer hd-cart-add" type="button" data-cart-provider="${esc(c.provider)}" data-cart-id="${esc(c.item_id)}">Add to checkout preview →</button>`
+        : `<button class="hd-retailer" type="button" disabled title="${esc(checkout.note || checkoutPolicy.rule || "")}">${esc(dict.onsitePending || "On-site checkout pending")}</button>`;
     const productVisual = typeof c.image_url === "string" && c.image_url.startsWith("https://")
       ? `<div class="hd-product-visual has-image"><img src="${esc(c.image_url)}" alt="${esc(c.title || "Product")}" loading="lazy"></div>`
       : `<div class="hd-product-visual" aria-hidden="true">${esc(glyphFor(c.provider))}</div>`;
@@ -112,6 +153,7 @@
     const count = $("#hd-catalog-count");
     if (!grid || !count) return;
     const items = Array.isArray(products) ? products : [];
+    catalogItems = items;
     count.textContent = items.length ? items.length + " LIVE" : "WAITING";
     grid.innerHTML = items.map(item => {
       const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
@@ -127,7 +169,7 @@
             <h3>${esc(item.title || "Catalog product")}</h3>
             <div class="hd-catalog-price"><small>${esc(dict.catalogBase || "Supplier base")}</small><strong>${base}</strong></div>
             <ul class="hd-catalog-gaps">${gaps}</ul>
-            <button class="hd-retailer" type="button" disabled>${esc(dict.catalogPending || "Checkout activation pending")}</button>
+            <button class="hd-retailer hd-cart-add" type="button" data-cart-provider="${esc(item.provider || "")}" data-cart-id="${esc(item.item_id || "")}">Add to checkout preview →</button>
           </div>
         </article>`;
     }).join("");
@@ -204,6 +246,7 @@
     const status = $("#hd-live-search-status");
     if (!section || !grid || !status) return;
     const results = data.results || [];
+    searchItems = results;
     const states = (data.providers || []).map(p => {
       const count = p.result_count ? " (" + p.result_count + ")" : "";
       return p.provider + ": " + p.state + count;
@@ -239,6 +282,13 @@
     }
   }
 
+  document.addEventListener("click", event => {
+    const button = event.target.closest?.(".hd-cart-add");
+    if (!button) return;
+    const item = [...catalogItems, ...searchItems].find(row => String(row.provider) === String(button.dataset.cartProvider) && String(row.item_id) === String(button.dataset.cartId));
+    if (item) addToCart(item);
+  });
+
   document.querySelectorAll("[data-hunt-query]").forEach(btn => {
     btn.addEventListener("click", () => {
       const query = String(btn.dataset.huntQuery || "").trim();
@@ -271,6 +321,8 @@
     dict = e.detail.dict;
     if (allDeals.length) renderDeals(allDeals);
   });
+
+  updateCartCount();
 
   load().catch(err => {
     const empty = $("#hd-empty");
