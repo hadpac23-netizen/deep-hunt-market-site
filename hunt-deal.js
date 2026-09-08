@@ -37,6 +37,7 @@
     const count = readCart().reduce((sum, item) => sum + Math.max(1, Number(item.qty) || 1), 0);
     const badge = $("#hd-cart-count");
     if (badge) badge.textContent = String(count);
+    document.querySelectorAll("[data-cart-count]").forEach(el => el.textContent = String(count));
   }
 
   function addToCart(item) {

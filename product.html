@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Inspect live product images, variants, availability and source pricing on HUNT DEAL.">
   <title>Product — HUNT DEAL</title>
-  <link rel="stylesheet" href="hunt-deal.css?v=market3">
+  <link rel="stylesheet" href="hunt-deal.css?v=ios2">
 </head>
 <body class="hd-page">
   <div class="hd-space"></div>
@@ -20,7 +20,7 @@
 
     <section class="hd-product-layout glass" id="hd-product-layout">
       <div class="hd-product-gallery">
-        <div class="hd-product-main-media"><img id="hd-product-main-image" alt="Product image"></div>
+        <div class="hd-product-main-media"><img id="hd-product-main-image" alt="Product image"><button class="hd-zoom-open" id="hd-zoom-open" type="button" aria-label="Open image zoom">+</button></div>
         <div class="hd-product-thumbs" id="hd-product-thumbs"></div>
       </div>
 
@@ -49,8 +49,31 @@
     <section class="hd-product-loading glass" id="hd-product-loading"><span>◉</span><strong>Loading live product detail…</strong></section>
     <section class="hd-category-empty glass" id="hd-product-error" hidden><span>◇</span><h2>Product detail is not available yet.</h2><p id="hd-product-error-copy">This provider has not exposed an approved detail feed to HUNT DEAL.</p><a class="hd-btn" href="./">Back to market</a></section>
   </main>
+  <div class="hd-image-zoom" id="hd-image-zoom" hidden role="dialog" aria-modal="true" aria-label="Product image zoom">
+    <div class="hd-image-zoom-panel">
+      <button class="hd-zoom-close" id="hd-zoom-close" type="button" aria-label="Close zoom">&times;</button>
+      <div class="hd-image-zoom-stage"><img id="hd-zoom-image" alt="Zoomed product image"></div>
+      <div class="hd-zoom-controls">
+        <button id="hd-zoom-out" type="button">-</button>
+        <span id="hd-zoom-level">100%</span>
+        <button id="hd-zoom-in" type="button">+</button>
+        <button id="hd-zoom-reset" type="button">Reset</button>
+      </div>
+    </div>
+  </div>
+  <div class="hd-product-mobile-bar">
+    <div><small>Source price</small><strong id="hd-mobile-price">--</strong></div>
+    <button id="hd-mobile-add" class="hd-btn hd-btn-primary" type="button">Add to Cart</button>
+  </div>
+  <nav class="hd-mobile-nav" aria-label="Mobile navigation">
+    <a href="./"><span>&#8962;</span><small>Home</small></a>
+    <a href="category.html?c=women"><span>&#9638;</span><small>Categories</small></a>
+    <a class="active" href="#"><span>&#9671;</span><small>Product</small></a>
+    <a href="checkout.html"><span>&#9711;</span><small>Cart</small><b data-cart-count>0</b></a>
+    <a href="auth.html"><span>&#9675;</span><small>Account</small></a>
+  </nav>
 
-  <script src="market-core.js?v=market3"></script>
-  <script src="product.js?v=market3"></script>
+  <script src="market-core.js?v=ios2"></script>
+  <script src="product.js?v=ios2"></script>
 </body>
 </html>

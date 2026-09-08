@@ -6,6 +6,8 @@
   const def = H.categoryDefs[slug];
   let rawResults = [];
   let resultOrder = new Map();
+  const viewKey = "hunt_market_view_v1";
+  let viewMode = localStorage.getItem(viewKey) || "comfortable";
 
   const $ = q => document.querySelector(q);
   const productKey = p => `${p.provider || ""}:${p.item_id || ""}`;
@@ -28,6 +30,18 @@
         <a class="hd-btn hd-market-view" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">View product →</a>
       </div>
     </article>`;
+  }
+
+  function applyViewMode(mode) {
+    const allowed = new Set(["compact", "comfortable", "large"]);
+    viewMode = allowed.has(mode) ? mode : "comfortable";
+    const grid = $("#hd-category-grid");
+    if (grid) grid.dataset.view = viewMode;
+    document.querySelectorAll("[data-view-mode]").forEach(button => {
+      button.classList.toggle("active", button.dataset.viewMode === viewMode);
+      button.setAttribute("aria-pressed", String(button.dataset.viewMode === viewMode));
+    });
+    localStorage.setItem(viewKey, viewMode);
   }
 
   function renderCategories() {
@@ -66,6 +80,7 @@
     $("#hd-cat-breadcrumb").textContent = def.title;
     $("#hd-cat-copy").textContent = def.description;
     renderCategories();
+    applyViewMode(viewMode);
     H.recordSignal(slug,"category");
     const score = Number(H.signals()[slug] || 0);
     $("#hd-boom-reason").textContent = score > 2 ? `This category has a ${score}-point local interest signal.` : "Learning locally from category visits, product views and cart actions.";
@@ -82,6 +97,9 @@
 
   $("#hd-cat-apply")?.addEventListener("click",renderGrid);
   $("#hd-cat-sort")?.addEventListener("change",renderGrid);
+  document.querySelectorAll("[data-view-mode]").forEach(button => {
+    button.addEventListener("click", () => applyViewMode(button.dataset.viewMode));
+  });
   document.addEventListener("click", event => {
     const link = event.target.closest?.("[data-product-view]");
     if (!link) return;

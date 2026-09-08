@@ -10,6 +10,7 @@
   let selectedSize = null;
   let selectedVariant = null;
   let quantity = 1;
+  let zoomScale = 1;
 
   function cachedProduct() {
     try { return JSON.parse(sessionStorage.getItem(`hunt_product_${provider}:${id}`) || "null"); }
@@ -67,6 +68,7 @@
     $("#hd-product-stock").textContent = product.availability_verified ? "IN STOCK" : "DISCOVERY";
     $("#hd-product-stock").className = `hd-status ${product.availability_verified?"green":"blue"}`;
     $("#hd-product-price").textContent = H.money(selectedVariant?.price_amount ?? product.price_amount, selectedVariant?.currency || product.currency || "USD");
+    syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);
     $("#hd-product-description").textContent = product.description || "The provider has not supplied a full description to HUNT DEAL yet.";
     $("#hd-product-gaps").innerHTML = (product.gaps || ["Provider variant feed is incomplete."]).map(x=>`<li>${H.esc(x)}</li>`).join("");
@@ -79,6 +81,47 @@
     $("#hd-product-category-link").href=H.categoryUrl(cat); $("#hd-product-category-link").textContent=def.title;
     document.title=`${product.title || "Product"} — HUNT DEAL`;
     renderOptions(); renderGallery();
+  }
+
+  function syncMobilePrice() {
+    const mobile = $("#hd-mobile-price");
+    if (!mobile || !product) return;
+    mobile.textContent = H.money(selectedVariant?.price_amount ?? product.price_amount, selectedVariant?.currency || product.currency || "USD");
+  }
+
+  function setZoom(scale) {
+    zoomScale = Math.max(1, Math.min(3, Number(scale) || 1));
+    const image = $("#hd-zoom-image");
+    if (image) image.style.transform = `scale(${zoomScale})`;
+    const level = $("#hd-zoom-level");
+    if (level) level.textContent = `${Math.round(zoomScale * 100)}%`;
+  }
+
+  function openZoom() {
+    const main = $("#hd-product-main-image");
+    const modal = $("#hd-image-zoom");
+    const image = $("#hd-zoom-image");
+    if (!main?.src || !modal || !image) return;
+    image.src = main.src;
+    image.alt = main.alt || product?.title || "Product image";
+    modal.hidden = false;
+    document.body.classList.add("hd-modal-open");
+    setZoom(1);
+    $("#hd-zoom-close")?.focus();
+  }
+
+  function closeZoom() {
+    const modal = $("#hd-image-zoom");
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.classList.remove("hd-modal-open");
+    setZoom(1);
+  }
+
+  function addCurrentToCart() {
+    if (!product || !selectedVariant) return;
+    H.addCart(product, selectedVariant, quantity);
+    location.href = "checkout.html";
   }
 
   function renderFallback(cached) {
@@ -120,11 +163,15 @@
   });
   $("#hd-qty-minus")?.addEventListener("click",()=>{quantity=Math.max(1,quantity-1);$("#hd-qty-value").textContent=String(quantity);});
   $("#hd-qty-plus")?.addEventListener("click",()=>{quantity=Math.min(20,quantity+1);$("#hd-qty-value").textContent=String(quantity);});
-  $("#hd-product-add")?.addEventListener("click",()=>{
-    if(!product||!selectedVariant)return;
-    H.addCart(product,selectedVariant,quantity);
-    location.href="checkout.html";
-  });
+  $("#hd-product-add")?.addEventListener("click",addCurrentToCart);
+  $("#hd-mobile-add")?.addEventListener("click",addCurrentToCart);
+  $("#hd-zoom-open")?.addEventListener("click",openZoom);
+  $("#hd-zoom-close")?.addEventListener("click",closeZoom);
+  $("#hd-zoom-in")?.addEventListener("click",()=>setZoom(zoomScale + 0.25));
+  $("#hd-zoom-out")?.addEventListener("click",()=>setZoom(zoomScale - 0.25));
+  $("#hd-zoom-reset")?.addEventListener("click",()=>setZoom(1));
+  $("#hd-image-zoom")?.addEventListener("click",event=>{ if(event.target.id === "hd-image-zoom") closeZoom(); });
+  document.addEventListener("keydown",event=>{ if(event.key === "Escape" && !$("#hd-image-zoom")?.hidden) closeZoom(); });
 
   load().catch(err=>{
     $("#hd-product-loading").hidden=true; $("#hd-product-layout").hidden=true; $("#hd-product-error").hidden=false; $("#hd-product-error-copy").textContent=err.message||"Product unavailable";
