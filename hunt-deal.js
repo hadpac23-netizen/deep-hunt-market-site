@@ -25,9 +25,11 @@
 
   function categoryFor(deal) {
     const title = String(deal?.title || deal?.evaluation?.candidate?.title || "").toLowerCase();
-    if (/(shoe|shirt|dress|watch|bag|fashion|jacket|sneaker|clothing|beauty)/.test(title)) return "fashion";
+    if (/(perfume|fragrance|beauty|skincare|makeup|cosmetic|hair care|serum|cream)/.test(title)) return "beauty";
+    if (/(jewelry|jewellery|necklace|bracelet|earring|ring|handbag|purse|wallet|belt|sunglass|accessor)/.test(title)) return "accessories";
+    if (/(shoe|shirt|dress|watch|bag|fashion|jacket|sneaker|clothing|apparel|top|skirt)/.test(title)) return "fashion";
     if (/(travel|luggage|carry|suitcase|adapter|passport)/.test(title)) return "travel";
-    if (/(home|kitchen|vacuum|fryer|lamp|chair|bed|coffee)/.test(title)) return "home";
+    if (/(home|kitchen|vacuum|fryer|lamp|chair|bed|coffee|decor|rug)/.test(title)) return "home";
     return "tech";
   }
 
@@ -158,6 +160,21 @@
     $("#hd-commission").textContent = money(commerce.net_confirmed_commission_usd || 0);
   }
 
+  function renderProviderNetwork(providers) {
+    const host = $("#hd-provider-badges");
+    if (!host) return;
+    const items = Array.isArray(providers) ? providers : [];
+    host.innerHTML = items.map(item => {
+      const state = String(item.state || "UNKNOWN").toUpperCase();
+      const tone = /READY|LIVE|CONFIGURED|CATALOG_LIVE/.test(state)
+        ? "ready"
+        : /AUTH_REQUIRED|APPROVAL_REQUIRED|MANUAL_PROGRAM|VERIFYING/.test(state)
+          ? "waiting"
+          : "neutral";
+      return `<span class="hd-provider-pill ${tone}"><b>${esc(item.provider || "Provider")}</b><small>${esc(state.replaceAll("_", " "))}</small></span>`;
+    }).join("") || "<span>No provider state yet.</span>";
+  }
+
   async function load() {
     const res = await fetch(publicApiUrl("hunt-storefront"),{
       cache:"no-store",
@@ -168,6 +185,7 @@
     providerCheckout = data.provider_checkout || {};
     checkoutPolicy = data.checkout || checkoutPolicy;
     renderMetrics(data);
+    renderProviderNetwork(data.providers || []);
     renderCatalog(data.merchant_products || []);
     if (!(data.deals || []).length && (data.merchant_products || []).length) {
       $("#hd-test-title").textContent = dict.liveCatalogConnected || "Live merchant catalog connected";
@@ -217,6 +235,19 @@
       if (grid) grid.innerHTML = "";
     }
   }
+
+  document.querySelectorAll("[data-hunt-query]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const query = String(btn.dataset.huntQuery || "").trim();
+      if (!query) return;
+      const input = $("#hd-search-input");
+      if (input) input.value = query;
+      runLiveSearch(query);
+      window.setTimeout(() => {
+        $("#live-search")?.scrollIntoView({behavior:"smooth", block:"start"});
+      }, 80);
+    });
+  });
 
   document.querySelectorAll(".hd-filter-row button").forEach(btn => {
     btn.addEventListener("click", () => {

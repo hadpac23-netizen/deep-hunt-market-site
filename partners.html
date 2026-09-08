@@ -21,6 +21,7 @@
     .partner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
     .partner-card{padding:18px;border-radius:14px}
     .partner-card h3{margin:5px 0 8px}.partner-card p{font-size:.78rem;color:#91a8c3;line-height:1.5}
+    .partner-focus{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 2px}.partner-focus span{border:1px solid rgba(113,172,244,.3);background:rgba(10,29,51,.72);border-radius:999px;padding:7px 10px;color:#b9cce2;font-size:.63rem;font-weight:850}
     .partner-form{padding:22px;border-radius:18px;display:grid;gap:14px}
     .partner-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .partner-form label{display:grid;gap:6px;font-size:.7rem;color:#9bb0c8}
@@ -42,6 +43,7 @@
       <div class="hd-kicker">BRANDS · MERCHANTS · PUBLISHERS · COMMERCE PARTNERS</div>
       <h1>Bring your products<br><em>into HUNT DEAL.</em></h1>
       <p>HUNT DEAL is building an evidence-first shopping layer for verified product discovery, price intelligence, affiliate attribution and approved native checkout integrations. We only activate capabilities that are supported by the merchant or platform contract.</p>
+      <div class="partner-focus"><span>Perfume &amp; Fragrance</span><span>Beauty &amp; Skincare</span><span>Women's Fashion</span><span>Jewelry &amp; Accessories</span><span>Bags &amp; Shoes</span><span>Home &amp; Lifestyle</span><span>Tech &amp; Travel</span></div>
     </section>
 
     <section class="partner-grid">
@@ -82,7 +84,19 @@
               <option>Direct merchant partnership</option>
             </select>
           </label>
-          <label>Primary market<input name="market" maxlength="120" placeholder="US, EU, Israel, Global…"></label>
+          <label>Primary market<input name="market" maxlength="120" placeholder="US, EU, Israel, Global..."></label>
+          <label>Product vertical
+            <select name="vertical">
+              <option>Perfume &amp; Fragrance</option>
+              <option>Beauty &amp; Skincare</option>
+              <option>Women's Fashion</option>
+              <option>Jewelry &amp; Accessories</option>
+              <option>Bags &amp; Shoes</option>
+              <option>Home &amp; Lifestyle</option>
+              <option>Tech &amp; Travel</option>
+              <option>Other</option>
+            </select>
+          </label>
           <label>Official API or feed available?
             <select name="api_available"><option>Yes</option><option>No</option><option>Not sure</option></select>
           </label>

@@ -18,7 +18,7 @@
       partnership_type: data.get("partnership_type") || "",
       market: data.get("market") || "",
       api_available: data.get("api_available") || "Not sure",
-      message: data.get("message") || "",
+      message: `[Vertical: ${data.get("vertical") || "Other"}] ${data.get("message") || ""}`,
       bot_field: data.get("bot-field") || "",
       authorized_to_submit: data.get("authorized_to_submit") === "on"
     };
