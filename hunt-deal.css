@@ -200,3 +200,38 @@ html[dir="rtl"] .hd-nav,html[dir="rtl"] .hd-tools{direction:rtl}html[dir="rtl"] 
 }
 @media(max-width:480px){.hd-shelf-card,.hd-shelf-card:nth-child(n+5){flex-basis:62%;}.hd-mobile-nav{left:6px;right:6px}.hd-product-mobile-bar{left:7px;right:7px}.hd-product-mobile-bar .hd-btn{min-width:132px}.hd-market-product-grid[data-view="compact"] .hd-market-card-body p,.hd-market-product-grid[data-view="comfortable"] .hd-market-card-body p{display:none}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+/* Shopper-first cleanup: technical operations stay behind the scenes */
+.hd-home-clean #provider-wall,.hd-home-clean .hd-stats,.hd-home-clean #radar,.hd-home-clean #catalog,.hd-home-clean #deals{display:none!important}
+body.hd-page:not(.hd-ops-page) #provider-wall,body.hd-page:not(.hd-ops-page) .hd-stats,body.hd-page:not(.hd-ops-page) #radar{display:none!important}
+/* Remove duplicate category walls from the shopper home; the single category rail + shelves are the canonical path. */
+body.hd-page:not(.hd-ops-page) .hd-hunt-market,body.hd-page:not(.hd-ops-page) .hd-women-zone{display:none!important}
+
+/* Softer product stages: neutral matte instead of bright white boxes. */
+.hd-shelf-media,.hd-market-card-media,.hd-product-main-media,.hd-product-thumbs button,.hd-product-visual.has-image{
+  background:radial-gradient(circle at 50% 42%,#e7eaed 0%,#cdd3d9 68%,#bcc4cc 100%)!important;
+}
+.hd-shelf-media img,.hd-market-card-media img{
+  padding:2px!important;
+  transform:scale(1.06);
+  filter:saturate(1.03) contrast(1.02);
+  mix-blend-mode:multiply;
+}
+.hd-product-main-media img{padding:8px!important;transform:scale(1.025);filter:saturate(1.02) contrast(1.015)}
+.hd-product-thumbs img{padding:0;filter:saturate(1.02) contrast(1.01)}
+.hd-shelf-card:hover .hd-shelf-media img{transform:scale(1.10)}
+.hd-market-product-card:hover .hd-market-card-media img{transform:scale(1.085)}
+
+/* Cleaner hierarchy: less text and fewer borders. */
+.hd-shelf-card,.hd-market-product-card{border-color:rgba(128,174,231,.11)!important;box-shadow:0 10px 28px rgba(0,0,0,.17)!important}
+.hd-shelf-card-body>p{display:none}
+.hd-shelf-card-body{min-height:108px!important}
+.hd-shelf-title{min-height:34px}
+.hd-market-shelf{border-color:rgba(128,174,231,.11)!important;box-shadow:0 12px 34px rgba(0,0,0,.14)}
+.hd-market-shelf-head p{max-width:680px}
+
+@media(max-width:760px){
+  .hd-shelf-card-body{min-height:102px!important}
+  .hd-shelf-media img,.hd-market-card-media img{transform:scale(1.08)}
+  .hd-shelf-card:hover .hd-shelf-media img,.hd-market-product-card:hover .hd-market-card-media img{transform:scale(1.08)}
+}

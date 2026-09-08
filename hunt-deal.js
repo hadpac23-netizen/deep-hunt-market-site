@@ -168,7 +168,7 @@
         <article class="hd-catalog-card glass">
           <div class="hd-catalog-media">${image}<span class="hd-catalog-badge">${esc(item.verdict || "CATALOG")}</span></div>
           <div class="hd-catalog-body">
-            <div class="hd-provider">${esc(item.provider || "Provider")} · LIVE CATALOG</div>
+            <div class="hd-provider">${esc(item.provider || "Provider")} · VERIFIED SOURCE</div>
             <h3><a class="hd-catalog-title-link" href="${esc(detailUrl)}">${esc(item.title || "Catalog product")}</a></h3>
             <div class="hd-catalog-price"><small>${esc(dict.catalogBase || "Supplier base")}</small><strong>${base}</strong></div>
             <ul class="hd-catalog-gaps">${gaps}</ul>
@@ -227,11 +227,11 @@
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
     return `<article class="hd-shelf-card">
-      <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>LIVE CATALOG</span></a>
+      <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>VERIFIED SOURCE</span></a>
       <div class="hd-shelf-card-body">
         <small>${esc(item.provider || "Provider")}</small>
         <a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a>
-        <p>Open for live price, sizes, colors and availability.</p>
+        <p>Open for source price, sizes, colors and availability.</p>
         <a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a>
       </div>
     </article>`;
