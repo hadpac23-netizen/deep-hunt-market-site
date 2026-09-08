@@ -17,7 +17,7 @@
     <nav class="hd-nav">
       <a href="#deals" data-i18n="navDeals">Deals Now</a>
       <a href="#deals" data-i18n="navPicks">Smart Picks</a>
-      <a href="#deals" data-i18n="navTrends">Trend Radar</a>
+      <a href="#live-search" data-i18n="navTrends">Trend Radar</a>
       <a href="#deals" data-i18n="navCompare">Price Lens</a>
     </nav>
     <div class="hd-tools">
@@ -97,6 +97,14 @@
       <div><span>↗</span><p><small data-i18n="clicks">Outbound clicks</small><strong id="hd-click-count">0</strong></p></div>
       <div><span>$</span><p><small data-i18n="commission">Confirmed commission</small><strong id="hd-commission">$0</strong></p></div>
       <div class="hd-stat-quote">“Not just lower prices. Smarter choices.”</div>
+    </section>
+
+    <section class="hd-deals-section" id="live-search" hidden>
+      <div class="hd-section-head">
+        <div><h2 data-i18n="searchResults">Live Price Search</h2><p data-i18n="searchResultsSub">Discovery results stay separate from qualified Smart Picks.</p></div>
+      </div>
+      <p class="hd-inline-disclosure" id="hd-live-search-status" data-i18n="searchReady">Type a product above and press Enter to search ready providers.</p>
+      <div class="hd-deal-grid" id="hd-search-grid"></div>
     </section>
 
     <section class="hd-deals-section" id="deals">

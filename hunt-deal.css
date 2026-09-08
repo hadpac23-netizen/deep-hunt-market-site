@@ -12,7 +12,7 @@ body.hd-page{background:
   linear-gradient(180deg,#020712,#040b14 62%,#030812)}
 .hd-space{position:fixed;inset:0;pointer-events:none;z-index:-2;overflow:hidden;background:
   linear-gradient(90deg,rgba(2,7,16,.96) 0%,rgba(2,8,17,.72) 28%,rgba(3,10,22,.48) 56%,rgba(2,7,16,.86) 100%),
-  url("/earth-night.jpg") center 20%/cover no-repeat;filter:saturate(.8) contrast(1.16) brightness(.65)}
+  url("earth-night.jpg") center 20%/cover no-repeat;filter:saturate(.8) contrast(1.16) brightness(.65)}
 .hd-space:before{content:"";position:absolute;inset:0;background:
   radial-gradient(circle at 14% 18%,rgba(79,135,255,.16),transparent 24rem),
   radial-gradient(circle at 91% 12%,rgba(137,91,255,.12),transparent 26rem),

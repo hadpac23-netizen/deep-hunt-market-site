@@ -7,6 +7,15 @@
 
   const $ = q => document.querySelector(q);
   const isStaticPublicHost = location.hostname.endsWith(".github.io");
+  const supabaseFunctionsBase = "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1";
+  const supabasePublishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
+  const publicApiUrl = name => isStaticPublicHost
+    ? supabaseFunctionsBase + "/" + name
+    : (name === "hunt-storefront" ? "/api/storefront" : "/api/deals/hunt");
+  const publicApiHeaders = extra => ({
+    ...(isStaticPublicHost ? {"apikey": supabasePublishableKey} : {}),
+    ...(extra || {})
+  });
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const money = (value, currency="USD") => {
     if (value === null || value === undefined || Number.isNaN(Number(value))) return "—";
@@ -43,8 +52,8 @@
     const m = deal.metrics || {};
     const verdict = String(deal.verdict || e.verdict || "TEST").toUpperCase();
     const category = categoryFor(deal);
-    const verified = (e.verified_signals || []).slice(0,2).join(" · ");
-    const gaps = (e.gaps || []).slice(0,1).join(" · ");
+    const verified = (e.verified_signals || deal.verified_signals || []).slice(0,2).join(" · ");
+    const gaps = (e.gaps || deal.gaps || []).slice(0,1).join(" · ");
     const checkout = providerCheckout[c.provider] || {};
     const canCheckoutHere = checkoutPolicy.public_checkout_enabled === true
       && checkout.mode === "ONSITE_CAPABLE"
@@ -123,7 +132,10 @@
   }
 
   async function load() {
-    const res = await fetch("storefront.json",{cache:"no-store"});
+    const res = await fetch(publicApiUrl("hunt-storefront"),{
+      cache:"no-store",
+      headers: publicApiHeaders()
+    });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Storefront unavailable");
     providerCheckout = data.provider_checkout || {};
@@ -131,6 +143,47 @@
     renderMetrics(data);
     renderAdvisor(data);
     renderDeals(data.deals || []);
+  }
+
+  function renderLiveSearch(data) {
+    const section = $("#live-search");
+    const grid = $("#hd-search-grid");
+    const status = $("#hd-live-search-status");
+    if (!section || !grid || !status) return;
+    const results = data.results || [];
+    const states = (data.providers || []).map(p => {
+      const count = p.result_count ? " (" + p.result_count + ")" : "";
+      return p.provider + ": " + p.state + count;
+    }).join(" · ");
+    section.hidden = false;
+    status.textContent = results.length
+      ? results.length + " discovery results · " + states
+      : (states || (dict.searchNoResults || "No live results yet."));
+    grid.innerHTML = results.map(renderCard).join("");
+    if (results.length) renderAdvisor({deals: results});
+  }
+
+  async function runLiveSearch(query) {
+    const clean = String(query || "").trim();
+    if (!clean) return;
+    const section = $("#live-search");
+    const status = $("#hd-live-search-status");
+    if (section) section.hidden = false;
+    if (status) status.textContent = dict.searching || "Searching ready providers…";
+    try {
+      const res = await fetch(publicApiUrl("hunt-deals-hunt"), {
+        method: "POST",
+        headers: publicApiHeaders({"Content-Type":"application/json"}),
+        body: JSON.stringify({query: clean, limit: 8})
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Live search unavailable");
+      renderLiveSearch(data);
+    } catch (err) {
+      if (status) status.textContent = err.message || "Live search unavailable";
+      const grid = $("#hd-search-grid");
+      if (grid) grid.innerHTML = "";
+    }
   }
 
   document.querySelectorAll(".hd-filter-row button").forEach(btn => {
@@ -142,6 +195,11 @@
     });
   });
   $("#hd-search-input")?.addEventListener("input", applyFilters);
+  $("#hd-search-input")?.addEventListener("keydown", event => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    runLiveSearch(event.currentTarget.value);
+  });
 
   window.addEventListener("hunt:language", e => {
     dict = e.detail.dict;
