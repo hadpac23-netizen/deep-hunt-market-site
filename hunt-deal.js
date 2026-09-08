@@ -64,10 +64,13 @@
     const cta = canCheckoutHere
       ? `<a class="hd-retailer" href="/checkout/${encodeURIComponent(deal.id)}">${esc(dict.onsiteCheckout || "Buy on HUNT DEAL")} →</a>`
       : `<button class="hd-retailer" type="button" disabled title="${esc(checkout.note || checkoutPolicy.rule || "")}">${esc(dict.onsitePending || "On-site checkout pending")}</button>`;
+    const productVisual = typeof c.image_url === "string" && c.image_url.startsWith("https://")
+      ? `<div class="hd-product-visual has-image"><img src="${esc(c.image_url)}" alt="${esc(c.title || "Product")}" loading="lazy"></div>`
+      : `<div class="hd-product-visual" aria-hidden="true">${esc(glyphFor(c.provider))}</div>`;
     return `
       <article class="hd-deal-card" data-category="${category}" data-search="${esc((c.title||"")+" "+(c.provider||""))}">
         <div class="hd-deal-top"><span class="hd-verdict ${verdict==="SELL"?"sell":""}">${esc(verdict)}</span><span class="hd-heart">♡</span></div>
-        <div class="hd-product-visual" aria-hidden="true">${esc(glyphFor(c.provider))}</div>
+        ${productVisual}
         <h3>${esc(c.title || "Verified product")}</h3>
         <div class="hd-price">${money(c.price_amount,c.currency||"USD")}</div>
         <div class="hd-provider">${esc(c.provider || "Provider")} · ${m.outbound_clicks||0} clicks · ${m.conversions||0} conversions</div>
@@ -224,7 +227,7 @@
       const res = await fetch(publicApiUrl("hunt-deals-hunt"), {
         method: "POST",
         headers: publicApiHeaders({"Content-Type":"application/json"}),
-        body: JSON.stringify({query: clean, limit: 8})
+        body: JSON.stringify({query: clean, limit: 12})
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Live search unavailable");
