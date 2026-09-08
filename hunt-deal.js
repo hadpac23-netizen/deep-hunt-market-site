@@ -52,10 +52,6 @@
     const m = deal.metrics || {};
     const verdict = String(deal.verdict || e.verdict || "TEST").toUpperCase();
     const category = categoryFor(deal);
-    const imageUrl = typeof c.image_url === "string" && c.image_url.startsWith("https://") ? c.image_url : "";
-    const priceText = c.price_basis === "SUPPLIER_BASE"
-      ? (dict.supplierBase || "Supplier base") + " " + money(c.price_amount,c.currency||"USD")
-      : money(c.price_amount,c.currency||"USD");
     const verified = (e.verified_signals || deal.verified_signals || []).slice(0,2).join(" · ");
     const gaps = (e.gaps || deal.gaps || []).slice(0,1).join(" · ");
     const checkout = providerCheckout[c.provider] || {};
@@ -69,9 +65,9 @@
     return `
       <article class="hd-deal-card" data-category="${category}" data-search="${esc((c.title||"")+" "+(c.provider||""))}">
         <div class="hd-deal-top"><span class="hd-verdict ${verdict==="SELL"?"sell":""}">${esc(verdict)}</span><span class="hd-heart">♡</span></div>
-        <div class="hd-product-visual">${imageUrl ? `<img src="${esc(imageUrl)}" alt="${esc(c.title || "Product")}" loading="lazy">` : esc(glyphFor(c.provider))}</div>
+        <div class="hd-product-visual" aria-hidden="true">${esc(glyphFor(c.provider))}</div>
         <h3>${esc(c.title || "Verified product")}</h3>
-        <div class="hd-price">${esc(priceText)}</div>
+        <div class="hd-price">${money(c.price_amount,c.currency||"USD")}</div>
         <div class="hd-provider">${esc(c.provider || "Provider")} · ${m.outbound_clicks||0} clicks · ${m.conversions||0} conversions</div>
         <div class="hd-why"><b>${esc(dict.why || "Why this deal?")}</b>${esc(verified || "Evidence review passed the minimum public gate.")}</div>
         <div class="hd-red-note">● ${esc(dict.redTeam || "Red Team note")}: ${esc(gaps || "No recorded evidence gap.")}</div>
@@ -96,13 +92,40 @@
     allDeals = (deals || []).filter(deal => {
       if (!isStaticPublicHost) return true;
       const c = candidateOf(deal);
-      return c.merchant_product === true || (typeof c.affiliate_url === "string" && c.affiliate_url.startsWith("https://"));
+      return typeof c.affiliate_url === "string" && c.affiliate_url.startsWith("https://");
     });
     const grid = $("#hd-deal-grid");
     if (!grid) return;
     grid.innerHTML = allDeals.map(renderCard).join("");
     $("#hd-empty").hidden = allDeals.length > 0;
     applyFilters();
+  }
+
+
+  function renderCatalog(products) {
+    const grid = $("#hd-catalog-grid");
+    const count = $("#hd-catalog-count");
+    if (!grid || !count) return;
+    const items = Array.isArray(products) ? products : [];
+    count.textContent = items.length ? items.length + " LIVE" : "WAITING";
+    grid.innerHTML = items.map(item => {
+      const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
+        ? `<img class="hd-catalog-image" src="${esc(item.image_url)}" alt="${esc(item.title || "Catalog product")}" loading="lazy">`
+        : '<div class="hd-catalog-image hd-catalog-placeholder">◇</div>';
+      const base = item.price_amount == null ? "—" : money(item.price_amount, item.currency || "USD");
+      const gaps = (item.gaps || []).slice(0,2).map(x => `<li>${esc(x)}</li>`).join("");
+      return `
+        <article class="hd-catalog-card glass">
+          <div class="hd-catalog-media">${image}<span class="hd-catalog-badge">${esc(item.verdict || "CATALOG")}</span></div>
+          <div class="hd-catalog-body">
+            <div class="hd-provider">${esc(item.provider || "Provider")} · LIVE CATALOG</div>
+            <h3>${esc(item.title || "Catalog product")}</h3>
+            <div class="hd-catalog-price"><small>${esc(dict.catalogBase || "Supplier base")}</small><strong>${base}</strong></div>
+            <ul class="hd-catalog-gaps">${gaps}</ul>
+            <button class="hd-retailer" type="button" disabled>${esc(dict.catalogPending || "Checkout activation pending")}</button>
+          </div>
+        </article>`;
+    }).join("");
   }
 
   function renderAdvisor(data) {
@@ -130,7 +153,7 @@
   function renderMetrics(data) {
     const commerce = data.commerce || {};
     $("#hd-provider-count").textContent = (data.providers || []).length;
-    $("#hd-qualified-count").textContent = (commerce.public_test_sell_count || 0) + (commerce.live_catalog_count || 0);
+    $("#hd-qualified-count").textContent = commerce.public_test_sell_count || 0;
     $("#hd-click-count").textContent = commerce.outbound_clicks || 0;
     $("#hd-commission").textContent = money(commerce.net_confirmed_commission_usd || 0);
   }
@@ -144,10 +167,14 @@
     if (!res.ok) throw new Error(data.error || "Storefront unavailable");
     providerCheckout = data.provider_checkout || {};
     checkoutPolicy = data.checkout || checkoutPolicy;
-    const initialProducts = [...(data.deals || []), ...(data.merchant_products || [])];
     renderMetrics(data);
-    renderAdvisor({deals: initialProducts});
-    renderDeals(initialProducts);
+    renderCatalog(data.merchant_products || []);
+    if (!(data.deals || []).length && (data.merchant_products || []).length) {
+      $("#hd-test-title").textContent = dict.liveCatalogConnected || "Live merchant catalog connected";
+      $("#hd-test-copy").textContent = (data.merchant_products || []).length + " catalog products available for validation.";
+    }
+    renderAdvisor(data);
+    renderDeals(data.deals || []);
   }
 
   function renderLiveSearch(data) {

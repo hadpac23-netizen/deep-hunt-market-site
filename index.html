@@ -25,7 +25,7 @@
     <nav class="hd-nav">
       <a href="#deals" data-i18n="navDeals">Deals Now</a>
       <a href="#deals" data-i18n="navPicks">Smart Picks</a>
-      <a href="#live-search" data-i18n="navTrends">Trend Radar</a>
+      <a href="#radar" data-i18n="navTrends">Trend Radar</a>
       <a href="#deals" data-i18n="navCompare">Price Lens</a>
       <a href="partners.html">Partners</a>
     </nav>
@@ -106,6 +106,42 @@
       <div><span>↗</span><p><small data-i18n="clicks">Outbound clicks</small><strong id="hd-click-count">0</strong></p></div>
       <div><span>$</span><p><small data-i18n="commission">Confirmed commission</small><strong id="hd-commission">$0</strong></p></div>
       <div class="hd-stat-quote">“Not just lower prices. Smarter choices.”</div>
+    </section>
+
+
+    <section class="hd-radar-section" id="radar">
+      <div class="hd-section-head">
+        <div><div class="hd-kicker hd-kicker-small">SEPTEMBER 2026 SIGNALS</div><h2 data-i18n="radarTitle">Trend Radar</h2><p data-i18n="radarSub">Fresh shopping signals guide what HUNT DEAL researches next. Signals are not sales claims.</p></div>
+      </div>
+      <div class="hd-radar-grid">
+        <article class="hd-radar-card glass">
+          <div class="hd-radar-top"><span class="hd-radar-icon">⚡</span><span class="hd-status green">LIVE SIGNAL</span></div>
+          <h3>Portable power & travel tech</h3>
+          <p>Portable chargers, compact adapters and travel-ready accessories are showing strong September attention across current deal and travel coverage.</p>
+          <small>Research focus · price freshness · portability · verified availability</small>
+        </article>
+        <article class="hd-radar-card glass">
+          <div class="hd-radar-top"><span class="hd-radar-icon">◉</span><span class="hd-status blue">HOT</span></div>
+          <h3>Robot vacuums & smart home</h3>
+          <p>IFA launches and active September discounting keep robot cleaning and connected-home products high on the watchlist.</p>
+          <small>Research focus · real discount depth · retailer spread · model age</small>
+        </article>
+        <article class="hd-radar-card glass">
+          <div class="hd-radar-top"><span class="hd-radar-icon">✈</span><span class="hd-status blue">SEASONAL</span></div>
+          <h3>Travel organizers & fall gear</h3>
+          <p>Packing organizers, luggage accessories and compact travel essentials are recurring in current fall-travel shopping coverage.</p>
+          <small>Research focus · low-friction utility · shipping · return risk</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="hd-deals-section" id="catalog">
+      <div class="hd-section-head">
+        <div><div class="hd-kicker hd-kicker-small">LIVE MERCHANT CATALOG</div><h2 data-i18n="catalogTitle">Products already connected</h2><p data-i18n="catalogSub">Real catalog inventory from an approved API source. These are catalog candidates, not qualified deals yet.</p></div>
+        <span class="hd-status blue" id="hd-catalog-count">CONNECTING</span>
+      </div>
+      <p class="hd-inline-disclosure" data-i18n="catalogTruth">Supplier base cost is shown only as source intelligence. It is not a public retail price or a promised margin.</p>
+      <div class="hd-catalog-grid" id="hd-catalog-grid"></div>
     </section>
 
     <section class="hd-deals-section" id="live-search" hidden>

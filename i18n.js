@@ -42,11 +42,12 @@
         advisor: "HUNT Advisor", advisorSub: "REAL DEAL INTELLIGENCE · SMARTER SHOPPING",
         brief: "Today's Deal Intelligence Brief", best: "Best price right now", worth: "Worth testing", avoid: "What to avoid", confidence: "Confidence & value",
         noBest: "No verified live offer yet.", noWorth: "Provider feeds are being connected.", noAvoid: "Fake urgency and unsupported discounts.", noConfidence: "Evidence first",
-        providers: "Providers mapped", qualified: "Live products", clicks: "Outbound clicks", commission: "Confirmed commission",
-        smartPicks: "Live Product Picks", smartPicksSub: "Verified merchant catalog products can appear alongside TEST/SELL deals. Empty is better than fabricated.",
+        providers: "Providers mapped", qualified: "Qualified offers", clicks: "Outbound clicks", commission: "Confirmed commission",
+        smartPicks: "Smart Deal Picks", smartPicksSub: "Only TEST/SELL candidates can appear here. Empty is better than fabricated.",
         all: "All Deals", tech: "Tech", home: "Home", fashion: "Fashion", travel: "Travel",
         noDeals: "No qualified live deals yet.", noDealsSub: "The engine is ready. Real products appear only after a provider feed and affiliate path are verified.",
         why: "Why this deal?", redTeam: "Red Team note", retailer: "Check retailer", onsiteCheckout: "Buy on HUNT DEAL", onsitePending: "On-site checkout pending", compare: "Compare", test: "TEST", sell: "SELL",
+        radarTitle: "Trend Radar", radarSub: "Fresh shopping signals guide what HUNT DEAL researches next. Signals are not sales claims.", catalogTitle: "Products already connected", catalogSub: "Real catalog inventory from an approved API source. These are catalog candidates, not qualified deals yet.", catalogTruth: "Supplier base cost is source intelligence only. It is not a public retail price or a promised margin.", catalogBase: "Supplier base", catalogPending: "Checkout activation pending", liveCatalogConnected: "Live merchant catalog connected",
         footerTag: "A BOOM branch · commerce intelligence now, full BOOM later."
       },
       ar: {
@@ -61,11 +62,12 @@
         advisor: "HUNT Advisor", advisorSub: "ذكاء عروض حقيقي · تسوق أذكى",
         brief: "ملخص ذكاء العروض اليوم", best: "أفضل سعر الآن", worth: "يستحق الاختبار", avoid: "ما الذي نتجنبه", confidence: "الثقة والقيمة",
         noBest: "لا يوجد عرض حي موثق بعد.", noWorth: "نربط مصادر المنتجات الرسمية.", noAvoid: "استعجال وهمي وخصومات غير مثبتة.", noConfidence: "الدليل أولًا",
-        providers: "المصادر المربوطة", qualified: "منتجات مباشرة", clicks: "نقرات للخارج", commission: "عمولة مؤكدة",
-        smartPicks: "منتجات HUNT المباشرة", smartPicksSub: "يمكن أن تظهر منتجات موثقة من كتالوج المورد مع عروض TEST/SELL. الفراغ أفضل من بيانات مزيفة.",
+        providers: "المصادر المربوطة", qualified: "العروض المؤهلة", clicks: "نقرات للخارج", commission: "عمولة مؤكدة",
+        smartPicks: "اختيارات HUNT الذكية", smartPicksSub: "فقط المنتجات TEST/SELL تظهر هنا. الفراغ أفضل من بيانات مزيفة.",
         all: "الكل", tech: "تقنية", home: "منزل", fashion: "موضة", travel: "سفر",
         noDeals: "لا توجد عروض حية مؤهلة بعد.", noDealsSub: "المحرك جاهز. المنتج يظهر فقط بعد توثيق المصدر ومسار العمولة.",
         why: "لماذا هذا العرض؟", redTeam: "ملاحظة Red Team", retailer: "افتح المتجر", compare: "قارن", test: "اختبار", sell: "بيع",
+        radarTitle: "رادار الترند", radarSub: "إشارات تسوق حديثة توجه ما يبحث عنه HUNT DEAL لاحقًا. الإشارة ليست ادعاء مبيعات.", catalogTitle: "منتجات متصلة الآن", catalogSub: "مخزون حقيقي من مصدر API معتمد. هذه منتجات كتالوج وليست صفقات مؤهلة بعد.", catalogTruth: "تكلفة المورد الأساسية معلومة مصدر فقط وليست سعر بيع أو هامش ربح مضمون.", catalogBase: "تكلفة المورد", catalogPending: "تفعيل الدفع قيد الانتظار", liveCatalogConnected: "تم ربط كتالوج تاجر حي",
         footerTag: "فرع من BOOM · ذكاء تجارة الآن، والمنصة الكاملة لاحقًا."
       },
       he: {
@@ -80,11 +82,12 @@
         advisor: "HUNT Advisor", advisorSub: "מודיעין דילים אמיתי · קנייה חכמה יותר",
         brief: "תקציר הדילים של היום", best: "המחיר הטוב כרגע", worth: "שווה בדיקה", avoid: "ממה להימנע", confidence: "ביטחון וערך",
         noBest: "עדיין אין הצעה חיה מאומתת.", noWorth: "מקורות המוצרים מתחברים.", noAvoid: "לחץ מזויף והנחות לא מוכחות.", noConfidence: "ראיות לפני הכול",
-        providers: "ספקים ממופים", qualified: "מוצרים חיים", clicks: "קליקים החוצה", commission: "עמלה מאושרת",
-        smartPicks: "מוצרים חיים", smartPicksSub: "מוצרי קטלוג ספק מאומתים יכולים להופיע לצד דילי TEST/SELL. עדיף ריק ממומצא.",
+        providers: "ספקים ממופים", qualified: "הצעות מאושרות", clicks: "קליקים החוצה", commission: "עמלה מאושרת",
+        smartPicks: "Smart Deal Picks", smartPicksSub: "רק TEST/SELL יכולים להופיע. עדיף ריק ממומצא.",
         all: "הכול", tech: "טכנולוגיה", home: "בית", fashion: "אופנה", travel: "נסיעות",
         noDeals: "אין עדיין דילים חיים מאושרים.", noDealsSub: "המנוע מוכן. מוצרים יופיעו רק לאחר אימות מקור וייחוס עמלה.",
         why: "למה הדיל הזה?", redTeam: "הערת Red Team", retailer: "לצפייה בחנות", compare: "השווה", test: "TEST", sell: "SELL",
+        radarTitle: "רדאר טרנדים", radarSub: "סיגנלים עדכניים מכוונים את המחקר הבא של HUNT DEAL. סיגנל אינו טענת מכירות.", catalogTitle: "מוצרים שכבר מחוברים", catalogSub: "קטלוג אמיתי ממקור API מאושר. אלה מועמדי קטלוג, לא דילים מאושרים.", catalogTruth: "עלות בסיס ספק היא מידע מקור בלבד, לא מחיר קמעונאי ולא הבטחת מרווח.", catalogBase: "בסיס ספק", catalogPending: "הפעלת checkout בהמתנה", liveCatalogConnected: "קטלוג סוחר חי מחובר",
         footerTag: "ענף של BOOM · מודיעין מסחר עכשיו, BOOM המלא בהמשך."
       },
       es: {
@@ -99,11 +102,12 @@
         advisor: "HUNT Advisor", advisorSub: "INTELIGENCIA REAL DE OFERTAS",
         brief: "Resumen de ofertas de hoy", best: "Mejor precio ahora", worth: "Vale la pena probar", avoid: "Qué evitar", confidence: "Confianza y valor",
         noBest: "Aún no hay una oferta en vivo verificada.", noWorth: "Conectando feeds oficiales.", noAvoid: "Urgencia falsa y descuentos sin prueba.", noConfidence: "Evidencia primero",
-        providers: "Proveedores", qualified: "Productos en vivo", clicks: "Clics salientes", commission: "Comisión confirmada",
-        smartPicks: "Productos en vivo", smartPicksSub: "Los productos verificados del catálogo pueden aparecer junto a ofertas TEST/SELL. Mejor vacío que inventado.",
+        providers: "Proveedores", qualified: "Ofertas calificadas", clicks: "Clics salientes", commission: "Comisión confirmada",
+        smartPicks: "Selecciones inteligentes", smartPicksSub: "Solo TEST/SELL pueden aparecer. Mejor vacío que inventado.",
         all: "Todo", tech: "Tecnología", home: "Hogar", fashion: "Moda", travel: "Viajes",
         noDeals: "Aún no hay ofertas calificadas.", noDealsSub: "El motor está listo. Los productos aparecen solo con fuente y atribución verificadas.",
         why: "¿Por qué esta oferta?", redTeam: "Nota Red Team", retailer: "Ver tienda", compare: "Comparar", test: "TEST", sell: "SELL",
+        radarTitle: "Radar de tendencias", radarSub: "Señales recientes orientan la próxima investigación de HUNT DEAL. Una señal no es una promesa de ventas.", catalogTitle: "Productos ya conectados", catalogSub: "Inventario real de una fuente API aprobada. Son candidatos de catálogo, no ofertas calificadas.", catalogTruth: "El coste base del proveedor es solo inteligencia de origen; no es precio minorista ni margen garantizado.", catalogBase: "Base proveedor", catalogPending: "Checkout pendiente de activación", liveCatalogConnected: "Catálogo comercial en vivo conectado",
         footerTag: "Una rama de BOOM · inteligencia comercial ahora, BOOM completo después."
       },
       fr: {
@@ -118,11 +122,12 @@
         advisor: "HUNT Advisor", advisorSub: "INTELLIGENCE D'OFFRES RÉELLE",
         brief: "Brief des offres du jour", best: "Meilleur prix actuel", worth: "À tester", avoid: "À éviter", confidence: "Confiance et valeur",
         noBest: "Aucune offre live vérifiée pour l'instant.", noWorth: "Connexion des flux officiels.", noAvoid: "Fausse urgence et remises non prouvées.", noConfidence: "Les preuves d'abord",
-        providers: "Fournisseurs", qualified: "Produits en direct", clicks: "Clics sortants", commission: "Commission confirmée",
-        smartPicks: "Produits en direct", smartPicksSub: "Les produits vérifiés du catalogue peuvent apparaître avec les offres TEST/SELL. Mieux vaut vide qu'inventé.",
+        providers: "Fournisseurs", qualified: "Offres qualifiées", clicks: "Clics sortants", commission: "Commission confirmée",
+        smartPicks: "Sélections intelligentes", smartPicksSub: "Seuls TEST/SELL apparaissent. Mieux vaut vide qu'inventé.",
         all: "Tout", tech: "Tech", home: "Maison", fashion: "Mode", travel: "Voyage",
         noDeals: "Aucune offre qualifiée en direct.", noDealsSub: "Le moteur est prêt. Les produits n'apparaissent qu'après vérification de la source et de l'attribution.",
         why: "Pourquoi cette offre ?", redTeam: "Note Red Team", retailer: "Voir le marchand", compare: "Comparer", test: "TEST", sell: "SELL",
+        radarTitle: "Radar des tendances", radarSub: "Des signaux récents orientent les prochaines recherches HUNT DEAL. Un signal n’est pas une promesse de vente.", catalogTitle: "Produits déjà connectés", catalogSub: "Inventaire réel depuis une source API approuvée. Ce sont des candidats catalogue, pas encore des offres qualifiées.", catalogTruth: "Le coût fournisseur est une donnée source uniquement, pas un prix public ni une marge garantie.", catalogBase: "Base fournisseur", catalogPending: "Activation du paiement en attente", liveCatalogConnected: "Catalogue marchand en direct connecté",
         footerTag: "Une branche de BOOM · intelligence commerciale maintenant, BOOM complet plus tard."
       }
     },
