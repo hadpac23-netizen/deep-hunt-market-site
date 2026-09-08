@@ -98,13 +98,22 @@
     $("#hd-boom-reason").textContent = score > 2 ? `This category has a ${score}-point local interest signal.` : "Learning locally from category visits, product views and cart actions.";
     H.updateCartBadges();
 
-    const data = await H.search(def.query,24);
-    rawResults = Array.isArray(data.results) ? data.results : [];
+    const shelfData = await H.storefront({shelves:1});
+    const shelfRows = Array.isArray(shelfData?.shelves?.[slug]) ? shelfData.shelves[slug] : [];
+    let providerState = "";
+    if (shelfRows.length) {
+      rawResults = shelfRows;
+      const providers = [...new Set(rawResults.map(p=>p.provider).filter(Boolean))];
+      providerState = `${rawResults.length} live catalog products · ${providers.join(" + ")}`;
+    } else {
+      const data = await H.search(def.query,24);
+      rawResults = Array.isArray(data.results) ? data.results : [];
+      providerState = (data.providers || []).filter(x=>x.result_count || x.state === "SEARCHED").map(x=>`${x.provider}: ${x.result_count||0}`).join(" · ");
+    }
     window.HuntAnalytics?.category(slug, rawResults.length);
     resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
     rawResults.forEach(p => { try { sessionStorage.setItem(`hunt_product_${productKey(p)}`, JSON.stringify(p)); } catch {} });
-    const states = (data.providers || []).filter(x=>x.result_count || x.state === "SEARCHED").map(x=>`${x.provider}: ${x.result_count||0}`).join(" · ");
-    $("#hd-cat-provider-state").textContent = states || "No connected provider returned a product for this category yet.";
+    $("#hd-cat-provider-state").textContent = providerState || "No connected provider returned a product for this category yet.";
     renderGrid();
   }
 

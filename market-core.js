@@ -22,7 +22,12 @@
     shoes: {title:"Shoes", query:"shoes", icon:"S", description:"Sneakers, canvas shoes and slides."},
     accessories: {title:"Accessories", query:"accessories", icon:"X", description:"Hats, caps, tags and everyday accessories."},
     home: {title:"Home", query:"home", icon:"O", description:"Rugs, pillows, blankets and useful home finds."},
-    tech: {title:"Phone & Tech", query:"tech", icon:"P", description:"Phone cases and connected accessories."},
+    tech: {title:"Phone & Tech", query:"tech", icon:"P", description:"Phones, electronics and connected accessories from live supplier feeds."},
+    gaming: {title:"Gaming Accessories", query:"gaming accessories", icon:"G", description:"Gaming accessories and desk-ready gear from connected supplier feeds."},
+    kitchen: {title:"Kitchen", query:"kitchen", icon:"K", description:"Kitchen organizers, cookware accessories and useful everyday finds."},
+    lighting: {title:"Lighting", query:"lighting", icon:"L", description:"Decorative lighting, desk lights and home lighting accessories."},
+    bath: {title:"Bath & Bathroom", query:"bathroom bath", icon:"B", description:"Bathroom organizers and bath accessories."},
+    toys: {title:"Toys & Play", query:"kids toys", icon:"T", description:"Selected toys, puzzles and creative play products."},
     travel: {title:"Travel", query:"travel", icon:"R", description:"Travel bags, tags, bottles and useful travel items."},
     gifts: {title:"Gifts", query:"gifts", icon:"G", description:"Gift ideas from live approved catalogs."},
     kids: {title:"Kids & Youth", query:"kids", icon:"K", description:"Kids and youth apparel from the connected live catalog."},
@@ -38,16 +43,17 @@
     office: {title:"Office & Desk", query:"office", icon:"D", description:"Desk mats, calendars, mouse pads and notebooks."},
     pillows: {title:"Pillows", query:"pillows", icon:"P", description:"Decorative pillows and pillow products."},
     ornaments: {title:"Ornaments", query:"ornaments", icon:"R", description:"Seasonal and decorative ornaments."},
-    perfume: {title:"Perfume & Fragrance", query:"women perfume fragrance", icon:"F", description:"Waiting for an approved fragrance supplier feed."},
-    beauty: {title:"Beauty & Skincare", query:"beauty skincare makeup", icon:"Y", description:"Waiting for an approved beauty supplier feed."},
-    jewelry: {title:"Jewelry", query:"women jewelry necklace bracelet earrings", icon:"Q", description:"Waiting for an approved jewelry supplier feed."}
+    perfume: {title:"Perfume & Fragrance", query:"women perfume fragrance", icon:"F", description:"Live when matched from connected approved supplier feeds."},
+    beauty: {title:"Beauty & Skincare", query:"beauty skincare makeup", icon:"Y", description:"Beauty and skincare products matched from connected approved supplier feeds."},
+    jewelry: {title:"Jewelry", query:"women jewelry necklace bracelet earrings", icon:"Q", description:"Jewelry and accessories matched from connected approved supplier feeds."}
   };
 
   const categoryGroups = [
     {title:"Fashion", items:["women","men","dresses","tops","hoodies","jackets","activewear","swimwear","socks"]},
-    {title:"Accessories", items:["bags","shoes","hats","accessories","jewelry","beauty","perfume"]},
-    {title:"Home & Lifestyle", items:["home","pillows","blankets","wallart","drinkware","travel","tech"]},
-    {title:"Kids & Pets", items:["kids","pets"]},
+    {title:"Beauty & Style", items:["bags","shoes","hats","accessories","jewelry","beauty","perfume"]},
+    {title:"Home & Lifestyle", items:["home","kitchen","bath","lighting","pillows","blankets","wallart","drinkware","travel"]},
+    {title:"Tech & Gaming", items:["tech","gaming"]},
+    {title:"Kids & Pets", items:["kids","toys","pets"]},
     {title:"Gifts & Office", items:["gifts","ornaments","stickers","stationery","office"]}
   ];
 
@@ -90,6 +96,11 @@
     if (/(handbag|purse|crossbody|tote|backpack|\bbag\b)/.test(t)) return "bags";
     if (/(shoe|sneaker|slide|heel)/.test(t)) return "shoes";
     if (/(hat|cap|wallet|belt|accessor|beanie|\btag\b)/.test(t)) return "accessories";
+    if (/(gaming|gamepad|controller|headset stand)/.test(t)) return "gaming";
+    if (/(kitchen|cookware|utensil|bakeware|lunch box|food storage)/.test(t)) return "kitchen";
+    if (/(lamp|lighting|night light|desk light)/.test(t)) return "lighting";
+    if (/(bathroom|bath mat|shower|soap dispenser)/.test(t)) return "bath";
+    if (/(toy|puzzle|plush|building block|craft kit)/.test(t)) return "toys";
     if (/(travel|luggage|suitcase|duffle|weekender)/.test(t)) return "travel";
     if (/(home|rug|pillow|blanket|decor|coaster|poster|canvas)/.test(t)) return "home";
     if (/(phone|iphone|samsung|airpods|magsafe|tech|electronics)/.test(t)) return "tech";
@@ -124,6 +135,11 @@
     if (/handbag|purse|crossbody|backpack|\bbag/.test(q)) return "bags";
     if (/shoe|sneaker|heel|slide/.test(q)) return "shoes";
     if (/hat|cap|wallet|belt|accessor|beanie/.test(q)) return "accessories";
+    if (/gaming|gamepad|controller/.test(q)) return "gaming";
+    if (/kitchen|cookware|utensil|bakeware/.test(q)) return "kitchen";
+    if (/lighting|lamp|night light|desk light/.test(q)) return "lighting";
+    if (/bathroom|bath|shower|soap dispenser/.test(q)) return "bath";
+    if (/toys?|puzzle|plush|building block/.test(q)) return "toys";
     if (/travel|luggage|duffle|weekender/.test(q)) return "travel";
     if (/home|decor|rug|pillow|blanket/.test(q)) return "home";
     if (/phone|tech|electronic|airpods|magsafe/.test(q)) return "tech";

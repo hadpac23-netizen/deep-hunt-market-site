@@ -1,0 +1,56 @@
+/* HUNT DEAL WOW layer — additive, removable */
+.hd-hero{position:relative}
+.hd-hero:before{content:"";position:absolute;inset:-30px 44% 12% -8%;pointer-events:none;background:radial-gradient(circle at 34% 35%,rgba(85,156,255,.15),transparent 48%);filter:blur(18px);z-index:-1}
+.hd-live-proof{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;max-width:650px;margin:18px 0 2px}
+.hd-live-proof>div{min-height:64px;padding:10px 14px;border-radius:14px;border:1px solid rgba(118,180,255,.2);background:linear-gradient(145deg,rgba(14,35,60,.72),rgba(6,18,33,.56));backdrop-filter:blur(18px);box-shadow:inset 0 1px 0 rgba(255,255,255,.045)}
+.hd-live-proof strong{display:block;font-size:1.28rem;line-height:1;color:#eef7ff;text-shadow:0 0 24px rgba(91,178,255,.38)}
+.hd-live-proof span{display:block;margin-top:7px;font-size:.5rem;font-weight:950;letter-spacing:.16em;color:#77a9d8}
+.hd-wow-showcase{width:min(1580px,calc(100% - 64px));margin:14px auto 22px;padding:20px;border:1px solid rgba(108,174,255,.2);border-radius:22px;background:linear-gradient(145deg,rgba(8,24,43,.84),rgba(5,14,27,.92));box-shadow:0 30px 80px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.04);position:relative;overflow:hidden}
+.hd-wow-showcase:before{content:"";position:absolute;width:560px;height:560px;border-radius:50%;right:-260px;top:-330px;background:radial-gradient(circle,rgba(93,108,255,.18),transparent 68%);pointer-events:none}
+.hd-wow-showcase:after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;left:-230px;bottom:-330px;background:radial-gradient(circle,rgba(48,222,179,.11),transparent 70%);pointer-events:none}
+.hd-wow-head{display:flex;align-items:end;justify-content:space-between;gap:24px;position:relative;z-index:1;margin-bottom:16px}
+.hd-wow-head h2{font-size:clamp(1.7rem,3vw,2.8rem);letter-spacing:-.045em;margin:0}
+.hd-wow-head p{max-width:780px;margin:7px 0 0;color:#93a9c4;font-size:.72rem;line-height:1.55}
+.hd-wow-live{flex:0 0 auto;display:flex;align-items:center;gap:8px;border:1px solid rgba(75,245,161,.28);background:rgba(7,34,33,.72);color:#61f3aa;border-radius:999px;padding:9px 13px;font-size:.64rem;font-weight:950;letter-spacing:.08em}
+.hd-wow-live i{width:7px;height:7px;border-radius:50%;background:#4bf5a1;box-shadow:0 0 14px #4bf5a1}
+.hd-wow-worlds{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;position:relative;z-index:1}
+.hd-wow-world{min-height:132px;padding:14px;border:1px solid rgba(128,178,235,.15);border-radius:16px;background:linear-gradient(155deg,rgba(14,36,61,.84),rgba(6,18,33,.9));text-decoration:none;position:relative;overflow:hidden;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.hd-wow-world:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% -6%,rgba(91,165,255,.17),transparent 48%);pointer-events:none}
+.hd-wow-world:nth-child(3n+2):before{background:radial-gradient(circle at 82% -6%,rgba(124,102,255,.19),transparent 48%)}
+.hd-wow-world:nth-child(3n):before{background:radial-gradient(circle at 82% -6%,rgba(62,226,181,.13),transparent 48%)}
+.hd-wow-world>span{position:absolute;right:12px;top:10px;font-size:.55rem;color:#587a9e}
+.hd-wow-world small{display:block;font-size:.48rem;font-weight:950;letter-spacing:.15em;color:#68afff;margin-bottom:20px}
+.hd-wow-world strong{display:block;font-size:.95rem;line-height:1.15}
+.hd-wow-world em{display:block;margin-top:8px;font-size:.53rem;color:#91a7bf;font-style:normal}
+.hd-wow-world:hover{transform:translateY(-4px);border-color:rgba(104,177,255,.46);box-shadow:0 18px 40px rgba(0,0,0,.28)}
+.hd-wow-rail-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:22px 2px 9px;position:relative;z-index:1}
+.hd-wow-rail-head small{font-size:.47rem;letter-spacing:.15em;font-weight:950;color:#64b1ff}
+.hd-wow-rail-head h3{margin:3px 0 0;font-size:1.1rem}
+.hd-wow-rail-head>span{border:1px solid rgba(82,179,255,.28);border-radius:999px;padding:6px 9px;color:#79bcff;font-size:.48rem;font-weight:950}
+.hd-wow-rail-head.value small{color:#54e4a0}.hd-wow-rail-head.value>span{color:#56eaa3;border-color:rgba(74,230,160,.28)}
+.hd-wow-track{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;padding:1px 1px 7px;position:relative;z-index:1}
+.hd-wow-track::-webkit-scrollbar{display:none}
+.hd-wow-product{flex:0 0 clamp(190px,15vw,232px);scroll-snap-align:start;border:1px solid rgba(119,172,231,.16);border-radius:15px;background:rgba(5,17,31,.88);overflow:hidden;transition:transform .22s ease,border-color .22s ease}
+.hd-wow-product:hover{transform:translateY(-4px);border-color:rgba(100,178,255,.5)}
+.hd-wow-product-media{aspect-ratio:4/5;display:block;position:relative;background:linear-gradient(155deg,#eff5fa,#d8e5ef);overflow:hidden}
+.hd-wow-product-media img{width:100%;height:100%;object-fit:contain;padding:8px;transition:transform .35s ease}
+.hd-wow-product:hover .hd-wow-product-media img{transform:scale(1.055)}
+.hd-wow-product-media>span{position:absolute;top:8px;left:8px;border:1px solid rgba(74,162,255,.4);background:rgba(5,24,43,.78);backdrop-filter:blur(8px);color:#79baff;border-radius:999px;padding:5px 7px;font-size:.43rem;font-weight:950;letter-spacing:.06em}
+.hd-wow-image-placeholder{width:100%;height:100%;display:grid;place-items:center;font-size:2rem;color:#6383a5}
+.hd-wow-product-body{padding:10px;min-height:126px;display:flex;flex-direction:column}
+.hd-wow-product-body>small{font-size:.45rem;color:#6f89a7;text-transform:uppercase}
+.hd-wow-product-body>a{font-size:.69rem;line-height:1.3;color:#f2f7ff;text-decoration:none;font-weight:850;margin:4px 0 8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.hd-wow-price{margin-top:auto;display:flex;align-items:end;justify-content:space-between;gap:8px}
+.hd-wow-price strong{font-size:.83rem;color:#62e7aa}.hd-wow-price em{font-size:.42rem;color:#6f849d;font-style:normal}
+.hd-topbar{box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.hd-btn-primary{transition:transform .2s ease,box-shadow .2s ease}.hd-btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 38px rgba(75,145,255,.55),inset 0 0 15px rgba(255,255,255,.2)}
+.hd-market-shelf{transition:border-color .22s ease,box-shadow .22s ease}.hd-market-shelf:hover{border-color:rgba(110,177,255,.22)!important;box-shadow:0 16px 45px rgba(0,0,0,.19)!important}
+@media(max-width:1200px){.hd-wow-worlds{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:760px){
+  .hd-live-proof{grid-template-columns:repeat(3,1fr);gap:6px}.hd-live-proof>div{min-height:58px;padding:9px}.hd-live-proof strong{font-size:1rem}.hd-live-proof span{font-size:.42rem}
+  .hd-wow-showcase{width:min(100% - 24px,1580px);padding:13px;border-radius:18px}.hd-wow-head{align-items:flex-start;flex-direction:column;gap:11px}.hd-wow-head h2{font-size:1.65rem}
+  .hd-wow-worlds{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.hd-wow-world{min-height:114px;padding:12px}.hd-wow-world small{margin-bottom:15px}
+  .hd-wow-product{flex-basis:58%;max-width:225px}
+}
+@media(max-width:480px){.hd-wow-product{flex-basis:72%}.hd-wow-head p{font-size:.66rem}.hd-live-proof{margin-top:14px}}
+@media(prefers-reduced-motion:reduce){.hd-wow-world,.hd-wow-product,.hd-wow-product-media img,.hd-btn-primary{transition:none!important}}

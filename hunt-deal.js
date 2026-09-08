@@ -9,7 +9,7 @@
   const cartKey = "hunt_deal_cart_v1";
 
   const $ = q => document.querySelector(q);
-  const isStaticPublicHost = location.hostname.endsWith(".github.io");
+  const isStaticPublicHost = location.hostname.endsWith(".github.io") || location.hostname === "127.0.0.1" || location.hostname === "localhost";
   const supabaseFunctionsBase = "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1";
   const supabasePublishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
   const publicApiUrl = name => isStaticPublicHost
@@ -222,6 +222,14 @@
     travel: ["Travel Picks", "travel"],
     home: ["Home Finds", "home"],
     tech: ["Phone & Tech", "tech"],
+    gaming: ["Gaming Accessories", "gaming"],
+    beauty: ["Beauty & Skincare", "beauty"],
+    perfume: ["Perfume & Fragrance", "perfume"],
+    jewelry: ["Jewelry", "jewelry"],
+    kitchen: ["Kitchen", "kitchen"],
+    toys: ["Toys & Play", "toys"],
+    lighting: ["Lighting", "lighting"],
+    bath: ["Bath & Bathroom", "bath"],
     gifts: ["Gift Ideas", "gifts"],
     kids: ["Kids & Youth", "kids"],
     hats: ["Hats & Caps", "hats"],
@@ -240,9 +248,10 @@
 
   const shelfDepartments = [
     ["Fashion", ["women","men","dresses","tops","hoodies","jackets","activewear","swimwear","socks"]],
-    ["Accessories", ["bags","shoes","hats","accessories"]],
-    ["Home & Lifestyle", ["home","pillows","blankets","wallart","drinkware","travel","tech"]],
-    ["Kids & Pets", ["kids","pets"]],
+    ["Beauty & Style", ["bags","shoes","hats","accessories","jewelry","beauty","perfume"]],
+    ["Home & Lifestyle", ["home","kitchen","bath","lighting","pillows","blankets","wallart","drinkware","travel"]],
+    ["Tech & Gaming", ["tech","gaming"]],
+    ["Kids & Pets", ["kids","toys","pets"]],
     ["Gifts & Office", ["gifts","ornaments","stickers","stationery","office"]],
   ];
 
@@ -294,6 +303,8 @@
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Market shelves unavailable");
+      window.HuntMarketShelves = data;
+      window.dispatchEvent(new CustomEvent("hunt:shelves", {detail:data}));
       const shelves = data.shelves || {};
       const html = shelfDepartments.map(([department, slugs]) => {
         const sections = slugs.map(slug => {
