@@ -3,92 +3,128 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Deep Hunt — Find Real Market Opportunities</title>
-  <meta name="description" content="Evidence-first market intelligence: buyer signals, competition, commercial gaps and prioritized next actions.">
-  <link rel="stylesheet" href="/assets.css">
+  <meta name="description" content="HUNT DEAL — evidence-first price comparison and smart commerce intelligence.">
+  <title>HUNT DEAL — Smarter Shopping Intelligence</title>
+  <link rel="stylesheet" href="hunt-deal.css">
 </head>
-<body class="site">
-  <header class="nav shell">
-    <a class="brand" href="/">DEEP HUNT</a>
-    <nav class="nav-links">
-      <a class="nav-link" href="#how">How it works</a>
-      <a class="nav-link" href="#packages">Packages</a>
-      <a class="button mini" href="#start">Start a hunt</a>
+<body class="hd-page">
+  <div class="hd-space"></div>
+  <header class="hd-topbar">
+    <div class="hd-brand-wrap">
+      <a class="hd-brand" href="./">HUNT <span>DEAL</span></a>
+      <div class="hd-branch" data-i18n="branch">A BOOM branch · full BOOM coming later.</div>
+    </div>
+    <nav class="hd-nav">
+      <a href="#deals" data-i18n="navDeals">Deals Now</a>
+      <a href="#deals" data-i18n="navPicks">Smart Picks</a>
+      <a href="#deals" data-i18n="navTrends">Trend Radar</a>
+      <a href="#deals" data-i18n="navCompare">Price Lens</a>
     </nav>
+    <div class="hd-tools">
+      <label class="hd-search">
+        <span aria-hidden="true">⌕</span>
+        <input id="hd-search-input" data-i18n-placeholder="search" placeholder="Search products, brands, or categories…">
+      </label>
+      <select class="hd-lang" data-lang-select aria-label="Language">
+        <option value="en">EN</option><option value="ar">AR</option><option value="he">HE</option><option value="es">ES</option><option value="fr">FR</option>
+      </select>
+    </div>
   </header>
 
   <main>
-    <section class="hero shell">
-      <div class="eyebrow">EVIDENCE-FIRST MARKET INTELLIGENCE</div>
-      <h1>Stop guessing where the money is.</h1>
-      <p class="hero-copy">We investigate buyer demand, competitors, commercial evidence and market gaps—then show you what is worth pursuing and what should be killed early.</p>
-      <div class="hero-actions">
-        <a class="button primary" href="#packages">Choose a hunt</a>
-        <a class="button ghost" href="#how">See how it works</a>
+    <section class="hd-hero">
+      <div class="hd-hero-copy">
+        <div class="hd-kicker" data-i18n="kicker">COMPARE SMARTER · SHOP BETTER · KEEP THE FACTS VISIBLE</div>
+        <h1><span data-i18n="hero1">Better decisions</span><br><em data-i18n="hero2">before you spend.</em></h1>
+        <p data-i18n="heroCopy">HUNT DEAL compares verified offers across approved marketplaces, explains why a deal is worth attention, and tracks what actually converts.</p>
+        <div class="hd-actions">
+          <a class="hd-btn hd-btn-primary" href="#deals" data-i18n="explore">Explore Deals Now</a>
+          <a class="hd-btn" href="#how" data-i18n="how">How it works</a>
+        </div>
+        <div class="hd-feature-row" id="how">
+          <div><b>◇</b><span data-i18n="f1">Price comparison</span></div>
+          <div><b>◎</b><span data-i18n="f2">Global provider map</span></div>
+          <div><b>✦</b><span data-i18n="f3">AI + Red Team</span></div>
+          <div><b>◉</b><span data-i18n="f4">Truthful commission tracking</span></div>
+        </div>
       </div>
-      <div class="trust-row"><span>Buyer signals</span><span>Competition</span><span>Evidence gaps</span><span>Red Team</span></div>
-      <p class="fine">No guaranteed revenue claims. Evidence, inference and unknowns are kept separate.</p>
+
+      <section class="hd-advisor glass">
+        <div class="hd-advisor-head">
+          <div class="hd-advisor-title"><span class="hd-brain">◉</span><div><h2 data-i18n="advisor">HUNT Advisor</h2><p data-i18n="advisorSub">REAL DEAL INTELLIGENCE · SMARTER SHOPPING</p></div></div>
+          <div class="hd-live"><i></i><span data-i18n="live">LIVE</span></div>
+        </div>
+        <h3 data-i18n="brief">Today's Deal Intelligence Brief</h3>
+        <div class="hd-brief-grid">
+          <article>
+            <span class="hd-card-icon green">★</span>
+            <small data-i18n="best">Best price right now</small>
+            <strong id="hd-best-title" data-i18n="noBest">No verified live offer yet.</strong>
+            <p id="hd-best-copy">—</p>
+            <span class="hd-status green" id="hd-best-status">WAITING</span>
+          </article>
+          <article>
+            <span class="hd-card-icon blue">△</span>
+            <small data-i18n="worth">Worth testing</small>
+            <strong id="hd-test-title" data-i18n="noWorth">Provider feeds are being connected.</strong>
+            <p id="hd-test-copy">—</p>
+            <span class="hd-status blue">TEST</span>
+          </article>
+          <article>
+            <span class="hd-card-icon red">!</span>
+            <small data-i18n="avoid">What to avoid</small>
+            <strong data-i18n="noAvoid">Fake urgency and unsupported discounts.</strong>
+            <p>Unsupported savings, stale prices, and unverified payout claims stay out.</p>
+            <span class="hd-status red">SKIP</span>
+          </article>
+          <article class="hd-confidence">
+            <small data-i18n="confidence">Confidence & value</small>
+            <div class="hd-ring"><span id="hd-confidence-number">0%</span></div>
+            <ul>
+              <li><i class="green-dot"></i> Evidence quality</li>
+              <li><i class="blue-dot"></i> Price freshness</li>
+              <li><i class="violet-dot"></i> Provider trust</li>
+              <li><i class="red-dot"></i> Red Team gaps</li>
+            </ul>
+          </article>
+        </div>
+      </section>
     </section>
 
-    <section id="how" class="shell section">
-      <div class="section-head">
-        <div class="eyebrow">HOW IT WORKS</div>
-        <h2>Research built to help a business decision.</h2>
-      </div>
-      <div class="grid">
-        <article class="card"><span>01</span><h3>Hunt</h3><p>We search for buyer, market and competitive signals using live and documented sources where available.</p></article>
-        <article class="card"><span>02</span><h3>Verify</h3><p>We separate evidence from assumptions. Missing money, buyer or scope proof stays visibly missing.</p></article>
-        <article class="card"><span>03</span><h3>Kill weak ideas</h3><p>Red Team pressure-tests the opportunity before you spend more time or money on it.</p></article>
-        <article class="card"><span>04</span><h3>Act</h3><p>You get a prioritized action memo: who to approach, what to verify next and what not to chase.</p></article>
-      </div>
+    <section class="hd-stats glass">
+      <div><span>◎</span><p><small data-i18n="providers">Providers mapped</small><strong id="hd-provider-count">0</strong></p></div>
+      <div><span>✓</span><p><small data-i18n="qualified">Qualified offers</small><strong id="hd-qualified-count">0</strong></p></div>
+      <div><span>↗</span><p><small data-i18n="clicks">Outbound clicks</small><strong id="hd-click-count">0</strong></p></div>
+      <div><span>$</span><p><small data-i18n="commission">Confirmed commission</small><strong id="hd-commission">$0</strong></p></div>
+      <div class="hd-stat-quote">“Not just lower prices. Smarter choices.”</div>
     </section>
 
-    <section id="packages" class="shell section">
-      <div class="section-head">
-        <div class="eyebrow">PILOT PACKAGES</div>
-        <h2>Start small. Go deeper only when the evidence earns it.</h2>
+    <section class="hd-deals-section" id="deals">
+      <div class="hd-section-head">
+        <div><h2 data-i18n="smartPicks">Smart Deal Picks</h2><p data-i18n="smartPicksSub">Only TEST/SELL candidates can appear here. Empty is better than fabricated.</p></div>
+        <div class="hd-filter-row">
+          <button class="active" data-category="all" data-i18n="all">All Deals</button>
+          <button data-category="tech" data-i18n="tech">Tech</button>
+          <button data-category="home" data-i18n="home">Home</button>
+          <button data-category="fashion" data-i18n="fashion">Fashion</button>
+          <button data-category="travel" data-i18n="travel">Travel</button>
+        </div>
       </div>
-      <div class="pricing">
-        <article class="price-card">
-          <div class="price-top"><span>Quick Scan</span><strong>$250</strong></div>
-          <h3>Opportunity Quick Scan</h3>
-          <p>A focused first pass for one market, product or business problem.</p>
-          <ul><li>Buyer/demand signals</li><li>Competitor snapshot</li><li>Evidence gaps</li><li>Next-action memo</li></ul>
-          <a class="button ghost" href="https://buy.stripe.com/test_00w9ANbM43O3h1g3kY5wI00">Test Quick Scan Checkout</a>
-        </article>
-        <article class="price-card featured">
-          <div class="badge">MOST USEFUL START</div>
-          <div class="price-top"><span>Deep Sprint</span><strong>$600</strong></div>
-          <h3>Deep Hunt Sprint</h3>
-          <p>A deeper commercial investigation with a stronger Red Team pass.</p>
-          <ul><li>Buyer and market scan</li><li>Competitor landscape</li><li>Commercial evidence</li><li>Red Team kill test</li><li>Prioritized action plan</li></ul>
-          <a class="button primary" href="https://buy.stripe.com/test_aFabIV5nG2JZfXc9Jm5wI01">Test Deep Sprint Checkout</a>
-        </article>
-        <article class="price-card">
-          <div class="price-top"><span>Pro Hunt</span><strong>$1,500</strong></div>
-          <h3>Opportunity Hunt Pro</h3>
-          <p>For a serious market decision that needs broader investigation and prioritization.</p>
-          <ul><li>Broader source coverage</li><li>Opportunity shortlist</li><li>Commercial gaps</li><li>Red Team review</li><li>Executive action memo</li></ul>
-          <a class="button ghost" href="https://buy.stripe.com/test_eVq9ANbM4doD6mC2gU5wI02">Test Pro Hunt Checkout</a>
-        </article>
-      </div>
-      <p class="fine"><strong>TEST MODE:</strong> Checkout buttons use Stripe sandbox links and do not charge real money. Pilot prices are service prices, not promises of financial return.</p>
-    </section>
-
-    <section id="start" class="shell section contact">
-      <div class="contact-copy">
-        <div class="eyebrow">TEST LAUNCH</div>
-        <h2>Checkout flow is ready for sandbox testing.</h2>
-        <p>The three package buttons above open Stripe Test Mode. No real payment is collected on this public preview.</p>
-      </div>
-      <div>
-        <p class="fine"><strong>Current limitation:</strong> GitHub Pages cannot receive our lead form submissions. The private Money Ops form remains available locally, and the Netlify form bundle is ready for when hosted forms are available again.</p>
-        <a class="button primary" href="#packages">Test a package</a>
+      <div class="hd-deal-grid" id="hd-deal-grid"></div>
+      <div class="hd-empty glass" id="hd-empty">
+        <span>✦</span>
+        <div><h3 data-i18n="noDeals">No qualified live deals yet.</h3><p data-i18n="noDealsSub">The engine is ready. Real products appear only after a provider feed and affiliate path are verified.</p></div>
       </div>
     </section>
   </main>
 
-  <footer class="shell footer">DEEP HUNT · Evidence before hype.</footer>
-  <script src="/site.js"></script>
+  <footer class="hd-footer">
+    <div><strong>HUNT DEAL</strong><small data-i18n="footerTag">A BOOM branch · commerce intelligence now, full BOOM later.</small></div>
+    <div class="hd-disclosure"><span data-i18n="affiliateDisclosure"></span><small data-i18n="nasaCredit"></small></div>
+    <nav><a href="#deals">Deals</a><a href="#deals">Price Lens</a></nav>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="hunt-deal.js"></script>
 </body>
 </html>
