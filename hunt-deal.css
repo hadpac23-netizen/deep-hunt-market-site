@@ -235,3 +235,9 @@ body.hd-page:not(.hd-ops-page) .hd-hunt-market,body.hd-page:not(.hd-ops-page) .h
   .hd-shelf-media img,.hd-market-card-media img{transform:scale(1.08)}
   .hd-shelf-card:hover .hd-shelf-media img,.hd-market-product-card:hover .hd-market-card-media img{transform:scale(1.08)}
 }
+
+/* Department hierarchy for a full but calm marketplace */
+.hd-shelf-department{display:grid;gap:12px;margin:2px 0 22px}.hd-shelf-department-head{display:flex;align-items:end;justify-content:space-between;gap:16px;padding:8px 2px 2px;border-bottom:1px solid rgba(128,174,231,.12)}.hd-shelf-department-head span{font-size:.48rem;font-weight:950;letter-spacing:.16em;color:#6aaeff}.hd-shelf-department-head h2{margin:0;font-size:clamp(1.15rem,2vw,1.65rem);letter-spacing:-.025em}
+.hd-category-side-group{display:grid;gap:5px;padding:7px 0;border-bottom:1px solid rgba(128,174,231,.11)}.hd-category-side-group:last-child{border-bottom:0}.hd-category-side-group>strong{font-size:.48rem;letter-spacing:.12em;text-transform:uppercase;color:#6da9ee;padding:3px 8px}.hd-category-side-group>div{display:grid;gap:2px}
+@media(max-width:1000px){.hd-category-side #hd-category-side-links{display:grid!important;gap:5px!important;overflow:visible!important}.hd-category-side-group>div{display:flex;overflow-x:auto;scrollbar-width:none;gap:4px}.hd-category-side-group>div::-webkit-scrollbar{display:none}.hd-category-side-group a{flex:0 0 auto;white-space:nowrap}.hd-shelf-department{margin-bottom:18px}}
+@media(max-width:760px){.hd-shelf-department-head{padding-top:5px}.hd-shelf-department-head h2{font-size:1.15rem}.hd-category-side-group>strong{padding-left:4px}.hd-category-side-group>div{margin:0 -2px}}

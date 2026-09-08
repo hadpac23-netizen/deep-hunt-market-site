@@ -46,9 +46,21 @@
 
   function renderCategories() {
     const entries = Object.entries(H.categoryDefs);
-    const chips = entries.map(([key,value]) => `<a class="${key===slug?"active":""}" href="${H.categoryUrl(key)}">${value.icon} ${H.esc(value.title)}</a>`).join("");
+    const chips = entries
+      .map(([key,value]) => `<a class="${key===slug?"active":""}" href="${H.categoryUrl(key)}">${value.icon} ${H.esc(value.title)}</a>`)
+      .join("");
     $("#hd-category-strip").innerHTML = chips;
-    $("#hd-category-side-links").innerHTML = chips;
+
+    const groups = Array.isArray(H.categoryGroups) ? H.categoryGroups : [];
+    $("#hd-category-side-links").innerHTML = groups.map(group => {
+      const links = group.items
+        .filter(key => H.categoryDefs[key])
+        .map(key => {
+          const value = H.categoryDefs[key];
+          return `<a class="${key===slug?"active":""}" href="${H.categoryUrl(key)}">${value.icon} ${H.esc(value.title)}</a>`;
+        }).join("");
+      return `<section class="hd-category-side-group"><strong>${H.esc(group.title)}</strong><div>${links}</div></section>`;
+    }).join("");
   }
 
   function filteredSorted() {

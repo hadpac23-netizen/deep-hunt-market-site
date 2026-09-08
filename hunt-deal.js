@@ -223,7 +223,28 @@
     home: ["Home Finds", "home"],
     tech: ["Phone & Tech", "tech"],
     gifts: ["Gift Ideas", "gifts"],
+    kids: ["Kids & Youth", "kids"],
+    hats: ["Hats & Caps", "hats"],
+    drinkware: ["Drinkware", "drinkware"],
+    wallart: ["Wall Art", "wallart"],
+    blankets: ["Blankets & Towels", "blankets"],
+    stickers: ["Stickers", "stickers"],
+    stationery: ["Stationery", "stationery"],
+    pets: ["Pets", "pets"],
+    socks: ["Socks", "socks"],
+    swimwear: ["Swimwear", "swimwear"],
+    office: ["Office & Desk", "office"],
+    pillows: ["Pillows", "pillows"],
+    ornaments: ["Ornaments", "ornaments"],
   };
+
+  const shelfDepartments = [
+    ["Fashion", ["women","men","dresses","tops","hoodies","jackets","activewear","swimwear","socks"]],
+    ["Accessories", ["bags","shoes","hats","accessories"]],
+    ["Home & Lifestyle", ["home","pillows","blankets","wallart","drinkware","travel","tech"]],
+    ["Kids & Pets", ["kids","pets"]],
+    ["Gifts & Office", ["gifts","ornaments","stickers","stationery","office"]],
+  ];
 
   function shelfCard(item) {
     const detailUrl = window.HuntCore
@@ -274,12 +295,17 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Market shelves unavailable");
       const shelves = data.shelves || {};
-      const html = Object.entries(shelfMeta).map(([slug,meta]) => {
-        const items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
-        if (!items.length) return "";
-        const cards = items.map(shelfCard).join("");
-        const categoryHref = window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`;
-        return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>LIVE CATEGORY</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track">${cards}</div></section>`;
+      const html = shelfDepartments.map(([department, slugs]) => {
+        const sections = slugs.map(slug => {
+          const meta = shelfMeta[slug];
+          const items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
+          if (!meta || !items.length) return "";
+          const cards = items.map(shelfCard).join("");
+          const categoryHref = window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`;
+          return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>LIVE CATEGORY</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track">${cards}</div></section>`;
+        }).filter(Boolean).join("");
+        if (!sections) return "";
+        return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
       }).join("");
       root.innerHTML = html || '<div class="hd-shelf-loading glass">No live shelves yet.</div>';
       counter.textContent = `${Number(data.visible_product_count || 0)} LIVE`;

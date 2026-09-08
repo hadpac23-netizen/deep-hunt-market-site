@@ -25,10 +25,31 @@
     tech: {title:"Phone & Tech", query:"tech", icon:"P", description:"Phone cases and connected accessories."},
     travel: {title:"Travel", query:"travel", icon:"R", description:"Travel bags, tags, bottles and useful travel items."},
     gifts: {title:"Gifts", query:"gifts", icon:"G", description:"Gift ideas from live approved catalogs."},
+    kids: {title:"Kids & Youth", query:"kids", icon:"K", description:"Kids and youth apparel from the connected live catalog."},
+    hats: {title:"Hats & Caps", query:"hats", icon:"C", description:"Caps, hats, beanies and headwear."},
+    drinkware: {title:"Drinkware", query:"drinkware", icon:"U", description:"Mugs, bottles and tumblers."},
+    wallart: {title:"Wall Art", query:"wallart", icon:"L", description:"Posters, canvas and wall decor."},
+    blankets: {title:"Blankets & Towels", query:"blankets", icon:"N", description:"Blankets, towels and soft home essentials."},
+    stickers: {title:"Stickers", query:"stickers", icon:"I", description:"Sticker sheets and decorative stickers."},
+    stationery: {title:"Stationery", query:"stationery", icon:"E", description:"Notebooks, journals and calendars."},
+    pets: {title:"Pets", query:"pets", icon:"V", description:"Pet accessories and selected pet products."},
+    socks: {title:"Socks", query:"socks", icon:"Z", description:"Printed and embroidered socks."},
+    swimwear: {title:"Swimwear", query:"swimwear", icon:"S", description:"Swimwear and swim-focused apparel."},
+    office: {title:"Office & Desk", query:"office", icon:"D", description:"Desk mats, calendars, mouse pads and notebooks."},
+    pillows: {title:"Pillows", query:"pillows", icon:"P", description:"Decorative pillows and pillow products."},
+    ornaments: {title:"Ornaments", query:"ornaments", icon:"R", description:"Seasonal and decorative ornaments."},
     perfume: {title:"Perfume & Fragrance", query:"women perfume fragrance", icon:"F", description:"Waiting for an approved fragrance supplier feed."},
     beauty: {title:"Beauty & Skincare", query:"beauty skincare makeup", icon:"Y", description:"Waiting for an approved beauty supplier feed."},
     jewelry: {title:"Jewelry", query:"women jewelry necklace bracelet earrings", icon:"Q", description:"Waiting for an approved jewelry supplier feed."}
   };
+
+  const categoryGroups = [
+    {title:"Fashion", items:["women","men","dresses","tops","hoodies","jackets","activewear","swimwear","socks"]},
+    {title:"Accessories", items:["bags","shoes","hats","accessories","jewelry","beauty","perfume"]},
+    {title:"Home & Lifestyle", items:["home","pillows","blankets","wallart","drinkware","travel","tech"]},
+    {title:"Kids & Pets", items:["kids","pets"]},
+    {title:"Gifts & Office", items:["gifts","ornaments","stickers","stationery","office"]}
+  ];
 
 
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -49,6 +70,19 @@
     if (/(perfume|fragrance)/.test(t)) return "perfume";
     if (/(beauty|skincare|makeup|cosmetic|serum|cream)/.test(t)) return "beauty";
     if (/(jewelry|jewellery|necklace|bracelet|earring|ring)/.test(t)) return "jewelry";
+    if (/\b(kids?|youth|toddler|baby)\b/.test(t)) return "kids";
+    if (/\b(swim|swimsuit|bikini|swim trunks)\b/.test(t)) return "swimwear";
+    if (/\b(sock|socks)\b/.test(t)) return "socks";
+    if (/\b(sticker|stickers)\b/.test(t)) return "stickers";
+    if (/\b(pet|dog|cat)\b/.test(t)) return "pets";
+    if (/\b(ornament|ornaments)\b/.test(t)) return "ornaments";
+    if (/\b(notebook|journal|calendar)\b/.test(t)) return "stationery";
+    if (/\b(desk mat|desk calendar|mouse pad)\b/.test(t)) return "office";
+    if (/\b(pillow|pillows)\b/.test(t)) return "pillows";
+    if (/\b(blanket|blankets|towel|towels)\b/.test(t)) return "blankets";
+    if (/\b(poster|posters|canvas|wall art|flag|framed)\b/.test(t)) return "wallart";
+    if (/\b(mug|mugs|bottle|bottles|tumbler|tumblers|cup|cups)\b/.test(t)) return "drinkware";
+    if (/\b(hat|hats|cap|caps|beanie|bucket hat)\b/.test(t)) return "hats";
     if (/\b(dress|dresses|skirt|skirts)\b/.test(t)) return "dresses";
     if (/\b(hoodie|hoodies|sweatshirt|sweatshirts)\b/.test(t)) return "hoodies";
     if (/\b(jacket|jackets|windbreaker|bomber|letterman)\b/.test(t)) return "jackets";
@@ -70,6 +104,19 @@
     if (/perfume|fragrance/.test(q)) return "perfume";
     if (/jewel|necklace|bracelet|earring|ring/.test(q)) return "jewelry";
     if (/beauty|skincare|makeup/.test(q)) return "beauty";
+    if (/kids?|youth|toddler|baby/.test(q)) return "kids";
+    if (/swimwear|swimsuit|bikini|swim trunks/.test(q)) return "swimwear";
+    if (/\bsocks?\b/.test(q)) return "socks";
+    if (/stickers?/.test(q)) return "stickers";
+    if (/\bpets?\b|dog|cat/.test(q)) return "pets";
+    if (/ornaments?/.test(q)) return "ornaments";
+    if (/stationery|notebook|journal|calendar/.test(q)) return "stationery";
+    if (/\boffice\b|desk mat|mouse pad/.test(q)) return "office";
+    if (/pillows?/.test(q)) return "pillows";
+    if (/blankets?|towels?/.test(q)) return "blankets";
+    if (/wallart|wall art|poster|canvas|framed/.test(q)) return "wallart";
+    if (/drinkware|mug|bottle|tumbler/.test(q)) return "drinkware";
+    if (/\bhats?\b|\bcaps?\b|beanie/.test(q)) return "hats";
     if (/dress|skirt/.test(q)) return "dresses";
     if (/hoodie|sweatshirt/.test(q)) return "hoodies";
     if (/jacket|outerwear|windbreaker|bomber/.test(q)) return "jackets";
@@ -167,7 +214,7 @@
   const categoryUrl = slug => `category.html?c=${encodeURIComponent(categoryDefs[slug] ? slug : "women")}`;
 
   window.HuntCore = {
-    functionsBase,publishableKey,cartKey,signalKey,categoryDefs,esc,money,safeQuery,
+    functionsBase,publishableKey,cartKey,signalKey,categoryDefs,categoryGroups,esc,money,safeQuery,
     inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,signals,
     cart,saveCart,addCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
   };
