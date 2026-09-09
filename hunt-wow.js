@@ -11,8 +11,8 @@
   const departments = [
     {title:"Women · Clothing", slug:"women", href:"category.html?c=women", items:["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear"], womenOnly:true},
     {title:"Women · Shoes & Accessories", slug:"women", href:"category.html?c=women&sub=shoes", items:["shoes","bags","jewelry","accessories","hats"], womenOnly:true},
-    {title:"Beauty & Fragrance", slug:"beauty", href:"category.html?c=beauty", items:["beauty","perfume"]},
     {title:"Men", slug:"men", items:["men","suits","underwear","socks"]},
+    {title:"Beauty & Fragrance", slug:"beauty", href:"category.html?c=beauty", items:["beauty","perfume"]},
     {title:"Kids", slug:"kids", items:["kids","toys"]},
     {title:"Home & Living", slug:"home", items:["home","kitchen","storage","bedding","bath","lighting","cleaning"]},
     {title:"Tech & Gaming", slug:"tech", items:["tech","phoneaccessories","gaming"]},
@@ -150,10 +150,21 @@
     return hasWomen && !hasMen;
   }
 
+  function displayScore(item) {
+    const title=String(item?.title||"").trim();
+    let score=0;
+    if(typeof item?.image_url==="string"&&item.image_url.startsWith("https://"))score+=8;
+    if(item?.availability_verified===true)score+=4;
+    if(Number.isFinite(Number(item?.price_amount))&&Number(item.price_amount)>0)score+=2;
+    if(Number(item?.variant_count||0)>0)score+=2;
+    if(title.length>=18&&title.length<=90)score+=2;
+    return score;
+  }
+
   function departmentCard(dep, shelves) {
     let products = pickProducts(shelves, dep.items, dep.womenOnly ? 100 : 30);
     if (dep.womenOnly) products = products.filter(isWomenItem).slice(0,30);
-    const rep = products.find(x => typeof x.image_url === "string" && x.image_url.startsWith("https://"));
+    const rep = [...products].sort((a,b)=>displayScore(b)-displayScore(a))[0];
     const uniqueCount = products.length;
     const image = rep
       ? `<img src="${H.esc(rep.image_url)}" alt="" loading="lazy">`
@@ -169,7 +180,7 @@
     const title=String(item?.title||"").toLowerCase();
     const searchBoost=recentSearchTerms.reduce((sum,term)=>sum+(title.includes(term)?18:0),0);
     const actionBoost=recentActionKeys.has(key)?90:0;
-    const completeness=(item?.image_url?2:0)+(Number(item?.price_amount)>0?2:0);
+    const completeness=displayScore(item);
     return H.personalScore(item)*10 + searchBoost + actionBoost + completeness;
   }
 

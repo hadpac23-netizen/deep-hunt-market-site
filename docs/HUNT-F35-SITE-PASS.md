@@ -79,3 +79,20 @@ Flow tests:
 - live product → checkout-light-v2.html: PASS
 - checkout subtotal without verified retail pricing: PRICING PENDING
 - HUNT Mission persistence: PASS
+
+## BOOM Display Art Doctrine
+
+The first-view merchandising order is intentionally stable:
+1. Women · Clothing
+2. Women · Shoes & Accessories
+3. Men
+
+BOOM may personalize the departments that follow, but it must not displace those first three launch priorities.
+
+Visual merchandising rules:
+- Prefer products with valid HTTPS imagery, verified availability, usable product titles and real price data.
+- Preserve supplier diversity instead of letting one source dominate a shelf.
+- Use category imagery to identify the category, not merely decorate it.
+- Keep curated homepage shelves smaller than the full catalog; depth belongs in Category and Search.
+- Never label a product popular, trending, scarce or best-selling without verified evidence.
+- Never fabricate a discount, crossed-out price, review count or urgency cue.

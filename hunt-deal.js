@@ -391,13 +391,19 @@
 
   function orderedShelfDepartments() {
     const signals = window.HuntCore?.signals?.() || {};
+    const pinned = ["Women · Clothing","Women · Shoes & Accessories","Men"];
+    const defaultOrder = ["Beauty & Fragrance","Home & Living","Tech & Gaming","Everyday","Creative & Gifts"];
     const scored = shelfDepartments
       .map((entry, index) => ({entry, index, score: entry[1].reduce((sum, slug) => sum + Number(signals[slug] || 0), 0)}));
-    if (scored.some(row => row.score > 0)) {
-      return scored.sort((a,b) => (b.score - a.score) || (a.index - b.index)).map(row => row.entry);
-    }
-    const defaultOrder = ["Women · Clothing","Men","Home & Living","Tech & Gaming","Beauty & Fragrance","Everyday","Women · Shoes & Accessories","Creative & Gifts"];
-    return scored.sort((a,b) => defaultOrder.indexOf(a.entry[0]) - defaultOrder.indexOf(b.entry[0])).map(row => row.entry);
+    const pinnedRows = pinned
+      .map(name => scored.find(row => row.entry[0] === name))
+      .filter(Boolean);
+    const rest = scored
+      .filter(row => !pinned.includes(row.entry[0]))
+      .sort((a,b) => (b.score - a.score)
+        || (defaultOrder.indexOf(a.entry[0]) - defaultOrder.indexOf(b.entry[0]))
+        || (a.index - b.index));
+    return [...pinnedRows,...rest].map(row => row.entry);
   }
 
   function isWomenShelfItem(item) {
@@ -428,6 +434,18 @@
     return inferred === slug;
   }
 
+  function displayQualityScore(item) {
+    const title = String(item?.title || "").trim();
+    let score = 0;
+    if (typeof item?.image_url === "string" && item.image_url.startsWith("https://")) score += 8;
+    if (item?.availability_verified === true) score += 4;
+    if (Number.isFinite(Number(item?.price_amount)) && Number(item.price_amount) > 0) score += 2;
+    if (Number(item?.variant_count || 0) > 0) score += 2;
+    if (title.length >= 18 && title.length <= 90) score += 2;
+    if (item?.brand) score += 1;
+    return score;
+  }
+
   function selectShelfItems(items, limit, renderedKeys) {
     const rows = [];
     const localSeen = new Set();
@@ -441,7 +459,13 @@
       groups.get(provider).push(item);
     }
 
-    // Preserve the first stable catalog order inside each provider. Live refresh updates data in place, never reshuffles visible products.
+    // Display art: prefer complete, identifiable products while preserving provider diversity.
+    for (const [provider, group] of groups) {
+      groups.set(provider, group
+        .map((item,index)=>({item,index,score:displayQualityScore(item)}))
+        .sort((a,b)=>(b.score-a.score)||(a.index-b.index))
+        .map(row=>row.item));
+    }
     const providers = [...groups.keys()];
     let cursor = 0;
     while (rows.length < limit && providers.length) {

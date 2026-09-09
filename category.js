@@ -74,6 +74,7 @@
 
   function matchesSub(product) {
     if (!sub || !["women","men"].includes(slug)) return true;
+    if (H.inferCategory(product) === sub) return true;
     const title = String(product?.title || "").toLowerCase();
     const patterns = {
       tops:/shirt|tee|t-shirt|top|tank|polo|blouse/,
@@ -105,14 +106,15 @@
     const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
     const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
     if (kids || /\bunisex\b/.test(title)) return false;
+    const neutralStyleSub = new Set(["bags","jewelry","accessories","hats","shoes","socks"]);
     if (slug==="women") {
-      if (hasMen) return false;
-      if (hasWomen) return true;
-      return gender==="women";
+      if (hasMen || gender==="men") return false;
+      if (hasWomen || gender==="women") return true;
+      return neutralStyleSub.has(sub);
     }
-    if (hasWomen) return false;
-    if (hasMen) return true;
-    return gender==="men";
+    if (hasWomen || gender==="women") return false;
+    if (hasMen || gender==="men") return true;
+    return neutralStyleSub.has(sub);
   }
 
   function matchesCategoryTruth(product) {

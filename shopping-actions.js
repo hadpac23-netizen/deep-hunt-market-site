@@ -30,7 +30,7 @@
   function productInfoFromUrl(href){
     try{
       const u=new URL(href,location.href);
-      if(!u.pathname.endsWith("/product.html")&&!u.pathname.endsWith("product.html"))return null;
+      if(!/\/(?:product|product-light-v2)\.html$/.test(u.pathname)&&!/(?:^|\/)(?:product|product-light-v2)\.html$/.test(u.pathname))return null;
       const provider=(u.searchParams.get("provider")||"").trim();
       const itemId=(u.searchParams.get("id")||u.searchParams.get("product_id")||"").trim();
       if(!provider||!itemId)return null;
@@ -96,7 +96,7 @@
 
   function scan(){
     scanQueued=false;
-    document.querySelectorAll("a[href*='product.html?']").forEach(a=>{
+    document.querySelectorAll("a[href*='product.html?'],a[href*='product-light-v2.html?']").forEach(a=>{
       const info=productInfoFromUrl(a.href);
       if(!info)return;
       const card=a.closest(cardSelectors);
