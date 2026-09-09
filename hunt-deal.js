@@ -258,8 +258,10 @@
   };
 
   const shelfDepartments = [
-    ["Fashion", ["women","men","dresses","shoes"]],
-    ["Beauty & Style", ["beauty","perfume","jewelry","bags"]],
+    ["Women · Clothing", ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"]],
+    ["Women · Shoes & Accessories", ["shoes","bags","jewelry","accessories","hats"]],
+    ["Beauty & Fragrance", ["beauty","perfume"]],
+    ["Men", ["men"]],
     ["Home & Living", ["home","kitchen","storage","bedding"]],
     ["Tech & Gaming", ["tech","phoneaccessories","gaming","office"]],
     ["Everyday", ["travel","kids","toys","pets"]],
@@ -273,7 +275,7 @@
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
-    return `<article class="hd-shelf-card" role="listitem">
+    return `<article class="hd-shelf-card" role="listitem" data-category="${esc(item.category || "")}">
       <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>VERIFIED SOURCE</span></a>
       <div class="hd-shelf-card-body">
         <small>${esc(item.provider || "Provider")}</small>
@@ -352,6 +354,15 @@
       .map(row => row.entry);
   }
 
+  function isWomenShelfItem(item) {
+    const title=String(item?.title||"").toLowerCase();
+    if (String(item?.gender||"").toLowerCase()==="women") return true;
+    if (/\bunisex\b/.test(title)) return false;
+    const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
+    const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
+    return hasWomen && !hasMen;
+  }
+
   function selectShelfItems(items, limit, renderedKeys) {
     const rows = [];
     const localSeen = new Set();
@@ -405,11 +416,14 @@
     const html = orderedShelfDepartments().map(([department, slugs]) => {
       const sections = slugs.map(slug => {
         const meta = shelfMeta[slug];
-        const items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
+        let items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
+        if (department.startsWith("Women") && slug !== "women") items = items.filter(isWomenShelfItem);
         if (!meta || items.length < 4) return "";
         const selected = selectShelfItems(items, limit, renderedKeys);
         const cards = selected.map(shelfCard).join("");
-        const categoryHref = window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`;
+        const categoryHref = department.startsWith("Women") && slug !== "women"
+          ? `category.html?c=women&sub=${encodeURIComponent(slug)}`
+          : (window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`);
         return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
       }).filter(Boolean).join("");
       if (!sections) return "";
@@ -443,7 +457,7 @@
     let snapshotData = null;
 
     try {
-      const snapshotRes = await fetch("catalog-snapshot.json?v=productsfix1", {cache:"force-cache"});
+      const snapshotRes = await fetch("catalog-snapshot.json?v=catalog5k1", {cache:"force-cache"});
       if (snapshotRes.ok) {
         snapshotData = await snapshotRes.json();
         renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");

@@ -7,10 +7,11 @@
   let lastData = null;
 
   const departments = [
-    {title:"Women", slug:"women", items:["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry"]},
+    {title:"Women · Clothing", slug:"women", href:"category.html?c=women", items:["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"], womenOnly:true},
+    {title:"Women · Shoes & Accessories", slug:"women", href:"category.html?c=women&sub=shoes", items:["shoes","bags","jewelry","accessories","hats"], womenOnly:true},
+    {title:"Beauty & Fragrance", slug:"beauty", href:"category.html?c=beauty", items:["beauty","perfume"]},
     {title:"Men", slug:"men", items:["men"]},
     {title:"Kids", slug:"kids", items:["kids","toys"]},
-    {title:"Beauty & Style", slug:"beauty", items:["beauty","jewelry","bags","shoes","accessories","perfume"]},
     {title:"Home & Living", slug:"home", items:["home","kitchen","storage","bedding","bath","lighting","cleaning"]},
     {title:"Tech & Gaming", slug:"tech", items:["tech","phoneaccessories","gaming"]},
     {title:"Sports & Travel", slug:"sports", items:["sports","outdoors","travel"]},
@@ -18,9 +19,11 @@
   ];
 
   const megaGroups = [
-    ["Women", "women", ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"]],
+    ["Women · Clothing", "women", ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"]],
+    ["Women · Shoes & Accessories", "women", ["shoes","bags","jewelry","accessories","hats"]],
+    ["Beauty & Fragrance", null, ["beauty","perfume"]],
     ["Men", "men", ["tops","bottoms","hoodies","jackets","knitwear","activewear"]],
-    ["Beauty & Style", null, ["beauty","perfume","jewelry","bags","shoes","hats","accessories"]],    ["Home & Living", null, ["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]],
+    ["Home & Living", null, ["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]],
     ["Tech", null, ["tech","phoneaccessories","gaming","office"]],
     ["Kids & Pets", null, ["kids","toys","pets"]],
     ["Sports & Travel", null, ["sports","outdoors","travel"]],
@@ -92,7 +95,7 @@
   }
 
   function modeSlugs(value) {
-    if (value === "women") return ["women"];
+    if (value === "women") return ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats","beauty","perfume"];
     if (value === "men") return ["men"];
     if (value === "home") return ["home","kitchen","storage","bedding","bath","lighting"];
     if (value === "tech") return ["tech","phoneaccessories","gaming","office"];
@@ -126,7 +129,7 @@
     const price = Number.isFinite(Number(item.price_amount)) && Number(item.price_amount) > 0
       ? H.money(Number(item.price_amount), item.currency || "USD")
       : "Open product";
-    return `<article class="hd-wow-product" role="listitem">
+    return `<article class="hd-wow-product" role="listitem" data-category="${H.esc(item.category || "")}">
       <a class="hd-wow-product-media" href="${H.esc(href)}">${image}<span>${H.esc(label)}</span></a>
       <div class="hd-wow-product-body">
         <small>${H.esc(item.provider || "LIVE SOURCE")}</small>
@@ -136,14 +139,24 @@
     </article>`;
   }
 
+  function isWomenItem(item) {
+    const title=String(item?.title||"").toLowerCase();
+    if (String(item?.gender||"").toLowerCase()==="women") return true;
+    if (/\bunisex\b/.test(title)) return false;
+    const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
+    const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
+    return hasWomen && !hasMen;
+  }
+
   function departmentCard(dep, shelves) {
-    const products = pickProducts(shelves, dep.items, 30);
+    let products = pickProducts(shelves, dep.items, dep.womenOnly ? 100 : 30);
+    if (dep.womenOnly) products = products.filter(isWomenItem).slice(0,30);
     const rep = products.find(x => typeof x.image_url === "string" && x.image_url.startsWith("https://"));
     const uniqueCount = products.length;
     const image = rep
       ? `<img src="${H.esc(rep.image_url)}" alt="" loading="lazy">`
       : '<div class="hd-dept-placeholder" aria-hidden="true">H</div>';
-    return `<a class="hd-dept-card" href="${H.esc(H.categoryUrl(dep.slug))}">
+    return `<a class="hd-dept-card" href="${H.esc(dep.href || H.categoryUrl(dep.slug))}">
       <div class="hd-dept-image">${image}</div>
       <div><strong>${H.esc(dep.title)}</strong><span>${uniqueCount ? uniqueCount + "+ live picks" : "Open department"}</span></div>
     </a>`;
@@ -151,7 +164,8 @@
 
   function renderPersonalized(shelves) {
     const value = mode();
-    const products = pickProducts(shelves, modeSlugs(value), 16);
+    let products = pickProducts(shelves, modeSlugs(value), value === "women" ? 100 : 16);
+    if (value === "women") products = products.filter(isWomenItem).slice(0,16);
     const host = $("#hd-for-you-products");
     if (!host) return;
     host.innerHTML = products.map(item => productCard(item, value === "for-you" ? "FOR YOU" : value.toUpperCase())).join("");
@@ -223,6 +237,7 @@
   });
 
   setupMegaMenu();
-  window.addEventListener("hunt:shelves", event => render(event.detail));
+  window.addEventListener("hunt:shopping-survey", () => { if (lastData) renderPersonalized(lastData.shelves || {}); });
+    window.addEventListener("hunt:shelves", event => render(event.detail));
   if (window.HuntMarketShelves) render(window.HuntMarketShelves);
 })();

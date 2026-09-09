@@ -3,6 +3,7 @@
   const publishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
   const cartKey = "hunt_deal_cart_v1";
   const signalKey = "hunt_deal_boom_signals_v1";
+  const preferenceKey = "hunt_shopping_preferences_v1";
   const blocked = [
     "gun","firearm","ammunition","ammo","weapon","switchblade","taser",
     "cannabis","marijuana","thc","cocaine","heroin","meth","steroid",
@@ -185,20 +186,35 @@
   const signals = () => readJson(signalKey, {});
   function recordSignal(category, action="view") {
     const slug = categoryDefs[category] ? category : inferCategory(category);
-    const weights = {search:1, category:2, view:3, like:5, cart:6, save:8};
+    const weights = {search:1, category:2, view:3, like:5, cart:6, save:8, survey:12};
     const state = signals();
     state[slug] = Math.min(100, Math.max(0, Number(state[slug] || 0) + Number(weights[action] || 1)));
     writeJson(signalKey, state);
     return state[slug];
   }
+  const shoppingPreferences = () => readJson(preferenceKey, {categories:[],price_band:"any",priorities:[],discovery_modes:[]});
+  function saveShoppingPreferences(value, applySignals=true) {
+    const safe = {
+      categories:Array.isArray(value?.categories)?value.categories.filter(x=>categoryDefs[x]).slice(0,40):[],
+      price_band:["any","under25","25to50","50to100","100plus"].includes(value?.price_band)?value.price_band:"any",
+      priorities:Array.isArray(value?.priorities)?value.priorities.map(String).slice(0,10):[],
+      discovery_modes:Array.isArray(value?.discovery_modes)?value.discovery_modes.map(String).slice(0,10):[]
+    };
+    writeJson(preferenceKey,safe);
+    if(applySignals) safe.categories.forEach(slug=>recordSignal(slug,"survey"));
+    return safe;
+  }
   function personalScore(product) {
     const category = inferCategory(product);
-    return Number(signals()[category] || 0);
+    const preferenceBoost = shoppingPreferences().categories.includes(category) ? 20 : 0;
+    return Number(signals()[category] || 0) + preferenceBoost;
   }
   function personalReason(product) {
     const category = inferCategory(product);
+    const preferred = shoppingPreferences().categories.includes(category);
     const score = personalScore(product);
-    return score > 0 ? `Matches your recent ${categoryDefs[category]?.title || category} activity on this device.` : "BOOM is still learning from your views and cart actions.";
+    if (preferred) return `Matches a shopping category you selected in your HUNT survey.`;
+    return score > 0 ? `Matches your recent ${categoryDefs[category]?.title || category} activity on this device.` : "BOOM is still learning from your views, likes, saves and shopping survey.";
   }
 
   const cart = () => readJson(cartKey, []);
@@ -262,8 +278,8 @@
   const categoryUrl = slug => `category.html?c=${encodeURIComponent(categoryDefs[slug] ? slug : "women")}`;
 
   window.HuntCore = {
-    functionsBase,publishableKey,cartKey,signalKey,categoryDefs,categoryGroups,esc,money,safeQuery,
-    inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,signals,
+    functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
+    inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
     cart,saveCart,addCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
   };
 })();

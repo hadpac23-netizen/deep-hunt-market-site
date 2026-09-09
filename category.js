@@ -23,7 +23,7 @@
     const hasPrice = Number.isFinite(Number(product.price_amount)) && Number(product.price_amount) > 0;
     const price = hasPrice ? H.money(product.price_amount, product.currency || "USD") : "Open product";
     const productUrl = H.productUrl(product);
-    return `<article class="hd-market-product-card" data-key="${H.esc(productKey(product))}" data-price="${Number(product.price_amount)||0}" data-score="${score}">
+    return `<article class="hd-market-product-card" data-category="${H.esc(product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${Number(product.price_amount)||0}" data-score="${score}">
       <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}</a>
       <div class="hd-market-card-body">
         <small>${H.esc(product.provider || "Provider")} · ${H.esc(product.availability_verified ? "AVAILABLE" : "DISCOVERY")}</small>
@@ -60,7 +60,7 @@
         .filter(key => H.categoryDefs[key])
         .map(key => {
           const value = H.categoryDefs[key];
-          const genderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"].includes(key);
+          const genderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats"].includes(key);
           const href = genderSub ? `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}` : H.categoryUrl(key);
           const active = genderSub ? sub===key : key===slug;
           return `<a class="${active?"active":""}" href="${href}">${value.icon} ${H.esc(value.title)}</a>`;
@@ -79,9 +79,34 @@
       jackets:/jacket|coat|windbreaker|outerwear|blazer/,
       knitwear:/sweater|cardigan|knit/,
       activewear:/sport|athletic|fitness|yoga|running|rash guard/,
-      swimwear:/swim|swimsuit|bikini|board shorts/
+      swimwear:/swim|swimsuit|bikini|board shorts/,
+      shoes:/shoe|sneaker|heel|loafer|boot|sandal|slide/,
+      bags:/bag|handbag|purse|crossbody|tote|backpack/,
+      jewelry:/jewelry|jewellery|necklace|bracelet|earring|pendant|ring/,
+      accessories:/accessor|wallet|belt|scarf|sunglass/,
+      hats:/hat|cap|beanie/,
+      beauty:/beauty|skincare|makeup|cosmetic|serum|cream/,
+      perfume:/perfume|fragrance|eau de|parfum/
     };
     return patterns[sub] ? patterns[sub].test(title) : true;
+  }
+
+  function matchesGenderScope(product) {
+    if (!sub || !["women","men"].includes(slug)) return true;
+    const title=String(product?.title||"").toLowerCase();
+    const gender=String(product?.gender||"").toLowerCase();
+    if (slug==="women") {
+      if (gender==="women") return true;
+      if (/\bunisex\b/.test(title)) return false;
+      const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
+      const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
+      return hasWomen && !hasMen;
+    }
+    if (gender==="men") return true;
+    if (/\bunisex\b/.test(title)) return false;
+    const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
+    const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
+    return hasMen && !hasWomen;
   }
 
   function matchesCategoryTruth(product) {
@@ -104,7 +129,7 @@
       const price = Number(p.price_amount);
       const priced = Number.isFinite(price) && price > 0;
       const priceMatch = hasPriceFilter ? priced && price >= min && price <= max : true;
-      return matchesCategoryTruth(p) && matchesSub(p) && priceMatch;
+      return matchesCategoryTruth(p) && matchesGenderScope(p) && matchesSub(p) && priceMatch;
     });
     if (sort === "price-low") items.sort((a,b)=>(Number(a.price_amount)||Infinity)-(Number(b.price_amount)||Infinity));
     else if (sort === "price-high") items.sort((a,b)=>(Number(b.price_amount)||0)-(Number(a.price_amount)||0));
@@ -134,6 +159,8 @@
     $("#hd-boom-reason").textContent = score > 2 ? `This category has a ${score}-point local interest signal.` : "Learning locally from category visits, product views and cart actions.";
     H.updateCartBadges();
 
+    const sourceSlug = sub && ["women","men"].includes(slug) && H.categoryDefs[sub] ? sub : slug;
+
     const applyRows = (rows, label) => {
       rawResults = (Array.isArray(rows) ? rows : []).filter(product => {
         if (slug !== "men") return true;
@@ -152,10 +179,10 @@
 
     let rendered = false;
     try {
-      const snapshotRes = await fetch("catalog-snapshot.json?v=productsfix1", {cache:"force-cache"});
+      const snapshotRes = await fetch("catalog-snapshot.json?v=catalog5k1", {cache:"force-cache"});
       if (snapshotRes.ok) {
         const snapshot = await snapshotRes.json();
-        const snapshotRows = Array.isArray(snapshot?.shelves?.[slug]) ? snapshot.shelves[slug] : [];
+        const snapshotRows = Array.isArray(snapshot?.shelves?.[sourceSlug]) ? snapshot.shelves[sourceSlug] : [];
         if (snapshotRows.length) {
           applyRows(snapshotRows, "verified");
           rendered = true;
@@ -168,7 +195,7 @@
         H.storefront({shelves:1}),
         new Promise((_, reject) => setTimeout(() => reject(new Error("Live catalog timeout")), 15000))
       ]);
-      const liveRows = Array.isArray(liveData?.shelves?.[slug]) ? liveData.shelves[slug] : [];
+      const liveRows = Array.isArray(liveData?.shelves?.[sourceSlug]) ? liveData.shelves[sourceSlug] : [];
       if (liveRows.length) {
         applyRows(liveRows, "live");
         rendered = true;

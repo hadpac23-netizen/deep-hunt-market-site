@@ -4,6 +4,7 @@
 
   const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
   const state=new Map();
+  const localKey="hunt_local_product_actions_v1";
   let session=null;
   let scanQueued=false;
 
@@ -14,6 +15,17 @@
 
   function key(provider,itemId){return String(provider||"")+":"+String(itemId||"");}
   function esc(value){return H.esc(String(value??""));}
+  function readLocal(){try{return JSON.parse(localStorage.getItem(localKey)||"{}")}catch{return {}}}
+  function writeLocal(value){localStorage.setItem(localKey,JSON.stringify(value||{}));}
+  function loadLocalState(){
+    const rows=readLocal();
+    for(const [k,row] of Object.entries(rows)) if(row&&(row.liked||row.saved)) state.set(k,row);
+  }
+  function persistLocal(meta,row){
+    const rows=readLocal(), k=key(meta.provider,meta.item_id);
+    if(!row.liked&&!row.saved) delete rows[k]; else rows[k]={...meta,...row};
+    writeLocal(rows);
+  }
 
   function productInfoFromUrl(href){
     try{
@@ -29,7 +41,7 @@
   function metaForCard(card,info){
     const title=card?.querySelector?.(".hd-shelf-title,.hd-market-card-title,.hd-shop-card-title,.hd-wow-product-body>a,[data-product-title]")?.textContent?.trim()||"";
     const image=card?.querySelector?.("img")?.src||"";
-    const category=new URLSearchParams(location.search).get("c")||card?.dataset?.category||null;
+    const category=card?.dataset?.category||new URLSearchParams(location.search).get("c")||null;
     return {provider:info.provider,item_id:info.itemId,title,image_url:image||null,category};
   }
 
@@ -138,12 +150,23 @@
   }
 
   async function toggle(btn){
+    const meta=metaForButton(btn);
     if(!session?.user){
-      const next=location.pathname+location.search+location.hash;
-      location.href="auth.html?next="+encodeURIComponent(next);
+      const k=key(meta.provider,meta.item_id);
+      const old=state.get(k)||{liked:false,saved:false};
+      const kind=btn.dataset.shopAction;
+      const next={...old};
+      if(kind==="like")next.liked=!Boolean(old.liked);
+      if(kind==="save")next.saved=!Boolean(old.saved);
+      if(!next.liked&&!next.saved)state.delete(k);else state.set(k,next);
+      persistLocal(meta,next);
+      refreshButtons();
+      const active=kind==="like"?Boolean(next.liked):Boolean(next.saved);
+      if(active&&meta.category)H.recordSignal?.(meta.category,kind);
+      window.HuntAnalytics?.shoppingAction?.({provider:meta.provider,itemId:meta.item_id,action:kind,active,category:meta.category||""});
+      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved),local:true}}));
       return;
     }
-    const meta=metaForButton(btn);
     const k=key(meta.provider,meta.item_id);
     const old=state.get(k)||{liked:false,saved:false};
     const kind=btn.dataset.shopAction;
@@ -198,20 +221,45 @@
     }
   }
 
+  async function mergeLocalToAccount(){
+    if(!session?.user)return;
+    const rows=Object.values(readLocal()).filter(row=>row&&(row.liked||row.saved));
+    if(!rows.length)return;
+    const {data:existingRows}=await client.from("hunt_product_actions")
+      .select("provider,item_id,liked,saved,liked_at,saved_at,title,image_url,category");
+    const existing=new Map((existingRows||[]).map(row=>[key(row.provider,row.item_id),row]));
+    const now=new Date().toISOString();
+    for(const row of rows){
+      const previous=existing.get(key(row.provider,row.item_id))||{};
+      const liked=Boolean(row.liked||previous.liked);
+      const saved=Boolean(row.saved||previous.saved);
+      await client.from("hunt_product_actions").upsert({
+        user_id:session.user.id,provider:String(row.provider||""),item_id:String(row.item_id||""),
+        title:String(row.title||previous.title||""),image_url:row.image_url||previous.image_url||null,category:row.category||previous.category||null,
+        liked,saved,
+        liked_at:liked?(previous.liked_at||row.liked_at||now):null,
+        saved_at:saved?(previous.saved_at||row.saved_at||now):null
+      },{onConflict:"user_id,provider,item_id"});
+    }
+    localStorage.removeItem(localKey);
+  }
+
   document.addEventListener("click",event=>{
     const btn=event.target.closest?.("[data-shop-action][data-provider][data-item-id]");
     if(!btn)return;
     event.preventDefault();
     event.stopPropagation();
     toggle(btn);
-  });
+  },true);
 
   const observer=new MutationObserver(queueScan);
   observer.observe(document.documentElement,{childList:true,subtree:true});
 
   async function init(){
+    loadLocalState();
     const {data}=await client.auth.getSession();
     session=data.session||null;
+    if(session?.user)await mergeLocalToAccount();
     await loadState();
     scan();
   }
