@@ -83,6 +83,16 @@
     return patterns[sub] ? patterns[sub].test(title) : true;
   }
 
+  function matchesCategoryTruth(product) {
+    const title = String(product?.title || "").toLowerCase();
+    if (!title) return false;
+    if (slug === "women" && /\b(baby|newborn|toddler|kid|kids|child|children|boys?|youth)\b/.test(title)) return false;
+    if (slug === "men" && /\b(women|woman|female|ladies|girls?)\b/.test(title)) return false;
+    if (slug === "beauty" && /\b(pet|dog|cat|toy|slime|foam beads|puzzle)\b/.test(title)) return false;
+    if (slug === "jewelry" && /\b(parrot|bird toy|pet toy|toy set|handbag belt|bag belt|strap buckle|key findings)\b/.test(title)) return false;
+    return true;
+  }
+
   function filteredSorted() {
     const min = Number($("#hd-price-min").value || 0);
     const maxRaw = $("#hd-price-max").value.trim();
@@ -90,7 +100,7 @@
     const sort = $("#hd-cat-sort").value;
     const items = rawResults.filter(p => {
       const price = Number(p.price_amount);
-      return matchesSub(p) && Number.isFinite(price) && price >= min && price <= max;
+      return matchesCategoryTruth(p) && matchesSub(p) && Number.isFinite(price) && price >= min && price <= max;
     });
     if (sort === "price-low") items.sort((a,b)=>(Number(a.price_amount)||Infinity)-(Number(b.price_amount)||Infinity));
     else if (sort === "price-high") items.sort((a,b)=>(Number(b.price_amount)||0)-(Number(a.price_amount)||0));

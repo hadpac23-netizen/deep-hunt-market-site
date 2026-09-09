@@ -84,14 +84,15 @@
 
   function inferCategory(value) {
     const t = String(value?.title || value || "").toLowerCase();
+    if (/\b(pet|dog|cat)\b/.test(t)) return "pets";
+    if (/\b(toy|toys|puzzle|plush|building block|craft kit|slime)\b/.test(t)) return "toys";
+    if (/\b(kids?|youth|toddler|baby|newborn)\b/.test(t)) return "kids";
     if (/(perfume|fragrance)/.test(t)) return "perfume";
     if (/(beauty|skincare|makeup|cosmetic|serum|cream)/.test(t)) return "beauty";
     if (/(jewelry|jewellery|necklace|bracelet|earring|ring)/.test(t)) return "jewelry";
-    if (/\b(kids?|youth|toddler|baby)\b/.test(t)) return "kids";
     if (/\b(swim|swimsuit|bikini|swim trunks)\b/.test(t)) return "swimwear";
     if (/\b(sock|socks)\b/.test(t)) return "socks";
     if (/\b(sticker|stickers)\b/.test(t)) return "stickers";
-    if (/\b(pet|dog|cat)\b/.test(t)) return "pets";
     if (/\b(ornament|ornaments)\b/.test(t)) return "ornaments";
     if (/\b(notebook|journal|calendar)\b/.test(t)) return "stationery";
     if (/\b(desk mat|desk calendar|mouse pad)\b/.test(t)) return "office";
@@ -117,7 +118,6 @@
     if (/(bathroom|bath mat|shower|soap dispenser)/.test(t)) return "bath";
     if (/(craft|sewing|knitting|crochet|painting|drawing|scrapbook|beading)/.test(t)) return "crafts";
     if (/(party|birthday|gift wrap|balloon)/.test(t)) return "party";
-    if (/(toy|puzzle|plush|building block|craft kit)/.test(t)) return "toys";
     if (/(sports|fitness|running|cycling|yoga)/.test(t)) return "sports";
     if (/(outdoor|camping|picnic|hiking|garden)/.test(t)) return "outdoors";
     if (/(travel|luggage|suitcase|duffle|weekender)/.test(t)) return "travel";
