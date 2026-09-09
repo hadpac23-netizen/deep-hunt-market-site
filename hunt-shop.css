@@ -205,3 +205,9 @@ html[data-hunt-theme="dark"] :is(.hd-review-photos img,.hd-review-file-preview i
 .hd-search-button:hover,.hd-search-button:focus-visible{filter:brightness(.96);outline:2px solid color-mix(in srgb,var(--shop-accent) 55%,transparent);outline-offset:2px}
 html[dir="rtl"] .hd-search-button{margin-inline-start:2px}
 @media(max-width:760px){.hd-search{display:flex!important}.hd-search-button{height:32px;padding-inline:12px}}
+
+.hd-promo-block.verified-deal{border:1px solid var(--shop-line);padding:18px;border-radius:12px;background:var(--shop-soft)}
+.hd-promo-block.verified-deal .hd-promo-copy>small{font-weight:950;letter-spacing:.14em}
+.hd-promo-proof{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.hd-promo-proof span{display:inline-flex;align-items:center;min-height:28px;padding:0 9px;border:1px solid var(--shop-line);border-radius:999px;background:var(--shop-bg);font-size:.55rem;font-weight:850;color:var(--shop-text)}
+.hd-promo-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}

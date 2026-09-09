@@ -158,3 +158,35 @@ Owner approval remains required for paid commitments and production launches.
 HUNT taxonomy now includes Suits & Formalwear, Underwear & Essentials, and Socks.
 All three support women / men routing.
 The currently connected storefront already has live sock products; suits and underwear wait for a verified supplier feed instead of fake filler.
+
+## Promo Truth and Deal Chess
+
+HUNT promotions are not decorative marketing claims. They are structured, verifiable deal objects.
+
+Supported deal families:
+- percent or amount off
+- 1+1 / BOGO
+- Buy X Get Y
+- bundle
+- tiered / volume discount
+- coupon
+- free shipping
+- free gift
+- combined promotions
+
+Before a campaign receives a VERIFIED DEAL label, HUNT requires a live status, valid time window, HTTPS source evidence, recent verification and checkout verification.
+
+BOOM then evaluates mission fit:
+- effective unit value when it can be calculated without assumptions
+- quantity the shopper actually needs
+- whether the promotion forces unnecessary overbuy
+- final landed cost when shipping and taxes are available
+- competing offers
+- allowed promotion combinations
+
+This layer is called **Deal Chess**:
+BOOM searches the legal, supported promotion combinations and chooses the best outcome for the shopping mission. It must never assume discounts stack when the source checkout does not allow stacking.
+
+### Channel note — 2026-09-09
+
+Google Shopping/free listings and Merchant Center checkout links support Israel, but the Google Merchant Center Promotions add-on currently lists a narrower set of eligible offer countries that does not include Israel. HUNT therefore keeps promotion truth and redemption logic channel-independent and exports promotions only to channels where the merchant is eligible.

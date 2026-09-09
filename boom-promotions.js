@@ -122,7 +122,7 @@
   async function liveSponsored(){
     if(!client)return [];
     const {data:campaigns,error}=await client.from("hunt_promotion_campaigns")
-      .select("id,title,subtitle,badge,placement,category_slug,audience_mode,audience_value,sponsored,disclosure,status,starts_at,ends_at")
+      .select("*")
       .eq("status","live")
       .eq("sponsored",true)
       .in("placement",["home_feature","home_strip","sponsored_collection"])
@@ -131,7 +131,7 @@
 
     const ids=campaigns.map(x=>x.id);
     const {data:items}=await client.from("hunt_promotion_items")
-      .select("campaign_id,provider,item_id,title_snapshot,image_url_snapshot,price_amount_snapshot,currency,rank")
+      .select("*")
       .in("campaign_id",ids)
       .order("rank",{ascending:true});
 
@@ -146,6 +146,52 @@
     }
     return campaigns.map(c=>({...c,items:grouped.get(c.id)||[]})).filter(c=>c.items.length);
   }
+
+  async function liveVerifiedPromotions(){
+    if(!client||!window.HuntPromotionTruth)return [];
+    const {data:campaigns,error}=await client.from("hunt_promotion_campaigns")
+      .select("*")
+      .eq("status","live")
+      .limit(24);
+    if(error||!campaigns?.length)return [];
+    const verified=campaigns.filter(c=>!c.sponsored&&window.HuntPromotionTruth.verified(c));
+    if(!verified.length)return [];
+    const ids=verified.map(x=>x.id);
+    const {data:items}=await client.from("hunt_promotion_items")
+      .select("*")
+      .in("campaign_id",ids)
+      .order("rank",{ascending:true});
+    const grouped=new Map();
+    for(const item of items||[]){
+      if(!grouped.has(item.campaign_id))grouped.set(item.campaign_id,[]);
+      grouped.get(item.campaign_id).push({
+        provider:item.provider,item_id:item.item_id,title:item.title_snapshot,
+        image_url:item.image_url_snapshot,price_amount:item.price_amount_snapshot,
+        currency:item.currency||"USD",promotion_role:item.promotion_role||"featured"
+      });
+    }
+    return verified.map(c=>({...c,items:grouped.get(c.id)||[]})).filter(c=>c.items.length);
+  }
+
+  function dealBlock(promo){
+    const truth=window.HuntPromotionTruth;
+    const label=truth?.label?.(promo)||"VERIFIED DEAL";
+    const eq=truth?.equivalentPercent?.(promo);
+    const verification=promo.verified_at?new Date(promo.verified_at).toLocaleString():"";
+    const coupon=promo.coupon_code?'<span class="hd-promo-code">Code: '+H.esc(promo.coupon_code)+'</span>':"";
+    const value=Number.isFinite(Number(eq))?'<span>Equivalent same-item value: '+H.esc(Number(eq).toFixed(1))+'%</span>':"";
+    return '<section class="hd-promo-block verified-deal">'+
+      '<div class="hd-promo-copy">'+
+        '<small>'+H.esc(label)+'</small>'+
+        '<h3>'+H.esc(promo.title||label)+'</h3>'+
+        '<p>'+H.esc(promo.subtitle||promo.terms_text||"Checkout-verified promotion.")+'</p>'+
+        '<p class="hd-promo-disclosure">Verified at checkout'+(verification?' · '+H.esc(verification):'')+'.</p>'+
+        '<div class="hd-promo-proof">'+coupon+value+'</div>'+
+      '</div>'+
+      '<div class="hd-promo-track" role="list">'+(promo.items||[]).slice(0,10).map(productCard).join("")+'</div>'+
+    '</section>';
+  }
+
   function promoBlock(promo,{sponsored=false}={}){
     const disclosure=sponsored
       ? `<p class="hd-promo-disclosure">${H.esc(promo.disclosure||"Sponsored placement.")}</p>`
@@ -176,17 +222,19 @@
     }
 
     const editorial=editorialPromos(shelves);
+    const verifiedDeals=await liveVerifiedPromotions();
     const sponsored=await liveSponsored();
     const chosen=sponsored.length?sponsored.slice(0,1):[];
     const blocks=[
+      ...verifiedDeals.slice(0,2).map(dealBlock),
       ...chosen.map(x=>promoBlock(x,{sponsored:true})),
       ...editorial.map(x=>promoBlock(x))
-    ].slice(0,3);
+    ].slice(0,4);
 
     host.innerHTML=`
       <div class="hd-promo-head">
-        <div><small>BOOM PROMOTION STUDIO</small><h2>Offers made to fit the shopper — not shout at them.</h2>
-        <p>Personalized edits use real catalog data. Sponsored placements are always labeled.</p></div>
+        <div><small>BOOM PROMOTION STUDIO</small><h2>Verified deals first. Noise last.</h2>
+        <p>1+1, Buy X Get Y, bundles, coupons and shipping offers appear as deals only after checkout verification. Sponsored placements stay labeled.</p></div>
         <a href="sell.html">Advertise on HUNT →</a>
       </div>
       ${blocks.join("")}`;
