@@ -28,3 +28,21 @@ html[data-hunt-theme="dark"] .hd-hero-copy{background:linear-gradient(105deg,#23
 @media(max-width:760px){.hd-topbar{padding:8px 12px!important;grid-template-columns:1fr auto!important}.hd-tools{grid-column:1/-1!important;width:100%!important;flex-wrap:wrap!important}.hd-search{order:5;min-width:0!important;flex:1!important}.hd-lang{display:none!important}.hd-hero,.hd-department-shell,.hd-wow-showcase,.hd-live-market,.hd-shop-more{width:calc(100% - 24px)!important}.hd-hero-copy{padding:30px 20px!important}.hd-hero h1{font-size:2.8rem!important}.hd-department-bar{justify-content:flex-start!important}.hd-dept-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:8px!important}.hd-dept-card span{display:none!important}#hd-for-you-products.hd-wow-track,.hd-shop-more-grid,.hd-market-v2 .hd-shelf-track,.hd-market-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:20px 9px!important}.hd-category-content{display:block!important}.hd-category-side{display:none!important}.hd-mobile-nav{background:var(--shop-surface)!important;border-color:var(--shop-line)!important;color:var(--shop-text)!important}}
 @media(max-width:430px){.hd-dept-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}.hd-theme-toggle{min-width:36px!important;padding:0 8px!important}}
 @media(prefers-reduced-motion:reduce){.hd-dept-card img,.hd-wow-product img,.hd-shop-card img{transition:none!important}}
+/* HUNT accent pass — restrained, accessible, consistent */
+:root{--shop-accent:#5b4df6;--shop-accent-soft:#f0eeff;--shop-on-accent:#fff}
+html[data-hunt-theme="dark"]{--shop-accent:#9b8cff;--shop-accent-soft:#242039;--shop-on-accent:#111}
+.hd-kicker,.hd-for-you-head small,.hd-shop-more-head small,.hd-wow-rail-head small{color:var(--shop-accent)!important}
+.hd-brand span{color:var(--shop-accent)!important;-webkit-text-fill-color:var(--shop-accent)!important}
+.hd-department-bar a:hover,.hd-all-categories:hover{color:var(--shop-accent)!important;background:var(--shop-accent-soft)!important}
+.hd-category-strip a.active,.hd-category-side-group a.active,.hd-market-shelf-head a,.hd-shop-card-price,.hd-wow-price strong{color:var(--shop-accent)!important}
+.hd-category-strip a.active{border-bottom-color:var(--shop-accent)!important}
+.hd-mode-switch button.active{background:var(--shop-accent)!important;color:var(--shop-on-accent)!important}
+.hd-theme-toggle:hover,.hd-account-link:hover,.hd-cart-link:hover,.hd-nav a:hover{color:var(--shop-accent)!important}
+.hd-btn-primary{background:var(--shop-accent)!important;border-color:var(--shop-accent)!important;color:var(--shop-on-accent)!important}
+.hd-btn-primary:hover{filter:brightness(.94)}
+.hd-shop-card:hover .hd-shop-card-title,.hd-wow-product:hover .hd-wow-product-body>a,.hd-shelf-card:hover .hd-shelf-title,.hd-market-product-card:hover .hd-market-card-title{color:var(--shop-accent)!important}
+
+/* Remove internal engineering language from customer-facing cards */
+.hd-live-market .hd-kicker,.hd-shelf-department-head>span,.hd-market-shelf-head small,.hd-wow-price em,.hd-market-card-price span{display:none!important}
+.hd-market-shelf-head p{font-size:.62rem!important}
+.hd-shop-more-head small{letter-spacing:.12em!important}
