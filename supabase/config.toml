@@ -416,3 +416,6 @@ enabled = true
 
 [functions.hunt-supplier-adapter]
 verify_jwt = false
+
+[functions.hunt-promotion-radar]
+verify_jwt = false

@@ -1,0 +1,211 @@
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "npm:@supabase/supabase-js@2.116.0";
+import { catalogSafetyTitle } from "../_shared/hunt-catalog-warehouse.ts";
+
+const env = (name: string) => (Deno.env.get(name) || "").trim();
+const clean = (value: unknown) => typeof value === "string" ? value.trim() : "";
+
+function json(data: unknown, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {"Content-Type":"application/json","Cache-Control":"no-store"}
+  });
+}
+
+function secretKey() {
+  try {
+    const keys = JSON.parse(env("SUPABASE_SECRET_KEYS") || "{}");
+    return clean(keys?.default) || env("SUPABASE_SERVICE_ROLE_KEY");
+  } catch {
+    return env("SUPABASE_SERVICE_ROLE_KEY");
+  }
+}
+
+function authorized(req: Request) {
+  const expected = env("HUNT_PROMOTION_RADAR_INTERNAL_TOKEN");
+  const supplied = clean(req.headers.get("x-hunt-radar-token"));
+  return Boolean(expected) && supplied === expected;
+}
+function shopifyConfig() {
+  const rawShop = env("SHOPIFY_ADMIN_SHOP").toLowerCase()
+    .replace(/^https?:\/\//,"")
+    .replace(/\/$/,"");
+  const shop = /^[a-z0-9][a-z0-9.-]*\.myshopify\.com$/.test(rawShop) ? rawShop : "";
+  const versionRaw = env("SHOPIFY_ADMIN_API_VERSION") || "2026-07";
+  const version = /^\d{4}-\d{2}$/.test(versionRaw) ? versionRaw : "2026-07";
+  return {
+    shop,
+    version,
+    token: env("SHOPIFY_ADMIN_ACCESS_TOKEN")
+  };
+}
+
+function providerStatus() {
+  const shopify = shopifyConfig();
+  return {
+    shopify: {
+      status: shopify.shop && shopify.token ? "configured" : "credentials_required",
+      shop_configured: Boolean(shopify.shop),
+      token_present: Boolean(shopify.token),
+      api_version: shopify.version,
+      source: "Shopify Admin GraphQL discountNodes"
+    }
+  };
+}
+
+function discountType(typename: string) {
+  const t = typename.toLowerCase();
+  if (t.includes("bxgy")) return "buy_x_get_y";
+  if (t.includes("free") && t.includes("shipping")) return "free_shipping";
+  return "combined";
+}
+const SHOPIFY_DISCOUNTS_QUERY = `
+query HuntPromotionRadar {
+  discountNodes(first: 100, query: "status:active") {
+    nodes {
+      id
+      discount {
+        __typename
+        ... on DiscountAutomaticBxgy {
+          title
+          summary
+          status
+          startsAt
+          endsAt
+        }
+        ... on DiscountCodeBxgy {
+          title
+          summary
+          status
+          startsAt
+          endsAt
+        }
+        ... on DiscountAutomaticBasic {
+          title
+          summary
+          status
+          startsAt
+          endsAt
+        }
+        ... on DiscountCodeBasic {
+          title
+          summary
+          status
+          startsAt
+          endsAt
+        }
+      }
+    }
+  }
+}`;
+
+async function scanShopify() {
+  const cfg = shopifyConfig();
+  if (!cfg.shop || !cfg.token) throw new Error("Shopify promotion radar credentials are not configured.");
+  const endpoint = `https://${cfg.shop}/admin/api/${cfg.version}/graphql.json`;
+  const response = await fetch(endpoint, {
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "X-Shopify-Access-Token":cfg.token
+    },
+    body:JSON.stringify({query:SHOPIFY_DISCOUNTS_QUERY})
+  });
+  if (!response.ok) throw new Error("Shopify discounts returned HTTP " + response.status);
+  const payload = await response.json();
+  if (Array.isArray(payload?.errors) && payload.errors.length) {
+    throw new Error("Shopify discounts GraphQL returned an error.");
+  }
+  const nodes = Array.isArray(payload?.data?.discountNodes?.nodes)
+    ? payload.data.discountNodes.nodes : [];
+  const now = new Date().toISOString();
+  return nodes.map((node:any) => {
+    const discount = node?.discount || {};
+    const title = clean(discount?.title);
+    const typename = clean(discount?.__typename);
+    if (!title || !catalogSafetyTitle(title)) return null;
+    return {
+      source_provider:"Shopify",
+      source_kind:"shopify_admin_graphql",
+      source_offer_id:clean(node?.id),
+      title,
+      deal_type:discountType(typename),
+      buy_quantity:null,
+      get_quantity:null,
+      reward_percent_off:null,
+      reward_amount_off:null,
+      minimum_purchase_amount:null,
+      coupon_code:null,
+      free_shipping:false,
+      terms_text:clean(discount?.summary) || null,
+      source_url:`https://${cfg.shop}`,
+      market_scope:{shop:cfg.shop},
+      evidence:{
+        shopify_gid:clean(node?.id),
+        shopify_type:typename,
+        shopify_status:clean(discount?.status),
+        shopify_summary:clean(discount?.summary),
+        api_version:cfg.version,
+        details_complete:false,
+        checkout_test_required:true
+      },
+      valid_from:clean(discount?.startsAt) || null,
+      valid_until:clean(discount?.endsAt) || null,
+      observed_at:now,
+      checkout_verified:false,
+      verification_status:"pending_review",
+      updated_at:now
+    };
+  }).filter((row:any)=>row?.source_offer_id);
+}
+
+async function upsertObservations(rows: Record<string,unknown>[]) {
+  const key = secretKey();
+  const url = env("SUPABASE_URL");
+  if (!key || !url) throw new Error("Supabase secret environment is unavailable.");
+  const client = createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
+  let written = 0;
+  for (let i=0;i<rows.length;i+=200) {
+    const batch = rows.slice(i,i+200);
+    const {error} = await client.from("hunt_promotion_observations")
+      .upsert(batch,{onConflict:"source_provider,source_offer_id",ignoreDuplicates:false});
+    if (error) throw new Error(error.message);
+    written += batch.length;
+  }
+  return written;
+}
+Deno.serve(async(req: Request) => {
+  if (req.method !== "POST") return json({error:"POST required"},405);
+  if (!authorized(req)) return json({error:"unauthorized"},401);
+
+  let body:any = {};
+  try { body = await req.json(); } catch {}
+
+  if (body?.action === "status") {
+    return json({ok:true,providers:providerStatus()});
+  }
+
+  const provider = clean(body?.provider).toLowerCase();
+  if (body?.action !== "scan" || provider !== "shopify") {
+    return json({error:"supported action: scan, provider: shopify"},400);
+  }
+
+  try {
+    const observations = await scanShopify();
+    const dryRun = body?.dry_run !== false;
+    if (dryRun) {
+      return json({
+        ok:true,
+        dry_run:true,
+        provider:"Shopify",
+        observation_count:observations.length,
+        verification_state:"pending_review",
+        sample:observations.slice(0,5)
+      });
+    }
+    const written = await upsertObservations(observations as Record<string,unknown>[]);
+    return json({ok:true,dry_run:false,provider:"Shopify",written});
+  } catch (error) {
+    return json({error:error instanceof Error ? error.message : "promotion radar scan failed"},502);
+  }
+});
