@@ -73,6 +73,7 @@
 .hd-market-v2 .hd-market-shelf{border-radius:17px;padding:13px}
 .hd-market-v2 .hd-shelf-track{display:flex!important;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;gap:9px}
 .hd-market-v2 .hd-shelf-track::-webkit-scrollbar{display:none}
+.hd-market-v2 .hd-shelf-track:focus-visible{outline:2px solid currentColor;outline-offset:4px;border-radius:12px}
 .hd-market-v2 .hd-shelf-card,.hd-market-v2 .hd-shelf-card:nth-child(n+5){display:block!important;flex:0 0 clamp(175px,15vw,220px);max-width:220px;scroll-snap-align:start}
 .hd-market-v2 .hd-shelf-card-body{min-height:104px!important}
 .hd-market-v2 .hd-shelf-card-body>p{display:none}
@@ -111,5 +112,5 @@
 }
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto!important}
-  .hd-dept-card,.hd-dept-image img,.hd-wow-product,.hd-wow-product-media img{transition:none!important}
+  .hd-dept-card,.hd-dept-image img,.hd-wow-product,.hd-wow-product-media img,.hd-shelf-card,.hd-shelf-card img{transition:none!important;animation:none!important}
 }

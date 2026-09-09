@@ -259,9 +259,11 @@
 
   const shelfDepartments = [
     ["Fashion", ["women","men","dresses","shoes"]],
-    ["Beauty & Style", ["beauty","jewelry","bags"]],
-    ["Home & Living", ["home","kitchen","storage"]],
-    ["Everyday", ["tech","travel","kids","pets"]],
+    ["Beauty & Style", ["beauty","perfume","jewelry","bags"]],
+    ["Home & Living", ["home","kitchen","storage","bedding"]],
+    ["Tech & Gaming", ["tech","phoneaccessories","gaming","office"]],
+    ["Everyday", ["travel","kids","toys","pets"]],
+    ["Creative & Gifts", ["crafts","party","gifts","stationery"]],
   ];
 
   function shelfCard(item) {
@@ -271,7 +273,7 @@
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
-    return `<article class="hd-shelf-card">
+    return `<article class="hd-shelf-card" role="listitem">
       <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>VERIFIED SOURCE</span></a>
       <div class="hd-shelf-card-body">
         <small>${esc(item.provider || "Provider")}</small>
@@ -293,11 +295,11 @@
     const cards = low.map(item => {
       const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : `product.html?provider=Printful&id=${encodeURIComponent(item.item_id || "")}`;
       const image = item.image_url?.startsWith("https://") ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">` : '<div class="hd-shelf-placeholder">◇</div>';
-      return `<article class="hd-shelf-card low-cost"><a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>LOW SOURCE COST</span></a><div class="hd-shelf-card-body"><small>${esc(item.provider || "Printful")}</small><a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a><div class="hd-shelf-source-price"><b>${money(item.price_amount,item.currency||"USD")}</b><em>supplier base</em></div><a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a></div></article>`;
+      return `<article class="hd-shelf-card low-cost" role="listitem"><a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>LOW SOURCE COST</span></a><div class="hd-shelf-card-body"><small>${esc(item.provider || "Printful")}</small><a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a><div class="hd-shelf-source-price"><b>${money(item.price_amount,item.currency||"USD")}</b><em>supplier base</em></div><a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a></div></article>`;
     }).join("");
     const section = document.createElement("section");
     section.className = "hd-market-shelf low-source";
-    section.innerHTML = `<div class="hd-market-shelf-head"><div><small>VALUE FIRST</small><h3>Low source cost picks</h3><p>Lowest verified supplier-base costs from the connected live catalog. Not final retail prices.</p></div><a href="#catalog">See live catalog →</a></div><div class="hd-shelf-track">${cards}</div>`;
+    section.innerHTML = `<div class="hd-market-shelf-head"><div><small>VALUE FIRST</small><h3>Low source cost picks</h3><p>Lowest verified supplier-base costs from the connected live catalog. Not final retail prices.</p></div><a href="#catalog">See live catalog →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="Low source cost products">${cards}</div>`;
     root.prepend(section);
   }
 
@@ -322,7 +324,7 @@
           if (!meta || !items.length) return "";
           const cards = items.slice(0,12).map(shelfCard).join("");
           const categoryHref = window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`;
-          return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>LIVE CATEGORY</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track">${cards}</div></section>`;
+          return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>LIVE CATEGORY</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
         }).filter(Boolean).join("");
         if (!sections) return "";
         return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
