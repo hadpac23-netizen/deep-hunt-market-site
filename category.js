@@ -135,7 +135,11 @@
     H.updateCartBadges();
 
     const applyRows = (rows, label) => {
-      rawResults = Array.isArray(rows) ? rows : [];
+      rawResults = (Array.isArray(rows) ? rows : []).filter(product => {
+        if (slug !== "men") return true;
+        const text = String(product?.title || "").toLowerCase();
+        return !/\b(women(?:'s|s)?|woman|female|unisex)\b/.test(text);
+      });
       const providers = [...new Set(rawResults.map(p=>p.provider).filter(Boolean))];
       $("#hd-cat-provider-state").textContent = rawResults.length
         ? `${rawResults.length} ${label} catalog products · ${providers.join(" + ")}`
