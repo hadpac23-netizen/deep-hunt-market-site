@@ -419,3 +419,6 @@ verify_jwt = false
 
 [functions.hunt-promotion-radar]
 verify_jwt = false
+
+[functions.hunt-promotion-verifier]
+verify_jwt = false

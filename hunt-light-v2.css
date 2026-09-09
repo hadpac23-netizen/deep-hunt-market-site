@@ -183,7 +183,7 @@ html[dir="rtl"] body.hunt-light-v2 .hd-topbar,html[dir="rtl"] body.hunt-light-v2
 .hunt-light-v2 .hd-mission-copy small{font-size:.58rem;letter-spacing:.16em;color:#777}
 .hunt-light-v2 .hd-mission-copy h2{margin:5px 0 7px;font-size:clamp(1.3rem,2.4vw,2rem);letter-spacing:-.04em}
 .hunt-light-v2 .hd-mission-copy p{margin:0;color:#666;line-height:1.55}
-.hunt-light-v2 .hd-mission-form{display:grid;grid-template-columns:2fr .7fr .9fr auto;gap:8px;align-items:end}
+.hunt-light-v2 .hd-mission-form{display:grid;grid-template-columns:2fr .42fr .7fr .9fr auto;gap:8px;align-items:end}
 .hunt-light-v2 .hd-mission-form label{display:grid;gap:5px;font-size:.58rem;color:#666}
 .hunt-light-v2 .hd-mission-form input{height:42px;border:1px solid #ddd;border-radius:999px;background:#fff;color:#111;padding:0 14px;font:inherit}
 .hunt-light-v2 .hd-mission-form input:focus-visible{outline:2px solid #111;outline-offset:2px}

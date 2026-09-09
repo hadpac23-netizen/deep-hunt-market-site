@@ -87,6 +87,28 @@ query HuntPromotionRadar {
           status
           startsAt
           endsAt
+          combinesWith { orderDiscounts productDiscounts shippingDiscounts }
+          customerBuys {
+            items { __typename }
+            value {
+              __typename
+              ... on DiscountQuantity { quantity }
+              ... on DiscountPurchaseAmount { amount }
+            }
+          }
+          customerGets {
+            items { __typename }
+            value {
+              __typename
+              ... on DiscountOnQuantity {
+                quantity { quantity }
+                effect {
+                  __typename
+                  ... on DiscountPercentage { percentage }
+                }
+              }
+            }
+          }
         }
         ... on DiscountCodeBxgy {
           title
@@ -94,20 +116,37 @@ query HuntPromotionRadar {
           status
           startsAt
           endsAt
+          codes(first: 1) { nodes { code } }
+          combinesWith { orderDiscounts productDiscounts shippingDiscounts }
+          customerBuys {
+            items { __typename }
+            value {
+              __typename
+              ... on DiscountQuantity { quantity }
+              ... on DiscountPurchaseAmount { amount }
+            }
+          }
+          customerGets {
+            items { __typename }
+            value {
+              __typename
+              ... on DiscountOnQuantity {
+                quantity { quantity }
+                effect {
+                  __typename
+                  ... on DiscountPercentage { percentage }
+                }
+              }
+            }
+          }
         }
         ... on DiscountAutomaticBasic {
-          title
-          summary
-          status
-          startsAt
-          endsAt
+          title summary status startsAt endsAt
+          combinesWith { orderDiscounts productDiscounts shippingDiscounts }
         }
         ... on DiscountCodeBasic {
-          title
-          summary
-          status
-          startsAt
-          endsAt
+          title summary status startsAt endsAt
+          combinesWith { orderDiscounts productDiscounts shippingDiscounts }
         }
       }
     }
@@ -139,18 +178,30 @@ async function scanShopify() {
     const title = clean(discount?.title);
     const typename = clean(discount?.__typename);
     if (!title || !catalogSafetyTitle(title)) return null;
+    const buysValue = discount?.customerBuys?.value || {};
+    const getsValue = discount?.customerGets?.value || {};
+    const effect = getsValue?.effect || {};
+    const buyQtyRaw = Number(buysValue?.quantity);
+    const getQtyRaw = Number(getsValue?.quantity?.quantity);
+    const percentRaw = Number(effect?.percentage);
+    const rewardPercent = Number.isFinite(percentRaw) && percentRaw > 0
+      ? (percentRaw <= 1 ? percentRaw * 100 : percentRaw) : null;
+    const minimumAmountRaw = Number(buysValue?.amount);
+    const buyQty = Number.isFinite(buyQtyRaw) && buyQtyRaw > 0 ? Math.trunc(buyQtyRaw) : null;
+    const getQty = Number.isFinite(getQtyRaw) && getQtyRaw > 0 ? Math.trunc(getQtyRaw) : null;
+    const dealType = discountType(typename);
     return {
       source_provider:"Shopify",
       source_kind:"shopify_admin_graphql",
       source_offer_id:clean(node?.id),
       title,
-      deal_type:discountType(typename),
-      buy_quantity:null,
-      get_quantity:null,
-      reward_percent_off:null,
+      deal_type:dealType === "buy_x_get_y" && buyQty === 1 && getQty === 1 && rewardPercent === 100 ? "bogo" : dealType,
+      buy_quantity:buyQty,
+      get_quantity:getQty,
+      reward_percent_off:rewardPercent,
       reward_amount_off:null,
-      minimum_purchase_amount:null,
-      coupon_code:null,
+      minimum_purchase_amount:Number.isFinite(minimumAmountRaw) && minimumAmountRaw > 0 ? minimumAmountRaw : null,
+      coupon_code:clean(discount?.codes?.nodes?.[0]?.code) || null,
       free_shipping:false,
       terms_text:clean(discount?.summary) || null,
       source_url:`https://${cfg.shop}`,
@@ -161,7 +212,10 @@ async function scanShopify() {
         shopify_status:clean(discount?.status),
         shopify_summary:clean(discount?.summary),
         api_version:cfg.version,
-        details_complete:false,
+        customer_buys_type:clean(discount?.customerBuys?.items?.__typename) || null,
+        customer_gets_type:clean(discount?.customerGets?.items?.__typename) || null,
+        combines_with:discount?.combinesWith || null,
+        details_complete:Boolean((buyQty || minimumAmountRaw > 0) && (getQty || rewardPercent)),
         checkout_test_required:true
       },
       valid_from:clean(discount?.startsAt) || null,

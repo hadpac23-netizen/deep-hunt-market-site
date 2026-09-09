@@ -180,6 +180,7 @@
     const verification=promo.verified_at?new Date(promo.verified_at).toLocaleString():"";
     const coupon=promo.coupon_code?'<span class="hd-promo-code">Code: '+H.esc(promo.coupon_code)+'</span>':"";
     const value=Number.isFinite(Number(eq))?'<span>Equivalent same-item value: '+H.esc(Number(eq).toFixed(1))+'%</span>':"";
+    const passport=window.HuntDealPassport?.html?.(promo)||"";
     return '<section class="hd-promo-block verified-deal">'+
       '<div class="hd-promo-copy">'+
         '<small>'+H.esc(label)+'</small>'+
@@ -187,6 +188,7 @@
         '<p>'+H.esc(promo.subtitle||promo.terms_text||"Checkout-verified promotion.")+'</p>'+
         '<p class="hd-promo-disclosure">Verified at checkout'+(verification?' · '+H.esc(verification):'')+'.</p>'+
         '<div class="hd-promo-proof">'+coupon+value+'</div>'+
+        passport+
       '</div>'+
       '<div class="hd-promo-track" role="list">'+(promo.items||[]).slice(0,10).map(productCard).join("")+'</div>'+
     '</section>';

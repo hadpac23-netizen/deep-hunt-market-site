@@ -70,3 +70,23 @@ BOOM must reject or downgrade:
 
 Deal Chess compares verified combinations, not headlines.
 A larger advertised discount does not automatically rank higher than a lower landed cost or a better mission fit.
+
+## Checkout Verifier and Deal Passport
+
+Promotion verification is a separate internal step from discovery.
+
+The verifier records:
+- source freshness
+- structure completeness
+- checkout reproduction
+- landed-cost completeness
+- mission quantity fit
+- comparison evidence
+- final verdict: BUY / WAIT / SWITCH / SKIP
+
+BUY is intentionally difficult:
+checkout verification, complete landed cost, no mission overbuy, and evidence that the option is the best verified choice are all required.
+
+The verifier defaults to dry-run and does not publish campaigns automatically.
+Every non-dry-run verification writes an audit record to `hunt_promotion_verifications`.
+The Deal Passport UI mirrors these truth gates for shoppers.

@@ -211,3 +211,19 @@ html[dir="rtl"] .hd-search-button{margin-inline-start:2px}
 .hd-promo-proof{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
 .hd-promo-proof span{display:inline-flex;align-items:center;min-height:28px;padding:0 9px;border:1px solid var(--shop-line);border-radius:999px;background:var(--shop-bg);font-size:.55rem;font-weight:850;color:var(--shop-text)}
 .hd-promo-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+/* Deal Passport */
+.hd-deal-passport{margin-top:12px;padding:11px;border:1px solid var(--shop-line);border-radius:10px;background:var(--shop-bg)}
+.hd-deal-passport-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hd-deal-passport-head small{font-size:.5rem;font-weight:950;letter-spacing:.12em;color:var(--shop-muted)}
+.hd-deal-verdict{display:inline-flex;align-items:center;min-height:25px;padding:0 9px;border-radius:999px;font-size:.55rem;font-weight:950;border:1px solid var(--shop-line)}
+.hd-deal-verdict.buy{background:#eef8f0}
+.hd-deal-verdict.wait{background:#fff8e8}
+.hd-deal-verdict.switch{background:#eef4ff}
+.hd-deal-verdict.skip{background:#fff0f0}
+.hd-deal-passport>p{margin:8px 0!important;font-size:.58rem!important;line-height:1.45!important;color:var(--shop-muted)!important}
+.hd-deal-passport-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.hd-deal-passport-grid span{display:grid;gap:2px;padding:7px 8px;border-radius:8px;background:var(--shop-soft)}
+.hd-deal-passport-grid b{font-size:.48rem;color:var(--shop-muted)}
+.hd-deal-passport-grid em{font-style:normal;font-size:.54rem;font-weight:800;color:var(--shop-text)}
+@media(max-width:760px){.hd-deal-passport-grid{grid-template-columns:1fr}}
