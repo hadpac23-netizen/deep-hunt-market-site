@@ -1,18 +1,22 @@
 # HUNT Supplier Adapter
 
 ## Current status
-ORPE / BRASTY is the first supplier lane.
+Brandsdistribution / BDroppy is now the first paid supplier lane for HUNT fashion.
 The adapter is implemented locally and is NOT deployed.
-No ORPE credential or feed URL is stored in Git.
+BrandsGateway stays second because its custom REST API/CSV plan is materially more expensive.
+ORPE / BRASTY stays conditional because current registration requires a valid EU VAT number.
+No supplier credential, password or private feed URL is stored in Git.
 
 ## Flow
-ORPE CSV/JSON feed
+Brandsdistribution CSV/API or ORPE CSV/JSON feed
 → hunt-supplier-adapter
-→ normalize and safety-filter
+→ normalize + safety filter + market eligibility gate
 → hunt_catalog_products
 → catalogWarehouseShelves()
 → hunt-storefront
 → HUNT Light v2
+
+Brandsdistribution catalog imports PRODUCT and MODEL rows together so HUNT can preserve supplier SKU, barcode/EAN, price and real stock totals. Country selling restrictions remain a separate market-eligibility check before regional publishing.
 
 ## Default safety
 - Feed URL comes only from Supabase secrets.

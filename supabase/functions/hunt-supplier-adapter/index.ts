@@ -45,6 +45,13 @@ function providerStatus() {
       feed_format: env("ORPE_FEED_FORMAT") || "csv",
       authorization: Boolean(env("ORPE_FEED_AUTHORIZATION"))
     },
+    brandsdistribution: {
+      status: env("BRANDSDISTRIBUTION_API_KEY") && env("BRANDSDISTRIBUTION_PASSWORD")
+        ? "configured" : "credentials_required",
+      api_base: env("BRANDSDISTRIBUTION_API_BASE") || "https://www.brandsdistribution.com",
+      catalog_endpoint: "/restful/export/api/products.csv",
+      order_status_endpoint: "/restful/ghost/clientorders/clientkey/{key}/"
+    },
     perfumes_wholesale: {
       status: env("PERFUMES_WHOLESALE_USERNAME") && env("PERFUMES_WHOLESALE_PASSWORD")
         ? "credentials_present_api_driver_pending" : "credentials_required",
@@ -162,6 +169,94 @@ async function loadOrpeFeed() {
   const map = (() => { try { return JSON.parse(env("ORPE_FEED_FIELD_MAP") || "{}"); } catch { return {}; } })();
   return parseFeed(text,format).map(row=>normalizeOrpe(row,map)).filter(Boolean);
 }
+function bdCategory(raw: Record<string,string>) {
+  const text = [raw.Categorie,raw.Sottocategorie,raw.name,raw.productname].join(" ").toLowerCase();
+  const gender = clean(raw.Genere).toLowerCase();
+  if (/shoe|sneaker|boot|sandal/.test(text)) return "shoes";
+  if (/bag|handbag|backpack|purse|wallet/.test(text)) return "bags";
+  if (/watch|jewel|sunglass|accessor|belt|scarf|hat|cap/.test(text)) return "accessories";
+  if (/cosmetic|beauty|perfume|fragrance/.test(text)) return /perfume|fragrance/.test(text) ? "perfume" : "beauty";
+  if (/woman|women|female/.test(gender)) return "women";
+  if (/man|men|male/.test(gender)) return "men";
+  if (/kid|child|boy|girl/.test(gender)) return "kids";
+  return "";
+}
+
+function bdFeedBody(text: string) {
+  const start = text.indexOf("<![CDATA[");
+  const end = text.lastIndexOf("]]>");
+  return start >= 0 && end > start ? text.slice(start + 9,end) : text;
+}
+
+async function loadBrandsdistributionFeed() {
+  const apiKey = env("BRANDSDISTRIBUTION_API_KEY");
+  const password = env("BRANDSDISTRIBUTION_PASSWORD");
+  if (!apiKey || !password) throw new Error("Brandsdistribution credentials are not configured.");
+  const base = env("BRANDSDISTRIBUTION_API_BASE") || "https://www.brandsdistribution.com";
+  const parsed = new URL(base);
+  if (!["www.brandsdistribution.com","idt2015.rewix.zero11.net"].includes(parsed.hostname)) {
+    throw new Error("Brandsdistribution API host is not approved.");
+  }
+  const url = new URL("/restful/export/api/products.csv",parsed.origin);
+  url.searchParams.set("acceptedlocales","en_US");
+  url.searchParams.set("output-filetype","csv");
+  const auth = "Basic " + btoa(apiKey + ":" + password);
+  const res = await fetch(url,{headers:{"Accept":"text/csv,application/xml;q=0.8","Authorization":auth}});
+  if (!res.ok) throw new Error("Brandsdistribution catalog returned HTTP " + res.status);
+  const text = await res.text();
+  if (text.length > 20_000_000) throw new Error("Brandsdistribution catalog exceeds the 20 MB safety limit.");
+  const rows = parseCsv(bdFeedBody(text),",");
+  const products = new Map<string,Record<string,string>>();
+  const models = new Map<string,Record<string,string>[]>();
+  for (const row of rows) {
+    const id = clean(row.product_id);
+    if (!id) continue;
+    if (clean(row.record_type).toUpperCase() === "MODEL") {
+      if (!models.has(id)) models.set(id,[]);
+      models.get(id)!.push(row);
+    } else products.set(id,row);
+  }
+  const now = new Date().toISOString();
+  return [...products.entries()].map(([id,raw]) => {
+    const title = clean(raw.productname) || [clean(raw.brand),clean(raw.name)].filter(Boolean).join(" ");
+    const category = bdCategory(raw);
+    if (!title || !category || !isSafeTitle(title)) return null;
+    const modelRows = models.get(id) || [];
+    const stock = modelRows.length
+      ? modelRows.reduce((sum,row)=>sum + Math.max(0,numberValue(row.model_quantity) || 0),0)
+      : Math.max(0,numberValue(raw.product_quantity) || 0);
+    const firstBarcode = modelRows.map(row=>clean(row.barcode)).find(Boolean) || "";
+    const image = clean(raw["picture 1"]);
+    const price = numberValue(raw.price_novat);
+    return {
+      provider:"Brandsdistribution",
+      item_id:id,
+      category,
+      title,
+      image_url:image.startsWith("https://") ? image : null,
+      price_amount:price && price > 0 ? price : null,
+      currency:"EUR",
+      price_basis:"SUPPLIER_BASE",
+      availability_verified:stock > 0,
+      stock_quantity:Math.trunc(stock),
+      brand:clean(raw.brand) || null,
+      ean:firstBarcode || null,
+      supplier_sku:clean(raw.code) || id,
+      product_line:clean(raw.Sottocategorie) || null,
+      volume_ml:null,
+      concentration:null,
+      gender:clean(raw.Genere) || null,
+      source_region:"EU",
+      authenticity_status:"supplier_claimed_original",
+      market_eligibility_status:"provider_country_check_required",
+      market_restrictions:null,
+      source_fresh_at:now,
+      last_stock_check_at:now,
+      updated_at:now
+    };
+  }).filter(Boolean);
+}
+
 async function upsertProducts(products: Record<string,unknown>[]) {
   const key = secretKey();
   const url = env("SUPABASE_URL");
@@ -187,22 +282,26 @@ Deno.serve(async(req: Request) => {
   if (body?.action === "status") {
     return json({ok:true,providers:providerStatus()});
   }
-  if (body?.action !== "import" || body?.provider !== "orpe") {
-    return json({error:"supported action: import, provider: orpe"},400);
+  const provider = clean(body?.provider).toLowerCase();
+  if (body?.action !== "import" || !["orpe","brandsdistribution"].includes(provider)) {
+    return json({error:"supported action: import, provider: orpe | brandsdistribution"},400);
   }
 
   try {
-    const products = await loadOrpeFeed();
+    const products = provider === "brandsdistribution"
+      ? await loadBrandsdistributionFeed()
+      : await loadOrpeFeed();
+    const providerName = provider === "brandsdistribution" ? "Brandsdistribution" : "ORPE";
     const dryRun = body?.dry_run !== false;
     if (dryRun) {
       return json({
-        ok:true,dry_run:true,provider:"ORPE",
+        ok:true,dry_run:true,provider:providerName,
         normalized_count:products.length,
         sample:products.slice(0,5)
       });
     }
     const written = await upsertProducts(products as Record<string,unknown>[]);
-    return json({ok:true,dry_run:false,provider:"ORPE",written});
+    return json({ok:true,dry_run:false,provider:providerName,written});
   } catch (error) {
     return json({error:error instanceof Error ? error.message : "supplier import failed"},502);
   }

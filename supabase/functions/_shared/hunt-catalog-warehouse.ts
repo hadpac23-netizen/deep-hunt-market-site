@@ -21,7 +21,7 @@ const safeTitle = (title: string) => {
 export async function catalogWarehouseShelves(db: any) {
   if (!db) return {};
   const {data,error} = await db.from("hunt_catalog_products")
-    .select("provider,item_id,category,title,image_url,price_amount,currency,price_basis,availability_verified,source_fresh_at,brand,ean,supplier_sku,product_line,volume_ml,concentration,gender,stock_quantity,source_region,authenticity_status,last_stock_check_at")
+    .select("provider,item_id,category,title,image_url,price_amount,currency,price_basis,availability_verified,source_fresh_at,brand,ean,supplier_sku,product_line,volume_ml,concentration,gender,stock_quantity,source_region,authenticity_status,market_eligibility_status,market_restrictions,last_stock_check_at")
     .order("source_fresh_at",{ascending:false})
     .limit(2500);
   if (error || !Array.isArray(data)) return {};
@@ -55,6 +55,8 @@ export async function catalogWarehouseShelves(db: any) {
       gender:clean(raw?.gender) || null,
       source_region:clean(raw?.source_region) || null,
       authenticity_status:clean(raw?.authenticity_status) || "unverified",
+      market_eligibility_status:clean(raw?.market_eligibility_status) || "unknown",
+      market_restrictions:raw?.market_restrictions ?? null,
       source_fresh_at:raw?.source_fresh_at || null,
       last_stock_check_at:raw?.last_stock_check_at || null,
       merchant_product:true

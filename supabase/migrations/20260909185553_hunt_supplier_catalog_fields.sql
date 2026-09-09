@@ -9,6 +9,8 @@ alter table public.hunt_catalog_products
   add column if not exists stock_quantity integer,
   add column if not exists source_region text,
   add column if not exists authenticity_status text not null default 'unverified',
+  add column if not exists market_eligibility_status text not null default 'unknown',
+  add column if not exists market_restrictions jsonb,
   add column if not exists last_stock_check_at timestamptz;
 
 create index if not exists hunt_catalog_products_brand_idx
