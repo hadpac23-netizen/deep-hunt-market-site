@@ -7,7 +7,7 @@
   <title>Product — HUNT DEAL</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
   <link rel="stylesheet" href="hunt-wow.css?v=market2">
-  <link rel="stylesheet" href="hunt-shop.css?v=shop4">
+  <link rel="stylesheet" href="hunt-shop.css?v=shop5">
 </head>
 <body class="hd-page hd-market-v2">
   <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
@@ -49,6 +49,29 @@
       <article class="glass"><div class="hd-kicker hd-kicker-small">SHOPPING NOTES</div><h2>Things to know</h2><ul id="hd-product-gaps"><li>Checking fulfillment and retail readiness.</li></ul></article>
     </section>
 
+    <section class="hd-reviews" id="reviews" aria-labelledby="hd-reviews-title">
+      <div class="hd-reviews-head">
+        <div><div class="hd-kicker hd-kicker-small">SHOPPER REVIEWS</div><h2 id="hd-reviews-title">Ratings & reviews</h2></div>
+        <div class="hd-review-summary" aria-live="polite"><strong id="hd-review-average">—</strong><span id="hd-review-summary-stars">☆☆☆☆☆</span><small id="hd-review-count">0 reviews</small></div>
+      </div>
+      <div class="hd-review-layout">
+        <aside class="hd-review-form glass">
+          <h3>Rate this product</h3>
+          <div class="hd-review-star-input" id="hd-review-star-input" role="group" aria-label="Product rating"></div>
+          <label for="hd-review-comment">Your review</label>
+          <textarea id="hd-review-comment" maxlength="2000" rows="5" placeholder="What did you like? How was the fit, quality or color?"></textarea>
+          <label class="hd-review-upload" for="hd-review-images"><strong>Add photos</strong><span>Up to 4 JPG, PNG or WebP images · 5 MB each</span></label>
+          <input id="hd-review-images" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+          <div class="hd-review-file-preview" id="hd-review-file-preview"></div>
+          <p class="hd-review-signin-note" id="hd-review-signin-note">Sign in to publish a rating or review.</p>
+          <button class="hd-btn hd-btn-primary" id="hd-review-submit" type="button">Publish review</button>
+          <p class="hd-review-status" id="hd-review-status" aria-live="polite"></p>
+          <small class="hd-review-photo-note">Reviews with photos are held for moderation before the photos become public.</small>
+        </aside>
+        <div class="hd-review-list" id="hd-review-list"><div class="hd-review-empty">Loading reviews…</div></div>
+      </div>
+    </section>
+
     <section class="hd-product-loading glass" id="hd-product-loading"><span>◉</span><strong>Loading live product detail…</strong></section>
     <section class="hd-category-empty glass" id="hd-product-error" hidden><span>◇</span><h2>Product detail is not available yet.</h2><p id="hd-product-error-copy">This provider has not exposed an approved detail feed to HUNT DEAL.</p><a class="hd-btn" href="./">Back to market</a></section>
   </main>
@@ -82,6 +105,7 @@
   <script src="analytics-config.js?v=analytics1"></script>
   <script src="analytics.js?v=analytics1"></script>
   <script src="product.js?v=market2"></script>
-  <script src="hunt-theme.js?v=shop4"></script>
+  <script src="reviews.js?v=reviews1"></script>
+  <script src="hunt-theme.js?v=shop5"></script>
 </body>
 </html>
