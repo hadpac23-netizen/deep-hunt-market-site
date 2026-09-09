@@ -9,7 +9,7 @@
 
   const cardSelectors=[
     ".hd-shelf-card",".hd-market-product-card",".hd-wow-product",".hd-shop-card",
-    ".hd-dept-card",".hd-catalog-product",".hd-search-card",".hd-profile-product"
+    ".hd-dept-card",".hd-catalog-product",".hd-search-card",".hd-profile-product",".hd-promo-product"
   ].join(",");
 
   function key(provider,itemId){return String(provider||"")+":"+String(itemId||"");}
@@ -55,7 +55,7 @@
   }
   function decorateCard(card,info){
     if(!card||card.querySelector(".hd-shop-actions"))return;
-    const media=card.querySelector(".hd-shelf-media,.hd-market-card-media,.hd-wow-product-media,.hd-shop-card-media,.hd-profile-product-media,a[href*='product.html']");
+    const media=card.querySelector(".hd-shelf-media,.hd-market-card-media,.hd-wow-product-media,.hd-shop-card-media,.hd-profile-product-media,.hd-promo-product-media,a[href*='product.html']");
     if(!media)return;
     const host=document.createElement("div");
     host.className="hd-shop-actions";
