@@ -237,6 +237,27 @@
         hunt_checkout_stage: "preview_no_payment"
       });
     },
+    recommendationImpression({placement="",items=[]}={}) {
+      const normalized=Array.isArray(items)?items.slice(0,20).map(x=>item(x,null,1)).filter(x=>x.item_id):[];
+      if(!normalized.length)return false;
+      return dataLayerPush("view_promotion", {
+        creative_name: clean(placement||"recommendation",80),
+        items: normalized
+      });
+    },
+    relatedProductClick(product={}, placement="endless_discovery") {
+      return dataLayerPush("select_item", {
+        item_list_id: clean(placement,80),
+        item_list_name: clean(placement,80),
+        items:[item(product,null,1)]
+      });
+    },
+    surveyComplete({categories=[],priceBand="any"}={}) {
+      return dataLayerPush("shopping_survey_complete", {
+        selected_category_count: Array.isArray(categories)?categories.length:0,
+        price_band: clean(priceBand,40)
+      });
+    },
     shoppingAction({provider="",itemId="",action="",active=false,category=""}={}) {
       if (!["like","save"].includes(clean(action, 20))) return false;
       return dataLayerPush("shopping_preference", {

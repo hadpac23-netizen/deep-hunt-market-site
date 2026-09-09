@@ -134,7 +134,7 @@
       ? '<img src="'+H.esc(item.image_url)+'" alt="'+H.esc(item.title||"Product")+'" loading="lazy">'
       : '<div class="hd-profile-product-placeholder">H</div>';
     const slug=String(item.category||H.inferCategory(item)||"");
-    return '<article class="hd-shelf-card" role="listitem" data-category="'+H.esc(slug)+'">'+
+    return '<article class="hd-shelf-card" role="listitem" data-category="'+H.esc(slug)+'" data-endless-key="'+H.esc(key(item))+'">'+
       '<a class="hd-shelf-media" href="'+H.esc(href)+'">'+img+'</a>'+
       '<div class="hd-shelf-body">'+
         '<a class="hd-shelf-title" href="'+H.esc(href)+'">'+H.esc(item.title||"Product")+'</a>'+
@@ -159,6 +159,7 @@
     }
     if(next.length){
       host.insertAdjacentHTML("beforeend",next.map(card).join(""));
+      window.HuntAnalytics?.recommendationImpression?.({placement:"endless_discovery",items:next});
       const cat=String(next[0]?.category||"");
       if($("#hd-endless-copy"))$("#hd-endless-copy").textContent="BOOM is mixing more "+categoryTitle(cat)+" with related finds and your shopping preferences.";
     }
@@ -225,6 +226,16 @@
     $("#hd-product-video-grid").innerHTML=html;
     $("#hd-product-media-section").hidden=false;
   }
+
+  document.addEventListener("click",event=>{
+    const link=event.target.closest?.("#hd-endless-grid a[href*=\'product.html\']");
+    if(link){
+      const cardEl=link.closest("[data-endless-key]");
+      const k=cardEl?.dataset.endlessKey||"";
+      const product=pool.find(x=>key(x)===k);
+      if(product)window.HuntAnalytics?.relatedProductClick?.(product,"endless_discovery");
+    }
+  },true);
 
   document.addEventListener("click",event=>{
     const button=event.target.closest?.(".hd-product-video-thumb[data-product-video-id], .hd-product-video-card[data-product-video-id] .hd-product-video-thumb");

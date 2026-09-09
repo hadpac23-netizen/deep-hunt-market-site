@@ -193,3 +193,9 @@ html[data-hunt-theme="dark"] :is(.hd-review-photos img,.hd-review-file-preview i
 .hd-merchant-status.ready{color:#1c67d2}.hd-merchant-status.in_progress{color:#b06c00}.hd-merchant-status.done{color:#12834d}.hd-merchant-status.blocked,.hd-merchant-status.rejected{color:#b82f40}.hd-merchant-status.review{color:#7d67d9}
 @media(max-width:850px){.hd-command-board{grid-template-columns:1fr}.hd-command-toolbar{display:block}.hd-command-filters{margin-top:12px}}
 @media(max-width:620px){.hd-command-shell{width:calc(100% - 24px)}.hd-command-edit{grid-template-columns:1fr}.hd-command-edit label.wide{grid-column:auto}.hd-command-filters{display:grid;grid-template-columns:1fr 1fr}}
+
+
+/* BOOM Marketing Lab */
+.hd-marketing-lab-shell{width:min(1280px,calc(100% - 40px));margin:0 auto;padding:34px 0 80px}
+.hd-command-edit textarea{width:100%;resize:vertical;border:1px solid var(--shop-line);background:var(--shop-surface);color:var(--shop-text);padding:8px;font:inherit}
+.hd-merchant-status.testing{color:#b06c00}.hd-merchant-status.won{color:#12834d}.hd-merchant-status.lost{color:#b82f40}.hd-merchant-status.inconclusive{color:#7d67d9}

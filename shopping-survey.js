@@ -83,6 +83,7 @@
     const sess=await getSession();
     await persistServer(sess,safe);
     window.dispatchEvent(new CustomEvent("hunt:shopping-survey",{detail:safe}));
+    window.HuntAnalytics?.surveyComplete?.({categories:safe.categories,priceBand:safe.price_band});
     renderSummary(safe);
   });
 
