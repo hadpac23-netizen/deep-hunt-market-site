@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="HUNT DEAL checkout preview for connected catalog products.">
+  <title>Checkout — HUNT Light v2 Preview</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="stylesheet" href="hunt-deal.css?v=photo6">
+  <link rel="stylesheet" href="hunt-shop.css?v=platform1">
+  <link rel="stylesheet" href="hunt-light-v2.css?v=2">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="hunt-icon-192.png">
+  <meta name="theme-color" content="#111111">
+</head>
+<body class="hd-page hd-checkout-page hunt-light-v2">
+  <div class="hd-space"></div>
+  <header class="hd-topbar">
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">PRE-LAUNCH CHECKOUT</div></div>
+    <nav class="hd-nav"><a href="./#catalog">Products</a><a href="./#hunt-market">Deal Hunt</a></nav>
+    <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-btn" href="./">Continue shopping</a></div>
+  </header>
+
+  <main class="hd-checkout-shell">
+    <section class="hd-checkout-banner glass">
+      <span class="hd-status blue">PRE-LAUNCH</span>
+      <div><h1>Checkout preview</h1><p>This flow uses real connected catalog products. Payment is not live yet. Supplier base cost is not a customer retail price, and no order will be submitted until merchant pricing, fulfillment and payment activation are approved.</p></div>
+    </section>
+
+    <div class="hd-checkout-layout">
+      <section class="hd-checkout-items glass">
+        <div class="hd-section-head"><div><div class="hd-kicker hd-kicker-small">YOUR CART</div><h2>Order items</h2></div><button id="hd-clear-cart" class="hd-link-button" type="button">Clear cart</button></div>
+        <div id="hd-checkout-items"></div>
+        <div id="hd-checkout-empty" class="hd-empty-checkout" hidden><strong>Your cart is empty.</strong><a class="hd-btn hd-btn-primary" href="./#catalog">Browse live products</a></div>
+      </section>
+
+      <aside class="hd-checkout-summary glass">
+        <div class="hd-kicker hd-kicker-small">ORDER SUMMARY</div>
+        <div class="hd-summary-row"><span>Supplier base subtotal</span><strong id="hd-checkout-subtotal">—</strong></div>
+        <div class="hd-summary-row"><span>Retail price</span><strong>PENDING</strong></div>
+        <div class="hd-summary-row"><span>Shipping</span><strong>PENDING</strong></div>
+        <div class="hd-summary-row"><span>Taxes / duties</span><strong>PENDING</strong></div>
+        <div class="hd-summary-total"><span>Customer total</span><strong>NOT SET</strong></div>
+        <label class="hd-checkout-label">Destination market
+          <select id="hd-checkout-market"><option>Israel</option><option>United States</option><option>European Union</option><option>United Kingdom</option><option>Gulf / Middle East</option><option>Other</option></select>
+        </label>
+        <button class="hd-btn hd-btn-primary hd-pay-disabled" type="button" disabled>Payment activation pending</button>
+        <p class="hd-checkout-truth">No card data is collected on this page. A live checkout will only be enabled after an authorized business payment account, confirmed retail prices and supplier fulfillment are connected.</p>
+      </aside>
+    </div>
+
+    <section class="hd-checkout-readiness glass">
+      <div><b>1</b><span><strong>Catalog</strong><small>LIVE — real connected products & images</small></span></div>
+      <div><b>2</b><span><strong>Retail pricing</strong><small>PENDING — must be approved before sale</small></span></div>
+      <div><b>3</b><span><strong>Fulfillment</strong><small>PENDING — supplier/store credentials required</small></span></div>
+      <div><b>4</b><span><strong>Payment</strong><small>PENDING — authorized merchant account required</small></span></div>
+    </section>
+  </main>
+  <nav class="hd-mobile-nav" aria-label="Mobile navigation">
+    <a href="./"><span>&#8962;</span><small>Home</small></a>
+    <a href="category.html?c=women"><span>&#9638;</span><small>Categories</small></a>
+    <a href="category.html?c=women#for-you"><span>&#10022;</span><small>For You</small></a>
+    <a class="active" href="checkout.html"><span>&#9711;</span><small>Cart</small><b data-cart-count>0</b></a>
+    <a href="auth.html"><span>&#9675;</span><small>Sign in</small></a>
+  </nav>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
+  <script src="account-presence.js?v=profile2"></script>
+  <script src="analytics-config.js?v=analytics1"></script>
+  <script src="analytics.js?v=ladder1"></script>
+  <script src="checkout.js?v=photo6"></script>
+  <script src="hunt-theme.js?v=shop4"></script>
+  <script src="pwa.js?v=pwa1"></script>
+  <script src="hunt-light-v2-preview.js?v=2"></script>
+</body>
+</html>
