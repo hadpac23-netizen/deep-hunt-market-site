@@ -122,6 +122,24 @@
     return true;
   }
 
+  function listingReadiness(product) {
+    let score=0;
+    const title=String(product?.title||"").trim();
+    const image=String(product?.image_url||"");
+    const price=Number(product?.price_amount);
+    if(image.startsWith("https://")) score+=4;
+    if(title.length>=12 && title.length<=180) score+=3;
+    else if(title.length>=5) score+=1;
+    if(Number.isFinite(price)&&price>0) score+=2;
+    if(product?.availability_verified===true) score+=2;
+    if(String(product?.price_basis||"").toUpperCase()==="MERCHANT_RETAIL") score+=1;
+    if(product?.source_fresh_at){
+      const age=Date.now()-Date.parse(product.source_fresh_at);
+      if(Number.isFinite(age) && age>=0 && age<45*86400000) score+=1;
+    }
+    return score;
+  }
+
   function filteredSorted() {
     const min = Number($("#hd-price-min").value || 0);
     const maxRaw = $("#hd-price-max").value.trim();
@@ -136,8 +154,15 @@
     });
     if (sort === "price-low") items.sort((a,b)=>(Number(a.price_amount)||Infinity)-(Number(b.price_amount)||Infinity));
     else if (sort === "price-high") items.sort((a,b)=>(Number(b.price_amount)||0)-(Number(a.price_amount)||0));
-    else if (sort === "for-you") items.sort((a,b)=>H.personalScore(b)-H.personalScore(a) || (resultOrder.get(productKey(a))||0)-(resultOrder.get(productKey(b))||0));
-    else items.sort((a,b)=>(resultOrder.get(productKey(a))||0)-(resultOrder.get(productKey(b))||0));
+    else if (sort === "for-you") items.sort((a,b)=>
+      H.personalScore(b)-H.personalScore(a) ||
+      listingReadiness(b)-listingReadiness(a) ||
+      (resultOrder.get(productKey(a))||0)-(resultOrder.get(productKey(b))||0)
+    );
+    else items.sort((a,b)=>
+      listingReadiness(b)-listingReadiness(a) ||
+      (resultOrder.get(productKey(a))||0)-(resultOrder.get(productKey(b))||0)
+    );
     return items;
   }
 
