@@ -18,21 +18,23 @@
   }
 
   async function snapshotProduct() {
-    try {
-      const res = await fetch("catalog-home.json?v=platform1", {cache:"force-cache"});
-      if (!res.ok) return null;
-      const data = await res.json();
-      const wantedProvider = String(provider || "").toLowerCase();
-      const wantedId = String(id || "");
-      for (const rows of Object.values(data?.shelves || {})) {
-        for (const item of Array.isArray(rows) ? rows : []) {
-          if (String(item?.item_id || "") !== wantedId) continue;
-          if (String(item?.provider || "").toLowerCase() !== wantedProvider) continue;
-          try { sessionStorage.setItem(`hunt_product_${provider}:${id}`, JSON.stringify(item)); } catch {}
-          return item;
+    const wantedProvider = String(provider || "").toLowerCase();
+    const wantedId = String(id || "");
+    for (const source of ["catalog-fashion/home.json?v=fashion1","catalog-home.json?v=platform1"]) {
+      try {
+        const res = await fetch(source, {cache:"force-cache"});
+        if (!res.ok) continue;
+        const data = await res.json();
+        for (const rows of Object.values(data?.shelves || {})) {
+          for (const item of Array.isArray(rows) ? rows : []) {
+            if (String(item?.item_id || "") !== wantedId) continue;
+            if (String(item?.provider || "").toLowerCase() !== wantedProvider) continue;
+            try { sessionStorage.setItem(`hunt_product_${provider}:${id}`, JSON.stringify(item)); } catch {}
+            return item;
+          }
         }
-      }
-    } catch {}
+      } catch {}
+    }
     return null;
   }
 
@@ -238,7 +240,10 @@
     if (!id) throw new Error("Missing product id");
     H.updateCartBadges();
     try {
-      const data = await H.storefront({provider,product_id:id});
+      const data = await Promise.race([
+        H.storefront({provider,product_id:id}),
+        new Promise((_,reject)=>setTimeout(()=>reject(new Error("Provider detail timeout")),12000))
+      ]);
       product=data.product;
       variants=Array.isArray(product?.variants)?product.variants:[];
       selectedVariant=variants[0]||null;

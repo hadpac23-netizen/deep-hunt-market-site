@@ -6,6 +6,7 @@
   const sub = params.get("sub") || "";
   const def = H.categoryDefs[slug];
   const mainCategories = ["women","men","kids","beauty","home","kitchen","tech","sports","gifts"];
+  const curatedFashionSlugs = new Set(["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear","shoes","bags","jewelry","accessories","hats"]);
   let rawResults = [];
   let resultOrder = new Map();
   const viewKey = "hunt_market_view_v1";
@@ -337,18 +338,25 @@
 
     let rendered = false;
     let shardLoaded = false;
-    try {
-      const shardRes = await fetch(`catalog-shards/${encodeURIComponent(sourceSlug)}.json?v=catalog30k1`, {cache:"force-cache"});
-      if (shardRes.ok) {
+    const shardCandidates = curatedFashionSlugs.has(sourceSlug)
+      ? [
+          "catalog-fashion/" + encodeURIComponent(sourceSlug) + ".json?v=fashion1",
+          "catalog-shards/" + encodeURIComponent(sourceSlug) + ".json?v=catalog30k1"
+        ]
+      : ["catalog-shards/" + encodeURIComponent(sourceSlug) + ".json?v=catalog30k1"];
+    for (const shardUrl of shardCandidates) {
+      if (shardLoaded) break;
+      try {
+        const shardRes = await fetch(shardUrl, {cache:"force-cache"});
+        if (!shardRes.ok) continue;
         const shard = await shardRes.json();
         const shardRows = Array.isArray(shard?.products) ? shard.products : [];
-        if (shardRows.length) {
-          applyRows(shardRows, "expanded");
-          rendered = true;
-          shardLoaded = true;
-        }
-      }
-    } catch {}
+        if (!shardRows.length) continue;
+        applyRows(shardRows, shardUrl.startsWith("catalog-fashion/") ? "curated" : "expanded");
+        rendered = true;
+        shardLoaded = true;
+      } catch {}
+    }
 
     if (!shardLoaded) {
       try {

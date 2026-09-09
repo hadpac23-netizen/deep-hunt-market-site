@@ -1,0 +1,69 @@
+{
+  "slug": "suits",
+  "count": 4,
+  "source": "HUNT authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-09T23:39:21.429Z",
+  "products": [
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097522537801555970",
+      "title": "Cream 2 Piece Suit Black Scarf Lapel Blazer & Wide Leg Pants",
+      "image_url": "https://cf.cjdropshipping.com/1ad32deb-812f-461f-a850-b4cd383d9991.png",
+      "category": "suits",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 43.12,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609090256201619800",
+      "title": "Chinese-style Business Suit With Flared Trousers",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/82abf3b3-f660-4f74-bdee-8e61d5c1142c.jpg",
+      "category": "suits",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 26.04,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bottoms",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096781869867360257",
+      "title": "Men's Piped Shawl Collar Belted Tuxedo Suit Set",
+      "image_url": "https://cf.cjdropshipping.com/5e218395-546a-4a2c-ad11-d97adcce808d.png",
+      "category": "suits",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 53.07,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "men",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097518029809754113",
+      "title": "Women Blazers Suit Set With Chinese Knot Tassel",
+      "image_url": "https://cf.cjdropshipping.com/44def2df-07e4-4f20-9bc2-d9faf1a12de4.png",
+      "category": "suits",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 27.36,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "women",
+      "catalog_discovery": true
+    }
+  ]
+}

@@ -283,11 +283,11 @@
       : '<div class="hd-shelf-placeholder">◇</div>';
     const effectiveCategory = window.HuntCore?.inferCategory?.(item) || item.category || "";
     return `<article class="hd-shelf-card" role="listitem" data-category="${esc(effectiveCategory)}">
-      <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>VERIFIED SOURCE</span></a>
+      <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(item?.availability_verified === true ? "VERIFIED AVAILABLE" : "CATALOG DISCOVERY")}</span></a>
       <div class="hd-shelf-card-body">
         <small>${esc(item.provider || "Provider")}</small>
         <a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a>
-        <p>Open for source price, sizes, colors and availability.</p>
+        <p>${esc(item?.availability_verified === true ? "Availability verified. Open for source price, sizes and colors." : "Catalog item. Open to recheck variants and availability.")}</p>
         <a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a>
       </div>
     </article>`;
@@ -324,7 +324,12 @@
     return 4;
   }
 
-  function shelfCategoryLimit() {
+  function shelfCategoryLimit(department) {
+    const mobile = window.matchMedia?.("(max-width: 760px)")?.matches;
+    const tablet = window.matchMedia?.("(max-width: 1100px)")?.matches;
+    if (department === "Women · Clothing") return mobile ? 2 : (tablet ? 2 : 3);
+    if (department === "Women · Shoes & Accessories") return mobile ? 2 : (tablet ? 2 : 3);
+    if (department === "Men") return mobile ? 1 : 2;
     return 1;
   }
 
@@ -343,6 +348,30 @@
       out[field] = value;
     }
     return out;
+  }
+
+  const curatedFashionSlugs = new Set(["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear","shoes","bags","jewelry","accessories","hats"]);
+
+  function overlayFashionSnapshot(snapshot, fashion) {
+    const shelves = {...(snapshot?.shelves || {})};
+    for (const [slug, rows] of Object.entries(fashion?.shelves || {})) {
+      if (!curatedFashionSlugs.has(slug) || !Array.isArray(rows) || !rows.length) continue;
+      shelves[slug] = rows;
+    }
+    const unique = new Set();
+    for (const rows of Object.values(shelves)) {
+      for (const item of Array.isArray(rows) ? rows : []) {
+        if (item?.item_id) unique.add(String(item.provider || "") + ":" + String(item.item_id));
+      }
+    }
+    return {
+      ...(snapshot || {}),
+      shelves,
+      visible_product_count: unique.size,
+      shelf_entry_count: Object.values(shelves).reduce((sum, rows) => sum + (Array.isArray(rows) ? rows.length : 0), 0),
+      source: "HUNT curated fashion + catalog snapshot",
+      availability_policy: "CATALOG_DISCOVERY_UNTIL_PROVIDER_RECHECK"
+    };
   }
 
   function mergeShelfData(snapshot, live) {
@@ -384,7 +413,7 @@
       shelves,
       visible_product_count: unique.size,
       shelf_entry_count: Object.values(shelves).reduce((sum, rows) => sum + rows.length, 0),
-      source: "Verified catalog snapshot + live supplier refresh",
+      source: "Curated catalog snapshot + live supplier refresh",
       _hunt_merged: true
     };
   }
@@ -392,7 +421,7 @@
   function orderedShelfDepartments() {
     const signals = window.HuntCore?.signals?.() || {};
     const pinned = ["Women · Clothing","Women · Shoes & Accessories","Men"];
-    const defaultOrder = ["Beauty & Fragrance","Home & Living","Tech & Gaming","Everyday","Creative & Gifts"];
+    const defaultOrder = ["Home & Living","Tech & Gaming","Beauty & Fragrance","Everyday","Creative & Gifts"];
     const scored = shelfDepartments
       .map((entry, index) => ({entry, index, score: entry[1].reduce((sum, slug) => sum + Number(signals[slug] || 0), 0)}));
     const pinnedRows = pinned
@@ -504,18 +533,21 @@
     const html = orderedShelfDepartments().slice(0, shelfDepartmentLimit()).map(([department, slugs]) => {
       const sections = [];
       for (const slug of slugs) {
-        if (sections.length >= shelfCategoryLimit()) break;
+        if (sections.length >= shelfCategoryLimit(department)) break;
         const meta = shelfMeta[slug];
         let items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
         items = items.filter(item => matchesShelfTruth(item, slug, department));
         if (!meta || items.length < 4) continue;
         const selected = selectShelfItems(items, limit, renderedKeys);
         if (!selected.length) continue;
+        for (const item of selected) {
+          try { sessionStorage.setItem("hunt_product_" + String(item.provider || "") + ":" + String(item.item_id || ""), JSON.stringify(item)); } catch {}
+        }
         const cards = selected.map(shelfCard).join("");
         const categoryHref = department.startsWith("Women") && slug !== "women"
           ? `category.html?c=women&sub=${encodeURIComponent(slug)}`
           : (window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`);
-        sections.push(`<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`);
+        sections.push(`<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "CURATED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`);
       }
       if (!sections.length) return "";
       return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections.join("")}</section>`;
@@ -526,9 +558,9 @@
       : '';
     root.innerHTML = (html + browseMore) || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
     const count = Number(data?.visible_product_count || 0);
-    const label = mode === "live" ? "LIVE" : mode === "hybrid" ? "READY" : "CATALOG";
+    const label = mode === "live" ? "LIVE" : "CATALOG";
     counter.textContent = `${count.toLocaleString()} ${label}`;
-    counter.title = mode === "hybrid" ? "Verified catalog with live supplier refresh merged in" : (mode === "live" ? "Live supplier refresh" : "Verified catalog snapshot while live suppliers refresh");
+    counter.title = mode === "hybrid" ? "Curated catalog with verified live supplier refresh merged in" : (mode === "live" ? "Verified live supplier refresh" : "Curated catalog discovery while live suppliers refresh");
     return true;
   }
 
@@ -554,6 +586,10 @@
       const snapshotRes = await fetch("catalog-home.json?v=platform1", {cache:"force-cache"});
       if (snapshotRes.ok) {
         snapshotData = await snapshotRes.json();
+        try {
+          const fashionRes = await fetch("catalog-fashion/home.json?v=fashion1", {cache:"force-cache"});
+          if (fashionRes.ok) snapshotData = overlayFashionSnapshot(snapshotData, await fashionRes.json());
+        } catch {}
         renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");
       }
     } catch {}
@@ -572,14 +608,14 @@
         window.HuntMarketShelves = merged;
         window.dispatchEvent(new CustomEvent("hunt:shelves-refreshed", {detail:merged}));
         const count = Number(merged?.visible_product_count || 0);
-        counter.textContent = `${count.toLocaleString()} READY`;
-        counter.title = "Visible shelves are stable; live supplier data refreshed in the background.";
+        counter.textContent = `${count.toLocaleString()} CATALOG`;
+        counter.title = "Curated catalog stays stable while verified live supplier data refreshes in the background.";
       } else {
         renderMarketShelvesData(merged, "live");
       }
     } catch (err) {
       if (renderedFallback) {
-        counter.title = "Live refresh is temporarily unavailable; showing verified catalog products.";
+        counter.title = "Live refresh is temporarily unavailable; showing curated catalog discovery products.";
         return;
       }
       const msg = err?.name === "AbortError"

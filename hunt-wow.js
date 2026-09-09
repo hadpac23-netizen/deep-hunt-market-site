@@ -97,8 +97,8 @@
   }
 
   function modeSlugs(value) {
-    if (value === "women") return ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats","beauty","perfume"];
-    if (value === "men") return ["men"];
+    if (value === "women") return ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear","shoes","bags","jewelry","accessories","hats","beauty","perfume"];
+    if (value === "men") return ["men","suits","underwear","socks","tops","bottoms","hoodies","jackets","knitwear","activewear","shoes","accessories","hats"];
     if (value === "home") return ["home","kitchen","storage","bedding","bath","lighting"];
     if (value === "tech") return ["tech","phoneaccessories","gaming","office"];
     const signals = H.signals();
@@ -161,6 +161,17 @@
     return score;
   }
 
+  function orderedDepartments() {
+    const pinned = ["Women · Clothing","Women · Shoes & Accessories","Men"];
+    const fixed = pinned.map(title=>departments.find(dep=>dep.title===title)).filter(Boolean);
+    const rest = departments
+      .filter(dep=>!pinned.includes(dep.title))
+      .map((dep,index)=>({dep,index,score:dep.items.reduce((sum,slug)=>sum+Number(H.signals?.()?.[slug]||0),0)}))
+      .sort((a,b)=>(b.score-a.score)||(a.index-b.index))
+      .map(row=>row.dep);
+    return [...fixed,...rest];
+  }
+
   function departmentCard(dep, shelves) {
     let products = pickProducts(shelves, dep.items, dep.womenOnly ? 100 : 30);
     if (dep.womenOnly) products = products.filter(isWomenItem).slice(0,30);
@@ -171,7 +182,7 @@
       : '<div class="hd-dept-placeholder" aria-hidden="true">H</div>';
     return `<a class="hd-dept-card" href="${H.esc(dep.href || H.categoryUrl(dep.slug))}">
       <div class="hd-dept-image">${image}</div>
-      <div><strong>${H.esc(dep.title)}</strong><span>${uniqueCount ? uniqueCount + "+ live picks" : "Open department"}</span></div>
+      <div><strong>${H.esc(dep.title)}</strong><span>${uniqueCount ? uniqueCount + "+ catalog picks" : "Open department"}</span></div>
     </a>`;
   }
 
@@ -227,7 +238,9 @@
     const all = flatUnique(shelves);
     if (!all.length) return;
 
-    const liveCount = Number(data.visible_product_count || all.length);
+    const catalogCount = Number(data.visible_product_count || all.length);
+    const verifiedKeys = new Set(all.filter(x=>x?.availability_verified===true).map(x=>String(x?.provider||"")+":"+String(x?.item_id||"")));
+    const verifiedCount = verifiedKeys.size;
     const providerCount = new Set(all.map(x => x.provider).filter(Boolean)).size;
     const categoryCount = Object.values(shelves).filter(rows => Array.isArray(rows) && rows.length).length;
 
@@ -240,9 +253,9 @@
       hero.querySelector(":scope > p")?.after(proof);
     }
     if (proof) proof.innerHTML = `
-      <div><strong>${liveCount.toLocaleString()}</strong><span>UNIQUE LIVE PRODUCTS</span></div>
-      <div><strong>${providerCount}</strong><span>LIVE CATALOG SOURCES</span></div>
-      <div><strong>${categoryCount}</strong><span>LIVE CATEGORIES</span></div>`;
+      <div><strong>${catalogCount.toLocaleString()}</strong><span>CATALOG PRODUCTS</span></div>
+      <div><strong>${verifiedCount.toLocaleString()}</strong><span>VERIFIED AVAILABLE</span></div>
+      <div><strong>${categoryCount}</strong><span>CATALOG CATEGORIES</span></div>`;
 
     let showcase = $("#hd-wow-showcase");
     if (!showcase) {
@@ -253,14 +266,14 @@
     }
 
     const cjLimit = window.matchMedia?.("(max-width: 760px)")?.matches ? 6 : 8;
-    const cj = all.filter(x => String(x.provider).toLowerCase().includes("cj")).slice(0,cjLimit);
+    const cj = all.filter(x => String(x.provider).toLowerCase().includes("cj") && x?.availability_verified===true && x?.catalog_discovery!==true).slice(0,cjLimit);
     showcase.innerHTML = `
       <div class="hd-wow-head">
         <div><div class="hd-kicker hd-kicker-small">SHOP BY DEPARTMENT</div><h2>Everything is easier to find now.</h2>
         <p>Large departments first, detailed subcategories inside. Real images come from the live supplier catalog.</p></div>
-        <span class="hd-wow-live" aria-live="polite"><i></i>${liveCount.toLocaleString()} LIVE</span>
+        <span class="hd-wow-live" aria-live="polite"><i></i>${verifiedCount.toLocaleString()} VERIFIED · ${catalogCount.toLocaleString()} CATALOG</span>
       </div>
-      <div class="hd-dept-grid">${departments.map(dep => departmentCard(dep,shelves)).join("")}</div>
+      <div class="hd-dept-grid">${orderedDepartments().map(dep => departmentCard(dep,shelves)).join("")}</div>
       <section class="hd-for-you" id="for-you" aria-labelledby="hd-for-you-title">
         <div class="hd-for-you-head"><div><small>PERSONALIZED SHOPPING</small><h3 id="hd-for-you-title">For You</h3><p id="hd-for-you-copy"></p></div>
           <div class="hd-mode-switch" aria-label="Choose shopping view">
