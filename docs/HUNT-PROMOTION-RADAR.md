@@ -19,6 +19,12 @@ An observation is never automatically a deal.
 - The radar stores the official object type, summary, dates and source identity as evidence.
 - It does not parse marketing copy into invented quantities or savings.
 
+### Awin Offers API
+- Uses the official Publisher Offers API.
+- Retrieves active promotions and vouchers from authorized Awin data.
+- Preserves advertiser identity, terms, start/end dates, regions and voucher code when available.
+- Imported offers remain `pending_review` until HUNT verifies redemption at checkout.
+
 ### HUNT merchants
 Merchant-created campaigns remain a first-party source lane.
 They still require source evidence and checkout verification before receiving a VERIFIED DEAL badge.

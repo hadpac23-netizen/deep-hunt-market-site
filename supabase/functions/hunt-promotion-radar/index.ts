@@ -40,8 +40,17 @@ function shopifyConfig() {
   };
 }
 
+function awinConfig() {
+  const publisherId = env("AWIN_PUBLISHER_ID");
+  return {
+    publisherId: /^\d+$/.test(publisherId) ? publisherId : "",
+    token: env("AWIN_ACCESS_TOKEN")
+  };
+}
+
 function providerStatus() {
   const shopify = shopifyConfig();
+  const awin = awinConfig();
   return {
     shopify: {
       status: shopify.shop && shopify.token ? "configured" : "credentials_required",
@@ -49,6 +58,12 @@ function providerStatus() {
       token_present: Boolean(shopify.token),
       api_version: shopify.version,
       source: "Shopify Admin GraphQL discountNodes"
+    },
+    awin: {
+      status: awin.publisherId && awin.token ? "configured" : "credentials_required",
+      publisher_id_configured: Boolean(awin.publisherId),
+      token_present: Boolean(awin.token),
+      source: "Awin Publisher Offers API"
     }
   };
 }
@@ -159,6 +174,86 @@ async function scanShopify() {
   }).filter((row:any)=>row?.source_offer_id);
 }
 
+function firstHttps(...values: unknown[]) {
+  for (const value of values) {
+    const candidate = clean(value);
+    if (candidate.startsWith("https://")) return candidate;
+  }
+  return "";
+}
+
+async function scanAwin() {
+  const cfg = awinConfig();
+  if (!cfg.publisherId || !cfg.token) throw new Error("Awin promotion radar credentials are not configured.");
+  const endpoint = new URL(`https://api.awin.com/publisher/${cfg.publisherId}/promotions`);
+  endpoint.searchParams.set("accessToken",cfg.token);
+  const response = await fetch(endpoint,{
+    method:"POST",
+    headers:{
+      "Authorization":"Bearer " + cfg.token,
+      "Content-Type":"application/json",
+      "Accept":"application/json"
+    },
+    body:JSON.stringify({
+      filters:{status:"active",type:"all"},
+      pagination:{page:1,pageSize:200}
+    })
+  });
+  if (!response.ok) throw new Error("Awin Offers API returned HTTP " + response.status);
+  const payload = await response.json();
+  const offers = Array.isArray(payload) ? payload
+    : Array.isArray(payload?.data) ? payload.data
+    : Array.isArray(payload?.offers) ? payload.offers
+    : Array.isArray(payload?.promotions) ? payload.promotions
+    : [];
+  const now = new Date().toISOString();
+  return offers.map((offer:any) => {
+    const title = clean(offer?.title);
+    const offerId = clean(offer?.promotionId ?? offer?.id);
+    const sourceUrl = firstHttps(offer?.url,offer?.urlTracking);
+    if (!title || !offerId || !sourceUrl || !catalogSafetyTitle(title)) return null;
+    const regions = offer?.regions || {};
+    const list = Array.isArray(regions?.list)
+      ? regions.list.map((row:any)=>clean(row?.countryCode)).filter(Boolean).slice(0,120)
+      : [];
+    const voucher = offer?.voucher || {};
+    return {
+      source_provider:"Awin",
+      source_kind:"awin_offers_api",
+      source_offer_id:offerId,
+      title,
+      deal_type:clean(offer?.type).toLowerCase() === "voucher" ? "coupon" : "combined",
+      buy_quantity:null,
+      get_quantity:null,
+      reward_percent_off:null,
+      reward_amount_off:null,
+      minimum_purchase_amount:null,
+      coupon_code:clean(voucher?.code) || null,
+      free_shipping:false,
+      terms_text:clean(offer?.terms) || clean(offer?.description) || null,
+      source_url:sourceUrl,
+      market_scope:{all:regions?.all === true,countries:list},
+      evidence:{
+        advertiser_id:offer?.advertiser?.id ?? null,
+        advertiser_name:clean(offer?.advertiser?.name) || null,
+        advertiser_joined:offer?.advertiser?.joined === true,
+        offer_type:clean(offer?.type),
+        description:clean(offer?.description),
+        voucher_exclusive:voucher?.exclusive === true,
+        voucher_attributable:voucher?.attributable ?? null,
+        details_complete:false,
+        checkout_test_required:true
+      },
+      valid_from:clean(offer?.startDate) || null,
+      valid_until:clean(offer?.endDate) || null,
+      observed_at:now,
+      checkout_verified:false,
+      verification_status:"pending_review",
+      updated_at:now
+    };
+  }).filter((row:any)=>row?.source_offer_id);
+}
+
 async function upsertObservations(rows: Record<string,unknown>[]) {
   const key = secretKey();
   const url = env("SUPABASE_URL");
@@ -186,25 +281,26 @@ Deno.serve(async(req: Request) => {
   }
 
   const provider = clean(body?.provider).toLowerCase();
-  if (body?.action !== "scan" || provider !== "shopify") {
-    return json({error:"supported action: scan, provider: shopify"},400);
+  if (body?.action !== "scan" || !["shopify","awin"].includes(provider)) {
+    return json({error:"supported action: scan, provider: shopify | awin"},400);
   }
 
   try {
-    const observations = await scanShopify();
+    const observations = provider === "awin" ? await scanAwin() : await scanShopify();
+    const providerName = provider === "awin" ? "Awin" : "Shopify";
     const dryRun = body?.dry_run !== false;
     if (dryRun) {
       return json({
         ok:true,
         dry_run:true,
-        provider:"Shopify",
+        provider:providerName,
         observation_count:observations.length,
         verification_state:"pending_review",
         sample:observations.slice(0,5)
       });
     }
     const written = await upsertObservations(observations as Record<string,unknown>[]);
-    return json({ok:true,dry_run:false,provider:"Shopify",written});
+    return json({ok:true,dry_run:false,provider:providerName,written});
   } catch (error) {
     return json({error:error instanceof Error ? error.message : "promotion radar scan failed"},502);
   }
