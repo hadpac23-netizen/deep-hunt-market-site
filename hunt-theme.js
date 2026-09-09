@@ -90,11 +90,12 @@
       "women","men","beauty","home","tech","kids","shoes","bags","jewelry",
       "kitchen","travel","pets","sports","office","toys"
     ];
-    for (let round = 0; round < 4 && picks.length < 30; round += 1) {
+    const limit = window.matchMedia?.("(max-width: 760px)")?.matches ? 8 : 12;
+    for (let round = 0; round < 3 && picks.length < limit; round += 1) {
       for (const slug of order) {
         const row = bySlug.get(slug)?.[round];
         if (row) picks.push(row);
-        if (picks.length >= 30) break;
+        if (picks.length >= limit) break;
       }
     }
 
@@ -109,15 +110,15 @@
       <div class="hd-shop-more-grid">${picks.map(card).join("")}</div>`;
   }  function simplifyCopy() {
     const h1 = document.querySelector(".hd-hero h1");
-    if (h1) h1.innerHTML = 'Shop more.<br><em>Find it faster.</em>';
+    if (h1) h1.innerHTML = 'Shop normally.<br><em>Or let HUNT hunt for you.</em>';
 
     const heroCopy = document.querySelector(".hd-hero-copy>p");
     if (heroCopy) {
-      heroCopy.textContent = "Fashion, beauty, home, tech, gifts and everyday finds — organized clearly with real catalog products.";
+      heroCopy.textContent = "Browse verified products as a normal store, or give BOOM a shopping mission and let HUNT compare real offers, promotions, and better market options.";
     }
 
     const kicker = document.querySelector(".hd-hero .hd-kicker");
-    if (kicker) kicker.textContent = "HUNT DEAL · SHOPPING, ORGANIZED";
+    if (kicker) kicker.textContent = "HUNT DEAL · STORE + DECISION INTELLIGENCE";
 
     const mainHead = document.querySelector("#shop .hd-section-head h2");
     if (mainHead) mainHead.textContent = "Popular departments";

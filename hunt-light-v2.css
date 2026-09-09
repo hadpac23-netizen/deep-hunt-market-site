@@ -190,3 +190,14 @@ html[dir="rtl"] body.hunt-light-v2 .hd-topbar,html[dir="rtl"] body.hunt-light-v2
 .hunt-light-v2 .hd-mission-status{grid-column:1/-1;margin:0;min-height:1.2em;font-size:.68rem;color:#666}
 @media(max-width:900px){.hunt-light-v2 .hd-mission{grid-template-columns:1fr}.hunt-light-v2 .hd-mission-form{grid-template-columns:1fr 1fr}.hunt-light-v2 .hd-mission-form label:first-child{grid-column:1/-1}}
 @media(max-width:600px){.hunt-light-v2 .hd-mission{width:calc(100% - 20px);padding:14px}.hunt-light-v2 .hd-mission-form{grid-template-columns:1fr}.hunt-light-v2 .hd-mission-form label:first-child{grid-column:auto}}
+
+/* Home catalog handoff — full inventory lives in Categories/Search */
+.hunt-light-v2 .hd-home-catalog-cta{
+  display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;
+  margin:22px auto 4px;padding:14px 0;border-top:1px solid #ededed;text-align:center
+}
+.hunt-light-v2 .hd-home-catalog-cta span{font-size:.66rem;line-height:1.45;color:#777}
+@media(max-width:600px){
+  .hunt-light-v2 .hd-home-catalog-cta{align-items:stretch;flex-direction:column;padding:14px 4px 0}
+  .hunt-light-v2 .hd-home-catalog-cta .hd-btn{width:100%;justify-content:center}
+}

@@ -173,6 +173,14 @@
     return verified.map(c=>({...c,items:grouped.get(c.id)||[]})).filter(c=>c.items.length);
   }
 
+  function promoItemLimit(){
+    return window.matchMedia?.("(max-width: 760px)")?.matches ? 4 : 6;
+  }
+
+  function promoBlockLimit(){
+    return window.matchMedia?.("(max-width: 760px)")?.matches ? 2 : 3;
+  }
+
   function dealBlock(promo){
     const truth=window.HuntPromotionTruth;
     const label=truth?.label?.(promo)||"VERIFIED DEAL";
@@ -190,7 +198,7 @@
         '<div class="hd-promo-proof">'+coupon+value+'</div>'+
         passport+
       '</div>'+
-      '<div class="hd-promo-track" role="list">'+(promo.items||[]).slice(0,10).map(productCard).join("")+'</div>'+
+      '<div class="hd-promo-track" role="list">'+(promo.items||[]).slice(0,promoItemLimit()).map(productCard).join("")+'</div>'+
     '</section>';
   }
 
@@ -205,7 +213,7 @@
         <p>${H.esc(promo.subtitle||"")}</p>
         ${disclosure}
       </div>
-      <div class="hd-promo-track" role="list">${(promo.items||[]).slice(0,10).map(productCard).join("")}</div>
+      <div class="hd-promo-track" role="list">${(promo.items||[]).slice(0,promoItemLimit()).map(productCard).join("")}</div>
     </section>`;
   }
 
@@ -241,7 +249,7 @@
       ...orderedVerified.slice(0,2).map(dealBlock),
       ...chosen.map(x=>promoBlock(x,{sponsored:true})),
       ...editorial.map(x=>promoBlock(x))
-    ].slice(0,4);
+    ].slice(0,promoBlockLimit());
 
     host.innerHTML=`
       <div class="hd-promo-head">

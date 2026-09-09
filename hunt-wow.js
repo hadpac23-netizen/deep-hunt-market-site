@@ -173,19 +173,24 @@
     return H.personalScore(item)*10 + searchBoost + actionBoost + completeness;
   }
 
+  function personalizedLimit() {
+    return window.matchMedia?.("(max-width: 760px)")?.matches ? 8 : 12;
+  }
+
   function renderPersonalized(shelves) {
     const value = mode();
+    const limit = personalizedLimit();
     let products;
     if(value === "for-you"){
       const allowed=new Set(modeSlugs(value));
       products=flatUnique(shelves)
         .filter(item=>allowed.has(H.inferCategory(item)||item?.category))
         .sort((a,b)=>behaviorScore(b)-behaviorScore(a))
-        .slice(0,16);
+        .slice(0,limit);
     } else {
-      products = pickProducts(shelves, modeSlugs(value), value === "women" ? 100 : 16);
+      products = pickProducts(shelves, modeSlugs(value), value === "women" ? 100 : limit);
     }
-    if (value === "women") products = products.filter(isWomenItem).slice(0,16);
+    if (value === "women") products = products.filter(isWomenItem).slice(0,limit);
     const host = $("#hd-for-you-products");
     if (!host) return;
     host.innerHTML = products.map(item => productCard(item, value === "for-you" ? "FOR YOU" : value.toUpperCase())).join("");
@@ -236,7 +241,8 @@
       $("#shop")?.before(showcase);
     }
 
-    const cj = all.filter(x => String(x.provider).toLowerCase().includes("cj")).slice(0,12);
+    const cjLimit = window.matchMedia?.("(max-width: 760px)")?.matches ? 6 : 8;
+    const cj = all.filter(x => String(x.provider).toLowerCase().includes("cj")).slice(0,cjLimit);
     showcase.innerHTML = `
       <div class="hd-wow-head">
         <div><div class="hd-kicker hd-kicker-small">SHOP BY DEPARTMENT</div><h2>Everything is easier to find now.</h2>

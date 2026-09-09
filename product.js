@@ -17,6 +17,25 @@
     catch { return null; }
   }
 
+  async function snapshotProduct() {
+    try {
+      const res = await fetch("catalog-home.json?v=platform1", {cache:"force-cache"});
+      if (!res.ok) return null;
+      const data = await res.json();
+      const wantedProvider = String(provider || "").toLowerCase();
+      const wantedId = String(id || "");
+      for (const rows of Object.values(data?.shelves || {})) {
+        for (const item of Array.isArray(rows) ? rows : []) {
+          if (String(item?.item_id || "") !== wantedId) continue;
+          if (String(item?.provider || "").toLowerCase() !== wantedProvider) continue;
+          try { sessionStorage.setItem(`hunt_product_${provider}:${id}`, JSON.stringify(item)); } catch {}
+          return item;
+        }
+      }
+    } catch {}
+    return null;
+  }
+
   function uniqueBy(items,key) {
     const seen = new Set();
     return items.filter(item=>{ const v=String(item[key]||""); if(!v||seen.has(v))return false; seen.add(v); return true; });
@@ -210,11 +229,11 @@
       window.HuntAnalytics?.viewItem(product, selectedVariant);
       window.dispatchEvent(new CustomEvent("hunt:product-loaded",{detail:{product,variants,selectedVariant}}));
     } catch (err) {
-      const cached=cachedProduct();
-      if (!cached) throw err;
-      H.recordSignal(cached,"view");
-      renderFallback(cached);
-      window.HuntAnalytics?.viewItem(cached, null);
+      const fallback = cachedProduct() || await snapshotProduct();
+      if (!fallback) throw err;
+      H.recordSignal(fallback,"view");
+      renderFallback(fallback);
+      window.HuntAnalytics?.viewItem(fallback, null);
       window.dispatchEvent(new CustomEvent("hunt:product-loaded",{detail:{product,variants:[],selectedVariant:null,fallback:true}}));
     }
     $("#hd-product-loading").hidden=true;

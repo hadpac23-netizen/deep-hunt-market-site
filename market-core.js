@@ -370,7 +370,16 @@
     return data;
   }
 
-  const productUrl = product => `product.html?provider=${encodeURIComponent(product?.provider || "Printful")}&id=${encodeURIComponent(product?.item_id || "")}`;
+  const productUrl = product => {
+    const provider = product?.provider || "Printful";
+    const itemId = product?.item_id || "";
+    if (itemId) {
+      try {
+        sessionStorage.setItem(`hunt_product_${provider}:${itemId}`, JSON.stringify(product));
+      } catch {}
+    }
+    return `product.html?provider=${encodeURIComponent(provider)}&id=${encodeURIComponent(itemId)}`;
+  };
   const categoryUrl = slug => `category.html?c=${encodeURIComponent(categoryDefs[slug] ? slug : "women")}`;
 
   window.HuntCore = {

@@ -309,9 +309,19 @@
   }
 
   function shelfItemLimit() {
-    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 10;
-    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 12;
-    return 18;
+    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 4;
+    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 6;
+    return 8;
+  }
+
+  function shelfDepartmentLimit() {
+    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 4;
+    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 5;
+    return 6;
+  }
+
+  function shelfCategoryLimit() {
+    return 2;
   }
 
   function mergeProductRecord(base, fresh) {
@@ -460,24 +470,30 @@
 
     const renderedKeys = new Set();
     const limit = shelfItemLimit();
-    const html = orderedShelfDepartments().map(([department, slugs]) => {
-      const sections = slugs.map(slug => {
+    const html = orderedShelfDepartments().slice(0, shelfDepartmentLimit()).map(([department, slugs]) => {
+      const sections = [];
+      for (const slug of slugs) {
+        if (sections.length >= shelfCategoryLimit()) break;
         const meta = shelfMeta[slug];
         let items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
         items = items.filter(item => matchesShelfTruth(item, slug, department));
-        if (!meta || items.length < 4) return "";
+        if (!meta || items.length < 4) continue;
         const selected = selectShelfItems(items, limit, renderedKeys);
+        if (!selected.length) continue;
         const cards = selected.map(shelfCard).join("");
         const categoryHref = department.startsWith("Women") && slug !== "women"
           ? `category.html?c=women&sub=${encodeURIComponent(slug)}`
           : (window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`);
-        return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
-      }).filter(Boolean).join("");
-      if (!sections) return "";
-      return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
+        sections.push(`<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`);
+      }
+      if (!sections.length) return "";
+      return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections.join("")}</section>`;
     }).join("");
 
-    root.innerHTML = html || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
+    const browseMore = html
+      ? '<div class="hd-home-catalog-cta"><a class="hd-btn" href="#departments">Browse all departments</a><span>The full catalog stays available through Categories and Search.</span></div>'
+      : '';
+    root.innerHTML = (html + browseMore) || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
     const count = Number(data?.visible_product_count || 0);
     const label = mode === "live" ? "LIVE" : mode === "hybrid" ? "READY" : "CATALOG";
     counter.textContent = `${count.toLocaleString()} ${label}`;
