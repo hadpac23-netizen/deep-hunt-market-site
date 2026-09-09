@@ -112,6 +112,21 @@
       </section>
     </section>
 
+    <section class="hd-mission glass" id="hunt-mission" aria-labelledby="hunt-mission-title">
+      <div class="hd-mission-copy">
+        <small>BOOM DECISION INTELLIGENCE</small>
+        <h2 id="hunt-mission-title">Give HUNT a mission.</h2>
+        <p>Tell BOOM what you want and your budget. HUNT saves the mission on this device and starts a live search now.</p>
+      </div>
+      <form id="hd-mission-form" class="hd-mission-form">
+        <label>What are you hunting for?<input id="hd-mission-query" required maxlength="120" placeholder="e.g. black men's suit, size 52"></label>
+        <label>Budget<input id="hd-mission-budget" type="number" min="0" step="1" inputmode="decimal" placeholder="Optional"></label>
+        <label>Need it by<input id="hd-mission-deadline" type="date"></label>
+        <button class="hd-btn hd-btn-primary" type="submit">Launch HUNT</button>
+      </form>
+      <p id="hd-mission-status" class="hd-mission-status" aria-live="polite"></p>
+    </section>
+
     <section class="hd-department-shell glass" id="departments" aria-label="Shop departments">
       <div class="hd-department-bar">
         <button class="hd-all-categories" id="hd-all-categories" type="button" aria-expanded="false" aria-controls="hd-mega-menu">All categories <span aria-hidden="true">⌄</span></button>
@@ -122,6 +137,9 @@
         <a href="category.html?c=home">Home</a>
         <a href="category.html?c=kitchen">Kitchen</a>
         <a href="category.html?c=tech">Tech</a>
+        <a href="category.html?c=suits">Suits</a>
+        <a href="category.html?c=underwear">Essentials</a>
+        <a href="category.html?c=socks">Socks</a>
         <a href="category.html?c=shoes">Shoes</a>
         <a href="category.html?c=bags">Bags</a>
       </div>
@@ -142,6 +160,10 @@
         <fieldset><legend>What do you want more of?</legend>
           <div class="hd-survey-chips">
             <label><input type="checkbox" name="survey-category" value="women"><span>Women's clothing</span></label>
+            <label><input type="checkbox" name="survey-category" value="men"><span>Men's clothing</span></label>
+            <label><input type="checkbox" name="survey-category" value="suits"><span>Suits & formalwear</span></label>
+            <label><input type="checkbox" name="survey-category" value="underwear"><span>Underwear & essentials</span></label>
+            <label><input type="checkbox" name="survey-category" value="socks"><span>Socks</span></label>
             <label><input type="checkbox" name="survey-category" value="shoes"><span>Shoes</span></label>
             <label><input type="checkbox" name="survey-category" value="accessories"><span>Bags & accessories</span></label>
             <label><input type="checkbox" name="survey-category" value="beauty"><span>Beauty & fragrance</span></label>
@@ -267,6 +289,7 @@
   <script src="analytics-config.js?v=analytics1"></script>
   <script src="analytics.js?v=ladder1"></script>
   <script src="hunt-deal.js?v=stable1"></script>
+  <script src="hunt-mission.js?v=mission1"></script>
   <script src="hunt-wow.js?v=women1"></script>
   <script src="boom-promotions.js?v=promo1"></script>
   <script src="hunt-theme.js?v=shop4"></script>

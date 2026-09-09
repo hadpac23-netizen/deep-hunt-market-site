@@ -1,6 +1,6 @@
 const ALLOWED_CATEGORIES = new Set([
   "women","men","kids","beauty","perfume","dresses","tops","bottoms","hoodies","jackets","knitwear",
-  "activewear","swimwear","bags","shoes","accessories","jewelry","hats","socks","home","kitchen","storage",
+  "activewear","suits","underwear","swimwear","bags","shoes","accessories","jewelry","hats","socks","home","kitchen","storage",
   "bedding","bath","lighting","cleaning","tech","phoneaccessories","gaming","sports","outdoors","travel",
   "toys","pets","crafts","party","gifts","office","stationery","pillows","blankets","wallart","drinkware","ornaments"
 ]);
@@ -10,7 +10,7 @@ const BLOCKED_TERMS = [
   "pepper spray","mace","brass knuckle","firework","explosive","detonator","poison","pesticide",
   "cannabis","marijuana","thc","cbd","cocaine","heroin","meth","steroid","vape","cigarette","nicotine",
   "beer","wine","vodka","whiskey","whisky","rum","tequila","casino","sportsbook","betting","porn","sex toy",
-  "spyware","diet pill","laxative"
+  "adult toy","vibrator","dildo","masturbator","bdsm","cock ring","butt plug","spyware","diet pill","laxative"
 ];
 
 const clean = (value: unknown) => typeof value === "string" ? value.trim() : "";

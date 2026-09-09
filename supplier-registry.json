@@ -46,7 +46,7 @@
       "sandbox_base": "https://idt2015.rewix.zero11.net",
       "sandbox_api_verified_reachable": true,
       "monthly_full_catalog_price_eur": 99,
-      "categories": ["women", "men", "shoes", "bags", "accessories"],
+      "categories": ["women", "men", "suits", "underwear", "socks", "shoes", "bags", "accessories"],
       "regions": ["EU", "global"],
       "integration": ["api", "csv", "xml", "json"],
       "credentials_required": true

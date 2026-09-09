@@ -6,7 +6,7 @@ const BLOCKED_TERMS = [
   "pepper spray","mace","brass knuckle","firework","explosive","detonator","poison","pesticide",
   "cannabis","marijuana","thc","cbd","cocaine","heroin","meth","steroid","vape","cigarette","nicotine",
   "beer","wine","vodka","whiskey","whisky","rum","tequila","casino","sportsbook","betting","porn","sex toy",
-  "spyware","diet pill","laxative"
+  "adult toy","vibrator","dildo","masturbator","bdsm","cock ring","butt plug","spyware","diet pill","laxative"
 ];
 
 const env = (name: string) => (Deno.env.get(name) || "").trim();
@@ -172,6 +172,9 @@ async function loadOrpeFeed() {
 function bdCategory(raw: Record<string,string>) {
   const text = [raw.Categorie,raw.Sottocategorie,raw.name,raw.productname].join(" ").toLowerCase();
   const gender = clean(raw.Genere).toLowerCase();
+  if (/\b(suit|suits|tuxedo|formal jacket|formalwear|business suit)\b/.test(text)) return "suits";
+  if (/\b(underwear|briefs?|boxer briefs?|boxers?|underpants|intimates?|bras?)\b/.test(text)) return "underwear";
+  if (/\b(sock|socks)\b/.test(text)) return "socks";
   if (/shoe|sneaker|boot|sandal/.test(text)) return "shoes";
   if (/bag|handbag|backpack|purse|wallet/.test(text)) return "bags";
   if (/watch|jewel|sunglass|accessor|belt|scarf|hat|cap/.test(text)) return "accessories";

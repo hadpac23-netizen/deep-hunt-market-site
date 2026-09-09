@@ -177,3 +177,16 @@ html[dir="rtl"] body.hunt-light-v2 .hd-topbar,html[dir="rtl"] body.hunt-light-v2
 .hunt-light-v2 .hd-product-confidence strong{font-size:.62rem;color:#111}
 .hunt-light-v2 .hd-product-confidence span{margin-top:3px;font-size:.52rem;line-height:1.4;color:#777}
 @media(max-width:760px){.hunt-light-v2 .hd-smart-filters{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;padding-bottom:2px}.hunt-light-v2 .hd-smart-filters::-webkit-scrollbar{display:none}.hunt-light-v2 .hd-smart-filters label{flex:0 0 auto}.hunt-light-v2 .hd-product-confidence{grid-template-columns:1fr}.hunt-light-v2 .hd-product-confidence>div{padding:9px}}
+
+/* HUNT Mission */
+.hunt-light-v2 .hd-mission{width:min(1320px,calc(100% - 36px));margin:0 auto 22px;padding:18px 20px;display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.4fr);gap:22px;align-items:end;border:1px solid #ececec!important;border-radius:16px!important;background:#fff!important}
+.hunt-light-v2 .hd-mission-copy small{font-size:.58rem;letter-spacing:.16em;color:#777}
+.hunt-light-v2 .hd-mission-copy h2{margin:5px 0 7px;font-size:clamp(1.3rem,2.4vw,2rem);letter-spacing:-.04em}
+.hunt-light-v2 .hd-mission-copy p{margin:0;color:#666;line-height:1.55}
+.hunt-light-v2 .hd-mission-form{display:grid;grid-template-columns:2fr .7fr .9fr auto;gap:8px;align-items:end}
+.hunt-light-v2 .hd-mission-form label{display:grid;gap:5px;font-size:.58rem;color:#666}
+.hunt-light-v2 .hd-mission-form input{height:42px;border:1px solid #ddd;border-radius:999px;background:#fff;color:#111;padding:0 14px;font:inherit}
+.hunt-light-v2 .hd-mission-form input:focus-visible{outline:2px solid #111;outline-offset:2px}
+.hunt-light-v2 .hd-mission-status{grid-column:1/-1;margin:0;min-height:1.2em;font-size:.68rem;color:#666}
+@media(max-width:900px){.hunt-light-v2 .hd-mission{grid-template-columns:1fr}.hunt-light-v2 .hd-mission-form{grid-template-columns:1fr 1fr}.hunt-light-v2 .hd-mission-form label:first-child{grid-column:1/-1}}
+@media(max-width:600px){.hunt-light-v2 .hd-mission{width:calc(100% - 20px);padding:14px}.hunt-light-v2 .hd-mission-form{grid-template-columns:1fr}.hunt-light-v2 .hd-mission-form label:first-child{grid-column:auto}}

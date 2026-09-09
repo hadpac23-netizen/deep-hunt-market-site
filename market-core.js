@@ -8,7 +8,7 @@
     "gun","firearm","ammunition","ammo","weapon","switchblade","taser",
     "cannabis","marijuana","thc","cocaine","heroin","meth","steroid",
     "vape","cigarette","nicotine","beer","wine","vodka","casino",
-    "sportsbook","betting","porn","sex toy","spyware"
+    "sportsbook","betting","porn","sex toy","adult toy","vibrator","dildo","masturbator","bdsm","spyware"
   ];
 
   const categoryDefs = {
@@ -49,7 +49,9 @@
     stickers: {title:"Stickers", query:"stickers", icon:"I", description:"Sticker sheets and decorative stickers."},
     stationery: {title:"Stationery", query:"stationery", icon:"E", description:"Notebooks, journals and calendars."},
     pets: {title:"Pets", query:"pets", icon:"V", description:"Pet accessories and selected pet products."},
-    socks: {title:"Socks", query:"socks", icon:"Z", description:"Printed and embroidered socks."},
+    suits: {title:"Suits & Formalwear", query:"suits formalwear blazers tuxedo", icon:"F", description:"Suits, formal jackets, blazers and business-ready apparel from verified live catalogs."},
+    underwear: {title:"Underwear & Essentials", query:"underwear briefs boxers bras essentials", icon:"E", description:"Everyday underwear and essentials from verified live catalogs."},
+    socks: {title:"Socks", query:"socks", icon:"Z", description:"Everyday and fashion socks from verified live catalogs."},
     swimwear: {title:"Swimwear", query:"swimwear", icon:"S", description:"Swimwear and swim-focused apparel."},
     office: {title:"Office & Desk", query:"office", icon:"D", description:"Desk mats, calendars, mouse pads and notebooks."},
     pillows: {title:"Pillows", query:"pillows", icon:"P", description:"Decorative pillows and pillow products."},
@@ -60,7 +62,7 @@
   };
 
   const categoryGroups = [
-    {title:"Women & Men", items:["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","socks"]},
+    {title:"Women & Men", items:["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear"]},
     {title:"Beauty & Style", items:["bags","shoes","hats","accessories","jewelry","beauty","perfume"]},
     {title:"Home & Living", items:["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]},
     {title:"Tech & Gaming", items:["tech","phoneaccessories","gaming"]},
@@ -91,6 +93,8 @@
     if (/(perfume|fragrance|eau de|parfum|toilette spray)/.test(t)) return "perfume";
     if (/(beauty|skincare|makeup|cosmetic|serum|cream)/.test(t)) return "beauty";
     if (/(jewelry|jewellery|necklace|bracelet|earring|ring)/.test(t)) return "jewelry";
+    if (/\b(suit|suits|tuxedo|formal jacket|formalwear|business suit|blazer set)\b/.test(t)) return "suits";
+    if (/\b(underwear|briefs?|boxer briefs?|boxers?|underpants|intimates?|bra|bras)\b/.test(t)) return "underwear";
     if (/\b(swim|swimsuit|bikini|swim trunks)\b/.test(t)) return "swimwear";
     if (/\b(sock|socks)\b/.test(t)) return "socks";
     if (/\b(sticker|stickers)\b/.test(t)) return "stickers";
@@ -146,7 +150,10 @@
     sports:["sports","fitness","ספורט","כושר","رياضة","لياقة","deportes","sport"],
     travel:["travel","luggage","נסיעות","מזוודות","سفر","حقائب سفر","viaje","voyage"],
     gifts:["gifts","gift","מתנות","מתנה","هدايا","هدية","regalos","cadeaux"],
-    accessories:["accessories","אביזרים","אקססוריז","إكسسوارات","اكسسوارات","accesorios","accessoires"]
+    accessories:["accessories","אביזרים","אקססוריז","إكسسوارات","اكسسوارات","accesorios","accessoires"],
+    suits:["suits","formalwear","business suit","חליפות","חליפה","بدلات","بدلة","costumes","trajes"],
+    underwear:["underwear","briefs","boxers","הלבשה תחתונה","תחתונים","ملابس داخلية","ropa interior","sous-vêtements"],
+    socks:["socks","גרביים","גרב","جوارب","جورب","calcetines","chaussettes"]
   };
   const brandAliases = {
     "dior":["דיור","ديور"],
@@ -223,6 +230,8 @@
     if (/jewel|necklace|bracelet|earring|ring/.test(q)) return "jewelry";
     if (/beauty|skincare|makeup/.test(q)) return "beauty";
     if (/kids?|youth|toddler|baby|child|children|boys?|girls?|infant/.test(q)) return "kids";
+    if (/\b(suit|suits|tuxedo|formalwear|business suit|formal jacket)\b/.test(q)) return "suits";
+    if (/\b(underwear|briefs?|boxer briefs?|boxers?|underpants|intimates?|bras?)\b/.test(q)) return "underwear";
     if (/swimwear|swimsuit|bikini|swim trunks/.test(q)) return "swimwear";
     if (/\bsocks?\b/.test(q)) return "socks";
     if (/stickers?/.test(q)) return "stickers";

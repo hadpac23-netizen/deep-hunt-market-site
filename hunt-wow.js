@@ -9,10 +9,10 @@
   const recentActionKeys = new Set();
 
   const departments = [
-    {title:"Women · Clothing", slug:"women", href:"category.html?c=women", items:["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"], womenOnly:true},
+    {title:"Women · Clothing", slug:"women", href:"category.html?c=women", items:["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear"], womenOnly:true},
     {title:"Women · Shoes & Accessories", slug:"women", href:"category.html?c=women&sub=shoes", items:["shoes","bags","jewelry","accessories","hats"], womenOnly:true},
     {title:"Beauty & Fragrance", slug:"beauty", href:"category.html?c=beauty", items:["beauty","perfume"]},
-    {title:"Men", slug:"men", items:["men"]},
+    {title:"Men", slug:"men", items:["men","suits","underwear","socks"]},
     {title:"Kids", slug:"kids", items:["kids","toys"]},
     {title:"Home & Living", slug:"home", items:["home","kitchen","storage","bedding","bath","lighting","cleaning"]},
     {title:"Tech & Gaming", slug:"tech", items:["tech","phoneaccessories","gaming"]},
@@ -21,10 +21,10 @@
   ];
 
   const megaGroups = [
-    ["Women · Clothing", "women", ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"]],
+    ["Women · Clothing", "women", ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear"]],
     ["Women · Shoes & Accessories", "women", ["shoes","bags","jewelry","accessories","hats"]],
     ["Beauty & Fragrance", null, ["beauty","perfume"]],
-    ["Men", "men", ["tops","bottoms","hoodies","jackets","knitwear","activewear"]],
+    ["Men", "men", ["tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks"]],
     ["Home & Living", null, ["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]],
     ["Tech", null, ["tech","phoneaccessories","gaming","office"]],
     ["Kids & Pets", null, ["kids","toys","pets"]],

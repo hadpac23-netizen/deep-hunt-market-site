@@ -63,7 +63,7 @@
         .filter(key => H.categoryDefs[key])
         .map(key => {
           const value = H.categoryDefs[key];
-          const genderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats"].includes(key);
+          const genderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear","shoes","bags","jewelry","accessories","hats"].includes(key);
           const href = genderSub ? `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}` : H.categoryUrl(key);
           const active = genderSub ? sub===key : key===slug;
           return `<a class="${active?"active":""}" href="${href}">${value.icon} ${H.esc(value.title)}</a>`;
@@ -82,6 +82,9 @@
       jackets:/jacket|coat|windbreaker|outerwear|blazer/,
       knitwear:/sweater|cardigan|knit/,
       activewear:/sport|athletic|fitness|yoga|running|rash guard/,
+      suits:/suit|tuxedo|formal jacket|formalwear|business suit|blazer set/,
+      underwear:/underwear|briefs?|boxer briefs?|boxers?|underpants|intimates?|bras?/,
+      socks:/sock|socks/,
       swimwear:/swim|swimsuit|bikini|board shorts/,
       shoes:/shoe|sneaker|heel|loafer|boot|sandal|slide/,
       bags:/bag|handbag|purse|crossbody|tote|backpack/,
@@ -117,7 +120,7 @@
     if (!title) return false;
     const inferred = H.inferCategory(product);
     if (["women","men"].includes(slug)) {
-      const allowed = new Set(["women","men","dresses","tops","bottoms","hoodies","knitwear","jackets","activewear","swimwear","bags","shoes","accessories","jewelry","hats","socks"]);
+      const allowed = new Set(["women","men","dresses","tops","bottoms","hoodies","knitwear","jackets","activewear","suits","underwear","swimwear","bags","shoes","accessories","jewelry","hats","socks"]);
       if (!allowed.has(inferred)) return false;
       if (sub && inferred !== sub) return false;
       if (slug === "women" && /\b(baby|newborn|toddler|kid|kids|child|children|boys?|youth|infant)\b/.test(title)) return false;

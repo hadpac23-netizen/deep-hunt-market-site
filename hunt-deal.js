@@ -250,6 +250,8 @@
     stickers: ["Stickers", "stickers"],
     stationery: ["Stationery", "stationery"],
     pets: ["Pets", "pets"],
+    suits: ["Suits & Formalwear", "suits"],
+    underwear: ["Underwear & Essentials", "underwear"],
     socks: ["Socks", "socks"],
     swimwear: ["Swimwear", "swimwear"],
     office: ["Office & Desk", "office"],
@@ -258,10 +260,10 @@
   };
 
   const shelfDepartments = [
-    ["Women · Clothing", ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"]],
+    ["Women · Clothing", ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear"]],
     ["Women · Shoes & Accessories", ["shoes","bags","jewelry","accessories","hats"]],
     ["Beauty & Fragrance", ["beauty","perfume"]],
-    ["Men", ["men"]],
+    ["Men", ["men","suits","underwear","socks"]],
     ["Home & Living", ["home","kitchen","storage","bedding"]],
     ["Tech & Gaming", ["tech","phoneaccessories","gaming","office"]],
     ["Everyday", ["travel","kids","toys","pets"]],

@@ -11,7 +11,7 @@
   let dashboard={accounts:[],stores:[]};
 
   const categories=[
-    "women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","socks",
+    "women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","swimwear","socks",
     "bags","shoes","hats","accessories","jewelry","beauty","perfume","home","kitchen","storage","bedding","bath",
     "lighting","cleaning","pillows","blankets","wallart","drinkware","tech","phoneaccessories","gaming","sports",
     "outdoors","travel","kids","toys","pets","gifts","party","crafts","ornaments","stickers","stationery","office"
