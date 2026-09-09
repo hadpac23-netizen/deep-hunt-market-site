@@ -171,7 +171,7 @@ html[dir="rtl"] body.hunt-light-v2 .hd-topbar,html[dir="rtl"] body.hunt-light-v2
 .hunt-light-v2 .hd-boom-product{display:flex!important;border:1px solid #eee!important;background:#fafafa!important;border-radius:12px!important;padding:10px 12px!important}
 .hunt-light-v2 .hd-boom-product>span{width:38px!important;height:38px!important;border-radius:10px!important;background:#111!important;color:#fff!important}
 .hunt-light-v2 .hd-boom-product small{color:#777!important}
-.hunt-light-v2 .hd-product-confidence{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 0 4px;border-top:1px solid #eee}
+.hunt-light-v2 .hd-product-confidence{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:12px 0 4px;border-top:1px solid #eee}
 .hunt-light-v2 .hd-product-confidence>div{min-width:0;padding:10px;background:#fafafa;border-radius:10px}
 .hunt-light-v2 .hd-product-confidence strong,.hunt-light-v2 .hd-product-confidence span{display:block}
 .hunt-light-v2 .hd-product-confidence strong{font-size:.62rem;color:#111}

@@ -117,7 +117,27 @@
     $("#hd-product-provider").textContent = product.provider || provider;
     $("#hd-product-stock").textContent = product.availability_verified ? "IN STOCK" : "DISCOVERY";
     $("#hd-product-stock").className = `hd-status ${product.availability_verified?"green":"blue"}`;
-    $("#hd-product-price").textContent = H.money(selectedVariant?.price_amount ?? product.price_amount, selectedVariant?.currency || product.currency || "USD");
+    const shownAmount = selectedVariant?.price_amount ?? product.price_amount;
+    const shownCurrency = selectedVariant?.currency || product.currency || "USD";
+    const basis = String(product.price_basis || "SUPPLIER_BASE").toUpperCase();
+    const verifiedRetail = product.retail_price_verified === true && product.profit_gate_status === "PASS";
+    $("#hd-product-price").textContent = H.money(shownAmount, shownCurrency);
+    const basisCopy = $("#hd-product-price-basis");
+    if (basisCopy) {
+      basisCopy.textContent = verifiedRetail
+        ? "Verified retail price · Profit Gate PASS"
+        : basis === "MERCHANT_RETAIL"
+          ? "Merchant retail price · checkout activation still pending"
+          : "Supplier/source price · not the final customer retail price";
+    }
+    const shippingCopy = $("#hd-product-shipping");
+    if (shippingCopy) shippingCopy.textContent = product.shipping_verified === true && product.shipping_summary
+      ? String(product.shipping_summary)
+      : "Pending a verified destination quote.";
+    const returnsCopy = $("#hd-product-returns");
+    if (returnsCopy) returnsCopy.textContent = product.returns_policy_verified === true && product.returns_summary
+      ? String(product.returns_summary)
+      : "Provider return policy not verified yet.";
     syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);
     $("#hd-product-description").textContent = product.description || "The provider has not supplied a full description to HUNT DEAL yet.";
@@ -199,7 +219,7 @@
     }
     if (!selectedVariant) return;
     H.addCart(product, selectedVariant, quantity);
-    location.href = "checkout.html";
+    location.href = window.HuntLightPreview?.rewrite?.("checkout.html") || "checkout.html";
   }
 
   function renderFallback(cached) {

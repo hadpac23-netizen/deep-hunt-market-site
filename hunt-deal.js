@@ -9,12 +9,16 @@
   const cartKey = "hunt_deal_cart_v1";
 
   const $ = q => document.querySelector(q);
-  const isStaticPublicHost = location.hostname.endsWith(".github.io") || location.hostname === "127.0.0.1" || location.hostname === "localhost";
+  const isLocalPreview = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+  const isGitHubPublicHost = location.hostname.endsWith(".github.io");
+  const isStaticPublicHost = isGitHubPublicHost || isLocalPreview;
   const supabaseFunctionsBase = "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1";
   const supabasePublishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
-  const publicApiUrl = name => isStaticPublicHost
-    ? supabaseFunctionsBase + "/" + name
-    : (name === "hunt-storefront" ? "/api/storefront" : "/api/deals/hunt");
+  const publicApiUrl = name => isLocalPreview
+    ? location.origin + "/functions/v1/" + name
+    : isGitHubPublicHost
+      ? supabaseFunctionsBase + "/" + name
+      : (name === "hunt-storefront" ? "/api/storefront" : "/api/deals/hunt");
   const publicApiHeaders = extra => ({
     ...(isStaticPublicHost ? {"apikey": supabasePublishableKey} : {}),
     ...(extra || {})
@@ -59,7 +63,7 @@
     });
     localStorage.setItem(cartKey, JSON.stringify(cart));
     updateCartCount();
-    location.href = "checkout.html";
+    location.href = window.HuntLightPreview?.rewrite?.("checkout.html") || "checkout.html";
   }
 
   function categoryFor(deal) {
@@ -315,13 +319,13 @@
   }
 
   function shelfDepartmentLimit() {
-    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 4;
-    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 5;
-    return 6;
+    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 3;
+    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 4;
+    return 4;
   }
 
   function shelfCategoryLimit() {
-    return 2;
+    return 1;
   }
 
   function mergeProductRecord(base, fresh) {
@@ -387,10 +391,13 @@
 
   function orderedShelfDepartments() {
     const signals = window.HuntCore?.signals?.() || {};
-    return shelfDepartments
-      .map((entry, index) => ({entry, index, score: entry[1].reduce((sum, slug) => sum + Number(signals[slug] || 0), 0)}))
-      .sort((a,b) => (b.score - a.score) || (a.index - b.index))
-      .map(row => row.entry);
+    const scored = shelfDepartments
+      .map((entry, index) => ({entry, index, score: entry[1].reduce((sum, slug) => sum + Number(signals[slug] || 0), 0)}));
+    if (scored.some(row => row.score > 0)) {
+      return scored.sort((a,b) => (b.score - a.score) || (a.index - b.index)).map(row => row.entry);
+    }
+    const defaultOrder = ["Women · Clothing","Men","Home & Living","Tech & Gaming","Beauty & Fragrance","Everyday","Women · Shoes & Accessories","Creative & Gifts"];
+    return scored.sort((a,b) => defaultOrder.indexOf(a.entry[0]) - defaultOrder.indexOf(b.entry[0])).map(row => row.entry);
   }
 
   function isWomenShelfItem(item) {

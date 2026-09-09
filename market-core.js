@@ -1,5 +1,7 @@
 (() => {
-  const functionsBase = "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1";
+  const remoteFunctionsBase = "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1";
+  const localPreview = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+  const functionsBase = localPreview ? location.origin + "/functions/v1" : remoteFunctionsBase;
   const publishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
   const cartKey = "hunt_deal_cart_v1";
   const signalKey = "hunt_deal_boom_signals_v1";
