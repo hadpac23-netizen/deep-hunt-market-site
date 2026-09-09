@@ -17,6 +17,8 @@ Brandsdistribution CSV/API or ORPE CSV/JSON feed
 → hunt-storefront
 → HUNT Light v2
 
+The storefront integration patch is kept in `scripts/patch-hunt-storefront-warehouse.mjs`. It adds warehouse shelves and warehouse product-detail routing to a verified local copy of the current storefront without deploying it automatically.
+
 Brandsdistribution catalog imports PRODUCT and MODEL rows together so HUNT can preserve supplier SKU, barcode/EAN, price and real stock totals. Country selling restrictions remain a separate market-eligibility check before regional publishing.
 
 ## Default safety
