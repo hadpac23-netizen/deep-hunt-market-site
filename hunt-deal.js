@@ -457,7 +457,7 @@
     let snapshotData = null;
 
     try {
-      const snapshotRes = await fetch("catalog-snapshot.json?v=catalog5k1", {cache:"force-cache"});
+      const snapshotRes = await fetch("catalog-home.json?v=platform1", {cache:"force-cache"});
       if (snapshotRes.ok) {
         snapshotData = await snapshotRes.json();
         renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");

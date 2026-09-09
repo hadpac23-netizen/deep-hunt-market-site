@@ -60,6 +60,37 @@
     $("#hd-selected-size").textContent = selectedSize || "—";
   }
 
+  function renderProductStructuredData() {
+    if (!product) return;
+    let script=document.querySelector("#hd-product-jsonld");
+    if(!script){
+      script=document.createElement("script");
+      script.type="application/ld+json";
+      script.id="hd-product-jsonld";
+      document.head.appendChild(script);
+    }
+    const images=[...new Set([...(product.gallery||[]),product.image_url].filter(x=>typeof x==="string"&&x.startsWith("https://")))].slice(0,8);
+    const payload={
+      "@context":"https://schema.org",
+      "@type":"Product",
+      "name":String(product.title||"Product"),
+      "url":location.href.split("#")[0]
+    };
+    if(images.length)payload.image=images;
+    if(product.description)payload.description=String(product.description).slice(0,4000);
+    if(product.sku)payload.sku=String(product.sku);
+    if(product.brand)payload.brand={"@type":"Brand","name":String(product.brand)};
+    script.textContent=JSON.stringify(payload);
+
+    let canonical=document.querySelector('link[rel="canonical"]');
+    if(!canonical){
+      canonical=document.createElement("link");
+      canonical.rel="canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href=location.href.split("#")[0];
+  }
+
   function renderBuybox() {
     chooseVariant();
     $("#hd-product-title").textContent = product.title || "Product";
@@ -80,7 +111,7 @@
     const cat=H.inferCategory(product); const def=H.categoryDefs[cat] || H.categoryDefs.women;
     $("#hd-product-category-link").href=H.categoryUrl(cat); $("#hd-product-category-link").textContent=def.title;
     document.title=`${product.title || "Product"} — HUNT DEAL`;
-    renderOptions(); renderGallery();
+    renderOptions(); renderGallery(); renderProductStructuredData();
     const externalVisit = typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
     const readyForCart = variants.length > 0;
     const storeName = product?.store?.name || "partner store";

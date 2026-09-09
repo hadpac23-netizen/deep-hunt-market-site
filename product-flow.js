@@ -71,16 +71,36 @@
   }
 
   async function buildPool(product){
-    const res=await fetch("catalog-snapshot.json?v=catalog5k1",{cache:"force-cache"});
-    if(!res.ok)throw new Error("Catalog unavailable");
-    const data=await res.json();
-    const all=[];
-    for(const [slug,rows] of Object.entries(data?.shelves||{})){
-      for(const raw of Array.isArray(rows)?rows:[]){
-        const item={...raw,category:raw.category||slug};
-        const k=key(item);
-        if(!item.item_id||k===key(product)||seen.has(k))continue;
-        all.push(item);
+    const currentCategory=String(product?.category||H.inferCategory(product)||"");
+    const prefs=H.shoppingPreferences?.()||{};
+    const requested=[currentCategory,...siblingSlugs(currentCategory),...(prefs.categories||[]).slice(0,3)]
+      .filter(Boolean)
+      .filter((slug,index,array)=>array.indexOf(slug)===index)
+      .slice(0,8);
+
+    const shardResults=await Promise.all(requested.map(async slug=>{
+      try{
+        const res=await fetch("catalog-shards/"+encodeURIComponent(slug)+".json?v=catalog30k1",{cache:"force-cache"});
+        if(!res.ok)return [];
+        const data=await res.json();
+        return (Array.isArray(data?.products)?data.products:[]).map(item=>({...item,category:item.category||slug}));
+      }catch{return []}
+    }));
+
+    let all=shardResults.flat().filter(item=>{
+      const k=key(item);
+      return item?.item_id&&k!==key(product)&&!seen.has(k);
+    });
+
+    if(!all.length){
+      const res=await fetch("catalog-home.json?v=platform1",{cache:"force-cache"});
+      if(!res.ok)throw new Error("Catalog unavailable");
+      const data=await res.json();
+      all=[];
+      for(const [slug,rows] of Object.entries(data?.shelves||{})){
+        for(const raw of Array.isArray(rows)?rows:[]){
+          all.push({...raw,category:raw.category||slug});
+        }
       }
     }
 
@@ -92,7 +112,6 @@
       keys.add(k);deduped.push(item);
     }
 
-    const currentCategory=String(product?.category||H.inferCategory(product)||"");
     const currentPrice=Number(product?.price_amount);
     const title=String(product?.title||"").toLowerCase();
     const currentGender=isWomen(product)?"women":isMen(product)?"men":/\b(dress|skirt|blouse|handbag|purse)\b/.test(title)?"women":"general";

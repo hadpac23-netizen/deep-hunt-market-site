@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
 Sitemap: https://hadpac23-netizen.github.io/deep-hunt-market-site/sitemap.xml

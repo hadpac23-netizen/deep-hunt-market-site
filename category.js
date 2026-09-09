@@ -10,6 +10,9 @@
   let resultOrder = new Map();
   const viewKey = "hunt_market_view_v1";
   let viewMode = localStorage.getItem(viewKey) || "comfortable";
+  let visibleLimit = 48;
+  const pageSize = 48;
+  let gridObserver = null;
 
   const $ = q => document.querySelector(q);
   const productKey = p => `${p.provider || ""}:${p.item_id || ""}`;
@@ -138,11 +141,38 @@
     return items;
   }
 
-  function renderGrid() {
+  function renderGrid({reset=false}={}) {
+    if (reset) visibleLimit = pageSize;
     const items = filteredSorted();
-    $("#hd-cat-count").textContent = `${items.length} live products`;
-    $("#hd-category-grid").innerHTML = items.map(productCard).join("");
+    const visible = items.slice(0,visibleLimit);
+    $("#hd-cat-count").textContent = `${items.length} products · showing ${visible.length}`;
+    $("#hd-category-grid").innerHTML = visible.map(productCard).join("");
     $("#hd-category-empty").hidden = items.length > 0;
+    visible.forEach(p => { try { sessionStorage.setItem(`hunt_product_${productKey(p)}`, JSON.stringify(p)); } catch {} });
+    const sentinel=$("#hd-category-more");
+    if(sentinel){
+      const hasMore=visible.length<items.length;
+      sentinel.hidden=!hasMore;
+      const strong=sentinel.querySelector("strong");
+      if(strong)strong.textContent=hasMore?`Load more · ${items.length-visible.length} remaining`:"All products loaded";
+    }
+  }
+
+  function loadMore() {
+    const total=filteredSorted().length;
+    if(visibleLimit>=total)return;
+    visibleLimit=Math.min(total,visibleLimit+pageSize);
+    renderGrid();
+  }
+
+  function setupGridObserver() {
+    const sentinel=$("#hd-category-more");
+    if(!sentinel || !("IntersectionObserver" in window))return;
+    gridObserver?.disconnect();
+    gridObserver=new IntersectionObserver(entries=>{
+      if(entries.some(entry=>entry.isIntersecting))loadMore();
+    },{rootMargin:"850px 0px"});
+    gridObserver.observe(sentinel);
   }
 
   async function load() {
@@ -158,37 +188,63 @@
     const score = Number(H.signals()[slug] || 0);
     $("#hd-boom-reason").textContent = score > 2 ? `This category has a ${score}-point local interest signal.` : "Learning locally from category visits, product views and cart actions.";
     H.updateCartBadges();
+    setupGridObserver();
 
     const sourceSlug = sub && ["women","men"].includes(slug) && H.categoryDefs[sub] ? sub : slug;
 
-    const applyRows = (rows, label) => {
-      rawResults = (Array.isArray(rows) ? rows : []).filter(product => {
+    const applyRows = (rows, label, {merge=false}={}) => {
+      const incoming = (Array.isArray(rows) ? rows : []).filter(product => {
         if (slug !== "men") return true;
         const text = String(product?.title || "").toLowerCase();
         return !/\b(women(?:'s|s)?|woman|female|unisex)\b/.test(text);
       });
+      if (merge && rawResults.length) {
+        const merged = new Map(rawResults.map(product => [productKey(product), product]));
+        for (const product of incoming) {
+          const k = productKey(product);
+          merged.set(k, {...(merged.get(k)||{}), ...product});
+        }
+        rawResults = [...merged.values()];
+      } else {
+        rawResults = incoming;
+      }
       const providers = [...new Set(rawResults.map(p=>p.provider).filter(Boolean))];
       $("#hd-cat-provider-state").textContent = rawResults.length
-        ? `${rawResults.length} ${label} catalog products · ${providers.join(" + ")}`
+        ? `${rawResults.length} catalog products ready · ${providers.join(" + ")}${label==="live"?" · live refresh merged":""}`
         : "No connected provider returned a product for this category yet.";
       resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
-      rawResults.forEach(p => { try { sessionStorage.setItem(`hunt_product_${productKey(p)}`, JSON.stringify(p)); } catch {} });
       window.HuntAnalytics?.category(slug, rawResults.length);
       renderGrid();
     };
 
     let rendered = false;
+    let shardLoaded = false;
     try {
-      const snapshotRes = await fetch("catalog-snapshot.json?v=catalog5k1", {cache:"force-cache"});
-      if (snapshotRes.ok) {
-        const snapshot = await snapshotRes.json();
-        const snapshotRows = Array.isArray(snapshot?.shelves?.[sourceSlug]) ? snapshot.shelves[sourceSlug] : [];
-        if (snapshotRows.length) {
-          applyRows(snapshotRows, "verified");
+      const shardRes = await fetch(`catalog-shards/${encodeURIComponent(sourceSlug)}.json?v=catalog30k1`, {cache:"force-cache"});
+      if (shardRes.ok) {
+        const shard = await shardRes.json();
+        const shardRows = Array.isArray(shard?.products) ? shard.products : [];
+        if (shardRows.length) {
+          applyRows(shardRows, "expanded");
           rendered = true;
+          shardLoaded = true;
         }
       }
     } catch {}
+
+    if (!shardLoaded) {
+      try {
+        const snapshotRes = await fetch("catalog-snapshot.json?v=catalog5k1", {cache:"force-cache"});
+        if (snapshotRes.ok) {
+          const snapshot = await snapshotRes.json();
+          const snapshotRows = Array.isArray(snapshot?.shelves?.[sourceSlug]) ? snapshot.shelves[sourceSlug] : [];
+          if (snapshotRows.length) {
+            applyRows(snapshotRows, "verified");
+            rendered = true;
+          }
+        }
+      } catch {}
+    }
 
     try {
       const liveData = await Promise.race([
@@ -197,7 +253,7 @@
       ]);
       const liveRows = Array.isArray(liveData?.shelves?.[sourceSlug]) ? liveData.shelves[sourceSlug] : [];
       if (liveRows.length) {
-        applyRows(liveRows, "live");
+        applyRows(liveRows, "live", {merge:true});
         rendered = true;
       }
     } catch {}
@@ -209,8 +265,8 @@
     }
   }
 
-  $("#hd-cat-apply")?.addEventListener("click",renderGrid);
-  $("#hd-cat-sort")?.addEventListener("change",renderGrid);
+  $("#hd-cat-apply")?.addEventListener("click",()=>renderGrid({reset:true}));
+  $("#hd-cat-sort")?.addEventListener("change",()=>renderGrid({reset:true}));
   document.querySelectorAll("[data-view-mode]").forEach(button => {
     button.addEventListener("click", () => applyViewMode(button.dataset.viewMode));
   });
