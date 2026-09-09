@@ -129,28 +129,6 @@ html[data-hunt-theme="dark"] :is(.hd-review-photos img,.hd-review-file-preview i
 .hd-survey-done strong{color:var(--shop-text)}.hd-survey-done span{color:var(--shop-muted);font-size:.65rem}.hd-survey-done .hd-btn{margin-left:auto}
 @media(max-width:760px){.hd-shopping-survey{width:calc(100% - 24px);padding:15px}.hd-shopping-survey-head{display:block;position:relative;padding-right:40px}#hd-shopping-survey-skip{position:absolute;right:0;top:0}.hd-survey-done .hd-btn{margin-left:0;width:100%}}
 
-/* HUNT Fashion Lookbook */
-.hd-fashion-lookbook{width:min(1480px,calc(100% - 64px));margin:22px auto 34px}
-.hd-fashion-lookbook-head{display:flex;justify-content:space-between;align-items:end;gap:24px;border-bottom:1px solid var(--shop-line);padding-bottom:12px;margin-bottom:14px}
-.hd-fashion-lookbook-head small{color:var(--shop-accent);font-weight:950;letter-spacing:.12em}
-.hd-fashion-lookbook-head h2{margin:4px 0;color:var(--shop-text);font-size:clamp(1.35rem,2.4vw,2.1rem);letter-spacing:-.03em}
-.hd-fashion-lookbook-head p{margin:0;color:var(--shop-muted);font-size:.68rem}
-.hd-fashion-lookbook-head>a{color:var(--shop-accent);font-size:.68rem;font-weight:900;text-decoration:none;white-space:nowrap}
-.hd-fashion-video-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.hd-fashion-video-card{min-width:0;background:var(--shop-surface);border:1px solid var(--shop-line);overflow:hidden}
-.hd-fashion-video-thumb{position:relative;width:100%;aspect-ratio:16/9;border:0;padding:0;background:#111;cursor:pointer;overflow:hidden;display:block}
-.hd-fashion-video-thumb img{width:100%;height:100%;object-fit:cover;display:block;filter:none!important;mix-blend-mode:normal!important;opacity:1!important;transition:transform .2s ease}
-.hd-fashion-video-thumb:hover img{transform:scale(1.025)}
-.hd-fashion-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.94);color:#111;font-size:1rem;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-.hd-fashion-official{position:absolute;left:9px;top:9px;padding:5px 7px;background:rgba(0,0,0,.72);color:#fff;font-size:.48rem;font-weight:950;letter-spacing:.08em}
-.hd-fashion-video-frame{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}
-.hd-fashion-video-copy{padding:10px}
-.hd-fashion-video-copy small{display:block;color:var(--shop-accent);font-size:.52rem;font-weight:850}
-.hd-fashion-video-copy h3{margin:5px 0 3px;color:var(--shop-text);font-size:.86rem}
-.hd-fashion-video-copy p{margin:0;color:var(--shop-muted);font-size:.58rem}
-@media(max-width:850px){.hd-fashion-video-grid{grid-template-columns:1fr 1fr}.hd-fashion-video-card:last-child{grid-column:1/-1}}
-@media(max-width:620px){.hd-fashion-lookbook{width:calc(100% - 24px)}.hd-fashion-lookbook-head{display:block}.hd-fashion-lookbook-head>a{display:inline-block;margin-top:8px}.hd-fashion-video-grid{grid-template-columns:1fr}.hd-fashion-video-card:last-child{grid-column:auto}}
-
 /* BOOM World Radar */
 .hd-radar-shell{width:min(1280px,calc(100% - 40px));margin:0 auto;padding:34px 0 80px}
 .hd-radar-toolbar{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:16px;margin:0 0 18px;border-radius:4px!important}
@@ -165,3 +143,33 @@ html[data-hunt-theme="dark"] :is(.hd-review-photos img,.hd-review-file-preview i
 .hd-merchant-status.scouted{color:#7d67d9}.hd-merchant-status.prototype{color:#b06c00}.hd-merchant-status.testing{color:#1c67d2}.hd-merchant-status.adopted{color:#12834d}.hd-merchant-status.blocked,.hd-merchant-status.rejected{color:#b82f40}
 @media(max-width:850px){.hd-radar-board{grid-template-columns:1fr}.hd-radar-toolbar{display:block}.hd-radar-filters{margin-top:12px}}
 @media(max-width:620px){.hd-radar-shell{width:calc(100% - 24px)}.hd-radar-edit{grid-template-columns:1fr}.hd-radar-edit label.wide{grid-column:auto}.hd-radar-filters{display:grid;grid-template-columns:1fr 1fr}}
+
+/* Product-native video: only verified media for the exact product */
+.hd-product-media-section,.hd-endless-discovery{margin:34px 0}
+.hd-product-section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;border-bottom:1px solid var(--shop-line);padding-bottom:10px;margin-bottom:14px}
+.hd-product-section-head h2{margin:3px 0;color:var(--shop-text);font-size:clamp(1.2rem,2.2vw,1.8rem)}
+.hd-product-section-head p{margin:0;color:var(--shop-muted);font-size:.66rem}
+.hd-product-video-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.hd-product-video-card{background:var(--shop-surface);border:1px solid var(--shop-line);overflow:hidden}
+.hd-product-video-thumb{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;background:#111;cursor:pointer;overflow:hidden}
+.hd-product-video-thumb img{width:100%;height:100%;object-fit:cover;display:block;filter:none!important;mix-blend-mode:normal!important;opacity:1!important}
+.hd-product-video-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.95);color:#111;box-shadow:0 8px 28px rgba(0,0,0,.25)}
+.hd-product-video-copy{padding:10px}.hd-product-video-copy strong,.hd-product-video-copy small{display:block}.hd-product-video-copy strong{color:var(--shop-text);font-size:.76rem}.hd-product-video-copy small{color:var(--shop-muted);font-size:.55rem;margin-top:3px}
+.hd-product-video-frame{display:block;width:100%;aspect-ratio:16/9;border:0;background:#000}
+
+/* BOOM Endless Discovery */
+.hd-endless-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px 12px}
+.hd-endless-grid .hd-shelf-card{min-width:0;position:relative}
+.hd-endless-grid .hd-shelf-media{display:block;aspect-ratio:3/4;overflow:hidden;background:var(--shop-soft)}
+.hd-endless-grid .hd-shelf-media img{width:100%;height:100%;object-fit:cover}
+.hd-endless-grid .hd-shelf-body{padding:8px 1px}
+.hd-endless-grid .hd-shelf-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--shop-text);text-decoration:none;font-size:.68rem;line-height:1.35}
+.hd-endless-grid .hd-shelf-price{display:block;color:var(--shop-accent);font-size:.76rem;font-weight:900;margin-top:5px}
+.hd-endless-grid .hd-shelf-meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}.hd-endless-grid .hd-shelf-meta span{font-size:.48rem;color:var(--shop-muted)}
+.hd-endless-sentinel{display:flex;justify-content:center;align-items:center;gap:9px;color:var(--shop-muted);padding:28px 0 12px;font-size:.64rem}
+.hd-endless-sentinel span{width:9px;height:9px;border-radius:50%;background:var(--shop-accent);box-shadow:0 0 0 0 rgba(0,0,0,.2);animation:hd-endless-pulse 1.4s infinite}
+.hd-endless-sentinel.done span{display:none}.hd-endless-sentinel.done strong{font-weight:700}
+@keyframes hd-endless-pulse{0%{transform:scale(.8);opacity:.5}50%{transform:scale(1.15);opacity:1}100%{transform:scale(.8);opacity:.5}}
+@media(max-width:1050px){.hd-endless-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:760px){.hd-product-video-grid{grid-template-columns:1fr}.hd-endless-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 9px}}
+.hd-product-video-card video{display:block;width:100%;aspect-ratio:16/9;background:#000}

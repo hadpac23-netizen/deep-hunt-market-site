@@ -177,12 +177,14 @@
       H.recordSignal(product,"view");
       renderBuybox();
       window.HuntAnalytics?.viewItem(product, selectedVariant);
+      window.dispatchEvent(new CustomEvent("hunt:product-loaded",{detail:{product,variants,selectedVariant}}));
     } catch (err) {
       const cached=cachedProduct();
       if (!cached) throw err;
       H.recordSignal(cached,"view");
       renderFallback(cached);
       window.HuntAnalytics?.viewItem(cached, null);
+      window.dispatchEvent(new CustomEvent("hunt:product-loaded",{detail:{product,variants:[],selectedVariant:null,fallback:true}}));
     }
     $("#hd-product-loading").hidden=true;
   }

@@ -19,7 +19,7 @@ Continuously scan official retail, marketplace, search, social-commerce, adverti
 ## Priority domains
 1. product discovery and conversational shopping
 2. visual search and shop-the-look
-3. shoppable video / LIVE / creator commerce
+3. product-native verified video / LIVE / creator commerce
 4. price watch and verified deal intelligence
 5. merchant feeds and catalog normalization
 6. personalization with explicit shopper controls

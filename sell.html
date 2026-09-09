@@ -6,7 +6,7 @@
   <meta name="description" content="Sell on HUNT DEAL — apply as a merchant, upload approved products, connect a product feed, or use the HUNT Seller API.">
   <title>Sell on HUNT — HUNT DEAL</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
-  <link rel="stylesheet" href="hunt-shop.css?v=women1">
+  <link rel="stylesheet" href="hunt-shop.css?v=productflow1">
 </head>
 <body class="hd-page hd-market-v2">
   <a class="hd-skip-link" href="#main-content">Skip to seller dashboard</a>
@@ -64,6 +64,7 @@
             <label>Inventory quantity<input name="inventory_quantity" type="number" min="0" step="1"></label>
             <label>Product page URL<input name="product_url" type="url" placeholder="https://your-store.com/product/..."></label>
             <label class="wide">Image URLs, one per line<textarea name="image_urls" rows="4" placeholder="https://..."></textarea></label>
+            <label class="wide">Product video URLs, one per line<textarea name="video_urls" rows="3" placeholder="https://youtube.com/watch?v=... or verified HTTPS video"></textarea><small>Videos are reviewed separately and will not appear until HUNT verifies they belong to this exact product.</small></label>
             <label class="wide">Description<textarea name="description" rows="5" maxlength="12000"></textarea></label>
             <button class="hd-btn hd-btn-primary" type="submit">Send for product review →</button>
           </form>
@@ -105,7 +106,7 @@
   <footer class="hd-footer"><div><strong>HUNT DEAL</strong><small>Merchant marketplace network.</small></div><nav><a href="./">Store</a><a href="partners.html">Partners</a><a href="seller-api.html">Seller API</a></nav></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="market-core.js?v=women1"></script>
-  <script src="seller.js?v=merchant1"></script>
+  <script src="seller.js?v=media1"></script>
   <script src="seller-ads.js?v=merchant1"></script>
   <script src="hunt-theme.js?v=shop4"></script>
 </body>

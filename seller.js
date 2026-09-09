@@ -125,6 +125,7 @@
       const form=new FormData(event.currentTarget);
       const body=Object.fromEntries(form.entries());
       body.image_urls=String(body.image_urls||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+      body.video_urls=String(body.video_urls||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean).slice(0,3);
       if(body.price_amount==="")body.price_amount=null;
       if(body.inventory_quantity==="")body.inventory_quantity=null;
       setStatus("#hd-seller-product-status","Submitting product…");

@@ -97,3 +97,23 @@ Use official platform guidance and HUNT evidence. Current curriculum includes:
 - no paid campaign launch without owner approval
 - no sensitive-trait targeting
 - no dark patterns
+
+
+### 8. Product Page Never Dead-Ends
+After product details, reviews and verified product media, BOOM should continue discovery progressively as the shopper scrolls.
+Ranking order:
+1. same exact category
+2. sibling/complementary categories
+3. similar price band
+4. explicit Shopping Survey interests
+5. likes/saves/browsing signals
+6. supplier/category diversity
+
+Rules:
+- load in small batches
+- never repeat the same provider:item pair
+- preserve gender/category truth
+- do not insert unrelated brand media
+- product video must be verified to belong to the exact product
+- do not fake infinity; when the finite high-quality pool is exhausted, say so
+- measure scroll depth, next-product opens, likes, saves and product-to-product journeys

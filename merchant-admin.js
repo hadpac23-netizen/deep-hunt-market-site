@@ -53,6 +53,16 @@
     </article>`).join(""):'<p>No pending products.</p>';
   }
 
+  function renderMedia(rows){
+    $("#hd-admin-media-count").textContent=String(rows.length);
+    $("#hd-admin-media").innerHTML=rows.length?rows.map(media=>`<article>
+      <div><strong>${H.esc(media.source_name||media.provider||"Product video")}</strong><small>${H.esc(media.provider||"")} · ${H.esc(media.item_id||"")}</small></div>
+      <p><a href="${H.esc(media.media_url)}" target="_blank" rel="noopener">Open submitted video ↗</a></p>
+      ${media.source_url?`<p><a href="${H.esc(media.source_url)}" target="_blank" rel="noopener">Product/source page ↗</a></p>`:""}
+      <div class="hd-admin-actions"><button data-admin-action="approve-media" data-id="${H.esc(media.id)}">Verify & approve</button><button data-admin-action="reject-media" data-id="${H.esc(media.id)}">Reject</button></div>
+    </article>`).join(""):'<p>No pending product media.</p>';
+  }
+
   function renderAds(rows){
     $("#hd-admin-ad-count").textContent=String(rows.length);
     $("#hd-admin-ads").innerHTML=rows.length?rows.map(req=>`<article>
@@ -62,15 +72,17 @@
     </article>`).join(""):'<p>No pending placement requests.</p>';
   }
   async function load(){
-    const [stores,products,ads,approved]=await Promise.all([
+    const [stores,products,ads,media,approved]=await Promise.all([
       api("/admin/stores?status=pending"),
       api("/admin/products?status=pending_review"),
       api("/admin/ad-requests?status=pending"),
+      api("/admin/media?status=pending_review"),
       api("/admin/stores?status=approved")
     ]);
     renderStores(stores.stores||[]);
     renderProducts(products.products||[]);
     renderAds(ads.requests||[]);
+    renderMedia(media.media||[]);
     const select=$("#hd-admin-tracking-store");
     select.innerHTML=(approved.stores||[]).map(store=>`<option value="${H.esc(store.id)}">${H.esc(store.name)}</option>`).join("")||'<option value="">No approved stores</option>';
     $("#hd-merchant-admin").hidden=false;
@@ -84,7 +96,9 @@
       "approve-product":`/admin/products/${encodeURIComponent(id)}/approve`,
       "reject-product":`/admin/products/${encodeURIComponent(id)}/reject`,
       "approve-ad":`/admin/ad-requests/${encodeURIComponent(id)}/approve`,
-      "reject-ad":`/admin/ad-requests/${encodeURIComponent(id)}/reject`
+      "reject-ad":`/admin/ad-requests/${encodeURIComponent(id)}/reject`,
+      "approve-media":`/admin/media/${encodeURIComponent(id)}/approve`,
+      "reject-media":`/admin/media/${encodeURIComponent(id)}/reject`
     };
     const route=routes[action];
     if(!route)return;
