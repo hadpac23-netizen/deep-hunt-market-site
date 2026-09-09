@@ -160,7 +160,6 @@
       (resultOrder.get(productKey(a))||0)-(resultOrder.get(productKey(b))||0)
     );
     else items.sort((a,b)=>
-      listingReadiness(b)-listingReadiness(a) ||
       (resultOrder.get(productKey(a))||0)-(resultOrder.get(productKey(b))||0)
     );
     return items;
@@ -217,6 +216,23 @@
 
     const sourceSlug = sub && ["women","men"].includes(slug) && H.categoryDefs[sub] ? sub : slug;
 
+    const mergeProductRecord = (base, fresh) => {
+      if (!base) return fresh || {};
+      if (!fresh) return base;
+      const out = {...base};
+      for (const [field,value] of Object.entries(fresh)) {
+        if (value === null || value === undefined || value === "") continue;
+        if (Array.isArray(value) && value.length === 0 && Array.isArray(out[field]) && out[field].length) continue;
+        if (field === "price_amount") {
+          const n = Number(value);
+          if (!Number.isFinite(n) || n <= 0) continue;
+        }
+        if (typeof value === "object" && !Array.isArray(value) && value && !Object.keys(value).length && out[field]) continue;
+        out[field] = value;
+      }
+      return out;
+    };
+
     const applyRows = (rows, label, {merge=false}={}) => {
       const incoming = (Array.isArray(rows) ? rows : []).filter(product => {
         if (slug !== "men") return true;
@@ -227,11 +243,11 @@
         const merged = new Map(rawResults.map(product => [productKey(product), product]));
         for (const product of incoming) {
           const k = productKey(product);
-          merged.set(k, {...(merged.get(k)||{}), ...product});
+          merged.set(k, mergeProductRecord(merged.get(k), product));
         }
         rawResults = [...merged.values()];
       } else {
-        rawResults = incoming;
+        rawResults = [...incoming].sort((a,b)=>listingReadiness(b)-listingReadiness(a));
       }
       const providers = [...new Set(rawResults.map(p=>p.provider).filter(Boolean))];
       $("#hd-cat-provider-state").textContent = rawResults.length

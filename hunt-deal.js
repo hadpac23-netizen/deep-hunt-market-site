@@ -311,6 +311,23 @@
     return 18;
   }
 
+  function mergeProductRecord(base, fresh) {
+    if (!base) return fresh || {};
+    if (!fresh) return base;
+    const out = {...base};
+    for (const [field,value] of Object.entries(fresh)) {
+      if (value === null || value === undefined || value === "") continue;
+      if (Array.isArray(value) && value.length === 0 && Array.isArray(out[field]) && out[field].length) continue;
+      if (field === "price_amount") {
+        const n = Number(value);
+        if (!Number.isFinite(n) || n <= 0) continue;
+      }
+      if (typeof value === "object" && !Array.isArray(value) && value && !Object.keys(value).length && out[field]) continue;
+      out[field] = value;
+    }
+    return out;
+  }
+
   function mergeShelfData(snapshot, live) {
     const snapShelves = snapshot?.shelves || {};
     const liveShelves = live?.shelves || {};
@@ -320,18 +337,27 @@
 
     for (const slug of slugs) {
       const seen = new Set();
+      const positions = new Map();
       const rows = [];
       const append = (items, fresh) => {
         for (const item of Array.isArray(items) ? items : []) {
           const key = `${item?.provider || ""}:${item?.item_id || ""}`;
-          if (!item?.item_id || seen.has(key)) continue;
+          if (!item?.item_id) continue;
+          if (seen.has(key)) {
+            if (fresh) {
+              const index = positions.get(key);
+              rows[index] = {...mergeProductRecord(rows[index], item), _hunt_fresh:true};
+            }
+            continue;
+          }
           seen.add(key);
           unique.add(key);
+          positions.set(key, rows.length);
           rows.push({...item, _hunt_fresh: fresh});
         }
       };
-      append(liveShelves[slug], true);
       append(snapShelves[slug], false);
+      append(liveShelves[slug], true);
       shelves[slug] = rows;
     }
 
@@ -376,8 +402,7 @@
       groups.get(provider).push(item);
     }
 
-    // Live-refreshed items stay ahead inside each provider, then snapshot items fill the shelf.
-    for (const group of groups.values()) group.sort((a,b) => Number(Boolean(b._hunt_fresh)) - Number(Boolean(a._hunt_fresh)));
+    // Preserve the first stable catalog order inside each provider. Live refresh updates data in place, never reshuffles visible products.
     const providers = [...groups.keys()];
     let cursor = 0;
     while (rows.length < limit && providers.length) {
@@ -472,7 +497,17 @@
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Market shelves unavailable");
       const merged = snapshotData ? mergeShelfData(snapshotData, data) : data;
-      renderMarketShelvesData(merged, snapshotData ? "hybrid" : "live");
+      if (snapshotData && renderedFallback) {
+        // Freeze the already-visible storefront. Background live refresh may enrich data,
+        // but it must never replace/reorder cards the shopper is already looking at.
+        window.HuntMarketShelves = merged;
+        window.dispatchEvent(new CustomEvent("hunt:shelves-refreshed", {detail:merged}));
+        const count = Number(merged?.visible_product_count || 0);
+        counter.textContent = `${count.toLocaleString()} READY`;
+        counter.title = "Visible shelves are stable; live supplier data refreshed in the background.";
+      } else {
+        renderMarketShelvesData(merged, "live");
+      }
     } catch (err) {
       if (renderedFallback) {
         counter.title = "Live refresh is temporarily unavailable; showing verified catalog products.";
