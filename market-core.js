@@ -185,7 +185,7 @@
   const signals = () => readJson(signalKey, {});
   function recordSignal(category, action="view") {
     const slug = categoryDefs[category] ? category : inferCategory(category);
-    const weights = {search:1, category:2, view:3, cart:6};
+    const weights = {search:1, category:2, view:3, like:5, cart:6, save:8};
     const state = signals();
     state[slug] = Math.min(100, Math.max(0, Number(state[slug] || 0) + Number(weights[action] || 1)));
     writeJson(signalKey, state);

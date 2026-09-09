@@ -182,11 +182,13 @@
         state.set(k,data);
       }
       refreshButtons();
+      const preferenceActive=kind==="like"?Boolean(next.liked):Boolean(next.saved);
+      if(preferenceActive&&meta.category) H.recordSignal?.(meta.category,kind);
       window.HuntAnalytics?.shoppingAction?.({
         provider:meta.provider,
         itemId:meta.item_id,
         action:kind,
-        active:kind==="like"?Boolean(next.liked):Boolean(next.saved),
+        active:preferenceActive,
         category:meta.category||""
       });
       window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved)}}));

@@ -303,6 +303,92 @@
     root.prepend(section);
   }
 
+  function shelfItemLimit() {
+    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 10;
+    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 12;
+    return 18;
+  }
+
+  function mergeShelfData(snapshot, live) {
+    const snapShelves = snapshot?.shelves || {};
+    const liveShelves = live?.shelves || {};
+    const slugs = new Set([...Object.keys(snapShelves), ...Object.keys(liveShelves)]);
+    const shelves = {};
+    const unique = new Set();
+
+    for (const slug of slugs) {
+      const seen = new Set();
+      const rows = [];
+      const append = (items, fresh) => {
+        for (const item of Array.isArray(items) ? items : []) {
+          const key = `${item?.provider || ""}:${item?.item_id || ""}`;
+          if (!item?.item_id || seen.has(key)) continue;
+          seen.add(key);
+          unique.add(key);
+          rows.push({...item, _hunt_fresh: fresh});
+        }
+      };
+      append(liveShelves[slug], true);
+      append(snapShelves[slug], false);
+      shelves[slug] = rows;
+    }
+
+    return {
+      ...(snapshot || {}),
+      ...(live || {}),
+      shelves,
+      visible_product_count: unique.size,
+      shelf_entry_count: Object.values(shelves).reduce((sum, rows) => sum + rows.length, 0),
+      source: "Verified catalog snapshot + live supplier refresh",
+      _hunt_merged: true
+    };
+  }
+
+  function orderedShelfDepartments() {
+    const signals = window.HuntCore?.signals?.() || {};
+    return shelfDepartments
+      .map((entry, index) => ({entry, index, score: entry[1].reduce((sum, slug) => sum + Number(signals[slug] || 0), 0)}))
+      .sort((a,b) => (b.score - a.score) || (a.index - b.index))
+      .map(row => row.entry);
+  }
+
+  function selectShelfItems(items, limit, renderedKeys) {
+    const rows = [];
+    const localSeen = new Set();
+    const groups = new Map();
+    for (const item of Array.isArray(items) ? items : []) {
+      const key = `${item?.provider || ""}:${item?.item_id || ""}`;
+      if (!item?.item_id || localSeen.has(key)) continue;
+      localSeen.add(key);
+      const provider = String(item.provider || "Other");
+      if (!groups.has(provider)) groups.set(provider, []);
+      groups.get(provider).push(item);
+    }
+
+    // Live-refreshed items stay ahead inside each provider, then snapshot items fill the shelf.
+    for (const group of groups.values()) group.sort((a,b) => Number(Boolean(b._hunt_fresh)) - Number(Boolean(a._hunt_fresh)));
+    const providers = [...groups.keys()];
+    let cursor = 0;
+    while (rows.length < limit && providers.length) {
+      const provider = providers[cursor % providers.length];
+      const group = groups.get(provider) || [];
+      let pickIndex = group.findIndex(item => !renderedKeys.has(`${item.provider || ""}:${item.item_id || ""}`));
+      if (pickIndex < 0) pickIndex = group.length ? 0 : -1;
+      if (pickIndex >= 0) {
+        const [item] = group.splice(pickIndex, 1);
+        rows.push(item);
+        renderedKeys.add(`${item.provider || ""}:${item.item_id || ""}`);
+      }
+      if (!group.length) {
+        groups.delete(provider);
+        providers.splice(cursor % providers.length, 1);
+        if (!providers.length) break;
+        cursor = cursor % providers.length;
+      } else cursor += 1;
+    }
+    return rows;
+  }
+
   function renderMarketShelvesData(data, mode = "live") {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
@@ -314,12 +400,15 @@
     window.HuntMarketShelves = data;
     window.dispatchEvent(new CustomEvent("hunt:shelves", {detail:data}));
 
-    const html = shelfDepartments.map(([department, slugs]) => {
+    const renderedKeys = new Set();
+    const limit = shelfItemLimit();
+    const html = orderedShelfDepartments().map(([department, slugs]) => {
       const sections = slugs.map(slug => {
         const meta = shelfMeta[slug];
         const items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
-        if (!meta || !items.length) return "";
-        const cards = items.slice(0,12).map(shelfCard).join("");
+        if (!meta || items.length < 4) return "";
+        const selected = selectShelfItems(items, limit, renderedKeys);
+        const cards = selected.map(shelfCard).join("");
         const categoryHref = window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`;
         return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
       }).filter(Boolean).join("");
@@ -329,8 +418,9 @@
 
     root.innerHTML = html || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
     const count = Number(data?.visible_product_count || 0);
-    counter.textContent = `${count.toLocaleString()} ${mode === "live" ? "LIVE" : "CATALOG"}`;
-    counter.title = mode === "live" ? "Live supplier refresh" : "Verified catalog snapshot while live suppliers refresh";
+    const label = mode === "live" ? "LIVE" : mode === "hybrid" ? "READY" : "CATALOG";
+    counter.textContent = `${count.toLocaleString()} ${label}`;
+    counter.title = mode === "hybrid" ? "Verified catalog with live supplier refresh merged in" : (mode === "live" ? "Live supplier refresh" : "Verified catalog snapshot while live suppliers refresh");
     return true;
   }
 
@@ -350,12 +440,13 @@
     if (!root || !counter) return;
 
     let renderedFallback = false;
+    let snapshotData = null;
 
     try {
       const snapshotRes = await fetch("catalog-snapshot.json?v=productsfix1", {cache:"force-cache"});
       if (snapshotRes.ok) {
-        const snapshot = await snapshotRes.json();
-        renderedFallback = renderMarketShelvesData(snapshot, "snapshot");
+        snapshotData = await snapshotRes.json();
+        renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");
       }
     } catch {}
 
@@ -366,7 +457,8 @@
       }, 15000);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Market shelves unavailable");
-      renderMarketShelvesData(data, "live");
+      const merged = snapshotData ? mergeShelfData(snapshotData, data) : data;
+      renderMarketShelvesData(merged, snapshotData ? "hybrid" : "live");
     } catch (err) {
       if (renderedFallback) {
         counter.title = "Live refresh is temporarily unavailable; showing verified catalog products.";
