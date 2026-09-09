@@ -87,6 +87,7 @@ query HuntPromotionRadar {
           status
           startsAt
           endsAt
+          discountClasses
           combinesWith { orderDiscounts productDiscounts shippingDiscounts }
           customerBuys {
             items { __typename }
@@ -117,6 +118,7 @@ query HuntPromotionRadar {
           startsAt
           endsAt
           codes(first: 1) { nodes { code } }
+          discountClasses
           combinesWith { orderDiscounts productDiscounts shippingDiscounts }
           customerBuys {
             items { __typename }
@@ -142,11 +144,50 @@ query HuntPromotionRadar {
         }
         ... on DiscountAutomaticBasic {
           title summary status startsAt endsAt
+          discountClasses
           combinesWith { orderDiscounts productDiscounts shippingDiscounts }
+          minimumRequirement {
+            __typename
+            ... on DiscountMinimumSubtotal {
+              greaterThanOrEqualToSubtotal { amount currencyCode }
+            }
+            ... on DiscountMinimumQuantity { greaterThanOrEqualToQuantity }
+          }
+          customerGets {
+            value {
+              __typename
+              ... on DiscountPercentage { percentage }
+              ... on DiscountAmount {
+                amount { amount currencyCode }
+                appliesOnEachItem
+              }
+            }
+            items { __typename }
+          }
         }
         ... on DiscountCodeBasic {
           title summary status startsAt endsAt
+          codes(first:1) { nodes { code } }
+          discountClasses
           combinesWith { orderDiscounts productDiscounts shippingDiscounts }
+          minimumRequirement {
+            __typename
+            ... on DiscountMinimumSubtotal {
+              greaterThanOrEqualToSubtotal { amount currencyCode }
+            }
+            ... on DiscountMinimumQuantity { greaterThanOrEqualToQuantity }
+          }
+          customerGets {
+            value {
+              __typename
+              ... on DiscountPercentage { percentage }
+              ... on DiscountAmount {
+                amount { amount currencyCode }
+                appliesOnEachItem
+              }
+            }
+            items { __typename }
+          }
         }
       }
     }
@@ -181,15 +222,29 @@ async function scanShopify() {
     const buysValue = discount?.customerBuys?.value || {};
     const getsValue = discount?.customerGets?.value || {};
     const effect = getsValue?.effect || {};
+    const basicValue = discount?.customerGets?.value || {};
+    const minimum = discount?.minimumRequirement || {};
     const buyQtyRaw = Number(buysValue?.quantity);
     const getQtyRaw = Number(getsValue?.quantity?.quantity);
-    const percentRaw = Number(effect?.percentage);
+    const percentRaw = Number(effect?.percentage ?? basicValue?.percentage);
     const rewardPercent = Number.isFinite(percentRaw) && percentRaw > 0
       ? (percentRaw <= 1 ? percentRaw * 100 : percentRaw) : null;
-    const minimumAmountRaw = Number(buysValue?.amount);
-    const buyQty = Number.isFinite(buyQtyRaw) && buyQtyRaw > 0 ? Math.trunc(buyQtyRaw) : null;
+    const rewardAmountRaw = Number(basicValue?.amount?.amount);
+    const rewardAmount = Number.isFinite(rewardAmountRaw) && rewardAmountRaw > 0 ? rewardAmountRaw : null;
+    const minimumAmountRaw = Number(
+      buysValue?.amount ??
+      minimum?.greaterThanOrEqualToSubtotal?.amount
+    );
+    const minimumQtyRaw = Number(minimum?.greaterThanOrEqualToQuantity);
+    const buyQty = Number.isFinite(buyQtyRaw) && buyQtyRaw > 0
+      ? Math.trunc(buyQtyRaw)
+      : (Number.isFinite(minimumQtyRaw) && minimumQtyRaw > 0 ? Math.trunc(minimumQtyRaw) : null);
     const getQty = Number.isFinite(getQtyRaw) && getQtyRaw > 0 ? Math.trunc(getQtyRaw) : null;
-    const dealType = discountType(typename);
+    let dealType = discountType(typename);
+    if (dealType === "combined") {
+      if (rewardPercent) dealType = "percent_off";
+      else if (rewardAmount) dealType = "amount_off";
+    }
     return {
       source_provider:"Shopify",
       source_kind:"shopify_admin_graphql",
@@ -199,7 +254,7 @@ async function scanShopify() {
       buy_quantity:buyQty,
       get_quantity:getQty,
       reward_percent_off:rewardPercent,
-      reward_amount_off:null,
+      reward_amount_off:rewardAmount,
       minimum_purchase_amount:Number.isFinite(minimumAmountRaw) && minimumAmountRaw > 0 ? minimumAmountRaw : null,
       coupon_code:clean(discount?.codes?.nodes?.[0]?.code) || null,
       free_shipping:false,
@@ -214,8 +269,14 @@ async function scanShopify() {
         api_version:cfg.version,
         customer_buys_type:clean(discount?.customerBuys?.items?.__typename) || null,
         customer_gets_type:clean(discount?.customerGets?.items?.__typename) || null,
+        discount_classes:Array.isArray(discount?.discountClasses) ? discount.discountClasses : [],
         combines_with:discount?.combinesWith || null,
-        details_complete:Boolean((buyQty || minimumAmountRaw > 0) && (getQty || rewardPercent)),
+        minimum_currency:clean(minimum?.greaterThanOrEqualToSubtotal?.currencyCode) || null,
+        reward_currency:clean(basicValue?.amount?.currencyCode) || null,
+        reward_applies_each_item:basicValue?.appliesOnEachItem === true,
+        details_complete:dealType === "buy_x_get_y" || dealType === "bogo"
+          ? Boolean((buyQty || minimumAmountRaw > 0) && (getQty || rewardPercent || rewardAmount))
+          : Boolean(rewardPercent || rewardAmount),
         checkout_test_required:true
       },
       valid_from:clean(discount?.startsAt) || null,

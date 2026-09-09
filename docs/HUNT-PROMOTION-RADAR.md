@@ -90,3 +90,22 @@ checkout verification, complete landed cost, no mission overbuy, and evidence th
 The verifier defaults to dry-run and does not publish campaigns automatically.
 Every non-dry-run verification writes an audit record to `hunt_promotion_verifications`.
 The Deal Passport UI mirrors these truth gates for shoppers.
+
+## Deal Chess v2
+
+Deal Chess v2 compares only verified promotions with complete landed-cost evidence for the exact cart quantity required by the current HUNT Mission.
+
+Ranking rules:
+- non-overbuy outcomes rank ahead of overbuy outcomes
+- comparable offers must use the same currency
+- landed total is the primary comparison
+- unit cost breaks ties
+- incomplete landed-cost evidence is excluded from the winner set
+
+Combination rules:
+- source metadata such as Shopify `combinesWith` is evidence, not proof of a final stacked price
+- a stack enters Deal Chess only after that exact combination is reproduced at checkout
+- the stack proof must contain the offer IDs, landed total, quantity, currency and an evidence reference
+- no theoretical stacking or unsupported coupon combinations are calculated
+
+Shopify discount classes are recorded as PRODUCT, ORDER or SHIPPING when available.

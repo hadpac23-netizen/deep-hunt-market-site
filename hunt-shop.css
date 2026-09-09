@@ -227,3 +227,9 @@ html[dir="rtl"] .hd-search-button{margin-inline-start:2px}
 .hd-deal-passport-grid b{font-size:.48rem;color:var(--shop-muted)}
 .hd-deal-passport-grid em{font-style:normal;font-size:.54rem;font-weight:800;color:var(--shop-text)}
 @media(max-width:760px){.hd-deal-passport-grid{grid-template-columns:1fr}}
+
+/* Deal Chess v2 */
+.hd-deal-chess-summary{display:grid;gap:5px;margin:0 0 14px;padding:12px 14px;border:1px solid var(--shop-line);border-radius:12px;background:var(--shop-soft)}
+.hd-deal-chess-summary small{font-size:.5rem;font-weight:950;letter-spacing:.13em;color:var(--shop-muted)}
+.hd-deal-chess-summary strong{font-size:.72rem;line-height:1.45;color:var(--shop-text)}
+.hd-deal-chess-summary span{font-size:.56rem;line-height:1.4;color:var(--shop-muted)}

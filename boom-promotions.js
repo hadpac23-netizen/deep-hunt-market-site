@@ -225,10 +225,20 @@
 
     const editorial=editorialPromos(shelves);
     const verifiedDeals=await liveVerifiedPromotions();
+    const chess=window.HuntDealChess?.compare?.(verifiedDeals) || null;
+    const rankedSingles=Array.isArray(chess?.ranked)
+      ? chess.ranked.filter(row=>row?.kind==="single").map(row=>row.promos?.[0]).filter(Boolean)
+      : [];
+    const orderedVerified=rankedSingles.length
+      ? [...rankedSingles,...verifiedDeals.filter(p=>!rankedSingles.includes(p))]
+      : verifiedDeals;
+    const chessCopy=chess?.winner
+      ? '<div class="hd-deal-chess-summary"><small>DEAL CHESS · BEST VERIFIED MOVE</small><strong>'+H.esc(window.HuntDealChess.explain(chess))+'</strong><span>'+H.esc(chess.reason||"")+'</span></div>'
+      : '';
     const sponsored=await liveSponsored();
     const chosen=sponsored.length?sponsored.slice(0,1):[];
     const blocks=[
-      ...verifiedDeals.slice(0,2).map(dealBlock),
+      ...orderedVerified.slice(0,2).map(dealBlock),
       ...chosen.map(x=>promoBlock(x,{sponsored:true})),
       ...editorial.map(x=>promoBlock(x))
     ].slice(0,4);
@@ -239,6 +249,7 @@
         <p>1+1, Buy X Get Y, bundles, coupons and shipping offers appear as deals only after checkout verification. Sponsored placements stay labeled.</p></div>
         <a href="sell.html">Advertise on HUNT →</a>
       </div>
+      ${chessCopy}
       ${blocks.join("")}`;
   }
 
