@@ -64,7 +64,8 @@
 
   function categoryFor(deal) {
     const title = String(deal?.title || deal?.evaluation?.candidate?.title || "").toLowerCase();
-    if (/(perfume|fragrance|beauty|skincare|makeup|cosmetic|hair care|serum|cream)/.test(title)) return "beauty";
+    if (/(perfume|fragrance)/.test(title)) return "perfume";
+    if (/(beauty|skincare|makeup|cosmetic|hair care|serum|cream)/.test(title)) return "beauty";
     if (/(jewelry|jewellery|necklace|bracelet|earring|ring|handbag|purse|wallet|belt|sunglass|accessor)/.test(title)) return "accessories";
     if (/(shoe|shirt|dress|watch|bag|fashion|jacket|sneaker|clothing|apparel|top|skirt)/.test(title)) return "fashion";
     if (/(travel|luggage|carry|suitcase|adapter|passport)/.test(title)) return "travel";

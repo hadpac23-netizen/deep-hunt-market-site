@@ -95,7 +95,7 @@
     if (/\b(sticker|stickers)\b/.test(t)) return "stickers";
     if (/\b(ornament|ornaments)\b/.test(t)) return "ornaments";
     if (/\b(notebook|journal|calendar)\b/.test(t)) return "stationery";
-    if (/\b(desk mat|desk calendar|mouse pad)\b/.test(t)) return "office";
+    if (/\b(desk mat|desk calendar)\b/.test(t)) return "office";
     if (/\b(pillow|pillows)\b/.test(t)) return "pillows";
     if (/\b(blanket|blankets|towel|towels)\b/.test(t)) return "blankets";
     if (/\b(poster|posters|canvas|wall art|flag|framed)\b/.test(t)) return "wallart";
@@ -109,7 +109,7 @@
     if (/(shoe|sneaker|slide|heel)/.test(t)) return "shoes";
     if (/(hat|cap|wallet|belt|accessor|beanie|\btag\b)/.test(t)) return "accessories";
     if (/(phone case|mobile case|screen protector|phone stand|charging cable)/.test(t)) return "phoneaccessories";
-    if (/(gaming|gamepad|controller|headset stand)/.test(t)) return "gaming";
+    if (/(gaming|gamer|gamepad|controller|headset stand|mouse ?pads?)/.test(t)) return "gaming";
     if (/(storage|organizer|closet|rack|shelf)/.test(t)) return "storage";
     if (/(bedding|bed sheet|duvet|comforter|pillowcase)/.test(t)) return "bedding";
     if (/(cleaning|laundry|mop|squeegee|dust)/.test(t)) return "cleaning";
