@@ -20,14 +20,15 @@
       ? `<img src="${H.esc(product.image_url)}" alt="${H.esc(product.title || "Product")}" loading="lazy">`
       : `<div class="hd-market-card-placeholder">◇</div>`;
     const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">${H.esc(product.provider || "LIVE")}</span>`;
-    const price = H.money(product.price_amount, product.currency || "USD");
+    const hasPrice = Number.isFinite(Number(product.price_amount)) && Number(product.price_amount) > 0;
+    const price = hasPrice ? H.money(product.price_amount, product.currency || "USD") : "Open product";
     const productUrl = H.productUrl(product);
     return `<article class="hd-market-product-card" data-key="${H.esc(productKey(product))}" data-price="${Number(product.price_amount)||0}" data-score="${score}">
       <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}</a>
       <div class="hd-market-card-body">
         <small>${H.esc(product.provider || "Provider")} · ${H.esc(product.availability_verified ? "AVAILABLE" : "DISCOVERY")}</small>
         <a href="${H.esc(productUrl)}" class="hd-market-card-title" data-product-view="${H.esc(productKey(product))}">${H.esc(product.title || "Product")}</a>
-        <div class="hd-market-card-price"><strong>${price}</strong><span>${H.esc(product.price_basis || "SOURCE PRICE")}</span></div>
+        <div class="hd-market-card-price"><strong>${price}</strong><span>${H.esc(hasPrice ? (product.price_basis || "SOURCE PRICE") : "DETAIL PRICE")}</span></div>
         <p>${H.esc(score > 0 ? H.personalReason(product) : "Open the product to inspect images, variants and availability.")}</p>
         <a class="hd-btn hd-market-view" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">View product →</a>
       </div>
@@ -98,9 +99,12 @@
     const maxRaw = $("#hd-price-max").value.trim();
     const max = maxRaw ? Number(maxRaw) : Infinity;
     const sort = $("#hd-cat-sort").value;
+    const hasPriceFilter = min > 0 || Number.isFinite(max);
     const items = rawResults.filter(p => {
       const price = Number(p.price_amount);
-      return matchesCategoryTruth(p) && matchesSub(p) && Number.isFinite(price) && price >= min && price <= max;
+      const priced = Number.isFinite(price) && price > 0;
+      const priceMatch = hasPriceFilter ? priced && price >= min && price <= max : true;
+      return matchesCategoryTruth(p) && matchesSub(p) && priceMatch;
     });
     if (sort === "price-low") items.sort((a,b)=>(Number(a.price_amount)||Infinity)-(Number(b.price_amount)||Infinity));
     else if (sort === "price-high") items.sort((a,b)=>(Number(b.price_amount)||0)-(Number(a.price_amount)||0));
