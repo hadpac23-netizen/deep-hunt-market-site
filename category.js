@@ -26,7 +26,7 @@
     const hasPrice = Number.isFinite(Number(product.price_amount)) && Number(product.price_amount) > 0;
     const price = hasPrice ? H.money(product.price_amount, product.currency || "USD") : "Open product";
     const productUrl = H.productUrl(product);
-    return `<article class="hd-market-product-card" data-category="${H.esc(product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${Number(product.price_amount)||0}" data-score="${score}">
+    return `<article class="hd-market-product-card" data-category="${H.esc(H.inferCategory(product) || product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${Number(product.price_amount)||0}" data-score="${score}">
       <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}</a>
       <div class="hd-market-card-body">
         <small>${H.esc(product.provider || "Provider")} · ${H.esc(product.availability_verified ? "AVAILABLE" : "DISCOVERY")}</small>
@@ -95,31 +95,36 @@
   }
 
   function matchesGenderScope(product) {
-    if (!sub || !["women","men"].includes(slug)) return true;
+    if (!["women","men"].includes(slug)) return true;
     const title=String(product?.title||"").toLowerCase();
     const gender=String(product?.gender||"").toLowerCase();
-    if (slug==="women") {
-      if (gender==="women") return true;
-      if (/\bunisex\b/.test(title)) return false;
-      const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
-      const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
-      return hasWomen && !hasMen;
-    }
-    if (gender==="men") return true;
-    if (/\bunisex\b/.test(title)) return false;
-    const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
+    const kids=/\b(baby|newborn|toddler|kid|kids|child|children|boys?|girls?|youth|infant)\b/.test(title);
     const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
-    return hasMen && !hasWomen;
+    const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
+    if (kids || /\bunisex\b/.test(title)) return false;
+    if (slug==="women") {
+      if (hasMen) return false;
+      if (hasWomen) return true;
+      return gender==="women";
+    }
+    if (hasWomen) return false;
+    if (hasMen) return true;
+    return gender==="men";
   }
 
   function matchesCategoryTruth(product) {
     const title = String(product?.title || "").toLowerCase();
     if (!title) return false;
-    if (slug === "women" && /\b(baby|newborn|toddler|kid|kids|child|children|boys?|youth)\b/.test(title)) return false;
-    if (slug === "men" && /\b(women|woman|female|ladies|girls?)\b/.test(title)) return false;
-    if (slug === "beauty" && /\b(pet|dog|cat|toy|slime|foam beads|puzzle|hallway|hall tree|entryway|wardrobe|shoe cabinet|shoe storage|coat rack|furniture|mudroom)\b/.test(title)) return false;
-    if (slug === "jewelry" && /\b(parrot|bird toy|pet toy|toy set|handbag belt|bag belt|strap buckle|key findings)\b/.test(title)) return false;
-    return true;
+    const inferred = H.inferCategory(product);
+    if (["women","men"].includes(slug)) {
+      const allowed = new Set(["women","men","dresses","tops","bottoms","hoodies","knitwear","jackets","activewear","swimwear","bags","shoes","accessories","jewelry","hats","socks"]);
+      if (!allowed.has(inferred)) return false;
+      if (sub && inferred !== sub) return false;
+      if (slug === "women" && /\b(baby|newborn|toddler|kid|kids|child|children|boys?|youth|infant)\b/.test(title)) return false;
+      if (slug === "men" && /\b(women|woman|female|ladies|girls?)\b/.test(title)) return false;
+      return true;
+    }
+    return inferred === slug;
   }
 
   function listingReadiness(product) {

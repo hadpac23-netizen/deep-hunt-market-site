@@ -33,7 +33,7 @@
       en: {
         branch: "A BOOM branch · full BOOM coming later.",
         navDeals: "Deals Now", navPicks: "Smart Picks", navTrends: "Trend Radar", navCompare: "Price Lens",
-        search: "Search products, brands, or categories…",
+        search: "Search products, brands, or categories…", searchLabel: "Search products, brands, or categories", searchButton: "Search", searching: "Searching ready providers…", searchNoResults: "No closely matching live results yet.", searchReady: "Type what you want and BOOM will route the search.",
         kicker: "COMPARE SMARTER · SHOP BETTER · KEEP THE FACTS VISIBLE",
         hero1: "Better decisions", hero2: "before you spend.",
         heroCopy: "HUNT DEAL compares verified offers across approved marketplaces, explains why a deal is worth attention, and tracks what actually converts.",
@@ -53,7 +53,7 @@
       ar: {
         branch: "فرع من BOOM · المنصة الكاملة لاحقًا.",
         navDeals: "العروض الآن", navPicks: "اختيارات ذكية", navTrends: "رادار الترند", navCompare: "مقارنة الأسعار",
-        search: "ابحث عن منتج أو علامة أو فئة…",
+        search: "ابحث عن منتج أو علامة أو فئة…", searchLabel: "ابحث عن منتج أو علامة أو فئة", searchButton: "بحث", searching: "جارٍ البحث في المصادر الجاهزة…", searchNoResults: "لا توجد نتائج حية مطابقة بشكل كافٍ بعد.", searchReady: "اكتب ما تريد وBOOM يوجّه البحث للمكان الصحيح.",
         kicker: "قارن بذكاء · اشترِ أفضل · خلّي الحقيقة ظاهرة",
         hero1: "قرارات أفضل", hero2: "قبل ما تدفع.",
         heroCopy: "HUNT DEAL يقارن العروض الموثقة بين المتاجر المعتمدة، يشرح لماذا العرض يستحق الانتباه، ويتابع ما الذي يتحول فعلًا إلى مبيعات وعمولة.",
@@ -73,7 +73,7 @@
       he: {
         branch: "ענף של BOOM · הפלטפורמה המלאה בהמשך.",
         navDeals: "דילים עכשיו", navPicks: "בחירות חכמות", navTrends: "רדאר טרנדים", navCompare: "השוואת מחירים",
-        search: "חפש מוצר, מותג או קטגוריה…",
+        search: "חפש מוצר, מותג או קטגוריה…", searchLabel: "חפש מוצר, מותג או קטגוריה", searchButton: "חיפוש", searching: "מחפש בספקים הזמינים…", searchNoResults: "עדיין אין תוצאות חיות מספיק מתאימות.", searchReady: "כתוב מה אתה מחפש ו-BOOM ייקח אותך למקום הנכון.",
         kicker: "משווים חכם · קונים טוב יותר · משאירים את העובדות גלויות",
         hero1: "החלטות טובות יותר", hero2: "לפני שמוציאים כסף.",
         heroCopy: "HUNT DEAL משווה הצעות מאומתות בין מרקטפלייסים מאושרים, מסביר למה דיל שווה תשומת לב ועוקב אחרי מה שבאמת ממיר.",
@@ -93,7 +93,7 @@
       es: {
         branch: "Una rama de BOOM · la plataforma completa llegará después.",
         navDeals: "Ofertas", navPicks: "Selecciones", navTrends: "Radar", navCompare: "Comparar precios",
-        search: "Buscar productos, marcas o categorías…",
+        search: "Buscar productos, marcas o categorías…", searchLabel: "Buscar productos, marcas o categorías", searchButton: "Buscar", searching: "Buscando en proveedores disponibles…", searchNoResults: "Aún no hay resultados en vivo suficientemente relacionados.", searchReady: "Escribe lo que buscas y BOOM dirigirá la búsqueda.",
         kicker: "COMPARA MEJOR · COMPRA MEJOR · DATOS VISIBLES",
         hero1: "Mejores decisiones", hero2: "antes de gastar.",
         heroCopy: "HUNT DEAL compara ofertas verificadas entre marketplaces aprobados, explica por qué importan y mide lo que realmente convierte.",
@@ -113,7 +113,7 @@
       fr: {
         branch: "Une branche de BOOM · la plateforme complète viendra plus tard.",
         navDeals: "Offres", navPicks: "Sélections", navTrends: "Radar", navCompare: "Comparer les prix",
-        search: "Rechercher produits, marques ou catégories…",
+        search: "Rechercher produits, marques ou catégories…", searchLabel: "Rechercher produits, marques ou catégories", searchButton: "Rechercher", searching: "Recherche dans les fournisseurs disponibles…", searchNoResults: "Pas encore de résultats live suffisamment pertinents.", searchReady: "Écrivez ce que vous cherchez et BOOM dirigera la recherche.",
         kicker: "COMPAREZ MIEUX · ACHETEZ MIEUX · GARDEZ LES PREUVES VISIBLES",
         hero1: "De meilleures décisions", hero2: "avant de dépenser.",
         heroCopy: "HUNT DEAL compare des offres vérifiées entre marketplaces approuvées, explique leur intérêt et mesure ce qui convertit réellement.",
@@ -232,6 +232,10 @@
     document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
       const key = el.dataset.i18nPlaceholder;
       if (dict[key] !== undefined) el.setAttribute("placeholder", dict[key]);
+    });
+    document.querySelectorAll("[data-i18n-aria-label]").forEach(el => {
+      const key = el.dataset.i18nAriaLabel;
+      if (dict[key] !== undefined) el.setAttribute("aria-label", dict[key]);
     });
     document.querySelectorAll("[data-lang-select]").forEach(el => { el.value = safe; });
     localStorage.setItem("hunt_language", safe);

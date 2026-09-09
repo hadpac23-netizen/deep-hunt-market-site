@@ -113,7 +113,7 @@
       : `<div class="hd-product-visual" aria-hidden="true">${esc(glyphFor(c.provider))}</div>`;
     return `
       <article class="hd-deal-card" data-category="${category}" data-search="${esc((c.title||"")+" "+(c.provider||""))}">
-        <div class="hd-deal-top"><span class="hd-verdict ${verdict==="SELL"?"sell":""}">${esc(verdict)}</span><span class="hd-heart">♡</span></div>
+        <div class="hd-deal-top"><span class="hd-verdict ${verdict==="SELL"?"sell":""}">${esc(verdict)}</span></div>
         ${productVisual}
         <h3>${esc(c.title || "Verified product")}</h3>
         <div class="hd-price">${money(c.price_amount,c.currency||"USD")}</div>
@@ -275,7 +275,8 @@
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
-    return `<article class="hd-shelf-card" role="listitem" data-category="${esc(item.category || "")}">
+    const effectiveCategory = window.HuntCore?.inferCategory?.(item) || item.category || "";
+    return `<article class="hd-shelf-card" role="listitem" data-category="${esc(effectiveCategory)}">
       <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>VERIFIED SOURCE</span></a>
       <div class="hd-shelf-card-body">
         <small>${esc(item.provider || "Provider")}</small>
@@ -382,11 +383,30 @@
 
   function isWomenShelfItem(item) {
     const title=String(item?.title||"").toLowerCase();
-    if (String(item?.gender||"").toLowerCase()==="women") return true;
-    if (/\bunisex\b/.test(title)) return false;
+    const explicitKids=/\b(baby|newborn|toddler|kid|kids|child|children|boys?|girls?|youth|infant)\b/.test(title);
     const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
+    const hasMen=/\b(men(?:'s)?|man|male|gentlemen|boys?)\b/.test(title);
+    if (explicitKids || hasMen || /\bunisex\b/.test(title)) return false;
+    if (hasWomen) return true;
+    return String(item?.gender||"").toLowerCase()==="women";
+  }
+
+  function isMenShelfItem(item) {
+    const title=String(item?.title||"").toLowerCase();
+    const explicitKids=/\b(baby|newborn|toddler|kid|kids|child|children|boys?|girls?|youth|infant)\b/.test(title);
     const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
-    return hasWomen && !hasMen;
+    const hasWomen=/\b(women(?:'s)?|woman|female|ladies|girls?)\b/.test(title);
+    if (explicitKids || hasWomen || /\bunisex\b/.test(title)) return false;
+    if (hasMen) return true;
+    return String(item?.gender||"").toLowerCase()==="men";
+  }
+
+  function matchesShelfTruth(item, slug, department) {
+    const inferred = window.HuntCore?.inferCategory?.(item) || item?.category || "";
+    if (slug === "women") return isWomenShelfItem(item);
+    if (slug === "men") return isMenShelfItem(item);
+    if (department.startsWith("Women") && isMenShelfItem(item)) return false;
+    return inferred === slug;
   }
 
   function selectShelfItems(items, limit, renderedKeys) {
@@ -442,7 +462,7 @@
       const sections = slugs.map(slug => {
         const meta = shelfMeta[slug];
         let items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
-        if (department.startsWith("Women") && slug !== "women") items = items.filter(isWomenShelfItem);
+        items = items.filter(item => matchesShelfTruth(item, slug, department));
         if (!meta || items.length < 4) return "";
         const selected = selectShelfItems(items, limit, renderedKeys);
         const cards = selected.map(shelfCard).join("");
@@ -577,7 +597,7 @@
 
   async function runLiveSearch(query) {
     const clean = String(query || "").trim();
-    if (!clean) return;
+    if (!clean) return null;
     const section = $("#live-search");
     const status = $("#hd-live-search-status");
     if (section) section.hidden = false;
@@ -595,11 +615,28 @@
         resultCount: Array.isArray(data.results) ? data.results.length : 0
       });
       renderLiveSearch(data);
+      section?.scrollIntoView({behavior:"smooth",block:"start"});
+      return data;
     } catch (err) {
       if (status) status.textContent = err.message || "Live search unavailable";
       const grid = $("#hd-search-grid");
       if (grid) grid.innerHTML = "";
+      return null;
     }
+  }
+
+  async function executeSmartSearch(rawQuery) {
+    const H = window.HuntCore;
+    const intent = H?.resolveSearchIntent ? H.resolveSearchIntent(rawQuery) : {kind:"search",query:String(rawQuery||"").trim()};
+    if (!intent?.query && !intent?.slug) return;
+    if (intent.kind === "category" && intent.slug) {
+      H?.recordSignal?.(intent.slug,"search");
+      location.href = H?.categoryUrl ? H.categoryUrl(intent.slug) : "category.html?c=" + encodeURIComponent(intent.slug);
+      return;
+    }
+    if(intent.slug) H?.recordSignal?.(intent.slug,"search");
+    window.dispatchEvent(new CustomEvent("hunt:search",{detail:intent}));
+    await runLiveSearch(intent.query || rawQuery);
   }
 
   document.addEventListener("click", event => {
@@ -628,10 +665,9 @@
     });
   });
   $("#hd-search-input")?.addEventListener("input", applyFilters);
-  $("#hd-search-input")?.addEventListener("keydown", event => {
-    if (event.key !== "Enter") return;
+  $("#hd-search-form")?.addEventListener("submit", event => {
     event.preventDefault();
-    runLiveSearch(event.currentTarget.value);
+    executeSmartSearch($("#hd-search-input")?.value || "");
   });
 
   window.addEventListener("hunt:language", e => {

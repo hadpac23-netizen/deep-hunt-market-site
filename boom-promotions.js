@@ -29,7 +29,7 @@
       .sort((a,b)=>Number(b[1])-Number(a[1]))
       .map(([slug])=>slug)
       .slice(0,5);
-    return signals.length?signals:["women","men","home","beauty","tech","kids","travel"];
+    return signals.length?signals:["women","men","home","beauty","perfume","tech","kids","travel"];
   }
 
   function priced(items,max){
@@ -77,6 +77,7 @@
       if(picks.length>=8){under={limit,picks:picks.slice(0,10)};break;}
     }
 
+    const perfumeInterest=Number(H.signals?.()?.perfume||0)>0;
     const candidates=[
       {
         key:"for-you",
@@ -87,10 +88,10 @@
       },
       {
         key:"beauty",
-        badge:"HUNT EDIT",
-        title:"Beauty worth a closer look",
-        subtitle:"A clean beauty edit from the live catalog — no fake discount claims.",
-        items:flat(shelves,["beauty","perfume"]).slice(0,10)
+        badge:perfumeInterest?"BOOM FRAGRANCE EDIT":"HUNT EDIT",
+        title:perfumeInterest?"Fragrance & beauty matched to your recent search":"Beauty worth a closer look",
+        subtitle:perfumeInterest?"Real perfume and beauty catalog items ranked from your current shopping signals.":"A clean beauty edit from the live catalog — no fake discount claims.",
+        items:flat(shelves,perfumeInterest?["perfume","beauty"]:["beauty","perfume"]).slice(0,10)
       },
       {
         key:"home",
@@ -193,5 +194,6 @@
 
   window.addEventListener("hunt:shelves",event=>render(event.detail));
   window.addEventListener("hunt:shopping-action",()=>lastData&&render(lastData));
+  window.addEventListener("hunt:search",()=>lastData&&render(lastData));
   if(window.HuntMarketShelves)render(window.HuntMarketShelves);
 })();

@@ -1,0 +1,91 @@
+/* HUNT Light v2 — isolated preview, shopping-first */
+.hunt-light-v2{--shop-accent:#111;--shop-accent-soft:#f3f3f3;--shop-bg:#fff;--shop-surface:#fff;--shop-soft:#f6f6f6;--shop-text:#111;--shop-muted:#747474;--shop-line:#e9e9e9;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.hunt-light-v2 .hd-topbar{min-height:62px!important;padding:8px clamp(14px,2.2vw,34px)!important;grid-template-columns:auto minmax(360px,1fr) auto!important;gap:22px!important;box-shadow:none!important;position:sticky!important;top:0!important;background:rgba(255,255,255,.96)!important;backdrop-filter:blur(18px)!important}
+.hunt-light-v2 .hd-brand{font-size:1.35rem!important;letter-spacing:-.035em!important}
+.hunt-light-v2 .hd-brand span{font-weight:600!important}
+.hunt-light-v2 .hd-nav{display:flex!important;justify-content:center!important;gap:22px!important;overflow:hidden!important}
+.hunt-light-v2 .hd-nav a{font-size:.73rem!important;font-weight:650!important;padding:18px 0!important;white-space:nowrap!important}
+.hunt-light-v2 .hd-nav a:after{display:none!important}
+.hunt-light-v2 .hd-tools{gap:8px!important}
+.hunt-light-v2 .hd-search{height:44px!important;min-width:min(34vw,480px)!important;border-radius:999px!important;padding:0 5px 0 14px!important;background:#f4f4f4!important;border-color:transparent!important}
+.hunt-light-v2 .hd-search:focus-within{background:#fff!important;border-color:#bdbdbd!important}
+.hunt-light-v2 .hd-search-button{height:34px!important;border-radius:999px!important;background:#111!important;color:#fff!important;padding-inline:17px!important}
+.hunt-light-v2 .hd-lang{border-radius:999px!important;height:38px!important}
+.hunt-light-v2 .hd-account-link,.hunt-light-v2 .hd-cart-link{font-size:.72rem!important;font-weight:750!important}
+.hunt-light-v2 .hd-hero{width:min(1460px,calc(100% - 36px))!important;padding:14px 0 4px!important}
+.hunt-light-v2 .hd-hero-copy{padding:24px clamp(20px,4vw,48px)!important;border-radius:18px!important;background:linear-gradient(110deg,#f7f7f7,#fff 55%,#f3f0ec)!important;min-height:0!important}
+.hunt-light-v2 .hd-hero-copy:after{display:none!important}
+.hunt-light-v2 .hd-kicker{font-size:.53rem!important;letter-spacing:.18em!important;margin-bottom:8px!important}
+.hunt-light-v2 .hd-hero h1{font-size:clamp(2rem,3.4vw,3.7rem)!important;line-height:.94!important;max-width:640px!important;margin:0 0 10px!important}
+.hunt-light-v2 .hd-hero-copy>p{font-size:.82rem!important;line-height:1.5!important;max-width:590px!important;margin:0!important}
+.hunt-light-v2 .hd-actions{margin-top:15px!important;gap:8px!important}
+.hunt-light-v2 .hd-btn{min-height:38px!important;border-radius:999px!important;padding:0 16px!important;font-size:.68rem!important}
+.hunt-light-v2 .hd-department-shell{width:min(1460px,calc(100% - 36px))!important;margin:8px auto 18px!important;border-bottom:0!important;position:sticky!important;top:62px!important;z-index:42!important;background:rgba(255,255,255,.96)!important;backdrop-filter:blur(16px)!important}
+.hunt-light-v2 .hd-department-bar{justify-content:flex-start!important;padding:4px 0!important}
+.hunt-light-v2 .hd-department-bar a,.hunt-light-v2 .hd-all-categories{min-height:38px!important;border-radius:999px!important;padding:0 13px!important;font-size:.66rem!important;font-weight:700!important}
+.hunt-light-v2 .hd-department-bar a:hover,.hunt-light-v2 .hd-all-categories:hover{background:#f3f3f3!important;color:#111!important}
+.hunt-light-v2 .hd-wow-showcase,.hunt-light-v2 .hd-live-market,.hunt-light-v2 .hd-shop-more,.hunt-light-v2 .hd-boom-promotions{width:min(1460px,calc(100% - 36px))!important;margin:18px auto 34px!important}
+.hunt-light-v2 .hd-wow-showcase{padding:0!important}
+.hunt-light-v2 .hd-wow-head,.hunt-light-v2 .hd-for-you-head,.hunt-light-v2 .hd-shop-more-head,.hunt-light-v2 .hd-promo-head{padding-bottom:9px!important;margin-bottom:13px!important;border-bottom:1px solid #ededed!important}
+.hunt-light-v2 .hd-wow-head h2,.hunt-light-v2 .hd-for-you-head h3,.hunt-light-v2 .hd-shop-more-head h3,.hunt-light-v2 .hd-promo-head h2{font-size:clamp(1.1rem,1.8vw,1.55rem)!important;letter-spacing:-.035em!important}
+.hunt-light-v2 .hd-wow-head p,.hunt-light-v2 .hd-for-you-head p,.hunt-light-v2 .hd-shop-more-head p,.hunt-light-v2 .hd-promo-head p{display:none!important}
+.hunt-light-v2 .hd-dept-grid{grid-template-columns:repeat(8,minmax(0,1fr))!important;gap:14px!important}
+.hunt-light-v2 .hd-dept-image{border-radius:14px!important;overflow:hidden!important}
+.hunt-light-v2 .hd-dept-card strong{font-size:.72rem!important;font-weight:650!important}
+.hunt-light-v2 #hd-for-you-products.hd-wow-track,.hunt-light-v2 .hd-shop-more-grid,.hunt-light-v2.hd-market-v2 .hd-shelf-track,.hunt-light-v2 .hd-promo-track{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:28px 13px!important}
+.hunt-light-v2 .hd-market-shelf{margin-bottom:28px!important}
+.hunt-light-v2 .hd-shelf-department-head{border-bottom:0!important;padding:0 0 5px!important}
+.hunt-light-v2 .hd-market-shelf-head{padding:0 0 10px!important;align-items:center!important}
+.hunt-light-v2 .hd-market-shelf-head h3{font-size:1.08rem!important;letter-spacing:-.025em!important}
+.hunt-light-v2 .hd-market-shelf-head p{display:none!important}
+.hunt-light-v2 .hd-shelf-card,.hunt-light-v2 .hd-wow-product,.hunt-light-v2 .hd-shop-card,.hunt-light-v2 .hd-promo-product{position:relative!important;border:0!important;box-shadow:none!important;background:transparent!important}
+.hunt-light-v2 .hd-shelf-media,.hunt-light-v2 .hd-wow-product-media,.hunt-light-v2 .hd-shop-card-media,.hunt-light-v2 .hd-promo-product-media{aspect-ratio:3/4!important;border-radius:12px!important;background:#f5f5f5!important;overflow:hidden!important}
+.hunt-light-v2 .hd-shelf-media img,.hunt-light-v2 .hd-wow-product-media img,.hunt-light-v2 .hd-shop-card-media img,.hunt-light-v2 .hd-promo-product-media img{object-fit:cover!important;padding:0!important;transition:transform .24s ease!important}
+.hunt-light-v2 .hd-shelf-card:hover img,.hunt-light-v2 .hd-wow-product:hover img,.hunt-light-v2 .hd-shop-card:hover img,.hunt-light-v2 .hd-promo-product:hover img{transform:scale(1.025)!important}
+.hunt-light-v2 .hd-shelf-card-body,.hunt-light-v2 .hd-wow-product-body,.hunt-light-v2 .hd-shop-card-body,.hunt-light-v2 .hd-promo-product-body{padding:7px 1px 0!important;min-height:0!important}
+.hunt-light-v2 .hd-shelf-title,.hunt-light-v2 .hd-wow-product-body>a,.hunt-light-v2 .hd-shop-card-title,.hunt-light-v2 .hd-promo-product-body>a{font-size:.75rem!important;font-weight:560!important;line-height:1.35!important;display:-webkit-box!important;-webkit-line-clamp:2!important;-webkit-box-orient:vertical!important;overflow:hidden!important}
+.hunt-light-v2 .hd-wow-price strong,.hunt-light-v2 .hd-shop-card-price,.hunt-light-v2 .hd-promo-product-body strong,.hunt-light-v2 .hd-shelf-source-price b{font-size:.82rem!important;font-weight:800!important;color:#111!important}
+.hunt-light-v2 .hd-shop-actions{top:8px!important;right:8px!important;left:auto!important;gap:6px!important}
+.hunt-light-v2 .hd-shop-action{width:34px!important;height:34px!important;border-radius:50%!important;background:rgba(255,255,255,.94)!important;border:0!important;box-shadow:0 2px 12px rgba(0,0,0,.09)!important;color:#111!important}
+.hunt-light-v2 .hd-shop-action[aria-pressed="true"]{background:#111!important;color:#fff!important}
+.hunt-light-v2 .hd-promo-block{grid-template-columns:220px minmax(0,1fr)!important;padding:16px 0!important}
+.hunt-light-v2 .hd-promo-copy h3{font-size:1.05rem!important}
+.hunt-light-v2 .hd-promo-copy p{font-size:.65rem!important}
+@media(max-width:1180px){
+  .hunt-light-v2 .hd-topbar{grid-template-columns:auto 1fr!important}
+  .hunt-light-v2 .hd-nav{display:none!important}
+  .hunt-light-v2 .hd-tools{justify-content:flex-end!important}
+  .hunt-light-v2 #hd-for-you-products.hd-wow-track,.hunt-light-v2 .hd-shop-more-grid,.hunt-light-v2.hd-market-v2 .hd-shelf-track,.hunt-light-v2 .hd-promo-track{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+  .hunt-light-v2 .hd-topbar{padding:8px 10px!important;gap:8px!important;grid-template-columns:1fr auto!important}
+  .hunt-light-v2 .hd-brand{font-size:1.18rem!important}
+  .hunt-light-v2 .hd-account-link{display:none!important}
+  .hunt-light-v2 .hd-tools{grid-column:1/-1!important;display:grid!important;grid-template-columns:1fr auto!important;width:100%!important}
+  .hunt-light-v2 .hd-search{order:0!important;min-width:0!important;width:100%!important;height:44px!important}
+  .hunt-light-v2 .hd-cart-link{display:flex!important;align-items:center!important;justify-content:center!important;min-width:66px!important}
+  .hunt-light-v2 .hd-hero,.hunt-light-v2 .hd-department-shell,.hunt-light-v2 .hd-wow-showcase,.hunt-light-v2 .hd-live-market,.hunt-light-v2 .hd-shop-more,.hunt-light-v2 .hd-boom-promotions{width:calc(100% - 20px)!important}
+  .hunt-light-v2 .hd-hero-copy{padding:20px 17px!important;border-radius:14px!important}
+  .hunt-light-v2 .hd-hero h1{font-size:2.15rem!important}
+  .hunt-light-v2 .hd-hero-copy>p{font-size:.74rem!important}
+  .hunt-light-v2 .hd-department-shell{top:105px!important;margin-top:6px!important}
+  .hunt-light-v2 .hd-dept-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:10px!important}
+  .hunt-light-v2 #hd-for-you-products.hd-wow-track,.hunt-light-v2 .hd-shop-more-grid,.hunt-light-v2.hd-market-v2 .hd-shelf-track,.hunt-light-v2 .hd-promo-track{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:22px 9px!important}
+  .hunt-light-v2 .hd-shelf-media,.hunt-light-v2 .hd-wow-product-media,.hunt-light-v2 .hd-shop-card-media,.hunt-light-v2 .hd-promo-product-media{border-radius:9px!important}
+  .hunt-light-v2 .hd-promo-block{display:block!important}
+  .hunt-light-v2 .hd-promo-copy{margin-bottom:12px!important}
+  .hunt-light-v2 .hd-mobile-nav{left:8px!important;right:8px!important;border-radius:18px!important;background:rgba(255,255,255,.96)!important;box-shadow:0 8px 28px rgba(0,0,0,.12)!important}
+}
+
+/* Final preview grid override */
+.hunt-light-v2.hd-market-v2 .hd-live-market .hd-shelf-track{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;overflow:visible!important}
+@media(max-width:1180px){.hunt-light-v2.hd-market-v2 .hd-live-market .hd-shelf-track{grid-template-columns:repeat(4,minmax(0,1fr))!important}}
+@media(max-width:760px){.hunt-light-v2.hd-market-v2 .hd-live-market .hd-shelf-track{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:22px 9px!important}}
+
+/* Light preview keeps supplier images inside their cards */
+.hunt-light-v2 .hd-shelf-media img,.hunt-light-v2 .hd-market-card-media img,.hunt-light-v2 .hd-wow-product-media img,.hunt-light-v2 .hd-shop-card-media img,.hunt-light-v2 .hd-promo-product-media img{transform:none!important;mix-blend-mode:normal!important;filter:none!important}
+.hunt-light-v2 .hd-shelf-card:hover .hd-shelf-media img,.hunt-light-v2 .hd-market-product-card:hover .hd-market-card-media img,.hunt-light-v2 .hd-wow-product:hover .hd-wow-product-media img,.hunt-light-v2 .hd-shop-card:hover .hd-shop-card-media img,.hunt-light-v2 .hd-promo-product:hover .hd-promo-product-media img{transform:scale(1.025)!important}
+
+/* RTL: keep root layout stable while mirroring shopper-facing regions */
+html[dir="rtl"] body.hunt-light-v2{direction:ltr}
+html[dir="rtl"] body.hunt-light-v2 .hd-topbar,html[dir="rtl"] body.hunt-light-v2 main,html[dir="rtl"] body.hunt-light-v2 .hd-department-shell,html[dir="rtl"] body.hunt-light-v2 .hd-mobile-nav,html[dir="rtl"] body.hunt-light-v2 .hd-footer{direction:rtl}

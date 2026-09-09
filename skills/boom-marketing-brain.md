@@ -80,3 +80,22 @@ Optimize for conversion value and profit, not traffic volume.
 - paid-ads connector: campaign build/analysis with approval
 - analytics source: ROAS, CAC, CVR, AOV, margin
 - Merchant/feed diagnostics when connected
+
+## 2026 adaptive growth loop
+BOOM may act automatically inside HUNT on zero-spend, reversible actions:
+- learn from search, category open, product open, like, save, cart and verified purchase signals
+- reorder onsite editorial collections by measured relevance
+- switch a collection toward fragrance/beauty when perfume intent becomes strong
+- stop unrelated recommendations instead of filling empty space
+- draft SEO pages, creative briefs, experiment ideas and country opportunities
+- refresh organic creative hypotheses when fatigue signals rise
+- keep a control/baseline so personalization has to prove value
+
+For external distribution BOOM may research, prepare and recommend, but must not publish a paid campaign, change a paid budget, or spend money without owner approval.
+
+### Platform lessons adopted in September 2026
+- Google Performance Max: feed it reliable conversion/value data, strong assets and stable goals; avoid frequent disruptive changes during learning.
+- Google measurement: inspect conversion lag, channel performance, audience/search insights and creative performance before scaling.
+- TikTok Smart+: use automation as controllable modules; optimize for website conversions only when reliable event data exists.
+- Meta Reels/Advantage creative: favor native vertical creative, test variants, and use broad placement automation only with truthful product-native assets.
+- BOOM rule: automation earns more freedom only after measurable improvement against a baseline.

@@ -87,8 +87,8 @@
     const t = String(value?.title || value || "").toLowerCase();
     if (/\b(pet|dog|cat)\b/.test(t)) return "pets";
     if (/\b(toy|toys|puzzle|plush|building block|craft kit|slime)\b/.test(t)) return "toys";
-    if (/\b(kids?|youth|toddler|baby|newborn)\b/.test(t)) return "kids";
-    if (/(perfume|fragrance)/.test(t)) return "perfume";
+    if (/\b(kids?|youth|toddler|baby|newborn|child|children|boys?|girls?|infant)\b/.test(t)) return "kids";
+    if (/(perfume|fragrance|eau de|parfum|toilette spray)/.test(t)) return "perfume";
     if (/(beauty|skincare|makeup|cosmetic|serum|cream)/.test(t)) return "beauty";
     if (/(jewelry|jewellery|necklace|bracelet|earring|ring)/.test(t)) return "jewelry";
     if (/\b(swim|swimsuit|bikini|swim trunks)\b/.test(t)) return "swimwear";
@@ -130,12 +130,88 @@
     return "gifts";
   }
 
+  const searchAliases = {
+    women:["women","woman","ladies","נשים","אופנת נשים","نساء","نسائي","mujeres","femmes"],
+    men:["men","mens","גברים","אופנת גברים","رجال","رجالي","hombres","hommes"],
+    perfume:["perfume","fragrance","בשמים","בושם","عطور","عطر","parfum"],
+    beauty:["beauty","skincare","makeup","יופי","טיפוח","איפור","تجميل","عناية بالبشرة","مكياج","belleza","beauté"],
+    jewelry:["jewelry","jewellery","תכשיטים","שרשרת","צמיד","مجوهرات","قلادة","سوار","joyería","bijoux"],
+    shoes:["shoes","sneakers","נעליים","נעל","أحذية","حذاء","zapatos","chaussures"],
+    bags:["bags","handbags","purse","תיקים","תיק","حقائب","حقيبة","bolsos","sacs"],
+    tech:["tech","electronics","phone","טכנולוגיה","אלקטרוניקה","טלפון","تقنية","إلكترونيات","هاتف","tecnología","électronique"],
+    home:["home","decor","בית","עיצוב לבית","منزل","ديكور","hogar","maison"],
+    kitchen:["kitchen","מטבח","مطبخ","cocina","cuisine"],
+    kids:["kids","children","ילדים","ילד","أطفال","طفل","niños","enfants"],
+    toys:["toys","toy","צעצועים","צעצוע","ألعاب","لعبة","juguetes","jouets"],
+    sports:["sports","fitness","ספורט","כושר","رياضة","لياقة","deportes","sport"],
+    travel:["travel","luggage","נסיעות","מזוודות","سفر","حقائب سفر","viaje","voyage"],
+    gifts:["gifts","gift","מתנות","מתנה","هدايا","هدية","regalos","cadeaux"],
+    accessories:["accessories","אביזרים","אקססוריז","إكسسوارات","اكسسوارات","accesorios","accessoires"]
+  };
+  const brandAliases = {
+    "dior":["דיור","ديور"],
+    "chanel":["שאנל","شانيل"],
+    "tom ford":["טום פורד","توم فورد"],
+    "armani":["ארמני","ارماني","أرماني"],
+    "versace":["ורסאצ'ה","ורסאצה","فيرساتشي"],
+    "ysl":["איב סן לורן","سان لوران","ايف سان لوران"],
+    "gucci":["גוצ'י","גוצי","غوتشي"],
+    "hugo boss":["הוגו בוס","هوجو بوس"],
+    "creed":["קריד","كريد"],
+    "lancome":["לנקום","لانكوم"],
+    "givenchy":["ז'יבנשי","זיבנשי","جيفنشي"],
+    "rabanne":["רבאן","رابان"],
+    "carolina herrera":["קרולינה הררה","كارولينا هيريرا"],
+    "burberry":["ברברי","بربري"],
+    "hermes":["הרמס","هيرمس"],
+    "prada":["פראדה","برادا"],
+    "valentino":["ולנטינו","فالنتينو"]
+  };
+
+  const foldSearch = value => String(value || "").toLowerCase().replace(/[’']/g,"").replace(/\s+/g," ").trim();
+
+  function normalizeSearchQuery(query) {
+    const original=String(query||"").trim().slice(0,120);
+    if(!original)return "";
+    let q=foldSearch(original);
+    for(const [canonical,aliases] of Object.entries(brandAliases)){
+      for(const alias of aliases){
+        const a=foldSearch(alias);
+        if(q.includes(a))q=q.split(a).join(canonical);
+      }
+    }
+    for(const [slug,aliases] of Object.entries(searchAliases)){
+      for(const alias of aliases){
+        const a=foldSearch(alias);
+        if(q===a)return categoryDefs[slug]?.query||slug;
+        if(q.includes(a)){
+          const canonical=categoryDefs[slug]?.query?.split(" ")[0]||slug;
+          q=q.split(a).join(canonical);
+        }
+      }
+    }
+    return q.replace(/\s+/g," ").trim();
+  }
+
+  function resolveSearchIntent(query) {
+    const original=String(query||"").trim().slice(0,120);
+    if(!original)return {kind:"empty",query:"",slug:null};
+    const folded=foldSearch(original);
+    for(const [slug,aliases] of Object.entries(searchAliases)){
+      if(aliases.some(alias=>foldSearch(alias)===folded)){
+        return {kind:"category",slug,query:categoryDefs[slug]?.query||slug,original};
+      }
+    }
+    const normalized=normalizeSearchQuery(original);
+    return {kind:"search",slug:slugFromQuery(normalized),query:normalized||original,original};
+  }
+
   function slugFromQuery(query) {
     const q = String(query || "").toLowerCase();
     if (/perfume|fragrance/.test(q)) return "perfume";
     if (/jewel|necklace|bracelet|earring|ring/.test(q)) return "jewelry";
     if (/beauty|skincare|makeup/.test(q)) return "beauty";
-    if (/kids?|youth|toddler|baby/.test(q)) return "kids";
+    if (/kids?|youth|toddler|baby|child|children|boys?|girls?|infant/.test(q)) return "kids";
     if (/swimwear|swimsuit|bikini|swim trunks/.test(q)) return "swimwear";
     if (/\bsocks?\b/.test(q)) return "socks";
     if (/stickers?/.test(q)) return "stickers";
@@ -279,7 +355,7 @@
 
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
-    inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
+    inferCategory,slugFromQuery,normalizeSearchQuery,resolveSearchIntent,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
     cart,saveCart,addCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
   };
 })();

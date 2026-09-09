@@ -37,29 +37,65 @@
   }
 
   function siblingSlugs(slug){
-    for(const slugs of Object.values(H.categoryGroups||{})){
-      if(Array.isArray(slugs)&&slugs.includes(slug))return slugs;
+    for(const group of H.categoryGroups||[]){
+      const slugs=Array.isArray(group)?group:(Array.isArray(group?.items)?group.items:[]);
+      if(slugs.includes(slug))return slugs.filter(x=>x!==slug);
     }
     return [];
   }
 
-  function relationScore(item,currentCategory,currentPrice,currentGender){
-    const slug=String(item?.category||H.inferCategory(item)||"");
-    let score=0;
-    if(slug===currentCategory)score+=100;
-    if(siblingSlugs(currentCategory).includes(slug))score+=55;
+  const relatedMap={
+    women:["dresses","tops","bottoms","hoodies","knitwear","jackets","activewear","swimwear","bags","shoes","accessories","jewelry"],
+    men:["tops","bottoms","hoodies","knitwear","jackets","activewear","shoes","accessories"],
+    dresses:["women","shoes","bags","jewelry"], tops:["women","men","hoodies","jackets","knitwear","bottoms"],
+    bottoms:["women","men","tops","hoodies","jackets"], hoodies:["women","men","tops","bottoms","jackets"],
+    jackets:["women","men","tops","bottoms","hoodies"], knitwear:["women","men","tops","bottoms","jackets"],
+    activewear:["women","men","sports","shoes"], swimwear:["women","sports","travel"],
+    perfume:["beauty"], beauty:["perfume"], jewelry:["accessories","bags"], bags:["accessories","shoes"], shoes:["accessories","bags"],
+    phoneaccessories:["tech"], gaming:["tech"], tech:["phoneaccessories","gaming"],
+    kitchen:["home","storage"], storage:["home","kitchen"], bedding:["home","blankets","pillows"], bath:["home"], lighting:["home"],
+    travel:["bags","accessories"], sports:["activewear","outdoors"], outdoors:["sports","travel"],
+    toys:["kids","gifts"], kids:["toys"], gifts:["party","crafts"], accessories:["bags","shoes","jewelry"]
+  };
+  const broadCategories=new Set(["women","men","home","tech","sports","accessories","beauty","gifts"]);
+
+  function productTokens(value){
+    const raw=[value?.title,value?.brand,value?.type_name,value?.model].filter(Boolean).join(" ").toLowerCase();
+    return new Set((raw.match(/[a-z0-9]{3,}/g)||[]).filter(token=>!["the","and","for","with","from","product","women","woman","mens","men"].includes(token)));
+  }
+
+  function relationScore(item,current,currentCategory,currentPrice,currentGender){
+    const slug=String(H.inferCategory(item)||item?.category||"");
+    if(currentGender==="women"&&isMen(item))return -1;
+    if(currentGender==="men"&&isWomen(item))return -1;
+
+    const exact=slug===currentCategory;
+    const related=(relatedMap[currentCategory]||[]).includes(slug);
+    const a=productTokens(current), b=productTokens(item);
+    let overlap=0; a.forEach(token=>{if(b.has(token))overlap+=1;});
+    const brandA=String(current?.brand||"").trim().toLowerCase();
+    const brandB=String(item?.brand||"").trim().toLowerCase();
+    const brandMatch=Boolean(brandA&&brandB&&brandA===brandB);
+    const typeA=String(current?.type_name||"").trim().toLowerCase();
+    const typeB=String(item?.type_name||"").trim().toLowerCase();
+    const typeMatch=Boolean(typeA&&typeB&&typeA===typeB);
+    const lexical=overlap>0||brandMatch||typeMatch;
+
+    if(!exact&&!related)return -1;
+    if(broadCategories.has(currentCategory)&&!lexical)return -1;
+    if(related&&!lexical)return -1;
+
+    let score=exact?140:65;
+    score+=Math.min(48,overlap*12)+(brandMatch?40:0)+(typeMatch?25:0);
     const prefs=H.shoppingPreferences?.()||{};
-    if(prefs.categories?.includes(slug))score+=28;
-    score+=Math.min(30,Number(H.signals?.()?.[slug]||0));
-    if(currentGender==="women"&&isWomen(item))score+=25;
-    if(currentGender==="men"&&isMen(item))score+=25;
+    if(prefs.categories?.includes(slug))score+=8;
+    score+=Math.min(8,Number(H.signals?.()?.[slug]||0));
     const p=Number(item?.price_amount);
     if(Number.isFinite(currentPrice)&&currentPrice>0&&Number.isFinite(p)&&p>0){
       const ratio=Math.abs(p-currentPrice)/Math.max(currentPrice,1);
-      score+=Math.max(0,18-Math.round(ratio*18));
+      score+=Math.max(0,14-Math.round(ratio*14));
     }
-    if(item?.availability_verified)score+=6;
-    if(String(item?.price_basis||"").toUpperCase()==="MERCHANT_RETAIL")score+=4;
+    if(item?.availability_verified)score+=5;
     return score;
   }
 
@@ -71,7 +107,7 @@
   }
 
   async function buildPool(product){
-    const currentCategory=String(product?.category||H.inferCategory(product)||"");
+    const currentCategory=String(H.inferCategory(product)||product?.category||"");
     const prefs=H.shoppingPreferences?.()||{};
     const requested=[currentCategory,...siblingSlugs(currentCategory),...(prefs.categories||[]).slice(0,3)]
       .filter(Boolean)
@@ -117,12 +153,8 @@
     const currentGender=isWomen(product)?"women":isMen(product)?"men":/\b(dress|skirt|blouse|handbag|purse)\b/.test(title)?"women":"general";
 
     pool=deduped
-      .filter(item=>{
-        if(currentGender==="women"&&["men"].includes(String(item.category)))return false;
-        if(currentGender==="men"&&["women","dresses"].includes(String(item.category)))return false;
-        return true;
-      })
-      .map(item=>({item,score:relationScore(item,currentCategory,currentPrice,currentGender),tie:stableTie(item)}))
+      .map(item=>({item,score:relationScore(item,product,currentCategory,currentPrice,currentGender),tie:stableTie(item)}))
+      .filter(row=>row.score>=0)
       .sort((a,b)=>(b.score-a.score)||(a.tie-b.tie))
       .map(x=>x.item);
     cursor=0;
@@ -133,7 +165,7 @@
     const img=safeHttps(item.image_url)
       ? '<img src="'+H.esc(item.image_url)+'" alt="'+H.esc(item.title||"Product")+'" loading="lazy">'
       : '<div class="hd-profile-product-placeholder">H</div>';
-    const slug=String(item.category||H.inferCategory(item)||"");
+    const slug=String(H.inferCategory(item)||item.category||"");
     return '<article class="hd-shelf-card" role="listitem" data-category="'+H.esc(slug)+'" data-endless-key="'+H.esc(key(item))+'">'+
       '<a class="hd-shelf-media" href="'+H.esc(href)+'">'+img+'</a>'+
       '<div class="hd-shelf-body">'+
@@ -145,10 +177,18 @@
   }
 
   function appendNext(){
-    if(loading||!pool.length)return;
-    loading=true;
+    if(loading)return;
     const host=$("#hd-endless-grid");
     const sentinel=$("#hd-endless-sentinel");
+    if(!pool.length){
+      if(sentinel){
+        sentinel.classList.add("done");
+        sentinel.querySelector("strong").textContent="No more closely related products are verified right now.";
+      }
+      observer?.disconnect();
+      return;
+    }
+    loading=true;
     const size=window.matchMedia?.("(max-width:760px)")?.matches?8:12;
     const next=[];
     while(cursor<pool.length&&next.length<size){
@@ -161,11 +201,11 @@
       host.insertAdjacentHTML("beforeend",next.map(card).join(""));
       window.HuntAnalytics?.recommendationImpression?.({placement:"endless_discovery",items:next});
       const cat=String(next[0]?.category||"");
-      if($("#hd-endless-copy"))$("#hd-endless-copy").textContent="BOOM is mixing more "+categoryTitle(cat)+" with related finds and your shopping preferences.";
+      if($("#hd-endless-copy"))$("#hd-endless-copy").textContent="BOOM is showing closely related "+categoryTitle(cat)+" products first — not random catalog filler.";
     }
     if(cursor>=pool.length){
       sentinel.classList.add("done");
-      sentinel.querySelector("strong").textContent="You reached the end of this discovery pool.";
+      sentinel.querySelector("strong").textContent=pool.length?"You reached the end of the closely related products.":"No more closely related products are verified right now.";
       observer?.disconnect();
     }
     loading=false;

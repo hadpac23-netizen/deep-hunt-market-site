@@ -199,3 +199,9 @@ html[data-hunt-theme="dark"] :is(.hd-review-photos img,.hd-review-file-preview i
 .hd-marketing-lab-shell{width:min(1280px,calc(100% - 40px));margin:0 auto;padding:34px 0 80px}
 .hd-command-edit textarea{width:100%;resize:vertical;border:1px solid var(--shop-line);background:var(--shop-surface);color:var(--shop-text);padding:8px;font:inherit}
 .hd-merchant-status.testing{color:#b06c00}.hd-merchant-status.won{color:#12834d}.hd-merchant-status.lost{color:#b82f40}.hd-merchant-status.inconclusive{color:#7d67d9}
+
+/* BOOM smart search control */
+.hd-search-button{height:30px;border:0;border-radius:2px;padding:0 13px;background:var(--shop-accent);color:#111;font:inherit;font-size:.72rem;font-weight:900;cursor:pointer;white-space:nowrap}
+.hd-search-button:hover,.hd-search-button:focus-visible{filter:brightness(.96);outline:2px solid color-mix(in srgb,var(--shop-accent) 55%,transparent);outline-offset:2px}
+html[dir="rtl"] .hd-search-button{margin-inline-start:2px}
+@media(max-width:760px){.hd-search{display:flex!important}.hd-search-button{height:32px;padding-inline:12px}}

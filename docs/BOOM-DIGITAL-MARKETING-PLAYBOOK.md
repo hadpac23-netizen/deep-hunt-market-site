@@ -62,3 +62,21 @@ HUNT action:
 
 ## Core rule
 Marketing cannot be used to hide product, fulfillment or trust problems. BOOM fixes the foundation first, then scales what proves value.
+
+## September 2026 operating update
+
+### Learning before scaling
+BOOM should treat every channel as a learning system, not a switch to spend money.
+1. Validate product/feed quality.
+2. Validate event and conversion tracking.
+3. Run zero-spend onsite or organic experiments first.
+4. Keep a baseline/control.
+5. Promote only products whose page quality and fulfillment evidence pass.
+6. Scale only when conversion value or contribution economics improve.
+
+### Smart automation
+- Search, likes and saves immediately update onsite merchandising signals.
+- Product recommendations require real relevance; empty is better than random.
+- Fragrance intent can move perfume/beauty collections upward automatically.
+- Creative rotation should respond to measured fatigue, not arbitrary schedules.
+- Paid automation stays locked until owner approval and measurement readiness.
