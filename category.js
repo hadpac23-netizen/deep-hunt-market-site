@@ -134,23 +134,48 @@
     $("#hd-boom-reason").textContent = score > 2 ? `This category has a ${score}-point local interest signal.` : "Learning locally from category visits, product views and cart actions.";
     H.updateCartBadges();
 
-    const shelfData = await H.storefront({shelves:1});
-    const shelfRows = Array.isArray(shelfData?.shelves?.[slug]) ? shelfData.shelves[slug] : [];
-    let providerState = "";
-    if (shelfRows.length) {
-      rawResults = shelfRows;
+    const applyRows = (rows, label) => {
+      rawResults = Array.isArray(rows) ? rows : [];
       const providers = [...new Set(rawResults.map(p=>p.provider).filter(Boolean))];
-      providerState = `${rawResults.length} live catalog products · ${providers.join(" + ")}`;
-    } else {
+      $("#hd-cat-provider-state").textContent = rawResults.length
+        ? `${rawResults.length} ${label} catalog products · ${providers.join(" + ")}`
+        : "No connected provider returned a product for this category yet.";
+      resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
+      rawResults.forEach(p => { try { sessionStorage.setItem(`hunt_product_${productKey(p)}`, JSON.stringify(p)); } catch {} });
+      window.HuntAnalytics?.category(slug, rawResults.length);
+      renderGrid();
+    };
+
+    let rendered = false;
+    try {
+      const snapshotRes = await fetch("catalog-snapshot.json?v=productsfix1", {cache:"force-cache"});
+      if (snapshotRes.ok) {
+        const snapshot = await snapshotRes.json();
+        const snapshotRows = Array.isArray(snapshot?.shelves?.[slug]) ? snapshot.shelves[slug] : [];
+        if (snapshotRows.length) {
+          applyRows(snapshotRows, "verified");
+          rendered = true;
+        }
+      }
+    } catch {}
+
+    try {
+      const liveData = await Promise.race([
+        H.storefront({shelves:1}),
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Live catalog timeout")), 15000))
+      ]);
+      const liveRows = Array.isArray(liveData?.shelves?.[slug]) ? liveData.shelves[slug] : [];
+      if (liveRows.length) {
+        applyRows(liveRows, "live");
+        rendered = true;
+      }
+    } catch {}
+
+    if (!rendered) {
       const data = await H.search(def.query,24);
-      rawResults = Array.isArray(data.results) ? data.results : [];
-      providerState = (data.providers || []).filter(x=>x.result_count || x.state === "SEARCHED").map(x=>`${x.provider}: ${x.result_count||0}`).join(" · ");
+      const results = Array.isArray(data.results) ? data.results : [];
+      applyRows(results, "discovery");
     }
-    window.HuntAnalytics?.category(slug, rawResults.length);
-    resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
-    rawResults.forEach(p => { try { sessionStorage.setItem(`hunt_product_${productKey(p)}`, JSON.stringify(p)); } catch {} });
-    $("#hd-cat-provider-state").textContent = providerState || "No connected provider returned a product for this category yet.";
-    renderGrid();
   }
 
   $("#hd-cat-apply")?.addEventListener("click",renderGrid);

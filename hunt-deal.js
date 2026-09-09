@@ -303,36 +303,79 @@
     root.prepend(section);
   }
 
+  function renderMarketShelvesData(data, mode = "live") {
+    const root = $("#hd-shelves-root");
+    const counter = $("#hd-shelf-count");
+    if (!root || !counter) return false;
+    const shelves = data?.shelves || {};
+    const hasProducts = Object.values(shelves).some(items => Array.isArray(items) && items.length);
+    if (!hasProducts) return false;
+
+    window.HuntMarketShelves = data;
+    window.dispatchEvent(new CustomEvent("hunt:shelves", {detail:data}));
+
+    const html = shelfDepartments.map(([department, slugs]) => {
+      const sections = slugs.map(slug => {
+        const meta = shelfMeta[slug];
+        const items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
+        if (!meta || !items.length) return "";
+        const cards = items.slice(0,12).map(shelfCard).join("");
+        const categoryHref = window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`;
+        return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
+      }).filter(Boolean).join("");
+      if (!sections) return "";
+      return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
+    }).join("");
+
+    root.innerHTML = html || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
+    const count = Number(data?.visible_product_count || 0);
+    counter.textContent = `${count.toLocaleString()} ${mode === "live" ? "LIVE" : "CATALOG"}`;
+    counter.title = mode === "live" ? "Live supplier refresh" : "Verified catalog snapshot while live suppliers refresh";
+    return true;
+  }
+
+  async function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(url, {...options, signal:controller.signal});
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   async function loadMarketShelves() {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
     if (!root || !counter) return;
+
+    let renderedFallback = false;
+
     try {
-      const res = await fetch(publicApiUrl("hunt-storefront") + "?shelves=1", {
+      const snapshotRes = await fetch("catalog-snapshot.json?v=productsfix1", {cache:"force-cache"});
+      if (snapshotRes.ok) {
+        const snapshot = await snapshotRes.json();
+        renderedFallback = renderMarketShelvesData(snapshot, "snapshot");
+      }
+    } catch {}
+
+    try {
+      const res = await fetchWithTimeout(publicApiUrl("hunt-storefront") + "?shelves=1", {
         cache:"no-store",
         headers: publicApiHeaders()
-      });
+      }, 15000);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Market shelves unavailable");
-      window.HuntMarketShelves = data;
-      window.dispatchEvent(new CustomEvent("hunt:shelves", {detail:data}));
-      const shelves = data.shelves || {};
-      const html = shelfDepartments.map(([department, slugs]) => {
-        const sections = slugs.map(slug => {
-          const meta = shelfMeta[slug];
-          const items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
-          if (!meta || !items.length) return "";
-          const cards = items.slice(0,12).map(shelfCard).join("");
-          const categoryHref = window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`;
-          return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>LIVE CATEGORY</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
-        }).filter(Boolean).join("");
-        if (!sections) return "";
-        return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
-      }).join("");
-      root.innerHTML = html || '<div class="hd-shelf-loading glass">No live shelves yet.</div>';
-      counter.textContent = `${Number(data.visible_product_count || 0)} LIVE`;
+      renderMarketShelvesData(data, "live");
     } catch (err) {
-      root.innerHTML = `<div class="hd-shelf-loading glass">${esc(err.message || "Market shelves unavailable")}</div>`;
+      if (renderedFallback) {
+        counter.title = "Live refresh is temporarily unavailable; showing verified catalog products.";
+        return;
+      }
+      const msg = err?.name === "AbortError"
+        ? "Live catalog is taking longer than expected. Try again shortly."
+        : (err.message || "Market shelves unavailable");
+      root.innerHTML = `<div class="hd-shelf-loading glass">${esc(msg)}</div>`;
       counter.textContent = "WAITING";
     }
   }
