@@ -89,7 +89,7 @@
     if (!title) return false;
     if (slug === "women" && /\b(baby|newborn|toddler|kid|kids|child|children|boys?|youth)\b/.test(title)) return false;
     if (slug === "men" && /\b(women|woman|female|ladies|girls?)\b/.test(title)) return false;
-    if (slug === "beauty" && /\b(pet|dog|cat|toy|slime|foam beads|puzzle)\b/.test(title)) return false;
+    if (slug === "beauty" && /\b(pet|dog|cat|toy|slime|foam beads|puzzle|hallway|hall tree|entryway|wardrobe|shoe cabinet|shoe storage|coat rack|furniture|mudroom)\b/.test(title)) return false;
     if (slug === "jewelry" && /\b(parrot|bird toy|pet toy|toy set|handbag belt|bag belt|strap buckle|key findings)\b/.test(title)) return false;
     return true;
   }
