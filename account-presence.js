@@ -9,12 +9,14 @@
 
   function signedOut() {
     desktopLinks.forEach(link => {
+      link.href = "auth.html";
       link.classList.remove("hd-account-connected");
       link.removeAttribute("title");
       link.setAttribute("aria-label", "Sign in");
       link.replaceChildren(document.createTextNode("Sign in"));
     });
     mobileLinks.forEach(link => {
+      link.href = "auth.html";
       link.classList.remove("hd-account-connected");
       const icon = link.querySelector("span");
       const label = link.querySelector("small");
@@ -37,6 +39,7 @@
     const label = name ? `Account — ${name}` : "Account";
 
     desktopLinks.forEach(link => {
+      link.href = "profile.html";
       link.classList.add("hd-account-connected");
       link.replaceChildren();
       const avatarWrap = document.createElement("span");
@@ -63,6 +66,7 @@
     });
 
     mobileLinks.forEach(link => {
+      link.href = "profile.html";
       link.classList.add("hd-account-connected");
       const icon = link.querySelector("span");
       const text = link.querySelector("small");

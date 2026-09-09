@@ -237,6 +237,16 @@
         hunt_checkout_stage: "preview_no_payment"
       });
     },
+    shoppingAction({provider="",itemId="",action="",active=false,category=""}={}) {
+      if (!["like","save"].includes(clean(action, 20))) return false;
+      return dataLayerPush("shopping_preference", {
+        item_id: clean(itemId, 100),
+        item_brand: clean(provider, 80),
+        item_category: clean(category, 60),
+        preference_action: clean(action, 20),
+        preference_active: Boolean(active)
+      });
+    },
     purchase({transactionId, value, currency = "USD", items = [], confirmed = false} = {}) {
       if (confirmed !== true || !clean(transactionId, 120) || !(Number(value) >= 0)) return false;
       return dataLayerPush("purchase", {
