@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Sell on HUNT DEAL — apply as a merchant, upload approved products, connect a product feed, or use the HUNT Seller API.">
+  <title>Sell on HUNT — HUNT DEAL</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo6">
+  <link rel="stylesheet" href="hunt-shop.css?v=merchant1">
+</head>
+<body class="hd-page hd-market-v2">
+  <a class="hd-skip-link" href="#main-content">Skip to seller dashboard</a>
+  <header class="hd-topbar">
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">SELLER NETWORK</div></div>
+    <nav class="hd-nav" aria-label="Primary"><a href="./">Storefront</a><a href="partners.html">Partners</a><a href="seller-api.html">Seller API</a></nav>
+    <div class="hd-tools"><a class="hd-account-link" href="auth.html">Account</a></div>
+  </header>
+
+  <main class="hd-seller-shell" id="main-content">
+    <section class="hd-seller-hero">
+      <div class="hd-kicker">SELL ON HUNT · STORES · BRANDS · RETAIL CHAINS</div>
+      <h1>Bring your store<br><em>into HUNT.</em></h1>
+      <p>Apply once, connect products manually or through the HUNT Seller API, and request approved sponsored placements. Products never go live until store approval, safety checks and product review pass.</p>
+      <div class="hd-seller-points">
+        <span>Manual upload</span><span>Seller API</span><span>Product feeds</span><span>Affiliate tracking</span><span>Sponsored placements</span>
+      </div>
+    </section>
+
+    <section id="hd-seller-signed-out" class="hd-seller-gate glass" hidden>
+      <h2>Sign in to create a merchant account.</h2>
+      <p>Your HUNT account identifies the authorized store owner. Business verification is reviewed separately before products or API keys can be activated.</p>
+      <a class="hd-btn hd-btn-primary" href="auth.html?next=/deep-hunt-market-site/sell.html">Sign in →</a>
+    </section>
+
+    <section id="hd-seller-application" class="hd-seller-panel glass" hidden>
+      <div class="hd-seller-section-head"><div><small>STEP 1</small><h2>Apply as a merchant</h2><p>Submitting this form starts review. It does not activate selling, advertising or payouts.</p></div></div>
+      <form id="hd-seller-apply-form" class="hd-seller-form">
+        <label>Legal business / organization name<input name="legal_name" required maxlength="160"></label>
+        <label>Store / brand name<input name="store_name" required maxlength="120"></label>
+        <label>Contact email<input name="contact_email" type="email" required maxlength="254"></label>
+        <label>Store website<input name="website_url" type="url" placeholder="https://example.com"></label>
+        <label>Country code<input name="country_code" maxlength="2" placeholder="US"></label>
+        <label>Store type<select name="store_type"><option value="independent">Independent store</option><option value="chain">Retail chain</option><option value="brand">Brand</option><option value="marketplace">Marketplace</option><option value="supplier">Supplier</option></select></label>
+        <button class="hd-btn hd-btn-primary" type="submit">Submit merchant application →</button>
+      </form>
+      <p class="hd-seller-status" id="hd-seller-apply-status" aria-live="polite"></p>
+    </section>
+
+    <section id="hd-seller-dashboard" hidden>
+      <div class="hd-seller-section-head"><div><small>MERCHANT DASHBOARD</small><h2>Your HUNT stores</h2><p>Approved stores can create API keys and submit products. Product publishing always remains review-controlled.</p></div><a class="hd-btn" href="seller-api.html">API docs →</a></div>
+      <div id="hd-seller-stores" class="hd-seller-store-grid"></div>
+
+      <div class="hd-seller-grid">
+        <section class="hd-seller-panel glass">
+          <div class="hd-seller-section-head compact"><div><small>PRODUCT UPLOAD</small><h3>Add or update a product</h3></div></div>
+          <form id="hd-seller-product-form" class="hd-seller-form">
+            <label>Approved store<select name="store_id" id="hd-product-store" required></select></label>
+            <label>External product ID<input name="external_id" required maxlength="180" placeholder="sku-123 or product-123"></label>
+            <label>SKU<input name="sku" maxlength="180"></label>
+            <label>Title<input name="title" required maxlength="260"></label>
+            <label>Category<select name="category" id="hd-product-category" required></select></label>
+            <label>Retail price<input name="price_amount" type="number" min="0" step="0.01"></label>
+            <label>Currency<input name="currency" value="USD" maxlength="3"></label>
+            <label>Inventory quantity<input name="inventory_quantity" type="number" min="0" step="1"></label>
+            <label>Product page URL<input name="product_url" type="url" placeholder="https://your-store.com/product/..."></label>
+            <label class="wide">Image URLs, one per line<textarea name="image_urls" rows="4" placeholder="https://..."></textarea></label>
+            <label class="wide">Description<textarea name="description" rows="5" maxlength="12000"></textarea></label>
+            <button class="hd-btn hd-btn-primary" type="submit">Send for product review →</button>
+          </form>
+          <p class="hd-seller-status" id="hd-seller-product-status" aria-live="polite"></p>
+        </section>
+
+        <section class="hd-seller-panel glass">
+          <div class="hd-seller-section-head compact"><div><small>SELLER API</small><h3>Create an API key</h3><p>Only approved stores can create keys. The raw key is displayed once.</p></div></div>
+          <form id="hd-seller-key-form" class="hd-seller-form single">
+            <label>Approved store<select name="store_id" id="hd-key-store" required></select></label>
+            <label>Key name<input name="name" maxlength="80" value="Catalog integration"></label>
+            <button class="hd-btn hd-btn-primary" type="submit">Create API key →</button>
+          </form>
+          <div id="hd-seller-key-result" class="hd-api-key-result" hidden><strong>Copy this key now</strong><code id="hd-seller-api-key"></code><button id="hd-copy-api-key" class="hd-btn" type="button">Copy</button><small>HUNT stores only the hash. The full key cannot be shown again.</small></div>
+          <p class="hd-seller-status" id="hd-seller-key-status" aria-live="polite"></p>
+        </section>
+
+        <section class="hd-seller-panel glass">
+          <div class="hd-seller-section-head compact"><div><small>ADVERTISE ON HUNT</small><h3>Request a sponsored placement</h3><p>This creates a review request only. No charge or campaign activates automatically.</p></div></div>
+          <form id="hd-seller-ad-form" class="hd-seller-form">
+            <label>Store<select name="store_id" id="hd-ad-store" required></select></label>
+            <label>Placement<select name="placement_type"><option value="homepage">Homepage</option><option value="category">Category</option><option value="search">Search</option><option value="sponsored_collection">Sponsored collection</option><option value="other">Other</option></select></label>
+            <label class="wide">Campaign / collection title<input name="title" required maxlength="160"></label>
+            <label class="wide">Destination URL<input name="destination_url" type="url"></label>
+            <label class="wide">Notes<textarea name="notes" maxlength="3000" rows="4"></textarea></label>
+            <button class="hd-btn hd-btn-primary" type="submit">Request placement →</button>
+          </form>
+          <p class="hd-seller-status" id="hd-seller-ad-status" aria-live="polite"></p>
+        </section>
+
+        <section class="hd-seller-panel glass">
+          <div class="hd-seller-section-head compact"><div><small>PRODUCT STATUS</small><h3>Your submitted products</h3></div></div>
+          <div id="hd-seller-products" class="hd-seller-product-list"><p>Select an approved store to load its products.</p></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="hd-footer"><div><strong>HUNT DEAL</strong><small>Merchant marketplace network.</small></div><nav><a href="./">Store</a><a href="partners.html">Partners</a><a href="seller-api.html">Seller API</a></nav></footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
+  <script src="market-core.js?v=market2"></script>
+  <script src="seller.js?v=merchant1"></script>
+  <script src="seller-ads.js?v=merchant1"></script>
+  <script src="hunt-theme.js?v=shop4"></script>
+</body>
+</html>

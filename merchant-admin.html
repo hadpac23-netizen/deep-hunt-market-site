@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
+  <title>Merchant Admin — HUNT DEAL</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo6"><link rel="stylesheet" href="hunt-shop.css?v=merchant1">
+</head>
+<body class="hd-page hd-market-v2">
+  <header class="hd-topbar">
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">MERCHANT ADMIN</div></div>
+    <nav class="hd-nav"><a href="./">Store</a><a href="sell.html">Seller portal</a><a href="review-moderation.html">Reviews</a></nav>
+  </header>
+  <main class="hd-merchant-admin-shell">
+    <section class="hd-seller-hero"><div class="hd-kicker">ADMIN · MARKETPLACE CONTROL</div><h1>Merchant review<br><em>and publishing.</em></h1><p>Approve stores first, then approve safe product submissions. Sponsored placement requests stay inactive until manually approved.</p></section>
+    <section id="hd-merchant-admin-status" class="hd-seller-gate glass"><strong>Checking admin access…</strong></section>
+
+    <section id="hd-merchant-admin" hidden>
+      <div class="hd-admin-columns">
+        <section class="hd-seller-panel glass"><div class="hd-seller-section-head compact"><div><small>STORES</small><h2>Pending stores</h2></div><strong id="hd-admin-store-count">0</strong></div><div id="hd-admin-stores" class="hd-admin-list"></div></section>
+        <section class="hd-seller-panel glass"><div class="hd-seller-section-head compact"><div><small>PRODUCTS</small><h2>Pending products</h2></div><strong id="hd-admin-product-count">0</strong></div><div id="hd-admin-products" class="hd-admin-list"></div></section>
+        <section class="hd-seller-panel glass"><div class="hd-seller-section-head compact"><div><small>SPONSORED</small><h2>Placement requests</h2></div><strong id="hd-admin-ad-count">0</strong></div><div id="hd-admin-ads" class="hd-admin-list"></div></section>
+      </div>
+
+      <section class="hd-seller-panel glass">
+        <div class="hd-seller-section-head"><div><small>AFFILIATE ATTRIBUTION</small><h2>Configure approved store tracking</h2><p>HUNT admin controls tracking templates so sellers cannot turn HUNT into an arbitrary redirect service.</p></div></div>
+        <form id="hd-admin-tracking-form" class="hd-seller-form">
+          <label>Approved store<select id="hd-admin-tracking-store" name="store_id" required></select></label>
+          <label>Network / program<input name="affiliate_network" maxlength="80" placeholder="Awin, Rakuten, direct…"></label>
+          <label class="wide">Tracking template<input name="affiliate_tracking_template" maxlength="1800" placeholder="https://network.example/track?...&dest={url}&subid={click_id}"></label>
+          <label>SubID parameter label<input name="affiliate_subid_param" maxlength="80" placeholder="clickref or u1"></label>
+          <button class="hd-btn hd-btn-primary" type="submit">Save tracking configuration →</button>
+        </form>
+        <p class="hd-seller-status" id="hd-admin-tracking-status" aria-live="polite"></p>
+      </section>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
+  <script src="market-core.js?v=market2"></script><script src="merchant-admin.js?v=merchant1"></script><script src="hunt-theme.js?v=shop4"></script>
+</body></html>

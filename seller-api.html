@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="HUNT Seller API documentation for approved stores, brands and retail chains.">
+  <title>HUNT Seller API</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo6"><link rel="stylesheet" href="hunt-shop.css?v=merchant1">
+</head>
+<body class="hd-page hd-market-v2">
+  <header class="hd-topbar">
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a></div>
+    <nav class="hd-nav"><a href="./">Store</a><a href="sell.html">Sell on HUNT</a><a href="partners.html">Partners</a></nav>
+  </header>
+  <main class="hd-api-docs">
+    <section class="hd-seller-hero"><div class="hd-kicker">HUNT SELLER API · V1</div><h1>Connect your catalog<br><em>to HUNT.</em></h1><p>Approved merchants can create a Seller API key and submit products individually or in batches. Every new or changed product returns to HUNT review before publication.</p></section>
+
+    <section class="hd-api-doc glass">
+      <h2>Authentication</h2>
+      <p>Send the Seller API key in the Authorization header. Keys are shown once when created in the seller dashboard.</p>
+      <pre><code>Authorization: Bearer hunt_sk_...</code></pre>
+      <p>Do not put Seller API keys in browser code, public repositories or product feeds.</p>
+    </section>
+
+    <section class="hd-api-doc glass">
+      <h2>Base endpoint</h2>
+      <pre><code>https://zszlnahjqmwozwubetkm.supabase.co/functions/v1/hunt-seller-api</code></pre>
+      <div class="hd-api-table">
+        <div><code>GET /v1/products</code><span>List your submitted products</span></div>
+        <div><code>POST /v1/products</code><span>Create or update one product</span></div>
+        <div><code>POST /v1/products/batch</code><span>Create or update up to 100 products</span></div>
+        <div><code>PUT /v1/products/{external_id}</code><span>Replace a product submission</span></div>
+        <div><code>DELETE /v1/products/{external_id}</code><span>Archive a product</span></div>
+      </div>
+    </section>
+
+    <section class="hd-api-doc glass">
+      <h2>Product object</h2>
+      <pre><code>{
+  "external_id": "store-product-123",
+  "sku": "SKU-123",
+  "title": "Product title",
+  "description": "Product description",
+  "category": "home",
+  "image_urls": ["https://merchant.example/image.jpg"],
+  "product_url": "https://merchant.example/products/123",
+  "price_amount": 29.90,
+  "currency": "USD",
+  "inventory_quantity": 14
+}</code></pre>
+      <p><strong>Important:</strong> <code>product_url</code> must use the approved store domain. Images must use HTTPS. HUNT applies category and safety validation before accepting a submission.</p>
+    </section>
+
+    <section class="hd-api-doc glass">
+      <h2>Publishing lifecycle</h2>
+      <ol><li>Merchant submits product.</li><li>HUNT validates the payload and safety rules.</li><li>Status becomes <code>pending_review</code>.</li><li>HUNT admin approves or rejects the product.</li><li>Approved products become eligible for HUNT shelves.</li></ol>
+      <p>An API response of 201 means the submission was accepted for review; it does not mean the product is already public.</p>
+    </section>
+
+    <section class="hd-api-doc glass">
+      <h2>External-store attribution</h2>
+      <p>Approved external-store products use HUNT's redirect service to create a first-party <code>click_id</code>. Affiliate networks can be configured by HUNT admin to pass that value into their supported SubID / ClickRef field.</p>
+      <p>HUNT does not use arbitrary destination URLs from the shopper. The destination comes from the approved merchant product or store record.</p>
+    </section>
+  </main>
+  <footer class="hd-footer"><div><strong>HUNT DEAL</strong><small>Seller platform.</small></div><nav><a href="sell.html">Seller dashboard</a><a href="./">Storefront</a></nav></footer>
+  <script src="hunt-theme.js?v=shop4"></script>
+</body></html>

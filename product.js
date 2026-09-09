@@ -81,11 +81,21 @@
     $("#hd-product-category-link").href=H.categoryUrl(cat); $("#hd-product-category-link").textContent=def.title;
     document.title=`${product.title || "Product"} — HUNT DEAL`;
     renderOptions(); renderGallery();
+    const externalVisit = typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
     const readyForCart = variants.length > 0;
+    const storeName = product?.store?.name || "partner store";
     const add = $("#hd-product-add");
-    if (add) { add.disabled = !readyForCart; add.textContent = readyForCart ? "Add to checkout preview →" : "Options pending"; }
+    if (add) {
+      add.disabled = externalVisit ? false : !readyForCart;
+      add.textContent = externalVisit ? `Visit ${storeName} →` : (readyForCart ? "Add to checkout preview →" : "Options pending");
+    }
     const mobileAdd = $("#hd-mobile-add");
-    if (mobileAdd) { mobileAdd.disabled = !readyForCart; mobileAdd.textContent = readyForCart ? "Add to Cart" : "Options pending"; }
+    if (mobileAdd) {
+      mobileAdd.disabled = externalVisit ? false : !readyForCart;
+      mobileAdd.textContent = externalVisit ? "Visit store" : (readyForCart ? "Add to Cart" : "Options pending");
+    }
+    const quantityBlock = document.querySelector(".hd-product-quantity");
+    if (quantityBlock) quantityBlock.hidden = externalVisit;
   }
 
   function syncMobilePrice() {
@@ -124,7 +134,20 @@
   }
 
   function addCurrentToCart() {
-    if (!product || !selectedVariant) return;
+    if (!product) return;
+    if (typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://")) {
+      let sid = localStorage.getItem("hunt_outbound_session_v1");
+      if (!sid) {
+        sid = crypto.randomUUID();
+        localStorage.setItem("hunt_outbound_session_v1", sid);
+      }
+      const destination = new URL(product.external_visit_url);
+      destination.searchParams.set("src", location.pathname + location.search);
+      destination.searchParams.set("sid", sid);
+      location.href = destination.toString();
+      return;
+    }
+    if (!selectedVariant) return;
     H.addCart(product, selectedVariant, quantity);
     location.href = "checkout.html";
   }
