@@ -12,7 +12,21 @@
   let googleReady=false;
 
   function setStatus(message,tone="") { status.textContent=message||""; status.dataset.tone=tone; }
-  function redirectUrl(){ return new URL("auth.html",location.href).href.split("#")[0].split("?")[0]; }
+  function nextTarget(){
+    const raw=new URLSearchParams(location.search).get("next")||"";
+    if(!raw)return "";
+    try{
+      const target=new URL(raw,location.origin);
+      if(target.origin!==location.origin)return "";
+      return target.pathname+target.search+target.hash;
+    }catch{return "";}
+  }
+  function redirectUrl(){
+    const url=new URL("auth.html",location.href);
+    const next=nextTarget();
+    if(next)url.searchParams.set("next",next);
+    return url.href;
+  }
 
   function renderSession(session) {
     const user=session?.user||null;
@@ -24,6 +38,11 @@
     $("#hd-account-name").textContent=name;
     $("#hd-account-email").textContent=user.email||"Signed-in account";
     $("#hd-account-avatar").textContent=String(name).trim().slice(0,1).toUpperCase()||"H";
+    const next=nextTarget();
+    if(next&&!sessionStorage.getItem("hunt_auth_redirecting")){
+      sessionStorage.setItem("hunt_auth_redirecting","1");
+      setTimeout(()=>location.replace(next),250);
+    }
   }
 
   function loadGoogleIdentity() {
