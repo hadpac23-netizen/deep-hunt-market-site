@@ -422,3 +422,6 @@ verify_jwt = false
 
 [functions.hunt-promotion-verifier]
 verify_jwt = false
+
+[functions.hunt-profit-gate]
+verify_jwt = false

@@ -92,11 +92,22 @@ revoke all on table public.hunt_mission_offers from anon, authenticated;
 revoke all on table public.hunt_demand_pools from anon, authenticated;
 revoke all on table public.hunt_demand_pool_members from anon, authenticated;
 
+create index if not exists hunt_purchase_missions_user_idx
+  on public.hunt_purchase_missions (user_id, created_at desc)
+  where user_id is not null;
+
 create index if not exists hunt_purchase_missions_open_idx
   on public.hunt_purchase_missions (status, category, country_code, deadline_at);
 
 create index if not exists hunt_mission_offers_rank_idx
   on public.hunt_mission_offers (mission_id, status, landed_total, valid_until);
+
+create index if not exists hunt_mission_offers_store_idx
+  on public.hunt_mission_offers (store_id, created_at desc);
+
+create index if not exists hunt_mission_offers_product_idx
+  on public.hunt_mission_offers (merchant_product_id)
+  where merchant_product_id is not null;
 
 create index if not exists hunt_demand_pools_collecting_idx
   on public.hunt_demand_pools (status, category, country_code, member_count desc);

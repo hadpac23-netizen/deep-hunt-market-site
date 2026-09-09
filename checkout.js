@@ -9,6 +9,13 @@
   };
   const read = () => { try { const v=JSON.parse(localStorage.getItem(key)||"[]"); return Array.isArray(v)?v:[]; } catch { return []; } };
   const write = cart => localStorage.setItem(key, JSON.stringify(cart));
+  const verifiedRetail = item => {
+    const amount = Number(item?.retail_price_amount);
+    const currency = String(item?.retail_currency || item?.currency || "").toUpperCase();
+    const verified = item?.retail_price_verified === true && item?.profit_gate_status === "PASS";
+    return verified && Number.isFinite(amount) && amount >= 0 && /^[A-Z]{3}$/.test(currency)
+      ? {amount,currency} : null;
+  };
   let checkoutTracked = false;
 
   function render() {
@@ -20,13 +27,17 @@
     host.innerHTML = cart.map(item => `
       <article class="hd-checkout-item" data-key="${esc(item.key)}">
         ${item.image_url ? `<img src="${esc(item.image_url)}" alt="${esc(item.title)}">` : `<div class="hd-checkout-thumb">◇</div>`}
-        <div class="hd-checkout-item-copy"><small>${esc(item.provider)} · ${esc(item.price_basis || "SUPPLIER_BASE")}</small><h3>${esc(item.title)}</h3><p>${item.variant_label ? `Selected: ${esc(item.variant_label)} · ` : ""}Source cost ${money(item.price_amount,item.currency||"USD")} · not a retail price</p></div>
+        <div class="hd-checkout-item-copy"><small>${esc(item.provider)} · ${esc(item.price_basis || "SOURCE")}</small><h3>${esc(item.title)}</h3><p>${item.variant_label ? `Selected: ${esc(item.variant_label)} · ` : ""}${verifiedRetail(item) ? `Verified retail ${money(verifiedRetail(item).amount,verifiedRetail(item).currency)} · Profit Gate PASS` : "Retail pricing pending Profit Gate"}</p></div>
         <div class="hd-qty"><button type="button" data-delta="-1">−</button><span>${Math.max(1,Number(item.qty)||1)}</span><button type="button" data-delta="1">+</button></div>
         <button class="hd-remove" type="button" aria-label="Remove item">×</button>
       </article>`).join("");
-    const currencies = new Set(cart.map(x=>x.currency||"USD"));
-    const subtotal = cart.reduce((sum,x)=>sum + (Number(x.price_amount)||0)*Math.max(1,Number(x.qty)||1),0);
-    $("#hd-checkout-subtotal").textContent = currencies.size === 1 ? money(subtotal,[...currencies][0]) : "MULTI-CURRENCY";
+    const retailRows = cart.map(item=>({item,retail:verifiedRetail(item)}));
+    const allRetailVerified = retailRows.length > 0 && retailRows.every(row=>row.retail);
+    const currencies = new Set(retailRows.filter(row=>row.retail).map(row=>row.retail.currency));
+    const subtotal = retailRows.reduce((sum,row)=>sum + (row.retail?.amount||0)*Math.max(1,Number(row.item.qty)||1),0);
+    $("#hd-checkout-subtotal").textContent = allRetailVerified && currencies.size === 1
+      ? money(subtotal,[...currencies][0])
+      : "PRICING PENDING";
     const count = cart.reduce((sum,item)=>sum + Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll("[data-cart-count]").forEach(el=>el.textContent=String(count));
     if (!checkoutTracked && cart.length) {
