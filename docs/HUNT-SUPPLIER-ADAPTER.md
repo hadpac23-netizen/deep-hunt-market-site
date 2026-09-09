@@ -2,7 +2,8 @@
 
 ## Current status
 Brandsdistribution / BDroppy is now the first paid supplier lane for HUNT fashion.
-The adapter is implemented locally and is NOT deployed.
+Its official sandbox is reachable and returns the expected 401 on API calls without credentials.
+The adapter is configured to use the sandbox host first. It is implemented locally and is NOT deployed.
 BrandsGateway stays second because its custom REST API/CSV plan is materially more expensive.
 ORPE / BRASTY stays conditional because current registration requires a valid EU VAT number.
 No supplier credential, password or private feed URL is stored in Git.
