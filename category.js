@@ -3,7 +3,9 @@
   const params = new URLSearchParams(location.search);
   const requested = params.get("c") || "women";
   const slug = H.categoryDefs[requested] ? requested : "women";
+  const sub = params.get("sub") || "";
   const def = H.categoryDefs[slug];
+  const mainCategories = ["women","men","kids","beauty","home","kitchen","tech","sports","gifts"];
   let rawResults = [];
   let resultOrder = new Map();
   const viewKey = "hunt_market_view_v1";
@@ -45,7 +47,7 @@
   }
 
   function renderCategories() {
-    const entries = Object.entries(H.categoryDefs);
+    const entries = mainCategories.map(key => [key,H.categoryDefs[key]]).filter(([,value]) => value);
     const chips = entries
       .map(([key,value]) => `<a class="${key===slug?"active":""}" href="${H.categoryUrl(key)}">${value.icon} ${H.esc(value.title)}</a>`)
       .join("");
@@ -57,10 +59,28 @@
         .filter(key => H.categoryDefs[key])
         .map(key => {
           const value = H.categoryDefs[key];
-          return `<a class="${key===slug?"active":""}" href="${H.categoryUrl(key)}">${value.icon} ${H.esc(value.title)}</a>`;
+          const genderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"].includes(key);
+          const href = genderSub ? `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}` : H.categoryUrl(key);
+          const active = genderSub ? sub===key : key===slug;
+          return `<a class="${active?"active":""}" href="${href}">${value.icon} ${H.esc(value.title)}</a>`;
         }).join("");
       return `<section class="hd-category-side-group"><strong>${H.esc(group.title)}</strong><div>${links}</div></section>`;
     }).join("");
+  }
+
+  function matchesSub(product) {
+    if (!sub || !["women","men"].includes(slug)) return true;
+    const title = String(product?.title || "").toLowerCase();
+    const patterns = {
+      tops:/shirt|tee|t-shirt|top|tank|polo|blouse/,
+      bottoms:/pants|trouser|shorts|jeans|joggers|leggings/,
+      hoodies:/hoodie|sweatshirt/,
+      jackets:/jacket|coat|windbreaker|outerwear|blazer/,
+      knitwear:/sweater|cardigan|knit/,
+      activewear:/sport|athletic|fitness|yoga|running|rash guard/,
+      swimwear:/swim|swimsuit|bikini|board shorts/
+    };
+    return patterns[sub] ? patterns[sub].test(title) : true;
   }
 
   function filteredSorted() {
@@ -70,7 +90,7 @@
     const sort = $("#hd-cat-sort").value;
     const items = rawResults.filter(p => {
       const price = Number(p.price_amount);
-      return Number.isFinite(price) && price >= min && price <= max;
+      return matchesSub(p) && Number.isFinite(price) && price >= min && price <= max;
     });
     if (sort === "price-low") items.sort((a,b)=>(Number(a.price_amount)||Infinity)-(Number(b.price_amount)||Infinity));
     else if (sort === "price-high") items.sort((a,b)=>(Number(b.price_amount)||0)-(Number(a.price_amount)||0));
@@ -87,10 +107,12 @@
   }
 
   async function load() {
-    document.title = `${def.title} — HUNT DEAL`;
-    $("#hd-cat-title").textContent = def.title;
-    $("#hd-cat-breadcrumb").textContent = def.title;
-    $("#hd-cat-copy").textContent = def.description;
+    const subDef = sub && H.categoryDefs[sub] ? H.categoryDefs[sub] : null;
+    const pageTitle = subDef && ["women","men"].includes(slug) ? `${def.title} · ${subDef.title}` : def.title;
+    document.title = `${pageTitle} — HUNT DEAL`;
+    $("#hd-cat-title").textContent = pageTitle;
+    $("#hd-cat-breadcrumb").textContent = pageTitle;
+    $("#hd-cat-copy").textContent = subDef && ["women","men"].includes(slug) ? `${subDef.title} filtered inside ${def.title}.` : def.description;
     renderCategories();
     applyViewMode(viewMode);
     H.recordSignal(slug,"category");

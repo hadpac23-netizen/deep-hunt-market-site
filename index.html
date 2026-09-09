@@ -13,27 +13,28 @@
   <meta name="twitter:card" content="summary_large_image">
   <title>HUNT DEAL — Smarter Shopping Intelligence</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
-  <link rel="stylesheet" href="hunt-wow.css?v=wow1">
+  <link rel="stylesheet" href="hunt-wow.css?v=market2">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"HUNT DEAL","url":"https://hadpac23-netizen.github.io/deep-hunt-market-site/","description":"Evidence-first shopping and commerce intelligence."}</script>
 </head>
-<body class="hd-page hd-home-clean">
+<body class="hd-page hd-home-clean hd-market-v2">
+  <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
   <div class="hd-space"></div>
   <header class="hd-topbar">
     <div class="hd-brand-wrap">
       <a class="hd-brand" href="./">HUNT <span>DEAL</span></a>
       <div class="hd-branch" data-i18n="branch">A BOOM branch · full BOOM coming later.</div>
     </div>
-    <nav class="hd-nav">
-      <a href="#deals" data-i18n="navDeals">Deals Now</a>
-      <a href="#deals" data-i18n="navPicks">Smart Picks</a>
-      <a href="#radar" data-i18n="navTrends">Trend Radar</a>
-      <a href="#deals" data-i18n="navCompare">Price Lens</a>
-      <a href="partners.html">Partners</a>
+    <nav class="hd-nav" aria-label="Primary">
+      <a href="#shop">Shop</a>
+      <a href="#for-you">For You</a>
+      <a href="category.html?c=women">Women</a>
+      <a href="category.html?c=men">Men</a>
+      <a href="#departments">Categories</a>
     </nav>
     <div class="hd-tools">
       <label class="hd-search">
         <span aria-hidden="true">⌕</span>
-        <input id="hd-search-input" data-i18n-placeholder="search" placeholder="Search products, brands, or categories…">
+        <input id="hd-search-input" aria-label="Search products, brands, or categories" data-i18n-placeholder="search" placeholder="Search products, brands, or categories…">
       </label>
       <select class="hd-lang" data-lang-select aria-label="Language">
         <option value="en">EN</option><option value="ar">AR</option><option value="he">HE</option><option value="es">ES</option><option value="fr">FR</option>
@@ -43,15 +44,15 @@
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <section class="hd-hero">
       <div class="hd-hero-copy">
         <div class="hd-kicker" data-i18n="kicker">COMPARE SMARTER · SHOP BETTER · KEEP THE FACTS VISIBLE</div>
         <h1><span data-i18n="hero1">Better decisions</span><br><em data-i18n="hero2">before you spend.</em></h1>
         <p data-i18n="heroCopy">HUNT DEAL compares verified offers across approved marketplaces, explains why a deal is worth attention, and tracks what actually converts.</p>
         <div class="hd-actions">
-          <a class="hd-btn hd-btn-primary" href="#deals" data-i18n="explore">Explore Deals Now</a>
-          <a class="hd-btn" href="#how" data-i18n="how">How it works</a>
+          <a class="hd-btn hd-btn-primary" href="#shop" data-i18n="explore">Shop Live Products</a>
+          <a class="hd-btn" href="#departments" data-i18n="how">Browse Categories</a>
         </div>
         <div class="hd-feature-row" id="how">
           <div><b>◇</b><span data-i18n="f1">Price comparison</span></div>
@@ -103,92 +104,32 @@
       </section>
     </section>
 
-    <section class="hd-market-nav glass" aria-label="Deal categories">
-      <div class="hd-market-nav-track">
-        <button type="button" data-hunt-query="women">Women</button>
-        <button type="button" data-hunt-query="men">Men</button>
-        <button type="button" data-hunt-query="dresses">Dresses</button>
-        <button type="button" data-hunt-query="tops">Tops</button>
-        <button type="button" data-hunt-query="hoodies">Hoodies</button>
-        <button type="button" data-hunt-query="jackets">Jackets</button>
-        <button type="button" data-hunt-query="activewear">Activewear</button>
-        <button type="button" data-hunt-query="bags">Bags</button>
-        <button type="button" data-hunt-query="shoes">Shoes</button>
-        <button type="button" data-hunt-query="accessories">Accessories</button>
-        <button type="button" data-hunt-query="home">Home</button>
-        <button type="button" data-hunt-query="travel">Travel</button>
-        <button type="button" data-hunt-query="tech">Tech</button>
-        <button type="button" data-hunt-query="gifts">Gifts</button>
-        <button type="button" data-hunt-query="kitchen">Kitchen</button>
-        <button type="button" data-hunt-query="gaming accessories">Gaming</button>
-        <button type="button" data-hunt-query="kids toys">Kids &amp; Toys</button>
-        <button type="button" data-hunt-query="pets">Pets</button>
-        <button type="button" data-hunt-query="office desk">Office</button>
-        <button type="button" data-hunt-query="lighting">Lighting</button>
-        <button type="button" data-hunt-query="bathroom bath">Bath</button>
-        <button type="button" data-hunt-query="women perfume fragrance">Perfume</button>
-        <button type="button" data-hunt-query="beauty skincare makeup">Beauty</button>
-        <button type="button" data-hunt-query="women jewelry necklace bracelet earrings">Jewelry</button>
+    <section class="hd-department-shell glass" id="departments" aria-label="Shop departments">
+      <div class="hd-department-bar">
+        <button class="hd-all-categories" id="hd-all-categories" type="button" aria-expanded="false" aria-controls="hd-mega-menu">All categories <span aria-hidden="true">⌄</span></button>
+        <a href="category.html?c=women">Women</a>
+        <a href="category.html?c=men">Men</a>
+        <a href="category.html?c=kids">Kids</a>
+        <a href="category.html?c=beauty">Beauty</a>
+        <a href="category.html?c=home">Home</a>
+        <a href="category.html?c=kitchen">Kitchen</a>
+        <a href="category.html?c=tech">Tech</a>
+        <a href="category.html?c=shoes">Shoes</a>
+        <a href="category.html?c=bags">Bags</a>
       </div>
+      <div class="hd-mega-menu" id="hd-mega-menu" hidden aria-label="All shopping categories"></div>
     </section>
 
-    <section class="hd-hunt-market" id="hunt-market">
-      <div class="hd-section-head hd-hunt-head">
-        <div>
-          <div class="hd-kicker hd-kicker-small">DEAL HUNT / LIVE SEARCH / VERIFIED SOURCES</div>
-          <h2>Hunt thousands of deal ideas by category</h2>
-          <p>Pick a category and HUNT DEAL searches connected providers live. No fake discounts, no invented stock, no fake countdowns.</p>
-        </div>
-        <a class="hd-btn hd-btn-primary" href="#live-search">Open Live Hunt</a>
-      </div>
 
-      <div class="hd-category-grid">
-        <button class="hd-category-card hot" type="button" data-hunt-query="women fashion deals"><span>&#128087;</span><b>Women's Fashion</b><small>Dresses / tops / sets</small></button>
-        <button class="hd-category-card hot" type="button" data-hunt-query="women perfume fragrance"><span>&#10022;</span><b>Perfume</b><small>Fragrance / gift sets</small></button>
-        <button class="hd-category-card hot" type="button" data-hunt-query="women jewelry accessories"><span>&#9671;</span><b>Jewelry</b><small>Necklaces / bracelets</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="women handbags purses"><span>&#128092;</span><b>Bags</b><small>Handbags / purses</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="women shoes sneakers"><span>&#9682;</span><b>Shoes</b><small>Sneakers / heels</small></button>
-        <button class="hd-category-card hot" type="button" data-hunt-query="beauty skincare makeup"><span>&#10023;</span><b>Beauty</b><small>Skincare / makeup</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="women sunglasses accessories"><span>&#9673;</span><b>Sunglasses</b><small>Frames / accessories</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="women watches"><span>&#8986;</span><b>Watches</b><small>Classic / smart</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="hair beauty tools"><span>~</span><b>Hair</b><small>Care / styling tools</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="women wallets belts accessories"><span>&#9635;</span><b>Accessories</b><small>Wallets / belts</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="home decor deals"><span>&#8962;</span><b>Home</b><small>Decor / organizers</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="kitchen deals"><span>&#9711;</span><b>Kitchen</b><small>Tools / appliances</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="phone accessories electronics"><span>&#8767;</span><b>Phone &amp; Tech</b><small>Audio / charging</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="travel accessories luggage"><span>&#9992;</span><b>Travel</b><small>Luggage / organizers</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="fitness accessories"><span>&#9651;</span><b>Fitness</b><small>Gear / accessories</small></button>
-        <button class="hd-category-card" type="button" data-hunt-query="gifts for women"><span>&#9829;</span><b>Gifts</b><small>Gift ideas / sets</small></button>
-      </div>
-    </section>
 
-    <section class="hd-women-zone">
+    <section class="hd-live-market" id="shop">
       <div class="hd-section-head">
         <div>
-          <div class="hd-kicker hd-kicker-small">WOMEN'S DEAL HUNT</div>
-          <h2>Beauty, fragrance, fashion &amp; accessories</h2>
-          <p>A high-density hunt zone around the categories you want most. Buttons launch real provider search, not pre-filled fake discounts.</p>
+          <div class="hd-kicker hd-kicker-small">LIVE MARKET · ORGANIZED SHOPPING</div>
+          <h2>Shop real products by department</h2>
+          <p>Real supplier products, clean departments, personalized suggestions, and clear product details. Open a category to browse the full live catalog.</p>
         </div>
-        <span class="hd-status green">LIVE HUNT</span>
-      </div>
-      <div class="hd-women-grid">
-        <button type="button" class="hd-women-card perfume" data-hunt-query="women perfume fragrance gift set"><span class="hd-women-label">FRAGRANCE</span><strong>Perfume Hunt</strong><small>Fragrances / gift sets / discovery</small><em>HUNT NOW -&gt;</em></button>
-        <button type="button" class="hd-women-card jewelry" data-hunt-query="women jewelry necklace bracelet earrings"><span class="hd-women-label">ACCESSORIES</span><strong>Jewelry Hunt</strong><small>Necklaces / bracelets / earrings / rings</small><em>HUNT NOW -&gt;</em></button>
-        <button type="button" class="hd-women-card bags" data-hunt-query="women handbags shoulder bags purses"><span class="hd-women-label">BAGS</span><strong>Bag Hunt</strong><small>Handbags / shoulder bags / everyday bags</small><em>HUNT NOW -&gt;</em></button>
-        <button type="button" class="hd-women-card beauty" data-hunt-query="beauty skincare makeup set"><span class="hd-women-label">BEAUTY</span><strong>Beauty Hunt</strong><small>Skincare / makeup / hair / beauty tools</small><em>HUNT NOW -&gt;</em></button>
-        <button type="button" class="hd-women-card shoes" data-hunt-query="women shoes sneakers heels"><span class="hd-women-label">STYLE</span><strong>Shoe Hunt</strong><small>Sneakers / casual / heels / seasonal</small><em>HUNT NOW -&gt;</em></button>
-        <button type="button" class="hd-women-card fashion" data-hunt-query="women fashion dresses tops sets"><span class="hd-women-label">FASHION</span><strong>Fashion Hunt</strong><small>Dresses / tops / matching sets / outerwear</small><em>HUNT NOW -&gt;</em></button>
-      </div>
-    </section>
-
-    <section class="hd-live-market" id="live-market">
-      <div class="hd-section-head">
-        <div>
-          <div class="hd-kicker hd-kicker-small">LIVE MARKET · FAST SHELVES</div>
-          <h2>More products, organized by what people want</h2>
-          <p>Verified supplier-catalog products with real source images. Open any product for source price, sizes, colors and stock. Retail sale activation follows supplier approval.</p>
-        </div>
-        <span class="hd-status green" id="hd-shelf-count">CONNECTING</span>
+        <span class="hd-status green" id="hd-shelf-count" aria-live="polite">CONNECTING</span>
       </div>
       <div id="hd-shelves-root" class="hd-shelves-root">
         <div class="hd-shelf-loading glass">Loading live market shelves...</div>
@@ -213,41 +154,6 @@
       <div class="hd-stat-quote">“Not just lower prices. Smarter choices.”</div>
     </section>
 
-
-    <section class="hd-radar-section" id="radar">
-      <div class="hd-section-head">
-        <div><div class="hd-kicker hd-kicker-small">SEPTEMBER 2026 SIGNALS</div><h2 data-i18n="radarTitle">Trend Radar</h2><p data-i18n="radarSub">Fresh shopping signals guide what HUNT DEAL researches next. Signals are not sales claims.</p></div>
-      </div>
-      <div class="hd-radar-grid">
-        <article class="hd-radar-card glass">
-          <div class="hd-radar-top"><span class="hd-radar-icon">⚡</span><span class="hd-status green">LIVE SIGNAL</span></div>
-          <h3>Portable power & travel tech</h3>
-          <p>Portable chargers, compact adapters and travel-ready accessories are showing strong September attention across current deal and travel coverage.</p>
-          <small>Research focus · price freshness · portability · verified availability</small>
-        </article>
-        <article class="hd-radar-card glass">
-          <div class="hd-radar-top"><span class="hd-radar-icon">◉</span><span class="hd-status blue">HOT</span></div>
-          <h3>Robot vacuums & smart home</h3>
-          <p>IFA launches and active September discounting keep robot cleaning and connected-home products high on the watchlist.</p>
-          <small>Research focus · real discount depth · retailer spread · model age</small>
-        </article>
-        <article class="hd-radar-card glass">
-          <div class="hd-radar-top"><span class="hd-radar-icon">✈</span><span class="hd-status blue">SEASONAL</span></div>
-          <h3>Travel organizers & fall gear</h3>
-          <p>Packing organizers, luggage accessories and compact travel essentials are recurring in current fall-travel shopping coverage.</p>
-          <small>Research focus · low-friction utility · shipping · return risk</small>
-        </article>
-      </div>
-    </section>
-
-    <section class="hd-deals-section" id="catalog">
-      <div class="hd-section-head">
-        <div><div class="hd-kicker hd-kicker-small">LIVE MERCHANT CATALOG</div><h2 data-i18n="catalogTitle">Products already connected</h2><p data-i18n="catalogSub">Real catalog inventory from an approved API source. These are catalog candidates, not qualified deals yet.</p></div>
-        <span class="hd-status blue" id="hd-catalog-count">CONNECTING</span>
-      </div>
-      <p class="hd-inline-disclosure" data-i18n="catalogTruth">Supplier base cost is shown only as source intelligence. It is not a public retail price or a promised margin.</p>
-      <div class="hd-catalog-grid" id="hd-catalog-grid"></div>
-    </section>
 
     <section class="hd-deals-section" id="live-search" hidden>
       <div class="hd-section-head">
@@ -293,12 +199,12 @@
   </footer>
 
   <script src="i18n.js"></script>
-  <script src="market-core.js?v=wow1"></script>
+  <script src="market-core.js?v=market2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="account-presence.js?v=account1"></script>
   <script src="analytics-config.js?v=analytics1"></script>
   <script src="analytics.js?v=analytics1"></script>
-  <script src="hunt-deal.js?v=wow1"></script>
-  <script src="hunt-wow.js?v=wow1"></script>
+  <script src="hunt-deal.js?v=market2"></script>
+  <script src="hunt-wow.js?v=market2"></script>
 </body>
 </html>

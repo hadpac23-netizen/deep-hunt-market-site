@@ -6,16 +6,18 @@
   <meta name="description" content="Browse live HUNT DEAL category products with BOOM personalization.">
   <title>Category — HUNT DEAL</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
+  <link rel="stylesheet" href="hunt-wow.css?v=market2">
 </head>
-<body class="hd-page">
+<body class="hd-page hd-market-v2">
+  <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
   <div class="hd-space"></div>
   <header class="hd-topbar">
     <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">BOOM PERSONALIZED MARKET</div></div>
-    <nav class="hd-nav"><a href="./#hunt-market">Categories</a><a href="./#catalog">Catalog</a><a href="partners.html">Partners</a></nav>
+    <nav class="hd-nav" aria-label="Primary"><a href="./#shop">Shop</a><a href="./#for-you">For You</a><a href="category.html?c=women">Women</a><a href="category.html?c=men">Men</a></nav>
     <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a></div>
   </header>
 
-  <main class="hd-category-shell">
+  <main class="hd-category-shell" id="main-content">
     <section class="hd-category-hero glass">
       <div class="hd-breadcrumb"><a href="./">Home</a><span>/</span><strong id="hd-cat-breadcrumb">Category</strong></div>
       <div class="hd-category-hero-row">
@@ -26,16 +28,16 @@
     </section>
 
     <section class="hd-category-toolbar glass">
-      <div class="hd-cat-result-copy"><strong id="hd-cat-count">0 products</strong><small id="hd-cat-provider-state">Searching verified sources…</small></div>
+      <div class="hd-cat-result-copy"><strong id="hd-cat-count" aria-live="polite">0 products</strong><small id="hd-cat-provider-state" aria-live="polite">Searching verified sources…</small></div>
       <div class="hd-cat-controls">
         <label>Sort<select id="hd-cat-sort"><option value="for-you">For You</option><option value="relevance">Relevance</option><option value="price-low">Price: Low</option><option value="price-high">Price: High</option></select></label>
         <label>Min<input id="hd-price-min" inputmode="decimal" placeholder="0"></label>
         <label>Max<input id="hd-price-max" inputmode="decimal" placeholder="Any"></label>
         <button id="hd-cat-apply" class="hd-btn" type="button">Apply</button>
         <div class="hd-view-control" aria-label="Product image size">
-          <button type="button" data-view-mode="compact" title="Compact">&#9638;</button>
-          <button type="button" data-view-mode="comfortable" class="active" title="Comfortable">&#9638;</button>
-          <button type="button" data-view-mode="large" title="Large">&#9635;</button>
+          <button type="button" data-view-mode="compact" title="Compact" aria-label="Compact product cards">&#9638;</button>
+          <button type="button" data-view-mode="comfortable" class="active" title="Comfortable" aria-label="Comfortable product cards">&#9638;</button>
+          <button type="button" data-view-mode="large" title="Large" aria-label="Large product cards">&#9635;</button>
         </div>
       </div>
     </section>
@@ -55,16 +57,16 @@
   <nav class="hd-mobile-nav" aria-label="Mobile navigation">
     <a href="./"><span>&#8962;</span><small>Home</small></a>
     <a class="active" href="category.html?c=women"><span>&#9638;</span><small>Categories</small></a>
-    <a href="category.html?c=women#for-you"><span>&#10022;</span><small>For You</small></a>
+    <a href="./#for-you"><span>&#10022;</span><small>For You</small></a>
     <a href="checkout.html"><span>&#9711;</span><small>Cart</small><b data-cart-count>0</b></a>
     <a href="auth.html"><span>&#9675;</span><small>Sign in</small></a>
   </nav>
 
-  <script src="market-core.js?v=wow1"></script>
+  <script src="market-core.js?v=market2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="account-presence.js?v=account1"></script>
   <script src="analytics-config.js?v=analytics1"></script>
   <script src="analytics.js?v=analytics1"></script>
-  <script src="category.js?v=wow1"></script>
+  <script src="category.js?v=market2"></script>
 </body>
 </html>

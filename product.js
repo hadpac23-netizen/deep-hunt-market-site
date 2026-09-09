@@ -81,6 +81,11 @@
     $("#hd-product-category-link").href=H.categoryUrl(cat); $("#hd-product-category-link").textContent=def.title;
     document.title=`${product.title || "Product"} — HUNT DEAL`;
     renderOptions(); renderGallery();
+    const readyForCart = variants.length > 0;
+    const add = $("#hd-product-add");
+    if (add) { add.disabled = !readyForCart; add.textContent = readyForCart ? "Add to checkout preview →" : "Options pending"; }
+    const mobileAdd = $("#hd-mobile-add");
+    if (mobileAdd) { mobileAdd.disabled = !readyForCart; mobileAdd.textContent = readyForCart ? "Add to Cart" : "Options pending"; }
   }
 
   function syncMobilePrice() {

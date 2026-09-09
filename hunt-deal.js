@@ -213,7 +213,9 @@
     men: ["Men's Fashion", "men"],
     dresses: ["Dresses & Skirts", "dresses"],
     tops: ["Tops & T-Shirts", "tops"],
+    bottoms: ["Bottoms", "bottoms"],
     hoodies: ["Hoodies & Sweatshirts", "hoodies"],
+    knitwear: ["Knitwear", "knitwear"],
     jackets: ["Jackets & Outerwear", "jackets"],
     activewear: ["Activewear", "activewear"],
     bags: ["Bags & Totes", "bags"],
@@ -221,13 +223,21 @@
     accessories: ["Accessories", "accessories"],
     travel: ["Travel Picks", "travel"],
     home: ["Home Finds", "home"],
+    storage: ["Storage & Organization", "storage"],
+    bedding: ["Bedding", "bedding"],
+    cleaning: ["Cleaning & Laundry", "cleaning"],
     tech: ["Phone & Tech", "tech"],
+    phoneaccessories: ["Phone Accessories", "phoneaccessories"],
     gaming: ["Gaming Accessories", "gaming"],
+    sports: ["Sports & Fitness", "sports"],
+    outdoors: ["Outdoor & Garden", "outdoors"],
     beauty: ["Beauty & Skincare", "beauty"],
     perfume: ["Perfume & Fragrance", "perfume"],
     jewelry: ["Jewelry", "jewelry"],
     kitchen: ["Kitchen", "kitchen"],
     toys: ["Toys & Play", "toys"],
+    crafts: ["Arts & Crafts", "crafts"],
+    party: ["Party & Celebration", "party"],
     lighting: ["Lighting", "lighting"],
     bath: ["Bath & Bathroom", "bath"],
     gifts: ["Gift Ideas", "gifts"],
@@ -247,12 +257,10 @@
   };
 
   const shelfDepartments = [
-    ["Fashion", ["women","men","dresses","tops","hoodies","jackets","activewear","swimwear","socks"]],
-    ["Beauty & Style", ["bags","shoes","hats","accessories","jewelry","beauty","perfume"]],
-    ["Home & Lifestyle", ["home","kitchen","bath","lighting","pillows","blankets","wallart","drinkware","travel"]],
-    ["Tech & Gaming", ["tech","gaming"]],
-    ["Kids & Pets", ["kids","toys","pets"]],
-    ["Gifts & Office", ["gifts","ornaments","stickers","stationery","office"]],
+    ["Fashion", ["women","men","dresses","shoes"]],
+    ["Beauty & Style", ["beauty","jewelry","bags"]],
+    ["Home & Living", ["home","kitchen","storage"]],
+    ["Everyday", ["tech","travel","kids","pets"]],
   ];
 
   function shelfCard(item) {
@@ -311,7 +319,7 @@
           const meta = shelfMeta[slug];
           const items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
           if (!meta || !items.length) return "";
-          const cards = items.map(shelfCard).join("");
+          const cards = items.slice(0,12).map(shelfCard).join("");
           const categoryHref = window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`;
           return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>LIVE CATEGORY</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track">${cards}</div></section>`;
         }).filter(Boolean).join("");
@@ -320,7 +328,6 @@
       }).join("");
       root.innerHTML = html || '<div class="hd-shelf-loading glass">No live shelves yet.</div>';
       counter.textContent = `${Number(data.visible_product_count || 0)} LIVE`;
-      renderLowSourceShelf(catalogItems);
     } catch (err) {
       root.innerHTML = `<div class="hd-shelf-loading glass">${esc(err.message || "Market shelves unavailable")}</div>`;
       counter.textContent = "WAITING";
@@ -450,7 +457,6 @@
 
   load().then(() => {
     const root = $("#hd-shelves-root");
-    if (root && !root.querySelector(".hd-market-shelf.low-source")) renderLowSourceShelf(catalogItems);
   }).catch(err => {
     const empty = $("#hd-empty");
     if (empty) { empty.hidden = false; empty.querySelector("p").textContent = err.message; }

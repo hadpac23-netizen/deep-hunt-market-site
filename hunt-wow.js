@@ -2,29 +2,34 @@
   const H = window.HuntCore;
   if (!H) return;
 
-  const worlds = [
-    ["women","Fashion","Women's fashion","01"],
-    ["beauty","Beauty","Beauty & skincare","02"],
-    ["jewelry","Jewelry","Jewelry & style","03"],
-    ["home","Home","Home & living","04"],
-    ["kitchen","Kitchen","Kitchen finds","05"],
-    ["tech","Tech","Phone & tech","06"],
-    ["gaming","Gaming","Gaming accessories","07"],
-    ["travel","Travel","Travel essentials","08"],
-    ["kids","Kids","Kids & youth","09"],
-    ["toys","Toys","Toys & play","10"],
-    ["pets","Pets","Pet finds","11"],
-    ["office","Office","Office & desk","12"]
+  const $ = q => document.querySelector(q);
+  const modeKey = "hunt_shop_mode_v2";
+  let lastData = null;
+
+  const departments = [
+    {title:"Women", slug:"women", items:["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry"]},
+    {title:"Men", slug:"men", items:["men"]},
+    {title:"Kids", slug:"kids", items:["kids","toys"]},
+    {title:"Beauty & Style", slug:"beauty", items:["beauty","jewelry","bags","shoes","accessories","perfume"]},
+    {title:"Home & Living", slug:"home", items:["home","kitchen","storage","bedding","bath","lighting","cleaning"]},
+    {title:"Tech & Gaming", slug:"tech", items:["tech","phoneaccessories","gaming"]},
+    {title:"Sports & Travel", slug:"sports", items:["sports","outdoors","travel"]},
+    {title:"Gifts & More", slug:"gifts", items:["gifts","party","crafts","office","stationery","pets"]}
   ];
 
-  const money = (value, currency="USD") => {
-    if (!Number.isFinite(Number(value)) || Number(value) <= 0) return "LIVE SOURCE";
-    return H.money(Number(value), currency);
-  };
+  const megaGroups = [
+    ["Women", "women", ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"]],
+    ["Men", "men", ["tops","bottoms","hoodies","jackets","knitwear","activewear"]],
+    ["Beauty & Style", null, ["beauty","perfume","jewelry","bags","shoes","hats","accessories"]],    ["Home & Living", null, ["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]],
+    ["Tech", null, ["tech","phoneaccessories","gaming","office"]],
+    ["Kids & Pets", null, ["kids","toys","pets"]],
+    ["Sports & Travel", null, ["sports","outdoors","travel"]],
+    ["Gifts & Creative", null, ["gifts","party","crafts","stationery","ornaments"]]
+  ];
 
   function flatUnique(shelves) {
-    const seen = new Set();
     const out = [];
+    const seen = new Set();
     Object.values(shelves || {}).forEach(rows => {
       (Array.isArray(rows) ? rows : []).forEach(item => {
         const key = `${item?.provider || ""}:${item?.item_id || ""}`;
@@ -36,93 +41,188 @@
     return out;
   }
 
-  function productCard(item, label) {
+  function linkFor(groupSlug, subSlug) {
+    if (groupSlug === "women" || groupSlug === "men") {
+      return `category.html?c=${encodeURIComponent(groupSlug)}&sub=${encodeURIComponent(subSlug)}`;
+    }
+    return H.categoryUrl(subSlug);
+  }
+
+  function megaMenuHtml() {
+    return megaGroups.map(([title, groupSlug, items]) => {
+      const links = items.filter(slug => H.categoryDefs[slug]).map(slug => {
+        const def = H.categoryDefs[slug];
+        return `<a href="${H.esc(linkFor(groupSlug, slug))}">${H.esc(def.title)}</a>`;
+      }).join("");
+      const allLink = groupSlug ? H.categoryUrl(groupSlug) : H.categoryUrl(items[0]);
+      return `<section><h3><a href="${H.esc(allLink)}">${H.esc(title)}</a></h3><div>${links}</div></section>`;
+    }).join("");
+  }
+
+  function setupMegaMenu() {
+    const button = $("#hd-all-categories");
+    const menu = $("#hd-mega-menu");
+    if (!button || !menu) return;
+    menu.innerHTML = megaMenuHtml();
+    const close = () => {
+      menu.hidden = true;
+      button.setAttribute("aria-expanded","false");
+    };    const open = () => {
+      menu.hidden = false;
+      button.setAttribute("aria-expanded","true");
+      menu.querySelector("a")?.focus();
+    };
+    button.addEventListener("click", () => menu.hidden ? open() : close());
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && !menu.hidden) {
+        close();
+        button.focus();
+      }
+    });
+    document.addEventListener("click", event => {
+      if (menu.hidden) return;
+      if (menu.contains(event.target) || button.contains(event.target)) return;
+      close();
+    });
+  }
+
+  function mode() {
+    const value = localStorage.getItem(modeKey) || "for-you";
+    return ["for-you","women","men","home","tech"].includes(value) ? value : "for-you";
+  }
+
+  function modeSlugs(value) {
+    if (value === "women") return ["women"];
+    if (value === "men") return ["men"];
+    if (value === "home") return ["home","kitchen","storage","bedding","bath","lighting"];
+    if (value === "tech") return ["tech","phoneaccessories","gaming","office"];
+    const signals = H.signals();
+    const ranked = Object.entries(signals)
+      .filter(([slug,score]) => H.categoryDefs[slug] && Number(score) > 0)
+      .sort((a,b) => Number(b[1]) - Number(a[1]))
+      .map(([slug]) => slug)
+      .slice(0,5);
+    return ranked.length ? ranked : ["women","men","home","beauty","tech","kids","travel"];
+  }
+
+  function pickProducts(shelves, slugs, limit=16) {
+    const out = [];
+    const seen = new Set();
+    for (const slug of slugs) {
+      for (const item of Array.isArray(shelves?.[slug]) ? shelves[slug] : []) {
+        const key = `${item?.provider || ""}:${item?.item_id || ""}`;
+        if (!item?.item_id || seen.has(key)) continue;
+        seen.add(key);
+        out.push(item);
+        if (out.length >= limit) return out;
+      }
+    }
+    return out;
+  }  function productCard(item, label="LIVE") {
     const href = H.productUrl(item);
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${H.esc(item.image_url)}" alt="${H.esc(item.title || "Product")}" loading="lazy">`
-      : `<div class="hd-wow-image-placeholder">H</div>`;
-    const hasPrice = Number.isFinite(Number(item.price_amount)) && Number(item.price_amount) > 0;
-    return `<article class="hd-wow-product">
-      <a class="hd-wow-product-media" href="${H.esc(href)}">
-        ${image}
-        <span>${H.esc(label)}</span>
-      </a>
+      : '<div class="hd-wow-image-placeholder" aria-hidden="true">H</div>';
+    const price = Number.isFinite(Number(item.price_amount)) && Number(item.price_amount) > 0
+      ? H.money(Number(item.price_amount), item.currency || "USD")
+      : "Open product";
+    return `<article class="hd-wow-product" role="listitem">
+      <a class="hd-wow-product-media" href="${H.esc(href)}">${image}<span>${H.esc(label)}</span></a>
       <div class="hd-wow-product-body">
         <small>${H.esc(item.provider || "LIVE SOURCE")}</small>
         <a href="${H.esc(href)}">${H.esc(item.title || "Product")}</a>
-        <div class="hd-wow-price">
-          <strong>${money(item.price_amount, item.currency || "USD")}</strong>
-          <em>${hasPrice ? "supplier base" : "open product"}</em>
-        </div>
+        <div class="hd-wow-price"><strong>${price}</strong><em>${item.price_amount ? "supplier base" : "details"}</em></div>
       </div>
     </article>`;
   }
 
-  function render(data) {
+  function departmentCard(dep, shelves) {
+    const products = pickProducts(shelves, dep.items, 30);
+    const rep = products.find(x => typeof x.image_url === "string" && x.image_url.startsWith("https://"));
+    const uniqueCount = products.length;
+    const image = rep
+      ? `<img src="${H.esc(rep.image_url)}" alt="" loading="lazy">`
+      : '<div class="hd-dept-placeholder" aria-hidden="true">H</div>';
+    return `<a class="hd-dept-card" href="${H.esc(H.categoryUrl(dep.slug))}">
+      <div class="hd-dept-image">${image}</div>
+      <div><strong>${H.esc(dep.title)}</strong><span>${uniqueCount ? uniqueCount + "+ live picks" : "Open department"}</span></div>
+    </a>`;
+  }
+
+  function renderPersonalized(shelves) {
+    const value = mode();
+    const products = pickProducts(shelves, modeSlugs(value), 16);
+    const host = $("#hd-for-you-products");
+    if (!host) return;
+    host.innerHTML = products.map(item => productCard(item, value === "for-you" ? "FOR YOU" : value.toUpperCase())).join("");
+    host.setAttribute("role","list");
+    document.querySelectorAll("[data-shop-mode]").forEach(button => {
+      const active = button.dataset.shopMode === value;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    const copy = $("#hd-for-you-copy");
+    if (copy) copy.textContent = value === "for-you"
+      ? (Object.keys(H.signals()).length ? "Based on categories you viewed on this device." : "A balanced mix while HUNT learns what you browse.")
+      : `Showing ${value} picks by your choice.`;
+  }  function render(data) {
+    lastData = data;
     const shelves = data?.shelves || {};
     const all = flatUnique(shelves);
     if (!all.length) return;
 
+    const liveCount = Number(data.visible_product_count || all.length);
     const providerCount = new Set(all.map(x => x.provider).filter(Boolean)).size;
     const categoryCount = Object.values(shelves).filter(rows => Array.isArray(rows) && rows.length).length;
-    const liveCount = Number(data.visible_product_count || all.length);
 
-    const hero = document.querySelector(".hd-hero-copy");
-    if (hero && !hero.querySelector(".hd-live-proof")) {
-      const proof = document.createElement("div");
+    const hero = $(".hd-hero-copy");
+    let proof = hero?.querySelector(".hd-live-proof");
+    if (hero && !proof) {
+      proof = document.createElement("div");
       proof.className = "hd-live-proof";
-      proof.innerHTML = `
-        <div><strong data-wow-live>${liveCount.toLocaleString()}</strong><span>LIVE PRODUCTS</span></div>
-        <div><strong data-wow-providers>${providerCount}</strong><span>LIVE SOURCES</span></div>
-        <div><strong data-wow-categories>${categoryCount}</strong><span>SHOPPING WORLDS</span></div>`;
-      const intro = hero.querySelector(":scope > p");
-      intro?.after(proof);
-    } else {
-      const live = hero?.querySelector("[data-wow-live]");
-      const providers = hero?.querySelector("[data-oow-providers]");
-      const categories = hero?.querySelector("[data-wow-categories]");
-      if (live) live.textContent = liveCount.toLocaleString();
-      if (providers) providers.textContent = String(providerCount);
-      if (categories) categories.textContent = String(categoryCount);
+      proof.setAttribute("aria-label","Live marketplace summary");
+      hero.querySelector(":scope > p")?.after(proof);
     }
+    if (proof) proof.innerHTML = `
+      <div><strong>${liveCount.toLocaleString()}</strong><span>UNIQUE LIVE PRODUCTS</span></div>
+      <div><strong>${providerCount}</strong><span>LIVE CATALOG SOURCES</span></div>
+      <div><strong>${categoryCount}</strong><span>LIVE CATEGORIES</span></div>`;
 
-    let showcase = document.querySelector("#hd-wow-showcase");
+    let showcase = $("#hd-wow-showcase");
     if (!showcase) {
       showcase = document.createElement("section");
       showcase.id = "hd-wow-showcase";
       showcase.className = "hd-wow-showcase";
-      document.querySelector("#live-market")?.before(showcase);
+      $("#shop")?.before(showcase);
     }
 
-    const worldCards = worlds.map(([slug,kicker,title,num]) => {
-      const count = Array.isArray(shelves[slug]) ? shelves[slug].length : 0;
-      if (!count) return "";
-      return `<a class="hd-wow-world" href="${H.esc(H.categoryUrl(slug))}" data-world="${H.esc(slug)}">
-        <span>${num}</span><small>${H.esc(kicker)}</small><strong>${H.esc(title)}</strong><em>${count} live products →</em>
-      </a>`;
-    }).join("");
-
-    const cj = all.filter(x => String(x.provider).toLowerCase().includes("cj")).slice(0,10);
-    const priced = all
-      .filter(x => Number.isFinite(Number(x.price_amount)) && Number(x.price_amount) > 0)
-      .sort((a,b) => Number(a.price_amount) - Number(b.price_amount))
-      .slice(0,10);
-
+    const cj = all.filter(x => String(x.provider).toLowerCase().includes("cj")).slice(0,12);
     showcase.innerHTML = `
       <div class="hd-wow-head">
-        <div>
-          <div class="hd-kicker hd-kicker-small">HUNT MARKET · LIVE SUPPLIERS · REAL PRODUCTS</div>
-          <h2>One marketplace. A world of real products.</h2>
-          <p>Explore live supplier catalogs by world, then open any product for variants, source price and current provider data.</p>
-        </div>
-        <div class="hd-wow-live"><i></i>${liveCount.toLocaleString()} LIVE</div>
+        <div><div class="hd-kicker hd-kicker-small">SHOP BY DEPARTMENT</div><h2>Everything is easier to find now.</h2>
+        <p>Large departments first, detailed subcategories inside. Real images come from the live supplier catalog.</p></div>
+        <span class="hd-wow-live" aria-live="polite"><i></i>${liveCount.toLocaleString()} LIVE</span>
       </div>
-      <div class="hd-wow-worlds">${worldCards}</div>
-      ${cj.length ? `<div class="hd-wow-rail-head"><div><small>CONNECTED NOW</small><h3>Fresh from CJdropshipping</h3></div><span>LIVE API</span></div><div class="hd-wow-track">${cj.map(x => productCard(x,"CJ LIVE")).join("")}</div>` : ""}
-      ${priced.length ? `<div class="hd-wow-rail-head value"><div><small>VALUE RADAR</small><h3>Low source-cost discoveries</h3></div><span>SUPPLIER BASE</span></div><div class="hd-wow-track">${priced.map(x => productCard(x,"VALUE FIND")).join("")}</div>` : ""}
-    `;
-  }
+      <div class="hd-dept-grid">${departments.map(dep => departmentCard(dep,shelves)).join("")}</div>
+      <section class="hd-for-you" id="for-you" aria-labelledby="hd-for-you-title">
+        <div class="hd-for-you-head"><div><small>PERSONALIZED SHOPPING</small><h3 id="hd-for-you-title">For You</h3><p id="hd-for-you-copy"></p></div>
+          <div class="hd-mode-switch" aria-label="Choose shopping view">
+            <button type="button" data-shop-mode="for-you">For You</button><button type="button" data-shop-mode="women">Women</button>
+            <button type="button" data-shop-mode="men">Men</button><button type="button" data-shop-mode="home">Home</button><button type="button" data-shop-mode="tech">Tech</button>
+          </div>
+        </div>
+        <div class="hd-wow-track" id="hd-for-you-products"></div>
+      </section>
+      ${cj.length ? `<section class="hd-fresh-source"><div class="hd-wow-rail-head"><div><small>FRESH SOURCE</small><h3>New from CJdropshipping</h3></div><span>LIVE API</span></div><div class="hd-wow-track" role="list">${cj.map(x => productCard(x,"CJ LIVE")).join("")}</div></section>` : ""}`;
+    renderPersonalized(shelves);
+  }  document.addEventListener("click", event => {
+    const button = event.target.closest?.("[data-shop-mode]");
+    if (!button) return;
+    localStorage.setItem(modeKey, button.dataset.shopMode || "for-you");
+    if (lastData) renderPersonalized(lastData.shelves || {});
+  });
 
+  setupMegaMenu();
   window.addEventListener("hunt:shelves", event => render(event.detail));
   if (window.HuntMarketShelves) render(window.HuntMarketShelves);
 })();
