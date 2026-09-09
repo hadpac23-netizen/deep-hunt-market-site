@@ -158,3 +158,22 @@ html[dir="rtl"] body.hunt-light-v2 .hd-topbar,html[dir="rtl"] body.hunt-light-v2
   .hunt-light-v2 .hd-checkout-banner{display:block!important}
   .hunt-light-v2 .hd-checkout-items,.hunt-light-v2 .hd-checkout-summary,.hunt-light-v2 .hd-checkout-readiness{padding:14px!important;border-radius:12px!important}
 }
+
+/* Smart category filters */
+.hunt-light-v2 .hd-category-toolbar{flex-wrap:wrap!important}
+.hunt-light-v2 .hd-smart-filters{flex:1 0 100%;display:flex;gap:7px;flex-wrap:wrap;padding-top:10px;border-top:1px solid #f0f0f0}
+.hunt-light-v2 .hd-smart-filters[hidden]{display:none!important}
+.hunt-light-v2 .hd-smart-filters label{display:grid;gap:4px;font-size:.52rem;color:#777}
+.hunt-light-v2 .hd-smart-filters select{height:34px;min-width:118px;border:1px solid #ddd;border-radius:999px;background:#fff;color:#111;padding:0 30px 0 11px;font:inherit;font-size:.66rem}
+.hunt-light-v2 .hd-smart-filters select:focus-visible{outline:2px solid #111;outline-offset:2px}
+
+/* Premium product confidence layer */
+.hunt-light-v2 .hd-boom-product{display:flex!important;border:1px solid #eee!important;background:#fafafa!important;border-radius:12px!important;padding:10px 12px!important}
+.hunt-light-v2 .hd-boom-product>span{width:38px!important;height:38px!important;border-radius:10px!important;background:#111!important;color:#fff!important}
+.hunt-light-v2 .hd-boom-product small{color:#777!important}
+.hunt-light-v2 .hd-product-confidence{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px 0 4px;border-top:1px solid #eee}
+.hunt-light-v2 .hd-product-confidence>div{min-width:0;padding:10px;background:#fafafa;border-radius:10px}
+.hunt-light-v2 .hd-product-confidence strong,.hunt-light-v2 .hd-product-confidence span{display:block}
+.hunt-light-v2 .hd-product-confidence strong{font-size:.62rem;color:#111}
+.hunt-light-v2 .hd-product-confidence span{margin-top:3px;font-size:.52rem;line-height:1.4;color:#777}
+@media(max-width:760px){.hunt-light-v2 .hd-smart-filters{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none;padding-bottom:2px}.hunt-light-v2 .hd-smart-filters::-webkit-scrollbar{display:none}.hunt-light-v2 .hd-smart-filters label{flex:0 0 auto}.hunt-light-v2 .hd-product-confidence{grid-template-columns:1fr}.hunt-light-v2 .hd-product-confidence>div{padding:9px}}

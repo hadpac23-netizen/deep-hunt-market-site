@@ -203,7 +203,18 @@
       }
     }
     const normalized=normalizeSearchQuery(original);
-    return {kind:"search",slug:slugFromQuery(normalized),query:normalized||original,original};
+    const inferred=slugFromQuery(normalized);
+    const womenFallback=inferred==="women" && !/\bwomen\b|women's|womens|dress|skirt|shirt|t-shirt|tops|tank|polo/.test(normalized);
+    return {kind:"search",slug:womenFallback?null:inferred,query:normalized||original,original};
+  }
+
+  function detectBrand(value) {
+    const explicit=typeof value==="object" ? String(value?.brand||"").trim() : "";
+    if(explicit && explicit.length<=80)return explicit;
+    const text=typeof value==="object" ? String(value?.title||"") : String(value||"");
+    const normalized=normalizeSearchQuery(text);
+    const names=Object.keys(brandAliases).sort((a,b)=>b.length-a.length);
+    return names.find(name=>normalized.includes(name)) || "";
   }
 
   function slugFromQuery(query) {
@@ -355,7 +366,7 @@
 
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
-    inferCategory,slugFromQuery,normalizeSearchQuery,resolveSearchIntent,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
+    inferCategory,slugFromQuery,normalizeSearchQuery,resolveSearchIntent,detectBrand,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
     cart,saveCart,addCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
   };
 })();

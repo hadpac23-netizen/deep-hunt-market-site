@@ -5,6 +5,8 @@
   const $ = q => document.querySelector(q);
   const modeKey = "hunt_shop_mode_v2";
   let lastData = null;
+  let recentSearchTerms = [];
+  const recentActionKeys = new Set();
 
   const departments = [
     {title:"Women · Clothing", slug:"women", href:"category.html?c=women", items:["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"], womenOnly:true},
@@ -162,9 +164,27 @@
     </a>`;
   }
 
+  function behaviorScore(item) {
+    const key=`${item?.provider||""}:${item?.item_id||""}`;
+    const title=String(item?.title||"").toLowerCase();
+    const searchBoost=recentSearchTerms.reduce((sum,term)=>sum+(title.includes(term)?18:0),0);
+    const actionBoost=recentActionKeys.has(key)?90:0;
+    const completeness=(item?.image_url?2:0)+(Number(item?.price_amount)>0?2:0);
+    return H.personalScore(item)*10 + searchBoost + actionBoost + completeness;
+  }
+
   function renderPersonalized(shelves) {
     const value = mode();
-    let products = pickProducts(shelves, modeSlugs(value), value === "women" ? 100 : 16);
+    let products;
+    if(value === "for-you"){
+      const allowed=new Set(modeSlugs(value));
+      products=flatUnique(shelves)
+        .filter(item=>allowed.has(H.inferCategory(item)||item?.category))
+        .sort((a,b)=>behaviorScore(b)-behaviorScore(a))
+        .slice(0,16);
+    } else {
+      products = pickProducts(shelves, modeSlugs(value), value === "women" ? 100 : 16);
+    }
     if (value === "women") products = products.filter(isWomenItem).slice(0,16);
     const host = $("#hd-for-you-products");
     if (!host) return;
@@ -176,9 +196,15 @@
       button.setAttribute("aria-pressed", String(active));
     });
     const copy = $("#hd-for-you-copy");
-    if (copy) copy.textContent = value === "for-you"
-      ? (Object.keys(H.signals()).length ? "Based on categories you viewed on this device." : "A balanced mix while HUNT learns what you browse.")
-      : `Showing ${value} picks by your choice.`;
+    if (copy) {
+      if(value === "for-you"){
+        const top=Object.entries(H.signals()).filter(([slug,score])=>H.categoryDefs[slug]&&Number(score)>0).sort((a,b)=>Number(b[1])-Number(a[1])).slice(0,2).map(([slug])=>H.categoryDefs[slug]?.title||slug);
+        copy.textContent = recentSearchTerms.length
+          ? `Updated from your latest search and shopping actions${top.length ? " · " + top.join(" + ") : ""}.`
+          : recentActionKeys.size ? `Updated from your latest Like / Save actions${top.length ? " · " + top.join(" + ") : ""}.`
+          : top.length ? `Learning from your recent activity · ${top.join(" + ")}.` : "A balanced mix while HUNT learns what you browse.";
+      } else copy.textContent=`Showing ${value} picks by your choice.`;
+    }
   }  function render(data) {
     lastData = data;
     const shelves = data?.shelves || {};
@@ -238,6 +264,17 @@
 
   setupMegaMenu();
   window.addEventListener("hunt:shopping-survey", () => { if (lastData) renderPersonalized(lastData.shelves || {}); });
+  window.addEventListener("hunt:shopping-action", event => {
+    const detail=event.detail||{};
+    const key=`${detail.provider||""}:${detail.item_id||""}`;
+    if(detail.liked||detail.saved)recentActionKeys.add(key); else recentActionKeys.delete(key);
+    if(lastData)renderPersonalized(lastData.shelves||{});
+  });
+  window.addEventListener("hunt:search", event => {
+    const query=String(event.detail?.query||"").toLowerCase();
+    recentSearchTerms=query.split(/\s+/).map(x=>x.trim()).filter(x=>x.length>2).slice(0,4);
+    if(lastData)renderPersonalized(lastData.shelves||{});
+  });
     window.addEventListener("hunt:shelves", event => render(event.detail));
   if (window.HuntMarketShelves) render(window.HuntMarketShelves);
 })();

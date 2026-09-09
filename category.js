@@ -145,6 +145,72 @@
     return score;
   }
 
+  function fragranceConcentration(product) {
+    const text=String(product?.title||"").toLowerCase();
+    if(/\b(extrait|extract)\b/.test(text))return "Extrait";
+    if(/\b(edp|eau de parfum)\b/.test(text))return "EDP";
+    if(/\b(edt|eau de toilette)\b/.test(text))return "EDT";
+    if(/\b(edc|eau de cologne|cologne)\b/.test(text))return "Cologne";
+    if(/\bparfum\b/.test(text))return "Parfum";
+    return "";
+  }
+
+  function fragranceVolume(product) {
+    const text=String(product?.title||"");
+    const match=text.match(/\b(\d{1,4}(?:\.\d+)?)\s*ml\b/i);
+    return match ? `${Number(match[1])} ml` : "";
+  }
+
+  function smartFilterValue(id) {
+    return String(document.querySelector(id)?.value||"").trim();
+  }
+
+  function smartFilterMatches(product) {
+    const provider=smartFilterValue("#hd-filter-provider");
+    const brand=smartFilterValue("#hd-filter-brand");
+    const type=smartFilterValue("#hd-filter-type");
+    const concentration=smartFilterValue("#hd-filter-concentration");
+    const volume=smartFilterValue("#hd-filter-volume");
+    const available=smartFilterValue("#hd-filter-available");
+    if(provider && String(product?.provider||"")!==provider)return false;
+    if(brand && String(H.detectBrand?.(product)||"")!==brand)return false;
+    if(type && String(H.inferCategory(product)||"")!==type)return false;
+    if(concentration && fragranceConcentration(product)!==concentration)return false;
+    if(volume && fragranceVolume(product)!==volume)return false;
+    if(available==="verified" && product?.availability_verified!==true)return false;
+    return true;
+  }
+
+  function smartSelect(id,label,values) {
+    const unique=[...new Set(values.filter(Boolean))].sort((a,b)=>String(a).localeCompare(String(b)));
+    if(unique.length<2)return "";
+    const options=unique.map(value=>`<option value="${H.esc(value)}">${H.esc(value)}</option>`).join("");
+    return `<label>${H.esc(label)}<select id="${id}"><option value="">All</option>${options}</select></label>`;
+  }
+
+  function renderSmartFilters() {
+    const host=$("#hd-smart-filters");
+    if(!host)return;
+    const eligible=rawResults.filter(p=>matchesCategoryTruth(p)&&matchesGenderScope(p)&&matchesSub(p));
+    const providers=eligible.map(p=>String(p?.provider||"")).filter(Boolean);
+    const brands=eligible.map(p=>H.detectBrand?.(p)||"").filter(Boolean);
+    const types=eligible.map(p=>H.inferCategory(p)).filter(Boolean);
+    const concentrations=slug==="perfume" ? eligible.map(fragranceConcentration).filter(Boolean) : [];
+    const volumes=slug==="perfume" ? eligible.map(fragranceVolume).filter(Boolean) : [];
+    const hasVerified=eligible.some(p=>p?.availability_verified===true);
+    const hasUnverified=eligible.some(p=>p?.availability_verified!==true);
+    const parts=[
+      smartSelect("hd-filter-provider","Source",providers),
+      smartSelect("hd-filter-brand","Brand",brands),
+      ["women","men"].includes(slug) ? smartSelect("hd-filter-type","Type",types) : "",
+      concentrations.length ? smartSelect("hd-filter-concentration","Concentration",concentrations) : "",
+      volumes.length ? smartSelect("hd-filter-volume","Size",volumes) : "",
+      hasVerified && hasUnverified ? '<label>Availability<select id="hd-filter-available"><option value="">All</option><option value="verified">Verified available</option></select></label>' : ""
+    ].filter(Boolean);
+    host.innerHTML=parts.join("");
+    host.hidden=!parts.length;
+  }
+
   function filteredSorted() {
     const min = Number($("#hd-price-min").value || 0);
     const maxRaw = $("#hd-price-max").value.trim();
@@ -155,7 +221,7 @@
       const price = Number(p.price_amount);
       const priced = Number.isFinite(price) && price > 0;
       const priceMatch = hasPriceFilter ? priced && price >= min && price <= max : true;
-      return matchesCategoryTruth(p) && matchesGenderScope(p) && matchesSub(p) && priceMatch;
+      return matchesCategoryTruth(p) && matchesGenderScope(p) && matchesSub(p) && priceMatch && smartFilterMatches(p);
     });
     if (sort === "price-low") items.sort((a,b)=>(Number(a.price_amount)||Infinity)-(Number(b.price_amount)||Infinity));
     else if (sort === "price-high") items.sort((a,b)=>(Number(b.price_amount)||0)-(Number(a.price_amount)||0));
@@ -259,6 +325,7 @@
         ? `${rawResults.length} catalog products ready · ${providers.join(" + ")}${label==="live"?" · live refresh merged":""}`
         : "No connected provider returned a product for this category yet.";
       resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
+      renderSmartFilters();
       window.HuntAnalytics?.category(slug, rawResults.length);
       renderGrid();
     };
@@ -313,6 +380,7 @@
 
   $("#hd-cat-apply")?.addEventListener("click",()=>renderGrid({reset:true}));
   $("#hd-cat-sort")?.addEventListener("change",()=>renderGrid({reset:true}));
+  $("#hd-smart-filters")?.addEventListener("change",()=>renderGrid({reset:true}));
   document.querySelectorAll("[data-view-mode]").forEach(button => {
     button.addEventListener("click", () => applyViewMode(button.dataset.viewMode));
   });

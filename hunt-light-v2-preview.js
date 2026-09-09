@@ -1,5 +1,8 @@
 (()=>{
   "use strict";
+  const savedLang=localStorage.getItem("hunt_language")||"en";
+  document.documentElement.lang=savedLang;
+  document.documentElement.dir=["ar","he"].includes(savedLang)?"rtl":"ltr";
   const rewrite = href => {
     if(!href || href.startsWith("#") || href.startsWith("http") || href.startsWith("mailto:")) return href;
     try{
