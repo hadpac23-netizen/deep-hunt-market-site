@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-09",
+  "policy": {
+    "onsite_first": true,
+    "never_fake_connection": true,
+    "owner_approval_before_paid_onboarding": true,
+    "publish_requires_live_price_stock_and_source": true
+  },
+  "suppliers": [
+    {
+      "id": "orpe_brasty",
+      "name": "ORPE / BRASTY",
+      "priority": 1,
+      "status": "target_not_connected",
+      "categories": ["perfume", "beauty", "skincare", "makeup"],
+      "regions": ["EU"],
+      "integration": ["api", "feed"],
+      "order_automation": true,
+      "stock_price_sync": true,
+      "white_label": true,
+      "credentials_required": true
+    },
+    {
+      "id": "brandsgateway",
+      "name": "BrandsGateway",
+      "priority": 2,
+      "status": "target_not_connected",
+      "categories": ["women", "men", "bags", "shoes", "accessories", "designer"],
+      "regions": ["EU", "US", "global"],
+      "integration": ["rest_api"],
+      "order_automation": true,
+      "stock_price_sync": true,
+      "white_label": true,
+      "credentials_required": true
+    },
+    {
+      "id": "brandsdistribution_bdroppy",
+      "name": "Brandsdistribution / BDroppy",
+      "priority": 3,
+      "status": "target_not_connected",
+      "categories": ["women", "men", "shoes", "bags", "accessories"],
+      "regions": ["EU", "global"],
+      "integration": ["api", "csv", "xml", "json"],
+      "credentials_required": true
+    },
+    {
+      "id": "perfumeswholesale_eu",
+      "name": "PerfumesWholesale.eu",
+      "priority": 4,
+      "status": "target_not_connected",
+      "categories": ["perfume", "beauty"],
+      "regions": ["EU"],
+      "integration": ["rest_api"],
+      "order_automation": true,
+      "stock_price_sync": true,
+      "credentials_required": true
+    },
+    {
+      "id": "doba",
+      "name": "Doba",
+      "priority": 5,
+      "status": "target_not_connected",
+      "categories": ["general"],
+      "regions": ["US"],
+      "integration": ["retailer_api"],
+      "order_automation": true,
+      "tracking_api": true,
+      "credentials_required": true
+    },
+    {
+      "id": "cjdropshipping",
+      "name": "CJdropshipping",
+      "priority": 6,
+      "status": "catalog_present_order_path_unverified",
+      "categories": ["general"],
+      "regions": ["China", "US", "EU", "global"],
+      "integration": ["catalog"],
+      "credentials_required": true
+    }
+  ]
+}
