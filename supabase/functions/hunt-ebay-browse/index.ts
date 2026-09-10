@@ -131,7 +131,10 @@ function normalizeSummary(item: any) {
     } : null,
     shipping_options: shipping,
     source_url: clean(item?.itemWebUrl) || null,
-    external_visit_url: clean(item?.itemAffiliateWebUrl) || clean(item?.itemWebUrl) || null,
+    external_visit_url: null,
+    onsite_checkout_required: true,
+    onsite_checkout_enabled: env("EBAY_ORDER_API_APPROVED").toLowerCase()==="true",
+    checkout_status: env("EBAY_ORDER_API_APPROVED").toLowerCase()==="true" ? "ORDER_API_APPROVED" : "ORDER_API_APPROVAL_REQUIRED",
     item_end_date: clean(item?.itemEndDate) || null,
     catalog_discovery: true,
     merchant_product: false
@@ -286,7 +289,9 @@ Deno.serve(async (req: Request) => {
       supported_departments:Object.keys(DEPARTMENTS),
       oauth:"client_credentials",
       browse_api:true,
-      checkout_api:false
+      order_api_approved:env("EBAY_ORDER_API_APPROVED").toLowerCase()==="true",
+      onsite_checkout:env("EBAY_ORDER_API_APPROVED").toLowerCase()==="true" && Boolean(clientId && clientSecret),
+      checkout_api:env("EBAY_ORDER_API_APPROVED").toLowerCase()==="true"
     });
   }
 

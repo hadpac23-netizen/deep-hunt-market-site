@@ -16,23 +16,29 @@ if [[ -z "$EBAY_CLIENT_ID" || -z "$EBAY_CLIENT_SECRET" ]]; then
 fi
 
 INTERNAL_TOKEN="$(openssl rand -hex 32)"
+ORDER_INTERNAL_TOKEN="$(openssl rand -hex 32)"
 TOKEN_FILE="$HOME/.hunt-ebay-internal-token"
+ORDER_TOKEN_FILE="$HOME/.hunt-ebay-order-internal-token"
 TMP_ENV="$(mktemp -t hunt-ebay-secrets)"
 chmod 600 "$TMP_ENV"
-trap 'rm -f "$TMP_ENV"; unset EBAY_CLIENT_ID EBAY_CLIENT_SECRET INTERNAL_TOKEN' EXIT
+trap 'rm -f "$TMP_ENV"; unset EBAY_CLIENT_ID EBAY_CLIENT_SECRET INTERNAL_TOKEN ORDER_INTERNAL_TOKEN' EXIT
 
 cat > "$TMP_ENV" <<ENV
 EBAY_CLIENT_ID=$EBAY_CLIENT_ID
 EBAY_CLIENT_SECRET=$EBAY_CLIENT_SECRET
 EBAY_MARKETPLACE_ID=EBAY_US
 HUNT_EBAY_INTERNAL_TOKEN=$INTERNAL_TOKEN
+HUNT_EBAY_ORDER_INTERNAL_TOKEN=$ORDER_INTERNAL_TOKEN
+EBAY_ORDER_API_APPROVED=false
 ENV
 
 printf '%s' "$INTERNAL_TOKEN" > "$TOKEN_FILE"
-chmod 600 "$TOKEN_FILE"
+printf '%s' "$ORDER_INTERNAL_TOKEN" > "$ORDER_TOKEN_FILE"
+chmod 600 "$TOKEN_FILE" "$ORDER_TOKEN_FILE"
 
 npx supabase secrets set --project-ref "$PROJECT_REF" --env-file "$TMP_ENV"
 npx supabase functions deploy hunt-ebay-browse --project-ref "$PROJECT_REF" --no-verify-jwt
+npx supabase functions deploy hunt-ebay-order --project-ref "$PROJECT_REF" --no-verify-jwt
 
 STATUS_URL="https://${PROJECT_REF}.supabase.co/functions/v1/hunt-ebay-browse"
 STATUS="$(curl -sS --max-time 20 -X POST "$STATUS_URL" \
@@ -58,3 +64,14 @@ fi
 echo "EBAY_SECRETS_CONFIGURED"
 echo "EBAY_OAUTH_BROWSE_PASS"
 echo "eBay Browse adapter deployed and live search verified."
+
+ORDER_STATUS="$(curl -sS --max-time 20 -X POST "https://${PROJECT_REF}.supabase.co/functions/v1/hunt-ebay-order" \
+  -H "content-type: application/json" \
+  -H "x-hunt-ebay-order-token: $ORDER_INTERNAL_TOKEN" \
+  --data '{"action":"status"}')"
+
+if [[ "$ORDER_STATUS" == *'"onsite_checkout":true'* ]]; then
+  echo "EBAY_ONSITE_CHECKOUT_READY"
+else
+  echo "EBAY_ORDER_API_APPROVAL_REQUIRED"
+fi

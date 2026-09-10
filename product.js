@@ -153,21 +153,28 @@
     $("#hd-product-category-link").href=H.categoryUrl(cat); $("#hd-product-category-link").textContent=def.title;
     document.title=`${product.title || "Product"} — HUNT DEAL`;
     renderOptions(); renderGallery(); renderProductStructuredData();
-    const externalVisit = typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
-    const readyForCart = variants.length > 0;
+    const onsiteRequired = product?.onsite_checkout_required === true;
+    const onsiteEnabled = product?.onsite_checkout_enabled === true;
+    const externalVisit = !onsiteRequired && typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
+    const readyForCart = variants.length > 0 || (product?.provider === "eBay" && product?.availability_verified === true);
     const storeName = product?.store?.name || "partner store";
+    const checkoutBlocked = onsiteRequired && !onsiteEnabled;
     const add = $("#hd-product-add");
     if (add) {
-      add.disabled = externalVisit ? false : !readyForCart;
-      add.textContent = externalVisit ? `Visit ${storeName} →` : (readyForCart ? "Add to checkout preview →" : "Options pending");
+      add.disabled = checkoutBlocked ? true : (externalVisit ? false : !readyForCart);
+      add.textContent = checkoutBlocked
+        ? "HUNT checkout awaiting eBay approval"
+        : externalVisit
+          ? `Visit ${storeName} →`
+          : (readyForCart ? "Add to HUNT checkout →" : "Options pending");
     }
     const mobileAdd = $("#hd-mobile-add");
     if (mobileAdd) {
-      mobileAdd.disabled = externalVisit ? false : !readyForCart;
-      mobileAdd.textContent = externalVisit ? "Visit store" : (readyForCart ? "Add to Cart" : "Options pending");
+      mobileAdd.disabled = checkoutBlocked ? true : (externalVisit ? false : !readyForCart);
+      mobileAdd.textContent = checkoutBlocked ? "Checkout approval pending" : (externalVisit ? "Visit store" : (readyForCart ? "Add to Cart" : "Options pending"));
     }
     const quantityBlock = document.querySelector(".hd-product-quantity");
-    if (quantityBlock) quantityBlock.hidden = externalVisit;
+    if (quantityBlock) quantityBlock.hidden = externalVisit || checkoutBlocked;
   }
 
   function syncMobilePrice() {
@@ -207,6 +214,7 @@
 
   function addCurrentToCart() {
     if (!product) return;
+    if (product?.onsite_checkout_required === true && product?.onsite_checkout_enabled !== true) return;
     if (typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://")) {
       let sid = localStorage.getItem("hunt_outbound_session_v1");
       if (!sid) {

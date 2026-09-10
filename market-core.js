@@ -334,6 +334,9 @@
       price_amount: amount == null ? null : Number(amount),
       currency: String(variant?.currency || product.currency || "USD"),
       price_basis: String(product.price_basis || "SUPPLIER_BASE"),
+      onsite_checkout_required: product?.onsite_checkout_required === true,
+      onsite_checkout_enabled: product?.onsite_checkout_enabled === true,
+      checkout_status: String(product?.checkout_status || ""),
       qty: Math.max(1, Math.min(20, Number(qty) || 1))
     };
     if (existing) existing.qty = Math.min(20, Number(existing.qty || 1) + row.qty);

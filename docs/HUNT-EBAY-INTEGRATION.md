@@ -31,6 +31,10 @@ Credentials live only in Supabase Edge Function secrets:
 - EBAY_CLIENT_SECRET
 - EBAY_MARKETPLACE_ID
 - HUNT_EBAY_INTERNAL_TOKEN
+- HUNT_EBAY_ORDER_INTERNAL_TOKEN
+- EBAY_ORDER_API_APPROVED
+- EBAY_EPN_CAMPAIGN_ID (when approved / configured)
+- EBAY_EPN_REFERENCE_ID (optional attribution reference)
 
 No eBay client secret is stored in Git, browser JavaScript, catalog JSON, or chat.
 
@@ -55,9 +59,14 @@ Affiliate attribution can be added later only through an approved eBay Partner N
 
 ## Checkout policy
 
-This phase does not activate eBay checkout inside HUNT.
-The adapter reports checkout_api=false.
-Onsite eBay checkout requires the appropriate eBay Buy API production approval and a separate HUNT checkout verification pass.
+HUNT uses ONSITE_FIRST for eBay.
+
+- eBay products do not use a silent outbound / affiliate checkout fallback.
+- Product records carry onsite_checkout_required=true.
+- Until eBay grants Order API production access, the HUNT buy button stays disabled and reports ORDER_API_APPROVAL_REQUIRED.
+- After approval, HUNT uses eBay Order API v2 Guest Checkout and the official Checkout with eBay widget inside the HUNT site.
+- Browse price is not treated as final landed checkout total; the Order API checkout session becomes the source of shipping/tax/import-charge truth.
+- HUNT does not store guest contact or shipping details in its database as part of the adapter; those values are forwarded only to the authorized eBay checkout session.
 
 ## Activation test
 
@@ -65,8 +74,9 @@ The local secure setup script:
 1. prompts locally for Production Client ID and Client Secret
 2. stores them with Supabase secrets via a temporary chmod-600 env file
 3. generates a private internal HUNT/eBay function token
-4. deploys hunt-ebay-browse
-5. calls status
+4. deploys hunt-ebay-browse and hunt-ebay-order
+5. calls Browse status
 6. performs a real Women fashion Browse search
+7. calls Order status; onsite checkout remains locked unless eBay Order API approval is explicitly enabled
 
 Activation is successful only when the live OAuth/Browse request returns ok=true.
