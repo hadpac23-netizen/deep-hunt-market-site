@@ -28,7 +28,25 @@ const DEPARTMENTS: Record<string,string> = {
   men: "men fashion clothing",
   suits: "men suits",
   underwear: "men underwear",
-  socks: "men socks"
+  menunderwear: "men underwear basics",
+  socks: "men socks",
+  kids: "kids clothing fashion",
+  kidsunderwear: "kids underwear basics",
+  womenunderwear: "women underwear basics",
+  sleepwear: "sleepwear pajamas",
+  loungewear: "loungewear sets",
+  plussize: "plus size fashion",
+  petite: "petite women clothing",
+  maternity: "maternity clothing",
+  sets: "clothing matching sets",
+  beauty: "beauty personal care",
+  perfume: "perfume fragrance",
+  home: "home decor",
+  kitchen: "kitchen accessories",
+  tech: "consumer electronics accessories",
+  phoneaccessories: "phone accessories",
+  gifts: "gifts",
+  travel: "travel accessories"
 };
 
 const EXTRA_BLOCKED = [
