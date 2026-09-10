@@ -36,7 +36,7 @@
     return items.filter(x=>{
       const n=Number(x?.price_amount);
       const basis=String(x?.price_basis||"").toUpperCase();
-      return basis==="MERCHANT_RETAIL"&&String(x?.currency||"USD").toUpperCase()==="USD"&&Number.isFinite(n)&&n>0&&n<=max;
+      return ["MERCHANT_RETAIL","MARKETPLACE_RETAIL"].includes(basis)&&String(x?.currency||"USD").toUpperCase()==="USD"&&Number.isFinite(n)&&n>0&&n<=max;
     });
   }
 
@@ -48,6 +48,7 @@
   function priceBasis(item){
     const basis=String(item?.price_basis||"").toUpperCase();
     if(basis==="MERCHANT_RETAIL")return "Retail price";
+    if(basis==="MARKETPLACE_RETAIL")return "Marketplace price";
     if(basis==="SUPPLIER_BASE")return "Supplier price";
     return "Current catalog price";
   }
@@ -66,6 +67,50 @@
       </div>
     </article>`;
   }
+  function firstDistinct(shelves, specs, limit=6){
+    const out=[],seen=new Set();
+    for(const spec of specs){
+      const rows=flat(shelves,[spec.slug]).filter(item=>{
+        const title=String(item?.title||"");
+        const n=Number(item?.price_amount);
+        return (!spec.pattern || spec.pattern.test(title)) &&
+          typeof item?.image_url==="string" && item.image_url.startsWith("https://") &&
+          Number.isFinite(n) && n>0;
+      });
+      for(const item of rows){
+        const key=String(item?.provider||"")+":"+String(item?.item_id||"");
+        if(seen.has(key))continue;
+        seen.add(key);out.push(item);break;
+      }
+      if(out.length>=limit)break;
+    }
+    return out;
+  }
+
+  function smartSets(shelves){
+    const complete=firstDistinct(shelves,[
+      {slug:"bags"},{slug:"jewelry"},{slug:"accessories"},{slug:"shoes"}
+    ],4);
+    const phone=firstDistinct(shelves,[
+      {slug:"phoneaccessories",pattern:/crossbody|shoulder strap|neck strap/i},
+      {slug:"phoneaccessories",pattern:/wrist strap|wristband/i},
+      {slug:"phoneaccessories",pattern:/kickstand|ring stand/i},
+      {slug:"phoneaccessories",pattern:/magsafe|magnetic/i}
+    ],4);
+    return [
+      complete.length>=3 ? {
+        key:"complete-look",badge:"BOOM SMART SET",title:"Complete the look",
+        subtitle:"A bag, jewelry and accessories that work together. Shop pieces individually; a bundle saving appears only when a supplier-funded price is verified.",
+        items:complete
+      } : null,
+      phone.length>=3 ? {
+        key:"phone-setup",badge:"BOOM SMART SET",title:"Build your phone setup",
+        subtitle:"Carry, protect and stand options selected together. Choose only what you need; verified bundle pricing will appear when available.",
+        items:phone
+      } : null
+    ].filter(Boolean);
+  }
+
   function editorialPromos(shelves){
     const all=flat(shelves);
     const preferred=flat(shelves,preferredSlugs()).slice(0,10);
@@ -117,6 +162,49 @@
     });
 
     return candidates.filter(x=>x.items.length>=4).slice(0,3);
+  }
+
+  async function liveVerifiedPriceDrops(shelves){
+    if(!client)return [];
+    const {data:rows,error}=await client.from("hunt_verified_deals")
+      .select("*")
+      .eq("status","approved")
+      .order("verified_at",{ascending:false})
+      .limit(12);
+    if(error||!rows?.length)return [];
+    const products=new Map(flat(shelves).map(item=>[
+      String(item?.provider||"")+":"+String(item?.item_id||""),item
+    ]));
+    return rows.map(row=>{
+      const current=Number(row.current_price);
+      const reference=Number(row.reference_price);
+      const verifiedAt=Date.parse(String(row.verified_at||""));
+      if(!Number.isFinite(current)||current<=0||!Number.isFinite(reference)||reference<=current)return null;
+      if(!String(row.source_url||"").startsWith("https://"))return null;
+      if(!Number.isFinite(verifiedAt)||Date.now()-verifiedAt>7*24*60*60*1000)return null;
+      const item=products.get(String(row.provider||"")+":"+String(row.item_id||""))||{
+        provider:row.provider,item_id:row.item_id,title:row.title_snapshot,
+        price_amount:current,currency:row.currency||"USD"
+      };
+      return {...row,item:{...item,price_amount:current,currency:row.currency||item.currency||"USD"},
+        computed_percent:Math.round((1-current/reference)*1000)/10};
+    }).filter(Boolean);
+  }
+
+  function verifiedPriceDropBlock(row){
+    const current=H.money(Number(row.current_price),row.currency||"USD");
+    const reference=H.money(Number(row.reference_price),row.currency||"USD");
+    const when=row.verified_at?new Date(row.verified_at).toLocaleString():"";
+    return '<section class="hd-promo-block verified-deal">'+
+      '<div class="hd-promo-copy">'+
+        '<small>VERIFIED PRICE DROP</small>'+
+        '<h3>'+H.esc(row.title_snapshot||row.item?.title||"Verified deal")+'</h3>'+
+        '<p>Current '+H.esc(current)+' · reference '+H.esc(reference)+
+          (Number.isFinite(Number(row.computed_percent))?' · '+H.esc(String(row.computed_percent))+'% lower':'')+'.</p>'+
+        '<p class="hd-promo-disclosure">Source-verified'+(when?' · '+H.esc(when):'')+'. Reference price is evidence-based, not an invented MSRP.</p>'+
+      '</div>'+
+      '<div class="hd-promo-track" role="list">'+productCard(row.item)+'</div>'+
+    '</section>';
   }
 
   async function liveSponsored(){
@@ -232,6 +320,8 @@
     }
 
     const editorial=editorialPromos(shelves);
+    const sets=smartSets(shelves);
+    const priceDrops=await liveVerifiedPriceDrops(shelves);
     const verifiedDeals=await liveVerifiedPromotions();
     const chess=window.HuntDealChess?.compare?.(verifiedDeals) || null;
     const rankedSingles=Array.isArray(chess?.ranked)
@@ -246,14 +336,16 @@
     const sponsored=await liveSponsored();
     const chosen=sponsored.length?sponsored.slice(0,1):[];
     const blocks=[
+      ...priceDrops.slice(0,2).map(verifiedPriceDropBlock),
       ...orderedVerified.slice(0,2).map(dealBlock),
       ...chosen.map(x=>promoBlock(x,{sponsored:true})),
+      ...sets.slice(0,1).map(x=>promoBlock(x)),
       ...editorial.map(x=>promoBlock(x))
     ].slice(0,promoBlockLimit());
 
     host.innerHTML=`
       <div class="hd-promo-head">
-        <div><small>BOOM PROMOTION STUDIO</small><h2>Verified deals first. Noise last.</h2>
+        <div><small>HUNT DEALS · BOOM CURATION</small><h2>Good combinations. Real offers.</h2>
         <p>1+1, Buy X Get Y, bundles, coupons and shipping offers appear as deals only after checkout verification. Sponsored placements stay labeled.</p></div>
         <a href="sell.html">Advertise on HUNT →</a>
       </div>
