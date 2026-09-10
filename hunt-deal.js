@@ -282,12 +282,19 @@
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
     const effectiveCategory = window.HuntCore?.inferCategory?.(item) || item.category || "";
+    const hasPrice = Number.isFinite(Number(item?.price_amount)) && Number(item.price_amount) > 0;
+    const basis = String(item?.price_basis || "").toUpperCase();
+    const priceLabel = basis === "MARKETPLACE_RETAIL" ? "marketplace" : (basis === "SUPPLIER_BASE" ? "supplier base" : "source");
+    const priceHtml = hasPrice
+      ? `<div class="hd-shelf-source-price"><b>${money(Number(item.price_amount),item.currency||"USD")}</b><em>${esc(priceLabel)}</em></div>`
+      : "";
     return `<article class="hd-shelf-card" role="listitem" data-category="${esc(effectiveCategory)}">
       <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(item?.availability_verified === true ? "VERIFIED AVAILABLE" : "CATALOG DISCOVERY")}</span></a>
       <div class="hd-shelf-card-body">
         <small>${esc(item.provider || "Provider")}</small>
         <a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a>
-        <p>${esc(item?.availability_verified === true ? "Availability verified. Open for source price, sizes and colors." : "Catalog item. Open to recheck variants and availability.")}</p>
+        ${priceHtml}
+        <p>${esc(item?.availability_verified === true ? "Availability verified. Open for sizes, colors and current details." : "Catalog item. Open to recheck variants and availability.")}</p>
         <a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a>
       </div>
     </article>`;

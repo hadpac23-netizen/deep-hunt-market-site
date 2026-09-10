@@ -233,3 +233,19 @@ html[dir="rtl"] .hd-search-button{margin-inline-start:2px}
 .hd-deal-chess-summary small{font-size:.5rem;font-weight:950;letter-spacing:.13em;color:var(--shop-muted)}
 .hd-deal-chess-summary strong{font-size:.72rem;line-height:1.45;color:var(--shop-text)}
 .hd-deal-chess-summary span{font-size:.56rem;line-height:1.4;color:var(--shop-muted)}
+
+/* BOOM F35 trend drop — curated, not paid placement */
+.hd-f35-drop{margin:0 0 30px;padding:18px 0 24px;border-bottom:1px solid var(--shop-line)}
+.hd-f35-drop .hd-wow-rail-head{align-items:end;margin-bottom:14px}
+.hd-f35-drop .hd-wow-rail-head p{margin:4px 0 0;max-width:720px;color:var(--shop-muted);font-size:.62rem;line-height:1.5}
+.hd-f35-drop .hd-wow-product-media>span{display:block!important;background:rgba(17,17,17,.82)!important;color:#fff!important;border:0!important;border-radius:2px!important;letter-spacing:.08em!important}
+html[data-hunt-theme="dark"] .hd-f35-drop .hd-wow-product-media>span{background:rgba(245,245,245,.88)!important;color:#111!important}
+@media(max-width:760px){.hd-f35-drop{margin-bottom:24px;padding-top:8px}.hd-f35-drop .hd-wow-rail-head{align-items:flex-start}}
+
+/* Functional accessories need full-product framing rather than fashion-style cropping. */
+.hd-shelf-card[data-category="phoneaccessories"] .hd-shelf-media img,
+.hd-wow-product[data-category="phoneaccessories"] .hd-wow-product-media img,
+.hd-market-product-card[data-category="phoneaccessories"] .hd-market-card-media img{
+  object-fit:contain!important;
+  padding:8px!important;
+}

@@ -131,14 +131,74 @@
     const price = Number.isFinite(Number(item.price_amount)) && Number(item.price_amount) > 0
       ? H.money(Number(item.price_amount), item.currency || "USD")
       : "Open product";
+    const basis = String(item?.price_basis || "").toUpperCase();
+    const priceLabel = item.price_amount
+      ? (basis === "MARKETPLACE_RETAIL" ? "marketplace price" : (basis === "SUPPLIER_BASE" ? "supplier base" : "source price"))
+      : "details";
     return `<article class="hd-wow-product" role="listitem" data-category="${H.esc(item.category || "")}">
       <a class="hd-wow-product-media" href="${H.esc(href)}">${image}<span>${H.esc(label)}</span></a>
       <div class="hd-wow-product-body">
         <small>${H.esc(item.provider || "LIVE SOURCE")}</small>
         <a href="${H.esc(href)}">${H.esc(item.title || "Product")}</a>
-        <div class="hd-wow-price"><strong>${price}</strong><em>${item.price_amount ? "supplier base" : "details"}</em></div>
+        <div class="hd-wow-price"><strong>${price}</strong><em>${H.esc(priceLabel)}</em></div>
       </div>
     </article>`;
+  }
+
+
+  const f35TrendRules = [
+    {label:"SATIN", slugs:["shoes"], pattern:/satin.*ballet|ballet.*satin/i, weight:26},
+    {label:"SUEDE", slugs:["jackets"], pattern:/suede.*jacket|jacket.*suede/i, weight:25},
+    {label:"PEPLUM", slugs:["jackets"], pattern:/peplum/i, weight:24},
+    {label:"BROWN DENIM", slugs:["women"], pattern:/brown.*jeans|jeans.*brown/i, weight:23},
+    {label:"OLIVE", slugs:["bags"], pattern:/olive.*bag|bag.*olive/i, weight:23},
+    {label:"SILK", slugs:["accessories"], pattern:/silk.*scarf|scarf.*silk/i, weight:24},
+    {label:"BROOCH", slugs:["accessories","jewelry"], pattern:/brooch(?:es)?/i, weight:23},
+    {label:"CHARMS", slugs:["jewelry","accessories"], pattern:/charm(?:s)?.*necklace|necklace.*charm/i, weight:24},
+    {label:"PEARLS", slugs:["jewelry","accessories"], pattern:/pearl(?:s)?/i, weight:22},
+    {label:"WRAP", slugs:["accessories"], pattern:/wrap(?:around)?.*sunglasses|shield.*sunglasses/i, weight:22},
+    {label:"WESTERN", slugs:["accessories"], pattern:/western.*belt|belt.*western/i, weight:20},
+    {label:"POUCH", slugs:["bags"], pattern:/drawstring|pouch/i, weight:22},
+    {label:"ANIMAL", slugs:["bags"], pattern:/leopard|zebra|cow print|animal print/i, weight:21},
+    {label:"CROSSBODY", slugs:["phoneaccessories"], pattern:/crossbody|shoulder strap|neck strap/i, weight:25},
+    {label:"WRIST", slugs:["phoneaccessories"], pattern:/wrist strap|wristband/i, weight:24},
+    {label:"KICKSTAND", slugs:["phoneaccessories"], pattern:/kickstand|ring stand/i, weight:20}
+  ];
+
+  function f35TrendPick(shelves, limit=10) {
+    const candidates = [];
+    const seen = new Set();
+    for (const rule of f35TrendRules) {
+      for (const slug of rule.slugs) {
+        for (const item of Array.isArray(shelves?.[slug]) ? shelves[slug] : []) {
+          const key = `${item?.provider || ""}:${item?.item_id || ""}`;
+          if (!item?.item_id || seen.has(key) || !rule.pattern.test(String(item?.title || ""))) continue;
+          if (!(typeof item?.image_url === "string" && item.image_url.startsWith("https://"))) continue;
+          const feedback = Number(item?.seller?.feedback_percentage);
+          if (Number.isFinite(feedback) && feedback < 97) continue;
+          const price = Number(item?.price_amount);
+          if (!Number.isFinite(price) || price <= 0) continue;
+          const score = rule.weight + displayScore(item) + (feedback >= 99 ? 4 : feedback >= 98 ? 2 : 0);
+          candidates.push({item, label:rule.label, score});
+          seen.add(key);
+        }
+      }
+    }
+    const sorted = candidates.sort((a,b)=>b.score-a.score);
+    const selected = [];
+    const labelCounts = new Map();
+    const categoryCounts = new Map();
+    for (const row of sorted) {
+      const labelCount = labelCounts.get(row.label) || 0;
+      const category = H.inferCategory(row.item) || row.item?.category || "";
+      const categoryCount = categoryCounts.get(category) || 0;
+      if (labelCount >= 2 || categoryCount >= 3) continue;
+      selected.push(row);
+      labelCounts.set(row.label,labelCount+1);
+      categoryCounts.set(category,categoryCount+1);
+      if (selected.length >= limit) break;
+    }
+    return selected;
   }
 
   function isWomenItem(item) {
@@ -273,6 +333,13 @@
         <p>Large departments first, detailed subcategories inside. Real images come from the live supplier catalog.</p></div>
         <span class="hd-wow-live" aria-live="polite"><i></i>${verifiedCount.toLocaleString()} VERIFIED · ${catalogCount.toLocaleString()} CATALOG</span>
       </div>
+      ${(() => {
+        const trends = f35TrendPick(shelves, window.matchMedia?.("(max-width: 760px)")?.matches ? 8 : 10);
+        return trends.length ? `<section class="hd-f35-drop" aria-labelledby="hd-f35-title">
+          <div class="hd-wow-rail-head"><div><small>BOOM · F35 TREND DROP</small><h3 id="hd-f35-title">Interesting now</h3><p>Current source products selected for visual appeal, relevance and seller quality — not paid placement.</p></div><span>LIVE CURATION</span></div>
+          <div class="hd-wow-track" role="list">${trends.map(row => productCard(row.item,row.label)).join("")}</div>
+        </section>` : "";
+      })()}
       <div class="hd-dept-grid">${orderedDepartments().map(dep => departmentCard(dep,shelves)).join("")}</div>
       <section class="hd-for-you" id="for-you" aria-labelledby="hd-for-you-title">
         <div class="hd-for-you-head"><div><small>PERSONALIZED SHOPPING</small><h3 id="hd-for-you-title">For You</h3><p id="hd-for-you-copy"></p></div>
