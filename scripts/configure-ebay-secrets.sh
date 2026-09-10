@@ -10,6 +10,10 @@ read "EBAY_CLIENT_ID?Production Client ID (App ID): "
 read -s "EBAY_CLIENT_SECRET?Production Client Secret (Cert ID): "
 echo
 
+# Browser copy buttons can add surrounding whitespace/CRLF. Normalize only the edges.
+EBAY_CLIENT_ID="$(printf '%s' "$EBAY_CLIENT_ID" | tr -d '\r\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')"
+EBAY_CLIENT_SECRET="$(printf '%s' "$EBAY_CLIENT_SECRET" | tr -d '\r\n' | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')"
+
 if [[ -z "$EBAY_CLIENT_ID" || -z "$EBAY_CLIENT_SECRET" ]]; then
   echo "Missing Client ID or Client Secret. Nothing changed."
   exit 1
