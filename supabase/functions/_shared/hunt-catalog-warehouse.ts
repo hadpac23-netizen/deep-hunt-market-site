@@ -1,6 +1,6 @@
 const ALLOWED_CATEGORIES = new Set([
   "women","men","kids","beauty","perfume","dresses","tops","bottoms","hoodies","jackets","knitwear",
-  "activewear","suits","underwear","swimwear","bags","shoes","accessories","jewelry","hats","socks","home","kitchen","storage",
+  "activewear","suits","underwear","womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","swimwear","bags","shoes","accessories","jewelry","hats","socks","home","kitchen","storage",
   "bedding","bath","lighting","cleaning","tech","phoneaccessories","gaming","sports","outdoors","travel",
   "toys","pets","crafts","party","gifts","office","stationery","pillows","blankets","wallart","drinkware","ornaments"
 ]);
