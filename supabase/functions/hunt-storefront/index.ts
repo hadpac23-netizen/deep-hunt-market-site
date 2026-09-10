@@ -781,6 +781,11 @@ async function printfulCatalog(limit = 24) {
 }
 
 
+const EBAY_FASHION_MANUAL_REVIEW_BRANDS = [
+  "prada","coach","longchamp","gucci","chanel","louis vuitton","lv ","dior","ysl","saint laurent",
+  "hermes","hermès","michael kors","tory burch","kate spade","balenciaga","burberry","fendi","versace"
+];
+
 let ebayShelfCache: { value: Record<string, any[]> | null; expiresAt: number } = { value: null, expiresAt: 0 };
 
 async function ebayAdapter(body: any) {
@@ -810,8 +815,13 @@ async function ebayMarketShelves() {
     ["women", "women fashion clothing", 36],
     ["dresses", "women dresses", 30],
     ["bags", "women handbags", 30],
+    ["bags", "women leather crossbody bag", 24],
     ["shoes", "women shoes", 30],
-    ["jewelry", "women jewelry", 24],
+    ["jewelry", "women 316L stainless steel jewelry", 30],
+    ["jewelry", "women PVD gold plated jewelry", 24],
+    ["accessories", "women acetate hair claw clip", 30],
+    ["accessories", "women premium hair accessories", 24],
+    ["accessories", "women polarized sunglasses", 30],
     ["men", "men fashion clothing", 30],
     ["suits", "men suits", 24],
     ["phoneaccessories", "iPhone 18 Pro case MagSafe", 36],
@@ -832,13 +842,16 @@ async function ebayMarketShelves() {
       const key = String(item?.provider) + ":" + String(item?.item_id);
       if (!item?.item_id || seen.has(key) || !cleanText(item?.image_url).startsWith("https://")) continue;
       if (!allowedTitle(cleanText(item?.title))) continue;
+      const titleLower = cleanText(item?.title).toLowerCase();
+      if (["bags","jewelry","accessories"].includes(slug) &&
+          EBAY_FASHION_MANUAL_REVIEW_BRANDS.some(brand => titleLower.includes(brand))) continue;
       const feedback = Number(item?.seller?.feedback_percentage);
       if (Number.isFinite(feedback) && feedback < 97) continue;
       const price = Number(item?.price_amount);
       if (!Number.isFinite(price) || price <= 0) continue;
       seen.add(key);
       out[slug].push({ ...item, category: slug });
-      const shelfCap = slug === "phoneaccessories" ? 220 : 120;
+      const shelfCap = slug === "phoneaccessories" ? 220 : (slug === "accessories" ? 160 : 120);
       if (out[slug].length >= shelfCap) break;
     }
   }
