@@ -15,6 +15,31 @@ if [[ -z "$EBAY_CLIENT_ID" || -z "$EBAY_CLIENT_SECRET" ]]; then
   exit 1
 fi
 
+OAUTH_TMP="$(mktemp -t hunt-ebay-oauth)"
+OAUTH_STATUS="$(curl -sS --max-time 20 -o "$OAUTH_TMP" -w "%{http_code}" \
+  -X POST 'https://api.ebay.com/identity/v1/oauth2/token' \
+  --user "$EBAY_CLIENT_ID:$EBAY_CLIENT_SECRET" \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  --data-urlencode 'grant_type=client_credentials' \
+  --data-urlencode 'scope=https://api.ebay.com/oauth/api_scope')"
+
+if [[ "$OAUTH_STATUS" != "200" ]] || ! grep -q '"access_token"' "$OAUTH_TMP"; then
+  echo "EBAY_CREDENTIAL_CHECK_FAILED (HTTP $OAUTH_STATUS)"
+  python3 - "$OAUTH_TMP" <<'PYERR'
+import json,sys
+try:
+    data=json.load(open(sys.argv[1]))
+    print('eBay:', data.get('error','oauth_error'), '-', data.get('error_description','Client authentication failed'))
+except Exception:
+    print('eBay OAuth rejected the Production key pair.')
+PYERR
+  rm -f "$OAUTH_TMP"
+  echo "Use App ID + Cert ID from the SAME Production keyset. Do not use Dev ID or Sandbox keys."
+  exit 2
+fi
+rm -f "$OAUTH_TMP"
+echo "EBAY_LOCAL_OAUTH_PASS"
+
 INTERNAL_TOKEN="$(openssl rand -hex 32)"
 ORDER_INTERNAL_TOKEN="$(openssl rand -hex 32)"
 TOKEN_FILE="$HOME/.hunt-ebay-internal-token"
