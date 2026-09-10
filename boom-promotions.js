@@ -91,22 +91,47 @@
     const complete=firstDistinct(shelves,[
       {slug:"bags"},{slug:"jewelry"},{slug:"accessories"},{slug:"shoes"}
     ],4);
-    const phone=firstDistinct(shelves,[
-      {slug:"phoneaccessories",pattern:/crossbody|shoulder strap|neck strap/i},
-      {slug:"phoneaccessories",pattern:/wrist strap|wristband/i},
-      {slug:"phoneaccessories",pattern:/kickstand|ring stand/i},
-      {slug:"phoneaccessories",pattern:/magsafe|magnetic/i}
-    ],4);
+    const phoneRows=flat(shelves,["phoneaccessories"]);
+    const modelDefs=[
+      ["iPhone 18 Pro Max",/iphone\s*18\s*pro\s*max/i],
+      ["iPhone 18 Pro",/iphone\s*18\s*pro(?!\s*max)/i],
+      ["Galaxy S26 Ultra",/(galaxy\s*)?s26\s*ultra/i],
+      ["Galaxy Z Fold 8",/(galaxy\s*)?z?\s*fold\s*8|fold8/i],
+      ["Galaxy Z Flip 8",/(galaxy\s*)?z?\s*flip\s*8|flip8/i]
+    ];
+    const styles=[
+      ["crossbody",/crossbody|shoulder strap|neck strap/i],
+      ["kickstand",/kickstand|ring stand/i],
+      ["magnetic",/magsafe|magnetic/i],
+      ["clear",/clear|transparent/i],
+      ["leather",/leather|pu leather/i]
+    ];
+    let phoneEdit=null;
+    for(const [model,modelRe] of modelDefs){
+      const modelRows=phoneRows.filter(item=>modelRe.test(String(item?.title||"")));
+      const picks=[],seen=new Set();
+      for(const [,styleRe] of styles){
+        const item=modelRows.find(x=>{
+          const key=String(x?.provider||"")+":"+String(x?.item_id||"");
+          return !seen.has(key)&&styleRe.test(String(x?.title||""))&&Number(x?.price_amount)>0;
+        });
+        if(item){
+          seen.add(String(item?.provider||"")+":"+String(item?.item_id||""));
+          picks.push(item);
+        }
+      }
+      if(picks.length>=3){phoneEdit={model,items:picks.slice(0,4)};break;}
+    }
     return [
       complete.length>=3 ? {
         key:"complete-look",badge:"BOOM SMART SET",title:"Complete the look",
         subtitle:"A bag, jewelry and accessories that work together. Shop pieces individually; a bundle saving appears only when a supplier-funded price is verified.",
         items:complete
       } : null,
-      phone.length>=3 ? {
-        key:"phone-setup",badge:"BOOM SMART SET",title:"Build your phone setup",
-        subtitle:"Carry, protect and stand options selected together. Choose only what you need; verified bundle pricing will appear when available.",
-        items:phone
+      phoneEdit ? {
+        key:"phone-case-edit",badge:"BOOM COMPATIBILITY EDIT",title:phoneEdit.model+" case edit",
+        subtitle:"Different case styles for the same phone model. Shop individually; a protection-bundle saving appears only after one supplier confirms compatible SKUs and a verified package price.",
+        items:phoneEdit.items
       } : null
     ].filter(Boolean);
   }
