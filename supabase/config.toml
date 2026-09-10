@@ -425,3 +425,5 @@ verify_jwt = false
 
 [functions.hunt-profit-gate]
 verify_jwt = false
+[functions.hunt-ebay-browse]
+verify_jwt = false
