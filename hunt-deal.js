@@ -751,6 +751,10 @@
           const focusRes = await fetch("catalog-focus/home.json?v=focus2", {cache:"force-cache"});
           if (focusRes.ok) snapshotData = overlayFocusSnapshot(snapshotData, await focusRes.json());
         } catch {}
+        try {
+          const surveyRes = await fetch("catalog-survey/home.json?v=survey1", {cache:"force-cache"});
+          if (surveyRes.ok) snapshotData = mergeShelfData(await surveyRes.json(), snapshotData);
+        } catch {}
         renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");
       }
     } catch {}

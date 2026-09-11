@@ -8,6 +8,7 @@
   const mainCategories = ["women","men","kids","beauty","home","kitchen","tech","sports","gifts"];
   const curatedFashionSlugs = new Set(["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","socks","swimwear","shoes","bags","jewelry","accessories","hats"]);
   const curatedFocusSlugs = new Set(["beauty","gaming","tech","lighting","travel","crafts","sports","drinkware","bedding","hats","socks","swimwear"]);
+  const surveyFillSlugs = new Set(["plussize","suits","bags","dresses","beauty","phoneaccessories","toys","pets"]);
   let rawResults = [];
   let resultOrder = new Map();
   const viewKey = "hunt_market_view_v1";
@@ -150,6 +151,7 @@
     else if(title.length>=5) score+=1;
     if(Number.isFinite(price)&&price>0) score+=2;
     if(product?.availability_verified===true) score+=2;
+    if(product?.retail_price_verified===true && String(product?.profit_gate_status||"")==="PASS") score+=5;
     if(String(product?.price_basis||"").toUpperCase()==="MERCHANT_RETAIL") score+=1;
     if(product?.source_fresh_at){
       const age=Date.now()-Date.parse(product.source_fresh_at);
@@ -359,17 +361,19 @@
 
     let rendered = false;
     let shardLoaded = false;
-    const shardCandidates = curatedFashionSlugs.has(sourceSlug)
-      ? [
-          "catalog-fashion/" + encodeURIComponent(sourceSlug) + ".json?v=fashion3",
-          "catalog-shards/" + encodeURIComponent(sourceSlug) + ".json?v=catalog30k1"
-        ]
-      : curatedFocusSlugs.has(sourceSlug)
+    const shardCandidates = surveyFillSlugs.has(sourceSlug)
+      ? ["catalog-survey/" + encodeURIComponent(sourceSlug) + ".json?v=survey1"]
+      : curatedFashionSlugs.has(sourceSlug)
         ? [
-            "catalog-focus/" + encodeURIComponent(sourceSlug) + ".json?v=focus2",
+            "catalog-fashion/" + encodeURIComponent(sourceSlug) + ".json?v=fashion3",
             "catalog-shards/" + encodeURIComponent(sourceSlug) + ".json?v=catalog30k1"
           ]
-        : ["catalog-shards/" + encodeURIComponent(sourceSlug) + ".json?v=catalog30k1"];
+        : curatedFocusSlugs.has(sourceSlug)
+          ? [
+              "catalog-focus/" + encodeURIComponent(sourceSlug) + ".json?v=focus2",
+              "catalog-shards/" + encodeURIComponent(sourceSlug) + ".json?v=catalog30k1"
+            ]
+          : ["catalog-shards/" + encodeURIComponent(sourceSlug) + ".json?v=catalog30k1"];
     for (const shardUrl of shardCandidates) {
       if (shardLoaded) break;
       try {
@@ -378,7 +382,7 @@
         const shard = await shardRes.json();
         const shardRows = Array.isArray(shard?.products) ? shard.products : [];
         if (!shardRows.length) continue;
-        applyRows(shardRows, (shardUrl.startsWith("catalog-fashion/") || shardUrl.startsWith("catalog-focus/")) ? "curated" : "expanded");
+        applyRows(shardRows, (shardUrl.startsWith("catalog-fashion/") || shardUrl.startsWith("catalog-focus/") || shardUrl.startsWith("catalog-survey/")) ? "curated" : "expanded");
         rendered = true;
         shardLoaded = true;
       } catch {}
