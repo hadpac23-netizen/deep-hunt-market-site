@@ -372,6 +372,7 @@
       variant_id: variantId === "base" ? null : variantId,
       variant_label: [variant?.color, variant?.size].filter(Boolean).join(" / ") || null,
       title: String(product.title || "Product"),
+      category: String(inferCategory(product) || product?.category || ""),
       image_url: String(variant?.image_url || product.image_url || "") || null,
       price_amount: amount == null ? null : Number(amount),
       currency: String(variant?.currency || product.currency || "USD"),

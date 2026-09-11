@@ -4,8 +4,51 @@
   const config = window.HUNT_ANALYTICS_CONFIG || {};
   const consentKey = "hunt_analytics_consent_v1";
   const queue = [];
+  const learnSessionKey = "hunt_learning_session_v1";
   let pageTracked = false;
   let initialized = false;
+
+  function learningSession() {
+    try {
+      let sid = sessionStorage.getItem(learnSessionKey);
+      if (!sid) {
+        sid = crypto.randomUUID();
+        sessionStorage.setItem(learnSessionKey, sid);
+      }
+      return sid;
+    } catch {
+      return "";
+    }
+  }
+
+  function learningSignal(eventType, payload = {}) {
+    if (!consentGranted || !window.HuntCore?.publishableKey) return false;
+    const endpoint = (window.HuntCore.functionsBase || "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1") + "/hunt-commerce-signal";
+    const body = {
+      event_type: clean(eventType, 40),
+      session_id: learningSession(),
+      provider: clean(payload.provider || "", 80),
+      item_id: clean(payload.item_id || "", 100),
+      category: clean(payload.category || "", 60),
+      placement: clean(payload.placement || "", 80),
+      quantity: Math.max(1, Math.min(20, Number(payload.quantity) || 1))
+    };
+    if (Number.isFinite(Number(payload.retail_price))) body.retail_price = Number(payload.retail_price);
+    fetch(endpoint, {
+      method: "POST",
+      keepalive: true,
+      headers: {apikey: window.HuntCore.publishableKey, "Content-Type": "application/json"},
+      body: JSON.stringify(body)
+    }).catch(() => {});
+    return true;
+  }
+
+  function learningRetail(product = {}, variant = null) {
+    const verified = (variant?.retail_price_verified ?? product?.retail_price_verified) === true &&
+      String(variant?.profit_gate_status || product?.profit_gate_status || "") === "PASS";
+    const amount = Number(variant?.retail_price_amount ?? product?.retail_price_amount);
+    return verified && Number.isFinite(amount) && amount > 0 ? amount : null;
+  }
 
   const clean = (value, max = 120) =>
     String(value ?? "")
@@ -207,12 +250,25 @@
       });
     },
     viewItem(product, variant = null) {
+      learningSignal("hunt_view_item", {
+        provider: product?.provider || "",
+        item_id: product?.item_id || product?.id || "",
+        category: window.HuntCore?.inferCategory?.(product) || product?.category || "",
+        retail_price: learningRetail(product, variant) ?? undefined
+      });
       return dataLayerPush("view_item", {
         items: [item(product, variant, 1)],
-        hunt_price_stage: "source_intelligence_not_retail"
+        hunt_price_stage: learningRetail(product, variant) ? "verified_retail" : "source_intelligence_not_retail"
       });
     },
     addToCart(row, product = {}) {
+      learningSignal("hunt_add_to_cart", {
+        provider: row?.provider || product?.provider || "",
+        item_id: row?.item_id || product?.item_id || "",
+        category: row?.category || window.HuntCore?.inferCategory?.(product) || product?.category || "",
+        quantity: row?.qty || 1,
+        retail_price: Number.isFinite(Number(row?.retail_price_amount)) ? Number(row.retail_price_amount) : undefined
+      });
       return dataLayerPush("add_to_cart", {
         items: [item(product, {
           variant_label: row?.variant_label,
@@ -223,8 +279,17 @@
       });
     },
     beginCheckout(cart = [], destination = "") {
-      const items = Array.isArray(cart) ? cart.map(cartItem).filter(x => x.item_id) : [];
+      const rows = Array.isArray(cart) ? cart : [];
+      const items = rows.map(cartItem).filter(x => x.item_id);
       if (!items.length) return false;
+      rows.forEach(row => learningSignal("hunt_begin_checkout", {
+        provider: row?.provider || "",
+        item_id: row?.item_id || "",
+        category: row?.category || "",
+        quantity: row?.qty || 1,
+        retail_price: Number.isFinite(Number(row?.retail_price_amount)) ? Number(row.retail_price_amount) : undefined,
+        placement: clean(destination, 60)
+      }));
       return dataLayerPush("begin_checkout", {
         items,
         destination_market: clean(destination, 60),
@@ -246,6 +311,12 @@
       });
     },
     relatedProductClick(product={}, placement="endless_discovery") {
+      learningSignal("hunt_select_item", {
+        provider: product?.provider || "",
+        item_id: product?.item_id || "",
+        category: window.HuntCore?.inferCategory?.(product) || product?.category || "",
+        placement
+      });
       return dataLayerPush("select_item", {
         item_list_id: clean(placement,80),
         item_list_name: clean(placement,80),
@@ -253,6 +324,10 @@
       });
     },
     surveyComplete({categories=[],priceBand="any"}={}) {
+      (Array.isArray(categories) ? categories : []).slice(0,20).forEach(category => learningSignal("hunt_survey_complete", {
+        category,
+        placement: clean(priceBand,40)
+      }));
       return dataLayerPush("shopping_survey_complete", {
         selected_category_count: Array.isArray(categories)?categories.length:0,
         price_band: clean(priceBand,40)
@@ -260,6 +335,9 @@
     },
     shoppingAction({provider="",itemId="",action="",active=false,category=""}={}) {
       if (!["like","save"].includes(clean(action, 20))) return false;
+      if (active === true) learningSignal(action === "save" ? "hunt_save" : "hunt_like", {
+        provider, item_id: itemId, category
+      });
       return dataLayerPush("shopping_preference", {
         item_id: clean(itemId, 100),
         item_brand: clean(provider, 80),

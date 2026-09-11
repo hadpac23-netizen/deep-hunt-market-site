@@ -6,6 +6,7 @@
   let checkoutPolicy = {mode:"ONSITE_FIRST", public_checkout_enabled:false};
   let catalogItems = [];
   let searchItems = [];
+  let boomLearning = {categories:{},products:{},event_count:0};
   const cartKey = "hunt_deal_cart_v1";
 
   const $ = q => document.querySelector(q);
@@ -552,6 +553,9 @@
     const price = customerPrice(item);
     const margin = Number(item?.projected_product_margin);
     const signals = window.HuntCore?.signals?.() || {};
+    const learningKey = String(item?.provider || "") + ":" + String(item?.item_id || "");
+    const categoryLearning = Number(boomLearning?.categories?.[category] || 0);
+    const productLearning = Number(boomLearning?.products?.[learningKey] || 0);
     let score = prior * 0.45;
     if (typeof item?.image_url === "string" && item.image_url.startsWith("https://")) score += 8;
     if (item?.availability_verified === true) score += 8;
@@ -568,7 +572,33 @@
     if (title.length >= 18 && title.length <= 90) score += 2;
     if (item?.brand) score += 1;
     score += Math.min(8, Number(signals[category] || 0) * 0.25);
+    score += Math.min(12, Math.max(0, categoryLearning));
+    score += Math.min(18, Math.max(0, productLearning));
     return Math.max(0, Math.min(100, score));
+  }
+
+  async function loadBoomLearning() {
+    try {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 1800);
+      const res = await fetch(supabaseFunctionsBase + "/hunt-commerce-learning", {
+        cache:"no-store",
+        signal:controller.signal,
+        headers:{apikey:supabasePublishableKey}
+      });
+      clearTimeout(timer);
+      if (!res.ok) return false;
+      const data = await res.json();
+      if (data && typeof data === "object") {
+        boomLearning = {
+          categories:data.categories && typeof data.categories === "object" ? data.categories : {},
+          products:data.products && typeof data.products === "object" ? data.products : {},
+          event_count:Number(data.event_count || 0)
+        };
+        return true;
+      }
+    } catch {}
+    return false;
   }
 
   function buildTrendingShelf(shelves) {
@@ -892,7 +922,7 @@
   });
 
   updateCartCount();
-  loadMarketShelves();
+  loadBoomLearning().finally(() => loadMarketShelves());
 
   load().then(() => {
     const root = $("#hd-shelves-root");
