@@ -47,6 +47,26 @@
     return variants.filter(v => !color || v.color === color);
   }
 
+  function sizeRank(value) {
+    const raw=String(value||"").trim().toUpperCase();
+    const alpha={XXXS:10,XXS:20,XS:30,S:40,M:50,L:60,XL:70,XXL:80,XXXL:90,"2XL":80,"3XL":90,"4XL":100,"5XL":110,"6XL":120};
+    if (alpha[raw] != null) return alpha[raw];
+    const numeric=raw.match(/^(?:EU|US|UK)?\s*(\d{1,3}(?:\.5)?)$/);
+    if (numeric) return 1000 + Number(numeric[1]);
+    const cm=raw.match(/^(\d{2,3})\s*CM$/);
+    if (cm) return 2000 + Number(cm[1]);
+    const age=raw.match(/^(\d{1,2})(?:[-\/]\d{1,2})?\s*(?:M|Y|YR|YRS)$/);
+    if (age) return 3000 + Number(age[1]);
+    const toddler=raw.match(/^(\d{1,2})T$/);
+    if (toddler) return 4000 + Number(toddler[1]);
+    return 9000;
+  }
+
+  function compareSizes(a,b) {
+    const ra=sizeRank(a?.size), rb=sizeRank(b?.size);
+    return ra-rb || String(a?.size||"").localeCompare(String(b?.size||""),undefined,{numeric:true,sensitivity:"base"});
+  }
+
   function chooseVariant() {
     let choices = variants;
     if (selectedColor) choices = choices.filter(v=>v.color===selectedColor);
@@ -68,17 +88,21 @@
   }
 
   function renderOptions() {
-    const colors = uniqueBy(variants,"color");
+    const colors = uniqueBy(variants,"color").sort((a,b)=>String(a.color||"").localeCompare(String(b.color||""),undefined,{sensitivity:"base"}));
     const colorBlock=$("#hd-color-block");
     colorBlock.hidden = colors.length===0;
     $("#hd-color-options").innerHTML = colors.map(v=>`<button type="button" class="hd-color-choice ${v.color===selectedColor?"active":""}" data-color="${H.esc(v.color)}" title="${H.esc(v.color)}"><i style="background:${/^#[0-9a-f]{6}$/i.test(v.color_code||"")?v.color_code:"#8aa1bd"}"></i><span>${H.esc(v.color)}</span></button>`).join("");
     $("#hd-selected-color").textContent = selectedColor || "—";
 
-    const sizes = uniqueBy(variantsForColor(selectedColor),"size");
+    const sizes = uniqueBy(variantsForColor(selectedColor),"size").sort(compareSizes);
     const sizeBlock=$("#hd-size-block");
     sizeBlock.hidden = sizes.length===0;
     $("#hd-size-options").innerHTML = sizes.map(v=>`<button type="button" class="${v.size===selectedSize?"active":""}" data-size="${H.esc(v.size)}">${H.esc(v.size)}</button>`).join("");
     $("#hd-selected-size").textContent = selectedSize || "—";
+    const sizeSource=$("#hd-size-source");
+    if(sizeSource) sizeSource.textContent = sizes.length
+      ? "Provider-reported size · exact stock is verified when you select this option."
+      : "No provider size options were supplied for this item.";
   }
 
   function renderProductStructuredData() {
@@ -117,7 +141,9 @@
     $("#hd-product-title").textContent = product.title || "Product";
     $("#hd-product-breadcrumb").textContent = product.title || "Product";
     $("#hd-product-provider").textContent = product.provider || provider;
-    $("#hd-product-stock").textContent = product.availability_verified ? "IN STOCK" : "DISCOVERY";
+    const cjNeedsVariantCheck = String(product?.provider || provider).toLowerCase().includes("cj") &&
+      product?.variant_stock_recheck_required === true && variants.length > 0;
+    $("#hd-product-stock").textContent = product.availability_verified ? "IN STOCK" : (cjNeedsVariantCheck ? "CHECK SIZE STOCK" : "DISCOVERY");
     $("#hd-product-stock").className = `hd-status ${product.availability_verified?"green":"blue"}`;
     const retailAmount = selectedVariant?.retail_price_amount ?? product.retail_price_amount;
     const retailCurrency = selectedVariant?.retail_currency || product.retail_currency || selectedVariant?.currency || product.currency || "USD";

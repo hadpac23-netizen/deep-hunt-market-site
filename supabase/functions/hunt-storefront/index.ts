@@ -250,10 +250,28 @@ async function cjProductDetail(productId: string) {
     ...(Array.isArray(raw?.productImageSet) ? raw.productImageSet.map(cleanText) : [])
   ].filter((x, i, arr) => x.startsWith("https://") && arr.indexOf(x) === i);
 
+  const sizeLike = (value: string) => /^(?:(?:EU|US|UK)\s*)?(?:\d{1,2}(?:\.5)?|\d{2,3}\s*CM|\d{1,2}[A-K]|\d{1,2}\s*[A-K]|XXXS|XXS|XS|S|M|L|XL|XXL|XXXL|[2-6]XL|ONE\s*SIZE|FREE\s*SIZE|\d{1,2}[-\/]\d{1,2}\s*(?:M|Y|YR|YRS)|\d{1,2}T)$/i.test(value.trim());
+  const parseVariantOptions = (v: any) => {
+    const key = cleanText(v?.variantKey);
+    const variantName = cleanText(v?.variantNameEn);
+    const source = key || variantName.replace(title, "").trim();
+    const parts = source.split(/\s*-\s*/).map((x: string) => x.trim()).filter(Boolean);
+    if (parts.length > 1 && sizeLike(parts[parts.length - 1])) {
+      return { color: parts.slice(0, -1).join(" - "), size: parts[parts.length - 1] };
+    }
+    const tail = source.match(/(?:^|\s)((?:(?:EU|US|UK)\s*)?(?:\d{1,2}(?:\.5)?|\d{2,3}\s*CM|\d{1,2}[A-K]|XXXS|XXS|XS|S|M|L|XL|XXL|XXXL|[2-6]XL|ONE\s*SIZE|FREE\s*SIZE|\d{1,2}[-\/]\d{1,2}\s*(?:M|Y|YR|YRS)|\d{1,2}T))$/i);
+    if (tail) {
+      const size = tail[1].trim();
+      const color = source.slice(0, Math.max(0, (tail.index || 0))).replace(/[-\/]+$/g, "").trim();
+      return { color, size };
+    }
+    return { color: parts.length > 1 ? parts[0] : "", size: parts.length > 1 ? parts.slice(1).join(" / ") : (parts[0] || "") };
+  };
+
   const variantsRaw = Array.isArray(raw?.variants) ? raw.variants : [];
   const variants = variantsRaw.map((v: any) => {
     const key = cleanText(v?.variantKey);
-    const parts = key.split("-").map((x: string) => x.trim()).filter(Boolean);
+    const options = parseVariantOptions(v);
     const price = Number(v?.variantSellPrice);
     const retail = cjRetailPrice(price);
     const inventories = Array.isArray(v?.inventories) ? v.inventories : [];
@@ -265,8 +283,10 @@ async function cjProductDetail(productId: string) {
       variant_id: cleanText(v?.vid),
       sku: cleanText(v?.variantSku),
       title: cleanText(v?.variantNameEn) || key || title,
-      color: parts.length > 1 ? parts[0] : "",
-      size: parts.length > 1 ? parts.slice(1).join(" / ") : (parts[0] || ""),
+      color: options.color,
+      size: options.size,
+      size_source: "PROVIDER",
+      stock_check_required: stockTotal <= 0,
       image_url: cleanText(v?.variantImage) || gallery[0] || "",
       price_amount: Number.isFinite(price) && price > 0 ? price : null,
       currency: "USD",
@@ -301,6 +321,8 @@ async function cjProductDetail(productId: string) {
     variants,
     variant_count: variants.length,
     availability_verified: variants.some((v: any) => v.availability_verified),
+    variant_stock_recheck_required: variants.some((v: any) => v.stock_check_required === true),
+    size_data_source: variants.some((v: any) => v.size) ? "PROVIDER_VARIANTS" : "NONE",
     avg_fulfillment_time: null,
     gaps: [
       "Final shipping cost depends on destination and selected variant.",
@@ -384,6 +406,20 @@ async function cjMarketShelves() {
   const out: Record<string, any[]> = {};
   for (const slug of Object.keys(definitions)) out[slug] = [];
 
+  const strictTitleRules: Record<string, RegExp> = {
+    shoes: /\b(shoe|shoes|sneaker|sneakers|slipper|slippers|sandal|sandals|boot|boots|loafer|loafers|heel|heels|pump|pumps|mule|mules|clog|clogs)\b/i,
+    bags: /\b(bag|bags|tote|crossbody|backpack|purse|handbag|luggage|duffle|satchel|clutch)\b/i,
+    jewelry: /\b(jewelry|jewellery|necklace|bracelet|earring|earrings|pendant|ring|rings|anklet|brooch)\b/i,
+    perfume: /\b(perfume|fragrance|cologne|eau de parfum|eau de toilette)\b/i,
+    phoneaccessories: /\b(phone case|iphone case|mobile case|screen protector|phone stand|phone holder|charging cable|charger|magsafe)\b/i,
+    toys: /\b(toy|toys|puzzle|plush|building block|educational game|drawing board|microscope|walkie[- ]?talkie)\b/i,
+    pets: /\b(pet|pets|dog|dogs|cat|cats|puppy|kitten)\b/i
+  };
+  const titleFitsShelf = (slug: string, title: string) => {
+    const rule = strictTitleRules[slug];
+    return !rule || rule.test(title);
+  };
+
   const detectGender = (text: string) => {
     const women = /\b(women(?:'s)?|woman|female|ladies|girl)\b/i.test(text);
     const men = /\b(men(?:'s)?|man|male|gentlemen|boy)\b/i.test(text);
@@ -417,7 +453,7 @@ async function cjMarketShelves() {
     const gender = detectGender(haystack);
 
     for (const [slug, pattern] of Object.entries(definitions)) {
-      if (out[slug].length >= 260 || !pattern.test(haystack)) continue;
+      if (out[slug].length >= 260 || !pattern.test(haystack) || !titleFitsShelf(slug, title)) continue;
       if (slug === "men" && (gender !== "men" || /\bunisex\b/i.test(haystack))) continue;
       if (slug === "women" && (gender !== "women" || /\bunisex\b/i.test(haystack))) continue;
       out[slug].push({
