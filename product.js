@@ -49,10 +49,18 @@
 
   function sizeRank(value) {
     const raw=String(value||"").trim().toUpperCase();
-    const alpha={XXXS:10,XXS:20,XS:30,S:40,M:50,L:60,XL:70,XXL:80,XXXL:90,"2XL":80,"3XL":90,"4XL":100,"5XL":110,"6XL":120};
+    const alpha={XXXS:10,XXS:20,XS:30,S:40,M:50,L:60,XL:70,XXL:80,XXXL:90,"2XL":80,"3XL":90,"4XL":100,"5XL":110,"6XL":120,"ONE SIZE":130,"FREE SIZE":130};
     if (alpha[raw] != null) return alpha[raw];
-    const numeric=raw.match(/^(?:EU|US|UK)?\s*(\d{1,3}(?:\.5)?)$/);
-    if (numeric) return 1000 + Number(numeric[1]);
+    const prefixed=raw.match(/^(EU|US|UK)\s*(\d{1,3}(?:\.5)?)(?:\s*[-\/]\s*(\d{1,3}(?:\.5)?))?$/);
+    if (prefixed) return 1000 + Number(prefixed[2]);
+    const numericRange=raw.match(/^(\d{1,3}(?:\.5)?)\s*[-\/]\s*(\d{1,3}(?:\.5)?)$/);
+    if (numericRange) return 1100 + Number(numericRange[1]);
+    const numeric=raw.match(/^(\d{1,3}(?:\.5)?)$/);
+    if (numeric) return 1200 + Number(numeric[1]);
+    const bra=raw.match(/^(\d{1,2})\s*([A-K])$/);
+    if (bra) return 1400 + Number(bra[1]) + (bra[2].charCodeAt(0)-65)/10;
+    const waistInseam=raw.match(/^(\d{2})\s*X\s*(\d{2})$/);
+    if (waistInseam) return 1600 + Number(waistInseam[1]) + Number(waistInseam[2])/100;
     const cm=raw.match(/^(\d{2,3})\s*CM$/);
     if (cm) return 2000 + Number(cm[1]);
     const age=raw.match(/^(\d{1,2})(?:[-\/]\d{1,2})?\s*(?:M|Y|YR|YRS)$/);
@@ -100,9 +108,12 @@
     $("#hd-size-options").innerHTML = sizes.map(v=>`<button type="button" class="${v.size===selectedSize?"active":""}" data-size="${H.esc(v.size)}">${H.esc(v.size)}</button>`).join("");
     $("#hd-selected-size").textContent = selectedSize || "—";
     const sizeSource=$("#hd-size-source");
-    if(sizeSource) sizeSource.textContent = sizes.length
-      ? "Provider-reported size · exact stock is verified when you select this option."
-      : "No provider size options were supplied for this item.";
+    if(sizeSource) {
+      const system=String(selectedVariant?.size_system || sizes.find(v=>v?.size_system)?.size_system || "PROVIDER");
+      sizeSource.textContent = sizes.length
+        ? `Provider-reported size · ${system} · exact stock is verified for the selected variant.`
+        : "No provider size options were supplied for this item.";
+    }
   }
 
   function renderProductStructuredData() {

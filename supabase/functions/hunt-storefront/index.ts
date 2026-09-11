@@ -250,7 +250,21 @@ async function cjProductDetail(productId: string) {
     ...(Array.isArray(raw?.productImageSet) ? raw.productImageSet.map(cleanText) : [])
   ].filter((x, i, arr) => x.startsWith("https://") && arr.indexOf(x) === i);
 
-  const sizeLike = (value: string) => /^(?:(?:EU|US|UK)\s*)?(?:\d{1,2}(?:\.5)?|\d{2,3}\s*CM|\d{1,2}[A-K]|\d{1,2}\s*[A-K]|XXXS|XXS|XS|S|M|L|XL|XXL|XXXL|[2-6]XL|ONE\s*SIZE|FREE\s*SIZE|\d{1,2}[-\/]\d{1,2}\s*(?:M|Y|YR|YRS)|\d{1,2}T)$/i.test(value.trim());
+  const sizeLike = (value: string) => /^(?:(?:EU|US|UK)\s*)?(?:\d{1,3}(?:\.5)?|\d{1,3}\s*[-\/]\s*\d{1,3}(?:\.5)?|\d{2,3}\s*CM|\d{1,2}[A-K]|\d{1,2}\s*[A-K]|\d{2}\s*[xX]\s*\d{2}|XXXS|XXS|XS|S|M|L|XL|XXL|XXXL|[2-6]XL|ONE\s*SIZE|FREE\s*SIZE|\d{1,2}[-\/]\d{1,2}\s*(?:M|Y|YR|YRS)|\d{1,2}T)$/i.test(value.trim());
+  const inferSizeSystem = (value: string) => {
+    const raw = value.trim().toUpperCase();
+    if (/^EU\b/.test(raw)) return "EU";
+    if (/^US\b/.test(raw)) return "US";
+    if (/^UK\b/.test(raw)) return "UK";
+    if (/^(?:XXXS|XXS|XS|S|M|L|XL|XXL|XXXL|[2-6]XL|ONE\s*SIZE|FREE\s*SIZE)$/.test(raw)) return "ALPHA";
+    if (/^\d{1,2}\s*[A-K]$/.test(raw)) return "BRA";
+    if (/^\d{2}\s*[X]\s*\d{2}$/.test(raw)) return "WAIST_INSEAM";
+    if (/^\d{2,3}\s*CM$/.test(raw)) return "CM";
+    if (/^\d{1,2}(?:[-\/]\d{1,2})?\s*(?:M|Y|YR|YRS)$/.test(raw) || /^\d{1,2}T$/.test(raw)) return "AGE";
+    if (/^\d{1,3}(?:\.5)?\s*[-\/]\s*\d{1,3}(?:\.5)?$/.test(raw)) return "RANGE";
+    if (/^\d{1,3}(?:\.5)?$/.test(raw)) return "NUMERIC";
+    return "PROVIDER";
+  };
   const parseVariantOptions = (v: any) => {
     const key = cleanText(v?.variantKey);
     const variantName = cleanText(v?.variantNameEn);
@@ -259,7 +273,7 @@ async function cjProductDetail(productId: string) {
     if (parts.length > 1 && sizeLike(parts[parts.length - 1])) {
       return { color: parts.slice(0, -1).join(" - "), size: parts[parts.length - 1] };
     }
-    const tail = source.match(/(?:^|\s)((?:(?:EU|US|UK)\s*)?(?:\d{1,2}(?:\.5)?|\d{2,3}\s*CM|\d{1,2}[A-K]|XXXS|XXS|XS|S|M|L|XL|XXL|XXXL|[2-6]XL|ONE\s*SIZE|FREE\s*SIZE|\d{1,2}[-\/]\d{1,2}\s*(?:M|Y|YR|YRS)|\d{1,2}T))$/i);
+    const tail = source.match(/(?:^|\s)((?:(?:EU|US|UK)\s*)?(?:\d{1,3}(?:\.5)?|\d{1,3}\s*[-\/]\s*\d{1,3}(?:\.5)?|\d{2,3}\s*CM|\d{1,2}[A-K]|\d{2}\s*[xX]\s*\d{2}|XXXS|XXS|XS|S|M|L|XL|XXL|XXXL|[2-6]XL|ONE\s*SIZE|FREE\s*SIZE|\d{1,2}[-\/]\d{1,2}\s*(?:M|Y|YR|YRS)|\d{1,2}T))$/i);
     if (tail) {
       const size = tail[1].trim();
       const color = source.slice(0, Math.max(0, (tail.index || 0))).replace(/[-\/]+$/g, "").trim();
@@ -286,6 +300,7 @@ async function cjProductDetail(productId: string) {
       color: options.color,
       size: options.size,
       size_source: "PROVIDER",
+      size_system: options.size ? inferSizeSystem(options.size) : "NONE",
       stock_check_required: stockTotal <= 0,
       image_url: cleanText(v?.variantImage) || gallery[0] || "",
       price_amount: Number.isFinite(price) && price > 0 ? price : null,
