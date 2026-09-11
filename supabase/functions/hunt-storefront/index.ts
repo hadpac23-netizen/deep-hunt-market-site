@@ -803,6 +803,12 @@ function ebayShelfTitleAllowed(slug: string, rawTitle: string) {
   if (slug === "maternity") return apparel && has(/\b(maternity|pregnancy|pregnant)\b/);
   if (slug === "sets") return apparel && has(/\b(co-?ord|matching set|2 piece|two piece|2pc|two-piece)\b/);
   if (slug === "suits") return apparel && has(/\b(suit|suits|tuxedo|formal jacket|formalwear|business suit|blazer set)\b/) && !has(/\b(pet|dog|cat|recovery|swim|wetsuit)\b/);
+  if (slug === "gaming") return has(/\b(gaming headset|gaming headphones|game controller|gaming controller|gamepad|mechanical gaming keyboard|gaming keyboard|gaming mouse)\b/)
+    && !has(/\b(chair|desk|table|sticker|skin only|case only)\b/);
+  if (slug === "tech") return has(/\b(usb[- ]?c charger|wall charger|wireless charger|power bank|usb[- ]?c hub|usb hub|wireless earbuds|earphones|headphones|lavalier microphone|lapel microphone|wireless microphone|webcam|portable monitor|smartwatch|smart watch)\b/)
+    && !has(/\b(case only|cover only|holder only|stand only|replacement shell)\b/);
+  if (slug === "lighting") return has(/\b(under[- ]?cabinet light|desk lamp|table lamp|reading lamp|rechargeable lamp|led strip light|led strip)\b/)
+    && !has(/\b(aquarium|car interior|vehicle interior)\b/);
   return true;
 }
 
@@ -865,19 +871,50 @@ async function ebayMarketShelves(focusSlug = "") {
     ["womenunderwear", "women everyday bra bralette", 24],
     ["menunderwear", "men cotton boxer briefs multipack", 30],
     ["menunderwear", "men underwear briefs multipack", 24],
+    ["menunderwear", "men boxer briefs cotton pack", 30],
+    ["menunderwear", "men undershirt multipack", 24],
     ["kidsunderwear", "kids cotton underwear multipack", 30],
-    ["kidsunderwear", "boys girls underwear multipack", 24],
+    ["kidsunderwear", "boys underwear multipack", 24],
+    ["kidsunderwear", "boys boxer briefs pack", 24],
+    ["kidsunderwear", "kids undershirt multipack", 20],
     ["sleepwear", "women pajamas sleepwear set", 24],
+    ["sleepwear", "women cotton pajamas set", 24],
     ["sleepwear", "men pajamas sleepwear set", 24],
+    ["sleepwear", "men cotton pajamas set", 24],
     ["sleepwear", "kids pajamas sleepwear set", 20],
+    ["sleepwear", "boys pajamas set", 20],
     ["loungewear", "women loungewear set", 24],
+    ["loungewear", "women lounge pants set", 24],
     ["loungewear", "men loungewear set", 24],
+    ["loungewear", "men lounge pants set", 24],
     ["plussize", "women plus size clothing", 30],
+    ["plussize", "women plus size dress", 28],
+    ["plussize", "women plus size blouse", 24],
     ["plussize", "men plus size clothing", 24],
+    ["plussize", "men big tall shirt", 24],
     ["petite", "women petite clothing", 24],
+    ["petite", "petite women trousers", 24],
+    ["petite", "petite women jeans", 24],
+    ["petite", "petite women dress", 24],
     ["maternity", "women maternity clothing", 24],
+    ["maternity", "women maternity top", 24],
+    ["maternity", "women maternity dress", 24],
+    ["maternity", "women maternity leggings", 24],
     ["sets", "women 2 piece matching set", 24],
+    ["sets", "women matching pants set", 24],
     ["sets", "men co ord matching set", 20],
+    ["sets", "men matching tracksuit set", 20],
+    ["gaming", "gaming headset", 30],
+    ["gaming", "game controller", 30],
+    ["gaming", "mechanical gaming keyboard", 24],
+    ["gaming", "gaming mouse", 24],
+    ["tech", "usb c charger 65w", 30],
+    ["tech", "usb c hub", 30],
+    ["tech", "wireless lapel microphone", 30],
+    ["tech", "wireless earbuds", 30],
+    ["tech", "portable monitor", 24],
+    ["lighting", "under cabinet light rechargeable", 24],
+    ["lighting", "desk lamp rechargeable", 24],
     ["men", "men fashion clothing", 30],
     ["men", "men polo shirt", 28],
     ["men", "men knit polo shirt", 24],
