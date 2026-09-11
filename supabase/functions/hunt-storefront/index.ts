@@ -1,4 +1,5 @@
 import { createClient } from "jsr:@supabase/supabase-js@2";
+import matterhornSnapshot from "./matterhorn_snapshot.json" with { type: "json" };
 
 const PUBLIC_KEY = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
 
@@ -751,6 +752,59 @@ async function withProviderTimeout<T>(promise: Promise<T>, fallback: T, ms = 900
   }
 }
 
+function matterhornProductDetail(productId: string) {
+  const rows = Array.isArray((matterhornSnapshot as any)?.products) ? (matterhornSnapshot as any).products : [];
+  const row = rows.find((item: any) => String(item?.item_id || "") === String(productId || ""));
+  if (!row) return null;
+  return {
+    ...row,
+    provider: "Matterhorn Wholesale",
+    price_basis: "SUPPLIER_BASE",
+    retail_price_verified: false,
+    checkout_status: "MATTERHORN_ACCOUNT_TERMS_PENDING",
+    gaps: [
+      "Matterhorn catalog, size and stock data come from the official supplier feed.",
+      "HUNT checkout remains disabled until account, payment timing, shipping and returns terms are approved."
+    ]
+  };
+}
+
+function matterhornMarketShelves() {
+  const rows = Array.isArray((matterhornSnapshot as any)?.products) ? (matterhornSnapshot as any).products : [];
+  const out: Record<string, any[]> = { womenunderwear: [], underwear: [], sleepwear: [] };
+  for (const row of rows) {
+    const shelfItem = {
+      provider: "Matterhorn Wholesale",
+      item_id: String(row?.item_id || ""),
+      title: cleanText(row?.title),
+      image_url: cleanText(row?.image_url),
+      category: row?.category === "sleepwear" ? "sleepwear" : "womenunderwear",
+      subcategory: cleanText(row?.subcategory),
+      brand: cleanText(row?.brand) || null,
+      color: cleanText(row?.color) || null,
+      price_amount: Number.isFinite(Number(row?.price_amount)) ? Number(row.price_amount) : null,
+      currency: cleanText(row?.currency) || "EUR",
+      price_basis: "SUPPLIER_BASE",
+      retail_price_verified: false,
+      availability_verified: row?.availability_verified === true,
+      stock_quantity: Number(row?.stock_quantity || 0),
+      variant_count: Number(row?.variant_count || 0),
+      size_data_source: "PROVIDER_VARIANTS",
+      checkout_status: "MATTERHORN_ACCOUNT_TERMS_PENDING",
+      catalog_discovery: true,
+      merchant_product: true,
+      source_fresh_at: row?.source_fresh_at || null
+    };
+    if (!shelfItem.item_id || !shelfItem.image_url.startsWith("https://")) continue;
+    if (row?.category === "sleepwear") out.sleepwear.push(shelfItem);
+    else {
+      out.womenunderwear.push(shelfItem);
+      out.underwear.push(shelfItem);
+    }
+  }
+  return out;
+}
+
 function mergeMarketShelves(...sources: Record<string, any[]>[]) {
   const merged: Record<string, any[]> = {};
   for (const source of sources) {
@@ -1143,6 +1197,11 @@ function providerState() {
       connector_stage: env("GOOTEN_API_KEY") ? "PUBLIC_CATALOG_LIVE_CREDENTIALS_PRESENT" : "PUBLIC_CATALOG_LIVE",
     },
     {
+      provider: "Matterhorn Wholesale",
+      state: "CATALOG_LIVE",
+      connector_stage: "OFFICIAL_FEED_SNAPSHOT_LIVE_ACCOUNT_TERMS_PENDING",
+    },
+    {
       provider: "BigBuy",
       state: env("BIGBUY_API_KEY") ? "CREDENTIALS_PRESENT" : "AUTH_REQUIRED",
       connector_stage: "STAGED",
@@ -1285,6 +1344,10 @@ function checkoutMap() {
       mode: "APPROVAL_REQUIRED",
       note: "Connector is staged; live catalog and fulfillment activation wait for verified API credentials."
     },
+    "Matterhorn Wholesale": {
+      mode: "APPROVAL_REQUIRED",
+      note: "Official supplier feed is connected for catalog, sizes and stock. Account, payment timing, shipping/returns and order activation remain approval-required."
+    },
     BigBuy: {
       mode: "APPROVAL_REQUIRED",
       note: "Connector is staged; live catalog and order activation wait for verified API credentials."
@@ -1341,7 +1404,8 @@ Deno.serve(async (req: Request) => {
       withProviderTimeout(gootenMarketShelves(), {}, 8000),
       withProviderTimeout(ebayMarketShelves(focusShelf), {}, focusShelf ? 7000 : 10000)
     ]);
-    const mergedShelves = mergeMarketShelves(merchantShelves, printfulShelves, gootenShelves, cjShelves, ebayShelves);
+    const matterhornShelves = matterhornMarketShelves();
+    const mergedShelves = mergeMarketShelves(matterhornShelves, merchantShelves, printfulShelves, gootenShelves, cjShelves, ebayShelves);
     const shelves = focusShelf ? { [focusShelf]: mergedShelves[focusShelf] || [] } : mergedShelves;
     const visibleEntries = Object.values(shelves).reduce(
       (sum: number, items: any) => sum + (Array.isArray(items) ? items.length : 0),
@@ -1369,6 +1433,7 @@ Deno.serve(async (req: Request) => {
         )
       ),
       source: [
+        "Matterhorn official supplier feed snapshot",
         "HUNT approved merchants",
         "Printful public catalog",
         env("CJ_API_KEY") || env("CJ_ACCESS_TOKEN") ? "CJdropshipping API" : null,
@@ -1400,6 +1465,23 @@ Deno.serve(async (req: Request) => {
         },
         truth_note:"This approved merchant product is discovered on HUNT, but checkout is completed by the partner store."
       }),{headers});
+    }
+    if (providerLower === "matterhorn wholesale" || providerLower === "matterhorn") {
+      const product = matterhornProductDetail(productId);
+      if (!product) {
+        return new Response(JSON.stringify({ error: "product not found" }), { status: 404, headers });
+      }
+      return new Response(JSON.stringify({
+        product,
+        provider_checkout,
+        checkout: {
+          mode: "ONSITE_FIRST",
+          external_purchase_links_enabled: false,
+          public_checkout_enabled: false
+        },
+        truth_note:
+          "Matterhorn product, size and stock data come from the official supplier feed. HUNT checkout stays disabled until commercial account and fulfillment terms are approved."
+      }), { headers });
     }
     if (providerLower === "ebay") {
       const product = await ebayProductDetail(productId);
