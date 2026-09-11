@@ -23,7 +23,9 @@ const freshEnough = (value: unknown) => {
 };
 const safeTitle = (title: string) => {
   const lower = title.toLowerCase();
-  return title.length >= 3 && !BLOCKED_TERMS.some(term => lower.includes(term));
+  if (title.length < 3 || BLOCKED_TERMS.some(term => lower.includes(term))) return false;
+  if (/\b(temu\s*&\s*tk|tmeu|tk\s*only|supports?\s+pickup|self[- ]?pickup|shipment\s+from\s+walmart|logistics\s+only)\b/.test(lower)) return false;
+  return true;
 };
 export const catalogSafetyTitle = safeTitle;
 export async function catalogWarehouseShelves(db: any) {

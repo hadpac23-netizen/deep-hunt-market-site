@@ -256,6 +256,15 @@
     pets: ["Pets", "pets"],
     suits: ["Suits & Formalwear", "suits"],
     underwear: ["Underwear & Essentials", "underwear"],
+    womenunderwear: ["Women's Underwear & Basics", "womenunderwear"],
+    menunderwear: ["Men's Underwear & Basics", "menunderwear"],
+    kidsunderwear: ["Kids Underwear & Basics", "kidsunderwear"],
+    sleepwear: ["Sleepwear", "sleepwear"],
+    loungewear: ["Loungewear", "loungewear"],
+    plussize: ["Plus & Curve", "plussize"],
+    petite: ["Petite", "petite"],
+    maternity: ["Maternity", "maternity"],
+    sets: ["Sets & Co-ords", "sets"],
     socks: ["Socks", "socks"],
     swimwear: ["Swimwear", "swimwear"],
     office: ["Office & Desk", "office"],
@@ -264,13 +273,15 @@
   };
 
   const shelfDepartments = [
-    ["Women · Clothing", ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear"]],
+    ["Women · Clothing", ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","sets","womenunderwear","sleepwear","loungewear","plussize","petite","maternity"]],
     ["Women · Shoes & Accessories", ["shoes","bags","jewelry","accessories","hats"]],
     ["Beauty & Fragrance", ["beauty","perfume"]],
-    ["Men", ["men","suits","underwear","socks"]],
+    ["Men", ["men","suits"]],
+    ["Fit, Basics & Sleep", ["womenunderwear","menunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","socks","swimwear"]],
+    ["Kids & Youth", ["kids","kidsunderwear"]],
     ["Home & Living", ["home","kitchen","storage","bedding"]],
     ["Tech & Gaming", ["tech","phoneaccessories","gaming","office"]],
-    ["Everyday", ["travel","kids","toys","pets"]],
+    ["Everyday", ["travel","toys","pets"]],
     ["Creative & Gifts", ["crafts","party","gifts","stationery"]],
   ];
 
@@ -326,9 +337,9 @@
   }
 
   function shelfDepartmentLimit() {
-    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 3;
-    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 4;
-    return 4;
+    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 4;
+    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 5;
+    return 6;
   }
 
   function shelfCategoryLimit(department) {
@@ -337,6 +348,8 @@
     if (department === "Women · Clothing") return mobile ? 2 : (tablet ? 2 : 3);
     if (department === "Women · Shoes & Accessories") return mobile ? 2 : (tablet ? 2 : 3);
     if (department === "Men") return mobile ? 1 : 2;
+    if (department === "Fit, Basics & Sleep") return mobile ? 1 : 2;
+    if (department === "Beauty & Fragrance") return mobile ? 1 : 2;
     return 1;
   }
 
@@ -357,7 +370,8 @@
     return out;
   }
 
-  const curatedFashionSlugs = new Set(["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear","shoes","bags","jewelry","accessories","hats"]);
+  const curatedFashionSlugs = new Set(["women","men","kids","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","socks","swimwear","shoes","bags","jewelry","accessories","hats"]);
+  const curatedFocusSlugs = new Set(["beauty","gaming","tech","lighting","travel","crafts","sports","drinkware","bedding","hats","socks","swimwear"]);
 
   function overlayFashionSnapshot(snapshot, fashion) {
     const shelves = {...(snapshot?.shelves || {})};
@@ -377,6 +391,28 @@
       visible_product_count: unique.size,
       shelf_entry_count: Object.values(shelves).reduce((sum, rows) => sum + (Array.isArray(rows) ? rows.length : 0), 0),
       source: "HUNT curated fashion + catalog snapshot",
+      availability_policy: "CATALOG_DISCOVERY_UNTIL_PROVIDER_RECHECK"
+    };
+  }
+
+  function overlayFocusSnapshot(snapshot, focus) {
+    const shelves = {...(snapshot?.shelves || {})};
+    for (const [slug, rows] of Object.entries(focus?.shelves || {})) {
+      if (!curatedFocusSlugs.has(slug) || !Array.isArray(rows) || rows.length < 4) continue;
+      shelves[slug] = rows;
+    }
+    const unique = new Set();
+    for (const rows of Object.values(shelves)) {
+      for (const item of Array.isArray(rows) ? rows : []) {
+        if (item?.item_id) unique.add(String(item.provider || "") + ":" + String(item.item_id));
+      }
+    }
+    return {
+      ...(snapshot || {}),
+      shelves,
+      visible_product_count: unique.size,
+      shelf_entry_count: Object.values(shelves).reduce((sum, rows) => sum + (Array.isArray(rows) ? rows.length : 0), 0),
+      source: "HUNT curated fashion + focus + catalog snapshot",
       availability_policy: "CATALOG_DISCOVERY_UNTIL_PROVIDER_RECHECK"
     };
   }
@@ -428,7 +464,7 @@
   function orderedShelfDepartments() {
     const signals = window.HuntCore?.signals?.() || {};
     const pinned = ["Women · Clothing","Women · Shoes & Accessories","Men"];
-    const defaultOrder = ["Home & Living","Tech & Gaming","Beauty & Fragrance","Everyday","Creative & Gifts"];
+    const defaultOrder = ["Fit, Basics & Sleep","Beauty & Fragrance","Home & Living","Tech & Gaming","Everyday","Creative & Gifts"];
     const scored = shelfDepartments
       .map((entry, index) => ({entry, index, score: entry[1].reduce((sum, slug) => sum + Number(signals[slug] || 0), 0)}));
     const pinnedRows = pinned
@@ -442,31 +478,39 @@
     return [...pinnedRows,...rest].map(row => row.entry);
   }
 
+  function hasSupplierNoise(item) {
+    const title=String(item?.title||"").toLowerCase();
+    return /\b(temu\s*&\s*tk|tmeu|tk\s*only|supports?\s+pickup|self[- ]?pickup|shipment\s+from\s+walmart|logistics\s+only)\b/.test(title);
+  }
+
   function isWomenShelfItem(item) {
     const title=String(item?.title||"").toLowerCase();
     const explicitKids=/\b(baby|newborn|toddler|kid|kids|child|children|boys?|girls?|youth|infant)\b/.test(title);
-    const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
-    const hasMen=/\b(men(?:'s)?|man|male|gentlemen|boys?)\b/.test(title);
+    const hasWomen=/\b(women(?:'s|s)?|woman|female|ladies)\b/.test(title);
+    const hasMen=/\b(men(?:'s|s)?|man|male|gentlemen|boys?)\b/.test(title);
     if (explicitKids || hasMen || /\bunisex\b/.test(title)) return false;
     if (hasWomen) return true;
-    return String(item?.gender||"").toLowerCase()==="women";
+    return ["women","female"].includes(String(item?.gender||"").toLowerCase());
   }
 
   function isMenShelfItem(item) {
     const title=String(item?.title||"").toLowerCase();
     const explicitKids=/\b(baby|newborn|toddler|kid|kids|child|children|boys?|girls?|youth|infant)\b/.test(title);
-    const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
-    const hasWomen=/\b(women(?:'s)?|woman|female|ladies|girls?)\b/.test(title);
+    const hasMen=/\b(men(?:'s|s)?|man|male|gentlemen)\b/.test(title);
+    const hasWomen=/\b(women(?:'s|s)?|woman|female|ladies|girls?)\b/.test(title);
     if (explicitKids || hasWomen || /\bunisex\b/.test(title)) return false;
     if (hasMen) return true;
-    return String(item?.gender||"").toLowerCase()==="men";
+    return ["men","male"].includes(String(item?.gender||"").toLowerCase());
   }
 
   function matchesShelfTruth(item, slug, department) {
-    const inferred = window.HuntCore?.inferCategory?.(item) || item?.category || "";
+    if (hasSupplierNoise(item)) return false;
+    const curatedCategory = item?.curation_source && item?.category ? String(item.category) : "";
+    const inferred = curatedCategory || window.HuntCore?.inferCategory?.(item) || item?.category || "";
     if (slug === "women") return isWomenShelfItem(item);
     if (slug === "men") return isMenShelfItem(item);
     if (department.startsWith("Women") && isMenShelfItem(item)) return false;
+    if (department === "Kids & Youth" && /\b(adult|men(?:'s|s)?|women(?:'s|s)?|man|woman)\b/.test(String(item?.title||"").toLowerCase())) return false;
     return inferred === slug;
   }
 
@@ -594,8 +638,12 @@
       if (snapshotRes.ok) {
         snapshotData = await snapshotRes.json();
         try {
-          const fashionRes = await fetch("catalog-fashion/home.json?v=fashion1", {cache:"force-cache"});
+          const fashionRes = await fetch("catalog-fashion/home.json?v=fashion3", {cache:"force-cache"});
           if (fashionRes.ok) snapshotData = overlayFashionSnapshot(snapshotData, await fashionRes.json());
+        } catch {}
+        try {
+          const focusRes = await fetch("catalog-focus/home.json?v=focus2", {cache:"force-cache"});
+          if (focusRes.ok) snapshotData = overlayFocusSnapshot(snapshotData, await focusRes.json());
         } catch {}
         renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");
       }

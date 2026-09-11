@@ -1,0 +1,57 @@
+{
+  "slug": "loungewear",
+  "count": 3,
+  "source": "HUNT authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-11T07:45:52.376Z",
+  "products": [
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609080643261603500",
+      "title": "Loose-fit Straight-leg Loungewear Pajama Pantstrendy Arlo-style Trousers",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/ff7f4de4-8331-40fe-966a-49c46d2cba9e.jpg",
+      "category": "loungewear",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 4.21,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bottoms",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609081212361613200",
+      "title": "Summer Floral Strap Shorts Loungewear Set",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/08/12/78122674-3dd0-44d7-afa3-fec1c04d7f84_fine.jpeg",
+      "category": "loungewear",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 5.27,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bottoms",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097206184205475842",
+      "title": "Women Ribbed Knit Wide Leg Pants, Bold Blue Orange Leopard Print High Waist Loose Casual Loungewear Trousers With Pockets",
+      "image_url": "https://cf.cjdropshipping.com/e62b8a3f-e598-4729-ac0e-7b677570bd43.JPG",
+      "category": "loungewear",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 8.4,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bottoms",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    }
+  ]
+}

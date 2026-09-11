@@ -1,0 +1,57 @@
+{
+  "slug": "lighting",
+  "count": 3,
+  "source": "HUNT focused curation from authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-11T07:54:08.496Z",
+  "products": [
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609080741041601100",
+      "title": "Floor Lamp Minimalist Nordic LED Light For Living Room And Bedroom",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/43f96919-3970-4561-a7bf-55a9293390e1.jpg",
+      "category": "lighting",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 38.02,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "home",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097259203002912770",
+      "title": "Led Desk Lamp With Clamp - Reading Table Lamp For Home Office With Atmosphere",
+      "image_url": "https://cf.cjdropshipping.com/130bfc58-b96c-4aca-9527-2ef77e32940d.jpg",
+      "category": "lighting",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 28,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "home",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096906633389301761",
+      "title": "2-Pack Cordless Table Lamp, 5200mAh Rechargeable Desk Lamp with Stepless Dimming & 3 Adjustable Heights for Restaurant & Bedroom",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/884245712c684d06963b71b618d97f17.jpg",
+      "category": "lighting",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 47.57,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "lighting",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    }
+  ]
+}

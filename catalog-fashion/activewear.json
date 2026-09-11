@@ -1,9 +1,9 @@
 {
   "slug": "activewear",
-  "count": 18,
+  "count": 20,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-09T23:39:21.429Z",
+  "curated_at": "2026-09-11T07:45:52.361Z",
   "products": [
     {
       "provider": "Gooten",
@@ -17,6 +17,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": true,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -32,7 +33,94 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|134251613863|433704171184",
+      "category": "activewear",
+      "title": "Nike Men's Sportswear T-Shirt Active Short Sleeve Graphic Tee",
+      "image_url": "https://i.ebayimg.com/images/g/-zgAAOSwh-JjL4r~/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/-zgAAOSwh-JjL4r~/s-l960.jpg"
+      ],
+      "price_amount": 19.95,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "micoe123",
+        "feedback_percentage": 99.8,
+        "feedback_score": 11757
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-22T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/134251613863?_skw=men+fashion+clothing&hash=item1f42050ea7:g:-zgAAOSwh-JjL4r~",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|145816569602|444901895942",
+      "category": "activewear",
+      "title": "Nike Men's Sportswear T-Shirt Active Short Sleeve Graphic Tee",
+      "image_url": "https://i.ebayimg.com/images/g/etIAAOSwDHVmXpS9/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/etIAAOSwDHVmXpS9/s-l1600.jpg"
+      ],
+      "price_amount": 19.95,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "micoe123",
+        "feedback_percentage": 99.8,
+        "feedback_score": 11757
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/145816569602?_skw=men+fashion+clothing&hash=item21f3584702:g:etIAAOSwDHVmXpS9",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -47,6 +135,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -62,6 +151,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -77,6 +167,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -92,6 +183,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -107,6 +199,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -122,6 +215,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -137,6 +231,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -152,6 +247,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -167,6 +263,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -182,6 +279,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -197,6 +295,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -212,6 +311,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -227,6 +327,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -242,6 +343,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -257,6 +359,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -272,6 +375,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     }
   ]

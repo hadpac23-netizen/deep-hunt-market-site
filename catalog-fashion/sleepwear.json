@@ -1,0 +1,56 @@
+{
+  "slug": "sleepwear",
+  "count": 3,
+  "source": "HUNT authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-11T07:45:52.375Z",
+  "products": [
+    {
+      "provider": "Gooten",
+      "item_id": "270",
+      "title": "Pajamas",
+      "image_url": "https://appassets.azureedge.net/product-pajamas/Previews/Pajamas-preview-612x612-V1.jpg",
+      "category": "sleepwear",
+      "price_amount": 42.4,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": true,
+      "source_fresh_at": "2026-09-09T14:56:55Z",
+      "source_category": "kids",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609080643261603500",
+      "title": "Loose-fit Straight-leg Loungewear Pajama Pantstrendy Arlo-style Trousers",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/ff7f4de4-8331-40fe-966a-49c46d2cba9e.jpg",
+      "category": "sleepwear",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 4.21,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bottoms",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609080514511635300",
+      "title": "Women's Sleepwear Printed Collar Short Sleeved Shorts Set",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/becff9c5-6715-407b-a809-52fae9397034.jpg",
+      "category": "sleepwear",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 8.68,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bottoms",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    }
+  ]
+}

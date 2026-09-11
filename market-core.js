@@ -53,6 +53,15 @@
     pets: {title:"Pets", query:"pets", icon:"V", description:"Pet accessories and selected pet products."},
     suits: {title:"Suits & Formalwear", query:"suits formalwear blazers tuxedo", icon:"F", description:"Suits, formal jackets, blazers and business-ready apparel from verified live catalogs."},
     underwear: {title:"Underwear & Essentials", query:"underwear briefs boxers bras essentials", icon:"E", description:"Everyday underwear and essentials from verified live catalogs."},
+    womenunderwear: {title:"Women's Underwear & Basics", query:"women underwear briefs bras basics", icon:"W", description:"Everyday women's underwear and basic layers from verified live catalogs."},
+    menunderwear: {title:"Men's Underwear & Basics", query:"men underwear boxer briefs basics", icon:"M", description:"Everyday men's underwear and basic layers from verified live catalogs."},
+    kidsunderwear: {title:"Kids Underwear & Basics", query:"kids underwear briefs basics", icon:"K", description:"Age-appropriate kids underwear and basic layers from verified live catalogs."},
+    sleepwear: {title:"Sleepwear", query:"pajamas sleepwear", icon:"P", description:"Pajamas and sleepwear from connected live catalogs."},
+    loungewear: {title:"Loungewear", query:"loungewear lounge sets", icon:"L", description:"Comfort-focused lounge sets and separates."},
+    plussize: {title:"Plus & Curve", query:"plus size clothing", icon:"+", description:"Extended-size fashion. Product-specific supplier sizing always takes priority."},
+    petite: {title:"Petite", query:"women petite clothing", icon:"P", description:"Petite-focused apparel with product-specific measurements where available."},
+    maternity: {title:"Maternity", query:"women maternity clothing", icon:"M", description:"Maternity-focused clothing from verified live catalogs."},
+    sets: {title:"Sets & Co-ords", query:"matching set co ord clothing", icon:"2", description:"Coordinated two-piece and matching apparel sets."},
     socks: {title:"Socks", query:"socks", icon:"Z", description:"Everyday and fashion socks from verified live catalogs."},
     swimwear: {title:"Swimwear", query:"swimwear", icon:"S", description:"Swimwear and swim-focused apparel."},
     office: {title:"Office & Desk", query:"office", icon:"D", description:"Desk mats, calendars, mouse pads and notebooks."},
@@ -64,7 +73,8 @@
   };
 
   const categoryGroups = [
-    {title:"Women & Men", items:["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear"]},
+    {title:"Women & Men", items:["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits"]},
+    {title:"Fit, Basics & Sleep", items:["womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","socks","swimwear"]},
     {title:"Beauty & Style", items:["bags","shoes","hats","accessories","jewelry","beauty","perfume"]},
     {title:"Home & Living", items:["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]},
     {title:"Tech & Gaming", items:["tech","phoneaccessories","gaming"]},
@@ -88,9 +98,21 @@
   };
 
   function inferCategory(value) {
+    const explicit = typeof value === "object" ? String(value?.category || "").toLowerCase() : "";
+    const precise = new Set(["womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets"]);
+    if (precise.has(explicit) && categoryDefs[explicit]) return explicit;
     const t = String(value?.title || value || "").toLowerCase();
     if (/\b(pet|dog|cat)\b/.test(t)) return "pets";
     if (/\b(toy|toys|puzzle|plush|building block|craft kit|slime)\b/.test(t)) return "toys";
+    if (/\b(kids?|youth|toddler|baby|newborn|child|children|boys?|girls?|infant)\b/.test(t) && /\b(underwear|briefs?|boxers?|underpants|undershirt|base layer)\b/.test(t)) return "kidsunderwear";
+    if (/\b(women(?:'s)?|woman|ladies|female)\b/.test(t) && /\b(underwear|briefs?|panties|bra|bras|bralette|camisole|intimates?)\b/.test(t)) return "womenunderwear";
+    if (/\b(men(?:'s)?|man|male)\b/.test(t) && /\b(underwear|briefs?|boxer briefs?|boxers?|underpants|undershirt|base layer)\b/.test(t)) return "menunderwear";
+    if (/\b(pajamas?|pyjamas?|sleepwear|nightwear|nightgown|sleep set)\b/.test(t)) return "sleepwear";
+    if (/\b(loungewear|lounge set|lounge pants|lounge top)\b/.test(t)) return "loungewear";
+    if (/\b(plus size|curve|big & tall|big and tall)\b/.test(t)) return "plussize";
+    if (/\bpetite\b/.test(t)) return "petite";
+    if (/\b(maternity|pregnancy|pregnant|nursing)\b/.test(t)) return "maternity";
+    if (/\b(co-?ord|matching set|2 piece|two piece|2pc|two-piece)\b/.test(t)) return "sets";
     if (/\b(kids?|youth|toddler|baby|newborn|child|children|boys?|girls?|infant)\b/.test(t)) return "kids";
     if (/(perfume|fragrance|eau de|parfum|toilette spray)/.test(t)) return "perfume";
     if (/(beauty|skincare|makeup|cosmetic|serum|cream)/.test(t)) return "beauty";
@@ -155,6 +177,15 @@
     accessories:["accessories","אביזרים","אקססוריז","إكسسوارات","اكسسوارات","accesorios","accessoires"],
     suits:["suits","formalwear","business suit","חליפות","חליפה","بدلات","بدلة","costumes","trajes"],
     underwear:["underwear","briefs","boxers","הלבשה תחתונה","תחתונים","ملابس داخلية","ropa interior","sous-vêtements"],
+    womenunderwear:["women underwear","women basics","תחתוני נשים","הלבשה תחתונה נשים","ملابس داخلية نسائية"],
+    menunderwear:["men underwear","men basics","תחתוני גברים","הלבשה תחתונה גברים","ملابس داخلية رجالية"],
+    kidsunderwear:["kids underwear","children underwear","תחתוני ילדים","ملابس داخلية للأطفال"],
+    sleepwear:["sleepwear","pajamas","pyjamas","בגדי שינה","פיג'מות","ملابس نوم","بيجامات"],
+    loungewear:["loungewear","lounge set","בגדי פנאי","ملابس منزلية"],
+    plussize:["plus size","curve","מידות גדולות","מידה גדולה","مقاسات كبيرة"],
+    petite:["petite","פטיט","נמוכות","قصيرات القامة"],
+    maternity:["maternity","pregnancy clothing","בגדי הריון","ملابس حمل"],
+    sets:["co ord","co-ord","matching set","סטים","חליפות שני חלקים","أطقم"],
     socks:["socks","גרביים","גרב","جوارب","جورب","calcetines","chaussettes"]
   };
   const brandAliases = {
@@ -231,6 +262,15 @@
     if (/perfume|fragrance/.test(q)) return "perfume";
     if (/jewel|necklace|bracelet|earring|ring/.test(q)) return "jewelry";
     if (/beauty|skincare|makeup/.test(q)) return "beauty";
+    if (/women.*(underwear|brief|bra)|(?:underwear|brief|bra).*women/.test(q)) return "womenunderwear";
+    if (/men.*(underwear|brief|boxer)|(?:underwear|brief|boxer).*men/.test(q)) return "menunderwear";
+    if (/(kids?|children|boys?|girls?).*(underwear|brief|boxer)|(?:underwear|brief|boxer).*(kids?|children|boys?|girls?)/.test(q)) return "kidsunderwear";
+    if (/pajamas?|pyjamas?|sleepwear|nightwear/.test(q)) return "sleepwear";
+    if (/loungewear|lounge set/.test(q)) return "loungewear";
+    if (/plus size|curve|big and tall|big & tall/.test(q)) return "plussize";
+    if (/\bpetite\b/.test(q)) return "petite";
+    if (/maternity|pregnancy clothing/.test(q)) return "maternity";
+    if (/co-?ord|matching set|2 piece|two piece/.test(q)) return "sets";
     if (/kids?|youth|toddler|baby|child|children|boys?|girls?|infant/.test(q)) return "kids";
     if (/\b(suit|suits|tuxedo|formalwear|business suit|formal jacket)\b/.test(q)) return "suits";
     if (/\b(underwear|briefs?|boxer briefs?|boxers?|underpants|intimates?|bras?)\b/.test(q)) return "underwear";

@@ -1,0 +1,73 @@
+{
+  "slug": "plussize",
+  "count": 4,
+  "source": "HUNT authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-11T07:45:52.376Z",
+  "products": [
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097582701160099842",
+      "title": "White Cargo Jeans Men Loose Fit Denim Pants Workwear Style Big Size Plus Size Streetwear Ready Stock",
+      "image_url": "https://cf.cjdropshipping.com/adc72f0a-2fac-4867-b4ec-ac131c7845c1.jpg",
+      "category": "plussize",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 21.35,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bottoms",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097218985099112450",
+      "title": "Kaftan Cover Up For Women V Neck Batwing Sleeve Plus Size Caftan Dress",
+      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/5b5ba907-ac18-4518-8575-056162efd44e.jpg",
+      "category": "plussize",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 8.63,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "dresses",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097236263966183425",
+      "title": "Men's Summer Work Shorts Plus Size Mid-Length  Checkered Casual 5 Inch Shorts  Summer Riding Pants For Men",
+      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/e1b22ef3-92cd-4018-a031-119ef64cee98.jpg",
+      "category": "plussize",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 10.12,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bottoms",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097580450408493058",
+      "title": "Graphic Print Jeans Men Relaxed Fit Light Blue Denim Pants Distressed Streetwear Plus Size Big Tall Ready Stock",
+      "image_url": "https://cf.cjdropshipping.com/eb5a98db-29cf-466c-a319-13de7949ec82.png",
+      "category": "plussize",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 21.35,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bottoms",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    }
+  ]
+}

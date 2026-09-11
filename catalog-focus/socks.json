@@ -1,9 +1,9 @@
 {
   "slug": "socks",
-  "count": 15,
-  "source": "HUNT authorized catalog snapshots",
+  "count": 23,
+  "source": "HUNT focused curation from authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-11T07:45:52.362Z",
+  "curated_at": "2026-09-11T07:54:08.498Z",
   "products": [
     {
       "provider": "Gooten",
@@ -17,7 +17,7 @@
       "availability_verified": true,
       "source_fresh_at": "2026-09-09T14:56:55Z",
       "source_category": "accessories",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -33,39 +33,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2609070305091638000",
-      "title": "Formal Wide-top Mens Casual Mid-calf Socks",
-      "image_url": "https://cf.cjdropshipping.com/quick/product/f4fa26de-0d17-4ed2-9c45-47b64286340a.jpg",
-      "category": "socks",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 1.52,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "socks",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2096835734234116098",
-      "title": "New Fashion Y2K Cute Kawaii Harajuku Lolita Star Knitted Horn Shape Leg Warmer Leg Cover Slouch Socks",
-      "image_url": "https://cf.cjdropshipping.com/45cbb996-bffa-483f-b757-ea73c8f759d0.jpg",
-      "category": "socks",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 2.88,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "socks",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -81,7 +49,55 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
-      "curation_source": "fashion",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609081110031630800",
+      "title": "Kids Socks, Breathable Mid-calf Socks",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/33d0963f-1c54-4145-8e2b-34289aaa67e1.jpg",
+      "category": "socks",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 0.67,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "kids",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609070520021605700",
+      "title": "Newborn Socks For Baby Boys And Girls",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/d9478054-660b-4588-b269-95c2c2f46a31.jpg",
+      "category": "socks",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 3.51,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "kids",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096878076593999874",
+      "title": "Women Girls Neon Halloween Print Knit Flared Leg Warmers Slouch Socks For Party Clubwear",
+      "image_url": "https://cf.cjdropshipping.com/99b02b02-4fb3-437c-a445-63bff1013bb1.jpg",
+      "category": "socks",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 2.05,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "knitwear",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -97,7 +113,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -113,7 +129,23 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "socks",
-      "curation_source": "fashion",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609070305091638000",
+      "title": "Formal Wide-top Mens Casual Mid-calf Socks",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/f4fa26de-0d17-4ed2-9c45-47b64286340a.jpg",
+      "category": "socks",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 1.52,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "socks",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -129,7 +161,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "socks",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -145,7 +177,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "socks",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -161,7 +193,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "socks",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -177,7 +209,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "socks",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -193,7 +225,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "socks",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -209,7 +241,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "socks",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -225,7 +257,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "socks",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -241,7 +273,103 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "socks",
-      "curation_source": "fashion",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096847261486833665",
+      "title": "Y2K Goth Fashion Acrylic Leg Warmers For Women Girls Knitted Star Pattern Slouch Socks",
+      "image_url": "https://cf.cjdropshipping.com/7f6facf4-fad4-44ea-8eeb-3d92f83c24ca.jpg",
+      "category": "socks",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 2.07,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "socks",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097057613502242818",
+      "title": "Pilates Chair Wunda Chair Pilates Combo Chair with Handles Split Pedals Reformer Machine 4-Level Resistance for Yoga Core Training Rehabilitation Includes Non-Slip Socks",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/0735770a828a4b9388dc2027cc566544.jpg",
+      "category": "socks",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 254.76,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "activewear",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096849590688702465",
+      "title": "Y2K Goth Cool Girl JK Knitted Cross Love Sock Cover Japanese Style Sweet Winter Mid-calf Geometric Jacquard Stacked Slouch Socks",
+      "image_url": "https://cf.cjdropshipping.com/862a77fa-41f8-4c76-af91-b92d10444ce0.jpg",
+      "category": "socks",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 2.05,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "kids",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096871035228827649",
+      "title": "Women Girls Neon Color Flared Knit Rhinestone Sock Cuffs Leg Warmer Slouch Socks For Clubwear Party Daily",
+      "image_url": "https://cf.cjdropshipping.com/91a07e8a-28d4-4762-b451-e9ec91fb7db2.jpg",
+      "category": "socks",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 2.14,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "knitwear",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096875193608888322",
+      "title": "Fashion Hollow Heart Cute Lolita Japanese Style Flared Sock Cuffs Leg Warmer For Girls Women For Party Dancewear Daily",
+      "image_url": "https://cf.cjdropshipping.com/2c33e4cf-0e98-41f5-ba51-e6dc7e66194d.jpg",
+      "category": "socks",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 2.14,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "party",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096835734234116098",
+      "title": "New Fashion Y2K Cute Kawaii Harajuku Lolita Star Knitted Horn Shape Leg Warmer Leg Cover Slouch Socks",
+      "image_url": "https://cf.cjdropshipping.com/45cbb996-bffa-483f-b757-ea73c8f759d0.jpg",
+      "category": "socks",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 2.88,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "socks",
+      "curation_source": "focus",
       "catalog_discovery": true
     }
   ]

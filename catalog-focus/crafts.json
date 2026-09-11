@@ -1,0 +1,73 @@
+{
+  "slug": "crafts",
+  "count": 4,
+  "source": "HUNT focused curation from authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-11T07:54:08.497Z",
+  "products": [
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609090819041608700",
+      "title": "Transparent Plastic Craft Supplies Storage Box",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/4e88e550-320d-4a3b-be08-89521f921259.jpg",
+      "category": "crafts",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 7.9,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bags",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097156959627239426",
+      "title": "230Pcs Portable Sewing Kit Home Travel Case Needles Thread Scissors Set",
+      "image_url": "https://cf.cjdropshipping.com/e46d4b2b-5b19-4711-8920-5b25e3d3afd5.jpg",
+      "category": "crafts",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 13,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "crafts",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097030831700992001",
+      "title": "Natural 6-Tier Desktop Storage Organizer, Adjustable Removable Shelves Wooden Desk Rack with Anti-Fall Baffles for Craft Supplies Stationery",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/f7b5fe4dc12e4ea2b00b99d4d4b5a29a.jpg",
+      "category": "crafts",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 47.69,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "crafts",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097029854692401154",
+      "title": "White 6-Tier Desktop Storage Organizer, Adjustable Removable Shelves Wooden Desk Rack with Anti-Fall Baffles for Craft Supplies Stationery",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/920b516b582a45e4bf9b9f9d37cb69f8.jpg",
+      "category": "crafts",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 47.69,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "crafts",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    }
+  ]
+}

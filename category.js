@@ -6,7 +6,8 @@
   const sub = params.get("sub") || "";
   const def = H.categoryDefs[slug];
   const mainCategories = ["women","men","kids","beauty","home","kitchen","tech","sports","gifts"];
-  const curatedFashionSlugs = new Set(["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear","shoes","bags","jewelry","accessories","hats"]);
+  const curatedFashionSlugs = new Set(["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","socks","swimwear","shoes","bags","jewelry","accessories","hats"]);
+  const curatedFocusSlugs = new Set(["beauty","gaming","tech","lighting","travel","crafts","sports","drinkware","bedding","hats","socks","swimwear"]);
   let rawResults = [];
   let resultOrder = new Map();
   const viewKey = "hunt_market_view_v1";
@@ -64,7 +65,7 @@
         .filter(key => H.categoryDefs[key])
         .map(key => {
           const value = H.categoryDefs[key];
-          const genderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear","shoes","bags","jewelry","accessories","hats"].includes(key);
+          const genderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","womenunderwear","menunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","socks","swimwear","shoes","bags","jewelry","accessories","hats"].includes(key);
           const href = genderSub ? `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}` : H.categoryUrl(key);
           const active = genderSub ? sub===key : key===slug;
           return `<a class="${active?"active":""}" href="${href}">${value.icon} ${H.esc(value.title)}</a>`;
@@ -118,12 +119,18 @@
     return neutralStyleSub.has(sub);
   }
 
+  function hasSupplierNoise(product) {
+    const title=String(product?.title||"").toLowerCase();
+    return /\b(temu\s*&\s*tk|tmeu|tk\s*only|supports?\s+pickup|self[- ]?pickup|shipment\s+from\s+walmart|logistics\s+only)\b/.test(title);
+  }
+
   function matchesCategoryTruth(product) {
     const title = String(product?.title || "").toLowerCase();
-    if (!title) return false;
-    const inferred = H.inferCategory(product);
+    if (!title || hasSupplierNoise(product)) return false;
+    const curatedCategory = product?.curation_source && product?.category ? String(product.category) : "";
+    const inferred = curatedCategory || H.inferCategory(product);
     if (["women","men"].includes(slug)) {
-      const allowed = new Set(["women","men","dresses","tops","bottoms","hoodies","knitwear","jackets","activewear","suits","underwear","swimwear","bags","shoes","accessories","jewelry","hats","socks"]);
+      const allowed = new Set(["women","men","dresses","tops","bottoms","hoodies","knitwear","jackets","activewear","suits","underwear","womenunderwear","menunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","swimwear","bags","shoes","accessories","jewelry","hats","socks"]);
       if (!allowed.has(inferred)) return false;
       if (sub && inferred !== sub) return false;
       if (slug === "women" && /\b(baby|newborn|toddler|kid|kids|child|children|boys?|youth|infant)\b/.test(title)) return false;
@@ -282,7 +289,22 @@
     document.title = `${pageTitle} — HUNT DEAL`;
     $("#hd-cat-title").textContent = pageTitle;
     $("#hd-cat-breadcrumb").textContent = pageTitle;
-    $("#hd-cat-copy").textContent = subDef && ["women","men"].includes(slug) ? `${subDef.title} filtered inside ${def.title}.` : def.description;
+    const categoryCopy = subDef && ["women","men"].includes(slug) ? `${subDef.title} filtered inside ${def.title}.` : def.description;
+    $("#hd-cat-copy").textContent = categoryCopy;
+    const canonicalUrl = new URL("category", "https://deep-hunt-market.netlify.app/");
+    canonicalUrl.searchParams.set("c", slug);
+    if (sub && H.categoryDefs[sub]) canonicalUrl.searchParams.set("sub", sub);
+    const canonicalEl = $("#hd-canonical");
+    if (canonicalEl) canonicalEl.href = canonicalUrl.toString();
+    const metaDescription = $("#hd-meta-description");
+    const socialDescription = `${pageTitle}: ${categoryCopy} Browse live supplier products with clear source information on HUNT DEAL.`;
+    if (metaDescription) metaDescription.content = socialDescription;
+    const socialTitle = `${pageTitle} - HUNT DEAL`;
+    [["#hd-og-title", socialTitle], ["#hd-twitter-title", socialTitle],
+     ["#hd-og-description", socialDescription], ["#hd-twitter-description", socialDescription],
+     ["#hd-og-url", canonicalUrl.toString()]].forEach(([selector, value]) => {
+      const el = $(selector); if (el) el.content = value;
+    });
     renderCategories();
     applyViewMode(viewMode);
     H.recordSignal(slug,"category");
@@ -311,11 +333,10 @@
     };
 
     const applyRows = (rows, label, {merge=false}={}) => {
-      const incoming = (Array.isArray(rows) ? rows : []).filter(product => {
-        if (slug !== "men") return true;
-        const text = String(product?.title || "").toLowerCase();
-        return !/\b(women(?:'s|s)?|woman|female|unisex)\b/.test(text);
-      });
+      const incoming = (Array.isArray(rows) ? rows : []).filter(product =>
+        matchesCategoryTruth(product) && matchesGenderScope(product) && matchesSub(product)
+      );
+
       if (merge && rawResults.length) {
         const merged = new Map(rawResults.map(product => [productKey(product), product]));
         for (const product of incoming) {
@@ -340,10 +361,15 @@
     let shardLoaded = false;
     const shardCandidates = curatedFashionSlugs.has(sourceSlug)
       ? [
-          "catalog-fashion/" + encodeURIComponent(sourceSlug) + ".json?v=fashion1",
+          "catalog-fashion/" + encodeURIComponent(sourceSlug) + ".json?v=fashion3",
           "catalog-shards/" + encodeURIComponent(sourceSlug) + ".json?v=catalog30k1"
         ]
-      : ["catalog-shards/" + encodeURIComponent(sourceSlug) + ".json?v=catalog30k1"];
+      : curatedFocusSlugs.has(sourceSlug)
+        ? [
+            "catalog-focus/" + encodeURIComponent(sourceSlug) + ".json?v=focus2",
+            "catalog-shards/" + encodeURIComponent(sourceSlug) + ".json?v=catalog30k1"
+          ]
+        : ["catalog-shards/" + encodeURIComponent(sourceSlug) + ".json?v=catalog30k1"];
     for (const shardUrl of shardCandidates) {
       if (shardLoaded) break;
       try {
@@ -352,7 +378,7 @@
         const shard = await shardRes.json();
         const shardRows = Array.isArray(shard?.products) ? shard.products : [];
         if (!shardRows.length) continue;
-        applyRows(shardRows, shardUrl.startsWith("catalog-fashion/") ? "curated" : "expanded");
+        applyRows(shardRows, (shardUrl.startsWith("catalog-fashion/") || shardUrl.startsWith("catalog-focus/")) ? "curated" : "expanded");
         rendered = true;
         shardLoaded = true;
       } catch {}
@@ -374,7 +400,7 @@
 
     try {
       const liveData = await Promise.race([
-        H.storefront({shelves:1}),
+        H.storefront({shelves:1,shelf:sourceSlug}),
         new Promise((_, reject) => setTimeout(() => reject(new Error("Live catalog timeout")), 15000))
       ]);
       const liveRows = Array.isArray(liveData?.shelves?.[sourceSlug]) ? liveData.shelves[sourceSlug] : [];

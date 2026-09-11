@@ -1,0 +1,57 @@
+{
+  "slug": "menunderwear",
+  "count": 3,
+  "source": "HUNT authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-11T07:45:52.375Z",
+  "products": [
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609071215041628500",
+      "title": "Mens Fallwinter Crew-neck Ribbed Long-sleeve Henley Undershirt",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/2293688d-7712-4d7e-bf19-150b7d966b56.jpg",
+      "category": "menunderwear",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 7.12,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "hoodies",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609071211591629300",
+      "title": "Men's Hooded Base Layer Outdoor Top",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/92099adb-4d5b-4a4f-8a16-975f38981b2b.jpg",
+      "category": "menunderwear",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 6.77,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "men",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097585970480709633",
+      "title": "New Quick-dry Ski Clothing Sports Ski Underwear Set For Men And Women, Moisture-wicking, Sweat-wicking, Warm Compression Sports Suit",
+      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/5a4d9ede-11be-4d52-9051-b0666e9f6a43.jpg",
+      "category": "menunderwear",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 23.99,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "activewear",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    }
+  ]
+}

@@ -1,9 +1,9 @@
 {
   "slug": "tops",
-  "count": 166,
+  "count": 209,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-09T23:39:21.426Z",
+  "curated_at": "2026-09-11T07:45:52.348Z",
   "products": [
     {
       "provider": "CJdropshipping",
@@ -18,6 +18,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -33,6 +34,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -48,6 +50,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -63,6 +66,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -78,6 +82,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -93,6 +98,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -108,6 +114,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -123,7 +130,51 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|167025330672|466743655405",
+      "category": "tops",
+      "title": "Women 100% Real Suede Leather Brown Cropped Jacket Short Casual Coat Blouson Top",
+      "image_url": "https://i.ebayimg.com/images/g/KH4AAeSwkN9qZGwU/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/KH4AAeSwkN9qZGwU/s-l1600.jpg"
+      ],
+      "price_amount": 157.5,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.039Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "leatherworld2015",
+        "feedback_percentage": 99,
+        "feedback_score": 2855
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-23T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-30T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/167025330672?_skw=women+suede+jacket&hash=item26e37c49f0:g:KH4AAeSwkN9qZGwU&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZymfQakN%2Fen8UEIufIBG1aeo0Wa3Bch0BUyL1vxgmyLY%2Bkh7MTKtMjQpFfynaJGvhINntyFKBjUJJReGXlr26dF8h%2BbZCsZB246%2FGavkj%2BbR0ViBIwZu8boZdK6p8%2FbIg%2BRK2%2FGiNfPBtG3sF9ukFYz7QPM0gOihU9Wjzti0EItz6JwAZoZNog5RQbxxlJmnwyNOg5rN11ZStMp4b8byleD67NIftJI4NSR6yQKv4UaX6uQf39bhezQumeum77GP%2B1YPk9aEqCd1yOoZdGLL8GpqIcuGKLkp4fn4%2FVnO1CKQ%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "jackets",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -138,6 +189,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -153,6 +205,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -168,6 +221,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -183,7 +237,226 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|254864478808|554705579179",
+      "category": "tops",
+      "title": "Men Polo Shirt Plain Golf Sports Cotton Tee Jersey Casual Short Sleeve Quick Dry",
+      "image_url": "https://i.ebayimg.com/images/g/p0MAAOSwQTxgJZrz/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/p0MAAOSwQTxgJZrz/s-l960.jpg"
+      ],
+      "price_amount": 13.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "rainbowsunflowerinc",
+        "feedback_percentage": 99.4,
+        "feedback_score": 103824
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/254864478808?_skw=men+fashion+clothing&hash=item3b571b5258:g:p0MAAOSwQTxgJZrz",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|397280780606|665672990989",
+      "category": "tops",
+      "title": "Button Down Shirt Men Fashion Hawaiian European Design Party Men's Casual Top",
+      "image_url": "https://i.ebayimg.com/images/g/afgAAeSwlgtpG0e~/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/afgAAeSwlgtpG0e~/s-l1600.jpg"
+      ],
+      "price_amount": 39.59,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "companyofmcb",
+        "feedback_percentage": 99.3,
+        "feedback_score": 886
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-30T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-10-26T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/397280780606?_skw=men+fashion+clothing&hash=item5c7fc7a13e:g:afgAAeSwlgtpG0e~&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZ23ymDVYKT38A39OoeQc5U4TJ%2BnvifR7UV1nKr25ZZqoWLBJWbUCfoJNLxhDtWP4TFM6prxyhe5rLMGHvnDVBm8hMttJEoovWO2qvkYlKgdsLpg1qFaDuxJQo3i%2FsOEJURNv1XvG0vitmcwSyvSxXoa91bEVG7J2orXewU1SBBQEfXJL0Mpmx%2B%2BG%2BGW8M0rL%2BdrEY%2F%2BUJcityUgB91sWvVGnD5lCQShU4Ys0I145fiOd3%2FRC5fylvzrZHxzM1N1Xc75Ss70hdDp9SoHONLgM6%2Bx8eXB%2BM%2BUvt4j9kI60xFWQ%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|396897693759|665338053806",
+      "category": "tops",
+      "title": "Button Down Shirt Men Fashion Black and White Summer Long Sleeve Casual Shirts",
+      "image_url": "https://i.ebayimg.com/images/g/e9UAAeSwL1togmaW/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/e9UAAeSwL1togmaW/s-l1200.jpg"
+      ],
+      "price_amount": 53.35,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "companyofmcb",
+        "feedback_percentage": 99.3,
+        "feedback_score": 886
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-30T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-10-26T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/396897693759?_skw=men+fashion+clothing&hash=item5c68f2303f:g:e9UAAeSwL1togmaW&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGa6crKv32G3oTD%2FBZhaXDH1JjS764Px8XMHof9nKn2bJ5iN%2FQxJ1yNH%2BEaH1%2BjNteWl8RmB3w7ecPh9QVp3dro9NCXagdS38EKs4CBnLBvezs1Jpj1U9XhFZ44Z%2BeoM0IAcZUE2S%2BSm3tjsy7cxo41hAHCKPjEQzQbloqOY6CvWm7peLCO9D1zuXvpxIslQZkJAAyKKXUS8fO0xWNXRAOA2F51%2BoTg9I4Pxaysdn0wEdsnnY1rd4ioF5j5OJ6m4Oyvk5RscsDcCzt%2B9Co928hbvdNm8f%2FKSeppRt3S%2Bobl%2FoA%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|285469025159|587407841717",
+      "category": "tops",
+      "title": "Next Level Apparel 3600 Unisex Premium Plain TShirt Super Soft Blank Fit T-Shirt",
+      "image_url": "https://i.ebayimg.com/images/g/MDgAAOSwz7Bm8U3y/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/MDgAAOSwz7Bm8U3y/s-l1600.jpg"
+      ],
+      "price_amount": 20.28,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "veetrends20",
+        "feedback_percentage": 99.6,
+        "feedback_score": 48707
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/285469025159?_skw=men+fashion+clothing&hash=item427747a387:g:MDgAAOSwz7Bm8U3y",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|397786606654|666118389611",
+      "category": "tops",
+      "title": "Blue Mule Truck Graphic T-Shirt, Kick Style for Bold Apparel Lovers, Casual Unis",
+      "image_url": "https://i.ebayimg.com/images/g/np8AAeSwq4FpzJPG/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/np8AAeSwq4FpzJPG/s-l960.jpg"
+      ],
+      "price_amount": 21,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "hanse-566",
+        "feedback_percentage": 99.1,
+        "feedback_score": 447
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 7.99,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-22T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/397786606654?_skw=men+fashion+clothing&hash=item5c9dedec3e:g:np8AAeSwq4FpzJPG",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -198,6 +471,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -213,7 +487,51 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|396897657155|665337983857",
+      "category": "tops",
+      "title": "Button Down Shirt Men Fashion Floral Casual  Summer Short Sleeve Casual Shirts",
+      "image_url": "https://i.ebayimg.com/images/g/ancAAeSw31logmGe/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/ancAAeSw31logmGe/s-l1200.jpg"
+      ],
+      "price_amount": 45.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "companyofmcb",
+        "feedback_percentage": 99.3,
+        "feedback_score": 886
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-30T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-10-26T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/396897657155?_skw=men+fashion+clothing&hash=item5c68f1a143:g:ancAAeSw31logmGe",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -228,7 +546,140 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|365643778435|635431483314",
+      "category": "tops",
+      "title": "3D Camouflage T-Shirt Men Clothes Outdoor Fashion Casual O Neck Short Sleeve Sum",
+      "image_url": "https://i.ebayimg.com/images/g/o~kAAOSw4AZoPU49/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/o~kAAOSw4AZoPU49/s-l1200.jpg"
+      ],
+      "price_amount": 14.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "mrfalak",
+        "feedback_percentage": 98.3,
+        "feedback_score": 2394
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-18T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-24T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/365643778435?_skw=men+fashion+clothing&hash=item5522114983:g:o~kAAOSw4AZoPU49",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|305440922500|604360964729",
+      "category": "tops",
+      "title": "Playstation Classic Logo Black White Gaming T Shirt Tee Clothing Street Fashion",
+      "image_url": "https://i.ebayimg.com/images/g/eTMAAOSwB95l7AfF/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/eTMAAOSwB95l7AfF/s-l1600.jpg"
+      ],
+      "price_amount": 19.77,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "newcultureclub",
+        "feedback_percentage": 99.8,
+        "feedback_score": 2057
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 4.75,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-18T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-23T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/305440922500?_skw=men+fashion+clothing&hash=item471db29b84:g:eTMAAOSwB95l7AfF",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|273925228928|578212561734",
+      "category": "tops",
+      "title": "Camo T-Shirt Tactical Tee Short Sleeve Military Army Camouflage Uniform Fashion",
+      "image_url": "https://i.ebayimg.com/images/g/x9kAAOSwIHNmBY7T/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/x9kAAOSwIHNmBY7T/s-l1600.jpg"
+      ],
+      "price_amount": 14.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "armyuniverse",
+        "feedback_percentage": 99.7,
+        "feedback_score": 270020
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/273925228928?_skw=men+fashion+clothing&hash=item3fc7374980:g:x9kAAOSwIHNmBY7T",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -243,7 +694,97 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|306185711430|605712563123",
+      "category": "tops",
+      "title": "baker 3 three skateboards Vintage Logo video Classic Skate TShirt Print",
+      "image_url": "https://i.ebayimg.com/images/g/W78AAOSwTHNn2M2S/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/W78AAOSwTHNn2M2S/s-l1600.jpg"
+      ],
+      "price_amount": 19.97,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "newcultureclub",
+        "feedback_percentage": 99.8,
+        "feedback_score": 2057
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 4.75,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-18T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-23T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/306185711430?_skw=men+fashion+clothing&hash=item474a172f46:g:W78AAOSwTHNn2M2S",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|397932273262|666238156651",
+      "category": "tops",
+      "title": "Button Down Shirt Men Fashion Luxury  Western Lion Long Sleeve Hawaiian Shirt",
+      "image_url": "https://i.ebayimg.com/images/g/R~oAAeSwjapqAHzG/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/R~oAAeSwjapqAHzG/s-l1600.jpg"
+      ],
+      "price_amount": 51.51,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "companyofmcb",
+        "feedback_percentage": 99.3,
+        "feedback_score": 886
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-30T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-10-26T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/397932273262?_skw=men+fashion+clothing&hash=item5ca69c9e6e:g:R~oAAeSwjapqAHzG&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZ7bTwBL3LvXiNMPchWXZ3MrJ%2FuZAnCtzfGZj0Q7XnaAsbgnB8GDCYASHxNFySEvSgYKieTyVfSiWOmgzBSAxGIbsKBQlc5XuWKiE19lLz2QJ4J1fkuog%2BkBT6tHh9W3XUnUOSlrUBLUYT4h8p1ZqP6Qev6AAQnVdSqfPhah01c9cvijJZgP0bizASLbqT2h9ibxPlETTURHFengESeLuw8uEACCgnulP0lpj8C9AOB1mqHnNOrxiBXf52e8CC1uKTbQ0nD6dkkT6l8ZODb7fs8iBWZ9aSYD9oc94OyoJaaZg%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -258,7 +799,54 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|177276884416|476929484869",
+      "category": "tops",
+      "title": "Kawaii-Bucket-Hat Mens Graphic Tee, 100% Cotton, Casual Summer Wear",
+      "image_url": "https://i.ebayimg.com/images/g/e~EAAeSweM9p6fjp/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/e~EAAeSweM9p6fjp/s-l1600.jpg"
+      ],
+      "price_amount": 28,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "authenticbrands1961",
+        "feedback_percentage": 99.3,
+        "feedback_score": 5200
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 6.99,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": null,
+          "max_estimated_delivery_date": null
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/177276884416?_skw=men+fashion+clothing&hash=item29468695c0:g:e~EAAeSweM9p6fjp&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZIv7xQMRbSYkUB%2BQURgYZAkqmqdE8ZJDYAZxPjwziJbzbnpphylM%2B2Vzav9qDzSZKXUWy4Cgik9ZJplhD%2B2qJAMohkvtQZlP%2FiVZG6TDrwNrzLcMoX%2FEqKYBIp0H8nYEA75dr%2Bbl1LWf5ZyNEc6TRNa0qH6zfgMDzRG8Yc8YU8DGQMe3Z%2BypInDe6TlKgUXWx6YST4huowlFJ9EkvWRM3dYiZszbei%2Fm%2BAdjB3aou7UcCfKHclQ9pt%2B21G3TyxCVgiwkZlGhl8s45USFfCPC2n6VsXGKY44HWX3%2BDCndyghg%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -273,6 +861,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -288,6 +877,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -303,6 +893,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -318,7 +909,94 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|397932273262|666238156662",
+      "category": "tops",
+      "title": "Button Down Shirt Men Fashion Luxury  Western Lion Long Sleeve Hawaiian Shirt",
+      "image_url": "https://i.ebayimg.com/images/g/R~oAAeSwjapqAHzG/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/R~oAAeSwjapqAHzG/s-l1600.jpg"
+      ],
+      "price_amount": 51.51,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.307Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "companyofmcb",
+        "feedback_percentage": 99.3,
+        "feedback_score": 886
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-29T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-10-23T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/397932273262?_skw=men+fashion+clothing&hash=item5ca69c9e6e:g:R~oAAeSwjapqAHzG&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZ7bTwBL3LvXiNMPchWXZ3MrJ%2FuZAnCtzfGZj0Q7XnaAsbgnB8GDCYASHxNFySEvSgYKieTyVfSiWOmgzBSAxGIbsKBQlc5XuWKiE19lLz2QJ4J1fkuog%2BkBT6tHh9W3XUWwGvw9mfnvy75CW7dE4%2B6AyqRwzbPUSh8t80wbTkTonv9DCYucC67RX%2Fq1qrFQvZjMC82w4J4Fjtb%2BYIxo3kcIVdz0Ht%2FyElyRJ4POYD4QJaYz%2BtVrb3fPgfGTlPQ%2Fzleyk6HyydtKcs6k2cl42ha65bzh%2FBW1Sg1Q%2Fa1%2FgZZ8A%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|397203308217|665610872487",
+      "category": "tops",
+      "title": "Button Down Shirt Men Fashion European Baroque Floral Polyester Slim Fit Shirts",
+      "image_url": "https://i.ebayimg.com/images/g/x5sAAeSwc3VpAN0W/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/x5sAAeSwc3VpAN0W/s-l1200.jpg"
+      ],
+      "price_amount": 36.95,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.308Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "companyofmcb",
+        "feedback_percentage": 99.3,
+        "feedback_score": 886
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-29T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-10-23T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/397203308217?_skw=men+fashion+clothing&hash=item5c7b297eb9:g:x5sAAeSwc3VpAN0W",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -333,6 +1011,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -348,6 +1027,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -363,6 +1043,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -378,6 +1059,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -393,6 +1075,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -408,6 +1091,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -423,6 +1107,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -438,6 +1123,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -453,6 +1139,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -468,6 +1155,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -483,6 +1171,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -498,6 +1187,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -513,6 +1203,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -528,6 +1219,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -543,6 +1235,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -558,6 +1251,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -573,6 +1267,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -588,6 +1283,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -603,6 +1299,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -618,6 +1315,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -633,6 +1331,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -648,7 +1347,404 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|257039991320|557681209710",
+      "category": "tops",
+      "title": "Womens V Neck Puff Sleeve Summer Top Casual Beach Vacation Blouse 2026 Fashion",
+      "image_url": "https://i.ebayimg.com/images/g/F24AAOSw5E1oP-Mn/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/F24AAOSw5E1oP-Mn/s-l1600.jpg"
+      ],
+      "price_amount": 19.79,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "wmsclearance",
+        "feedback_percentage": 99.4,
+        "feedback_score": 18131
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/257039991320?_skw=women+fashion+clothing&hash=item3bd8c70218:g:F24AAOSw5E1oP-Mn&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGbVu%2FA%2FtqMZz9UF93tWOAA3ol%2FXAkXyJMOSGuX6aFIRT%2BU0AMrvZOAvQjoXnMZChXw9Qusv%2BaE9opHalYcdLoNZGFGN%2FxrMbwsY%2Bx8GDS1amMmkjwIFleAnMuacZ5mo8Ri%2FagHM%2Fsu7MLAyLaDBmX%2BNJuAUtgMluZ1iMeaHxgaNtFv0CEp%2B4ZpByCahBSnRv6I%2FoxYpfinMfAfgfcm%2Fw5pXzcxMInZ3qHLweXENjk3Ir8F1jnATR8SI4C15gXRLGDDkF5uryXXEdczbgYzwJo5t8aRv2%2F4DFhM9ry48iqOsSw%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|158184629404|0",
+      "category": "tops",
+      "title": "Women's Large Clothing Graphic T-shirt Light Gray Fashion Shirt Extra Soft",
+      "image_url": "https://i.ebayimg.com/images/g/NmUAAOSw1-BkwpH2/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/NmUAAOSw1-BkwpH2/s-l1600.jpg"
+      ],
+      "price_amount": 24.7,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "cathysflippinfabulous",
+        "feedback_percentage": 99.1,
+        "feedback_score": 591
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 4.95,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/158184629404?_skw=women+fashion+clothing&hash=item24d489e49c:g:NmUAAOSw1-BkwpH2&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGYUIYVTjuhN1N2WiPQ%2FY6Yk1DcxsntwuJJ6LYZclhRpJ5wkQgtE6f4NeR6jctBll%2BEI4WrdUT1wlUAII0pK4m6LfSDV1DsQWjiNKz3hqy8p3twaCTROhvZ%2FY5JpEb9blY9UEGdrFEQgn5i%2Fl075YJMDF7s5AMOI5gqMneGD%2B6Lr%2FHcFe64afFfvm7PDG1uCzVnWEdkj9Pvw5%2FKOsV4oQhSkOv98hbOUmUutEwzOQXYM5RSC1DG2FFcDVAmjDiRosOG9op0pJ5SMh5Zi8AxfrMKcQxrg4wAXFP%2F7eRhBfJq6PA%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|117377245165|417264224257",
+      "category": "tops",
+      "title": "Women's T‑Shirt Cute Sea Turtle With Flowers Graphic Fashion Daily Wear Top",
+      "image_url": "https://i.ebayimg.com/images/g/EbIAAeSw0zlqjduY/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/EbIAAeSw0zlqjduY/s-l1600.jpg"
+      ],
+      "price_amount": 12.87,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "lzlifegoodsmarket",
+        "feedback_percentage": 99.4,
+        "feedback_score": 27277
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/117377245165?_skw=women+fashion+clothing&hash=item1b543a9fed:g:EbIAAeSw0zlqjduY&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGYBLELVO2m4t5lEeU1MaVSLvVFoCBYL0vb%2F%2BTkFROsb0k3SA%2Bao%2FD3G3tv2FubwHLdh9e8Py6Ssk%2FSGQuETjGnNA0KP09l8oAJBPZ9k%2FdbNGTDBRYPsSW4JJsxEycNEOf6974qlcDjSr%2Fcs0I3%2FzecHbVhuI8zMPIFa5DXVkgQkL1dkrXsxPrP7c%2BgzRCbpCRNw4hDu0l3eVfucNbgQ%2FcchMsyMloKfQsJN7cYkkUkXz2sYK7q9rZhb0rhKCUAtuQ7VzX1InWts6TbImtw83Zyu2CvSvjesReXbv4JYN6GyZA%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|206445445919|507145866126",
+      "category": "tops",
+      "title": "Invisible Camisole Vest Ins Fashion Slim U-neck Top Summer Women's Clothing",
+      "image_url": "https://i.ebayimg.com/images/g/tg4AAeSwlYhqZ1eU/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/tg4AAeSwlYhqZ1eU/s-l960.jpg"
+      ],
+      "price_amount": 14.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "home-edit",
+        "feedback_percentage": 100,
+        "feedback_score": 192
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-22T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/206445445919?_skw=women+fashion+clothing&hash=item30111b831f:g:tg4AAeSwlYhqZ1eU",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|286173400514|0",
+      "category": "tops",
+      "title": "Allimy Women Summer Clothes Shirt V Neck Short Sleeve Tops Fashion 2024 Blouse L",
+      "image_url": "https://i.ebayimg.com/images/g/~mIAAOSw5zpnOOHs/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/~mIAAOSw5zpnOOHs/s-l1600.jpg"
+      ],
+      "price_amount": 27.64,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "shoppermaxx",
+        "feedback_percentage": 99.8,
+        "feedback_score": 20677
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/286173400514?_skw=women+fashion+clothing&hash=item42a1438dc2:g:~mIAAOSw5zpnOOHs",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|227201651234|0",
+      "category": "tops",
+      "title": "Womens Clothing  Fashion Solid Fluffy Plain Crop Top & long cardigan",
+      "image_url": "https://i.ebayimg.com/images/g/dfQAAeSwmgJpglFn/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/dfQAAeSwmgJpglFn/s-l1200.jpg"
+      ],
+      "price_amount": 22,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "jaal571080",
+        "feedback_percentage": 100,
+        "feedback_score": 129
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/227201651234?_skw=women+fashion+clothing&hash=item34e6461222:g:dfQAAeSwmgJpglFn",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|335860526420|545404790092",
+      "category": "tops",
+      "title": "New Women Spring Fashion Front Hollow Out Crop Top Slim Camisole Top Clothing",
+      "image_url": "https://i.ebayimg.com/images/g/XzIAAOSwiP1n02oa/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/XzIAAOSwiP1n02oa/s-l960.jpg"
+      ],
+      "price_amount": 21.41,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "flowerin9",
+        "feedback_percentage": 98.7,
+        "feedback_score": 1126
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-30T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-10-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/335860526420?_skw=women+fashion+clothing&hash=item4e32d8ed54:g:XzIAAOSwiP1n02oa",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|398210844765|0",
+      "category": "tops",
+      "title": "Womans NWT Fashion Clothing Peasant Boho Blouse White Medium Pintuck Button Down",
+      "image_url": "https://i.ebayimg.com/images/g/GMIAAeSwhINqT~GL/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/GMIAAeSwhINqT~GL/s-l1600.jpg"
+      ],
+      "price_amount": 40.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "resalequeen9",
+        "feedback_percentage": 100,
+        "feedback_score": 770
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 7.99,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/398210844765?_skw=women+fashion+clothing&hash=item5cb737485d:g:GMIAAeSwhINqT~GL&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGY7ezSjjYZlDMKScwIB42crTgTi1fYLyzZRQarVY2l4C11QMviBffRapJjwa0YxbQb1AWNaF6c34iHy6LeRSSz9kQjWfH4u7rgnOJwrvOkoB3w4CCkM6%2FiwnNrJaAgcuc9qynXEuXU%2BWuQw1b1O29WXbgd%2FkXHkAVw3XQOImPOzFn%2BrAk1VGgeS%2BhS1pE6vrVmmtZ7ORT6yXiMTX3FUbLJ55Qa8IXBG%2Bqh1O9NbZ1KW635EVoCTZ1BUxXMcx2Y9auaJ8cPSekEKzgaIzZWdVEwRrFRssJe6QEMUPc5dyCgdLg%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|124446238335|425323748539",
+      "category": "tops",
+      "title": "COQUETA Ladies T-Shirt woman fashion clothing TANK TOP black white blue mint NW",
+      "image_url": "https://i.ebayimg.com/images/g/abYAAOSwl89ftXgA/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/abYAAOSwl89ftXgA/s-l1600.jpg"
+      ],
+      "price_amount": 19.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "mia_beach",
+        "feedback_percentage": 100,
+        "feedback_score": 16938
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-16T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/124446238335?_skw=women+fashion+clothing&hash=item1cf992e67f:g:abYAAOSwl89ftXgA&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZvpB5PZrlKFaEy05ssGpjrxU71MxOUBman7BTHpmSyGfI3N9PJ5oUFb9uo1A94DGJVhvTma6L3gKGFpmKGJQfI77ZwVH9Oa2aELjronQFdycQCQoJZCWlz848HzoTwP6Enexm%2Fni5aKl1WwgiCGLMvKKBIKA%2B9SqPzTQjNEMzRNXidz51Gy3n66yQC4HmOrQ7buEkp4NwGDoM%2F32HnZfW78yciZjA9bOqSrLU3vYaaqK0VrfFyl0lxtv9nJ7kNNd0NGBiHzdp29VfIfJgtnBsDadp0yAYnoEWPi6W%2BRMwEiQ%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -663,6 +1759,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -678,6 +1775,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -693,7 +1791,94 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|186831024037|0",
+      "category": "tops",
+      "title": "Trendy Satchel Shoulder Bag For Women Olive Green Top Handle Leather Handbag",
+      "image_url": "https://i.ebayimg.com/images/g/57IAAOSwatNnVJp1/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/57IAAOSwatNnVJp1/s-l960.jpg"
+      ],
+      "price_amount": 19.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.962Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "cam1297",
+        "feedback_percentage": 100,
+        "feedback_score": 412
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/186831024037?_skw=women+olive+green+shoulder+bag&hash=item2b7fff2fa5:g:57IAAOSwatNnVJp1",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "bags",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|167826964089|467385619582",
+      "category": "tops",
+      "title": "Women’s Luxury Genuine Suede Leather Crossbody Bag Designer Top Handle Messenger",
+      "image_url": "https://i.ebayimg.com/images/g/IfsAAeSwEQho2~Yc/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/IfsAAeSwEQho2~Yc/s-l960.jpg"
+      ],
+      "price_amount": 139.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.244Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "essenzaitaliana",
+        "feedback_percentage": 100,
+        "feedback_score": 69
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-26T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-10-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/167826964089?_skw=women+leather+crossbody+bag&hash=item2713443e79:g:IfsAAeSwEQho2~Yc&amdata=enc%3AAQALAAABAACCtXRWQnOEpyOqnQQ8KGZYlbBEdnqfK4TEMD5Sl8y9mwq5cprmpFdBvxq8moPeUsxBDY96e890JlYML%2FjEQWHli1n%2BEmLuQTUwJhJEYH%2Bnu%2FumzuT%2BA0B1gW58WQTqIWhDUJbnOTbx2AETxeC6Fb%2BT40PkSJD%2BhxD8sAKDaq24RzvubW4tK7ueE3s2D2u%2B9GMVAjfb9u9C73g6cVSRcKqGqbj5Ep7XW%2BSN6o1y0UcaTtLfe4TRfeDq0VGCpp89siv0GZumtwa6CnMe8U5m22Ke6PDKC7au4d5SsJ5J1GpewD2YehUTKBVVt2yC5a0mIZnuhIoh3EAC7yDsePix%2FQI%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "bags",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -708,6 +1893,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -723,6 +1909,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -738,6 +1925,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "crafts",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -753,6 +1941,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -768,7 +1957,51 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|176855573577|476580239250",
+      "category": "tops",
+      "title": "Women Stretchy Belt for Dresses Elastic Wide Waist Belt Top Gift For BIrthday",
+      "image_url": "https://i.ebayimg.com/images/g/oXkAAOSwv6ZntFMe/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/oXkAAOSwv6ZntFMe/s-l1600.jpg"
+      ],
+      "price_amount": 29.9,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:23.152Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "usamarkethub",
+        "feedback_percentage": 99.3,
+        "feedback_score": 2469
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/176855573577?_skw=women+dresses&hash=item292d69e449:g:oXkAAOSwv6ZntFMe&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGaM4DqZpeu%2FPNH%2B9EwehI%2FRv3N0VltnUNDoE0Il13gBQNHaDy%2BLXN5UG3vYtjYyU8Xf76Uxj53W0htBm8Yp2qczR948lDm7uFXWmbbuERwtqaSFWPTG6d3I6s%2FSK2sooKlcNCXJEibmH5sqyAUKTWAQLeaZqdSVXrtrV6DPbYvjJXVNX69u44OTxAXtLA5BTCK7EyoO6pO4YGi%2BdV12z4vgp4Aa%2By%2Bi92U3KcL%2Fw%2FbEhrJ5bAs97BbBNTvU%2BNdhW0C4e%2FP9HhFUQzT0G9%2F0bYgIU%2BIlLzrT%2BHjhEkweNbfGSw%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "dresses",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -783,6 +2016,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -798,6 +2032,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "gifts",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -813,6 +2048,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "home",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -828,6 +2064,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -843,6 +2080,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -858,6 +2096,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -873,6 +2112,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -888,6 +2128,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -903,6 +2144,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -918,6 +2160,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -933,6 +2176,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -948,6 +2192,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -963,6 +2208,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -978,7 +2224,315 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|227223459508|526422046731",
+      "category": "tops",
+      "title": "A4 Mens Dri-Fit Workout Running Cooling Performance Crew Jogging T-Shirt - N3142",
+      "image_url": "https://i.ebayimg.com/images/g/9Q0AAOSw79Vg2wC7/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/9Q0AAOSw79Vg2wC7/s-l1200.jpg"
+      ],
+      "price_amount": 13.15,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "ustrade20",
+        "feedback_percentage": 99.7,
+        "feedback_score": 47044
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/227223459508?_skw=men+fashion+clothing&hash=item34e792d6b4:g:9Q0AAOSw79Vg2wC7",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|134251613863|433704171184",
+      "category": "tops",
+      "title": "Nike Men's Sportswear T-Shirt Active Short Sleeve Graphic Tee",
+      "image_url": "https://i.ebayimg.com/images/g/-zgAAOSwh-JjL4r~/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/-zgAAOSwh-JjL4r~/s-l960.jpg"
+      ],
+      "price_amount": 19.95,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "micoe123",
+        "feedback_percentage": 99.8,
+        "feedback_score": 11757
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-22T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/134251613863?_skw=men+fashion+clothing&hash=item1f42050ea7:g:-zgAAOSwh-JjL4r~",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|226585216841|525761954135",
+      "category": "tops",
+      "title": "Gildan Men's A-Shirt Tanks, Multipack, Style G1104, White Tank Tops",
+      "image_url": "https://i.ebayimg.com/images/g/5qEAAOSwDwlnpOJ3/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/5qEAAOSwDwlnpOJ3/s-l500.jpg"
+      ],
+      "price_amount": 19.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with imperfections",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "offpricecloseoutdeals",
+        "feedback_percentage": 99.5,
+        "feedback_score": 12143
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/226585216841?_skw=men+fashion+clothing&hash=item34c1880749:g:5qEAAOSwDwlnpOJ3",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|145816569602|444901895942",
+      "category": "tops",
+      "title": "Nike Men's Sportswear T-Shirt Active Short Sleeve Graphic Tee",
+      "image_url": "https://i.ebayimg.com/images/g/etIAAOSwDHVmXpS9/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/etIAAOSwDHVmXpS9/s-l1600.jpg"
+      ],
+      "price_amount": 19.95,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "micoe123",
+        "feedback_percentage": 99.8,
+        "feedback_score": 11757
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/145816569602?_skw=men+fashion+clothing&hash=item21f3584702:g:etIAAOSwDHVmXpS9",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|366544046989|636249063763",
+      "category": "tops",
+      "title": "Hot Style Apparel Topps Baesball T Shirt",
+      "image_url": "https://i.ebayimg.com/images/g/p2IAAOSwVDpnqN0c/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/p2IAAOSwVDpnqN0c/s-l1200.jpg"
+      ],
+      "price_amount": 17.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "the-video-bin",
+        "feedback_percentage": 99.5,
+        "feedback_score": 187344
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 5.95,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/366544046989?_skw=men+fashion+clothing&hash=item5557ba4b8d:g:p2IAAOSwVDpnqN0c",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|188537960236|695968660955",
+      "category": "tops",
+      "title": "New Summer Mesh Ice Silk Short-sleeved T-shirt Men's Ice Silk Short Sleeve Shirt",
+      "image_url": "https://i.ebayimg.com/images/g/vxwAAeSw35RqNqXf/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/vxwAAeSw35RqNqXf/s-l960.jpg"
+      ],
+      "price_amount": 21,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "amee-47",
+        "feedback_percentage": 98.5,
+        "feedback_score": 587
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/188537960236?_skw=men+fashion+clothing&hash=item2be5bcf72c:g:vxwAAeSw35RqNqXf",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|176228709163|475682653898",
+      "category": "tops",
+      "title": "Mens 100% Soft Linen Guayabera Shirt for Men- Red Traditional 4-Pocket - MLS401",
+      "image_url": "https://i.ebayimg.com/images/g/TcwAAeSwwapqGeFA/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/TcwAAeSwwapqGeFA/s-l1600.jpg"
+      ],
+      "price_amount": 72.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "casualtropicalwear",
+        "feedback_percentage": 99.5,
+        "feedback_score": 2741
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 7.75,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/176228709163?_skw=men+fashion+clothing&hash=item29080cb32b:g:TcwAAeSwwapqGeFA&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGaMd4sCdWJ%2FQOO8yX3sqvQMbVYvaqnyB66%2Buo9dLRfzGDTPn2D28a4%2FjFQPsTCBfRtBEa73sQAVGUAEJo2P8udNMhowO9%2FYDcnQv%2FJvRihFELjr%2B2sarPf%2Bg588UGvrxlj4uqWDnkhrj65yLh8%2B7ON9G%2BRkVnF0g7GakWJGwiozFN65%2FRSzB116l%2FkIGx3%2FPyV9OQN%2BHUVExxEGWQIy5Xa1exPcnWXe2czqqQrNsIHK%2BWtnt8kzHRCwJbCjDU8II45bSa9KbVQcj%2FMZR9ExYHE3RGOy0xRmADhK9qNV2DcSbw%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -993,6 +2547,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1008,7 +2563,55 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|377464228794|0",
+      "category": "tops",
+      "title": "Cuts Clothing Elongated Henley T-Shirt Men's Sze M Stratus Pyca Pro Gray",
+      "image_url": "https://i.ebayimg.com/images/g/amQAAeSwflRqbuRm/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/amQAAeSwflRqbuRm/s-l1600.jpg"
+      ],
+      "price_amount": 19.48,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "drippedgallo",
+        "feedback_percentage": 100,
+        "feedback_score": 811
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 7.2,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/377464228794?_skw=men+fashion+clothing&hash=item57e29f0bba:g:amQAAeSwflRqbuRm",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1023,7 +2626,52 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|318669152547|0",
+      "category": "tops",
+      "title": "Alternative Apparel Style 5050BP Basic Crew Neck T Shirt Charcoal Grey L NWOT",
+      "image_url": "https://i.ebayimg.com/images/g/8UUAAeSwl2NpgU2R/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/8UUAAeSwl2NpgU2R/s-l1600.jpg"
+      ],
+      "price_amount": 8,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "hometownhangers",
+        "feedback_percentage": 100,
+        "feedback_score": 1420
+      },
+      "shipping_options": [
+        {
+          "type": "CALCULATED",
+          "cost": null,
+          "min_estimated_delivery_date": null,
+          "max_estimated_delivery_date": null
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/318669152547?_skw=men+fashion+clothing&hash=item4a32296123:g:8UUAAeSwl2NpgU2R",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1038,7 +2686,55 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|377295855697|0",
+      "category": "tops",
+      "title": "Cuts Clothing Elongated Henley T-Shirt Men's M Black Pyca Pro",
+      "image_url": "https://i.ebayimg.com/images/g/zokAAeSw9AZqPZss/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/zokAAeSw9AZqPZss/s-l1600.jpg"
+      ],
+      "price_amount": 20,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "drippedgallo",
+        "feedback_percentage": 100,
+        "feedback_score": 811
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 7.2,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/377295855697?_skw=men+fashion+clothing&hash=item57d895e051:g:zokAAeSw9AZqPZss",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1053,6 +2749,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1068,7 +2765,54 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|305543098813|604450997644",
+      "category": "tops",
+      "title": "Costco Wholesale T Shirt Heavy Cotton Tee Logo Merch Gift Apparel Shopping Gear",
+      "image_url": "https://i.ebayimg.com/images/g/YZYAAOSwM3xmY5W5/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/YZYAAOSwM3xmY5W5/s-l1600.jpg"
+      ],
+      "price_amount": 19.88,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "newcultureclub",
+        "feedback_percentage": 99.8,
+        "feedback_score": 2057
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 4.75,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-18T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-23T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/305543098813?_skw=men+fashion+clothing&hash=item4723c9b1bd:g:YZYAAOSwM3xmY5W5",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1083,6 +2827,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1098,6 +2843,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1113,6 +2859,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1128,6 +2875,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1143,6 +2891,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1158,6 +2907,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1173,6 +2923,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1188,6 +2939,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1203,6 +2955,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1218,7 +2971,98 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|137080558568|0",
+      "category": "tops",
+      "title": "Men's Police Blue Military Style Genuine Leather Shirt Police Uniform Lambskin",
+      "image_url": "https://i.ebayimg.com/images/g/y8MAAeSwu3dpouA6/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/y8MAAeSwu3dpouA6/s-l960.jpg"
+      ],
+      "price_amount": 165,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.308Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "abubshe_90",
+        "feedback_percentage": 100,
+        "feedback_score": 18
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 25,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-19T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/137080558568?_skw=men+fashion+clothing&hash=item1feaa353e8:g:y8MAAeSwu3dpouA6&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGa0v5R%2B6dCi9Y23rPZiYmdfl4pcyB59a7bnO88jNVJcPXrRxbxfRdGChYk3rBmvIXAKxeiSYUA78i4Oao6ED%2FP5QxEoXE8rp%2FdOIB0THqc9R2yC5qDfGKMq1%2F7085gSg1bag2dOemhaqHSpj7jxVpSbL7pXrYtLFLUsOcRnoGeRRbop9%2FhYbQq06c1sgCVl6im1hiPREChMoJnjCzxbT46ex4CaPrrRO75epvVYrUvIF40fqKjE3JzYmtQKjbjGcROvthiXqk0D3Kx01ZX8NB%2BvdUm91rt5QBZYBOY%2FAe8N8A%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|377478454866|645778181005",
+      "category": "tops",
+      "title": "PUMA Speedcat Women Low-Top Sneakers Suede Shoes - New - Free SHIPPING!!!",
+      "image_url": "https://i.ebayimg.com/images/g/sOMAAeSwHvxqnn~D/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/sOMAAeSwHvxqnn~D/s-l960.jpg"
+      ],
+      "price_amount": 66.84,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:23.394Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with box",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "nat8638",
+        "feedback_percentage": 100,
+        "feedback_score": 24
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-26T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-30T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/377478454866?_skw=women+shoes&hash=item57e3781e52:g:sOMAAeSwHvxqnn~D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "shoes",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1233,6 +3077,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1248,6 +3093,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1263,6 +3109,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1278,6 +3125,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1293,6 +3141,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1308,6 +3157,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1323,6 +3173,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1338,6 +3189,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1353,6 +3205,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1368,6 +3221,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1383,6 +3237,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1398,6 +3253,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1413,6 +3269,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1428,6 +3285,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1443,6 +3301,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1458,6 +3317,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1473,6 +3333,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1488,6 +3349,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1503,6 +3365,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1518,6 +3381,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1533,6 +3397,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1548,6 +3413,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1563,6 +3429,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1578,6 +3445,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1593,6 +3461,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1608,6 +3477,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1623,6 +3493,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1638,6 +3509,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1653,6 +3525,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1668,6 +3541,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1683,6 +3557,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1698,6 +3573,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1713,6 +3589,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1728,7 +3605,184 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|167549021057|467170467638",
+      "category": "tops",
+      "title": "Style&co Women's Floral Print short Sleeve Top NWT",
+      "image_url": "https://i.ebayimg.com/images/g/OTMAAOSwHzxoONw8/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/OTMAAOSwHzxoONw8/s-l1600.jpg"
+      ],
+      "price_amount": 19.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "the_wholesale_outlet",
+        "feedback_percentage": 99.7,
+        "feedback_score": 28647
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/167549021057?_skw=women+fashion+clothing&hash=item2702b32b81:g:OTMAAOSwHzxoONw8&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGbtU95PAv6uw1%2FQfEwoJySOJ43989QzMAy8Kz4su0tJ%2FcGiIIw5Vayyfc8lGGD0m0xI4PW1O7DRSq7zUEGayAyna25KIuDM1m9DuMMDRcBYN%2Bmb92LeVZEd8d7Tppels88IAhr%2FY%2FuI9iUXBeqhmmfXXWCW4yFNXwa9XAYES9XkT2KyOy73kqxxO6CIEkefDBg48UEUJW%2FCT93cWOEH%2FvFUUPjNerLMvyRMyxBQeYlrgUmRPid5DGWQQYkPv6rR%2Bz7nWe%2By8vnFGOHuUqNvCchbNbc4w6OEiiXOwA%2FDbtwQYg%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|168658380116|0",
+      "category": "tops",
+      "title": "NWT Western Boho Leopard Print Tunic Women Large Turquoise Beaded Semi-sheer Top",
+      "image_url": "https://i.ebayimg.com/images/g/lhEAAeSwmmZqmDGl/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/lhEAAeSwmmZqmDGl/s-l1600.jpg"
+      ],
+      "price_amount": 13.64,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "dmfannin",
+        "feedback_percentage": 99.9,
+        "feedback_score": 1298
+      },
+      "shipping_options": [
+        {
+          "type": "CALCULATED",
+          "cost": null,
+          "min_estimated_delivery_date": null,
+          "max_estimated_delivery_date": null
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/168658380116?_skw=women+fashion+clothing&hash=item2744d2a554:g:lhEAAeSwmmZqmDGl&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGa3s0mWvcj1BTSyXkRMfGwMCYUdk6H9ZJ%2BQmzpFEA835q0n9O11yH4vYXIMCkLYP6nl%2BzRSm4hsVgihzHAVTwCsMLnHglbFcfIb5O0dqQxUC8uHTBPGleeqOEMOXgFv1SokFEMPQw6sIAGoLBwC8VnWzxLPy2QEcvqQTyuSjVCLbg4vhlmvWVfJwzfREET8btdWM7LgCWLjeCr5HtH400LwS7Oh6lR2xCulv5sGmlOUahfli0LDike%2BROUtoBlZsLbhc1vqpom3X67tyXrgq6X4MX0wPZzT%2ByA0XtVzBDRydw%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|394550254943|663097364396",
+      "category": "tops",
+      "title": "Busty Big Boobs Clothing Slutty Shirt Crop Top Bimbo - Titty Queen  ~ Crop Top",
+      "image_url": "https://i.ebayimg.com/images/g/uzwAAOSwMldkLMcW/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/uzwAAOSwMldkLMcW/s-l1600.jpg"
+      ],
+      "price_amount": 16.5,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "fetfashions",
+        "feedback_percentage": 100,
+        "feedback_score": 1158
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 5.75,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/394550254943?_skw=women+fashion+clothing&hash=item5bdd071d5f:g:uzwAAOSwMldkLMcW",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|186793859623|0",
+      "category": "tops",
+      "title": "Indian Ethnic Top Blouse Cotton Tunic For Women Hippie Retro Boho Gypsy",
+      "image_url": "https://i.ebayimg.com/images/g/wGMAAOSwqTRkxo0Q/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/wGMAAOSwqTRkxo0Q/s-l1600.jpg"
+      ],
+      "price_amount": 32.19,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "jaipurfashionhub12",
+        "feedback_percentage": 100,
+        "feedback_score": 1424
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-23T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-10-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/186793859623?_skw=women+fashion+clothing&hash=item2b7dc81a27:g:wGMAAOSwqTRkxo0Q&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGakaSb5QdpYHkc%2BYpiTjEdm3F9C3bAqsSCj9ydQBeYj7%2BttKsMA5SXNx1aHQcM4DEFbZTNM7OaQUEXAse5Wai%2BadHyo76eh4uwpGmhPUvUctC9vZDllNj3DHGxDd8QB69eTDnKhxQQBbRF82kvZqDnxlMPu6N3flFdxVHIkfc1%2FrcGdVCzrrmSROGB47SiANz3OMXkA7tJrK3imOS0QI6nSQIfKLFKMmCF%2BdesbSJ39gahomplsmw2P1v%2B7eUT%2Bh%2BmZtZ%2BV%2Fa5LvTl08pIy4m%2Fgsx2YM5OPzBF4JrqIHZ0p4Q%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1743,6 +3797,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1758,6 +3813,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1773,6 +3829,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1788,6 +3845,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1803,6 +3861,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1818,6 +3877,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1833,6 +3893,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1848,6 +3909,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1863,6 +3925,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1878,6 +3941,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1893,6 +3957,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1908,6 +3973,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1923,6 +3989,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1938,6 +4005,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1953,6 +4021,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1968,6 +4037,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1983,6 +4053,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1998,6 +4069,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2013,6 +4085,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2028,6 +4101,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2043,6 +4117,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2058,6 +4133,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2073,6 +4149,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2088,6 +4165,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2103,6 +4181,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2118,6 +4197,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2133,21 +4213,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2097164133573353474",
-      "title": "European And American Cross-Border 2025 New Style Chanel-Inspired Jacket For Women, Short Design, Niche Temperament, Tweed British Style Top",
-      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/c1c32af9-41c9-4074-a0cb-8c1df65908e0.jpg",
-      "category": "tops",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 12.52,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2163,6 +4229,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2178,6 +4245,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2193,6 +4261,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2208,6 +4277,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2223,6 +4293,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2238,6 +4309,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2253,6 +4325,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2268,6 +4341,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2283,6 +4357,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2298,6 +4373,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2313,6 +4389,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2328,6 +4405,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2343,6 +4421,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2358,6 +4437,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2373,6 +4453,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2388,6 +4469,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2403,6 +4485,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2418,6 +4501,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2433,6 +4517,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2448,6 +4533,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2463,6 +4549,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2478,6 +4565,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2493,6 +4581,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     }
   ]

@@ -1,26 +1,10 @@
 {
   "slug": "swimwear",
-  "count": 5,
-  "source": "HUNT authorized catalog snapshots",
+  "count": 3,
+  "source": "HUNT focused curation from authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-11T07:45:52.363Z",
+  "curated_at": "2026-09-11T07:54:08.498Z",
   "products": [
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2097543943327162370",
-      "title": "Lace Bathing Suit Cover Up Boho Beach Women Maxi Bikini Sundress Dress Summer US",
-      "image_url": "https://cf.cjdropshipping.com/doba-import/940de0cb347e490c863f3ec637bb99b5.jpg",
-      "category": "swimwear",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 10.35,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "dresses",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
     {
       "provider": "CJdropshipping",
       "item_id": "2609080402191619700",
@@ -34,23 +18,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2097207667319758849",
-      "title": "Women's V-neck Long Kaftan Geometric Printing Dress Beach Bikini Cover Ups",
-      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/ce645b27-55f7-434d-a46a-1626777eeede.jpg",
-      "category": "swimwear",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 8.63,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "dresses",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -66,7 +34,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "swimwear",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -82,7 +50,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "swimwear",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     }
   ]

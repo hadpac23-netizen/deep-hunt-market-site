@@ -1,9 +1,9 @@
 {
   "slug": "knitwear",
-  "count": 94,
+  "count": 113,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-09T23:39:21.429Z",
+  "curated_at": "2026-09-11T07:45:52.358Z",
   "products": [
     {
       "provider": "Gooten",
@@ -17,6 +17,7 @@
       "availability_verified": true,
       "source_fresh_at": "2026-09-09T14:56:55Z",
       "source_category": "home",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -31,6 +32,7 @@
       "availability_verified": true,
       "source_fresh_at": "2026-09-09T14:56:55Z",
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -46,6 +48,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -61,6 +64,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -76,6 +80,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -91,6 +96,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -106,6 +112,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -121,6 +128,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -136,6 +144,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -151,6 +160,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -166,6 +176,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -181,7 +192,55 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|227407308047|0",
+      "category": "knitwear",
+      "title": "J. Crew Women's Classic Roll Neck Mock-Neck Sweater Long Ivory Size M NWT",
+      "image_url": "https://i.ebayimg.com/images/g/5ucAAeSwJg5qQWdU/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/5ucAAeSwJg5qQWdU/s-l1600.jpg"
+      ],
+      "price_amount": 78,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "khanboutiquefinds",
+        "feedback_percentage": 100,
+        "feedback_score": 1617
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 7.99,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/227407308047?_skw=women+roll+neck+sweater&hash=item34f288250f:g:5ucAAeSwJg5qQWdU",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -196,6 +255,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -211,6 +271,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -226,6 +287,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -241,6 +303,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -256,6 +319,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -271,22 +335,52 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
-      "provider": "CJdropshipping",
-      "item_id": "2097588502321987585",
-      "title": "Women's Western Cowboy Fringe Pullover Poncho Shawl, Faux Cashmere Fashion Warm Versatile Wrap",
-      "image_url": "https://cf.cjdropshipping.com/1011af66-cddc-4414-9b4b-4dd61e47c140.jpg",
+      "provider": "eBay",
+      "item_id": "v1|227201651234|0",
       "category": "knitwear",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 7.99,
+      "title": "Womens Clothing  Fashion Solid Fluffy Plain Crop Top & long cardigan",
+      "image_url": "https://i.ebayimg.com/images/g/dfQAAeSwmgJpglFn/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/dfQAAeSwmgJpglFn/s-l1200.jpg"
+      ],
+      "price_amount": 22,
       "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
+      "price_basis": "MARKETPLACE_RETAIL",
       "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.623Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "jaal571080",
+        "feedback_percentage": 100,
+        "feedback_score": 129
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/227201651234?_skw=women+fashion+clothing&hash=item34e6461222:g:dfQAAeSwmgJpglFn",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
       "source_category": "women",
-      "catalog_discovery": true
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -301,7 +395,51 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|178321345962|477705602422",
+      "category": "knitwear",
+      "title": "Women's Cotton Maxi Pullover Sundress - Universal",
+      "image_url": "https://i.ebayimg.com/images/g/S1wAAeSw9XJqhxJi/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/S1wAAeSw9XJqhxJi/s-l1200.jpg"
+      ],
+      "price_amount": 12.97,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:23.152Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "bullseye_deals",
+        "feedback_percentage": 99.5,
+        "feedback_score": 1481435
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/178321345962?_skw=women+dresses&hash=item2984c7cdaa:g:S1wAAeSw9XJqhxJi",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "dresses",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -316,6 +454,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -331,6 +470,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -346,6 +486,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -361,6 +502,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -376,6 +518,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -391,6 +534,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -406,6 +550,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -421,6 +566,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -436,6 +582,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -451,6 +598,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -466,6 +614,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -481,6 +630,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -496,6 +646,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -511,6 +662,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -526,6 +678,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -541,7 +694,51 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|115104880602|0",
+      "category": "knitwear",
+      "title": "Woman 18K Gold Plated Stainless Steel Love Charm Sweater Chain Rolo Necklace",
+      "image_url": "https://i.ebayimg.com/images/g/MwoAAOSwU7tiJvLr/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/MwoAAOSwU7tiJvLr/s-l960.jpg"
+      ],
+      "price_amount": 11.09,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.565Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "easybuy_au",
+        "feedback_percentage": 99.3,
+        "feedback_score": 16846
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/115104880602?_skw=women+stainless+steel+charm+necklace&hash=item1accc917da:g:MwoAAOSwU7tiJvLr&amdata=enc%3AAQALAAABAACCtXRWQnOEpyOqnQQ8KGZNo1JORalb9BWYEwcUgwQrnZOXFVRsHoxfmm2VNi2F%2FP%2Be1uEkrtl%2B9tRXBqYEiJCxNP3YKkhadLoVrHY0dxuH3yBOQWa67UQCqhS0aP2MI7a52uOAIJBrqhjLeHnkc1yN5c%2FJpDcmI4s0kLwP3luPsCHYnInlgSF8TnjVWiZwyvpmWqaxWPobmjZvm%2FPqtfAVR%2B9Z4GkVlMCa0EEh4y7tDb%2B4izIofzmZ%2BYjNfNvhd37HILsCYZTSrhgWOLybKelxdsa8yT8jld2GdjVgi2EHORORlVcxhqNs1Rd1ptFU%2Bu2rvzh3W7Iuy5ohY1iy2YE%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "jewelry",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -556,7 +753,174 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "kids",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|188909590007|0",
+      "category": "knitwear",
+      "title": "NWT FREE PEOPLE We The Free Roll Neck Rugby Crop Sweater Size L",
+      "image_url": "https://i.ebayimg.com/images/g/iBMAAeSwAvhqobR2/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/iBMAAeSwAvhqobR2/s-l1600.jpg"
+      ],
+      "price_amount": 79,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "maddiesmom9",
+        "feedback_percentage": 100,
+        "feedback_score": 2265
+      },
+      "shipping_options": [],
+      "source_url": "https://www.ebay.com/itm/188909590007?_skw=women+roll+neck+sweater&hash=item2bfbe395f7:g:iBMAAeSwAvhqobR2",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|407048516507|0",
+      "category": "knitwear",
+      "title": "Gap Women's Crewneck Roll Neck Cotton Soft Sweater, Brown, Size S",
+      "image_url": "https://i.ebayimg.com/images/g/NEsAAeSwsApqSTRQ/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/NEsAAeSwsApqSTRQ/s-l1200.jpg"
+      ],
+      "price_amount": 21.21,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "bobbos2003",
+        "feedback_percentage": 100,
+        "feedback_score": 28316
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/407048516507?_skw=women+roll+neck+sweater&hash=item5ec5fb739b:g:NEsAAeSwsApqSTRQ&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZzJcQSJUKtDVCGiNUMxUYziR7k1wA1mGd0RCEpkyL9Sz4Xdmg9Go%2F7DuSkJ68y55Xqlhpc0LaG7aC9M3M%2BkbFSI6ct7CRARnm5p2XL32nJnEp9rekDjCK5S7mxzic2mdChh2N%2BMwBbKGG9D8CdsEuyFpJjqYyt53roD%2FcwofC1BgcMhpQovc2TjNqaKFPaAbIptamOVubVEDVzJagsHweetowaHH8%2F%2BbUqBtsgiV5TiAYMfDQdHVZjhf%2B7PMoRTQXHwk4PUY2gl4lGUdT9aT6UeTPW2mJ8Ii5O6LJ63td19Q%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|407101740401|0",
+      "category": "knitwear",
+      "title": "Gap Women's Crewneck Roll Neck Cotton Soft Sweater, Blue, Size L",
+      "image_url": "https://i.ebayimg.com/images/g/TXAAAeSw13lpaByc/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/TXAAAeSw13lpaByc/s-l1600.jpg"
+      ],
+      "price_amount": 22.06,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "bobbos2003",
+        "feedback_percentage": 100,
+        "feedback_score": 28316
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/407101740401?_skw=women+roll+neck+sweater&hash=item5ec9279571:g:TXAAAeSw13lpaByc&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGb7p5kQS97vFZgAP5SxNI2hp%2BheOMjhKdOSClEr%2BGjfnBxy3Tn8u%2FUC%2BnZS1dzqn%2BmL8NgXow5cmAWLw1D4uWC4m9%2B1NLjyC%2Fw%2BjCNfc0qkGASaKIM9GA0bzIULC6EoVNeFiWJhJEtVKeDtO%2BrTTLxuv956i4IkyP9QfFSbz9iTv4FINLaBFTUWx0yp0C98QgPFBfjurC%2BJnx8lqnvL4hHNfANBhn4xJ71phnFXrDoY91x7ev79o0tuf7ErnGeqYlXgWZKM21296PcOMSJ9v2u%2BEXo4ZUtB4NHuhDT%2BlQkUNw%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|407072857030|0",
+      "category": "knitwear",
+      "title": "Gap Women's Crewneck Roll Neck Cotton Soft Sweater, Brown, Size L",
+      "image_url": "https://i.ebayimg.com/images/g/OvIAAeSwMD1ppxqA/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/OvIAAeSwMD1ppxqA/s-l1600.jpg"
+      ],
+      "price_amount": 23.95,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "bobbos2003",
+        "feedback_percentage": 100,
+        "feedback_score": 28316
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/407072857030?_skw=women+roll+neck+sweater&hash=item5ec76edbc6:g:OvIAAeSwMD1ppxqA&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGYEwD3rY22%2Fxu%2Fr0niL%2BGNPS4b4eHYNC9GzGe2gkLtc6i6X0iaObl5X4%2Bvhq9vNWOEf%2BX3pQ%2BoS40mcnJQHxc4%2B2SqQYUGw5ATpLMS2ip9KTivo0hLnSwwaWgmhKOMN5qPYLVkRgH32SzXySk4hUgypYB79nrvDYM5a4Y8Zh3xyAYb00OAMAqF2NmC%2BmEDZKN2Z5dK5%2BnG9BEfanb6aX1gDHlQ79fbRNR4MdHdG8Re2qkh1yv8yYXzsxRH4DXYjJ2Fxl74tw479YK%2F4bAs%2FNPfMMNGpzn%2FmoGlAd5GgXFNnbw%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -571,7 +935,51 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|358651004550|0",
+      "category": "knitwear",
+      "title": "GAP Women's Roll Neck Sweater, NWT, White Multi Stripe, M, 100% Cotton, Soft",
+      "image_url": "https://i.ebayimg.com/images/g/ZbEAAeSwE8pqI00f/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/ZbEAAeSwE8pqI00f/s-l960.jpg"
+      ],
+      "price_amount": 20.72,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "msyd-outlet",
+        "feedback_percentage": 99.9,
+        "feedback_score": 8159
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/358651004550?_skw=women+roll+neck+sweater&hash=item5381440686:g:ZbEAAeSwE8pqI00f",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -586,7 +994,275 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|307156824946|0",
+      "category": "knitwear",
+      "title": "J Crew Roll Neck Sweater Womens XL Purple Midweight Knit Pullover Y2K Style NEW",
+      "image_url": "https://i.ebayimg.com/images/g/zn4AAeSwiOxqlq2Z/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/zn4AAeSwiOxqlq2Z/s-l1600.jpg"
+      ],
+      "price_amount": 50,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "nickshhs",
+        "feedback_percentage": 99.6,
+        "feedback_score": 30717
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/307156824946?_skw=women+roll+neck+sweater&hash=item4783f93372:g:zn4AAeSwiOxqlq2Z",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|257676299043|0",
+      "category": "knitwear",
+      "title": "L.L. Bean Women's Green Roll Neck Sweater",
+      "image_url": "https://i.ebayimg.com/images/g/dmwAAeSwPd5qfI3Y/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/dmwAAeSwPd5qfI3Y/s-l1600.jpg"
+      ],
+      "price_amount": 35,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "royaldesign36",
+        "feedback_percentage": 100,
+        "feedback_score": 118
+      },
+      "shipping_options": [
+        {
+          "type": "CALCULATED",
+          "cost": null,
+          "min_estimated_delivery_date": null,
+          "max_estimated_delivery_date": null
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/257676299043?_skw=women+roll+neck+sweater&hash=item3bfeb44b23:g:dmwAAeSwPd5qfI3Y",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|398196308439|0",
+      "category": "knitwear",
+      "title": "J Crew Women’s Roll Neck Sweater (100% Cotton, Medium, Striped)",
+      "image_url": "https://i.ebayimg.com/images/g/D~sAAeSw5oRqXQfh/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/D~sAAeSw5oRqXQfh/s-l1600.jpg"
+      ],
+      "price_amount": 85,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "blanket_ball",
+        "feedback_percentage": 100,
+        "feedback_score": 139
+      },
+      "shipping_options": [
+        {
+          "type": "CALCULATED",
+          "cost": null,
+          "min_estimated_delivery_date": null,
+          "max_estimated_delivery_date": null
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/398196308439?_skw=women+roll+neck+sweater&hash=item5cb65979d7:g:D~sAAeSw5oRqXQfh",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|287175996331|0",
+      "category": "knitwear",
+      "title": "Gap Women's Roll Neck Sweater 100% Cotton Size XXL Blue Textured Stitch Pattern",
+      "image_url": "https://i.ebayimg.com/images/g/mk8AAeSwNPFpplgB/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/mk8AAeSwNPFpplgB/s-l1600.jpg"
+      ],
+      "price_amount": 18,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "bayshorebeach",
+        "feedback_percentage": 99.9,
+        "feedback_score": 4729
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 7.4,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/287175996331?_skw=women+roll+neck+sweater&hash=item42dd05f3ab:g:mk8AAeSwNPFpplgB",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|306191159548|0",
+      "category": "knitwear",
+      "title": "Cotton On Women's Everfine Roll Neck Knit Lightweight Sweater Grey Size S NEW",
+      "image_url": "https://i.ebayimg.com/images/g/wjQAAOSwafdn3D5q/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/wjQAAOSwafdn3D5q/s-l1600.jpg"
+      ],
+      "price_amount": 14.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "the*surplus*store",
+        "feedback_percentage": 100,
+        "feedback_score": 27233
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 4.99,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/306191159548?_skw=women+roll+neck+sweater&hash=item474a6a50fc:g:wjQAAOSwafdn3D5q",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|407091379106|0",
+      "category": "knitwear",
+      "title": "Gap Women's Crewneck Roll Neck Cotton Soft Sweater, Blue, Size XL",
+      "image_url": "https://i.ebayimg.com/images/g/OGQAAeSwgvFpttUa/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/OGQAAeSwgvFpttUa/s-l1600.jpg"
+      ],
+      "price_amount": 20.36,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "bobbos2003",
+        "feedback_percentage": 100,
+        "feedback_score": 28316
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/407091379106?_skw=women+roll+neck+sweater&hash=item5ec8897ba2:g:OGQAAeSwgvFpttUa",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -601,6 +1277,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -616,7 +1293,55 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|198578448872|0",
+      "category": "knitwear",
+      "title": "CHAPS Women  Preppy Roll Neck Sweater 2X Vibrant Fisherman 100% Cotton NWT",
+      "image_url": "https://i.ebayimg.com/images/g/Yc8AAeSwGflqg6he/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/Yc8AAeSwGflqg6he/s-l1600.jpg"
+      ],
+      "price_amount": 28.87,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "dragonflybuyz",
+        "feedback_percentage": 99.7,
+        "feedback_score": 1538
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 8.99,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/198578448872?_skw=women+roll+neck+sweater&hash=item2e3c32a9e8:g:Yc8AAeSwGflqg6he&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGYW97hWggECIjctekThDMYozC6dx8ZUTyZJ1EtQFYdsCwcOGTi7BPJDXCki1PxOh%2BLuK8x0BWvbYlg2kIRKvPcfv5YLTH5PsmHLfnaLG4YkN9BFE3oHw5r%2FT%2B6VXGDgHBRarlHkfmAfmxOQc%2BIccyhwOfVz9opAzFZMxkxV65Yn7mvEhT9mGNGFD45lHBnxZvcv9jj6spu6O7Ojt%2F4yARXLesXXbIHkSLw7n83xDG%2Fj8tPXcp4PSHUrxpUpX%2BKrxpJRpIy8umxUJwJcU2ZV09J3frwCFxddoqioGrWMnbiQWA%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -631,6 +1356,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -646,7 +1372,55 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|336708489019|0",
+      "category": "knitwear",
+      "title": "AllSaints Sweater Womens Small Alabaster White Lock Roll Neck Italian Yarn Knit",
+      "image_url": "https://i.ebayimg.com/images/g/zAkAAeSw1stqZYjP/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/zAkAAeSw1stqZYjP/s-l640.jpg"
+      ],
+      "price_amount": 61.6,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "sisyph-68",
+        "feedback_percentage": 100,
+        "feedback_score": 13108
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 6.5,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/336708489019?_skw=women+roll+neck+sweater&hash=item4e6563cf3b:g:zAkAAeSw1stqZYjP&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZ5qNUaurZWpkynkKsolnDieEBS6iSDVdfaCEG8cdM0zVFjBNdItbH%2FzRGKHFIM7B2erOViJ3zmC8gM81tJ%2FUQqDz0xJHH2yYM%2BEg7hldAdyq60jaNZM8FrIjWmP25BjjSGGYNG8E5ckAy64rRG3mKk62bej5vr6G%2FJrSGAaKuYjAv%2FCHlBbvaj5Lp2H%2BUbIEONwlh3fs4qKkzcAusC%2B8sojHJ6BS4tzrA%2Fw80blnPnLT8Gq2z%2BFzuFAa8rF4OXGkGPJGdqRTHv5wnghvkNjKOvObp9ki6UdOZefSbSJJ5e6Q%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -661,7 +1435,51 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|407107713743|0",
+      "category": "knitwear",
+      "title": "Gap Women's Crewneck Roll Neck Cotton Soft Sweater, Brown, Size M",
+      "image_url": "https://i.ebayimg.com/images/g/vggAAeSwfJZppxmE/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/vggAAeSwfJZppxmE/s-l1600.jpg"
+      ],
+      "price_amount": 23.95,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "bobbos2003",
+        "feedback_percentage": 100,
+        "feedback_score": 28316
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/407107713743?_skw=women+roll+neck+sweater&hash=item5ec982bacf:g:vggAAeSwfJZppxmE&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZ8pMgmzbviakdqRGhfNbueV31s0gvYAUvGIrPBUJZouM1COUxBTEz69AYEm7aCef0XSz9b0WfXlZxxzXI0mKR4ahKT4LilKoFVT6cBneAsvMRrfnNr0iMRqjnJVDuhb%2B9bnzRuuj88D3%2Frj3DoinTkGHtgsydCW1XI05WIs7VCGSL5zV6Ioh0uzb%2Bc6Z8Dcm0efO8CgBCTity4yhBNWxIV1AncL%2BWADmLKJuntu6p8pfZDcJoV9PdRKrUMuJuQ3K0Bn5CC30F%2Fg%2BPpjUqa9rBLgqBZ07VqV758X2hO%2FFoDKA%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -676,7 +1494,51 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|188567570966|696102580822",
+      "category": "knitwear",
+      "title": "Women's Long Sleeve Contrast Roll Hem Boat Neck Sweater - Wild Fable",
+      "image_url": "https://i.ebayimg.com/images/g/ZkgAAeSwUXpqhxMi/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/ZkgAAeSwUXpqhxMi/s-l1200.jpg"
+      ],
+      "price_amount": 23.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "bullseye_deals",
+        "feedback_percentage": 99.5,
+        "feedback_score": 1481436
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/188567570966?_skw=women+roll+neck+sweater&hash=item2be780ca16:g:ZkgAAeSwUXpqhxMi",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -691,7 +1553,54 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|227411982914|0",
+      "category": "knitwear",
+      "title": "Womans Vintage J CREW Roll Neck Striped Cotton Knit Sweater Size L NWT",
+      "image_url": "https://i.ebayimg.com/images/g/SIgAAeSwH3JqRUTt/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/SIgAAeSwH3JqRUTt/s-l1600.jpg"
+      ],
+      "price_amount": 165.55,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "lifestylebrandnames4u",
+        "feedback_percentage": 99.9,
+        "feedback_score": 22151
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 7.85,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/227411982914?_skw=women+roll+neck+sweater&hash=item34f2cf7a42:g:SIgAAeSwH3JqRUTt",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -706,6 +1615,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -721,7 +1631,55 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|267226974831|0",
+      "category": "knitwear",
+      "title": "Lands End Wool Blend Roll Neck Sweater Women M Beige Donegal Knit Beige Marled",
+      "image_url": "https://i.ebayimg.com/images/g/ciUAAOSwTE9oBVMb/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/ciUAAOSwTE9oBVMb/s-l640.jpg"
+      ],
+      "price_amount": 34.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.739Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "thriftywomenfinds",
+        "feedback_percentage": 99.9,
+        "feedback_score": 4382
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 13.65,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/267226974831?_skw=women+roll+neck+sweater&hash=item3e37f80a6f:g:ciUAAOSwTE9oBVMb&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGYvO8RvM1NCnKYVp8YtDZUSJe0KpruGDdV%2BGl7iOYaAOthx7N3S1wgeOILjOJh7INc2hZNaFl3XRn9BgJEuEnW26sWACU8bVjmc8qEqEp7yMF58LcYqsgVXd%2Byqy%2BTGLcTC80l0mAEFghdJVGi2vR0Gyx4MW1g1F22r%2FyuMSeANTkjxou5KzZhdskgch4fB5mLJvMRZNXiPpIXvwyr1VARUJd6Tkk3ieaDjN7YPG5nhsIPTfWzagKWlLctsjmVcJDh9el9COql0pHaF4Q7VkOQCPIKGxHy2t3Sq%2F2eN8yapWw%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -736,6 +1694,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -751,6 +1710,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -766,6 +1726,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -781,6 +1742,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -796,6 +1758,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -811,6 +1774,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -826,6 +1790,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -841,6 +1806,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -856,6 +1822,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -871,6 +1838,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -886,6 +1854,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -901,6 +1870,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -916,6 +1886,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -931,6 +1902,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -946,6 +1918,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -961,6 +1934,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -976,6 +1950,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -991,6 +1966,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1006,6 +1982,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1021,6 +1998,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1036,6 +2014,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1051,21 +2030,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2097598587225812994",
-      "title": "Women's Faux Cashmere Pullover Poncho, Vintage Fringe Shawl",
-      "image_url": "https://cf.cjdropshipping.com/d1b3822d-dc75-44a5-989a-b505633ec50a.jpg",
-      "category": "knitwear",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 7.99,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "women",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1081,6 +2046,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1096,6 +2062,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1111,6 +2078,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1126,6 +2094,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1141,6 +2110,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1156,6 +2126,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1171,6 +2142,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1186,6 +2158,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1201,6 +2174,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1216,6 +2190,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1231,6 +2206,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1246,6 +2222,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1261,6 +2238,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1276,6 +2254,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1291,6 +2270,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1306,6 +2286,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1321,6 +2302,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1336,6 +2318,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1351,6 +2334,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1366,6 +2350,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1381,6 +2366,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1396,6 +2382,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jewelry",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1411,6 +2398,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "knitwear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     }
   ]

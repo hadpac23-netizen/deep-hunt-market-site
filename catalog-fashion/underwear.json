@@ -3,7 +3,7 @@
   "count": 13,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-09T23:39:21.430Z",
+  "curated_at": "2026-09-11T07:45:52.362Z",
   "products": [
     {
       "provider": "CJdropshipping",
@@ -18,6 +18,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -33,6 +34,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -48,6 +50,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "drinkware",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -63,6 +66,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "women",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -78,6 +82,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -93,6 +98,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -108,6 +114,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -123,6 +130,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -138,6 +146,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -153,6 +162,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -168,6 +178,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -183,6 +194,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -198,6 +210,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     }
   ]

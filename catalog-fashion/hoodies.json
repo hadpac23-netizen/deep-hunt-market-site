@@ -3,7 +3,7 @@
   "count": 32,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-09T23:39:21.428Z",
+  "curated_at": "2026-09-11T07:45:52.355Z",
   "products": [
     {
       "provider": "Gooten",
@@ -17,6 +17,7 @@
       "availability_verified": true,
       "source_fresh_at": "2026-09-09T14:56:55Z",
       "source_category": "home",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -31,6 +32,7 @@
       "availability_verified": true,
       "source_fresh_at": "2026-09-09T14:56:55Z",
       "source_category": "home",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -45,6 +47,7 @@
       "availability_verified": true,
       "source_fresh_at": "2026-09-09T14:56:55Z",
       "source_category": "home",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -59,6 +62,7 @@
       "availability_verified": true,
       "source_fresh_at": "2026-09-09T14:56:55Z",
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -73,6 +77,7 @@
       "availability_verified": true,
       "source_fresh_at": "2026-09-09T14:56:55Z",
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -87,6 +92,7 @@
       "availability_verified": true,
       "source_fresh_at": "2026-09-09T14:56:55Z",
       "source_category": "tops",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -102,6 +108,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -117,6 +124,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -132,6 +140,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -147,6 +156,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -162,6 +172,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -177,6 +188,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -192,6 +204,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -207,6 +220,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -222,6 +236,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -237,6 +252,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -252,6 +268,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -267,6 +284,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -282,6 +300,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -297,6 +316,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -312,6 +332,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -327,6 +348,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -342,6 +364,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -357,6 +380,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -372,6 +396,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -387,6 +412,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -402,6 +428,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -417,6 +444,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -432,6 +460,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -447,6 +476,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -462,6 +492,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -477,6 +508,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hoodies",
+      "curation_source": "fashion",
       "catalog_discovery": true
     }
   ]

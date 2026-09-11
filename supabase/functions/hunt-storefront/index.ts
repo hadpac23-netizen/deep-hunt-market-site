@@ -50,7 +50,9 @@ function cleanText(value: unknown): string {
 
 function allowedTitle(title: string): boolean {
   const lower = title.toLowerCase();
-  return !BLOCKED_TERMS.some(term => lower.includes(term));
+  if (BLOCKED_TERMS.some(term => lower.includes(term))) return false;
+  if (/\b(temu\s*&\s*tk|tmeu|tk\s*only|supports?\s+pickup|self[- ]?pickup|shipment\s+from\s+walmart|logistics\s+only)\b/.test(lower)) return false;
+  return true;
 }
 
 function catalogHaystack(raw: any): string {
@@ -786,7 +788,27 @@ const EBAY_FASHION_MANUAL_REVIEW_BRANDS = [
   "hermes","hermès","michael kors","tory burch","kate spade","balenciaga","burberry","fendi","versace"
 ];
 
-let ebayShelfCache: { value: Record<string, any[]> | null; expiresAt: number } = { value: null, expiresAt: 0 };
+
+function ebayShelfTitleAllowed(slug: string, rawTitle: string) {
+  const t = cleanText(rawTitle).toLowerCase();
+  const has = (re: RegExp) => re.test(t);
+  const apparel = has(/\b(dress|shirt|top|blouse|pants|trousers|jeans|shorts|skirt|jacket|coat|sweater|cardigan|hoodie|clothing|apparel|wear|leggings|bra|briefs?|boxers?|suit|blazer|pajamas?|pyjamas?)\b/);
+  if (slug === "womenunderwear") return has(/\b(women(?:'s|s)?|woman|ladies|female)\b/) && has(/\b(underwear|briefs?|panties|bra|bras|bralette|camisole|intimates?)\b/);
+  if (slug === "menunderwear") return has(/\b(men(?:'s|s)?|man|male)\b/) && has(/\b(underwear|briefs?|boxer briefs?|boxers?|underpants|undershirt|base layer)\b/);
+  if (slug === "kidsunderwear") return has(/\b(kids?|children|child|boys?|youth|toddler)\b/) && has(/\b(underwear|briefs?|boxers?|underpants|undershirt|base layer)\b/);
+  if (slug === "sleepwear") return apparel && has(/\b(pajamas?|pyjamas?|sleepwear|nightwear|nightgown|sleep set)\b/);
+  if (slug === "loungewear") return apparel && has(/\b(loungewear|lounge set|lounge pants|lounge top)\b/);
+  if (slug === "plussize") return apparel && has(/\b(plus size|big & tall|big and tall)\b/);
+  if (slug === "petite") return apparel && has(/\bpetite\b/);
+  if (slug === "maternity") return apparel && has(/\b(maternity|pregnancy|pregnant)\b/);
+  if (slug === "sets") return apparel && has(/\b(co-?ord|matching set|2 piece|two piece|2pc|two-piece)\b/);
+  if (slug === "suits") return apparel && has(/\b(suit|suits|tuxedo|formal jacket|formalwear|business suit|blazer set)\b/) && !has(/\b(pet|dog|cat|recovery|swim|wetsuit)\b/);
+  return true;
+}
+
+const ebayShelfCaches = new Map<string, { value: Record<string, any[]>; expiresAt: number }>();
+const ebayShelfDiagnostics = new Map<string, { queries: number; adapter_ok: number; raw_items: number; title_gate_pass: number; quality_pass: number }>();
+
 
 async function ebayAdapter(body: any) {
   const token = env("HUNT_EBAY_INTERNAL_TOKEN");
@@ -809,8 +831,10 @@ async function ebayAdapter(body: any) {
   }
 }
 
-async function ebayMarketShelves() {
-  if (ebayShelfCache.value && ebayShelfCache.expiresAt > Date.now()) return ebayShelfCache.value;
+async function ebayMarketShelves(focusSlug = "") {
+  const cacheKey = focusSlug || "*";
+  const cached = ebayShelfCaches.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.value;
   const specs = [
     ["women", "women fashion clothing", 36],
     ["women", "women brown jeans", 20],
@@ -837,7 +861,29 @@ async function ebayMarketShelves() {
     ["accessories", "women 100 percent silk scarf", 24],
     ["accessories", "women floral brooch", 24],
     ["accessories", "women western leather belt", 20],
+    ["womenunderwear", "women cotton underwear multipack", 30],
+    ["womenunderwear", "women everyday bra bralette", 24],
+    ["menunderwear", "men cotton boxer briefs multipack", 30],
+    ["menunderwear", "men underwear briefs multipack", 24],
+    ["kidsunderwear", "kids cotton underwear multipack", 30],
+    ["kidsunderwear", "boys girls underwear multipack", 24],
+    ["sleepwear", "women pajamas sleepwear set", 24],
+    ["sleepwear", "men pajamas sleepwear set", 24],
+    ["sleepwear", "kids pajamas sleepwear set", 20],
+    ["loungewear", "women loungewear set", 24],
+    ["loungewear", "men loungewear set", 24],
+    ["plussize", "women plus size clothing", 30],
+    ["plussize", "men plus size clothing", 24],
+    ["petite", "women petite clothing", 24],
+    ["maternity", "women maternity clothing", 24],
+    ["sets", "women 2 piece matching set", 24],
+    ["sets", "men co ord matching set", 20],
     ["men", "men fashion clothing", 30],
+    ["men", "men polo shirt", 28],
+    ["men", "men knit polo shirt", 24],
+    ["men", "men linen shirt", 28],
+    ["men", "men chino pants", 28],
+    ["men", "men straight jeans", 28],
     ["suits", "men suits", 24],
     ["phoneaccessories", "iPhone 18 Pro case MagSafe", 36],
     ["phoneaccessories", "iPhone 18 Pro Max case MagSafe", 36],
@@ -848,18 +894,24 @@ async function ebayMarketShelves() {
     ["phoneaccessories", "Samsung Galaxy Z Fold 8 case", 30],
     ["phoneaccessories", "Samsung Galaxy Z Flip 8 case", 30],
   ] as const;
-  const results = await Promise.all(specs.map(([slug, q, limit]) =>
-    withProviderTimeout(ebayAdapter({ action: "search", q, limit }), null, 7000)
+  const selectedSpecs = focusSlug ? specs.filter(([slug]) => slug === focusSlug) : specs;
+  const results = await Promise.all(selectedSpecs.map(([slug, q, limit]) =>
+    withProviderTimeout(ebayAdapter({ action: "search", q, limit }), null, focusSlug ? 6000 : 4500)
       .then(data => ({ slug, data }))
   ));
   const out: Record<string, any[]> = {};
+  const diag = { queries: selectedSpecs.length, adapter_ok: 0, raw_items: 0, title_gate_pass: 0, quality_pass: 0 };
   for (const {slug, data} of results) {
     if (!out[slug]) out[slug] = [];
+    if (data) diag.adapter_ok += 1;
+    diag.raw_items += Array.isArray(data?.items) ? data.items.length : 0;
     const seen = new Set(out[slug].map(x => String(x?.provider) + ":" + String(x?.item_id)));
     for (const item of Array.isArray(data?.items) ? data.items : []) {
       const key = String(item?.provider) + ":" + String(item?.item_id);
       if (!item?.item_id || seen.has(key) || !cleanText(item?.image_url).startsWith("https://")) continue;
       if (!allowedTitle(cleanText(item?.title))) continue;
+      if (!ebayShelfTitleAllowed(slug, cleanText(item?.title))) continue;
+      diag.title_gate_pass += 1;
       const titleLower = cleanText(item?.title).toLowerCase();
       if (["bags","jewelry","accessories"].includes(slug) &&
           EBAY_FASHION_MANUAL_REVIEW_BRANDS.some(brand => titleLower.includes(brand))) continue;
@@ -868,12 +920,18 @@ async function ebayMarketShelves() {
       const price = Number(item?.price_amount);
       if (!Number.isFinite(price) || price <= 0) continue;
       seen.add(key);
+      diag.quality_pass += 1;
       out[slug].push({ ...item, category: slug });
-      const shelfCap = slug === "phoneaccessories" ? 220 : (slug === "accessories" ? 160 : 120);
+      const shelfCap = slug === "phoneaccessories" ? 220
+        : slug === "accessories" ? 160
+        : slug === "men" ? 180
+        : ["womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear"].includes(slug) ? 100
+        : 120;
       if (out[slug].length >= shelfCap) break;
     }
   }
-  ebayShelfCache = { value: out, expiresAt: Date.now() + 10 * 60 * 1000 };
+  ebayShelfDiagnostics.set(cacheKey, diag);
+  ebayShelfCaches.set(cacheKey, { value: out, expiresAt: Date.now() + 10 * 60 * 1000 });
   return out;
 }
 
@@ -1127,6 +1185,8 @@ Deno.serve(async (req: Request) => {
   const url = new URL(req.url);
   const productProvider = cleanText(url.searchParams.get("provider") || "");
   const productId = cleanText(url.searchParams.get("product_id") || "");
+  const rawShelf = cleanText(url.searchParams.get("shelf") || "").toLowerCase();
+  const focusShelf = /^[a-z0-9]+$/.test(rawShelf) ? rawShelf : "";
 
   if (url.searchParams.get("shelves") === "1") {
     const [merchantShelves, printfulShelves, cjShelves, gootenShelves, ebayShelves] = await Promise.all([
@@ -1134,9 +1194,10 @@ Deno.serve(async (req: Request) => {
       withProviderTimeout(printfulMarketShelves(), {}, 8000),
       withProviderTimeout(cjMarketShelves(), {}, 9000),
       withProviderTimeout(gootenMarketShelves(), {}, 8000),
-      withProviderTimeout(ebayMarketShelves(), {}, 10000)
+      withProviderTimeout(ebayMarketShelves(focusShelf), {}, focusShelf ? 7000 : 10000)
     ]);
-    const shelves = mergeMarketShelves(merchantShelves, printfulShelves, gootenShelves, cjShelves, ebayShelves);
+    const mergedShelves = mergeMarketShelves(merchantShelves, printfulShelves, gootenShelves, cjShelves, ebayShelves);
+    const shelves = focusShelf ? { [focusShelf]: mergedShelves[focusShelf] || [] } : mergedShelves;
     const visibleEntries = Object.values(shelves).reduce(
       (sum: number, items: any) => sum + (Array.isArray(items) ? items.length : 0),
       0
@@ -1173,6 +1234,7 @@ Deno.serve(async (req: Request) => {
         "Shelf cards intentionally defer price to the product detail view so the homepage stays fast and never invents a price.",
       truth_note:
         "Only products matched to their shelf category are shown. Empty unsupported categories remain empty until a verified supplier feed is connected.",
+      focused_shelf_diagnostics: focusShelf ? (ebayShelfDiagnostics.get(focusShelf) || null) : undefined,
     }), { headers });
   }
 

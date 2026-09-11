@@ -1,0 +1,57 @@
+{
+  "slug": "drinkware",
+  "count": 3,
+  "source": "HUNT focused curation from authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-11T07:54:08.497Z",
+  "products": [
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097568121972494338",
+      "title": "750ml 26 Oz Filtered Water Bottle With Filter Straw For Outdoor Camping Biking",
+      "image_url": "https://cf.cjdropshipping.com/44555386-17c7-47f0-866f-a74f799c0b0a.jpg",
+      "category": "drinkware",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 34,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "drinkware",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096847628043837441",
+      "title": "Gourd Style Water Bottle PC 800ml Insulated Chinese Retro Portable Sports Water Bottle For Men Women Green",
+      "image_url": "https://cf.cjdropshipping.com/17887392/d0bb925c-ab90-4aff-a83d-7bdd02333f22.jpg",
+      "category": "drinkware",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 22.94,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "activewear",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096982369514086401",
+      "title": "3 * 7-inch Caffeinated Coffee Tea Beverage (new DBZ Cartoon Character Water Bottle Anime Double-layer Thermos Tea Cup Plastic Cup)",
+      "image_url": "https://xffbbhangzhou.oss-cn-hangzhou.aliyuncs.com/product/2YP9J279F582RVR6CM76B5V5RX.jpg",
+      "category": "drinkware",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 1.5,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bags",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    }
+  ]
+}

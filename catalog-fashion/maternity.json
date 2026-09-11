@@ -1,0 +1,41 @@
+{
+  "slug": "maternity",
+  "count": 2,
+  "source": "HUNT authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-11T07:45:52.377Z",
+  "products": [
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609090103201607500",
+      "title": "Breathable V-neck Maternity Nursing Modal Dress",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/09/01/2f676e5a-6a2a-42fe-9a6b-87a9da9a85eb.jpg",
+      "category": "maternity",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 6.71,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "dresses",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609070244071606700",
+      "title": "Maternity V-neck Long-sleeve Knitted Sweater With A Waist Tie",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/18f1aae6-b3ea-418f-b0c6-c7459fb808e1.jpg",
+      "category": "maternity",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 5.01,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "knitwear",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    }
+  ]
+}

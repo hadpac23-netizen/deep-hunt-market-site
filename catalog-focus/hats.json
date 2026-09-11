@@ -1,9 +1,9 @@
 {
   "slug": "hats",
-  "count": 12,
-  "source": "HUNT authorized catalog snapshots",
+  "count": 17,
+  "source": "HUNT focused curation from authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-11T07:45:52.374Z",
+  "curated_at": "2026-09-11T07:54:08.498Z",
   "products": [
     {
       "provider": "Gooten",
@@ -17,7 +17,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": true,
       "source_category": "accessories",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -32,7 +32,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": true,
       "source_category": "accessories",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -47,7 +47,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": true,
       "source_category": "accessories",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -63,7 +63,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "accessories",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -79,7 +79,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "accessories",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -95,23 +95,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "accessories",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2096994554104537089",
-      "title": "T1 55 MEI8 Best Mom Ever Hat For Women, Adjustable Embroidered Wash Cotton Mama Birthday Baseball Cap",
-      "image_url": "https://xffbbhangzhou.oss-cn-hangzhou.aliyuncs.com/product/13Y44JV59E88NS2DG8BAZ58VP8.jpg",
-      "category": "hats",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 6.85,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "accessories",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -127,7 +111,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "accessories",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -143,7 +127,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hats",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -159,7 +143,87 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "hats",
-      "curation_source": "fashion",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097156847317471233",
+      "title": "Baby Water Washed Denim Retro Beanie With Bear Embroidery And Soft Brim. Spring Autumn Outdoor Breathable Baseball Cap",
+      "image_url": "https://cf.cjdropshipping.com/98220a67-7a66-4ad5-b2bc-979b1cd8c0c3.jpg",
+      "category": "hats",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 2.48,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097591819444920321",
+      "title": "Retro Fashion Water-washed Denim Children's Baseball Cap With Heart Patch, Fringed Soft Brim, Casual And Versatile",
+      "image_url": "https://cf.cjdropshipping.com/86916815-42a7-4b8a-907d-bd1e3c741d49.jpg",
+      "category": "hats",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 2.48,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096810024510447618",
+      "title": "Retro Washed Denim Children's Baseball Cap With Full Pattern Of Little Bear Diamond Jacquard Soft Brim Fisherman Hat",
+      "image_url": "https://cf.cjdropshipping.com/803971e0-5b98-48f7-ab4e-9d5d6111fa3c.jpg",
+      "category": "hats",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 2.48,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097138888035364866",
+      "title": "Sweet Style Children's Plush Beanie With Soft Wooden Earflaps And Pleated Edges, Red Bow Knitted Hat, Warm Fishing Hat",
+      "image_url": "https://cf.cjdropshipping.com/4b666c01-1268-4c54-8184-3088eaf31383.jpg",
+      "category": "hats",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 2.48,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096849043347910657",
+      "title": "Sweet Style Patchwork Lettered Lace Edging Denim Kids Baseball Cap Washed And Antique Soft Brim Bow Tie Hat",
+      "image_url": "https://cf.cjdropshipping.com/cf240412-5794-4166-9623-1b55e6f2b46b.jpg",
+      "category": "hats",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 2.48,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -175,7 +239,23 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "accessories",
-      "curation_source": "fashion",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096994554104537089",
+      "title": "T1 55 MEI8 Best Mom Ever Hat For Women, Adjustable Embroidered Wash Cotton Mama Birthday Baseball Cap",
+      "image_url": "https://xffbbhangzhou.oss-cn-hangzhou.aliyuncs.com/product/13Y44JV59E88NS2DG8BAZ58VP8.jpg",
+      "category": "hats",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 6.85,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "curation_source": "focus",
       "catalog_discovery": true
     },
     {
@@ -191,7 +271,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "accessories",
-      "curation_source": "fashion",
+      "curation_source": "focus",
       "catalog_discovery": true
     }
   ]

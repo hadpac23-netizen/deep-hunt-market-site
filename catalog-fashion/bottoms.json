@@ -1,9 +1,9 @@
 {
   "slug": "bottoms",
-  "count": 159,
+  "count": 179,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-09T23:39:21.427Z",
+  "curated_at": "2026-09-11T07:45:52.353Z",
   "products": [
     {
       "provider": "Gooten",
@@ -17,6 +17,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": true,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -32,6 +33,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -47,6 +49,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -62,6 +65,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -77,6 +81,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -92,6 +97,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -107,6 +113,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -122,6 +129,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -137,6 +145,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -152,6 +161,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -167,6 +177,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -182,6 +193,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -197,6 +209,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -212,6 +225,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -227,6 +241,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -242,6 +257,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -257,6 +273,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -272,6 +289,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -287,6 +305,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -302,6 +321,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -317,6 +337,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -332,6 +353,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -347,6 +369,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -362,6 +385,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -377,6 +401,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -392,6 +417,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -407,6 +433,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -422,6 +449,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -437,6 +465,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -452,6 +481,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -467,6 +497,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -482,6 +513,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -497,6 +529,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -512,6 +545,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -527,6 +561,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -542,6 +577,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -557,6 +593,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -572,6 +609,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -587,6 +625,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -602,6 +641,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -617,6 +657,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -632,6 +673,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -647,6 +689,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -662,6 +705,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -677,6 +721,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -692,6 +737,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -707,6 +753,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -722,6 +769,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -737,6 +785,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -752,6 +801,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -767,7 +817,183 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|363136302438|632308804932",
+      "category": "bottoms",
+      "title": "Fashion Sports Apparel Skin Tights Compression Base Men's Running Gym Shorts",
+      "image_url": "https://i.ebayimg.com/images/g/bQwAAOSwIvRfgX6K/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/bQwAAOSwIvRfgX6K/s-l960.jpg"
+      ],
+      "price_amount": 12.96,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.414Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "pingnanbead",
+        "feedback_percentage": 99.7,
+        "feedback_score": 24370
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/363136302438?_skw=men+fashion+clothing&hash=item548c9c3d66:g:bQwAAOSwIvRfgX6K",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "men",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|398381309776|0",
+      "category": "bottoms",
+      "title": "Classic Tan Skinny Jeans for Women - Stretchy Everyday Fit",
+      "image_url": "https://i.ebayimg.com/images/g/MhsAAeSw2VRqosUx/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/MhsAAeSw2VRqosUx/s-l1600.jpg"
+      ],
+      "price_amount": 25,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "lacfis0",
+        "feedback_percentage": 100,
+        "feedback_score": 27
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 7.95,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-18T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/398381309776?_skw=women+brown+jeans&hash=item5cc1605f50:g:MhsAAeSw2VRqosUx",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|206519630320|507208603913",
+      "category": "bottoms",
+      "title": "Gloria Vanderbilt Women's Amanda Jeans Straight Leg High Rise Relaxed Classic",
+      "image_url": "https://i.ebayimg.com/images/g/FlkAAeSw-dlqkJSU/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/FlkAAeSw-dlqkJSU/s-l1200.jpg"
+      ],
+      "price_amount": 27.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "bab_elec",
+        "feedback_percentage": 99.7,
+        "feedback_score": 15015
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/206519630320?_skw=women+brown+jeans&hash=item30158779f0:g:FlkAAeSw-dlqkJSU&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGYwJ1v4npQs9dEznY8HBo7KqdgW7O9jYLO%2FRa%2BRYiIapxgRnEcIUWl5oSGIM2SHeaWsfAHRFKEvKKxhXlMjCMgD4nPy1DLUPZ77F8DHE9w2SuKYACReFyEb6JDi079m8A7JgTun5wUsuO7CmXWsbgZ6hGnQUDUfKuIRV78KUqE1lH5ncNTEU%2FUol0vZNFNj3iCkmPonDnavCBo488FgvR0IGK1UmZz5LgStApkbEA76EklJZPH78nKDpFu4fQhqxYshK%2BY454Snm0Rf8Ugan8PXBlWdW%2B%2BxpzBOYRtr66Qymg%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|377420287685|0",
+      "category": "bottoms",
+      "title": "Women's Vintage Embossed Leather Belt Cowgirl Western Waist Belt for Jeans Pants",
+      "image_url": "https://i.ebayimg.com/images/g/RcgAAeSw~cFqgDw6/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/RcgAAeSw~cFqgDw6/s-l1600.jpg"
+      ],
+      "price_amount": 11.78,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:22.245Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "byk_store",
+        "feedback_percentage": 99.7,
+        "feedback_score": 897
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/377420287685?_skw=women+western+leather+belt&hash=item57e0008ec5:g:RcgAAeSw~cFqgDw6",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "accessories",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -782,6 +1008,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "accessories",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -797,6 +1024,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "accessories",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -812,6 +1040,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -827,6 +1056,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -842,6 +1072,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -857,6 +1088,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -872,6 +1104,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -887,6 +1120,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -902,6 +1136,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -917,6 +1152,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -932,6 +1168,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -947,6 +1184,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -962,6 +1200,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -977,6 +1216,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -992,6 +1232,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1007,6 +1248,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1022,6 +1264,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1037,6 +1280,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1052,6 +1296,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1067,6 +1312,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1082,6 +1328,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1097,6 +1344,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1112,6 +1360,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1127,6 +1376,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1142,6 +1392,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1157,6 +1408,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1172,6 +1424,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1187,6 +1440,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1202,6 +1456,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1217,6 +1472,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1232,6 +1488,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1247,6 +1504,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1262,6 +1520,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1277,6 +1536,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1292,6 +1552,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1307,6 +1568,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1322,6 +1584,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1337,6 +1600,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1352,6 +1616,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1367,6 +1632,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1382,6 +1648,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1397,6 +1664,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1412,6 +1680,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1427,6 +1696,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1442,6 +1712,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1457,6 +1728,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1472,6 +1744,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1487,6 +1760,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1502,6 +1776,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1517,6 +1792,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1532,6 +1808,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1547,6 +1824,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1562,6 +1840,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1577,6 +1856,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1592,6 +1872,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1607,7 +1888,715 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|356615137671|625582241458",
+      "category": "bottoms",
+      "title": "La Bijou 611S Women's Ultra Stretch Skinny Slim Fit Denim Jeggings Jeans - New",
+      "image_url": "https://i.ebayimg.com/images/g/5F4AAeSw61NqK-LQ/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/5F4AAeSw61NqK-LQ/s-l1600.jpg"
+      ],
+      "price_amount": 10.95,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "altatac",
+        "feedback_percentage": 99.2,
+        "feedback_score": 739546
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/356615137671?_skw=women+brown+jeans&hash=item5307eb2987:g:5F4AAeSw61NqK-LQ&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGamYJipbZQc4TEJ2a0yvEo7HEltmgFZeHhiMezFOPW%2BACi6M8qdxl3FN10VqDFASeFqs1RuCbQQvJF4e2DmJHCuRwdHfhZYIbgIrDwFYfx2YophIRdK8GrnCePgxc%2B5C9GdpBn3Vy1dTQsl5gIKVma5fffD9EgGYRAUzNwEpZnRWmp6i168A10DfT%2BmTv%2BPPOUxlD4DSyIfWP7AhGGUqVl0pZLmh%2BHGWIOLPxFn5o8CLHGJbcsoH41RaazY46OG5BWJQCUFWzfyttL6%2BeKEXx9DqDPPuAEX0niUs%2B5JMeakhg%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|377484914432|0",
+      "category": "bottoms",
+      "title": "Gloria Vanderbilt NWT Jeans Women 14s Brown Denim Supreme Stretch Tapered Leg",
+      "image_url": "https://i.ebayimg.com/images/g/6bMAAeSwFGhqoecs/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/6bMAAeSwFGhqoecs/s-l1600.jpg"
+      ],
+      "price_amount": 22.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "viraldealzz",
+        "feedback_percentage": 100,
+        "feedback_score": 151
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 9.99,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/377484914432?_skw=women+brown+jeans&hash=item57e3daaf00:g:6bMAAeSwFGhqoecs&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZOq%2BpEJvnviZgX1yltv%2FqIbR9KB6RU4lDUM6Hja2VaOUy5uN%2B4uPQhFzc%2F1JuEnbhW9eK%2FdfU%2B1A97heBX8u4tFLxIODXougHLDEhK%2B3dO138uLHRJDBP6UBmbxanPNYLMOegf4BRq9EW9MXqvsoKrZPoK0z3jd9v7j7YYhAJerWXfhgtkoKSZMg%2FHWKHLpgazvDiESvNWZVQtoCmpTHHKB0SFLotCqc16%2B%2FA44sOiWAtrctXsumpKoq9Wk0vSHUH9MrerNIMZNib1CD%2FUtg3PzovMqvJcvV6OIRwm8bzp1Q%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|137721540459|435729005501",
+      "category": "bottoms",
+      "title": "Women's Camel Brown Straight Leg Jeans High Waist Patch Pockets",
+      "image_url": "https://i.ebayimg.com/images/g/Sw4AAeSw~3hqoq3Y/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/Sw4AAeSw~3hqoq3Y/s-l1200.jpg"
+      ],
+      "price_amount": 40.14,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "hanting003",
+        "feedback_percentage": 100,
+        "feedback_score": 2
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/137721540459?_skw=women+brown+jeans&hash=item2010d7ef6b:g:Sw4AAeSw~3hqoq3Y",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|178484701744|0",
+      "category": "bottoms",
+      "title": "Women's High-Rise Easy Barrel Jeans - Universal Thread Brown 2",
+      "image_url": "https://i.ebayimg.com/images/g/ay4AAeSwkA5qooE-/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/ay4AAeSwkA5qooE-/s-l1200.jpg"
+      ],
+      "price_amount": 16.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "bullseye_deals",
+        "feedback_percentage": 99.5,
+        "feedback_score": 1481435
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/178484701744?_skw=women+brown+jeans&hash=item298e846a30:g:ay4AAeSwkA5qooE-",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|298662313722|0",
+      "category": "bottoms",
+      "title": "BDG Jeans Women 30 Brown NWT MSRP $69 High-Rise Flared Hipster Y2K Retro",
+      "image_url": "https://i.ebayimg.com/images/g/DjUAAeSw--hqovLC/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/DjUAAeSw--hqovLC/s-l1600.jpg"
+      ],
+      "price_amount": 28,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with imperfections",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "roomies_closet",
+        "feedback_percentage": 100,
+        "feedback_score": 8
+      },
+      "shipping_options": [
+        {
+          "type": "CALCULATED",
+          "cost": null,
+          "min_estimated_delivery_date": null,
+          "max_estimated_delivery_date": null
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/298662313722?_skw=women+brown+jeans&hash=item4589a93efa:g:DjUAAeSw--hqovLC",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|188902958115|0",
+      "category": "bottoms",
+      "title": "Women's High-Rise Easy Barrel Jeans - Universal Thread Brown 4",
+      "image_url": "https://i.ebayimg.com/images/g/vjkAAeSwSCRqolkd/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/vjkAAeSwSCRqolkd/s-l1200.jpg"
+      ],
+      "price_amount": 16.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "bullseye_deals",
+        "feedback_percentage": 99.5,
+        "feedback_score": 1481435
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/188902958115?_skw=women+brown+jeans&hash=item2bfb7e6423:g:vjkAAeSwSCRqolkd",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|188155367516|696032849428",
+      "category": "bottoms",
+      "title": "Women's Highest-Rise Sailor Straight Jeans - Universal",
+      "image_url": "https://i.ebayimg.com/images/g/k3cAAeSw0Uxqol3D/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/k3cAAeSw0Uxqol3D/s-l1200.jpg"
+      ],
+      "price_amount": 15.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "bullseye_deals",
+        "feedback_percentage": 99.5,
+        "feedback_score": 1481435
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/188155367516?_skw=women+brown+jeans&hash=item2bceef105c:g:k3cAAeSw0Uxqol3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|188681250803|696022917061",
+      "category": "bottoms",
+      "title": "Universal Thread Women's High-Rise Easy Barrel Leg Jeans Relaxed Fit",
+      "image_url": "https://i.ebayimg.com/images/g/sdIAAeSwyYNqol3O/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/sdIAAeSwyYNqol3O/s-l1200.jpg"
+      ],
+      "price_amount": 17.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "bullseye_deals",
+        "feedback_percentage": 99.5,
+        "feedback_score": 1481435
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/188681250803?_skw=women+brown+jeans&hash=item2bee4767f3:g:sdIAAeSwyYNqol3O",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|188888939135|0",
+      "category": "bottoms",
+      "title": "Women's High-Rise Easy Barrel Jeans - Universal Thread Brown 8",
+      "image_url": "https://i.ebayimg.com/images/g/V6MAAeSwFbZqoli5/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/V6MAAeSwFbZqoli5/s-l1200.jpg"
+      ],
+      "price_amount": 16.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "bullseye_deals",
+        "feedback_percentage": 99.5,
+        "feedback_score": 1481435
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/188888939135?_skw=women+brown+jeans&hash=item2bfaa87a7f:g:V6MAAeSwFbZqoli5",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|398023662554|0",
+      "category": "bottoms",
+      "title": "Levi’s Women’s 314 Shaping Straight Jeans Size 32x30 Camel Brown Hypersoft",
+      "image_url": "https://i.ebayimg.com/images/g/e5UAAeSwi7NqIJQI/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/e5UAAeSwi7NqIJQI/s-l1600.jpg"
+      ],
+      "price_amount": 45,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "hbstylestore",
+        "feedback_percentage": 100,
+        "feedback_score": 7
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/398023662554?_skw=women+brown+jeans&hash=item5cac0f1bda:g:e5UAAeSwi7NqIJQI&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZHak8qBo4%2F91Rhmal5HVq1SvEoThKA6W9ZQz1ZFa7pDXaNDDrL9ZziW22hoqyskD1X4Jg8GxdzyC6HswNz%2BXtClof3sJU5z202D%2BweYDQEEqu4JdI7r%2BvoRG3O8g5MSduSz6WtqyPJ69inS4x6OhjukkTSwspmNkHR4JRkYn8hZbKF21%2BC1eDJNbBf66V3yrp6yA8uVo4cRZeV32niM%2FIbH0s13f0Cd6NRycV%2F6FadleNFtZy6Z4u7snFjJ8NGI7gipDabSOUDR9KZ3HzTUDndcRM8DTkXE5bep89C%2FWKk0Q%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|318635573996|0",
+      "category": "bottoms",
+      "title": "Adriano Goldschmied Women's Size 4 Brown Jeans",
+      "image_url": "https://i.ebayimg.com/images/g/l-YAAeSw8KNqa6Kr/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/l-YAAeSw8KNqa6Kr/s-l1600.jpg"
+      ],
+      "price_amount": 49.45,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "joeynickels",
+        "feedback_percentage": 100,
+        "feedback_score": 18
+      },
+      "shipping_options": [
+        {
+          "type": "CALCULATED",
+          "cost": null,
+          "min_estimated_delivery_date": null,
+          "max_estimated_delivery_date": null
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/318635573996?_skw=women+brown+jeans&hash=item4a302902ec:g:l-YAAeSw8KNqa6Kr&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGYVui5%2F%2BvA9f77HjE6bTVRkovj3AqL%2B7KFuvFRTMOF7FsBzcoEAUHu7CnksveB%2BvTOaySEWBCTrTZnvIJ8Z6S8LE5k5xV6g3SbIIUFXMRT6mXYhxbytPOyByOKLZZM5Vynk29v%2F7pLeQ7Hy3j97adri--rXmvpIBxpLE%2BdhCjgMfe1z5XIvCn9ICn1sJp%2FzX5Y%2FCIm3yDaandBupDakRWZc8K0va6KHVxG3u5Km489JKHAoC6W9TFKXWpu05mcZ4BcrDxiIQ9KwHZkfr89HTgQTkfB9MGHnTaFeVH3U%2FTfIdw%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|137679830167|0",
+      "category": "bottoms",
+      "title": "AG Adriano Goldschmied Jeans Womens 26R Brown Legging Ankle Skinny Raw Hem NWT",
+      "image_url": "https://i.ebayimg.com/images/g/Sb0AAeSw4cVpLfu~/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/Sb0AAeSw4cVpLfu~/s-l1600.jpg"
+      ],
+      "price_amount": 41.8,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "branemm",
+        "feedback_percentage": 99.9,
+        "feedback_score": 4838
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 9.99,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/137679830167?_skw=women+brown+jeans&hash=item200e5b7c97:g:Sb0AAeSw4cVpLfu~&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGauvEIhYjQkQ3u%2BEL4IwmvfGdHmRHmPEcOj3RrdkZGfzty5X1pKiD%2FBzTOG%2Fs%2FrWN7uYqd676D6gVWvBJk%2Be2CGuo0t4NQoXlECYKlZS%2BY8ZCZ%2FtptlNt0csqtNx2Cnlpf0UIcY0VoMoCcNgm384b%2Fm9cLnxeE0JUnZGiCVRSq4fh4oKK3Pf9ymgP27qPXezWXlY3XkskFd1QRLRIGWYs2UIVDX3pY%2BdW3gMuAh8B%2FG3I8iSdaQllGRHL0izlSFSNt4FSEKfd%2FppKBPNySc3tY1dtCG9bdK6r5g2MabFtDWoQ%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|178350397824|0",
+      "category": "bottoms",
+      "title": "Womens's Highest-Rise Sailor Straight Jeans - Universal Thread Brown 4",
+      "image_url": "https://i.ebayimg.com/images/g/AF0AAeSwpPFqolUz/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/AF0AAeSwpPFqolUz/s-l1200.jpg"
+      ],
+      "price_amount": 15.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "bullseye_deals",
+        "feedback_percentage": 99.5,
+        "feedback_score": 1481435
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/178350397824?_skw=women+brown+jeans&hash=item2986831980:g:AF0AAeSwpPFqolUz",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|206459286918|0",
+      "category": "bottoms",
+      "title": "Womens's Highest-Rise Sailor Straight Jeans - Universal Thread Brown 6",
+      "image_url": "https://i.ebayimg.com/images/g/sHQAAeSw8Wtqolij/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/sHQAAeSw8Wtqolij/s-l1200.jpg"
+      ],
+      "price_amount": 15.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New without tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "bullseye_deals",
+        "feedback_percentage": 99.5,
+        "feedback_score": 1481435
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/206459286918?_skw=women+brown+jeans&hash=item3011eeb586:g:sHQAAeSw8Wtqolij",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|326969362098|0",
+      "category": "bottoms",
+      "title": "Old Navy High Rise O.G. Straight Light Brown Jeans Women's 12 \"fit 33x28\" NWT",
+      "image_url": "https://i.ebayimg.com/images/g/DpkAAeSwEb5pdU2B/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/DpkAAeSwEb5pdU2B/s-l1600.jpg"
+      ],
+      "price_amount": 26.1,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "thehoffyhouse",
+        "feedback_percentage": 99.9,
+        "feedback_score": 6358
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/326969362098?_skw=women+brown+jeans&hash=item4c20e486b2:g:DpkAAeSwEb5pdU2B&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGYWrnB%2FVb8GV64W29Yaw%2BfHJXzO2uRp0TBOYw3mft3V%2Fnt6vG%2BgSKuK7RhC%2BubYM2t6yZ2xQfh0lFofNmBV4cEdOinC7AKVDJsn4LtQy5qHRb0tcE5B00sxsTQtP6z0UqYqbXiPRD8f%2B5r%2BHuZ8QhZ5gQ1s981AZqJVs0nwp82E%2BBj1zq5q2YBO386YxTM9kPLAf0G84WGy7EDYBJ9xfK14VTVFzywbqSR5Bq27B79Q1jPij7DIs4qedLM4epdlSc%2F4FjHi%2F6Sg9PUiLd5eY6VRgl9%2FqbCi5Hb7wj7O1icQbQ%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|357293399143|0",
+      "category": "bottoms",
+      "title": "Sofia Jeans Women's Melisa High Rise Flare Coated Brown Jeans Size 14",
+      "image_url": "https://i.ebayimg.com/images/g/5cEAAOSw8exmH06s/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/5cEAAOSw8exmH06s/s-l1600.jpg"
+      ],
+      "price_amount": 26.97,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.743Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New with tags",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "plus-size69",
+        "feedback_percentage": 99.6,
+        "feedback_score": 1293
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": {
+            "amount": 6.95,
+            "currency": "USD"
+          },
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/357293399143?_skw=women+brown+jeans&hash=item5330589c67:g:5cEAAOSw8exmH06s&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGbOiG7BgF6fXsr%2FE1CH1tPbPKi9KjO4j2ky4iaqHBuGCET5rxR890cXw4THY3NkJ6S6%2FxI9fFtKCRR1AlGCeBlw9vnb80JaTUuK23md%2FOK2BUqAnMjS0rQrLdSjQtmzZuvBPH1TUBQlMDrvLCGQV6CsrlidNOkSe7oP1Bec8L9buptGwk6XHzyfORmYsSGYHs7pxg665gF8oPZgKmUrLfneWhgMzR7CCQU0iV4OIDtGKF9VKg4QU9jaPYGPieknLbI%2BvD8ZMGRPiu9LxoOfNH3YaBTWsyC1bw3%2BxBlVi0EzAw%3D%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "women",
+      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1622,6 +2611,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1637,6 +2627,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1652,6 +2643,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1667,6 +2659,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1682,6 +2675,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1697,6 +2691,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1712,6 +2707,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1727,6 +2723,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1742,6 +2739,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bags",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1757,6 +2755,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1772,6 +2771,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1787,6 +2787,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1802,6 +2803,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1817,6 +2819,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1832,6 +2835,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1847,6 +2851,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1862,6 +2867,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1877,6 +2883,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1892,6 +2899,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1907,6 +2915,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1922,6 +2931,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1937,6 +2947,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1952,6 +2963,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1967,6 +2979,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1982,6 +2995,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -1997,6 +3011,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2012,6 +3027,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2027,6 +3043,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2042,6 +3059,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2057,6 +3075,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2072,6 +3091,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2087,6 +3107,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2102,6 +3123,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2117,6 +3139,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2132,6 +3155,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2147,6 +3171,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2162,6 +3187,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2177,6 +3203,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2192,6 +3219,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2207,6 +3235,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2222,6 +3251,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2237,6 +3267,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2252,6 +3283,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2267,6 +3299,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2282,6 +3315,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2297,6 +3331,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2312,6 +3347,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2327,6 +3363,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "bottoms",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2342,6 +3379,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2357,6 +3395,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2372,6 +3411,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     },
     {
@@ -2387,6 +3427,7 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "dresses",
+      "curation_source": "fashion",
       "catalog_discovery": true
     }
   ]

@@ -1,0 +1,835 @@
+{
+  "slug": "tech",
+  "count": 33,
+  "source": "HUNT focused curation from authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-11T07:54:08.496Z",
+  "products": [
+    {
+      "provider": "eBay",
+      "item_id": "v1|366108391626|635944197796",
+      "category": "tech",
+      "title": "OtterBox iPhone 18/17 Pro Max, Commuter Series MagSafe Case & Screen Protector",
+      "image_url": "https://i.ebayimg.com/images/g/9OAAAeSwQUNplN5f/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/9OAAAeSwQUNplN5f/s-l1600.jpg"
+      ],
+      "price_amount": 39.95,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:38:21.985Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "your-best-store",
+        "feedback_percentage": 99.7,
+        "feedback_score": 205173
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/366108391626?_skw=iPhone+18+Pro+Max+case+MagSafe&hash=item553dc2b8ca:g:9OAAAeSwQUNplN5f",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|257404864636|558070577330",
+      "category": "tech",
+      "title": "For Samsung Galaxy S26 Ultra S26 Waterproof Case w Shockproof Screen Protector",
+      "image_url": "https://i.ebayimg.com/images/g/tSMAAeSwjk9pumqm/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/tSMAAeSwjk9pumqm/s-l1600.jpg"
+      ],
+      "price_amount": 19.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.099Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "cheshuwe_0",
+        "feedback_percentage": 98.8,
+        "feedback_score": 20210
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/257404864636?_skw=Samsung+Galaxy+S26+Ultra+case&hash=item3bee86887c:g:tSMAAeSwjk9pumqm&amdata=enc%3AAQALAAABAACCtXRWQnOEpyOqnQQ8KGZdmrSm9u37aDdfcs2zRuDTf%2BXj2D6Tlj0gsswT5amUTyMGgwqonpUQBxUy9omll1iQEuwEBzqEMCnL111BinfBeHbXjBv5z9ZF8WvnMoy3NDtAieiVYqRZ7ntk%2BMukVMz4%2Bo4cKEN4Cbuwq7nThma7qleQR8oYzKsmQszxTx3wjq2imWv1PkrUzMM1BS269Wpr4y3uQ3B3VUFeFxhZq77%2Fy80Q3Yb5q0nGkCJbXNhPg0NVFwsBOrttH8jokXJk39NZfWvh8vfXcc0JmOGS5%2BnJpIcFqO5VpvAsk1QHe007Dj9uNEpfuFQ9esgnHT5gb8M%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|124553836348|426195113476",
+      "category": "tech",
+      "title": "For Samsung Galaxy S26 S25 Ultra 24 23 22 + Shockproof Case +Screen Protector",
+      "image_url": "https://i.ebayimg.com/images/g/D5sAAOSw20llpujw/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/D5sAAOSw20llpujw/s-l1600.jpg"
+      ],
+      "price_amount": 10.98,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.099Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "qzw_vision",
+        "feedback_percentage": 99.6,
+        "feedback_score": 151186
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/124553836348?_skw=Samsung+Galaxy+S26+Ultra+case&hash=item1cfffcb73c:g:D5sAAOSw20llpujw",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|256791058550|557349524125",
+      "category": "tech",
+      "title": "For Samsung Galaxy S24/S25/S26 Ultra Rugged Armor Phone Case + Screen Protector",
+      "image_url": "https://i.ebayimg.com/images/g/lbMAAOSwcrJmaXsj/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/lbMAAOSwcrJmaXsj/s-l1600.jpg"
+      ],
+      "price_amount": 14.62,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.099Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "lovecase28",
+        "feedback_percentage": 99.3,
+        "feedback_score": 21744
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/256791058550?_skw=Samsung+Galaxy+S26+Ultra+case&hash=item3bc9f09876:g:lbMAAOSwcrJmaXsj",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|178425071467|477755367077",
+      "category": "tech",
+      "title": "For Samsung Galaxy Z Fold 8 Leather Mag Safe Case Stand Cover + Screen Protector",
+      "image_url": "https://i.ebayimg.com/images/g/qW8AAeSw2rZqhmdr/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/qW8AAeSw2rZqhmdr/s-l1600.jpg"
+      ],
+      "price_amount": 16.91,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.208Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "cute-cube-shell",
+        "feedback_percentage": 99.8,
+        "feedback_score": 16448
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/178425071467?_skw=Samsung+Galaxy+Z+Fold+8+case&hash=item298af6876b:g:qW8AAeSw2rZqhmdr",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|407103335587|677279292120",
+      "category": "tech",
+      "title": "For Samsung Galaxy Z Fold8 Magnetic Kickstand Hand Strap Case w Screen Protector",
+      "image_url": "https://i.ebayimg.com/images/g/HYQAAeSwRo9qaFN~/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/HYQAAeSwRo9qaFN~/s-l960.jpg"
+      ],
+      "price_amount": 22.37,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.208Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "kaleisha0",
+        "feedback_percentage": 99.5,
+        "feedback_score": 20042
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-22T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/407103335587?_skw=Samsung+Galaxy+Z+Fold+8+case&hash=item5ec93feca3:g:HYQAAeSwRo9qaFN~",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|298620352610|595398795852",
+      "category": "tech",
+      "title": "For Samsung Galaxy Z Fold8 Case Magnetic Ring Holder Stand with Screen Protector",
+      "image_url": "https://i.ebayimg.com/images/g/wxIAAeSw0KVqj-S5/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/wxIAAeSw0KVqj-S5/s-l1600.jpg"
+      ],
+      "price_amount": 17,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.208Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "surewearegood",
+        "feedback_percentage": 99.5,
+        "feedback_score": 153484
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/298620352610?_skw=Samsung+Galaxy+Z+Fold+8+case&hash=item458728f862:g:wxIAAeSw0KVqj-S5",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|800478478743|0",
+      "category": "tech",
+      "title": "Samsung Galaxy Z Fold 8 Case with Built-in Screen Protector, Ultra Slim Black",
+      "image_url": "https://i.ebayimg.com/images/g/bEUAAeSwgsZqdxEs/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/bEUAAeSwgsZqdxEs/s-l1600.jpg"
+      ],
+      "price_amount": 41.31,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.208Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New",
+      "buying_options": [
+        "FIXED_PRICE",
+        "BEST_OFFER"
+      ],
+      "seller": {
+        "username": "mindm0",
+        "feedback_percentage": 99.4,
+        "feedback_score": 688
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/800478478743?_skw=Samsung+Galaxy+Z+Fold+8+case&hash=itemba603c4197:g:bEUAAeSwgsZqdxEs&amdata=enc%3AAQALAAABAACCtXRWQnOEpyOqnQQ8KGaQXhYbD7q1JpNn5Ms7nTWmnRGeN9mPq6MhQb1tLTRrfWD5Fy19Isl4p5UtZA2laV1sm9ybIxj%2B5KxCounmal%2BMK%2BwrT5O840Go5k08TkdmmHxlpIoEwu50abLSgUe7NkKksPyhXxt7O5IErjUjrCm2vL5bQhSfZ8LiHBD78QJBcrSzcNN4iNAtmBCzxnB0T6u9t4Z9CC6wf6qLhhLA%2BA3gTFC8OFMoHf9%2Bf9ru2QLd9IuzVbTZebg2g8JCbfFNJXe4Abp3vAKrv%2Fesrape16WZVrlKonxxCP%2F2c8TrdtGG3TUeP9mVWqlPmtHeRUvOPTs%3D",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|158153025055|459355445020",
+      "category": "tech",
+      "title": "For Samsung Galaxy Z Flip 8 Shockproof Stand Case with Screen Protector Cover",
+      "image_url": "https://i.ebayimg.com/images/g/89cAAeSw6FJqcbzg/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/89cAAeSw6FJqcbzg/s-l1600.jpg"
+      ],
+      "price_amount": 12.99,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.022Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "hicases",
+        "feedback_percentage": 99.5,
+        "feedback_score": 86951
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-22T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/158153025055?_skw=Samsung+Galaxy+Z+Flip+8+case&hash=item24d2a7a61f:g:89cAAeSw6FJqcbzg",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|298525019980|595356895284",
+      "category": "tech",
+      "title": "For Samsung Galaxy Z Flip 8 Mag Safe Case Shockproof Matte With Screen Protector",
+      "image_url": "https://i.ebayimg.com/images/g/YLIAAeSwMttqYKwa/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/YLIAAeSwMttqYKwa/s-l1600.jpg"
+      ],
+      "price_amount": 13.1,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.022Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "surewearegood",
+        "feedback_percentage": 99.5,
+        "feedback_score": 153484
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/298525019980?_skw=Samsung+Galaxy+Z+Flip+8+case&hash=item45817a4f4c:g:YLIAAeSwMttqYKwa",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus"
+    },
+    {
+      "provider": "eBay",
+      "item_id": "v1|406821905001|677047221695",
+      "category": "tech",
+      "title": "Hinge Magnetic Stand Case w/ Screen Protector For Samsung Galaxy Z Flip8 7 6 5",
+      "image_url": "https://i.ebayimg.com/images/g/yLIAAeSwZJxpzenf/s-l225.jpg",
+      "gallery": [
+        "https://i.ebayimg.com/images/g/yLIAAeSwZJxpzenf/s-l1600.jpg"
+      ],
+      "price_amount": 16.32,
+      "currency": "USD",
+      "price_basis": "MARKETPLACE_RETAIL",
+      "availability_verified": false,
+      "source_fresh_at": "2026-09-10T18:06:40.023Z",
+      "marketplace_id": "EBAY_US",
+      "condition": "New",
+      "buying_options": [
+        "FIXED_PRICE"
+      ],
+      "seller": {
+        "username": "kaleisha0",
+        "feedback_percentage": 99.5,
+        "feedback_score": 20042
+      },
+      "shipping_options": [
+        {
+          "type": "FIXED",
+          "cost": null,
+          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
+          "max_estimated_delivery_date": "2026-09-22T07:00:00.000Z"
+        }
+      ],
+      "source_url": "https://www.ebay.com/itm/406821905001?_skw=Samsung+Galaxy+Z+Flip+8+case&hash=item5eb879a269:g:yLIAAeSwZJxpzenf",
+      "external_visit_url": null,
+      "onsite_checkout_required": true,
+      "onsite_checkout_enabled": false,
+      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
+      "item_end_date": null,
+      "catalog_discovery": true,
+      "merchant_product": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus"
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097540795493621761",
+      "title": "Bluetooth Headset 5.1 True Wireless Earphones Earbuds Headphones HiFi Sport TWS",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/af86fdd29b5f4ef38e3df91ad777e83f.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 15.71,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "activewear",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097525811057369090",
+      "title": "Bone Conduction Headphones Bluetooth 5.1 Wireless Earbuds Outdoor Sport Headset",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/3ddccef35f494271aca827a46552108b.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 11.58,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "activewear",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097547747749634050",
+      "title": "Cleaning Pen For Airpods Pro 1 2 Earphones Cleaner Kit Soft Brush Case Earbuds",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/2b6e8bf5e8e24962af0ad7a0afb89ede.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 7.52,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "cleaning",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097533987005767681",
+      "title": "3Pin XLR Female Jack To Dual 2 Male Plug Y Splitter Cable Adapter Microphone USA",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/99dd007cf3f748949d23880ce9709727.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 8.74,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "home",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097545432317665281",
+      "title": "Bluetooth Speaker Wireless Waterproof Outdoor Stereo Bass USB/TF/FM Radio LOUD",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/4d2cf2fbc720420cb6bbceb24d81c2b9.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 14.1,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "home",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097540241619009538",
+      "title": "Mini Portable Bluetooth Speaker Phone Holder 4-in-1 Bracket Speaker Night Light",
+      "image_url": "https://cf.cjdropshipping.com/f8f2632d-cc85-44ba-b45e-ac0d64506868.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 16,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "lighting",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096858484501794817",
+      "title": "Rechargeable UV Power Bank Function Type C LED Flashlight 1372 200LM For Camping Outdoor Emergency",
+      "image_url": "https://cf.cjdropshipping.com/c3825957-6767-47a0-8f48-18672712ccc5.png",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 14.47,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "outdoors",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097534150499737602",
+      "title": "1-3 PACK For Samsung Galaxy S22 S23 PLUS ULTRA Tempered Glass Screen Protector",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/4e02170cd8e748b6a8cc10ebb7403433.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 7.21,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097549151495102465",
+      "title": "3 PACK - For Samsung Galaxy S21 PLUS ULTRA Tempered Glass Screen Protector Clear",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/e530b2462cfb49689f2c6dee3f79de09.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 10.35,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096896836981788673",
+      "title": "99800mAh 12V Car J Ump Starter Pack Booster Battery Charger Emergency Power Bank",
+      "image_url": "https://cf.cjdropshipping.com/6149513b-8026-48b1-bb15-d78ff1400ead.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 39,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097552473744580610",
+      "title": "Multi USB 8-Port Fast Desktop Hub Wall Charger Charging Station Quick Charge 3.0",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/07fdfb13dae249bf958962cd466f657f.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 18.63,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097556183593885698",
+      "title": "Retractable Car Charger 4 in 1 Fast Car Phone Charger 120W With USB Type C Cable",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/5f182e75d0c4446281886a9f1163c094.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 17.71,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "phoneaccessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097543828642308097",
+      "title": "16-300Ω HIFI Headphone Amplifier Portable Earphone AMP 3.5mm w/ Audio USB Cable",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/9f01d2ff5c2a46898fcdb367950243da.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 13.42,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "tech",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609090319501622700",
+      "title": "Best-selling Business Wireless Bluetooth Earbuds",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/09/03/164f024f-462e-44b2-ae35-57bbec974155_trans.jpeg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 7.81,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "tech",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097554021199486977",
+      "title": "Bluetooth Headset TWS 5.0 Wireless Earphones Earbuds Headphones Stereo Ear Hook",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/9ff9adaf13c243469a715668fb790512.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 18.01,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "tech",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097159764710809601",
+      "title": "2025 Hot Selling M79 Wireless Bluetooth Earphones With High Pitched Bone Conduction For Running Sports, Private Model Bluetooth Earphones",
+      "image_url": "https://cf.cjdropshipping.com/7e65119d-cc39-4624-a637-eb0ab37a4131.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 7.96,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "activewear",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097159391505670146",
+      "title": "2025 New GL8 Cross Border Selected Private Model Earphones High Beauty Earclip Type Wireless Bluetooth Earphones",
+      "image_url": "https://cf.cjdropshipping.com/6bb1e0a3-0475-40c6-8315-55c0aa998046.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 6.32,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "beauty",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097210606570725378",
+      "title": "Rechargeable Magnetic Power Bank Function Type C LED Work Light K586 Portable Inspection Lamp Emergency",
+      "image_url": "https://cf.cjdropshipping.com/1dc7a857-43a0-4df3-ba0d-5140a1965399.png",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 8.72,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "lighting",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097269122635964417",
+      "title": "2 Pack USB Rechargeable LED Flashlight Adjustable Focus 3-Modes Outdoor Mini Flashlight W/ USB Cable+Mini Box",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/2b8033b5b53e4728a01bbb5a83ab449e.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 11.11,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "outdoors",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097033783538900993",
+      "title": "3-in-1 Camping Fan with LED Lantern, Portable Hanging Tent Fan 3 Speed Wind, Timer Function & Power Bank, Low Noise Rechargeable Fan with Remote Control for Outdoor Camping Fishing RV--10400mAh",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/287066dfc27d4e98ab0f0a119ca82103.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 41.92,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "outdoors",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097036404676911106",
+      "title": "3-in-1 Camping Fan with LED Lantern, Portable Hanging Tent Fan 3 Speed Wind, Timer Function & Power Bank, Low Noise Rechargeable Fan with Remote Control for Outdoor Camping Fishing RV--5200mAh",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/8cabb75ad88749cf95b804640c521a46.jpg",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 37,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "outdoors",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097209642115522562",
+      "title": "Rechargeable White Laser Battery Display Power Bank Function LED Flashlight F450 Portable Torch Light Outdoor",
+      "image_url": "https://cf.cjdropshipping.com/830b3c48-d52e-421e-b8bc-ddfe16098b41.png",
+      "category": "tech",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 17.24,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "outdoors",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    }
+  ]
+}

@@ -1,3 +1,6 @@
 User-agent: *
 Allow: /
-Sitemap: https://hadpac23-netizen.github.io/deep-hunt-market-site/sitemap.xml
+Disallow: /auth.html
+Disallow: /checkout.html
+Disallow: /profile.html
+Sitemap: https://deep-hunt-market.netlify.app/sitemap.xml

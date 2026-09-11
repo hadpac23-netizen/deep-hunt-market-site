@@ -36,7 +36,13 @@
     Object.entries(shelves || {}).forEach(([slug, rows]) => {
       (Array.isArray(rows) ? rows : []).forEach(item => {
         const key = `${item?.provider || ""}:${item?.item_id || ""}`;
-        if (!item?.item_id || seen.has(key)) return;
+        const title = String(item?.title || "");
+        if (!item?.item_id || seen.has(key) || !title) return;
+        if (/\b(temu\s*&\s*tk|tmeu|tk\s*only|supports?\s+pickup|self[- ]?pickup|shipment\s+from\s+walmart|logistics\s+only|no provide self pick-up)\b/i.test(title)) return;
+        const curatedCategory = item?.curation_source && item?.category ? String(item.category) : "";
+        const inferred = curatedCategory || window.HuntCore?.inferCategory?.(item) || item?.category || "";
+        if (inferred && !["women","men","kids"].includes(slug) && inferred !== slug) return;
+        if (slug === "kids" && !/\b(baby|newborn|toddler|kids?|child|children|boys?|girls?|youth|infant)\b/i.test(title)) return;
         seen.add(key);
         out.push({...item, _slug: slug});
       });

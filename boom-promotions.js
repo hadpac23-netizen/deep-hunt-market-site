@@ -8,6 +8,16 @@
 
   let lastData=null;
 
+  function displaySafe(item, slug=""){
+    const title=String(item?.title||"").trim();
+    if(!item?.item_id || !title) return false;
+    if(/\b(temu\s*&\s*tk|tmeu|tk\s*only|supports?\s+pickup|self[- ]?pickup|shipment\s+from\s+walmart|logistics\s+only)\b/i.test(title)) return false;
+    const curatedCategory=item?.curation_source&&item?.category?String(item.category):"";
+    const inferred=curatedCategory||H.inferCategory?.(item)||String(item?.category||"");
+    if(slug && inferred && !["women","men","kids"].includes(slug) && inferred!==slug) return false;
+    return true;
+  }
+
   function unique(rows){
     const out=[],seen=new Set();
     for(const item of rows||[]){
@@ -20,7 +30,7 @@
 
   function flat(shelves,slugs=null){
     const keys=Array.isArray(slugs)?slugs:Object.keys(shelves||{});
-    return unique(keys.flatMap(slug=>Array.isArray(shelves?.[slug])?shelves[slug].map(x=>({...x,_slug:slug})):[]));
+    return unique(keys.flatMap(slug=>Array.isArray(shelves?.[slug])?shelves[slug].filter(item=>displaySafe(item,slug)).map(x=>({...x,_slug:slug})):[]));
   }
 
   function preferredSlugs(){
@@ -89,7 +99,7 @@
 
   function smartSets(shelves){
     const complete=firstDistinct(shelves,[
-      {slug:"bags"},{slug:"jewelry"},{slug:"accessories"},{slug:"shoes"}
+      {slug:"bags"},{slug:"jewelry"},{slug:"accessories"},{slug:"shoes",pattern:/\b(women(?:'s|s)?|woman|female|ladies)\b/i}
     ],4);
     const phoneRows=flat(shelves,["phoneaccessories"]);
     const modelDefs=[
