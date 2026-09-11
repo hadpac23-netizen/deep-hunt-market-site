@@ -1,7 +1,8 @@
 (() => {
   const remoteFunctionsBase = "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1";
   const localPreview = location.hostname === "127.0.0.1" || location.hostname === "localhost";
-  const functionsBase = localPreview ? location.origin + "/functions/v1" : remoteFunctionsBase;
+  const staticPreview = localPreview && location.port === "8767";
+  const functionsBase = localPreview && !staticPreview ? location.origin + "/functions/v1" : remoteFunctionsBase;
   const publishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
   const cartKey = "hunt_deal_cart_v1";
   const signalKey = "hunt_deal_boom_signals_v1";
@@ -362,6 +363,7 @@
     const variantId = String(variant?.variant_id || "base");
     const key = `${product.provider}:${product.item_id}:${variantId}`;
     const existing = items.find(x => x.key === key);
+    const maxQty = String(product?.provider || "").toLowerCase().includes("cj") ? 5 : 20;
     const amount = variant?.price_amount ?? product.price_amount ?? null;
     const row = {
       key,
@@ -374,12 +376,18 @@
       price_amount: amount == null ? null : Number(amount),
       currency: String(variant?.currency || product.currency || "USD"),
       price_basis: String(product.price_basis || "SUPPLIER_BASE"),
+      retail_price_amount: Number(variant?.retail_price_amount ?? product?.retail_price_amount ?? NaN),
+      retail_currency: String(variant?.retail_currency || product?.retail_currency || variant?.currency || product?.currency || "USD"),
+      retail_price_verified: (variant?.retail_price_verified ?? product?.retail_price_verified) === true,
+      profit_gate_status: String(variant?.profit_gate_status || product?.profit_gate_status || ""),
+      projected_product_profit: Number(variant?.projected_product_profit ?? product?.projected_product_profit ?? NaN),
+      shipping_priced_separately: (variant?.shipping_priced_separately ?? product?.shipping_priced_separately) === true,
       onsite_checkout_required: product?.onsite_checkout_required === true,
       onsite_checkout_enabled: product?.onsite_checkout_enabled === true,
       checkout_status: String(product?.checkout_status || ""),
-      qty: Math.max(1, Math.min(20, Number(qty) || 1))
+      qty: Math.max(1, Math.min(maxQty, Number(qty) || 1))
     };
-    if (existing) existing.qty = Math.min(20, Number(existing.qty || 1) + row.qty);
+    if (existing) existing.qty = Math.min(maxQty, Number(existing.qty || 1) + row.qty);
     else items.push(row);
     saveCart(items);
     recordSignal(product, "cart");
@@ -397,6 +405,18 @@
     if (!res.ok) throw new Error(data.error || "Storefront unavailable");
     return data;
   }
+  async function cjQuote({vid,country_code="",origin_code="",quantity=1}={}) {
+    const url = new URL(functionsBase + "/hunt-cj-quote");
+    if (vid) url.searchParams.set("vid", String(vid));
+    if (country_code) url.searchParams.set("country_code", String(country_code).toUpperCase());
+    if (origin_code) url.searchParams.set("origin_code", String(origin_code).toUpperCase());
+    url.searchParams.set("quantity", String(Math.max(1, Math.min(5, Number(quantity)||1))));
+    const res = await fetch(url,{cache:"no-store",headers:{apikey:publishableKey}});
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "CJ quote unavailable");
+    return data;
+  }
+
   async function search(query, limit=20) {
     const clean = safeQuery(query);
     if (!clean) throw new Error("This search is not available.");
@@ -430,6 +450,6 @@
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
     inferCategory,slugFromQuery,normalizeSearchQuery,resolveSearchIntent,detectBrand,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
-    cart,saveCart,addCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
+    cart,saveCart,addCart,cartCount,updateCartBadges,storefront,cjQuote,search,productUrl,categoryUrl
   };
 })();

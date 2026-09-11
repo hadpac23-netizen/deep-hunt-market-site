@@ -202,6 +202,31 @@ async function cjAccessToken(): Promise<string> {
   return token;
 }
 
+function cjRetailPrice(sourceCost: number) {
+  const cost = Number(sourceCost);
+  if (!Number.isFinite(cost) || cost <= 0) return null;
+  const minProfit = Math.max(0, Number(env("HUNT_CJ_MIN_PROFIT_USD") || "4"));
+  const paymentReserve = Math.min(0.15, Math.max(0, Number(env("HUNT_CJ_PAYMENT_RESERVE_RATE") || "0.04")));
+  const refundReserve = Math.min(0.20, Math.max(0, Number(env("HUNT_CJ_REFUND_RESERVE_RATE") || "0.05")));
+  const targetMargin = Math.min(0.75, Math.max(0.10, Number(env("HUNT_CJ_TARGET_PRODUCT_MARGIN") || "0.35")));
+  const reserveDenominator = Math.max(0.50, 1 - paymentReserve - refundReserve);
+  const contributionFloor = (cost + minProfit) / reserveDenominator;
+  const marginFloor = cost / Math.max(0.20, 1 - targetMargin);
+  const raw = Math.max(contributionFloor, marginFloor);
+  const retail = Math.max(0.99, Math.ceil(raw) - 0.01);
+  const projectedProfit = retail * reserveDenominator - cost;
+  const projectedMargin = retail > 0 ? projectedProfit / retail : 0;
+  return {
+    retail_price_amount: Number(retail.toFixed(2)),
+    retail_currency: "USD",
+    retail_price_verified: true,
+    profit_gate_status: projectedProfit >= minProfit && projectedMargin >= Math.min(targetMargin, 0.35) ? "PASS" : "REVIEW",
+    projected_product_profit: Number(projectedProfit.toFixed(2)),
+    projected_product_margin: Number(projectedMargin.toFixed(4)),
+    shipping_priced_separately: true
+  };
+}
+
 async function cjProductDetail(productId: string) {
   const token = await cjAccessToken();
   if (!token) return null;
@@ -229,6 +254,7 @@ async function cjProductDetail(productId: string) {
     const key = cleanText(v?.variantKey);
     const parts = key.split("-").map((x: string) => x.trim()).filter(Boolean);
     const price = Number(v?.variantSellPrice);
+    const retail = cjRetailPrice(price);
     const inventories = Array.isArray(v?.inventories) ? v.inventories : [];
     const stockTotal = inventories.reduce(
       (sum: number, inv: any) => sum + Math.max(0, Number(inv?.totalInventory || 0)),
@@ -243,6 +269,7 @@ async function cjProductDetail(productId: string) {
       image_url: cleanText(v?.variantImage) || gallery[0] || "",
       price_amount: Number.isFinite(price) && price > 0 ? price : null,
       currency: "USD",
+      ...(retail || {}),
       stock_quantity: stockTotal,
       availability_verified: stockTotal > 0
     };
@@ -254,6 +281,7 @@ async function cjProductDetail(productId: string) {
     .replace(/\s+/g, " ")
     .slice(0, 1800);
 
+  const retail = cjRetailPrice(basePrice);
   return {
     provider: "CJdropshipping",
     item_id: cleanText(raw?.pid) || productId,
@@ -268,6 +296,7 @@ async function cjProductDetail(productId: string) {
     price_amount: Number.isFinite(basePrice) && basePrice > 0 ? basePrice : null,
     currency: "USD",
     price_basis: "SUPPLIER_BASE",
+    ...(retail || {}),
     variants,
     variant_count: variants.length,
     availability_verified: variants.some((v: any) => v.availability_verified),

@@ -35,11 +35,17 @@
       <aside class="hd-checkout-summary glass">
         <div class="hd-kicker hd-kicker-small">ORDER SUMMARY</div>
         <div class="hd-summary-row"><span>Verified retail subtotal</span><strong id="hd-checkout-subtotal">PRICING PENDING</strong></div>
-        <div class="hd-summary-row"><span>Shipping</span><strong>PENDING</strong></div>
-        <div class="hd-summary-row"><span>Taxes / duties</span><strong>PENDING</strong></div>
-        <div class="hd-summary-total"><span>Customer total</span><strong>NOT SET</strong></div>
-        <label class="hd-checkout-label">Destination market
-          <select id="hd-checkout-market"><option>Israel</option><option>United States</option><option>European Union</option><option>United Kingdom</option><option>Gulf / Middle East</option><option>Other</option></select>
+        <div class="hd-summary-row"><span>Verified shipping estimate</span><strong id="hd-checkout-shipping">SELECT COUNTRY</strong></div>
+        <div class="hd-summary-row"><span>Taxes / duties</span><strong>NOT INCLUDED YET</strong></div>
+        <div class="hd-summary-total"><span>Estimated customer total</span><strong id="hd-checkout-total">NOT SET</strong></div>
+        <label class="hd-checkout-label">Destination country
+          <select id="hd-checkout-market">
+            <option value="">Choose country</option>
+            <option value="IL">Israel</option><option value="US">United States</option><option value="GB">United Kingdom</option>
+            <option value="DE">Germany</option><option value="FR">France</option><option value="IT">Italy</option><option value="ES">Spain</option><option value="NL">Netherlands</option>
+            <option value="AE">United Arab Emirates</option><option value="SA">Saudi Arabia</option><option value="CA">Canada</option><option value="AU">Australia</option>
+            <option value="JP">Japan</option><option value="SG">Singapore</option>
+          </select>
         </label>
         <button class="hd-btn hd-btn-primary hd-pay-disabled" type="button" disabled>Payment activation pending</button>
         <p class="hd-checkout-truth">No card data is collected on this page. A live checkout will only be enabled after an authorized business payment account, confirmed retail prices and supplier fulfillment are connected.</p>
@@ -48,8 +54,8 @@
 
     <section class="hd-checkout-readiness glass">
       <div><b>1</b><span><strong>Catalog</strong><small>LIVE — real connected products & images</small></span></div>
-      <div><b>2</b><span><strong>Retail pricing</strong><small>PENDING — must be approved before sale</small></span></div>
-      <div><b>3</b><span><strong>Fulfillment</strong><small>PENDING — supplier/store credentials required</small></span></div>
+      <div><b>2</b><span><strong>Retail pricing</strong><small>LIVE FOR CJ — HUNT Price Gate must PASS</small></span></div>
+      <div><b>3</b><span><strong>Fulfillment</strong><small>LIVE FOR CJ PREVIEW — stock + shipping rechecked before checkout</small></span></div>
       <div><b>4</b><span><strong>Payment</strong><small>PENDING — authorized merchant account required</small></span></div>
     </section>
   </main>
@@ -62,9 +68,10 @@
   </nav>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="account-presence.js?v=profile2"></script>
+  <script src="market-core.js?v=cjprice1"></script>
   <script src="analytics-config.js?v=analytics1"></script>
   <script src="analytics.js?v=ladder1"></script>
-  <script src="checkout.js?v=photo6"></script>
+  <script src="checkout.js?v=cjprice1"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa1"></script>
 </body>

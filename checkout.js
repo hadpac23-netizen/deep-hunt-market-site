@@ -1,4 +1,5 @@
 (() => {
+  const H = window.HuntCore;
   const key = "hunt_deal_cart_v1";
   const $ = q => document.querySelector(q);
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -9,6 +10,7 @@
   };
   const read = () => { try { const v=JSON.parse(localStorage.getItem(key)||"[]"); return Array.isArray(v)?v:[]; } catch { return []; } };
   const write = cart => localStorage.setItem(key, JSON.stringify(cart));
+  const isCJ = item => String(item?.provider || "").toLowerCase().includes("cj");
   const verifiedRetail = item => {
     const amount = Number(item?.retail_price_amount);
     const currency = String(item?.retail_currency || item?.currency || "").toUpperCase();
@@ -17,6 +19,64 @@
       ? {amount,currency} : null;
   };
   let checkoutTracked = false;
+  let quoteGeneration = 0;
+
+  function pricingSnapshot(cart) {
+    const rows = cart.map(item=>({item,retail:verifiedRetail(item)}));
+    const allVerified = rows.length > 0 && rows.every(row=>row.retail);
+    const currencies = new Set(rows.filter(row=>row.retail).map(row=>row.retail.currency));
+    const subtotal = rows.reduce((sum,row)=>sum + (row.retail?.amount||0)*Math.max(1,Number(row.item.qty)||1),0);
+    return {rows,allVerified,currencies,subtotal};
+  }
+  async function refreshShipping(cart, pricing) {
+    const country = String($("#hd-checkout-market")?.value || "").toUpperCase();
+    const shippingEl = $("#hd-checkout-shipping");
+    const totalEl = $("#hd-checkout-total");
+    const generation = ++quoteGeneration;
+    if (!shippingEl || !totalEl) return;
+    if (!cart.length) { shippingEl.textContent="—"; totalEl.textContent="—"; return; }
+    if (!country) { shippingEl.textContent="SELECT COUNTRY"; totalEl.textContent="NOT SET"; return; }
+    if (!pricing.allVerified || pricing.currencies.size !== 1) {
+      shippingEl.textContent="PRICING GATE PENDING"; totalEl.textContent="NOT SET"; return;
+    }
+    const unsupported = cart.filter(item => !isCJ(item) || !item?.variant_id);
+    if (unsupported.length) {
+      shippingEl.textContent="SOME ITEMS PENDING";
+      totalEl.textContent="NOT SET";
+      return;
+    }
+    shippingEl.textContent="CHECKING…";
+    totalEl.textContent="CHECKING…";
+    const results = await Promise.all(cart.map(async item => {
+      try {
+        const quote = await H.cjQuote({
+          vid:item.variant_id,
+          country_code:country,
+          quantity:Math.max(1,Math.min(5,Number(item.qty)||1))
+        });
+        const cheapest = Array.isArray(quote?.shipping_options) ? quote.shipping_options[0] : null;
+        return {item,quote,cheapest};
+      } catch (error) {
+        return {item,error};
+      }
+    }));
+    if (generation !== quoteGeneration) return;
+    const allReady = results.length === cart.length && results.every(row =>
+      row.quote?.stock_verified === true &&
+      row.quote?.stock_available === true &&
+      row.quote?.shipping_verified === true &&
+      row.cheapest && Number.isFinite(Number(row.cheapest.price_usd))
+    );
+    if (!allReady) {
+      shippingEl.textContent="QUOTE UNAVAILABLE";
+      totalEl.textContent="NOT SET";
+      return;
+    }
+    const shipping = results.reduce((sum,row)=>sum + Number(row.cheapest.price_usd||0),0);
+    const currency = [...pricing.currencies][0];
+    shippingEl.textContent = money(shipping,"USD");
+    totalEl.textContent = currency === "USD" ? money(pricing.subtotal + shipping,"USD") : "CURRENCY REVIEW";
+  }
 
   function render() {
     const cart = read();
@@ -24,28 +84,27 @@
     const empty = $("#hd-checkout-empty");
     if (!host || !empty) return;
     empty.hidden = cart.length > 0;
-    host.innerHTML = cart.map(item => `
+    host.innerHTML = cart.map(item => {
+      const retail = verifiedRetail(item);
+      return `
       <article class="hd-checkout-item" data-key="${esc(item.key)}">
         ${item.image_url ? `<img src="${esc(item.image_url)}" alt="${esc(item.title)}">` : `<div class="hd-checkout-thumb">◇</div>`}
-        <div class="hd-checkout-item-copy"><small>${esc(item.provider)} · ${esc(item.price_basis || "SOURCE")}</small><h3>${esc(item.title)}</h3><p>${item.variant_label ? `Selected: ${esc(item.variant_label)} · ` : ""}${item?.onsite_checkout_required === true && item?.onsite_checkout_enabled !== true ? "HUNT onsite checkout pending eBay Order API approval" : (verifiedRetail(item) ? `Verified retail ${money(verifiedRetail(item).amount,verifiedRetail(item).currency)} · Profit Gate PASS` : "Retail pricing pending Profit Gate")}</p></div>
+        <div class="hd-checkout-item-copy"><small>${esc(item.provider)}</small><h3>${esc(item.title)}</h3><p>${item.variant_label ? `Selected: ${esc(item.variant_label)} · ` : ""}${retail ? `HUNT price ${money(retail.amount,retail.currency)} · Profit Gate PASS` : "Retail pricing pending Profit Gate"}${isCJ(item) ? " · stock rechecked before cart" : ""}</p></div>
         <div class="hd-qty"><button type="button" data-delta="-1">−</button><span>${Math.max(1,Number(item.qty)||1)}</span><button type="button" data-delta="1">+</button></div>
         <button class="hd-remove" type="button" aria-label="Remove item">×</button>
-      </article>`).join("");
-    const retailRows = cart.map(item=>({item,retail:verifiedRetail(item)}));
-    const allRetailVerified = retailRows.length > 0 && retailRows.every(row=>row.retail);
-    const currencies = new Set(retailRows.filter(row=>row.retail).map(row=>row.retail.currency));
-    const subtotal = retailRows.reduce((sum,row)=>sum + (row.retail?.amount||0)*Math.max(1,Number(row.item.qty)||1),0);
-    $("#hd-checkout-subtotal").textContent = allRetailVerified && currencies.size === 1
-      ? money(subtotal,[...currencies][0])
+      </article>`; }).join("");
+    const pricing = pricingSnapshot(cart);
+    $("#hd-checkout-subtotal").textContent = pricing.allVerified && pricing.currencies.size === 1
+      ? money(pricing.subtotal,[...pricing.currencies][0])
       : "PRICING PENDING";
     const count = cart.reduce((sum,item)=>sum + Math.max(1,Number(item.qty)||1),0);
     document.querySelectorAll("[data-cart-count]").forEach(el=>el.textContent=String(count));
+    refreshShipping(cart, pricing);
     if (!checkoutTracked && cart.length) {
       checkoutTracked = true;
       window.HuntAnalytics?.beginCheckout(cart, $("#hd-checkout-market")?.value || "");
     }
   }
-
   document.addEventListener("click", event => {
     const row = event.target.closest?.(".hd-checkout-item");
     if (!row) return;
@@ -54,13 +113,15 @@
     if (index < 0) return;
     if (event.target.matches(".hd-remove")) cart.splice(index,1);
     else if (event.target.matches("[data-delta]")) {
-      cart[index].qty = Math.max(1,Math.min(20,(Number(cart[index].qty)||1)+Number(event.target.dataset.delta||0)));
+      const maxQty = isCJ(cart[index]) ? 5 : 20;
+      cart[index].qty = Math.max(1,Math.min(maxQty,(Number(cart[index].qty)||1)+Number(event.target.dataset.delta||0)));
     } else return;
     write(cart); render();
   });
   $("#hd-clear-cart")?.addEventListener("click",()=>{ write([]); render(); });
   $("#hd-checkout-market")?.addEventListener("change", event => {
     window.HuntAnalytics?.checkoutMarket(event.currentTarget.value || "");
+    render();
   });
   render();
 })();

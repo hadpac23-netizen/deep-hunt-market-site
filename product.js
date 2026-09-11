@@ -119,10 +119,14 @@
     $("#hd-product-provider").textContent = product.provider || provider;
     $("#hd-product-stock").textContent = product.availability_verified ? "IN STOCK" : "DISCOVERY";
     $("#hd-product-stock").className = `hd-status ${product.availability_verified?"green":"blue"}`;
-    const shownAmount = selectedVariant?.price_amount ?? product.price_amount;
-    const shownCurrency = selectedVariant?.currency || product.currency || "USD";
+    const retailAmount = selectedVariant?.retail_price_amount ?? product.retail_price_amount;
+    const retailCurrency = selectedVariant?.retail_currency || product.retail_currency || selectedVariant?.currency || product.currency || "USD";
+    const retailVerified = (selectedVariant?.retail_price_verified ?? product.retail_price_verified) === true &&
+      String(selectedVariant?.profit_gate_status || product.profit_gate_status || "") === "PASS";
+    const shownAmount = retailVerified ? retailAmount : (selectedVariant?.price_amount ?? product.price_amount);
+    const shownCurrency = retailVerified ? retailCurrency : (selectedVariant?.currency || product.currency || "USD");
     const basis = String(product.price_basis || "SUPPLIER_BASE").toUpperCase();
-    const verifiedRetail = product.retail_price_verified === true && product.profit_gate_status === "PASS";
+    const verifiedRetail = retailVerified;
     $("#hd-product-price").textContent = H.money(shownAmount, shownCurrency);
     const basisCopy = $("#hd-product-price-basis");
     if (basisCopy) {
@@ -156,6 +160,7 @@
     const onsiteRequired = product?.onsite_checkout_required === true;
     const onsiteEnabled = product?.onsite_checkout_enabled === true;
     const externalVisit = !onsiteRequired && typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
+    const isCJ = String(product?.provider || provider).toLowerCase().includes("cj");
     const readyForCart = variants.length > 0 || (product?.provider === "eBay" && product?.availability_verified === true);
     const storeName = product?.store?.name || "partner store";
     const checkoutBlocked = onsiteRequired && !onsiteEnabled;
@@ -166,12 +171,12 @@
         ? "HUNT checkout awaiting eBay approval"
         : externalVisit
           ? `Visit ${storeName} →`
-          : (readyForCart ? "Add to HUNT checkout →" : "Options pending");
+          : (readyForCart ? (isCJ ? "Verify stock & add →" : "Add to HUNT checkout →") : "Options pending");
     }
     const mobileAdd = $("#hd-mobile-add");
     if (mobileAdd) {
       mobileAdd.disabled = checkoutBlocked ? true : (externalVisit ? false : !readyForCart);
-      mobileAdd.textContent = checkoutBlocked ? "Checkout approval pending" : (externalVisit ? "Visit store" : (readyForCart ? "Add to Cart" : "Options pending"));
+      mobileAdd.textContent = checkoutBlocked ? "Checkout approval pending" : (externalVisit ? "Visit store" : (readyForCart ? (isCJ ? "Verify & add" : "Add to Cart") : "Options pending"));
     }
     const quantityBlock = document.querySelector(".hd-product-quantity");
     if (quantityBlock) quantityBlock.hidden = externalVisit || checkoutBlocked;
@@ -180,7 +185,11 @@
   function syncMobilePrice() {
     const mobile = $("#hd-mobile-price");
     if (!mobile || !product) return;
-    mobile.textContent = H.money(selectedVariant?.price_amount ?? product.price_amount, selectedVariant?.currency || product.currency || "USD");
+    const retailVerified = (selectedVariant?.retail_price_verified ?? product?.retail_price_verified) === true &&
+      String(selectedVariant?.profit_gate_status || product?.profit_gate_status || "") === "PASS";
+    mobile.textContent = retailVerified
+      ? H.money(selectedVariant?.retail_price_amount ?? product?.retail_price_amount, selectedVariant?.retail_currency || product?.retail_currency || "USD")
+      : H.money(selectedVariant?.price_amount ?? product.price_amount, selectedVariant?.currency || product.currency || "USD");
   }
 
   function setZoom(scale) {
@@ -212,7 +221,7 @@
     setZoom(1);
   }
 
-  function addCurrentToCart() {
+  async function addCurrentToCart() {
     if (!product) return;
     if (product?.onsite_checkout_required === true && product?.onsite_checkout_enabled !== true) return;
     if (typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://")) {
@@ -228,6 +237,26 @@
       return;
     }
     if (!selectedVariant) return;
+    const isCJ = String(product?.provider || provider).toLowerCase().includes("cj");
+    if (isCJ) {
+      const buttons = [$("#hd-product-add"), $("#hd-mobile-add")].filter(Boolean);
+      buttons.forEach(button=>{ button.disabled=true; button.textContent="Verifying stock…"; });
+      try {
+        const quote = await H.cjQuote({vid:selectedVariant.variant_id,quantity});
+        if (!quote?.stock_verified || !quote?.stock_available) {
+          buttons.forEach(button=>{ button.disabled=true; button.textContent="Currently unavailable"; });
+          $("#hd-product-stock").textContent="OUT OF STOCK";
+          $("#hd-product-stock").className="hd-status";
+          return;
+        }
+        selectedVariant.stock_quantity = Number(quote?.selected_origin?.total_inventory || 0);
+        selectedVariant.availability_verified = true;
+        product.availability_verified = true;
+      } catch {
+        buttons.forEach(button=>{ button.disabled=false; button.textContent="Try stock check again"; });
+        return;
+      }
+    }
     H.addCart(product, selectedVariant, quantity);
     location.href = window.HuntLightPreview?.rewrite?.("checkout.html") || "checkout.html";
   }
@@ -281,7 +310,7 @@
     if(size){ selectedSize=size.dataset.size; chooseVariant(); renderBuybox(); return; }
   });
   $("#hd-qty-minus")?.addEventListener("click",()=>{quantity=Math.max(1,quantity-1);$("#hd-qty-value").textContent=String(quantity);});
-  $("#hd-qty-plus")?.addEventListener("click",()=>{quantity=Math.min(20,quantity+1);$("#hd-qty-value").textContent=String(quantity);});
+  $("#hd-qty-plus")?.addEventListener("click",()=>{const maxQty=String(product?.provider||provider).toLowerCase().includes("cj")?5:20;quantity=Math.min(maxQty,quantity+1);$("#hd-qty-value").textContent=String(quantity);});
   $("#hd-product-add")?.addEventListener("click",addCurrentToCart);
   $("#hd-mobile-add")?.addEventListener("click",addCurrentToCart);
   $("#hd-zoom-open")?.addEventListener("click",openZoom);

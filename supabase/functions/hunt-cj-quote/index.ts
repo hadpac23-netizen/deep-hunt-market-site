@@ -54,9 +54,10 @@ Deno.serve(async(req:Request)=>{
   const cached=quoteCache.get(cacheKey);
   if(cached&&cached.expiresAt>Date.now())return json({...cached.value,cached:true},200,headers);
   const ip=(req.headers.get("x-forwarded-for")||"").split(",")[0].trim()||"unknown";
-  const last=rate.get(ip)||0;
+  const rateKey=ip+"|"+vid;
+  const last=rate.get(rateKey)||0;
   if(Date.now()-last<1500)return json({error:"rate limited"},429,headers);
-  rate.set(ip,Date.now());
+  rate.set(rateKey,Date.now());
   const token=await cjToken();
   if(!token)return json({error:"CJ unavailable"},503,headers);
   const stockUrl=new URL("https://developers.cjdropshipping.com/api2.0/v1/product/stock/queryByVid");
