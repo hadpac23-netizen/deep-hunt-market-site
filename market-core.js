@@ -19,13 +19,16 @@
     men: {title:"Men's Fashion", query:"men", icon:"M", description:"Men's apparel only: shirts, hoodies, jackets, bottoms and everyday styles."},
     dresses: {title:"Dresses & Skirts", query:"dresses", icon:"D", description:"Dresses and skirts from the connected live catalog."},
     tops: {title:"Tops & T-Shirts", query:"tops", icon:"T", description:"T-shirts, tops, tanks, polos and blouses."},
-    bottoms: {title:"Bottoms", query:"bottoms pants shorts jeans", icon:"B", description:"Pants, shorts, jeans, joggers and leggings."},
+    bottoms: {title:"Bottoms", query:"bottoms pants shorts", icon:"B", description:"Pants, shorts, joggers and leggings."},
+    jeans: {title:"Jeans & Denim", query:"jeans denim", icon:"J", description:"Jeans, denim jackets, skirts and denim-focused styles."},
     hoodies: {title:"Hoodies & Sweatshirts", query:"hoodies", icon:"H", description:"Hoodies, sweatshirts and warm layers."},
     knitwear: {title:"Knitwear", query:"sweaters cardigans knitwear", icon:"N", description:"Sweaters, cardigans and knit layers."},
     jackets: {title:"Jackets & Outerwear", query:"jackets", icon:"J", description:"Jackets, windbreakers and outerwear."},
     activewear: {title:"Activewear", query:"activewear", icon:"A", description:"Athletic apparel, leggings, shorts and performance wear."},
     bags: {title:"Bags", query:"bags", icon:"B", description:"Crossbody bags, totes, backpacks and everyday bags."},
-    shoes: {title:"Shoes", query:"shoes", icon:"S", description:"Sneakers, canvas shoes and slides."},
+    shoes: {title:"Shoes", query:"shoes", icon:"S", description:"Sneakers, canvas shoes and everyday footwear."},
+    slippers: {title:"Slippers & Home Shoes", query:"slippers home shoes slides", icon:"L", description:"Indoor slippers, plush slippers, slides and comfort footwear."},
+    sunglasses: {title:"Sunglasses & Eyewear", query:"sunglasses eyewear", icon:"E", description:"Fashion sunglasses and eyewear from verified suppliers."},
     accessories: {title:"Accessories", query:"accessories", icon:"X", description:"Hats, caps, tags and everyday accessories."},
     home: {title:"Home", query:"home", icon:"O", description:"Decor, useful home finds and everyday living products."},
     storage: {title:"Storage & Organization", query:"storage organizer", icon:"S", description:"Closet, kitchen and home storage solutions."},
@@ -51,7 +54,13 @@
     blankets: {title:"Blankets & Towels", query:"blankets", icon:"N", description:"Blankets, towels and soft home essentials."},
     stickers: {title:"Stickers", query:"stickers", icon:"I", description:"Sticker sheets and decorative stickers."},
     stationery: {title:"Stationery", query:"stationery", icon:"E", description:"Notebooks, journals and calendars."},
-    pets: {title:"Pets", query:"pets", icon:"V", description:"Pet accessories and selected pet products."},
+    pets: {title:"Pets", query:"pets", icon:"V", description:"Premium products for cats, dogs and suitable household pets."},
+    petbeds: {title:"Pet Beds & Houses", query:"pet beds houses", icon:"B", description:"Beds, mats, houses and comfort products for pets."},
+    catfurniture: {title:"Cat Trees & Furniture", query:"cat trees scratchers furniture", icon:"C", description:"Cat trees, scratchers, towers and cat furniture."},
+    petfeeders: {title:"Feeders & Water", query:"pet feeders fountains bowls", icon:"F", description:"Bowls, feeders, fountains and feeding accessories."},
+    pettoys: {title:"Pet Toys", query:"pet toys interactive", icon:"T", description:"Interactive and everyday toys for cats and dogs."},
+    petgrooming: {title:"Pet Grooming", query:"pet grooming care", icon:"G", description:"Grooming and everyday care tools for pets."},
+    pettravel: {title:"Pet Travel", query:"pet carriers travel", icon:"R", description:"Carriers, travel bags and travel accessories for pets."},
     suits: {title:"Suits & Formalwear", query:"suits formalwear blazers tuxedo", icon:"F", description:"Suits, formal jackets, blazers and business-ready apparel from verified live catalogs."},
     underwear: {title:"Underwear & Essentials", query:"underwear briefs boxers bras essentials", icon:"E", description:"Everyday underwear and essentials from verified live catalogs."},
     womenunderwear: {title:"Women's Underwear & Basics", query:"women underwear briefs bras basics", icon:"W", description:"Everyday women's underwear and basic layers from verified live catalogs."},
@@ -69,18 +78,24 @@
     pillows: {title:"Pillows", query:"pillows", icon:"P", description:"Decorative pillows and pillow products."},
     ornaments: {title:"Ornaments", query:"ornaments", icon:"R", description:"Seasonal and decorative ornaments."},
     perfume: {title:"Perfume & Fragrance", query:"women perfume fragrance", icon:"F", description:"Live when matched from connected approved supplier feeds."},
-    beauty: {title:"Beauty & Skincare", query:"beauty skincare makeup", icon:"Y", description:"Beauty and skincare products matched from connected approved supplier feeds."},
+    beauty: {title:"Beauty", query:"beauty", icon:"Y", description:"Curated beauty products from connected approved supplier feeds."},
+    makeup: {title:"Makeup", query:"makeup cosmetics", icon:"M", description:"Makeup and color cosmetics from approved suppliers."},
+    skincare: {title:"Skincare", query:"skincare serum cream cleanser", icon:"S", description:"Skincare from approved suppliers with ingredient and compliance data."},
+    haircare: {title:"Haircare", query:"haircare shampoo conditioner", icon:"H", description:"Shampoo, conditioner and hair-care products from approved suppliers."},
+    bodycare: {title:"Body Care", query:"body care lotion wash", icon:"B", description:"Body-care products from approved suppliers."},
     jewelry: {title:"Jewelry", query:"women jewelry necklace bracelet earrings", icon:"Q", description:"Jewelry and accessories matched from connected approved supplier feeds."}
   };
 
   const categoryGroups = [
-    {title:"Women & Men", items:["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits"]},
-    {title:"Fit, Basics & Sleep", items:["womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","socks","swimwear"]},
-    {title:"Beauty & Style", items:["bags","shoes","hats","accessories","jewelry","beauty","perfume"]},
+    {title:"Women · Clothing", items:["women","dresses","jeans","sets","tops","bottoms","jackets","knitwear","activewear","plussize","petite","maternity"]},
+    {title:"Women · Beauty, Bags & Accessories", items:["beauty","makeup","skincare","haircare","bodycare","perfume","bags","jewelry","accessories","sunglasses"]},
+    {title:"Women · Shoes, Underwear & Comfort", items:["shoes","slippers","womenunderwear","sleepwear","loungewear","socks","swimwear"]},
+    {title:"Men", items:["men","suits","jeans","sets","tops","bottoms","jackets","activewear","menunderwear","sleepwear","socks","shoes","slippers","sunglasses","accessories"]},
+    {title:"Kids", items:["kids","kidsunderwear","sleepwear","socks","shoes","slippers","toys"]},
+    {title:"Pets", items:["pets","petbeds","catfurniture","petfeeders","pettoys","petgrooming","pettravel"]},
     {title:"Home & Living", items:["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]},
     {title:"Tech & Gaming", items:["tech","phoneaccessories","gaming"]},
     {title:"Sports & Outdoors", items:["sports","outdoors","travel"]},
-    {title:"Kids & Pets", items:["kids","toys","pets"]},
     {title:"Gifts, Crafts & Office", items:["gifts","party","crafts","ornaments","stickers","stationery","office"]}
   ];
 
@@ -103,6 +118,12 @@
     const precise = new Set(["womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets"]);
     if (precise.has(explicit) && categoryDefs[explicit]) return explicit;
     const t = String(value?.title || value || "").toLowerCase();
+    if (/\b(cat tree|cat tower|cat scratcher|scratching post|cat furniture)\b/.test(t)) return "catfurniture";
+    if (/\b(pet bed|dog bed|cat bed|pet house|dog house|cat house|pet mat)\b/.test(t)) return "petbeds";
+    if (/\b(pet feeder|automatic feeder|water fountain|pet bowl|slow feeder)\b/.test(t)) return "petfeeders";
+    if (/\b(pet grooming|grooming brush|pet clipper|deshedding|pet shampoo)\b/.test(t)) return "petgrooming";
+    if (/\b(pet carrier|dog carrier|cat carrier|pet travel)\b/.test(t)) return "pettravel";
+    if (/\b(pet toy|dog toy|cat toy|interactive cat toy|rope toy)\b/.test(t)) return "pettoys";
     if (/\b(pet|dog|cat)\b/.test(t)) return "pets";
     if (/\b(toy|toys|puzzle|plush|building block|craft kit|slime)\b/.test(t)) return "toys";
     if (/\b(kids?|youth|toddler|baby|newborn|child|children|boys?|girls?|infant)\b/.test(t) && /\b(underwear|briefs?|boxers?|underpants|undershirt|base layer)\b/.test(t)) return "kidsunderwear";
@@ -116,7 +137,11 @@
     if (/\b(co-?ord|matching set|2 piece|two piece|2pc|two-piece)\b/.test(t)) return "sets";
     if (/\b(kids?|youth|toddler|baby|newborn|child|children|boys?|girls?|infant)\b/.test(t)) return "kids";
     if (/(perfume|fragrance|eau de|parfum|toilette spray)/.test(t)) return "perfume";
-    if (/(beauty|skincare|makeup|cosmetic|serum|cream)/.test(t)) return "beauty";
+    if (/\b(makeup|cosmetic|lipstick|mascara|eyeshadow|blush|foundation|lip gloss)\b/.test(t)) return "makeup";
+    if (/\b(skincare|serum|face cream|cleanser|toner|moisturizer)\b/.test(t)) return "skincare";
+    if (/\b(haircare|shampoo|conditioner|hair mask|hair oil)\b/.test(t)) return "haircare";
+    if (/\b(body care|body lotion|body wash|body cream)\b/.test(t)) return "bodycare";
+    if (/(beauty|cosmetic|serum|cream)/.test(t)) return "beauty";
     if (/(jewelry|jewellery|necklace|bracelet|earring|ring)/.test(t)) return "jewelry";
     if (/\b(suit|suits|tuxedo|formal jacket|formalwear|business suit|blazer set)\b/.test(t)) return "suits";
     if (/\b(underwear|briefs?|boxer briefs?|boxers?|underpants|intimates?|bra|bras)\b/.test(t)) return "underwear";
@@ -131,6 +156,7 @@
     if (/\b(poster|posters|canvas|wall art|flag|framed)\b/.test(t)) return "wallart";
     if (/\b(mug|mugs|bottle|bottles|tumbler|tumblers|cup|cups)\b/.test(t)) return "drinkware";
     if (/\b(hat|hats|cap|caps|beanie|bucket hat)\b/.test(t)) return "hats";
+    if (/\b(jeans?|denim)\b/.test(t)) return "jeans";
     if (/\b(dress|dresses|skirt|skirts)\b/.test(t)) return "dresses";
     if (/\b(hoodie|hoodies|sweatshirt|sweatshirts)\b/.test(t)) return "hoodies";
     if (/\b(jacket|jackets|windbreaker|bomber|letterman)\b/.test(t)) return "jackets";
@@ -163,9 +189,16 @@
     women:["women","woman","ladies","נשים","אופנת נשים","نساء","نسائي","mujeres","femmes"],
     men:["men","mens","גברים","אופנת גברים","رجال","رجالي","hombres","hommes"],
     perfume:["perfume","fragrance","בשמים","בושם","عطور","عطر","parfum"],
-    beauty:["beauty","skincare","makeup","יופי","טיפוח","איפור","تجميل","عناية بالبشرة","مكياج","belleza","beauté"],
+    beauty:["beauty","יופי","טיפוח","تجميل","belleza","beauté"],
+    makeup:["makeup","cosmetics","איפור","مكياج"],
+    skincare:["skincare","skin care","טיפוח עור","عناية بالبشرة"],
+    haircare:["haircare","shampoo","conditioner","טיפוח שיער","شامبو"],
+    bodycare:["body care","body lotion","טיפוח גוף","عناية بالجسم"],
     jewelry:["jewelry","jewellery","תכשיטים","שרשרת","צמיד","مجوهرات","قلادة","سوار","joyería","bijoux"],
     shoes:["shoes","sneakers","נעליים","נעל","أحذية","حذاء","zapatos","chaussures"],
+    slippers:["slippers","home shoes","נעלי בית","כפכפים","شبشب","نعال"],
+    sunglasses:["sunglasses","eyewear","משקפי שמש","نظارات شمسية"],
+    jeans:["jeans","denim","גינס","ג׳ינס","جينز"],
     bags:["bags","handbags","purse","תיקים","תיק","حقائب","حقيبة","bolsos","sacs"],
     tech:["tech","electronics","phone","טכנולוגיה","אלקטרוניקה","טלפון","تقنية","إلكترونيات","هاتف","tecnología","électronique"],
     home:["home","decor","בית","עיצוב לבית","منزل","ديكور","hogar","maison"],
@@ -262,7 +295,11 @@
     const q = String(query || "").toLowerCase();
     if (/perfume|fragrance/.test(q)) return "perfume";
     if (/jewel|necklace|bracelet|earring|ring/.test(q)) return "jewelry";
-    if (/beauty|skincare|makeup/.test(q)) return "beauty";
+    if (/\bmakeup\b|cosmetic|lipstick|mascara|eyeshadow|blush|foundation/.test(q)) return "makeup";
+    if (/skincare|skin care|serum|cleanser|toner|moisturizer/.test(q)) return "skincare";
+    if (/haircare|shampoo|conditioner|hair mask|hair oil/.test(q)) return "haircare";
+    if (/body care|body lotion|body wash|body cream/.test(q)) return "bodycare";
+    if (/beauty/.test(q)) return "beauty";
     if (/women.*(underwear|brief|bra)|(?:underwear|brief|bra).*women/.test(q)) return "womenunderwear";
     if (/men.*(underwear|brief|boxer)|(?:underwear|brief|boxer).*men/.test(q)) return "menunderwear";
     if (/(kids?|children|boys?|girls?).*(underwear|brief|boxer)|(?:underwear|brief|boxer).*(kids?|children|boys?|girls?)/.test(q)) return "kidsunderwear";
@@ -278,6 +315,12 @@
     if (/swimwear|swimsuit|bikini|swim trunks/.test(q)) return "swimwear";
     if (/\bsocks?\b/.test(q)) return "socks";
     if (/stickers?/.test(q)) return "stickers";
+    if (/cat tree|cat tower|cat scratcher|cat furniture/.test(q)) return "catfurniture";
+    if (/pet bed|dog bed|cat bed|pet house/.test(q)) return "petbeds";
+    if (/pet feeder|water fountain|pet bowl/.test(q)) return "petfeeders";
+    if (/pet grooming|grooming brush|deshedding/.test(q)) return "petgrooming";
+    if (/pet carrier|pet travel/.test(q)) return "pettravel";
+    if (/pet toy|dog toy|cat toy/.test(q)) return "pettoys";
     if (/\bpets?\b|dog|cat/.test(q)) return "pets";
     if (/ornaments?/.test(q)) return "ornaments";
     if (/stationery|notebook|journal|calendar/.test(q)) return "stationery";
@@ -287,11 +330,14 @@
     if (/wallart|wall art|poster|canvas|framed/.test(q)) return "wallart";
     if (/drinkware|mug|bottle|tumbler/.test(q)) return "drinkware";
     if (/\bhats?\b|\bcaps?\b|beanie/.test(q)) return "hats";
+    if (/jeans?|denim/.test(q)) return "jeans";
     if (/dress|skirt/.test(q)) return "dresses";
     if (/hoodie|sweatshirt/.test(q)) return "hoodies";
     if (/jacket|outerwear|windbreaker|bomber/.test(q)) return "jackets";
     if (/activewear|fitness|gym|athletic|legging|yoga|performance/.test(q)) return "activewear";
     if (/handbag|purse|crossbody|backpack|\bbag/.test(q)) return "bags";
+    if (/slipper|home shoes|fuzzy slippers/.test(q)) return "slippers";
+    if (/sunglasses|eyewear|polarized glasses/.test(q)) return "sunglasses";
     if (/shoe|sneaker|heel|slide/.test(q)) return "shoes";
     if (/hat|cap|wallet|belt|accessor|beanie/.test(q)) return "accessories";
     if (/phone accessories|phone case|screen protector|phone stand|charging cable/.test(q)) return "phoneaccessories";

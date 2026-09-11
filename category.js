@@ -6,8 +6,8 @@
   const sub = params.get("sub") || "";
   const def = H.categoryDefs[slug];
   const mainCategories = ["women","men","kids","beauty","home","kitchen","tech","sports","gifts"];
-  const curatedFashionSlugs = new Set(["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","socks","swimwear","shoes","bags","jewelry","accessories","hats"]);
-  const curatedFocusSlugs = new Set(["beauty","gaming","tech","lighting","travel","crafts","sports","drinkware","bedding","hats","socks","swimwear"]);
+  const curatedFashionSlugs = new Set(["women","men","dresses","jeans","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","socks","swimwear","shoes","slippers","bags","jewelry","accessories","sunglasses","hats"]);
+  const curatedFocusSlugs = new Set(["beauty","makeup","skincare","haircare","bodycare","gaming","tech","lighting","travel","crafts","sports","drinkware","bedding","hats","socks","swimwear","pets","petbeds","catfurniture","petfeeders","pettoys","petgrooming","pettravel"]);
   const surveyFillSlugs = new Set(["plussize","suits","bags","dresses","beauty","phoneaccessories","toys","pets"]);
   let rawResults = [];
   let resultOrder = new Map();

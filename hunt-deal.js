@@ -237,9 +237,22 @@
     gaming: ["Gaming Accessories", "gaming"],
     sports: ["Sports & Fitness", "sports"],
     outdoors: ["Outdoor & Garden", "outdoors"],
-    beauty: ["Beauty & Skincare", "beauty"],
+    beauty: ["Beauty", "beauty"],
+    makeup: ["Makeup", "makeup"],
+    skincare: ["Skincare", "skincare"],
+    haircare: ["Haircare", "haircare"],
+    bodycare: ["Body Care", "bodycare"],
     perfume: ["Perfume & Fragrance", "perfume"],
     jewelry: ["Jewelry", "jewelry"],
+    jeans: ["Jeans & Denim", "jeans"],
+    slippers: ["Slippers & Home Shoes", "slippers"],
+    sunglasses: ["Sunglasses & Eyewear", "sunglasses"],
+    petbeds: ["Pet Beds & Houses", "petbeds"],
+    catfurniture: ["Cat Trees & Furniture", "catfurniture"],
+    petfeeders: ["Feeders & Water", "petfeeders"],
+    pettoys: ["Pet Toys", "pettoys"],
+    petgrooming: ["Pet Grooming", "petgrooming"],
+    pettravel: ["Pet Travel", "pettravel"],
     kitchen: ["Kitchen", "kitchen"],
     toys: ["Toys & Play", "toys"],
     crafts: ["Arts & Crafts", "crafts"],
@@ -275,17 +288,17 @@
   };
 
   const shelfDepartments = [
-    ["Women · Clothing", ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","sets","womenunderwear","sleepwear","loungewear","plussize","petite","maternity"]],
-    ["Women · Shoes & Accessories", ["shoes","bags","jewelry","accessories","hats"]],
-    ["Beauty & Fragrance", ["beauty","perfume"]],
+    ["Women · Fashion", ["women","dresses","jeans","tops","bottoms","sets","jackets","knitwear","activewear","plussize","petite","maternity"]],
+    ["Women · Beauty", ["beauty","makeup","skincare","haircare","bodycare","perfume"]],
+    ["Women · Bags & Accessories", ["bags","jewelry","accessories","sunglasses","hats"]],
+    ["Women · Shoes & Comfort", ["shoes","slippers","womenunderwear","sleepwear","loungewear","socks","swimwear"]],
     ["Trending Deals", ["__trending"]],
-    ["Men", ["men","suits"]],
-    ["Fit, Basics & Sleep", ["womenunderwear","menunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","socks","swimwear"]],
-    ["Kids & Youth", ["kids","kidsunderwear"]],
+    ["Men", ["men","suits","jeans","menunderwear","shoes","slippers","socks"]],
+    ["Kids & Youth", ["kids","kidsunderwear","toys"]],
+    ["Pets", ["pets","petbeds","catfurniture","petfeeders","pettoys","petgrooming","pettravel"]],
     ["Home & Living", ["home","kitchen","storage","bedding"]],
     ["Tech & Gaming", ["tech","phoneaccessories","gaming","office"]],
-    ["Everyday", ["travel","toys","pets"]],
-    ["Creative & Gifts", ["crafts","party","gifts","stationery"]],
+    ["Creative & Gifts", ["crafts","party","gifts","stationery","travel"]],
   ];
 
   function shelfCard(item) {
@@ -473,8 +486,8 @@
 
   function orderedShelfDepartments() {
     const signals = window.HuntCore?.signals?.() || {};
-    const pinned = ["Women · Clothing","Women · Shoes & Accessories","Beauty & Fragrance","Trending Deals","Men","Tech & Gaming","Home & Living","Kids & Youth","Everyday"];
-    const defaultOrder = ["Fit, Basics & Sleep","Creative & Gifts"];
+    const pinned = ["Women · Fashion","Women · Beauty","Women · Bags & Accessories","Women · Shoes & Comfort","Trending Deals","Men","Kids & Youth","Pets","Home & Living","Tech & Gaming"];
+    const defaultOrder = ["Creative & Gifts"];
     const scored = shelfDepartments
       .map((entry, index) => ({entry, index, score: entry[1].reduce((sum, slug) => sum + Number(signals[slug] || 0), 0)}));
     const pinnedRows = pinned
