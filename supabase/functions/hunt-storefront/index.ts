@@ -405,6 +405,7 @@ async function cjMarketShelves() {
       .map((value: any) => Number(value))
       .filter((value: number) => Number.isFinite(value) && value > 0);
     const price = candidatePrices.length ? Math.min(...candidatePrices) : NaN;
+    const retail = cjRetailPrice(price);
     const verifiedInventory = Math.max(
       0,
       Number(raw?.totalVerifiedInventory || 0),
@@ -430,6 +431,7 @@ async function cjMarketShelves() {
         price_amount: Number.isFinite(price) && price > 0 ? price : null,
         currency: "USD",
         price_basis: "SUPPLIER_BASE",
+        ...(retail || {}),
         availability_verified: verifiedInventory > 0,
         stock_quantity: verifiedInventory,
         supplier_delivery_cycle: cleanText(raw?.deliveryCycle) || null

@@ -270,12 +270,14 @@
     office: ["Office & Desk", "office"],
     pillows: ["Pillows", "pillows"],
     ornaments: ["Ornaments", "ornaments"],
+    __trending: ["Trending Deals", "women"],
   };
 
   const shelfDepartments = [
     ["Women · Clothing", ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","sets","womenunderwear","sleepwear","loungewear","plussize","petite","maternity"]],
     ["Women · Shoes & Accessories", ["shoes","bags","jewelry","accessories","hats"]],
     ["Beauty & Fragrance", ["beauty","perfume"]],
+    ["Trending Deals", ["__trending"]],
     ["Men", ["men","suits"]],
     ["Fit, Basics & Sleep", ["womenunderwear","menunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","socks","swimwear"]],
     ["Kids & Youth", ["kids","kidsunderwear"]],
@@ -293,14 +295,21 @@
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
     const effectiveCategory = window.HuntCore?.inferCategory?.(item) || item.category || "";
-    const hasPrice = Number.isFinite(Number(item?.price_amount)) && Number(item.price_amount) > 0;
-    const basis = String(item?.price_basis || "").toUpperCase();
-    const priceLabel = basis === "MARKETPLACE_RETAIL" ? "marketplace" : (basis === "SUPPLIER_BASE" ? "supplier base" : "source");
-    const priceHtml = hasPrice
-      ? `<div class="hd-shelf-source-price"><b>${money(Number(item.price_amount),item.currency||"USD")}</b><em>${esc(priceLabel)}</em></div>`
-      : "";
+    const retailAmount = Number(item?.retail_price_amount);
+    const retailCurrency = String(item?.retail_currency || item?.currency || "USD");
+    const retailVerified = item?.retail_price_verified === true && item?.profit_gate_status === "PASS" && Number.isFinite(retailAmount) && retailAmount > 0;
+    const sourceAmount = Number(item?.price_amount);
+    const marketplaceRetail = String(item?.price_basis || "").toUpperCase() === "MARKETPLACE_RETAIL" && Number.isFinite(sourceAmount) && sourceAmount > 0;
+    const priceHtml = retailVerified
+      ? `<div class="hd-shelf-source-price"><b>${money(retailAmount,retailCurrency)}</b><em>HUNT price</em></div>`
+      : marketplaceRetail
+        ? `<div class="hd-shelf-source-price"><b>${money(sourceAmount,item.currency||"USD")}</b><em>marketplace</em></div>`
+        : "";
+    const mediaBadge = item?._boom_trending === true
+      ? `BOOM ${Math.round(Number(item._boom_score || boomDealScore(item)))} · VERIFIED`
+      : (item?.availability_verified === true ? "VERIFIED AVAILABLE" : "CATALOG DISCOVERY");
     return `<article class="hd-shelf-card" role="listitem" data-category="${esc(effectiveCategory)}">
-      <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(item?.availability_verified === true ? "VERIFIED AVAILABLE" : "CATALOG DISCOVERY")}</span></a>
+      <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(mediaBadge)}</span></a>
       <div class="hd-shelf-card-body">
         <small>${esc(item.provider || "Provider")}</small>
         <a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a>
@@ -337,9 +346,9 @@
   }
 
   function shelfDepartmentLimit() {
-    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 4;
-    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 5;
-    return 6;
+    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 5;
+    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 7;
+    return 9;
   }
 
   function shelfCategoryLimit(department) {
@@ -463,8 +472,8 @@
 
   function orderedShelfDepartments() {
     const signals = window.HuntCore?.signals?.() || {};
-    const pinned = ["Women · Clothing","Women · Shoes & Accessories","Men"];
-    const defaultOrder = ["Fit, Basics & Sleep","Beauty & Fragrance","Home & Living","Tech & Gaming","Everyday","Creative & Gifts"];
+    const pinned = ["Women · Clothing","Women · Shoes & Accessories","Beauty & Fragrance","Trending Deals","Men","Tech & Gaming","Home & Living","Kids & Youth","Everyday"];
+    const defaultOrder = ["Fit, Basics & Sleep","Creative & Gifts"];
     const scored = shelfDepartments
       .map((entry, index) => ({entry, index, score: entry[1].reduce((sum, slug) => sum + Number(signals[slug] || 0), 0)}));
     const pinnedRows = pinned
@@ -507,6 +516,7 @@
     if (hasSupplierNoise(item)) return false;
     const curatedCategory = item?.curation_source && item?.category ? String(item.category) : "";
     const inferred = curatedCategory || window.HuntCore?.inferCategory?.(item) || item?.category || "";
+    if (slug === "__trending") return item?._boom_trending === true;
     if (slug === "women") return isWomenShelfItem(item);
     if (slug === "men") return isMenShelfItem(item);
     if (department.startsWith("Women") && isMenShelfItem(item)) return false;
@@ -514,16 +524,75 @@
     return inferred === slug;
   }
 
-  function displayQualityScore(item) {
+  const boomCategoryPrior = {
+    accessories:97, bags:95, beauty:95, perfume:95,
+    women:93, dresses:93, tops:93, bottoms:93, jackets:93, knitwear:93, activewear:93, sets:93, plussize:93,
+    jewelry:92, tech:90, phoneaccessories:90, gaming:88,
+    home:88, kitchen:88, storage:88, lighting:88,
+    men:86, suits:86, shoes:84, toys:82, pets:81, kids:80
+  };
+  const boomDealTargets = [4.99,7.99,9.99,14.99,19.99];
+
+  function customerPrice(item) {
+    const retail = Number(item?.retail_price_amount);
+    if (item?.retail_price_verified === true && item?.profit_gate_status === "PASS" && Number.isFinite(retail) && retail > 0) {
+      return retail;
+    }
+    const source = Number(item?.price_amount);
+    if (String(item?.price_basis || "").toUpperCase() === "MARKETPLACE_RETAIL" && Number.isFinite(source) && source > 0) {
+      return source;
+    }
+    return null;
+  }
+
+  function boomDealScore(item) {
     const title = String(item?.title || "").trim();
-    let score = 0;
+    const category = window.HuntCore?.inferCategory?.(item) || item?.category || "";
+    const prior = Number(boomCategoryPrior[category] || 78);
+    const price = customerPrice(item);
+    const margin = Number(item?.projected_product_margin);
+    const signals = window.HuntCore?.signals?.() || {};
+    let score = prior * 0.45;
     if (typeof item?.image_url === "string" && item.image_url.startsWith("https://")) score += 8;
-    if (item?.availability_verified === true) score += 4;
-    if (Number.isFinite(Number(item?.price_amount)) && Number(item.price_amount) > 0) score += 2;
+    if (item?.availability_verified === true) score += 8;
+    if (item?.retail_price_verified === true && item?.profit_gate_status === "PASS") score += 10;
+    if (Number.isFinite(margin) && margin > 0) score += Math.min(10, margin * 14);
+    if (Number.isFinite(price) && price > 0) {
+      if (price <= 25) score += 4;
+      const nearest = Math.min(...boomDealTargets.map(target => Math.abs(price - target)));
+      if (nearest <= 1) score += 4;
+      else if (nearest <= 3) score += 2;
+    }
+    if (item?.shipping_verified === true) score += 8;
     if (Number(item?.variant_count || 0) > 0) score += 2;
     if (title.length >= 18 && title.length <= 90) score += 2;
     if (item?.brand) score += 1;
-    return score;
+    score += Math.min(8, Number(signals[category] || 0) * 0.25);
+    return Math.max(0, Math.min(100, score));
+  }
+
+  function buildTrendingShelf(shelves) {
+    const seen = new Set();
+    const rows = [];
+    for (const [slug, items] of Object.entries(shelves || {})) {
+      if (slug === "__trending" || !Array.isArray(items)) continue;
+      for (const item of items) {
+        const key = `${item?.provider || ""}:${item?.item_id || ""}`;
+        if (!item?.item_id || seen.has(key) || hasSupplierNoise(item)) continue;
+        seen.add(key);
+        const price = customerPrice(item);
+        const huntPriced = item?.retail_price_verified === true && item?.profit_gate_status === "PASS";
+        if (!huntPriced || item?.availability_verified !== true || !Number.isFinite(price) || price <= 0 || price > 25) continue;
+        if (!(typeof item?.image_url === "string" && item.image_url.startsWith("https://"))) continue;
+        const score = boomDealScore(item);
+        rows.push({...item,_boom_trending:true,_boom_score:Number(score.toFixed(1))});
+      }
+    }
+    return rows.sort((a,b)=>(b._boom_score-a._boom_score)).slice(0,80);
+  }
+
+  function displayQualityScore(item) {
+    return boomDealScore(item);
   }
 
   function selectShelfItems(items, limit, renderedKeys) {
@@ -573,6 +642,7 @@
     const counter = $("#hd-shelf-count");
     if (!root || !counter) return false;
     const shelves = data?.shelves || {};
+    shelves.__trending = buildTrendingShelf(shelves);
     const hasProducts = Object.values(shelves).some(items => Array.isArray(items) && items.length);
     if (!hasProducts) return false;
 
@@ -595,10 +665,16 @@
           try { sessionStorage.setItem("hunt_product_" + String(item.provider || "") + ":" + String(item.item_id || ""), JSON.stringify(item)); } catch {}
         }
         const cards = selected.map(shelfCard).join("");
-        const categoryHref = department.startsWith("Women") && slug !== "women"
-          ? `category.html?c=women&sub=${encodeURIComponent(slug)}`
-          : (window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`);
-        sections.push(`<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "CURATED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`);
+        const categoryHref = slug === "__trending"
+          ? "#catalog"
+          : department.startsWith("Women") && slug !== "women"
+            ? `category.html?c=women&sub=${encodeURIComponent(slug)}`
+            : (window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`);
+        const eyebrow = slug === "__trending" ? "BOOM DEAL SCORE" : (mode === "live" ? "LIVE CATEGORY" : "CURATED CATALOG");
+        const shelfCopy = slug === "__trending"
+          ? `${items.length} HUNT-priced candidates ranked by category demand, margin, stock, price appeal and media quality. Shipping is finalized after destination selection.`
+          : `${items.length} real catalog products ready to inspect.`;
+        sections.push(`<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${eyebrow}</small><h3>${esc(meta[0])}</h3><p>${esc(shelfCopy)}</p></div><a href="${esc(categoryHref)}">${slug === "__trending" ? "See catalog →" : "View all →"}</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`);
       }
       if (!sections.length) return "";
       return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections.join("")}</section>`;
