@@ -286,19 +286,22 @@ async function cjMarketShelves() {
   if (!token) return {};
 
   const products: any[] = [];
-  for (let pageNum = 1; pageNum <= 5; pageNum += 1) {
-    const url = new URL("https://developers.cjdropshipping.com/api2.0/v1/product/list");
-    url.searchParams.set("pageNum", String(pageNum));
-    url.searchParams.set("pageSize", "200");
+  for (let page = 1; page <= 1; page += 1) {
+    const url = new URL("https://developers.cjdropshipping.com/api2.0/v1/product/listV2");
+    url.searchParams.set("page", String(page));
+    url.searchParams.set("size", "100");
+    url.searchParams.set("features", "enable_category");
     const res = await fetch(url, {
       headers: {"CJ-Access-Token": token, "Accept": "application/json"}
     });
     if (!res.ok) break;
     const data = await res.json();
-const rows = Array.isArray(data?.data?.list) ? data.data.list : [];
+    const content = Array.isArray(data?.data?.content) ? data.data.content : [];
+    const rows = content.flatMap((entry: any) =>
+      Array.isArray(entry?.productList) ? entry.productList : []
+    );
     products.push(...rows);
-    if (rows.length < 200) break;
-    if (pageNum < 5) await new Promise(resolve => setTimeout(resolve, 1100));
+    if (rows.length < 100) break;
   }
 
   const definitions: Record<string, RegExp> = {
@@ -360,11 +363,23 @@ const rows = Array.isArray(data?.data?.list) ? data.data.list : [];
   };
 
   for (const raw of products) {
-    const id = cleanText(raw?.pid);
-    const title = cleanText(raw?.productNameEn);
-    const image = cleanText(raw?.productImage);
-    const categoryName = cleanText(raw?.categoryName);
-    const price = Number(raw?.sellPrice);
+    const id = cleanText(raw?.id);
+    const title = cleanText(raw?.nameEn);
+    const image = cleanText(raw?.bigImage);
+    const categoryName = [
+      cleanText(raw?.oneCategoryName),
+      cleanText(raw?.twoCategoryName),
+      cleanText(raw?.threeCategoryName)
+    ].filter(Boolean).join(" / ");
+    const candidatePrices = [raw?.nowPrice, raw?.discountPrice, raw?.sellPrice]
+      .map((value: any) => Number(value))
+      .filter((value: number) => Number.isFinite(value) && value > 0);
+    const price = candidatePrices.length ? Math.min(...candidatePrices) : NaN;
+    const verifiedInventory = Math.max(
+      0,
+      Number(raw?.totalVerifiedInventory || 0),
+      Number(raw?.warehouseInventoryNum || 0)
+    );
     if (!id || !title || !image.startsWith("https://")) continue;
     const haystack = (title + " " + categoryName).toLowerCase();
     if (!allowedTitle(haystack)) continue;
@@ -385,7 +400,9 @@ const rows = Array.isArray(data?.data?.list) ? data.data.list : [];
         price_amount: Number.isFinite(price) && price > 0 ? price : null,
         currency: "USD",
         price_basis: "SUPPLIER_BASE",
-        availability_verified: false
+        availability_verified: verifiedInventory > 0,
+        stock_quantity: verifiedInventory,
+        supplier_delivery_cycle: cleanText(raw?.deliveryCycle) || null
       });
     }
   }
