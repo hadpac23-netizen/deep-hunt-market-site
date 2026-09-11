@@ -1,5 +1,6 @@
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import matterhornSnapshot from "./matterhorn_snapshot.json" with { type: "json" };
+import surveySnapshot from "./survey_snapshot.json" with { type: "json" };
 
 const PUBLIC_KEY = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
 
@@ -820,6 +821,31 @@ function matterhornMarketShelves() {
   return out;
 }
 
+function surveyMarketShelves() {
+  const rawShelves = (surveySnapshot as any)?.shelves || {};
+  const out: Record<string, any[]> = {};
+  for (const [slug, rows] of Object.entries(rawShelves)) {
+    const items = Array.isArray(rows) ? rows : [];
+    out[String(slug)] = items
+      .filter((row: any) =>
+        row?.item_id &&
+        cleanText(row?.image_url).startsWith("https://") &&
+        row?.retail_price_verified === true &&
+        cleanText(row?.profit_gate_status) === "PASS" &&
+        row?.availability_verified === true
+      )
+      .map((row: any) => ({
+        ...row,
+        provider: cleanText(row?.provider) || "CJdropshipping",
+        category: cleanText(row?.category) || String(slug),
+        catalog_discovery: true,
+        merchant_product: true,
+        sourcing_batch: cleanText(row?.sourcing_batch) || "survey-fill"
+      }));
+  }
+  return out;
+}
+
 function mergeMarketShelves(...sources: Record<string, any[]>[]) {
   const merged: Record<string, any[]> = {};
   for (const source of sources) {
@@ -1420,7 +1446,8 @@ Deno.serve(async (req: Request) => {
       withProviderTimeout(ebayMarketShelves(focusShelf), {}, focusShelf ? 7000 : 10000)
     ]);
     const matterhornShelves = matterhornMarketShelves();
-    const mergedShelves = mergeMarketShelves(matterhornShelves, merchantShelves, printfulShelves, gootenShelves, cjShelves, ebayShelves);
+    const surveyShelves = surveyMarketShelves();
+    const mergedShelves = mergeMarketShelves(surveyShelves, matterhornShelves, merchantShelves, printfulShelves, gootenShelves, cjShelves, ebayShelves);
     const shelves = focusShelf ? { [focusShelf]: mergedShelves[focusShelf] || [] } : mergedShelves;
     const visibleEntries = Object.values(shelves).reduce(
       (sum: number, items: any) => sum + (Array.isArray(items) ? items.length : 0),
@@ -1448,6 +1475,7 @@ Deno.serve(async (req: Request) => {
         )
       ),
       source: [
+        "HUNT curated survey-fill snapshot",
         "Matterhorn official supplier feed snapshot",
         "HUNT approved merchants",
         "Printful public catalog",
