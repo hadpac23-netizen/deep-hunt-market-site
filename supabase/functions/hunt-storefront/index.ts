@@ -603,6 +603,10 @@ async function merchantProductDetail(productId:string) {
   const price=Number(data.price_amount);
   const compareAt=Number(data.compare_at_amount);
   const base=Deno.env.get("SUPABASE_URL")||"";
+  const publicBase=(Deno.env.get("HUNT_PUBLIC_URL")||"https://deep-hunt-market.netlify.app").replace(/\/$/,"");
+  const encodedProductId=encodeURIComponent(String(data.id));
+  const partnerHandoffUrl=base+"/functions/v1/hunt-go?product_id="+encodedProductId;
+  const handoffUrl=publicBase+"/checkout-handoff.html?provider=merchant&id="+encodedProductId;
   return {
     provider:"HUNT Merchant",
     item_id:String(data.id),
@@ -621,9 +625,13 @@ async function merchantProductDetail(productId:string) {
     variants:[],
     variant_count:0,
     availability_verified:data.availability_verified===true||Number(data.inventory_quantity)>0,
-    external_visit_url:base+"/functions/v1/hunt-go?product_id="+encodeURIComponent(String(data.id)),
+    external_visit_url:handoffUrl,
+    partner_handoff_url:partnerHandoffUrl,
+    checkout_handoff:true,
+    checkout_status:"PARTNER_HANDOFF",
+    checkout_disclosure:"Payment and order submission are completed by the approved partner store.",
     affiliate_disclosure:data.merchant_stores?.affiliate_network ? "HUNT may earn a commission from qualifying purchases at this partner store." : null,
-    gaps:["Checkout is completed by the partner store. HUNT tracks the outbound visit but does not process this order."]
+    gaps:["HUNT presents the product and secure handoff. Final price, shipping, taxes, returns and payment are confirmed by the partner store."]
   };
 }
 

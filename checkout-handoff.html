@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Secure HUNT DEAL checkout handoff to an approved partner store.">
+  <title>Secure checkout handoff — HUNT DEAL</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo6">
+  <link rel="stylesheet" href="hunt-shop.css?v=shelf3">
+  <meta name="theme-color" content="#111111">
+  <style>
+    .hd-handoff-shell{max-width:980px;margin:110px auto 80px;padding:0 18px}
+    .hd-handoff-card{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(280px,.8fr);gap:22px;padding:24px}
+    .hd-handoff-product{display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:start}
+    .hd-handoff-product img{width:150px;aspect-ratio:1/1;object-fit:contain;background:#fff;border-radius:18px}
+    .hd-handoff-kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.66}
+    .hd-handoff-price{font-size:28px;font-weight:800;margin:12px 0}
+    .hd-handoff-panel{padding:20px;border-radius:22px;background:rgba(255,255,255,.055)}
+    .hd-handoff-truth{font-size:13px;line-height:1.55;opacity:.76;margin:14px 0}
+    .hd-handoff-actions{display:grid;gap:10px;margin-top:18px}
+    .hd-handoff-error{padding:16px;border-radius:16px;background:rgba(255,70,70,.09);border:1px solid rgba(255,70,70,.25)}
+    @media(max-width:760px){.hd-handoff-card{grid-template-columns:1fr}.hd-handoff-product{grid-template-columns:100px 1fr}.hd-handoff-product img{width:100px}}
+  </style>
+</head>
+<body class="hd-page">
+  <div class="hd-space"></div>
+  <header class="hd-topbar">
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">SECURE CHECKOUT HANDOFF</div></div>
+    <nav class="hd-nav"><a href="./#catalog">Products</a><a href="checkout.html">Cart</a></nav>
+    <div class="hd-tools"><a class="hd-btn" href="./">Continue shopping</a></div>
+  </header>
+
+  <main class="hd-handoff-shell">
+    <section class="hd-checkout-banner glass">
+      <span class="hd-status blue">HUNT SECURE HANDOFF</span>
+      <div>
+        <h1>Checkout, without losing the HUNT experience.</h1>
+        <p>HUNT verifies the approved partner and product context here. If this partner requires its own checkout, payment and order submission happen on the partner's official site or checkout.</p>
+      </div>
+    </section>
+
+    <section class="hd-handoff-card glass" id="hd-handoff-card">
+      <div>
+        <div class="hd-handoff-kicker">ORDER ITEM</div>
+        <div id="hd-handoff-product" class="hd-handoff-product">
+          <div class="hd-checkout-thumb">◇</div>
+          <div><h2>Loading product…</h2><p>Verifying approved partner checkout route.</p></div>
+        </div>
+      </div>
+      <aside class="hd-handoff-panel">
+        <div class="hd-handoff-kicker">CHECKOUT ROUTE</div>
+        <h2 id="hd-handoff-store">Approved partner</h2>
+        <div class="hd-handoff-price" id="hd-handoff-price">—</div>
+        <p class="hd-handoff-truth" id="hd-handoff-truth">HUNT does not collect card details on this step. Final price, shipping, taxes, returns and payment are confirmed by the partner at its official checkout.</p>
+        <div class="hd-handoff-actions">
+          <button type="button" id="hd-handoff-continue" class="hd-btn hd-btn-primary" disabled>Verifying partner…</button>
+          <button type="button" id="hd-handoff-back" class="hd-btn">Back to product</button>
+        </div>
+        <p class="hd-handoff-truth" id="hd-handoff-affiliate" hidden>HUNT may earn a commission from a qualifying purchase. This does not change the price charged by the partner.</p>
+      </aside>
+    </section>
+  </main>
+
+  <script src="market-core.js?v=shelf4"></script>
+  <script src="checkout-handoff.js?v=handoff2"></script>
+</body>
+</html>
