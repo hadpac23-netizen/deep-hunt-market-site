@@ -11,8 +11,9 @@ const ALLOWED_ORIGINS = new Set([
 
 function cors(req: Request): Record<string, string> {
   const origin = req.headers.get("origin") || "";
+  const netlifyPreview = /^https:\/\/[a-z0-9-]+--deep-hunt-market\.netlify\.app$/i.test(origin);
   return {
-    "Access-Control-Allow-Origin": ALLOWED_ORIGINS.has(origin)
+    "Access-Control-Allow-Origin": (ALLOWED_ORIGINS.has(origin) || netlifyPreview)
       ? origin
       : "https://hadpac23-netizen.github.io",
     "Access-Control-Allow-Headers": "apikey, content-type",

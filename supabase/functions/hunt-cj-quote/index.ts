@@ -10,8 +10,9 @@ const json=(data:unknown,status=200,headers:Record<string,string>={})=>
   new Response(JSON.stringify(data),{status,headers:{"content-type":"application/json","cache-control":"no-store",...headers}});
 function cors(req:Request){
   const origin=req.headers.get("origin")||"";
+  const netlifyPreview=/^https:\/\/[a-z0-9-]+--deep-hunt-market\.netlify\.app$/i.test(origin);
   return {
-    "Access-Control-Allow-Origin":ALLOWED_ORIGINS.has(origin)?origin:"https://deep-hunt-market.netlify.app",
+    "Access-Control-Allow-Origin":(ALLOWED_ORIGINS.has(origin)||netlifyPreview)?origin:"https://deep-hunt-market.netlify.app",
     "Access-Control-Allow-Headers":"apikey, content-type",
     "Access-Control-Allow-Methods":"GET, OPTIONS",
     "Vary":"Origin"
