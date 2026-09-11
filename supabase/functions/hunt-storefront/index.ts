@@ -771,15 +771,24 @@ function matterhornProductDetail(productId: string) {
 
 function matterhornMarketShelves() {
   const rows = Array.isArray((matterhornSnapshot as any)?.products) ? (matterhornSnapshot as any).products : [];
-  const out: Record<string, any[]> = { womenunderwear: [], underwear: [], sleepwear: [] };
+  const out: Record<string, any[]> = {
+    womenunderwear: [],
+    menunderwear: [],
+    underwear: [],
+    socks: [],
+    sleepwear: []
+  };
   for (const row of rows) {
+    const category = cleanText(row?.category);
+    const gender = cleanText(row?.gender);
     const shelfItem = {
       provider: "Matterhorn Wholesale",
       item_id: String(row?.item_id || ""),
       title: cleanText(row?.title),
       image_url: cleanText(row?.image_url),
-      category: row?.category === "sleepwear" ? "sleepwear" : "womenunderwear",
+      category,
       subcategory: cleanText(row?.subcategory),
+      gender: gender || null,
       brand: cleanText(row?.brand) || null,
       color: cleanText(row?.color) || null,
       price_amount: Number.isFinite(Number(row?.price_amount)) ? Number(row.price_amount) : null,
@@ -796,10 +805,16 @@ function matterhornMarketShelves() {
       source_fresh_at: row?.source_fresh_at || null
     };
     if (!shelfItem.item_id || !shelfItem.image_url.startsWith("https://")) continue;
-    if (row?.category === "sleepwear") out.sleepwear.push(shelfItem);
-    else {
+    if (category === "womenunderwear") {
       out.womenunderwear.push(shelfItem);
       out.underwear.push(shelfItem);
+    } else if (category === "menunderwear") {
+      out.menunderwear.push(shelfItem);
+      out.underwear.push(shelfItem);
+    } else if (category === "socks") {
+      out.socks.push(shelfItem);
+    } else if (category === "sleepwear") {
+      out.sleepwear.push(shelfItem);
     }
   }
   return out;
