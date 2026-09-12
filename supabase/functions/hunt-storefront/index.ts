@@ -54,7 +54,7 @@ function cleanText(value: unknown): string {
 function allowedTitle(title: string): boolean {
   const lower = title.toLowerCase();
   if (BLOCKED_TERMS.some(term => lower.includes(term))) return false;
-  if (/\b(weight loss|lose weight|fat burn|burn fat|slimming|waist trainer|waist trimmer|body shaper|diet pill|laxative)\b/.test(lower)) return false;
+  if (/\b(weight[- ]?loss|lose weight|weight lose|fat burn|burn fat|fat reduction|slimming|waist trainer|waist trimmer|body shaper|body shaping|hip trainer|buttock|butt lifting|booty|diet pill|laxative)\b/.test(lower)) return false;
   if (/\b(temu\s*&\s*tk|tmeu|tk\s*only|supports?\s+pickup|self[- ]?pickup|shipment\s+from\s+walmart|logistics\s+only)\b/.test(lower)) return false;
   return true;
 }
@@ -358,22 +358,22 @@ async function cjMarketShelves(focusSlug = "") {
   if (!token) return {};
 
   const focusedQueries: Record<string, string[]> = {
-    sunglasses: ["polarized sunglasses", "UV400 sunglasses", "fashion sunglasses"],
-    yoga: ["yoga mat", "yoga accessories", "pilates accessories"],
-    swimming: ["swimming goggles", "swim cap", "swimming training"],
-    racketsports: ["tennis racket", "badminton racket", "table tennis"],
-    sportstowels: ["sports towel", "gym towel", "cooling towel"],
-    towels: ["bath towel", "beach towel", "cotton towel"],
-    fitnessequipment: ["fitness equipment", "resistance bands", "dumbbell"],
-    runningcycling: ["running accessories", "cycling accessories", "running belt"],
-    ballsports: ["basketball accessories", "football training", "volleyball accessories"],
-    swimwear: ["women swimwear", "women swimsuit", "beach cover up"],
-    sports: ["fitness", "running accessories", "sports equipment"]
+    sunglasses: ["women polarized sunglasses"],
+    yoga: ["yoga mat"],
+    swimming: ["swimming goggles"],
+    racketsports: ["tennis racket"],
+    sportstowels: ["sports towel"],
+    towels: ["bath towel"],
+    fitnessequipment: ["fitness equipment"],
+    runningcycling: ["running accessories", "cycling accessories"],
+    ballsports: ["basketball accessories", "football training"],
+    swimwear: ["women swimsuit"],
+    sports: ["fitness equipment"]
   };
   const queries = focusSlug && focusedQueries[focusSlug] ? focusedQueries[focusSlug] : [""];
   const products: any[] = [];
   const seenProducts = new Set<string>();
-  for (const keyword of queries.slice(0, 3)) {
+  for (const keyword of queries.slice(0, 2)) {
     const url = new URL("https://developers.cjdropshipping.com/api2.0/v1/product/listV2");
     url.searchParams.set("page", "1");
     url.searchParams.set("size", keyword ? "60" : "100");
@@ -473,9 +473,17 @@ async function cjMarketShelves(focusSlug = "") {
     toys: /\b(toy|toys|puzzle|plush|building block|educational game|drawing board|microscope|walkie[- ]?talkie)\b/i,
     pets: /\b(pet|pets|dog|dogs|cat|cats|puppy|kitten)\b/i
   };
+  const shelfNegativeRules: Record<string, RegExp> = {
+    sunglasses: /\b(pet|dog|cat|doll|toy|car|vehicle|visor|holder|clip|organizer|storage|protective|safety)\b/i,
+    sportstowels: /\b(pet|dog|cat|bandana)\b/i,
+    towels: /\b(pet|dog|cat|bandana)\b/i,
+    sports: /\b(tactical|survival|hunting|defense|stab[- ]?resistant|physical therapy|rehabilitation|pain relief|ems|muscle trainer|weight[- ]?loss|weight lose|fat reduction|slimming|waist trainer|body shaping|hip trainer|butt lifting|booty)\b/i,
+    fitnessequipment: /\b(tactical|survival|hunting|defense|stab[- ]?resistant|physical therapy|rehabilitation|pain relief|ems|muscle trainer|weight[- ]?loss|weight lose|fat reduction|slimming|waist trainer|body shaping|hip trainer|butt lifting|booty)\b/i
+  };
   const titleFitsShelf = (slug: string, title: string) => {
     const rule = strictTitleRules[slug];
-    return !rule || rule.test(title);
+    const negative = shelfNegativeRules[slug];
+    return (!rule || rule.test(title)) && (!negative || !negative.test(title));
   };
 
   const detectGender = (text: string) => {
