@@ -181,7 +181,7 @@ function primaryCatalogTitle(raw: any): string {
 }
 
 let cjTokenCache = { token: "", expiresAt: 0 };
-let cjShelfCache: { value: Record<string, any[]> | null; expiresAt: number } = { value: null, expiresAt: 0 };
+const cjShelfCaches = new Map<string, { value: Record<string, any[]>; expiresAt: number }>();
 
 async function cjAccessToken(): Promise<string> {
   const direct = env("CJ_ACCESS_TOKEN");
@@ -349,29 +349,51 @@ async function cjProductDetail(productId: string) {
   };
 }
 
-async function cjMarketShelves() {
-  if (cjShelfCache.value && cjShelfCache.expiresAt > Date.now()) return cjShelfCache.value;
+async function cjMarketShelves(focusSlug = "") {
+  const cacheKey = focusSlug || "*";
+  const cached = cjShelfCaches.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.value;
 
   const token = await cjAccessToken();
   if (!token) return {};
 
+  const focusedQueries: Record<string, string[]> = {
+    sunglasses: ["polarized sunglasses", "UV400 sunglasses", "fashion sunglasses"],
+    yoga: ["yoga mat", "yoga accessories", "pilates accessories"],
+    swimming: ["swimming goggles", "swim cap", "swimming training"],
+    racketsports: ["tennis racket", "badminton racket", "table tennis"],
+    sportstowels: ["sports towel", "gym towel", "cooling towel"],
+    towels: ["bath towel", "beach towel", "cotton towel"],
+    fitnessequipment: ["fitness equipment", "resistance bands", "dumbbell"],
+    runningcycling: ["running accessories", "cycling accessories", "running belt"],
+    ballsports: ["basketball accessories", "football training", "volleyball accessories"],
+    swimwear: ["women swimwear", "women swimsuit", "beach cover up"],
+    sports: ["fitness", "running accessories", "sports equipment"]
+  };
+  const queries = focusSlug && focusedQueries[focusSlug] ? focusedQueries[focusSlug] : [""];
   const products: any[] = [];
-  for (let page = 1; page <= 1; page += 1) {
+  const seenProducts = new Set<string>();
+  for (const keyword of queries.slice(0, 3)) {
     const url = new URL("https://developers.cjdropshipping.com/api2.0/v1/product/listV2");
-    url.searchParams.set("page", String(page));
-    url.searchParams.set("size", "100");
+    url.searchParams.set("page", "1");
+    url.searchParams.set("size", keyword ? "60" : "100");
+    if (keyword) url.searchParams.set("keyWord", keyword);
     url.searchParams.set("features", "enable_category");
     const res = await fetch(url, {
       headers: {"CJ-Access-Token": token, "Accept": "application/json"}
     });
-    if (!res.ok) break;
+    if (!res.ok) continue;
     const data = await res.json();
     const content = Array.isArray(data?.data?.content) ? data.data.content : [];
     const rows = content.flatMap((entry: any) =>
       Array.isArray(entry?.productList) ? entry.productList : []
     );
-    products.push(...rows);
-    if (rows.length < 100) break;
+    for (const row of rows) {
+      const pid = cleanText(row?.id);
+      if (!pid || seenProducts.has(pid)) continue;
+      seenProducts.add(pid);
+      products.push(row);
+    }
   }
 
   const definitions: Record<string, RegExp> = {
@@ -511,7 +533,7 @@ async function cjMarketShelves() {
     }
   }
 
-  cjShelfCache = { value: out, expiresAt: Date.now() + 20 * 60 * 1000 };
+  cjShelfCaches.set(cacheKey, { value: out, expiresAt: Date.now() + 20 * 60 * 1000 });
   return out;
 }
 
@@ -1460,7 +1482,7 @@ Deno.serve(async (req: Request) => {
     const [merchantShelves, printfulShelves, cjShelves, gootenShelves, ebayShelves] = await Promise.all([
       withProviderTimeout(merchantMarketShelves(), {}, 3500),
       withProviderTimeout(printfulMarketShelves(), {}, 8000),
-      withProviderTimeout(cjMarketShelves(), {}, 9000),
+      withProviderTimeout(cjMarketShelves(focusShelf), {}, focusShelf ? 9000 : 9000),
       withProviderTimeout(gootenMarketShelves(), {}, 8000),
       withProviderTimeout(ebayMarketShelves(focusShelf), {}, focusShelf ? 7000 : 10000)
     ]);
