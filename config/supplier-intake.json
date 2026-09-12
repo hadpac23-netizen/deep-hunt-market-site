@@ -25,8 +25,14 @@
         "order_api": "unknown",
         "tracking": "unknown"
       },
-      "country_rules": {"default": "check"},
-      "categories": ["general", "women", "swimwear"]
+      "country_rules": {
+        "default": "check"
+      },
+      "categories": [
+        "general",
+        "women",
+        "swimwear"
+      ]
     },
     {
       "id": "hypersku",
@@ -36,15 +42,28 @@
       "inventory_upfront_required": false,
       "subscription_required": false,
       "integration": {
-        "catalog": "unknown",
+        "catalog": "open_api_scope_to_confirm",
         "variants": "unknown",
         "live_stock_quote": "unknown",
         "shipping_quote": "unknown",
-        "order_api": "unknown",
-        "tracking": true
+        "order_api": true,
+        "tracking": true,
+        "open_api": true
       },
-      "country_rules": {"allowed": ["IL"], "default": "check"},
-      "categories": ["general", "women", "swimwear"]
+      "country_rules": {
+        "allowed": [
+          "IL"
+        ],
+        "default": "check"
+      },
+      "categories": [
+        "general",
+        "women",
+        "swimwear"
+      ],
+      "notes": [
+        "Official help center confirms Open API for unsupported/custom storefronts and no subscription fee."
+      ]
     },
     {
       "id": "fondmart",
@@ -54,15 +73,26 @@
       "inventory_upfront_required": false,
       "subscription_required": false,
       "integration": {
-        "catalog": "unknown",
+        "catalog": "product_data_package",
         "variants": "unknown",
         "live_stock_quote": "unknown",
         "shipping_quote": "unknown",
-        "order_api": "unknown",
-        "tracking": "unknown"
+        "order_api": "platform_sync_only_confirmed",
+        "tracking": "unknown",
+        "open_api": "not_publicly_confirmed"
       },
-      "country_rules": {"default": "check"},
-      "categories": ["women", "swimwear", "plussize", "dresses"]
+      "country_rules": {
+        "default": "check"
+      },
+      "categories": [
+        "women",
+        "swimwear",
+        "plussize",
+        "dresses"
+      ],
+      "notes": [
+        "Official FondMart FAQ confirms third-party stores can download a product data package; Shopify/WooCommerce support free auto-sync."
+      ]
     },
     {
       "id": "eprolo",
@@ -72,15 +102,26 @@
       "inventory_upfront_required": false,
       "subscription_required": false,
       "integration": {
-        "catalog": "unknown",
+        "catalog": "docs_required",
         "variants": "unknown",
         "live_stock_quote": "unknown",
         "shipping_quote": "unknown",
-        "order_api": "unknown",
-        "tracking": "unknown"
+        "order_api": "docs_required",
+        "tracking": "unknown",
+        "open_api": true
       },
-      "country_rules": {"default": "check"},
-      "categories": ["general", "women", "swimwear"]
+      "country_rules": {
+        "default": "check"
+      },
+      "categories": [
+        "general",
+        "women",
+        "swimwear"
+      ],
+      "api_access_process": "Create free account, then request API document from account support rep.",
+      "notes": [
+        "Official EPROLO API page says API access is free and documentation is supplied after request to support rep."
+      ]
     },
     {
       "id": "trendsi",
@@ -97,8 +138,21 @@
         "order_api": "platform_only",
         "tracking": true
       },
-      "country_rules": {"blocked": ["IL"], "default": "check"},
-      "categories": ["women", "swimwear", "dresses", "accessories"]
+      "country_rules": {
+        "blocked": [
+          "IL"
+        ],
+        "default": "check"
+      },
+      "categories": [
+        "women",
+        "swimwear",
+        "dresses",
+        "accessories"
+      ],
+      "notes": [
+        "Supplier support confirmed no CSV, integrations limited to Shopify/CommentSold/TikTok Shop, and Israel is currently unsupported."
+      ]
     }
   ]
 }
