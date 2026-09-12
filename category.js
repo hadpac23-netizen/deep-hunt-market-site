@@ -21,7 +21,10 @@
   const productKey = p => `${p.provider || ""}:${p.item_id || ""}`;
   function customerPrice(product) {
     const retail = Number(product?.retail_price_amount);
-    const retailVerified = product?.retail_price_verified === true && Number.isFinite(retail) && retail > 0;
+    const retailVerified = product?.retail_price_verified === true
+      && String(product?.profit_gate_status || "").toUpperCase() === "PASS"
+      && Number.isFinite(retail)
+      && retail > 0;
     if (retailVerified) return {amount:retail,currency:product?.retail_currency || product?.currency || "USD",label:"RETAIL PRICE",verified:true};
     const base = Number(product?.price_amount);
     const merchantRetail = String(product?.price_basis || "").toUpperCase() === "MERCHANT_RETAIL";

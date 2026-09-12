@@ -368,6 +368,16 @@ async function cjMarketShelves(focusSlug = "") {
     runningcycling: ["running accessories", "cycling accessories"],
     ballsports: ["basketball accessories", "football training"],
     swimwear: ["women swimsuit"],
+    bags: ["women handbag", "crossbody bag"],
+    jewelry: ["women necklace", "stainless steel jewelry"],
+    lighting: ["desk lamp", "office lamp"],
+    bedding: ["duvet cover", "bed sheet"],
+    loungewear: ["women lounge set", "pajama set"],
+    sets: ["women two piece set", "women clothing set"],
+    jackets: ["women jacket"],
+    knitwear: ["women sweater"],
+    shoes: ["women shoes"],
+    tech: ["laptop stand", "phone charging stand"],
     sports: ["fitness equipment"]
   };
   const queries = focusSlug && focusedQueries[focusSlug] ? focusedQueries[focusSlug] : [""];
@@ -481,6 +491,10 @@ async function cjMarketShelves(focusSlug = "") {
     swimming: /\b(swimming ring|pool stairs|swimming trunks|swim trunks|shorts|pants|boxer|toddler|baby)\b/i,
     racketsports: /\b(hair comb|hairbrush|brush|bracelet|skirt|hat|music|beauty|pet|dog|toy)\b/i,
     ballsports: /\b(pet|dog|puppy|toy|shoe|sock|clothes|shirt|jersey)\b/i,
+    lighting: /\b(car|vehicle|motorcycle|aquarium|grow light|uv steril|medical|surgical)\b/i,
+    tech: /\b(car|vehicle|motorcycle|spy|hidden camera|surveillance)\b/i,
+    jewelry: /\b(pet|dog|cat|toy|craft kit|diy kit)\b/i,
+    bags: /\b(pet|dog|cat|tool bag|trash bag|garbage|vacuum bag)\b/i,
     sports: /\b(tactical|survival|hunting|defense|stab[- ]?resistant|physical therapy|rehabilitation|pain relief|ems|muscle trainer|weight[- ]?loss|weight lose|fat reduction|slimming|waist trainer|body shaping|hip trainer|butt lifting|booty)\b/i,
     fitnessequipment: /\b(tactical|survival|hunting|defense|stab[- ]?resistant|protective vest|camping|physical therapy|rehabilitation|pain relief|ems|muscle trainer|fighting|boxing|taekwondo|sanda|weight[- ]?loss|weight lose|fat reduction|slimming|waist trainer|body shaping|hip trainer|butt lifting|booty)\b/i
   };
@@ -1496,7 +1510,9 @@ Deno.serve(async (req: Request) => {
       withProviderTimeout(printfulMarketShelves(), {}, 8000),
       withProviderTimeout(cjMarketShelves(focusShelf), {}, focusShelf ? 9000 : 9000),
       withProviderTimeout(gootenMarketShelves(), {}, 8000),
-      withProviderTimeout(ebayMarketShelves(focusShelf), {}, focusShelf ? 7000 : 10000)
+      enabled("EBAY_ORDER_API_APPROVED")
+        ? withProviderTimeout(ebayMarketShelves(focusShelf), {}, focusShelf ? 7000 : 10000)
+        : Promise.resolve({})
     ]);
     const matterhornShelves = matterhornMarketShelves();
     const surveyShelves = surveyMarketShelves();
