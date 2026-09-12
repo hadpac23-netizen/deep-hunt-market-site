@@ -22,9 +22,11 @@ const brandRisk = /\b(chanel|gucci|prada|louis vuitton|dior|ysl|saint laurent|he
 function baseUsable(item){
   const title=safeText(item?.title);
   const auth=lower(item?.authenticity_status);
+  const provider=lower(item?.provider);
   const brandOkay=!brandRisk.test(title) || ["verified","authorized"].includes(auth);
+  const onsiteFirst=provider !== "ebay";
   return Boolean(item?.item_id && item?.provider && title && httpsImage(item?.image_url) && positivePrice(item?.price_amount)
-    && !blocked.test(title) && !sexualized.test(title) && !bodyIdeal.test(title) && !supplierNoise.test(title) && brandOkay);
+    && onsiteFirst && !blocked.test(title) && !sexualized.test(title) && !bodyIdeal.test(title) && !supplierNoise.test(title) && brandOkay);
 }
 function usable(item){
   return baseUsable(item) && !kids.test(safeText(item?.title));
@@ -53,7 +55,7 @@ const tests = {
     && !/\b(coat rack|hall tree)\b/i.test(t),
   knitwear: t => !nonFashionNoise(t) && /\b(sweater|sweaters|cardigan|cardigans|pullover|knitwear|knit top|knitted top|knit sweater|knitted sweater)\b/i.test(t),
   activewear: t => !nonFashionNoise(t)
-    && /\b(sports bra|yoga (wear|set|pants|leggings|top)|gym wear|fitness wear|workout (wear|shirt|top|shorts|leggings|set|clothing)|athletic (wear|shirt|shorts)|running (shirt|shorts|leggings)|compression (shirt|pants|leggings)|training (shirt|shorts|wear)|sportswear|leggings)\b/i.test(t)
+    && /\b(sports bra|yoga (wear|set|pants|leggings|top|jacket)|gym (wear|shirt|top|shorts|pants|set)|fitness (wear|shirt|top|shorts|pants|set)|workout (wear|shirt|top|shorts|pants|leggings|set|clothing)|athletic (wear|shirt|top|shorts|pants|set)|running (shirt|top|shorts|pants|leggings|jacket)|compression (shirt|top|pants|leggings)|training (shirt|top|shorts|pants|wear|set)|track pants|tracksuit|cycling jersey|performance (shirt|top|shorts)|sportswear|leggings)\b/i.test(t)
     && !/\b(equipment|resistance bands?|exercise bands?|chair|machine|mat|strap|roller|dumbbell|weights?)\b/i.test(t),
   suits: t => !nonFashionNoise(t)
     && /\b(tuxedo|business suit|formal suit|two[- ]?piece suit|2[- ]?piece suit|three[- ]?piece suit|3[- ]?piece suit|pantsuit|pant suit|suit set|blazer.{0,30}pants)\b/i.test(t)
@@ -165,10 +167,14 @@ function score(item){
   const t=safeText(item.title);
   let s=0;
   if(item.availability_verified===true)s+=20;
+  if(item.retail_price_verified===true && String(item.profit_gate_status||"")==="PASS")s+=12;
+  if(Number(item.variant_count)>0)s+=Math.min(4,Number(item.variant_count)>=4?4:2);
+  if(Array.isArray(item.gallery) && item.gallery.length>=3)s+=3;
+  if(item.source_fresh_at)s+=2;
   if(item.provider==="Printful")s+=4;
   if(item.provider==="Gooten")s+=2;
   if(t.length>=20&&t.length<=105)s+=5;
-  if(/\b(2026|new arrival|fashion|classic|elegant|casual|premium)\b/i.test(t))s+=2;
+  if(/\b(2026|new arrival|fashion|classic|elegant|casual|premium|cotton|linen|knit|tailored|oversize|oversized)\b/i.test(t))s+=2;
   return s;
 }
 

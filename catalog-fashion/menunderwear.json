@@ -3,7 +3,7 @@
   "count": 3,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-11T07:45:52.375Z",
+  "curated_at": "2026-09-12T14:04:09.450Z",
   "products": [
     {
       "provider": "CJdropshipping",

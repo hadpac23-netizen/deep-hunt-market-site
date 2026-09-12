@@ -1,9 +1,9 @@
 {
   "slug": "men",
-  "count": 110,
+  "count": 90,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-11T07:45:52.386Z",
+  "curated_at": "2026-09-12T14:04:09.453Z",
   "products": [
     {
       "provider": "CJdropshipping",
@@ -38,135 +38,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|254864478808|554705579179",
-      "category": "tops",
-      "title": "Men Polo Shirt Plain Golf Sports Cotton Tee Jersey Casual Short Sleeve Quick Dry",
-      "image_url": "https://i.ebayimg.com/images/g/p0MAAOSwQTxgJZrz/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/p0MAAOSwQTxgJZrz/s-l960.jpg"
-      ],
-      "price_amount": 13.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "rainbowsunflowerinc",
-        "feedback_percentage": 99.4,
-        "feedback_score": 103824
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/254864478808?_skw=men+fashion+clothing&hash=item3b571b5258:g:p0MAAOSwQTxgJZrz",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|397280780606|665672990989",
-      "category": "tops",
-      "title": "Button Down Shirt Men Fashion Hawaiian European Design Party Men's Casual Top",
-      "image_url": "https://i.ebayimg.com/images/g/afgAAeSwlgtpG0e~/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/afgAAeSwlgtpG0e~/s-l1600.jpg"
-      ],
-      "price_amount": 39.59,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "companyofmcb",
-        "feedback_percentage": 99.3,
-        "feedback_score": 886
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-30T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-10-26T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/397280780606?_skw=men+fashion+clothing&hash=item5c7fc7a13e:g:afgAAeSwlgtpG0e~&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZ23ymDVYKT38A39OoeQc5U4TJ%2BnvifR7UV1nKr25ZZqoWLBJWbUCfoJNLxhDtWP4TFM6prxyhe5rLMGHvnDVBm8hMttJEoovWO2qvkYlKgdsLpg1qFaDuxJQo3i%2FsOEJURNv1XvG0vitmcwSyvSxXoa91bEVG7J2orXewU1SBBQEfXJL0Mpmx%2B%2BG%2BGW8M0rL%2BdrEY%2F%2BUJcityUgB91sWvVGnD5lCQShU4Ys0I145fiOd3%2FRC5fylvzrZHxzM1N1Xc75Ss70hdDp9SoHONLgM6%2Bx8eXB%2BM%2BUvt4j9kI60xFWQ%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|396897693759|665338053806",
-      "category": "tops",
-      "title": "Button Down Shirt Men Fashion Black and White Summer Long Sleeve Casual Shirts",
-      "image_url": "https://i.ebayimg.com/images/g/e9UAAeSwL1togmaW/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/e9UAAeSwL1togmaW/s-l1200.jpg"
-      ],
-      "price_amount": 53.35,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "companyofmcb",
-        "feedback_percentage": 99.3,
-        "feedback_score": 886
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-30T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-10-26T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/396897693759?_skw=men+fashion+clothing&hash=item5c68f2303f:g:e9UAAeSwL1togmaW&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGa6crKv32G3oTD%2FBZhaXDH1JjS764Px8XMHof9nKn2bJ5iN%2FQxJ1yNH%2BEaH1%2BjNteWl8RmB3w7ecPh9QVp3dro9NCXagdS38EKs4CBnLBvezs1Jpj1U9XhFZ44Z%2BeoM0IAcZUE2S%2BSm3tjsy7cxo41hAHCKPjEQzQbloqOY6CvWm7peLCO9D1zuXvpxIslQZkJAAyKKXUS8fO0xWNXRAOA2F51%2BoTg9I4Pxaysdn0wEdsnnY1rd4ioF5j5OJ6m4Oyvk5RscsDcCzt%2B9Co928hbvdNm8f%2FKSeppRt3S%2Bobl%2FoA%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609080534311618800",
       "title": "Elegant Long-sleeve Slim-fit Casual Mens Solid-color Shirt For Spring And Summer",
@@ -181,92 +52,6 @@
       "source_category": "men",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|396897657155|665337983857",
-      "category": "tops",
-      "title": "Button Down Shirt Men Fashion Floral Casual  Summer Short Sleeve Casual Shirts",
-      "image_url": "https://i.ebayimg.com/images/g/ancAAeSw31logmGe/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/ancAAeSw31logmGe/s-l1200.jpg"
-      ],
-      "price_amount": 45.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "companyofmcb",
-        "feedback_percentage": 99.3,
-        "feedback_score": 886
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-30T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-10-26T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/396897657155?_skw=men+fashion+clothing&hash=item5c68f1a143:g:ancAAeSw31logmGe",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|365643778435|635431483314",
-      "category": "tops",
-      "title": "3D Camouflage T-Shirt Men Clothes Outdoor Fashion Casual O Neck Short Sleeve Sum",
-      "image_url": "https://i.ebayimg.com/images/g/o~kAAOSw4AZoPU49/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/o~kAAOSw4AZoPU49/s-l1200.jpg"
-      ],
-      "price_amount": 14.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "mrfalak",
-        "feedback_percentage": 98.3,
-        "feedback_score": 2394
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-18T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-24T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/365643778435?_skw=men+fashion+clothing&hash=item5522114983:g:o~kAAOSw4AZoPU49",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -285,49 +70,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|397932273262|666238156651",
-      "category": "tops",
-      "title": "Button Down Shirt Men Fashion Luxury  Western Lion Long Sleeve Hawaiian Shirt",
-      "image_url": "https://i.ebayimg.com/images/g/R~oAAeSwjapqAHzG/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/R~oAAeSwjapqAHzG/s-l1600.jpg"
-      ],
-      "price_amount": 51.51,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "companyofmcb",
-        "feedback_percentage": 99.3,
-        "feedback_score": 886
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-30T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-10-26T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/397932273262?_skw=men+fashion+clothing&hash=item5ca69c9e6e:g:R~oAAeSwjapqAHzG&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZ7bTwBL3LvXiNMPchWXZ3MrJ%2FuZAnCtzfGZj0Q7XnaAsbgnB8GDCYASHxNFySEvSgYKieTyVfSiWOmgzBSAxGIbsKBQlc5XuWKiE19lLz2QJ4J1fkuog%2BkBT6tHh9W3XUnUOSlrUBLUYT4h8p1ZqP6Qev6AAQnVdSqfPhah01c9cvijJZgP0bizASLbqT2h9ibxPlETTURHFengESeLuw8uEACCgnulP0lpj8C9AOB1mqHnNOrxiBXf52e8CC1uKTbQ0nD6dkkT6l8ZODb7fs8iBWZ9aSYD9oc94OyoJaaZg%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609080236531612600",
       "title": "Men's New Casual Texture Waffle Long Sleeve Top",
@@ -344,50 +86,20 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|177276884416|476929484869",
+      "provider": "CJdropshipping",
+      "item_id": "2609080344441603700",
+      "title": "Mens Cotton-Linen Solid-Color Lapel Single-Breasted Short-Sleeve Shirt",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/c28231b4-4475-45a9-a07a-f194a924f791.jpg",
       "category": "tops",
-      "title": "Kawaii-Bucket-Hat Mens Graphic Tee, 100% Cotton, Casual Summer Wear",
-      "image_url": "https://i.ebayimg.com/images/g/e~EAAeSweM9p6fjp/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/e~EAAeSweM9p6fjp/s-l1600.jpg"
-      ],
-      "price_amount": 28,
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 4.92,
       "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
+      "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "authenticbrands1961",
-        "feedback_percentage": 99.3,
-        "feedback_score": 5200
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 6.99,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/177276884416?_skw=men+fashion+clothing&hash=item29468695c0:g:e~EAAeSweM9p6fjp&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZIv7xQMRbSYkUB%2BQURgYZAkqmqdE8ZJDYAZxPjwziJbzbnpphylM%2B2Vzav9qDzSZKXUWy4Cgik9ZJplhD%2B2qJAMohkvtQZlP%2FiVZG6TDrwNrzLcMoX%2FEqKYBIp0H8nYEA75dr%2Bbl1LWf5ZyNEc6TRNa0qH6zfgMDzRG8Yc8YU8DGQMe3Z%2BypInDe6TlKgUXWx6YST4huowlFJ9EkvWRM3dYiZszbei%2Fm%2BAdjB3aou7UcCfKHclQ9pt%2B21G3TyxCVgiwkZlGhl8s45USFfCPC2n6VsXGKY44HWX3%2BDCndyghg%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
       "source_category": "men",
-      "curation_source": "fashion"
+      "curation_source": "fashion",
+      "catalog_discovery": true
     },
     {
       "provider": "CJdropshipping",
@@ -423,6 +135,22 @@
     },
     {
       "provider": "CJdropshipping",
+      "item_id": "2609080144131625400",
+      "title": "Retro-style Plus-size Mens Cotton-linen Shirt",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/ae2aef97-294e-459d-8e8b-06faa173b99e.jpg",
+      "category": "tops",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 10.42,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "men",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
       "item_id": "2609080545191600300",
       "title": "Striped Classic Trendy Long-Sleeved Lapel ShirtFour-Way Stretch Men's Top",
       "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/08/06/418c4e3c-6268-4c58-bd63-0e84f458575e.jpg",
@@ -438,90 +166,20 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|397932273262|666238156662",
+      "provider": "CJdropshipping",
+      "item_id": "2609080708071624400",
+      "title": "Mens Linen Set, Summer Chinese-Style Plus-Size Cropped-Sleeve T-Shirt",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/c59545fd-aac8-499c-841c-523290bc3370.jpg",
       "category": "tops",
-      "title": "Button Down Shirt Men Fashion Luxury  Western Lion Long Sleeve Hawaiian Shirt",
-      "image_url": "https://i.ebayimg.com/images/g/R~oAAeSwjapqAHzG/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/R~oAAeSwjapqAHzG/s-l1600.jpg"
-      ],
-      "price_amount": 51.51,
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 19.1,
       "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
+      "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:06:40.307Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "companyofmcb",
-        "feedback_percentage": 99.3,
-        "feedback_score": 886
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-29T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-10-23T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/397932273262?_skw=men+fashion+clothing&hash=item5ca69c9e6e:g:R~oAAeSwjapqAHzG&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZ7bTwBL3LvXiNMPchWXZ3MrJ%2FuZAnCtzfGZj0Q7XnaAsbgnB8GDCYASHxNFySEvSgYKieTyVfSiWOmgzBSAxGIbsKBQlc5XuWKiE19lLz2QJ4J1fkuog%2BkBT6tHh9W3XUWwGvw9mfnvy75CW7dE4%2B6AyqRwzbPUSh8t80wbTkTonv9DCYucC67RX%2Fq1qrFQvZjMC82w4J4Fjtb%2BYIxo3kcIVdz0Ht%2FyElyRJ4POYD4QJaYz%2BtVrb3fPgfGTlPQ%2Fzleyk6HyydtKcs6k2cl42ha65bzh%2FBW1Sg1Q%2Fa1%2FgZZ8A%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|397203308217|665610872487",
-      "category": "tops",
-      "title": "Button Down Shirt Men Fashion European Baroque Floral Polyester Slim Fit Shirts",
-      "image_url": "https://i.ebayimg.com/images/g/x5sAAeSwc3VpAN0W/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/x5sAAeSwc3VpAN0W/s-l1200.jpg"
-      ],
-      "price_amount": 36.95,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:06:40.308Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "companyofmcb",
-        "feedback_percentage": 99.3,
-        "feedback_score": 886
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-29T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-10-23T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/397203308217?_skw=men+fashion+clothing&hash=item5c7b297eb9:g:x5sAAeSwc3VpAN0W",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
+      "source_category": "tops",
+      "curation_source": "fashion",
+      "catalog_discovery": true
     },
     {
       "provider": "CJdropshipping",
@@ -536,6 +194,22 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096995766057336834",
+      "title": "3 PCS ( M) Funny Animal Boxers, Novelty Cotton Boxer Shorts, Humorous Underwear, Gag Gifts For Men",
+      "image_url": "https://xffbbhangzhou.oss-cn-hangzhou.aliyuncs.com/product/08Y96SWVCD9Y1BTG09YHJMQF4A.png",
+      "category": "bottoms",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 2.5,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bottoms",
       "curation_source": "fashion",
       "catalog_discovery": true
     },
@@ -652,49 +326,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|363136302438|632308804932",
-      "category": "bottoms",
-      "title": "Fashion Sports Apparel Skin Tights Compression Base Men's Running Gym Shorts",
-      "image_url": "https://i.ebayimg.com/images/g/bQwAAOSwIvRfgX6K/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/bQwAAOSwIvRfgX6K/s-l960.jpg"
-      ],
-      "price_amount": 12.96,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "pingnanbead",
-        "feedback_percentage": 99.7,
-        "feedback_score": 24370
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/363136302438?_skw=men+fashion+clothing&hash=item548c9c3d66:g:bQwAAOSwIvRfgX6K",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609080808341632600",
       "title": "Casual Korean-style Fashionable Slim-fit Jacquard Mens Blazer",
@@ -805,49 +436,6 @@
       "source_category": "activewear",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|306162727001|605655157828",
-      "category": "shoes",
-      "title": "Men Fashion Sneakers Lace up Skate Shoes Classic Walking Shoes Casual Shoes US",
-      "image_url": "https://i.ebayimg.com/images/g/HRcAAOSwQxZoW7R2/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/HRcAAOSwQxZoW7R2/s-l1600.jpg"
-      ],
-      "price_amount": 26.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with box",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "brunomarc.officialstore",
-        "feedback_percentage": 99.5,
-        "feedback_score": 8691
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/306162727001?_skw=men+fashion+clothing&hash=item4748b87859:g:HRcAAOSwQxZoW7R2",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -978,314 +566,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|227223459508|526422046731",
-      "category": "tops",
-      "title": "A4 Mens Dri-Fit Workout Running Cooling Performance Crew Jogging T-Shirt - N3142",
-      "image_url": "https://i.ebayimg.com/images/g/9Q0AAOSw79Vg2wC7/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/9Q0AAOSw79Vg2wC7/s-l1200.jpg"
-      ],
-      "price_amount": 13.15,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "ustrade20",
-        "feedback_percentage": 99.7,
-        "feedback_score": 47044
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/227223459508?_skw=men+fashion+clothing&hash=item34e792d6b4:g:9Q0AAOSw79Vg2wC7",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|134251613863|433704171184",
-      "category": "tops",
-      "title": "Nike Men's Sportswear T-Shirt Active Short Sleeve Graphic Tee",
-      "image_url": "https://i.ebayimg.com/images/g/-zgAAOSwh-JjL4r~/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/-zgAAOSwh-JjL4r~/s-l960.jpg"
-      ],
-      "price_amount": 19.95,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "micoe123",
-        "feedback_percentage": 99.8,
-        "feedback_score": 11757
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-22T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/134251613863?_skw=men+fashion+clothing&hash=item1f42050ea7:g:-zgAAOSwh-JjL4r~",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|226585216841|525761954135",
-      "category": "tops",
-      "title": "Gildan Men's A-Shirt Tanks, Multipack, Style G1104, White Tank Tops",
-      "image_url": "https://i.ebayimg.com/images/g/5qEAAOSwDwlnpOJ3/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/5qEAAOSwDwlnpOJ3/s-l500.jpg"
-      ],
-      "price_amount": 19.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with imperfections",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "offpricecloseoutdeals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 12143
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/226585216841?_skw=men+fashion+clothing&hash=item34c1880749:g:5qEAAOSwDwlnpOJ3",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|145816569602|444901895942",
-      "category": "tops",
-      "title": "Nike Men's Sportswear T-Shirt Active Short Sleeve Graphic Tee",
-      "image_url": "https://i.ebayimg.com/images/g/etIAAOSwDHVmXpS9/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/etIAAOSwDHVmXpS9/s-l1600.jpg"
-      ],
-      "price_amount": 19.95,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "micoe123",
-        "feedback_percentage": 99.8,
-        "feedback_score": 11757
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/145816569602?_skw=men+fashion+clothing&hash=item21f3584702:g:etIAAOSwDHVmXpS9",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|188537960236|695968660955",
-      "category": "tops",
-      "title": "New Summer Mesh Ice Silk Short-sleeved T-shirt Men's Ice Silk Short Sleeve Shirt",
-      "image_url": "https://i.ebayimg.com/images/g/vxwAAeSw35RqNqXf/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/vxwAAeSw35RqNqXf/s-l960.jpg"
-      ],
-      "price_amount": 21,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "amee-47",
-        "feedback_percentage": 98.5,
-        "feedback_score": 587
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/188537960236?_skw=men+fashion+clothing&hash=item2be5bcf72c:g:vxwAAeSw35RqNqXf",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|176228709163|475682653898",
-      "category": "tops",
-      "title": "Mens 100% Soft Linen Guayabera Shirt for Men- Red Traditional 4-Pocket - MLS401",
-      "image_url": "https://i.ebayimg.com/images/g/TcwAAeSwwapqGeFA/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/TcwAAeSwwapqGeFA/s-l1600.jpg"
-      ],
-      "price_amount": 72.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "casualtropicalwear",
-        "feedback_percentage": 99.5,
-        "feedback_score": 2741
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 7.75,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/176228709163?_skw=men+fashion+clothing&hash=item29080cb32b:g:TcwAAeSwwapqGeFA&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGaMd4sCdWJ%2FQOO8yX3sqvQMbVYvaqnyB66%2Buo9dLRfzGDTPn2D28a4%2FjFQPsTCBfRtBEa73sQAVGUAEJo2P8udNMhowO9%2FYDcnQv%2FJvRihFELjr%2B2sarPf%2Bg588UGvrxlj4uqWDnkhrj65yLh8%2B7ON9G%2BRkVnF0g7GakWJGwiozFN65%2FRSzB116l%2FkIGx3%2FPyV9OQN%2BHUVExxEGWQIy5Xa1exPcnWXe2czqqQrNsIHK%2BWtnt8kzHRCwJbCjDU8II45bSa9KbVQcj%2FMZR9ExYHE3RGOy0xRmADhK9qNV2DcSbw%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|377464228794|0",
-      "category": "tops",
-      "title": "Cuts Clothing Elongated Henley T-Shirt Men's Sze M Stratus Pyca Pro Gray",
-      "image_url": "https://i.ebayimg.com/images/g/amQAAeSwflRqbuRm/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/amQAAeSwflRqbuRm/s-l1600.jpg"
-      ],
-      "price_amount": 19.48,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "drippedgallo",
-        "feedback_percentage": 100,
-        "feedback_score": 811
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 7.2,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/377464228794?_skw=men+fashion+clothing&hash=item57e29f0bba:g:amQAAeSwflRqbuRm",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609090703311606000",
       "title": "Men's Color-Block Long-Sleeved Button-Up Top",
@@ -1300,53 +580,6 @@
       "source_category": "men",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|377295855697|0",
-      "category": "tops",
-      "title": "Cuts Clothing Elongated Henley T-Shirt Men's M Black Pyca Pro",
-      "image_url": "https://i.ebayimg.com/images/g/zokAAeSw9AZqPZss/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/zokAAeSw9AZqPZss/s-l1600.jpg"
-      ],
-      "price_amount": 20,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.414Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "drippedgallo",
-        "feedback_percentage": 100,
-        "feedback_score": 811
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 7.2,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/377295855697?_skw=men+fashion+clothing&hash=item57d895e051:g:zokAAeSw9AZqPZss",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1414,22 +647,6 @@
     },
     {
       "provider": "CJdropshipping",
-      "item_id": "2609080344441603700",
-      "title": "Mens Cotton-Linen Solid-Color Lapel Single-Breasted Short-Sleeve Shirt",
-      "image_url": "https://cf.cjdropshipping.com/quick/product/c28231b4-4475-45a9-a07a-f194a924f791.jpg",
-      "category": "tops",
-      "gender": "men",
-      "merchant_product": true,
-      "price_amount": 4.92,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "men",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
       "item_id": "2609080400351627500",
       "title": "Mens Retro-Style Long-Sleeve Sun-Protective Shirt",
       "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/08/03/94aa840a-c6cb-4598-aac5-c8e427fa7493.jpg",
@@ -1441,85 +658,6 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "men",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2609080144131625400",
-      "title": "Retro-style Plus-size Mens Cotton-linen Shirt",
-      "image_url": "https://cf.cjdropshipping.com/quick/product/ae2aef97-294e-459d-8e8b-06faa173b99e.jpg",
-      "category": "tops",
-      "gender": "men",
-      "merchant_product": true,
-      "price_amount": 10.42,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "men",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|137080558568|0",
-      "category": "tops",
-      "title": "Men's Police Blue Military Style Genuine Leather Shirt Police Uniform Lambskin",
-      "image_url": "https://i.ebayimg.com/images/g/y8MAAeSwu3dpouA6/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/y8MAAeSwu3dpouA6/s-l960.jpg"
-      ],
-      "price_amount": 165,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:06:40.308Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "abubshe_90",
-        "feedback_percentage": 100,
-        "feedback_score": 18
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 25,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-19T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/137080558568?_skw=men+fashion+clothing&hash=item1feaa353e8:g:y8MAAeSwu3dpouA6&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGa0v5R%2B6dCi9Y23rPZiYmdfl4pcyB59a7bnO88jNVJcPXrRxbxfRdGChYk3rBmvIXAKxeiSYUA78i4Oao6ED%2FP5QxEoXE8rp%2FdOIB0THqc9R2yC5qDfGKMq1%2F7085gSg1bag2dOemhaqHSpj7jxVpSbL7pXrYtLFLUsOcRnoGeRRbop9%2FhYbQq06c1sgCVl6im1hiPREChMoJnjCzxbT46ex4CaPrrRO75epvVYrUvIF40fqKjE3JzYmtQKjbjGcROvthiXqk0D3Kx01ZX8NB%2BvdUm91rt5QBZYBOY%2FAe8N8A%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "men",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2609080708071624400",
-      "title": "Mens Linen Set, Summer Chinese-Style Plus-Size Cropped-Sleeve T-Shirt",
-      "image_url": "https://cf.cjdropshipping.com/quick/product/c59545fd-aac8-499c-841c-523290bc3370.jpg",
-      "category": "tops",
-      "gender": "general",
-      "merchant_product": true,
-      "price_amount": 19.1,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "tops",
       "curation_source": "fashion",
       "catalog_discovery": true
     },
@@ -1568,22 +706,6 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "tops",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2096995766057336834",
-      "title": "3 PCS ( M) Funny Animal Boxers, Novelty Cotton Boxer Shorts, Humorous Underwear, Gag Gifts For Men",
-      "image_url": "https://xffbbhangzhou.oss-cn-hangzhou.aliyuncs.com/product/08Y96SWVCD9Y1BTG09YHJMQF4A.png",
-      "category": "bottoms",
-      "gender": "general",
-      "merchant_product": true,
-      "price_amount": 2.5,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "bottoms",
       "curation_source": "fashion",
       "catalog_discovery": true
     },

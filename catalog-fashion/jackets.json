@@ -1,9 +1,9 @@
 {
   "slug": "jackets",
-  "count": 157,
+  "count": 120,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-11T07:45:52.356Z",
+  "curated_at": "2026-09-12T14:04:09.444Z",
   "products": [
     {
       "provider": "Gooten",
@@ -69,6 +69,22 @@
     },
     {
       "provider": "CJdropshipping",
+      "item_id": "2609090538461620500",
+      "title": "Womens Cotton-lined Cozy Home Wear Cotton Jacket",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/f49ca97f-7c95-4ba7-80a6-89f18443fcd4.jpg",
+      "category": "jackets",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 7.81,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "home",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
       "item_id": "2096864034251780097",
       "title": "Anuo New Arrival Fashion Casual Velvet Blazer Loose Top Set",
       "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/756b0f9d-ba9d-4724-a7ee-905552bd33fc.jpg",
@@ -82,49 +98,6 @@
       "source_category": "jackets",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|167025330672|466743655405",
-      "category": "jackets",
-      "title": "Women 100% Real Suede Leather Brown Cropped Jacket Short Casual Coat Blouson Top",
-      "image_url": "https://i.ebayimg.com/images/g/KH4AAeSwkN9qZGwU/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/KH4AAeSwkN9qZGwU/s-l1600.jpg"
-      ],
-      "price_amount": 157.5,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "leatherworld2015",
-        "feedback_percentage": 99,
-        "feedback_score": 2855
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-23T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-30T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/167025330672?_skw=women+suede+jacket&hash=item26e37c49f0:g:KH4AAeSwkN9qZGwU&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZymfQakN%2Fen8UEIufIBG1aeo0Wa3Bch0BUyL1vxgmyLY%2Bkh7MTKtMjQpFfynaJGvhINntyFKBjUJJReGXlr26dF8h%2BbZCsZB246%2FGavkj%2BbR0ViBIwZu8boZdK6p8%2FbIg%2BRK2%2FGiNfPBtG3sF9ukFYz7QPM0gOihU9Wjzti0EItz6JwAZoZNog5RQbxxlJmnwyNOg5rN11ZStMp4b8byleD67NIftJI4NSR6yQKv4UaX6uQf39bhezQumeum77GP%2B1YPk9aEqCd1yOoZdGLL8GpqIcuGKLkp4fn4%2FVnO1CKQ%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -191,49 +164,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|187954747155|696014008362",
-      "category": "jackets",
-      "title": "Women's Suede Fashion Jacket - Universal",
-      "image_url": "https://i.ebayimg.com/images/g/CbsAAeSwu3NpaLQO/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/CbsAAeSwu3NpaLQO/s-l1200.jpg"
-      ],
-      "price_amount": 19.54,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481436
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/187954747155?_skw=women+suede+jacket&hash=item2bc2f9d713:g:CbsAAeSwu3NpaLQO",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2097578885836632065",
       "title": "Classic Light Wash Relaxed Denim Jacket",
@@ -250,133 +180,20 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|177851978450|477712637515",
+      "provider": "CJdropshipping",
+      "item_id": "2609090652481611100",
+      "title": "Dark Brown Crew-neck Long-sleeve Cotton Jacket",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/09/06/9c3e02e2-ce76-45df-ab1d-5407cc53cfeb_fine.jpeg",
       "category": "jackets",
-      "title": "Universal Thread Women's Western Fringe Faux Suede Fashion Jacket Long Sleeve",
-      "image_url": "https://i.ebayimg.com/images/g/R-sAAeSwgqhqkAml/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/R-sAAeSwgqhqkAml/s-l1200.jpg"
-      ],
-      "price_amount": 22.99,
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 12.15,
       "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
+      "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481436
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/177851978450?_skw=women+suede+jacket&hash=item2968cdd2d2:g:R-sAAeSwgqhqkAml",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
       "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|187948425378|696014031547",
-      "category": "jackets",
-      "title": "Women's Faux Suede Button-Up Fashion Jacket - Universal",
-      "image_url": "https://i.ebayimg.com/images/g/i94AAeSwYspqh~au/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/i94AAeSwYspqh~au/s-l1200.jpg"
-      ],
-      "price_amount": 18.65,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481436
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/187948425378?_skw=women+suede+jacket&hash=item2bc29960a2:g:i94AAeSwYspqh~au",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|188287302129|695851103266",
-      "category": "jackets",
-      "title": "Women’s Genuine Suede Leather Jacket  Zip-Up Bomber Style Casual Outerwear Coat",
-      "image_url": "https://i.ebayimg.com/images/g/fCgAAeSwcM9p4iVZ/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/fCgAAeSwcM9p4iVZ/s-l1600.jpg"
-      ],
-      "price_amount": 149,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "leather_artistry",
-        "feedback_percentage": 100,
-        "feedback_score": 27
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-19T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-26T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/188287302129?_skw=women+suede+jacket&hash=item2bd6cc39f1:g:fCgAAeSwcM9p4iVZ&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGYkSm71ZiN3jaf7msbH%2BF%2BeZd6wBU9bU7Ux4p9a%2F%2BjPKT6lCKgkLwfQw5QF7%2FafpbDA1ydcqOsCaloIT3H4SQGYJFcFIVA%2F6BzMbzf%2BGr69juEuDwGkO0a6S%2BOv%2BvY9akCdH5iV%2FiHRtLMGiBM3OPUUX43nQnptIvWT0miT8aA%2BqmSnVz%2F2JP5nP1wVrOmlE0iC%2B07kEGZlBwLzSyAz%2FIBrVtLcISyPR4ianoYxsJ94EH14JuANyRsZZBHkl4iJ16TWUwHGlrcg9E749MBvBkB6%2B505k9ceKar2v1vLKW4H8w%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
+      "curation_source": "fashion",
+      "catalog_discovery": true
     },
     {
       "provider": "CJdropshipping",
@@ -387,6 +204,22 @@
       "gender": "general",
       "merchant_product": true,
       "price_amount": 14.24,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "jackets",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097252574381314050",
+      "title": "Floral Print Oversized Denim Jacket",
+      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/8b846336-7780-4478-8ae2-8bae241d9507.jpg",
+      "category": "jackets",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 9.69,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
@@ -427,94 +260,36 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|366656985298|0",
+      "provider": "CJdropshipping",
+      "item_id": "2609080314131600700",
+      "title": "New Chinese Style Mock Two Piece Tailored Mountain Breeze Jacket",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/08/03/486bcf8f-0081-4363-97a2-0b5f0d649b6b.jpg",
       "category": "jackets",
-      "title": "Anne Klein Classic Off-White Collarless Peplum Suit Jacket Blazer Size 2",
-      "image_url": "https://i.ebayimg.com/images/g/6egAAeSwaVxqoIKb/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/6egAAeSwaVxqoIKb/s-l1600.jpg"
-      ],
-      "price_amount": 28.99,
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 58.68,
       "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
+      "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "dancerb19",
-        "feedback_percentage": 100,
-        "feedback_score": 1
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/366656985298?_skw=women+peplum+jacket&hash=item555e7598d2:g:6egAAeSwaVxqoIKb",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
       "source_category": "jackets",
-      "curation_source": "fashion"
+      "curation_source": "fashion",
+      "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|206490842540|507178602131",
+      "provider": "CJdropshipping",
+      "item_id": "2609080111141631700",
+      "title": "Stylish Western-style Winter Cotton-padded Coat With A Thick Outer Layer",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/a4aea25b-b8e0-4616-9399-c26c7f50d715.jpg",
       "category": "jackets",
-      "title": "Women's Denim Jacket Ruffle Hem Button Down Jean Jacket Casual Peplum",
-      "image_url": "https://i.ebayimg.com/images/g/3cEAAeSwd3dqfyjM/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/3cEAAeSwd3dqfyjM/s-l960.jpg"
-      ],
-      "price_amount": 34.99,
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 8.68,
       "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
+      "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "brianasmom",
-        "feedback_percentage": 100,
-        "feedback_score": 1650
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 2.28,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-18T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-22T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206490842540?_skw=women+peplum+jacket&hash=item3013d035ac:g:3cEAAeSwd3dqfyjM",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
       "source_category": "jackets",
-      "curation_source": "fashion"
+      "curation_source": "fashion",
+      "catalog_discovery": true
     },
     {
       "provider": "CJdropshipping",
@@ -525,6 +300,22 @@
       "gender": "general",
       "merchant_product": true,
       "price_amount": 10.57,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "jackets",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096900890463137794",
+      "title": "Women Niche-Design Cropped Knit Cardigan New Autumn-Winter Stand-Collar Double-Zipper Sweater Coat",
+      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/191f1a8e-93a7-4fb1-92a3-e11e8eabd1e1.jpg",
+      "category": "jackets",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 9.44,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
@@ -589,6 +380,38 @@
       "gender": "general",
       "merchant_product": true,
       "price_amount": 12.15,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "jackets",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609080939511612400",
+      "title": "Womens Lightweight Warm Cotton-padded Hooded Coat For Fall And Winter",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/08/09/53414bfe-6c4a-431f-adbb-ec8b7ecb1925.jpg",
+      "category": "jackets",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 7.99,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "jackets",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609070918201616700",
+      "title": "Womens Mid-Length Padded Cotton Coat With Hood And Fleece Lining Warm Outerwear",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/7b5b96dd-512f-47ff-b987-0ea30be74532.jpg",
+      "category": "jackets",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 10.42,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
@@ -822,22 +645,6 @@
     },
     {
       "provider": "CJdropshipping",
-      "item_id": "2609090538461620500",
-      "title": "Womens Cotton-lined Cozy Home Wear Cotton Jacket",
-      "image_url": "https://cf.cjdropshipping.com/quick/product/f49ca97f-7c95-4ba7-80a6-89f18443fcd4.jpg",
-      "category": "jackets",
-      "gender": "general",
-      "merchant_product": true,
-      "price_amount": 7.81,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "home",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
       "item_id": "2609090651401621101",
       "title": "Velvet Leopard-print Hooded Sweatshirt Jacket",
       "image_url": "https://cf.cjdropshipping.com/quick/product/89a5042c-9d3f-49f3-86c1-02c16dadbbce.jpg",
@@ -869,50 +676,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|820111246902|0",
-      "category": "jackets",
-      "title": "Red Out Brook Vintage Suede Leather Jacket Women's Large NWT Full Zip",
-      "image_url": "https://i.ebayimg.com/images/g/e1oAAeSwz3JqoZ2p/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/e1oAAeSwz3JqoZ2p/s-l1600.jpg"
-      ],
-      "price_amount": 35,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "usedbooknook",
-        "feedback_percentage": 100,
-        "feedback_score": 2
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/820111246902?_skw=women+suede+jacket&hash=itembef2708636:g:e1oAAeSwz3JqoZ2p",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2097257489774252033",
       "title": "Acid-Wash Hooded Denim Bomber Jacket",
@@ -927,49 +690,6 @@
       "source_category": "jackets",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|394576271567|663124137356",
-      "category": "jackets",
-      "title": "Women's Chic Cropped Tassel Fringe Faux Suede Moto Jacket - Chartou",
-      "image_url": "https://i.ebayimg.com/images/g/WXIAAOSw2kZkP2TT/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/WXIAAOSw2kZkP2TT/s-l500.jpg"
-      ],
-      "price_amount": 37.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "johnnybay-001",
-        "feedback_percentage": 100,
-        "feedback_score": 1026
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/394576271567?_skw=women+suede+jacket&hash=item5bde9418cf:g:WXIAAOSw2kZkP2TT&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZu1tWhuCmT%2BwLVWkLxsPjv6GBZ9dCnODiiG9QUwKEi0Sjq1p9ZYnWydkLnTs9%2FywSM5LViG4ACMyEr1G7XrmUQZtxGhAw11t%2F5vohgJlTP%2BSOq3uvDtSVYI3kvJq5aScqLlvGcCaIeCXM%2B8PuYKevEZ7WKNf9%2F0NRUKlUuYY1kbQUVm7URrzdVxTHDBHpo87NvnPHkNP2GCd8RgBkuC9ZymTE6QHs8opxkYt38lepvBEA6DgsfmhDLsxGoizqLCbNO3AMu%2Bk1XgvpLaHQDvUXyKtI9uG1XtiU1TBCagff3MA%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -988,86 +708,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|800642022508|0",
-      "category": "jackets",
-      "title": "NWT Shinestar faux-suede jacket women's medium",
-      "image_url": "https://i.ebayimg.com/images/g/ickAAeSwWN5qot03/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/ickAAeSwWN5qot03/s-l1600.jpg"
-      ],
-      "price_amount": 29.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "bjs547",
-        "feedback_percentage": 100,
-        "feedback_score": 13
-      },
-      "shipping_options": [],
-      "source_url": "https://www.ebay.com/itm/800642022508?_skw=women+suede+jacket&hash=itemba69fbbc6c:g:ickAAeSwWN5qot03",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|206548349129|507267613910",
-      "category": "jackets",
-      "title": "Women’s Genuine Suede Leather Black Moto Biker Jacket Cream Zip Pockets Belted",
-      "image_url": "https://i.ebayimg.com/images/g/OBYAAeSwE01qoqPB/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/OBYAAeSwE01qoqPB/s-l1200.jpg"
-      ],
-      "price_amount": 139.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "vintageleatherapparel",
-        "feedback_percentage": 100,
-        "feedback_score": 1
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-18T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-29T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206548349129?_skw=women+suede+jacket&hash=item30173db0c9:g:OBYAAeSwE01qoqPB",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609080545571607900",
       "title": "Childrens Lightweight Hooded Sun-protective Jacket",
@@ -1084,49 +724,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|187571660834|696014000060",
-      "category": "jackets",
-      "title": "A New Day Women's Faux Suede Trench Jacket Long Sleeve Side Pockets",
-      "image_url": "https://i.ebayimg.com/images/g/-q0AAeSwlyZqjxkB/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/-q0AAeSwlyZqjxkB/s-l1200.jpg"
-      ],
-      "price_amount": 24.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481436
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/187571660834?_skw=women+suede+jacket&hash=item2bac246822:g:-q0AAeSwlyZqjxkB",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2097597491073822722",
       "title": "College Style Retro High-end Knitted Cardigan Women's Autumn New Niche Design Love Button Sweater Jacket",
@@ -1141,49 +738,6 @@
       "source_category": "jackets",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|206548356768|507267595530",
-      "category": "jackets",
-      "title": "Women’s Genuine Suede Leather Red Biker Jacket Zip Pockets Belted",
-      "image_url": "https://i.ebayimg.com/images/g/MW0AAeSwJARqoqm0/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/MW0AAeSwJARqoqm0/s-l1200.jpg"
-      ],
-      "price_amount": 139.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "vintageleatherapparel",
-        "feedback_percentage": 100,
-        "feedback_score": 1
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-18T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-29T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206548356768?_skw=women+suede+jacket&hash=item30173dcea0:g:MW0AAeSwJARqoqm0",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1218,49 +772,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|287578633341|0",
-      "category": "jackets",
-      "title": "Mother the roamer suede jacket new with tags",
-      "image_url": "https://i.ebayimg.com/images/g/-r0AAeSwzaRqovY~/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/-r0AAeSwzaRqovY~/s-l1600.jpg"
-      ],
-      "price_amount": 149,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "thecuratedclosetcda",
-        "feedback_percentage": 100,
-        "feedback_score": 16
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/287578633341?_skw=women+suede+jacket&hash=item42f505b47d:g:-r0AAeSwzaRqovY~",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609070739591627700",
       "title": "Cropped Lapel Zip-up Jacket Long-sleeved Small-check Coat For Women",
@@ -1269,113 +780,6 @@
       "gender": "women",
       "merchant_product": true,
       "price_amount": 7.47,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "jackets",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|407206753912|0",
-      "category": "jackets",
-      "title": "R&K Originals Black Houndstooth Suede Jacket Blazer Size 8 Vintage",
-      "image_url": "https://i.ebayimg.com/images/g/AtkAAeSw9tNqop12/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/AtkAAeSw9tNqop12/s-l1600.jpg"
-      ],
-      "price_amount": 42,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with imperfections",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "2ndhand2ndheart",
-        "feedback_percentage": 100,
-        "feedback_score": 5
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/407206753912?_skw=women+suede+jacket&hash=item5ecf69f678:g:AtkAAeSw9tNqop12",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|128070967180|0",
-      "category": "jackets",
-      "title": "Coldwater Creek Jacket Size M 10-12 Ivory Faux Suede Sherpa Lined Soft Coat NWOT",
-      "image_url": "https://i.ebayimg.com/images/g/28kAAeSw9P9qoaaX/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/28kAAeSw9P9qoaaX/s-l1600.jpg"
-      ],
-      "price_amount": 39.88,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "vrod77578",
-        "feedback_percentage": 99.6,
-        "feedback_score": 2005
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 9,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/128070967180?_skw=women+suede+jacket&hash=item1dd19fdf8c:g:28kAAeSw9P9qoaaX&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGb4M3gkkMN2Kifh58KdT5JnXpnyZji2GK3Swfnl6iVa2LA0EDLAJ9rktBXGYjVvcd8hFt2o8JchP--YA5r0yKnbopr5nd3Iycol0LyCU3HBycHMs8SOeiIUom99mehlCiU1ViE8rcDxNY3WFMVjk%2FxbR10BnsG3vl%2FJ5mAw7iIsxDX2ICEVQGOf4sbeKyuh%2FNA8qxClfYPT2GFb4sZ4Gnb2vrg%2BT4PBh5UrFuOAmKbDsMQNzOBkhWiRnOlzIqMNN5mfDTAjHCuIMBa27ohB9Uc7CZui79ba21nTJxjyDGQ4vg%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2609090652481611100",
-      "title": "Dark Brown Crew-neck Long-sleeve Cotton Jacket",
-      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/09/06/9c3e02e2-ce76-45df-ab1d-5407cc53cfeb_fine.jpeg",
-      "category": "jackets",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 12.15,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
@@ -1400,49 +804,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|177816120321|477699975046",
-      "category": "jackets",
-      "title": "Women's Faux Suede Peplum Hem Jacket - A New Day",
-      "image_url": "https://i.ebayimg.com/images/g/TzcAAeSwwTlqh~VS/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/TzcAAeSwwTlqh~VS/s-l1200.jpg"
-      ],
-      "price_amount": 20.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481436
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/177816120321?_skw=women+suede+jacket&hash=item2966aaac01:g:TzcAAeSwwTlqh~VS",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609090248521638500",
       "title": "Double-zip Long-sleeve Knitted Cardigan Sweater Coat",
@@ -1457,142 +818,6 @@
       "source_category": "jackets",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|366555079470|636254443861",
-      "category": "jackets",
-      "title": "Women Western Cowgirl Suede Fringe Jacket Native American Fringe Leather Jacket",
-      "image_url": "https://i.ebayimg.com/images/g/WNEAAeSwrndqXqa2/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/WNEAAeSwrndqXqa2/s-l1600.jpg"
-      ],
-      "price_amount": 109.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "pretletinternationalllc",
-        "feedback_percentage": 98.4,
-        "feedback_score": 91
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 19.99,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/366555079470?_skw=women+suede+jacket&hash=item555862a32e:g:WNEAAeSwrndqXqa2",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|168678648560|0",
-      "category": "jackets",
-      "title": "Reformation Veda Lincoln Suede Jacket Oat Distressed Leather XS NWT",
-      "image_url": "https://i.ebayimg.com/images/g/v0gAAeSwr9dqALj1/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/v0gAAeSwr9dqALj1/s-l1200.jpg"
-      ],
-      "price_amount": 400,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "elizabeths_style",
-        "feedback_percentage": 100,
-        "feedback_score": 21
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/168678648560?_skw=women+suede+jacket&hash=item274607eaf0:g:v0gAAeSwr9dqALj1",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|257494219487|558140397624",
-      "category": "jackets",
-      "title": "Yasmin Suede Jacket Cognac   THE NOLI SHOP",
-      "image_url": "https://i.ebayimg.com/images/g/NkIAAeSwmBVpj2cT/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/NkIAAeSwmBVpj2cT/s-l1600.jpg"
-      ],
-      "price_amount": 36.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "yoga_4_you",
-        "feedback_percentage": 99.5,
-        "feedback_score": 2990
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 9.99,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/257494219487?_skw=women+suede+jacket&hash=item3bf3d9fadf:g:NkIAAeSwmBVpj2cT",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1628,113 +853,6 @@
     },
     {
       "provider": "CJdropshipping",
-      "item_id": "2097252574381314050",
-      "title": "Floral Print Oversized Denim Jacket",
-      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/8b846336-7780-4478-8ae2-8bae241d9507.jpg",
-      "category": "jackets",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 9.69,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "jackets",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|800641425097|0",
-      "category": "jackets",
-      "title": "Free people we the free Rosie suede jacket size M new with tags",
-      "image_url": "https://i.ebayimg.com/images/g/PRkAAeSw7BNqorc8/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/PRkAAeSw7BNqorc8/s-l1600.jpg"
-      ],
-      "price_amount": 350,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "sorho17",
-        "feedback_percentage": 100,
-        "feedback_score": 15
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/800641425097?_skw=women+suede+jacket&hash=itemba69f29ec9:g:PRkAAeSw7BNqorc8",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|237057200683|0",
-      "category": "jackets",
-      "title": "Linea by Louis Dell'Olio Womens Suede Leather Jacket Sz XL Button Up Pockets NWT",
-      "image_url": "https://i.ebayimg.com/images/g/ti4AAOSwr79oNEvm/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/ti4AAOSwr79oNEvm/s-l1600.jpg"
-      ],
-      "price_amount": 36.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.039Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "retireandresell",
-        "feedback_percentage": 99.9,
-        "feedback_score": 15750
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 12.95,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/237057200683?_skw=women+suede+jacket&hash=item3731b5d22b:g:ti4AAOSwr79oNEvm&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGbnqPCJbJf2BSUHpfXIpiO5xfU6vAgJdheVs4LZQAdh%2FLZwQejH8Mwzr1%2Fp3R3o6G18REtZTBUhHj1%2FIr8h2yAPjPnLMn5El4YJgJrtM%2B%2BfD9A1lDGiQw60IzZSS3wMKDz%2FklAo10albtGXmIQne2HIOYS9G2W0ovlRor4iLdp68s0%2FsLtDzPdG0lV3N%2B%2BDyrDIaU28iBAFgQMnWRAuntawnzEH4p6bgp%2B8Aswbz%2BPpCcdRiIsCFgRk5ZCLRwwGYDbsLpfjggsuBqKH2fc353l%2F2bwqhuYFO5Y3inh86CP1yw%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "CJdropshipping",
       "item_id": "2609090933581608400",
       "title": "Japanese-style Quilted Warm Mens Mid-length Trench Coat",
       "image_url": "https://cf.cjdropshipping.com/quick/product/974050ab-41c7-4795-86e7-9737b74a120b.jpg",
@@ -1764,49 +882,6 @@
       "source_category": "jackets",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|188137703971|696020561329",
-      "category": "jackets",
-      "title": "Women's Woven Peplum Jacket - All In Motion",
-      "image_url": "https://i.ebayimg.com/images/g/NzIAAeSwsDVqj-Dm/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/NzIAAeSwsDVqj-Dm/s-l1200.jpg"
-      ],
-      "price_amount": 15.29,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481436
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/188137703971?_skw=women+peplum+jacket&hash=item2bcde18a23:g:NzIAAeSwsDVqj-Dm",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1839,50 +914,6 @@
       "source_category": "jackets",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|407125479048|0",
-      "category": "jackets",
-      "title": "Scripted Fatigue Peplum Jacket Women’s Size M ($295 Retail) NWT",
-      "image_url": "https://i.ebayimg.com/images/g/TpQAAeSwwhdqdOo0/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/TpQAAeSwwhdqdOo0/s-l1600.jpg"
-      ],
-      "price_amount": 68,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "rodima-48",
-        "feedback_percentage": 100,
-        "feedback_score": 48
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/407125479048?_skw=women+peplum+jacket&hash=item5eca91ce88:g:TpQAAeSwwhdqdOo0&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGbZ5n9pBhI74Fyrl0i2ZmY9NiD%2BLacFb9fVdAYNLzVzAp4Hc0%2BHdFAi1OqNYovRppxjPuruWU5i94tvvslPoFDXjMJqcEDANoOGOnbmcACP3cM5CzpIsddA42xaEBpQNOOjjQY7rrnV2RCRXYD7cLLtVpS6DBEbP0gq7xm7FQ0HU%2BjZPpFcVrU8UzEuGAGEkZSu1WrcLQ3knCDardYFkrz98HDETPeLT3yhO9wRjqtqwfC9c6xr2862DUln%2BJosk1SoDJ9zyIF3B4Hq0q2idKi%2BcXJ0MB01J1j2GJ7rnFe1tQ%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1933,50 +964,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|389950793717|0",
-      "category": "jackets",
-      "title": "Noir Black Double Lapel Peplum Fitted Ponte Office Career Blazer Jacket M NWT",
-      "image_url": "https://i.ebayimg.com/images/g/9vsAAeSwnLZp8Vej/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/9vsAAeSwnLZp8Vej/s-l1600.jpg"
-      ],
-      "price_amount": 32,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "savingwithsavannah",
-        "feedback_percentage": 97.5,
-        "feedback_score": 77
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/389950793717?_skw=women+peplum+jacket&hash=item5acae0e7f5:g:9vsAAeSwnLZp8Vej&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZU865rVrMdeiBrqZi6eLY5%2BTjZZHc%2F8ezgCi5aN38h%2BDsvN%2BYTRn%2B%2Bq2PlgiCAJyTcrtHToacYxvohQ1yKwSMmzo3isqUtwbGclWLIgv1SMNfqu4F329jfRQSoeWpix225uWlFxfZAzTazp3TfiYY8hgR6HLHKICJGC2R7Ar%2FWlP5VSKGJ%2BDJz1Y%2BJjIarGmr4ZrLPDyZRtgTvnCrPafB4WSyv5bkmCqIka3xsC35%2BFAWGQQlt8N9Dd4ZYZPb8GesbTIvKSNR0s980NY8dU5jbgOJKs9fCx5fWEU43FRHBfA%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609080508411612900",
       "title": "Men's Windproof And Waterproof Outdoor Fishing Hooded Jacket For Men",
@@ -1991,49 +978,6 @@
       "source_category": "jackets",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|206467903738|507161416924",
-      "category": "jackets",
-      "title": "Astr Nicolle Textured Peplum Jacket Cream",
-      "image_url": "https://i.ebayimg.com/images/g/9d4AAeSwzY5qc1N3/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/9d4AAeSwzY5qc1N3/s-l1600.jpg"
-      ],
-      "price_amount": 64,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "designeroutlet",
-        "feedback_percentage": 99,
-        "feedback_score": 27107
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206467903738?_skw=women+peplum+jacket&hash=item30127230fa:g:9d4AAeSwzY5qc1N3&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZ3%2B56V2WyXGw1yKiVFv%2Fk0p5XCNduwyHpcUYZOfIGhHZWZDwjBiiN6gMo7c7D7liO9wFfdYxLPncc7dBenaboGDcV6CPOafP0J3ykkirG%2BBVrsUsFirN52s9GGulWKkwYEE8ri1uOFIoJ7%2FBEZ3i--%2FToZrq92N6f2mkf3Iq%2FrL51tcIHSuBY8xy1AMr0lAhGubZodr0e1jH85MB5OXDQ3f%2Bf3sa1zpP4jTlSFsJ20LHEBhRoFS7MaJ4F4ae9DOVVWPjaZ0b5Tusv83I9g4AVh%2BwEyghaJOZrKBiW9goqWYA%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -2066,49 +1010,6 @@
       "source_category": "jackets",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|188032530102|696014053472",
-      "category": "jackets",
-      "title": "All In Motion Women's Woven Peplum Jacket Side Pockets UPF 50+ Moisture Wicking",
-      "image_url": "https://i.ebayimg.com/images/g/DzQAAeSwsoRqj9mk/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/DzQAAeSwsoRqj9mk/s-l1200.jpg"
-      ],
-      "price_amount": 17.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481436
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/188032530102?_skw=women+peplum+jacket&hash=item2bc79cb6b6:g:DzQAAeSwsoRqj9mk",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -2151,103 +1052,6 @@
       "gender": "women",
       "merchant_product": true,
       "price_amount": 44.44,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "jackets",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|178471691719|0",
-      "category": "jackets",
-      "title": "ELOQUII Size 28 NWT Black Faux Leather Ruffle Peplum Jacket 4x",
-      "image_url": "https://i.ebayimg.com/images/g/UX0AAeSwW8NqnNOB/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/UX0AAeSwW8NqnNOB/s-l1600.jpg"
-      ],
-      "price_amount": 89.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "maggiemademebuyit",
-        "feedback_percentage": 100,
-        "feedback_score": 3
-      },
-      "shipping_options": [],
-      "source_url": "https://www.ebay.com/itm/178471691719?_skw=women+peplum+jacket&hash=item298dbde5c7:g:UX0AAeSwW8NqnNOB",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|198630583377|0",
-      "category": "jackets",
-      "title": "NWT Forever 21 Tan Cropped Trench Jacket L Belted Peplum Double Breasted",
-      "image_url": "https://i.ebayimg.com/images/g/~28AAeSwxPxqoder/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/~28AAeSwxPxqoder/s-l1600.jpg"
-      ],
-      "price_amount": 13,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "racheolive_19",
-        "feedback_percentage": 100,
-        "feedback_score": 27
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/198630583377?_skw=women+peplum+jacket&hash=item2e3f4e2c51:g:~28AAeSwxPxqoder",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2609080314131600700",
-      "title": "New Chinese Style Mock Two Piece Tailored Mountain Breeze Jacket",
-      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/08/03/486bcf8f-0081-4363-97a2-0b5f0d649b6b.jpg",
-      "category": "jackets",
-      "gender": "men",
-      "merchant_product": true,
-      "price_amount": 58.68,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
@@ -2304,50 +1108,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|377474523674|0",
-      "category": "jackets",
-      "title": "NWT Champagne Taupe Beaded Peplum Evening Jacket Ruffle Sleeve Formal Blazer",
-      "image_url": "https://i.ebayimg.com/images/g/~LIAAeSwOA1p-ryp/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/~LIAAeSwOA1p-ryp/s-l1600.jpg"
-      ],
-      "price_amount": 11.25,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "lu_193729",
-        "feedback_percentage": 100,
-        "feedback_score": 9
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/377474523674?_skw=women+peplum+jacket&hash=item57e33c221a:g:~LIAAeSwOA1p-ryp",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609071048231624700",
       "title": "Niche Waist-cinching Figure-flattering Trench Coat",
@@ -2394,49 +1154,6 @@
       "source_category": "jackets",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|377477209863|0",
-      "category": "jackets",
-      "title": "Elie Tahari Aliza Peplum Jacket New With Tags Black Size L XL Designer $448",
-      "image_url": "https://i.ebayimg.com/images/g/EuQAAeSwM6BqnfDU/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/EuQAAeSwM6BqnfDU/s-l1600.jpg"
-      ],
-      "price_amount": 125,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "beethriftyb",
-        "feedback_percentage": 100,
-        "feedback_score": 2
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/377477209863?_skw=women+peplum+jacket&hash=item57e3651f07:g:EuQAAeSwM6BqnfDU",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -2487,50 +1204,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|389950859804|0",
-      "category": "jackets",
-      "title": "Noir Navy Double Lapel Peplum Fitted Ponte Office Career Blazer Jacket S NWT",
-      "image_url": "https://i.ebayimg.com/images/g/ilsAAeSwvPRp8V1H/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/ilsAAeSwvPRp8V1H/s-l1600.jpg"
-      ],
-      "price_amount": 32,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "savingwithsavannah",
-        "feedback_percentage": 97.5,
-        "feedback_score": 77
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/389950859804?_skw=women+peplum+jacket&hash=item5acae1ea1c:g:ilsAAeSwvPRp8V1H&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGY4%2FJB7GScs4wDZcCFagDk1ZPmzg37PeHToFkUL%2BMOJYwELMKmnOLVnoOrv2y%2Bgs4YhVTTcuy5BTWUlNh3kk5qayNENXRsZ9KcNFNoP%2FCOHsf3EOIkB%2BgZTSAhnL3%2BgesLExZFuLCSZNwcVaYl6RfpFCitIBm%2BUZQMxY2859ruD5AEjA9zGYvbF8zm4QgK04e4e5nFvb3cq4Kdh6W9yd%2BYv2P9gBYe5cHdEImGPN5QRMmQZRyY%2B0uBwBhZojSgMLtBbjxrEmrAMUSDao9OcEZd%2BIUTPBR8ocxwLDvkg4uJCHQ%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609070849541624400",
       "title": "Slim Fit Figure Flattering European And American Style Versatile Jacket",
@@ -2547,53 +1220,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|147539249340|0",
-      "category": "jackets",
-      "title": "Baccini Women Cream Faux Leather Peplum Jacket Zip Front Mandarin Collar NWT L",
-      "image_url": "https://i.ebayimg.com/images/g/W28AAeSwz0JqlQ0t/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/W28AAeSwz0JqlQ0t/s-l1600.jpg"
-      ],
-      "price_amount": 29.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "flippingreat",
-        "feedback_percentage": 98.6,
-        "feedback_score": 109
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 4.99,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/147539249340?_skw=women+peplum+jacket&hash=item225a0648bc:g:W28AAeSwz0JqlQ0t&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGaoNNpjjy7iy5Jdii8PkW6EWCWd6cTIS2S0W2A0yg55rO%2FW7wN2dEm6uQmk7vIkUVEGFAYZxHu%2BdHlb7xZORXC2z7ziovCsytJtpiqV%2B9i%2B3IuLkJUqCxmW8hbjnwrBie23E3cSzAWece7ESNU6kj0cAA%2Bxbp632y198%2FqnHWzWAU0Yn2CEI96R8HYZOnNfp5jewwbqLZ4b10%2FkBPW9CYZvFvPYSrS2aw%2FuKNypuUJSJZB4atGf99ss0rmO7VqNSQanUbLlh7IyZ5VstPx72HphCaVObmo8eESPcdiWfyHdsg%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609080331401618000",
       "title": "Solid Color Commute Trendy Brand Rolled Sleeves Shirt Coat Men",
@@ -2608,49 +1234,6 @@
       "source_category": "jackets",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|257542761500|0",
-      "category": "jackets",
-      "title": "Noir Black Double Notch Lapel Peplum Blazer Jacket Stretch Women's L Large NEW",
-      "image_url": "https://i.ebayimg.com/images/g/AcMAAeSwo9hphSOI/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/AcMAAeSwo9hphSOI/s-l960.jpg"
-      ],
-      "price_amount": 44.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "skybunnync",
-        "feedback_percentage": 99.8,
-        "feedback_score": 10423
-      },
-      "shipping_options": [
-        {
-          "type": "CALCULATED",
-          "cost": null,
-          "min_estimated_delivery_date": null,
-          "max_estimated_delivery_date": null
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/257542761500?_skw=women+peplum+jacket&hash=item3bf6beac1c:g:AcMAAeSwo9hphSOI&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZIM6z91qaGD6aI6aBTCt8tFWPkLBfGKfMkeptwUPG3XjPFiOksH9oLkP9s%2FIKmhgN%2FlX1XV3qCO%2FupnnYTBWJfSnVnTRnkTIwnEQiu%2FAKipWseSDrP86P%2FdOJzxi2PM8A7aXtNLdpDyq4vCYQxIHUAvQU1IIVc9ecA4%2FdBzUqNnS8cCrs42FY%2BUuDff4bYWcP1jstz3uu88Wb3PphjShtefts0RjILLUtU3%2FX8A%2FbCTSyk2PUZntBbigF4b%2BXNTFBM6fY9grVAd1669TZMRAZVLav0pA4cFJCV6XcWf%2FWOrQ%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -2701,59 +1284,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|198529484687|0",
-      "category": "jackets",
-      "title": "Peplum Zip Front Jacket Blazer Gray Ring Zip Long Sleeve Career Office XL NWT",
-      "image_url": "https://i.ebayimg.com/images/g/ysAAAeSwahlqZlda/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/ysAAAeSwahlqZlda/s-l1600.jpg"
-      ],
-      "price_amount": 32.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "coppertop538",
-        "feedback_percentage": 99.8,
-        "feedback_score": 749
-      },
-      "shipping_options": [],
-      "source_url": "https://www.ebay.com/itm/198529484687?_skw=women+peplum+jacket&hash=item2e3947878f:g:ysAAAeSwahlqZlda",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2609080111141631700",
-      "title": "Stylish Western-style Winter Cotton-padded Coat With A Thick Outer Layer",
-      "image_url": "https://cf.cjdropshipping.com/quick/product/a4aea25b-b8e0-4616-9399-c26c7f50d715.jpg",
-      "category": "jackets",
-      "gender": "general",
-      "merchant_product": true,
-      "price_amount": 8.68,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "jackets",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609070732171601500",
       "title": "Suede-fleece Lapel-zippered Coat Womens Short Top Jacket",
@@ -2786,53 +1316,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|178371779783|0",
-      "category": "jackets",
-      "title": "Nwt AKIRA peplum Puffer Wrap Jacket in Deep Plum size S",
-      "image_url": "https://i.ebayimg.com/images/g/by8AAeSwOzFqcUMo/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/by8AAeSwOzFqcUMo/s-l1600.jpg"
-      ],
-      "price_amount": 120,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "ksclothing2014",
-        "feedback_percentage": 98.4,
-        "feedback_score": 633
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 6.5,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-16T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/178371779783?_skw=women+peplum+jacket&hash=item2987c95cc7:g:by8AAeSwOzFqcUMo&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGYjdeutcUx1TltZTvD0Qx54EUY8JnWL32eCke5MVUuursv8g%2FiXxY6bUy%2FQSDXuCnnTukE92RracpOLeiNkRLRt47suifFhlDFVqV0vbaovECBjeuBiUkcLCm2MR5dtOILB6bAC9dpjU%2FMyAX%2B0vCpdIxgTgIpekVkJ37uz3kMvjMSZAcr7lvKm34rUFLev2B7di7nqIUL8TbjCqfMiRhxK3IV1vveAsBPT9ai0cF3FnKfDH27fd2fEDV5G3A0QpkMk%2BNoll8z1bXM6FZCNiEs4n1qG5YIjHyp%2BSFo8lOXzKg%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609090701371623300",
       "title": "Thickened Stand-collar Faux Two-piece Down Jacket",
@@ -2849,52 +1332,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|298596382704|595385828523",
-      "category": "jackets",
-      "title": "ZARA WOMAN SS26 BLACK ZW COLLECTION PEPLUM JACKET ALL SIZES 6895/258/800",
-      "image_url": "https://i.ebayimg.com/images/g/KB0AAeSwXSZqg174/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/KB0AAeSwXSZqg174/s-l1200.jpg"
-      ],
-      "price_amount": 129.9,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.626Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "lesweetcouture",
-        "feedback_percentage": 100,
-        "feedback_score": 6749
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 29.95,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-18T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-25T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/298596382704?_skw=women+peplum+jacket&hash=item4585bb37f0:g:KB0AAeSwXSZqg174&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGa965Y8YMYTkWfle1Fd1X9fE2FyJY71GJ28HxhKvOsYMNg5lm1%2FI2e5r4U1KozBjYEk1jbIKUxGRYfA5hSXTVlMx%2BDr%2F6TVUai3gi7%2BStAk3NLLDkIUSc9HFG3kGLnIw7Hm2B4BtBM0voQV1qvTJSNHHiBfhxmnI36XfUjgH0MwOTevdG6EWKxndLmnbKGMYLuiy%2BOo3iM1eoqzBE6MbqoCXTz0Cmqz%2BLQW51b43HjoxbdjrH4XznAX2E8mX%2BOn39r2rtDH%2By7eXhMjKr57QgbufKFARjethesPaDpohruq7g%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "jackets",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609070620581623700",
       "title": "Vintage Double-Breasted Short Coat Womens Stand-Neck Jacket",
@@ -2903,22 +1340,6 @@
       "gender": "general",
       "merchant_product": true,
       "price_amount": 7.64,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "jackets",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2096900890463137794",
-      "title": "Women Niche-Design Cropped Knit Cardigan New Autumn-Winter Stand-Collar Double-Zipper Sweater Coat",
-      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/191f1a8e-93a7-4fb1-92a3-e11e8eabd1e1.jpg",
-      "category": "jackets",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 9.44,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
@@ -3072,22 +1493,6 @@
     },
     {
       "provider": "CJdropshipping",
-      "item_id": "2609080939511612400",
-      "title": "Womens Lightweight Warm Cotton-padded Hooded Coat For Fall And Winter",
-      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/08/09/53414bfe-6c4a-431f-adbb-ec8b7ecb1925.jpg",
-      "category": "jackets",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 7.99,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "jackets",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
       "item_id": "2609070847031624000",
       "title": "Womens Long-sleeve Solid-color Patchwork Lace Gold-velvet Coat",
       "image_url": "https://cf.cjdropshipping.com/quick/product/3644e480-2d5c-4e47-a546-f394797d8344.jpg",
@@ -3152,22 +1557,6 @@
     },
     {
       "provider": "CJdropshipping",
-      "item_id": "2609070918201616700",
-      "title": "Womens Mid-Length Padded Cotton Coat With Hood And Fleece Lining Warm Outerwear",
-      "image_url": "https://cf.cjdropshipping.com/quick/product/7b5b96dd-512f-47ff-b987-0ea30be74532.jpg",
-      "category": "jackets",
-      "gender": "general",
-      "merchant_product": true,
-      "price_amount": 10.42,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "jackets",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
       "item_id": "2609080620491635000",
       "title": "Womens Versatile Stand-collar Contrast-color Zip-up Jacket",
       "image_url": "https://cf.cjdropshipping.com/quick/product/393fd77b-b00f-4b77-ae4d-4dda2d15e06a.jpg",
@@ -3195,6 +1584,22 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "jackets",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097604157907447809",
+      "title": "Women's Thick Fringe Jacquard Knit Shawl, Warm Autumn Winter Outerwear Fringe Scarf Poncho Striped Jacquard",
+      "image_url": "https://cf.cjdropshipping.com/928c7f99-f797-4205-a357-49c0052cf3a2.jpg",
+      "category": "jackets",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 6.99,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
       "curation_source": "fashion",
       "catalog_discovery": true
     },
@@ -3303,6 +1708,22 @@
       "gender": "women",
       "merchant_product": true,
       "price_amount": 16.47,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "jackets",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097156645272543234",
+      "title": "New Autumn Winter Women  Mock-Two-Piece Knit Sweater,Sophisticated Color-Blocked Turtleneck Style Long-Sleeve Pullover Wearable As Inner Layer Or Outerwear",
+      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/08615d74-406f-4952-9909-6cab4c8874d0.jpg",
+      "category": "jackets",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 7.88,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
@@ -3440,22 +1861,6 @@
     },
     {
       "provider": "CJdropshipping",
-      "item_id": "2097604157907447809",
-      "title": "Women's Thick Fringe Jacquard Knit Shawl, Warm Autumn Winter Outerwear Fringe Scarf Poncho Striped Jacquard",
-      "image_url": "https://cf.cjdropshipping.com/928c7f99-f797-4205-a357-49c0052cf3a2.jpg",
-      "category": "jackets",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 6.99,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "accessories",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
       "item_id": "2097575066619203585",
       "title": "Cross-Border European And American Contrasting Color Vest Yoga Jumpsuit For Women Seamless Fitness Outerwear Tight-Fitting Sports Running Jumpsuit Shorts",
       "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/76816618-54f2-4624-ab76-2381a2aecf98.jpg",
@@ -3511,22 +1916,6 @@
       "gender": "men",
       "merchant_product": true,
       "price_amount": 11.4,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "jackets",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2097156645272543234",
-      "title": "New Autumn Winter Women  Mock-Two-Piece Knit Sweater,Sophisticated Color-Blocked Turtleneck Style Long-Sleeve Pullover Wearable As Inner Layer Or Outerwear",
-      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/08615d74-406f-4952-9909-6cab4c8874d0.jpg",
-      "category": "jackets",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 7.88,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,

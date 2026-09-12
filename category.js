@@ -19,6 +19,15 @@
 
   const $ = q => document.querySelector(q);
   const productKey = p => `${p.provider || ""}:${p.item_id || ""}`;
+  function customerPrice(product) {
+    const retail = Number(product?.retail_price_amount);
+    const retailVerified = product?.retail_price_verified === true && Number.isFinite(retail) && retail > 0;
+    if (retailVerified) return {amount:retail,currency:product?.retail_currency || product?.currency || "USD",label:"RETAIL PRICE",verified:true};
+    const base = Number(product?.price_amount);
+    const merchantRetail = String(product?.price_basis || "").toUpperCase() === "MERCHANT_RETAIL";
+    if (merchantRetail && Number.isFinite(base) && base > 0) return {amount:base,currency:product?.currency || "USD",label:"RETAIL PRICE",verified:true};
+    return {amount:null,currency:product?.currency || "USD",label:"PRICE PENDING",verified:false};
+  }
 
   function productCard(product) {
     const score = H.personalScore(product);
@@ -26,15 +35,15 @@
       ? `<img src="${H.esc(product.image_url)}" alt="${H.esc(product.title || "Product")}" loading="lazy">`
       : `<div class="hd-market-card-placeholder">◇</div>`;
     const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">${H.esc(product.provider || "LIVE")}</span>`;
-    const hasPrice = Number.isFinite(Number(product.price_amount)) && Number(product.price_amount) > 0;
-    const price = hasPrice ? H.money(product.price_amount, product.currency || "USD") : "Open product";
+    const customer = customerPrice(product);
+    const price = customer.verified ? H.money(customer.amount, customer.currency) : "Price pending";
     const productUrl = H.productUrl(product);
-    return `<article class="hd-market-product-card" data-category="${H.esc(H.inferCategory(product) || product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${Number(product.price_amount)||0}" data-score="${score}">
+    return `<article class="hd-market-product-card" data-category="${H.esc(H.inferCategory(product) || product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${customer.amount || 0}" data-score="${score}">
       <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}</a>
       <div class="hd-market-card-body">
         <small>${H.esc(product.provider || "Provider")} · ${H.esc(product.availability_verified ? "AVAILABLE" : "DISCOVERY")}</small>
         <a href="${H.esc(productUrl)}" class="hd-market-card-title" data-product-view="${H.esc(productKey(product))}">${H.esc(product.title || "Product")}</a>
-        <div class="hd-market-card-price"><strong>${price}</strong><span>${H.esc(hasPrice ? (product.price_basis || "SOURCE PRICE") : "DETAIL PRICE")}</span></div>
+        <div class="hd-market-card-price"><strong>${price}</strong><span>${H.esc(customer.label)}</span></div>
         <p>${H.esc(score > 0 ? H.personalReason(product) : "Open the product to inspect images, variants and availability.")}</p>
         <a class="hd-btn hd-market-view" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">View product →</a>
       </div>
@@ -233,13 +242,14 @@
     const sort = $("#hd-cat-sort").value;
     const hasPriceFilter = min > 0 || Number.isFinite(max);
     const items = rawResults.filter(p => {
-      const price = Number(p.price_amount);
-      const priced = Number.isFinite(price) && price > 0;
+      const customer = customerPrice(p);
+      const price = Number(customer.amount);
+      const priced = customer.verified && Number.isFinite(price) && price > 0;
       const priceMatch = hasPriceFilter ? priced && price >= min && price <= max : true;
       return matchesCategoryTruth(p) && matchesGenderScope(p) && matchesSub(p) && priceMatch && smartFilterMatches(p);
     });
-    if (sort === "price-low") items.sort((a,b)=>(Number(a.price_amount)||Infinity)-(Number(b.price_amount)||Infinity));
-    else if (sort === "price-high") items.sort((a,b)=>(Number(b.price_amount)||0)-(Number(a.price_amount)||0));
+    if (sort === "price-low") items.sort((a,b)=>(Number(customerPrice(a).amount)||Infinity)-(Number(customerPrice(b).amount)||Infinity));
+    else if (sort === "price-high") items.sort((a,b)=>(Number(customerPrice(b).amount)||0)-(Number(customerPrice(a).amount)||0));
     else if (sort === "for-you") items.sort((a,b)=>
       H.personalScore(b)-H.personalScore(a) ||
       listingReadiness(b)-listingReadiness(a) ||

@@ -1,53 +1,10 @@
 {
   "slug": "dresses",
-  "count": 147,
+  "count": 116,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-11T07:45:52.324Z",
+  "curated_at": "2026-09-12T14:04:09.433Z",
   "products": [
-    {
-      "provider": "eBay",
-      "item_id": "v1|158251008510|459386505622",
-      "category": "dresses",
-      "title": "Women's Black Sleeveless V Neck Dress Twist Front Ruched Mini Casual Summer",
-      "image_url": "https://i.ebayimg.com/images/g/vS0AAeSwyIRqmH6-/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/vS0AAeSwyIRqmH6-/s-l960.jpg"
-      ],
-      "price_amount": 14.96,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "resdynamis",
-        "feedback_percentage": 99.4,
-        "feedback_score": 1183
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/158251008510?_skw=women+dresses&hash=item24d87ec1fe:g:vS0AAeSwyIRqmH6-",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
     {
       "provider": "CJdropshipping",
       "item_id": "2096847414645141506",
@@ -63,49 +20,6 @@
       "source_category": "dresses",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|147359018913|445757249421",
-      "category": "dresses",
-      "title": "Women's Fashionable Stringy Stitching Elegant Summer Dress XS-2XL",
-      "image_url": "https://i.ebayimg.com/images/g/cwkAAeSw5mlqJj7T/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/cwkAAeSw5mlqJj7T/s-l960.jpg"
-      ],
-      "price_amount": 32.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "great_northern_games",
-        "feedback_percentage": 97.1,
-        "feedback_score": 453
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-23T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-10-15T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/147359018913?_skw=women+dresses&hash=item224f482fa1:g:cwkAAeSw5mlqJj7T&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGblwLQJAQ%2FPNXQ9zJhFU5WE3UnVn4pYlMoF56DUHv13Ys3EakZW50QE8zlArkqVj1icO8pn9yJnok%2B54RuSCaok%2Fb%2BclZ5gvirmkdavN3TgeeVinoIyUtxJ%2F3Jvs8y4KhITZMhcdi%2BZnrOLMrxBTIxsFAc64y3Ajd3W9eVWUwNYx7qTPfT9XNMGVaUPd1EAnGD9GGzmMATA96tUGxYt%2BI%2Ba7VayodZyFL9ZHd6IPmbB%2FCk7CMy8%2Fbb5Db7xvvUqfKDAwONWVA9AJmUy2dOk6Z5FRt3nFkZ93gI9Tqm1fYrDEw%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -252,93 +166,20 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|158250750714|459386510772",
+      "provider": "CJdropshipping",
+      "item_id": "2609080326541609000",
+      "title": "French-style Three-dimensional Floral Lantern-sleeve Cotton-linen Dress",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/5d4fc313-7201-4976-8cf3-57ff8a208f86.jpg",
       "category": "dresses",
-      "title": "Women's V Neck Button Front Maxi Dress Long Sleeve Side Slit Casual Belted",
-      "image_url": "https://i.ebayimg.com/images/g/5xUAAeSwpyFqmGt8/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/5xUAAeSwpyFqmGt8/s-l960.jpg"
-      ],
-      "price_amount": 22.46,
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 11.28,
       "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
+      "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "resdynamis",
-        "feedback_percentage": 99.4,
-        "feedback_score": 1183
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-21T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-10-03T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/158250750714?_skw=women+dresses&hash=item24d87ad2fa:g:5xUAAeSwpyFqmGt8",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
       "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|297869282190|595117858836",
-      "category": "dresses",
-      "title": "Women's Dress Fashion Summer Strap Banquet Large Swing 3D Flower A-line Dress",
-      "image_url": "https://i.ebayimg.com/images/g/4vUAAOSwiFpkK9KO/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/4vUAAOSwiFpkK9KO/s-l1600.jpg"
-      ],
-      "price_amount": 69.92,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "minikiwbb",
-        "feedback_percentage": 99,
-        "feedback_score": 1273
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 3.99,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-28T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-10-20T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/297869282190?_skw=women+dresses&hash=item455a648b8e:g:4vUAAOSwiFpkK9KO&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGasFOYZvBrSImw3F6z0lUtZSdbMFt%2FofDc5aP7NpDTAT0Wvsavy9N9AJImC0%2FkTUm50JcWxGpVG4jdmvPhqAPK6%2BCNVa3Rg%2FdndX7sryO70z5jxfg3shZgiClTwykc8gGI5wfVfgKxZb6PNdAyf94Qj1w1IZLnGV2RL2jxjbMM%2BnzdYJ4z1%2FvJBPuaJxTvbPCqbQ5D0HIAJ6I5DKZCdBHAUXEuAdtxptfgo50tMiAVZO%2F2aDyf6rUAG2%2FIZVTpG1zBROrFTJQp3h4XF9ziVuP2WFGe5qou5cRH8bbyHnqWzNg%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
+      "curation_source": "fashion",
+      "catalog_discovery": true
     },
     {
       "provider": "CJdropshipping",
@@ -373,47 +214,20 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|178448524180|477791234172",
+      "provider": "CJdropshipping",
+      "item_id": "2097571322473074690",
+      "title": "New Autumn And Winter Rainbow Stripe Vacation-Style Loose V Neck Long Sleeve Knit Dress",
+      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/a66a0ab6-e30b-4921-9e69-bc7291dbad4d.jpg",
       "category": "dresses",
-      "title": "A New Day Women's Casual Button-Front Midi Dress - Black",
-      "image_url": "https://i.ebayimg.com/images/g/FbwAAeSw9J9qokAf/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/FbwAAeSw9J9qokAf/s-l1200.jpg"
-      ],
-      "price_amount": 20.99,
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 10.7,
       "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
+      "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/178448524180?_skw=women+dresses&hash=item298c5c6394:g:FbwAAeSw9J9qokAf",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
       "source_category": "dresses",
-      "curation_source": "fashion"
+      "curation_source": "fashion",
+      "catalog_discovery": true
     },
     {
       "provider": "CJdropshipping",
@@ -440,6 +254,38 @@
       "gender": "general",
       "merchant_product": true,
       "price_amount": 50,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "dresses",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097234060050452481",
+      "title": "Solid Color Long Hooded Cotton Linen Dress, Loose Bohemian Style Women's Clothing",
+      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/0906cea6-92a8-48b4-8b7e-44a76d1b5250.jpg",
+      "category": "dresses",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 7.2,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "dresses",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609080149551637100",
+      "title": "Strapless Satin Lace Trim Cotton Dress",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/ce3f8c92-50e6-4897-8227-c6488ca6329d.jpg",
+      "category": "dresses",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 14.24,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
@@ -624,185 +470,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|362539382539|631690208445",
-      "category": "dresses",
-      "title": "Women Fashion Clothing Faux Suede Dress #EA112 free shipping S M L pick size",
-      "image_url": "https://i.ebayimg.com/images/g/xqUAAOSwjoFcR1PU/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/xqUAAOSwjoFcR1PU/s-l960.jpg"
-      ],
-      "price_amount": 32,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.623Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "ny6jewelry",
-        "feedback_percentage": 99.6,
-        "feedback_score": 13501
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-22T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/362539382539?_skw=women+fashion+clothing&hash=item546907f70b:g:xqUAAOSwjoFcR1PU",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "women",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|127815445751|0",
-      "category": "dresses",
-      "title": "Women's Fashion Clothing Vibrant Orange Mini Dress - Size XS - V-Neckline - NWT",
-      "image_url": "https://i.ebayimg.com/images/g/mnQAAeSwUxBpxE0-/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/mnQAAeSwUxBpxE0-/s-l1600.jpg"
-      ],
-      "price_amount": 3.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:22.623Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "jwestlimited1",
-        "feedback_percentage": 100,
-        "feedback_score": 7192
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 7.95,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-17T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/127815445751?_skw=women+fashion+clothing&hash=item1dc264ecf7:g:mnQAAeSwUxBpxE0-",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "women",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|800633170673|657537830530",
-      "category": "dresses",
-      "title": "Womens Ribbed Scoop Neck Sleeveless Tank Dresses Basic Bodycon Mini Fit Dress",
-      "image_url": "https://i.ebayimg.com/images/g/RgkAAeSwIDpqoKEu/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/RgkAAeSwIDpqoKEu/s-l960.jpg"
-      ],
-      "price_amount": 18.9,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "ufoundit_llc",
-        "feedback_percentage": 99.2,
-        "feedback_score": 2353
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-22T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-26T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/800633170673?_skw=women+dresses&hash=itemba6974aaf1:g:RgkAAeSwIDpqoKEu&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGa0iKo6F4nTh7OMxuIJ4yvD3zePhKAuxswzhWykhCHusxQG%2Fg2XdLzhC5mpNyYa9l4Ab4ulAN4wZwDBrdQTnOZSe7POirPT8l9Ymd%2BzUFfhuHITXJd%2BCg9jYPskoqJGlqkF%2BrmRH3bjPYlvGwQVhA0tzjDlNosANVUOjPTfda6AiirZxsiSBkFkTqtFoRiILBF5vxv4RLG8XCyQ46ntvkzTzuHI7fD1bTttXBErM6%2FCK12uAo46AhrnbV09%2BzFgK%2BTX753R%2BoInVrlEGs4k0WULedhTOWFOsawvXb%2FkWvuTFA%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|157103925570|458601943363",
-      "category": "dresses",
-      "title": "Basketball Spandex Dress for Women - Comfortable Fit, Versatile Style, Ideal for",
-      "image_url": "https://i.ebayimg.com/images/g/Z4YAAeSw7PFpxGSy/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/Z4YAAeSw7PFpxGSy/s-l1200.jpg"
-      ],
-      "price_amount": 32,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "clausemil",
-        "feedback_percentage": 99.7,
-        "feedback_score": 364
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": {
-            "amount": 4.57,
-            "currency": "USD"
-          },
-          "min_estimated_delivery_date": "2026-09-12T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-15T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/157103925570?_skw=women+dresses&hash=item24941fa942:g:Z4YAAeSw7PFpxGSy&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGbv7DuL60E60CEPmg60UG157QZFZefPoLpr%2B%2F35qlgpfy57j4tQfN4UqYdeSy5Fd%2FuKFfxTqm%2Fx4wL5%2B9hYmkjjbADnvvLnD9qacMKXj9tWA0ckDuXZUgidjENfa0h0phqNUeYQd%2BHpLCFXHQNQIR1Q7zxWvk0gz77V5O4FZLkKJ8Id2LQW9gvyBEjHAbGy%2Fk5u1A7v1u%2B%2F02KzkLb2r%2B2E5o8PWmDz%2BmmRxI%2FatSGknVqXZz%2B5TmBeoyMNTu%2BuWKBKFJi8zR%2BvtdULqoGQj1T3",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609080540261604200",
       "title": "Backless Strap Polka Dot Dress Women",
@@ -817,49 +484,6 @@
       "source_category": "dresses",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|206421947718|507124373945",
-      "category": "dresses",
-      "title": "Women's Side-Tie Midi Dress - A New Day",
-      "image_url": "https://i.ebayimg.com/images/g/jL4AAeSwFLNqj-MS/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/jL4AAeSwFLNqj-MS/s-l1200.jpg"
-      ],
-      "price_amount": 8.2,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206421947718?_skw=women+dresses&hash=item300fb4f546:g:jL4AAeSwFLNqj-MS",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -910,49 +534,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|206428856575|507254970476",
-      "category": "dresses",
-      "title": "Women's Lace Trim Midi Slip Dress - Universal",
-      "image_url": "https://i.ebayimg.com/images/g/BI4AAeSwAkNqolVT/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/BI4AAeSwAkNqolVT/s-l1200.jpg"
-      ],
-      "price_amount": 16.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206428856575?_skw=women+dresses&hash=item30101e60ff:g:BI4AAeSwAkNqolVT",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2097568962582724609",
       "title": "Button-ront Puff Sleeve Ruffle Hem Denim Midi Dress",
@@ -967,92 +548,6 @@
       "source_category": "dresses",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|205791229682|507254877576",
-      "category": "dresses",
-      "title": "A New Day Women's Short Sleeve Pleated Midi Shirtdress Dress Cotton Side Pockets",
-      "image_url": "https://i.ebayimg.com/images/g/350AAeSwTolqovP3/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/350AAeSwTolqovP3/s-l1200.jpg"
-      ],
-      "price_amount": 17.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/205791229682?_skw=women+dresses&hash=item2fea1cf6f2:g:350AAeSwTolqovP3",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|178256973472|477700011236",
-      "category": "dresses",
-      "title": "Women's Lace Cami Midi A-Line Dress - Universal",
-      "image_url": "https://i.ebayimg.com/images/g/j-EAAeSwva1qj-Pr/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/j-EAAeSwva1qj-Pr/s-l1200.jpg"
-      ],
-      "price_amount": 16.22,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/178256973472?_skw=women+dresses&hash=item2980f18ea0:g:j-EAAeSwva1qj-Pr",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1087,50 +582,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|206474700626|0",
-      "category": "dresses",
-      "title": "Women's Sleeveless Button-Front Smocked Maxi Sundress - Universal Thread Black",
-      "image_url": "https://i.ebayimg.com/images/g/v24AAeSwMfVqmtdt/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/v24AAeSwMfVqmtdt/s-l1200.jpg"
-      ],
-      "price_amount": 12.97,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206474700626?_skw=women+dresses&hash=item3012d9e752:g:v24AAeSwMfVqmtdt",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609080138231621000",
       "title": "Dropped-shoulder Loose-fit Candy-colored Long-sleeve Dress",
@@ -1161,135 +612,6 @@
       "source_category": "dresses",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|188566176990|696014006580",
-      "category": "dresses",
-      "title": "Women's Button-Front Lace Midi Dress - Wild Fable Floral",
-      "image_url": "https://i.ebayimg.com/images/g/bu0AAeSwwTlqj-DD/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/bu0AAeSwwTlqj-DD/s-l1200.jpg"
-      ],
-      "price_amount": 12.97,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/188566176990?_skw=women+dresses&hash=item2be76b84de:g:bu0AAeSwwTlqj-DD",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|206376937830|507118497269",
-      "category": "dresses",
-      "title": "Universal Thread Women's Short Sleeve Lace Trim Knit Dress Cotton Side Pockets",
-      "image_url": "https://i.ebayimg.com/images/g/TxIAAeSwMf5qkA0x/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/TxIAAeSwMf5qkA0x/s-l1200.jpg"
-      ],
-      "price_amount": 18.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206376937830?_skw=women+dresses&hash=item300d062966:g:TxIAAeSwMf5qkA0x",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|188656458647|696015736245",
-      "category": "dresses",
-      "title": "Women's Crafted Midi Sundress - Universal",
-      "image_url": "https://i.ebayimg.com/images/g/SqMAAeSwALdqj9zy/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/SqMAAeSwALdqj9zy/s-l1200.jpg"
-      ],
-      "price_amount": 16.22,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/188656458647?_skw=women+dresses&hash=item2beccd1b97:g:SqMAAeSwALdqj9zy",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1357,65 +679,6 @@
     },
     {
       "provider": "CJdropshipping",
-      "item_id": "2609080326541609000",
-      "title": "French-style Three-dimensional Floral Lantern-sleeve Cotton-linen Dress",
-      "image_url": "https://cf.cjdropshipping.com/quick/product/5d4fc313-7201-4976-8cf3-57ff8a208f86.jpg",
-      "category": "dresses",
-      "gender": "general",
-      "merchant_product": true,
-      "price_amount": 11.28,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "dresses",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|158250787747|459386419119",
-      "category": "dresses",
-      "title": "Women's Skull Rose Graphic Print Sleeveless Spaghetti Strap A-Line Mini Dress",
-      "image_url": "https://i.ebayimg.com/images/g/NT4AAeSwzadqmuhv/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/NT4AAeSwzadqmuhv/s-l960.jpg"
-      ],
-      "price_amount": 22.46,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "resdynamis",
-        "feedback_percentage": 99.4,
-        "feedback_score": 1183
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/158250787747?_skw=women+dresses&hash=item24d87b63a3:g:NT4AAeSwzadqmuhv&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGage8cNFJYCXYLhNVXW%2F7t8ZikwoVlZ42sk2Fa2wQYzf1OCFN6vLRSXvnl2HLCCpVnvc6Ay97LSq8WlcWkxKChWy%2Bl7uQvqjtEyz7jbht18ny5jnELCDOV0Bon6%2FpApoNgcF1jureH1AgrA5EZHIvqK%2FDeRLfb6IhQrNtWancCFBx%2FtBT2zxy3tevINXdteQG49n0fMN5cdvAozkqwSnyY5R0Q2klYfne%2BbXnnQvavP%2FCqS0oCxQ2hyMVwuf5bKq1NUoOy3NFHo0ODsBPukIiWoz%2BESlPSRNez10E6EL6WDsA%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "CJdropshipping",
       "item_id": "2096811428964753409",
       "title": "Grey Pinstripe Double-Breasted Blazer Midi Dress",
       "image_url": "https://cf.cjdropshipping.com/12c11f18-afda-427e-8160-11c72abde537.png",
@@ -1445,49 +708,6 @@
       "source_category": "dresses",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|206521638248|507213226104",
-      "category": "dresses",
-      "title": "A New Day Women's Cami Gingham Sleeveless Maxi Dress - Black",
-      "image_url": "https://i.ebayimg.com/images/g/BHkAAeSwvA9qovQV/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/BHkAAeSwvA9qovQV/s-l1200.jpg"
-      ],
-      "price_amount": 17.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206521638248?_skw=women+dresses&hash=item3015a61d68:g:BHkAAeSwvA9qovQV",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1522,49 +742,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|188235773349|696014052247",
-      "category": "dresses",
-      "title": "Universal Thread Women's Lace Cami Midi A-Line Dress Sleeveless Cotton",
-      "image_url": "https://i.ebayimg.com/images/g/X6IAAeSwz0JqkBCZ/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/X6IAAeSwz0JqkBCZ/s-l1200.jpg"
-      ],
-      "price_amount": 19.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/188235773349?_skw=women+dresses&hash=item2bd3b9f5a5:g:X6IAAeSwz0JqkBCZ",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609080846041635000",
       "title": "Lace Evening Gown Bridesmaid Dress",
@@ -1595,49 +772,6 @@
       "source_category": "dresses",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|206374226552|507255012846",
-      "category": "dresses",
-      "title": "Women's Flutter Short Sleeve Midi Dress - A New Day",
-      "image_url": "https://i.ebayimg.com/images/g/a5sAAeSwsVlqokMa/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/a5sAAeSwsVlqokMa/s-l1200.jpg"
-      ],
-      "price_amount": 20.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206374226552?_skw=women+dresses&hash=item300cdcca78:g:a5sAAeSwsVlqokMa",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1672,49 +806,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|206112022792|507117306027",
-      "category": "dresses",
-      "title": "Women's High Neck Dropped Waist Midi A-Line Dress - Wild Fable",
-      "image_url": "https://i.ebayimg.com/images/g/2g0AAeSwvk9qj9WA/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/2g0AAeSwvk9qj9WA/s-l1200.jpg"
-      ],
-      "price_amount": 15.29,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206112022792?_skw=women+dresses&hash=item2ffd3be108:g:2g0AAeSwvk9qj9WA",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609081347451605000",
       "title": "Mesh Long Sleeve Dress Women",
@@ -1745,108 +836,6 @@
       "source_category": "dresses",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|178321345962|477705602422",
-      "category": "dresses",
-      "title": "Women's Cotton Maxi Pullover Sundress - Universal",
-      "image_url": "https://i.ebayimg.com/images/g/S1wAAeSw9XJqhxJi/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/S1wAAeSw9XJqhxJi/s-l1200.jpg"
-      ],
-      "price_amount": 12.97,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/178321345962?_skw=women+dresses&hash=item2984c7cdaa:g:S1wAAeSw9XJqhxJi",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2097571322473074690",
-      "title": "New Autumn And Winter Rainbow Stripe Vacation-Style Loose V Neck Long Sleeve Knit Dress",
-      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/a66a0ab6-e30b-4921-9e69-bc7291dbad4d.jpg",
-      "category": "dresses",
-      "gender": "general",
-      "merchant_product": true,
-      "price_amount": 10.7,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "dresses",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|178448523605|477773574888",
-      "category": "dresses",
-      "title": "Wild Fable Women's Ruffle Trim Sleeveless Maxi Slip Dress - Moss Green",
-      "image_url": "https://i.ebayimg.com/images/g/cEAAAeSwK41qoPtA/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/cEAAAeSwK41qoPtA/s-l1200.jpg"
-      ],
-      "price_amount": 16.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/178448523605?_skw=women+dresses&hash=item298c5c6155:g:cEAAAeSwK41qoPtA",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -1881,49 +870,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|178334428597|477791124058",
-      "category": "dresses",
-      "title": "Women's Linen Embroidered Midi High Low Dress - Universal",
-      "image_url": "https://i.ebayimg.com/images/g/s1oAAeSwqGBqouxJ/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/s1oAAeSwqGBqouxJ/s-l1200.jpg"
-      ],
-      "price_amount": 17.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/178334428597?_skw=women+dresses&hash=item29858f6db5:g:s1oAAeSwqGBqouxJ",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609081104481616900",
       "title": "Plus-size Womens Batwing-sleeve Dress",
@@ -1956,49 +902,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|206421945448|507119283502",
-      "category": "dresses",
-      "title": "Women's Cami Midi Sundress - Universal",
-      "image_url": "https://i.ebayimg.com/images/g/Sk4AAeSwiipqkn9p/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/Sk4AAeSwiipqkn9p/s-l1200.jpg"
-      ],
-      "price_amount": 16.22,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206421945448?_skw=women+dresses&hash=item300fb4ec68:g:Sk4AAeSwiipqkn9p",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609070800251606600",
       "title": "Princess-style Knitted Dress",
@@ -2013,49 +916,6 @@
       "source_category": "dresses",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|178448523699|477773768778",
-      "category": "dresses",
-      "title": "A New Day Women's Mesh Sheer Layer Sleeveless Maxi Dress - Black",
-      "image_url": "https://i.ebayimg.com/images/g/huEAAeSwnp1qkelW/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/huEAAeSwnp1qkelW/s-l1200.jpg"
-      ],
-      "price_amount": 17.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/178448523699?_skw=women+dresses&hash=item298c5c61b3:g:huEAAeSwnp1qkelW",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -2106,50 +966,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|206507979031|0",
-      "category": "dresses",
-      "title": "Women's Side-Tie Midi Dress - A New Day Cream M",
-      "image_url": "https://i.ebayimg.com/images/g/2L8AAeSwNjZqoBPC/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/2L8AAeSwNjZqoBPC/s-l1200.jpg"
-      ],
-      "price_amount": 15.29,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without tags",
-      "buying_options": [
-        "FIXED_PRICE",
-        "BEST_OFFER"
-      ],
-      "seller": {
-        "username": "bullseye_deals",
-        "feedback_percentage": 99.5,
-        "feedback_score": 1481435
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/206507979031?_skw=women+dresses&hash=item3014d5b117:g:2L8AAeSwNjZqoBPC",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2609090834511603000",
       "title": "Red Satin Strap Slit A-line Evening Gown",
@@ -2198,49 +1014,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|176855573577|476580239250",
-      "category": "dresses",
-      "title": "Women Stretchy Belt for Dresses Elastic Wide Waist Belt Top Gift For BIrthday",
-      "image_url": "https://i.ebayimg.com/images/g/oXkAAOSwv6ZntFMe/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/oXkAAOSwv6ZntFMe/s-l1600.jpg"
-      ],
-      "price_amount": 29.9,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "usamarkethub",
-        "feedback_percentage": 99.3,
-        "feedback_score": 2469
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-14T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-19T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/176855573577?_skw=women+dresses&hash=item292d69e449:g:oXkAAOSwv6ZntFMe&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGaM4DqZpeu%2FPNH%2B9EwehI%2FRv3N0VltnUNDoE0Il13gBQNHaDy%2BLXN5UG3vYtjYyU8Xf76Uxj53W0htBm8Yp2qczR948lDm7uFXWmbbuERwtqaSFWPTG6d3I6s%2FSK2sooKlcNCXJEibmH5sqyAUKTWAQLeaZqdSVXrtrV6DPbYvjJXVNX69u44OTxAXtLA5BTCK7EyoO6pO4YGi%2BdV12z4vgp4Aa%2By%2Bi92U3KcL%2Fw%2FbEhrJ5bAs97BbBNTvU%2BNdhW0C4e%2FP9HhFUQzT0G9%2F0bYgIU%2BIlLzrT%2BHjhEkweNbfGSw%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2096895567782309889",
       "title": "Satin Lace Corset Mermaid Maxi Gown",
@@ -2271,49 +1044,6 @@
       "source_category": "dresses",
       "curation_source": "fashion",
       "catalog_discovery": true
-    },
-    {
-      "provider": "eBay",
-      "item_id": "v1|147371115293|445762171760",
-      "category": "dresses",
-      "title": "Women's Satin Ruched Sweetheart Bodycon Mini Dress Spaghetti Strap XS-L",
-      "image_url": "https://i.ebayimg.com/images/g/gQwAAeSw9mVqLSKO/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/gQwAAeSw9mVqLSKO/s-l1200.jpg"
-      ],
-      "price_amount": 25.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:23.152Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New with tags",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "great_northern_games",
-        "feedback_percentage": 97.1,
-        "feedback_score": 453
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-23T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-10-15T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/147371115293?_skw=women+dresses&hash=item225000c31d:g:gQwAAeSw9mVqLSKO&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGa%2Bw%2Fw%2B0tU8gD66zzEsvsS1eaWhpLA9ADmogILDybDU3y7%2FWmAWz4QFet41fEm%2FSZU1fMK4vXRuQp8Nv0B9X1GwV6G63QhujpXH%2FeYbuSxUJDnzeHZJSrRjhHnqRER2ce%2FHYRS1gQu9p6zFYBl45O4UulMVz1ZyoU8bU6q9w0WBgG9qD9AwDsMiydHv25EtcQI1w7J%2Bko%2Biwh1i7aKXoa2ZZlM4dZaFlAfGPh4zNTDc5Xi5QP5JdkVeIaMKanwSjIej54ITFcYH66%2FmEXGd%2FNT%2FYLw%2FfQDmFRL1WpnBHIq7lA%3D%3D",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "dresses",
-      "curation_source": "fashion"
     },
     {
       "provider": "CJdropshipping",
@@ -2365,22 +1095,6 @@
     },
     {
       "provider": "CJdropshipping",
-      "item_id": "2097234060050452481",
-      "title": "Solid Color Long Hooded Cotton Linen Dress, Loose Bohemian Style Women's Clothing",
-      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/0906cea6-92a8-48b4-8b7e-44a76d1b5250.jpg",
-      "category": "dresses",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 7.2,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "dresses",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
       "item_id": "2609070851501620100",
       "title": "Solid-color Long-sleeve Crew-neck Womens Dress",
       "image_url": "https://cf.cjdropshipping.com/quick/product/ca3ad2a7-dc05-4def-aafb-6e6f536f2e2f.jpg",
@@ -2420,22 +1134,6 @@
       "gender": "women",
       "merchant_product": true,
       "price_amount": 8.16,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "dresses",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2609080149551637100",
-      "title": "Strapless Satin Lace Trim Cotton Dress",
-      "image_url": "https://cf.cjdropshipping.com/quick/product/ce3f8c92-50e6-4897-8227-c6488ca6329d.jpg",
-      "category": "dresses",
-      "gender": "general",
-      "merchant_product": true,
-      "price_amount": 14.24,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
@@ -2876,49 +1574,6 @@
       "catalog_discovery": true
     },
     {
-      "provider": "eBay",
-      "item_id": "v1|307048603977|606874126614",
-      "category": "dresses",
-      "title": "Women’s Pink Satin Bow Ballet Mule Flats Slip-On Backless Dress Shoes",
-      "image_url": "https://i.ebayimg.com/images/g/mT8AAeSwPA1qTZHy/s-l225.jpg",
-      "gallery": [
-        "https://i.ebayimg.com/images/g/mT8AAeSwPA1qTZHy/s-l1600.jpg"
-      ],
-      "price_amount": 36.99,
-      "currency": "USD",
-      "price_basis": "MARKETPLACE_RETAIL",
-      "availability_verified": false,
-      "source_fresh_at": "2026-09-10T18:38:21.915Z",
-      "marketplace_id": "EBAY_US",
-      "condition": "New without box",
-      "buying_options": [
-        "FIXED_PRICE"
-      ],
-      "seller": {
-        "username": "shoemanash46",
-        "feedback_percentage": 100,
-        "feedback_score": 1089
-      },
-      "shipping_options": [
-        {
-          "type": "FIXED",
-          "cost": null,
-          "min_estimated_delivery_date": "2026-09-15T07:00:00.000Z",
-          "max_estimated_delivery_date": "2026-09-21T07:00:00.000Z"
-        }
-      ],
-      "source_url": "https://www.ebay.com/itm/307048603977?_skw=women+satin+ballet+flats&hash=item477d85e149:g:mT8AAeSwPA1qTZHy",
-      "external_visit_url": null,
-      "onsite_checkout_required": true,
-      "onsite_checkout_enabled": false,
-      "checkout_status": "ORDER_API_APPROVAL_REQUIRED",
-      "item_end_date": null,
-      "catalog_discovery": true,
-      "merchant_product": false,
-      "source_category": "shoes",
-      "curation_source": "fashion"
-    },
-    {
       "provider": "CJdropshipping",
       "item_id": "2096859026572468225",
       "title": "2025 Amazon Aliexpress New Autumn Elegant Slim-Fit Solid Color Short-Sleeve Stand Collar Single-Breasted Dress",
@@ -3007,6 +1662,22 @@
       "gender": "women",
       "merchant_product": true,
       "price_amount": 13.36,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "dresses",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096835477254201346",
+      "title": "Cross-Border Summer New Model Amazon Wish Hot-Selling Cotton And Linen Solid Color Loose Round Neck Short-Sleeved Dress",
+      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/8ee0ffbf-1e31-477e-bc5c-7e6c3591008a.jpg",
+      "category": "dresses",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 9.76,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
@@ -3119,22 +1790,6 @@
       "gender": "women",
       "merchant_product": true,
       "price_amount": 10.76,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "dresses",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2096835477254201346",
-      "title": "Cross-Border Summer New Model Amazon Wish Hot-Selling Cotton And Linen Solid Color Loose Round Neck Short-Sleeved Dress",
-      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/8ee0ffbf-1e31-477e-bc5c-7e6c3591008a.jpg",
-      "category": "dresses",
-      "gender": "general",
-      "merchant_product": true,
-      "price_amount": 9.76,
       "currency": "USD",
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,

@@ -3,7 +3,7 @@
   "count": 6,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-11T07:45:52.375Z",
+  "curated_at": "2026-09-12T14:04:09.450Z",
   "products": [
     {
       "provider": "CJdropshipping",
@@ -23,22 +23,6 @@
     },
     {
       "provider": "CJdropshipping",
-      "item_id": "2609080218051611400",
-      "title": "Threaded Underwear Womens Simple Solid Color High-end For Ladies",
-      "image_url": "https://cf.cjdropshipping.com/quick/product/22dd2957-d11f-48ec-819f-6511e936da7b.jpg",
-      "category": "womenunderwear",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 0.63,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "bottoms",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
       "item_id": "2609080913461626300",
       "title": "Women Bra Bralette Ultrathin Pure Cotton",
       "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/08/09/01a201bb-a056-43ba-9d27-f4b9ad1f7ef3.jpg",
@@ -50,6 +34,22 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "women",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609080218051611400",
+      "title": "Threaded Underwear Womens Simple Solid Color High-end For Ladies",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/22dd2957-d11f-48ec-819f-6511e936da7b.jpg",
+      "category": "womenunderwear",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 0.63,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "bottoms",
       "curation_source": "fashion",
       "catalog_discovery": true
     },

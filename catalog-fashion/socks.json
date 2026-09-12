@@ -3,7 +3,7 @@
   "count": 15,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-11T07:45:52.362Z",
+  "curated_at": "2026-09-12T14:04:09.447Z",
   "products": [
     {
       "provider": "Gooten",
@@ -33,6 +33,22 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096858801003974657",
+      "title": "Y2K Goth Lolita Flared Knit Lace Tie Leg Warmers Slouch Socks",
+      "image_url": "https://cf.cjdropshipping.com/8b7b0374-cf67-44de-b34a-09aa3a250a60.JPG",
+      "category": "socks",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 2.39,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "knitwear",
       "curation_source": "fashion",
       "catalog_discovery": true
     },
@@ -81,22 +97,6 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "activewear",
-      "curation_source": "fashion",
-      "catalog_discovery": true
-    },
-    {
-      "provider": "CJdropshipping",
-      "item_id": "2096858801003974657",
-      "title": "Y2K Goth Lolita Flared Knit Lace Tie Leg Warmers Slouch Socks",
-      "image_url": "https://cf.cjdropshipping.com/8b7b0374-cf67-44de-b34a-09aa3a250a60.JPG",
-      "category": "socks",
-      "gender": "women",
-      "merchant_product": true,
-      "price_amount": 2.39,
-      "currency": "USD",
-      "price_basis": "SUPPLIER_BASE",
-      "availability_verified": false,
-      "source_category": "knitwear",
       "curation_source": "fashion",
       "catalog_discovery": true
     },
