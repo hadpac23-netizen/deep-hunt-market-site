@@ -76,7 +76,6 @@
   function glyphFor(provider) {
     const p = String(provider || "").toLowerCase();
     if (p.includes("amazon")) return "a";
-    if (p.includes("ebay")) return "e";
     if (p.includes("walmart")) return "✦";
     if (p.includes("etsy")) return "E";
     if (p.includes("temu")) return "T";
