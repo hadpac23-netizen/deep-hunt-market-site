@@ -1,9 +1,9 @@
 {
   "slug": "swimwear",
-  "count": 5,
+  "count": 7,
   "source": "HUNT authorized catalog snapshots",
   "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
-  "curated_at": "2026-09-11T07:45:52.363Z",
+  "curated_at": "2026-09-12T08:14:00.000Z",
   "products": [
     {
       "provider": "CJdropshipping",
@@ -82,6 +82,38 @@
       "price_basis": "SUPPLIER_BASE",
       "availability_verified": false,
       "source_category": "swimwear",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097218985099112450",
+      "title": "Kaftan Cover Up For Women V Neck Batwing Sleeve Plus Size Caftan Dress",
+      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/5b5ba907-ac18-4518-8575-056162efd44e.jpg",
+      "category": "swimwear",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 8.63,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "plussize",
+      "curation_source": "fashion",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097180517163257858",
+      "title": "Women's V Neck Chiffon 2 Piece Dress, Loose Cover Up Beach Dress For Seaside Vacations",
+      "image_url": "https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/daff37f4-cb4e-48e9-999b-1f974737de2c.jpg",
+      "category": "swimwear",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 8.1,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "dresses",
       "curation_source": "fashion",
       "catalog_discovery": true
     }
