@@ -461,10 +461,10 @@ async function cjMarketShelves(focusSlug = "") {
     jewelry: /\b(jewelry|jewellery|necklace|bracelet|earring|earrings|pendant|ring|rings|anklet|brooch)\b/i,
     perfume: /\b(perfume|fragrance|cologne|eau de parfum|eau de toilette)\b/i,
     phoneaccessories: /\b(phone case|iphone case|mobile case|screen protector|phone stand|phone holder|charging cable|charger|magsafe)\b/i,
-    fitnessequipment: /\b(dumbbell|kettlebell|resistance band|exercise band|pull up|push up|ab roller|foam roller|jump rope|skipping rope|fitness equipment|gym equipment|training equipment)\b/i,
+    fitnessequipment: /\b(dumbbell|kettlebell|resistance band|exercise band|pull up|push up|ab roller|foam roller|jump rope|skipping rope|step machine|treadmill|exercise bike|weight bench|fitness equipment|gym equipment)\b/i,
     yoga: /\b(yoga|pilates|yoga mat|yoga block|pilates ring|yoga strap)\b/i,
     runningcycling: /\b(running|cycling|bike|bicycle|hydration belt|running belt|cycling jersey|bike bag|cycling glasses)\b/i,
-    swimming: /\b(swimming|swim goggles|swimming goggles|swim cap|kickboard|swim training)\b/i,
+    swimming: /\b(swim goggles|swimming goggles|goggles|swim cap|swimming cap|kickboard|pull buoy|swim fins|swimming fins|swim training)\b/i,
     ballsports: /\b(basketball|football|soccer|volleyball|ball pump|training cone|sports cone)\b/i,
     racketsports: /\b(tennis|padel|badminton|table tennis|ping pong|racket|racquet)\b/i,
     sportstowels: /\b(gym towel|sports towel|sport towel|yoga towel|cooling towel|quick dry towel|quick-dry towel)\b/i,
@@ -474,11 +474,15 @@ async function cjMarketShelves(focusSlug = "") {
     pets: /\b(pet|pets|dog|dogs|cat|cats|puppy|kitten)\b/i
   };
   const shelfNegativeRules: Record<string, RegExp> = {
-    sunglasses: /\b(pet|dog|cat|doll|toy|car|vehicle|visor|holder|clip|organizer|storage|protective|safety)\b/i,
+    sunglasses: /\b(pet|dog|cat|doll|toy|car|vehicle|visor|holder|clip|organizer|storage|protective|safety|kid|kids|child|children)\b/i,
     sportstowels: /\b(pet|dog|cat|bandana)\b/i,
-    towels: /\b(pet|dog|cat|bandana)\b/i,
+    towels: /\b(pet|dog|cat|bandana|car magnetic)\b/i,
+    runningcycling: /\b(pet|dog|leash|generator)\b/i,
+    swimming: /\b(swimming ring|pool stairs|swimming trunks|swim trunks|shorts|pants|boxer|toddler|baby)\b/i,
+    racketsports: /\b(hair comb|hairbrush|brush|bracelet|skirt|hat|music|beauty|pet|dog|toy)\b/i,
+    ballsports: /\b(pet|dog|puppy|toy|shoe|sock|clothes|shirt|jersey)\b/i,
     sports: /\b(tactical|survival|hunting|defense|stab[- ]?resistant|physical therapy|rehabilitation|pain relief|ems|muscle trainer|weight[- ]?loss|weight lose|fat reduction|slimming|waist trainer|body shaping|hip trainer|butt lifting|booty)\b/i,
-    fitnessequipment: /\b(tactical|survival|hunting|defense|stab[- ]?resistant|physical therapy|rehabilitation|pain relief|ems|muscle trainer|weight[- ]?loss|weight lose|fat reduction|slimming|waist trainer|body shaping|hip trainer|butt lifting|booty)\b/i
+    fitnessequipment: /\b(tactical|survival|hunting|defense|stab[- ]?resistant|protective vest|camping|physical therapy|rehabilitation|pain relief|ems|muscle trainer|fighting|boxing|taekwondo|sanda|weight[- ]?loss|weight lose|fat reduction|slimming|waist trainer|body shaping|hip trainer|butt lifting|booty)\b/i
   };
   const titleFitsShelf = (slug: string, title: string) => {
     const rule = strictTitleRules[slug];
