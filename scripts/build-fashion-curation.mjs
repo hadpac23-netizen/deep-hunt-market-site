@@ -22,11 +22,9 @@ const brandRisk = /\b(chanel|gucci|prada|louis vuitton|dior|ysl|saint laurent|he
 function baseUsable(item){
   const title=safeText(item?.title);
   const auth=lower(item?.authenticity_status);
-  const provider=lower(item?.provider);
   const brandOkay=!brandRisk.test(title) || ["verified","authorized"].includes(auth);
-  const onsiteFirst=provider !== "ebay";
   return Boolean(item?.item_id && item?.provider && title && httpsImage(item?.image_url) && positivePrice(item?.price_amount)
-    && onsiteFirst && !blocked.test(title) && !sexualized.test(title) && !bodyIdeal.test(title) && !supplierNoise.test(title) && brandOkay);
+    && !blocked.test(title) && !sexualized.test(title) && !bodyIdeal.test(title) && !supplierNoise.test(title) && brandOkay);
 }
 function usable(item){
   return baseUsable(item) && !kids.test(safeText(item?.title));

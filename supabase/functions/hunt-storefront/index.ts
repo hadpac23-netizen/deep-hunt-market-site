@@ -1053,213 +1053,9 @@ async function printfulCatalog(limit = 24) {
 }
 
 
-const EBAY_FASHION_MANUAL_REVIEW_BRANDS = [
-  "prada","coach","longchamp","gucci","chanel","louis vuitton","lv ","dior","ysl","saint laurent",
-  "hermes","hermès","michael kors","tory burch","kate spade","balenciaga","burberry","fendi","versace"
-];
-
-
-function ebayShelfTitleAllowed(slug: string, rawTitle: string) {
-  const t = cleanText(rawTitle).toLowerCase();
-  const has = (re: RegExp) => re.test(t);
-  const apparel = has(/\b(dress|shirt|top|blouse|pants|trousers|jeans|shorts|skirt|jacket|coat|sweater|cardigan|hoodie|clothing|apparel|wear|leggings|bra|briefs?|boxers?|suit|blazer|pajamas?|pyjamas?)\b/);
-  if (slug === "womenunderwear") return has(/\b(women(?:'s|s)?|woman|ladies|female)\b/) && has(/\b(underwear|briefs?|panties|bra|bras|bralette|camisole|intimates?)\b/);
-  if (slug === "menunderwear") return has(/\b(men(?:'s|s)?|man|male)\b/) && has(/\b(underwear|briefs?|boxer briefs?|boxers?|underpants|undershirt|base layer)\b/);
-  if (slug === "kidsunderwear") return has(/\b(kids?|children|child|boys?|youth|toddler)\b/) && has(/\b(underwear|briefs?|boxers?|underpants|undershirt|base layer)\b/);
-  if (slug === "sleepwear") return apparel && has(/\b(pajamas?|pyjamas?|sleepwear|nightwear|nightgown|sleep set)\b/);
-  if (slug === "loungewear") return apparel && has(/\b(loungewear|lounge set|lounge pants|lounge top)\b/);
-  if (slug === "plussize") return apparel && has(/\b(plus size|big & tall|big and tall)\b/);
-  if (slug === "petite") return apparel && has(/\bpetite\b/);
-  if (slug === "maternity") return apparel && has(/\b(maternity|pregnancy|pregnant)\b/);
-  if (slug === "sets") return apparel && has(/\b(co-?ord|matching set|2 piece|two piece|2pc|two-piece)\b/);
-  if (slug === "suits") return apparel && has(/\b(suit|suits|tuxedo|formal jacket|formalwear|business suit|blazer set)\b/) && !has(/\b(pet|dog|cat|recovery|swim|wetsuit)\b/);
-  if (slug === "gaming") return has(/\b(gaming headset|gaming headphones|game controller|gaming controller|gamepad|mechanical gaming keyboard|gaming keyboard|gaming mouse)\b/)
-    && !has(/\b(chair|desk|table|sticker|skin only|case only)\b/);
-  if (slug === "tech") return has(/\b(usb[- ]?c charger|wall charger|wireless charger|power bank|usb[- ]?c hub|usb hub|wireless earbuds|earphones|headphones|lavalier microphone|lapel microphone|wireless microphone|webcam|portable monitor|smartwatch|smart watch)\b/)
-    && !has(/\b(case only|cover only|holder only|stand only|replacement shell)\b/);
-  if (slug === "lighting") return has(/\b(under[- ]?cabinet light|desk lamp|table lamp|reading lamp|rechargeable lamp|led strip light|led strip)\b/)
-    && !has(/\b(aquarium|car interior|vehicle interior)\b/);
-  return true;
-}
-
-const ebayShelfCaches = new Map<string, { value: Record<string, any[]>; expiresAt: number }>();
-const ebayShelfDiagnostics = new Map<string, { queries: number; adapter_ok: number; raw_items: number; title_gate_pass: number; quality_pass: number }>();
-
-
-async function ebayAdapter(body: any) {
-  const token = env("HUNT_EBAY_INTERNAL_TOKEN");
-  const base = env("SUPABASE_URL").replace(/\/$/, "");
-  if (!token || !base || !env("EBAY_CLIENT_ID") || !env("EBAY_CLIENT_SECRET")) return null;
-  try {
-    const res = await fetch(base + "/functions/v1/hunt-ebay-browse", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-hunt-ebay-token": token,
-      },
-      body: JSON.stringify(body),
-    });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data?.ok === true ? data : null;
-  } catch {
-    return null;
-  }
-}
-
-async function ebayMarketShelves(focusSlug = "") {
-  const cacheKey = focusSlug || "*";
-  const cached = ebayShelfCaches.get(cacheKey);
-  if (cached && cached.expiresAt > Date.now()) return cached.value;
-  const specs = [
-    ["women", "women fashion clothing", 36],
-    ["women", "women brown jeans", 20],
-    ["jackets", "women suede jacket", 24],
-    ["jackets", "women peplum jacket", 20],
-    ["knitwear", "women roll neck sweater", 20],
-    ["dresses", "women dresses", 30],
-    ["shoes", "women satin ballet flats", 24],
-    ["bags", "women handbags", 30],
-    ["bags", "women olive green shoulder bag", 20],
-    ["bags", "women burgundy shoulder bag", 20],
-    ["bags", "women leather crossbody bag", 24],
-    ["bags", "women drawstring pouch bag suede leather", 24],
-    ["bags", "women animal print shoulder bag", 20],
-    ["shoes", "women shoes", 30],
-    ["jewelry", "women 316L stainless steel jewelry", 30],
-    ["jewelry", "women PVD gold plated jewelry", 24],
-    ["jewelry", "women stainless steel charm necklace", 28],
-    ["jewelry", "women freshwater pearl earrings", 24],
-    ["accessories", "women acetate hair claw clip", 30],
-    ["accessories", "women premium hair accessories", 24],
-    ["accessories", "women polarized sunglasses", 30],
-    ["accessories", "women wraparound sunglasses UV400", 24],
-    ["accessories", "women 100 percent silk scarf", 24],
-    ["accessories", "women floral brooch", 24],
-    ["accessories", "women western leather belt", 20],
-    ["womenunderwear", "women cotton underwear multipack", 30],
-    ["womenunderwear", "women everyday bra bralette", 24],
-    ["menunderwear", "men cotton boxer briefs multipack", 30],
-    ["menunderwear", "men underwear briefs multipack", 24],
-    ["menunderwear", "men boxer briefs cotton pack", 30],
-    ["menunderwear", "men undershirt multipack", 24],
-    ["kidsunderwear", "kids cotton underwear multipack", 30],
-    ["kidsunderwear", "boys underwear multipack", 24],
-    ["kidsunderwear", "boys boxer briefs pack", 24],
-    ["kidsunderwear", "kids undershirt multipack", 20],
-    ["sleepwear", "women pajamas sleepwear set", 24],
-    ["sleepwear", "women cotton pajamas set", 24],
-    ["sleepwear", "men pajamas sleepwear set", 24],
-    ["sleepwear", "men cotton pajamas set", 24],
-    ["sleepwear", "kids pajamas sleepwear set", 20],
-    ["sleepwear", "boys pajamas set", 20],
-    ["loungewear", "women loungewear set", 24],
-    ["loungewear", "women lounge pants set", 24],
-    ["loungewear", "men loungewear set", 24],
-    ["loungewear", "men lounge pants set", 24],
-    ["plussize", "women plus size clothing", 30],
-    ["plussize", "women plus size dress", 28],
-    ["plussize", "women plus size blouse", 24],
-    ["plussize", "men plus size clothing", 24],
-    ["plussize", "men big tall shirt", 24],
-    ["petite", "women petite clothing", 24],
-    ["petite", "petite women trousers", 24],
-    ["petite", "petite women jeans", 24],
-    ["petite", "petite women dress", 24],
-    ["maternity", "women maternity clothing", 24],
-    ["maternity", "women maternity top", 24],
-    ["maternity", "women maternity dress", 24],
-    ["maternity", "women maternity leggings", 24],
-    ["sets", "women 2 piece matching set", 24],
-    ["sets", "women matching pants set", 24],
-    ["sets", "men co ord matching set", 20],
-    ["sets", "men matching tracksuit set", 20],
-    ["gaming", "gaming headset", 30],
-    ["gaming", "game controller", 30],
-    ["gaming", "mechanical gaming keyboard", 24],
-    ["gaming", "gaming mouse", 24],
-    ["tech", "usb c charger 65w", 30],
-    ["tech", "usb c hub", 30],
-    ["tech", "wireless lapel microphone", 30],
-    ["tech", "wireless earbuds", 30],
-    ["tech", "portable monitor", 24],
-    ["lighting", "under cabinet light rechargeable", 24],
-    ["lighting", "desk lamp rechargeable", 24],
-    ["men", "men fashion clothing", 30],
-    ["men", "men polo shirt", 28],
-    ["men", "men knit polo shirt", 24],
-    ["men", "men linen shirt", 28],
-    ["men", "men chino pants", 28],
-    ["men", "men straight jeans", 28],
-    ["suits", "men suits", 24],
-    ["phoneaccessories", "iPhone 18 Pro case MagSafe", 36],
-    ["phoneaccessories", "iPhone 18 Pro Max case MagSafe", 36],
-    ["phoneaccessories", "iPhone 18 Pro crossbody case strap", 30],
-    ["phoneaccessories", "iPhone 18 Pro wrist strap case", 24],
-    ["phoneaccessories", "Samsung Galaxy S26 Ultra case", 36],
-    ["phoneaccessories", "Samsung Galaxy S26 Ultra magnetic case kickstand", 30],
-    ["phoneaccessories", "Samsung Galaxy Z Fold 8 case", 30],
-    ["phoneaccessories", "Samsung Galaxy Z Flip 8 case", 30],
-  ] as const;
-  const selectedSpecs = focusSlug ? specs.filter(([slug]) => slug === focusSlug) : specs;
-  const results = await Promise.all(selectedSpecs.map(([slug, q, limit]) =>
-    withProviderTimeout(ebayAdapter({ action: "search", q, limit }), null, focusSlug ? 6000 : 4500)
-      .then(data => ({ slug, data }))
-  ));
-  const out: Record<string, any[]> = {};
-  const diag = { queries: selectedSpecs.length, adapter_ok: 0, raw_items: 0, title_gate_pass: 0, quality_pass: 0 };
-  for (const {slug, data} of results) {
-    if (!out[slug]) out[slug] = [];
-    if (data) diag.adapter_ok += 1;
-    diag.raw_items += Array.isArray(data?.items) ? data.items.length : 0;
-    const seen = new Set(out[slug].map(x => String(x?.provider) + ":" + String(x?.item_id)));
-    for (const item of Array.isArray(data?.items) ? data.items : []) {
-      const key = String(item?.provider) + ":" + String(item?.item_id);
-      if (!item?.item_id || seen.has(key) || !cleanText(item?.image_url).startsWith("https://")) continue;
-      if (!allowedTitle(cleanText(item?.title))) continue;
-      if (!ebayShelfTitleAllowed(slug, cleanText(item?.title))) continue;
-      diag.title_gate_pass += 1;
-      const titleLower = cleanText(item?.title).toLowerCase();
-      if (["bags","jewelry","accessories"].includes(slug) &&
-          EBAY_FASHION_MANUAL_REVIEW_BRANDS.some(brand => titleLower.includes(brand))) continue;
-      const feedback = Number(item?.seller?.feedback_percentage);
-      if (Number.isFinite(feedback) && feedback < 97) continue;
-      const price = Number(item?.price_amount);
-      if (!Number.isFinite(price) || price <= 0) continue;
-      seen.add(key);
-      diag.quality_pass += 1;
-      out[slug].push({ ...item, category: slug });
-      const shelfCap = slug === "phoneaccessories" ? 220
-        : slug === "accessories" ? 160
-        : slug === "men" ? 180
-        : ["womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear"].includes(slug) ? 100
-        : 120;
-      if (out[slug].length >= shelfCap) break;
-    }
-  }
-  ebayShelfDiagnostics.set(cacheKey, diag);
-  ebayShelfCaches.set(cacheKey, { value: out, expiresAt: Date.now() + 10 * 60 * 1000 });
-  return out;
-}
-
-async function ebayProductDetail(productId: string) {
-  const data = await ebayAdapter({ action: "item", item_id: productId });
-  return data?.product || null;
-}
 
 function providerState() {
   return [
-    {
-      provider: "eBay",
-      state:
-        env("EBAY_CLIENT_ID") && env("EBAY_CLIENT_SECRET")
-          ? "CATALOG_LIVE"
-          : "AUTH_REQUIRED",
-      connector_stage:
-        env("EBAY_CLIENT_ID") && env("EBAY_CLIENT_SECRET")
-          ? (env("EBAY_EPN_CAMPAIGN_ID") ? "BROWSE_LIVE_EPN_READY" : "BROWSE_LIVE_EPN_PENDING")
-          : "STAGED",
-    },
     {
       provider: "Amazon",
       state:
@@ -1389,11 +1185,6 @@ function providerState() {
 }
 
 function checkoutMap() {
-  const ebayActive = Boolean(
-    env("EBAY_CLIENT_ID") &&
-      env("EBAY_CLIENT_SECRET") &&
-      enabled("EBAY_ORDER_API_APPROVED")
-  );
   const wooActive = Boolean(
     env("WOOCOMMERCE_BASE_URL") &&
       env("WOOCOMMERCE_CONSUMER_KEY") &&
@@ -1423,7 +1214,6 @@ function checkoutMap() {
   );
 
   return {
-    eBay: { mode: ebayActive ? "ONSITE_CAPABLE" : "APPROVAL_REQUIRED" },
     Amazon: { mode: "DISCOVERY_ONLY" },
     "impact.com": { mode: "DISCOVERY_ONLY" },
     Printful: {
@@ -1505,18 +1295,15 @@ Deno.serve(async (req: Request) => {
   const focusShelf = /^[a-z0-9]+$/.test(rawShelf) ? rawShelf : "";
 
   if (url.searchParams.get("shelves") === "1") {
-    const [merchantShelves, printfulShelves, cjShelves, gootenShelves, ebayShelves] = await Promise.all([
+    const [merchantShelves, printfulShelves, cjShelves, gootenShelves] = await Promise.all([
       withProviderTimeout(merchantMarketShelves(), {}, 3500),
       withProviderTimeout(printfulMarketShelves(), {}, 8000),
       withProviderTimeout(cjMarketShelves(focusShelf), {}, focusShelf ? 9000 : 9000),
-      withProviderTimeout(gootenMarketShelves(), {}, 8000),
-      enabled("EBAY_ORDER_API_APPROVED")
-        ? withProviderTimeout(ebayMarketShelves(focusShelf), {}, focusShelf ? 7000 : 10000)
-        : Promise.resolve({})
+      withProviderTimeout(gootenMarketShelves(), {}, 8000)
     ]);
     const matterhornShelves = matterhornMarketShelves();
     const surveyShelves = surveyMarketShelves();
-    const mergedShelves = mergeMarketShelves(surveyShelves, matterhornShelves, merchantShelves, printfulShelves, gootenShelves, cjShelves, ebayShelves);
+    const mergedShelves = mergeMarketShelves(surveyShelves, matterhornShelves, merchantShelves, printfulShelves, gootenShelves, cjShelves);
     const shelves = focusShelf ? { [focusShelf]: mergedShelves[focusShelf] || [] } : mergedShelves;
     const visibleEntries = Object.values(shelves).reduce(
       (sum: number, items: any) => sum + (Array.isArray(items) ? items.length : 0),
@@ -1550,13 +1337,11 @@ Deno.serve(async (req: Request) => {
         "Printful public catalog",
         env("CJ_API_KEY") || env("CJ_ACCESS_TOKEN") ? "CJdropshipping API" : null,
         "Gooten public catalog",
-        env("EBAY_CLIENT_ID") && env("EBAY_CLIENT_SECRET") ? "eBay Browse Production" : null,
       ].filter(Boolean).join(" + "),
       price_note:
         "Shelf cards intentionally defer price to the product detail view so the homepage stays fast and never invents a price.",
       truth_note:
         "Only products matched to their shelf category are shown. Empty unsupported categories remain empty until a verified supplier feed is connected.",
-      focused_shelf_diagnostics: focusShelf ? (ebayShelfDiagnostics.get(focusShelf) || null) : undefined,
     }), { headers });
   }
 
@@ -1593,23 +1378,6 @@ Deno.serve(async (req: Request) => {
         },
         truth_note:
           "Matterhorn product, size and stock data come from the official supplier feed. HUNT checkout stays disabled until commercial account and fulfillment terms are approved."
-      }), { headers });
-    }
-    if (providerLower === "ebay") {
-      const product = await ebayProductDetail(productId);
-      if (!product) {
-        return new Response(JSON.stringify({ error: "product not found" }), { status: 404, headers });
-      }
-      return new Response(JSON.stringify({
-        product,
-        provider_checkout,
-        checkout: {
-          mode: "ONSITE_FIRST",
-          external_purchase_links_enabled: false,
-          public_checkout_enabled: false,
-        },
-        truth_note:
-          "eBay product, price and availability are live marketplace data. Onsite purchase stays disabled until eBay Order API production approval is active.",
       }), { headers });
     }
     if (providerLower === "cjdropshipping" || providerLower === "cj") {

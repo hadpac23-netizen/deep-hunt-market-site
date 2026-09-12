@@ -20,7 +20,6 @@
     "cjdropshipping": {default:"check"},
     "cj": {default:"check"},
     "matterhorn": {default:"check"},
-    "ebay": {default:"check"},
     "printful": {default:"check"},
     "gooten": {default:"check"},
     "brandsgateway": {default:"check"},

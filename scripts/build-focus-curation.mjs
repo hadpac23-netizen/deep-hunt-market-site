@@ -26,8 +26,6 @@ function usable(item){
     &&!supplierNoise.test(title)&&!blocked.test(title)&&!sexualized.test(title)&&!bodyIdeal.test(title)&&brandOkay);
 }
 
-const providerName=item=>low(item?.provider);
-const onsiteCatalog=item=>!providerName(item).includes("ebay");
 const verifiedBrand=item=>["verified","authorized"].includes(low(item?.authenticity_status));
 
 const tests={
@@ -54,44 +52,34 @@ const tests={
   crafts:t=>/\b(embroidery kit|crochet kit|knitting kit|beading kit|bead kit|sewing kit|scrapbook kit|scrapbooking|painting kit|diy craft kit|craft supplies|embroidery thread|crochet hooks?|knitting needles?)\b/i.test(t)
     &&!/\b(hat|beanie|cap|wall art|finished decor)\b/i.test(t),
 
-  sports:(t,item)=>onsiteCatalog(item)
-    &&/\b(yoga mat|pilates|resistance bands?|fitness bands?|dumbbells?|jump rope|skipping rope|running belt|gym bag|exercise mat|workout bands?|basketball|football|soccer|volleyball|tennis|badminton|table tennis|swimming|swim cap|sports sunglasses|cycling glasses|sports towel|gym towel|cooling towel)\b/i.test(t)
+  sports:t=>/\b(yoga mat|pilates|resistance bands?|fitness bands?|dumbbells?|jump rope|skipping rope|running belt|gym bag|exercise mat|workout bands?|basketball|football|soccer|volleyball|tennis|badminton|table tennis|swimming|swim cap|sports sunglasses|cycling glasses|sports towel|gym towel|cooling towel)\b/i.test(t)
     &&!/\b(dog|pet|therapy|medical|supplement|pre-workout|protein powder|fat burner)\b/i.test(t),
 
-  fitnessequipment:(t,item)=>onsiteCatalog(item)
-    &&/\b(dumbbells?|resistance bands?|fitness bands?|workout bands?|jump rope|skipping rope|exercise mat|training bench|curl bench|weight bench|pull-up|push-up|ab roller|step platform|balance board|foam roller|gym equipment|fitness equipment)\b/i.test(t)
+  fitnessequipment:t=>/\b(dumbbells?|resistance bands?|fitness bands?|workout bands?|jump rope|skipping rope|exercise mat|training bench|curl bench|weight bench|pull-up|push-up|ab roller|step platform|balance board|foam roller|gym equipment|fitness equipment)\b/i.test(t)
     &&!/\b(therapy|medical|weight loss|fat burn|slimming)\b/i.test(t),
 
-  yoga:(t,item)=>onsiteCatalog(item)
-    &&/\b(yoga mat|pilates mat|yoga block|yoga strap|yoga towel|pilates ring|pilates ball|resistance band)\b/i.test(t)
+  yoga:t=>/\b(yoga mat|pilates mat|yoga block|yoga strap|yoga towel|pilates ring|pilates ball|resistance band)\b/i.test(t)
     &&!/\b(therapy|medical|weight loss|fat burn|slimming)\b/i.test(t),
 
-  runningcycling:(t,item)=>onsiteCatalog(item)
-    &&/\b(running belt|running vest|running light|cycling glasses|sports sunglasses|cycling bag|bike bag|bicycle bag|cycling gloves|running cap|hydration belt|sports bottle)\b/i.test(t)
+  runningcycling:t=>/\b(running belt|running vest|running light|cycling glasses|sports sunglasses|cycling bag|bike bag|bicycle bag|cycling gloves|running cap|hydration belt|sports bottle)\b/i.test(t)
     &&!/\b(motorcycle|medical|therapy)\b/i.test(t),
 
-  swimming:(t,item)=>onsiteCatalog(item)
-    &&/\b(swim cap|swimming cap|swimming goggles|swim goggles|kickboard|swim training|pool training|swim bag|swimming accessory)\b/i.test(t)
+  swimming:t=>/\b(swim cap|swimming cap|swimming goggles|swim goggles|kickboard|swim training|pool training|swim bag|swimming accessory)\b/i.test(t)
     &&!/\b(inflatable boat|repair kit|adult|lingerie)\b/i.test(t),
 
-  ballsports:(t,item)=>onsiteCatalog(item)
-    &&/\b(basketball|football|soccer|volleyball|training ball|ball pump|ball bag|ball storage)\b/i.test(t)
+  ballsports:t=>/\b(basketball|football|soccer|volleyball|training ball|ball pump|ball bag|ball storage)\b/i.test(t)
     &&!/\b(medal|hanger|decor|medical|therapy)\b/i.test(t),
 
-  racketsports:(t,item)=>onsiteCatalog(item)
-    &&/\b(tennis ball|tennis racket|tennis racquet|badminton|table tennis|ping pong|padel|racket grip|racquet grip)\b/i.test(t)
+  racketsports:t=>/\b(tennis ball|tennis racket|tennis racquet|badminton|table tennis|ping pong|padel|racket grip|racquet grip)\b/i.test(t)
     &&!/\b(bracelet|shoe|dress|skirt|medal|decor)\b/i.test(t),
 
-  sportstowels:(t,item)=>onsiteCatalog(item)
-    &&/\b(sports? towels?|gym towels?|cooling towels?|yoga towels?|golf towels?|quick[- ]?dry towels?)\b/i.test(t)
+  sportstowels:t=>/\b(sports? towels?|gym towels?|cooling towels?|yoga towels?|golf towels?|quick[- ]?dry towels?)\b/i.test(t)
     &&!/\b(rack|holder|hook|warmer|storage|cabinet)\b/i.test(t),
 
-  towels:(t,item)=>onsiteCatalog(item)
-    &&/\b(bath towels?|hand towels?|beach towels?|sports? towels?|gym towels?|cooling towels?|yoga towels?|golf towels?|turkish towels?|peshtemal|towel sets?)\b/i.test(t)
+  towels:t=>/\b(bath towels?|hand towels?|beach towels?|sports? towels?|gym towels?|cooling towels?|yoga towels?|golf towels?|turkish towels?|peshtemal|towel sets?)\b/i.test(t)
     &&!/\b(rack|holder|hook|warmer|storage|cabinet|paper towel)\b/i.test(t),
 
-  sunglasses:(t,item)=>onsiteCatalog(item)
-    &&/\b(sunglasses?|sports? glasses|cycling glasses|polarized eyewear|uv400 eyewear)\b/i.test(t)
+  sunglasses:t=>/\b(sunglasses?|sports? glasses|cycling glasses|polarized eyewear|uv400 eyewear)\b/i.test(t)
     &&(!/\b(ray[- ]?ban|oakley|maui jim|gucci|prada|chanel|dior|versace|balenciaga)\b/i.test(t)||verifiedBrand(item))
     &&!/\b(pet|dog|costume|toy)\b/i.test(t),
 
@@ -137,7 +125,6 @@ function score(item){
   const title=text(item.title);
   let s=0;
   if(item.availability_verified===true)s+=20;
-  if(item.provider==="eBay")s+=3;
   if(title.length>=16&&title.length<=100)s+=3;
   if(item.variant_count>0)s+=1;
   if(item.source_fresh_at)s+=1;
