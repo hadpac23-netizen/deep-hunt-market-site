@@ -54,6 +54,7 @@ function cleanText(value: unknown): string {
 function allowedTitle(title: string): boolean {
   const lower = title.toLowerCase();
   if (BLOCKED_TERMS.some(term => lower.includes(term))) return false;
+  if (/\b(weight loss|lose weight|fat burn|burn fat|slimming|waist trainer|waist trimmer|body shaper|diet pill|laxative)\b/.test(lower)) return false;
   if (/\b(temu\s*&\s*tk|tmeu|tk\s*only|supports?\s+pickup|self[- ]?pickup|shipment\s+from\s+walmart|logistics\s+only)\b/.test(lower)) return false;
   return true;
 }
@@ -400,7 +401,16 @@ async function cjMarketShelves() {
     phoneaccessories: /\b(phone case|iphone case|mobile case|screen protector|phone stand|charging cable|charger)\b/i,
     gaming: /\b(gaming|gamepad|controller|keyboard|mouse pad|headset stand)\b/i,
     travel: /\b(travel|luggage|organizer|suitcase|passport holder|weekender|duffle)\b/i,
-    sports: /\b(sports|fitness|running|cycling|yoga|outdoor sport)\b/i,
+    sports: /\b(sports|fitness|running|cycling|yoga|pilates|swimming|basketball|football|soccer|volleyball|tennis|badminton|padel|table tennis|gym|training)\b/i,
+    fitnessequipment: /\b(dumbbell|kettlebell|resistance band|exercise band|pull up|push up|ab roller|foam roller|jump rope|skipping rope|fitness equipment|gym equipment|training equipment)\b/i,
+    yoga: /\b(yoga|pilates|yoga mat|yoga block|pilates ring|yoga strap)\b/i,
+    runningcycling: /\b(running|cycling|bike|bicycle|hydration belt|running belt|cycling jersey|bike bag|cycling glasses)\b/i,
+    swimming: /\b(swimming|swim goggles|swimming goggles|swim cap|kickboard|swim training)\b/i,
+    ballsports: /\b(basketball|football|soccer|volleyball|ball pump|training cone|sports cone)\b/i,
+    racketsports: /\b(tennis|padel|badminton|table tennis|ping pong|racket|racquet)\b/i,
+    sportstowels: /\b(gym towel|sports towel|sport towel|yoga towel|cooling towel|quick dry towel|quick-dry towel)\b/i,
+    towels: /\b(bath towel|hand towel|beach towel|cotton towel|microfiber towel|microfibre towel|turkish towel|peshtemal|towel set)\b/i,
+    sunglasses: /\b(sunglasses|sun glasses|eyewear|polarized glasses|polarised glasses|uv400)\b/i,
     outdoors: /\b(outdoor|camping|picnic|hiking|garden)\b/i,
     toys: /\b(toy|toys|puzzle|plush|building block|craft kit|educational game)\b/i,
     kids: /\b(kid|kids|child|children|baby|toddler|youth|girl|boy)\b/i,
@@ -429,6 +439,15 @@ async function cjMarketShelves() {
     jewelry: /\b(jewelry|jewellery|necklace|bracelet|earring|earrings|pendant|ring|rings|anklet|brooch)\b/i,
     perfume: /\b(perfume|fragrance|cologne|eau de parfum|eau de toilette)\b/i,
     phoneaccessories: /\b(phone case|iphone case|mobile case|screen protector|phone stand|phone holder|charging cable|charger|magsafe)\b/i,
+    fitnessequipment: /\b(dumbbell|kettlebell|resistance band|exercise band|pull up|push up|ab roller|foam roller|jump rope|skipping rope|fitness equipment|gym equipment|training equipment)\b/i,
+    yoga: /\b(yoga|pilates|yoga mat|yoga block|pilates ring|yoga strap)\b/i,
+    runningcycling: /\b(running|cycling|bike|bicycle|hydration belt|running belt|cycling jersey|bike bag|cycling glasses)\b/i,
+    swimming: /\b(swimming|swim goggles|swimming goggles|swim cap|kickboard|swim training)\b/i,
+    ballsports: /\b(basketball|football|soccer|volleyball|ball pump|training cone|sports cone)\b/i,
+    racketsports: /\b(tennis|padel|badminton|table tennis|ping pong|racket|racquet)\b/i,
+    sportstowels: /\b(gym towel|sports towel|sport towel|yoga towel|cooling towel|quick dry towel|quick-dry towel)\b/i,
+    towels: /\b(bath towel|hand towel|beach towel|cotton towel|microfiber towel|microfibre towel|turkish towel|peshtemal|towel set)\b/i,
+    sunglasses: /\b(sunglasses|sun glasses|eyewear|polarized glasses|polarised glasses|uv400)\b/i,
     toys: /\b(toy|toys|puzzle|plush|building block|educational game|drawing board|microscope|walkie[- ]?talkie)\b/i,
     pets: /\b(pet|pets|dog|dogs|cat|cats|puppy|kitten)\b/i
   };
