@@ -1,11 +1,14 @@
 {
-  "schema_version": 1,
-  "updated_at": "2026-09-09",
+  "schema_version": 2,
+  "updated_at": "2026-09-12",
   "policy": {
     "onsite_first": true,
     "never_fake_connection": true,
     "owner_approval_before_paid_onboarding": true,
-    "publish_requires_live_price_stock_and_source": true
+    "publish_requires_live_price_stock_and_source": true,
+    "country_fit_required": true,
+    "free_first": true,
+    "blocked_country_products_hidden": true
   },
   "suppliers": [
     {
@@ -15,9 +18,19 @@
       "status": "conditional_eu_vat_required",
       "adapter": "supabase/functions/hunt-supplier-adapter",
       "catalog_path": "feed_first_then_api",
-      "categories": ["perfume", "beauty", "skincare", "makeup"],
-      "regions": ["EU"],
-      "integration": ["api", "feed"],
+      "categories": [
+        "perfume",
+        "beauty",
+        "skincare",
+        "makeup"
+      ],
+      "regions": [
+        "EU"
+      ],
+      "integration": [
+        "api",
+        "feed"
+      ],
       "order_automation": true,
       "stock_price_sync": true,
       "white_label": true,
@@ -29,9 +42,22 @@
       "priority": 2,
       "status": "eligible_candidate_paid_api_required",
       "monthly_api_price_eur": 395,
-      "categories": ["women", "men", "bags", "shoes", "accessories", "designer"],
-      "regions": ["EU", "US", "global"],
-      "integration": ["rest_api"],
+      "categories": [
+        "women",
+        "men",
+        "bags",
+        "shoes",
+        "accessories",
+        "designer"
+      ],
+      "regions": [
+        "EU",
+        "US",
+        "global"
+      ],
+      "integration": [
+        "rest_api"
+      ],
       "order_automation": true,
       "stock_price_sync": true,
       "white_label": true,
@@ -46,9 +72,26 @@
       "sandbox_base": "https://idt2015.rewix.zero11.net",
       "sandbox_api_verified_reachable": true,
       "monthly_full_catalog_price_eur": 99,
-      "categories": ["women", "men", "suits", "underwear", "socks", "shoes", "bags", "accessories"],
-      "regions": ["EU", "global"],
-      "integration": ["api", "csv", "xml", "json"],
+      "categories": [
+        "women",
+        "men",
+        "suits",
+        "underwear",
+        "socks",
+        "shoes",
+        "bags",
+        "accessories"
+      ],
+      "regions": [
+        "EU",
+        "global"
+      ],
+      "integration": [
+        "api",
+        "csv",
+        "xml",
+        "json"
+      ],
       "credentials_required": true
     },
     {
@@ -56,9 +99,16 @@
       "name": "PerfumesWholesale.eu",
       "priority": 4,
       "status": "target_not_connected",
-      "categories": ["perfume", "beauty"],
-      "regions": ["EU"],
-      "integration": ["rest_api"],
+      "categories": [
+        "perfume",
+        "beauty"
+      ],
+      "regions": [
+        "EU"
+      ],
+      "integration": [
+        "rest_api"
+      ],
       "order_automation": true,
       "stock_price_sync": true,
       "credentials_required": true
@@ -68,9 +118,15 @@
       "name": "Doba",
       "priority": 5,
       "status": "target_not_connected",
-      "categories": ["general"],
-      "regions": ["US"],
-      "integration": ["retailer_api"],
+      "categories": [
+        "general"
+      ],
+      "regions": [
+        "US"
+      ],
+      "integration": [
+        "retailer_api"
+      ],
       "order_automation": true,
       "tracking_api": true,
       "credentials_required": true
@@ -80,9 +136,117 @@
       "name": "CJdropshipping",
       "priority": 6,
       "status": "catalog_present_order_path_unverified",
-      "categories": ["general"],
-      "regions": ["China", "US", "EU", "global"],
-      "integration": ["catalog"],
+      "categories": [
+        "general"
+      ],
+      "regions": [
+        "China",
+        "US",
+        "EU",
+        "global"
+      ],
+      "integration": [
+        "catalog"
+      ],
+      "credentials_required": true
+    },
+    {
+      "id": "trendsi",
+      "name": "Trendsi",
+      "priority": 7,
+      "status": "free_plan_hold_israel",
+      "categories": [
+        "women",
+        "swimwear",
+        "dresses",
+        "accessories"
+      ],
+      "regions": [
+        "multi-country"
+      ],
+      "integration": [
+        "shopify",
+        "commentsold",
+        "tiktok_shop"
+      ],
+      "free_plan": true,
+      "country_rules": {
+        "blocked": [
+          "IL"
+        ],
+        "default": "check"
+      },
+      "credentials_required": true
+    },
+    {
+      "id": "hypersku",
+      "name": "HyperSKU",
+      "priority": 8,
+      "status": "candidate_free_no_subscription",
+      "categories": [
+        "general",
+        "women",
+        "swimwear"
+      ],
+      "regions": [
+        "global"
+      ],
+      "integration": [
+        "platform",
+        "sourcing"
+      ],
+      "free_plan": true,
+      "country_rules": {
+        "allowed": [
+          "IL"
+        ],
+        "default": "check"
+      },
+      "credentials_required": true
+    },
+    {
+      "id": "fondmart",
+      "name": "FondMart",
+      "priority": 9,
+      "status": "candidate_free_no_inventory",
+      "categories": [
+        "women",
+        "swimwear",
+        "plussize",
+        "dresses"
+      ],
+      "regions": [
+        "global"
+      ],
+      "integration": [
+        "platform"
+      ],
+      "free_plan": true,
+      "country_rules": {
+        "default": "check"
+      },
+      "credentials_required": true
+    },
+    {
+      "id": "eprolo",
+      "name": "EPROLO",
+      "priority": 10,
+      "status": "candidate_free_no_subscription",
+      "categories": [
+        "general",
+        "women",
+        "swimwear"
+      ],
+      "regions": [
+        "global"
+      ],
+      "integration": [
+        "platform"
+      ],
+      "free_plan": true,
+      "country_rules": {
+        "default": "check"
+      },
       "credentials_required": true
     }
   ]

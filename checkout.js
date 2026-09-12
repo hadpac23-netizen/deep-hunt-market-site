@@ -36,6 +36,8 @@
     if (!shippingEl || !totalEl) return;
     if (!cart.length) { shippingEl.textContent="—"; totalEl.textContent="—"; return; }
     if (!country) { shippingEl.textContent="SELECT COUNTRY"; totalEl.textContent="NOT SET"; return; }
+    const countryBlocked = cart.filter(item => window.HuntCountry?.status?.(item,country)?.state === "blocked");
+    if (countryBlocked.length) { shippingEl.textContent="ITEM NOT AVAILABLE"; totalEl.textContent="NOT SET"; return; }
     if (!pricing.allVerified || pricing.currencies.size !== 1) {
       shippingEl.textContent="PRICING GATE PENDING"; totalEl.textContent="NOT SET"; return;
     }

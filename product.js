@@ -279,23 +279,40 @@
       const buttons = [$("#hd-product-add"), $("#hd-mobile-add")].filter(Boolean);
       buttons.forEach(button=>{ button.disabled=true; button.textContent="Verifying stock…"; });
       try {
-        const quote = await H.cjQuote({vid:selectedVariant.variant_id,quantity});
+        const country = window.HuntCountry?.current?.() || "";
+        if (!country || country === "ZZ") {
+          buttons.forEach(button=>{ button.disabled=false; button.textContent="Choose shipping country first"; });
+          return;
+        }
+        const quote = await H.cjQuote({vid:selectedVariant.variant_id,country_code:country,quantity});
         if (!quote?.stock_verified || !quote?.stock_available) {
           buttons.forEach(button=>{ button.disabled=true; button.textContent="Currently unavailable"; });
           $("#hd-product-stock").textContent="OUT OF STOCK";
           $("#hd-product-stock").className="hd-status";
           return;
         }
+        const hasShipping = quote?.shipping_verified === true && Array.isArray(quote?.shipping_options) && quote.shipping_options.length > 0;
+        if (!hasShipping) {
+          buttons.forEach(button=>{ button.disabled=true; button.textContent="Shipping unavailable to selected country"; });
+          return;
+        }
         selectedVariant.stock_quantity = Number(quote?.selected_origin?.total_inventory || 0);
         selectedVariant.availability_verified = true;
         product.availability_verified = true;
+        product.shipping_verified = true;
+        product.shipping_country = country;
       } catch {
         buttons.forEach(button=>{ button.disabled=false; button.textContent="Try stock check again"; });
         return;
       }
     }
-    H.addCart(product, selectedVariant, quantity);
-    location.href = window.HuntLightPreview?.rewrite?.("checkout.html") || "checkout.html";
+    try {
+      H.addCart(product, selectedVariant, quantity);
+      location.href = window.HuntLightPreview?.rewrite?.("checkout.html") || "checkout.html";
+    } catch (error) {
+      const buttons = [$("#hd-product-add"), $("#hd-mobile-add")].filter(Boolean);
+      buttons.forEach(button=>{ button.disabled=false; button.textContent=String(error?.message || "Shipping verification required"); });
+    }
   }
 
   function renderFallback(cached) {
