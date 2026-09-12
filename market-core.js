@@ -73,7 +73,7 @@
     maternity: {title:"Maternity", query:"women maternity clothing", icon:"M", description:"Maternity-focused clothing from verified live catalogs."},
     sets: {title:"Sets & Co-ords", query:"matching set co ord clothing", icon:"2", description:"Coordinated two-piece and matching apparel sets."},
     socks: {title:"Socks", query:"socks", icon:"Z", description:"Everyday and fashion socks from verified live catalogs."},
-    swimwear: {title:"Swimwear", query:"swimwear", icon:"S", description:"Swimwear and swim-focused apparel."},
+    swimwear: {title:"Swim & Beach", query:"swimwear beachwear cover up resort wear", icon:"S", description:"Curated women's swimwear, cover-ups and beachwear from connected approved suppliers."},
     office: {title:"Office & Desk", query:"office", icon:"D", description:"Desk mats, calendars, mouse pads and notebooks."},
     pillows: {title:"Pillows", query:"pillows", icon:"P", description:"Decorative pillows and pillow products."},
     ornaments: {title:"Ornaments", query:"ornaments", icon:"R", description:"Seasonal and decorative ornaments."},
@@ -89,7 +89,8 @@
   const categoryGroups = [
     {title:"Women · Clothing", items:["women","dresses","jeans","sets","tops","bottoms","jackets","knitwear","activewear","plussize","petite","maternity"]},
     {title:"Women · Beauty, Bags & Accessories", items:["beauty","makeup","skincare","haircare","bodycare","perfume","bags","jewelry","accessories","sunglasses"]},
-    {title:"Women · Shoes, Underwear & Comfort", items:["shoes","slippers","womenunderwear","sleepwear","loungewear","socks","swimwear"]},
+    {title:"Women · Swim & Beach", items:["swimwear"]},
+    {title:"Women · Shoes, Underwear & Comfort", items:["shoes","slippers","womenunderwear","sleepwear","loungewear","socks"]},
     {title:"Men", items:["men","suits","jeans","sets","tops","bottoms","jackets","activewear","menunderwear","sleepwear","socks","shoes","slippers","sunglasses","accessories"]},
     {title:"Kids", items:["kids","kidsunderwear","sleepwear","socks","shoes","slippers","toys"]},
     {title:"Pets", items:["pets","petbeds","catfurniture","petfeeders","pettoys","petgrooming","pettravel"]},
