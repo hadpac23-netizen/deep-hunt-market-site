@@ -10,7 +10,7 @@
 
   function displaySafe(item, slug=""){
     const title=String(item?.title||"").trim();
-    if(!item?.item_id || !title) return false;
+    if(!item?.item_id || !title || !H.launchDisplayEligible(item)) return false;
     if(/\b(temu\s*&\s*tk|tmeu|tk\s*only|supports?\s+pickup|self[- ]?pickup|shipment\s+from\s+walmart|logistics\s+only)\b/i.test(title)) return false;
     const curatedCategory=item?.curation_source&&item?.category?String(item.category):"";
     const inferred=curatedCategory||H.inferCategory?.(item)||String(item?.category||"");

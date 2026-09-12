@@ -125,7 +125,7 @@
 
     let all=shardResults.flat().filter(item=>{
       const k=key(item);
-      return item?.item_id&&k!==key(product)&&!seen.has(k);
+      return item?.item_id&&H.launchDisplayEligible(item)&&k!==key(product)&&!seen.has(k);
     });
 
     if(!all.length){
@@ -135,6 +135,7 @@
       all=[];
       for(const [slug,rows] of Object.entries(data?.shelves||{})){
         for(const raw of Array.isArray(rows)?rows:[]){
+          if(!H.launchDisplayEligible(raw))continue;
           all.push({...raw,category:raw.category||slug});
         }
       }

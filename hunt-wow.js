@@ -116,7 +116,7 @@
     for (const slug of slugs) {
       for (const item of Array.isArray(shelves?.[slug]) ? shelves[slug] : []) {
         const key = `${item?.provider || ""}:${item?.item_id || ""}`;
-        if (!item?.item_id || seen.has(key)) continue;
+        if (!item?.item_id || seen.has(key) || !H.launchDisplayEligible(item)) continue;
         seen.add(key);
         out.push(item);
         if (out.length >= limit) return out;
@@ -128,13 +128,18 @@
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${H.esc(item.image_url)}" alt="${H.esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-wow-image-placeholder" aria-hidden="true">H</div>';
-    const price = Number.isFinite(Number(item.price_amount)) && Number(item.price_amount) > 0
-      ? H.money(Number(item.price_amount), item.currency || "USD")
-      : "Open product";
     const basis = String(item?.price_basis || "").toUpperCase();
-    const priceLabel = item.price_amount
-      ? (basis === "MARKETPLACE_RETAIL" ? "marketplace price" : (basis === "SUPPLIER_BASE" ? "supplier base" : "source price"))
-      : "details";
+    const retail = Number(item?.retail_price_amount);
+    const retailVerified = item?.retail_price_verified === true
+      && String(item?.profit_gate_status || "").toUpperCase() === "PASS"
+      && Number.isFinite(retail) && retail > 0;
+    const merchantRetail = basis === "MERCHANT_RETAIL" && Number.isFinite(Number(item?.price_amount)) && Number(item.price_amount) > 0;
+    const price = retailVerified
+      ? H.money(retail, item?.retail_currency || item?.currency || "USD")
+      : merchantRetail
+        ? H.money(Number(item.price_amount), item.currency || "USD")
+        : "Price pending";
+    const priceLabel = retailVerified || merchantRetail ? "retail price" : "verified price pending";
     return `<article class="hd-wow-product" role="listitem" data-category="${H.esc(item.category || "")}">
       <a class="hd-wow-product-media" href="${H.esc(href)}">${image}<span>${H.esc(label)}</span></a>
       <div class="hd-wow-product-body">
@@ -172,7 +177,7 @@
       for (const slug of rule.slugs) {
         for (const item of Array.isArray(shelves?.[slug]) ? shelves[slug] : []) {
           const key = `${item?.provider || ""}:${item?.item_id || ""}`;
-          if (!item?.item_id || seen.has(key) || !rule.pattern.test(String(item?.title || ""))) continue;
+          if (!item?.item_id || seen.has(key) || !H.launchDisplayEligible(item) || !rule.pattern.test(String(item?.title || ""))) continue;
           if (!(typeof item?.image_url === "string" && item.image_url.startsWith("https://"))) continue;
           const feedback = Number(item?.seller?.feedback_percentage);
           if (Number.isFinite(feedback) && feedback < 97) continue;

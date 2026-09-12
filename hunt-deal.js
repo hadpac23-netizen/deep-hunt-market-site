@@ -454,7 +454,7 @@
       const append = (items, fresh) => {
         for (const item of Array.isArray(items) ? items : []) {
           const key = `${item?.provider || ""}:${item?.item_id || ""}`;
-          if (!item?.item_id) continue;
+          if (!item?.item_id || !window.HuntCore?.launchDisplayEligible?.(item)) continue;
           if (seen.has(key)) {
             if (fresh) {
               const index = positions.get(key);
@@ -684,13 +684,19 @@
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
     if (!root || !counter) return false;
-    const shelves = data?.shelves || {};
+    const shelves = Object.fromEntries(
+      Object.entries(data?.shelves || {}).map(([slug, rows]) => [
+        slug,
+        (Array.isArray(rows) ? rows : []).filter(item => window.HuntCore?.launchDisplayEligible?.(item))
+      ])
+    );
     shelves.__trending = buildTrendingShelf(shelves);
     const hasProducts = Object.values(shelves).some(items => Array.isArray(items) && items.length);
     if (!hasProducts) return false;
 
-    window.HuntMarketShelves = data;
-    window.dispatchEvent(new CustomEvent("hunt:shelves", {detail:data}));
+    const displayData = {...data, shelves};
+    window.HuntMarketShelves = displayData;
+    window.dispatchEvent(new CustomEvent("hunt:shelves", {detail:displayData}));
 
     const renderedKeys = new Set();
     const limit = shelfItemLimit();
@@ -700,8 +706,8 @@
         if (sections.length >= shelfCategoryLimit(department)) break;
         const meta = shelfMeta[slug];
         let items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
-        items = items.filter(item => matchesShelfTruth(item, slug, department));
-        if (!meta || items.length < 4) continue;
+        items = items.filter(item => window.HuntCore?.launchDisplayEligible?.(item) && matchesShelfTruth(item, slug, department));
+        if (!meta || items.length < 6) continue;
         const selected = selectShelfItems(items, limit, renderedKeys);
         if (!selected.length) continue;
         for (const item of selected) {
@@ -727,7 +733,11 @@
       ? '<div class="hd-home-catalog-cta"><a class="hd-btn" href="#departments">Browse all departments</a><span>The full catalog stays available through Categories and Search.</span></div>'
       : '';
     root.innerHTML = (html + browseMore) || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
-    const count = Number(data?.visible_product_count || 0);
+    const displayKeys = new Set();
+    Object.values(shelves).forEach(rows => (Array.isArray(rows) ? rows : []).forEach(item => {
+      if (item?.item_id) displayKeys.add(String(item.provider || "") + ":" + String(item.item_id));
+    }));
+    const count = displayKeys.size;
     const label = mode === "live" ? "LIVE" : "CATALOG";
     counter.textContent = `${count.toLocaleString()} ${label}`;
     counter.title = mode === "hybrid" ? "Curated catalog with verified live supplier refresh merged in" : (mode === "live" ? "Verified live supplier refresh" : "Curated catalog discovery while live suppliers refresh");
@@ -844,9 +854,9 @@
     const grid = $("#hd-search-grid");
     const status = $("#hd-live-search-status");
     if (!section || !grid || !status) return;
-    const results = data.results || [];
+    const results = (data.results || []).filter(item => window.HuntCore?.launchDisplayEligible?.(item));
     searchItems = results;
-    const states = (data.providers || []).map(p => {
+    const states = (data.providers || []).filter(p => !String(p?.provider || "").toLowerCase().includes("ebay")).map(p => {
       const count = p.result_count ? " (" + p.result_count + ")" : "";
       return p.provider + ": " + p.state + count;
     }).join(" · ");

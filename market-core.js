@@ -482,6 +482,13 @@
     return data;
   }
 
+  function launchDisplayEligible(product) {
+    const provider = String(product?.provider || "").trim().toLowerCase();
+    if (!provider) return true;
+    if (provider.includes("ebay")) return false;
+    return true;
+  }
+
   async function search(query, limit=20) {
     const clean = safeQuery(query);
     if (!clean) throw new Error("This search is not available.");
@@ -493,6 +500,8 @@
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Live search unavailable");
+    if (Array.isArray(data.results)) data.results = data.results.filter(launchDisplayEligible);
+    if (Array.isArray(data.providers)) data.providers = data.providers.filter(row => !String(row?.provider || "").toLowerCase().includes("ebay"));
     window.HuntAnalytics?.search({
       category: slugFromQuery(clean),
       resultCount: Array.isArray(data.results) ? data.results.length : 0
@@ -515,6 +524,6 @@
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
     inferCategory,slugFromQuery,normalizeSearchQuery,resolveSearchIntent,detectBrand,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
-    cart,saveCart,onsiteCheckoutEligible,addCart,cartCount,updateCartBadges,storefront,cjQuote,search,productUrl,categoryUrl
+    cart,saveCart,onsiteCheckoutEligible,launchDisplayEligible,addCart,cartCount,updateCartBadges,storefront,cjQuote,search,productUrl,categoryUrl
   };
 })();

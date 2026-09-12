@@ -306,3 +306,26 @@ body[data-product-category="kidsunderwear"] .hd-product-main-media img{
 .hd-category-directory-grid a{display:flex;align-items:center;min-height:42px;padding:10px 12px;border:1px solid rgba(118,160,210,.18);border-radius:10px;background:rgba(10,20,34,.46);color:inherit;text-decoration:none;font-size:.78rem;font-weight:750}
 .hd-category-directory-grid a:hover,.hd-category-directory-grid a:focus-visible{border-color:rgba(118,160,210,.5);transform:translateY(-1px)}
 @media(max-width:640px){.hd-category-directory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hd-category-directory{width:min(100% - 20px,1240px)}}
+
+/* HUNT launch polish: object/product categories keep the full item in frame. */
+:is(.hd-shelf-card,.hd-market-product-card)[data-category="bags"] img,
+:is(.hd-shelf-card,.hd-market-product-card)[data-category="jewelry"] img,
+:is(.hd-shelf-card,.hd-market-product-card)[data-category="accessories"] img,
+:is(.hd-shelf-card,.hd-market-product-card)[data-category="shoes"] img,
+:is(.hd-shelf-card,.hd-market-product-card)[data-category="lighting"] img,
+:is(.hd-shelf-card,.hd-market-product-card)[data-category="tech"] img,
+:is(.hd-shelf-card,.hd-market-product-card)[data-category="sports"] img,
+:is(.hd-shelf-card,.hd-market-product-card)[data-category="towels"] img,
+:is(.hd-shelf-card,.hd-market-product-card)[data-category="phoneaccessories"] img{
+  object-fit:contain!important;
+  padding:12px!important;
+  background:#f7f7f5!important;
+}
+body[data-product-category="bags"] .hd-product-main-media img,
+body[data-product-category="jewelry"] .hd-product-main-media img,
+body[data-product-category="lighting"] .hd-product-main-media img,
+body[data-product-category="tech"] .hd-product-main-media img,
+body[data-product-category="sports"] .hd-product-main-media img{
+  object-fit:contain!important;
+  padding:clamp(18px,3vw,34px)!important;
+}

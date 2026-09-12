@@ -349,7 +349,10 @@
 
     const applyRows = (rows, label, {merge=false}={}) => {
       const incoming = (Array.isArray(rows) ? rows : []).filter(product =>
-        matchesCategoryTruth(product) && matchesGenderScope(product) && matchesSub(product)
+        H.launchDisplayEligible(product) &&
+        matchesCategoryTruth(product) &&
+        matchesGenderScope(product) &&
+        matchesSub(product)
       );
 
       if (merge && rawResults.length) {
