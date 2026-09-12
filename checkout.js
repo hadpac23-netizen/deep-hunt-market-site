@@ -125,5 +125,79 @@
     window.HuntAnalytics?.checkoutMarket(event.currentTarget.value || "");
     render();
   });
+
+  function paymentFingerprint(cart,country){
+    return JSON.stringify({
+      country,
+      items:cart.map(item=>[item.provider,item.item_id,item.variant_id,Math.max(1,Number(item.qty)||1)])
+    });
+  }
+  function paymentIdempotency(cart,country){
+    const fingerprint=paymentFingerprint(cart,country);
+    try{
+      const saved=JSON.parse(sessionStorage.getItem("hunt_payment_attempt_v1")||"null");
+      if(saved?.fingerprint===fingerprint&&saved?.key)return saved.key;
+    }catch{}
+    const key=crypto.randomUUID();
+    sessionStorage.setItem("hunt_payment_attempt_v1",JSON.stringify({fingerprint,key}));
+    return key;
+  }
+  async function validateSecureCheckout(){
+    const button=$("#hd-checkout-pay");
+    const status=$("#hd-checkout-pay-status");
+    const cart=read();
+    const country=String($("#hd-checkout-market")?.value||"").toUpperCase();
+    if(!button||!status)return;
+    if(!cart.length){ status.textContent="Your cart is empty."; return; }
+    if(!country){ status.textContent="Choose a destination country first."; return; }
+    if(cart.some(item=>!item.variant_id)){
+      status.textContent="Every item needs a verified variant before secure checkout.";
+      return;
+    }
+    button.disabled=true;
+    button.textContent="Validating stock, shipping & price…";
+    status.textContent="HUNT is rechecking the cart on the server. No payment is being collected.";
+    try{
+      const response=await fetch(H.functionsBase+"/hunt-payment-session",{
+        method:"POST",
+        headers:{apikey:H.publishableKey,"Content-Type":"application/json"},
+        body:JSON.stringify({
+          country_code:country,
+          idempotency_key:paymentIdempotency(cart,country),
+          items:cart.map(item=>({
+            provider:item.provider,
+            item_id:item.item_id,
+            variant_id:item.variant_id,
+            qty:Math.max(1,Number(item.qty)||1)
+          }))
+        })
+      });
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok||data?.ok!==true)throw new Error(data?.error||"Checkout validation failed");
+      const session=data.session||{};
+      if(Number.isFinite(Number(session.product_amount)))$("#hd-checkout-subtotal").textContent=money(session.product_amount,session.currency||"USD");
+      if(Number.isFinite(Number(session.shipping_amount)))$("#hd-checkout-shipping").textContent=money(session.shipping_amount,session.currency||"USD");
+      if(Number.isFinite(Number(session.total_amount)))$("#hd-checkout-total").textContent=money(session.total_amount,session.currency||"USD");
+
+      if(data.payment_ready!==true){
+        button.textContent="Payment account activation pending";
+        status.textContent=`Server verified cart total ${money(session.total_amount,session.currency||"USD")}. Stock, destination shipping and retail price passed. Live payment remains disabled until the authorized merchant account is connected.`;
+        return;
+      }
+      if(session.provider_redirect_url){
+        status.textContent="Secure payment session ready. Redirecting…";
+        location.href=session.provider_redirect_url;
+        return;
+      }
+      button.textContent="Secure payment fields ready";
+      status.textContent="PayPlus secure hosted fields are ready for this session. HUNT still needs the final hosted-fields UI activation before collecting payment.";
+    }catch(error){
+      button.textContent="Validate secure checkout";
+      status.textContent=String(error?.message||"Checkout validation failed.");
+    }finally{
+      button.disabled=false;
+    }
+  }
+  $("#hd-checkout-pay")?.addEventListener("click",validateSecureCheckout);
   render();
 })();

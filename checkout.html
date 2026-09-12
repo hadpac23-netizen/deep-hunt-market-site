@@ -48,8 +48,8 @@
             <option value="JP">Japan</option><option value="SG">Singapore</option>
           </select>
         </label>
-        <button class="hd-btn hd-btn-primary hd-pay-disabled" type="button" disabled>Payment activation pending</button>
-        <p class="hd-checkout-truth">No card data is collected on this page. A live checkout will only be enabled after an authorized business payment account, confirmed retail prices and supplier fulfillment are connected.</p>
+        <button class="hd-btn hd-btn-primary" id="hd-checkout-pay" type="button">Validate secure checkout</button>
+        <p id="hd-checkout-pay-status" class="hd-checkout-truth" aria-live="polite">No card data is collected on this page. HUNT validates stock, destination shipping and retail pricing on the server before a payment session can be created.</p>
       </aside>
     </div>
 
@@ -73,7 +73,7 @@
   <script src="country-availability.js?v=country1"></script>
   <script src="analytics-config.js?v=analytics1"></script>
   <script src="analytics.js?v=boomlearn1"></script>
-  <script src="checkout.js?v=cjprice1"></script>
+  <script src="checkout.js?v=payment1"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa1"></script>
 </body>
