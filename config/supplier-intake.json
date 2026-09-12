@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-09-12",
+  "policy": {
+    "free_first": true,
+    "no_fake_price": true,
+    "no_fake_stock": true,
+    "unknown_stays_unknown": true,
+    "country_fit_required_before_checkout": true,
+    "paid_supplier_requires_business_approval": true
+  },
+  "providers": [
+    {
+      "id": "cjdropshipping",
+      "name": "CJdropshipping",
+      "state": "connected_catalog",
+      "free_to_start": true,
+      "inventory_upfront_required": false,
+      "subscription_required": false,
+      "integration": {
+        "catalog": true,
+        "variants": true,
+        "live_stock_quote": true,
+        "shipping_quote": true,
+        "order_api": "unknown",
+        "tracking": "unknown"
+      },
+      "country_rules": {"default": "check"},
+      "categories": ["general", "women", "swimwear"]
+    },
+    {
+      "id": "hypersku",
+      "name": "HyperSKU",
+      "state": "candidate",
+      "free_to_start": true,
+      "inventory_upfront_required": false,
+      "subscription_required": false,
+      "integration": {
+        "catalog": "unknown",
+        "variants": "unknown",
+        "live_stock_quote": "unknown",
+        "shipping_quote": "unknown",
+        "order_api": "unknown",
+        "tracking": true
+      },
+      "country_rules": {"allowed": ["IL"], "default": "check"},
+      "categories": ["general", "women", "swimwear"]
+    },
+    {
+      "id": "fondmart",
+      "name": "FondMart",
+      "state": "candidate",
+      "free_to_start": true,
+      "inventory_upfront_required": false,
+      "subscription_required": false,
+      "integration": {
+        "catalog": "unknown",
+        "variants": "unknown",
+        "live_stock_quote": "unknown",
+        "shipping_quote": "unknown",
+        "order_api": "unknown",
+        "tracking": "unknown"
+      },
+      "country_rules": {"default": "check"},
+      "categories": ["women", "swimwear", "plussize", "dresses"]
+    },
+    {
+      "id": "eprolo",
+      "name": "EPROLO",
+      "state": "candidate",
+      "free_to_start": true,
+      "inventory_upfront_required": false,
+      "subscription_required": false,
+      "integration": {
+        "catalog": "unknown",
+        "variants": "unknown",
+        "live_stock_quote": "unknown",
+        "shipping_quote": "unknown",
+        "order_api": "unknown",
+        "tracking": "unknown"
+      },
+      "country_rules": {"default": "check"},
+      "categories": ["general", "women", "swimwear"]
+    },
+    {
+      "id": "trendsi",
+      "name": "Trendsi",
+      "state": "candidate_us_first",
+      "free_to_start": true,
+      "inventory_upfront_required": false,
+      "subscription_required": false,
+      "integration": {
+        "catalog": false,
+        "variants": true,
+        "live_stock_quote": "platform_only",
+        "shipping_quote": "platform_only",
+        "order_api": "platform_only",
+        "tracking": true
+      },
+      "country_rules": {"blocked": ["IL"], "default": "check"},
+      "categories": ["women", "swimwear", "dresses", "accessories"]
+    }
+  ]
+}
