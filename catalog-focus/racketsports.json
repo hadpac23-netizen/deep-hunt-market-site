@@ -1,0 +1,25 @@
+{
+  "slug": "racketsports",
+  "count": 1,
+  "source": "HUNT focused curation from authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-12T13:23:11.304Z",
+  "products": [
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097095357247021058",
+      "title": "8ft Blue Mid-Size Ping Pong Conversion Top Foldable & Portable Table Tennis Table Top for Indoor Games",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/6463bf1118034e94b7fc637d18b3793d.jpg",
+      "category": "racketsports",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 159.34,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "activewear",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    }
+  ]
+}

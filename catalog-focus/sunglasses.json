@@ -1,0 +1,73 @@
+{
+  "slug": "sunglasses",
+  "count": 4,
+  "source": "HUNT focused curation from authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-12T13:23:11.304Z",
+  "products": [
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097553993269616642",
+      "title": "Mens Polarized Pilot Sunglasses Outdoor Driving UV400 Sun Glasses Sport Eyewear",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/49b7249dc5264ed88501659e6cf9ecb3.jpg",
+      "category": "sunglasses",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 9.59,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097269169083686913",
+      "title": "3 pairs Motorcycle Sports Biker Riding Glasses Wind Resistant Eye Protection Women Men Sports Goggles Cycling Glasses Sunglasses Gray/Clear/Yellow",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/4988ebcf57ea4b2d90bba6a23e539f08.jpg",
+      "category": "sunglasses",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 9.54,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097022387837501441",
+      "title": "SCVCN Cycling Glasses, Sports Sunglasses, Outdoor Men's And Women's Running, Mountain Bike Wind Glasses, Protective Goggles",
+      "image_url": "https://xffbbhangzhou.oss-cn-hangzhou.aliyuncs.com/product/6EZNHN1D619XM8R1CD9KCGGC7B.jpg",
+      "category": "sunglasses",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 9.11,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097022292040409090",
+      "title": "Kapvoe Children's Polarized Cycling Glasses For Teenagers Outdoor Sports And Outdoor Cycling Windproof Goggles",
+      "image_url": "https://xffbbhangzhou.oss-cn-hangzhou.aliyuncs.com/product/6VQSYHMR44928SN9RTJT302WA6.jpg",
+      "category": "sunglasses",
+      "gender": "women",
+      "merchant_product": true,
+      "price_amount": 12.49,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "activewear",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    }
+  ]
+}

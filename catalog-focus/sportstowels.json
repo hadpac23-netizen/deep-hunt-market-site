@@ -1,0 +1,55 @@
+{
+  "slug": "sportstowels",
+  "count": 3,
+  "source": "HUNT focused curation from authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-12T13:23:11.304Z",
+  "products": [
+    {
+      "provider": "Gooten",
+      "item_id": "423",
+      "title": "Golf Towels",
+      "image_url": "https://appassets.azureedge.net/product-golftowels/Preview/GolfTowel_Catalog_Photo_01.png",
+      "category": "sportstowels",
+      "merchant_product": true,
+      "price_amount": 9.9,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": true,
+      "source_category": "home",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "Gooten",
+      "item_id": "425",
+      "title": "Yoga Towels",
+      "image_url": "https://appassets.azureedge.net/product-yogatowels/Preview/Yoga_Towel_Catalog_Photo_11.png",
+      "category": "sportstowels",
+      "merchant_product": true,
+      "price_amount": 21.9,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": true,
+      "source_category": "sports",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2096865317354360833",
+      "title": "Cooling Sports Towel  Colors Quick Dry Ice Towel For Gym Running Yoga Cycling, Custom Available",
+      "image_url": "https://cf.cjdropshipping.com/9e6a8d71-81ef-4df3-80f4-d005e8c949b3.jpg",
+      "category": "sportstowels",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 0.98,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "activewear",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    }
+  ]
+}

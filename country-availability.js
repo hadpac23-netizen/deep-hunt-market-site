@@ -4,9 +4,12 @@
 
   const COUNTRY_KEY = "hunt_ship_country_v1";
   const countryNames = {
-    ZZ:"Choose country", IL:"Israel", US:"United States", GB:"United Kingdom",
-    DE:"Germany", FR:"France", IT:"Italy", ES:"Spain", NL:"Netherlands",
-    CA:"Canada", AU:"Australia", AE:"United Arab Emirates", SA:"Saudi Arabia"
+    ZZ:"Choose country", IL:"Israel", US:"United States", CA:"Canada", MX:"Mexico", BR:"Brazil",
+    GB:"United Kingdom", DE:"Germany", FR:"France", IT:"Italy", ES:"Spain", NL:"Netherlands",
+    BE:"Belgium", AT:"Austria", CH:"Switzerland", PL:"Poland", PT:"Portugal", GR:"Greece", IE:"Ireland",
+    SE:"Sweden", DK:"Denmark", NO:"Norway", FI:"Finland", TR:"Türkiye",
+    CN:"China", JP:"Japan", KR:"South Korea", SG:"Singapore", IN:"India",
+    AU:"Australia", NZ:"New Zealand", AE:"United Arab Emirates", SA:"Saudi Arabia"
   };
 
   const supplierRules = {

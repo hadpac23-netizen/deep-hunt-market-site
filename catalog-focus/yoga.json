@@ -1,0 +1,40 @@
+{
+  "slug": "yoga",
+  "count": 2,
+  "source": "HUNT focused curation from authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-12T13:23:11.303Z",
+  "products": [
+    {
+      "provider": "Gooten",
+      "item_id": "400",
+      "title": "Yoga Mat",
+      "image_url": "https://az412349.cdn.gooten.com/product-yogamats/Preview/Yoga_Mat_Catalog_Photo_1.png",
+      "category": "yoga",
+      "merchant_product": true,
+      "price_amount": 38.9,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": true,
+      "source_category": "sports",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2609071000391607000",
+      "title": "Beginners Portable PVC Yoga Mat",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/09/07/09/fd30f3ab-0c7a-4814-830b-9f2bd3d3a28e_water.jpeg",
+      "category": "yoga",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 3.5,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "activewear",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    }
+  ]
+}

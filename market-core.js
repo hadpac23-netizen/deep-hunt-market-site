@@ -37,7 +37,15 @@
     tech: {title:"Phone & Tech", query:"tech", icon:"P", description:"Phones, electronics and connected accessories from live supplier feeds."},
     phoneaccessories: {title:"Phone Accessories", query:"phone accessories", icon:"A", description:"Cases, stands, charging cables and phone accessories."},
     gaming: {title:"Gaming Accessories", query:"gaming accessories", icon:"G", description:"Gaming accessories and desk-ready gear from connected supplier feeds."},
-    sports: {title:"Sports & Fitness", query:"sports fitness", icon:"F", description:"Sports, fitness and active-lifestyle accessories."},
+    sports: {title:"Sports & Fitness", query:"sports fitness", icon:"F", description:"Sports, fitness, activewear and training equipment."},
+    fitnessequipment: {title:"Fitness Equipment", query:"fitness equipment gym equipment", icon:"G", description:"Gym and home-training equipment from approved supplier catalogs."},
+    yoga: {title:"Yoga & Pilates", query:"yoga pilates", icon:"Y", description:"Mats, blocks, bands and accessories for yoga and Pilates."},
+    runningcycling: {title:"Running & Cycling", query:"running cycling accessories", icon:"R", description:"Running and cycling accessories, hydration and sports eyewear."},
+    swimming: {title:"Swimming", query:"swimming goggles caps accessories", icon:"S", description:"Swimming accessories and training essentials."},
+    ballsports: {title:"Ball Sports", query:"basketball football volleyball sports", icon:"B", description:"Basketball, football, volleyball and related training accessories."},
+    racketsports: {title:"Racket Sports", query:"tennis padel badminton table tennis", icon:"T", description:"Tennis, padel, badminton and table-tennis accessories."},
+    sportstowels: {title:"Sports Towels", query:"sports towel gym towel yoga towel", icon:"T", description:"Quick-dry, cooling, yoga and gym towels."},
+    towels: {title:"Towels", query:"bath hand beach towel", icon:"T", description:"Bath, hand, beach and premium textile towels."},
     outdoors: {title:"Outdoor & Garden", query:"outdoor garden picnic", icon:"G", description:"Outdoor, garden and picnic products."},
     kitchen: {title:"Kitchen", query:"kitchen", icon:"K", description:"Kitchen organizers, cookware accessories and useful everyday finds."},
     lighting: {title:"Lighting", query:"lighting", icon:"L", description:"Decorative lighting, desk lights and home lighting accessories."},
@@ -96,7 +104,8 @@
     {title:"Pets", items:["pets","petbeds","catfurniture","petfeeders","pettoys","petgrooming","pettravel"]},
     {title:"Home & Living", items:["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]},
     {title:"Tech & Gaming", items:["tech","phoneaccessories","gaming"]},
-    {title:"Sports & Outdoors", items:["sports","outdoors","travel"]},
+    {title:"Sports & Fitness", items:["sports","activewear","fitnessequipment","yoga","runningcycling","swimming","ballsports","racketsports","sportstowels","sunglasses","outdoors","travel"]},
+    {title:"Towels & Soft Textiles", items:["towels","blankets","bedding","bath"]},
     {title:"Gifts, Crafts & Office", items:["gifts","party","crafts","ornaments","stickers","stationery","office"]}
   ];
 
@@ -116,7 +125,7 @@
 
   function inferCategory(value) {
     const explicit = typeof value === "object" ? String(value?.category || "").toLowerCase() : "";
-    const precise = new Set(["womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets"]);
+    const precise = new Set(["womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","fitnessequipment","yoga","runningcycling","swimming","ballsports","racketsports","sportstowels","towels"]);
     if (precise.has(explicit) && categoryDefs[explicit]) return explicit;
     const t = String(value?.title || value || "").toLowerCase();
     if (/\b(cat tree|cat tower|cat scratcher|scratching post|cat furniture)\b/.test(t)) return "catfurniture";

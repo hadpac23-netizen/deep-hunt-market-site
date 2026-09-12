@@ -1,0 +1,41 @@
+{
+  "slug": "swimming",
+  "count": 2,
+  "source": "HUNT focused curation from authorized catalog snapshots",
+  "availability_policy": "DISCOVERY_UNTIL_PROVIDER_RECHECK",
+  "curated_at": "2026-09-12T13:23:11.303Z",
+  "products": [
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097162526290894850",
+      "title": "2 Pack Kids Swim Caps for Girls Boy Aged 9-15, Waterproof Bathing Cap for Long and Short Hair, Silicone Swimming Cap Swim Hats with Fairy Mermaid Cartoon",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/3ffef08983714e13a20dc53912ae07d0.jpg",
+      "category": "swimming",
+      "gender": "men",
+      "merchant_product": true,
+      "price_amount": 15.24,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    },
+    {
+      "provider": "CJdropshipping",
+      "item_id": "2097161817210249217",
+      "title": "2pcs Silicone Swim Cap for Women Men, High Elasticity Comfortable Non-Slip Swimming Cap for Girls & Boys, Durable Waterproof Swim Hats for Long and Short Hair, Keep Hair Dry",
+      "image_url": "https://cf.cjdropshipping.com/doba-import/3e31eb454c864ba48325ec08c8de7b38.jpg",
+      "category": "swimming",
+      "gender": "general",
+      "merchant_product": true,
+      "price_amount": 15.24,
+      "currency": "USD",
+      "price_basis": "SUPPLIER_BASE",
+      "availability_verified": false,
+      "source_category": "accessories",
+      "curation_source": "focus",
+      "catalog_discovery": true
+    }
+  ]
+}
