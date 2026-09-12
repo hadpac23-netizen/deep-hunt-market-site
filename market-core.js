@@ -412,9 +412,17 @@
     return score > 0 ? `Matches your recent ${categoryDefs[category]?.title || category} activity on this device.` : "BOOM is still learning from your views, likes, saves and shopping survey.";
   }
 
+  function onsiteCheckoutEligible(product) {
+    const provider = String(product?.provider || "").toLowerCase();
+    const checkoutStatus = String(product?.checkout_status || "").toUpperCase();
+    if (provider.includes("cj")) return true;
+    if (product?.onsite_checkout_enabled === true && ["ORDER_API_APPROVED","FULFILLMENT_API_READY","HUNT_ORDER_ADAPTER_READY"].includes(checkoutStatus)) return true;
+    return false;
+  }
   const cart = () => readJson(cartKey, []);
   const saveCart = value => writeJson(cartKey, Array.isArray(value) ? value : []);
   function addCart(product, variant=null, qty=1) {
+    if (!onsiteCheckoutEligible(product)) throw new Error("HUNT checkout integration pending for this supplier");
     const items = cart();
     const variantId = String(variant?.variant_id || "base");
     const key = `${product.provider}:${product.item_id}:${variantId}`;
@@ -507,6 +515,6 @@
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
     inferCategory,slugFromQuery,normalizeSearchQuery,resolveSearchIntent,detectBrand,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
-    cart,saveCart,addCart,cartCount,updateCartBadges,storefront,cjQuote,search,productUrl,categoryUrl
+    cart,saveCart,onsiteCheckoutEligible,addCart,cartCount,updateCartBadges,storefront,cjQuote,search,productUrl,categoryUrl
   };
 })();

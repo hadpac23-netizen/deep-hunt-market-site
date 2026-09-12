@@ -11,6 +11,7 @@
   const read = () => { try { const v=JSON.parse(localStorage.getItem(key)||"[]"); return Array.isArray(v)?v:[]; } catch { return []; } };
   const write = cart => localStorage.setItem(key, JSON.stringify(cart));
   const isCJ = item => String(item?.provider || "").toLowerCase().includes("cj");
+  const onsiteEligible = item => H.onsiteCheckoutEligible?.(item) === true;
   const verifiedRetail = item => {
     const amount = Number(item?.retail_price_amount);
     const currency = String(item?.retail_currency || item?.currency || "").toUpperCase();
@@ -41,7 +42,7 @@
     if (!pricing.allVerified || pricing.currencies.size !== 1) {
       shippingEl.textContent="PRICING GATE PENDING"; totalEl.textContent="NOT SET"; return;
     }
-    const unsupported = cart.filter(item => !isCJ(item) || !item?.variant_id);
+    const unsupported = cart.filter(item => !onsiteEligible(item) || !isCJ(item) || !item?.variant_id);
     if (unsupported.length) {
       shippingEl.textContent="SOME ITEMS PENDING";
       totalEl.textContent="NOT SET";
@@ -150,6 +151,10 @@
     if(!button||!status)return;
     if(!cart.length){ status.textContent="Your cart is empty."; return; }
     if(!country){ status.textContent="Choose a destination country first."; return; }
+    if(cart.some(item=>!onsiteEligible(item))){
+      status.textContent="One or more items are still waiting for HUNT onsite checkout integration.";
+      return;
+    }
     if(cart.some(item=>!item.variant_id)){
       status.textContent="Every item needs a verified variant before secure checkout.";
       return;

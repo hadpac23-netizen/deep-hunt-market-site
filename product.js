@@ -160,18 +160,16 @@
     const retailCurrency = selectedVariant?.retail_currency || product.retail_currency || selectedVariant?.currency || product.currency || "USD";
     const retailVerified = (selectedVariant?.retail_price_verified ?? product.retail_price_verified) === true &&
       String(selectedVariant?.profit_gate_status || product.profit_gate_status || "") === "PASS";
-    const shownAmount = retailVerified ? retailAmount : (selectedVariant?.price_amount ?? product.price_amount);
-    const shownCurrency = retailVerified ? retailCurrency : (selectedVariant?.currency || product.currency || "USD");
     const basis = String(product.price_basis || "SUPPLIER_BASE").toUpperCase();
     const verifiedRetail = retailVerified;
-    $("#hd-product-price").textContent = H.money(shownAmount, shownCurrency);
+    $("#hd-product-price").textContent = verifiedRetail ? H.money(retailAmount, retailCurrency) : "Price pending";
     const basisCopy = $("#hd-product-price-basis");
     if (basisCopy) {
       basisCopy.textContent = verifiedRetail
-        ? "Verified retail price · Profit Gate PASS"
+        ? "Verified HUNT retail price · Profit Gate PASS"
         : basis === "MERCHANT_RETAIL"
-          ? "Merchant retail price · checkout activation still pending"
-          : "Supplier/source price · not the final customer retail price";
+          ? "Retail price supplied by merchant · HUNT checkout verification pending"
+          : "Customer retail price is not verified yet";
     }
     const shippingCopy = $("#hd-product-shipping");
     if (shippingCopy) shippingCopy.textContent = product.shipping_verified === true && product.shipping_summary
@@ -194,29 +192,27 @@
     $("#hd-product-category-link").href=H.categoryUrl(cat); $("#hd-product-category-link").textContent=def.title;
     document.title=`${product.title || "Product"} — HUNT DEAL`;
     renderOptions(); renderGallery(); renderProductStructuredData();
-    const onsiteRequired = product?.onsite_checkout_required === true;
-    const onsiteEnabled = product?.onsite_checkout_enabled === true;
-    const externalVisit = !onsiteRequired && typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
     const isCJ = String(product?.provider || provider).toLowerCase().includes("cj");
-    const readyForCart = variants.length > 0 || (product?.provider === "eBay" && product?.availability_verified === true);
-    const storeName = product?.store?.name || "partner store";
-    const checkoutBlocked = onsiteRequired && !onsiteEnabled;
+    const onsiteEligible = H.onsiteCheckoutEligible?.(product) === true;
+    const readyForCart = onsiteEligible && verifiedRetail && variants.length > 0;
+    const checkoutBlocked = !onsiteEligible || !verifiedRetail;
+    const blockedReason = !onsiteEligible
+      ? "HUNT checkout integration pending for this supplier"
+      : !verifiedRetail
+        ? "Retail price verification pending"
+        : "Options pending";
     const add = $("#hd-product-add");
     if (add) {
-      add.disabled = checkoutBlocked ? true : (externalVisit ? false : !readyForCart);
-      add.textContent = checkoutBlocked
-        ? "HUNT checkout awaiting eBay approval"
-        : externalVisit
-          ? `Visit ${storeName} →`
-          : (readyForCart ? (isCJ ? "Verify stock & add →" : "Add to HUNT checkout →") : "Options pending");
+      add.disabled = !readyForCart;
+      add.textContent = readyForCart ? (isCJ ? "Verify stock & add →" : "Add to HUNT checkout →") : blockedReason;
     }
     const mobileAdd = $("#hd-mobile-add");
     if (mobileAdd) {
-      mobileAdd.disabled = checkoutBlocked ? true : (externalVisit ? false : !readyForCart);
-      mobileAdd.textContent = checkoutBlocked ? "Checkout approval pending" : (externalVisit ? "Visit store" : (readyForCart ? (isCJ ? "Verify & add" : "Add to Cart") : "Options pending"));
+      mobileAdd.disabled = !readyForCart;
+      mobileAdd.textContent = readyForCart ? (isCJ ? "Verify & add" : "Add to Cart") : blockedReason;
     }
     const quantityBlock = document.querySelector(".hd-product-quantity");
-    if (quantityBlock) quantityBlock.hidden = externalVisit || checkoutBlocked;
+    if (quantityBlock) quantityBlock.hidden = checkoutBlocked;
   }
 
   function syncMobilePrice() {
@@ -226,7 +222,7 @@
       String(selectedVariant?.profit_gate_status || product?.profit_gate_status || "") === "PASS";
     mobile.textContent = retailVerified
       ? H.money(selectedVariant?.retail_price_amount ?? product?.retail_price_amount, selectedVariant?.retail_currency || product?.retail_currency || "USD")
-      : H.money(selectedVariant?.price_amount ?? product.price_amount, selectedVariant?.currency || product.currency || "USD");
+      : "Price pending";
   }
 
   function setZoom(scale) {
@@ -260,20 +256,10 @@
 
   async function addCurrentToCart() {
     if (!product) return;
-    if (product?.onsite_checkout_required === true && product?.onsite_checkout_enabled !== true) return;
-    if (typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://")) {
-      let sid = localStorage.getItem("hunt_outbound_session_v1");
-      if (!sid) {
-        sid = crypto.randomUUID();
-        localStorage.setItem("hunt_outbound_session_v1", sid);
-      }
-      const destination = new URL(product.external_visit_url);
-      destination.searchParams.set("src", location.pathname + location.search);
-      destination.searchParams.set("sid", sid);
-      location.href = destination.toString();
-      return;
-    }
-    if (!selectedVariant) return;
+    if (H.onsiteCheckoutEligible?.(product) !== true) return;
+    const retailVerified = (selectedVariant?.retail_price_verified ?? product?.retail_price_verified) === true &&
+      String(selectedVariant?.profit_gate_status || product?.profit_gate_status || "") === "PASS";
+    if (!retailVerified || !selectedVariant) return;
     const isCJ = String(product?.provider || provider).toLowerCase().includes("cj");
     if (isCJ) {
       const buttons = [$("#hd-product-add"), $("#hd-mobile-add")].filter(Boolean);
