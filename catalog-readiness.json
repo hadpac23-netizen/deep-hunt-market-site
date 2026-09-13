@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-13T18:48:33.840712+00:00",
+  "generated_at": "2026-09-13T19:27:41.161182+00:00",
   "policy": "PRODUCT_DETAIL_AUTHORITATIVE_V1",
-  "catalog_total": 5906,
+  "catalog_total": 6107,
   "last_recheck": {
     "candidates": 102,
     "detail_ready": 0,
@@ -23,5 +23,25 @@
         "origin_country_code": "CN"
       }
     ]
-  }
+  },
+  "readiness_policy": "PRODUCT_DETAIL_THEN_DESTINATION_QUOTE_V1",
+  "readiness": {
+    "DETAIL_RECHECK_REQUIRED": 5346,
+    "POD_SETUP_REQUIRED": 719,
+    "CATALOG_ONLY": 41,
+    "QUOTE_VERIFIED": 1
+  },
+  "provider_catalog": {
+    "CJdropshipping": 5347,
+    "Printful": 535,
+    "Gooten": 184,
+    "Matterhorn Wholesale": 41
+  },
+  "printful_public_catalog": {
+    "status": "CATALOG_DETAIL_VERIFIED",
+    "products": 535,
+    "private_fulfillment_credentials_required": true,
+    "customer_price_status": "PRICE_PENDING_UNTIL_HUNT_RETAIL"
+  },
+  "safety_cleanup": "TACTICAL_TERM_REMOVED_V1"
 }
