@@ -61,5 +61,13 @@
     "party": 107,
     "storage": 358,
     "sets": 38
-  }
+  },
+  "readiness_policy": "PRODUCT_DETAIL_THEN_DESTINATION_QUOTE_V1",
+  "readiness": {
+    "DETAIL_RECHECK_REQUIRED": 5351,
+    "POD_SETUP_REQUIRED": 513,
+    "CATALOG_ONLY": 41,
+    "QUOTE_VERIFIED": 1
+  },
+  "readiness_updated_at": "2026-09-13T19:06:28.284061+00:00"
 }

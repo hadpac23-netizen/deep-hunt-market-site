@@ -108,9 +108,17 @@
     $("#hd-product-provider").textContent = product.provider || provider;
     const providerName = String(product.provider || provider || "").toLowerCase();
     const podCatalog = providerName.includes("printful") || providerName.includes("gooten");
-    $("#hd-product-stock").textContent = podCatalog ? "POD CATALOG" : (product.availability_verified ? "IN STOCK" : "DISCOVERY");
-    $("#hd-product-stock").className = `hd-status ${podCatalog?"blue":(product.availability_verified?"green":"blue")}`;
+    const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
     const retail = currentRetailState();
+    const quoteAtCheckout = providerName.includes("cj") && variants.length > 0 && retail.ready;
+    $("#hd-product-stock").textContent = quoteVerified
+      ? "QUOTE VERIFIED"
+      : podCatalog
+        ? "POD CATALOG"
+        : quoteAtCheckout
+          ? "QUOTE AT CHECKOUT"
+          : "DISCOVERY";
+    $("#hd-product-stock").className = `hd-status ${quoteVerified?"green":"blue"}`;
     $("#hd-product-price").textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
     syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);
@@ -233,8 +241,9 @@
     if (!id) throw new Error("Missing product id");
     H.updateCartBadges();
     try {
+      const cached=cachedProduct();
       const data = await H.storefront({provider,product_id:id});
-      product=data.product;
+      product={...(cached || {}),...(data.product || {})};
       variants=Array.isArray(product?.variants)?product.variants:[];
       selectedVariant=variants[0]||null;
       selectedColor=selectedVariant?.color||null;

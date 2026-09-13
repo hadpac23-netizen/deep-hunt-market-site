@@ -304,18 +304,25 @@
       : '<div class="hd-shelf-placeholder">◇</div>';
     const providerName = String(item.provider || "").toLowerCase();
     const podSetupRequired = providerName.includes("printful") || providerName.includes("gooten");
-    const truthBadge = item.quality_gate === "BOOM_PREMIUM"
-      ? "BOOM PICK"
+    const quoteVerified = String(item?.quote_verification_status || "").toUpperCase() === "PASS";
+    const detailRecheckRequired = item?.checkout_status === "PRODUCT_DETAIL_RECHECK_REQUIRED"
+      || Boolean(item?.detail_recheck_status);
+    const truthBadge = quoteVerified
+      ? "QUOTE VERIFIED"
+      : item.quality_gate === "BOOM_PREMIUM"
+        ? "BOOM PICK"
+        : podSetupRequired
+          ? "POD CATALOG"
+          : detailRecheckRequired
+            ? "RECHECK REQUIRED"
+            : "SOURCE CATALOG";
+    const detailLine = quoteVerified
+      ? "A recent stock and shipping quote passed; destination is rechecked before checkout."
       : podSetupRequired
-        ? "POD CATALOG"
-        : item.availability_verified === true
-          ? "LIVE STOCK"
-          : "SOURCE CATALOG";
-    const detailLine = podSetupRequired
-      ? "Product source verified; HUNT setup is required before checkout."
-      : item.availability_verified === true
-        ? "Stock verified at source; rechecked before checkout."
-        : "Open for current price, variants and availability.";
+        ? "Product source verified; HUNT setup is required before checkout."
+        : detailRecheckRequired
+          ? "Product detail must be verified again before checkout."
+          : "Open for current price, variants and availability.";
     return `<article class="hd-shelf-card" role="listitem" data-category="${esc(item.category || "")}">
       <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(truthBadge)}</span></a>
       <div class="hd-shelf-card-body">
@@ -342,7 +349,10 @@
     if (!base) return fresh || {};
     if (!fresh) return base;
     const out = {...base};
+    const detailGate = base?.checkout_status === "PRODUCT_DETAIL_RECHECK_REQUIRED"
+      || Boolean(base?.detail_recheck_status);
     for (const [field,value] of Object.entries(fresh)) {
+      if (detailGate && ["availability_verified","retail_price_verified","retail_price_amount","profit_gate_status","checkout_status","snapshot_quality_gate"].includes(field)) continue;
       if (value === null || value === undefined || value === "") continue;
       if (Array.isArray(value) && value.length === 0 && Array.isArray(out[field]) && out[field].length) continue;
       if (field === "price_amount") {
