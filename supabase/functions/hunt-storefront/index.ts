@@ -400,7 +400,7 @@ async function cjMarketShelves(focusSlug = "") {
   const queryLimit = deeperFocus.has(focusSlug) ? 4 : 2;
   const products: any[] = [];
   const seenProducts = new Set<string>();
-  for (const keyword of queries.slice(0, queryLimit)) {
+  const fetchKeyword = async (keyword: string) => {
     const url = new URL("https://developers.cjdropshipping.com/api2.0/v1/product/listV2");
     url.searchParams.set("page", "1");
     url.searchParams.set("size", keyword ? "60" : "100");
@@ -409,13 +409,19 @@ async function cjMarketShelves(focusSlug = "") {
     const res = await fetch(url, {
       headers: {"CJ-Access-Token": token, "Accept": "application/json"}
     });
-    if (!res.ok) continue;
+    if (!res.ok) return [];
     const data = await res.json();
     const content = Array.isArray(data?.data?.content) ? data.data.content : [];
-    const rows = content.flatMap((entry: any) =>
+    return content.flatMap((entry: any) =>
       Array.isArray(entry?.productList) ? entry.productList : []
     );
-    for (const row of rows) {
+  };
+  const queryResults = await Promise.allSettled(
+    queries.slice(0, queryLimit).map(keyword => fetchKeyword(keyword))
+  );
+  for (const result of queryResults) {
+    if (result.status !== "fulfilled") continue;
+    for (const row of result.value) {
       const pid = cleanText(row?.id);
       if (!pid || seenProducts.has(pid)) continue;
       seenProducts.add(pid);
@@ -1392,7 +1398,7 @@ Deno.serve(async (req: Request) => {
     const [merchantShelves, printfulShelves, cjShelves, gootenShelves] = await Promise.all([
       withProviderTimeout(merchantMarketShelves(), {}, 3500),
       withProviderTimeout(printfulMarketShelves(), {}, 8000),
-      withProviderTimeout(cjMarketShelves(focusShelf), {}, focusShelf ? 9000 : 9000),
+      withProviderTimeout(cjMarketShelves(focusShelf), {}, focusShelf ? 14000 : 10000),
       withProviderTimeout(gootenMarketShelves(), {}, 8000)
     ]);
     const matterhornShelves = matterhornMarketShelves();
