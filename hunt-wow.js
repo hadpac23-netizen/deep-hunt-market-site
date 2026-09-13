@@ -126,15 +126,18 @@
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${H.esc(item.image_url)}" alt="${H.esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-wow-image-placeholder" aria-hidden="true">H</div>';
-    const price = Number.isFinite(Number(item.price_amount)) && Number(item.price_amount) > 0
-      ? H.money(Number(item.price_amount), item.currency || "USD")
-      : "Open product";
+    const retailAmount = Number(item?.retail_price_amount);
+    const retailReady = item?.retail_price_verified === true
+      && String(item?.profit_gate_status || "").toUpperCase() === "PASS"
+      && Number.isFinite(retailAmount)
+      && retailAmount > 0;
+    const price = retailReady ? H.money(retailAmount, item.retail_currency || item.currency || "USD") : "Price pending";
     return `<article class="hd-wow-product" role="listitem" data-category="${H.esc(item.category || "")}">
       <a class="hd-wow-product-media" href="${H.esc(href)}">${image}<span>${H.esc(label)}</span></a>
       <div class="hd-wow-product-body">
-        <small>${H.esc(item.provider || "LIVE SOURCE")}</small>
+        <small>${H.esc(item.provider || "CATALOG SOURCE")}</small>
         <a href="${H.esc(href)}">${H.esc(item.title || "Product")}</a>
-        <div class="hd-wow-price"><strong>${price}</strong><em>${item.price_amount ? "supplier base" : "details"}</em></div>
+        <div class="hd-wow-price"><strong>${price}</strong><em>${retailReady ? "HUNT retail" : "price pending"}</em></div>
       </div>
     </article>`;
   }
@@ -185,22 +188,22 @@
     const all = flatUnique(shelves);
     if (!all.length) return;
 
-    const liveCount = Number(data.visible_product_count || all.length);
-    const providerCount = new Set(all.map(x => x.provider).filter(Boolean)).size;
-    const categoryCount = Object.values(shelves).filter(rows => Array.isArray(rows) && rows.length).length;
+    const liveCount = Number(data.catalog_total_product_count || data.visible_product_count || all.length);
+    const providerCount = Number(data.catalog_provider_count || 0) || new Set(all.map(x => x.provider).filter(Boolean)).size;
+    const categoryCount = Number(data.catalog_category_count || 0) || Object.values(shelves).filter(rows => Array.isArray(rows) && rows.length).length;
 
     const hero = $(".hd-hero-copy");
     let proof = hero?.querySelector(".hd-live-proof");
     if (hero && !proof) {
       proof = document.createElement("div");
       proof.className = "hd-live-proof";
-      proof.setAttribute("aria-label","Live marketplace summary");
+      proof.setAttribute("aria-label","Marketplace catalog summary");
       hero.querySelector(":scope > p")?.after(proof);
     }
     if (proof) proof.innerHTML = `
-      <div><strong>${liveCount.toLocaleString()}</strong><span>UNIQUE LIVE PRODUCTS</span></div>
-      <div><strong>${providerCount}</strong><span>LIVE CATALOG SOURCES</span></div>
-      <div><strong>${categoryCount}</strong><span>LIVE CATEGORIES</span></div>`;
+      <div><strong>${liveCount.toLocaleString()}</strong><span>QUALITY CATALOG PRODUCTS</span></div>
+      <div><strong>${providerCount}</strong><span>CATALOG SOURCES</span></div>
+      <div><strong>${categoryCount}</strong><span>SHOPPING CATEGORIES</span></div>`;
 
     let showcase = $("#hd-wow-showcase");
     if (!showcase) {

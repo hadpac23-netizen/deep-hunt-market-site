@@ -327,25 +327,9 @@
     </article>`;
   }
 
-  function renderLowSourceShelf(products) {
-    // Internal supplier economics must never be rendered to customers.
+  function renderLowSourceShelf() {
+    // Supplier economics are internal-only and never rendered to customers.
     return;
-    const root = $("#hd-shelves-root");
-    if (!root) return;
-    const low = (Array.isArray(products) ? products : [])
-      .filter(item => Number.isFinite(Number(item.price_amount)) && Number(item.price_amount) > 0)
-      .sort((a,b)=>Number(a.price_amount)-Number(b.price_amount))
-      .slice(0,6);
-    if (!low.length) return;
-    const cards = low.map(item => {
-      const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : `product.html?provider=Printful&id=${encodeURIComponent(item.item_id || "")}`;
-      const image = item.image_url?.startsWith("https://") ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">` : '<div class="hd-shelf-placeholder">◇</div>';
-      return `<article class="hd-shelf-card low-cost" role="listitem"><a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>LOW SOURCE COST</span></a><div class="hd-shelf-card-body"><small>${esc(item.provider || "Printful")}</small><a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a><div class="hd-shelf-source-price"><b>${money(item.price_amount,item.currency||"USD")}</b><em>supplier base</em></div><a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a></div></article>`;
-    }).join("");
-    const section = document.createElement("section");
-    section.className = "hd-market-shelf low-source";
-    section.innerHTML = `<div class="hd-market-shelf-head"><div><small>VALUE FIRST</small><h3>Low source cost picks</h3><p>Lowest verified supplier-base costs from the connected live catalog. Not final retail prices.</p></div><a href="#catalog">See live catalog →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="Low source cost products">${cards}</div>`;
-    root.prepend(section);
   }
 
   function shelfItemLimit() {
@@ -543,10 +527,13 @@
     }).join("");
 
     root.innerHTML = html || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
-    const count = Number(data?.visible_product_count || 0);
-    const label = mode === "live" ? "LIVE" : mode === "hybrid" ? "READY" : "CATALOG";
+    const fullCatalogCount = Number(data?.catalog_total_product_count || 0);
+    const count = fullCatalogCount || Number(data?.visible_product_count || 0);
+    const label = fullCatalogCount ? "CATALOG" : (mode === "live" ? "LIVE" : mode === "hybrid" ? "READY" : "CATALOG");
     counter.textContent = `${count.toLocaleString()} ${label}`;
-    counter.title = mode === "hybrid" ? "Verified catalog with live supplier refresh merged in" : (mode === "live" ? "Live supplier refresh" : "Verified catalog snapshot while live suppliers refresh");
+    counter.title = fullCatalogCount
+      ? "BOOM quality catalog across category pages; home shelves remain curated for speed."
+      : (mode === "hybrid" ? "Verified catalog with live supplier refresh merged in" : (mode === "live" ? "Live supplier refresh" : "Verified catalog snapshot while live suppliers refresh"));
     return true;
   }
 

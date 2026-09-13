@@ -28,9 +28,15 @@
     storage: {title:"Storage & Organization", query:"storage organizer", icon:"S", description:"Closet, kitchen and home storage solutions."},
     bedding: {title:"Bedding", query:"bedding sheets duvet comforter", icon:"D", description:"Bedding, blankets, pillowcases and soft home essentials."},
     cleaning: {title:"Cleaning & Laundry", query:"cleaning laundry", icon:"C", description:"Household cleaning and laundry accessories."},
-    tech: {title:"Phone & Tech", query:"tech", icon:"P", description:"Phones, electronics and connected accessories from live supplier feeds."},
+    tech: {title:"Phone & Tech", query:"tech", icon:"P", description:"Phones, electronics and connected accessories from approved catalog sources."},
+    phonecases: {title:"Premium Phone Cases", query:"phone cases", icon:"C", description:"Curated phone cases with product-detail recheck before checkout."},
     phoneaccessories: {title:"Phone Accessories", query:"phone accessories", icon:"A", description:"Cases, stands, charging cables and phone accessories."},
     gaming: {title:"Gaming Accessories", query:"gaming accessories", icon:"G", description:"Gaming accessories and desk-ready gear from connected supplier feeds."},
+    hairaccessories: {title:"Hair Accessories", query:"hair accessories", icon:"H", description:"Hair clips, headbands, barrettes and everyday hair accessories."},
+    sets: {title:"Matching Sets", query:"matching sets", icon:"2", description:"Two-piece and coordinated apparel sets from approved catalog sources."},
+    plussize: {title:"Plus Size", query:"plus size fashion", icon:"+", description:"Extended-size apparel with product-detail recheck before checkout."},
+    sleepwear: {title:"Sleepwear", query:"sleepwear pajamas", icon:"N", description:"Pyjamas, nightwear and robes from approved catalog sources."},
+    suits: {title:"Suits & Tailoring", query:"suits blazers", icon:"U", description:"Suits, blazers and tailored styles from approved catalog sources."},
     sports: {title:"Sports & Fitness", query:"sports fitness", icon:"F", description:"Sports, fitness and active-lifestyle accessories."},
     outdoors: {title:"Outdoor & Garden", query:"outdoor garden picnic", icon:"G", description:"Outdoor, garden and picnic products."},
     kitchen: {title:"Kitchen", query:"kitchen", icon:"K", description:"Kitchen organizers, cookware accessories and useful everyday finds."},
@@ -60,10 +66,10 @@
   };
 
   const categoryGroups = [
-    {title:"Women & Men", items:["women","men","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","socks"]},
-    {title:"Beauty & Style", items:["bags","shoes","hats","accessories","jewelry","beauty","perfume"]},
+    {title:"Women & Men", items:["women","men","dresses","tops","bottoms","sets","plussize","sleepwear","suits","hoodies","jackets","knitwear","activewear","swimwear","socks"]},
+    {title:"Beauty & Style", items:["bags","shoes","hats","accessories","hairaccessories","jewelry","beauty","perfume"]},
     {title:"Home & Living", items:["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]},
-    {title:"Tech & Gaming", items:["tech","phoneaccessories","gaming"]},
+    {title:"Tech & Gaming", items:["tech","phonecases","phoneaccessories","gaming"]},
     {title:"Sports & Outdoors", items:["sports","outdoors","travel"]},
     {title:"Kids & Pets", items:["kids","toys","pets"]},
     {title:"Gifts, Crafts & Office", items:["gifts","party","crafts","ornaments","stickers","stationery","office"]}

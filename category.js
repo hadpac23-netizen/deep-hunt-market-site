@@ -17,21 +17,32 @@
   const $ = q => document.querySelector(q);
   const productKey = p => `${p.provider || ""}:${p.item_id || ""}`;
 
+  function retailState(product) {
+    const amount = Number(product?.retail_price_amount);
+    const currency = String(product?.retail_currency || product?.currency || "USD");
+    const ready = product?.retail_price_verified === true
+      && String(product?.profit_gate_status || "").toUpperCase() === "PASS"
+      && Number.isFinite(amount)
+      && amount > 0;
+    return {ready, amount: ready ? amount : null, currency};
+  }
+
   function productCard(product) {
     const score = H.personalScore(product);
     const image = product.image_url?.startsWith("https://")
       ? `<img src="${H.esc(product.image_url)}" alt="${H.esc(product.title || "Product")}" loading="lazy">`
       : `<div class="hd-market-card-placeholder">◇</div>`;
-    const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">${H.esc(product.provider || "LIVE")}</span>`;
-    const hasPrice = Number.isFinite(Number(product.price_amount)) && Number(product.price_amount) > 0;
-    const price = hasPrice ? H.money(product.price_amount, product.currency || "USD") : "Open product";
+    const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">${H.esc(product.provider || "CATALOG")}</span>`;
+    const retail = retailState(product);
+    const price = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
+    const stateLabel = retail.ready ? "HUNT RETAIL" : (product.availability_verified === true ? "CATALOG" : "DISCOVERY");
     const productUrl = H.productUrl(product);
-    return `<article class="hd-market-product-card" data-category="${H.esc(product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${Number(product.price_amount)||0}" data-score="${score}">
+    return `<article class="hd-market-product-card" data-category="${H.esc(product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${retail.amount || 0}" data-score="${score}">
       <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}</a>
       <div class="hd-market-card-body">
-        <small>${H.esc(product.provider || "Provider")} · ${H.esc(product.availability_verified ? "AVAILABLE" : "DISCOVERY")}</small>
+        <small>${H.esc(product.provider || "Provider")} · ${H.esc(stateLabel)}</small>
         <a href="${H.esc(productUrl)}" class="hd-market-card-title" data-product-view="${H.esc(productKey(product))}">${H.esc(product.title || "Product")}</a>
-        <div class="hd-market-card-price"><strong>${price}</strong><span>${H.esc(hasPrice ? (product.price_basis || "SOURCE PRICE") : "DETAIL PRICE")}</span></div>
+        <div class="hd-market-card-price"><strong>${price}</strong><span>${retail.ready ? "HUNT RETAIL" : "PRICE PENDING"}</span></div>
         <p>${H.esc(score > 0 ? H.personalReason(product) : "Open the product to inspect images, variants and availability.")}</p>
         <a class="hd-btn hd-market-view" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">View product →</a>
       </div>
@@ -126,13 +137,13 @@
     let score=0;
     const title=String(product?.title||"").trim();
     const image=String(product?.image_url||"");
-    const price=Number(product?.price_amount);
+    const retail=retailState(product);
     if(image.startsWith("https://")) score+=4;
     if(title.length>=12 && title.length<=180) score+=3;
     else if(title.length>=5) score+=1;
-    if(Number.isFinite(price)&&price>0) score+=2;
+    if(retail.ready) score+=2;
     if(product?.availability_verified===true) score+=2;
-    if(String(product?.price_basis||"").toUpperCase()==="MERCHANT_RETAIL") score+=1;
+    if(retail.ready) score+=1;
     if(product?.source_fresh_at){
       const age=Date.now()-Date.parse(product.source_fresh_at);
       if(Number.isFinite(age) && age>=0 && age<45*86400000) score+=1;
@@ -147,13 +158,12 @@
     const sort = $("#hd-cat-sort").value;
     const hasPriceFilter = min > 0 || Number.isFinite(max);
     const items = rawResults.filter(p => {
-      const price = Number(p.price_amount);
-      const priced = Number.isFinite(price) && price > 0;
-      const priceMatch = hasPriceFilter ? priced && price >= min && price <= max : true;
+      const retail = retailState(p);
+      const priceMatch = hasPriceFilter ? retail.ready && retail.amount >= min && retail.amount <= max : true;
       return matchesCategoryTruth(p) && matchesGenderScope(p) && matchesSub(p) && priceMatch;
     });
-    if (sort === "price-low") items.sort((a,b)=>(Number(a.price_amount)||Infinity)-(Number(b.price_amount)||Infinity));
-    else if (sort === "price-high") items.sort((a,b)=>(Number(b.price_amount)||0)-(Number(a.price_amount)||0));
+    if (sort === "price-low") items.sort((a,b)=>(retailState(a).amount??Infinity)-(retailState(b).amount??Infinity));
+    else if (sort === "price-high") items.sort((a,b)=>(retailState(b).amount??-Infinity)-(retailState(a).amount??-Infinity));
     else if (sort === "for-you") items.sort((a,b)=>
       H.personalScore(b)-H.personalScore(a) ||
       listingReadiness(b)-listingReadiness(a) ||
@@ -261,7 +271,7 @@
     let rendered = false;
     let shardLoaded = false;
     try {
-      const shardRes = await fetch(`catalog-shards/${encodeURIComponent(sourceSlug)}.json?v=catalog30k1`, {cache:"force-cache"});
+      const shardRes = await fetch(`catalog-shards/${encodeURIComponent(sourceSlug)}.json?v=boom5k3`, {cache:"force-cache"});
       if (shardRes.ok) {
         const shard = await shardRes.json();
         const shardRows = Array.isArray(shard?.products) ? shard.products : [];
