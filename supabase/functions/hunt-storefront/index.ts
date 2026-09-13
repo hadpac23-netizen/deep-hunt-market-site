@@ -358,14 +358,20 @@ async function cjMarketShelves(focusSlug = "") {
   if (!token) return {};
 
   const focusedQueries: Record<string, string[]> = {
-    sunglasses: ["women polarized sunglasses", "women UV400 sunglasses"],
+    sunglasses: ["women polarized sunglasses", "fashion sunglasses women", "retro UV400 sunglasses"],
     yoga: ["yoga mat", "yoga block"],
     swimming: ["swimming goggles", "swim training gear"],
-    racketsports: ["tennis racket", "badminton racket"],
-    sportstowels: ["sports towel", "cooling towel"],
+    racketsports: ["tennis racket", "badminton racket", "table tennis paddle", "padel racket"],
+    sportstowels: ["sports towel", "cooling towel", "gym towel", "yoga towel"],
     towels: ["bath towel"],
     fitnessequipment: ["fitness equipment"],
-    runningcycling: ["running accessories", "cycling accessories"],
+    runningcycling: ["running belt", "cycling bag", "running hydration belt", "cycling glasses"],
+    petbeds: ["pet bed", "dog bed", "cat bed"],
+    catfurniture: ["cat tree", "cat scratcher", "cat scratching board", "cat climbing frame"],
+    petfeeders: ["automatic pet feeder", "pet water fountain", "slow feeder"],
+    pettoys: ["interactive cat toy", "dog chew toy", "pet toy"],
+    petgrooming: ["pet grooming brush", "pet clipper", "deshedding brush"],
+    pettravel: ["pet carrier", "cat carrier", "dog travel bag"],
     ballsports: ["basketball accessories", "football training"],
     swimwear: ["women swimsuit"],
     bags: ["women handbag", "crossbody bag"],
@@ -390,9 +396,11 @@ async function cjMarketShelves(focusSlug = "") {
     sports: ["fitness equipment"]
   };
   const queries = focusSlug && focusedQueries[focusSlug] ? focusedQueries[focusSlug] : [""];
+  const deeperFocus = new Set(["sunglasses","runningcycling","racketsports","sportstowels","petbeds","catfurniture","petfeeders","pettoys","petgrooming","pettravel"]);
+  const queryLimit = deeperFocus.has(focusSlug) ? 4 : 2;
   const products: any[] = [];
   const seenProducts = new Set<string>();
-  for (const keyword of queries.slice(0, 2)) {
+  for (const keyword of queries.slice(0, queryLimit)) {
     const url = new URL("https://developers.cjdropshipping.com/api2.0/v1/product/listV2");
     url.searchParams.set("page", "1");
     url.searchParams.set("size", keyword ? "60" : "100");
@@ -458,6 +466,12 @@ async function cjMarketShelves(focusSlug = "") {
     toys: /\b(toy|toys|puzzle|plush|building block|craft kit|educational game)\b/i,
     kids: /\b(kid|kids|child|children|baby|toddler|youth|girl|boy)\b/i,
     pets: /\b(pet|pets|dog|dogs|cat|cats)\b/i,
+    petbeds: /\b(pet bed|dog bed|cat bed|pet mat|dog mat|cat mat|pet house|dog house|cat house)\b/i,
+    catfurniture: /\b(cat tree|cat tower|cat scratcher|scratching post|scratching board|cat scratching board|cat furniture|cat condo|cat climbing frame)\b/i,
+    petfeeders: /\b(pet feeder|automatic feeder|dog feeder|cat feeder|pet water fountain|cat water fountain|dog water fountain|slow feeder|pet bowl|dog bowl|cat bowl)\b/i,
+    pettoys: /\b(pet toy|dog toy|cat toy|chew toy|interactive cat toy|interactive dog toy|rope toy)\b/i,
+    petgrooming: /\b(pet grooming|dog grooming|cat grooming|grooming brush|pet brush|dog brush|cat brush|pet clipper|deshedding|de-shedding)\b/i,
+    pettravel: /\b(pet carrier|dog carrier|cat carrier|pet travel|dog travel|cat travel|pet backpack|dog backpack|cat backpack)\b/i,
     crafts: /\b(craft|crafts|sewing|knitting|crochet|painting|drawing|scrapbook|beading)\b/i,
     party: /\b(party|birthday|decoration|decorations|gift wrap|balloon)\b/i,
     gifts: /\b(gift|gifts|decor|mug|ornament)\b/i,
@@ -508,7 +522,13 @@ async function cjMarketShelves(focusSlug = "") {
     plussize: /\b(plus size|plus-size|big and tall|big & tall)\b/i,
     suits: /\b(tuxedo|business suit|formal suit|two[- ]?piece suit|2[- ]?piece suit|three[- ]?piece suit|3[- ]?piece suit|pantsuit|pant suit|suit set|blazer.{0,30}pants)\b/i,
     toys: /\b(toy|toys|puzzle|plush|building block|educational game|drawing board|microscope|walkie[- ]?talkie)\b/i,
-    pets: /\b(pet|pets|dog|dogs|cat|cats|puppy|kitten)\b/i
+    pets: /\b(pet|pets|dog|dogs|cat|cats|puppy|kitten)\b/i,
+    petbeds: /\b(pet bed|dog bed|cat bed|pet mat|dog mat|cat mat|pet house|dog house|cat house)\b/i,
+    catfurniture: /\b(cat tree|cat tower|cat scratcher|scratching post|scratching board|cat scratching board|cat furniture|cat condo|cat climbing frame)\b/i,
+    petfeeders: /\b(pet feeder|automatic feeder|dog feeder|cat feeder|pet water fountain|cat water fountain|dog water fountain|slow feeder|pet bowl|dog bowl|cat bowl)\b/i,
+    pettoys: /\b(pet toy|dog toy|cat toy|chew toy|interactive cat toy|interactive dog toy|rope toy)\b/i,
+    petgrooming: /\b(pet grooming|dog grooming|cat grooming|grooming brush|pet brush|dog brush|cat brush|pet clipper|deshedding|de-shedding)\b/i,
+    pettravel: /\b(pet carrier|dog carrier|cat carrier|pet travel|dog travel|cat travel|pet backpack|dog backpack|cat backpack)\b/i
   };
   const shelfNegativeRules: Record<string, RegExp> = {
     sunglasses: /\b(pet|dog|cat|doll|toy|car|vehicle|visor|holder|clip|organizer|storage|protective|safety|kid|kids|child|children)\b/i,
@@ -516,8 +536,14 @@ async function cjMarketShelves(focusSlug = "") {
     towels: /\b(pet|dog|cat|bandana|car magnetic)\b/i,
     runningcycling: /\b(pet|dog|leash|generator)\b/i,
     swimming: /\b(swimming ring|pool stairs|swimming trunks|swim trunks|shorts|pants|boxer|toddler|baby)\b/i,
-    racketsports: /\b(hair comb|hairbrush|brush|bracelet|skirt|hat|music|beauty|pet|dog|toy)\b/i,
+    racketsports: /\b(hair comb|hairbrush|brush|bracelet|necklace|chain|jewelry|jewellery|skirt|hat|music|beauty|pet|dog|toy|shoe|shoes|sneaker|sneakers|dress|shirts?|t-shirts?|tops?|vest|apparel|clothing|shorts|pants)\b/i,
     ballsports: /\b(pet|dog|puppy|toy|shoe|sock|clothes|shirt|jersey)\b/i,
+    petbeds: /\b(human|baby|toddler|doll|car seat|sofa cover|cushion cover)\b/i,
+    catfurniture: /\b(doll|toy miniature|wall sticker|ornament)\b/i,
+    petfeeders: /\b(baby|human|livestock|chicken|bird feeder|fish feeder)\b/i,
+    pettoys: /\b(adult|human|baby teether|child|children)\b/i,
+    petgrooming: /\b(human hair|beard|eyebrow|beauty|makeup)\b/i,
+    pettravel: /\b(baby carrier|child carrier|laptop|camera bag|tool bag)\b/i,
     lighting: /\b(car|vehicle|motorcycle|aquarium|grow light|uv steril|medical|surgical)\b/i,
     tech: /\b(car|vehicle|motorcycle|spy|hidden camera|surveillance)\b/i,
     jewelry: /\b(pet|dog|cat|toy|craft kit|diy kit)\b/i,
