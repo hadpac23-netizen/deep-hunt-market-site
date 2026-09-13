@@ -227,7 +227,15 @@
     bedding: ["Bedding", "bedding"],
     cleaning: ["Cleaning & Laundry", "cleaning"],
     tech: ["Phone & Tech", "tech"],
+    phonecases: ["Premium Phone Cases", "phonecases"],
     phoneaccessories: ["Phone Accessories", "phoneaccessories"],
+    hairaccessories: ["Hair Accessories", "hairaccessories"],
+    plussize: ["Plus Size", "plussize"],
+    suits: ["Suits & Tailoring", "suits"],
+    sets: ["Matching Sets", "sets"],
+    sleepwear: ["Sleepwear", "sleepwear"],
+    womenunderwear: ["Women's Essentials", "womenunderwear"],
+    menunderwear: ["Men's Essentials", "menunderwear"],
     gaming: ["Gaming Accessories", "gaming"],
     sports: ["Sports & Fitness", "sports"],
     outdoors: ["Outdoor & Garden", "outdoors"],
@@ -257,13 +265,13 @@
   };
 
   const shelfDepartments = [
-    ["Women · Clothing", ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"]],
-    ["Women · Shoes & Accessories", ["shoes","bags","jewelry","accessories","hats"]],
-    ["Beauty & Fragrance", ["beauty","perfume"]],
-    ["Men", ["men"]],
-    ["Home & Living", ["home","kitchen","storage","bedding"]],
-    ["Tech & Gaming", ["tech","phoneaccessories","gaming","office"]],
-    ["Everyday", ["travel","kids","toys","pets"]],
+    ["Women · Clothing", ["women","dresses","tops","bottoms","sets","plussize","hoodies","jackets","knitwear","activewear","swimwear","sleepwear","womenunderwear"]],
+    ["Women · Shoes & Accessories", ["bags","hairaccessories","jewelry","accessories","shoes","hats"]],
+    ["Men", ["men","suits","menunderwear","socks"]],
+    ["Premium Phone & Tech", ["phonecases","phoneaccessories","tech","gaming","office"]],
+    ["Home & Living", ["home","lighting","kitchen","storage","bedding","bath"]],
+    ["Sports & Everyday", ["sports","travel","kids","toys","pets"]],
+    ["Beauty", ["beauty"]],
     ["Creative & Gifts", ["crafts","party","gifts","stationery"]],
   ];
 
@@ -274,12 +282,20 @@
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
+    const truthBadge = item.quality_gate === "BOOM_PREMIUM"
+      ? "BOOM PICK"
+      : item.availability_verified === true
+        ? "LIVE STOCK"
+        : "SOURCE CATALOG";
+    const detailLine = item.availability_verified === true
+      ? "Stock verified at source; rechecked before checkout."
+      : "Open for current price, variants and availability.";
     return `<article class="hd-shelf-card" role="listitem" data-category="${esc(item.category || "")}">
-      <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>VERIFIED SOURCE</span></a>
+      <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(truthBadge)}</span></a>
       <div class="hd-shelf-card-body">
         <small>${esc(item.provider || "Provider")}</small>
         <a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a>
-        <p>Open for source price, sizes, colors and availability.</p>
+        <p>${esc(detailLine)}</p>
         <a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a>
       </div>
     </article>`;
@@ -357,6 +373,7 @@
       };
       append(snapShelves[slug], false);
       append(liveShelves[slug], true);
+      rows.sort((a,b) => shelfQualityScore(b) - shelfQualityScore(a));
       shelves[slug] = rows;
     }
 
@@ -388,6 +405,22 @@
     return hasWomen && !hasMen;
   }
 
+  function shelfQualityScore(item) {
+    let score = 0;
+    if (item?.quality_gate === "BOOM_PREMIUM") score += 90;
+    if (item?.availability_verified === true) score += 50;
+    const retail = Number(item?.retail_price_amount);
+    const base = Number(item?.price_amount);
+    if ((Number.isFinite(retail) && retail > 0) || (Number.isFinite(base) && base > 0)) score += 20;
+    const stock = Number(item?.stock_quantity);
+    if (Number.isFinite(stock) && stock > 0) score += Math.min(20, stock);
+    if (String(item?.brand || "").trim()) score += 8;
+    if (Array.isArray(item?.gallery) && item.gallery.length >= 2) score += 10;
+    if (Number(item?.variant_count || 0) >= 2) score += 8;
+    if (item?._hunt_fresh === true) score += 7;
+    return score;
+  }
+
   function selectShelfItems(items, limit, renderedKeys) {
     const rows = [];
     const localSeen = new Set();
@@ -401,8 +434,12 @@
       groups.get(provider).push(item);
     }
 
-    // Preserve the first stable catalog order inside each provider. Live refresh updates data in place, never reshuffles visible products.
-    const providers = [...groups.keys()];
+    for (const group of groups.values()) group.sort((a,b) => shelfQualityScore(b) - shelfQualityScore(a));
+    const providers = [...groups.keys()].sort((a,b) => {
+      const aTop = groups.get(a)?.[0];
+      const bTop = groups.get(b)?.[0];
+      return shelfQualityScore(bTop) - shelfQualityScore(aTop);
+    });
     let cursor = 0;
     while (rows.length < limit && providers.length) {
       const provider = providers[cursor % providers.length];
@@ -497,13 +534,10 @@
       if (!res.ok) throw new Error(data.error || "Market shelves unavailable");
       const merged = snapshotData ? mergeShelfData(snapshotData, data) : data;
       if (snapshotData && renderedFallback) {
-        // Freeze the already-visible storefront. Background live refresh may enrich data,
-        // but it must never replace/reorder cards the shopper is already looking at.
-        window.HuntMarketShelves = merged;
+        // Fast snapshot first, then one quality-ranked hybrid refresh when live suppliers return.
+        // This keeps first paint fast without permanently hiding better live inventory.
+        renderMarketShelvesData(merged, "hybrid");
         window.dispatchEvent(new CustomEvent("hunt:shelves-refreshed", {detail:merged}));
-        const count = Number(merged?.visible_product_count || 0);
-        counter.textContent = `${count.toLocaleString()} READY`;
-        counter.title = "Visible shelves are stable; live supplier data refreshed in the background.";
       } else {
         renderMarketShelvesData(merged, "live");
       }
