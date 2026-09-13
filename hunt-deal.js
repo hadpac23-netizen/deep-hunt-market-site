@@ -419,6 +419,7 @@
       bags: /\b(bag|backpack|tote|handbag|purse|crossbody|duffle|weekender)\b/i,
       hairaccessories: /\b(hair|headband|hairpin|barrette|scrunchie|comb|claw clip|shark clip)\b/i,
       phonecases: /\b(case|cover)\b.*\b(phone|iphone|samsung|magsafe)\b|\b(phone|iphone|samsung|magsafe)\b.*\b(case|cover)\b/i,
+      sets: /\b(two[- ]?piece|2[- ]?piece|matching|co[- ]?ord|coord)\b.*\b(top|shirt|blouse|vest|hoodie|sweater|cardigan|jacket|dress|skirt|shorts|pants|trousers|pajama|outfit|clothing)\b/i,
       home: /\b(blanket|pillow|rug|mat|poster|canvas|decor|coaster|towel|placemat|tablecloth|runner|cutting board|wall art|home|curtain|lamp|lighting)\b/i,
       office: /\b(desk|calendar|journal|notebook|mouse pad|mousepad|office|acrylic desk)\b/i,
       sports: /\b(yoga|sport|fitness|running|cycling|gym|racket|towel|bottle|mat)\b/i,
@@ -428,6 +429,7 @@
     if (slug === "women" && /\b(boy|boys|kid|kids|child|children|baby|toddler)\b/i.test(title)) return false;
     if (slug === "women" && /\b(hair|clip|headband|jewelry|bag|purse|shoe|case|phone|wig|extension)\b/i.test(title)) return false;
     if (slug === "hairaccessories" && /\b(shorts|pants|trousers|jeans|shirt|tee|dress|hoodie|jacket|coat)\b/i.test(title)) return false;
+    if (slug === "sets" && /\b(necklace|bracelet|earring|earrings|jewelry|jewellery|gift|bedding|sheet|duvet|toy|tool|kitchen|bath|towel|baby|toddler|kid|kids|child|children|boys?|girls?|pet|dog|cat)\b/i.test(title)) return false;
     if (slug === "home" && /\b(hair|clip|headband|handbag|purse|phone case|halloween|witch|costume)\b/i.test(title)) return false;
     return true;
   }
