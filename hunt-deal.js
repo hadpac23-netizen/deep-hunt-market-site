@@ -225,6 +225,7 @@
     activewear: ["Activewear", "activewear"],
     bags: ["Bags & Totes", "bags"],
     shoes: ["Shoes", "shoes"],
+    hairaccessories: ["Hair Accessories", "hairaccessories"],
     accessories: ["Accessories", "accessories"],
     travel: ["Travel Picks", "travel"],
     home: ["Home Finds", "home"],
@@ -232,6 +233,7 @@
     bedding: ["Bedding", "bedding"],
     cleaning: ["Cleaning & Laundry", "cleaning"],
     tech: ["Phone & Tech", "tech"],
+    phonecases: ["Premium Phone Cases", "phonecases"],
     phoneaccessories: ["Phone Accessories", "phoneaccessories"],
     gaming: ["Gaming Accessories", "gaming"],
     sports: ["Sports & Fitness", "sports"],
@@ -289,14 +291,14 @@
   const shelfDepartments = [
     ["Women · Fashion", ["women","dresses","jeans","tops","bottoms","sets","jackets","knitwear","activewear","plussize","petite","maternity"]],
     ["Women · Beauty", ["beauty","makeup","skincare","haircare","bodycare","perfume"]],
-    ["Women · Bags & Accessories", ["bags","jewelry","accessories","sunglasses","hats"]],
+    ["Women · Bags & Accessories", ["bags","jewelry","hairaccessories","accessories","sunglasses","hats"]],
     ["Women · Shoes & Comfort", ["shoes","slippers","womenunderwear","sleepwear","loungewear","socks","swimwear"]],
     ["Trending Deals", ["__trending"]],
     ["Men", ["men","suits","jeans","menunderwear","shoes","slippers","socks"]],
     ["Kids & Youth", ["kids","kidsunderwear","toys"]],
     ["Pets", ["pets","petbeds","catfurniture","petfeeders","pettoys","petgrooming","pettravel"]],
     ["Home & Living", ["home","kitchen","storage","bedding"]],
-    ["Tech & Gaming", ["tech","phoneaccessories","gaming","office"]],
+    ["Tech & Gaming", ["phonecases","tech","phoneaccessories","gaming","office"]],
     ["Creative & Gifts", ["crafts","party","gifts","stationery","travel"]],
   ];
 
@@ -538,9 +540,9 @@
   }
 
   const boomCategoryPrior = {
-    accessories:97, bags:95, beauty:95, perfume:95,
+    hairaccessories:98, accessories:97, bags:95, beauty:95, perfume:95,
     women:93, dresses:93, tops:93, bottoms:93, jackets:93, knitwear:93, activewear:93, sets:93, plussize:93,
-    jewelry:92, tech:90, phoneaccessories:90, gaming:88,
+    jewelry:92, phonecases:94, tech:90, phoneaccessories:89, gaming:88,
     home:88, kitchen:88, storage:88, lighting:88,
     men:86, suits:86, shoes:84, toys:82, pets:81, kids:80
   };

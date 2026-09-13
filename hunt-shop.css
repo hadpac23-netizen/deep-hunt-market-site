@@ -243,6 +243,7 @@ html[data-hunt-theme="dark"] .hd-f35-drop .hd-wow-product-media>span{background:
 @media(max-width:760px){.hd-f35-drop{margin-bottom:24px;padding-top:8px}.hd-f35-drop .hd-wow-rail-head{align-items:flex-start}}
 
 /* Functional accessories need full-product framing rather than fashion-style cropping. */
+.hd-shelf-card[data-category="phonecases"] .hd-shelf-media img,
 .hd-shelf-card[data-category="phoneaccessories"] .hd-shelf-media img,
 .hd-wow-product[data-category="phoneaccessories"] .hd-wow-product-media img,
 .hd-market-product-card[data-category="phoneaccessories"] .hd-market-card-media img{
@@ -329,3 +330,11 @@ body[data-product-category="sports"] .hd-product-main-media img{
   object-fit:contain!important;
   padding:clamp(18px,3vw,34px)!important;
 }
+
+/* Premium phone-case media should show the whole case cleanly. */
+:is(.hd-shelf-card,.hd-market-product-card,.hd-wow-product)[data-category="phonecases"] img{object-fit:contain!important;padding:10px;background:#f6f6f4}
+body[data-product-category="phonecases"] .hd-product-main-media img{object-fit:contain!important;padding:18px;background:#f6f6f4}
+
+/* Hair accessories: keep the full clip/claw/headband visible. */
+:is(.hd-shelf-card,.hd-market-product-card,.hd-wow-product)[data-category="hairaccessories"] img{object-fit:contain!important;padding:12px;background:#f7f7f5}
+body[data-product-category="hairaccessories"] .hd-product-main-media img{object-fit:contain!important;padding:20px;background:#f7f7f5}

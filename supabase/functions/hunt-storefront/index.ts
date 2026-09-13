@@ -369,6 +369,7 @@ async function cjMarketShelves(focusSlug = "") {
     ballsports: ["basketball accessories", "football training"],
     swimwear: ["women swimsuit"],
     bags: ["women handbag", "crossbody bag"],
+    hairaccessories: ["women hair claw clip", "women headband scrunchie"],
     jewelry: ["women necklace", "stainless steel jewelry"],
     lighting: ["desk lamp", "office lamp"],
     bedding: ["duvet cover", "bed sheet"],
@@ -383,6 +384,8 @@ async function cjMarketShelves(focusSlug = "") {
     jackets: ["women jacket"],
     knitwear: ["women sweater"],
     shoes: ["women shoes"],
+    phonecases: ["magsafe phone case", "luxury phone case"],
+    phoneaccessories: ["phone stand screen protector", "fast charging cable"],
     tech: ["laptop stand", "phone charging stand"],
     sports: ["fitness equipment"]
   };
@@ -424,6 +427,7 @@ async function cjMarketShelves(focusSlug = "") {
     activewear: /\b(fitness|sport|sports|athletic|legging|leggings|yoga|gym|running)\b/i,
     bags: /\b(bag|bags|tote|crossbody|backpack|purse|handbag|luggage)\b/i,
     shoes: /\b(shoe|shoes|sneaker|sneakers|slipper|slippers|sandal|sandals|boots)\b/i,
+    hairaccessories: /\b(hair claw|hair clip|hairpin|headband|scrunchie|hair comb|barrette)\b/i,
     accessories: /\b(accessory|accessories|wallet|belt|scarf|hat|cap|sunglasses)\b/i,
     jewelry: /\b(jewelry|jewellery|necklace|bracelet|earring|earrings|pendant|ring|rings)\b/i,
     beauty: /\b(beauty|skincare|makeup|cosmetic|serum|cream|hair care|beauty tool|mirror)\b/i,
@@ -436,7 +440,8 @@ async function cjMarketShelves(focusSlug = "") {
     lighting: /\b(lamp|lighting|night light|desk light|led light)\b/i,
     cleaning: /\b(cleaning|cleaner|mop|brush|squeegee|dust|laundry)\b/i,
     tech: /\b(phone|tablet|computer|electronic|electronics|charging|charger|audio|earbuds|speaker)\b/i,
-    phoneaccessories: /\b(phone case|iphone case|mobile case|screen protector|phone stand|charging cable|charger)\b/i,
+    phonecases: /\b(phone case|iphone case|mobile case|magsafe case|tough case|clear case|snap case|leather case|camera protection case)\b/i,
+    phoneaccessories: /\b(screen protector|phone stand|phone holder|charging cable|charger|wireless charger|charging stand)\b/i,
     gaming: /\b(gaming|gamepad|controller|keyboard|mouse pad|headset stand)\b/i,
     travel: /\b(travel|luggage|organizer|suitcase|passport holder|weekender|duffle)\b/i,
     sports: /\b(sports|fitness|running|cycling|yoga|pilates|swimming|basketball|football|soccer|volleyball|tennis|badminton|padel|table tennis|gym|training)\b/i,
@@ -481,9 +486,11 @@ async function cjMarketShelves(focusSlug = "") {
   const strictTitleRules: Record<string, RegExp> = {
     shoes: /\b(shoe|shoes|sneaker|sneakers|slipper|slippers|sandal|sandals|boot|boots|loafer|loafers|heel|heels|pump|pumps|mule|mules|clog|clogs)\b/i,
     bags: /\b(bag|bags|tote|crossbody|backpack|purse|handbag|luggage|duffle|satchel|clutch)\b/i,
+    hairaccessories: /\b(hair claw|hair clip|hair clips|hairpin|headband|scrunchie|hair comb|barrette)\b/i,
     jewelry: /\b(jewelry|jewellery|necklace|bracelet|earring|earrings|pendant|ring|rings|anklet|brooch)\b/i,
     perfume: /\b(perfume|fragrance|cologne|eau de parfum|eau de toilette)\b/i,
-    phoneaccessories: /\b(phone case|iphone case|mobile case|screen protector|phone stand|phone holder|charging cable|charger|magsafe)\b/i,
+    phonecases: /\b(phone case|iphone case|mobile case|magsafe case|tough case|clear case|snap case|leather case|camera protection case|magnetic.{0,20}case)\b/i,
+    phoneaccessories: /\b(screen protector|phone stand|phone holder|charging cable|charger|wireless charger|charging stand)\b/i,
     fitnessequipment: /\b(dumbbell|kettlebell|resistance band|exercise band|pull up|push up|ab roller|foam roller|jump rope|skipping rope|step machine|treadmill|exercise bike|weight bench|fitness equipment|gym equipment)\b/i,
     yoga: /\b(yoga|pilates|yoga mat|yoga block|pilates ring|yoga strap)\b/i,
     runningcycling: /\b(running|cycling|bike|bicycle|hydration belt|running belt|cycling jersey|bike bag|cycling glasses)\b/i,
@@ -514,7 +521,10 @@ async function cjMarketShelves(focusSlug = "") {
     lighting: /\b(car|vehicle|motorcycle|aquarium|grow light|uv steril|medical|surgical)\b/i,
     tech: /\b(car|vehicle|motorcycle|spy|hidden camera|surveillance)\b/i,
     jewelry: /\b(pet|dog|cat|toy|craft kit|diy kit)\b/i,
+    hairaccessories: /\b(pet|dog|cat|wig|extension|toy|doll|kid|kids|child|children|girl|girls|baby|toddler)\b/i,
     bags: /\b(pet|dog|cat|tool bag|trash bag|garbage|vacuum bag)\b/i,
+    phonecases: /\b(pet|dog|cat|puppy|tablet|ipad|laptop|watch|airpods|cable|charger|stand|holder|screen protector)\b/i,
+    phoneaccessories: /\b(pet|dog|cat|puppy|car|vehicle|automotive|bumper|trunk|dashboard|motorcycle|watch|smartwatch|macbook|notebook|laptop|tablet|ipad)\b/i,
     kidsunderwear: /\b(adult|men(?:'s)?|man|male|lingerie|sexy|seductive|thong|g[- ]?string)\b/i,
     menunderwear: /\b(kids?|children|child|boys?|girls?|youth|lingerie|sexy|seductive)\b/i,
     maternity: /\b(medical|support belt|belly band|shapewear|slimming|waist trainer)\b/i,
@@ -584,6 +594,32 @@ async function cjMarketShelves(focusSlug = "") {
         supplier_delivery_cycle: cleanText(raw?.deliveryCycle) || null
       });
     }
+  }
+
+  if (Array.isArray(out.phonecases)) {
+    const premiumCaseScore = (row: any) => {
+      const t = cleanText(row?.title).toLowerCase();
+      let score = 0;
+      if (/magsafe|magnetic/.test(t)) score += 18;
+      if (/leather|carbon fiber|forged|metal/.test(t)) score += 14;
+      if (/clear|transparent|tough|shock|drop-resistant|anti-drop/.test(t)) score += 10;
+      if (/camera|lens|full wrap|all-inclusive/.test(t)) score += 8;
+      if (/luxury|business|premium|plating|gold foil/.test(t)) score += 6;
+      return score;
+    };
+    out.phonecases.sort((a:any,b:any)=>premiumCaseScore(b)-premiumCaseScore(a));
+  }
+  if (Array.isArray(out.hairaccessories)) {
+    const premiumHairScore = (row: any) => {
+      const t = cleanText(row?.title).toLowerCase();
+      let score = 0;
+      if (/acetate|cellulose acetate/.test(t)) score += 20;
+      if (/satin|silk|leather|metal|pearl/.test(t)) score += 14;
+      if (/french|elegant|high-grade|premium|luxury|exquisite/.test(t)) score += 10;
+      if (/large|updo|claw|headband|scrunchie/.test(t)) score += 5;
+      return score;
+    };
+    out.hairaccessories.sort((a:any,b:any)=>premiumHairScore(b)-premiumHairScore(a));
   }
 
   cjShelfCaches.set(cacheKey, { value: out, expiresAt: Date.now() + 20 * 60 * 1000 });
@@ -666,7 +702,7 @@ async function gootenMarketShelves() {
     wallart:/\b(canvas wrap|canvas print|poster|wall art|framed print|acrylic print|metal print)\b/i,
     stationery:/\b(notepad|journal|calendar|greeting card|postcard|stationery|sticker)\b/i,
     office:/\b(desk|calendar|notepad|journal|mouse pad|mousepad)\b/i,
-    phoneaccessories:/\b(phone case|phone cases|mobile case)\b/i,
+    phonecases:/\b(phone case|phone cases|mobile case)\b/i,
     gaming:/\b(gamer|gaming|mousepad|mouse pad)\b/i,
     travel:/\b(travel|luggage|pouch|bag|passport)\b/i,
     sports:/\b(yoga|sport|fitness|legging)\b/i,
@@ -688,7 +724,7 @@ async function gootenMarketShelves() {
     const titleText=title.toLowerCase();
     const haystack=(title+" "+path).toLowerCase();
     for (const [slug,pattern] of Object.entries(definitions)) {
-      const matchText = ["stationery","wallart","phoneaccessories","gaming"].includes(slug) ? titleText : haystack;
+      const matchText = ["stationery","wallart","phonecases","phoneaccessories","gaming"].includes(slug) ? titleText : haystack;
       if(out[slug].length>=120 || !pattern.test(matchText)) continue;
       out[slug].push({
         provider:"Gooten",
@@ -929,7 +965,8 @@ function surveyMarketShelves() {
         cleanText(row?.image_url).startsWith("https://") &&
         row?.retail_price_verified === true &&
         cleanText(row?.profit_gate_status) === "PASS" &&
-        row?.availability_verified === true
+        row?.availability_verified === true &&
+        !(String(slug) === "phoneaccessories" && (/\b(pet|dog|cat|puppy)\b/i.test(cleanText(row?.title)) || /\b(phone case|iphone case|mobile case|magsafe case|tough case|clear case)\b/i.test(cleanText(row?.title))))
       )
       .map((row: any) => ({
         ...row,
@@ -982,6 +1019,7 @@ async function printfulMarketShelves() {
     accessories: /\b(hat|hats|cap|caps|wallet|belt|tag|beanie|bucket hat|accessory|accessories)\b/i,
     travel: /\b(luggage|duffle|weekender|travel|bottle|towel|tag|bag|bags|suitcase)\b/i,
     home: /\b(rug|pillow|blanket|coaster|poster|canvas|wall art|home|decor)\b/i,
+    phonecases: /\b(case for iphone|case for samsung|magsafe.*case|tough case|clear case|snap case)\b/i,
     tech: /\b(phone|iphone|samsung|airpods|magsafe)\b/i,
     gifts: /\b(mug|ornament|blanket|poster|canvas|tumbler|bottle|coaster|gift)\b/i,
     kids: /\b(kids?|youth|toddler|baby)\b/i,

@@ -10,23 +10,23 @@
 
   const departments = [
     {title:"Women · Clothing", slug:"women", href:"category.html?c=women", items:["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear"], womenOnly:true},
-    {title:"Women · Shoes & Accessories", slug:"women", href:"category.html?c=women&sub=shoes", items:["shoes","bags","jewelry","accessories","hats"], womenOnly:true},
+    {title:"Women · Shoes & Accessories", slug:"women", href:"category.html?c=women&sub=shoes", items:["shoes","bags","jewelry","hairaccessories","accessories","hats"], womenOnly:true},
     {title:"Men", slug:"men", items:["men","suits","underwear","socks"]},
     {title:"Beauty & Fragrance", slug:"beauty", href:"category.html?c=beauty", items:["beauty","perfume"]},
     {title:"Kids", slug:"kids", items:["kids","toys"]},
     {title:"Home & Living", slug:"home", items:["home","kitchen","storage","bedding","bath","lighting","cleaning"]},
-    {title:"Tech & Gaming", slug:"tech", items:["tech","phoneaccessories","gaming"]},
+    {title:"Tech & Gaming", slug:"tech", items:["phonecases","tech","phoneaccessories","gaming"]},
     {title:"Sports & Travel", slug:"sports", items:["sports","outdoors","travel"]},
     {title:"Gifts & More", slug:"gifts", items:["gifts","party","crafts","office","stationery","pets"]}
   ];
 
   const megaGroups = [
     ["Women · Clothing", "women", ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear"]],
-    ["Women · Shoes & Accessories", "women", ["shoes","bags","jewelry","accessories","hats"]],
+    ["Women · Shoes & Accessories", "women", ["shoes","bags","jewelry","hairaccessories","accessories","hats"]],
     ["Beauty & Fragrance", null, ["beauty","perfume"]],
     ["Men", "men", ["tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks"]],
     ["Home & Living", null, ["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]],
-    ["Tech", null, ["tech","phoneaccessories","gaming","office"]],
+    ["Tech", null, ["phonecases","tech","phoneaccessories","gaming","office"]],
     ["Kids & Pets", null, ["kids","toys","pets"]],
     ["Sports & Travel", null, ["sports","outdoors","travel"]],
     ["Gifts & Creative", null, ["gifts","party","crafts","stationery","ornaments"]]
@@ -100,7 +100,7 @@
     if (value === "women") return ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","suits","underwear","socks","swimwear","shoes","bags","jewelry","accessories","hats","beauty","perfume"];
     if (value === "men") return ["men","suits","underwear","socks","tops","bottoms","hoodies","jackets","knitwear","activewear","shoes","accessories","hats"];
     if (value === "home") return ["home","kitchen","storage","bedding","bath","lighting"];
-    if (value === "tech") return ["tech","phoneaccessories","gaming","office"];
+    if (value === "tech") return ["phonecases","tech","phoneaccessories","gaming","office"];
     const signals = H.signals();
     const ranked = Object.entries(signals)
       .filter(([slug,score]) => H.categoryDefs[slug] && Number(score) > 0)
@@ -165,9 +165,9 @@
     {label:"WESTERN", slugs:["accessories"], pattern:/western.*belt|belt.*western/i, weight:20},
     {label:"POUCH", slugs:["bags"], pattern:/drawstring|pouch/i, weight:22},
     {label:"ANIMAL", slugs:["bags"], pattern:/leopard|zebra|cow print|animal print/i, weight:21},
-    {label:"CROSSBODY", slugs:["phoneaccessories"], pattern:/crossbody|shoulder strap|neck strap/i, weight:25},
-    {label:"WRIST", slugs:["phoneaccessories"], pattern:/wrist strap|wristband/i, weight:24},
-    {label:"KICKSTAND", slugs:["phoneaccessories"], pattern:/kickstand|ring stand/i, weight:20}
+    {label:"CROSSBODY", slugs:["phonecases","phoneaccessories"], pattern:/crossbody|shoulder strap|neck strap/i, weight:25},
+    {label:"WRIST", slugs:["phonecases","phoneaccessories"], pattern:/wrist strap|wristband/i, weight:24},
+    {label:"KICKSTAND", slugs:["phonecases","phoneaccessories"], pattern:/kickstand|ring stand/i, weight:20}
   ];
 
   function f35TrendPick(shelves, limit=10) {

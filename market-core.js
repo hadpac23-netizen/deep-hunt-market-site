@@ -29,13 +29,15 @@
     shoes: {title:"Shoes", query:"shoes", icon:"S", description:"Sneakers, canvas shoes and everyday footwear."},
     slippers: {title:"Slippers & Home Shoes", query:"slippers home shoes slides", icon:"L", description:"Indoor slippers, plush slippers, slides and comfort footwear."},
     sunglasses: {title:"Sunglasses & Eyewear", query:"sunglasses eyewear", icon:"E", description:"Fashion sunglasses and eyewear from verified suppliers."},
+    hairaccessories: {title:"Hair Accessories", query:"hair claws clips headbands scrunchies", icon:"H", description:"Hair claws, clips, headbands, scrunchies and polished hair accessories from approved live sources."},
     accessories: {title:"Accessories", query:"accessories", icon:"X", description:"Hats, caps, tags and everyday accessories."},
     home: {title:"Home", query:"home", icon:"O", description:"Decor, useful home finds and everyday living products."},
     storage: {title:"Storage & Organization", query:"storage organizer", icon:"S", description:"Closet, kitchen and home storage solutions."},
     bedding: {title:"Bedding", query:"bedding sheets duvet comforter", icon:"D", description:"Bedding, blankets, pillowcases and soft home essentials."},
     cleaning: {title:"Cleaning & Laundry", query:"cleaning laundry", icon:"C", description:"Household cleaning and laundry accessories."},
     tech: {title:"Phone & Tech", query:"tech", icon:"P", description:"Phones, electronics and connected accessories from live supplier feeds."},
-    phoneaccessories: {title:"Phone Accessories", query:"phone accessories", icon:"A", description:"Cases, stands, charging cables and phone accessories."},
+    phonecases: {title:"Premium Phone Cases", query:"premium phone cases magsafe clear tough leather camera protection", icon:"C", description:"Premium-looking phone cases, MagSafe-compatible styles, clear, tough, leather-look and camera-protection cases from approved live sources."},
+    phoneaccessories: {title:"Phone Accessories", query:"phone accessories", icon:"A", description:"Stands, screen protectors, charging accessories and useful phone add-ons."},
     gaming: {title:"Gaming Accessories", query:"gaming accessories", icon:"G", description:"Gaming accessories and desk-ready gear from connected supplier feeds."},
     sports: {title:"Sports & Fitness", query:"sports fitness", icon:"F", description:"Sports, fitness, activewear and training equipment."},
     fitnessequipment: {title:"Fitness Equipment", query:"fitness equipment gym equipment", icon:"G", description:"Gym and home-training equipment from approved supplier catalogs."},
@@ -96,14 +98,14 @@
 
   const categoryGroups = [
     {title:"Women · Clothing", items:["women","dresses","jeans","sets","tops","bottoms","jackets","knitwear","activewear","plussize","petite","maternity"]},
-    {title:"Women · Beauty, Bags & Accessories", items:["beauty","makeup","skincare","haircare","bodycare","perfume","bags","jewelry","accessories","sunglasses"]},
+    {title:"Women · Beauty, Bags & Accessories", items:["beauty","makeup","skincare","haircare","bodycare","perfume","bags","jewelry","hairaccessories","accessories","sunglasses"]},
     {title:"Women · Swim & Beach", items:["swimwear"]},
     {title:"Women · Shoes, Underwear & Comfort", items:["shoes","slippers","womenunderwear","sleepwear","loungewear","socks"]},
     {title:"Men", items:["men","suits","jeans","sets","tops","bottoms","jackets","activewear","menunderwear","sleepwear","socks","shoes","slippers","sunglasses","accessories"]},
     {title:"Kids", items:["kids","kidsunderwear","sleepwear","socks","shoes","slippers","toys"]},
     {title:"Pets", items:["pets","petbeds","catfurniture","petfeeders","pettoys","petgrooming","pettravel"]},
     {title:"Home & Living", items:["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]},
-    {title:"Tech & Gaming", items:["tech","phoneaccessories","gaming"]},
+    {title:"Tech & Gaming", items:["tech","phonecases","phoneaccessories","gaming"]},
     {title:"Sports & Fitness", items:["sports","activewear","fitnessequipment","yoga","runningcycling","swimming","ballsports","racketsports","sportstowels","sunglasses","outdoors","travel"]},
     {title:"Towels & Soft Textiles", items:["towels","blankets","bedding","bath"]},
     {title:"Gifts, Crafts & Office", items:["gifts","party","crafts","ornaments","stickers","stationery","office"]}
@@ -125,7 +127,7 @@
 
   function inferCategory(value) {
     const explicit = typeof value === "object" ? String(value?.category || "").toLowerCase() : "";
-    const precise = new Set(["womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","fitnessequipment","yoga","runningcycling","swimming","ballsports","racketsports","sportstowels","towels"]);
+    const precise = new Set(["womenunderwear","menunderwear","kidsunderwear","sleepwear","loungewear","plussize","petite","maternity","sets","fitnessequipment","yoga","runningcycling","swimming","ballsports","racketsports","sportstowels","towels","phonecases","hairaccessories"]);
     if (precise.has(explicit) && categoryDefs[explicit]) return explicit;
     const t = String(value?.title || value || "").toLowerCase();
     if (/\b(cat tree|cat tower|cat scratcher|scratching post|cat furniture)\b/.test(t)) return "catfurniture";
@@ -152,6 +154,7 @@
     if (/\b(haircare|shampoo|conditioner|hair mask|hair oil)\b/.test(t)) return "haircare";
     if (/\b(body care|body lotion|body wash|body cream)\b/.test(t)) return "bodycare";
     if (/(beauty|cosmetic|serum|cream)/.test(t)) return "beauty";
+    if (/\b(hair claw|hair clip|hairpin|headband|scrunchie|hair comb|barrette)\b/.test(t)) return "hairaccessories";
     if (/(jewelry|jewellery|necklace|bracelet|earring|ring)/.test(t)) return "jewelry";
     if (/\b(suit|suits|tuxedo|formal jacket|formalwear|business suit|blazer set)\b/.test(t)) return "suits";
     if (/\b(underwear|briefs?|boxer briefs?|boxers?|underpants|intimates?|bra|bras)\b/.test(t)) return "underwear";
@@ -174,7 +177,8 @@
     if (/(handbag|purse|crossbody|tote|backpack|\bbag\b)/.test(t)) return "bags";
     if (/(shoe|sneaker|slide|heel)/.test(t)) return "shoes";
     if (/(hat|cap|wallet|belt|accessor|beanie|\btag\b)/.test(t)) return "accessories";
-    if (/(phone case|mobile case|screen protector|phone stand|charging cable)/.test(t)) return "phoneaccessories";
+    if (/\b(phone case|iphone case|mobile case|magsafe case|tough case|clear case|snap case|camera protection case|leather case)\b/.test(t)) return "phonecases";
+    if (/(screen protector|phone stand|phone holder|charging cable|charger|wireless charger)/.test(t)) return "phoneaccessories";
     if (/(gaming|gamer|gamepad|controller|headset stand|mouse ?pads?)/.test(t)) return "gaming";
     if (/(storage|organizer|closet|rack|shelf)/.test(t)) return "storage";
     if (/(bedding|bed sheet|duvet|comforter|pillowcase)/.test(t)) return "bedding";
@@ -211,6 +215,7 @@
     jeans:["jeans","denim","גינס","ג׳ינס","جينز"],
     bags:["bags","handbags","purse","תיקים","תיק","حقائب","حقيبة","bolsos","sacs"],
     tech:["tech","electronics","phone","טכנולוגיה","אלקטרוניקה","טלפון","تقنية","إلكترونيات","هاتف","tecnología","électronique"],
+    phonecases:["phone cases","premium phone cases","magsafe cases","כיסויים לטלפון","כיסוי לטלפון","جرابات هاتف","كفرات هاتف"],
     home:["home","decor","בית","עיצוב לבית","منزل","ديكور","hogar","maison"],
     kitchen:["kitchen","מטבח","مطبخ","cocina","cuisine"],
     kids:["kids","children","ילדים","ילד","أطفال","طفل","niños","enfants"],
@@ -218,6 +223,7 @@
     sports:["sports","fitness","ספורט","כושר","رياضة","لياقة","deportes","sport"],
     travel:["travel","luggage","נסיעות","מזוודות","سفر","حقائب سفر","viaje","voyage"],
     gifts:["gifts","gift","מתנות","מתנה","هدايا","هدية","regalos","cadeaux"],
+    hairaccessories:["hair accessories","hair claws","hair clips","headbands","scrunchies","אביזרי שיער","סיכות שיער","اكسسوارات شعر"],
     accessories:["accessories","אביזרים","אקססוריז","إكسسوارات","اكسسوارات","accesorios","accessoires"],
     suits:["suits","formalwear","business suit","חליפות","חליפה","بدلات","بدلة","costumes","trajes"],
     underwear:["underwear","briefs","boxers","הלבשה תחתונה","תחתונים","ملابس داخلية","ropa interior","sous-vêtements"],
@@ -310,6 +316,8 @@
     if (/haircare|shampoo|conditioner|hair mask|hair oil/.test(q)) return "haircare";
     if (/body care|body lotion|body wash|body cream/.test(q)) return "bodycare";
     if (/beauty/.test(q)) return "beauty";
+    if (/hair claw|hair clip|headband|scrunchie|hair accessories|hair comb/.test(q)) return "hairaccessories";
+    if (/phone case|iphone case|mobile case|magsafe case|tough case|clear case|leather case/.test(q)) return "phonecases";
     if (/women.*(underwear|brief|bra)|(?:underwear|brief|bra).*women/.test(q)) return "womenunderwear";
     if (/men.*(underwear|brief|boxer)|(?:underwear|brief|boxer).*men/.test(q)) return "menunderwear";
     if (/(kids?|children|boys?|girls?).*(underwear|brief|boxer)|(?:underwear|brief|boxer).*(kids?|children|boys?|girls?)/.test(q)) return "kidsunderwear";
