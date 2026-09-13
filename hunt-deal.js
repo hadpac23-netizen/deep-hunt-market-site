@@ -282,14 +282,20 @@
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
+    const providerName = String(item.provider || "").toLowerCase();
+    const podSetupRequired = providerName.includes("printful") || providerName.includes("gooten");
     const truthBadge = item.quality_gate === "BOOM_PREMIUM"
       ? "BOOM PICK"
+      : podSetupRequired
+        ? "POD CATALOG"
+        : item.availability_verified === true
+          ? "LIVE STOCK"
+          : "SOURCE CATALOG";
+    const detailLine = podSetupRequired
+      ? "Product source verified; HUNT setup is required before checkout."
       : item.availability_verified === true
-        ? "LIVE STOCK"
-        : "SOURCE CATALOG";
-    const detailLine = item.availability_verified === true
-      ? "Stock verified at source; rechecked before checkout."
-      : "Open for current price, variants and availability.";
+        ? "Stock verified at source; rechecked before checkout."
+        : "Open for current price, variants and availability.";
     return `<article class="hd-shelf-card" role="listitem" data-category="${esc(item.category || "")}">
       <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(truthBadge)}</span></a>
       <div class="hd-shelf-card-body">
@@ -405,6 +411,27 @@
     return hasWomen && !hasMen;
   }
 
+  function isShelfFit(slug, item) {
+    const title = String(item?.title || "").toLowerCase();
+    const rules = {
+      women: /\b(dress|skirt|shirt|t-shirt|tee|top|tank|blouse|hoodie|sweatshirt|jacket|coat|windbreaker|jogger|pants|trousers|leggings|shorts|swim|pajama|sleepwear|activewear|sports bra|cardigan|sweater|bodysuit)\b/i,
+      men: /\b(men(?:'s)?|male|gentlemen)\b.*\b(shirt|tee|top|jacket|coat|pants|trousers|shorts|hoodie|suit|blazer|activewear|swim|underwear)\b|\b(shirt|tee|top|jacket|coat|pants|trousers|shorts|hoodie|suit|blazer|activewear|swim|underwear)\b.*\b(men(?:'s)?|male|gentlemen)\b/i,
+      bags: /\b(bag|backpack|tote|handbag|purse|crossbody|duffle|weekender)\b/i,
+      hairaccessories: /\b(hair|headband|hairpin|barrette|scrunchie|comb|claw clip|shark clip)\b/i,
+      phonecases: /\b(case|cover)\b.*\b(phone|iphone|samsung|magsafe)\b|\b(phone|iphone|samsung|magsafe)\b.*\b(case|cover)\b/i,
+      home: /\b(blanket|pillow|rug|mat|poster|canvas|decor|coaster|towel|placemat|tablecloth|runner|cutting board|wall art|home|curtain|lamp|lighting)\b/i,
+      office: /\b(desk|calendar|journal|notebook|mouse pad|mousepad|office|acrylic desk)\b/i,
+      sports: /\b(yoga|sport|fitness|running|cycling|gym|racket|towel|bottle|mat)\b/i,
+    };
+    if (rules[slug] && !rules[slug].test(title)) return false;
+    if (slug === "women" && !isWomenShelfItem(item)) return false;
+    if (slug === "women" && /\b(boy|boys|kid|kids|child|children|baby|toddler)\b/i.test(title)) return false;
+    if (slug === "women" && /\b(hair|clip|headband|jewelry|bag|purse|shoe|case|phone|wig|extension)\b/i.test(title)) return false;
+    if (slug === "hairaccessories" && /\b(shorts|pants|trousers|jeans|shirt|tee|dress|hoodie|jacket|coat)\b/i.test(title)) return false;
+    if (slug === "home" && /\b(hair|clip|headband|handbag|purse|phone case|halloween|witch|costume)\b/i.test(title)) return false;
+    return true;
+  }
+
   function shelfQualityScore(item) {
     let score = 0;
     if (item?.quality_gate === "BOOM_PREMIUM") score += 90;
@@ -477,7 +504,7 @@
     const html = orderedShelfDepartments().map(([department, slugs]) => {
       const sections = slugs.map(slug => {
         const meta = shelfMeta[slug];
-        let items = Array.isArray(shelves[slug]) ? shelves[slug] : [];
+        let items = Array.isArray(shelves[slug]) ? shelves[slug].filter(item => isShelfFit(slug, item)) : [];
         if (department.startsWith("Women") && slug !== "women") items = items.filter(isWomenShelfItem);
         if (!meta || items.length < 4) return "";
         const selected = selectShelfItems(items, limit, renderedKeys);
