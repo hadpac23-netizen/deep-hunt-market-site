@@ -91,14 +91,27 @@
     canonical.href=location.href.split("#")[0];
   }
 
+  function currentRetailState() {
+    const verified = (selectedVariant?.retail_price_verified ?? product?.retail_price_verified) === true;
+    const gate = String(selectedVariant?.profit_gate_status ?? product?.profit_gate_status ?? "").toUpperCase();
+    const raw = selectedVariant?.retail_price_amount ?? product?.retail_price_amount;
+    const amount = Number(raw);
+    const currency = String(selectedVariant?.retail_currency || product?.retail_currency || "USD");
+    const ready = verified && gate === "PASS" && Number.isFinite(amount) && amount > 0;
+    return {ready, amount:ready ? amount : null, currency, gate};
+  }
+
   function renderBuybox() {
     chooseVariant();
     $("#hd-product-title").textContent = product.title || "Product";
     $("#hd-product-breadcrumb").textContent = product.title || "Product";
     $("#hd-product-provider").textContent = product.provider || provider;
-    $("#hd-product-stock").textContent = product.availability_verified ? "IN STOCK" : "DISCOVERY";
-    $("#hd-product-stock").className = `hd-status ${product.availability_verified?"green":"blue"}`;
-    $("#hd-product-price").textContent = H.money(selectedVariant?.price_amount ?? product.price_amount, selectedVariant?.currency || product.currency || "USD");
+    const providerName = String(product.provider || provider || "").toLowerCase();
+    const podCatalog = providerName.includes("printful") || providerName.includes("gooten");
+    $("#hd-product-stock").textContent = podCatalog ? "POD CATALOG" : (product.availability_verified ? "IN STOCK" : "DISCOVERY");
+    $("#hd-product-stock").className = `hd-status ${podCatalog?"blue":(product.availability_verified?"green":"blue")}`;
+    const retail = currentRetailState();
+    $("#hd-product-price").textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
     syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);
     $("#hd-product-description").textContent = product.description || "The provider has not supplied a full description to HUNT DEAL yet.";
@@ -113,17 +126,34 @@
     document.title=`${product.title || "Product"} — HUNT DEAL`;
     renderOptions(); renderGallery(); renderProductStructuredData();
     const externalVisit = typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
-    const readyForCart = variants.length > 0;
+    const cjCheckoutReady = String(product.provider || provider || "").toLowerCase().includes("cj");
+    const readyForCart = variants.length > 0 && retail.ready && cjCheckoutReady;
     const storeName = product?.store?.name || "partner store";
     const add = $("#hd-product-add");
     if (add) {
       add.disabled = externalVisit ? false : !readyForCart;
-      add.textContent = externalVisit ? `Visit ${storeName} →` : (readyForCart ? "Add to checkout preview →" : "Options pending");
+      add.textContent = externalVisit
+        ? `Visit ${storeName} →`
+        : readyForCart
+          ? "Add to checkout preview →"
+          : !variants.length
+            ? "Options pending"
+            : !cjCheckoutReady
+              ? "Checkout setup pending"
+              : "Price verification pending";
     }
     const mobileAdd = $("#hd-mobile-add");
     if (mobileAdd) {
       mobileAdd.disabled = externalVisit ? false : !readyForCart;
-      mobileAdd.textContent = externalVisit ? "Visit store" : (readyForCart ? "Add to Cart" : "Options pending");
+      mobileAdd.textContent = externalVisit
+        ? "Visit store"
+        : readyForCart
+          ? "Add to Cart"
+          : !variants.length
+            ? "Options pending"
+            : !cjCheckoutReady
+              ? "Setup pending"
+              : "Price pending";
     }
     const quantityBlock = document.querySelector(".hd-product-quantity");
     if (quantityBlock) quantityBlock.hidden = externalVisit;
@@ -132,7 +162,8 @@
   function syncMobilePrice() {
     const mobile = $("#hd-mobile-price");
     if (!mobile || !product) return;
-    mobile.textContent = H.money(selectedVariant?.price_amount ?? product.price_amount, selectedVariant?.currency || product.currency || "USD");
+    const retail = currentRetailState();
+    mobile.textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
   }
 
   function setZoom(scale) {
@@ -179,6 +210,9 @@
       return;
     }
     if (!selectedVariant) return;
+    const retail = currentRetailState();
+    const cjCheckoutReady = String(product.provider || provider || "").toLowerCase().includes("cj");
+    if (!retail.ready || !cjCheckoutReady) return;
     H.addCart(product, selectedVariant, quantity);
     location.href = "checkout.html";
   }
@@ -229,7 +263,7 @@
     if(size){ selectedSize=size.dataset.size; chooseVariant(); renderBuybox(); return; }
   });
   $("#hd-qty-minus")?.addEventListener("click",()=>{quantity=Math.max(1,quantity-1);$("#hd-qty-value").textContent=String(quantity);});
-  $("#hd-qty-plus")?.addEventListener("click",()=>{quantity=Math.min(20,quantity+1);$("#hd-qty-value").textContent=String(quantity);});
+  $("#hd-qty-plus")?.addEventListener("click",()=>{quantity=Math.min(5,quantity+1);$("#hd-qty-value").textContent=String(quantity);});
   $("#hd-product-add")?.addEventListener("click",addCurrentToCart);
   $("#hd-mobile-add")?.addEventListener("click",addCurrentToCart);
   $("#hd-zoom-open")?.addEventListener("click",openZoom);

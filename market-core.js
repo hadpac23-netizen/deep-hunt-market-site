@@ -217,14 +217,34 @@
     return score > 0 ? `Matches your recent ${categoryDefs[category]?.title || category} activity on this device.` : "BOOM is still learning from your views, likes, saves and shopping survey.";
   }
 
-  const cart = () => readJson(cartKey, []);
+  const cart = () => {
+    const rows = readJson(cartKey, []);
+    return (Array.isArray(rows) ? rows : []).map(item => {
+      const verified = item?.retail_price_verified === true && item?.price_basis === "HUNT_RETAIL_PROFIT_GATE";
+      const amount = verified && Number.isFinite(Number(item?.price_amount)) && Number(item.price_amount) > 0
+        ? Number(item.price_amount)
+        : null;
+      return {
+        ...item,
+        price_amount: amount,
+        price_basis: amount !== null ? "HUNT_RETAIL_PROFIT_GATE" : "PRICE_PENDING",
+        retail_price_verified: amount !== null,
+        qty: Math.max(1, Math.min(5, Number(item?.qty) || 1))
+      };
+    });
+  };
   const saveCart = value => writeJson(cartKey, Array.isArray(value) ? value : []);
   function addCart(product, variant=null, qty=1) {
     const items = cart();
     const variantId = String(variant?.variant_id || "base");
     const key = `${product.provider}:${product.item_id}:${variantId}`;
     const existing = items.find(x => x.key === key);
-    const amount = variant?.price_amount ?? product.price_amount ?? null;
+    const retailVerified = (variant?.retail_price_verified ?? product.retail_price_verified) === true;
+    const profitGate = String(variant?.profit_gate_status ?? product.profit_gate_status ?? "").toUpperCase();
+    const retailRaw = variant?.retail_price_amount ?? product.retail_price_amount ?? null;
+    const retailAmount = retailVerified && profitGate === "PASS" && Number.isFinite(Number(retailRaw)) && Number(retailRaw) > 0
+      ? Number(retailRaw)
+      : null;
     const row = {
       key,
       provider: String(product.provider || ""),
@@ -233,13 +253,17 @@
       variant_label: [variant?.color, variant?.size].filter(Boolean).join(" / ") || null,
       title: String(product.title || "Product"),
       image_url: String(variant?.image_url || product.image_url || "") || null,
-      price_amount: amount == null ? null : Number(amount),
-      currency: String(variant?.currency || product.currency || "USD"),
-      price_basis: String(product.price_basis || "SUPPLIER_BASE"),
-      qty: Math.max(1, Math.min(20, Number(qty) || 1))
+      price_amount: retailAmount,
+      currency: String(variant?.retail_currency || product.retail_currency || "USD"),
+      price_basis: retailAmount !== null ? "HUNT_RETAIL_PROFIT_GATE" : "PRICE_PENDING",
+      retail_price_verified: retailAmount !== null,
+      profit_gate_status: profitGate || null,
+      qty: Math.max(1, Math.min(5, Number(qty) || 1))
     };
-    if (existing) existing.qty = Math.min(20, Number(existing.qty || 1) + row.qty);
-    else items.push(row);
+    if (existing) {
+      const nextQty = Math.min(5, Number(existing.qty || 1) + row.qty);
+      Object.assign(existing, row, {qty:nextQty});
+    } else items.push(row);
     saveCart(items);
     recordSignal(product, "cart");
     window.HuntAnalytics?.addToCart(row, product);
