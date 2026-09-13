@@ -1,5 +1,7 @@
 (() => {
   const key = "hunt_deal_cart_v1";
+  const functionsBase = "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1";
+  const publishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
   const $ = q => document.querySelector(q);
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const money = (value, currency="USD") => {
@@ -27,6 +29,113 @@
   };
   const write = cart => localStorage.setItem(key, JSON.stringify(cart));
   let checkoutTracked = false;
+  let quoteVerified = false;
+
+  function resetQuote(message="Verify price and shipping before payment.") {
+    quoteVerified = false;
+    if ($("#hd-checkout-shipping")) $("#hd-checkout-shipping").textContent = "PENDING";
+    if ($("#hd-checkout-total")) $("#hd-checkout-total").textContent = "PRE-LAUNCH";
+    if ($("#hd-checkout-status")) $("#hd-checkout-status").textContent = message;
+  }
+
+  function friendlyQuoteError(code) {
+    const messages = {
+      COUNTRY_REQUIRED:"Choose a destination country.",
+      INVALID_CART:"Your cart needs to be refreshed.",
+      INVALID_LINE_ITEM:"Open the product and choose an available option before checkout.",
+      PROVIDER_PAYMENT_NOT_READY:"One or more products are catalog-only and cannot be quoted for HUNT checkout yet.",
+      PRODUCT_RECHECK_FAILED:"A product could not be rechecked at the supplier. Please open it again before checkout.",
+      VARIANT_RECHECK_FAILED:"The selected option is no longer available. Please choose another option.",
+      RETAIL_PRICE_NOT_READY:"HUNT retail pricing is not verified for one or more items.",
+      CURRENCY_REVIEW_REQUIRED:"This item needs a currency review before checkout.",
+      SHIPPING_RECHECK_FAILED:"Shipping could not be rechecked right now.",
+      OUT_OF_STOCK:"One or more selected items are currently out of stock.",
+      SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination."
+    };
+    return messages[code] || "We could not verify this cart right now. No payment was attempted.";
+  }
+
+  async function verifyPriceAndShipping() {
+    const button = $("#hd-checkout-verify");
+    const status = $("#hd-checkout-status");
+    const cart = read();
+    const country = String($("#hd-checkout-market")?.value || "").toUpperCase();
+
+    if (!cart.length) {
+      resetQuote("Your cart is empty.");
+      return;
+    }
+    const invalid = cart.find(item =>
+      !item?.provider ||
+      !item?.item_id ||
+      !item?.variant_id ||
+      item?.retail_price_verified !== true ||
+      item?.price_basis !== "HUNT_RETAIL_PROFIT_GATE"
+    );
+    if (invalid) {
+      resetQuote("One or more items need a fresh product/variant check before shipping can be quoted.");
+      return;
+    }
+
+    if (button) {
+      button.disabled = true;
+      button.textContent = "Verifying…";
+    }
+    if (status) status.textContent = "Rechecking HUNT retail price, supplier stock and shipping…";
+
+    try {
+      const payload = {
+        country_code: country,
+        idempotency_key: `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
+        items: cart.map(item => ({
+          provider:item.provider,
+          item_id:item.item_id,
+          variant_id:item.variant_id,
+          qty:Math.max(1,Math.min(5,Number(item.qty)||1))
+        }))
+      };
+      const res = await fetch(functionsBase + "/hunt-payment-session", {
+        method:"POST",
+        headers:{
+          apikey:publishableKey,
+          "content-type":"application/json"
+        },
+        body:JSON.stringify(payload),
+        cache:"no-store"
+      });
+      const data = await res.json().catch(()=>({}));
+      if (!res.ok || data?.ok !== true || !data?.session) {
+        throw new Error(String(data?.error || "QUOTE_FAILED"));
+      }
+
+      const session = data.session;
+      const currency = String(session.currency || "USD");
+      $("#hd-checkout-subtotal").textContent = money(session.product_amount,currency);
+      $("#hd-checkout-shipping").textContent = money(session.shipping_amount,currency);
+      $("#hd-checkout-total").textContent = money(session.total_amount,currency);
+      quoteVerified = true;
+
+      if (status) {
+        status.textContent = data.payment_ready === true
+          ? "Price and shipping verified. Payment account status is controlled separately."
+          : "Price, stock and shipping verified. Payment is still disabled during pre-launch.";
+      }
+      window.HuntAnalytics?.checkoutQuoteVerified?.({
+        country,
+        currency,
+        productAmount:Number(session.product_amount||0),
+        shippingAmount:Number(session.shipping_amount||0),
+        totalAmount:Number(session.total_amount||0)
+      });
+    } catch (err) {
+      resetQuote(friendlyQuoteError(String(err?.message || "QUOTE_FAILED")));
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.textContent = quoteVerified ? "Recheck price & shipping" : "Verify price & shipping";
+      }
+    }
+  }
 
   function render() {
     const cart = read();
@@ -75,11 +184,19 @@
     else if (event.target.matches("[data-delta]")) {
       cart[index].qty = Math.max(1,Math.min(5,(Number(cart[index].qty)||1)+Number(event.target.dataset.delta||0)));
     } else return;
-    write(cart); render();
+    write(cart);
+    resetQuote("Cart changed. Recheck price and shipping.");
+    render();
   });
-  $("#hd-clear-cart")?.addEventListener("click",()=>{ write([]); render(); });
+  $("#hd-clear-cart")?.addEventListener("click",()=>{
+    write([]);
+    resetQuote("Your cart is empty.");
+    render();
+  });
   $("#hd-checkout-market")?.addEventListener("change", event => {
+    resetQuote("Destination changed. Recheck price and shipping.");
     window.HuntAnalytics?.checkoutMarket(event.currentTarget.value || "");
   });
+  $("#hd-checkout-verify")?.addEventListener("click",verifyPriceAndShipping);
   render();
 })();
