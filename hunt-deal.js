@@ -26,6 +26,15 @@
     catch { return String(value); }
   };
 
+  function retailState(item) {
+    const verified = item?.retail_price_verified === true;
+    const gate = String(item?.profit_gate_status || "").toUpperCase();
+    const amount = Number(item?.retail_price_amount);
+    const currency = String(item?.retail_currency || item?.currency || "USD");
+    const ready = verified && gate === "PASS" && Number.isFinite(amount) && amount > 0;
+    return {ready, amount: ready ? amount : null, currency};
+  }
+
   function readCart() {
     try {
       const raw = JSON.parse(localStorage.getItem(cartKey) || "[]");
@@ -42,21 +51,30 @@
 
   function addToCart(item) {
     if (!item || !item.item_id || !item.provider) return;
+    const retail = retailState(item);
+    if (!retail.ready) {
+      const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : "";
+      if (detailUrl) location.href = detailUrl;
+      return;
+    }
     const cart = readCart();
     const key = String(item.provider) + ":" + String(item.item_id);
     const existing = cart.find(row => row.key === key);
-    if (existing) existing.qty = Math.min(20, (Number(existing.qty) || 1) + 1);
-    else cart.push({
+    const row = {
       key,
       provider: String(item.provider),
       item_id: String(item.item_id),
       title: String(item.title || "Product"),
       image_url: typeof item.image_url === "string" ? item.image_url : null,
-      price_amount: item.price_amount == null ? null : Number(item.price_amount),
-      currency: String(item.currency || "USD"),
-      price_basis: String(item.price_basis || "SUPPLIER_BASE"),
+      price_amount: retail.amount,
+      currency: retail.currency,
+      price_basis: "HUNT_RETAIL_PROFIT_GATE",
+      retail_price_verified: true,
+      profit_gate_status: "PASS",
       qty: 1
-    });
+    };
+    if (existing) Object.assign(existing, row, {qty:Math.min(5,(Number(existing.qty)||1)+1)});
+    else cart.push(row);
     localStorage.setItem(cartKey, JSON.stringify(cart));
     updateCartCount();
     location.href = "checkout.html";
@@ -115,7 +133,7 @@
         <div class="hd-deal-top"><span class="hd-verdict ${verdict==="SELL"?"sell":""}">${esc(verdict)}</span><span class="hd-heart">♡</span></div>
         ${productVisual}
         <h3>${esc(c.title || "Verified product")}</h3>
-        <div class="hd-price">${money(c.price_amount,c.currency||"USD")}</div>
+        <div class="hd-price">${(() => { const r=retailState(c); return r.ready ? money(r.amount,r.currency) : "Price pending"; })()}</div>
         <div class="hd-provider">${esc(c.provider || "Provider")} · ${m.outbound_clicks||0} clicks · ${m.conversions||0} conversions</div>
         <div class="hd-why"><b>${esc(dict.why || "Why this deal?")}</b>${esc(verified || "Evidence review passed the minimum public gate.")}</div>
         <div class="hd-red-note">● ${esc(dict.redTeam || "Red Team note")}: ${esc(gaps || "No recorded evidence gap.")}</div>
@@ -161,7 +179,8 @@
       const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
         ? `<img class="hd-catalog-image" src="${esc(item.image_url)}" alt="${esc(item.title || "Catalog product")}" loading="lazy">`
         : '<div class="hd-catalog-image hd-catalog-placeholder">◇</div>';
-      const base = item.price_amount == null ? "—" : money(item.price_amount, item.currency || "USD");
+      const retail = retailState(item);
+      const priceLabel = retail.ready ? money(retail.amount, retail.currency) : "Price pending";
       const gaps = (item.gaps || []).slice(0,2).map(x => `<li>${esc(x)}</li>`).join("");
       const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : `product.html?provider=${encodeURIComponent(item.provider || "Printful")}&id=${encodeURIComponent(item.item_id || "")}`;
       return `
@@ -170,7 +189,7 @@
           <div class="hd-catalog-body">
             <div class="hd-provider">${esc(item.provider || "Provider")} · VERIFIED SOURCE</div>
             <h3><a class="hd-catalog-title-link" href="${esc(detailUrl)}">${esc(item.title || "Catalog product")}</a></h3>
-            <div class="hd-catalog-price"><small>${esc(dict.catalogBase || "Supplier base")}</small><strong>${base}</strong></div>
+            <div class="hd-catalog-price"><small>${retail.ready ? "HUNT retail" : "Customer price"}</small><strong>${priceLabel}</strong></div>
             <ul class="hd-catalog-gaps">${gaps}</ul>
             <a class="hd-retailer" href="${esc(detailUrl)}">View product / choose options →</a>
           </div>
@@ -187,7 +206,8 @@
 
     if (candidate) {
       $("#hd-best-title").textContent = candidate.title || dict.noBest;
-      $("#hd-best-copy").textContent = [candidate.provider, money(candidate.price_amount,candidate.currency||"USD")].filter(Boolean).join(" · ");
+      const retail = retailState(candidate);
+      $("#hd-best-copy").textContent = [candidate.provider, retail.ready ? money(retail.amount,retail.currency) : "Price pending"].filter(Boolean).join(" · ");
       $("#hd-best-status").textContent = String(top.verdict || "TEST").toUpperCase();
     }
     if (testCandidate) {
@@ -308,6 +328,8 @@
   }
 
   function renderLowSourceShelf(products) {
+    // Internal supplier economics must never be rendered to customers.
+    return;
     const root = $("#hd-shelves-root");
     if (!root) return;
     const low = (Array.isArray(products) ? products : [])
