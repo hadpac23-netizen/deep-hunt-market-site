@@ -57,8 +57,8 @@
         <h1><span data-i18n="hero1">Better decisions</span><br><em data-i18n="hero2">before you spend.</em></h1>
         <p data-i18n="heroCopy">HUNT DEAL compares verified offers across approved marketplaces, explains why a deal is worth attention, and tracks what actually converts.</p>
         <div class="hd-actions">
-          <a class="hd-btn hd-btn-primary" href="#shop" data-i18n="explore">Shop Live Products</a>
-          <a class="hd-btn" href="#departments" data-i18n="how">Browse Categories</a>
+          <a class="hd-btn hd-btn-primary" href="#shop" data-i18n="explore">Explore Deals Now</a>
+          <a class="hd-btn" href="#departments" data-i18n="how">How it works</a>
         </div>
         <div class="hd-feature-row" id="how">
           <div><b>◇</b><span data-i18n="f1">Price comparison</span></div>
@@ -118,50 +118,32 @@
         <a href="category.html?c=kids">Kids</a>
         <a href="category.html?c=beauty">Beauty</a>
         <a href="category.html?c=home">Home</a>
-        <a href="category.html?c=kitchen">Kitchen</a>
         <a href="category.html?c=tech">Tech</a>
-        <a href="category.html?c=shoes">Shoes</a>
-        <a href="category.html?c=bags">Bags</a>
+        <a href="category.html?c=accessories">Accessories</a>
+        <a href="category.html?c=sports">Sports</a>
+        <a href="category.html?c=pets">Pets</a>
       </div>
-      <div class="hd-mega-menu" id="hd-mega-menu" hidden aria-label="All shopping categories"></div>
+      <div class="hd-mega-menu" id="hd-mega-menu" hidden></div>
     </section>
+
+    <section class="hd-wow-showcase" id="hd-wow-showcase">
+      <div class="hd-wow-head">
+        <div><small>HUNT MARKET</small><h2>Everything starts with a product.</h2><p>Fresh discovery across real connected catalog shelves.</p></div>
+        <div class="hd-mode-switch" aria-label="Discovery mode"><button class="active" data-mode="all" type="button">All</button><button data-mode="for-you" type="button">For You</button></div>
+      </div>
+      <div class="hd-dept-grid" id="hd-dept-grid"></div>
+      <div class="hd-for-you-head"><div><small>BOOM FOR YOU</small><h3>Picked around what you browse</h3><p>Personalization uses shopping interactions, not fake popularity.</p></div><button id="hd-remix" class="hd-btn" type="button">Remix</button></div>
+      <div class="hd-wow-track" id="hd-for-you-products"></div>
+    </section>
+
     <section class="hd-live-market" id="shop">
-      <div class="hd-section-head">
-        <div>
-          <div class="hd-kicker hd-kicker-small">LIVE MARKET · ORGANIZED SHOPPING</div>
-          <h2>Shop real products by department</h2>
-          <p>Real supplier products, clean departments, personalized suggestions, and clear product details. Open a category to browse the full live catalog.</p>
-        </div>
-        <span class="hd-status green" id="hd-shelf-count" aria-live="polite">CONNECTING</span>
-      </div>
-      <div id="hd-shelves-root" class="hd-shelves-root">
-        <div class="hd-shelf-loading glass">Loading live market shelves...</div>
-      </div>
+      <div class="hd-section-head"><div><h2>Shop HUNT</h2><p>One mixed discovery feed across all live CJ shelves.</p></div><button id="hd-home-remix" class="hd-btn" type="button">Remix</button></div>
+      <div class="hd-market-product-grid" id="hd-home-random-grid"></div>
+      <div class="hd-category-more" id="hd-home-random-more" hidden aria-live="polite"><span></span><strong>Loading more products</strong></div>
     </section>
-
-    <section class="hd-provider-wall glass" id="provider-wall">
-      <div>
-        <small>COMMERCE NETWORK</small>
-        <strong>Providers &amp; partner programs</strong>
-        <p>Live state comes from HUNT DEAL backend. READY means configured; it never means a guaranteed discount.</p>
-      </div>
-      <div class="hd-provider-badges" id="hd-provider-badges"><span>Connecting provider network...</span></div>
-      <a class="hd-btn" href="partners.html">Brands &amp; merchants -&gt;</a>
-    </section>
-
-    <section class="hd-stats glass">
-      <div><span>◎</span><p><small data-i18n="providers">Providers mapped</small><strong id="hd-provider-count">0</strong></p></div>
-      <div><span>✓</span><p><small data-i18n="qualified">Qualified offers</small><strong id="hd-qualified-count">0</strong></p></div>
-      <div><span>↗</span><p><small data-i18n="clicks">Outbound clicks</small><strong id="hd-click-count">0</strong></p></div>
-      <div><span>$</span><p><small data-i18n="commission">Confirmed commission</small><strong id="hd-commission">$0</strong></p></div>
-      <div class="hd-stat-quote">“Not just lower prices. Smarter choices.”</div>
-    </section>
-
 
     <section class="hd-deals-section" id="live-search" hidden>
-      <div class="hd-section-head">
-        <div><h2 data-i18n="searchResults">Live Price Search</h2><p data-i18n="searchResultsSub">Discovery results stay separate from qualified Smart Picks.</p></div>
-      </div>
+      <div class="hd-section-head"><div><h2>Search Results</h2><p>Live provider search results stay separate from qualified Smart Picks.</p></div></div>
       <p class="hd-inline-disclosure" id="hd-live-search-status" data-i18n="searchReady">Type a product above and press Enter to search ready providers.</p>
       <div class="hd-deal-grid" id="hd-search-grid"></div>
     </section>
@@ -199,7 +181,7 @@
   <nav class="hd-legal-links" aria-label="Legal and customer policies"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="returns.html">Returns & Cancellation</a><a href="shipping.html">Shipping</a><a href="withdrawal.html">Withdrawal / Return request</a></nav>
   <footer class="hd-footer">
     <div><strong>HUNT DEAL</strong><small data-i18n="footerTag">A BOOM branch · commerce intelligence now, full BOOM later.</small></div>
-    <div class="hd-disclosure"><span data-i18n="affiliateDisclosure"></span><small data-i18n="nasaCredit"></small></div>
+    <div class="hd-disclosure"><span data-i18n="affiliateDisclosure">Affiliate disclosure: qualifying outbound links may earn HUNT DEAL a commission at no extra cost to you.</span><small data-i18n="nasaCredit">Earth imagery: NASA / Earth Observatory.</small></div>
     <nav><a href="#deals">Deals</a><a href="#deals">Price Lens</a><a href="partners.html">Partners</a></nav>
   </footer>
 
