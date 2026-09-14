@@ -93,16 +93,16 @@
   "launch_provider_policy": "CJ_ONLY_PHASE_1",
   "cj_shelf_fill": {
     "source": "CJ official API",
-    "shelf_entry_count": 2051,
-    "category_count": 42,
+    "shelf_entry_count": 2298,
+    "category_count": 44,
     "categories": {
-      "activewear": 9,
+      "activewear": 34,
       "bags": 80,
-      "bath": 2,
+      "bath": 23,
       "bottoms": 80,
       "boxers": 73,
       "chargers": 57,
-      "cleaning": 8,
+      "cleaning": 80,
       "dresses": 80,
       "earbuds": 38,
       "eveningdresses": 45,
@@ -117,9 +117,9 @@
       "makeup": 27,
       "mensbriefs": 49,
       "office": 52,
-      "outdoors": 5,
+      "outdoors": 36,
       "pets": 39,
-      "phonecases": 71,
+      "phonecases": 78,
       "phonestands": 27,
       "powerbanks": 23,
       "sets": 63,
@@ -137,8 +137,11 @@
       "travel": 21,
       "underwear": 44,
       "usefultech": 80,
-      "womensuits": 27
+      "womensuits": 27,
+      "belts": 66,
+      "perfume": 25
     },
-    "note": "Shelf fill requires product-detail and destination quote recheck before order placement."
+    "note": "Shelf fill requires product-detail and destination quote recheck before order placement.",
+    "updated_at": "2026-09-14T11:37:04.635864+00:00"
   }
 }
