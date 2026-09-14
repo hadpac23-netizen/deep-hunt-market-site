@@ -9,7 +9,7 @@
   const departments = [
     {title:"Women · Clothing", slug:"women", href:"category.html?c=women", items:["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"], womenOnly:true},
     {title:"Women · Shoes & Accessories", slug:"women", href:"category.html?c=women&sub=shoes", items:["shoes","bags","jewelry","accessories","hats"], womenOnly:true},
-    {title:"Beauty & Fragrance", slug:"beauty", href:"category.html?c=beauty", items:["beauty","perfume"]},
+    {title:"Beauty & Fragrance", slug:"beauty", href:"category.html?c=beauty", items:["beauty","makeup","skincare","perfume"]},
     {title:"Men", slug:"men", items:["men"]},
     {title:"Kids", slug:"kids", items:["kids","toys"]},
     {title:"Home & Living", slug:"home", items:["home","kitchen","storage","bedding","bath","lighting","cleaning"]},
@@ -19,10 +19,10 @@
   ];
 
   const megaGroups = [
-    ["Women · Clothing", "women", ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"]],
+    ["Women · Clothing", "women", ["dresses","tops","jeans","bottoms","underwear","hoodies","jackets","knitwear","activewear","swimwear"]],
     ["Women · Shoes & Accessories", "women", ["shoes","bags","jewelry","accessories","hats"]],
     ["Beauty & Fragrance", null, ["beauty","perfume"]],
-    ["Men", "men", ["tops","bottoms","hoodies","jackets","knitwear","activewear"]],
+    ["Men", "men", ["tops","jeans","bottoms","boxers","hoodies","jackets","knitwear","activewear"]],
     ["Home & Living", null, ["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]],
     ["Tech", null, ["tech","phoneaccessories","gaming","office"]],
     ["Kids & Pets", null, ["kids","toys","pets"]],
@@ -35,6 +35,7 @@
     const seen = new Set();
     Object.values(shelves || {}).forEach(rows => {
       (Array.isArray(rows) ? rows : []).forEach(item => {
+        if (String(item?.provider || "").toLowerCase() !== "cjdropshipping") return;
         const key = `${item?.provider || ""}:${item?.item_id || ""}`;
         if (!item?.item_id || seen.has(key)) return;
         seen.add(key);
@@ -95,8 +96,8 @@
   }
 
   function modeSlugs(value) {
-    if (value === "women") return ["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats","beauty","perfume"];
-    if (value === "men") return ["men"];
+    if (value === "women") return ["women","dresses","tops","jeans","bottoms","underwear","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats","beauty","makeup","skincare","perfume"];
+    if (value === "men") return ["men","tops","jeans","bottoms","boxers","hoodies","jackets","knitwear","activewear","suits","shoes","bags","accessories"];
     if (value === "home") return ["home","kitchen","storage","bedding","bath","lighting"];
     if (value === "tech") return ["tech","phoneaccessories","gaming","office"];
     const signals = H.signals();
@@ -188,8 +189,8 @@
     const all = flatUnique(shelves);
     if (!all.length) return;
 
-    const liveCount = Number(data.catalog_total_product_count || data.visible_product_count || all.length);
-    const providerCount = Number(data.catalog_provider_count || 0) || new Set(all.map(x => x.provider).filter(Boolean)).size;
+    const liveCount = all.length;
+    const providerCount = all.length ? 1 : 0;
     const categoryCount = Number(data.catalog_category_count || 0) || Object.values(shelves).filter(rows => Array.isArray(rows) && rows.length).length;
 
     const hero = $(".hd-hero-copy");
