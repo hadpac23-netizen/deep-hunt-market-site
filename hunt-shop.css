@@ -213,3 +213,9 @@ html[data-hunt-theme="dark"] :is(.hd-review-photos img,.hd-review-file-preview i
 .hd-ai-search-status strong{color:var(--shop-text)}.hd-ai-search-status span{color:var(--shop-muted);font-size:.72rem}
 .hd-ai-results{padding-top:20px}
 @media(max-width:760px){.hd-ai-search-shell{width:calc(100% - 24px)}.hd-ai-search-box{display:grid}.hd-ai-search-box .hd-btn{height:48px}}
+
+/* Launch QA: keep Like/Save controls inside each product card */
+.hd-shelf-card,.hd-market-product-card,.hd-wow-product,.hd-promo-product{position:relative}
+.hd-shelf-card>.hd-shop-actions,.hd-market-product-card>.hd-shop-actions,.hd-wow-product>.hd-shop-actions,.hd-promo-product>.hd-shop-actions{
+  top:8px;right:8px;left:auto;max-width:calc(100% - 16px)
+}
