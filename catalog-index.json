@@ -93,7 +93,7 @@
   "launch_provider_policy": "CJ_ONLY_PHASE_1",
   "cj_shelf_fill": {
     "source": "CJ official API",
-    "shelf_entry_count": 2298,
+    "shelf_entry_count": 2320,
     "category_count": 44,
     "categories": {
       "activewear": 34,
@@ -119,7 +119,7 @@
       "office": 52,
       "outdoors": 36,
       "pets": 39,
-      "phonecases": 78,
+      "phonecases": 100,
       "phonestands": 27,
       "powerbanks": 23,
       "sets": 63,
@@ -142,6 +142,20 @@
       "perfume": 25
     },
     "note": "Shelf fill requires product-detail and destination quote recheck before order placement.",
-    "updated_at": "2026-09-14T11:37:04.635864+00:00"
+    "updated_at": "2026-09-14T11:43:29.310214+00:00",
+    "phone_family_coverage": {
+      "iPhone": 10,
+      "Samsung/Galaxy": 14,
+      "Google Pixel": 0,
+      "Xiaomi/Redmi": 16,
+      "OnePlus": 0,
+      "Huawei": 4,
+      "Honor": 0,
+      "Oppo": 0,
+      "Vivo": 0,
+      "Motorola": 0,
+      "Realme": 0,
+      "Nothing": 0
+    }
   }
 }
