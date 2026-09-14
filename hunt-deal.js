@@ -560,6 +560,65 @@
     return result;
   }
 
+  let homeFeedPool = [];
+  let homeFeedCursor = 0;
+  let homeFeedObserver = null;
+  let homeFeedData = null;
+  let homeFeedMode = "snapshot";
+
+  function shuffleHome(items) {
+    const out=[...items];
+    for(let i=out.length-1;i>0;i--){
+      const buf=new Uint32Array(1);
+      crypto.getRandomValues(buf);
+      const j=buf[0]%(i+1);
+      [out[i],out[j]]=[out[j],out[i]];
+    }
+    return out;
+  }
+
+  function buildRandomHomePool(shelves) {
+    const seen=new Set(), rows=[];
+    for(const items of Object.values(shelves||{})){
+      for(const item of Array.isArray(items)?items:[]){
+        const key=`${item?.provider||""}:${item?.item_id||""}`;
+        if(!item?.item_id || seen.has(key)) continue;
+        if(String(item?.provider||"").toLowerCase()!=="cjdropshipping") continue;
+        seen.add(key);
+        rows.push(item);
+      }
+    }
+    return shuffleHome(rows);
+  }
+
+  function appendHomeFeedBatch() {
+    const grid=document.querySelector("#hd-home-random-grid");
+    const sentinel=document.querySelector("#hd-home-random-more");
+    if(!grid || !sentinel) return;
+    const batch=homeFeedPool.slice(homeFeedCursor,homeFeedCursor+48);
+    if(batch.length){
+      grid.insertAdjacentHTML("beforeend",batch.map(shelfCard).join(""));
+      homeFeedCursor+=batch.length;
+    }
+    const remaining=Math.max(0,homeFeedPool.length-homeFeedCursor);
+    const strong=sentinel.querySelector("strong");
+    if(strong)strong.textContent=remaining? `Loading more · ${remaining.toLocaleString()} left` : "You reached the end of this mix.";
+    if(!remaining){
+      sentinel.classList.add("done");
+      homeFeedObserver?.disconnect();
+    }
+  }
+
+  function setupHomeFeedObserver() {
+    const sentinel=document.querySelector("#hd-home-random-more");
+    if(!sentinel || !("IntersectionObserver" in window)) return;
+    homeFeedObserver?.disconnect();
+    homeFeedObserver=new IntersectionObserver(entries=>{
+      if(entries.some(entry=>entry.isIntersecting)) appendHomeFeedBatch();
+    },{rootMargin:"900px 0px"});
+    homeFeedObserver.observe(sentinel);
+  }
+
   function renderMarketShelvesData(data, mode = "live") {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
@@ -592,17 +651,36 @@
       return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
     }).join("");
 
-    const mixed = mixedHomeDiscovery(shelves, 24);
-    const mixedHtml = mixed.length ? `
-      <section class="hd-home-mixed">
+    homeFeedData=data;
+    homeFeedMode=mode;
+    homeFeedPool=buildRandomHomePool(shelves);
+    homeFeedCursor=0;
+    homeFeedObserver?.disconnect();
+    root.innerHTML = `
+      <section class="hd-home-random-feed">
         <div class="hd-market-shelf-head">
-          <div><small>DISCOVER SOMETHING NEW</small><h2>Fresh mix for this visit</h2><p>Women, men, beauty, tech, home and more — reshuffled each time you open HUNT.</p></div>
+          <div>
+            <small>DISCOVER EVERYTHING</small>
+            <h2>Something different every time.</h2>
+            <p>Women, men, kids, beauty, tech, home, accessories and more — fully mixed for discovery.</p>
+          </div>
           <button type="button" class="hd-home-remix" id="hd-home-remix">Remix</button>
         </div>
-        <div class="hd-home-mixed-grid" role="list">${mixed.map(shelfCard).join("")}</div>
-      </section>` : "";
-    root.innerHTML = mixedHtml + (html || '<div class="hd-shelf-loading glass">No catalog products available.</div>');
-    root.querySelector("#hd-home-remix")?.addEventListener("click",()=>renderMarketShelvesData(data,mode));
+        <div class="hd-home-random-grid" id="hd-home-random-grid" role="list"></div>
+        <div class="hd-home-random-more" id="hd-home-random-more" aria-live="polite"><span></span><strong>Loading more…</strong></div>
+      </section>`;
+    appendHomeFeedBatch();
+    setupHomeFeedObserver();
+    root.querySelector("#hd-home-remix")?.addEventListener("click",()=>{
+      homeFeedPool=shuffleHome(homeFeedPool);
+      homeFeedCursor=0;
+      const grid=document.querySelector("#hd-home-random-grid");
+      if(grid)grid.innerHTML="";
+      const sentinel=document.querySelector("#hd-home-random-more");
+      sentinel?.classList.remove("done");
+      appendHomeFeedBatch();
+      setupHomeFeedObserver();
+    });
     const cjKeys = new Set();
     Object.values(shelves).forEach(rows => (Array.isArray(rows) ? rows : []).forEach(item => {
       if (String(item?.provider || "").toLowerCase() === "cjdropshipping" && item?.item_id) cjKeys.add(String(item.item_id));
