@@ -27,22 +27,48 @@
     return out;
   }
 
+  function menuGroups(slug,items){
+    const rules={
+      women:[
+        ["Clothing",/women-(?:dresses|evening|suits|tops|jeans|bottoms|skirts|knitwear|outerwear|hoodies|clothing)/],
+        ["Intimates & Leisure",/women-(?:underwear|sleepwear|swim|socks)/],
+        ["Shoes & Accessories",/women-(?:shoes|wallets)/]
+      ],
+      men:[
+        ["Clothing",/men-(?:tops|suits|jeans|bottoms|outerwear|knitwear|hoodies|clothing)/],
+        ["Underwear & Leisure",/men-(?:boxers|underwear|sleepwear|socks)/],
+        ["Shoes & Accessories",/men-(?:shoes|bags|wallets|accessories)/]
+      ],
+      kids:[["Kids",/^kids-/],["Baby",/^baby(?:-|$)/]],
+      beauty:[["Beauty",/^(?:makeup|skincare|body-care|nails|hair|beauty-tools)$/]],
+      accessories:[["Jewelry",/^jewelry/],["Bags & Style",/^(?:bags|watches|hats|belts|scarves|gloves|hair-accessories|bag-accessories|keychains|socks)$/]],
+      tech:[["Phone",/^(?:phone-cases|chargers-cables|power-banks|stands-holders)$/],["Electronics",/^(?:audio|wearables|wearable-accessories|smart-home|cameras|computer-accessories|electronics|gaming)$/]],
+      home:[["Home",/^(?:home-storage|home-decor|bedding|bath|lighting)$/],["Kitchen & Utility",/^(?:kitchen|drinkware|cleaning|small-appliances|tools-diy)$/]]
+    };
+    const remaining=new Set(items),out=[];
+    for(const [label,re] of (rules[slug]||[])){
+      const rows=items.filter(x=>remaining.has(x)&&re.test(x));
+      rows.forEach(x=>remaining.delete(x));
+      if(rows.length)out.push([label,rows]);
+    }
+    const rest=[...remaining];
+    if(rest.length)chunks(rest,7).forEach((rows,i)=>out.push([i?"More":"Shop by category",rows]));
+    return out;
+  }
+
   function departmentMenuHtml(slug){
     const title=H.categoryDefs?.[slug]?.title || slug.replace(/-/g," ");
     const items=H.departmentSubcategories?.[slug] || [];
-    const groups=chunks(items,7);
-    const sections=groups.map((group,index)=>{
+    const sections=menuGroups(slug,items).map(([label,group],index)=>{
       const links=group.map(sub=>{
         const def=H.categoryDefs?.[sub];
         if(!def)return "";
         return `<a href="${H.esc(linkFor(slug,sub))}">${H.esc(def.title)}</a>`;
       }).join("");
-      const heading=index===0
-        ? `<a href="${H.esc(H.categoryUrl(slug))}">Shop all ${H.esc(title)}</a>`
-        : `<span>${H.esc(title)} · More</span>`;
-      return `<section><h3>${heading}</h3><div>${links}</div></section>`;
+      const shopAll=index===0 ? `<a class="hd-mega-shop-all" href="${H.esc(H.categoryUrl(slug))}">Shop all ${H.esc(title)} →</a>` : "";
+      return `<section><h3>${H.esc(label)}</h3>${shopAll}<div>${links}</div></section>`;
     }).join("");
-    return sections || `<section><h3><a href="${H.esc(H.categoryUrl(slug))}">${H.esc(title)}</a></h3></section>`;
+    return sections || `<section><h3>${H.esc(title)}</h3><a class="hd-mega-shop-all" href="${H.esc(H.categoryUrl(slug))}">Shop all →</a></section>`;
   }
 
   function allDepartmentsMenuHtml(){
@@ -272,7 +298,6 @@
   });
 
   setupMegaMenu();
-  window.addEventListener("hunt:shopping-survey", () => { if (lastData) renderPersonalized(lastData.shelves || {}); });
     window.addEventListener("hunt:shelves", event => render(event.detail));
   if (window.HuntMarketShelves) render(window.HuntMarketShelves);
 })();
