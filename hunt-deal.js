@@ -588,7 +588,8 @@
         rows.push(item);
       }
     }
-    return shuffleHome(rows);
+    const ranked = window.BoomNet?.rankFeed ? window.BoomNet.rankFeed(rows) : shuffleHome(rows);
+    return ranked;
   }
 
   function appendHomeFeedBatch() {
@@ -672,7 +673,7 @@
     appendHomeFeedBatch();
     setupHomeFeedObserver();
     root.querySelector("#hd-home-remix")?.addEventListener("click",()=>{
-      homeFeedPool=shuffleHome(homeFeedPool);
+      homeFeedPool=window.BoomNet?.remix ? window.BoomNet.remix(homeFeedPool) : shuffleHome(homeFeedPool);
       homeFeedCursor=0;
       const grid=document.querySelector("#hd-home-random-grid");
       if(grid)grid.innerHTML="";
