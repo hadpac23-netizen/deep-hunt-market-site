@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-14T11:25:00Z",
+  "generated_at": "2026-09-14T13:19:00Z",
   "quality_gate": "HUNT_CJ_ONLY_PHASE_1",
   "unique_quality_products": 3376,
   "shelf_entry_count": 3904,
   "providers": {
-    "CJdropshipping": 2321
+    "CJdropshipping": 29938
   },
   "categories": {
     "accessories": 59,
@@ -167,8 +167,8 @@
       "Nothing": 0
     }
   },
-  "launch_policy": "HUNT_CJ_ONLY_LAUNCH_V1",
-  "launch_unique_products": 2321,
+  "launch_policy": "HUNT_CJ_ONLY_30K_V1",
+  "launch_unique_products": 29938,
   "launch_shelf_entry_count": 3515,
   "launch_category_counts": {
     "accessories": 100,
@@ -249,13 +249,12 @@
     "CJ_2026_VERIFIED": 2864,
     "CJ_CURRENT_ACTIVE_VERIFIED": 651
   },
-  "launch_gaps": [
-    "thongs",
-    "longboxers"
-  ],
+  "launch_gaps": [],
   "launch_notes": [
-    "2026 products are ORDINARY_PRODUCT, verified inventory and saleStatus=3 from CJ official Product List.",
-    "Sparse shelves may be supplemented with older CJ items only when still active/on-sale with verified inventory.",
-    "Every item remains PRODUCT_DETAIL_RECHECK_REQUIRED until variant price, stock and destination shipping are rechecked."
-  ]
+    "CJ-only organized catalog.",
+    "Each product has one primary category to prevent duplicate/mixed shelves.",
+    "Live product detail rechecks variants, sizes, colors, stock, price and destination shipping before checkout."
+  ],
+  "launch_department_count": 13,
+  "launch_leaf_category_count": 106
 }
