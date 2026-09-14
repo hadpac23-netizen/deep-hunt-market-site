@@ -119,7 +119,29 @@
     catch(error){setStatus(error.message||"Moderation failed.","error");button.disabled=false;}
   });
 
-  $("#hd-admin-verification-form")?.addEventListener("submit",async event=>{\n    event.preventDefault();\n    const form=new FormData(event.currentTarget);\n    const storeId=String(form.get("store_id")||"");\n    const option=$("#hd-admin-commercial-store")?.selectedOptions?.[0];\n    const accountId=option?.dataset?.account||"";\n    const status=$("#hd-admin-verification-status");\n    status.textContent="Saving…";\n    try{\n      if(accountId){\n        await api("/admin/accounts/"+encodeURIComponent(accountId)+"/verification",{method:"PATCH",body:JSON.stringify({kyc_status:form.get("kyc_status"),payout_status:form.get("payout_status")})});\n      }\n      await api("/admin/stores/"+encodeURIComponent(storeId)+"/commercial",{method:"PATCH",body:JSON.stringify({commission_bps:Math.round(Number(form.get("commission_percent")||12)*100),payout_hold_days:Number(form.get("payout_hold_days")||14),return_window_days:Number(form.get("return_window_days")||14),shipping_sla_days:Number(form.get("shipping_sla_days")||7),fulfillment_mode:form.get("fulfillment_mode"),seller_of_record:form.get("seller_of_record")==="on"})});\n      status.textContent="Verification and commercial settings saved.";\n      status.dataset.tone="success";\n      await load();\n    }catch(error){\n      status.textContent=error.message||"Could not save merchant settings.";\n      status.dataset.tone="error";\n    }\n  });\n\n  $("#hd-admin-tracking-form")?.addEventListener("submit",async event=>{
+  $("#hd-admin-verification-form")?.addEventListener("submit",async event=>{
+    event.preventDefault();
+    const form=new FormData(event.currentTarget);
+    const storeId=String(form.get("store_id")||"");
+    const option=$("#hd-admin-commercial-store")?.selectedOptions?.[0];
+    const accountId=option?.dataset?.account||"";
+    const status=$("#hd-admin-verification-status");
+    status.textContent="Saving…";
+    try{
+      if(accountId){
+        await api("/admin/accounts/"+encodeURIComponent(accountId)+"/verification",{method:"PATCH",body:JSON.stringify({kyc_status:form.get("kyc_status"),payout_status:form.get("payout_status")})});
+      }
+      await api("/admin/stores/"+encodeURIComponent(storeId)+"/commercial",{method:"PATCH",body:JSON.stringify({commission_bps:Math.round(Number(form.get("commission_percent")||12)*100),payout_hold_days:Number(form.get("payout_hold_days")||14),return_window_days:Number(form.get("return_window_days")||14),shipping_sla_days:Number(form.get("shipping_sla_days")||7),fulfillment_mode:form.get("fulfillment_mode"),seller_of_record:form.get("seller_of_record")==="on"})});
+      status.textContent="Verification and commercial settings saved.";
+      status.dataset.tone="success";
+      await load();
+    }catch(error){
+      status.textContent=error.message||"Could not save merchant settings.";
+      status.dataset.tone="error";
+    }
+  });
+
+  $("#hd-admin-tracking-form")?.addEventListener("submit",async event=>{
     event.preventDefault();
     const body=Object.fromEntries(new FormData(event.currentTarget).entries());
     const storeId=body.store_id;
