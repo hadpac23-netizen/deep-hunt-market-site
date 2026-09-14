@@ -87,7 +87,7 @@
     const button = $("#hd-all-categories");
     const menu = $("#hd-mega-menu");
     if (!menu) return;
-    const navLinks=[...document.querySelectorAll('.hd-nav a[href*="category.html?c="]')];
+    const navLinks=[...document.querySelectorAll('.hd-nav a[href*="category.html?c="], .hd-department-bar a[href*="category.html?c="]')];
     let closeTimer=null;
     let activeTrigger=null;
     const clearTimer=()=>{if(closeTimer){clearTimeout(closeTimer);closeTimer=null;}};
@@ -126,9 +126,17 @@
       link.setAttribute("aria-expanded","false");
       link.addEventListener("pointerenter",()=>open(slug,link));
       link.addEventListener("focus",()=>open(slug,link));
+      link.addEventListener("click",event=>{
+        const touchLike=window.matchMedia?.("(pointer: coarse)")?.matches || window.innerWidth<=900;
+        if(touchLike && (menu.hidden || menu.dataset.department!==slug)){
+          event.preventDefault();
+          open(slug,link);
+        }
+      });
     });
 
     document.querySelector(".hd-nav")?.addEventListener("pointerleave",scheduleClose);
+    document.querySelector(".hd-department-bar")?.addEventListener("pointerleave",scheduleClose);
     menu.addEventListener("pointerenter",clearTimer);
     menu.addEventListener("pointerleave",scheduleClose);
 
