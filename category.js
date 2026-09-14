@@ -112,6 +112,18 @@
     return String(product?.category || "") === sub;
   }
 
+  function matchesCategoryTruth(product) {
+    const category = String(product?.category || "");
+    const department = String(product?.department || "");
+    const children = H.departmentSubcategories?.[slug] || [];
+    if (children.length) {
+      if (department) return department === slug;
+      return category === slug || children.includes(category);
+    }
+    if (category === slug) return true;
+    try { return H.inferCategory(product) === slug; } catch { return false; }
+  }
+
   function matchesGenderScope(product) {
     const department = String(product?.department || "");
     if (department && H.departmentSubcategories?.[slug]) return department === slug;
