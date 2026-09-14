@@ -1,7 +1,8 @@
 (() => {
   const H=window.HuntCore, sb=window.supabase;
   if(!H)return;
-  const client=sb?.createClient?sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey):null;
+  const client=window.HuntSupabaseClient || (sb?.createClient?sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey):null);
+  if(client&&!window.HuntSupabaseClient)window.HuntSupabaseClient=client;
   const $=q=>document.querySelector(q);
   let current=null;
   let pool=[];
