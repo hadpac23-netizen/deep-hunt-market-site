@@ -26,6 +26,23 @@
       </div>
 
       <section class="hd-seller-panel glass">
+        <div class="hd-seller-section-head"><div><small>COMMERCIAL GATES</small><h2>Merchant verification & terms</h2><p>Store approval stays blocked until the current Merchant Program is owner-activated, KYC is verified and the merchant accepts the current terms.</p></div></div>
+        <form id="hd-admin-verification-form" class="hd-seller-form">
+          <label>Pending / approved store<select id="hd-admin-commercial-store" name="store_id" required></select></label>
+          <label>KYC status<select name="kyc_status"><option>pending</option><option>verified</option><option>rejected</option><option>expired</option></select></label>
+          <label>Payout status<select name="payout_status"><option>not_configured</option><option>pending</option><option>ready</option><option>blocked</option></select></label>
+          <label>Commission %<input name="commission_percent" type="number" min="0" max="50" step="0.1" value="12"></label>
+          <label>Payout hold days<input name="payout_hold_days" type="number" min="0" max="90" value="14"></label>
+          <label>Return window days<input name="return_window_days" type="number" min="0" max="365" value="14"></label>
+          <label>Shipping SLA days<input name="shipping_sla_days" type="number" min="1" max="60" value="7"></label>
+          <label>Fulfillment<select name="fulfillment_mode"><option value="merchant_fulfilled">Merchant fulfilled</option><option value="supplier_fulfilled">Supplier fulfilled</option><option value="affiliate_outbound">Affiliate outbound</option></select></label>
+          <label><input type="checkbox" name="seller_of_record" checked> Merchant is Seller of Record</label>
+          <button class="hd-btn hd-btn-primary" type="submit">Save verification & commercial settings →</button>
+        </form>
+        <p class="hd-seller-status" id="hd-admin-verification-status" aria-live="polite"></p>
+      </section>
+
+      <section class="hd-seller-panel glass">
         <div class="hd-seller-section-head"><div><small>AFFILIATE ATTRIBUTION</small><h2>Configure approved store tracking</h2><p>HUNT admin controls tracking templates so sellers cannot turn HUNT into an arbitrary redirect service.</p></div></div>
         <form id="hd-admin-tracking-form" class="hd-seller-form">
           <label>Approved store<select id="hd-admin-tracking-store" name="store_id" required></select></label>
