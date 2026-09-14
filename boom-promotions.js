@@ -2,9 +2,10 @@
   const H=window.HuntCore;
   if(!H)return;
   const sb=window.supabase;
-  const client=sb?.createClient
+  const client=window.HuntSupabaseClient || (sb?.createClient
     ? sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey)
-    : null;
+    : null);
+  if(client&&!window.HuntSupabaseClient)window.HuntSupabaseClient=client;
 
   let lastData=null;
 
@@ -223,8 +224,9 @@
       host=document.createElement("section");
       host.id="hd-boom-promotions";
       host.className="hd-boom-promotions";
-      document.querySelector("#hd-wow-showcase")?.after(host);
-      if(!host.isConnected)document.querySelector("#shop")?.before(host);
+      const anchor=document.querySelector("#deals") || document.querySelector("#shop");
+      if(anchor)anchor.after(host);
+      else document.querySelector("main")?.append(host);
     }
 
     const editorialAll=editorialPromos(shelves);
