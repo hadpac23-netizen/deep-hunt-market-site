@@ -17,6 +17,9 @@
     dresses: {title:"Dresses & Skirts", query:"dresses", icon:"D", description:"Dresses and skirts from the connected live catalog."},
     tops: {title:"Tops & T-Shirts", query:"tops", icon:"T", description:"T-shirts, tops, tanks, polos and blouses."},
     bottoms: {title:"Bottoms", query:"bottoms pants shorts jeans", icon:"B", description:"Pants, shorts, jeans, joggers and leggings."},
+    jeans: {title:"Jeans & Denim", query:"jeans denim", icon:"J", description:"Jeans and denim bottoms with live product-detail recheck before checkout."},
+    underwear: {title:"Underwear & Basics", query:"underwear basics", icon:"U", description:"Everyday underwear and basic layers from approved CJ catalog products."},
+    boxers: {title:"Boxers & Underwear", query:"men boxers underwear", icon:"B", description:"Men's boxer briefs and everyday underwear from approved CJ catalog products."},
     hoodies: {title:"Hoodies & Sweatshirts", query:"hoodies", icon:"H", description:"Hoodies, sweatshirts and warm layers."},
     knitwear: {title:"Knitwear", query:"sweaters cardigans knitwear", icon:"N", description:"Sweaters, cardigans and knit layers."},
     jackets: {title:"Jackets & Outerwear", query:"jackets", icon:"J", description:"Jackets, windbreakers and outerwear."},
@@ -62,18 +65,25 @@
     ornaments: {title:"Ornaments", query:"ornaments", icon:"R", description:"Seasonal and decorative ornaments."},
     perfume: {title:"Perfume & Fragrance", query:"women perfume fragrance", icon:"F", description:"Live when matched from connected approved supplier feeds."},
     beauty: {title:"Beauty & Skincare", query:"beauty skincare makeup", icon:"Y", description:"Beauty and skincare products matched from connected approved supplier feeds."},
+    makeup: {title:"Makeup", query:"makeup cosmetics", icon:"M", description:"Curated makeup products from CJ with unrelated vanity furniture and accessories excluded."},
+    skincare: {title:"Skincare", query:"skincare face serum cleanser cream toner", icon:"S", description:"Curated skincare products from CJ with product-detail verification before checkout."},
     jewelry: {title:"Jewelry", query:"women jewelry necklace bracelet earrings", icon:"Q", description:"Jewelry and accessories matched from connected approved supplier feeds."}
   };
 
   const categoryGroups = [
-    {title:"Women & Men", items:["women","men","dresses","tops","bottoms","sets","plussize","sleepwear","suits","hoodies","jackets","knitwear","activewear","swimwear","socks"]},
-    {title:"Beauty & Style", items:["bags","shoes","hats","accessories","hairaccessories","jewelry","beauty","perfume"]},
+    {title:"Women & Men", items:["women","men","dresses","tops","jeans","bottoms","sets","underwear","boxers","plussize","sleepwear","suits","hoodies","jackets","knitwear","activewear","swimwear","socks"]},
+    {title:"Beauty & Style", items:["bags","shoes","hats","accessories","hairaccessories","jewelry","beauty","makeup","skincare","perfume"]},
     {title:"Home & Living", items:["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]},
     {title:"Tech & Gaming", items:["tech","phonecases","phoneaccessories","gaming"]},
     {title:"Sports & Outdoors", items:["sports","outdoors","travel"]},
     {title:"Kids & Pets", items:["kids","toys","pets"]},
     {title:"Gifts, Crafts & Office", items:["gifts","party","crafts","ornaments","stickers","stationery","office"]}
   ];
+
+  const genderSubcategories = {
+    women:["dresses","tops","jeans","bottoms","sets","underwear","sleepwear","activewear","swimwear","jackets","knitwear","shoes","bags","jewelry","makeup","skincare","accessories"],
+    men:["tops","jeans","bottoms","boxers","sleepwear","activewear","hoodies","jackets","knitwear","suits","shoes","bags","accessories","hats"]
+  };
 
 
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -95,7 +105,9 @@
     if (/\b(toy|toys|puzzle|plush|building block|craft kit|slime)\b/.test(t)) return "toys";
     if (/\b(kids?|youth|toddler|baby|newborn)\b/.test(t)) return "kids";
     if (/(perfume|fragrance)/.test(t)) return "perfume";
-    if (/(beauty|skincare|makeup|cosmetic|serum|cream)/.test(t)) return "beauty";
+    if (/\b(lipstick|lip gloss|mascara|eyeliner|eyeshadow|foundation|concealer|blush|makeup|cosmetic)\b/.test(t)) return "makeup";
+    if (/\b(skincare|skin care|serum|cleanser|toner|moisturizer|moisturiser|face cream|facial cream|eye cream)\b/.test(t)) return "skincare";
+    if (/(beauty|cosmetic|serum|cream)/.test(t)) return "beauty";
     if (/(jewelry|jewellery|necklace|bracelet|earring|ring)/.test(t)) return "jewelry";
     if (/\b(swim|swimsuit|bikini|swim trunks)\b/.test(t)) return "swimwear";
     if (/\b(sock|socks)\b/.test(t)) return "socks";
@@ -109,6 +121,9 @@
     if (/\b(mug|mugs|bottle|bottles|tumbler|tumblers|cup|cups)\b/.test(t)) return "drinkware";
     if (/\b(hat|hats|cap|caps|beanie|bucket hat)\b/.test(t)) return "hats";
     if (/\b(dress|dresses|skirt|skirts)\b/.test(t)) return "dresses";
+    if (/\b(jean|jeans|denim)\b/.test(t) && /\b(pants|trousers|jeans|denim)\b/.test(t)) return "jeans";
+    if (/\b(boxer|boxers|boxer briefs?)\b/.test(t) && /\b(men|man|male)\b/.test(t)) return "boxers";
+    if (/\b(bra|bralette|underwear|panties|panty|briefs|brief)\b/.test(t) && /\b(women|woman|female|ladies)\b/.test(t)) return "underwear";
     if (/\b(hoodie|hoodies|sweatshirt|sweatshirts)\b/.test(t)) return "hoodies";
     if (/\b(jacket|jackets|windbreaker|bomber|letterman)\b/.test(t)) return "jackets";
     if (/\b(athletic|performance|legging|leggings|sports bra|shorts|yoga|rash guard|joggers|track pants)\b/.test(t)) return "activewear";
@@ -140,7 +155,9 @@
     const q = String(query || "").toLowerCase();
     if (/perfume|fragrance/.test(q)) return "perfume";
     if (/jewel|necklace|bracelet|earring|ring/.test(q)) return "jewelry";
-    if (/beauty|skincare|makeup/.test(q)) return "beauty";
+    if (/lipstick|mascara|eyeliner|eyeshadow|foundation|concealer|blush|makeup/.test(q)) return "makeup";
+    if (/skincare|skin care|serum|cleanser|toner|moisturizer|face cream/.test(q)) return "skincare";
+    if (/beauty|cosmetic/.test(q)) return "beauty";
     if (/kids?|youth|toddler|baby/.test(q)) return "kids";
     if (/swimwear|swimsuit|bikini|swim trunks/.test(q)) return "swimwear";
     if (/\bsocks?\b/.test(q)) return "socks";
@@ -155,6 +172,9 @@
     if (/drinkware|mug|bottle|tumbler/.test(q)) return "drinkware";
     if (/\bhats?\b|\bcaps?\b|beanie/.test(q)) return "hats";
     if (/dress|skirt/.test(q)) return "dresses";
+    if (/jeans?|denim/.test(q)) return "jeans";
+    if (/boxer|boxers/.test(q)) return "boxers";
+    if (/underwear|panties|bra|bralette|briefs/.test(q)) return "underwear";
     if (/hoodie|sweatshirt/.test(q)) return "hoodies";
     if (/jacket|outerwear|windbreaker|bomber/.test(q)) return "jackets";
     if (/activewear|fitness|gym|athletic|legging|yoga|performance/.test(q)) return "activewear";
@@ -308,7 +328,7 @@
   const categoryUrl = slug => `category.html?c=${encodeURIComponent(categoryDefs[slug] ? slug : "women")}`;
 
   window.HuntCore = {
-    functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
+    functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,genderSubcategories,esc,money,safeQuery,
     inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
     cart,saveCart,addCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
   };
