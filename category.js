@@ -13,6 +13,10 @@
   let visibleLimit = 48;
   const pageSize = 48;
   let gridObserver = null;
+  let catalogPages = [];
+  let nextCatalogPageIndex = 0;
+  let catalogPageLoading = false;
+  let catalogTotalCount = 0;
 
   const $ = q => document.querySelector(q);
   const productKey = p => `${p.provider || ""}:${p.item_id || ""}`;
@@ -166,18 +170,40 @@
     visible.forEach(p => { try { sessionStorage.setItem(`hunt_product_${productKey(p)}`, JSON.stringify(p)); } catch {} });
     const sentinel=$("#hd-category-more");
     if(sentinel){
-      const hasMore=visible.length<items.length;
+      const hasLoadedMore=visible.length<items.length;
+      const hasRemoteMore=nextCatalogPageIndex<catalogPages.length;
+      const hasMore=hasLoadedMore||hasRemoteMore;
       sentinel.hidden=!hasMore;
       const strong=sentinel.querySelector("strong");
-      if(strong)strong.textContent=hasMore?`Load more · ${items.length-visible.length} remaining`:"All products loaded";
+      const remaining=Math.max(0,catalogTotalCount-visible.length);
+      if(strong)strong.textContent=hasMore?`Load more · ${remaining.toLocaleString()} remaining`:"All products loaded";
     }
   }
 
-  function loadMore() {
+  async function loadMore() {
     const total=filteredSorted().length;
-    if(visibleLimit>=total)return;
-    visibleLimit=Math.min(total,visibleLimit+pageSize);
-    renderGrid();
+    if(visibleLimit<total){
+      visibleLimit=Math.min(total,visibleLimit+pageSize);
+      renderGrid();
+      return;
+    }
+    if(catalogPageLoading || nextCatalogPageIndex>=catalogPages.length) return;
+    catalogPageLoading=true;
+    try{
+      const pagePath=catalogPages[nextCatalogPageIndex];
+      const res=await fetch(pagePath+"?v=30k1",{cache:"force-cache"});
+      if(!res.ok) throw new Error("Catalog page unavailable");
+      const page=await res.json();
+      const rows=Array.isArray(page?.products)?page.products:[];
+      nextCatalogPageIndex+=1;
+      applyRows(rows,"CJ paged",{merge:true});
+      visibleLimit=Math.min(filteredSorted().length,visibleLimit+pageSize);
+      renderGrid();
+    }catch(err){
+      console.warn("HUNT catalog page load failed",err);
+    }finally{
+      catalogPageLoading=false;
+    }
   }
 
   function setupGridObserver() {
@@ -256,18 +282,33 @@
     let rendered = false;
     let shardLoaded = false;
     try {
-      const shardRes = await fetch(`catalog-shards/${encodeURIComponent(sourceSlug)}.json?v=boom5k3`, {cache:"force-cache"});
-      if (shardRes.ok) {
-        const shard = await shardRes.json();
-        const shardRows = Array.isArray(shard?.products) ? shard.products : [];
-        const authoritative = shard?.launch_authoritative === true;
-        if (shardRows.length || authoritative) {
-          applyRows(shardRows, authoritative ? "CJ launch" : "expanded");
-          rendered = true;
-          shardLoaded = true;
+      const manifestRes = await fetch("catalog-manifest.json?v=30k1",{cache:"force-cache"});
+      if(manifestRes.ok){
+        const manifest=await manifestRes.json();
+        const info=manifest?.categories?.[sourceSlug];
+        catalogPages=Array.isArray(info?.pages)?info.pages:[];
+        catalogTotalCount=Number(info?.count||0);
+        nextCatalogPageIndex=0;
+        if(catalogPages.length){
+          const firstPath=catalogPages[0];
+          const firstRes=await fetch(firstPath+"?v=30k1",{cache:"force-cache"});
+          if(firstRes.ok){
+            const first=await firstRes.json();
+            const rows=Array.isArray(first?.products)?first.products:[];
+            nextCatalogPageIndex=1;
+            applyRows(rows,"CJ paged");
+            rendered=true;
+            shardLoaded=true;
+          }
+        } else if(info && Number(info.count)===0){
+          applyRows([],"CJ paged");
+          rendered=true;
+          shardLoaded=true;
         }
       }
-    } catch {}
+    } catch(err) {
+      console.warn("HUNT manifest load failed",err);
+    }
 
     if (shardLoaded) return;
 
