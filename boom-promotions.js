@@ -118,6 +118,25 @@
     return candidates.filter(x=>x.items.length>=4).slice(0,3);
   }
 
+  async function liveVerifiedDeals(){
+    try{
+      const res=await fetch((H.functionsBase||"https://zszlnahjqmwozwubetkm.supabase.co/functions/v1")+"/hunt-deal-engine",{cache:"no-store"});
+      const data=await res.json();
+      if(!res.ok||!Array.isArray(data?.deals))return [];
+      return data.deals.map(deal=>({
+        ...deal,
+        items:[{
+          provider:deal.provider,
+          item_id:deal.item_id,
+          title:deal.title_snapshot||"Verified deal",
+          image_url:null,
+          price_amount:deal.current_price,
+          currency:deal.currency||"USD"
+        }]
+      }));
+    }catch{return [];}
+  }
+
   async function liveSponsored(){
     if(!client)return [];
     const {data:campaigns,error}=await client.from("hunt_promotion_campaigns")
@@ -175,9 +194,19 @@
     }
 
     const editorial=editorialPromos(shelves);
-    const sponsored=await liveSponsored();
+    const [sponsored,deals]=await Promise.all([liveSponsored(),liveVerifiedDeals()]);
     const chosen=sponsored.length?sponsored.slice(0,1):[];
+    const dealBlocks=deals.slice(0,1).map(deal=>`<section class="hd-promo-block verified-deal">
+      <div class="hd-promo-copy">
+        <small>VERIFIED PRICE DROP</small>
+        <h3>${H.esc(deal.title_snapshot||"Verified HUNT deal")}</h3>
+        <p>${H.esc(String(deal.discount_percent||0))}% verified drop · reference ${H.esc(H.money(Number(deal.reference_price||0),deal.currency||"USD"))} · now ${H.esc(H.money(Number(deal.current_price||0),deal.currency||"USD"))}</p>
+        <p class="hd-promo-disclosure">Verified price history + Profit Gate + owner approval.</p>
+      </div>
+      <div class="hd-promo-track" role="list">${deal.items.map(productCard).join("")}</div>
+    </section>`);
     const blocks=[
+      ...dealBlocks,
       ...chosen.map(x=>promoBlock(x,{sponsored:true})),
       ...editorial.map(x=>promoBlock(x))
     ].slice(0,3);
