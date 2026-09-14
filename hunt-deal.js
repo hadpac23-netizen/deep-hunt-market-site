@@ -182,7 +182,7 @@
       const retail = retailState(item);
       const priceLabel = retail.ready ? money(retail.amount, retail.currency) : "Price pending";
       const gaps = (item.gaps || []).slice(0,2).map(x => `<li>${esc(x)}</li>`).join("");
-      const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : `product.html?provider=${encodeURIComponent(item.provider || "Printful")}&id=${encodeURIComponent(item.item_id || "")}`;
+      const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : `product.html?provider=${encodeURIComponent(item.provider || "CJdropshipping")}&id=${encodeURIComponent(item.item_id || "")}`;
       return `
         <article class="hd-catalog-card glass">
           <div class="hd-catalog-media">${image}<span class="hd-catalog-badge">${esc(item.verdict || "CATALOG")}</span></div>
@@ -301,21 +301,12 @@
     ornaments: ["Ornaments", "ornaments"],
   };
 
-  const shelfDepartments = [
-    ["Women · Clothing", ["women","dresses","eveningdresses","womensuits","tops","jeans","bottoms","sets","plussize","hoodies","jackets","knitwear","activewear","swimwear","sleepwear","underwear","socks"]],
-    ["Women · Shoes & Accessories", ["bags","hairaccessories","jewelry","accessories","sunglasses","belts","shoes","hats"]],
-    ["Men · Clothing", ["men","suits","tops","jeans","bottoms","boxers","longboxers","mensbriefs","socks","hoodies","jackets","knitwear","activewear","shoes","bags","sunglasses","belts"]],
-    ["Beauty", ["makeup","skincare","beauty","perfume"]],
-    ["Phone & Useful Tech", ["phonecases","chargers","powerbanks","phonestands","earbuds","phoneaccessories","usefultech","tech","gaming","office"]],
-    ["Home & Living", ["home","lighting","kitchen","storage","bedding","bath","cleaning","pillows","blankets","wallart","drinkware"]],
-    ["Sports & Everyday", ["sports","outdoors","travel","kids","toys","pets"]],
-    ["Creative & Gifts", ["crafts","party","gifts","stickers","stationery","ornaments"]],
-  ];
+  const shelfDepartments = [["Women",["women-dresses","women-evening","women-suits","women-tops","women-jeans","women-bottoms","women-skirts","women-knitwear","women-outerwear","women-underwear","women-sleepwear","women-swim","women-shoes","women-socks","women-wallets","women-hoodies","women-clothing"]],["Men",["men-tops","men-suits","men-jeans","men-bottoms","men-outerwear","men-knitwear","men-boxers","men-underwear","men-sleepwear","men-shoes","men-bags","men-wallets","men-socks","men-hoodies","men-accessories","men-clothing"]],["Kids & Baby",["kids-clothing","kids-shoes","kids-accessories","baby","baby-clothing","baby-shoes"]],["Beauty",["skincare","body-care","makeup","nails","hair","beauty-tools"]],["Accessories & Jewelry",["jewelry-necklaces","jewelry-rings","jewelry-earrings","jewelry-bracelets","jewelry","watches","bags","hats","belts","scarves","keychains","gloves","hair-accessories","bag-accessories","socks"]],["Phone & Tech",["phone-cases","chargers-cables","power-banks","stands-holders","audio","wearables","wearable-accessories","smart-home","cameras","computer-accessories","electronics","gaming"]],["Home & Living",["home-storage","kitchen","lighting","bedding","bath","home-decor","drinkware","tools-diy","cleaning","small-appliances"]],["Sports & Outdoors",["fitness","outdoors","active-bottoms","sports-gear","sports-bags","cycling","fitness-accessories"]],["Pets",["pet-accessories","pet-toys","pet-grooming","pet-clothing","pet-feeding","pet-walk","pet-beds","aquarium"]],["Toys & Play",["toys","plush-toys","building-toys","educational-toys"]],["Travel",["luggage"]],["Office & Crafts",["crafts","stationery","stickers"]],["Gifts & Party",["party"]]];
 
   function shelfCard(item) {
     const detailUrl = window.HuntCore
       ? window.HuntCore.productUrl(item)
-      : `product.html?provider=${encodeURIComponent(item.provider || "Printful")}&id=${encodeURIComponent(item.item_id || "")}`;
+      : `product.html?provider=${encodeURIComponent(item.provider || "CJdropshipping")}&id=${encodeURIComponent(item.item_id || "")}`;
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
@@ -340,11 +331,16 @@
         : detailRecheckRequired
           ? "Product detail must be verified again before checkout."
           : "Open for current price, variants and availability.";
+    const retailAmount = Number(item?.retail_price_amount);
+    const retailReady = item?.retail_price_verified === true && String(item?.profit_gate_status || "").toUpperCase() === "PASS" && Number.isFinite(retailAmount) && retailAmount > 0;
+    const retailEstimated = !retailReady && Number.isFinite(retailAmount) && retailAmount > 0;
+    const retailText = retailReady ? money(retailAmount, item?.retail_currency || "USD") : (retailEstimated ? `From ${money(retailAmount, item?.retail_currency || "USD")}` : "Price on product");
     return `<article class="hd-shelf-card" role="listitem" data-category="${esc(item.category || "")}">
       <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(truthBadge)}</span></a>
       <div class="hd-shelf-card-body">
         <small>${esc(item.provider || "Provider")}</small>
         <a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a>
+        <strong class="hd-shelf-price">${esc(retailText)}</strong>
         <p>${esc(detailLine)}</p>
         <a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a>
       </div>
@@ -539,14 +535,16 @@
     const limit = shelfItemLimit();
     const html = orderedShelfDepartments().map(([department, slugs]) => {
       const sections = slugs.map(slug => {
-        const meta = shelfMeta[slug];
+        const meta = shelfMeta[slug] || (window.HuntCore?.categoryDefs?.[slug] ? [window.HuntCore.categoryDefs[slug].title, slug] : [slug.replace(/-/g," "), slug]);
         let items = Array.isArray(shelves[slug]) ? shelves[slug].filter(item => String(item?.provider || "").toLowerCase() === "cjdropshipping" && isShelfFit(slug, item)) : [];
-        if (department.startsWith("Women") && slug !== "women") items = items.filter(isWomenShelfItem);
         if (!meta || items.length < 4) return "";
         const selected = selectShelfItems(items, limit, renderedKeys);
         const cards = selected.map(shelfCard).join("");
-        const categoryHref = department.startsWith("Women") && slug !== "women"
-          ? `category.html?c=women&sub=${encodeURIComponent(slug)}`
+        const parent = window.HuntCore
+          ? Object.entries(window.HuntCore.departmentSubcategories || {}).find(([,items]) => Array.isArray(items) && items.includes(slug))?.[0]
+          : null;
+        const categoryHref = parent
+          ? `category.html?c=${encodeURIComponent(parent)}&sub=${encodeURIComponent(slug)}`
           : (window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`);
         return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
       }).filter(Boolean).join("");
@@ -559,7 +557,7 @@
     Object.values(shelves).forEach(rows => (Array.isArray(rows) ? rows : []).forEach(item => {
       if (String(item?.provider || "").toLowerCase() === "cjdropshipping" && item?.item_id) cjKeys.add(String(item.item_id));
     }));
-    const count = cjKeys.size;
+    const count = Number(data?.visible_product_count || 0) || cjKeys.size;
     const label = mode === "live" ? "CJ LIVE" : "CJ READY";
     counter.textContent = `${count.toLocaleString()} ${label}`;
     counter.title = "Current HUNT launch phase: CJdropshipping products only.";
@@ -585,7 +583,7 @@
     let snapshotData = null;
 
     try {
-      const snapshotRes = await fetch("cj-launch-home.json?v=cjlaunch1", {cache:"force-cache"});
+      const snapshotRes = await fetch("cj-launch-home.json?v=30k1", {cache:"force-cache"});
       if (snapshotRes.ok) {
         snapshotData = await snapshotRes.json();
         renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");
