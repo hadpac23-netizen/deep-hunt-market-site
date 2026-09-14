@@ -4,6 +4,7 @@
   if(!H)return;
 
   let learning={categories:{},products:{},event_count:0,generated_at:null};
+  let merchants=[];
   let loaded=false;
   let remixNonce=0;
 
@@ -82,18 +83,29 @@
     return score(item)>=52 && ageDays(item?.source_fresh_at||item?.updated_at)<=90;
   }
   function remix(items){remixNonce+=1;return rankFeed(items);}
+  async function loadMerchantFeed(){
+    try{
+      const res=await fetch(H.functionsBase+"/hunt-boom-net?limit=60",{cache:"no-store",headers:{apikey:H.publishableKey}});
+      const data=await res.json();
+      merchants=res.ok&&Array.isArray(data?.products)?data.products:[];
+    }catch{merchants=[];}
+    return merchants;
+  }
   async function load(){
     try{
       const res=await fetch(H.functionsBase+"/hunt-commerce-learning",{
         cache:"no-store",headers:{apikey:H.publishableKey}
       });
       const data=await res.json();
-      if(res.ok&&data){learning=data;loaded=true;window.dispatchEvent(new CustomEvent("hunt:boom-net-ready",{detail:{learning}}));}
+      if(res.ok&&data){learning=data;}
+      await loadMerchantFeed();
+      loaded=true;
+      window.dispatchEvent(new CustomEvent("hunt:boom-net-ready",{detail:{learning,merchants}}));
     }catch{}
     return learning;
   }
   window.BoomNet=Object.freeze({
-    score,rankFeed,promotionEligible,remix,learning:()=>learning,loaded:()=>loaded,refresh:load
+    score,rankFeed,promotionEligible,remix,learning:()=>learning,merchantProducts:()=>[...merchants],loaded:()=>loaded,refresh:load,refreshMerchants:loadMerchantFeed
   });
   load();
 })();
