@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-14T11:46:57.461476+00:00",
+  "generated_at": "2026-09-14T11:25:00Z",
   "quality_gate": "HUNT_CJ_ONLY_PHASE_1",
   "unique_quality_products": 3376,
   "shelf_entry_count": 3904,
   "providers": {
-    "CJdropshipping": 3376
+    "CJdropshipping": 2321
   },
   "categories": {
     "accessories": 59,
@@ -166,5 +166,96 @@
       "Realme": 0,
       "Nothing": 0
     }
-  }
+  },
+  "launch_policy": "HUNT_CJ_ONLY_LAUNCH_V1",
+  "launch_unique_products": 2321,
+  "launch_shelf_entry_count": 3515,
+  "launch_category_counts": {
+    "accessories": 100,
+    "activewear": 80,
+    "bags": 80,
+    "bath": 46,
+    "beauty": 69,
+    "belts": 40,
+    "blankets": 33,
+    "bottoms": 80,
+    "boxers": 43,
+    "chargers": 55,
+    "cleaning": 63,
+    "crafts": 42,
+    "dresses": 80,
+    "drinkware": 12,
+    "earbuds": 29,
+    "eveningdresses": 54,
+    "gaming": 2,
+    "gifts": 30,
+    "hairaccessories": 13,
+    "hats": 60,
+    "home": 80,
+    "hoodies": 80,
+    "jackets": 80,
+    "jeans": 80,
+    "jewelry": 80,
+    "kids": 80,
+    "kitchen": 51,
+    "knitwear": 80,
+    "lighting": 48,
+    "longboxers": 0,
+    "makeup": 37,
+    "men": 80,
+    "mensbriefs": 24,
+    "office": 80,
+    "ornaments": 40,
+    "outdoors": 80,
+    "party": 2,
+    "perfume": 4,
+    "pets": 80,
+    "phoneaccessories": 140,
+    "phonecases": 50,
+    "phonestands": 17,
+    "pillows": 36,
+    "plussize": 35,
+    "powerbanks": 21,
+    "sets": 80,
+    "shoes": 80,
+    "skincare": 32,
+    "sleepwear": 28,
+    "socks": 27,
+    "sports": 80,
+    "stationery": 17,
+    "stickers": 25,
+    "storage": 80,
+    "suits": 38,
+    "sunglasses": 4,
+    "swimwear": 80,
+    "tech": 160,
+    "thongs": 0,
+    "tops": 80,
+    "toys": 80,
+    "travel": 44,
+    "underwear": 17,
+    "usefultech": 37,
+    "wallart": 4,
+    "women": 80,
+    "womensuits": 46
+  },
+  "launch_phone_case_family_counts": {
+    "Other/Universal": 41,
+    "iPhone": 6,
+    "Xiaomi/Redmi": 1,
+    "Samsung/Galaxy": 2
+  },
+  "launch_source_mix": {
+    "CJ_2026_VERIFIED": 2864,
+    "CJ_CURRENT_ACTIVE_VERIFIED": 651
+  },
+  "launch_gaps": [
+    "thongs",
+    "longboxers"
+  ],
+  "launch_notes": [
+    "2026 products are ORDINARY_PRODUCT, verified inventory and saleStatus=3 from CJ official Product List.",
+    "Sparse shelves may be supplemented with older CJ items only when still active/on-sale with verified inventory.",
+    "Every item remains PRODUCT_DETAIL_RECHECK_REQUIRED until variant price, stock and destination shipping are rechecked."
+  ]
 }
