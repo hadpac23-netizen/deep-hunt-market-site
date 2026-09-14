@@ -6,6 +6,7 @@
   const client=sb.createClient(SUPABASE_URL,H.publishableKey);
   const $=q=>document.querySelector(q);
   let session=null;
+  let merchantProgram=null;
 
   async function api(path,options={}){
     const res=await fetch(API+path,{
@@ -72,14 +73,33 @@
       ${actionButtons("ad",req.id)}
     </article>`).join(""):'<p>No pending placement requests.</p>';
   }
+  function renderProgramControl(){
+    const badge=$("#hd-admin-program-status-badge"), summary=$("#hd-admin-program-summary");
+    const activate=$("#hd-admin-program-activate"), pause=$("#hd-admin-program-pause");
+    if(!badge||!summary||!activate||!pause)return;
+    if(!merchantProgram){
+      badge.textContent="NONE"; summary.innerHTML="<p>No Merchant Program version found.</p>"; activate.hidden=true; pause.hidden=true; return;
+    }
+    badge.textContent=String(merchantProgram.status||"").replaceAll("_"," ").toUpperCase();
+    const pct=(Number(merchantProgram.default_commission_bps||0)/100).toFixed(1).replace(".0","");
+    const min=(Number(merchantProgram.min_commission_bps||0)/100).toFixed(1).replace(".0","");
+    const max=(Number(merchantProgram.max_commission_bps||0)/100).toFixed(1).replace(".0","");
+    summary.innerHTML="<p><strong>"+H.esc(merchantProgram.version)+"</strong> · $"+H.esc(merchantProgram.listing_fee_amount||0)+" listing fee · default "+H.esc(pct)+"% commission · planning band "+H.esc(min)+"–"+H.esc(max)+"% · "+H.esc(merchantProgram.payout_hold_days||14)+"-day payout hold · Seller of Record default: "+(merchantProgram.seller_of_record_default?"merchant":"HUNT")+"</p>";
+    activate.hidden=merchantProgram.status==="active"&&merchantProgram.owner_approved===true;
+    pause.hidden=!(merchantProgram.status==="active"&&merchantProgram.owner_approved===true);
+  }
+
   async function load(){
-    const [stores,products,ads,media,approved]=await Promise.all([
+    const [stores,products,ads,media,approved,program]=await Promise.all([
       api("/admin/stores?status=pending"),
       api("/admin/products?status=pending_review"),
       api("/admin/ad-requests?status=pending"),
       api("/admin/media?status=pending_review"),
-      api("/admin/stores?status=approved")
+      api("/admin/stores?status=approved"),
+      api("/admin/program")
     ]);
+    merchantProgram=program.program||null;
+    renderProgramControl();
     renderStores(stores.stores||[]);
     renderProducts(products.products||[]);
     renderAds(ads.requests||[]);
