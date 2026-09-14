@@ -38,6 +38,7 @@
     $("#hd-admin-store-count").textContent=String(rows.length);
     $("#hd-admin-stores").innerHTML=rows.length?rows.map(store=>`<article>
       <div><strong>${H.esc(store.name)}</strong><small>${H.esc(store.store_type||"store")} · ${H.esc(store.merchant_accounts?.legal_name||"")}</small></div>
+      <p><small>KYC: ${H.esc(store.merchant_accounts?.kyc_status||"pending")} · Agreement: ${H.esc(store.merchant_accounts?.agreement_status||"not_accepted")} · Payout: ${H.esc(store.merchant_accounts?.payout_status||"not_configured")}</small></p>
       <p>${store.website_url?`<a href="${H.esc(store.website_url)}" target="_blank" rel="noopener">${H.esc(store.website_url)}</a>`:"No website"}</p>
       ${actionButtons("store",store.id)}
     </article>`).join(""):'<p>No pending stores.</p>';
@@ -85,6 +86,11 @@
     renderMedia(media.media||[]);
     const select=$("#hd-admin-tracking-store");
     select.innerHTML=(approved.stores||[]).map(store=>`<option value="${H.esc(store.id)}">${H.esc(store.name)}</option>`).join("")||'<option value="">No approved stores</option>';
+    const commercial=$("#hd-admin-commercial-store");
+    if(commercial){
+      const combined=[...(stores.stores||[]),...(approved.stores||[])];
+      commercial.innerHTML=combined.map(store=>`<option value="${H.esc(store.id)}" data-account="${H.esc(store.merchant_account_id||"")}">${H.esc(store.name)} · ${H.esc(store.status)}</option>`).join("")||'<option value="">No stores</option>';
+    }
     $("#hd-merchant-admin").hidden=false;
     $("#hd-merchant-admin-status").hidden=true;
   }
@@ -113,7 +119,7 @@
     catch(error){setStatus(error.message||"Moderation failed.","error");button.disabled=false;}
   });
 
-  $("#hd-admin-tracking-form")?.addEventListener("submit",async event=>{
+  $("#hd-admin-verification-form")?.addEventListener("submit",async event=>{\n    event.preventDefault();\n    const form=new FormData(event.currentTarget);\n    const storeId=String(form.get("store_id")||"");\n    const option=$("#hd-admin-commercial-store")?.selectedOptions?.[0];\n    const accountId=option?.dataset?.account||"";\n    const status=$("#hd-admin-verification-status");\n    status.textContent="Saving…";\n    try{\n      if(accountId){\n        await api("/admin/accounts/"+encodeURIComponent(accountId)+"/verification",{method:"PATCH",body:JSON.stringify({kyc_status:form.get("kyc_status"),payout_status:form.get("payout_status")})});\n      }\n      await api("/admin/stores/"+encodeURIComponent(storeId)+"/commercial",{method:"PATCH",body:JSON.stringify({commission_bps:Math.round(Number(form.get("commission_percent")||12)*100),payout_hold_days:Number(form.get("payout_hold_days")||14),return_window_days:Number(form.get("return_window_days")||14),shipping_sla_days:Number(form.get("shipping_sla_days")||7),fulfillment_mode:form.get("fulfillment_mode"),seller_of_record:form.get("seller_of_record")==="on"})});\n      status.textContent="Verification and commercial settings saved.";\n      status.dataset.tone="success";\n      await load();\n    }catch(error){\n      status.textContent=error.message||"Could not save merchant settings.";\n      status.dataset.tone="error";\n    }\n  });\n\n  $("#hd-admin-tracking-form")?.addEventListener("submit",async event=>{
     event.preventDefault();
     const body=Object.fromEntries(new FormData(event.currentTarget).entries());
     const storeId=body.store_id;
