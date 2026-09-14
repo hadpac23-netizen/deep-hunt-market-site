@@ -281,3 +281,8 @@ html[data-hunt-theme="dark"] :is(.hd-review-photos img,.hd-review-file-preview i
 .hd-owner-history{margin-top:10px;padding:14px;border-radius:4px!important}.hd-owner-history-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin-top:10px}.hd-owner-history-grid article{padding:9px;background:var(--shop-soft)}.hd-owner-history-grid strong,.hd-owner-history-grid span{display:block}.hd-owner-history-grid strong{font-size:.58rem;color:var(--shop-text);margin-bottom:5px}.hd-owner-history-grid span{font-size:.46rem;color:var(--shop-muted);line-height:1.45}
 @media(max-width:1100px){.hd-owner-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.hd-owner-history-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 @media(max-width:760px){.hd-owner-head{display:block}.hd-owner-links{margin-top:10px}.hd-owner-grid{grid-template-columns:1fr}.hd-owner-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.hd-owner-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hd-owner-attention{grid-template-columns:repeat(2,minmax(0,1fr))}.hd-owner-history-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Customer policy navigation */
+.hd-legal-links{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;width:min(1180px,calc(100% - 28px));margin:18px auto 10px;padding:12px 0;border-top:1px solid var(--shop-line);border-bottom:1px solid var(--shop-line)}
+.hd-legal-links a{color:var(--shop-muted);text-decoration:none;font-size:.56rem;font-weight:800}
+.hd-legal-links a:hover,.hd-legal-links a:focus-visible{color:var(--shop-text);text-decoration:underline}
