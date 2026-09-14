@@ -1,0 +1,26 @@
+{
+  "version": "2026-09-15-draft1",
+  "status": "incomplete",
+  "brand_name": "HUNT DEAL",
+  "legal_entity_name": "",
+  "registration_number": "",
+  "registered_country": "Israel",
+  "business_address": "",
+  "support_email": "",
+  "support_phone": "",
+  "returns_address": "",
+  "privacy_contact_email": "",
+  "seller_of_record_model": "Seller of record will be identified at checkout before payment.",
+  "payments_status": "PRELAUNCH",
+  "last_reviewed": "2026-09-15",
+  "required_before_soft_launch": [
+    "legal_entity_name",
+    "business_address",
+    "support_email",
+    "privacy_contact_email"
+  ],
+  "required_before_real_money": [
+    "returns_address",
+    "registration_number"
+  ]
+}
