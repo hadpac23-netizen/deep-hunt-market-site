@@ -172,7 +172,7 @@
     const grid = $("#hd-catalog-grid");
     const count = $("#hd-catalog-count");
     if (!grid || !count) return;
-    const items = Array.isArray(products) ? products : [];
+    const items = (Array.isArray(products) ? products : []).filter(item => String(item?.provider || "").toLowerCase() === "cjdropshipping");
     catalogItems = items;
     count.textContent = items.length ? items.length + " LIVE" : "WAITING";
     grid.innerHTML = items.map(item => {
@@ -378,6 +378,7 @@
       const rows = [];
       const append = (items, fresh) => {
         for (const item of Array.isArray(items) ? items : []) {
+          if (String(item?.provider || "").toLowerCase() !== "cjdropshipping") continue;
           const key = `${item?.provider || ""}:${item?.item_id || ""}`;
           if (!item?.item_id) continue;
           if (seen.has(key)) {
@@ -522,7 +523,7 @@
     const html = orderedShelfDepartments().map(([department, slugs]) => {
       const sections = slugs.map(slug => {
         const meta = shelfMeta[slug];
-        let items = Array.isArray(shelves[slug]) ? shelves[slug].filter(item => isShelfFit(slug, item)) : [];
+        let items = Array.isArray(shelves[slug]) ? shelves[slug].filter(item => String(item?.provider || "").toLowerCase() === "cjdropshipping" && isShelfFit(slug, item)) : [];
         if (department.startsWith("Women") && slug !== "women") items = items.filter(isWomenShelfItem);
         if (!meta || items.length < 4) return "";
         const selected = selectShelfItems(items, limit, renderedKeys);
@@ -537,13 +538,14 @@
     }).join("");
 
     root.innerHTML = html || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
-    const fullCatalogCount = Number(data?.catalog_total_product_count || 0);
-    const count = fullCatalogCount || Number(data?.visible_product_count || 0);
-    const label = fullCatalogCount ? "CATALOG" : (mode === "live" ? "LIVE" : mode === "hybrid" ? "READY" : "CATALOG");
+    const cjKeys = new Set();
+    Object.values(shelves).forEach(rows => (Array.isArray(rows) ? rows : []).forEach(item => {
+      if (String(item?.provider || "").toLowerCase() === "cjdropshipping" && item?.item_id) cjKeys.add(String(item.item_id));
+    }));
+    const count = cjKeys.size;
+    const label = mode === "live" ? "CJ LIVE" : "CJ READY";
     counter.textContent = `${count.toLocaleString()} ${label}`;
-    counter.title = fullCatalogCount
-      ? "BOOM quality catalog across category pages; home shelves remain curated for speed."
-      : (mode === "hybrid" ? "Verified catalog with live supplier refresh merged in" : (mode === "live" ? "Live supplier refresh" : "Verified catalog snapshot while live suppliers refresh"));
+    counter.title = "Current HUNT launch phase: CJdropshipping products only.";
     return true;
   }
 
@@ -605,7 +607,7 @@
   function renderProviderNetwork(providers) {
     const host = $("#hd-provider-badges");
     if (!host) return;
-    const items = Array.isArray(providers) ? providers : [];
+    const items = (Array.isArray(providers) ? providers : []).filter(item => String(item?.provider || "").toLowerCase() === "cjdropshipping");
     host.innerHTML = items.map(item => {
       const state = String(item.state || "UNKNOWN").toUpperCase();
       const tone = /READY|LIVE|CONFIGURED|CATALOG_LIVE/.test(state)
@@ -642,7 +644,7 @@
     const grid = $("#hd-search-grid");
     const status = $("#hd-live-search-status");
     if (!section || !grid || !status) return;
-    const results = data.results || [];
+    const results = (data.results || []).filter(item => String(item?.provider || "").toLowerCase() === "cjdropshipping");
     searchItems = results;
     const states = (data.providers || []).map(p => {
       const count = p.result_count ? " (" + p.result_count + ")" : "";
