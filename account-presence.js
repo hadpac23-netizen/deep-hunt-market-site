@@ -105,6 +105,7 @@
     }
   });
   window.HuntAccountClient = client;
+  window.HuntSupabaseClient = client;
 
   client.auth.getSession()
     .then(({ data }) => signedIn(data?.session?.user || null))
