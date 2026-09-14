@@ -199,3 +199,11 @@ html[data-hunt-theme="dark"] :is(.hd-review-photos img,.hd-review-file-preview i
 .hd-marketing-lab-shell{width:min(1280px,calc(100% - 40px));margin:0 auto;padding:34px 0 80px}
 .hd-command-edit textarea{width:100%;resize:vertical;border:1px solid var(--shop-line);background:var(--shop-surface);color:var(--shop-text);padding:8px;font:inherit}
 .hd-merchant-status.testing{color:#b06c00}.hd-merchant-status.won{color:#12834d}.hd-merchant-status.lost{color:#b82f40}.hd-merchant-status.inconclusive{color:#7d67d9}
+
+
+/* HUNT gender category bar */
+.hd-gender-subcategories{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:13px;border-top:1px solid var(--shop-line)}
+.hd-gender-subcategories[hidden]{display:none}
+.hd-gender-subcategories a{display:inline-flex;align-items:center;min-height:34px;padding:8px 12px;border:1px solid var(--shop-line);background:var(--shop-surface);color:var(--shop-muted);text-decoration:none;font-size:.62rem;font-weight:850;border-radius:999px}
+.hd-gender-subcategories a:hover,.hd-gender-subcategories a.active{border-color:var(--shop-accent);background:var(--shop-accent-soft);color:var(--shop-accent)}
+@media(max-width:760px){.hd-gender-subcategories{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}.hd-gender-subcategories a{white-space:nowrap;flex:0 0 auto}}
