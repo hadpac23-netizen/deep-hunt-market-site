@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-13T19:27:41.161182+00:00",
+  "generated_at": "2026-09-14T10:45:00Z",
   "quality_gate": "BOOM_GLOBAL_5K_V4",
   "unique_quality_products": 6107,
   "shelf_entry_count": 8171,
@@ -60,7 +60,12 @@
     "home": 1668,
     "party": 107,
     "storage": 358,
-    "sets": 38
+    "sets": 38,
+    "jeans": 4,
+    "underwear": 5,
+    "boxers": 4,
+    "makeup": 4,
+    "skincare": 3
   },
   "readiness_policy": "PRODUCT_DETAIL_THEN_DESTINATION_QUOTE_V1",
   "readiness": {
@@ -71,5 +76,17 @@
   },
   "readiness_updated_at": "2026-09-13T19:06:28.284061+00:00",
   "printful_public_catalog_added": 206,
-  "safety_cleanup": "TACTICAL_TERM_REMOVED_V1"
+  "safety_cleanup": "TACTICAL_TERM_REMOVED_V1",
+  "priority_cj_verified": {
+    "policy": "CJ_PRODUCT_DETAIL_PRICE_GATE_AND_IL_SHIPPING_V1",
+    "total": 20,
+    "shelves": {
+      "jeans": 4,
+      "underwear": 5,
+      "boxers": 4,
+      "makeup": 4,
+      "skincare": 3
+    },
+    "note": "Priority gap shelves verified against CJ product detail, HUNT retail/profit gate, live stock and at least one Israel shipping quote. Existing global readiness snapshot remains unchanged until a full catalog rebuild."
+  }
 }
