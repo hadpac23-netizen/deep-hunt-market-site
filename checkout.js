@@ -42,13 +42,13 @@
     if (!box || !copy) return;
     if (!Array.isArray(cart) || cart.length < 2) {
       box.hidden = true;
-      return;
+      return null;
     }
     const invalid = cart.find(item => !item?.provider || !item?.item_id || !item?.variant_id);
     if (invalid) {
       box.hidden = false;
       copy.textContent = "Choose a real option for every bundle item before BOOM can verify an offer.";
-      return;
+      return null;
     }
     box.hidden = false;
     copy.textContent = "BOOM is checking whether this bundle has a safe verified offer…";
@@ -68,20 +68,23 @@
       const data = await res.json().catch(()=>({}));
       if (!res.ok || data?.ok !== true) throw new Error(data?.error || "BUNDLE_CHECK_FAILED");
       if (data.offer_available === true) {
-        copy.textContent = "Verified bundle preview: " + money(data.discount_amount, data.currency || "USD") + " potential offer. Preview only until checkout discount application is activated.";
+        copy.textContent = "Verified bundle preview: " + money(data.discount_amount, data.currency || "USD") + " potential offer. " + (data.application_enabled ? "It can be revalidated by checkout." : "Preview only until checkout discount application is activated.");
       } else if (data.offer_status === "OWNER_ACTIVATION_REQUIRED") {
         copy.textContent = "Bundle verified. No customer discount is active yet because the owner-approved bundle policy is not enabled.";
       } else {
         copy.textContent = data.message || "Bundle verified, but no safe offer is available right now.";
       }
+      return data;
     } catch {
       copy.textContent = "BOOM could not verify a bundle offer right now. No discount was applied.";
+      return null;
     }
   }
 
   function resetQuote(message="Verify price and shipping before payment.") {
     quoteVerified = false;
     if ($("#hd-checkout-shipping")) $("#hd-checkout-shipping").textContent = "PENDING";
+    if ($("#hd-checkout-discount")) $("#hd-checkout-discount").textContent = "—";
     if ($("#hd-checkout-total")) $("#hd-checkout-total").textContent = "PRE-LAUNCH";
     if ($("#hd-checkout-status")) $("#hd-checkout-status").textContent = message;
   }
@@ -132,9 +135,11 @@
     if (status) status.textContent = "Rechecking HUNT retail price, supplier stock and shipping…";
 
     try {
+      const bundlePreview = await checkBundlePreview(cart, country);
       const payload = {
         country_code: country,
         idempotency_key: `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
+        checkout_offer_id: bundlePreview?.offer_id || null,
         items: cart.map(item => ({
           provider:item.provider,
           item_id:item.item_id,
@@ -161,9 +166,10 @@
       $("#hd-checkout-subtotal").textContent = money(session.product_amount,currency);
       $("#hd-checkout-shipping").textContent = money(session.shipping_amount,currency);
       $("#hd-checkout-total").textContent = money(session.total_amount,currency);
+      const discountAmount = Number(session.discount_amount || 0);
+      $("#hd-checkout-discount").textContent = discountAmount > 0 ? "−" + money(discountAmount,currency) : (bundlePreview?.offer_available ? "PREVIEW" : "—");
       quoteVerified = true;
       rememberDestination(country);
-      await checkBundlePreview(cart, country);
 
       if (status) {
         status.textContent = data.payment_ready === true
