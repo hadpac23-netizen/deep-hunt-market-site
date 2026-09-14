@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">
   <title>BOOM Command Center — HUNT DEAL</title>
-  <link rel="stylesheet" href="hunt-deal.css?v=photo6"><link rel="stylesheet" href="hunt-shop.css?v=command1">
+  <link rel="stylesheet" href="hunt-deal.css?v=photo6"><link rel="stylesheet" href="hunt-shop.css?v=mission1">
   <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#111111">
 </head>
 <body class="hd-page hd-market-v2">
@@ -19,6 +19,63 @@
   </section>
   <section id="hd-command-status" class="hd-seller-gate glass"><strong>Checking admin access…</strong></section>
   <section id="hd-command-dashboard" hidden>
+    <section class="hd-owner-snapshot" id="hd-owner-snapshot">
+      <div class="hd-owner-head">
+        <div><div class="hd-kicker">OWNER SNAPSHOT · LIVE HUNT DATA</div><h2>Mission Control</h2><p id="hd-owner-generated">Loading current HUNT state…</p></div>
+        <div class="hd-owner-links"><a href="boom-deal-control.html">Deal & Profit</a><a href="merchant-admin.html">Merchants</a><a href="partner-outreach.html">Partners</a><a href="./">Store</a></div>
+      </div>
+
+      <div class="hd-owner-metrics">
+        <article><small>HUNT SESSIONS TODAY</small><strong id="hd-owner-sessions">0</strong><span id="hd-owner-pageviews">0 page views</span></article>
+        <article><small>PRODUCT VIEWS</small><strong id="hd-owner-product-views">0</strong><span id="hd-owner-searches">0 searches</span></article>
+        <article><small>ADD TO CART</small><strong id="hd-owner-carts">0</strong><span id="hd-owner-cart-rate">0% from product views</span></article>
+        <article><small>CHECKOUT STARTS</small><strong id="hd-owner-checkouts">0</strong><span id="hd-owner-checkout-rate">0% from carts</span></article>
+        <article><small>ORDERS TODAY</small><strong id="hd-owner-orders">0</strong><span id="hd-owner-gmv">$0.00 gross value</span></article>
+        <article><small>CATALOG</small><strong id="hd-owner-catalog">—</strong><span>CJ branch source-of-truth</span></article>
+      </div>
+
+      <div class="hd-owner-grid">
+        <section class="hd-owner-panel glass">
+          <div class="hd-owner-panel-head"><div><small>BOOM NEXT MOVE</small><h3 id="hd-owner-next-title">Calculating…</h3></div><span class="hd-owner-code" id="hd-owner-next-code">—</span></div>
+          <p id="hd-owner-next-why"></p>
+          <div class="hd-owner-next-action"><strong>Do next:</strong><span id="hd-owner-next-action">—</span></div>
+        </section>
+
+        <section class="hd-owner-panel glass">
+          <div class="hd-owner-panel-head"><div><small>$10K/DAY TARGET</small><h3>Unit-economics reality</h3></div></div>
+          <div class="hd-owner-mini-grid">
+            <div><strong id="hd-owner-econ-checks">0</strong><span>economics checks</span></div>
+            <div><strong id="hd-owner-econ-pass">0</strong><span>verified PASS</span></div>
+            <div><strong id="hd-owner-contribution">—</strong><span>avg contribution</span></div>
+            <div><strong id="hd-owner-required-orders">—</strong><span>orders/day for target*</span></div>
+          </div>
+          <p class="hd-owner-note" id="hd-owner-goal-note">No assumptions will be invented.</p>
+        </section>
+
+        <section class="hd-owner-panel glass">
+          <div class="hd-owner-panel-head"><div><small>ATTENTION QUEUE</small><h3>What needs review</h3></div></div>
+          <div class="hd-owner-attention">
+            <a href="boom-deal-control.html"><strong id="hd-owner-deals">0</strong><span>Deals waiting</span></a>
+            <a href="merchant-admin.html"><strong id="hd-owner-merchants">0</strong><span>Stores waiting</span></a>
+            <a href="merchant-admin.html"><strong id="hd-owner-kyc">0</strong><span>KYC waiting</span></a>
+            <a href="#hd-command-board"><strong id="hd-owner-blocked">0</strong><span>Blocked tasks</span></a>
+            <a href="merchant-admin.html"><strong id="hd-owner-stale">0</strong><span>Merchant products attention</span></a>
+            <a href="#hd-command-board"><strong id="hd-owner-open">0</strong><span>Open BOOM tasks</span></a>
+          </div>
+        </section>
+
+        <section class="hd-owner-panel glass">
+          <div class="hd-owner-panel-head"><div><small>RUNTIME SAFETY</small><h3>Hard gates</h3></div></div>
+          <div id="hd-owner-controls" class="hd-owner-controls"></div>
+        </section>
+      </div>
+
+      <section class="hd-owner-history glass">
+        <div class="hd-owner-panel-head"><div><small>7-DAY FUNNEL</small><h3>Measured HUNT activity</h3></div><span>HUNT only — no legacy BOOM mixing</span></div>
+        <div id="hd-owner-history" class="hd-owner-history-grid"></div>
+      </section>
+    </section>
+
     <div class="hd-command-toolbar glass">
       <div class="hd-command-metrics">
         <div><strong id="hd-command-total">0</strong><span>Total</span></div>
@@ -37,7 +94,7 @@
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
 <script src="market-core.js?v=boomcmd1"></script>
-<script src="boom-command-center.js?v=command1"></script>
+<script src="boom-command-center.js?v=mission1"></script>
 <script src="hunt-theme.js?v=shop4"></script>
 <script src="pwa.js?v=pwa1"></script>
 </body></html>
