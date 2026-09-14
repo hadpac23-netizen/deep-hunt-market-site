@@ -122,3 +122,12 @@
 .hd-mega-menu[data-department] h3{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#fff}
 @media(max-width:900px){.hd-mega-menu[data-department]{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.hd-mega-menu[data-department]{grid-template-columns:1fr}}
+
+/* Launch QA: category navigation stays accessible but bounded */
+.hd-department-shell{position:sticky;top:72px;z-index:44}
+.hd-mega-menu{max-height:min(70vh,640px);overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.hd-mega-menu[data-department]{max-height:min(72vh,660px)}
+@media(max-width:760px){
+  .hd-department-shell{top:66px}
+  .hd-mega-menu{top:118px;max-height:calc(100vh - 138px)}
+}
