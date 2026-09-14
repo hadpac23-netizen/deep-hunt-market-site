@@ -318,13 +318,16 @@
       if (shardRes.ok) {
         const shard = await shardRes.json();
         const shardRows = Array.isArray(shard?.products) ? shard.products : [];
-        if (shardRows.length) {
-          applyRows(shardRows, "expanded");
+        const authoritative = shard?.launch_authoritative === true;
+        if (shardRows.length || authoritative) {
+          applyRows(shardRows, authoritative ? "CJ launch" : "expanded");
           rendered = true;
           shardLoaded = true;
         }
       }
     } catch {}
+
+    if (shardLoaded) return;
 
     if (!shardLoaded) {
       try {
