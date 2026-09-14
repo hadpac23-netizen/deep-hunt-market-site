@@ -271,7 +271,7 @@
 
     const applyRows = (rows, label, {merge=false}={}) => {
       const incoming = (Array.isArray(rows) ? rows : []).filter(product => {
-        if (["jeans","underwear","boxers","makeup","skincare"].includes(sourceSlug) && String(product?.provider || "").toLowerCase() !== "cjdropshipping") return false;
+        if (String(product?.provider || "").toLowerCase() !== "cjdropshipping") return false;
         if (slug !== "men") return true;
         const text = String(product?.title || "").toLowerCase();
         return !/\b(women(?:'s|s)?|woman|female|unisex)\b/.test(text);
