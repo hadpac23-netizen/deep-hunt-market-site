@@ -588,6 +588,12 @@
         rows.push(item);
       }
     }
+    for(const item of window.BoomNet?.merchantProducts?.()||[]){
+      const key=`${item?.provider||""}:${item?.item_id||""}`;
+      if(!item?.item_id || seen.has(key) || item?.promotion_eligible!==true) continue;
+      seen.add(key);
+      rows.push(item);
+    }
     const ranked = window.BoomNet?.rankFeed ? window.BoomNet.rankFeed(rows) : shuffleHome(rows);
     return ranked;
   }
