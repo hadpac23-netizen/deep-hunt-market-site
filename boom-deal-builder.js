@@ -41,7 +41,11 @@
   }
   function write(v){localStorage.setItem(KEY,JSON.stringify(v));window.dispatchEvent(new CustomEvent("hunt:deal-builder",{detail:v}))}
   function key(x){return String(x?.provider||"")+":"+String(x?.item_id||"")}
-  function slug(x){return String(x?.category||H.inferCategory?.(x)||"")}
+  function slug(x){
+    const raw=String(x?.category||"").trim();
+    if(raw&&H.categoryDefs?.[raw])return raw;
+    return String(H.inferCategory?.(x)||raw||"");
+  }
   function safeImg(v){try{return new URL(v).protocol==="https:"}catch{return false}}
   function titleFor(s){return H.categoryDefs?.[s]?.title||s.replace(/-/g," ")}
   function price(x){
