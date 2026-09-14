@@ -2,7 +2,7 @@
   const H = window.HuntCore;
   const $ = q => document.querySelector(q);
   const params = new URLSearchParams(location.search);
-  const provider = params.get("provider") || "Printful";
+  const provider = params.get("provider") || "CJdropshipping";
   const id = params.get("id") || "";
   let product = null;
   let variants = [];
@@ -107,17 +107,14 @@
     $("#hd-product-breadcrumb").textContent = product.title || "Product";
     $("#hd-product-provider").textContent = product.provider || provider;
     const providerName = String(product.provider || provider || "").toLowerCase();
-    const podCatalog = providerName.includes("printful") || providerName.includes("gooten");
     const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
     const retail = currentRetailState();
     const quoteAtCheckout = providerName.includes("cj") && variants.length > 0 && retail.ready;
     $("#hd-product-stock").textContent = quoteVerified
       ? "QUOTE VERIFIED"
-      : podCatalog
-        ? "POD CATALOG"
-        : quoteAtCheckout
-          ? "QUOTE AT CHECKOUT"
-          : "DISCOVERY";
+      : quoteAtCheckout
+        ? "QUOTE AT CHECKOUT"
+        : "DISCOVERY";
     $("#hd-product-stock").className = `hd-status ${quoteVerified?"green":"blue"}`;
     $("#hd-product-price").textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
     syncMobilePrice();

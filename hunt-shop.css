@@ -200,3 +200,16 @@ html[data-hunt-theme="dark"] :is(.hd-review-photos img,.hd-review-file-preview i
   .hd-gender-subcategories{max-height:none;overflow-y:hidden}
   .hd-nav a:nth-child(n+5){display:none}
 }
+/* HUNT AI Find */
+.hd-ai-search-shell{width:min(1480px,calc(100% - 48px));margin:28px auto 70px}
+.hd-ai-search-hero{padding:36px clamp(18px,4vw,54px);background:var(--shop-surface);border:1px solid var(--shop-line)}
+.hd-ai-search-hero h1{margin:6px 0 10px;font-size:clamp(2rem,5vw,4.6rem);letter-spacing:-.05em;color:var(--shop-text)}
+.hd-ai-search-hero>p{max-width:760px;color:var(--shop-muted)}
+.hd-ai-search-box{display:flex;gap:10px;margin-top:22px}
+.hd-ai-search-box input{flex:1;min-width:0;height:52px;border:1px solid var(--shop-line);background:var(--shop-soft);color:var(--shop-text);padding:0 16px;font:inherit}
+.hd-ai-search-examples{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.hd-ai-search-examples button{border:1px solid var(--shop-line);background:transparent;color:var(--shop-muted);padding:7px 10px;cursor:pointer}
+.hd-ai-search-status{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;padding:18px 0;border-bottom:1px solid var(--shop-line)}
+.hd-ai-search-status strong{color:var(--shop-text)}.hd-ai-search-status span{color:var(--shop-muted);font-size:.72rem}
+.hd-ai-results{padding-top:20px}
+@media(max-width:760px){.hd-ai-search-shell{width:calc(100% - 24px)}.hd-ai-search-box{display:grid}.hd-ai-search-box .hd-btn{height:48px}}

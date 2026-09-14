@@ -311,7 +311,6 @@
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
     const providerName = String(item.provider || "").toLowerCase();
-    const podSetupRequired = providerName.includes("printful") || providerName.includes("gooten");
     const quoteVerified = String(item?.quote_verification_status || "").toUpperCase() === "PASS";
     const detailRecheckRequired = item?.checkout_status === "PRODUCT_DETAIL_RECHECK_REQUIRED"
       || Boolean(item?.detail_recheck_status);
@@ -319,18 +318,14 @@
       ? "QUOTE VERIFIED"
       : item.quality_gate === "BOOM_PREMIUM"
         ? "BOOM PICK"
-        : podSetupRequired
-          ? "POD CATALOG"
-          : detailRecheckRequired
-            ? "RECHECK REQUIRED"
-            : "SOURCE CATALOG";
+        : detailRecheckRequired
+          ? "RECHECK REQUIRED"
+          : "SOURCE CATALOG";
     const detailLine = quoteVerified
       ? "A recent stock and shipping quote passed; destination is rechecked before checkout."
-      : podSetupRequired
-        ? "Product source verified; HUNT setup is required before checkout."
-        : detailRecheckRequired
-          ? "Product detail must be verified again before checkout."
-          : "Open for current price, variants and availability.";
+      : detailRecheckRequired
+        ? "Product detail must be verified again before checkout."
+        : "Open for current price, variants and availability.";
     const retailAmount = Number(item?.retail_price_amount);
     const retailReady = item?.retail_price_verified === true && String(item?.profit_gate_status || "").toUpperCase() === "PASS" && Number.isFinite(retailAmount) && retailAmount > 0;
     const retailEstimated = !retailReady && Number.isFinite(retailAmount) && retailAmount > 0;
@@ -731,7 +726,8 @@
   $("#hd-search-input")?.addEventListener("keydown", event => {
     if (event.key !== "Enter") return;
     event.preventDefault();
-    runLiveSearch(event.currentTarget.value);
+    const query=String(event.currentTarget.value||"").trim();
+    if(query) location.href="search.html?q="+encodeURIComponent(query);
   });
 
   window.addEventListener("hunt:language", e => {

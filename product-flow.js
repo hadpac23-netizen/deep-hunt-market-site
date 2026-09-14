@@ -161,7 +161,7 @@
       host.insertAdjacentHTML("beforeend",next.map(card).join(""));
       window.HuntAnalytics?.recommendationImpression?.({placement:"endless_discovery",items:next});
       const cat=String(next[0]?.category||"");
-      if($("#hd-endless-copy"))$("#hd-endless-copy").textContent="BOOM is mixing more "+categoryTitle(cat)+" with related finds and your shopping preferences.";
+      if($("#hd-endless-copy"))$("#hd-endless-copy").textContent="HUNT is loading more "+categoryTitle(cat)+" and related finds as you continue browsing.";
     }
     if(cursor>=pool.length){
       sentinel.classList.add("done");

@@ -232,35 +232,24 @@
   const signals = () => readJson(signalKey, {});
   function recordSignal(category, action="view") {
     const slug = categoryDefs[category] ? category : inferCategory(category);
-    const weights = {search:1, category:2, view:3, like:5, cart:6, save:8, survey:12};
+    const weights = {search:1, category:2, view:3, like:5, cart:6, save:8};
     const state = signals();
     state[slug] = Math.min(100, Math.max(0, Number(state[slug] || 0) + Number(weights[action] || 1)));
     writeJson(signalKey, state);
     return state[slug];
   }
-  const shoppingPreferences = () => readJson(preferenceKey, {categories:[],price_band:"any",priorities:[],discovery_modes:[]});
-  function saveShoppingPreferences(value, applySignals=true) {
-    const safe = {
-      categories:Array.isArray(value?.categories)?value.categories.filter(x=>categoryDefs[x]).slice(0,40):[],
-      price_band:["any","under25","25to50","50to100","100plus"].includes(value?.price_band)?value.price_band:"any",
-      priorities:Array.isArray(value?.priorities)?value.priorities.map(String).slice(0,10):[],
-      discovery_modes:Array.isArray(value?.discovery_modes)?value.discovery_modes.map(String).slice(0,10):[]
-    };
-    writeJson(preferenceKey,safe);
-    if(applySignals) safe.categories.forEach(slug=>recordSignal(slug,"survey"));
-    return safe;
-  }
+  const shoppingPreferences = () => ({categories:[],price_band:"any",priorities:[],discovery_modes:[]});
+  function saveShoppingPreferences() { return shoppingPreferences(); }
   function personalScore(product) {
     const category = inferCategory(product);
-    const preferenceBoost = shoppingPreferences().categories.includes(category) ? 20 : 0;
-    return Number(signals()[category] || 0) + preferenceBoost;
+    return Number(signals()[category] || 0);
   }
   function personalReason(product) {
     const category = inferCategory(product);
-    const preferred = shoppingPreferences().categories.includes(category);
     const score = personalScore(product);
-    if (preferred) return `Matches a shopping category you selected in your HUNT survey.`;
-    return score > 0 ? `Matches your recent ${categoryDefs[category]?.title || category} activity on this device.` : "BOOM is still learning from your views, likes, saves and shopping survey.";
+    return score > 0
+      ? `Matches your recent ${categoryDefs[category]?.title || category} activity on this device.`
+      : "HUNT learns from products and categories you browse, save and add to cart.";
   }
 
   const cart = () => {
