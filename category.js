@@ -73,13 +73,25 @@
       .join("");
     $("#hd-category-strip").innerHTML = chips;
 
+    const subKeys = ["women","men"].includes(slug) ? (H.genderSubcategories?.[slug] || []) : [];
+    const subbar = $("#hd-gender-subcategories");
+    if (subbar) {
+      subbar.hidden = !subKeys.length;
+      subbar.innerHTML = subKeys.map(key => {
+        const value = H.categoryDefs[key];
+        if (!value) return "";
+        const href = `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}`;
+        return `<a class="${sub===key?"active":""}" href="${href}">${H.esc(value.title)}</a>`;
+      }).join("");
+    }
+
     const groups = Array.isArray(H.categoryGroups) ? H.categoryGroups : [];
     $("#hd-category-side-links").innerHTML = groups.map(group => {
       const links = group.items
         .filter(key => H.categoryDefs[key])
         .map(key => {
           const value = H.categoryDefs[key];
-          const genderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats"].includes(key);
+          const genderSub = ["women","men"].includes(slug) && (H.genderSubcategories?.[slug] || []).includes(key);
           const href = genderSub ? `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}` : H.categoryUrl(key);
           const active = genderSub ? sub===key : key===slug;
           return `<a class="${active?"active":""}" href="${href}">${value.icon} ${H.esc(value.title)}</a>`;
@@ -93,7 +105,10 @@
     const title = String(product?.title || "").toLowerCase();
     const patterns = {
       tops:/shirt|tee|t-shirt|top|tank|polo|blouse/,
+      jeans:/\bjean|jeans|denim\b/,
       bottoms:/pants|trouser|shorts|jeans|joggers|leggings/,
+      underwear:/\b(bra|bralette|underwear|panties|panty|briefs|brief)\b/,
+      boxers:/\b(boxer|boxers|boxer briefs?|underwear|brief|briefs)\b/,
       hoodies:/hoodie|sweatshirt/,
       jackets:/jacket|coat|windbreaker|outerwear|blazer/,
       knitwear:/sweater|cardigan|knit/,
@@ -105,6 +120,8 @@
       accessories:/accessor|wallet|belt|scarf|sunglass/,
       hats:/hat|cap|beanie/,
       beauty:/beauty|skincare|makeup|cosmetic|serum|cream/,
+      makeup:/\b(lipstick|lip gloss|mascara|eyeliner|eyeshadow|foundation|concealer|blush|eyebrow|makeup palette|setting powder|contour|highlighter)\b/,
+      skincare:/\b(serum|cleanser|toner|moisturizer|moisturiser|face cream|facial cream|eye cream|skincare set|skin care set)\b/,
       perfume:/perfume|fragrance|eau de|parfum/
     };
     return patterns[sub] ? patterns[sub].test(title) : true;
@@ -112,6 +129,7 @@
 
   function matchesGenderScope(product) {
     if (!sub || !["women","men"].includes(slug)) return true;
+    if (slug==="women" && ["makeup","skincare"].includes(sub)) return true;
     const title=String(product?.title||"").toLowerCase();
     const gender=String(product?.gender||"").toLowerCase();
     if (slug==="women") {
@@ -253,6 +271,7 @@
 
     const applyRows = (rows, label, {merge=false}={}) => {
       const incoming = (Array.isArray(rows) ? rows : []).filter(product => {
+        if (["jeans","underwear","boxers","makeup","skincare"].includes(sourceSlug) && String(product?.provider || "").toLowerCase() !== "cjdropshipping") return false;
         if (slug !== "men") return true;
         const text = String(product?.title || "").toLowerCase();
         return !/\b(women(?:'s|s)?|woman|female|unisex)\b/.test(text);
