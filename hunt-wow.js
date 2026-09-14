@@ -127,8 +127,9 @@
       link.addEventListener("pointerenter",()=>open(slug,link));
       link.addEventListener("focus",()=>open(slug,link));
       link.addEventListener("click",event=>{
+        const inDepartmentBar=Boolean(link.closest(".hd-department-bar"));
         const touchLike=window.matchMedia?.("(pointer: coarse)")?.matches || window.innerWidth<=900;
-        if(touchLike && (menu.hidden || menu.dataset.department!==slug)){
+        if((inDepartmentBar || touchLike) && (menu.hidden || menu.dataset.department!==slug)){
           event.preventDefault();
           open(slug,link);
         }
