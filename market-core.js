@@ -14,26 +14,38 @@
   const categoryDefs = {
     women: {title:"Women's Fashion", query:"women", icon:"W", description:"Women's apparel, everyday fashion and seasonal styles."},
     men: {title:"Men's Fashion", query:"men", icon:"M", description:"Men's apparel only: shirts, hoodies, jackets, bottoms and everyday styles."},
-    dresses: {title:"Dresses & Skirts", query:"dresses", icon:"D", description:"Dresses and skirts from the connected live catalog."},
+    dresses: {title:"Dresses & Skirts", query:"women dresses skirts", icon:"D", description:"Women's dresses and skirts from CJ."},
+    eveningdresses: {title:"Evening & Occasion Dresses", query:"women evening dress party formal", icon:"E", description:"Evening, party and occasion dresses from CJ."},
+    womensuits: {title:"Women's Suits & Blazers", query:"women suits blazers tailoring", icon:"U", description:"Women's suits, blazers and tailored sets from CJ."},
     tops: {title:"Tops & T-Shirts", query:"tops", icon:"T", description:"T-shirts, tops, tanks, polos and blouses."},
     bottoms: {title:"Bottoms", query:"bottoms pants shorts jeans", icon:"B", description:"Pants, shorts, jeans, joggers and leggings."},
     jeans: {title:"Jeans & Denim", query:"jeans denim", icon:"J", description:"Jeans and denim bottoms with live product-detail recheck before checkout."},
-    underwear: {title:"Underwear & Basics", query:"underwear basics", icon:"U", description:"Everyday underwear and basic layers from approved CJ catalog products."},
-    boxers: {title:"Boxers & Underwear", query:"men boxers underwear", icon:"B", description:"Men's boxer briefs and everyday underwear from approved CJ catalog products."},
+    underwear: {title:"Women's Underwear & Bras", query:"women underwear bra panties briefs", icon:"U", description:"Everyday women's underwear and bras from CJ."},
+    thongs: {title:"Women's Thongs", query:"women thong underwear", icon:"T", description:"Women's thong underwear kept separate from everyday basics."},
+    boxers: {title:"Men's Boxer Briefs", query:"men boxer briefs underwear", icon:"B", description:"Men's boxer briefs and everyday underwear from CJ."},
+    longboxers: {title:"Men's Long Boxer Briefs", query:"men long boxer briefs", icon:"L", description:"Long-leg boxer briefs and compression-style underwear from CJ."},
+    mensbriefs: {title:"Men's Briefs & Low-Rise", query:"men briefs low rise underwear", icon:"R", description:"Men's briefs and low-rise underwear from CJ."},
     hoodies: {title:"Hoodies & Sweatshirts", query:"hoodies", icon:"H", description:"Hoodies, sweatshirts and warm layers."},
     knitwear: {title:"Knitwear", query:"sweaters cardigans knitwear", icon:"N", description:"Sweaters, cardigans and knit layers."},
     jackets: {title:"Jackets & Outerwear", query:"jackets", icon:"J", description:"Jackets, windbreakers and outerwear."},
     activewear: {title:"Activewear", query:"activewear", icon:"A", description:"Athletic apparel, leggings, shorts and performance wear."},
     bags: {title:"Bags", query:"bags", icon:"B", description:"Crossbody bags, totes, backpacks and everyday bags."},
     shoes: {title:"Shoes", query:"shoes", icon:"S", description:"Sneakers, canvas shoes and slides."},
-    accessories: {title:"Accessories", query:"accessories", icon:"X", description:"Hats, caps, tags and everyday accessories."},
+    accessories: {title:"Accessories", query:"fashion accessories", icon:"X", description:"Everyday fashion accessories from CJ."},
+    sunglasses: {title:"Sunglasses", query:"sunglasses", icon:"G", description:"Sunglasses and eyewear accessories from CJ."},
+    belts: {title:"Belts & Small Accessories", query:"belt fashion accessories", icon:"B", description:"Belts and small fashion accessories from CJ."},
     home: {title:"Home", query:"home", icon:"O", description:"Decor, useful home finds and everyday living products."},
     storage: {title:"Storage & Organization", query:"storage organizer", icon:"S", description:"Closet, kitchen and home storage solutions."},
     bedding: {title:"Bedding", query:"bedding sheets duvet comforter", icon:"D", description:"Bedding, blankets, pillowcases and soft home essentials."},
     cleaning: {title:"Cleaning & Laundry", query:"cleaning laundry", icon:"C", description:"Household cleaning and laundry accessories."},
     tech: {title:"Phone & Tech", query:"tech", icon:"P", description:"Phones, electronics and connected accessories from approved catalog sources."},
     phonecases: {title:"Premium Phone Cases", query:"phone cases", icon:"C", description:"Curated phone cases with product-detail recheck before checkout."},
-    phoneaccessories: {title:"Phone Accessories", query:"phone accessories", icon:"A", description:"Cases, stands, charging cables and phone accessories."},
+    phoneaccessories: {title:"Phone Accessories", query:"phone accessories", icon:"A", description:"Useful phone accessories from CJ."},
+    chargers: {title:"Chargers & Cables", query:"phone charger cable usb type c", icon:"C", description:"Chargers, USB-C/Lightning cables and charging accessories from CJ."},
+    powerbanks: {title:"Power Banks", query:"power bank portable charger", icon:"P", description:"Portable charging products from CJ."},
+    phonestands: {title:"Phone & Tablet Stands", query:"phone tablet stand holder", icon:"S", description:"Phone and tablet stands and holders from CJ."},
+    earbuds: {title:"Earbuds & Audio", query:"wireless earbuds bluetooth audio", icon:"A", description:"Useful personal audio accessories from CJ."},
+    usefultech: {title:"Useful Electronics", query:"useful electronics smart device", icon:"E", description:"Practical everyday electronics from CJ."},
     gaming: {title:"Gaming Accessories", query:"gaming accessories", icon:"G", description:"Gaming accessories and desk-ready gear from connected supplier feeds."},
     hairaccessories: {title:"Hair Accessories", query:"hair accessories", icon:"H", description:"Hair clips, headbands, barrettes and everyday hair accessories."},
     sets: {title:"Matching Sets", query:"matching sets", icon:"2", description:"Two-piece and coordinated apparel sets from approved catalog sources."},
@@ -71,18 +83,18 @@
   };
 
   const categoryGroups = [
-    {title:"Women & Men", items:["women","men","dresses","tops","jeans","bottoms","sets","underwear","boxers","plussize","sleepwear","suits","hoodies","jackets","knitwear","activewear","swimwear","socks"]},
-    {title:"Beauty & Style", items:["bags","shoes","hats","accessories","hairaccessories","jewelry","beauty","makeup","skincare","perfume"]},
+    {title:"Women & Men", items:["women","men","dresses","eveningdresses","womensuits","tops","jeans","bottoms","sets","underwear","thongs","boxers","longboxers","mensbriefs","plussize","sleepwear","suits","hoodies","jackets","knitwear","activewear","swimwear","socks"]},
+    {title:"Beauty & Style", items:["bags","shoes","hats","accessories","sunglasses","belts","hairaccessories","jewelry","beauty","makeup","skincare","perfume"]},
     {title:"Home & Living", items:["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]},
-    {title:"Tech & Gaming", items:["tech","phonecases","phoneaccessories","gaming"]},
+    {title:"Tech & Gaming", items:["tech","phonecases","phoneaccessories","chargers","powerbanks","phonestands","earbuds","usefultech","gaming"]},
     {title:"Sports & Outdoors", items:["sports","outdoors","travel"]},
     {title:"Kids & Pets", items:["kids","toys","pets"]},
     {title:"Gifts, Crafts & Office", items:["gifts","party","crafts","ornaments","stickers","stationery","office"]}
   ];
 
   const genderSubcategories = {
-    women:["dresses","tops","jeans","bottoms","sets","underwear","sleepwear","activewear","swimwear","jackets","knitwear","shoes","bags","jewelry","makeup","skincare","accessories"],
-    men:["tops","jeans","bottoms","boxers","sleepwear","activewear","hoodies","jackets","knitwear","suits","shoes","bags","accessories","hats"]
+    women:["dresses","eveningdresses","womensuits","tops","jeans","bottoms","sets","underwear","thongs","socks","sleepwear","activewear","swimwear","jackets","knitwear","shoes","bags","jewelry","hairaccessories","sunglasses","belts","makeup","skincare","perfume","accessories"],
+    men:["tops","suits","jeans","bottoms","boxers","longboxers","mensbriefs","socks","sleepwear","activewear","hoodies","jackets","knitwear","shoes","bags","sunglasses","belts","accessories","hats"]
   };
 
 
@@ -120,8 +132,13 @@
     if (/\b(poster|posters|canvas|wall art|flag|framed)\b/.test(t)) return "wallart";
     if (/\b(mug|mugs|bottle|bottles|tumbler|tumblers|cup|cups)\b/.test(t)) return "drinkware";
     if (/\b(hat|hats|cap|caps|beanie|bucket hat)\b/.test(t)) return "hats";
+    if (/\b(evening|formal|prom|cocktail|party)\b/.test(t) && /\b(dress|gown)\b/.test(t)) return "eveningdresses";
+    if (/\b(women|woman|female|ladies)\b/.test(t) && /\b(suit|blazer|tailored)\b/.test(t)) return "womensuits";
     if (/\b(dress|dresses|skirt|skirts)\b/.test(t)) return "dresses";
     if (/\b(jean|jeans|denim)\b/.test(t) && /\b(pants|trousers|jeans|denim)\b/.test(t)) return "jeans";
+    if (/\b(thong|thongs)\b/.test(t) && /\b(women|woman|female|ladies)\b/.test(t)) return "thongs";
+    if (/\b(long boxer|long-leg boxer|long leg boxer)\b/.test(t) && /\b(men|man|male)\b/.test(t)) return "longboxers";
+    if (/\b(brief|briefs|low rise|low-rise)\b/.test(t) && /\b(men|man|male)\b/.test(t)) return "mensbriefs";
     if (/\b(boxer|boxers|boxer briefs?)\b/.test(t) && /\b(men|man|male)\b/.test(t)) return "boxers";
     if (/\b(bra|bralette|underwear|panties|panty|briefs|brief)\b/.test(t) && /\b(women|woman|female|ladies)\b/.test(t)) return "underwear";
     if (/\b(hoodie|hoodies|sweatshirt|sweatshirts)\b/.test(t)) return "hoodies";
@@ -129,7 +146,13 @@
     if (/\b(athletic|performance|legging|leggings|sports bra|shorts|yoga|rash guard|joggers|track pants)\b/.test(t)) return "activewear";
     if (/(handbag|purse|crossbody|tote|backpack|\bbag\b)/.test(t)) return "bags";
     if (/(shoe|sneaker|slide|heel)/.test(t)) return "shoes";
+    if (/\b(sunglasses|sun glasses|eyewear)\b/.test(t)) return "sunglasses";
+    if (/\b(belt|belts)\b/.test(t)) return "belts";
     if (/(hat|cap|wallet|belt|accessor|beanie|\btag\b)/.test(t)) return "accessories";
+    if (/\b(power bank|portable charger)\b/.test(t)) return "powerbanks";
+    if (/\b(phone|tablet)\b.*\b(stand|holder)\b|\b(stand|holder)\b.*\b(phone|tablet)\b/.test(t)) return "phonestands";
+    if (/\b(earbuds?|earphones?|bluetooth headset)\b/.test(t)) return "earbuds";
+    if (/\b(charger|charging cable|usb-c cable|type-c cable|lightning cable)\b/.test(t)) return "chargers";
     if (/(phone case|mobile case|screen protector|phone stand|charging cable)/.test(t)) return "phoneaccessories";
     if (/(gaming|gamer|gamepad|controller|headset stand|mouse ?pads?)/.test(t)) return "gaming";
     if (/(storage|organizer|closet|rack|shelf)/.test(t)) return "storage";
@@ -171,10 +194,15 @@
     if (/wallart|wall art|poster|canvas|framed/.test(q)) return "wallart";
     if (/drinkware|mug|bottle|tumbler/.test(q)) return "drinkware";
     if (/\bhats?\b|\bcaps?\b|beanie/.test(q)) return "hats";
+    if (/(evening|formal|prom|cocktail|party).*(dress|gown)|(dress|gown).*(evening|formal|prom|cocktail|party)/.test(q)) return "eveningdresses";
+    if (/women.*(suit|blazer)|(suit|blazer).*women/.test(q)) return "womensuits";
     if (/dress|skirt/.test(q)) return "dresses";
     if (/jeans?|denim/.test(q)) return "jeans";
+    if (/women.*thong|thong.*women/.test(q)) return "thongs";
+    if (/long.*boxer|boxer.*long/.test(q)) return "longboxers";
+    if (/men.*(brief|low rise)|(brief|low rise).*men/.test(q)) return "mensbriefs";
     if (/boxer|boxers/.test(q)) return "boxers";
-    if (/underwear|panties|bra|bralette|briefs/.test(q)) return "underwear";
+    if (/underwear|panties|bra|bralette/.test(q)) return "underwear";
     if (/hoodie|sweatshirt/.test(q)) return "hoodies";
     if (/jacket|outerwear|windbreaker|bomber/.test(q)) return "jackets";
     if (/activewear|fitness|gym|athletic|legging|yoga|performance/.test(q)) return "activewear";
