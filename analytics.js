@@ -252,12 +252,6 @@
         items:[item(product,null,1)]
       });
     },
-    surveyComplete({categories=[],priceBand="any"}={}) {
-      return dataLayerPush("shopping_survey_complete", {
-        selected_category_count: Array.isArray(categories)?categories.length:0,
-        price_band: clean(priceBand,40)
-      });
-    },
     shoppingAction({provider="",itemId="",action="",active=false,category=""}={}) {
       if (!["like","save"].includes(clean(action, 20))) return false;
       return dataLayerPush("shopping_preference", {
