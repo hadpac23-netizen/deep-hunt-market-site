@@ -13,8 +13,9 @@
   function key(item){return String(item?.provider||"")+":"+String(item?.item_id||"")}
   function safeHttps(value){try{return new URL(value).protocol==="https:"}catch{return false}}
   function price(item){
-    const n=Number(item?.price_amount);
-    return Number.isFinite(n)&&n>0?H.money(n,item.currency||"USD"):"View product";
+    const n=Number(item?.retail_price_amount);
+    const currency=item?.retail_currency||item?.currency||"USD";
+    return Number.isFinite(n)&&n>0?`From ${H.money(n,currency)}`:"View product";
   }
   function categoryTitle(slug){return H.categoryDefs?.[slug]?.title||slug||"More"}
   function isWomen(item){
@@ -37,8 +38,8 @@
   }
 
   function siblingSlugs(slug){
-    for(const slugs of Object.values(H.categoryGroups||{})){
-      if(Array.isArray(slugs)&&slugs.includes(slug))return slugs;
+    for(const [department,slugs] of Object.entries(H.departmentSubcategories||{})){
+      if(slug===department || (Array.isArray(slugs)&&slugs.includes(slug))) return Array.isArray(slugs)?slugs:[];
     }
     return [];
   }
@@ -53,7 +54,7 @@
     score+=Math.min(30,Number(H.signals?.()?.[slug]||0));
     if(currentGender==="women"&&isWomen(item))score+=25;
     if(currentGender==="men"&&isMen(item))score+=25;
-    const p=Number(item?.price_amount);
+    const p=Number(item?.retail_price_amount);
     if(Number.isFinite(currentPrice)&&currentPrice>0&&Number.isFinite(p)&&p>0){
       const ratio=Math.abs(p-currentPrice)/Math.max(currentPrice,1);
       score+=Math.max(0,18-Math.round(ratio*18));
@@ -89,11 +90,11 @@
 
     let all=shardResults.flat().filter(item=>{
       const k=key(item);
-      return item?.item_id&&k!==key(product)&&!seen.has(k);
+      return item?.item_id&&k!==key(product)&&!seen.has(k)&&String(item?.provider||"").toLowerCase()==="cjdropshipping";
     });
 
     if(!all.length){
-      const res=await fetch("catalog-home.json?v=platform1",{cache:"force-cache"});
+      const res=await fetch("cj-launch-home.json?v=30k2",{cache:"force-cache"});
       if(!res.ok)throw new Error("Catalog unavailable");
       const data=await res.json();
       all=[];
@@ -112,7 +113,7 @@
       keys.add(k);deduped.push(item);
     }
 
-    const currentPrice=Number(product?.price_amount);
+    const currentPrice=Number(product?.retail_price_amount);
     const title=String(product?.title||"").toLowerCase();
     const currentGender=isWomen(product)?"women":isMen(product)?"men":/\b(dress|skirt|blouse|handbag|purse)\b/.test(title)?"women":"general";
 
