@@ -629,7 +629,8 @@
   function renderMarketShelvesData(data, mode = "live") {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
-    if (!root || !counter) return false;
+    const existingGrid = document.querySelector("#hd-home-random-grid");
+    if (!root && !existingGrid) return false;
     const shelves = data?.shelves || {};
     const hasProducts = Object.values(shelves).some(items => Array.isArray(items) && items.length);
     if (!hasProducts) return false;
@@ -663,22 +664,27 @@
     homeFeedPool=buildRandomHomePool(shelves);
     homeFeedCursor=0;
     homeFeedObserver?.disconnect();
-    root.innerHTML = `
-      <section class="hd-home-random-feed">
-        <div class="hd-market-shelf-head">
-          <div>
-            <small>DISCOVER EVERYTHING</small>
-            <h2>Something different every time.</h2>
-            <p>Women, men, kids, beauty, tech, home, accessories and more — fully mixed for discovery.</p>
+    if (root) {
+      root.innerHTML = `
+        <section class="hd-home-random-feed">
+          <div class="hd-market-shelf-head">
+            <div>
+              <small>DISCOVER EVERYTHING</small>
+              <h2>Something different every time.</h2>
+              <p>Women, men, kids, beauty, tech, home, accessories and more — fully mixed for discovery.</p>
+            </div>
+            <button type="button" class="hd-home-remix" id="hd-home-remix">Remix</button>
           </div>
-          <button type="button" class="hd-home-remix" id="hd-home-remix">Remix</button>
-        </div>
-        <div class="hd-home-random-grid" id="hd-home-random-grid" role="list"></div>
-        <div class="hd-home-random-more" id="hd-home-random-more" aria-live="polite"><span></span><strong>Loading more…</strong></div>
-      </section>`;
+          <div class="hd-home-random-grid" id="hd-home-random-grid" role="list"></div>
+          <div class="hd-home-random-more" id="hd-home-random-more" aria-live="polite"><span></span><strong>Loading more…</strong></div>
+        </section>`;
+    } else {
+      existingGrid.innerHTML = "";
+      document.querySelector("#hd-home-random-more")?.classList.remove("done");
+    }
     appendHomeFeedBatch();
     setupHomeFeedObserver();
-    root.querySelector("#hd-home-remix")?.addEventListener("click",()=>{
+    document.querySelector("#hd-home-remix")?.addEventListener("click",()=>{
       homeFeedPool=window.BoomNet?.remix ? window.BoomNet.remix(homeFeedPool) : shuffleHome(homeFeedPool);
       homeFeedCursor=0;
       const grid=document.querySelector("#hd-home-random-grid");
@@ -694,8 +700,10 @@
     }));
     const count = Number(data?.visible_product_count || 0) || cjKeys.size;
     const label = mode === "live" ? "CJ LIVE" : "CJ READY";
-    counter.textContent = `${count.toLocaleString()} ${label}`;
-    counter.title = "Current HUNT launch phase: CJdropshipping products only.";
+    if (counter) {
+      counter.textContent = `${count.toLocaleString()} ${label}`;
+      counter.title = "Current HUNT launch phase: CJdropshipping products only.";
+    }
     return true;
   }
 
@@ -712,7 +720,8 @@
   async function loadMarketShelves() {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
-    if (!root || !counter) return;
+    const homeGrid = document.querySelector("#hd-home-random-grid");
+    if (!root && !homeGrid) return;
 
     let renderedFallback = false;
     let snapshotData = null;
@@ -745,14 +754,15 @@
       }
     } catch (err) {
       if (renderedFallback) {
-        counter.title = "Live refresh is temporarily unavailable; showing verified catalog products.";
+        if (counter) counter.title = "Live refresh is temporarily unavailable; showing verified catalog products.";
         return;
       }
       const msg = err?.name === "AbortError"
         ? "Live catalog is taking longer than expected. Try again shortly."
         : (err.message || "Market shelves unavailable");
-      root.innerHTML = `<div class="hd-shelf-loading glass">${esc(msg)}</div>`;
-      counter.textContent = "WAITING";
+      const target = root || homeGrid;
+      if (target) target.innerHTML = `<div class="hd-shelf-loading glass">${esc(msg)}</div>`;
+      if (counter) counter.textContent = "WAITING";
     }
   }
 
