@@ -302,14 +302,14 @@
   };
 
   const shelfDepartments = [
-    ["Women · Clothing", ["women","dresses","eveningdresses","womensuits","tops","jeans","bottoms","sets","plussize","hoodies","jackets","knitwear","activewear","swimwear","sleepwear","underwear","thongs"]],
+    ["Women · Clothing", ["women","dresses","eveningdresses","womensuits","tops","jeans","bottoms","sets","plussize","hoodies","jackets","knitwear","activewear","swimwear","sleepwear","underwear","socks"]],
     ["Women · Shoes & Accessories", ["bags","hairaccessories","jewelry","accessories","sunglasses","belts","shoes","hats"]],
-    ["Men", ["men","suits","jeans","bottoms","boxers","longboxers","mensbriefs","socks"]],
-    ["Premium Phone & Tech", ["phonecases","phoneaccessories","chargers","powerbanks","phonestands","earbuds","usefultech","tech","gaming","office"]],
-    ["Home & Living", ["home","lighting","kitchen","storage","bedding","bath"]],
-    ["Sports & Everyday", ["sports","travel","kids","toys","pets"]],
-    ["Beauty", ["beauty","makeup","skincare","perfume"]],
-    ["Creative & Gifts", ["crafts","party","gifts","stationery"]],
+    ["Men · Clothing", ["men","suits","tops","jeans","bottoms","boxers","longboxers","mensbriefs","socks","hoodies","jackets","knitwear","activewear","shoes","bags","sunglasses","belts"]],
+    ["Beauty", ["makeup","skincare","beauty","perfume"]],
+    ["Phone & Useful Tech", ["phonecases","chargers","powerbanks","phonestands","earbuds","phoneaccessories","usefultech","tech","gaming","office"]],
+    ["Home & Living", ["home","lighting","kitchen","storage","bedding","bath","cleaning","pillows","blankets","wallart","drinkware"]],
+    ["Sports & Everyday", ["sports","outdoors","travel","kids","toys","pets"]],
+    ["Creative & Gifts", ["crafts","party","gifts","stickers","stationery","ornaments"]],
   ];
 
   function shelfCard(item) {
@@ -585,12 +585,14 @@
     let snapshotData = null;
 
     try {
-      const snapshotRes = await fetch("catalog-home.json?v=platform1", {cache:"force-cache"});
+      const snapshotRes = await fetch("cj-launch-home.json?v=cjlaunch1", {cache:"force-cache"});
       if (snapshotRes.ok) {
         snapshotData = await snapshotRes.json();
         renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");
       }
     } catch {}
+
+    if (snapshotData?.launch_authoritative === true && renderedFallback) return;
 
     try {
       const res = await fetchWithTimeout(publicApiUrl("hunt-storefront") + "?shelves=1", {
