@@ -8,9 +8,9 @@
 
   const departments = [
     {title:"Women · Clothing", slug:"women", href:"category.html?c=women", items:["women","dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear"], womenOnly:true},
-    {title:"Women · Shoes & Accessories", slug:"women", href:"category.html?c=women&sub=shoes", items:["shoes","bags","jewelry","accessories","hats"], womenOnly:true},
+    {title:"Women · Shoes & Accessories", slug:"women", href:"category.html?c=women&sub=shoes", items:["shoes","bags","jewelry","accessories","sunglasses","belts","hats"], womenOnly:true},
     {title:"Beauty & Fragrance", slug:"beauty", href:"category.html?c=beauty", items:["beauty","makeup","skincare","perfume"]},
-    {title:"Men", slug:"men", items:["men"]},
+    {title:"Men", slug:"men", items:["men","suits","jeans","bottoms","boxers","longboxers","mensbriefs","socks"]},
     {title:"Kids", slug:"kids", items:["kids","toys"]},
     {title:"Home & Living", slug:"home", items:["home","kitchen","storage","bedding","bath","lighting","cleaning"]},
     {title:"Tech & Gaming", slug:"tech", items:["tech","phoneaccessories","gaming"]},
@@ -19,12 +19,12 @@
   ];
 
   const megaGroups = [
-    ["Women · Clothing", "women", ["dresses","tops","jeans","bottoms","underwear","hoodies","jackets","knitwear","activewear","swimwear"]],
-    ["Women · Shoes & Accessories", "women", ["shoes","bags","jewelry","accessories","hats"]],
+    ["Women · Clothing", "women", ["dresses","eveningdresses","womensuits","tops","jeans","bottoms","underwear","thongs","hoodies","jackets","knitwear","activewear","swimwear"]],
+    ["Women · Shoes & Accessories", "women", ["shoes","bags","jewelry","accessories","sunglasses","belts","hats"]],
     ["Beauty & Fragrance", null, ["beauty","perfume"]],
-    ["Men", "men", ["tops","jeans","bottoms","boxers","hoodies","jackets","knitwear","activewear"]],
+    ["Men", "men", ["tops","suits","jeans","bottoms","boxers","longboxers","mensbriefs","hoodies","jackets","knitwear","activewear","socks"]],
     ["Home & Living", null, ["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]],
-    ["Tech", null, ["tech","phoneaccessories","gaming","office"]],
+    ["Tech", null, ["tech","phonecases","phoneaccessories","chargers","powerbanks","phonestands","earbuds","usefultech","gaming","office"]],
     ["Kids & Pets", null, ["kids","toys","pets"]],
     ["Sports & Travel", null, ["sports","outdoors","travel"]],
     ["Gifts & Creative", null, ["gifts","party","crafts","stationery","ornaments"]]
@@ -99,7 +99,7 @@
     if (value === "women") return ["women","dresses","tops","jeans","bottoms","underwear","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats","beauty","makeup","skincare","perfume"];
     if (value === "men") return ["men","tops","jeans","bottoms","boxers","hoodies","jackets","knitwear","activewear","suits","shoes","bags","accessories"];
     if (value === "home") return ["home","kitchen","storage","bedding","bath","lighting"];
-    if (value === "tech") return ["tech","phoneaccessories","gaming","office"];
+    if (value === "tech") return ["tech","phonecases","phoneaccessories","chargers","powerbanks","phonestands","earbuds","usefultech","gaming","office"];
     const signals = H.signals();
     const ranked = Object.entries(signals)
       .filter(([slug,score]) => H.categoryDefs[slug] && Number(score) > 0)
