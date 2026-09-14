@@ -105,9 +105,14 @@
     const title = String(product?.title || "").toLowerCase();
     const patterns = {
       tops:/shirt|tee|t-shirt|top|tank|polo|blouse/,
-      jeans:/\bjean|jeans|denim\b/,
+      eveningdresses:/\b(evening|formal|prom|cocktail|party)\b.*\b(dress|gown)\b|\b(dress|gown)\b.*\b(evening|formal|prom|cocktail|party)\b/,
+      womensuits:/\b(women|woman|female|ladies)\b.*\b(suit|blazer|tailored)\b|\b(suit|blazer|tailored)\b.*\b(women|woman|female|ladies)\b/,
+      jeans:/\b(jean|jeans|denim)\b/,
       bottoms:/pants|trouser|shorts|jeans|joggers|leggings/,
+      thongs:/\b(thong|thongs)\b/,
       underwear:/\b(bra|bralette|underwear|panties|panty|briefs|brief)\b/,
+      longboxers:/\b(long boxer|long-leg boxer|long leg boxer)\b/,
+      mensbriefs:/\b(brief|briefs|low rise|low-rise)\b/,
       boxers:/\b(boxer|boxers|boxer briefs?|underwear|brief|briefs)\b/,
       hoodies:/hoodie|sweatshirt/,
       jackets:/jacket|coat|windbreaker|outerwear|blazer/,
@@ -117,19 +122,29 @@
       shoes:/shoe|sneaker|heel|loafer|boot|sandal|slide/,
       bags:/bag|handbag|purse|crossbody|tote|backpack/,
       jewelry:/jewelry|jewellery|necklace|bracelet|earring|pendant|ring/,
+      sunglasses:/\b(sunglasses|sun glasses|eyewear)\b/,
+      belts:/\b(belt|belts)\b/,
       accessories:/accessor|wallet|belt|scarf|sunglass/,
       hats:/hat|cap|beanie/,
       beauty:/beauty|skincare|makeup|cosmetic|serum|cream/,
       makeup:/\b(lipstick|lip gloss|mascara|eyeliner|eyeshadow|foundation|concealer|blush|eyebrow|makeup palette|setting powder|contour|highlighter)\b/,
       skincare:/\b(serum|cleanser|toner|moisturizer|moisturiser|face cream|facial cream|eye cream|skincare set|skin care set)\b/,
-      perfume:/perfume|fragrance|eau de|parfum/
+      perfume:/perfume|fragrance|eau de|parfum/,
+      chargers:/\b(charger|charging cable|usb-c cable|type-c cable|lightning cable)\b/,
+      powerbanks:/\b(power bank|portable charger)\b/,
+      phonestands:/\b(phone|tablet)\b.*\b(stand|holder)\b|\b(stand|holder)\b.*\b(phone|tablet)\b/,
+      earbuds:/\b(earbuds?|earphones?|bluetooth headset)\b/,
+      usefultech:/\b(smart device|electronics|electronic|adapter|hub|sensor|tracker|mini fan|usb gadget)\b/
     };
+    if (sub==="underwear" && /\b(thong|thongs)\b/.test(title)) return false;
+    if (sub==="boxers" && /\b(long boxer|long-leg boxer|long leg boxer|low rise|low-rise)\b/.test(title)) return false;
+    if (sub==="mensbriefs" && /\bboxer\b/.test(title)) return false;
     return patterns[sub] ? patterns[sub].test(title) : true;
   }
 
   function matchesGenderScope(product) {
     if (!sub || !["women","men"].includes(slug)) return true;
-    if (slug==="women" && ["makeup","skincare"].includes(sub)) return true;
+    if (slug==="women" && ["makeup","skincare","perfume"].includes(sub)) return true;
     const title=String(product?.title||"").toLowerCase();
     const gender=String(product?.gender||"").toLowerCase();
     if (slug==="women") {
@@ -151,7 +166,8 @@
     if (!title) return false;
     if (slug === "women" && /\b(baby|newborn|toddler|kid|kids|child|children|boys?|youth)\b/.test(title)) return false;
     if (slug === "men" && /\b(women|woman|female|ladies|girls?)\b/.test(title)) return false;
-    if (slug === "beauty" && /\b(pet|dog|cat|toy|slime|foam beads|puzzle|hallway|hall tree|entryway|wardrobe|shoe cabinet|shoe storage|coat rack|furniture|mudroom)\b/.test(title)) return false;
+    if (slug === "beauty" && /\b(pet|dog|cat|toy|slime|foam beads|puzzle|hallway|hall tree|entryway|wardrobe|shoe cabinet|shoe storage|coat rack|furniture|mudroom|mirror|desk|table|chair|organizer|storage)\b/.test(title)) return false;
+    if (slug === "tech" && /\b(clothing|dress|shirt|jacket|pants|underwear|jewelry|necklace|bracelet)\b/.test(title)) return false;
     if (slug === "jewelry" && /\b(parrot|bird toy|pet toy|toy set|handbag belt|bag belt|strap buckle|key findings)\b/.test(title)) return false;
     return true;
   }
