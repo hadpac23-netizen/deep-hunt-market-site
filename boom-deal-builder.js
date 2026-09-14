@@ -101,9 +101,19 @@
       if(!safeImg(x.image_url))continue;
       seen.add(k);clean.push(x);
     }
-    candidates=clean
+    const ranked=clean
       .map(x=>({x,score:(Number(H.personalScore?.(x)||0)*2)+(x.availability_verified?12:0)+(Number(x.retail_price_amount)>0?8:0)+Math.random()*6}))
-      .sort((a,b)=>b.score-a.score).slice(0,8).map(v=>v.x);
+      .sort((a,b)=>b.score-a.score);
+    const perType=new Map(),mixed=[];
+    for(const row of ranked){
+      const type=String(row.x?._bundle_reason||row.x?.category||"other");
+      const n=Number(perType.get(type)||0);
+      if(n>=2)continue;
+      perType.set(type,n+1);
+      mixed.push(row.x);
+      if(mixed.length>=8)break;
+    }
+    candidates=mixed;
   }
   function card(x,state){
     const k=key(x),selected=(state.items||[]).some(i=>i.key===k);
