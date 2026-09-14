@@ -4,7 +4,7 @@
   "unique_quality_products": 3376,
   "shelf_entry_count": 3904,
   "providers": {
-    "CJdropshipping": 29938
+    "CJdropshipping": 29834
   },
   "categories": {
     "accessories": 59,
@@ -167,8 +167,8 @@
       "Nothing": 0
     }
   },
-  "launch_policy": "HUNT_CJ_ONLY_30K_V1",
-  "launch_unique_products": 29938,
+  "launch_policy": "HUNT_CJ_ONLY_30K_V2_BEAUTY_CLEAN",
+  "launch_unique_products": 29834,
   "launch_shelf_entry_count": 3515,
   "launch_category_counts": {
     "accessories": 100,
@@ -252,9 +252,9 @@
   "launch_gaps": [],
   "launch_notes": [
     "CJ-only organized catalog.",
-    "Each product has one primary category to prevent duplicate/mixed shelves.",
-    "Live product detail rechecks variants, sizes, colors, stock, price and destination shipping before checkout."
+    "One primary category per product; Beauty cleaned and Fragrance separated.",
+    "Variants, sizes, colors, stock, retail price and destination shipping are rechecked from CJ product detail before checkout."
   ],
   "launch_department_count": 13,
-  "launch_leaf_category_count": 106
+  "launch_leaf_category_count": 107
 }
