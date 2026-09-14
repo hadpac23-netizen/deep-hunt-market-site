@@ -515,6 +515,51 @@
     return rows;
   }
 
+  function mixedHomeDiscovery(shelves, limit=24) {
+    const departmentMap = window.HuntCore?.departmentSubcategories || {};
+    const buckets = [];
+    const used = new Set();
+    const departments = ["women","men","kids","beauty","accessories","tech","home","sports","pets","toys","travel","office","gifts"];
+    for (const department of departments) {
+      const slugs = [department,...(departmentMap[department] || [])];
+      const rows = [];
+      for (const slug of slugs) {
+        for (const item of Array.isArray(shelves?.[slug]) ? shelves[slug] : []) {
+          const key = `${item?.provider || ""}:${item?.item_id || ""}`;
+          if (!item?.item_id || used.has(key) || String(item?.provider || "").toLowerCase() !== "cjdropshipping") continue;
+          rows.push(item);
+        }
+      }
+      if (rows.length) buckets.push(rows);
+    }
+    const rand = array => {
+      const out=[...array];
+      for(let i=out.length-1;i>0;i--){
+        const buf=new Uint32Array(1);
+        crypto.getRandomValues(buf);
+        const j=buf[0]%(i+1);
+        [out[i],out[j]]=[out[j],out[i]];
+      }
+      return out;
+    };
+    const shuffled=buckets.map(rand);
+    const result=[];
+    let cursor=0;
+    while(result.length<limit && shuffled.some(x=>x.length)){
+      for(const bucket of rand(shuffled)){
+        if(result.length>=limit)break;
+        const item=bucket.shift();
+        if(!item)continue;
+        const key=`${item?.provider || ""}:${item?.item_id || ""}`;
+        if(used.has(key))continue;
+        used.add(key);
+        result.push(item);
+      }
+      if(++cursor>limit*2)break;
+    }
+    return result;
+  }
+
   function renderMarketShelvesData(data, mode = "live") {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
@@ -547,7 +592,17 @@
       return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
     }).join("");
 
-    root.innerHTML = html || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
+    const mixed = mixedHomeDiscovery(shelves, 24);
+    const mixedHtml = mixed.length ? `
+      <section class="hd-home-mixed">
+        <div class="hd-market-shelf-head">
+          <div><small>DISCOVER SOMETHING NEW</small><h2>Fresh mix for this visit</h2><p>Women, men, beauty, tech, home and more — reshuffled each time you open HUNT.</p></div>
+          <button type="button" class="hd-home-remix" id="hd-home-remix">Remix</button>
+        </div>
+        <div class="hd-home-mixed-grid" role="list">${mixed.map(shelfCard).join("")}</div>
+      </section>` : "";
+    root.innerHTML = mixedHtml + (html || '<div class="hd-shelf-loading glass">No catalog products available.</div>');
+    root.querySelector("#hd-home-remix")?.addEventListener("click",()=>renderMarketShelvesData(data,mode));
     const cjKeys = new Set();
     Object.values(shelves).forEach(rows => (Array.isArray(rows) ? rows : []).forEach(item => {
       if (String(item?.provider || "").toLowerCase() === "cjdropshipping" && item?.item_id) cjKeys.add(String(item.item_id));
