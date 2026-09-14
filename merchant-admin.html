@@ -18,6 +18,12 @@
     <section id="hd-merchant-admin-status" class="hd-seller-gate glass"><strong>Checking admin access…</strong></section>
 
     <section id="hd-merchant-admin" hidden>
+      <section id="hd-admin-program-panel" class="hd-seller-panel glass">
+        <div class="hd-seller-section-head"><div><small>OWNER CONTROL</small><h2>Merchant Program activation</h2><p>Prepared terms stay non-binding until you explicitly activate the program. Activation opens merchant acceptance; it does not approve any store, payment account, payout or ad campaign.</p></div><strong id="hd-admin-program-status-badge">CHECKING</strong></div>
+        <div id="hd-admin-program-summary"></div>
+        <div class="hd-admin-actions"><button class="hd-btn hd-btn-primary" id="hd-admin-program-activate" type="button" hidden>Activate current program</button><button class="hd-btn" id="hd-admin-program-pause" type="button" hidden>Pause program</button></div>
+        <p class="hd-seller-status" id="hd-admin-program-status" aria-live="polite"></p>
+      </section>
       <div class="hd-admin-columns">
         <section class="hd-seller-panel glass"><div class="hd-seller-section-head compact"><div><small>STORES</small><h2>Pending stores</h2></div><strong id="hd-admin-store-count">0</strong></div><div id="hd-admin-stores" class="hd-admin-list"></div></section>
         <section class="hd-seller-panel glass"><div class="hd-seller-section-head compact"><div><small>PRODUCTS</small><h2>Pending products</h2></div><strong id="hd-admin-product-count">0</strong></div><div id="hd-admin-products" class="hd-admin-list"></div></section>
