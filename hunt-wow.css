@@ -114,3 +114,11 @@
   html{scroll-behavior:auto!important}
   .hd-dept-card,.hd-dept-image img,.hd-wow-product,.hd-wow-product-media img,.hd-shelf-card,.hd-shelf-card img{transition:none!important;animation:none!important}
 }
+
+.hd-mega-menu[data-department]{grid-template-columns:repeat(4,minmax(180px,1fr));padding:20px 22px;gap:18px}
+.hd-mega-menu[data-department] section{border-right:1px solid rgba(119,178,241,.12);padding-right:14px}
+.hd-mega-menu[data-department] section:last-child{border-right:0}
+.hd-mega-shop-all{display:block;margin:0 0 9px;color:#72beff!important;font-size:.65rem;font-weight:800;text-decoration:none}
+.hd-mega-menu[data-department] h3{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#fff}
+@media(max-width:900px){.hd-mega-menu[data-department]{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.hd-mega-menu[data-department]{grid-template-columns:1fr}}
