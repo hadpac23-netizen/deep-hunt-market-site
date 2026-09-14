@@ -24,11 +24,27 @@
     [/ורוד|ורודה|وردي/gi," pink "],
     [/חתונה|זفاف|عرס/gi," wedding "],
     [/אלגנטי|אלגנטית|أنيق|انيق/gi," elegant "],
-    [/מתחת|עד|تحت|اقل من|أقل من/gi," under "]
+    [/מתחת|עד|תחת|تحت|اقل من|أقل من/gi," under "],
+    [/ג׳ינס|גינס|جينز/gi," jeans "],
+    [/חולצה|חולצות|قميص|قمصان|تيشيرت|تي شيرت/gi," shirt "],
+    [/מכנס|מכנסיים|بنطلون|بناطيل/gi," pants "],
+    [/הלבשה תחתונה|תחתונים|ملابس داخلية|بوكسر|بوكسير/gi," underwear "],
+    [/בגד ים|בגדי ים|ملابس سباحة|مايوه/gi," swimwear "],
+    [/תכשיט|תכשיטים|مجوهرات|اكسسوارات/gi," jewelry "],
+    [/בית|לבית|منزل|للمنزل/gi," home "],
+    [/טכנולוגיה|אלקטרוניקה|تقنية|الكترونيات|إلكترونيات/gi," tech "],
+    [/טלפון|סמארטפון|هاتف|موبايل/gi," phone "],
+    [/יוקרתי|יוקרה|فاخر|فخم/gi," luxury "],
+    [/קלאסי|كلاسيكي/gi," classic "],
+    [/רטרו|ريترو/gi," retro "],
+    [/קיץ|קיצי|صيف|صيفي/gi," summer "],
+    [/חורף|חורפי|شتاء|شتوي/gi," winter "],
+    [/רשמי|פורמלי|رسمي/gi," formal "],
+    [/זול|תקציבי|رخيص|اقتصادي/gi," budget "]
   ];
   const colors=["black","white","red","blue","green","pink","purple","brown","beige","gray","grey","gold","silver","orange","yellow","khaki","navy"];
   const styles=["elegant","vintage","street","casual","luxury","minimal","sport","formal","wedding","summer","winter","oversized","classic","retro"];
-  const brandStyle={gucci:["luxury","statement","vintage"],prada:["minimal","luxury"],chanel:["classic","elegant","luxury"],zara:["modern","minimal","casual"]};
+  const brandStyle={gucci:["luxury","statement","vintage"],prada:["minimal","luxury"],chanel:["classic","elegant","luxury"],zara:["modern","minimal","casual"],dior:["elegant","luxury","classic"],versace:["luxury","statement"],armani:["formal","classic","minimal"],balenciaga:["street","oversized","statement"],nike:["sport","street"],adidas:["sport","street"]};
 
   function norm(q){
     let t=String(q||"").toLowerCase();
@@ -49,11 +65,14 @@
   function intent(raw){
     const q=norm(raw), max=budget(q), c=colors.filter(x=>q.includes(x));
     let st=styles.filter(x=>q.includes(x));
-    for(const [b,a] of Object.entries(brandStyle))if(q.includes(b))st=[...new Set([...st,...a])];
+    const brandHints=[];
+    for(const [b,a] of Object.entries(brandStyle))if(q.includes(b)){brandHints.push(b);st=[...new Set([...st,...a])];}
     const deps=Object.keys(H.departmentSubcategories||{});
     const leaves=Object.keys(H.categoryDefs||{}).filter(x=>!deps.includes(x));
     const cats=leaves.map(x=>[x,catScore(x,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
-    return {q,max,colors:c,styles:st,cats:cats.length?cats:[H.slugFromQuery?.(q)||"women"]};
+    const size=(q.match(/\b(?:size|מידה|مقاس)\s*[:=-]?\s*([a-z0-9.+-]{1,8})\b/i)||[])[1]||"";
+    const device=(q.match(/\b(?:iphone|galaxy|pixel|redmi|xiaomi|oneplus|motorola|oppo|vivo)\s*[a-z0-9 +.-]*/i)||[])[0]||"";
+    return {q,max,colors:c,styles:st,brandHints,size,device,cats:cats.length?cats:[H.slugFromQuery?.(q)||"women"]};
   }
   function score(p,i){
     const title=String(p.title||"").toLowerCase();
@@ -61,6 +80,8 @@
     i.q.split(" ").filter(x=>x.length>2).forEach(t=>{if(title.includes(t))n+=4;});
     i.colors.forEach(t=>{if(title.includes(t))n+=5;});
     i.styles.forEach(t=>{if(title.includes(t))n+=2;});
+    if(i.size&&title.includes(i.size.toLowerCase()))n+=2;
+    if(i.device&&title.includes(i.device.toLowerCase()))n+=8;
     return n;
   }
   function priceOK(p,i){
@@ -109,7 +130,10 @@
       `Categories: ${i.cats.map(x=>H.categoryDefs?.[x]?.title||x).join(", ")}`,
       i.colors.length?`Colors: ${i.colors.join(", ")}`:"",
       i.max?`Budget: up to $${i.max}`:"",
-      i.styles.length?`Style: ${i.styles.join(", ")}`:""
+      i.styles.length?`Style: ${i.styles.join(", ")}`:"",
+      i.size?`Size: ${i.size}`:"",
+      i.device?`Device: ${i.device}`:"",
+      i.brandHints.length?`Style reference only: ${i.brandHints.join(", ")} — results are not claimed as those brands.`:""
     ].filter(Boolean).join(" · ");
     $("#hd-ai-sentinel strong").textContent="Finding products…";
     H.recordSignal?.(i.cats[0]||"women","search");
