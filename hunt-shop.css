@@ -207,3 +207,16 @@ html[data-hunt-theme="dark"] :is(.hd-review-photos img,.hd-review-file-preview i
 .hd-gender-subcategories a{display:inline-flex;align-items:center;min-height:34px;padding:8px 12px;border:1px solid var(--shop-line);background:var(--shop-surface);color:var(--shop-muted);text-decoration:none;font-size:.62rem;font-weight:850;border-radius:999px}
 .hd-gender-subcategories a:hover,.hd-gender-subcategories a.active{border-color:var(--shop-accent);background:var(--shop-accent-soft);color:var(--shop-accent)}
 @media(max-width:760px){.hd-gender-subcategories{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}.hd-gender-subcategories a{white-space:nowrap;flex:0 0 auto}}
+
+
+/* HUNT 30K organized catalog */
+.hd-category-strip{overflow-x:auto;scrollbar-width:thin}
+.hd-category-strip a{white-space:nowrap}
+.hd-gender-subcategories{max-height:150px;overflow-y:auto}
+.hd-shelf-price{display:block;margin-top:6px;color:var(--shop-accent);font-size:.74rem;font-weight:950}
+.hd-market-shelf{content-visibility:auto;contain-intrinsic-size:580px}
+.hd-shelf-department{content-visibility:auto;contain-intrinsic-size:1400px}
+@media(max-width:760px){
+  .hd-gender-subcategories{max-height:none;overflow-y:hidden}
+  .hd-nav a:nth-child(n+5){display:none}
+}
