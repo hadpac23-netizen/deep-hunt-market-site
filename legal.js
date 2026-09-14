@@ -7,6 +7,11 @@
       if(r.ok)cfg=await r.json();
     }catch{}
     cfg=cfg||{};
+    try{
+      const r=await fetch("https://zszlnahjqmwozwubetkm.supabase.co/functions/v1/hunt-business-identity?public=1",{cache:"no-store"});
+      const d=await r.json();
+      if(r.ok&&d?.published&&d?.identity)cfg={...cfg,...d.identity,status:"published"};
+    }catch{}
     const value=(k,fallback="Not configured")=>String(cfg[k]||fallback);
     document.querySelectorAll("[data-legal]").forEach(el=>{
       const k=el.dataset.legal;
