@@ -66,6 +66,19 @@
       </div>
     </article>`;
   }
+  async function rotationPlan(){
+    let country="";
+    try{country=String(localStorage.getItem("hunt_destination_market_v1")||"").toUpperCase()}catch{}
+    try{
+      const url=new URL((H.functionsBase||"https://zszlnahjqmwozwubetkm.supabase.co/functions/v1")+"/hunt-campaign-rotation");
+      if(country)url.searchParams.set("country",country);
+      const res=await fetch(url,{cache:"no-store"});
+      const data=await res.json();
+      if(res.ok&&Array.isArray(data?.themes))return data;
+    }catch{}
+    return {enabled:false,country,themes:["for-you","home","tech","beauty"]};
+  }
+
   function editorialPromos(shelves){
     const all=flat(shelves);
     const preferred=flat(shelves,preferredSlugs()).slice(0,10);
@@ -105,6 +118,27 @@
         title:"Useful tech, easier to scan",
         subtitle:"Phone, gaming and everyday tech picks from the current catalog.",
         items:flat(shelves,["tech","phoneaccessories","gaming","office"]).slice(0,10)
+      },
+      {
+        key:"sports",
+        badge:"BOOM ACTIVE EDIT",
+        title:"Move, train, get outside",
+        subtitle:"Fitness, cycling and outdoor picks rotated from the live catalog.",
+        items:flat(shelves,["fitness","fitness-accessories","active-bottoms","sports-gear","cycling","outdoors"]).slice(0,10)
+      },
+      {
+        key:"travel",
+        badge:"BOOM TRAVEL EDIT",
+        title:"Ready for the next trip",
+        subtitle:"Travel, luggage and useful carry picks selected from live HUNT shelves.",
+        items:flat(shelves,["travel","luggage","bags"]).slice(0,10)
+      },
+      {
+        key:"kids",
+        badge:"BOOM FAMILY EDIT",
+        title:"Kids & baby picks",
+        subtitle:"A rotating edit across clothing, shoes, accessories and toys.",
+        items:flat(shelves,["kids","kids-clothing","kids-shoes","kids-accessories","baby","baby-clothing","baby-shoes","toys"]).slice(0,10)
       }
     ];
     if(under)candidates.splice(1,0,{
@@ -115,7 +149,7 @@
       items:under.picks
     });
 
-    return candidates.filter(x=>x.items.length>=4).slice(0,3);
+    return candidates.filter(x=>x.items.length>=4);
   }
 
   async function liveVerifiedDeals(){
@@ -193,9 +227,20 @@
       if(!host.isConnected)document.querySelector("#shop")?.before(host);
     }
 
-    const editorial=editorialPromos(shelves);
-    const [sponsored,deals]=await Promise.all([liveSponsored(),liveVerifiedDeals()]);
+    const editorialAll=editorialPromos(shelves);
+    const [sponsored,deals,rotation]=await Promise.all([liveSponsored(),liveVerifiedDeals(),rotationPlan()]);
     const chosen=sponsored.length?sponsored.slice(0,1):[];
+    const byKey=new Map(editorialAll.map(x=>[x.key,x]));
+    const editorial=[];
+    for(const key of rotation.themes||[]){
+      const item=byKey.get(key);
+      if(item&&!editorial.includes(item))editorial.push(item);
+    }
+    const under=byKey.get("under");
+    if(under&&!editorial.includes(under))editorial.splice(Math.min(1,editorial.length),0,under);
+    for(const item of editorialAll){
+      if(!editorial.includes(item))editorial.push(item);
+    }
     const dealBlocks=deals.slice(0,1).map(deal=>`<section class="hd-promo-block verified-deal">
       <div class="hd-promo-copy">
         <small>VERIFIED PRICE DROP</small>
@@ -214,7 +259,7 @@
     host.innerHTML=`
       <div class="hd-promo-head">
         <div><small>BOOM PROMOTION STUDIO</small><h2>Offers made to fit the shopper — not shout at them.</h2>
-        <p>Personalized edits use real catalog data. Sponsored placements are always labeled.</p></div>
+        <p>Personalized edits use real catalog data. Sponsored placements are always labeled. Daily rotation: ${H.esc(rotation?.season||"live")}${rotation?.country?" · "+H.esc(rotation.country):""}.</p></div>
         <a href="sell.html">Advertise on HUNT →</a>
       </div>
       ${blocks.join("")}`;
