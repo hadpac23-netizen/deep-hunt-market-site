@@ -308,7 +308,13 @@
     "computer-accessories",
     "lighting",
     "home-storage",
-    "cleaning"
+    "cleaning",
+    "cable-management",
+    "sensor-lighting",
+    "portable-vacuums",
+    "air-care",
+    "kitchen-electric",
+    "projectors"
   ],
   "home_electronics_priority": {
     "home_storage_and_desk": [

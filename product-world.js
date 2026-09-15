@@ -11,19 +11,19 @@
       {title:"Style rotation",copy:"T-shirts, blouses, jeans, jackets, underwear, shoes and slippers.",slugs:["women-tshirts","women-blouses","women-jeans","women-outerwear","women-underwear","women-shoes","women-slippers"]},
       {title:"Jewelry & accessories",copy:"Rings, earrings, necklaces, bracelets, sunglasses, bags and hair accessories.",slugs:["jewelry-rings","jewelry-earrings","jewelry-ear-cuffs","jewelry-necklaces","jewelry-pendants","jewelry-bracelets","jewelry-anklets","jewelry-sets","sunglasses","bags","hair-accessories","headbands","hair-clips"]},
       {title:"Beauty, hair & fragrance",copy:"Makeup, skincare, nails, hair tools, body care and fragrance.",slugs:["makeup","skincare","nails","hair-tools","hair","beauty-tools","body-care","fragrance"]},
-      {title:"Useful everyday",copy:"Phone stands, chargers, power banks, audio and practical electronics.",slugs:["stands-holders","chargers-cables","power-banks","audio","electronics","wearables"]},
-      {title:"Home & organize",copy:"Storage, lighting, small appliances and useful home finds.",slugs:["home-storage","lighting","small-appliances","cleaning","home-decor"]}
+      {title:"Useful everyday",copy:"Phone stands, chargers, power banks, audio and practical electronics.",slugs:["stands-holders","chargers-cables","power-banks","audio","electronics","wearables","projectors"]},
+      {title:"Home & organize",copy:"Storage, lighting, small appliances and useful home finds.",slugs:["home-storage","cable-management","lighting","sensor-lighting","air-care","portable-vacuums","kitchen-electric","small-appliances","cleaning","home-decor"]}
     ],
     men:[
       {title:"Men's style",copy:"T-shirts, jeans, ripped and baggy denim, jackets, underwear, shoes and slippers.",slugs:["men-tops","men-jeans","men-ripped-jeans","men-baggy-jeans","men-outerwear","men-underwear","men-shoes","men-slippers"]},
       {title:"Accessories & finish",copy:"Watches, belts, wallets, bags and selected accessories.",slugs:["watches","belts","men-wallets","men-bags","men-accessories"]},
       {title:"Grooming & fragrance",copy:"Fragrance, skincare, hair and body-care finds.",slugs:["fragrance","skincare","hair","body-care","beauty-tools"]},
-      {title:"Useful tech",copy:"Phone stands, chargers, power banks, audio, wearables and electronics.",slugs:["stands-holders","chargers-cables","power-banks","audio","wearables","electronics","computer-accessories"]},
+      {title:"Useful tech",copy:"Phone stands, chargers, power banks, audio, wearables and electronics.",slugs:["stands-holders","chargers-cables","power-banks","audio","wearables","electronics","computer-accessories","projectors"]},
       {title:"Sports, travel & everyday",copy:"Fitness gear, travel, luggage and practical storage.",slugs:["fitness","fitness-accessories","sports-gear","travel","luggage","home-storage"]}
     ],
     general:[
       {title:"Trending across HUNT",copy:"A dynamic mix of fashion, accessories and useful finds.",slugs:["women-tshirts","men-tops","bags","watches","jewelry","electronics"]},
-      {title:"Useful everyday",copy:"Phone, charging, organization and practical home products.",slugs:["stands-holders","chargers-cables","power-banks","home-storage","small-appliances"]},
+      {title:"Useful everyday",copy:"Phone, charging, organization and practical home products.",slugs:["stands-holders","chargers-cables","power-banks","home-storage","cable-management","sensor-lighting","air-care","portable-vacuums","kitchen-electric","small-appliances","projectors"]},
       {title:"Beauty & accessories",copy:"Jewelry, beauty, hair, nails and fragrance.",slugs:["jewelry-earrings","jewelry-rings","makeup","hair-tools","nails","fragrance"]}
     ]
   };
@@ -42,7 +42,7 @@
   }
   async function getManifest(){
     if(manifest)return manifest;
-    const res=await fetch("catalog-manifest.json?v=taxonomy3",{cache:"force-cache"});
+    const res=await fetch("catalog-manifest.json?v=taxonomy5",{cache:"force-cache"});
     if(!res.ok)throw new Error("Catalog manifest unavailable");
     manifest=await res.json();
     return manifest;
@@ -53,7 +53,7 @@
       const info=m?.categories?.[slug];
       const page=Array.isArray(info?.pages)?info.pages[0]:null;
       if(!page)return [];
-      const res=await fetch(page+"?v=taxonomy3",{cache:"force-cache"});
+      const res=await fetch(page+"?v=taxonomy5",{cache:"force-cache"});
       if(!res.ok)return [];
       const data=await res.json();
       return (Array.isArray(data?.products)?data.products:[]).map(x=>({...x,category:x.category||slug}));
