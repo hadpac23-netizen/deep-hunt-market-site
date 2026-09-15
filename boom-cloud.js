@@ -7,7 +7,7 @@
   const client=sb.createClient(URL,H.publishableKey);
   const $=q=>document.querySelector(q);
   const $$=q=>[...document.querySelectorAll(q)];
-  const state={managers:[],reports:[],events:[],decisions:[],chat:[],latest:new Map(),session:null,channel:null};
+  const state={managers:[],workers:[],workerReports:[],reports:[],events:[],decisions:[],chat:[],latest:new Map(),workerLatest:new Map(),session:null,channel:null};
   const conversationKey="hunt_boom_cloud_conversation_v1";
   const conversationId=localStorage.getItem(conversationKey)||crypto.randomUUID();
   localStorage.setItem(conversationKey,conversationId);
@@ -59,8 +59,12 @@
   }
   function buildLatest(){
     state.latest=new Map();
+    state.workerLatest=new Map();
     for(const r of state.reports){
       if(!state.latest.has(r.manager_id))state.latest.set(r.manager_id,r);
+    }
+    for(const r of state.workerReports){
+      if(!state.workerLatest.has(r.worker_id))state.workerLatest.set(r.worker_id,r);
     }
   }
   function sortAttention(rows){
@@ -84,7 +88,7 @@
     execEl.className="bc-exec-"+exec.toLowerCase();
     $("#bc-exec-note").textContent=critical?critical+" קריטיים":blocked?blocked+" חסומים":watch?watch+" דורשים תשומת לב":"המערכת יציבה לפי הדוחות האחרונים";
     $("#bc-manager-count").textContent=String(managers.length);
-    $("#bc-manager-watch").textContent=attention.length+" דורשים תשומת לב";
+    $("#bc-manager-watch").textContent=state.workers.length+" workers · "+attention.length+" דורשים תשומת לב";
     $("#bc-report-count").textContent=String(reports.length);
     const last=reports.map(r=>r.created_at).filter(Boolean).sort().at(-1);
     $("#bc-last-pulse").textContent=last?"Pulse לפני "+timeAgo(last):"אין pulse";
@@ -135,10 +139,11 @@
     const r=getReport(m.id);
     const status=statusOf(m);
     const issue=r?.issues?.[0]||r?.opportunity||"ממתין לדוח/אין בעיה פתוחה.";
+    const workers=state.workers.filter(w=>w.manager_id===m.id);
     return `<article class="bc-manager-card" data-manager-id="${esc(m.id)}" data-status="${esc(status)}">
       <header><div><h4>${esc(m.name)}</h4><small>${esc(m.department)} · reports to ${esc(m.reports_to||"OWNER")}</small></div><span class="bc-manager-state">${esc(status)}</span></header>
       <p>${esc(issue)}</p>
-      <footer><span>${esc(timeAgo(r?.created_at||m.last_report_at))}</span><span>${r?esc(r.action_class):"NO REPORT"}</span></footer>
+      <footer><span>${esc(timeAgo(r?.created_at||m.last_report_at))}</span><span>${workers.length} workers · ${r?esc(r.action_class):"NO REPORT"}</span></footer>
     </article>`;
   }
   function renderOrg(){
@@ -198,9 +203,16 @@
     const m=state.managers.find(x=>x.id===id);
     if(!m)return;
     const r=getReport(id);
+    const workers=state.workers.filter(x=>x.manager_id===id);
+    const workerHtml=workers.length?workers.map(w=>{
+      const wr=state.workerLatest.get(w.id);
+      const ws=wr?.status||w.status||"idle";
+      return '<article class=\'bc-worker-row\' data-status=\''+esc(ws)+'\'><div><strong>'+esc(w.name)+'</strong><small>'+esc(w.role)+'</small><p>'+esc(w.mission)+'</p></div><div class=\'bc-worker-meta\'><span class=\'bc-status-pill '+esc(ws)+'\'>'+esc(ws.toUpperCase())+'</span><small>'+esc(timeAgo(wr?.created_at||w.last_report_at))+'</small></div></article>';
+    }).join(''):'<div class=\'bc-empty\'>אין עובדים מוגדרים למנהל הזה.</div>';
     const body=$("#bc-detail-body");
     body.innerHTML=`
       <div class="bc-detail-block"><small>${esc(m.department)}</small><h2>${esc(m.name)}</h2><p>Reports to: ${esc(m.reports_to||"OWNER")} · Status: ${esc(statusOf(m))}</p></div>
+      <div class="bc-detail-block"><h3>Team · ${workers.length} workers</h3><div class="bc-worker-list">${workerHtml}</div></div>
       <div class="bc-detail-block"><h3>Latest metrics</h3><pre>${esc(JSON.stringify(r?.metrics||{},null,2))}</pre></div>
       <div class="bc-detail-block"><h3>Issues</h3><pre>${esc(JSON.stringify(r?.issues||[],null,2))}</pre></div>
       <div class="bc-detail-block"><h3>Recommended action</h3><p>${esc(r?.recommended_action||"אין דוח עדיין.")}</p></div>
@@ -221,15 +233,19 @@
   }
 
   async function loadAll(){
-    const [m,r,e,d,c]=await Promise.all([
+    const [m,w,wr,r,e,d,c]=await Promise.all([
       client.from("hunt_boom_managers").select("*").order("department",{ascending:true}),
+      client.from("hunt_boom_workers").select("*").order("manager_id",{ascending:true}).order("name",{ascending:true}),
+      client.from("hunt_boom_worker_reports").select("*").order("created_at",{ascending:false}).limit(800),
       client.from("hunt_boom_live_reports").select("*").order("created_at",{ascending:false}).limit(600),
       client.from("hunt_boom_events").select("*").order("created_at",{ascending:false}).limit(100),
       client.from("hunt_boom_decisions").select("*").order("priority",{ascending:false}).order("created_at",{ascending:false}).limit(100),
       client.from("hunt_boom_chat").select("*").eq("conversation_id",conversationId).order("created_at",{ascending:true}).limit(200)
     ]);
-    for(const x of [m,r,e,d,c])if(x.error)throw x.error;
+    for(const x of [m,w,wr,r,e,d,c])if(x.error)throw x.error;
     state.managers=m.data||[];
+    state.workers=w.data||[];
+    state.workerReports=wr.data||[];
     state.reports=r.data||[];
     state.events=e.data||[];
     state.decisions=d.data||[];
@@ -273,6 +289,8 @@
   function subscribe(){
     state.channel=client.channel("boom-command-cloud-live")
       .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_managers"},scheduleRefresh)
+      .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_workers"},scheduleRefresh)
+      .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_worker_reports"},scheduleRefresh)
       .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_live_reports"},scheduleRefresh)
       .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_events"},scheduleRefresh)
       .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_chat"},payload=>{
