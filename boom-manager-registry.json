@@ -81,7 +81,9 @@
         "PROPOSE",
         "SAFE_DYNAMIC",
         "STAGE_FIX"
-      ]
+      ],
+      "schedule": "*/30 * * * *",
+      "schedule_note": "Runs with BOOM reliability workflow; category state is report-only until a safe dynamic executor is explicitly enabled."
     },
     {
       "id": "inventory-truth",

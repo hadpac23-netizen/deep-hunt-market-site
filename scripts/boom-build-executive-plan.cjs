@@ -8,7 +8,11 @@ const reports=[];
 for(const file of inputs){
   const value=JSON.parse(fs.readFileSync(file,"utf8"));
   if(Array.isArray(value))reports.push(...value);
-  else reports.push(value);
+  else {
+    reports.push(value);
+    const departments=value?.details?.department_reports;
+    if(Array.isArray(departments))reports.push(...departments);
+  }
 }
 const plan=Core.buildExecutivePlan(reports,registry);
 const out=process.env.BOOM_EXECUTIVE_PLAN_PATH||"boom-executive-plan.json";
