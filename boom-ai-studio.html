@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>BOOM AI Engineering Studio</title>
+  <link rel="stylesheet" href="boom-ai-studio.css?v=1">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">B</div>
+      <div>
+        <strong>BOOM AI Engineering Studio</strong>
+        <small>Meta-F35 · Super Agent · Live HUNT Control</small>
+      </div>
+    </div>
+    <nav class="tabs" aria-label="BOOM views">
+      <button class="tab active" data-tab="studio" type="button">Studio</button>
+      <button class="tab" data-tab="executions" type="button">Executions</button>
+      <button class="tab" data-tab="evaluations" type="button">Evaluations</button>
+      <button class="tab" data-tab="learning" type="button">Learning</button>
+    </nav>
+    <div class="top-actions">
+      <span class="live-pill" id="live-state">CONNECTING</span>
+      <button class="top-btn" id="refresh" type="button">רענון</button>
+      <button class="top-btn" id="logout" type="button" hidden>יציאה</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="login-screen" id="login-screen">
+      <form class="login-card" id="login-form">
+        <div class="login-logo">B</div>
+        <small>OWNER / ADMIN ONLY</small>
+        <h1>כניסה ל־BOOM</h1>
+        <p>היכנס עם חשבון ה־Admin של HUNT. לא מתבצע redirect לאתר אחר.</p>
+        <label for="login-email">אימייל</label>
+        <input id="login-email" type="email" autocomplete="username" required>
+        <label for="login-password">סיסמה</label>
+        <input id="login-password" type="password" autocomplete="current-password" required>
+        <div class="login-error" id="login-error" aria-live="polite"></div>
+        <button class="primary-btn" id="login-submit" type="submit">כניסה ל־Studio</button>
+      </form>
+    </section>
+
+    <section class="app-shell" id="app-shell" hidden>
+      <section class="workspace">
+        <section class="view active" id="studio">
+          <div class="canvas-wrap" id="canvas">
+            <svg class="links" id="links" aria-hidden="true"></svg>
+
+            <div class="section-label label-owner">OWNER INPUT</div>
+            <div class="section-label label-meta">META INTELLIGENCE</div>
+            <div class="section-label label-runtime">RUNTIME</div>
+            <div class="section-label label-tools">DEPARTMENTS / TOOLS</div>
+
+            <article class="node node-trigger" id="node-owner" data-special="owner">
+              <span class="port out"></span>
+              <div class="node-head"><span class="node-icon">💬</span><span class="node-title">Owner Chat</span></div>
+              <div class="node-body"><p>פקודות ושיחה עם BOOM</p><footer><span>INPUT</span><span class="status-dot"></span></footer></div>
+            </article>
+
+            <article class="node node-meta" id="node-meta" data-manager-id="boom-meta-f35">
+              <span class="port in"></span><span class="port out"></span><span class="port bottom"></span>
+              <div class="node-head"><span class="node-icon">⚡</span><span class="node-title">BOOM Meta-F35</span></div>
+              <div class="node-body"><p>Learn · Evaluate · Improve</p><footer><span id="meta-label">AI ENGINEERING</span><span class="status-dot"></span></footer></div>
+            </article>
+
+            <article class="node node-super" id="node-super" data-manager-id="boom-super-agent">
+              <span class="port in"></span><span class="port out"></span><span class="port top"></span><span class="port bottom"></span>
+              <div class="node-head"><span class="node-icon">🧠</span><span class="node-title">BOOM Super Agent</span></div>
+              <div class="node-body"><p>Plan · Route · Command · Resolve</p><footer><span id="command-label">COMMAND BUS</span><span class="status-dot"></span></footer></div>
+            </article>
+
+            <article class="node node-model" id="node-model" data-special="model">
+              <span class="port top"></span>
+              <div class="node-head"><span class="node-icon">◉</span><span class="node-title">LLM / Reasoning Model</span></div>
+              <div class="node-body"><p>Connector ready — provider not enabled yet</p><footer><span>MODEL CONNECTOR</span><span class="status-dot"></span></footer></div>
+            </article>
+
+            <article class="node node-memory" id="node-memory" data-special="memory">
+              <span class="port top"></span>
+              <div class="node-head"><span class="node-icon">▤</span><span class="node-title">BOOM Memory & State</span></div>
+              <div class="node-body"><p>Reports · Commands · Events · Learnings</p><footer><span id="memory-label">STATE</span><span class="status-dot"></span></footer></div>
+            </article>
+
+            <article class="node node-eval" id="node-eval" data-special="eval">
+              <span class="port top"></span>
+              <div class="node-head"><span class="node-icon">✓</span><span class="node-title">Eval Guardian</span></div>
+              <div class="node-body"><p>Before/after · Regression · Keep/Kill</p><footer><span id="eval-label">EVALS</span><span class="status-dot"></span></footer></div>
+            </article>
+
+            <div id="tool-nodes"></div>
+
+            <div class="legend">
+              <span><i class="legend-dot healthy-dot"></i>Healthy</span>
+              <span><i class="legend-dot watch-dot"></i>Watch</span>
+              <span><i class="legend-dot blocked-dot"></i>Blocked</span>
+              <span>קו נע = Live activity</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="view scroll-view" id="executions">
+          <div class="page-head"><h1>Executions</h1><p>פקודות, אירועים ודוחות אחרונים.</p></div>
+          <div class="list" id="executions-list"></div>
+        </section>
+
+        <section class="view scroll-view" id="evaluations">
+          <div class="page-head"><h1>Evaluations</h1><p>כל Improvement Cycle וה־Eval שלו.</p></div>
+          <div class="list" id="evaluations-list"></div>
+        </section>
+
+        <section class="view scroll-view" id="learning">
+          <div class="page-head"><h1>AI Engineering Learning Lab</h1><p>Orchestration, Tools, Memory, Evals, Observability, MCP, Workflows ו־Guardrails.</p></div>
+          <div class="learning-grid" id="learning-list"></div>
+        </section>
+      </section>
+
+      <aside class="inspector">
+        <div class="inspector-head">
+          <small>NODE INSPECTOR</small>
+          <h2 id="inspect-title">BOOM Super Agent</h2>
+          <div class="status-wrap" id="inspect-status"></div>
+        </div>
+        <div class="inspector-body" id="inspect-body"></div>
+
+        <div class="chat-panel">
+          <div class="chat-log" id="chat-log">
+            <article class="chat-message boom">BOOM Studio מחובר. שאל אותי על המערכת.</article>
+          </div>
+          <div class="chat-input-row">
+            <textarea id="chat-input" rows="3" placeholder="דבר עם BOOM…"></textarea>
+            <button class="send-btn" id="chat-send" type="button">שלח</button>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js"></script>
+  <script src="market-core.js"></script>
+  <script src="boom-ai-studio.js?v=1"></script>
+</body>
+</html>
