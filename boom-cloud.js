@@ -7,7 +7,7 @@
   const client=sb.createClient(URL,H.publishableKey);
   const $=q=>document.querySelector(q);
   const $$=q=>[...document.querySelectorAll(q)];
-  const state={managers:[],workers:[],workerReports:[],reports:[],events:[],decisions:[],chat:[],latest:new Map(),workerLatest:new Map(),session:null,channel:null};
+  const state={managers:[],workers:[],workerReports:[],reports:[],events:[],decisions:[],commands:[],cycles:[],evals:[],learning:[],chat:[],latest:new Map(),workerLatest:new Map(),session:null,channel:null};
   const conversationKey="hunt_boom_cloud_conversation_v1";
   const conversationId=localStorage.getItem(conversationKey)||crypto.randomUUID();
   localStorage.setItem(conversationKey,conversationId);
@@ -16,6 +16,7 @@
   const statusRank={critical:6,blocked:5,watch:4,healthy:3,working:2,offline:1};
   const impactRank={critical:5,high:4,medium:3,low:2};
   const groupOrder=[
+    ["top","Meta / Super"],
     ["executive","Executive"],
     ["revenue","Sales · Profit · Growth"],
     ["suppliers","Suppliers"],
@@ -48,6 +49,7 @@
     return report?.status||manager.status||"offline";
   }
   function managerGroup(m){
+    if(["boom-meta-f35","boom-super-agent"].includes(m.id))return "top";
     if(m.id==="boom-executive")return "executive";
     if(["sales-director","pricing-profit","finance-reconciliation","marketing-growth","feedback-intelligence","daily-10k-mission"].includes(m.id))return "revenue";
     if(m.id.startsWith("supplier-")||m.id==="supplier-shipping")return "suppliers";
@@ -133,6 +135,49 @@
       focusCard("f35-acquisition","F35 Buyer Acquisition"),
       focusCard("daily-10k-mission","Daily $10K+ Mission")
     ].join("");
+  }
+
+
+  function renderSuperStack(){
+    const open=state.commands.filter(c=>["queued","accepted","running","waiting_owner"].includes(c.status));
+    const owner=open.filter(c=>c.owner_approval_required||c.status==="waiting_owner");
+    const set=(id,value)=>{const el=$(id);if(el)el.textContent=value};
+    set("#bc-learning-count",state.learning.length+" learnings");
+    set("#bc-cycle-count",state.cycles.length+" cycles");
+    set("#bc-eval-count",state.evals.length+" evals");
+    set("#bc-command-count",state.commands.length+" commands");
+    set("#bc-command-open",open.length+" open");
+    set("#bc-command-owner",owner.length+" owner");
+    set("#bc-stack-managers",state.managers.length+" managers");
+    set("#bc-stack-workers",state.workers.length+" workers");
+  }
+
+  function renderCommands(){
+    const rows=[...state.commands].sort((a,b)=>Number(b.priority||0)-Number(a.priority||0)||new Date(b.created_at)-new Date(a.created_at)).slice(0,40);
+    const open=rows.filter(c=>["queued","accepted","running","waiting_owner"].includes(c.status)).length;
+    $("#bc-command-summary").textContent=open+" פתוחות";
+    $("#bc-commands").innerHTML=rows.length?rows.map(c=>\`<article class="bc-command">
+      <div class="bc-command-priority">\${esc(c.priority||3)}</div>
+      <div><strong>\${esc(c.title)}</strong><p>\${esc(c.instruction)}</p><small>\${esc(c.issued_by)} → \${esc(c.target_manager_id)} · \${esc(c.action_class)}</small></div>
+      <span class="bc-status-pill \${c.status==="waiting_owner"?"watch":c.status==="failed"?"critical":"healthy"}">\${esc(c.status)}</span>
+    </article>\`).join(""):'<div class="bc-empty">אין עדיין פקודות BOOM.</div>';
+  }
+
+  function renderLearning(){
+    $("#bc-learning-summary").textContent=state.learning.length+" learning items";
+    const learn=state.learning.slice(0,16);
+    $("#bc-learning").innerHTML=learn.length?learn.map(x=>\`<article class="bc-learning-item">
+      <small>\${esc(x.domain)} · \${esc(x.source_name)}</small>
+      <strong>\${esc(x.title)}</strong>
+      <p>\${esc(x.principle)}</p>
+      <p><b>HUNT:</b> \${esc(x.hunt_application)}</p>
+    </article>\`).join(""):'<div class="bc-empty">אין learning items.</div>';
+    const cycles=state.cycles.slice(0,10);
+    $("#bc-cycles").innerHTML=cycles.length?cycles.map(c=>{
+      const evalRow=state.evals.find(e=>e.cycle_id===c.id);
+      const evalText=evalRow?(evalRow.passed===true?"PASS":evalRow.passed===false?"FAIL":"OPEN"):"NO EVAL";
+      return \`<article class="bc-cycle-item"><small>\${esc(c.status)} · \${esc(evalText)}</small><strong>\${esc(c.focus)}</strong><p>\${esc(c.hypothesis)}</p></article>\`;
+    }).join(""):'<div class="bc-empty">אין improvement cycles.</div>';
   }
 
   function managerCard(m){
@@ -225,6 +270,9 @@
     renderSummary();
     renderSuppliers();
     renderF35();
+    renderSuperStack();
+    renderCommands();
+    renderLearning();
     renderOrg();
     renderEvents();
     renderDecisions();
@@ -233,22 +281,30 @@
   }
 
   async function loadAll(){
-    const [m,w,wr,r,e,d,c]=await Promise.all([
+    const [m,w,wr,r,e,d,cmd,cy,ev,learn,c]=await Promise.all([
       client.from("hunt_boom_managers").select("*").order("department",{ascending:true}),
       client.from("hunt_boom_workers").select("*").order("manager_id",{ascending:true}).order("name",{ascending:true}),
       client.from("hunt_boom_worker_reports").select("*").order("created_at",{ascending:false}).limit(800),
       client.from("hunt_boom_live_reports").select("*").order("created_at",{ascending:false}).limit(600),
       client.from("hunt_boom_events").select("*").order("created_at",{ascending:false}).limit(100),
       client.from("hunt_boom_decisions").select("*").order("priority",{ascending:false}).order("created_at",{ascending:false}).limit(100),
+      client.from("hunt_boom_agent_commands").select("*").order("created_at",{ascending:false}).limit(200),
+      client.from("hunt_boom_improvement_cycles").select("*").order("started_at",{ascending:false}).limit(80),
+      client.from("hunt_boom_evals").select("*").order("created_at",{ascending:false}).limit(200),
+      client.from("hunt_boom_learning_items").select("*").order("learned_at",{ascending:false}).limit(100),
       client.from("hunt_boom_chat").select("*").eq("conversation_id",conversationId).order("created_at",{ascending:true}).limit(200)
     ]);
-    for(const x of [m,w,wr,r,e,d,c])if(x.error)throw x.error;
+    for(const x of [m,w,wr,r,e,d,cmd,cy,ev,learn,c])if(x.error)throw x.error;
     state.managers=m.data||[];
     state.workers=w.data||[];
     state.workerReports=wr.data||[];
     state.reports=r.data||[];
     state.events=e.data||[];
     state.decisions=d.data||[];
+    state.commands=cmd.data||[];
+    state.cycles=cy.data||[];
+    state.evals=ev.data||[];
+    state.learning=learn.data||[];
     state.chat=c.data||[];
     renderAll();
   }
@@ -297,6 +353,10 @@
         if(payload?.new?.conversation_id===conversationId)scheduleRefresh();
       })
       .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_decisions"},scheduleRefresh)
+      .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_agent_commands"},scheduleRefresh)
+      .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_improvement_cycles"},scheduleRefresh)
+      .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_evals"},scheduleRefresh)
+      .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_learning_items"},scheduleRefresh)
       .subscribe(status=>{
         const el=$("#bc-realtime-status");
         if(el)el.textContent=status;
