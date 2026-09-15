@@ -8,7 +8,18 @@
     return;
   }
 
-  const client=S.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const client=S.createClient(
+    "https://zszlnahjqmwozwubetkm.supabase.co",
+    H.publishableKey,
+    {
+      auth:{
+        flowType:"pkce",
+        detectSessionInUrl:true,
+        persistSession:true,
+        autoRefreshToken:true
+      }
+    }
+  );
   const $=q=>document.querySelector(q);
   const $$=q=>[...document.querySelectorAll(q)];
   const esc=v=>H.esc?.(v)??String(v??"");
@@ -377,12 +388,40 @@
 
   async function boot(){
     createToolNodes();
-    const {data:{session}}=await client.auth.getSession();
+
+    const url=new URL(location.href);
+    const oauthError=url.searchParams.get("error_description")||url.searchParams.get("error");
+    if(oauthError){
+      showLogin();
+      $("#login-error").textContent=oauthError;
+      setLive("GOOGLE LOGIN ERROR","critical");
+      return;
+    }
+
+    const code=url.searchParams.get("code");
+    if(code){
+      setLive("FINISHING GOOGLE LOGIN","watch");
+      const {data,error}=await client.auth.exchangeCodeForSession(code);
+      if(error)throw error;
+
+      // Remove OAuth callback parameters after the session is saved.
+      url.searchParams.delete("code");
+      url.searchParams.delete("state");
+      url.searchParams.delete("error");
+      url.searchParams.delete("error_description");
+      history.replaceState({},document.title,url.pathname+(url.search||""));
+
+      if(!data?.session)throw new Error("Google login completed but no session was created.");
+    }
+
+    const {data:{session},error:sessionError}=await client.auth.getSession();
+    if(sessionError)throw sessionError;
     if(!session){
       showLogin();
       setLive("LOGIN REQUIRED","watch");
       return;
     }
+
     state.session=session;
     await ensureAdmin(session);
     showApp();
@@ -467,7 +506,7 @@
   });
 
   client.auth.onAuthStateChange((event,session)=>{
-    if(event==="SIGNED_IN"&&session&&!state.session){
+    if(event==="SIGNED_IN"&&session&&!state.session&&!new URL(location.href).searchParams.has("code")){
       state.session=session;
       setTimeout(async()=>{
         try{
