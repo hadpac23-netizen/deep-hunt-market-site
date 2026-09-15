@@ -16,6 +16,7 @@ jobs:
       HUNT_BASE_URL: https://deep-hunt-market.netlify.app
       CDP_PORT: "9222"
       BOOM_REPORT_PATH: boom-site-reliability-report.json
+      BOOM_CATEGORY_REPORT_PATH: boom-category-report.json
       BOOM_EXECUTIVE_PLAN_PATH: boom-executive-plan.json
 
     steps:
@@ -51,10 +52,15 @@ jobs:
         continue-on-error: true
         run: node scripts/boom-site-reliability-scan.mjs
 
+      - name: Run Category Orchestrator Manager
+        id: category
+        continue-on-error: true
+        run: node scripts/boom-category-orchestrator-scan.mjs
+
       - name: Build BOOM executive plan
         id: executive
         continue-on-error: true
-        run: node scripts/boom-build-executive-plan.cjs boom-site-reliability-report.json
+        run: node scripts/boom-build-executive-plan.cjs boom-site-reliability-report.json boom-category-report.json
 
       - name: Upload BOOM reports
         if: always()
@@ -63,6 +69,7 @@ jobs:
           name: boom-reliability-${{ github.run_id }}
           path: |
             boom-site-reliability-report.json
+            boom-category-report.json
             boom-executive-plan.json
           if-no-files-found: error
           retention-days: 14
