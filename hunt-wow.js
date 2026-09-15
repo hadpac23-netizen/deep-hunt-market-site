@@ -155,6 +155,36 @@
     });
   }
 
+  const livingWorlds=[
+    {name:"Weekend Escape",copy:"Travel-ready picks that work together.",slugs:["luggage","bags","phone-cases","power-banks","drinkware"]},
+    {name:"Gym Reset",copy:"Fitness and everyday training picks in one place.",slugs:["fitness","fitness-accessories","active-bottoms","sports-bags","drinkware"]},
+    {name:"Phone Upgrade",copy:"A cleaner phone setup with useful add-ons.",slugs:["phone-cases","chargers-cables","power-banks","stands-holders","audio"]},
+    {name:"Pet Home",copy:"Useful picks for pets and the home around them.",slugs:["pet-accessories","pet-toys","pet-feeding","pet-beds"]},
+    {name:"Home Refresh",copy:"Small changes that make a room feel new.",slugs:["home-decor","lighting","home-storage","bedding","kitchen"]},
+    {name:"Beauty Edit",copy:"Beauty discovery across care, tools and makeup.",slugs:["skincare","makeup","beauty-tools","hair"]},
+    {name:"Everyday Carry",copy:"Compact essentials for the bag, pocket and phone.",slugs:["bags","wallets","keychains","phone-cases","power-banks"]},
+    {name:"Desk Upgrade",copy:"Useful pieces for a cleaner everyday workspace.",slugs:["computer-accessories","lighting","stationery","stands-holders","drinkware"]},
+    {name:"Style Mix",copy:"Fashion and accessories built for browsing together.",slugs:["women-tops","women-bottoms","bags","jewelry","women-shoes"]},
+    {name:"Gift Run",copy:"Easy-to-browse ideas across accessories, home and fun.",slugs:["jewelry","home-decor","toys","drinkware","party"]},
+    {name:"Kids Day",copy:"A practical mix for kids, baby and play.",slugs:["kids-clothing","kids-shoes","kids-accessories","baby","toys"]}
+  ];
+
+  function livingWorldsForSession(count=2) {
+    const key="hunt_living_worlds_v2";
+    let indexes=[];
+    try{indexes=JSON.parse(sessionStorage.getItem(key)||"[]")}catch{}
+    indexes=(Array.isArray(indexes)?indexes:[]).filter((x,i,a)=>Number.isInteger(x)&&x>=0&&x<livingWorlds.length&&a.indexOf(x)===i);
+    while(indexes.length<Math.min(count,livingWorlds.length)){
+      const seed=new Uint32Array(1);
+      crypto.getRandomValues(seed);
+      const index=seed[0]%livingWorlds.length;
+      if(!indexes.includes(index))indexes.push(index);
+    }
+    indexes=indexes.slice(0,count);
+    sessionStorage.setItem(key,JSON.stringify(indexes));
+    return indexes.map(index=>livingWorlds[index]);
+  }
+
   function mode() {
     const value = localStorage.getItem(modeKey) || "for-you";
     return ["for-you","women","men","home","tech"].includes(value) ? value : "for-you";
@@ -199,8 +229,9 @@
       && retailAmount > 0;
     const retailEstimated = !retailReady && Number.isFinite(retailAmount) && retailAmount > 0;
     const price = retailReady ? H.money(retailAmount, item.retail_currency || item.currency || "USD") : (retailEstimated ? `From ${H.money(retailAmount,item.retail_currency || item.currency || "USD")}` : "Price pending");
+    const newBadge=H.isNewArrival?.(item)?`<b class="hd-new-pulse">NEW</b>`:"";
     return `<article class="hd-wow-product" role="listitem" data-category="${H.esc(item.category || "")}">
-      <a class="hd-wow-product-media" href="${H.esc(href)}">${image}<span>${H.esc(label)}</span></a>
+      <a class="hd-wow-product-media" href="${H.esc(href)}">${image}<span>${H.esc(label)}</span>${newBadge}</a>
       <div class="hd-wow-product-body">
         <small>${H.esc(item.provider || "CATALOG SOURCE")}</small>
         <a href="${H.esc(href)}">${H.esc(item.title || "Product")}</a>
@@ -222,13 +253,12 @@
     let products = pickProducts(shelves, dep.items, dep.womenOnly ? 100 : 30);
     if (dep.womenOnly) products = products.filter(isWomenItem).slice(0,30);
     const rep = products.find(x => typeof x.image_url === "string" && x.image_url.startsWith("https://"));
-    const uniqueCount = products.length;
     const image = rep
       ? `<img src="${H.esc(rep.image_url)}" alt="" loading="lazy">`
       : '<div class="hd-dept-placeholder" aria-hidden="true">H</div>';
     return `<a class="hd-dept-card" href="${H.esc(dep.href || H.categoryUrl(dep.slug))}">
       <div class="hd-dept-image">${image}</div>
-      <div><strong>${H.esc(dep.title)}</strong><span>${uniqueCount ? uniqueCount + "+ live picks" : "Open department"}</span></div>
+      <div><strong>${H.esc(dep.title)}</strong><span>Explore department</span></div>
     </a>`;
   }
 
@@ -255,22 +285,18 @@
     const all = flatUnique(shelves);
     if (!all.length) return;
 
-    const liveCount = all.length;
-    const providerCount = all.length ? 1 : 0;
-    const categoryCount = Number(data.catalog_category_count || 0) || Object.values(shelves).filter(rows => Array.isArray(rows) && rows.length).length;
-
     const hero = $(".hd-hero-copy");
     let proof = hero?.querySelector(".hd-live-proof");
     if (hero && !proof) {
       proof = document.createElement("div");
       proof.className = "hd-live-proof";
-      proof.setAttribute("aria-label","Marketplace catalog summary");
+      proof.setAttribute("aria-label","Marketplace catalog qualities");
       hero.querySelector(":scope > p")?.after(proof);
     }
     if (proof) proof.innerHTML = `
-      <div><strong>${liveCount.toLocaleString()}</strong><span>QUALITY CATALOG PRODUCTS</span></div>
-      <div><strong>${providerCount}</strong><span>CATALOG SOURCES</span></div>
-      <div><strong>${categoryCount}</strong><span>SHOPPING CATEGORIES</span></div>`;
+      <div><strong>Curated</strong><span>DYNAMIC PRODUCT MIX</span></div>
+      <div><strong>Country-aware</strong><span>SHIPPING + PROFIT GATES</span></div>
+      <div><strong>Live recheck</strong><span>PRICE · STOCK · SHIPPING</span></div>`;
 
     let showcase = $("#hd-wow-showcase");
     if (!showcase) {
@@ -280,14 +306,28 @@
       $("#shop")?.before(showcase);
     }
 
-    const cj = all.filter(x => String(x.provider).toLowerCase().includes("cj")).slice(0,12);
+    const worlds=livingWorldsForSession(2);
+    const worldSections=worlds.map((world,index)=>{
+      let worldProducts=pickProducts(shelves,world.slugs,12);
+      if(worldProducts.length<6)worldProducts=[...worldProducts,...all.filter(x=>!worldProducts.some(y=>String(y.item_id)===String(x.item_id))).slice(0,12-worldProducts.length)];
+      return `<section class="hd-living-world" aria-labelledby="hd-living-world-title-${index}">
+        <div class="hd-for-you-head"><div><small>BOOM LIVING WORLD</small><h3 id="hd-living-world-title-${index}">${H.esc(world.name)}</h3><p>${H.esc(world.copy)} The mix changes between browsing sessions.</p></div><a class="hd-btn" href="search.html?q=${encodeURIComponent(world.name)}">Explore mission</a></div>
+        <div class="hd-wow-track" role="list">${worldProducts.map(x=>productCard(x,"WORLD PICK")).join("")}</div>
+      </section>`;
+    }).join("");
+    const cjAll = all.filter(x => String(x.provider).toLowerCase().includes("cj"));
+    const cjNew = cjAll.filter(x => H.isNewArrival?.(x)).slice(0,12);
+    const cj = (cjNew.length ? cjNew : cjAll).slice(0,12);
+    const cjTitle = cjNew.length ? "New arrivals from CJdropshipping" : "More from CJdropshipping";
+    const cjLabel = cjNew.length ? "NEW ARRIVALS" : "SOURCE PICKS";
     showcase.innerHTML = `
       <div class="hd-wow-head">
         <div><div class="hd-kicker hd-kicker-small">SHOP BY DEPARTMENT</div><h2>Everything is easier to find now.</h2>
-        <p>Large departments first, detailed subcategories inside. Real images come from the live supplier catalog.</p></div>
-        <span class="hd-wow-live" aria-live="polite"><i></i>${liveCount.toLocaleString()} LIVE</span>
+        <p>Large departments first, detailed subcategories inside. The visible mix changes by relevance and freshness, not catalog size.</p></div>
+        <span class="hd-wow-live" aria-live="polite"><i></i>FRESH NOW</span>
       </div>
       <div class="hd-dept-grid">${departments.map(dep => departmentCard(dep,shelves)).join("")}</div>
+      ${worldSections}
       <section class="hd-for-you" id="for-you" aria-labelledby="hd-for-you-title">
         <div class="hd-for-you-head"><div><small>PERSONALIZED SHOPPING</small><h3 id="hd-for-you-title">For You</h3><p id="hd-for-you-copy"></p></div>
           <div class="hd-mode-switch" aria-label="Choose shopping view">
@@ -297,7 +337,7 @@
         </div>
         <div class="hd-wow-track" id="hd-for-you-products"></div>
       </section>
-      ${cj.length ? `<section class="hd-fresh-source"><div class="hd-wow-rail-head"><div><small>FRESH SOURCE</small><h3>New from CJdropshipping</h3></div><span>LIVE API</span></div><div class="hd-wow-track" role="list">${cj.map(x => productCard(x,"CJ LIVE")).join("")}</div></section>` : ""}`;
+      ${cj.length ? `<section class="hd-fresh-source"><div class="hd-wow-rail-head"><div><small>${cjLabel}</small><h3>${cjTitle}</h3></div><span>LIVE API</span></div><div class="hd-wow-track" role="list">${cj.map(x => productCard(x,cjNew.length?"NEW":"CJ LIVE")).join("")}</div></section>` : ""}`;
     renderPersonalized(shelves);
   }  document.addEventListener("click", event => {
     const button = event.target.closest?.("[data-shop-mode]");

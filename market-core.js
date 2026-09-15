@@ -252,6 +252,16 @@
       : "HUNT learns from products and categories you browse, save and add to cart.";
   }
 
+  function isNewArrival(product, maxDays=14) {
+    if (product?.new_arrival === true) return true;
+    const raw = product?.first_seen_at || product?.discovered_at || product?.ingested_at || product?.created_at || "";
+    if (!raw) return false;
+    const ts = Date.parse(String(raw));
+    if (!Number.isFinite(ts)) return false;
+    const age = Date.now() - ts;
+    return age >= 0 && age <= Math.max(1, Number(maxDays) || 14) * 86400000;
+  }
+
   const cart = () => {
     const rows = readJson(cartKey, []);
     return (Array.isArray(rows) ? rows : []).map(item => {
@@ -338,7 +348,7 @@
 
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,departmentSubcategories,genderSubcategories,esc,money,safeQuery,
-    inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
+    inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,isNewArrival,signals,shoppingPreferences,saveShoppingPreferences,
     cart,saveCart,addCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
   };
 })();

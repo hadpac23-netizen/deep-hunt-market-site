@@ -7,7 +7,7 @@
   <title>AI Find — HUNT DEAL</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
   <link rel="stylesheet" href="hunt-wow.css?v=market2">
-  <link rel="stylesheet" href="hunt-shop.css?v=platform1">
+  <link rel="stylesheet" href="hunt-shop.css?v=dynamic1">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#111111">
 </head>
@@ -46,14 +46,22 @@
       <strong id="hd-ai-intent-title">Ready to search</strong>
       <span id="hd-ai-intent-copy">No profile guessing. Results come from the current CJ-only HUNT catalog.</span>
     </section>
+    <section class="hd-mission-panel" id="hd-mission-panel" hidden aria-live="polite">
+      <div class="hd-mission-head">
+        <div><small>BOOM MISSION SHOPPING</small><h2 id="hd-mission-title">Your mission set</h2><p id="hd-mission-copy"></p></div>
+        <button class="hd-btn" id="hd-mission-rebuild" type="button">Rebuild</button>
+      </div>
+      <div class="hd-mission-grid" id="hd-mission-grid"></div>
+      <div class="hd-mission-total"><span>Estimated product total</span><strong id="hd-mission-total">—</strong><small>Shipping, stock and final price are rechecked before checkout.</small></div>
+    </section>
     <section class="hd-ai-results">
       <div class="hd-market-product-grid" id="hd-ai-results-grid"></div>
       <div class="hd-category-sentinel" id="hd-ai-sentinel"><span></span><strong>Search to begin.</strong></div>
     </section>
   </main>
   <script src="hunt-theme.js?v=1"></script>
-  <script src="market-core.js?v=30k1"></script>
-  <script src="search.js?v=launchqa1"></script>
+  <script src="market-core.js?v=dynamic1"></script>
+  <script src="search.js?v=mission1"></script>
 
 <script src="analytics.js?v=huntmetrics1"></script>
 </body>
