@@ -46,7 +46,7 @@
   }
 
   function relationScore(item,currentCategory,currentPrice,currentGender){
-    const slug=String(item?.category||H.inferCategory(item)||"");
+    const slug=String(H.inferCategory(item)||item?.category||"");
     let score=0;
     if(slug===currentCategory)score+=100;
     if(siblingSlugs(currentCategory).includes(slug))score+=55;
@@ -73,7 +73,7 @@
   }
 
   async function buildPool(product){
-    const currentCategory=String(product?.category||H.inferCategory(product)||"");
+    const currentCategory=String(H.inferCategory(product)||product?.category||"");
     const prefs=H.shoppingPreferences?.()||{};
     const requested=[currentCategory,...siblingSlugs(currentCategory),...(prefs.categories||[]).slice(0,3)]
       .filter(Boolean)
@@ -135,7 +135,7 @@
     const img=safeHttps(item.image_url)
       ? '<img src="'+H.esc(item.image_url)+'" alt="'+H.esc(item.title||"Product")+'" loading="lazy">'
       : '<div class="hd-profile-product-placeholder">H</div>';
-    const slug=String(item.category||H.inferCategory(item)||"");
+    const slug=String(H.inferCategory(item)||item.category||"");
     return '<article class="hd-shelf-card" role="listitem" data-category="'+H.esc(slug)+'" data-endless-key="'+H.esc(key(item))+'">'+
       '<a class="hd-shelf-media" href="'+H.esc(href)+'">'+img+'</a>'+
       '<div class="hd-shelf-body">'+
