@@ -64,18 +64,72 @@ async function cjToken(){
   cjCache={token,expiresAt:Date.now()+12*60*60*1000};
   return token;
 }
-async function cjPost(path:string,body:any){
+const sleep=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
+function normalizeShippingPhone(country:string,value:unknown){
+  const raw=clean(value);
+  if(!raw)return "";
+  const digits=raw.replace(/\D/g,"");
+  if(country==="IL"){
+    if(digits.startsWith("972"))return "+"+digits;
+    if(digits.startsWith("0")&&digits.length>=9)return "+972"+digits.slice(1);
+  }
+  return raw;
+}
+function isTransientCjFailure(res:Response,out:any){
+  const code=String(out?.code||res.status);
+  const message=clean(out?.message).toLowerCase();
+  return res.status>=500 || code==="1603000" && (message.includes("server is busy")||message.includes("try again later"));
+}
+async function cjGetOrderByStoreNumber(orderNumber:string){
+  const ref=clean(orderNumber);
+  if(!ref)return null;
   const token=await cjToken();
-  const res=await fetch("https://developers.cjdropshipping.com/api2.0/v1"+path,{
+  const res=await fetch("https://developers.cjdropshipping.com/api2.0/v1/shopping/order/getOrderDetailBatch",{
     method:"POST",
     headers:{"content-type":"application/json","accept":"application/json","CJ-Access-Token":token},
-    body:JSON.stringify(body)
+    body:JSON.stringify({orderIds:[ref]})
   });
   const out=await res.json().catch(()=>({}));
-  if(!res.ok||out?.result!==true){
-    throw new Error("CJ_API_"+String(out?.code||res.status)+"_"+clean(out?.message).slice(0,120));
+  if(!res.ok||out?.result!==true)return null;
+  const list=Array.isArray(out?.data)?out.data:[];
+  const exact=list.find((row:any)=>
+    [row?.orderId,row?.orderNum,row?.cjOrderId,row?.cjOrderCode].some(value=>clean(value)===ref) ||
+    (Array.isArray(row?.productList)&&row.productList.some((line:any)=>clean(line?.orderNumber)===ref))
+  );
+  return exact||(list.length===1?list[0]:null);
+}
+async function cjPost(path:string,body:any,options:{maxAttempts?:number,reconcileOrderNumber?:string}={}){
+  const maxAttempts=Math.max(1,Math.min(5,Number(options.maxAttempts||1)));
+  let lastError="CJ_API_UNKNOWN";
+  for(let attempt=1;attempt<=maxAttempts;attempt++){
+    const token=await cjToken();
+    const res=await fetch("https://developers.cjdropshipping.com/api2.0/v1"+path,{
+      method:"POST",
+      headers:{"content-type":"application/json","accept":"application/json","CJ-Access-Token":token},
+      body:JSON.stringify(body)
+    });
+    const out=await res.json().catch(()=>({}));
+    if(res.ok&&out?.result===true)return out;
+    lastError="CJ_API_"+String(out?.code||res.status)+"_"+clean(out?.message).slice(0,120);
+    const transient=isTransientCjFailure(res,out);
+    const duplicate=String(out?.code||"")==="1603003";
+    if((transient||duplicate)&&options.reconcileOrderNumber){
+      const existing=await cjGetOrderByStoreNumber(options.reconcileOrderNumber).catch(()=>null);
+      if(existing){
+        return {
+          code:200,result:true,message:"Reconciled existing CJ order after ambiguous create",
+          data:{
+            orderId:clean(existing?.orderId||existing?.cjOrderId),
+            orderNumber:clean(existing?.orderNum||options.reconcileOrderNumber)
+          },
+          requestId:clean(out?.requestId)||null,reconciled:true
+        };
+      }
+    }
+    if(attempt>=maxAttempts||!transient)throw new Error(lastError);
+    await sleep(Math.min(8000,1000*(2**(attempt-1))));
   }
-  return out;
+  throw new Error(lastError);
 }
 function groupsFromLines(lines:any[]){
   const groups:Record<string,any>={};
@@ -305,7 +359,27 @@ Deno.serve(async(req:Request)=>{
       }
 
       if(!supplierId){
-        if(clean(fulfillment?.supplier_status)==="sandbox_claimed" && Number(fulfillment?.attempt_count||0)>1){
+        let reopenedFailedSandbox=false;
+        if(clean(fulfillment?.supplier_status)==="sandbox_create_failed"){
+          if(Number(fulfillment?.attempt_count||0)>=5)throw new Error("SANDBOX_RETRY_LIMIT_REACHED");
+          const {data:reopened,error:reopenError}=await ctx.supabaseAdmin
+            .from("hunt_fulfillment_orders")
+            .update({
+              status:"processing",supplier_status:"sandbox_claimed",last_error:null,
+              updated_at:new Date().toISOString()
+            })
+            .eq("id",fulfillment.id)
+            .eq("supplier_status","sandbox_create_failed")
+            .select("*").maybeSingle();
+          requireWrite(reopenError,"FULFILLMENT_REOPEN_FAILED");
+          if(!reopened)throw new Error("FULFILLMENT_REOPEN_RACE");
+          fulfillment=reopened;
+          reopenedFailedSandbox=true;
+        }
+        if(clean(fulfillment?.supplier_status)!=="sandbox_claimed"){
+          throw new Error("FULFILLMENT_ALREADY_PROCESSING");
+        }
+        if(Number(fulfillment?.attempt_count||0)>1&&!reopenedFailedSandbox){
           throw new Error("FULFILLMENT_ALREADY_PROCESSING");
         }
 
@@ -316,7 +390,7 @@ Deno.serve(async(req:Request)=>{
           shippingCountryCode:country,
           shippingProvince:clean(shipping.shippingProvince).slice(0,50),
           shippingCity:clean(shipping.shippingCity).slice(0,50),
-          shippingPhone:clean(shipping.shippingPhone).slice(0,20),
+          shippingPhone:normalizeShippingPhone(country,shipping.shippingPhone).slice(0,20),
           shippingCustomerName:clean(shipping.shippingCustomerName).slice(0,50),
           shippingAddress:clean(shipping.shippingAddress).slice(0,200),
           shippingAddress2:clean(shipping.shippingAddress2).slice(0,200),
@@ -353,7 +427,7 @@ Deno.serve(async(req:Request)=>{
 
         let created:any;
         try{
-          created=await cjPost("/shopping/order/createOrderV2",cjPayload);
+          created=await cjPost("/shopping/order/createOrderV2",cjPayload,{maxAttempts:5,reconcileOrderNumber:supplierCode});
         }catch(createError){
           const failure=clean((createError as Error)?.message)||"CJ_SANDBOX_CREATE_FAILED";
           const now=new Date().toISOString();
