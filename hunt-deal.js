@@ -717,6 +717,32 @@
     }
   }
 
+  const SHELF_LKG_KEY = "hunt_cj_shelves_lkg_v1";
+  const SHELF_LKG_TTL_MS = 6 * 60 * 60 * 1000;
+
+  function readShelfLkg() {
+    try {
+      const row = JSON.parse(localStorage.getItem(SHELF_LKG_KEY) || "null");
+      if (!row?.saved_at || !row?.data?.shelves) return null;
+      if (Date.now() - Number(row.saved_at) > SHELF_LKG_TTL_MS) return null;
+      return row.data;
+    } catch { return null; }
+  }
+
+  function writeShelfLkg(data) {
+    try {
+      if (!data?.shelves || Number(data?.visible_product_count || 0) <= 0) return;
+      const shelves = {};
+      for (const [slug, rows] of Object.entries(data.shelves)) {
+        shelves[slug] = (Array.isArray(rows) ? rows : []).slice(0, 18);
+      }
+      localStorage.setItem(SHELF_LKG_KEY, JSON.stringify({
+        saved_at: Date.now(),
+        data: {...data, shelves, _hunt_lkg:true}
+      }));
+    } catch {}
+  }
+
   async function loadMarketShelves() {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
@@ -725,14 +751,23 @@
 
     let renderedFallback = false;
     let snapshotData = null;
+    let baseData = null;
 
     try {
       const snapshotRes = await fetch("cj-launch-home.json?v=30k1", {cache:"force-cache"});
       if (snapshotRes.ok) {
         snapshotData = await snapshotRes.json();
+        baseData = snapshotData;
         renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");
       }
     } catch {}
+
+    const lkg = readShelfLkg();
+    if (lkg?.shelves) {
+      baseData = baseData ? mergeShelfData(baseData, lkg) : lkg;
+      renderedFallback = renderMarketShelvesData(baseData, "cached") || renderedFallback;
+      if (counter) counter.title = "Live refresh pending; showing the last known good catalog snapshot.";
+    }
 
     if (snapshotData?.launch_authoritative === true && renderedFallback) return;
 
@@ -743,7 +778,8 @@
       }, 15000);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Market shelves unavailable");
-      const merged = snapshotData ? mergeShelfData(snapshotData, data) : data;
+      const merged = baseData ? mergeShelfData(baseData, data) : data;
+      writeShelfLkg(merged);
       if (snapshotData && renderedFallback) {
         // Fast snapshot first, then one quality-ranked hybrid refresh when live suppliers return.
         // This keeps first paint fast without permanently hiding better live inventory.
