@@ -1,0 +1,292 @@
+{
+  "version": 1,
+  "provider": "EPROLO",
+  "status": "mapping_ready_feed_not_connected",
+  "principles": {
+    "official_feed_or_bridge_only": true,
+    "no_scraping": true,
+    "no_fake_stock_or_prices": true,
+    "live_stock_recheck_required_before_checkout": true,
+    "shipping_recheck_required_before_checkout": true,
+    "preserve_liked_saved_items": true,
+    "supplier_gravity_enabled": true
+  },
+  "source_groups": [
+    {
+      "source": [
+        "Fashion & Clothing",
+        "New Arrival Apparel"
+      ],
+      "targets": [
+        "women",
+        "men",
+        "women-tshirts",
+        "women-crop-tops",
+        "women-tanks",
+        "women-blouses",
+        "women-jeans",
+        "men-jeans",
+        "men-ripped-jeans",
+        "men-skinny-jeans",
+        "men-baggy-jeans",
+        "men-straight-jeans",
+        "women-swim",
+        "women-sleepwear",
+        "men-sleepwear",
+        "women-outerwear",
+        "men-outerwear"
+      ],
+      "priority": "very_high"
+    },
+    {
+      "source": [
+        "Jewelry & Accessories"
+      ],
+      "targets": [
+        "jewelry-necklaces",
+        "jewelry-rings",
+        "jewelry-earrings",
+        "jewelry-bracelets",
+        "jewelry",
+        "hair-accessories",
+        "headbands",
+        "hair-clips",
+        "sunglasses",
+        "watches",
+        "belts",
+        "scarves"
+      ],
+      "priority": "very_high"
+    },
+    {
+      "source": [
+        "Shoes & Bags"
+      ],
+      "targets": [
+        "women-shoes",
+        "men-shoes",
+        "bags",
+        "men-bags",
+        "women-wallets",
+        "men-wallets",
+        "luggage",
+        "travel",
+        "bag-accessories"
+      ],
+      "priority": "high"
+    },
+    {
+      "source": [
+        "Phones & Accessories"
+      ],
+      "targets": [
+        "phone-cases",
+        "chargers-cables",
+        "power-banks",
+        "stands-holders",
+        "audio",
+        "wearable-accessories"
+      ],
+      "priority": "high"
+    },
+    {
+      "source": [
+        "Consumer Electronic",
+        "Electronics & Smart Gadgets"
+      ],
+      "targets": [
+        "electronics",
+        "audio",
+        "wearables",
+        "smart-home",
+        "cameras",
+        "computer-accessories",
+        "gaming"
+      ],
+      "priority": "high"
+    },
+    {
+      "source": [
+        "Home Improvement",
+        "Home & Garden"
+      ],
+      "targets": [
+        "home-storage",
+        "kitchen",
+        "lighting",
+        "bedding",
+        "bath",
+        "home-decor",
+        "drinkware",
+        "tools-diy",
+        "cleaning",
+        "small-appliances"
+      ],
+      "priority": "high"
+    },
+    {
+      "source": [
+        "Beauty & Health",
+        "Health & Beauty"
+      ],
+      "targets": [
+        "skincare",
+        "makeup",
+        "nails",
+        "hair",
+        "beauty-tools",
+        "body-care",
+        "fragrance"
+      ],
+      "priority": "high",
+      "gates": [
+        "no_unverified_medical_claims",
+        "fragrance_authenticity_required"
+      ]
+    },
+    {
+      "source": [
+        "Mother & Kids"
+      ],
+      "targets": [
+        "kids-clothing",
+        "kids-shoes",
+        "kids-accessories",
+        "baby",
+        "baby-clothing",
+        "baby-shoes",
+        "educational-toys"
+      ],
+      "priority": "high",
+      "gates": [
+        "age_suitability_required",
+        "child_safety_review"
+      ]
+    },
+    {
+      "source": [
+        "Sports & Outdoors"
+      ],
+      "targets": [
+        "fitness",
+        "outdoors",
+        "active-bottoms",
+        "sports-gear",
+        "sports-bags",
+        "cycling",
+        "fitness-accessories"
+      ],
+      "priority": "medium_high"
+    },
+    {
+      "source": [
+        "Pet Supplies & Care"
+      ],
+      "targets": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-clothing",
+        "pet-feeding",
+        "pet-walk",
+        "pet-beds",
+        "aquarium"
+      ],
+      "priority": "medium"
+    },
+    {
+      "source": [
+        "Toys, Games & Novelty"
+      ],
+      "targets": [
+        "toys",
+        "plush-toys",
+        "building-toys",
+        "educational-toys"
+      ],
+      "priority": "medium",
+      "gates": [
+        "age_suitability_required",
+        "child_safety_review"
+      ]
+    },
+    {
+      "source": [
+        "Travel"
+      ],
+      "targets": [
+        "travel",
+        "luggage",
+        "bags"
+      ],
+      "priority": "medium"
+    },
+    {
+      "source": [
+        "Cars & Motorcycles"
+      ],
+      "targets": [
+        "future:auto-accessories"
+      ],
+      "priority": "low_until_taxonomy_ready",
+      "gates": [
+        "exclude_safety_critical_vehicle_parts"
+      ]
+    }
+  ],
+  "intake_gates": {
+    "common": [
+      "https_image",
+      "clear_title",
+      "variant_data",
+      "country_shipping",
+      "landed_cost",
+      "profit_gate",
+      "freshness",
+      "return_policy"
+    ],
+    "electronics": [
+      "voltage_or_power_spec",
+      "plug_or_connector_spec",
+      "destination_compatibility"
+    ],
+    "apparel": [
+      "size_data",
+      "color_variants",
+      "material_if_available"
+    ],
+    "beauty": [
+      "ingredient_or_product_type_if_available",
+      "no_unverified_medical_claims"
+    ],
+    "fragrance": [
+      "authenticity_verified_before_listing_as_original"
+    ],
+    "kids": [
+      "age_suitability",
+      "safety_review"
+    ],
+    "auto": [
+      "non_safety_critical_only"
+    ]
+  },
+  "gap_first_targets": [
+    "women-tshirts",
+    "women-crop-tops",
+    "women-tanks",
+    "men-ripped-jeans",
+    "men-skinny-jeans",
+    "men-baggy-jeans",
+    "headbands",
+    "hair-clips",
+    "sunglasses",
+    "electronics",
+    "beauty-tools",
+    "kids-shoes",
+    "travel",
+    "luggage",
+    "power-banks",
+    "small-appliances",
+    "fitness-accessories"
+  ]
+}

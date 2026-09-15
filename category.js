@@ -111,6 +111,11 @@
     if (!sub) return true;
     const validSubs = H.departmentSubcategories?.[slug] || [];
     if (!validSubs.includes(sub)) return true;
+    const virtual=H.virtualCategories?.[sub];
+    if(virtual?.match){
+      try{return new RegExp(virtual.match,"i").test(String(product?.title||""));}
+      catch{return false;}
+    }
     return String(product?.category || "") === sub;
   }
 
@@ -208,7 +213,7 @@
     catalogPageLoading=true;
     try{
       const pagePath=catalogPages[nextCatalogPageIndex];
-      const res=await fetch(pagePath+"?v=30k1",{cache:"force-cache"});
+      const res=await fetch(pagePath+"?v=taxonomy2",{cache:"force-cache"});
       if(!res.ok) throw new Error("Catalog page unavailable");
       const page=await res.json();
       const rows=Array.isArray(page?.products)?page.products:[];
@@ -266,7 +271,7 @@
 
     $("#hd-cat-title").textContent = pageTitle;
     $("#hd-cat-breadcrumb").textContent = pageTitle;
-    $("#hd-cat-copy").textContent = subDef ? `${subDef.title} inside ${def.title}. CJ-only products, organized without category mixing.` : def.description;
+    $("#hd-cat-copy").textContent = subDef ? `${subDef.title} inside ${def.title}. Verified catalog products, organized without category mixing.` : def.description;
     renderCategories();
     applyViewMode(viewMode);
     H.recordSignal(slug,"category");
@@ -275,7 +280,8 @@
     H.updateCartBadges();
     setupGridObserver();
 
-    const sourceSlug = sub && (H.departmentSubcategories?.[slug] || []).includes(sub) && H.categoryDefs[sub] ? sub : slug;
+    const virtualSub=H.virtualCategories?.[sub]||null;
+    const sourceSlug = virtualSub ? sub : (sub && (H.departmentSubcategories?.[slug] || []).includes(sub) && H.categoryDefs[sub] ? sub : slug);
 
     const mergeProductRecord = (base, fresh) => {
       if (!base) return fresh || {};
@@ -299,9 +305,9 @@
 
     const applyRows = (rows, label, {merge=false}={}) => {
       const incoming = (Array.isArray(rows) ? rows : []).filter(product => {
-        if (String(product?.provider || "").toLowerCase() !== "cjdropshipping") return false;
+        if (!String(product?.provider || "").trim()) return false;
         if (product?.department && String(product.department) !== slug) return false;
-        if (sub && String(product?.category || "") !== sub) return false;
+        if (!matchesSub(product)) return false;
         return true;
       });
       if (merge && rawResults.length) {
@@ -316,7 +322,7 @@
       }
       const providers = [...new Set(rawResults.map(p=>p.provider).filter(Boolean))];
       $("#hd-cat-provider-state").textContent = rawResults.length
-        ? "Curated CJ catalog · live variants, stock and shipping rechecked on product open"
+        ? "Verified HUNT catalog · variants, stock and shipping rechecked on product open"
         : "No connected provider returned a product for this category yet.";
       resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
       window.HuntAnalytics?.category(slug, rawResults.length);
@@ -326,7 +332,7 @@
     let rendered = false;
     let shardLoaded = false;
     try {
-      const manifestRes = await fetch("catalog-manifest.json?v=30k1",{cache:"force-cache"});
+      const manifestRes = await fetch("catalog-manifest.json?v=taxonomy2",{cache:"force-cache"});
       if(manifestRes.ok){
         const manifest=await manifestRes.json();
         const info=manifest?.categories?.[sourceSlug];
@@ -335,7 +341,7 @@
         nextCatalogPageIndex=0;
         if(catalogPages.length){
           const firstPath=catalogPages[0];
-          const firstRes=await fetch(firstPath+"?v=30k1",{cache:"force-cache"});
+          const firstRes=await fetch(firstPath+"?v=taxonomy2",{cache:"force-cache"});
           if(firstRes.ok){
             const first=await firstRes.json();
             const rows=Array.isArray(first?.products)?first.products:[];
