@@ -34,7 +34,9 @@
         "women-sleepwear",
         "men-sleepwear",
         "women-outerwear",
-        "men-outerwear"
+        "men-outerwear",
+        "women-slippers",
+        "men-slippers"
       ],
       "priority": "very_high"
     },
@@ -54,7 +56,12 @@
         "sunglasses",
         "watches",
         "belts",
-        "scarves"
+        "scarves",
+        "jewelry-ear-cuffs",
+        "jewelry-anklets",
+        "jewelry-brooches",
+        "jewelry-pendants",
+        "jewelry-sets"
       ],
       "priority": "very_high"
     },
@@ -136,7 +143,8 @@
         "hair",
         "beauty-tools",
         "body-care",
-        "fragrance"
+        "fragrance",
+        "hair-tools"
       ],
       "priority": "high",
       "gates": [
@@ -287,6 +295,14 @@
     "luggage",
     "power-banks",
     "small-appliances",
-    "fitness-accessories"
+    "fitness-accessories",
+    "jewelry-ear-cuffs",
+    "jewelry-anklets",
+    "jewelry-brooches",
+    "jewelry-pendants",
+    "jewelry-sets",
+    "women-slippers",
+    "men-slippers",
+    "hair-tools"
   ]
 }
