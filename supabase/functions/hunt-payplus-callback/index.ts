@@ -1,6 +1,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
+const num=(v:unknown)=>Number.isFinite(Number(v))?Number(v):null;
 const BASE=clean(Deno.env.get("SUPABASE_URL"));
 const SERVICE=clean(Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"));
 const supabase=createClient(BASE,SERVICE,{auth:{persistSession:false,autoRefreshToken:false}});
@@ -30,6 +31,38 @@ async function requestPayload(req:Request){
   const text=await req.text().catch(()=>"");
   try{return {...params,...JSON.parse(text)}}catch{return {...params,raw:text.slice(0,4000)}}
 }
+function verifiedTransaction(body:any){
+  const root=body?.data??body;
+  const candidates=[
+    root?.transaction,
+    Array.isArray(root?.transactions)?root.transactions[0]:null,
+    root?.data?.transaction,
+    Array.isArray(root?.data)?root.data[0]:null,
+    root
+  ].filter(Boolean);
+  const tx=candidates.find((x:any)=>x&&typeof x==="object")||{};
+  const requestUid=clean(
+    tx?.payment_request_uid||tx?.paymentRequestUid||
+    root?.payment_request_uid||root?.paymentRequestUid
+  );
+  const transactionUid=clean(
+    tx?.transaction_uid||tx?.transactionUid||
+    root?.transaction_uid||root?.transactionUid
+  );
+  const moreInfo=clean(
+    tx?.more_info||tx?.moreInfo||
+    root?.more_info||root?.moreInfo
+  );
+  const amount=num(
+    tx?.amount??tx?.transaction_amount??tx?.total_amount??
+    root?.amount??root?.transaction_amount??root?.total_amount
+  );
+  const currency=clean(
+    tx?.currency_code||tx?.currency||
+    root?.currency_code||root?.currency
+  ).toUpperCase();
+  return {requestUid,transactionUid,moreInfo,amount,currency};
+}
 async function verifyWithPayPlus(session:any,payload:any){
   const apiKey=clean(Deno.env.get("PAYPLUS_API_KEY"));
   const secretKey=clean(Deno.env.get("PAYPLUS_SECRET_KEY"));
@@ -49,7 +82,28 @@ async function verifyWithPayPlus(session:any,payload:any){
   });
   const body=await res.json().catch(()=>({}));
   if(!res.ok)throw new Error("PAYPLUS_IPN_VERIFY_FAILED_"+res.status);
-  return {body,transactionUid,requestUid};
+
+  const tx=verifiedTransaction(body);
+  if(!tx.requestUid||!tx.transactionUid||!tx.moreInfo||tx.amount===null||!tx.currency){
+    throw new Error("PAYPLUS_VERIFICATION_FIELDS_MISSING");
+  }
+  if(tx.requestUid!==requestUid)throw new Error("PAYPLUS_REQUEST_UID_MISMATCH");
+  if(tx.moreInfo!==session.id)throw new Error("PAYPLUS_MORE_INFO_MISMATCH");
+  if(transactionUid&&tx.transactionUid!==transactionUid)throw new Error("PAYPLUS_TRANSACTION_UID_MISMATCH");
+  if(clean(session.provider_transaction_uid)&&tx.transactionUid!==clean(session.provider_transaction_uid)){
+    throw new Error("PAYPLUS_STORED_TRANSACTION_UID_MISMATCH");
+  }
+  if(Math.abs(Number(tx.amount)-Number(session.total_amount))>0.01)throw new Error("PAYPLUS_AMOUNT_MISMATCH");
+  if(tx.currency!==clean(session.currency).toUpperCase())throw new Error("PAYPLUS_CURRENCY_MISMATCH");
+
+  return {
+    body,
+    transactionUid:tx.transactionUid,
+    requestUid:tx.requestUid,
+    moreInfo:tx.moreInfo,
+    amount:tx.amount,
+    currency:tx.currency
+  };
 }
 async function runtimeControl(key:string){
   const {data}=await supabase.from("hunt_runtime_controls")
@@ -86,7 +140,10 @@ Deno.serve(async(req:Request)=>{
     const payloadDigest=await sha256(JSON.stringify({
       session_id:session.id,
       transaction_uid:verified.transactionUid||null,
-      payment_request_uid:verified.requestUid||null
+      payment_request_uid:verified.requestUid||null,
+      amount:verified.amount,
+      currency:verified.currency,
+      more_info:verified.moreInfo
     }));
 
     const enabled=await runtimeControl("hunt_payplus_callback_accept_paid");

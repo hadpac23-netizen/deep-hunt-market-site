@@ -330,10 +330,10 @@ Deno.serve(async(req:Request)=>{
         currency:pricing.currency,
         product_amount:pricing.product_amount,
         shipping_amount:pricing.shipping_amount,
-        pre_discount_total_amount:finalPricing.pre_discount_total_amount,
-        discount_amount:finalPricing.discount_amount,
-        total_amount:finalPricing.total_amount,
-        checkout_offer_id:finalPricing.checkout_offer_id,
+        pre_discount_total_amount:pricing.total_amount,
+        discount_amount:0,
+        total_amount:pricing.total_amount,
+        checkout_offer_id:null,
         line_items:pricing.line_items,
         customer_email:shipping.email,
         shipping_snapshot:shipping.snapshot,
@@ -344,25 +344,97 @@ Deno.serve(async(req:Request)=>{
       .single();
     if(insertError||!inserted)throw new Error("PAYMENT_SESSION_STORE_FAILED");
 
+    let activeSession=inserted;
+    let offerClaimed=false;
+    if(finalPricing.checkout_offer_id&&offerApplication.application_enabled){
+      const now=new Date().toISOString();
+      const {data:claimed,error:claimError}=await ctx.supabaseAdmin
+        .from("hunt_checkout_offers")
+        .update({
+          status:"applied",
+          applied_payment_session_id:inserted.id,
+          updated_at:now
+        })
+        .eq("id",finalPricing.checkout_offer_id)
+        .eq("status","preview")
+        .is("applied_payment_session_id",null)
+        .select("id")
+        .maybeSingle();
+
+      if(claimError||!claimed){
+        await ctx.supabaseAdmin.from("hunt_payment_sessions").delete().eq("id",inserted.id);
+        return json(req,{ok:false,error:"CHECKOUT_OFFER_ALREADY_CLAIMED"},409);
+      }
+      offerClaimed=true;
+
+      const {data:discounted,error:discountError}=await ctx.supabaseAdmin
+        .from("hunt_payment_sessions")
+        .update({
+          pre_discount_total_amount:finalPricing.pre_discount_total_amount,
+          discount_amount:finalPricing.discount_amount,
+          total_amount:finalPricing.total_amount,
+          checkout_offer_id:finalPricing.checkout_offer_id,
+          updated_at:now
+        })
+        .eq("id",inserted.id)
+        .select("id,status,mode,country_code,currency,product_amount,shipping_amount,pre_discount_total_amount,discount_amount,total_amount,checkout_offer_id,expires_at")
+        .single();
+
+      if(discountError||!discounted){
+        await ctx.supabaseAdmin.from("hunt_checkout_offers").update({
+          status:"preview",
+          applied_payment_session_id:null,
+          updated_at:new Date().toISOString()
+        }).eq("id",finalPricing.checkout_offer_id).eq("applied_payment_session_id",inserted.id);
+        await ctx.supabaseAdmin.from("hunt_payment_sessions").delete().eq("id",inserted.id);
+        throw new Error("CHECKOUT_OFFER_SESSION_UPDATE_FAILED");
+      }
+      activeSession=discounted;
+    }
+
     if(initialMode==="prelaunch"){
-      await ctx.supabaseAdmin.from("hunt_payment_events").insert({
-        payment_session_id:inserted.id,
+      const {error:eventError}=await ctx.supabaseAdmin.from("hunt_payment_events").insert({
+        payment_session_id:activeSession.id,
         provider:"payplus",
         event_type:"prelaunch_session_created",
         payload_digest:cartDigest
       });
+      if(eventError){
+        if(offerClaimed&&finalPricing.checkout_offer_id){
+          await ctx.supabaseAdmin.from("hunt_checkout_offers").update({
+            status:"preview",
+            applied_payment_session_id:null,
+            updated_at:new Date().toISOString()
+          }).eq("id",finalPricing.checkout_offer_id).eq("applied_payment_session_id",activeSession.id);
+        }
+        await ctx.supabaseAdmin.from("hunt_payment_sessions").delete().eq("id",activeSession.id);
+        throw new Error("PAYMENT_EVENT_STORE_FAILED");
+      }
       return json(req,{
         ok:true,
         payment_ready:false,
         shipping_ready:true,
         reason:"AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED",
         idempotency_key:idempotencyKey,
-        session:inserted
+        session:activeSession
       });
     }
 
-    const providerSession=await createPayPlusSession(inserted.id,finalPricing);
-    if(!providerSession)throw new Error("PAYMENT_PROVIDER_NOT_CONFIGURED");
+    let providerSession:any=null;
+    try{
+      providerSession=await createPayPlusSession(activeSession.id,finalPricing);
+      if(!providerSession)throw new Error("PAYMENT_PROVIDER_NOT_CONFIGURED");
+    }catch(providerError){
+      if(offerClaimed&&finalPricing.checkout_offer_id){
+        await ctx.supabaseAdmin.from("hunt_checkout_offers").update({
+          status:"preview",
+          applied_payment_session_id:null,
+          updated_at:new Date().toISOString()
+        }).eq("id",finalPricing.checkout_offer_id).eq("applied_payment_session_id",activeSession.id);
+      }
+      await ctx.supabaseAdmin.from("hunt_payment_sessions").delete().eq("id",activeSession.id);
+      throw providerError;
+    }
     const {data:updated,error:updateError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
       .update({
@@ -373,24 +445,17 @@ Deno.serve(async(req:Request)=>{
         expires_at:providerSession.expires_at,
         updated_at:new Date().toISOString()
       })
-      .eq("id",inserted.id)
+      .eq("id",activeSession.id)
       .select("id,status,mode,country_code,currency,product_amount,shipping_amount,pre_discount_total_amount,discount_amount,total_amount,checkout_offer_id,provider_request_uid,provider_hosted_fields_uid,provider_redirect_url,expires_at")
       .single();
     if(updateError||!updated)throw new Error("PAYMENT_SESSION_UPDATE_FAILED");
 
-    if(finalPricing.checkout_offer_id&&offerApplication.application_enabled){
-      await ctx.supabaseAdmin.from("hunt_checkout_offers").update({
-        status:"applied",
-        applied_payment_session_id:inserted.id,
-        updated_at:new Date().toISOString()
-      }).eq("id",finalPricing.checkout_offer_id);
-    }
-
-    await ctx.supabaseAdmin.from("hunt_payment_events").insert({
-      payment_session_id:inserted.id,
+    const {error:eventError}=await ctx.supabaseAdmin.from("hunt_payment_events").insert({
+      payment_session_id:activeSession.id,
       provider:"payplus",
       event_type:"session_created"
     });
+    if(eventError)throw new Error("PAYMENT_EVENT_STORE_FAILED");
 
     return json(req,{
       ok:true,

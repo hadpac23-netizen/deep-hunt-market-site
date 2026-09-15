@@ -109,6 +109,9 @@ async function addPipelineRun(ctx:any,payload:any){
   if(error)throw new Error("PIPELINE_EVIDENCE_STORE_FAILED");
   return data;
 }
+function requireWrite(error:any,code:string){
+  if(error)throw new Error(code);
+}
 
 Deno.serve(async(req:Request)=>{
   if(req.method==="OPTIONS")return new Response("ok",{headers:cors(req)});
@@ -225,33 +228,89 @@ Deno.serve(async(req:Request)=>{
         }).select("id,is_test,status,external_order_id").single();
         if(error||!data)throw new Error("TEST_ORDER_CREATE_FAILED");
         order=data;
-        await ctx.supabaseAdmin.from("hunt_order_events").insert({
+        const {error:eventError}=await ctx.supabaseAdmin.from("hunt_order_events").insert({
           order_id:order.id,status:"processing",label:"HUNT sandbox fulfillment started"
         });
+        requireWrite(eventError,"ORDER_EVENT_START_STORE_FAILED");
       }
-      await ctx.supabaseAdmin.from("hunt_payment_sessions").update({
+      const {error:sessionStartError}=await ctx.supabaseAdmin.from("hunt_payment_sessions").update({
         order_id:order.id,fulfillment_status:"processing",updated_at:new Date().toISOString()
       }).eq("id",session.id);
+      requireWrite(sessionStartError,"PAYMENT_SESSION_FULFILLMENT_START_FAILED");
     }
 
     const supplierResults:any[]=[];
     let index=0;
     for(const group of groups as any[]){
       index+=1;
-      const {data:existingFulfillment}=await ctx.supabaseAdmin.from("hunt_fulfillment_orders")
-        .select("*").eq("payment_session_id",session.id).eq("provider","CJdropshipping")
-        .eq("group_key",group.group_key).maybeSingle();
+      const country=clean(session.country_code).toUpperCase();
+      const stableHash=(await sha256(session.id+"|"+group.group_key)).slice(0,12);
+      const stableOrderNumber=("HSBX-"+session.id.slice(0,8)+"-"+stableHash).slice(0,50);
 
-      let supplierId=clean(existingFulfillment?.supplier_order_id);
-      let supplierCode=clean(existingFulfillment?.supplier_order_code);
-      let track=clean(existingFulfillment?.tracking_number);
+      const {data:existingFulfillment,error:existingError}=await ctx.supabaseAdmin
+        .from("hunt_fulfillment_orders")
+        .select("*")
+        .eq("payment_session_id",session.id)
+        .eq("provider","CJdropshipping")
+        .eq("group_key",group.group_key)
+        .maybeSingle();
+      requireWrite(existingError,"FULFILLMENT_READ_FAILED");
+
+      let fulfillment=existingFulfillment;
+      let supplierId=clean(fulfillment?.supplier_order_id);
+      let supplierCode=clean(fulfillment?.supplier_order_code)||stableOrderNumber;
+      let track=clean(fulfillment?.tracking_number);
       let createRequestId:string|null=null;
 
+      if(!fulfillment){
+        const claimRow={
+          payment_session_id:session.id,
+          order_id:order.id,
+          provider:"CJdropshipping",
+          group_key:group.group_key,
+          status:"processing",
+          line_items:group.line_items,
+          logistics_name:group.shipping_method,
+          origin_country_code:group.origin_country_code,
+          destination_country_code:country,
+          supplier_order_code:stableOrderNumber,
+          supplier_status:"sandbox_claimed",
+          attempt_count:1,
+          last_attempt_at:new Date().toISOString(),
+          updated_at:new Date().toISOString()
+        };
+        const {data:claimed,error:claimError}=await ctx.supabaseAdmin
+          .from("hunt_fulfillment_orders")
+          .insert(claimRow)
+          .select("*")
+          .maybeSingle();
+
+        if(claimError){
+          const {data:raced,error:raceReadError}=await ctx.supabaseAdmin
+            .from("hunt_fulfillment_orders")
+            .select("*")
+            .eq("payment_session_id",session.id)
+            .eq("provider","CJdropshipping")
+            .eq("group_key",group.group_key)
+            .maybeSingle();
+          requireWrite(raceReadError,"FULFILLMENT_RACE_READ_FAILED");
+          if(!raced)throw new Error("FULFILLMENT_CLAIM_FAILED");
+          fulfillment=raced;
+        }else{
+          fulfillment=claimed;
+        }
+        supplierId=clean(fulfillment?.supplier_order_id);
+        supplierCode=clean(fulfillment?.supplier_order_code)||stableOrderNumber;
+        track=clean(fulfillment?.tracking_number);
+      }
+
       if(!supplierId){
-        const country=clean(session.country_code).toUpperCase();
-        const orderNumber=("HSBX-"+session.id.slice(0,8)+"-"+index+"-"+Date.now().toString().slice(-8)).slice(0,50);
+        if(clean(fulfillment?.supplier_status)==="sandbox_claimed" && Number(fulfillment?.attempt_count||0)>1){
+          throw new Error("FULFILLMENT_ALREADY_PROCESSING");
+        }
+
         const cjPayload={
-          orderNumber,
+          orderNumber:supplierCode,
           shippingZip:clean(shipping.shippingZip).slice(0,20),
           shippingCountry:countryNames[country],
           shippingCountryCode:country,
@@ -270,28 +329,46 @@ Deno.serve(async(req:Request)=>{
           products:group.line_items.map((line:any,i:number)=>({
             vid:line.variant_id,
             quantity:line.qty,
-            storeLineItemId:("HUNT-"+session.id.slice(0,8)+"-"+index+"-"+(i+1)).slice(0,125)
+            storeLineItemId:("HUNT-"+session.id.slice(0,8)+"-"+stableHash+"-"+(i+1)).slice(0,125)
           }))
         };
         const digest=await sha256(JSON.stringify(cjPayload));
+
+        const {data:claimedForAttempt,error:attemptClaimError}=await ctx.supabaseAdmin
+          .from("hunt_fulfillment_orders")
+          .update({
+            request_digest:digest,
+            supplier_status:"sandbox_submitting",
+            attempt_count:Number(fulfillment?.attempt_count||0)+1,
+            last_attempt_at:new Date().toISOString(),
+            updated_at:new Date().toISOString()
+          })
+          .eq("id",fulfillment.id)
+          .eq("supplier_status","sandbox_claimed")
+          .select("*")
+          .maybeSingle();
+        requireWrite(attemptClaimError,"FULFILLMENT_ATTEMPT_CLAIM_FAILED");
+        if(!claimedForAttempt)throw new Error("FULFILLMENT_ALREADY_PROCESSING");
+        fulfillment=claimedForAttempt;
+
         const created=await cjPost("/shopping/order/createOrderV2",cjPayload);
         supplierId=clean(created?.data?.orderId);
-        supplierCode=clean(created?.data?.orderNumber)||orderNumber;
+        supplierCode=clean(created?.data?.orderNumber)||stableOrderNumber;
         createRequestId=clean(created?.requestId)||null;
         if(!supplierId)throw new Error("CJ_SANDBOX_ORDER_ID_MISSING");
 
-        const row={
-          payment_session_id:session.id,order_id:order.id,provider:"CJdropshipping",
-          group_key:group.group_key,status:"submitted",line_items:group.line_items,
-          logistics_name:group.shipping_method,origin_country_code:group.origin_country_code,
-          destination_country_code:country,supplier_order_id:supplierId,
-          supplier_order_code:supplierCode,supplier_status:"sandbox_created",
-          request_digest:digest,attempt_count:Number(existingFulfillment?.attempt_count||0)+1,
-          last_attempt_at:new Date().toISOString(),last_error:null,updated_at:new Date().toISOString()
-        };
-        const {error}=await ctx.supabaseAdmin.from("hunt_fulfillment_orders")
-          .upsert(row,{onConflict:"payment_session_id,provider,group_key"});
-        if(error)throw new Error("FULFILLMENT_STORE_FAILED");
+        const {error:submittedError}=await ctx.supabaseAdmin
+          .from("hunt_fulfillment_orders")
+          .update({
+            status:"submitted",
+            supplier_order_id:supplierId,
+            supplier_order_code:supplierCode,
+            supplier_status:"sandbox_created",
+            last_error:null,
+            updated_at:new Date().toISOString()
+          })
+          .eq("id",fulfillment.id);
+        requireWrite(submittedError,"FULFILLMENT_STORE_FAILED");
       }
 
       const paid=await cjPost("/shopping/sandbox/simulatePay",{orderId:supplierId});
@@ -300,11 +377,12 @@ Deno.serve(async(req:Request)=>{
       const tracked=await cjPost("/shopping/sandbox/updateTrackNumber",{orderId:supplierId,trackNumber:track});
       await cjPost("/shopping/sandbox/updateStatus",{orderId:supplierId,targetStatus:500});
 
-      await ctx.supabaseAdmin.from("hunt_fulfillment_orders").update({
+      const {error:fulfillmentShipError}=await ctx.supabaseAdmin.from("hunt_fulfillment_orders").update({
         status:"shipped",supplier_status:"sandbox_shipped",
         tracking_number:track,carrier:"CJ SANDBOX",
         shipped_at:new Date().toISOString(),updated_at:new Date().toISOString()
       }).eq("payment_session_id",session.id).eq("provider","CJdropshipping").eq("group_key",group.group_key);
+      requireWrite(fulfillmentShipError,"FULFILLMENT_SHIPPED_STORE_FAILED");
 
       supplierResults.push({
         group_key:group.group_key,
@@ -318,19 +396,24 @@ Deno.serve(async(req:Request)=>{
     }
 
     const primary=supplierResults[0]||{};
-    await ctx.supabaseAdmin.from("hunt_orders").update({
+    const {error:orderShipError}=await ctx.supabaseAdmin.from("hunt_orders").update({
       status:"shipped",
       carrier:"CJ SANDBOX",
       tracking_number:primary.tracking_number||null,
       shipped_at:new Date().toISOString(),
       updated_at:new Date().toISOString()
     }).eq("id",order.id);
-    await ctx.supabaseAdmin.from("hunt_order_events").insert({
+    requireWrite(orderShipError,"ORDER_SHIPPED_STORE_FAILED");
+
+    const {error:orderEventError}=await ctx.supabaseAdmin.from("hunt_order_events").insert({
       order_id:order.id,status:"shipped",label:"CJ sandbox tracking verified"
     });
-    await ctx.supabaseAdmin.from("hunt_payment_sessions").update({
+    requireWrite(orderEventError,"ORDER_EVENT_SHIPPED_STORE_FAILED");
+
+    const {error:sessionShipError}=await ctx.supabaseAdmin.from("hunt_payment_sessions").update({
       fulfillment_status:"shipped",updated_at:new Date().toISOString()
     }).eq("id",session.id);
+    requireWrite(sessionShipError,"PAYMENT_SESSION_SHIPPED_STORE_FAILED");
 
     const evidence=await addPipelineRun(ctx,{
       payment_session_id:session.id,
