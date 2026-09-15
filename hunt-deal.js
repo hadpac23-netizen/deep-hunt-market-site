@@ -75,7 +75,7 @@
     };
     if (existing) Object.assign(existing, row, {qty:Math.min(5,(Number(existing.qty)||1)+1)});
     else cart.push(row);
-    localStorage.setItem(cartKey, JSON.stringify(cart));
+    if(window.HuntCore?.saveCart)window.HuntCore.saveCart(cart);else localStorage.setItem(cartKey, JSON.stringify(cart));
     updateCartCount();
     location.href = "checkout.html";
   }
@@ -473,6 +473,7 @@
     if (Array.isArray(item?.gallery) && item.gallery.length >= 2) score += 10;
     if (Number(item?.variant_count || 0) >= 2) score += 8;
     if (item?._hunt_fresh === true) score += 7;
+    score += Number(window.HuntSupplierGravity?.productBoost?.(item) || 0);
     return score;
   }
 

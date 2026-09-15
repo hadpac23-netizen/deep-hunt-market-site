@@ -164,11 +164,14 @@
     if (sort === "price-low") items.sort((a,b)=>(retailState(a).amount??Infinity)-(retailState(b).amount??Infinity));
     else if (sort === "price-high") items.sort((a,b)=>(retailState(b).amount??-Infinity)-(retailState(a).amount??-Infinity));
     else if (sort === "for-you") items.sort((a,b)=>
-      H.personalScore(b)-H.personalScore(a) ||
+      (H.personalScore(b)+Number(window.HuntSupplierGravity?.productBoost?.(b)||0))-
+      (H.personalScore(a)+Number(window.HuntSupplierGravity?.productBoost?.(a)||0)) ||
       listingReadiness(b)-listingReadiness(a) ||
       (resultOrder.get(productKey(a))||0)-(resultOrder.get(productKey(b))||0)
     );
     else items.sort((a,b)=>
+      Number(window.HuntSupplierGravity?.productBoost?.(b)||0)-
+      Number(window.HuntSupplierGravity?.productBoost?.(a)||0) ||
       (resultOrder.get(productKey(a))||0)-(resultOrder.get(productKey(b))||0)
     );
     return items;

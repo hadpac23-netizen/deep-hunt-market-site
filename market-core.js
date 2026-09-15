@@ -277,7 +277,12 @@
       };
     });
   };
-  const saveCart = value => writeJson(cartKey, Array.isArray(value) ? value : []);
+  const saveCart = value => {
+    const rows=Array.isArray(value) ? value : [];
+    writeJson(cartKey, rows);
+    window.dispatchEvent(new CustomEvent("hunt:cart-changed",{detail:{cart:rows}}));
+    return rows;
+  };
   function addCart(product, variant=null, qty=1) {
     const items = cart();
     const variantId = String(variant?.variant_id || "base");
