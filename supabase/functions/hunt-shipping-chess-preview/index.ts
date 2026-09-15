@@ -67,6 +67,8 @@ Deno.serve(async(req:Request)=>{
       .eq("inputs_verified",true).eq("profit_gate_status","PASS")
       .order("calculated_at",{ascending:false}).limit(1).maybeSingle();
     if(!currentEcon)return json(req,{ok:true,candidates:[]});
+    const currentCurrency=clean(currentEcon.currency).toUpperCase();
+    if(currentCurrency!=="USD")return json(req,{ok:true,candidates:[]});
     const currentVerifiedAt=Date.parse(String(currentEcon.calculated_at||""));
     if(!Number.isFinite(currentVerifiedAt)||Date.now()-currentVerifiedAt>86400000){
       return json(req,{ok:true,candidates:[]});
@@ -92,8 +94,6 @@ Deno.serve(async(req:Request)=>{
       const id=clean(row.item_id);
       if(id&&!byId.has(id))byId.set(id,row);
     }
-    const currentCurrency=clean(currentEcon.currency).toUpperCase();
-    if(currentCurrency!=="USD")return json(req,{ok:true,candidates:[]});
     const currentShipping=num(currentEcon.customer_shipping_amount);
     const currentDelivered=num(currentEcon.sale_price_per_unit)+currentShipping;
     const currentContribution=num(currentEcon.contribution_before_coupon);
