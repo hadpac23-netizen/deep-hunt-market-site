@@ -156,27 +156,27 @@
     const rows=[...state.commands].sort((a,b)=>Number(b.priority||0)-Number(a.priority||0)||new Date(b.created_at)-new Date(a.created_at)).slice(0,40);
     const open=rows.filter(c=>["queued","accepted","running","waiting_owner"].includes(c.status)).length;
     $("#bc-command-summary").textContent=open+" פתוחות";
-    $("#bc-commands").innerHTML=rows.length?rows.map(c=>\`<article class="bc-command">
+    $("#bc-commands").innerHTML=rows.length?rows.map(c=>`<article class="bc-command">
       <div class="bc-command-priority">\${esc(c.priority||3)}</div>
       <div><strong>\${esc(c.title)}</strong><p>\${esc(c.instruction)}</p><small>\${esc(c.issued_by)} → \${esc(c.target_manager_id)} · \${esc(c.action_class)}</small></div>
       <span class="bc-status-pill \${c.status==="waiting_owner"?"watch":c.status==="failed"?"critical":"healthy"}">\${esc(c.status)}</span>
-    </article>\`).join(""):'<div class="bc-empty">אין עדיין פקודות BOOM.</div>';
+    </article>`).join(""):'<div class="bc-empty">אין עדיין פקודות BOOM.</div>';
   }
 
   function renderLearning(){
     $("#bc-learning-summary").textContent=state.learning.length+" learning items";
     const learn=state.learning.slice(0,16);
-    $("#bc-learning").innerHTML=learn.length?learn.map(x=>\`<article class="bc-learning-item">
+    $("#bc-learning").innerHTML=learn.length?learn.map(x=>`<article class="bc-learning-item">
       <small>\${esc(x.domain)} · \${esc(x.source_name)}</small>
       <strong>\${esc(x.title)}</strong>
       <p>\${esc(x.principle)}</p>
       <p><b>HUNT:</b> \${esc(x.hunt_application)}</p>
-    </article>\`).join(""):'<div class="bc-empty">אין learning items.</div>';
+    </article>`).join(""):'<div class="bc-empty">אין learning items.</div>';
     const cycles=state.cycles.slice(0,10);
     $("#bc-cycles").innerHTML=cycles.length?cycles.map(c=>{
       const evalRow=state.evals.find(e=>e.cycle_id===c.id);
       const evalText=evalRow?(evalRow.passed===true?"PASS":evalRow.passed===false?"FAIL":"OPEN"):"NO EVAL";
-      return \`<article class="bc-cycle-item"><small>\${esc(c.status)} · \${esc(evalText)}</small><strong>\${esc(c.focus)}</strong><p>\${esc(c.hypothesis)}</p></article>\`;
+      return `<article class="bc-cycle-item"><small>\${esc(c.status)} · \${esc(evalText)}</small><strong>\${esc(c.focus)}</strong><p>\${esc(c.hypothesis)}</p></article>`;
     }).join(""):'<div class="bc-empty">אין improvement cycles.</div>';
   }
 
