@@ -322,7 +322,7 @@ Deno.serve(async(req:Request)=>{
     const {data:inserted,error:insertError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
       .insert({
-        user_id:ctx.userClaims?.sub||null,
+        user_id:ctx.userClaims?.id||ctx.userClaims?.sub||null,
         provider:"payplus",
         mode:initialMode,
         status:initialMode==="prelaunch"?"prelaunch":"created",

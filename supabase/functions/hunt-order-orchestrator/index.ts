@@ -34,7 +34,7 @@ async function sha256(value:string){
   return [...new Uint8Array(digest)].map(x=>x.toString(16).padStart(2,"0")).join("");
 }
 async function isAdmin(ctx:any){
-  const uid=clean(ctx.userClaims?.sub);
+  const uid=clean(ctx.userClaims?.id||ctx.userClaims?.sub);
   if(!uid)return false;
   const {data}=await ctx.supabaseAdmin.from("profiles").select("is_admin").eq("id",uid).maybeSingle();
   return data?.is_admin===true;
@@ -135,7 +135,7 @@ Deno.serve(async(req:Request)=>{
       .eq("id",sessionId).eq("idempotency_key",idem).maybeSingle();
     if(sessionError||!session)return json(req,{ok:false,error:"SESSION_NOT_FOUND"},404);
 
-    const uid=clean(ctx.userClaims?.sub);
+    const uid=clean(ctx.userClaims?.id||ctx.userClaims?.sub);
     if(session.user_id&&uid&&session.user_id!==uid&&!(await isAdmin(ctx))){
       return json(req,{ok:false,error:"SESSION_OWNER_MISMATCH"},403);
     }
@@ -351,7 +351,54 @@ Deno.serve(async(req:Request)=>{
         if(!claimedForAttempt)throw new Error("FULFILLMENT_ALREADY_PROCESSING");
         fulfillment=claimedForAttempt;
 
-        const created=await cjPost("/shopping/order/createOrderV2",cjPayload);
+        let created:any;
+        try{
+          created=await cjPost("/shopping/order/createOrderV2",cjPayload);
+        }catch(createError){
+          const failure=clean((createError as Error)?.message)||"CJ_SANDBOX_CREATE_FAILED";
+          const now=new Date().toISOString();
+          const {error:fulfillmentFailError}=await ctx.supabaseAdmin
+            .from("hunt_fulfillment_orders")
+            .update({
+              status:"failed",
+              supplier_status:"sandbox_create_failed",
+              last_error:failure,
+              updated_at:now
+            })
+            .eq("id",fulfillment.id);
+          requireWrite(fulfillmentFailError,"FULFILLMENT_FAILURE_STORE_FAILED");
+
+          const {error:orderFailError}=await ctx.supabaseAdmin
+            .from("hunt_orders")
+            .update({status:"exception",updated_at:now})
+            .eq("id",order.id);
+          requireWrite(orderFailError,"ORDER_FAILURE_STORE_FAILED");
+
+          const {error:sessionFailError}=await ctx.supabaseAdmin
+            .from("hunt_payment_sessions")
+            .update({fulfillment_status:"failed",updated_at:now})
+            .eq("id",session.id);
+          requireWrite(sessionFailError,"PAYMENT_SESSION_FAILURE_STORE_FAILED");
+
+          await addPipelineRun(ctx,{
+            payment_session_id:session.id,
+            order_id:order.id,
+            run_mode:"sandbox",
+            stage:"supplier_created",
+            status:"hold",
+            provider:"CJdropshipping",
+            evidence:{
+              is_test:true,
+              isSandbox:1,
+              error:failure,
+              no_real_supplier_charge:true,
+              no_real_logistics:true
+            },
+            last_error:failure,
+            created_by:uid
+          });
+          throw createError;
+        }
         supplierId=clean(created?.data?.orderId);
         supplierCode=clean(created?.data?.orderNumber)||stableOrderNumber;
         createRequestId=clean(created?.requestId)||null;
