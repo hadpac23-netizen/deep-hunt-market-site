@@ -7,7 +7,7 @@
   <title>BOOM Command Cloud — HUNT DEAL</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
   <link rel="stylesheet" href="hunt-shop.css?v=mission1">
-  <link rel="stylesheet" href="boom-cloud.css?v=cloud2">
+  <link rel="stylesheet" href="boom-cloud.css?v=cloud3">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#090b10">
 </head>
@@ -43,6 +43,29 @@
   </section>
 
   <section id="bc-dashboard" hidden>
+    <section class="bc-super-stack glass">
+      <article class="bc-super-layer meta" data-manager-id="boom-meta-f35">
+        <small>LAYER 0 · CONTINUOUS IMPROVEMENT</small>
+        <h2>BOOM Meta‑F35</h2>
+        <p>לומד AI/agents, בודק ארכיטקטורה, מריץ evals ומחליט איזה שיפור בכלל ראוי לעבור למערכת.</p>
+        <div class="bc-super-metrics"><span id="bc-learning-count">0 learnings</span><span id="bc-cycle-count">0 cycles</span><span id="bc-eval-count">0 evals</span></div>
+      </article>
+      <div class="bc-super-arrow">↓</div>
+      <article class="bc-super-layer super" data-manager-id="boom-super-agent">
+        <small>LAYER 1 · COMMAND & ORCHESTRATION</small>
+        <h2>BOOM Super Agent</h2>
+        <p>מסדר עדיפויות, נותן פקודות למנהלים, פותר התנגשויות ושומר על Owner Gate.</p>
+        <div class="bc-super-metrics"><span id="bc-command-count">0 commands</span><span id="bc-command-open">0 open</span><span id="bc-command-owner">0 owner</span></div>
+      </article>
+      <div class="bc-super-arrow">↓</div>
+      <article class="bc-super-layer exec" data-manager-id="boom-executive">
+        <small>LAYER 2 · HUNT EXECUTION BRAIN</small>
+        <h2>BOOM Executive</h2>
+        <p>מנהל את כל מחלקות HUNT ומרכז את הדוחות לביצוע אחד מסודר.</p>
+        <div class="bc-super-metrics"><span id="bc-stack-managers">0 managers</span><span id="bc-stack-workers">0 workers</span></div>
+      </article>
+    </section>
+
     <section class="bc-exec-row">
       <article class="bc-kpi glass">
         <small>EXECUTIVE STATUS</small>
@@ -92,6 +115,25 @@
               <strong id="bc-realtime-status">CONNECTING</strong>
               <p>Supabase Realtime + BOOM Pulse כל 5 דקות.</p>
             </div>
+          </div>
+        </section>
+
+        <section class="bc-panel glass">
+          <div class="bc-panel-head">
+            <div><small>SUPER AGENT COMMAND BUS</small><h2>פקודות BOOM למנהלים</h2></div>
+            <span id="bc-command-summary">0 פתוחות</span>
+          </div>
+          <div class="bc-commands" id="bc-commands"></div>
+        </section>
+
+        <section class="bc-panel glass">
+          <div class="bc-panel-head">
+            <div><small>META‑F35 EVOLUTION LOOP</small><h2>למידה · שדרוג · Eval</h2></div>
+            <span id="bc-learning-summary">0 learning items</span>
+          </div>
+          <div class="bc-learning-grid">
+            <div class="bc-learning-list" id="bc-learning"></div>
+            <div class="bc-cycle-list" id="bc-cycles"></div>
           </div>
         </section>
 
@@ -160,6 +202,8 @@
           <button type="button" data-boom-ask="מה מצב CJ ו-EPROLO?">CJ / EPROLO</button>
           <button type="button" data-boom-ask="מה מצב המכירות ומשימת 10 אלף דולר?">$10K</button>
           <button type="button" data-boom-ask="מה מצב F35 שיווק מחקר ומשתמשים?">F35</button>
+          <button type="button" data-boom-ask="מה Meta-F35 למד ואיך הוא משפר את עצמו?">מה למדת</button>
+          <button type="button" data-boom-ask="איזה פקודות Super Agent נתן למנהלים?">פקודות BOOM</button>
         </div>
         <div class="bc-chat-log" id="bc-chat-log"></div>
         <form class="bc-chat-form" id="bc-chat-form">
@@ -179,7 +223,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
 <script src="market-core.js?v=taxonomy6"></script>
-<script src="boom-cloud.js?v=cloud2"></script>
+<script src="boom-cloud.js?v=cloud3"></script>
 <script src="hunt-theme.js?v=shop4"></script>
 </body>
 </html>
