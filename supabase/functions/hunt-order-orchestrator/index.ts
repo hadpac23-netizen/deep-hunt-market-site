@@ -84,14 +84,19 @@ async function cjGetOrderByStoreNumber(orderNumber:string){
   const ref=clean(orderNumber);
   if(!ref)return null;
   const token=await cjToken();
-  const url="https://developers.cjdropshipping.com/api2.0/v1/shopping/order/list?pageNum=1&pageSize=10&orderIds="+encodeURIComponent(ref);
-  const res=await fetch(url,{
-    method:"GET",headers:{"accept":"application/json","CJ-Access-Token":token}
+  const res=await fetch("https://developers.cjdropshipping.com/api2.0/v1/shopping/order/getOrderDetailBatch",{
+    method:"POST",
+    headers:{"content-type":"application/json","accept":"application/json","CJ-Access-Token":token},
+    body:JSON.stringify({orderIds:[ref]})
   });
   const out=await res.json().catch(()=>({}));
   if(!res.ok||out?.result!==true)return null;
-  const list=Array.isArray(out?.data?.list)?out.data.list:[];
-  return list.find((row:any)=>clean(row?.orderNum)===ref||clean(row?.orderNumber)===ref)||null;
+  const list=Array.isArray(out?.data)?out.data:[];
+  const exact=list.find((row:any)=>
+    [row?.orderId,row?.orderNum,row?.cjOrderId,row?.cjOrderCode].some(value=>clean(value)===ref) ||
+    (Array.isArray(row?.productList)&&row.productList.some((line:any)=>clean(line?.orderNumber)===ref))
+  );
+  return exact||(list.length===1?list[0]:null);
 }
 async function cjPost(path:string,body:any,options:{maxAttempts?:number,reconcileOrderNumber?:string}={}){
   const maxAttempts=Math.max(1,Math.min(5,Number(options.maxAttempts||1)));
