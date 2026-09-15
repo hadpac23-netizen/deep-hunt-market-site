@@ -36,7 +36,24 @@
         "women-outerwear",
         "men-outerwear",
         "women-slippers",
-        "men-slippers"
+        "men-slippers",
+        "women-socks",
+        "women-socks-ankle",
+        "women-socks-no-show",
+        "women-socks-crew",
+        "women-socks-sport",
+        "women-socks-thermal",
+        "women-socks-compression",
+        "women-hosiery",
+        "women-socks-fashion",
+        "men-socks",
+        "men-socks-ankle",
+        "men-socks-no-show",
+        "men-socks-crew",
+        "men-socks-sport",
+        "men-socks-thermal",
+        "men-socks-compression",
+        "men-socks-fashion"
       ],
       "priority": "very_high"
     },
@@ -314,7 +331,31 @@
     "portable-vacuums",
     "air-care",
     "kitchen-electric",
-    "projectors"
+    "projectors",
+    "women-socks",
+    "women-socks-ankle",
+    "women-socks-no-show",
+    "women-socks-crew",
+    "women-socks-sport",
+    "women-socks-thermal",
+    "women-socks-compression",
+    "women-hosiery",
+    "women-socks-fashion",
+    "men-socks",
+    "men-socks-ankle",
+    "men-socks-no-show",
+    "men-socks-crew",
+    "men-socks-sport",
+    "men-socks-thermal",
+    "men-socks-compression",
+    "men-socks-fashion",
+    "women-knee-high-socks",
+    "women-thigh-high-socks",
+    "women-no-show-depth",
+    "men-business-dress-socks",
+    "men-patterned-socks",
+    "men-no-show-depth",
+    "men-ankle-depth"
   ],
   "home_electronics_priority": {
     "home_storage_and_desk": [
@@ -355,5 +396,22 @@
     "sample_or_quality_review_before_priority_promotion",
     "returns_and_failure_rate_monitoring",
     "profit_gate_after_landed_shipping"
+  ],
+  "sock_gap_priorities": [
+    "women-knee-high-socks",
+    "women-thigh-high-socks",
+    "women-no-show-depth",
+    "men-business-dress-socks",
+    "men-patterned-socks",
+    "men-no-show-depth",
+    "men-ankle-depth"
+  ],
+  "sock_quality_rules": [
+    "clear_material_and_size_if_available",
+    "accurate_pack_quantity",
+    "no_unverified_health_or_body_claims",
+    "country_shipping_recheck",
+    "profit_gate_after_shipping",
+    "avoid_duplicate_color_only_listings"
   ]
 }

@@ -213,7 +213,7 @@
     catalogPageLoading=true;
     try{
       const pagePath=catalogPages[nextCatalogPageIndex];
-      const res=await fetch(pagePath+"?v=taxonomy5",{cache:"force-cache"});
+      const res=await fetch(pagePath+"?v=taxonomy6",{cache:"force-cache"});
       if(!res.ok) throw new Error("Catalog page unavailable");
       const page=await res.json();
       const rows=Array.isArray(page?.products)?page.products:[];
@@ -332,7 +332,7 @@
     let rendered = false;
     let shardLoaded = false;
     try {
-      const manifestRes = await fetch("catalog-manifest.json?v=taxonomy5",{cache:"force-cache"});
+      const manifestRes = await fetch("catalog-manifest.json?v=taxonomy6",{cache:"force-cache"});
       if(manifestRes.ok){
         const manifest=await manifestRes.json();
         const info=manifest?.categories?.[sourceSlug];
@@ -341,7 +341,7 @@
         nextCatalogPageIndex=0;
         if(catalogPages.length){
           const firstPath=catalogPages[0];
-          const firstRes=await fetch(firstPath+"?v=taxonomy5",{cache:"force-cache"});
+          const firstRes=await fetch(firstPath+"?v=taxonomy6",{cache:"force-cache"});
           if(firstRes.ok){
             const first=await firstRes.json();
             const rows=Array.isArray(first?.products)?first.products:[];
