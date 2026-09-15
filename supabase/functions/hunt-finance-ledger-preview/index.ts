@@ -1,8 +1,13 @@
 import { createSupabaseContext } from "npm:@supabase/server";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
-const num=(v:unknown)=>Number.isFinite(Number(v))?Number(v):0;
 const money=(v:number)=>Number(v.toFixed(2));
+function requiredNumber(v:unknown,label:string,min=0,max=Number.POSITIVE_INFINITY){
+  if(v===null||v===undefined||v==="")throw new Error(label+"_MISSING");
+  const n=Number(v);
+  if(!Number.isFinite(n)||n<min||n>max)throw new Error(label+"_INVALID");
+  return n;
+}
 
 function cors(req:Request){
   const origin=req.headers.get("origin")||"";
@@ -70,15 +75,28 @@ Deno.serve(async(req:Request)=>{
     const lines=Array.isArray(session.line_items)?session.line_items:[];
     if(!lines.length)return json(req,{error:"EMPTY_LINE_ITEMS"},409);
 
-    const supplierProduct=lines.reduce((sum:number,x:any)=>
-      sum+num(x?.supplier_cost_per_unit)*Math.max(1,num(x?.qty)||1),0);
-    const supplierShipping=lines.reduce((sum:number,x:any)=>sum+num(x?.shipping_amount),0);
-    const gross=num(session.total_amount);
-    const processor=gross*num(profile.payment_rate);
-    const refund=gross*num(profile.refund_reserve_rate);
-    const platform=gross*num(profile.platform_variable_rate)+num(profile.platform_fixed_per_order);
+    const gross=requiredNumber(session.total_amount,"TOTAL_AMOUNT",0.01);
+    const paymentRate=requiredNumber(profile.payment_rate,"PAYMENT_RATE",0,1);
+    const refundRate=requiredNumber(profile.refund_reserve_rate,"REFUND_RESERVE_RATE",0,1);
+    const platformRate=requiredNumber(profile.platform_variable_rate,"PLATFORM_VARIABLE_RATE",0,1);
+    const platformFixed=requiredNumber(profile.platform_fixed_per_order,"PLATFORM_FIXED_PER_ORDER",0);
+
+    let supplierProduct=0;
+    let supplierShipping=0;
+    lines.forEach((x:any,index:number)=>{
+      const qty=requiredNumber(x?.qty,"LINE_"+index+"_QTY",1,5);
+      if(!Number.isInteger(qty))throw new Error("LINE_"+index+"_QTY_INVALID");
+      supplierProduct+=requiredNumber(x?.supplier_cost_per_unit,"LINE_"+index+"_SUPPLIER_COST",0.01)*qty;
+      supplierShipping+=requiredNumber(x?.shipping_amount,"LINE_"+index+"_SHIPPING",0);
+    });
+
+    const processor=gross*paymentRate;
+    const refund=gross*refundRate;
+    const platform=gross*platformRate+platformFixed;
     const taxReserve=0;
     const contribution=gross-supplierProduct-supplierShipping-processor-refund-platform-taxReserve;
+    if(!Number.isFinite(contribution))throw new Error("CONTRIBUTION_INVALID");
+    if(contribution<0)throw new Error("NEGATIVE_CONTRIBUTION_BLOCKED");
     const row={
       payment_session_id:session.id,
       order_id:session.order_id||null,
