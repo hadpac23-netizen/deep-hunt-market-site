@@ -391,6 +391,30 @@
     inspectManager("boom-super-agent");
   }
 
+  $("#google-login").addEventListener("click",async()=>{
+    const button=$("#google-login");
+    const error=$("#login-error");
+    button.disabled=true;
+    error.textContent="";
+    try{
+      const redirectTo=location.origin+location.pathname;
+      const {error:oauthError}=await client.auth.signInWithOAuth({
+        provider:"google",
+        options:{
+          redirectTo,
+          queryParams:{
+            access_type:"offline",
+            prompt:"select_account"
+          }
+        }
+      });
+      if(oauthError)throw oauthError;
+    }catch(err){
+      error.textContent=err.message||"Google login failed";
+      button.disabled=false;
+    }
+  });
+
   $("#login-form").addEventListener("submit",async ev=>{
     ev.preventDefault();
     const button=$("#login-submit");
@@ -440,6 +464,25 @@
     if(managerNode){inspectManager(managerNode.dataset.managerId);return}
     const special=ev.target.closest("[data-special]");
     if(special)inspectSpecial(special.dataset.special);
+  });
+
+  client.auth.onAuthStateChange((event,session)=>{
+    if(event==="SIGNED_IN"&&session&&!state.session){
+      state.session=session;
+      setTimeout(async()=>{
+        try{
+          await ensureAdmin(session);
+          showApp();
+          await loadAll();
+          subscribeRealtime();
+          inspectManager("boom-super-agent");
+        }catch(err){
+          showError(err);
+          await client.auth.signOut().catch(()=>{});
+          showLogin();
+        }
+      },0);
+    }
   });
 
   boot().catch(showError);

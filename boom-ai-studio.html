@@ -35,13 +35,24 @@
         <div class="login-logo">B</div>
         <small>OWNER / ADMIN ONLY</small>
         <h1>כניסה ל־BOOM</h1>
-        <p>היכנס עם חשבון ה־Admin של HUNT. לא מתבצע redirect לאתר אחר.</p>
-        <label for="login-email">אימייל</label>
-        <input id="login-email" type="email" autocomplete="username" required>
-        <label for="login-password">סיסמה</label>
-        <input id="login-password" type="password" autocomplete="current-password" required>
+        <p>היכנס ישירות עם חשבון Google / Gmail שמוגדר כ־Admin ב־HUNT.</p>
+
+        <button class="google-btn" id="google-login" type="button" aria-label="המשך עם Google">
+          <span class="google-g">G</span>
+          <span>המשך עם Google</span>
+        </button>
+
+        <div class="login-separator"><span>או כניסה חלופית</span></div>
+
+        <div class="password-login" id="password-login">
+          <label for="login-email">אימייל</label>
+          <input id="login-email" type="email" autocomplete="username">
+          <label for="login-password">סיסמה</label>
+          <input id="login-password" type="password" autocomplete="current-password">
+          <button class="secondary-login-btn" id="login-submit" type="submit">כניסה עם אימייל</button>
+        </div>
+
         <div class="login-error" id="login-error" aria-live="polite"></div>
-        <button class="primary-btn" id="login-submit" type="submit">כניסה ל־Studio</button>
       </form>
     </section>
 
