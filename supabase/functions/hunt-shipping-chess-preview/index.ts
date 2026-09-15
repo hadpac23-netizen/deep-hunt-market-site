@@ -47,8 +47,9 @@ Deno.serve(async(req:Request)=>{
     const body=await req.json();
     const provider=clean(body?.provider);
     const itemId=clean(body?.item_id);
+    const variantId=clean(body?.variant_id);
     const country=clean(body?.country_code).toUpperCase();
-    if(!provider||!itemId||!/^[A-Z]{2}$/.test(country)){
+    if(!provider||!itemId||!variantId||!/^[A-Z]{2}$/.test(country)){
       return json(req,{error:"INVALID_INPUT"},400);
     }
 
@@ -62,10 +63,14 @@ Deno.serve(async(req:Request)=>{
     const {data:currentEcon}=await ctx.supabaseAdmin
       .from("hunt_unit_economics")
       .select("item_id,variant_id,destination_country,currency,sale_price_per_unit,customer_shipping_amount,contribution_before_coupon,profit_gate_status,inputs_verified,calculated_at")
-      .eq("provider",provider).eq("item_id",itemId).eq("destination_country",country)
+      .eq("provider",provider).eq("item_id",itemId).eq("variant_id",variantId).eq("destination_country",country)
       .eq("inputs_verified",true).eq("profit_gate_status","PASS")
       .order("calculated_at",{ascending:false}).limit(1).maybeSingle();
     if(!currentEcon)return json(req,{ok:true,candidates:[]});
+    const currentVerifiedAt=Date.parse(String(currentEcon.calculated_at||""));
+    if(!Number.isFinite(currentVerifiedAt)||Date.now()-currentVerifiedAt>86400000){
+      return json(req,{ok:true,candidates:[]});
+    }
 
     const {data:catalogRows}=await ctx.supabaseAdmin
       .from("hunt_catalog_products")
@@ -94,6 +99,9 @@ Deno.serve(async(req:Request)=>{
     const ranked=(catalogRows||[]).map((cat:any)=>{
       const econ=byId.get(clean(cat.item_id));
       if(!econ)return null;
+      if(clean(econ.currency).toUpperCase()!==clean(currentEcon.currency).toUpperCase())return null;
+      const verifiedAt=Date.parse(String(econ.calculated_at||""));
+      if(!Number.isFinite(verifiedAt)||Date.now()-verifiedAt>86400000)return null;
       const similarity=overlap(clean(currentCatalog.title),clean(cat.title));
       if(similarity<1)return null;
       const shipping=num(econ.customer_shipping_amount);
@@ -115,14 +123,17 @@ Deno.serve(async(req:Request)=>{
         shipping_amount:money(shipping),
         shipping_saving:money(Math.max(0,shippingSaving)),
         delivered_saving:money(Math.max(0,deliveredSaving)),
-        contribution_gain:money(Math.max(0,contributionGain)),
         similarity,
-        verified_at:econ.calculated_at
+        verified_at:econ.calculated_at,
+        _profit_score:Math.max(0,contributionGain)
       };
     }).filter(Boolean).sort((a:any,b:any)=>
-      (b.delivered_saving*3+b.shipping_saving*2+b.contribution_gain+b.similarity)-
-      (a.delivered_saving*3+a.shipping_saving*2+a.contribution_gain+a.similarity)
-    ).slice(0,3);
+      (b.delivered_saving*3+b.shipping_saving*2+b._profit_score+b.similarity)-
+      (a.delivered_saving*3+a.shipping_saving*2+a._profit_score+a.similarity)
+    ).slice(0,3).map((row:any)=>{
+      const {_profit_score,...safe}=row;
+      return safe;
+    });
 
     return json(req,{
       ok:true,

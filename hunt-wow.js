@@ -27,6 +27,19 @@
     return out;
   }
 
+  function flatUnique(shelves){
+    const out=[],seen=new Set();
+    for(const rows of Object.values(shelves||{})){
+      for(const item of Array.isArray(rows)?rows:[]){
+        const key=String(item?.provider||"")+":"+String(item?.item_id||"");
+        if(!item?.item_id||seen.has(key))continue;
+        seen.add(key);
+        out.push(item);
+      }
+    }
+    return out;
+  }
+
   function menuGroups(slug,items){
     const rules={
       women:[
@@ -191,17 +204,19 @@
   }
 
   function modeSlugs(value) {
-    if (value === "women") return ["women",...(H.departmentSubcategories?.women || [])];
-    if (value === "men") return ["men",...(H.departmentSubcategories?.men || [])];
-    if (value === "home") return ["home",...(H.departmentSubcategories?.home || [])];
-    if (value === "tech") return ["tech",...(H.departmentSubcategories?.tech || [])];
+    const expand=slug=>[slug,...(H.departmentSubcategories?.[slug] || [])];
+    if (value === "women") return expand("women");
+    if (value === "men") return expand("men");
+    if (value === "home") return expand("home");
+    if (value === "tech") return expand("tech");
     const signals = H.signals();
     const ranked = Object.entries(signals)
       .filter(([slug,score]) => H.categoryDefs[slug] && Number(score) > 0)
       .sort((a,b) => Number(b[1]) - Number(a[1]))
       .map(([slug]) => slug)
       .slice(0,5);
-    return ranked.length ? ranked : ["women","men","home","beauty","tech","kids","travel"];
+    if (ranked.length) return [...new Set(ranked.flatMap(expand))];
+    return [...new Set(["women","men","home","beauty","tech","kids","travel"].flatMap(expand))];
   }
 
   function pickProducts(shelves, slugs, limit=16) {

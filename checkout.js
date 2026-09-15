@@ -126,6 +126,7 @@
           body:JSON.stringify({
             provider:item.provider,
             item_id:item.item_id,
+            variant_id:item.variant_id,
             country_code:String(country).toUpperCase()
           }),
           cache:"no-store"
