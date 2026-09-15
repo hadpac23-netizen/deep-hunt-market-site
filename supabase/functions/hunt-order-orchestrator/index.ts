@@ -80,8 +80,21 @@ function isTransientCjFailure(res:Response,out:any){
   const message=clean(out?.message).toLowerCase();
   return res.status>=500 || code==="1603000" && (message.includes("server is busy")||message.includes("try again later"));
 }
-async function cjPost(path:string,body:any,options:{maxAttempts?:number}={}){
-  const maxAttempts=Math.max(1,Math.min(3,Number(options.maxAttempts||1)));
+async function cjGetOrderByStoreNumber(orderNumber:string){
+  const ref=clean(orderNumber);
+  if(!ref)return null;
+  const token=await cjToken();
+  const url="https://developers.cjdropshipping.com/api2.0/v1/shopping/order/list?pageNum=1&pageSize=10&orderIds="+encodeURIComponent(ref);
+  const res=await fetch(url,{
+    method:"GET",headers:{"accept":"application/json","CJ-Access-Token":token}
+  });
+  const out=await res.json().catch(()=>({}));
+  if(!res.ok||out?.result!==true)return null;
+  const list=Array.isArray(out?.data?.list)?out.data.list:[];
+  return list.find((row:any)=>clean(row?.orderNum)===ref||clean(row?.orderNumber)===ref)||null;
+}
+async function cjPost(path:string,body:any,options:{maxAttempts?:number,reconcileOrderNumber?:string}={}){
+  const maxAttempts=Math.max(1,Math.min(5,Number(options.maxAttempts||1)));
   let lastError="CJ_API_UNKNOWN";
   for(let attempt=1;attempt<=maxAttempts;attempt++){
     const token=await cjToken();
@@ -93,8 +106,23 @@ async function cjPost(path:string,body:any,options:{maxAttempts?:number}={}){
     const out=await res.json().catch(()=>({}));
     if(res.ok&&out?.result===true)return out;
     lastError="CJ_API_"+String(out?.code||res.status)+"_"+clean(out?.message).slice(0,120);
-    if(attempt>=maxAttempts||!isTransientCjFailure(res,out))throw new Error(lastError);
-    await sleep(500*attempt);
+    const transient=isTransientCjFailure(res,out);
+    const duplicate=String(out?.code||"")==="1603003";
+    if((transient||duplicate)&&options.reconcileOrderNumber){
+      const existing=await cjGetOrderByStoreNumber(options.reconcileOrderNumber).catch(()=>null);
+      if(existing){
+        return {
+          code:200,result:true,message:"Reconciled existing CJ order after ambiguous create",
+          data:{
+            orderId:clean(existing?.orderId||existing?.cjOrderId),
+            orderNumber:clean(existing?.orderNum||options.reconcileOrderNumber)
+          },
+          requestId:clean(out?.requestId)||null,reconciled:true
+        };
+      }
+    }
+    if(attempt>=maxAttempts||!transient)throw new Error(lastError);
+    await sleep(Math.min(8000,1000*(2**(attempt-1))));
   }
   throw new Error(lastError);
 }
@@ -394,7 +422,7 @@ Deno.serve(async(req:Request)=>{
 
         let created:any;
         try{
-          created=await cjPost("/shopping/order/createOrderV2",cjPayload,{maxAttempts:3});
+          created=await cjPost("/shopping/order/createOrderV2",cjPayload,{maxAttempts:5,reconcileOrderNumber:supplierCode});
         }catch(createError){
           const failure=clean((createError as Error)?.message)||"CJ_SANDBOX_CREATE_FAILED";
           const now=new Date().toISOString();
