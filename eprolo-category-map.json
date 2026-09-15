@@ -303,6 +303,51 @@
     "jewelry-sets",
     "women-slippers",
     "men-slippers",
-    "hair-tools"
+    "hair-tools",
+    "smart-home",
+    "computer-accessories",
+    "lighting",
+    "home-storage",
+    "cleaning"
+  ],
+  "home_electronics_priority": {
+    "home_storage_and_desk": [
+      "cable-management",
+      "desk-setup",
+      "monitor-shelves",
+      "laptop-stands",
+      "home-storage"
+    ],
+    "lighting": [
+      "sensor-lighting",
+      "desk-lighting",
+      "night-lighting",
+      "solar-lighting"
+    ],
+    "small_appliances": [
+      "portable-vacuums",
+      "humidifiers-diffusers",
+      "small-appliances"
+    ],
+    "useful_electronics": [
+      "stands-holders",
+      "chargers-cables",
+      "power-banks",
+      "audio",
+      "electronics",
+      "computer-accessories",
+      "smart-home"
+    ]
+  },
+  "electrical_quality_gate": [
+    "destination_voltage_compatibility",
+    "plug_type_compatibility",
+    "battery_and_shipping_docs_if_applicable",
+    "credible_safety_compliance_evidence_for_destination",
+    "clear_power_and_connector_specs",
+    "supplier_stock_and_shipping_recheck",
+    "sample_or_quality_review_before_priority_promotion",
+    "returns_and_failure_rate_monitoring",
+    "profit_gate_after_landed_shipping"
   ]
 }
