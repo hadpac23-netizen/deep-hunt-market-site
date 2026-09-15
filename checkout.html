@@ -6,7 +6,7 @@
   <meta name="description" content="HUNT DEAL checkout preview for connected catalog products.">
   <title>Checkout Preview — HUNT DEAL</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
-  <link rel="stylesheet" href="hunt-shop.css?v=platform1">
+  <link rel="stylesheet" href="hunt-shop.css?v=shippingchess1">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="hunt-icon-192.png">
   <meta name="theme-color" content="#111111">
@@ -52,10 +52,48 @@
             <option value="AE">United Arab Emirates</option>
           </select>
         </label>
+
+        <div class="hd-shipping-form" role="group" aria-labelledby="hd-shipping-title">
+          <strong id="hd-shipping-title">Shipping details</strong>
+          <label class="hd-checkout-label">Full name
+            <input id="hd-ship-name" autocomplete="name" maxlength="50" placeholder="Recipient name">
+          </label>
+          <label class="hd-checkout-label">Email
+            <input id="hd-ship-email" type="email" autocomplete="email" maxlength="254" placeholder="Email for order updates">
+          </label>
+          <label class="hd-checkout-label">Address
+            <input id="hd-ship-address" autocomplete="street-address" maxlength="500" placeholder="Street and number">
+          </label>
+          <label class="hd-checkout-label">Address line 2
+            <input id="hd-ship-address2" autocomplete="address-line2" maxlength="500" placeholder="Apartment / unit (optional)">
+          </label>
+          <div class="hd-shipping-grid">
+            <label class="hd-checkout-label">City
+              <input id="hd-ship-city" autocomplete="address-level2" maxlength="50">
+            </label>
+            <label class="hd-checkout-label">Province / region
+              <input id="hd-ship-province" autocomplete="address-level1" maxlength="50">
+            </label>
+          </div>
+          <div class="hd-shipping-grid">
+            <label class="hd-checkout-label">Postal code
+              <input id="hd-ship-zip" autocomplete="postal-code" maxlength="20">
+            </label>
+            <label class="hd-checkout-label">Phone
+              <input id="hd-ship-phone" autocomplete="tel" maxlength="20">
+            </label>
+          </div>
+        </div>
+
         <button id="hd-checkout-verify" class="hd-btn hd-btn-primary" type="button">Verify price & shipping</button>
         <div class="hd-bundle-preview" id="hd-bundle-preview" hidden>
           <strong>BOOM bundle check</strong>
           <small id="hd-bundle-preview-copy">Bundle offer will be checked after price and shipping verification.</small>
+        </div>
+        <div class="hd-shipping-chess" id="hd-shipping-chess" hidden>
+          <div class="hd-shipping-chess-head"><strong>BOOM Shipping Chess</strong><small>Verified alternatives that may reduce shipping or delivered cost.</small></div>
+          <div class="hd-shipping-chess-list" id="hd-shipping-chess-list"></div>
+          <small class="hd-shipping-chess-note">Nothing is replaced automatically. Open an alternative and choose it yourself.</small>
         </div>
         <button class="hd-btn hd-btn-primary hd-pay-disabled" type="button" disabled>Payment activation pending</button>
         <p id="hd-checkout-status" class="hd-checkout-truth" aria-live="polite">No card data is collected on this page. Verify price and shipping first; payment remains disabled until an authorized merchant account and fulfillment flow are active.</p>
@@ -81,7 +119,7 @@
   <script src="account-presence.js?v=profile2"></script>
   <script src="analytics-config.js?v=analytics1"></script>
   <script src="analytics.js?v=huntmetrics1"></script>
-  <script src="checkout.js?v=bundle2"></script>
+  <script src="checkout.js?v=shippingchess3"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa1"></script>
 </body>

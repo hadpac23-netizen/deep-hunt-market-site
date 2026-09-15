@@ -39,6 +39,7 @@
       ? `<img src="${H.esc(product.image_url)}" alt="${H.esc(product.title || "Product")}" loading="lazy">`
       : `<div class="hd-market-card-placeholder">◇</div>`;
     const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">${H.esc(product.provider || "CATALOG")}</span>`;
+    const newBadge = H.isNewArrival?.(product) ? `<b class="hd-new-pulse">NEW</b>` : "";
     const retail = retailState(product);
     const price = retail.ready ? H.money(retail.amount, retail.currency) : (retail.estimated ? `From ${H.money(retail.amount, retail.currency)}` : "Price pending");
     const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
@@ -49,7 +50,7 @@
         : (retail.estimated ? "HUNT ESTIMATE · LIVE DETAIL REQUIRED" : (product.availability_verified === true ? "CATALOG" : "DISCOVERY"));
     const productUrl = H.productUrl(product);
     return `<article class="hd-market-product-card" data-category="${H.esc(product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${retail.amount || 0}" data-score="${score}">
-      <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}</a>
+      <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}${newBadge}</a>
       <div class="hd-market-card-body">
         <small>${H.esc(product.provider || "Provider")} · ${H.esc(stateLabel)}</small>
         <a href="${H.esc(productUrl)}" class="hd-market-card-title" data-product-view="${H.esc(productKey(product))}">${H.esc(product.title || "Product")}</a>
@@ -312,7 +313,7 @@
       }
       const providers = [...new Set(rawResults.map(p=>p.provider).filter(Boolean))];
       $("#hd-cat-provider-state").textContent = rawResults.length
-        ? `${rawResults.length} CJ products indexed · live variants, stock and shipping rechecked on product open`
+        ? "Curated CJ catalog · live variants, stock and shipping rechecked on product open"
         : "No connected provider returned a product for this category yet.";
       resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
       window.HuntAnalytics?.category(slug, rawResults.length);
