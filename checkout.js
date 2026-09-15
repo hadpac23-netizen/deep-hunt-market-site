@@ -131,6 +131,7 @@
       OUT_OF_STOCK:"One or more selected items are currently out of stock.",
       SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination.",
       SHIPPING_ADDRESS_INCOMPLETE:"Complete the shipping details before HUNT creates a checkout session.",
+      CUSTOMER_EMAIL_REQUIRED:"Enter an email for order updates.",
       CUSTOMER_EMAIL_INVALID:"Enter a valid email for order updates."
     };
     return messages[code] || "We could not verify this cart right now. No payment was attempted.";

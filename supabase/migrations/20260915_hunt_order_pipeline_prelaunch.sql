@@ -4,8 +4,7 @@ alter table public.hunt_orders
   add column if not exists shipping_snapshot jsonb not null default '{}'::jsonb;
 
 create unique index if not exists hunt_payment_events_provider_event_uidx
-  on public.hunt_payment_events(provider, provider_event_id)
-  where provider_event_id is not null;
+  on public.hunt_payment_events(provider, provider_event_id);
 
 create table if not exists public.hunt_order_pipeline_runs (
   id uuid primary key default gen_random_uuid(),

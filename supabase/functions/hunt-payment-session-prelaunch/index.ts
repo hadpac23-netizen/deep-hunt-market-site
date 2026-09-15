@@ -33,8 +33,9 @@ function normalizeShipping(body:any,country:string){
     ["shippingPhone",snapshot.shippingPhone]
   ].filter(([,value])=>!value).map(([key])=>key);
   if(missing.length)throw new Error("SHIPPING_ADDRESS_INCOMPLETE");
-  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error("CUSTOMER_EMAIL_INVALID");
-  return {snapshot,email:email||null};
+  if(!email)throw new Error("CUSTOMER_EMAIL_REQUIRED");
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error("CUSTOMER_EMAIL_INVALID");
+  return {snapshot,email};
 }
 
 function cors(req:Request){

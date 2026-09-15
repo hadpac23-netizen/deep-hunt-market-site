@@ -35,14 +35,13 @@ async function verifyWithPayPlus(session:any,payload:any){
   const secretKey=clean(Deno.env.get("PAYPLUS_SECRET_KEY"));
   if(!apiKey||!secretKey)throw new Error("PAYPLUS_CREDENTIALS_MISSING");
   const transactionUid=clean(payload?.transaction_uid||payload?.transactionUid);
-  const requestUid=clean(payload?.payment_request_uid||payload?.paymentRequestUid||session?.provider_request_uid);
-  if(!transactionUid&&!requestUid)throw new Error("PAYPLUS_PROVIDER_ID_REQUIRED");
+  const requestUid=clean(payload?.payment_request_uid||payload?.paymentRequestUid);
+  if(!requestUid)throw new Error("PAYMENT_REQUEST_UID_REQUIRED");
+  if(clean(session?.provider_request_uid)!==requestUid)throw new Error("PAYMENT_REQUEST_UID_MISMATCH");
   const base=session?.mode==="sandbox"
     ?"https://restapidev.payplus.co.il/api/v1.0"
     :"https://restapi.payplus.co.il/api/v1.0";
-  const verifyBody=transactionUid
-    ?{transaction_uid:transactionUid,related_transaction:false}
-    :{payment_request_uid:requestUid,related_transaction:false};
+  const verifyBody={payment_request_uid:requestUid,related_transaction:false};
   const res=await fetch(base+"/PaymentPages/ipn-full",{
     method:"POST",
     headers:{"content-type":"application/json","api-key":apiKey,"secret-key":secretKey},
@@ -65,13 +64,22 @@ Deno.serve(async(req:Request)=>{
     const payload:any=await requestPayload(req);
     const sessionHint=clean(payload?.more_info||payload?.moreInfo);
     const requestUid=clean(payload?.payment_request_uid||payload?.paymentRequestUid);
-    let query=supabase.from("hunt_payment_sessions")
-      .select("id,user_id,order_id,mode,status,total_amount,currency,provider_request_uid,provider_transaction_uid");
-    if(sessionHint)query=query.eq("id",sessionHint);
-    else if(requestUid)query=query.eq("provider_request_uid",requestUid);
-    else return json({ok:false,error:"PAYMENT_SESSION_REFERENCE_REQUIRED"},400);
-    const {data:session,error}=await query.maybeSingle();
+    if(!requestUid)return json({ok:false,error:"PAYMENT_REQUEST_UID_REQUIRED"},400);
+    const {data:session,error}=await supabase.from("hunt_payment_sessions")
+      .select("id,user_id,order_id,mode,status,total_amount,currency,provider_request_uid,provider_transaction_uid")
+      .eq("provider_request_uid",requestUid)
+      .maybeSingle();
     if(error||!session)return json({ok:false,error:"PAYMENT_SESSION_NOT_FOUND"},404);
+    if(sessionHint&&sessionHint!==session.id){
+      return json({ok:false,error:"PAYMENT_SESSION_REFERENCE_MISMATCH"},409);
+    }
+    if(session.mode==="prelaunch"){
+      return json({
+        ok:false,
+        error:"PRELAUNCH_SESSION_CALLBACK_BLOCKED",
+        payment_session_id:session.id
+      },409);
+    }
 
     const verified=await verifyWithPayPlus(session,payload);
     const providerEventId=verified.transactionUid||verified.requestUid;
