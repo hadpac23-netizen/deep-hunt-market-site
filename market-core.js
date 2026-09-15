@@ -253,7 +253,6 @@
   }
 
   function isNewArrival(product, maxDays=14) {
-    if (product?.new_arrival === true) return true;
     const raw = product?.first_seen_at || product?.discovered_at || product?.ingested_at || product?.created_at || "";
     if (!raw) return false;
     const ts = Date.parse(String(raw));

@@ -110,7 +110,7 @@ Deno.serve(async(req:Request)=>{
       const shippingSaving=currentShipping-shipping;
       const deliveredSaving=currentDelivered-delivered;
       const contributionGain=contribution-currentContribution;
-      if(shippingSaving<0.5&&deliveredSaving<0.5&&contributionGain<0.5)return null;
+      if(shippingSaving<0.5&&deliveredSaving<0.5)return null;
       return {
         provider:cat.provider,
         item_id:cat.item_id,

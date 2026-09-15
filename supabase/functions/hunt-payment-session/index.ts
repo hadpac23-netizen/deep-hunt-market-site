@@ -268,6 +268,17 @@ Deno.serve(async(req:Request)=>{
 
   try{
     const body=await req.json();
+    const configuredMode=clean(Deno.env.get("HUNT_PAYMENT_MODE")).toLowerCase()||"prelaunch";
+    if(configuredMode==="live"){
+      const {data:liveControl}=await ctx.supabaseAdmin
+        .from("hunt_runtime_controls")
+        .select("enabled,owner_approved")
+        .eq("key","hunt_payment_live")
+        .maybeSingle();
+      if(liveControl?.enabled!==true||liveControl?.owner_approved!==true){
+        return json(req,{ok:false,error:"LIVE_PAYMENT_DISABLED"},409);
+      }
+    }
     const base=clean(Deno.env.get("SUPABASE_URL"));
     const key=publishableKey();
     if(!base||!key)throw new Error("SERVER_CONFIG_MISSING");

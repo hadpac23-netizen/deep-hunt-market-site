@@ -178,7 +178,8 @@
       SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination.",
       SHIPPING_ADDRESS_INCOMPLETE:"Complete the shipping details before HUNT creates a checkout session.",
       CUSTOMER_EMAIL_REQUIRED:"Enter an email for order updates.",
-      CUSTOMER_EMAIL_INVALID:"Enter a valid email for order updates."
+      CUSTOMER_EMAIL_INVALID:"Enter a valid email for order updates.",
+      LIVE_PAYMENT_DISABLED:"Live payment is intentionally disabled before launch."
     };
     return messages[code] || "We could not verify this cart right now. No payment was attempted.";
   }

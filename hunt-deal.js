@@ -762,14 +762,14 @@
       }
     } catch {}
 
+    if (snapshotData?.launch_authoritative === true && renderedFallback) return;
+
     const lkg = readShelfLkg();
     if (lkg?.shelves) {
       baseData = baseData ? mergeShelfData(baseData, lkg) : lkg;
       renderedFallback = renderMarketShelvesData(baseData, "cached") || renderedFallback;
       if (counter) counter.title = "Live refresh pending; showing the last known good catalog snapshot.";
     }
-
-    if (snapshotData?.launch_authoritative === true && renderedFallback) return;
 
     try {
       const res = await fetchWithTimeout(publicApiUrl("hunt-storefront") + "?shelves=1", {

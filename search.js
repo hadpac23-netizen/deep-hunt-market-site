@@ -69,10 +69,12 @@
     return t.replace(/[^\w\u0590-\u05ff\u0600-\u06ff$€£.\-\s]/g," ").replace(/\s+/g," ").trim();
   }
   function budget(q){
-    for(const re of [/(?:under|below|max|up to)\s*[$€£]?\s*(\d+(?:\.\d+)?)/i,/[$€£]\s*(\d+(?:\.\d+)?)/i]){
-      const m=q.match(re); if(m)return Number(m[1]);
-    }
-    return null;
+    const match=q.match(/(?:under|below|max|up to)\s*([$€£])?\s*(\d+(?:\.\d+)?)/i)||q.match(/([$€£])\s*(\d+(?:\.\d+)?)/i);
+    if(!match)return null;
+    const symbol=match[1]||"$";
+    const amount=Number(match[2]);
+    if(!Number.isFinite(amount)||amount<=0)return null;
+    return {amount,currency:symbol==="€"?"EUR":symbol==="£"?"GBP":"USD"};
   }
   function catScore(slug,q){
     const d=H.categoryDefs?.[slug]; if(!d)return 0;
@@ -80,7 +82,7 @@
     return q.split(" ").filter(x=>x.length>1).reduce((n,t)=>n+(hay.includes(t)?(t.length>5?5:3):0),0);
   }
   function intent(raw){
-    const q=norm(raw), max=budget(q), c=colors.filter(x=>q.includes(x));
+    const q=norm(raw), budgetInfo=budget(q), max=budgetInfo?.amount??null, currency=budgetInfo?.currency||null, c=colors.filter(x=>q.includes(x));
     let st=styles.filter(x=>q.includes(x));
     const brandHints=[];
     for(const [b,a] of Object.entries(brandStyle))if(q.includes(b)){brandHints.push(b);st=[...new Set([...st,...a])];}
@@ -91,7 +93,7 @@
     const cats=mission?.cats?.length ? [...new Set([...mission.cats,...scored])].slice(0,6) : scored;
     const size=(q.match(/\b(?:size|מידה|مقاس)\s*[:=-]?\s*([a-z0-9.+-]{1,8})\b/i)||[])[1]||"";
     const device=(q.match(/\b(?:iphone|galaxy|pixel|redmi|xiaomi|oneplus|motorola|oppo|vivo)\s*[a-z0-9 +.-]*/i)||[])[0]||"";
-    return {q,max,colors:c,styles:st,brandHints,size,device,mission,cats:cats.length?cats:[H.slugFromQuery?.(q)||"women"]};
+    return {q,max,currency,colors:c,styles:st,brandHints,size,device,mission,cats:cats.length?cats:[H.slugFromQuery?.(q)||"women"]};
   }
   function score(p,i){
     const title=String(p.title||"").toLowerCase();
@@ -106,7 +108,8 @@
   function priceOK(p,i){
     if(!i.max)return true;
     const v=Number(p.retail_price_amount);
-    return Number.isFinite(v)&&v>0&&v<=i.max;
+    const currency=String(p.retail_currency||p.currency||"USD").toUpperCase();
+    return currency===String(i.currency||"USD").toUpperCase()&&Number.isFinite(v)&&v>0&&v<=i.max;
   }
   function card(p){
     const img=typeof p.image_url==="string"&&p.image_url.startsWith("http")?`<img src="${H.esc(p.image_url)}" alt="${H.esc(p.title||"Product")}" loading="lazy">`:"";
@@ -131,6 +134,7 @@
   function buildMissionSet(i){
     if(!i?.mission)return [];
     const picked=[],used=new Set();
+    let setCurrency=i.currency||null;
     let remaining=Number.isFinite(Number(i.max))&&Number(i.max)>0?Number(i.max):Infinity;
     for(const cat of i.mission.cats){
       const candidates=S.results.filter(p=>{
@@ -139,11 +143,14 @@
         const exact=String(p.category||"")===cat;
         const inferred=H.inferCategory?.(p)===cat;
         const price=Number(p.retail_price_amount);
+        const currency=String(p.retail_currency||p.currency||"USD").toUpperCase();
+        if(setCurrency&&currency!==String(setCurrency).toUpperCase())return false;
         return (exact||inferred)&&Number.isFinite(price)&&price>0&&price<=remaining;
       });
       if(!candidates.length)continue;
       const index=Math.min(S.missionOffset,candidates.length-1);
       const choice=candidates[index]||candidates[0];
+      if(!setCurrency)setCurrency=String(choice.retail_currency||choice.currency||"USD").toUpperCase();
       picked.push(choice);
       used.add(String(choice.item_id||""));
       remaining-=Number(choice.retail_price_amount)||0;
@@ -160,7 +167,7 @@
     panel.hidden=false;
     $("#hd-mission-title").textContent=i.mission.name;
     $("#hd-mission-copy").textContent=i.max
-      ? `A multi-category set built to stay within about $${i.max} before shipping and final verification.`
+      ? `A multi-category set built to stay within about ${H.money(i.max,i.currency||"USD")} before shipping and final verification.`
       : "A multi-category set built from your mission. Final shipping and price are verified before checkout.";
     $("#hd-mission-grid").innerHTML=set.length?set.map(missionProductCard).join(""):"<p>No complete mission set is available from the current catalog yet.</p>";
     const total=set.reduce((sum,p)=>sum+(Number(p.retail_price_amount)||0),0);
@@ -205,7 +212,7 @@
     $("#hd-ai-intent-copy").textContent=[
       `Categories: ${i.cats.map(x=>H.categoryDefs?.[x]?.title||x).join(", ")}`,
       i.colors.length?`Colors: ${i.colors.join(", ")}`:"",
-      i.max?`Budget: up to $${i.max}`:"",
+      i.max?`Budget: up to ${H.money(i.max,i.currency||"USD")}`:"",
       i.styles.length?`Style: ${i.styles.join(", ")}`:"",
       i.size?`Size: ${i.size}`:"",
       i.device?`Device: ${i.device}`:"",
