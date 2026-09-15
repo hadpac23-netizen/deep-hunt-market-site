@@ -12,11 +12,9 @@
   const isStaticPublicHost = location.hostname.endsWith(".github.io") || location.hostname === "127.0.0.1" || location.hostname === "localhost";
   const supabaseFunctionsBase = "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1";
   const supabasePublishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
-  const publicApiUrl = name => isStaticPublicHost
-    ? supabaseFunctionsBase + "/" + name
-    : (name === "hunt-storefront" ? "/api/storefront" : "/api/deals/hunt");
+  const publicApiUrl = name => supabaseFunctionsBase + "/" + name;
   const publicApiHeaders = extra => ({
-    ...(isStaticPublicHost ? {"apikey": supabasePublishableKey} : {}),
+    "apikey": supabasePublishableKey,
     ...(extra || {})
   });
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
