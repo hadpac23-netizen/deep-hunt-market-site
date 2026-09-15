@@ -56,7 +56,5 @@ values
 ('hunt_tracking_sync_sandbox',true,true,
  'Allow sandbox tracking simulation/sync only.',now())
 on conflict(key) do update set
-  enabled=excluded.enabled,
-  owner_approved=excluded.owner_approved,
   note=excluded.note,
   updated_at=now();

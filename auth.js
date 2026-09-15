@@ -37,7 +37,10 @@
     const next=nextTarget();
     if(next&&!sessionStorage.getItem("hunt_auth_redirecting")){
       sessionStorage.setItem("hunt_auth_redirecting","1");
-      setTimeout(()=>location.replace(next),250);
+      setTimeout(()=>{
+        sessionStorage.removeItem("hunt_auth_redirecting");
+        location.replace(next);
+      },250);
     }
   }
 

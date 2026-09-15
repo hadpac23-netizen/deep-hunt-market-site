@@ -181,12 +181,18 @@
           qty:Math.max(1,Math.min(5,Number(item.qty)||1))
         }))
       };
+      const authHeaders = {
+        apikey:publishableKey,
+        "content-type":"application/json"
+      };
+      try {
+        const client = window.HuntSupabaseClient || window.HuntAccountClient;
+        const {data:{session}} = client ? await client.auth.getSession() : {data:{session:null}};
+        if (session?.access_token) authHeaders.Authorization = "Bearer " + session.access_token;
+      } catch {}
       const res = await fetch(functionsBase + "/hunt-payment-session", {
         method:"POST",
-        headers:{
-          apikey:publishableKey,
-          "content-type":"application/json"
-        },
+        headers:authHeaders,
         body:JSON.stringify(payload),
         cache:"no-store"
       });

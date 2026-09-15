@@ -1,4 +1,5 @@
-
-drop index if exists public.hunt_payment_events_provider_event_uidx;
-create unique index hunt_payment_events_provider_event_uidx
-  on public.hunt_payment_events(provider, provider_event_id);
+-- Intentionally left as a no-op.
+-- The unique index on (provider, provider_event_id) is created by
+-- 20260915090100_hunt_order_pipeline_prelaunch.sql.
+-- Keeping this migration version preserves applied migration history
+-- without rebuilding the same index or blocking payment-event writes.

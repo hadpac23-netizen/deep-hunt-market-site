@@ -418,11 +418,18 @@ Deno.serve(async(req:Request)=>{
         requireWrite(submittedError,"FULFILLMENT_STORE_FAILED");
       }
 
-      const paid=await cjPost("/shopping/sandbox/simulatePay",{orderId:supplierId});
-      await cjPost("/shopping/sandbox/updateStatus",{orderId:supplierId,targetStatus:400});
-      track=track||("HUNTSBX"+session.id.replace(/-/g,"").slice(0,12)+String(index)).slice(0,64);
-      const tracked=await cjPost("/shopping/sandbox/updateTrackNumber",{orderId:supplierId,trackNumber:track});
-      await cjPost("/shopping/sandbox/updateStatus",{orderId:supplierId,targetStatus:500});
+      const alreadyShipped=clean(fulfillment?.supplier_status)==="sandbox_shipped";
+      let paid:any=null;
+      let tracked:any=null;
+      if(!alreadyShipped){
+        paid=await cjPost("/shopping/sandbox/simulatePay",{orderId:supplierId});
+        await cjPost("/shopping/sandbox/updateStatus",{orderId:supplierId,targetStatus:400});
+        track=track||("HUNTSBX"+session.id.replace(/-/g,"").slice(0,12)+String(index)).slice(0,64);
+        tracked=await cjPost("/shopping/sandbox/updateTrackNumber",{orderId:supplierId,trackNumber:track});
+        await cjPost("/shopping/sandbox/updateStatus",{orderId:supplierId,targetStatus:500});
+      }else{
+        track=track||clean(fulfillment?.tracking_number);
+      }
 
       const {error:fulfillmentShipError}=await ctx.supabaseAdmin.from("hunt_fulfillment_orders").update({
         status:"shipped",supplier_status:"sandbox_shipped",

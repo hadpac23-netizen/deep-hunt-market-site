@@ -78,7 +78,8 @@ async function verifyWithPayPlus(session:any,payload:any){
   const res=await fetch(base+"/PaymentPages/ipn-full",{
     method:"POST",
     headers:{"content-type":"application/json","api-key":apiKey,"secret-key":secretKey},
-    body:JSON.stringify(verifyBody)
+    body:JSON.stringify(verifyBody),
+    signal:AbortSignal.timeout(10000)
   });
   const body=await res.json().catch(()=>({}));
   if(!res.ok)throw new Error("PAYPLUS_IPN_VERIFY_FAILED_"+res.status);
