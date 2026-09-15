@@ -32,6 +32,34 @@
   let quoteVerified = false;
   const destinationKey = "hunt_destination_market_v1";
 
+  function readShipping(country) {
+    const value = id => String($(id)?.value || "").trim();
+    const shipping = {
+      shippingCustomerName:value("#hd-ship-name"),
+      shippingAddress:value("#hd-ship-address"),
+      shippingAddress2:value("#hd-ship-address2"),
+      shippingCity:value("#hd-ship-city"),
+      shippingProvince:value("#hd-ship-province"),
+      shippingZip:value("#hd-ship-zip"),
+      shippingPhone:value("#hd-ship-phone"),
+      shippingCountryCode:String(country || "").toUpperCase()
+    };
+    const customerEmail=value("#hd-ship-email").toLowerCase();
+    const required=[
+      ["Full name",shipping.shippingCustomerName],
+      ["Address",shipping.shippingAddress],
+      ["City",shipping.shippingCity],
+      ["Province / region",shipping.shippingProvince],
+      ["Postal code",shipping.shippingZip],
+      ["Phone",shipping.shippingPhone],
+      ["Email",customerEmail]
+    ];
+    const missing=required.filter(([,v])=>!v).map(([label])=>label);
+    if (missing.length) throw new Error("SHIPPING_ADDRESS_INCOMPLETE");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) throw new Error("CUSTOMER_EMAIL_INVALID");
+    return {shipping,customer_email:customerEmail};
+  }
+
   function rememberDestination(country) {
     try { localStorage.setItem(destinationKey, String(country || "").toUpperCase()); } catch {}
   }
@@ -101,7 +129,9 @@
       CURRENCY_REVIEW_REQUIRED:"This item needs a currency review before checkout.",
       SHIPPING_RECHECK_FAILED:"Shipping could not be rechecked right now.",
       OUT_OF_STOCK:"One or more selected items are currently out of stock.",
-      SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination."
+      SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination.",
+      SHIPPING_ADDRESS_INCOMPLETE:"Complete the shipping details before HUNT creates a checkout session.",
+      CUSTOMER_EMAIL_INVALID:"Enter a valid email for order updates."
     };
     return messages[code] || "We could not verify this cart right now. No payment was attempted.";
   }
@@ -135,9 +165,12 @@
     if (status) status.textContent = "Rechecking HUNT retail price, supplier stock and shipping…";
 
     try {
+      const shippingInput = readShipping(country);
       const bundlePreview = await checkBundlePreview(cart, country);
       const payload = {
         country_code: country,
+        customer_email: shippingInput.customer_email,
+        shipping: shippingInput.shipping,
         idempotency_key: `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
         checkout_offer_id: bundlePreview?.offer_id || null,
         items: cart.map(item => ({
