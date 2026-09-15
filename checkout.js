@@ -109,8 +109,53 @@
     }
   }
 
+  async function checkShippingChess(cart,country) {
+    const box=$("#hd-shipping-chess");
+    const list=$("#hd-shipping-chess-list");
+    if(!box||!list){return;}
+    box.hidden=true;
+    list.innerHTML="";
+    if(!Array.isArray(cart)||!cart.length||!country)return;
+    const rows=[];
+    for(const item of cart.slice(0,3)){
+      if(!item?.provider||!item?.item_id)continue;
+      try{
+        const res=await fetch(functionsBase+"/hunt-shipping-chess-preview",{
+          method:"POST",
+          headers:{apikey:publishableKey,"content-type":"application/json"},
+          body:JSON.stringify({
+            provider:item.provider,
+            item_id:item.item_id,
+            country_code:String(country).toUpperCase()
+          }),
+          cache:"no-store"
+        });
+        const data=await res.json().catch(()=>({}));
+        if(!res.ok||data?.ok!==true)continue;
+        for(const candidate of Array.isArray(data?.candidates)?data.candidates:[]){
+          const key=String(candidate?.provider||"")+":"+String(candidate?.item_id||"");
+          if(rows.some(x=>x.key===key)||cart.some(x=>String(x.provider)===String(candidate.provider)&&String(x.item_id)===String(candidate.item_id)))continue;
+          rows.push({key,candidate});
+        }
+      }catch{}
+    }
+    if(!rows.length)return;
+    list.innerHTML=rows.slice(0,3).map(({candidate})=>{
+      const saving=Number(candidate.delivered_saving||0);
+      const shippingSaving=Number(candidate.shipping_saving||0);
+      const href="product.html?provider="+encodeURIComponent(candidate.provider||"CJdropshipping")+"&id="+encodeURIComponent(candidate.item_id||"");
+      const benefit=saving>0
+        ? "Potential delivered-cost saving "+money(saving,candidate.currency||"USD")
+        : "Potential shipping saving "+money(shippingSaving,candidate.currency||"USD");
+      return `<article class="hd-shipping-chess-card">${candidate.image_url?`<img src="${esc(candidate.image_url)}" alt="${esc(candidate.title||"Alternative")}">`:""}<div><small>VERIFIED FOR ${esc(String(country).toUpperCase())}</small><strong>${esc(candidate.title||"Alternative")}</strong><span>${esc(benefit)}</span><em>Shipping ${money(candidate.shipping_amount,candidate.currency||"USD")} · Product ${money(candidate.sale_price_per_unit,candidate.currency||"USD")}</em></div><a href="${href}">View alternative →</a></article>`;
+    }).join("");
+    box.hidden=false;
+  }
+
   function resetQuote(message="Verify price and shipping before payment.") {
     quoteVerified = false;
+    const chess=$("#hd-shipping-chess");
+    if(chess)chess.hidden=true;
     if ($("#hd-checkout-shipping")) $("#hd-checkout-shipping").textContent = "PENDING";
     if ($("#hd-checkout-discount")) $("#hd-checkout-discount").textContent = "—";
     if ($("#hd-checkout-total")) $("#hd-checkout-total").textContent = "PRE-LAUNCH";
@@ -223,6 +268,7 @@
         shippingAmount:Number(session.shipping_amount||0),
         totalAmount:Number(session.total_amount||0)
       });
+      await checkShippingChess(cart,country);
     } catch (err) {
       resetQuote(friendlyQuoteError(String(err?.message || "QUOTE_FAILED")));
     } finally {
