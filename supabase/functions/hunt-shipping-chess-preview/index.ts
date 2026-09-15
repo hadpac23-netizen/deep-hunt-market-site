@@ -92,6 +92,8 @@ Deno.serve(async(req:Request)=>{
       const id=clean(row.item_id);
       if(id&&!byId.has(id))byId.set(id,row);
     }
+    const currentCurrency=clean(currentEcon.currency).toUpperCase();
+    if(currentCurrency!=="USD")return json(req,{ok:true,candidates:[]});
     const currentShipping=num(currentEcon.customer_shipping_amount);
     const currentDelivered=num(currentEcon.sale_price_per_unit)+currentShipping;
     const currentContribution=num(currentEcon.contribution_before_coupon);
@@ -99,7 +101,7 @@ Deno.serve(async(req:Request)=>{
     const ranked=(catalogRows||[]).map((cat:any)=>{
       const econ=byId.get(clean(cat.item_id));
       if(!econ)return null;
-      if(clean(econ.currency).toUpperCase()!==clean(currentEcon.currency).toUpperCase())return null;
+      if(clean(econ.currency).toUpperCase()!==currentCurrency)return null;
       const verifiedAt=Date.parse(String(econ.calculated_at||""));
       if(!Number.isFinite(verifiedAt)||Date.now()-verifiedAt>86400000)return null;
       const similarity=overlap(clean(currentCatalog.title),clean(cat.title));

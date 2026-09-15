@@ -144,7 +144,7 @@
     list.innerHTML=rows.slice(0,3).map(({candidate})=>{
       const saving=Number(candidate.delivered_saving||0);
       const shippingSaving=Number(candidate.shipping_saving||0);
-      const href="product.html?provider="+encodeURIComponent(candidate.provider||"CJdropshipping")+"&id="+encodeURIComponent(candidate.item_id||"");
+      const href="product.html?provider="+encodeURIComponent(candidate.provider||"CJdropshipping")+"&id="+encodeURIComponent(candidate.item_id||"")+"&variant_id="+encodeURIComponent(candidate.variant_id||"");
       const benefit=saving>0
         ? "Potential delivered-cost saving "+money(saving,candidate.currency||"USD")
         : "Potential shipping saving "+money(shippingSaving,candidate.currency||"USD");
