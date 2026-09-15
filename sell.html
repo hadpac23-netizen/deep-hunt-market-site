@@ -15,7 +15,7 @@
   <a class="hd-skip-link" href="#main-content">Skip to seller dashboard</a>
   <header class="hd-topbar">
     <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">SELLER NETWORK</div></div>
-    <nav class="hd-nav" aria-label="Primary"><a href="./">Storefront</a><a href="partners.html">Partners</a><a href="seller-api.html">Seller API</a></nav>
+    <nav class="hd-nav" aria-label="Primary"><a href="./">Storefront</a><a href="partners.html">Partners</a><a href="merchant-program.html">Program</a><a href="seller-api.html">Seller API</a></nav>
     <div class="hd-tools"><a class="hd-account-link" href="auth.html">Account</a></div>
   </header>
 
@@ -26,6 +26,11 @@
       <p>Apply once, connect products manually or through the HUNT Seller API, and request approved sponsored placements. Products never go live until store approval, safety checks and product review pass.</p>
       <div class="hd-seller-points">
         <span>Manual upload</span><span>Seller API</span><span>Product feeds</span><span>Affiliate tracking</span><span>Sponsored placements</span>
+      </div>
+      <div class="hd-seller-program glass">
+        <small>HUNT MERCHANT PROGRAM · OWNER-GATED PILOT</small>
+        <h2>Zero listing fee at launch. Commission is earned only on completed commerce.</h2>
+        <p>Planning terms: default 12% marketplace commission with a 10–15% working band by category/store, merchant remains Seller of Record by default, 14-day payout hold planning baseline, real inventory/price/tracking required, brand authorization required, and sponsored placement is reviewed separately. Final commercial activation requires HUNT owner approval, KYC, agreement acceptance and payout readiness.</p>
       </div>
     </section>
 
@@ -50,6 +55,18 @@
     </section>
 
     <section id="hd-seller-dashboard" hidden>
+      <section id="hd-seller-program-gate" class="hd-seller-panel glass">
+        <div class="hd-seller-section-head compact"><div><small>MERCHANT PROGRAM</small><h3 id="hd-program-title">Program status</h3><p id="hd-program-copy">Loading current program…</p></div><strong id="hd-program-badge">CHECKING</strong></div>
+        <form id="hd-program-accept-form" class="hd-seller-form single" hidden>
+          <label><input type="checkbox" name="seller_of_record_ack" required> I understand that my store remains Seller of Record unless a separate signed agreement says otherwise.</label>
+          <label><input type="checkbox" name="authenticity_ack" required> I confirm I have the right to sell and market every branded product I submit.</label>
+          <label><input type="checkbox" name="returns_ack" required> I accept the HUNT-approved returns and consumer-rights requirements for the markets I sell into.</label>
+          <label><input type="checkbox" name="safety_ack" required> I will not submit restricted, unsafe, counterfeit or prohibited products.</label>
+          <label><input type="checkbox" name="inventory_accuracy_ack" required> I will keep price, inventory, variants, shipping and tracking information accurate.</label>
+          <button class="hd-btn hd-btn-primary" type="submit">Accept current Merchant Program →</button>
+        </form>
+        <p class="hd-seller-status" id="hd-program-status" aria-live="polite"></p>
+      </section>
       <div class="hd-seller-section-head"><div><small>MERCHANT DASHBOARD</small><h2>Your HUNT stores</h2><p>Approved stores can create API keys and submit products. Product publishing always remains review-controlled.</p></div><a class="hd-btn" href="seller-api.html">API docs →</a></div>
       <div id="hd-seller-stores" class="hd-seller-store-grid"></div>
 
@@ -106,7 +123,7 @@
     </section>
   </main>
 
-  <footer class="hd-footer"><div><strong>HUNT DEAL</strong><small>Merchant marketplace network.</small></div><nav><a href="./">Store</a><a href="partners.html">Partners</a><a href="seller-api.html">Seller API</a></nav></footer>
+  <footer class="hd-footer"><div><strong>HUNT DEAL</strong><small>Merchant marketplace network.</small></div><nav><a href="./">Store</a><a href="partners.html">Partners</a><a href="merchant-program.html">Program</a><a href="seller-api.html">Seller API</a></nav></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="market-core.js?v=boomcmd1"></script>
   <script src="seller.js?v=media1"></script>

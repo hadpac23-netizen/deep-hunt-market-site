@@ -6,6 +6,7 @@
   const client=sb.createClient(SUPABASE_URL,H.publishableKey);
   const $=q=>document.querySelector(q);
   let session=null;
+  let merchantProgram=null;
 
   async function api(path,options={}){
     const res=await fetch(API+path,{
@@ -38,6 +39,7 @@
     $("#hd-admin-store-count").textContent=String(rows.length);
     $("#hd-admin-stores").innerHTML=rows.length?rows.map(store=>`<article>
       <div><strong>${H.esc(store.name)}</strong><small>${H.esc(store.store_type||"store")} · ${H.esc(store.merchant_accounts?.legal_name||"")}</small></div>
+      <p><small>KYC: ${H.esc(store.merchant_accounts?.kyc_status||"pending")} · Agreement: ${H.esc(store.merchant_accounts?.agreement_status||"not_accepted")} · Payout: ${H.esc(store.merchant_accounts?.payout_status||"not_configured")}</small></p>
       <p>${store.website_url?`<a href="${H.esc(store.website_url)}" target="_blank" rel="noopener">${H.esc(store.website_url)}</a>`:"No website"}</p>
       ${actionButtons("store",store.id)}
     </article>`).join(""):'<p>No pending stores.</p>';
@@ -71,20 +73,44 @@
       ${actionButtons("ad",req.id)}
     </article>`).join(""):'<p>No pending placement requests.</p>';
   }
+  function renderProgramControl(){
+    const badge=$("#hd-admin-program-status-badge"), summary=$("#hd-admin-program-summary");
+    const activate=$("#hd-admin-program-activate"), pause=$("#hd-admin-program-pause");
+    if(!badge||!summary||!activate||!pause)return;
+    if(!merchantProgram){
+      badge.textContent="NONE"; summary.innerHTML="<p>No Merchant Program version found.</p>"; activate.hidden=true; pause.hidden=true; return;
+    }
+    badge.textContent=String(merchantProgram.status||"").replaceAll("_"," ").toUpperCase();
+    const pct=(Number(merchantProgram.default_commission_bps||0)/100).toFixed(1).replace(".0","");
+    const min=(Number(merchantProgram.min_commission_bps||0)/100).toFixed(1).replace(".0","");
+    const max=(Number(merchantProgram.max_commission_bps||0)/100).toFixed(1).replace(".0","");
+    summary.innerHTML="<p><strong>"+H.esc(merchantProgram.version)+"</strong> · $"+H.esc(merchantProgram.listing_fee_amount||0)+" listing fee · default "+H.esc(pct)+"% commission · planning band "+H.esc(min)+"–"+H.esc(max)+"% · "+H.esc(merchantProgram.payout_hold_days||14)+"-day payout hold · Seller of Record default: "+(merchantProgram.seller_of_record_default?"merchant":"HUNT")+"</p>";
+    activate.hidden=merchantProgram.status==="active"&&merchantProgram.owner_approved===true;
+    pause.hidden=!(merchantProgram.status==="active"&&merchantProgram.owner_approved===true);
+  }
+
   async function load(){
-    const [stores,products,ads,media,approved]=await Promise.all([
+    const [stores,products,ads,media,approved,program]=await Promise.all([
       api("/admin/stores?status=pending"),
       api("/admin/products?status=pending_review"),
       api("/admin/ad-requests?status=pending"),
       api("/admin/media?status=pending_review"),
-      api("/admin/stores?status=approved")
+      api("/admin/stores?status=approved"),
+      api("/admin/program")
     ]);
+    merchantProgram=program.program||null;
+    renderProgramControl();
     renderStores(stores.stores||[]);
     renderProducts(products.products||[]);
     renderAds(ads.requests||[]);
     renderMedia(media.media||[]);
     const select=$("#hd-admin-tracking-store");
     select.innerHTML=(approved.stores||[]).map(store=>`<option value="${H.esc(store.id)}">${H.esc(store.name)}</option>`).join("")||'<option value="">No approved stores</option>';
+    const commercial=$("#hd-admin-commercial-store");
+    if(commercial){
+      const combined=[...(stores.stores||[]),...(approved.stores||[])];
+      commercial.innerHTML=combined.map(store=>`<option value="${H.esc(store.id)}" data-account="${H.esc(store.merchant_account_id||"")}">${H.esc(store.name)} · ${H.esc(store.status)}</option>`).join("")||'<option value="">No stores</option>';
+    }
     $("#hd-merchant-admin").hidden=false;
     $("#hd-merchant-admin-status").hidden=true;
   }
@@ -111,6 +137,28 @@
     button.disabled=true;
     try{await moderate(button.dataset.adminAction,button.dataset.id);}
     catch(error){setStatus(error.message||"Moderation failed.","error");button.disabled=false;}
+  });
+
+  $("#hd-admin-verification-form")?.addEventListener("submit",async event=>{
+    event.preventDefault();
+    const form=new FormData(event.currentTarget);
+    const storeId=String(form.get("store_id")||"");
+    const option=$("#hd-admin-commercial-store")?.selectedOptions?.[0];
+    const accountId=option?.dataset?.account||"";
+    const status=$("#hd-admin-verification-status");
+    status.textContent="Saving…";
+    try{
+      if(accountId){
+        await api("/admin/accounts/"+encodeURIComponent(accountId)+"/verification",{method:"PATCH",body:JSON.stringify({kyc_status:form.get("kyc_status"),payout_status:form.get("payout_status")})});
+      }
+      await api("/admin/stores/"+encodeURIComponent(storeId)+"/commercial",{method:"PATCH",body:JSON.stringify({commission_bps:Math.round(Number(form.get("commission_percent")||12)*100),payout_hold_days:Number(form.get("payout_hold_days")||14),return_window_days:Number(form.get("return_window_days")||14),shipping_sla_days:Number(form.get("shipping_sla_days")||7),fulfillment_mode:form.get("fulfillment_mode"),seller_of_record:form.get("seller_of_record")==="on"})});
+      status.textContent="Verification and commercial settings saved.";
+      status.dataset.tone="success";
+      await load();
+    }catch(error){
+      status.textContent=error.message||"Could not save merchant settings.";
+      status.dataset.tone="error";
+    }
   });
 
   $("#hd-admin-tracking-form")?.addEventListener("submit",async event=>{

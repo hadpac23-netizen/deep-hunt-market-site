@@ -2,7 +2,8 @@
   const H=window.HuntCore, sb=window.supabase;
   if(!H||!sb?.createClient)return;
 
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const client=window.HuntSupabaseClient || sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  if(client&&!window.HuntSupabaseClient)window.HuntSupabaseClient=client;
   const state=new Map();
   const localKey="hunt_local_product_actions_v1";
   let session=null;

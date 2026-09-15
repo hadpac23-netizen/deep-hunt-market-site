@@ -4,7 +4,8 @@
   if (!H || !sb?.createClient) return;
 
   const SUPABASE_URL = "https://zszlnahjqmwozwubetkm.supabase.co";
-  const client = sb.createClient(SUPABASE_URL, H.publishableKey);
+  const client = window.HuntSupabaseClient || sb.createClient(SUPABASE_URL, H.publishableKey);
+  if (client && !window.HuntSupabaseClient) window.HuntSupabaseClient = client;
   const params = new URLSearchParams(location.search);
   const provider = (params.get("provider") || "").trim();
   const itemId = (params.get("id") || params.get("product_id") || "").trim();

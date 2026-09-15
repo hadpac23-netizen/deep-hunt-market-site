@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Search HUNT DEAL with natural language across the CJ-only catalog.">
+  <title>AI Find — HUNT DEAL</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo6">
+  <link rel="stylesheet" href="hunt-wow.css?v=market2">
+  <link rel="stylesheet" href="hunt-shop.css?v=platform1">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#111111">
+</head>
+<body class="hd-page hd-market-v2">
+  <a class="hd-skip-link" href="#main-content">Skip to search results</a>
+  <header class="hd-topbar">
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a></div>
+    <nav class="hd-nav" aria-label="Primary">
+      <a href="./#shop">Shop</a>
+      <a href="category.html?c=women">Women</a>
+      <a href="category.html?c=men">Men</a>
+      <a href="category.html?c=kids">Kids</a>
+      <a href="category.html?c=beauty">Beauty</a>
+      <a href="category.html?c=tech">Tech</a>
+      <a href="category.html?c=home">Home</a>
+    </nav>
+    <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a></div>
+  </header>
+  <main id="main-content" class="hd-ai-search-shell">
+    <section class="hd-ai-search-hero">
+      <div class="hd-kicker hd-kicker-small">HUNT AI FIND</div>
+      <h1>Describe what you want.</h1>
+      <p>Search naturally in English, Hebrew or Arabic. HUNT turns your request into category, style, color and budget filters.</p>
+      <form id="hd-ai-search-form" class="hd-ai-search-box">
+        <input id="hd-ai-search-input" autocomplete="off" spellcheck="false" placeholder="e.g. black wedding dress under $40 / שמלה שחורה לחתונה">
+        <button class="hd-btn hd-btn-primary" type="submit">Find</button>
+      </form>
+      <div class="hd-ai-search-examples">
+        <button type="button" data-example="black wedding dress under $40">Black wedding dress under $40</button>
+        <button type="button" data-example="بدلة رجالية سوداء">بدلة رجالية سوداء</button>
+        <button type="button" data-example="כיסוי לאייפון 17 פרו מקס">כיסוי לאייפון 17 פרו מקס</button>
+        <button type="button" data-example="luxury inspired handbag">Luxury-inspired handbag</button>
+      </div>
+    </section>
+    <section class="hd-ai-search-status" aria-live="polite">
+      <strong id="hd-ai-intent-title">Ready to search</strong>
+      <span id="hd-ai-intent-copy">No profile guessing. Results come from the current CJ-only HUNT catalog.</span>
+    </section>
+    <section class="hd-ai-results">
+      <div class="hd-market-product-grid" id="hd-ai-results-grid"></div>
+      <div class="hd-category-sentinel" id="hd-ai-sentinel"><span></span><strong>Search to begin.</strong></div>
+    </section>
+  </main>
+  <script src="hunt-theme.js?v=1"></script>
+  <script src="market-core.js?v=30k1"></script>
+  <script src="search.js?v=launchqa1"></script>
+
+<script src="analytics.js?v=huntmetrics1"></script>
+</body>
+</html>
