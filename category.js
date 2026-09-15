@@ -1,5 +1,6 @@
 (() => {
   const H = window.HuntCore;
+  const PROD_ORIGIN = "https://deep-hunt-market.netlify.app";
   const params = new URLSearchParams(location.search);
   const requested = params.get("c") || "women";
   const slug = H.categoryDefs[requested] ? requested : "women";
@@ -232,6 +233,33 @@
     const subDef = sub && H.categoryDefs[sub] ? H.categoryDefs[sub] : null;
     const pageTitle = subDef ? `${def.title} · ${subDef.title}` : def.title;
     document.title = `${pageTitle} — HUNT DEAL`;
+
+    const canonicalUrl = new URL("/category.html", PROD_ORIGIN);
+    canonicalUrl.searchParams.set("c", slug);
+    if (subDef) canonicalUrl.searchParams.set("sub", sub);
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = canonicalUrl.toString();
+
+    let jsonLd = document.querySelector("#hd-category-jsonld");
+    if (!jsonLd) {
+      jsonLd = document.createElement("script");
+      jsonLd.type = "application/ld+json";
+      jsonLd.id = "hd-category-jsonld";
+      document.head.appendChild(jsonLd);
+    }
+    jsonLd.textContent = JSON.stringify({
+      "@context":"https://schema.org",
+      "@type":"CollectionPage",
+      name:pageTitle,
+      url:canonicalUrl.toString(),
+      description:subDef ? `${subDef.title} inside ${def.title} on HUNT DEAL.` : String(def.description || pageTitle)
+    });
+
     $("#hd-cat-title").textContent = pageTitle;
     $("#hd-cat-breadcrumb").textContent = pageTitle;
     $("#hd-cat-copy").textContent = subDef ? `${subDef.title} inside ${def.title}. CJ-only products, organized without category mixing.` : def.description;

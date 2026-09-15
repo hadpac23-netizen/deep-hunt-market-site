@@ -1,5 +1,6 @@
 (() => {
   const H = window.HuntCore;
+  const PROD_ORIGIN = "https://deep-hunt-market.netlify.app";
   const $ = q => document.querySelector(q);
   const params = new URLSearchParams(location.search);
   const provider = params.get("provider") || "CJdropshipping";
@@ -70,11 +71,14 @@
       document.head.appendChild(script);
     }
     const images=[...new Set([...(product.gallery||[]),product.image_url].filter(x=>typeof x==="string"&&x.startsWith("https://")))].slice(0,8);
+    const canonicalUrl = new URL("/product.html", PROD_ORIGIN);
+    canonicalUrl.searchParams.set("provider", provider);
+    canonicalUrl.searchParams.set("id", id);
     const payload={
       "@context":"https://schema.org",
       "@type":"Product",
       "name":String(product.title||"Product"),
-      "url":location.href.split("#")[0]
+      "url":canonicalUrl.toString()
     };
     if(images.length)payload.image=images;
     if(product.description)payload.description=String(product.description).slice(0,4000);
@@ -88,7 +92,7 @@
       canonical.rel="canonical";
       document.head.appendChild(canonical);
     }
-    canonical.href=location.href.split("#")[0];
+    canonical.href=canonicalUrl.toString();
   }
 
   function currentRetailState() {

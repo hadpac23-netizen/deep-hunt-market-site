@@ -42,7 +42,7 @@
   }
 
   async function loadData() {
-    const [mission, launch, econRes, dealRes, experimentRes, radarRes] = await Promise.all([
+    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, seoAudit] = await Promise.all([
       ownerFunction("hunt-owner-mission-control"),
       ownerFunction("hunt-launch-readiness"),
       client.from("hunt_unit_economics")
@@ -60,13 +60,25 @@
       client.from("hunt_boom_world_ideas")
         .select("id,title,domain,status,priority,user_value,complexity,next_action,evidence_note,last_verified_at,updated_at")
         .order("updated_at", {ascending:false})
-        .limit(80)
+        .limit(80),
+      client.from("hunt_growth_daily_briefs")
+        .select("day,generated_at,status,funnel,economics,marketing,creative,seo,love,publisher,learning,next_move,notes")
+        .order("day",{ascending:false})
+        .limit(1)
+        .maybeSingle(),
+      client.from("hunt_distribution_drafts")
+        .select("id,day,channel,provider,item_id,status,owner_approved,utm_source,utm_medium,utm_campaign,utm_content,created_at")
+        .order("created_at",{ascending:false})
+        .limit(80),
+      fetch("boom-seo-audit.json?v=os2",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)
     ]);
 
     if (econRes.error) throw econRes.error;
     if (dealRes.error) throw dealRes.error;
     if (experimentRes.error) throw experimentRes.error;
     if (radarRes.error) throw radarRes.error;
+    if (briefRes.error) throw briefRes.error;
+    if (distributionRes.error) throw distributionRes.error;
 
     const economics = econRes.data || [];
     const econMap = new Map();
@@ -92,7 +104,10 @@
       economics,
       deals,
       experiments: experimentRes.data || [],
-      worldIdeas: radarRes.data || []
+      worldIdeas: radarRes.data || [],
+      dailyBrief: briefRes.data || null,
+      distributionDrafts: distributionRes.data || [],
+      seoAudit
     };
   }
 
@@ -147,18 +162,76 @@
   }
 
   function renderOperating(plan, data) {
+    const Marketing = window.BoomMarketingBrain;
+    const Creative = window.BoomCreativeBrain;
+    const Seo = window.BoomSeoBrain;
+    const Love = window.BoomLoveEngine;
+    const Publisher = window.BoomEverywherePublisher;
+    const Learning = window.BoomLearningLoop;
+
+    const marketing = Marketing?.build?.({plan,data}) || {channels:[],primary:null,eligibleDeals:0};
+    const topDeal = plan.rankedDeals.find(x => x?.boom?.eligibleForPromotion) || null;
+    const creative = topDeal ? (Creative?.draftsForDeal?.(topDeal) || []) : [];
+    const publisherDrafts = Publisher?.buildDrafts?.(creative) || [];
+    const backendDrafts = Array.isArray(data.distributionDrafts) ? data.distributionDrafts : [];
+    const dailyBrief = data.dailyBrief || null;
+    const love = Love?.measure?.(data.snapshot?.today || {}) || {score:0,confidence:"unknown",next:"No Love Engine data."};
+
+    const pageSeo = (data.seoAudit?.pages || []).map(page => ({
+      page:page.file,
+      result:Seo?.evaluate?.(page) || {score:0,missing:[],actions:[]}
+    }));
+    const seoScore = pageSeo.length
+      ? Math.round(pageSeo.reduce((sum,row)=>sum+Number(row.result.score||0),0)/pageSeo.length)
+      : 0;
+    const seoActions = [...new Set(pageSeo.flatMap(row=>row.result.actions||[]))];
+
+    const exp = plan.recommendedExperiment;
+    const learning = exp
+      ? (Learning?.decide?.(exp,{sampleSize:Number(plan.funnel.sessions||0)}) || {decision:"collect",reason:"Learning engine unavailable.",next:"Collect evidence."})
+      : {decision:"prepare",reason:"No active experiment selected.",next:"Prepare a measurable experiment."};
+
     const brainRows = [
-      ["Analytics", Number(data.snapshot?.today?.unique_sessions || 0) > 0 ? "LIVE" : "READY"],
-      ["Profit", plan.verifiedEconomicsCount > 0 ? "LIVE" : "NEEDS DATA"],
-      ["Deals", plan.rankedDeals.length > 0 ? "LIVE" : "READY"],
-      ["Marketing", (data.experiments || []).length > 0 ? "LIVE" : "READY"],
-      ["Radar", (data.worldIdeas || []).length > 0 ? "LIVE" : "READY"]
+      ["Marketing", marketing.primary ? "LIVE" : "READY"],
+      ["Creative", creative.length ? creative.length + " DRAFTS" : "WAIT EVIDENCE"],
+      ["SEO", seoScore + "/100"],
+      ["Love", love.confidence.toUpperCase()],
+      ["Publisher", backendDrafts.length ? backendDrafts.length + " DRAFTS" : (publisherDrafts.length ? publisherDrafts.length + " READY" : "DRAFT-ONLY")],
+      ["Learning", String(learning.decision || "READY").toUpperCase()]
     ];
     $("#bg-brains").innerHTML = brainRows.map(([name,state]) =>
       '<div class="bg-step"><small>' + H.esc(name) + '</small><strong>' + H.esc(state) + '</strong></div>'
     ).join("");
 
-    const exp = plan.recommendedExperiment;
+    $("#bg-marketing-title").textContent = marketing.primary
+      ? String(marketing.primary.channel).replaceAll("_"," ") + " first"
+      : "No channel selected";
+    $("#bg-marketing-copy").textContent = marketing.primary
+      ? marketing.primary.reason + " " + marketing.primary.action
+      : "Waiting for verified growth evidence.";
+
+    $("#bg-seo-title").textContent = "SEO " + seoScore + "/100";
+    $("#bg-seo-copy").textContent = seoActions[0] || "Core audited pages have the required baseline SEO signals.";
+
+    $("#bg-love-title").textContent = "Love score " + Number(love.score||0).toFixed(1);
+    $("#bg-love-copy").textContent = love.next || "Collect more real return/save/like evidence.";
+
+    const draftCount = backendDrafts.length || publisherDrafts.length;
+    $("#bg-publisher-title").textContent = draftCount + " distribution drafts";
+    $("#bg-publisher-copy").textContent = draftCount
+      ? "Drafts have UTMs and remain owner-locked. No external post is sent automatically."
+      : "No product is promotion-eligible yet, so BOOM correctly created zero outbound drafts.";
+
+    $("#bg-learning-title").textContent = String(learning.decision || "prepare").replaceAll("_"," ");
+    $("#bg-learning-copy").textContent = learning.reason + " " + learning.next;
+
+    const nextMove = dailyBrief?.next_move || {};
+    $("#bg-daily-title").textContent = nextMove.title || "Daily brief is ready";
+    $("#bg-daily-status").textContent = String(nextMove.code || dailyBrief?.status || "READY").replaceAll("_"," ");
+    $("#bg-daily-copy").textContent = nextMove.action
+      ? nextMove.action + " · External publishing remains " + (dailyBrief?.publisher?.external_publish_enabled ? "ON" : "OFF") + "."
+      : "BOOM has no daily recommendation yet.";
+
     $("#bg-exp-title").textContent = exp?.title || "No active experiment selected";
     $("#bg-exp-copy").textContent = exp
       ? (String(exp.paid ? "Paid" : "Free") + " · " + String(exp.channel || "channel") + " · KPI: " + String(exp.primary_kpi || "measurable outcome") + ". " + String(exp.hypothesis || ""))

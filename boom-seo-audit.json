@@ -1,0 +1,48 @@
+{
+  "generated_at": "2026-09-15T07:43:51.830Z",
+  "production_origin": "https://deep-hunt-market.netlify.app",
+  "search_console_connected": false,
+  "pages": [
+    {
+      "file": "index.html",
+      "title": true,
+      "description": true,
+      "canonical": true,
+      "productionCanonical": true,
+      "indexable": true,
+      "structuredData": true,
+      "internalLinks": true,
+      "sitemap": true
+    },
+    {
+      "file": "category.html",
+      "title": true,
+      "description": true,
+      "canonical": true,
+      "productionCanonical": true,
+      "indexable": true,
+      "structuredData": true,
+      "internalLinks": true,
+      "sitemap": true
+    },
+    {
+      "file": "product.html",
+      "title": true,
+      "description": true,
+      "canonical": true,
+      "productionCanonical": true,
+      "indexable": true,
+      "structuredData": true,
+      "internalLinks": true,
+      "sitemap": true
+    }
+  ],
+  "counts": {
+    "pages": 3,
+    "missing_canonical": 0,
+    "non_production_canonical": 0,
+    "missing_structured_data": 0,
+    "missing_description": 0,
+    "sitemap_present": true
+  }
+}
