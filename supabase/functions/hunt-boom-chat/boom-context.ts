@@ -32,7 +32,8 @@ export function topicLabel(managerId:string){
 
 export function deriveTopicState(message:string,current:any,managerId:string,conversationId:string){
   const clean=String(message||"").replace(/\s+/g," ").trim();
-  const continuation=isContinuationMessage(clean);
+  const displayOnly=wantsCopyReport(clean);
+  const continuation=isContinuationMessage(clean)||displayOnly;
   const explicitNew=/(?:בלי\s+קשר|נושא\s+אחר|נעבור\s+לנושא|בוא\s+נדבר\s+על|new\s+topic|switch\s+topic|موضوع\s+جديد|خلينا\s+نحكي\s+عن)/i.test(clean);
   const currentManagers=Array.isArray(current?.relevant_managers)?current.relevant_managers:[];
   const managerChanged=managerId&&currentManagers.length>0&&!currentManagers.includes(managerId);

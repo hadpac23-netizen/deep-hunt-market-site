@@ -556,7 +556,7 @@ Deno.serve(async(req:Request)=>{
       reports:currentReports,
       waiting_decisions:(decisions||[]).filter((x:any)=>x.owner_approval_required&&["proposed","blocked"].includes(x.status)),
       open_commands:(commands||[]).filter((x:any)=>["queued","accepted","running","waiting_owner"].includes(x.status)),
-      learning:(learning||[]).slice(0,12),
+      learning:(learning||[]).slice(0,30),
       cycles:(cycles||[]).slice(0,5),
       evals:(evals||[]).slice(0,8),
       owner_memory:(ownerMemory||[]).map((x:any)=>({

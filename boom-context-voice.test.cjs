@@ -17,7 +17,7 @@ const current={
   relevant_managers:["checkout-payment"],
   topic_history:[]
 };
-for(const ping of ["ילה","בווום","היי בום","לא הבנתי","איפה זה עומד עכשיו"]){
+for(const ping of ["ילה","בווום","היי בום","לא הבנתי","איפה זה עומד עכשיו","תן לי קופי"]){
   const next=c.deriveTopicState(ping,current,"boom-super-agent","00000000-0000-0000-0000-000000000001");
   assert.equal(next.active_topic,current.active_topic,ping+" reset topic");
   assert.equal(next.active_goal,current.active_goal,ping+" reset goal");
