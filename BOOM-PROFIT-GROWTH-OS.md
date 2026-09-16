@@ -1,7 +1,7 @@
 # BOOM Profit & Growth OS
 
 ## Mission
-Build an evidence-first operating system for HUNT DEAL that connects verified product economics, deal intelligence, first-party analytics, SEO/growth signals, experimentation and owner approvals. The long-term business target is $10,000+ net profit/day, treated as a target rather than a guarantee.
+Build an evidence-first operating system for HUNT that connects verified product economics, deal intelligence, first-party analytics, SEO/growth signals, experimentation and owner approvals. The long-term business target is $10,000+ net profit/day, treated as a target rather than a guarantee.
 
 ## Existing systems reused
 - `hunt-profit-engine`: verified unit economics and safe CAC/coupon capacity.

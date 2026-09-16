@@ -1,0 +1,545 @@
+{
+  "version": 1,
+  "executive": "boom-executive",
+  "report_contract": {
+    "required": [
+      "manager_id",
+      "timestamp",
+      "scope",
+      "status",
+      "evidence",
+      "metrics",
+      "issues",
+      "recommended_action",
+      "action_class",
+      "owner_approval_required",
+      "confidence",
+      "expected_impact",
+      "risk_if_ignored",
+      "recheck_at",
+      "fallback"
+    ],
+    "statuses": [
+      "healthy",
+      "watch",
+      "blocked",
+      "critical"
+    ],
+    "action_classes": [
+      "OBSERVE",
+      "PROPOSE",
+      "SAFE_DYNAMIC",
+      "STAGE_FIX",
+      "OWNER_APPROVAL",
+      "BLOCK"
+    ]
+  },
+  "priorities": {
+    "order": [
+      "safety_legality",
+      "shopper_trust",
+      "transaction_correctness",
+      "stock_shipping_truth",
+      "positive_economics",
+      "user_relevance",
+      "conversion",
+      "growth",
+      "cosmetic_polish"
+    ]
+  },
+  "managers": [
+    {
+      "id": "boom-executive",
+      "name": "BOOM Executive Brain",
+      "reports_to": null,
+      "scope": [
+        "all"
+      ],
+      "mode": "executive",
+      "can_auto": [
+        "SAFE_DYNAMIC"
+      ],
+      "owner_gate": [
+        "OWNER_APPROVAL"
+      ]
+    },
+    {
+      "id": "category-orchestrator",
+      "name": "Category Orchestrator",
+      "reports_to": "boom-executive",
+      "scope": [
+        "taxonomy",
+        "category_depth",
+        "category_rotation",
+        "gap_detection",
+        "mapping",
+        "duplicates"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "SAFE_DYNAMIC",
+        "STAGE_FIX"
+      ],
+      "schedule": "*/30 * * * *",
+      "schedule_note": "Runs with BOOM reliability workflow; category state is report-only until a safe dynamic executor is explicitly enabled."
+    },
+    {
+      "id": "inventory-truth",
+      "name": "Inventory Truth Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "stock",
+        "variants",
+        "provider_existence",
+        "freshness",
+        "stale_items"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ]
+    },
+    {
+      "id": "sale-readiness",
+      "name": "Product Quality & Sale Readiness Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "images",
+        "titles",
+        "variants",
+        "quality",
+        "sale_eligibility",
+        "product_detail_truth"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ]
+    },
+    {
+      "id": "pricing-profit",
+      "name": "Pricing & Profit Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "landed_cost",
+        "retail_price",
+        "profit_gate",
+        "shipping_subsidy",
+        "bundle_economics"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "SAFE_DYNAMIC",
+        "BLOCK"
+      ]
+    },
+    {
+      "id": "supplier-shipping",
+      "name": "Supplier & Shipping Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "suppliers",
+        "shipping_methods",
+        "country_eligibility",
+        "tracking",
+        "supplier_quality",
+        "delivery_risk"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ]
+    },
+    {
+      "id": "checkout-payment",
+      "name": "Checkout & Payment Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "cart",
+        "checkout",
+        "payment_state",
+        "order_creation",
+        "callbacks",
+        "idempotency"
+      ],
+      "mode": "critical_path",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK",
+        "STAGE_FIX"
+      ]
+    },
+    {
+      "id": "marketing-growth",
+      "name": "Marketing & Growth Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "organic_growth",
+        "seo",
+        "social",
+        "campaigns",
+        "traffic",
+        "creative",
+        "market_learning"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "STAGE_FIX"
+      ]
+    },
+    {
+      "id": "sales-conversion",
+      "name": "Sales & Conversion Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "conversion",
+        "merchandising",
+        "bundles",
+        "aov",
+        "funnel",
+        "offer_fit"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "SAFE_DYNAMIC",
+        "STAGE_FIX"
+      ]
+    },
+    {
+      "id": "returns-care",
+      "name": "Returns & Customer Care Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "returns",
+        "refund_requests",
+        "complaints",
+        "delivery_issues",
+        "support_patterns"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE"
+      ]
+    },
+    {
+      "id": "feedback-intelligence",
+      "name": "Feedback & Shopper Intelligence Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "views",
+        "searches",
+        "likes",
+        "saves",
+        "carts",
+        "feedback",
+        "session_patterns",
+        "demand_signals"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "SAFE_DYNAMIC"
+      ]
+    },
+    {
+      "id": "integration-connections",
+      "name": "Integration & Connection Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "supplier_api",
+        "feeds",
+        "oauth",
+        "merchant_connectors",
+        "analytics_connections",
+        "webhooks"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "STAGE_FIX",
+        "BLOCK"
+      ]
+    },
+    {
+      "id": "site-reliability",
+      "name": "Site Reliability Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "home",
+        "search",
+        "category",
+        "product",
+        "cart",
+        "checkout",
+        "auth",
+        "profile",
+        "api_health",
+        "mobile",
+        "broken_links",
+        "js_errors"
+      ],
+      "mode": "scheduled_health_scan",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ],
+      "schedule": "*/30 * * * *",
+      "schedule_note": "GitHub scheduled workflow; activation occurs when workflow is present on the default branch."
+    },
+    {
+      "id": "repair-engineering",
+      "name": "Repair & Engineering Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "bugs",
+        "regressions",
+        "broken_buttons",
+        "failed_api",
+        "performance",
+        "staged_fixes"
+      ],
+      "mode": "on_demand_and_alert",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "STAGE_FIX"
+      ]
+    },
+    {
+      "id": "trust-compliance",
+      "name": "Trust & Compliance Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "restricted_products",
+        "claims",
+        "electrical_safety",
+        "kids_safety",
+        "authenticity",
+        "policy",
+        "privacy"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ]
+    },
+    {
+      "id": "analytics-truth",
+      "name": "Analytics & Data Truth Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "event_quality",
+        "funnels",
+        "attribution",
+        "data_gaps",
+        "metric_consistency"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ]
+    },
+    {
+      "id": "security-access",
+      "name": "Security & Access Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "auth",
+        "sessions",
+        "permissions",
+        "rls",
+        "secrets",
+        "abuse",
+        "access_control"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK",
+        "STAGE_FIX"
+      ]
+    },
+    {
+      "id": "finance-reconciliation",
+      "name": "Finance & Reconciliation Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "settlements",
+        "ledger",
+        "supplier_cost",
+        "refund_accounting",
+        "profit_release",
+        "reconciliation"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ]
+    },
+    {
+      "id": "release-control",
+      "name": "Release & Change Control Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "branches",
+        "qa",
+        "deploys",
+        "regressions",
+        "rollback",
+        "production_change"
+      ],
+      "mode": "release_gate",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK",
+        "STAGE_FIX"
+      ]
+    },
+    {
+      "id": "merchandising-ux",
+      "name": "Merchandising & UX Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "navigation",
+        "product_detail",
+        "recommendations",
+        "visual_merchandising",
+        "personalization",
+        "mobile_ux"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "SAFE_DYNAMIC",
+        "STAGE_FIX"
+      ]
+    },
+    {
+      "id": "country-localization",
+      "name": "Country & Localization Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "country_rules",
+        "currency",
+        "language",
+        "shipping_market",
+        "tax_display",
+        "payment_methods",
+        "plug_voltage"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ]
+    }
+  ],
+  "departments": [
+    {
+      "id": "dept-women",
+      "name": "Women Department Manager",
+      "department": "women",
+      "reports_to": "category-orchestrator"
+    },
+    {
+      "id": "dept-men",
+      "name": "Men Department Manager",
+      "department": "men",
+      "reports_to": "category-orchestrator"
+    },
+    {
+      "id": "dept-kids-baby",
+      "name": "Kids & Baby Department Manager",
+      "department": "kids",
+      "reports_to": "category-orchestrator"
+    },
+    {
+      "id": "dept-beauty",
+      "name": "Beauty & Personal Care Department Manager",
+      "department": "beauty",
+      "reports_to": "category-orchestrator"
+    },
+    {
+      "id": "dept-jewelry-accessories",
+      "name": "Jewelry & Accessories Department Manager",
+      "department": "accessories",
+      "reports_to": "category-orchestrator"
+    },
+    {
+      "id": "dept-home",
+      "name": "Home & Living Department Manager",
+      "department": "home",
+      "reports_to": "category-orchestrator"
+    },
+    {
+      "id": "dept-tech",
+      "name": "Tech & Electronics Department Manager",
+      "department": "tech",
+      "reports_to": "category-orchestrator"
+    },
+    {
+      "id": "dept-sports",
+      "name": "Sports & Outdoors Department Manager",
+      "department": "sports",
+      "reports_to": "category-orchestrator"
+    },
+    {
+      "id": "dept-pets",
+      "name": "Pets Department Manager",
+      "department": "pets",
+      "reports_to": "category-orchestrator"
+    },
+    {
+      "id": "dept-toys",
+      "name": "Toys Department Manager",
+      "department": "toys",
+      "reports_to": "category-orchestrator"
+    },
+    {
+      "id": "dept-travel-office-gifts",
+      "name": "Travel / Office / Gifts Department Manager",
+      "department": "travel-office-gifts",
+      "reports_to": "category-orchestrator"
+    }
+  ],
+  "department_report_fields": [
+    "clean_inventory",
+    "thin_subcategories",
+    "missing_subcategories",
+    "stale_inventory",
+    "demand_signals",
+    "conversion_weakness",
+    "return_quality_signals",
+    "supplier_gaps",
+    "recommended_actions"
+  ]
+}

@@ -12,11 +12,9 @@
   const isStaticPublicHost = location.hostname.endsWith(".github.io") || location.hostname === "127.0.0.1" || location.hostname === "localhost";
   const supabaseFunctionsBase = "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1";
   const supabasePublishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
-  const publicApiUrl = name => isStaticPublicHost
-    ? supabaseFunctionsBase + "/" + name
-    : (name === "hunt-storefront" ? "/api/storefront" : "/api/deals/hunt");
+  const publicApiUrl = name => supabaseFunctionsBase + "/" + name;
   const publicApiHeaders = extra => ({
-    ...(isStaticPublicHost ? {"apikey": supabasePublishableKey} : {}),
+    "apikey": supabasePublishableKey,
     ...(extra || {})
   });
   const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -75,7 +73,7 @@
     };
     if (existing) Object.assign(existing, row, {qty:Math.min(5,(Number(existing.qty)||1)+1)});
     else cart.push(row);
-    localStorage.setItem(cartKey, JSON.stringify(cart));
+    if(window.HuntCore?.saveCart)window.HuntCore.saveCart(cart);else localStorage.setItem(cartKey, JSON.stringify(cart));
     updateCartCount();
     location.href = "checkout.html";
   }
@@ -121,7 +119,7 @@
     const previewCart = c.merchant_product === true && Boolean(c.item_id) && Boolean(c.provider);
     const productHref = previewCart && window.HuntCore ? window.HuntCore.productUrl(c) : "";
     const cta = canCheckoutHere
-      ? `<a class="hd-retailer" href="/checkout/${encodeURIComponent(deal.id)}">${esc(dict.onsiteCheckout || "Buy on HUNT DEAL")} →</a>`
+      ? `<a class="hd-retailer" href="/checkout/${encodeURIComponent(deal.id)}">${esc(dict.onsiteCheckout || "Buy on HUNT")} →</a>`
       : previewCart
         ? `<a class="hd-retailer" href="${esc(productHref)}">View product / choose options →</a>`
         : `<button class="hd-retailer" type="button" disabled title="${esc(checkout.note || checkoutPolicy.rule || "")}">${esc(dict.onsitePending || "On-site checkout pending")}</button>`;
@@ -473,6 +471,7 @@
     if (Array.isArray(item?.gallery) && item.gallery.length >= 2) score += 10;
     if (Number(item?.variant_count || 0) >= 2) score += 8;
     if (item?._hunt_fresh === true) score += 7;
+    score += Number(window.HuntSupplierGravity?.productBoost?.(item) || 0);
     return score;
   }
 

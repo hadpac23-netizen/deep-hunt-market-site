@@ -117,7 +117,7 @@
     }
 
     const kicker = document.querySelector(".hd-hero .hd-kicker");
-    if (kicker) kicker.textContent = "HUNT DEAL · SHOPPING, ORGANIZED";
+    if (kicker) kicker.textContent = "HUNT · SHOPPING, ORGANIZED";
 
     const mainHead = document.querySelector("#shop .hd-section-head h2");
     if (mainHead) mainHead.textContent = "Popular departments";

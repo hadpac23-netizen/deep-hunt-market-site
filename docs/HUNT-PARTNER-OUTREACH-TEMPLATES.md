@@ -3,7 +3,7 @@
 These are drafts only. Do not send automatically.
 
 ## Core positioning
-HUNT DEAL is building a curated commerce-discovery marketplace that combines:
+HUNT is building a curated commerce-discovery marketplace that combines:
 - real supplier and merchant catalogs
 - personalized product discovery
 - seller/API/feed onboarding
@@ -17,11 +17,11 @@ Do not claim traffic, conversion volume, revenue, user count, purchase volume or
 
 ## THE OUTNET
 
-Subject: Partnership opportunity — THE OUTNET x HUNT DEAL
+Subject: Partnership opportunity — THE OUTNET x HUNT
 
 Hello THE OUTNET Affiliate Team,
 
-I’m reaching out from HUNT DEAL, a commerce-discovery marketplace currently building a curated shopping experience around real product catalogs, personalized discovery and tracked partner-store commerce.
+I’m reaching out from HUNT, a commerce-discovery marketplace currently building a curated shopping experience around real product catalogs, personalized discovery and tracked partner-store commerce.
 
 We saw that THE OUTNET Collective works with forward-thinking subnetworks, loyalty programs, brand partners and content creators, and we believe HUNT could be a strong fit as our marketplace expands its premium fashion and outlet discovery layer.
 
@@ -41,17 +41,17 @@ https://hadpac23-netizen.github.io/deep-hunt-market-site/
 We’d be happy to provide any additional information needed for review.
 
 Best,
-HUNT DEAL
+HUNT
 
 ---
 
 ## YOOX
 
-Subject: YOOX affiliate/product-feed integration with HUNT DEAL
+Subject: YOOX affiliate/product-feed integration with HUNT
 
 Hello YOOX Affiliate Team,
 
-I’m contacting you from HUNT DEAL, a commerce-discovery marketplace that is building personalized product discovery across fashion, lifestyle, home and other retail categories.
+I’m contacting you from HUNT, a commerce-discovery marketplace that is building personalized product discovery across fashion, lifestyle, home and other retail categories.
 
 We’re interested in joining the YOOX affiliate program and integrating the available product feed into HUNT. Our architecture already supports approved partner catalogs, tracked outbound visits, merchant attribution and product-level personalization.
 
@@ -63,17 +63,17 @@ https://hadpac23-netizen.github.io/deep-hunt-market-site/
 Could you please advise on the best affiliate network/program route and product-feed access for our platform?
 
 Best,
-HUNT DEAL
+HUNT
 
 ---
 
 ## iHerb
 
-Subject: HUNT DEAL application — shopping discovery / comparison partner
+Subject: HUNT application — shopping discovery / comparison partner
 
 Hello iHerb Affiliate Team,
 
-I’m reaching out from HUNT DEAL, a commerce-discovery marketplace building personalized shopping discovery and comparison experiences across multiple retail categories.
+I’m reaching out from HUNT, a commerce-discovery marketplace building personalized shopping discovery and comparison experiences across multiple retail categories.
 
 We saw that iHerb works with content, loyalty, coupon and shopping-comparison partners. HUNT’s model is particularly aligned with the shopping-discovery/comparison side: we organize real product catalogs, personalize recommendations, let users save and like products, and track outbound partner visits.
 
@@ -85,7 +85,7 @@ https://hadpac23-netizen.github.io/deep-hunt-market-site/
 Please let us know which network and integration path you recommend for this type of platform.
 
 Best,
-HUNT DEAL
+HUNT
 
 ---
 

@@ -39,7 +39,7 @@
       if (!res.ok) throw new Error(result.error || "Request could not be submitted.");
       status.textContent = result.duplicate
         ? "Request already received recently. We’ll review it."
-        : "Partnership request received. HUNT DEAL will review the technical and commercial fit.";
+        : "Partnership request received. HUNT will review the technical and commercial fit.";
       form.reset();
     } catch (error) {
       status.textContent = error?.message || "Request could not be submitted.";

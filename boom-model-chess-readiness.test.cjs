@@ -1,0 +1,11 @@
+const fs=require("fs");
+const assert=require("assert");
+const sql=fs.readFileSync("supabase/migrations/20260916162500_add_model_chess_readiness_gate.sql","utf8");
+assert(sql.includes("hunt_boom_model_chess_readiness"),"readiness function missing");
+assert(sql.includes("required_routes',2"),"two-route requirement missing");
+assert(sql.includes("successful_samples>=p_min_samples"),"success sample threshold missing");
+assert(sql.includes("latency_samples>=p_min_samples"),"latency threshold missing");
+assert(sql.includes("cost_samples>=p_min_samples"),"cost threshold missing");
+assert(sql.includes("quality_samples>=p_min_samples"),"quality threshold missing");
+assert(sql.includes("'passed',ready_routes>=2"),"readiness pass gate missing");
+console.log("BOOM Model Chess readiness test: PASS");

@@ -13,9 +13,9 @@
       : (price?"Current verified price "+price:"Verified HUNT product");
     const base={provider:clean(row.provider,80),itemId:clean(row.item_id,180),verifiedProductRelation:true};
     return [
-      {...base,channel:"organic_social",format:"9:16",hook:"A HUNT find worth a closer look",headline:title,body:valueLine+". See product details, variants and shipping checks on HUNT DEAL.",cta:"See the HUNT find"},
+      {...base,channel:"organic_social",format:"9:16",hook:"A HUNT find worth a closer look",headline:title,body:valueLine+". See product details, variants and shipping checks on HUNT.",cta:"See the HUNT find"},
       {...base,channel:"pinterest",format:"2:3",hook:"Save this HUNT find",headline:title,body:valueLine+". Product facts stay visible before checkout.",cta:"View product"},
-      {...base,channel:"seo",format:"search_copy",hook:"",headline:title+" | HUNT DEAL",body:"Explore "+title+" on HUNT DEAL with source, product details and verified deal evidence when available.",cta:"Explore"},
+      {...base,channel:"seo",format:"search_copy",hook:"",headline:title+" | HUNT",body:"Explore "+title+" on HUNT with source, product details and verified deal evidence when available.",cta:"Explore"},
       {...base,channel:"onsite",format:"onsite_card",hook:"BOOM PICK",headline:title,body:valueLine,cta:"View details"}
     ].map(x=>Object.freeze(x));
   }

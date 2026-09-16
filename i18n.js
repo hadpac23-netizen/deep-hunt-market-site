@@ -3,27 +3,27 @@
   const common = {
     en: {
       language: "Language", live: "LIVE", loading: "Loading…", verified: "Verified",
-      affiliateDisclosure: "Affiliate disclosure: qualifying outbound links may earn HUNT DEAL a commission at no extra cost to you.",
+      affiliateDisclosure: "Affiliate disclosure: qualifying outbound links may earn HUNT a commission at no extra cost to you.",
       nasaCredit: "Earth imagery: NASA / Earth Observatory."
     },
     ar: {
       language: "اللغة", live: "مباشر", loading: "جارٍ التحميل…", verified: "موثّق",
-      affiliateDisclosure: "إفصاح: قد يحصل HUNT DEAL على عمولة من بعض الروابط المؤهلة دون تكلفة إضافية عليك.",
+      affiliateDisclosure: "إفصاح: قد يحصل HUNT على عمولة من بعض الروابط المؤهلة دون تكلفة إضافية عليك.",
       nasaCredit: "صورة الأرض: NASA / Earth Observatory."
     },
     he: {
       language: "שפה", live: "פעיל", loading: "טוען…", verified: "מאומת",
-      affiliateDisclosure: "גילוי נאות: HUNT DEAL עשוי לקבל עמלה מקישורים מתאימים, ללא עלות נוספת עבורך.",
+      affiliateDisclosure: "גילוי נאות: HUNT עשוי לקבל עמלה מקישורים מתאימים, ללא עלות נוספת עבורך.",
       nasaCredit: "תמונת כדור הארץ: NASA / Earth Observatory."
     },
     es: {
       language: "Idioma", live: "EN VIVO", loading: "Cargando…", verified: "Verificado",
-      affiliateDisclosure: "Divulgación: HUNT DEAL puede recibir una comisión por enlaces elegibles sin coste extra para ti.",
+      affiliateDisclosure: "Divulgación: HUNT puede recibir una comisión por enlaces elegibles sin coste extra para ti.",
       nasaCredit: "Imagen de la Tierra: NASA / Earth Observatory."
     },
     fr: {
       language: "Langue", live: "EN DIRECT", loading: "Chargement…", verified: "Vérifié",
-      affiliateDisclosure: "Divulgation : HUNT DEAL peut recevoir une commission sur certains liens, sans coût supplémentaire pour vous.",
+      affiliateDisclosure: "Divulgation : HUNT peut recevoir une commission sur certains liens, sans coût supplémentaire pour vous.",
       nasaCredit: "Image de la Terre : NASA / Earth Observatory."
     }
   };
@@ -36,7 +36,7 @@
         search: "Search products, brands, or categories…",
         kicker: "COMPARE SMARTER · SHOP BETTER · KEEP THE FACTS VISIBLE",
         hero1: "Better decisions", hero2: "before you spend.",
-        heroCopy: "HUNT DEAL compares verified offers across approved marketplaces, explains why a deal is worth attention, and tracks what actually converts.",
+        heroCopy: "HUNT compares verified offers across approved marketplaces, explains why a deal is worth attention, and tracks what actually converts.",
         explore: "Explore Deals Now", how: "How it works",
         f1: "Price comparison", f2: "Global provider map", f3: "AI + Red Team", f4: "Truthful commission tracking",
         advisor: "HUNT Advisor", advisorSub: "REAL DEAL INTELLIGENCE · SMARTER SHOPPING",
@@ -46,8 +46,8 @@
         smartPicks: "Smart Deal Picks", smartPicksSub: "Only TEST/SELL candidates can appear here. Empty is better than fabricated.",
         all: "All Deals", tech: "Tech", home: "Home", fashion: "Fashion", travel: "Travel",
         noDeals: "No qualified live deals yet.", noDealsSub: "The engine is ready. Real products appear only after a provider feed and affiliate path are verified.",
-        why: "Why this deal?", redTeam: "Red Team note", retailer: "Check retailer", onsiteCheckout: "Buy on HUNT DEAL", onsitePending: "On-site checkout pending", compare: "Compare", test: "TEST", sell: "SELL",
-        radarTitle: "Trend Radar", radarSub: "Fresh shopping signals guide what HUNT DEAL researches next. Signals are not sales claims.", catalogTitle: "Products already connected", catalogSub: "Real catalog inventory from an approved API source. These are catalog candidates, not qualified deals yet.", catalogTruth: "Supplier base cost is source intelligence only. It is not a public retail price or a promised margin.", catalogBase: "Supplier base", catalogPending: "Checkout activation pending", liveCatalogConnected: "Live merchant catalog connected",
+        why: "Why this deal?", redTeam: "Red Team note", retailer: "Check retailer", onsiteCheckout: "Buy on HUNT", onsitePending: "On-site checkout pending", compare: "Compare", test: "TEST", sell: "SELL",
+        radarTitle: "Trend Radar", radarSub: "Fresh shopping signals guide what HUNT researches next. Signals are not sales claims.", catalogTitle: "Products already connected", catalogSub: "Real catalog inventory from an approved API source. These are catalog candidates, not qualified deals yet.", catalogTruth: "Supplier base cost is source intelligence only. It is not a public retail price or a promised margin.", catalogBase: "Supplier base", catalogPending: "Checkout activation pending", liveCatalogConnected: "Live merchant catalog connected",
         footerTag: "A BOOM branch · commerce intelligence now, full BOOM later."
       },
       ar: {
@@ -56,7 +56,7 @@
         search: "ابحث عن منتج أو علامة أو فئة…",
         kicker: "قارن بذكاء · اشترِ أفضل · خلّي الحقيقة ظاهرة",
         hero1: "قرارات أفضل", hero2: "قبل ما تدفع.",
-        heroCopy: "HUNT DEAL يقارن العروض الموثقة بين المتاجر المعتمدة، يشرح لماذا العرض يستحق الانتباه، ويتابع ما الذي يتحول فعلًا إلى مبيعات وعمولة.",
+        heroCopy: "HUNT يقارن العروض الموثقة بين المتاجر المعتمدة، يشرح لماذا العرض يستحق الانتباه، ويتابع ما الذي يتحول فعلًا إلى مبيعات وعمولة.",
         explore: "شاهد العروض", how: "كيف يعمل",
         f1: "مقارنة الأسعار", f2: "خريطة متاجر عالمية", f3: "AI + Red Team", f4: "تتبع عمولة حقيقية",
         advisor: "HUNT Advisor", advisorSub: "ذكاء عروض حقيقي · تسوق أذكى",
@@ -67,7 +67,7 @@
         all: "الكل", tech: "تقنية", home: "منزل", fashion: "موضة", travel: "سفر",
         noDeals: "لا توجد عروض حية مؤهلة بعد.", noDealsSub: "المحرك جاهز. المنتج يظهر فقط بعد توثيق المصدر ومسار العمولة.",
         why: "لماذا هذا العرض؟", redTeam: "ملاحظة Red Team", retailer: "افتح المتجر", compare: "قارن", test: "اختبار", sell: "بيع",
-        radarTitle: "رادار الترند", radarSub: "إشارات تسوق حديثة توجه ما يبحث عنه HUNT DEAL لاحقًا. الإشارة ليست ادعاء مبيعات.", catalogTitle: "منتجات متصلة الآن", catalogSub: "مخزون حقيقي من مصدر API معتمد. هذه منتجات كتالوج وليست صفقات مؤهلة بعد.", catalogTruth: "تكلفة المورد الأساسية معلومة مصدر فقط وليست سعر بيع أو هامش ربح مضمون.", catalogBase: "تكلفة المورد", catalogPending: "تفعيل الدفع قيد الانتظار", liveCatalogConnected: "تم ربط كتالوج تاجر حي",
+        radarTitle: "رادار الترند", radarSub: "إشارات تسوق حديثة توجه ما يبحث عنه HUNT لاحقًا. الإشارة ليست ادعاء مبيعات.", catalogTitle: "منتجات متصلة الآن", catalogSub: "مخزون حقيقي من مصدر API معتمد. هذه منتجات كتالوج وليست صفقات مؤهلة بعد.", catalogTruth: "تكلفة المورد الأساسية معلومة مصدر فقط وليست سعر بيع أو هامش ربح مضمون.", catalogBase: "تكلفة المورد", catalogPending: "تفعيل الدفع قيد الانتظار", liveCatalogConnected: "تم ربط كتالوج تاجر حي",
         footerTag: "فرع من BOOM · ذكاء تجارة الآن، والمنصة الكاملة لاحقًا."
       },
       he: {
@@ -76,7 +76,7 @@
         search: "חפש מוצר, מותג או קטגוריה…",
         kicker: "משווים חכם · קונים טוב יותר · משאירים את העובדות גלויות",
         hero1: "החלטות טובות יותר", hero2: "לפני שמוציאים כסף.",
-        heroCopy: "HUNT DEAL משווה הצעות מאומתות בין מרקטפלייסים מאושרים, מסביר למה דיל שווה תשומת לב ועוקב אחרי מה שבאמת ממיר.",
+        heroCopy: "HUNT משווה הצעות מאומתות בין מרקטפלייסים מאושרים, מסביר למה דיל שווה תשומת לב ועוקב אחרי מה שבאמת ממיר.",
         explore: "לדילים עכשיו", how: "איך זה עובד",
         f1: "השוואת מחירים", f2: "מפת ספקים גלובלית", f3: "AI + Red Team", f4: "מעקב עמלה אמיתי",
         advisor: "HUNT Advisor", advisorSub: "מודיעין דילים אמיתי · קנייה חכמה יותר",
@@ -87,7 +87,7 @@
         all: "הכול", tech: "טכנולוגיה", home: "בית", fashion: "אופנה", travel: "נסיעות",
         noDeals: "אין עדיין דילים חיים מאושרים.", noDealsSub: "המנוע מוכן. מוצרים יופיעו רק לאחר אימות מקור וייחוס עמלה.",
         why: "למה הדיל הזה?", redTeam: "הערת Red Team", retailer: "לצפייה בחנות", compare: "השווה", test: "TEST", sell: "SELL",
-        radarTitle: "רדאר טרנדים", radarSub: "סיגנלים עדכניים מכוונים את המחקר הבא של HUNT DEAL. סיגנל אינו טענת מכירות.", catalogTitle: "מוצרים שכבר מחוברים", catalogSub: "קטלוג אמיתי ממקור API מאושר. אלה מועמדי קטלוג, לא דילים מאושרים.", catalogTruth: "עלות בסיס ספק היא מידע מקור בלבד, לא מחיר קמעונאי ולא הבטחת מרווח.", catalogBase: "בסיס ספק", catalogPending: "הפעלת checkout בהמתנה", liveCatalogConnected: "קטלוג סוחר חי מחובר",
+        radarTitle: "רדאר טרנדים", radarSub: "סיגנלים עדכניים מכוונים את המחקר הבא של HUNT. סיגנל אינו טענת מכירות.", catalogTitle: "מוצרים שכבר מחוברים", catalogSub: "קטלוג אמיתי ממקור API מאושר. אלה מועמדי קטלוג, לא דילים מאושרים.", catalogTruth: "עלות בסיס ספק היא מידע מקור בלבד, לא מחיר קמעונאי ולא הבטחת מרווח.", catalogBase: "בסיס ספק", catalogPending: "הפעלת checkout בהמתנה", liveCatalogConnected: "קטלוג סוחר חי מחובר",
         footerTag: "ענף של BOOM · מודיעין מסחר עכשיו, BOOM המלא בהמשך."
       },
       es: {
@@ -96,7 +96,7 @@
         search: "Buscar productos, marcas o categorías…",
         kicker: "COMPARA MEJOR · COMPRA MEJOR · DATOS VISIBLES",
         hero1: "Mejores decisiones", hero2: "antes de gastar.",
-        heroCopy: "HUNT DEAL compara ofertas verificadas entre marketplaces aprobados, explica por qué importan y mide lo que realmente convierte.",
+        heroCopy: "HUNT compara ofertas verificadas entre marketplaces aprobados, explica por qué importan y mide lo que realmente convierte.",
         explore: "Ver ofertas", how: "Cómo funciona",
         f1: "Comparación de precios", f2: "Mapa global", f3: "AI + Red Team", f4: "Comisiones reales",
         advisor: "HUNT Advisor", advisorSub: "INTELIGENCIA REAL DE OFERTAS",
@@ -107,7 +107,7 @@
         all: "Todo", tech: "Tecnología", home: "Hogar", fashion: "Moda", travel: "Viajes",
         noDeals: "Aún no hay ofertas calificadas.", noDealsSub: "El motor está listo. Los productos aparecen solo con fuente y atribución verificadas.",
         why: "¿Por qué esta oferta?", redTeam: "Nota Red Team", retailer: "Ver tienda", compare: "Comparar", test: "TEST", sell: "SELL",
-        radarTitle: "Radar de tendencias", radarSub: "Señales recientes orientan la próxima investigación de HUNT DEAL. Una señal no es una promesa de ventas.", catalogTitle: "Productos ya conectados", catalogSub: "Inventario real de una fuente API aprobada. Son candidatos de catálogo, no ofertas calificadas.", catalogTruth: "El coste base del proveedor es solo inteligencia de origen; no es precio minorista ni margen garantizado.", catalogBase: "Base proveedor", catalogPending: "Checkout pendiente de activación", liveCatalogConnected: "Catálogo comercial en vivo conectado",
+        radarTitle: "Radar de tendencias", radarSub: "Señales recientes orientan la próxima investigación de HUNT. Una señal no es una promesa de ventas.", catalogTitle: "Productos ya conectados", catalogSub: "Inventario real de una fuente API aprobada. Son candidatos de catálogo, no ofertas calificadas.", catalogTruth: "El coste base del proveedor es solo inteligencia de origen; no es precio minorista ni margen garantizado.", catalogBase: "Base proveedor", catalogPending: "Checkout pendiente de activación", liveCatalogConnected: "Catálogo comercial en vivo conectado",
         footerTag: "Una rama de BOOM · inteligencia comercial ahora, BOOM completo después."
       },
       fr: {
@@ -116,7 +116,7 @@
         search: "Rechercher produits, marques ou catégories…",
         kicker: "COMPAREZ MIEUX · ACHETEZ MIEUX · GARDEZ LES PREUVES VISIBLES",
         hero1: "De meilleures décisions", hero2: "avant de dépenser.",
-        heroCopy: "HUNT DEAL compare des offres vérifiées entre marketplaces approuvées, explique leur intérêt et mesure ce qui convertit réellement.",
+        heroCopy: "HUNT compare des offres vérifiées entre marketplaces approuvées, explique leur intérêt et mesure ce qui convertit réellement.",
         explore: "Voir les offres", how: "Comment ça marche",
         f1: "Comparaison de prix", f2: "Carte mondiale", f3: "AI + Red Team", f4: "Commissions réelles",
         advisor: "HUNT Advisor", advisorSub: "INTELLIGENCE D'OFFRES RÉELLE",
@@ -127,7 +127,7 @@
         all: "Tout", tech: "Tech", home: "Maison", fashion: "Mode", travel: "Voyage",
         noDeals: "Aucune offre qualifiée en direct.", noDealsSub: "Le moteur est prêt. Les produits n'apparaissent qu'après vérification de la source et de l'attribution.",
         why: "Pourquoi cette offre ?", redTeam: "Note Red Team", retailer: "Voir le marchand", compare: "Comparer", test: "TEST", sell: "SELL",
-        radarTitle: "Radar des tendances", radarSub: "Des signaux récents orientent les prochaines recherches HUNT DEAL. Un signal n’est pas une promesse de vente.", catalogTitle: "Produits déjà connectés", catalogSub: "Inventaire réel depuis une source API approuvée. Ce sont des candidats catalogue, pas encore des offres qualifiées.", catalogTruth: "Le coût fournisseur est une donnée source uniquement, pas un prix public ni une marge garantie.", catalogBase: "Base fournisseur", catalogPending: "Activation du paiement en attente", liveCatalogConnected: "Catalogue marchand en direct connecté",
+        radarTitle: "Radar des tendances", radarSub: "Des signaux récents orientent les prochaines recherches HUNT. Un signal n’est pas une promesse de vente.", catalogTitle: "Produits déjà connectés", catalogSub: "Inventaire réel depuis une source API approuvée. Ce sont des candidats catalogue, pas encore des offres qualifiées.", catalogTruth: "Le coût fournisseur est une donnée source uniquement, pas un prix public ni une marge garantie.", catalogBase: "Base fournisseur", catalogPending: "Activation du paiement en attente", liveCatalogConnected: "Catalogue marchand en direct connecté",
         footerTag: "Une branche de BOOM · intelligence commerciale maintenant, BOOM complet plus tard."
       }
     },

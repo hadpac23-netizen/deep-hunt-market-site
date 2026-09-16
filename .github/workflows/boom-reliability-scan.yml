@@ -1,0 +1,88 @@
+name: BOOM HUNT Reliability Scan
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reliability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      HUNT_BASE_URL: https://deep-hunt-market.netlify.app
+      CDP_PORT: "9222"
+      BOOM_REPORT_PATH: boom-site-reliability-report.json
+      BOOM_CATEGORY_REPORT_PATH: boom-category-report.json
+      BOOM_EXECUTIVE_PLAN_PATH: boom-executive-plan.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Start headless Chrome
+        shell: bash
+        run: |
+          set -euo pipefail
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$CHROME" ]; then
+            echo "Chrome/Chromium not found on runner"
+            exit 1
+          fi
+          "$CHROME" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --remote-debugging-port=9222 about:blank >/tmp/boom-chrome.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:9222/json/version >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/boom-chrome.log || true
+          exit 1
+
+      - name: Run Site Reliability Manager
+        id: scan
+        continue-on-error: true
+        run: node scripts/boom-site-reliability-scan.mjs
+
+      - name: Run Category Orchestrator Manager
+        id: category
+        continue-on-error: true
+        run: node scripts/boom-category-orchestrator-scan.mjs
+
+      - name: Build BOOM executive plan
+        id: executive
+        continue-on-error: true
+        run: node scripts/boom-build-executive-plan.cjs boom-site-reliability-report.json boom-category-report.json
+
+      - name: Upload BOOM reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: boom-reliability-${{ github.run_id }}
+          path: |
+            boom-site-reliability-report.json
+            boom-category-report.json
+            boom-executive-plan.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Enforce critical gate
+        if: always()
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs=require("node:fs");
+          const plan=JSON.parse(fs.readFileSync("boom-executive-plan.json","utf8"));
+          const s=plan.summary||{};
+          console.log("BOOM executive status:",s.executive_status);
+          console.log("critical:",s.critical_count,"blocked:",s.blocked_count,"reports:",s.report_count);
+          if(Number(s.critical_count||0)>0 || Number(s.blocked_count||0)>0) process.exit(1);
+          NODE

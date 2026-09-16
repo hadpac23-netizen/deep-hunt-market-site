@@ -10,6 +10,34 @@
   let loading=false;
   let observer=null;
   const seen=new Set();
+  let manifestPromise=null;
+
+  async function catalogManifest(){
+    if(!manifestPromise){
+      manifestPromise=fetch("catalog-manifest.json?v=taxonomy6",{cache:"force-cache"})
+        .then(res=>res.ok?res.json():null)
+        .catch(()=>null);
+    }
+    return manifestPromise;
+  }
+
+  async function loadDiscoverySlug(slug){
+    try{
+      if(H.virtualCategories?.[slug]){
+        const manifest=await catalogManifest();
+        const page=manifest?.categories?.[slug]?.pages?.[0];
+        if(!page)return [];
+        const res=await fetch(page+"?v=taxonomy6",{cache:"force-cache"});
+        if(!res.ok)return [];
+        const data=await res.json();
+        return (Array.isArray(data?.products)?data.products:[]).map(item=>({...item,category:item.category||slug}));
+      }
+      const res=await fetch("catalog-shards/"+encodeURIComponent(slug)+".json?v=catalog30k1",{cache:"force-cache"});
+      if(!res.ok)return [];
+      const data=await res.json();
+      return (Array.isArray(data?.products)?data.products:[]).map(item=>({...item,category:item.category||slug}));
+    }catch{return []}
+  }
 
   function key(item){return String(item?.provider||"")+":"+String(item?.item_id||"")}
   function safeHttps(value){try{return new URL(value).protocol==="https:"}catch{return false}}
@@ -28,7 +56,19 @@
     if(/\b(earbuds?|earphones?|bluetooth headset)\b/.test(title))return "audio";
     const inferred=String(H.inferCategory(item)||item?.category||"");
     const aliases={phoneaccessories:"phone-cases",phonestands:"stands-holders",powerbanks:"power-banks",chargers:"chargers-cables",earbuds:"audio",usefultech:"electronics"};
-    return aliases[inferred]||inferred;
+    const base=aliases[inferred]||inferred;
+    const gender=isWomen(item)?"women":isMen(item)?"men":"";
+    const genderAliases={
+      hoodies:{women:"women-hoodies",men:"men-hoodies"},
+      jeans:{women:"women-jeans",men:"men-jeans"},
+      tops:{women:"women-tops",men:"men-tops"},
+      jackets:{women:"women-outerwear",men:"men-outerwear"},
+      underwear:{women:"women-underwear",men:"men-underwear"},
+      shoes:{women:"women-shoes",men:"men-shoes"},
+      socks:{women:"women-socks",men:"men-socks"},
+      bags:{women:"bags",men:"men-bags"}
+    };
+    return genderAliases[base]?.[gender]||base;
   }
   function isWomen(item){
     const title=String(item?.title||"").toLowerCase();
@@ -91,14 +131,7 @@
       .filter((slug,index,array)=>array.indexOf(slug)===index)
       .slice(0,8);
 
-    const shardResults=await Promise.all(requested.map(async slug=>{
-      try{
-        const res=await fetch("catalog-shards/"+encodeURIComponent(slug)+".json?v=catalog30k1",{cache:"force-cache"});
-        if(!res.ok)return [];
-        const data=await res.json();
-        return (Array.isArray(data?.products)?data.products:[]).map(item=>({...item,category:item.category||slug}));
-      }catch{return []}
-    }));
+    const shardResults=await Promise.all(requested.map(loadDiscoverySlug));
 
     let all=shardResults.flat().filter(item=>{
       const k=key(item);
