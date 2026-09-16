@@ -1,4 +1,4 @@
-/* HUNT DEAL marketplace v2 — organization, personalization, accessibility */
+/* HUNT marketplace v2 — organization, personalization, accessibility */
 .hd-skip-link{position:fixed;left:12px;top:8px;z-index:9999;transform:translateY(-150%);padding:10px 14px;border-radius:10px;background:#fff;color:#07111e;font-weight:900;text-decoration:none}
 .hd-skip-link:focus{transform:translateY(0)}
 .hd-market-v2 :is(a,button,input,select):focus-visible{outline:3px solid #8fd5ff;outline-offset:3px}

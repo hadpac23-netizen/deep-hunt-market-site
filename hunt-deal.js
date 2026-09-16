@@ -119,7 +119,7 @@
     const previewCart = c.merchant_product === true && Boolean(c.item_id) && Boolean(c.provider);
     const productHref = previewCart && window.HuntCore ? window.HuntCore.productUrl(c) : "";
     const cta = canCheckoutHere
-      ? `<a class="hd-retailer" href="/checkout/${encodeURIComponent(deal.id)}">${esc(dict.onsiteCheckout || "Buy on HUNT DEAL")} →</a>`
+      ? `<a class="hd-retailer" href="/checkout/${encodeURIComponent(deal.id)}">${esc(dict.onsiteCheckout || "Buy on HUNT")} →</a>`
       : previewCart
         ? `<a class="hd-retailer" href="${esc(productHref)}">View product / choose options →</a>`
         : `<button class="hd-retailer" type="button" disabled title="${esc(checkout.note || checkoutPolicy.rule || "")}">${esc(dict.onsitePending || "On-site checkout pending")}</button>`;

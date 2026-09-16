@@ -1,7 +1,7 @@
 # CLAUDE.md — BOOM AI Engineering Studio
 
 ## Mission
-Build and evolve BOOM as a real, inspectable AI-agent control system for HUNT DEAL.
+Build and evolve BOOM as a real, inspectable AI-agent control system for HUNT.
 
 The UI direction is a live node-graph studio inspired by modern workflow/agent builders:
 - central agent node

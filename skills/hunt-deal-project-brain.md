@@ -1,7 +1,7 @@
-# HUNT DEAL Project Brain
+# HUNT Project Brain
 
 ## Identity
-HUNT DEAL is BOOM's custom commerce/discovery marketplace. The user experience should feel like one intelligent HUNT system rather than a patchwork of supplier sites.
+HUNT is BOOM's custom commerce/discovery marketplace. The user experience should feel like one intelligent HUNT system rather than a patchwork of supplier sites.
 
 ## Durable Commerce Rules
 - ONSITE_FIRST checkout whenever legitimately possible.
