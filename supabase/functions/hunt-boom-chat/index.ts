@@ -375,8 +375,9 @@ ${JSON.stringify(compactCtx)}`;
   }
 
   async function tryOpenAI(model="gpt-5.6-luna"){
+    const started=performance.now();
     const apiKey=secrets.OPENAI_API_KEY||Deno.env.get("OPENAI_API_KEY")||"";
-    if(!apiKey){attempts.push({provider:"openai",ok:false,note:"not_configured"});return null}
+    if(!apiKey){attempts.push({provider:"openai",model,ok:false,note:"not_configured",latency_ms:Math.round(performance.now()-started)});return null}
     try{
       const input=[
         {role:"developer",content:[{type:"input_text",text:systemPrompt}]},
@@ -399,7 +400,7 @@ ${JSON.stringify(compactCtx)}`;
       });
       const text=await res.text();
       let data:any={};try{data=text?JSON.parse(text):{}}catch{}
-      attempts.push({provider:"openai",ok:res.ok,status:res.status});
+      attempts.push({provider:"openai",model,ok:res.ok,status:res.status,latency_ms:Math.round(performance.now()-started)});
       if(!res.ok)return null;
       const direct=String(data?.output_text||"").trim();
       const nested=Array.isArray(data?.output)
@@ -409,16 +410,17 @@ ${JSON.stringify(compactCtx)}`;
           .join("\n").trim()
         :"";
       const reply=direct||nested;
-      return reply?{reply,provider:"openai",attempts}:null;
+      return reply?{reply,provider:"openai",model,attempts}:null;
     }catch(e){
-      attempts.push({provider:"openai",ok:false,note:e instanceof Error?e.name:"error"});
+      attempts.push({provider:"openai",model,ok:false,note:e instanceof Error?e.name:"error",latency_ms:Math.round(performance.now()-started)});
       return null;
     }
   }
 
   async function tryGroq(model="openai/gpt-oss-120b"){
+    const started=performance.now();
     const apiKey=secrets.GROQ_API_KEY;
-    if(!apiKey){attempts.push({provider:"groq",ok:false,note:"not_configured"});return null}
+    if(!apiKey){attempts.push({provider:"groq",model,ok:false,note:"not_configured",latency_ms:Math.round(performance.now()-started)});return null}
     try{
       const res=await fetch("https://api.groq.com/openai/v1/chat/completions",{
         method:"POST",
@@ -433,19 +435,20 @@ ${JSON.stringify(compactCtx)}`;
       });
       const text=await res.text();
       let data:any={};try{data=text?JSON.parse(text):{}}catch{}
-      attempts.push({provider:"groq",ok:res.ok,status:res.status});
+      attempts.push({provider:"groq",model,ok:res.ok,status:res.status,latency_ms:Math.round(performance.now()-started)});
       if(!res.ok)return null;
       const reply=String(data?.choices?.[0]?.message?.content||"").trim();
-      return reply?{reply,provider:"groq",attempts}:null;
+      return reply?{reply,provider:"groq",model,attempts}:null;
     }catch(e){
-      attempts.push({provider:"groq",ok:false,note:e instanceof Error?e.name:"error"});
+      attempts.push({provider:"groq",model,ok:false,note:e instanceof Error?e.name:"error",latency_ms:Math.round(performance.now()-started)});
       return null;
     }
   }
 
   async function tryGemini(model="gemini-3.5-flash"){
+    const started=performance.now();
     const apiKey=secrets.GEMINI_API_KEY;
-    if(!apiKey){attempts.push({provider:"gemini",ok:false,note:"not_configured"});return null}
+    if(!apiKey){attempts.push({provider:"gemini",model,ok:false,note:"not_configured",latency_ms:Math.round(performance.now()-started)});return null}
     const contents=(history||[]).slice(-8).map((m:any)=>({
       role:m.role==="assistant"?"model":"user",
       parts:[{text:String(m.content||"").slice(0,2500)}]
@@ -464,12 +467,12 @@ ${JSON.stringify(compactCtx)}`;
       });
       const text=await res.text();
       let data:any={};try{data=text?JSON.parse(text):{}}catch{}
-      attempts.push({provider:"gemini",ok:res.ok,status:res.status});
+      attempts.push({provider:"gemini",model,ok:res.ok,status:res.status,latency_ms:Math.round(performance.now()-started)});
       if(!res.ok)return null;
       const reply=String(data?.candidates?.[0]?.content?.parts?.[0]?.text||"").trim();
-      return reply?{reply,provider:"gemini",attempts}:null;
+      return reply?{reply,provider:"gemini",model,attempts}:null;
     }catch(e){
-      attempts.push({provider:"gemini",ok:false,note:e instanceof Error?e.name:"error"});
+      attempts.push({provider:"gemini",model,ok:false,note:e instanceof Error?e.name:"error",latency_ms:Math.round(performance.now()-started)});
       return null;
     }
   }
@@ -489,6 +492,28 @@ ${JSON.stringify(compactCtx)}`;
   }
   const fallback=await tryOpenAI() || await tryGroq() || await tryGemini();
   return fallback?{...fallback,route_key:ctx?.model_route?.route_key||null}:{reply:null,provider:"none",attempts,route_key:ctx?.model_route?.route_key||null};
+}
+
+async function persistModelObservations(ai:any,modelRoute:any,taskClass:string){
+  const attempts=Array.isArray(ai?.attempts)?ai.attempts:[];
+  if(!attempts.length)return;
+  const rows=attempts.map((x:any)=>({
+    route_key:ai?.route_key||modelRoute?.route_key||null,
+    task_class:taskClass,
+    provider:String(x?.provider||"unknown"),
+    model:x?.model?String(x.model):null,
+    success:Boolean(x?.ok),
+    status_code:Number.isFinite(Number(x?.status))?Number(x.status):null,
+    latency_ms:Number.isFinite(Number(x?.latency_ms))?Math.max(0,Math.round(Number(x.latency_ms))):null,
+    quality_score:null,
+    estimated_cost_usd:null,
+    metadata:{note:x?.note||null,source:"hunt-boom-chat"}
+  }));
+  await rest("hunt_boom_model_observations",{
+    method:"POST",
+    headers:{Prefer:"return=minimal"},
+    body:JSON.stringify(rows)
+  });
 }
 
 async function persistTopicState(ownerId:string,topic:any,ctx:any,commandRow:any,provider:string){
@@ -734,6 +759,7 @@ Deno.serve(async(req:Request)=>{
       aiReply(message,history,ctx).catch(()=>({reply:null,provider:"none",attempts:[{provider:"boom-ai",ok:false,note:"exception"}]})),
       learnOwnerMemory(message,user.id,ownerRows?.[0]?.id||null).catch(()=>0)
     ]);
+    await persistModelObservations(ai,modelRoute,requestedTaskClass).catch(()=>{});
     let reply=enforceEvidenceLanguage(redactSecrets(ai?.reply||fallback(message,reports||[],managers||[],mode,commandRow)));
     const copyReport=buildCopyReport(ctx,topicState,commandRow);
     if(wantsCopyReport(message))reply=copyReport;
@@ -759,7 +785,7 @@ Deno.serve(async(req:Request)=>{
           ai_mode:"live_ai_gateway",
           provider:ai?.provider||"fallback",
           model_route_key:ai?.route_key||modelRoute?.route_key||null,
-          ai_attempts:Array.isArray(ai?.attempts)?ai.attempts.map((x:any)=>({provider:x.provider,ok:x.ok,status:x.status||null,note:x.note||null})):[],
+          ai_attempts:Array.isArray(ai?.attempts)?ai.attempts.map((x:any)=>({provider:x.provider,model:x.model||null,ok:x.ok,status:x.status||null,note:x.note||null,latency_ms:x.latency_ms??null})):[],
           command_id:commandRow?.id||null,
           active_topic:topicState.active_topic,
           spoken_text:spokenText.slice(0,1800)
