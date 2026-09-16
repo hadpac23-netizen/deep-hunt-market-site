@@ -57,9 +57,49 @@ function latest(rows:any[]){
 function needsOwnerGate(message:string){
   return /(production|deploy|publish|payment|charge|paid campaign|ad spend|price change|discount|coupon|supplier commitment|contract|פרודקשן|דיפלוי|פרסום בתשלום|קמפיין בתשלום|תשלום|חיוב|מחיר|הנחה|קופון|חוזה|התחייבות לספק|نشر مباشر|دفع|حملة مدفوعة|تغيير سعر|خصم|عقد)/i.test(message);
 }
+function routeManager(message:string){
+  const q=message.toLowerCase();
+  const rules:[RegExp,string][]=[
+    [/(cj|סי.?גי|dropshipping)/i,"supplier-cj"],
+    [/(eprolo|אפרולו|איפרולו|פרולו)/i,"supplier-eprolo"],
+    [/(מלאי|inventory|stock|זמינות|availability)/i,"inventory-truth"],
+    [/(checkout|צ.?קאאוט|קופה|payment|תשלום|paypal|apple pay|google pay)/i,"checkout-payment"],
+    [/(שיווק|marketing|פרסום|campaign|קמפיין|traffic|תנועה)/i,"marketing-growth"],
+    [/(acquisition|רכישת משתמש|משתמשים חדשים|לקוחות חדשים)/i,"f35-acquisition"],
+    [/(מכירות|sales|orders|הזמנות)/i,"sales-director"],
+    [/(רווח|profit|margin|מרווח|תמחור|pricing)/i,"pricing-profit"],
+    [/(10.?k|10.?אלף|עשרת אלפים)/i,"daily-10k-mission"],
+    [/(קטגור|category|categories)/i,"category-orchestrator"],
+    [/(מדפים|shelf|merchandising|תצוגה|rotation)/i,"dynamic-merchandising"],
+    [/(נשים|women|אישה)/i,"dept-women"],
+    [/(גברים|men|גבר)/i,"dept-men"],
+    [/(ילדים|kids|baby|תינוק)/i,"dept-kids-baby"],
+    [/(יופי|beauty|איפור|makeup|perfume|בושם)/i,"dept-beauty"],
+    [/(טכנולוג|tech|electronics|טלפון|phone|tablet|laptop)/i,"dept-tech"],
+    [/(צעצוע|toys|toy)/i,"dept-toys"],
+    [/(חיות|pets|pet|כלב|חתול)/i,"dept-pets"],
+    [/(ספורט|sports|gym|כושר)/i,"dept-sports"],
+    [/(בית|home|lighting|תאורה)/i,"dept-home"],
+    [/(תכשיט|jewelry|accessor|אקססור)/i,"dept-jewelry-accessories"],
+    [/(travel|נסיעות|office|משרד|gift|מתנה)/i,"dept-travel-office-gifts"],
+    [/(shipping|משלוח|country|מדינה|localization)/i,"supplier-shipping"],
+    [/(analytics|נתונים|data|מדידה|tracking)/i,"analytics-truth"],
+    [/(security|אבטחה|הרשאות|access)/i,"security-access"],
+    [/(bug|תקלה|כפתור|site|אתר|repair|תיקון)/i,"repair-engineering"],
+    [/(reliability|זמינות אתר|uptime|מהירות|performance)/i,"site-reliability"],
+    [/(integration|חיבור|api|connector)/i,"integration-connections"],
+    [/(research|מחקר|trend|טרנד|f35)/i,"f35-research"],
+    [/(quality|איכות|sale readiness|מוכן למכירה)/i,"sale-readiness"],
+    [/(return|refund|החזר|שירות לקוחות|customer care)/i,"returns-care"],
+    [/(feedback|like|save|לייק|שמירה)/i,"feedback-intelligence"],
+    [/(deploy|production|release|פרודקשן|השקה)/i,"release-control"]
+  ];
+  for(const [re,id] of rules)if(re.test(q))return id;
+  return "boom-super-agent";
+}
 function fallback(message:string,reports:any[],managers:any[],mode:string,commandRow:any){
   if(mode==="command"&&commandRow){
-    return `קיבלתי את הפקודה. רשמתי אותה ל־BOOM Super Agent כ־PROPOSE (#${commandRow.id}). אני אנתח, אנתב ואעקוב; פעולה חיה שדורשת Gate לא תופעל בלי אישור מתאים.`;
+    return `קיבלתי את הפקודה. #${commandRow.id} נותבה ל־${commandRow.target_manager_id} כ־PROPOSE [${commandRow.status}]. פעולה חיה שדורשת Gate לא תופעל בלי אישור מתאים.`;
   }
   const attention=latest(reports).filter((x:any)=>["critical","blocked","watch"].includes(x.status)).slice(0,6);
   if(/[\u0600-\u06ff]/.test(message)){
@@ -166,21 +206,22 @@ Deno.serve(async(req:Request)=>{
     let commandRow:any=null;
     if(mode==="command"){
       const clean=message.replace(/\s+/g," ").trim();
+      const targetManager=routeManager(message);
       const rows=await rest("hunt_boom_agent_commands",{
         method:"POST",
         headers:{Prefer:"return=representation"},
         body:JSON.stringify([{
           command_key:"owner-"+Date.now()+"-"+crypto.randomUUID().slice(0,8),
           issued_by:"boom-super-agent",
-          target_manager_id:"boom-super-agent",
+          target_manager_id:targetManager,
           priority:3,
           status:"queued",
           action_class:"PROPOSE",
           title:clean.slice(0,120),
           instruction:message,
-          reason:"Direct owner command from BOOM Chat/Voice. Super Agent should analyze, route and report.",
+          reason:"Direct owner command from BOOM Chat/Voice. BOOM routed it to "+targetManager+" for evidence-backed handling.",
           evidence:[{source:"owner-chat",conversation_id:conversationId}],
-          expected_result:"Analyze the owner command, route safe work to the right managers, and report evidence/status back to the owner.",
+          expected_result:"Target manager returns an evidence-backed result linked to this owner command; gated live actions remain owner-controlled.",
           success_metric:{source:"owner-chat",mode:"command"},
           owner_approval_required:needsOwnerGate(message)
         }])
