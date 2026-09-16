@@ -396,10 +396,12 @@
     return await res.blob();
   }
 
-  function appendChatMessage(type,text){
+  function appendChatMessage(type,text,{spokenText="",copyReport=""}={}){
     const article=document.createElement("article");
     article.className="chat-message "+type;
     article.dir="auto";
+    article.dataset.spokenText=String(spokenText||text||"");
+    article.dataset.copyReport=String(copyReport||text||"");
     const copy=document.createElement("span");
     copy.className="chat-copy";
     copy.textContent=String(text||"");
@@ -411,6 +413,13 @@
       speak.setAttribute("aria-label","השמע תשובה");
       speak.textContent="🔊";
       article.appendChild(speak);
+      const copyBtn=document.createElement("button");
+      copyBtn.type="button";
+      copyBtn.className="copy-report-btn";
+      copyBtn.setAttribute("aria-label","העתק דוח BOOM");
+      copyBtn.title="Copy report";
+      copyBtn.textContent="COPY";
+      article.appendChild(copyBtn);
     }
     $("#chat-log").appendChild(article);
     $("#chat-log").scrollTop=$("#chat-log").scrollHeight;
@@ -504,9 +513,11 @@
       });
       if(data?.error)throw new Error(data.error);
       if(data?.conversation_id)state.conversationId=data.conversation_id;
-      const reply=String(data.reply||"אין תשובה.");
-      appendChatMessage("boom",reply);
-      if(state.voiceLoop)await speakText(reply,{resumeListening:true});
+      const reply=String(data.display_text||data.reply||"אין תשובה.");
+      const spokenText=String(data.spoken_text||reply);
+      const copyReport=String(data.copy_report||reply);
+      appendChatMessage("boom",reply,{spokenText,copyReport});
+      if(state.voiceLoop)await speakText(spokenText,{resumeListening:true});
       return data;
     }catch(err){
       const msg="שגיאה: "+(err.message||err);
@@ -781,10 +792,24 @@
   $("#chat-mic").addEventListener("click",toggleMic);
   $("#voice-loop").addEventListener("click",()=>toggleVoiceLoop().catch(err=>setVoiceStatus(err.message||err)));
   $$("[data-chat-mode]").forEach(btn=>btn.addEventListener("click",()=>setChatMode(btn.dataset.chatMode)));
-  $("#chat-log").addEventListener("click",ev=>{
+  $("#chat-log").addEventListener("click",async ev=>{
+    const copyBtn=ev.target.closest(".copy-report-btn");
+    if(copyBtn){
+      const article=copyBtn.closest(".chat-message");
+      const text=article?.dataset.copyReport||article?.querySelector(".chat-copy")?.textContent||"";
+      try{
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent="✓";
+        setTimeout(()=>{copyBtn.textContent="COPY"},1200);
+      }catch{
+        setVoiceStatus("לא הצלחתי להעתיק — אפשר לסמן את הדוח ידנית");
+      }
+      return;
+    }
     const btn=ev.target.closest(".speak-btn");
     if(!btn)return;
-    const text=btn.closest(".chat-message")?.querySelector(".chat-copy")?.textContent||"";
+    const article=btn.closest(".chat-message");
+    const text=article?.dataset.spokenText||article?.querySelector(".chat-copy")?.textContent||"";
     speakText(text);
   });
   $("#chat-input").addEventListener("keydown",ev=>{if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();sendChat()}});
