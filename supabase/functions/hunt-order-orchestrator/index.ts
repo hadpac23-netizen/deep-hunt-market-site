@@ -69,6 +69,7 @@ function normalizeShippingPhone(country:string,value:unknown){
   const raw=clean(value);
   if(!raw)return "";
   const digits=raw.replace(/\D/g,"");
+  if(digits.startsWith("00")&&digits.length>4)return "+"+digits.slice(2);
   if(country==="IL"){
     if(digits.startsWith("972"))return "+"+digits;
     if(digits.startsWith("0")&&digits.length>=9)return "+972"+digits.slice(1);
@@ -103,11 +104,32 @@ async function cjPost(path:string,body:any,options:{maxAttempts?:number,reconcil
   let lastError="CJ_API_UNKNOWN";
   for(let attempt=1;attempt<=maxAttempts;attempt++){
     const token=await cjToken();
-    const res=await fetch("https://developers.cjdropshipping.com/api2.0/v1"+path,{
-      method:"POST",
-      headers:{"content-type":"application/json","accept":"application/json","CJ-Access-Token":token},
-      body:JSON.stringify(body)
-    });
+    let res:Response;
+    try{
+      res=await fetch("https://developers.cjdropshipping.com/api2.0/v1"+path,{
+        method:"POST",
+        headers:{"content-type":"application/json","accept":"application/json","CJ-Access-Token":token},
+        body:JSON.stringify(body)
+      });
+    }catch(error){
+      lastError="CJ_NETWORK_"+clean(error instanceof Error?error.message:String(error)).slice(0,120);
+      if(options.reconcileOrderNumber){
+        const existing=await cjGetOrderByStoreNumber(options.reconcileOrderNumber).catch(()=>null);
+        if(existing){
+          return {
+            code:200,result:true,message:"Reconciled existing CJ order after network failure",
+            data:{
+              orderId:clean(existing?.orderId||existing?.cjOrderId),
+              orderNumber:clean(existing?.orderNum||options.reconcileOrderNumber)
+            },
+            requestId:null,reconciled:true
+          };
+        }
+      }
+      if(attempt>=maxAttempts)throw new Error(lastError);
+      await sleep(Math.min(8000,1000*(2**(attempt-1))));
+      continue;
+    }
     const out=await res.json().catch(()=>({}));
     if(res.ok&&out?.result===true)return out;
     lastError="CJ_API_"+String(out?.code||res.status)+"_"+clean(out?.message).slice(0,120);
