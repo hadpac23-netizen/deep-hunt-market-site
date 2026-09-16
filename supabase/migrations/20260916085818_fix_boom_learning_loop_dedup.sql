@@ -18,6 +18,27 @@ end
 where problem_key is null;
 
 with ranked as (
+  select id,problem_key,command_key,
+         row_number() over (
+           partition by problem_key
+           order by created_at desc,id desc
+         ) as rn,
+         count(*) over (partition by problem_key) as problem_count
+  from public.hunt_boom_agent_commands
+  where status in ('queued','accepted','running','waiting_owner')
+    and problem_key like 'manager-health:%'
+)
+update public.hunt_boom_agent_commands c
+set repeat_count=greatest(c.repeat_count,r.problem_count-1),
+    latest_report_id=case
+      when r.command_key ~ '^report-[0-9]+$'
+        then substring(r.command_key from 8)::bigint
+      else c.latest_report_id
+    end
+from ranked r
+where c.id=r.id and r.rn=1;
+
+with ranked as (
   select id,
          row_number() over (
            partition by problem_key
