@@ -2,7 +2,7 @@ const fs=require("fs");
 const assert=require("assert");
 const src=fs.readFileSync("supabase/functions/hunt-boom-chat/index.ts","utf8");
 const start=src.indexOf("const ROUTE_RULES:");
-const end=src.indexOf("function shouldLearnOwner",start);
+const end=src.indexOf("function buildModelCircuitState",start);
 if(start<0||end<0)throw new Error("routing source missing");
 let s=src.slice(start,end)
   .replace("const ROUTE_RULES:[RegExp,string][]=","const ROUTE_RULES=")

@@ -120,6 +120,32 @@ function routeManagerDecision(message:string){
   if(matched.length===0)return {manager_id:"boom-super-agent",confidence:.35,abstained:true,matched_managers:[]};
   return {manager_id:"boom-super-agent",confidence:.45,abstained:true,matched_managers:matched};
 }
+function buildModelCircuitState(observations:any[]){
+  const byProvider=new Map<string,{attempts:number,successes:number,rateLimited:number}>();
+  for(const row of observations||[]){
+    const provider=String(row?.provider||"").toLowerCase();
+    if(!provider)continue;
+    const s=byProvider.get(provider)||{attempts:0,successes:0,rateLimited:0};
+    s.attempts++;
+    if(Boolean(row?.success))s.successes++;
+    if(Number(row?.status_code)===429)s.rateLimited++;
+    byProvider.set(provider,s);
+  }
+  const out:any={};
+  for(const [provider,s] of byProvider){
+    const successRate=s.attempts?s.successes/s.attempts:0;
+    const rateLimitRate=s.attempts?s.rateLimited/s.attempts:0;
+    out[provider]={
+      attempts:s.attempts,
+      successes:s.successes,
+      rate_limited:s.rateLimited,
+      success_rate:Number(successRate.toFixed(4)),
+      rate_limit_rate:Number(rateLimitRate.toFixed(4)),
+      open:s.attempts>=5&&(successRate<=.2||rateLimitRate>=.8)
+    };
+  }
+  return out;
+}
 function shouldLearnOwner(message:string){
   return /(תזכור|זכור|תמיד|מעכשיו|אל תעשה|אל תגיד|לא ככה|לא נכון|תיקון|אמרתי|שוב|אני מעדיף|אני רוצה ש|remember|always|from now on|never do|not like that|wrong|correction|i said|again|i prefer|i want you to|تذكر|دائما|من الآن|لا تعمل|مش هيك|غلط|تصحيح|بديك)/i.test(message);
 }
@@ -239,6 +265,7 @@ async function aiReply(message:string,history:any[],ctx:any){
   const compactCtx={
     mode:ctx.mode,
     routing:ctx.routing||null,
+    model_circuit:ctx.model_circuit||null,
     owner_command:ctx.owner_command||null,
     manager_status_counts:managerStatusCounts,
     attention_reports:(ctx.reports||[])
@@ -488,11 +515,16 @@ ${JSON.stringify(compactCtx)}`;
   }
 
   const runSpec=async(spec:string)=>{
-    const [provider,...parts]=String(spec||"").split(":");
+    const [rawProvider,...parts]=String(spec||"").split(":");
+    const provider=rawProvider==="google"?"gemini":rawProvider;
     const model=parts.join(":");
+    if(ctx?.model_circuit?.[provider]?.open){
+      attempts.push({provider,model:model||null,ok:false,note:"circuit_open",latency_ms:0});
+      return null;
+    }
     if(provider==="openai")return await tryOpenAI(model||"gpt-5.6-luna");
     if(provider==="groq")return await tryGroq(model||"openai/gpt-oss-120b");
-    if(provider==="google"||provider==="gemini")return await tryGemini(model||"gemini-3.5-flash");
+    if(provider==="gemini")return await tryGemini(model||"gemini-3.5-flash");
     return null;
   };
   const routeSpecs=[ctx?.model_route?.primary_model,ctx?.model_route?.fallback_model].filter(Boolean);
@@ -500,12 +532,12 @@ ${JSON.stringify(compactCtx)}`;
     const result=await runSpec(String(spec));
     if(result)return {...result,route_key:ctx?.model_route?.route_key||null};
   }
-  const fallback=await tryOpenAI() || await tryGroq() || await tryGemini();
+  const fallback=await runSpec("openai:gpt-5.6-luna") || await runSpec("groq:openai/gpt-oss-120b") || await runSpec("gemini:gemini-3.5-flash");
   return fallback?{...fallback,route_key:ctx?.model_route?.route_key||null}:{reply:null,provider:"none",attempts,route_key:ctx?.model_route?.route_key||null};
 }
 
 async function persistModelObservations(ai:any,modelRoute:any,taskClass:string){
-  const attempts=Array.isArray(ai?.attempts)?ai.attempts:[];
+  const attempts=(Array.isArray(ai?.attempts)?ai.attempts:[]).filter((x:any)=>x?.note!=="circuit_open");
   if(!attempts.length)return;
   const rows=attempts.map((x:any)=>({
     route_key:ai?.route_key||modelRoute?.route_key||null,
@@ -579,7 +611,8 @@ Deno.serve(async(req:Request)=>{
 
     const routeDecision=routeManagerDecision(message);
     const inferredManager=routeDecision.manager_id;
-    const [reports,managers,decisions,commands,learning,cycles,evals,historyRows,ownerMemory,projectMemory,topicRows,contextItems,capabilityPolicies,modelRoutes]=await Promise.all([
+    const modelHealthSince=new Date(Date.now()-6*60*60*1000).toISOString();
+    const [reports,managers,decisions,commands,learning,cycles,evals,historyRows,ownerMemory,projectMemory,topicRows,contextItems,capabilityPolicies,modelRoutes,modelObservations]=await Promise.all([
       rest("hunt_boom_live_reports?select=manager_id,status,metrics,issues,recommended_action,created_at&order=created_at.desc&limit=300"),
       rest("hunt_boom_managers?select=id,name,department,status,last_report_at,reports_to&order=department.asc"),
       rest("hunt_boom_decisions?select=id,title,status,owner_approval_required,priority&order=priority.desc,created_at.desc&limit=50"),
@@ -593,13 +626,15 @@ Deno.serve(async(req:Request)=>{
       rest("hunt_boom_topic_state?owner_id=eq."+encodeURIComponent(user.id)+"&select=*&limit=1"),
       rest("hunt_boom_context_items?owner_id=eq."+encodeURIComponent(user.id)+"&select=id,source_type,source_ref,content,relevance_score,freshness_score,trust_score,token_cost,expires_at,quarantined,metadata,updated_at&order=updated_at.desc&limit=100"),
       rest("hunt_boom_capability_policies?principal_type=eq.manager&tool_key=eq.default&enabled=eq.true&select=principal_id,permission_level,allowed_actions,denied_actions,owner_gate_required,enabled&limit=100"),
-      rest("hunt_boom_model_routes?enabled=eq.true&select=route_key,task_class,primary_model,fallback_model,max_latency_ms,max_cost_usd,min_quality_score,owner_gate_required,metadata&order=route_key.asc&limit=20")
+      rest("hunt_boom_model_routes?enabled=eq.true&select=route_key,task_class,primary_model,fallback_model,max_latency_ms,max_cost_usd,min_quality_score,owner_gate_required,metadata&order=route_key.asc&limit=20"),
+      rest("hunt_boom_model_observations?created_at=gte."+encodeURIComponent(modelHealthSince)+"&select=provider,success,status_code,created_at&order=created_at.desc&limit=100")
     ]);
 
     const history=(historyRows||[]).reverse().map((x:any)=>({
       role:x.sender_type==="boom"?"assistant":"user",
       content:String(x.body||"")
     }));
+    const modelCircuit=buildModelCircuitState(modelObservations||[]);
     const currentTopic=topicRows?.[0]||null;
     const topicState=deriveTopicState(message,currentTopic,inferredManager,conversationId);
     const currentReports=latest(reports||[]).map((x:any)=>({
@@ -701,6 +736,7 @@ Deno.serve(async(req:Request)=>{
         abstained:routeDecision.abstained,
         matched_managers:routeDecision.matched_managers
       },
+      model_circuit:modelCircuit,
       owner_command:commandRow?{
         id:commandRow.id,
         status:commandRow.status,
