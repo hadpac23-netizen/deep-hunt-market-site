@@ -171,7 +171,7 @@ Deno.serve(async(req:Request)=>{
         headers:{Prefer:"return=representation"},
         body:JSON.stringify([{
           command_key:"owner-"+Date.now()+"-"+crypto.randomUUID().slice(0,8),
-          issued_by:"owner",
+          issued_by:"boom-super-agent",
           target_manager_id:"boom-super-agent",
           priority:3,
           status:"queued",
