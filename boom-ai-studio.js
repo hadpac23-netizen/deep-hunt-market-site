@@ -41,7 +41,12 @@
     reportMap:new Map(),
     workerReportMap:new Map(),
     channel:null,
-    selected:"boom-super-agent"
+    selected:"boom-super-agent",
+    conversationId:null,
+    mediaRecorder:null,
+    micStream:null,
+    micChunks:[],
+    micTimer:null
   };
 
   const toolNodes=[
@@ -346,19 +351,80 @@
     const input=$("#chat-input");
     const text=input.value.trim();
     if(!text)return;
-    $("#chat-log").insertAdjacentHTML("beforeend",'<article class="chat-message owner">'+esc(text)+'</article>');
+    $("#chat-log").insertAdjacentHTML("beforeend",'<article class="chat-message owner" dir="auto">'+esc(text)+'</article>');
     input.value="";
     $("#chat-send").disabled=true;
     try{
-      const {data,error}=await client.functions.invoke("hunt-boom-chat",{body:{message:text}});
+      const {data,error}=await client.functions.invoke("hunt-boom-chat",{body:{message:text,conversation_id:state.conversationId}});
       if(error)throw error;
       if(data?.error)throw new Error(data.error);
-      $("#chat-log").insertAdjacentHTML("beforeend",'<article class="chat-message boom">'+esc(data.reply||"אין תשובה.")+'</article>');
+      if(data?.conversation_id)state.conversationId=data.conversation_id;
+      $("#chat-log").insertAdjacentHTML("beforeend",'<article class="chat-message boom" dir="auto">'+esc(data.reply||"אין תשובה.")+'</article>');
       $("#chat-log").scrollTop=$("#chat-log").scrollHeight;
     }catch(err){
       $("#chat-log").insertAdjacentHTML("beforeend",'<article class="chat-message boom">שגיאה: '+esc(err.message||err)+'</article>');
     }finally{
       $("#chat-send").disabled=false;
+    }
+  }
+
+  function blobToBase64(blob){
+    return new Promise((resolve,reject)=>{
+      const reader=new FileReader();
+      reader.onload=()=>resolve(String(reader.result||"").split(",")[1]||"");
+      reader.onerror=reject;
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  function setVoiceStatus(text){const el=$("#voice-status");if(el)el.textContent=text}
+
+  async function stopMic(){
+    if(state.micTimer){clearTimeout(state.micTimer);state.micTimer=null}
+    if(state.mediaRecorder&&state.mediaRecorder.state!=="inactive")state.mediaRecorder.stop();
+  }
+
+  async function toggleMic(){
+    const btn=$("#chat-mic");
+    if(state.mediaRecorder&&state.mediaRecorder.state==="recording"){stopMic();return}
+    if(!navigator.mediaDevices?.getUserMedia||!window.MediaRecorder){
+      setVoiceStatus("המיקרופון לא נתמך בדפדפן הזה");
+      return;
+    }
+    btn.disabled=true;
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});
+      state.micStream=stream;
+      const choices=["audio/webm;codecs=opus","audio/webm","audio/ogg;codecs=opus"];
+      const mime=choices.find(x=>MediaRecorder.isTypeSupported?.(x))||"";
+      const rec=new MediaRecorder(stream,mime?{mimeType:mime}:undefined);
+      state.mediaRecorder=rec;state.micChunks=[];
+      rec.ondataavailable=e=>{if(e.data?.size)state.micChunks.push(e.data)};
+      rec.onstart=()=>{btn.disabled=false;btn.classList.add("recording");btn.textContent="⏹";setVoiceStatus("מקשיב… עברית · العربية · English")};
+      rec.onerror=()=>{setVoiceStatus("שגיאת מיקרופון");btn.classList.remove("recording");btn.textContent="🎙️"};
+      rec.onstop=async()=>{
+        btn.classList.remove("recording");btn.textContent="🎙️";btn.disabled=true;
+        try{
+          const blob=new Blob(state.micChunks,{type:rec.mimeType||"audio/webm"});
+          state.micStream?.getTracks().forEach(t=>t.stop());state.micStream=null;
+          if(blob.size<800){setVoiceStatus("לא זוהה דיבור");return}
+          setVoiceStatus("מתמלל אוטומטית…");
+          const audio_base64=await blobToBase64(blob);
+          const {data,error}=await client.functions.invoke("hunt-boom-transcribe",{body:{audio_base64,mime_type:blob.type||"audio/webm"}});
+          if(error)throw error;if(data?.error)throw new Error(data.error);
+          const transcript=String(data?.transcript||"").trim();
+          if(!transcript)throw new Error("לא זוהה דיבור");
+          $("#chat-input").value=transcript;
+          setVoiceStatus("זוהה: "+transcript.slice(0,70)+(transcript.length>70?"…":""));
+          await sendChat();
+        }catch(err){
+          setVoiceStatus("שגיאה בתמלול: "+(err.message||err));
+        }finally{btn.disabled=false;state.mediaRecorder=null;state.micChunks=[]}
+      };
+      rec.start(250);
+      state.micTimer=setTimeout(()=>stopMic(),45000);
+    }catch(err){
+      btn.disabled=false;setVoiceStatus("לא התקבלה הרשאת מיקרופון: "+(err.message||err));
     }
   }
 
@@ -494,6 +560,7 @@
   $("#chat-toggle").addEventListener("click",()=>setChatOpen(!$(".inspector").classList.contains("chat-open")));
   $("#chat-collapse").addEventListener("click",()=>setChatOpen(false));
   $("#chat-send").addEventListener("click",sendChat);
+  $("#chat-mic").addEventListener("click",toggleMic);
   $("#chat-input").addEventListener("keydown",ev=>{if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();sendChat()}});
   window.addEventListener("resize",()=>requestAnimationFrame(drawLinks));
 
