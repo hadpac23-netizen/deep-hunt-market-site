@@ -437,7 +437,13 @@ ${JSON.stringify(compactCtx)}`;
       });
       const text=await res.text();
       let data:any={};try{data=text?JSON.parse(text):{}}catch{}
-      attempts.push({provider:"openai",model,ok:res.ok,status:res.status,latency_ms:Math.round(performance.now()-started)});
+      const usage=data?.usage||{};
+      attempts.push({
+        provider:"openai",model,ok:res.ok,status:res.status,latency_ms:Math.round(performance.now()-started),
+        input_tokens:Number.isFinite(Number(usage?.input_tokens))?Number(usage.input_tokens):null,
+        output_tokens:Number.isFinite(Number(usage?.output_tokens))?Number(usage.output_tokens):null,
+        total_tokens:Number.isFinite(Number(usage?.total_tokens))?Number(usage.total_tokens):null
+      });
       if(!res.ok)return null;
       const direct=String(data?.output_text||"").trim();
       const nested=Array.isArray(data?.output)
@@ -472,7 +478,13 @@ ${JSON.stringify(compactCtx)}`;
       });
       const text=await res.text();
       let data:any={};try{data=text?JSON.parse(text):{}}catch{}
-      attempts.push({provider:"groq",model,ok:res.ok,status:res.status,latency_ms:Math.round(performance.now()-started)});
+      const usage=data?.usage||{};
+      attempts.push({
+        provider:"groq",model,ok:res.ok,status:res.status,latency_ms:Math.round(performance.now()-started),
+        input_tokens:Number.isFinite(Number(usage?.prompt_tokens))?Number(usage.prompt_tokens):null,
+        output_tokens:Number.isFinite(Number(usage?.completion_tokens))?Number(usage.completion_tokens):null,
+        total_tokens:Number.isFinite(Number(usage?.total_tokens))?Number(usage.total_tokens):null
+      });
       if(!res.ok)return null;
       const reply=String(data?.choices?.[0]?.message?.content||"").trim();
       return reply?{reply,provider:"groq",model,attempts}:null;
@@ -504,7 +516,13 @@ ${JSON.stringify(compactCtx)}`;
       });
       const text=await res.text();
       let data:any={};try{data=text?JSON.parse(text):{}}catch{}
-      attempts.push({provider:"gemini",model,ok:res.ok,status:res.status,latency_ms:Math.round(performance.now()-started)});
+      const usage=data?.usageMetadata||{};
+      attempts.push({
+        provider:"gemini",model,ok:res.ok,status:res.status,latency_ms:Math.round(performance.now()-started),
+        input_tokens:Number.isFinite(Number(usage?.promptTokenCount))?Number(usage.promptTokenCount):null,
+        output_tokens:Number.isFinite(Number(usage?.candidatesTokenCount))?Number(usage.candidatesTokenCount):null,
+        total_tokens:Number.isFinite(Number(usage?.totalTokenCount))?Number(usage.totalTokenCount):null
+      });
       if(!res.ok)return null;
       const reply=String(data?.candidates?.[0]?.content?.parts?.[0]?.text||"").trim();
       return reply?{reply,provider:"gemini",model,attempts}:null;
@@ -549,6 +567,9 @@ async function persistModelObservations(ai:any,modelRoute:any,taskClass:string){
     latency_ms:Number.isFinite(Number(x?.latency_ms))?Math.max(0,Math.round(Number(x.latency_ms))):null,
     quality_score:null,
     estimated_cost_usd:null,
+    input_tokens:Number.isFinite(Number(x?.input_tokens))?Math.max(0,Math.round(Number(x.input_tokens))):null,
+    output_tokens:Number.isFinite(Number(x?.output_tokens))?Math.max(0,Math.round(Number(x.output_tokens))):null,
+    total_tokens:Number.isFinite(Number(x?.total_tokens))?Math.max(0,Math.round(Number(x.total_tokens))):null,
     metadata:{note:x?.note||null,source:"hunt-boom-chat"}
   }));
   await rest("hunt_boom_model_observations",{
@@ -839,7 +860,10 @@ Deno.serve(async(req:Request)=>{
           ai_mode:"live_ai_gateway",
           provider:ai?.provider||"fallback",
           model_route_key:ai?.route_key||modelRoute?.route_key||null,
-          ai_attempts:Array.isArray(ai?.attempts)?ai.attempts.map((x:any)=>({provider:x.provider,model:x.model||null,ok:x.ok,status:x.status||null,note:x.note||null,latency_ms:x.latency_ms??null})):[],
+          ai_attempts:Array.isArray(ai?.attempts)?ai.attempts.map((x:any)=>({
+            provider:x.provider,model:x.model||null,ok:x.ok,status:x.status||null,note:x.note||null,
+            latency_ms:x.latency_ms??null,input_tokens:x.input_tokens??null,output_tokens:x.output_tokens??null,total_tokens:x.total_tokens??null
+          })):[],
           command_id:commandRow?.id||null,
           active_topic:topicState.active_topic,
           spoken_text:spokenText.slice(0,1800)
