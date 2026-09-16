@@ -50,6 +50,7 @@
     chatMode:"chat",
     voiceLoop:false,
     speaking:false,
+    voiceAudio:null,
     audioContext:null,
     vadRaf:null
   };
@@ -374,6 +375,27 @@
     return data||{};
   }
 
+  async function invokeBoomAudio(name,body){
+    const {data:{session},error:sessionError}=await client.auth.getSession();
+    if(sessionError)throw sessionError;
+    if(!session?.access_token)throw new Error("Session expired. Please sign in again.");
+    const res=await fetch("https://zszlnahjqmwozwubetkm.supabase.co/functions/v1/"+name,{
+      method:"POST",
+      headers:{
+        "Authorization":"Bearer "+session.access_token,
+        "apikey":H.publishableKey,
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(body)
+    });
+    if(!res.ok){
+      const raw=await res.text();
+      let data={};try{data=raw?JSON.parse(raw):{}}catch{}
+      throw new Error(data?.error||("HTTP "+res.status));
+    }
+    return await res.blob();
+  }
+
   function appendChatMessage(type,text){
     const article=document.createElement("article");
     article.className="chat-message "+type;
@@ -410,44 +432,61 @@
       ||null;
   }
 
-  function speakText(text,{resumeListening=false}={}){
+  function browserSpeakText(text,{resumeListening=false}={}){
     return new Promise(resolve=>{
-      if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){
-        setVoiceStatus("השמעת קול לא נתמכת בדפדפן הזה");
-        resolve();
-        return;
-      }
+      if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){resolve();return}
       try{
-        if(state.mediaRecorder?.state==="recording")stopMic();
-        state.micStream?.getTracks().forEach(t=>t.stop());
-        state.micStream=null;
         speechSynthesis.cancel();
         const utter=new SpeechSynthesisUtterance(String(text||""));
         utter.lang=speechLanguage(text);
-        const voice=pickVoice(utter.lang);
-        if(voice)utter.voice=voice;
-        utter.rate=1;
-        utter.pitch=1;
-        state.speaking=true;
-        setVoiceStatus("BOOM מדבר…");
+        const voice=pickVoice(utter.lang);if(voice)utter.voice=voice;
+        utter.rate=.96;utter.pitch=1;
         const done=()=>{
           state.speaking=false;
           if(state.voiceLoop&&resumeListening){
             setVoiceStatus("תורך לדבר…");
-            setTimeout(()=>toggleMic().catch(()=>{}),450);
-          }else{
-            setVoiceStatus("עברית · العربية · English · Auto");
-          }
+            setTimeout(()=>toggleMic().catch(()=>{}),400);
+          }else setVoiceStatus("AI Voice · עברית · العربية · English · Auto");
           resolve();
         };
-        utter.onend=done;
-        utter.onerror=done;
+        utter.onend=done;utter.onerror=done;
         speechSynthesis.speak(utter);
-      }catch{
-        state.speaking=false;
-        resolve();
-      }
+      }catch{state.speaking=false;resolve()}
     });
+  }
+
+  async function speakText(text,{resumeListening=false}={}){
+    if(state.mediaRecorder?.state==="recording")await stopMic();
+    state.micStream?.getTracks().forEach(t=>t.stop());state.micStream=null;
+    speechSynthesis?.cancel?.();
+    if(state.voiceAudio){
+      try{state.voiceAudio.pause();state.voiceAudio.src=""}catch{}
+      state.voiceAudio=null;
+    }
+    state.speaking=true;
+    setVoiceStatus("BOOM מדבר בקול AI…");
+    try{
+      const blob=await invokeBoomAudio("hunt-boom-speak",{text:String(text||"")});
+      const url=URL.createObjectURL(blob);
+      const audio=new Audio(url);
+      state.voiceAudio=audio;
+      await new Promise((resolve,reject)=>{
+        audio.onended=resolve;
+        audio.onerror=()=>reject(new Error("audio playback failed"));
+        audio.play().catch(reject);
+      });
+      URL.revokeObjectURL(url);
+      state.voiceAudio=null;
+      state.speaking=false;
+      if(state.voiceLoop&&resumeListening){
+        setVoiceStatus("תורך לדבר…");
+        setTimeout(()=>toggleMic().catch(()=>{}),350);
+      }else setVoiceStatus("AI Voice · עברית · العربية · English · Auto");
+    }catch(err){
+      state.voiceAudio=null;
+      setVoiceStatus("קול AI לא זמין — עובר לקול המכשיר");
+      await browserSpeakText(text,{resumeListening});
+    }
   }
 
   async function sendChat(){
@@ -487,7 +526,7 @@
       :"דבר או כתוב ל־BOOM…";
     setVoiceStatus(state.chatMode==="command"
       ?"מצב פקודה · BOOM ינתח וינתב, פעולות חיות נשארות gated"
-      :"עברית · العربية · English · Auto");
+      :"AI Voice · עברית · العربية · English · Auto");
   }
 
   async function toggleVoiceLoop(){
@@ -497,6 +536,7 @@
     btn.textContent=state.voiceLoop?"⏹ עצור שיחה קולית":"🎧 שיחה קולית";
     if(!state.voiceLoop){
       speechSynthesis?.cancel?.();
+      if(state.voiceAudio){try{state.voiceAudio.pause();state.voiceAudio.src=""}catch{}state.voiceAudio=null}
       await stopMic();
       state.micStream?.getTracks().forEach(t=>t.stop());
       state.micStream=null;
