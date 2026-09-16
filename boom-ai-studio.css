@@ -15,9 +15,9 @@ button,input,textarea{font:inherit}
 .login-card{width:min(420px,100%);padding:26px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.015));box-shadow:0 20px 70px rgba(0,0,0,.35)}
 .login-logo{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(145deg,#809cff,#6a63ff);font-weight:950;margin-bottom:15px;box-shadow:0 0 30px rgba(106,99,255,.25)}
 .login-card small{color:var(--lime);letter-spacing:.13em;font-weight:900;font-size:10px}.login-card h1{margin:7px 0 8px;font-size:30px}.login-card p{color:var(--muted);font-size:13px;line-height:1.6}.login-card label{display:block;color:#c8d0db;font-size:11px;margin:10px 0 5px}.login-card input{width:100%;padding:12px 13px;border-radius:11px;border:1px solid var(--line);background:#080c12;color:#fff;outline:none}.login-card input:focus{border-color:#55667d;box-shadow:0 0 0 3px rgba(85,102,125,.12)}.primary-btn{width:100%;margin-top:12px;padding:12px;border:0;border-radius:11px;background:var(--lime);color:#091006;font-weight:950;cursor:pointer}.primary-btn:disabled{opacity:.55;cursor:wait}
-.google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:15px;padding:12px 14px;border:1px solid #394353;border-radius:11px;background:#fff;color:#1f2430;font-weight:900;cursor:pointer}
-.google-btn:hover{background:#f4f6f8}.google-btn:disabled{opacity:.55;cursor:wait}
-.google-g{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-weight:1000;background:linear-gradient(135deg,#4285f4 0 25%,#34a853 25% 50%,#fbbc05 50% 75%,#ea4335 75%);color:#fff}
+.github-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:15px;padding:12px 14px;border:1px solid #3a4350;border-radius:11px;background:#f7f8fa;color:#11151b;font-weight:900;cursor:pointer}
+.github-btn:hover{background:#fff}.github-btn:disabled{opacity:.55;cursor:wait}
+.github-mark{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:8px;font-weight:1000;background:#11151b;color:#fff}
 .login-separator{display:flex;align-items:center;gap:10px;margin:16px 0;color:#697587;font-size:9px}
 .login-separator:before,.login-separator:after{content:"";height:1px;background:var(--line);flex:1}
 .password-login{display:grid}.secondary-login-btn{width:100%;margin-top:12px;padding:11px;border:1px solid var(--line);border-radius:11px;background:#151b24;color:#dfe6ef;font-weight:850;cursor:pointer}

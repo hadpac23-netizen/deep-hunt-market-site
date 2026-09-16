@@ -394,13 +394,13 @@
     if(oauthError){
       showLogin();
       $("#login-error").textContent=oauthError;
-      setLive("GOOGLE LOGIN ERROR","critical");
+      setLive("OAUTH LOGIN ERROR","critical");
       return;
     }
 
     const code=url.searchParams.get("code");
     if(code){
-      setLive("FINISHING GOOGLE LOGIN","watch");
+      setLive("FINISHING GITHUB LOGIN","watch");
       const {data,error}=await client.auth.exchangeCodeForSession(code);
       if(error)throw error;
 
@@ -411,7 +411,7 @@
       url.searchParams.delete("error_description");
       history.replaceState({},document.title,url.pathname+(url.search||""));
 
-      if(!data?.session)throw new Error("Google login completed but no session was created.");
+      if(!data?.session)throw new Error("GitHub login completed but no session was created.");
     }
 
     const {data:{session},error:sessionError}=await client.auth.getSession();
@@ -430,26 +430,20 @@
     inspectManager("boom-super-agent");
   }
 
-  $("#google-login").addEventListener("click",async()=>{
-    const button=$("#google-login");
+  $("#github-login").addEventListener("click",async()=>{
+    const button=$("#github-login");
     const error=$("#login-error");
     button.disabled=true;
     error.textContent="";
     try{
       const redirectTo=location.origin+location.pathname;
       const {error:oauthError}=await client.auth.signInWithOAuth({
-        provider:"google",
-        options:{
-          redirectTo,
-          queryParams:{
-            access_type:"offline",
-            prompt:"select_account"
-          }
-        }
+        provider:"github",
+        options:{redirectTo}
       });
       if(oauthError)throw oauthError;
     }catch(err){
-      error.textContent=err.message||"Google login failed";
+      error.textContent=err.message||"GitHub login failed";
       button.disabled=false;
     }
   });
