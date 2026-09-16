@@ -33,13 +33,13 @@ const report=c.buildCopyReport({
     {manager_id:"supplier-eprolo",status:"watch",issues:["not connected"]}
   ],
   evals:[
-    {metric_name:"attention_manager_count",current_value:8,passed:false},
-    {metric_name:"command_duplicate_rate",current_value:0,passed:true}
+    {eval_key:"cycle-dup",subject_type:"cycle",subject_key:"cycle-1",metric_name:"command_duplicate_rate",current_value:0,passed:true},
+    {eval_key:"grad-1",subject_type:"learning_item",subject_key:"learned-1",metric_name:"learning_behavior_pass_rate",current_value:1,target:1,passed:true}
   ],
   open_commands:[],
   project_memory:[],
   learning:[
-    ...Array.from({length:4},(_,i)=>({domain:"agent-architecture",title:"learned-"+(i+1),status:"learned"})),
+    ...Array.from({length:4},(_,i)=>({domain:"agent-architecture",title:"learned-"+(i+1),status:"learned",graduation_eval_key:"grad-"+(i+1)})),
     ...Array.from({length:10},(_,i)=>({domain:"ai-engineering",title:"testing-"+(i+1),status:"testing"}))
   ]
 },{
@@ -55,8 +55,11 @@ assert(!report.includes("attention_manager_count"),"copy report mixed stale atte
 assert(report.includes("AI learning items: 14"),"AI learning count missing");
 assert(report.includes("Learned and behavior-backed: 4"),"learned count missing");
 assert(report.includes("Still testing: 10"),"testing count missing");
-assert(report.includes("Learned: learned-1"),"learned items missing");
+assert(report.includes("Learned: learned-1 — eval: grad-1"),"graduation proof missing from learned item");
+assert(report.includes("learning_behavior_pass_rate: 1 (PASS)"),"learning-item eval missing");
+assert(!report.includes("command_duplicate_rate"),"learning report leaked unrelated cycle eval");
 assert(report.includes("testing-1 — still testing"),"testing items missing");
+assert(report.includes("testing-10 — still testing"),"learning report truncated testing items");
 assert(!report.includes("supplier-cj"),"AI learning report leaked unrelated HUNT blocker");
 assert(!report.includes("supplier-eprolo"),"AI learning report leaked unrelated supplier blocker");
 

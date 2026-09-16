@@ -107,9 +107,8 @@ export function buildCopyReport(ctx:any,topic:any,commandRow:any){
     const key=String(e?.metric_name||"");
     if(key&&!latestEvalByMetric.has(key))latestEvalByMetric.set(key,e);
   }
-  const evals=[...latestEvalByMetric.values()]
-    .filter((e:any)=>String(e.metric_name)!=="attention_manager_count")
-    .slice(0,6);
+  const allLatestEvals=[...latestEvalByMetric.values()]
+    .filter((e:any)=>String(e.metric_name)!=="attention_manager_count");
   const decisions=(ctx.project_memory||[]).filter((m:any)=>Number(m.importance)>=5&&m.status==="active").slice(0,5);
   const topicText=(String(topic?.active_topic||"")+" "+String(topic?.active_goal||"")+" "+String(topic?.current_task||"")).toLowerCase();
   const learningMode=/(learning|ai engineering|לימוד|למידה|הנדסת ai|هندسة ai|تعلم)/i.test(topicText);
@@ -117,8 +116,12 @@ export function buildCopyReport(ctx:any,topic:any,commandRow:any){
     const d=String(x?.domain||"");
     return ["ai-engineering","agent-architecture","agent-reliability","long-running-agents"].includes(d);
   });
-  const learnedItems=learningItems.filter((x:any)=>x.status==="learned");
+  const learnedItems=learningItems.filter((x:any)=>["learned","adopted"].includes(x.status));
   const testingItems=learningItems.filter((x:any)=>x.status==="testing");
+  const evals=(learningMode
+    ?allLatestEvals.filter((e:any)=>e.subject_type==="learning_item")
+    :allLatestEvals
+  ).slice(0,8);
   const evidence=learningMode
     ?[
       "AI learning items: "+String(learningItems.length),
@@ -136,7 +139,7 @@ export function buildCopyReport(ctx:any,topic:any,commandRow:any){
     evidence.push(line);
   }
   const blockers=learningMode
-    ?testingItems.slice(0,8).map((x:any)=>String(x.title||x.learning_key||"learning item")+" — still testing; requires behavior/eval proof")
+    ?testingItems.slice(0,20).map((x:any)=>String(x.title||x.learning_key||"learning item")+" — still testing; requires behavior/eval proof")
     :attention.slice(0,8).map((r:any)=>{
       const issue=Array.isArray(r.issues)&&r.issues.length?" — "+String(r.issues[0]).slice(0,180):"";
       return String(r.manager_id)+": "+String(r.status)+issue;
@@ -146,7 +149,10 @@ export function buildCopyReport(ctx:any,topic:any,commandRow:any){
     :attention?.[0]?.recommended_action)||"Continue the active verified task.").slice(0,500);
   const completed=learningMode
     ?(learnedItems.length
-      ?learnedItems.slice(0,8).map((x:any)=>"Learned: "+String(x.title||x.learning_key||"AI lesson"))
+      ?learnedItems.slice(0,12).map((x:any)=>{
+        const proof=x.graduation_eval_key?" — eval: "+String(x.graduation_eval_key):"";
+        return "Learned: "+String(x.title||x.learning_key||"AI lesson")+proof;
+      })
       :["No AI-engineering lesson is marked learned without behavior/eval proof."])
     :(commandRow
       ?["Command #"+String(commandRow.id)+" routed to "+String(commandRow.target_manager_id)+"; current status: "+String(commandRow.status)+". This is routing evidence, not completion proof."]
