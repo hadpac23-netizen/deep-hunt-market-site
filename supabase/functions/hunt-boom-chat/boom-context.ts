@@ -110,28 +110,50 @@ export function buildCopyReport(ctx:any,topic:any,commandRow:any){
     .filter((e:any)=>String(e.metric_name)!=="attention_manager_count")
     .slice(0,6);
   const decisions=(ctx.project_memory||[]).filter((m:any)=>Number(m.importance)>=5&&m.status==="active").slice(0,5);
-  const evidence=[
-    "Open commands: "+String((ctx.open_commands||[]).length),
-    "Attention reports: "+String(attention.length)
-  ];
+  const topicText=(String(topic?.active_topic||"")+" "+String(topic?.active_goal||"")+" "+String(topic?.current_task||"")).toLowerCase();
+  const learningMode=/(learning|ai engineering|לימוד|למידה|הנדסת ai|هندسة ai|تعلم)/i.test(topicText);
+  const learningItems=(ctx.learning||[]).filter((x:any)=>{
+    const d=String(x?.domain||"");
+    return ["ai-engineering","agent-architecture","agent-reliability","long-running-agents"].includes(d);
+  });
+  const learnedItems=learningItems.filter((x:any)=>x.status==="learned");
+  const testingItems=learningItems.filter((x:any)=>x.status==="testing");
+  const evidence=learningMode
+    ?[
+      "AI learning items: "+String(learningItems.length),
+      "Learned and behavior-backed: "+String(learnedItems.length),
+      "Still testing: "+String(testingItems.length)
+    ]
+    :[
+      "Open commands: "+String((ctx.open_commands||[]).length),
+      "Attention reports: "+String(attention.length)
+    ];
   for(const e of evals){
     let line=String(e.metric_name)+": "+String(e.current_value??"n/a");
     if(e.passed===true)line+=" (PASS)";
     else if(e.passed===false)line+=" (NOT PASS)";
     evidence.push(line);
   }
-  const blockers=attention.slice(0,8).map((r:any)=>{
-    const issue=Array.isArray(r.issues)&&r.issues.length?" — "+String(r.issues[0]).slice(0,180):"";
-    return String(r.manager_id)+": "+String(r.status)+issue;
-  });
-  const next=String(topic?.next_expected_step||attention?.[0]?.recommended_action||"Continue the active verified task.").slice(0,500);
-  const completed=commandRow
-    ?["Command #"+String(commandRow.id)+" routed to "+String(commandRow.target_manager_id)+"; current status: "+String(commandRow.status)+". This is routing evidence, not completion proof."]
-    :["No live action is marked completed solely because of this chat response."];
+  const blockers=learningMode
+    ?testingItems.slice(0,8).map((x:any)=>String(x.title||x.learning_key||"learning item")+" — still testing; requires behavior/eval proof")
+    :attention.slice(0,8).map((r:any)=>{
+      const issue=Array.isArray(r.issues)&&r.issues.length?" — "+String(r.issues[0]).slice(0,180):"";
+      return String(r.manager_id)+": "+String(r.status)+issue;
+    });
+  const next=String(topic?.next_expected_step||(learningMode
+    ?"Validate testing AI-engineering lessons through behavior and evals, then mark only proven lessons as learned."
+    :attention?.[0]?.recommended_action)||"Continue the active verified task.").slice(0,500);
+  const completed=learningMode
+    ?(learnedItems.length
+      ?learnedItems.slice(0,8).map((x:any)=>"Learned: "+String(x.title||x.learning_key||"AI lesson"))
+      :["No AI-engineering lesson is marked learned without behavior/eval proof."])
+    :(commandRow
+      ?["Command #"+String(commandRow.id)+" routed to "+String(commandRow.target_manager_id)+"; current status: "+String(commandRow.status)+". This is routing evidence, not completion proof."]
+      :["No live action is marked completed solely because of this chat response."]);
   const ownerDecisions=decisions.length
     ?decisions.map((x:any)=>"- "+String(x.content||"").slice(0,300))
     :["- HUNT is the public brand; BOOM is the internal intelligence and orchestration layer."];
-  const blockerLines=blockers.length?blockers.map((x:string)=>"- "+x):["- No blocker is claimed from the current live context."];
+  const blockerLines=blockers.length?blockers.map((x:string)=>"- "+x):["- No blocker is claimed from the current topic context."];
   return [
     "BOOM COPY REPORT",
     "",

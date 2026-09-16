@@ -28,19 +28,37 @@ for(const ping of ["ילה","בווום","היי בום","לא הבנתי","אי
 const next=c.deriveTopicState("ילה",current,"boom-super-agent","00000000-0000-0000-0000-000000000001");
 
 const report=c.buildCopyReport({
-  reports:Array.from({length:7},(_,i)=>({manager_id:"watch-"+(i+1),status:"watch",issues:["issue-"+(i+1)]})),
+  reports:[
+    {manager_id:"supplier-cj",status:"watch",issues:["stale stock"]},
+    {manager_id:"supplier-eprolo",status:"watch",issues:["not connected"]}
+  ],
   evals:[
     {metric_name:"attention_manager_count",current_value:8,passed:false},
     {metric_name:"command_duplicate_rate",current_value:0,passed:true}
   ],
   open_commands:[],
-  project_memory:[]
-},next,null);
+  project_memory:[],
+  learning:[
+    ...Array.from({length:4},(_,i)=>({domain:"agent-architecture",title:"learned-"+(i+1),status:"learned"})),
+    ...Array.from({length:10},(_,i)=>({domain:"ai-engineering",title:"testing-"+(i+1),status:"testing"}))
+  ]
+},{
+  ...next,
+  active_topic:"BOOM Learning / AI Engineering",
+  active_goal:"ללמוד הנדסת AI",
+  current_task:"להמשיך ללמוד ולסכם"
+},null);
 assert(report.startsWith("BOOM COPY REPORT"),"copy report header missing");
 assert(report.includes("TOPIC:"),"copy report topic missing");
 assert(report.includes("NEXT ACTION:"),"copy report next action missing");
 assert(!report.includes("attention_manager_count"),"copy report mixed stale attention eval into live snapshot");
-assert(report.includes("watch-7"),"copy report omitted live blocker 7");
+assert(report.includes("AI learning items: 14"),"AI learning count missing");
+assert(report.includes("Learned and behavior-backed: 4"),"learned count missing");
+assert(report.includes("Still testing: 10"),"testing count missing");
+assert(report.includes("Learned: learned-1"),"learned items missing");
+assert(report.includes("testing-1 — still testing"),"testing items missing");
+assert(!report.includes("supplier-cj"),"AI learning report leaked unrelated HUNT blocker");
+assert(!report.includes("supplier-eprolo"),"AI learning report leaked unrelated supplier blocker");
 
 const edge=fs.readFileSync("supabase/functions/hunt-boom-chat/index.ts","utf8");
 assert(edge.includes("display_text:reply"),"display_text API missing");
