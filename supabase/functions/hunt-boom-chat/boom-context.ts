@@ -1,5 +1,5 @@
 export function isContinuationMessage(message:string){
-  return /^(?:ילה+|יאללה|תמשיך|המשך|נו+|בצע|כן|מאשר|אישור|מה עכשיו\??|מה הלאה\??|מה המצב\??|איפה זה עומד(?: עכשיו)?\??|איפה עצרנו\??|לא הבנתי|תסביר|טוב|אוקי|אוקיי|בסדר|(?:היי\s*)?ב[ו]+ם+|boom|hey\s+boom|yes|approved|confirm|confirmed|كمل|يلا|تابع|نعم|موافق|شو هسه\??|وين وصلنا\??|مش فاهم|اشرح|continue|go on|next|what now\??|where are we\??|explain)$/i.test(String(message||"").trim());
+  return /^(?:ילה+|יאללה|תמשיך|המשך|נו+|בצע|כן|מאשר|אישור|(?:אשר|אישור)\s+.+(?:production|פרודקשן)\.?|מה עכשיו\??|מה הלאה\??|מה המצב\??|איפה זה עומד(?: עכשיו)?\??|איפה עצרנו\??|לא הבנתי|תסביר|טוב|אוקי|אוקיי|בסדר|(?:היי\s*)?ב[ו]+ם+|boom|hey\s+boom|yes|approved|confirm|confirmed|approve\s+.+production\.?|كمل|يلا|تابع|نعم|موافق|وافق\s+.+production\.?|شو هسه\??|وين وصلنا\??|مش فاهم|اشرح|continue|go on|next|what now\??|where are we\??|explain)$/i.test(String(message||"").trim());
 }
 
 export function needsOwnerGate(message:string){
