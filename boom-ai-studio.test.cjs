@@ -19,6 +19,16 @@ assert(js.includes("hunt_boom_improvement_cycles"),"cycle data source missing");
 assert(js.includes("hunt_boom_evals"),"eval data source missing");
 assert(js.includes("hunt_boom_learning_items"),"learning data source missing");
 
+assert(html.includes('id="trace-summary"'),"trace summary missing");
+for(const type of ["command","event","worker","cycle","eval"]){
+  assert(html.includes('data-trace-type="'+type+'"'),"trace filter missing: "+type);
+  assert(js.includes('type:"'+type+'"'),"trace row mapping missing: "+type);
+}
+assert(js.includes("state.traceType"),"trace filter state missing");
+assert(js.includes("trace-evidence"),"trace evidence rendering missing");
+assert(css.includes(".trace-summary"),"trace summary styling missing");
+assert(css.includes(".trace-filter.active"),"active trace filter styling missing");
+
 assert(html.includes("provider not enabled yet"),"truthful model connector state missing");
 assert(js.includes("provider not enabled yet"),"model inspector truth state missing");
 

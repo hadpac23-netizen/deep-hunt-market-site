@@ -52,7 +52,8 @@
     speaking:false,
     voiceAudio:null,
     audioContext:null,
-    vadRaf:null
+    vadRaf:null,
+    traceType:"all"
   };
 
   const toolNodes=[
@@ -186,31 +187,82 @@
 
   function renderExecutions(){
     const rows=[
-      ...state.commands.slice(0,50).map(x=>({
+      ...state.commands.slice(0,80).map(x=>({
+        type:"command",
         priority:x.priority||3,
-        title:x.title,
-        body:x.instruction,
-        meta:x.issued_by+" → "+x.target_manager_id+" · "+x.status,
+        title:x.title||("Command #"+x.id),
+        body:x.instruction||"",
+        meta:(x.issued_by||"BOOM")+" → "+(x.target_manager_id||"unknown")+" · "+(x.action_class||"COMMAND"),
         time:x.created_at,
-        status:x.status
+        status:x.status,
+        evidence:x.evidence||[]
       })),
-      ...state.events.slice(0,40).map(x=>({
+      ...state.events.slice(0,80).map(x=>({
+        type:"event",
         priority:x.severity==="critical"?5:x.severity==="blocked"?4:x.severity==="watch"?3:1,
-        title:x.title,
+        title:x.title||x.event_type||"Event",
         body:x.body||"",
-        meta:"EVENT · "+(x.source_manager_id||"system"),
+        meta:"EVENT · "+(x.source_manager_id||"system")+" · "+(x.entity_type||"system"),
         time:x.created_at,
-        status:x.severity
+        status:x.severity||"healthy",
+        evidence:[]
+      })),
+      ...state.workerReports.slice(0,100).map(x=>({
+        type:"worker",
+        priority:x.status==="critical"?5:x.status==="blocked"?4:x.status==="watch"?3:1,
+        title:x.worker_id||"Worker report",
+        body:x.finding||x.recommended_action||"",
+        meta:"WORKER · "+(x.worker_id||"unknown")+" → "+(x.manager_id||"unknown")+" · "+(x.action_class||"OBSERVE"),
+        time:x.created_at,
+        status:x.status||"healthy",
+        evidence:Array.isArray(x.evidence)?x.evidence:[]
+      })),
+      ...state.cycles.slice(0,40).map(x=>({
+        type:"cycle",
+        priority:["blocked","killed"].includes(x.status)?4:x.status==="evaluating"?3:2,
+        title:"Cycle · "+(x.focus||x.cycle_key||x.id),
+        body:x.hypothesis||"",
+        meta:"CYCLE · "+(x.started_by||"BOOM")+" · "+(x.verdict||x.status),
+        time:x.evaluated_at||x.started_at,
+        status:x.status,
+        evidence:[
+          x.verdict?"verdict="+x.verdict:null,
+          x.result?.attention!==undefined?"attention="+x.result.attention:null
+        ].filter(Boolean)
+      })),
+      ...state.evals.slice(0,80).map(x=>({
+        type:"eval",
+        priority:x.passed===false?5:x.passed===true?1:3,
+        title:"Eval · "+(x.metric_name||x.eval_key||x.id),
+        body:(x.notes||"")+(x.current_value!==null&&x.current_value!==undefined?" · "+String(x.current_value)+" / target "+String(x.target??"—"):""),
+        meta:"EVAL · "+(x.subject_type||"subject")+" · "+(x.subject_key||"unknown"),
+        time:x.created_at,
+        status:x.passed===true?"healthy":x.passed===false?"critical":"watch",
+        evidence:Array.isArray(x.evidence)?x.evidence:[]
       }))
     ].sort((a,b)=>new Date(b.time)-new Date(a.time));
 
-    $("#executions-list").innerHTML=rows.length?rows.map(x=>
-      '<article class="list-row">'+
-        '<div class="priority">P'+esc(x.priority)+'</div>'+
-        '<div><strong>'+esc(x.title)+'</strong><p>'+esc(x.body)+'</p><small>'+esc(x.meta)+'</small></div>'+
+    const visible=state.traceType==="all"?rows:rows.filter(x=>x.type===state.traceType);
+    const failures=visible.filter(x=>["critical","blocked","failed","killed"].includes(String(x.status))).length;
+    const passed=visible.filter(x=>x.type==="eval"&&x.status==="healthy").length;
+    const actors=new Set(visible.map(x=>x.meta.split(" · ")[1]).filter(Boolean));
+
+    $("#trace-summary").innerHTML=
+      '<div><b>'+esc(visible.length)+'</b><span>SPANS</span></div>'+
+      '<div><b>'+esc(actors.size)+'</b><span>ACTORS</span></div>'+
+      '<div><b>'+esc(failures)+'</b><span>FAIL/BLOCK</span></div>'+
+      '<div><b>'+esc(passed)+'</b><span>EVAL PASS</span></div>';
+
+    $("#executions-list").innerHTML=visible.length?visible.map(x=>{
+      const evidence=x.evidence?.length
+        ?'<div class="trace-evidence">'+x.evidence.slice(0,3).map(v=>'<span>'+esc(v)+'</span>').join("")+'</div>'
+        :"";
+      return '<article class="list-row trace-row" data-trace-kind="'+esc(x.type)+'">'+
+        '<div class="trace-kind">'+esc(x.type.toUpperCase())+'</div>'+
+        '<div><strong>'+esc(x.title)+'</strong><p>'+esc(x.body)+'</p><small>'+esc(x.meta)+'</small>'+evidence+'</div>'+
         '<div>'+pill(x.status)+'<br><small>'+esc(ago(x.time))+'</small></div>'+
-      '</article>'
-    ).join(""):'<div class="list-row">אין executions.</div>';
+      '</article>';
+    }).join(""):'<div class="list-row">אין executions.</div>';
   }
 
   function renderEvaluations(){
@@ -816,6 +868,13 @@
   window.addEventListener("resize",()=>requestAnimationFrame(drawLinks));
 
   document.addEventListener("click",ev=>{
+    const traceFilter=ev.target.closest("[data-trace-type]");
+    if(traceFilter){
+      state.traceType=traceFilter.dataset.traceType||"all";
+      $$("#trace-filters .trace-filter").forEach(x=>x.classList.toggle("active",x===traceFilter));
+      renderExecutions();
+      return;
+    }
     const tab=ev.target.closest(".tab");
     if(tab){
       $$(".tab").forEach(x=>x.classList.remove("active"));

@@ -116,8 +116,17 @@
         </section>
 
         <section class="view scroll-view" id="executions">
-          <div class="page-head"><h1>Executions</h1><p>פקודות, אירועים ודוחות אחרונים.</p></div>
-          <div class="list" id="executions-list"></div>
+          <div class="page-head"><h1>Executions</h1><p>Timeline חי של commands, events, worker reports, cycles ו-evals.</p></div>
+          <div class="trace-summary" id="trace-summary"></div>
+          <div class="trace-filters" id="trace-filters" aria-label="Execution filters">
+            <button class="trace-filter active" type="button" data-trace-type="all">ALL</button>
+            <button class="trace-filter" type="button" data-trace-type="command">COMMANDS</button>
+            <button class="trace-filter" type="button" data-trace-type="event">EVENTS</button>
+            <button class="trace-filter" type="button" data-trace-type="worker">WORKERS</button>
+            <button class="trace-filter" type="button" data-trace-type="cycle">CYCLES</button>
+            <button class="trace-filter" type="button" data-trace-type="eval">EVALS</button>
+          </div>
+          <div class="list trace-list" id="executions-list"></div>
         </section>
 
         <section class="view scroll-view" id="evaluations">
