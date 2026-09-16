@@ -26,9 +26,10 @@
     if(/\b(charger|charging cable|usb-c cable|type-c cable|lightning cable)\b/.test(title))return "chargers-cables";
     if(/\b(phone case|mobile case|case for (?:iphone|samsung)|screen protector)\b/.test(title))return "phone-cases";
     if(/\b(earbuds?|earphones?|bluetooth headset)\b/.test(title))return "audio";
-    const inferred=String(H.inferCategory(item)||item?.category||"");
+    const stored=String(item?.category||"").trim();
+    const inferred=String(H.inferCategory(item)||"").trim();
     const aliases={phoneaccessories:"phone-cases",phonestands:"stands-holders",powerbanks:"power-banks",chargers:"chargers-cables",earbuds:"audio",usefultech:"electronics"};
-    return aliases[inferred]||inferred;
+    return aliases[stored]||stored||aliases[inferred]||inferred;
   }
   function isWomen(item){
     const title=String(item?.title||"").toLowerCase();
@@ -146,7 +147,7 @@
     const img=safeHttps(item.image_url)
       ? '<img src="'+H.esc(item.image_url)+'" alt="'+H.esc(item.title||"Product")+'" loading="lazy">'
       : '<div class="hd-profile-product-placeholder">H</div>';
-    const slug=String(H.inferCategory(item)||item.category||"");
+    const slug=discoverySlug(item);
     return '<article class="hd-shelf-card" role="listitem" data-category="'+H.esc(slug)+'" data-endless-key="'+H.esc(key(item))+'">'+
       '<a class="hd-shelf-media" href="'+H.esc(href)+'">'+img+'</a>'+
       '<div class="hd-shelf-body">'+
