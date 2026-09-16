@@ -4,6 +4,7 @@ const assert=require("assert");
 const edge=fs.readFileSync("supabase/functions/hunt-boom-chat/index.ts","utf8");
 const sql=fs.readFileSync("supabase/migrations/20260916143632_activate_boom_brain_v2_engines.sql","utf8");
 const hardening=fs.readFileSync("supabase/migrations/20260916150500_add_model_telemetry_and_mcp_gate.sql","utf8");
+const controls=fs.readFileSync("supabase/migrations/20260916153500_add_brain_v2_execution_controls.sql","utf8");
 
 assert(edge.includes("hunt_boom_model_routes?enabled=eq.true"),"model routes are not loaded");
 assert(edge.includes("requestedTaskClass=needsOwnerGate(message)?\"critical_reasoning\":\"owner_chat\""),"task-class route selection missing");
@@ -28,4 +29,10 @@ assert(hardening.includes("scope_not_allowed"),"MCP scope gate missing");
 assert(hardening.includes("oauth21_required"),"MCP OAuth 2.1 gate missing");
 assert(edge.includes("persistModelObservations"),"model observation writer missing");
 assert(edge.includes("latency_ms"),"model latency telemetry missing");
+assert(controls.includes("hunt_boom_promote_shadow_to_canary"),"canary promotion control missing");
+assert(controls.includes("traffic_out_of_bounds"),"canary traffic bound missing");
+assert(controls.includes("hunt_boom_rollback_canary"),"canary rollback missing");
+assert(controls.includes("hunt_boom_finalize_team_shadow"),"team finalize control missing");
+assert(controls.includes("output_member_mismatch"),"team member/output guard missing");
+assert(controls.includes("judge_verdict_required"),"team judge verdict guard missing");
 console.log("BOOM Brain v2 engines test: PASS");
