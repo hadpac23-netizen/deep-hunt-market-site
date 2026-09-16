@@ -17,20 +17,30 @@ const current={
   relevant_managers:["checkout-payment"],
   topic_history:[]
 };
+for(const ping of ["ילה","בווום","היי בום","לא הבנתי","איפה זה עומד עכשיו"]){
+  const next=c.deriveTopicState(ping,current,"boom-super-agent","00000000-0000-0000-0000-000000000001");
+  assert.equal(next.active_topic,current.active_topic,ping+" reset topic");
+  assert.equal(next.active_goal,current.active_goal,ping+" reset goal");
+  assert.equal(next.current_task,current.current_task,ping+" reset task");
+  assert.equal(next.relevant_managers[0],"checkout-payment",ping+" reset manager");
+  assert.equal(next.next_expected_step,"run checkout QA",ping+" reset next step");
+}
 const next=c.deriveTopicState("ילה",current,"boom-super-agent","00000000-0000-0000-0000-000000000001");
-assert.equal(next.active_topic,current.active_topic,"continuation reset topic");
-assert.equal(next.relevant_managers[0],"checkout-payment","continuation reset manager");
-assert.equal(next.next_expected_step,"run checkout QA","continuation reset next step");
 
 const report=c.buildCopyReport({
-  reports:[],
-  evals:[{metric_name:"command_duplicate_rate",current_value:0,passed:true}],
+  reports:Array.from({length:7},(_,i)=>({manager_id:"watch-"+(i+1),status:"watch",issues:["issue-"+(i+1)]})),
+  evals:[
+    {metric_name:"attention_manager_count",current_value:8,passed:false},
+    {metric_name:"command_duplicate_rate",current_value:0,passed:true}
+  ],
   open_commands:[],
   project_memory:[]
 },next,null);
 assert(report.startsWith("BOOM COPY REPORT"),"copy report header missing");
 assert(report.includes("TOPIC:"),"copy report topic missing");
 assert(report.includes("NEXT ACTION:"),"copy report next action missing");
+assert(!report.includes("attention_manager_count"),"copy report mixed stale attention eval into live snapshot");
+assert(report.includes("watch-7"),"copy report omitted live blocker 7");
 
 const edge=fs.readFileSync("supabase/functions/hunt-boom-chat/index.ts","utf8");
 assert(edge.includes("display_text:reply"),"display_text API missing");

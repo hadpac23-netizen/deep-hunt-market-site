@@ -1,5 +1,5 @@
 export function isContinuationMessage(message:string){
-  return /^(?:ילה+|יאללה|תמשיך|המשך|נו+|בצע|מה עכשיו\??|كمل|يلا|تابع|continue|go on|next)$/i.test(String(message||"").trim());
+  return /^(?:ילה+|יאללה|תמשיך|המשך|נו+|בצע|מה עכשיו\??|מה הלאה\??|מה המצב\??|איפה זה עומד(?: עכשיו)?\??|איפה עצרנו\??|לא הבנתי|תסביר|טוב|אוקי|אוקיי|בסדר|(?:היי\s*)?ב[ו]+ם+|boom|hey\s+boom|كمل|يلا|تابع|شو هسه\??|وين وصلنا\??|مش فاهم|اشرح|continue|go on|next|what now\??|where are we\??|explain)$/i.test(String(message||"").trim());
 }
 
 export function wantsCopyReport(message:string){
@@ -59,7 +59,9 @@ export function deriveTopicState(message:string,current:any,managerId:string,con
     unresolved_items:Array.isArray(current?.unresolved_items)?current.unresolved_items:[],
     decisions_made:Array.isArray(current?.decisions_made)?current.decisions_made:[],
     constraints:Array.isArray(current?.constraints)?current.constraints:[],
-    owner_last_instruction:clean.slice(0,1000),
+    owner_last_instruction:continuation
+      ?String(current?.owner_last_instruction||clean).slice(0,1000)
+      :clean.slice(0,1000),
     next_expected_step:continuation
       ?String(current?.next_expected_step||("Continue "+activeTopic)).slice(0,500)
       :("Verify and continue: "+currentTask).slice(0,500),
@@ -99,7 +101,14 @@ export function toSpokenText(displayText:string){
 
 export function buildCopyReport(ctx:any,topic:any,commandRow:any){
   const attention=(ctx.reports||[]).filter((r:any)=>["critical","blocked","watch"].includes(r.status));
-  const evals=(ctx.evals||[]).slice(0,6);
+  const latestEvalByMetric=new Map<string,any>();
+  for(const e of (ctx.evals||[])){
+    const key=String(e?.metric_name||"");
+    if(key&&!latestEvalByMetric.has(key))latestEvalByMetric.set(key,e);
+  }
+  const evals=[...latestEvalByMetric.values()]
+    .filter((e:any)=>String(e.metric_name)!=="attention_manager_count")
+    .slice(0,6);
   const decisions=(ctx.project_memory||[]).filter((m:any)=>Number(m.importance)>=5&&m.status==="active").slice(0,5);
   const evidence=[
     "Open commands: "+String((ctx.open_commands||[]).length),
@@ -111,7 +120,7 @@ export function buildCopyReport(ctx:any,topic:any,commandRow:any){
     else if(e.passed===false)line+=" (NOT PASS)";
     evidence.push(line);
   }
-  const blockers=attention.slice(0,6).map((r:any)=>{
+  const blockers=attention.slice(0,8).map((r:any)=>{
     const issue=Array.isArray(r.issues)&&r.issues.length?" — "+String(r.issues[0]).slice(0,180):"";
     return String(r.manager_id)+": "+String(r.status)+issue;
   });
