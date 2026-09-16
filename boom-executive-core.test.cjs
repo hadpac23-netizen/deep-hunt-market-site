@@ -25,6 +25,16 @@ const registry=JSON.parse(fs.readFileSync("./boom-manager-registry.json","utf8")
 }
 
 {
+  const gated={
+    manager_id:"release-control",scope:["production"],status:"watch",
+    evidence:["release prepared"],issues:["awaiting owner"],
+    recommended_action:"publish",action_class:"SAFE_DYNAMIC",
+    owner_approval_required:true,confidence:1,expected_impact:"high"
+  };
+  assert.equal(Core.canAutoExecute(gated,registry),false);
+}
+
+{
   const reports=[
     {manager_id:"inventory-truth",scope:["stock"],entity_key:"CJ:1",status:"critical",evidence:["provider says missing"],issues:["item missing"],recommended_action:"block item",action_class:"BLOCK",owner_approval_required:false,confidence:1,expected_impact:"critical"},
     {manager_id:"sale-readiness",scope:["stock"],entity_key:"CJ:1",status:"healthy",evidence:["old cache"],metrics:{checked:1},recommended_action:"none",action_class:"OBSERVE",owner_approval_required:false,confidence:0.4,expected_impact:"low"}

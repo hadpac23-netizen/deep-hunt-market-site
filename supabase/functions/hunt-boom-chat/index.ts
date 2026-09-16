@@ -1,4 +1,4 @@
-import {buildCopyReport,deriveTopicState,enforceEvidenceLanguage,toSpokenText,wantsCopyReport} from "./boom-context.ts";
+import {buildCopyReport,deriveTopicState,enforceEvidenceLanguage,needsOwnerGate,toSpokenText,wantsCopyReport} from "./boom-context.ts";
 
 const BASE=Deno.env.get("SUPABASE_URL")||"";
 const SERVICE=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";
@@ -55,9 +55,6 @@ function latest(rows:any[]){
   const map=new Map();
   for(const row of rows||[])if(!map.has(row.manager_id))map.set(row.manager_id,row);
   return [...map.values()];
-}
-function needsOwnerGate(message:string){
-  return /(production|deploy|publish|payment|charge|paid campaign|ad spend|price change|discount|coupon|supplier commitment|contract|פרודקשן|דיפלוי|פרסום בתשלום|קמפיין בתשלום|תשלום|חיוב|מחיר|הנחה|קופון|חוזה|התחייבות לספק|نشر مباشر|دفع|حملة مدفوعة|تغيير سعر|خصم|عقد)/i.test(message);
 }
 function redactSecrets(text:string){
   return String(text||"")

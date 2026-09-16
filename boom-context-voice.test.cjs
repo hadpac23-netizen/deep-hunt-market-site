@@ -5,6 +5,19 @@ const cp=require("child_process");
 cp.execFileSync("npx",["--yes","esbuild","supabase/functions/hunt-boom-chat/boom-context.ts","--bundle","--platform=node","--format=cjs","--outfile=/tmp/boom-context-regression.cjs"],{stdio:"ignore"});
 const c=require("/tmp/boom-context-regression.cjs");
 
+for(const sensitive of [
+  "deploy to production",
+  "activate payment charge",
+  "start paid campaign",
+  "change price discount coupon",
+  "supplier commitment contract",
+  "פרסום בתשלום",
+  "תשלום",
+  "הנחה",
+  "התחייבות לספק"
+])assert.equal(c.needsOwnerGate(sensitive),true,"owner gate missed: "+sensitive);
+assert.equal(c.needsOwnerGate("research supplier API and prepare a report"),false,"safe research was incorrectly owner-gated");
+
 const guarded=c.enforceEvidenceLanguage("Supplier is MISSING\nStatus: MISSING\nVerified by DB evidence: supplier is MISSING");
 assert(guarded.includes("Supplier needs verification"),"unsupported missing claim was not downgraded");
 assert(guarded.includes("Status: NEEDS_VERIFICATION"),"MISSING status was not downgraded");

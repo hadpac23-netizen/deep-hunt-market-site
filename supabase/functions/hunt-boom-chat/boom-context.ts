@@ -2,6 +2,10 @@ export function isContinuationMessage(message:string){
   return /^(?:ילה+|יאללה|תמשיך|המשך|נו+|בצע|מה עכשיו\??|מה הלאה\??|מה המצב\??|איפה זה עומד(?: עכשיו)?\??|איפה עצרנו\??|לא הבנתי|תסביר|טוב|אוקי|אוקיי|בסדר|(?:היי\s*)?ב[ו]+ם+|boom|hey\s+boom|كمل|يلا|تابع|شو هسه\??|وين وصلنا\??|مش فاهم|اشرح|continue|go on|next|what now\??|where are we\??|explain)$/i.test(String(message||"").trim());
 }
 
+export function needsOwnerGate(message:string){
+  return /(production|deploy|publish|payment|charge|paid campaign|ad spend|price change|discount|coupon|supplier commitment|contract|פרודקשן|דיפלוי|פרסום בתשלום|קמפיין בתשלום|תשלום|חיוב|מחיר|הנחה|קופון|חוזה|התחייבות לספק|نشر مباشر|دفع|حملة مدفوعة|تغيير سعر|خصم|عقد)/i.test(String(message||""));
+}
+
 export function wantsCopyReport(message:string){
   return /(תן\s*(?:לי\s*)?קופי|קופי\s*(?:לצ.?אט|לדיווח)?|סכם\s*(?:לי\s*)?לקופי|תן\s*(?:לי\s*)?דיווח|copy\s*report|copy\s*summary|report\s*for\s*copy|اعطيني\s*تقرير|نسخة\s*للكوبي)/i.test(String(message||""));
 }
