@@ -58,6 +58,12 @@
   }
 
   function currentRow(info){return state.get(key(info.provider,info.itemId))||{liked:false,saved:false};}
+  function snapshotRows(){
+    return [...state.values()].filter(row=>row&&(row.liked||row.saved)).map(row=>({...row}));
+  }
+  function emitState(){
+    window.dispatchEvent(new CustomEvent("hunt:shopping-state",{detail:{rows:snapshotRows()}}));
+  }
 
   function buttonMarkup(info,kind){
     const row=currentRow(info);
@@ -139,6 +145,7 @@
     state.clear();
     for(const row of data||[])state.set(key(row.provider,row.item_id),row);
     refreshButtons();
+    emitState();
   }
 
   function metaForButton(btn){
@@ -166,6 +173,7 @@
       if(active&&meta.category)H.recordSignal?.(meta.category,kind);
       window.HuntAnalytics?.shoppingAction?.({provider:meta.provider,itemId:meta.item_id,action:kind,active,category:meta.category||""});
       window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved),local:true}}));
+      emitState();
       return;
     }
     const k=key(meta.provider,meta.item_id);
@@ -216,9 +224,11 @@
         category:meta.category||""
       });
       window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved)}}));
+      emitState();
     }catch{
       state.set(k,old);
       refreshButtons();
+      emitState();
     }
   }
 
@@ -256,8 +266,11 @@
   const observer=new MutationObserver(queueScan);
   observer.observe(document.documentElement,{childList:true,subtree:true});
 
+  window.HuntShoppingActions={snapshot:snapshotRows};
+
   async function init(){
     loadLocalState();
+    emitState();
     const {data}=await client.auth.getSession();
     session=data.session||null;
     if(session?.user)await mergeLocalToAccount();
