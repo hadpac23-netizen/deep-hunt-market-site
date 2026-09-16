@@ -71,45 +71,54 @@ async function enforceRateLimit(ownerId:string){
   );
   if((rows||[]).length>=30)throw new Error("BOOM_RATE_LIMIT");
 }
+const ROUTE_RULES:[RegExp,string][]=[
+  [/(cj|סי.?גי|dropshipping)/i,"supplier-cj"],
+  [/(eprolo|אפרולו|איפרולו|פרולו)/i,"supplier-eprolo"],
+  [/(מלאי|inventory|stock|זמינות|availability)/i,"inventory-truth"],
+  [/(checkout|צ.?קאאוט|קופה|payment|תשלום|paypal|apple pay|google pay)/i,"checkout-payment"],
+  [/(שיווק|marketing|פרסום|campaign|קמפיין|traffic|תנועה)/i,"marketing-growth"],
+  [/(acquisition|רכישת משתמש|משתמשים חדשים|לקוחות חדשים)/i,"f35-acquisition"],
+  [/(מכירות|sales|orders|הזמנות)/i,"sales-director"],
+  [/(רווח|profit|margin|מרווח|תמחור|pricing)/i,"pricing-profit"],
+  [/(10.?k|10.?אלף|עשרת אלפים)/i,"daily-10k-mission"],
+  [/(קטגור|category|categories)/i,"category-orchestrator"],
+  [/(מדפים|shelf|merchandising|תצוגה|rotation)/i,"dynamic-merchandising"],
+  [/(נשים|women|אישה)/i,"dept-women"],
+  [/(גברים|גבר|\bmen\b)/i,"dept-men"],
+  [/(ילדים|kids|baby|תינוק)/i,"dept-kids-baby"],
+  [/(יופי|beauty|איפור|makeup|perfume|בושם)/i,"dept-beauty"],
+  [/(טכנולוג|tech|electronics|טלפון|phone|tablet|laptop)/i,"dept-tech"],
+  [/(צעצוע|toys|toy)/i,"dept-toys"],
+  [/(חיות|pets|pet|כלב|חתול)/i,"dept-pets"],
+  [/(ספורט|sports|gym|כושר)/i,"dept-sports"],
+  [/(בית|home|lighting|תאורה)/i,"dept-home"],
+  [/(תכשיט|jewelry|accessor|אקססור)/i,"dept-jewelry-accessories"],
+  [/(travel|נסיעות|office|משרד|gift|מתנה)/i,"dept-travel-office-gifts"],
+  [/(shipping|משלוח|country|מדינה|localization)/i,"supplier-shipping"],
+  [/(analytics|נתונים|data|מדידה|tracking)/i,"analytics-truth"],
+  [/(security|אבטחה|הרשאות|access)/i,"security-access"],
+  [/(bug|תקלה|כפתור|site|אתר|repair|תיקון)/i,"repair-engineering"],
+  [/(reliability|זמינות אתר|uptime|מהירות|performance)/i,"site-reliability"],
+  [/(integration|חיבור|api|connector)/i,"integration-connections"],
+  [/(research|מחקר|trend|טרנד|f35)/i,"f35-research"],
+  [/(quality|איכות|sale readiness|מוכן למכירה)/i,"sale-readiness"],
+  [/(return|refund|החזר|שירות לקוחות|customer care)/i,"returns-care"],
+  [/(feedback|like|save|לייק|שמירה)/i,"feedback-intelligence"],
+  [/(deploy|production|release|פרודקשן|השקה)/i,"release-control"]
+];
 function routeManager(message:string){
   const q=message.toLowerCase();
-  const rules:[RegExp,string][]=[
-    [/(cj|סי.?גי|dropshipping)/i,"supplier-cj"],
-    [/(eprolo|אפרולו|איפרולו|פרולו)/i,"supplier-eprolo"],
-    [/(מלאי|inventory|stock|זמינות|availability)/i,"inventory-truth"],
-    [/(checkout|צ.?קאאוט|קופה|payment|תשלום|paypal|apple pay|google pay)/i,"checkout-payment"],
-    [/(שיווק|marketing|פרסום|campaign|קמפיין|traffic|תנועה)/i,"marketing-growth"],
-    [/(acquisition|רכישת משתמש|משתמשים חדשים|לקוחות חדשים)/i,"f35-acquisition"],
-    [/(מכירות|sales|orders|הזמנות)/i,"sales-director"],
-    [/(רווח|profit|margin|מרווח|תמחור|pricing)/i,"pricing-profit"],
-    [/(10.?k|10.?אלף|עשרת אלפים)/i,"daily-10k-mission"],
-    [/(קטגור|category|categories)/i,"category-orchestrator"],
-    [/(מדפים|shelf|merchandising|תצוגה|rotation)/i,"dynamic-merchandising"],
-    [/(נשים|women|אישה)/i,"dept-women"],
-    [/(גברים|men|גבר)/i,"dept-men"],
-    [/(ילדים|kids|baby|תינוק)/i,"dept-kids-baby"],
-    [/(יופי|beauty|איפור|makeup|perfume|בושם)/i,"dept-beauty"],
-    [/(טכנולוג|tech|electronics|טלפון|phone|tablet|laptop)/i,"dept-tech"],
-    [/(צעצוע|toys|toy)/i,"dept-toys"],
-    [/(חיות|pets|pet|כלב|חתול)/i,"dept-pets"],
-    [/(ספורט|sports|gym|כושר)/i,"dept-sports"],
-    [/(בית|home|lighting|תאורה)/i,"dept-home"],
-    [/(תכשיט|jewelry|accessor|אקססור)/i,"dept-jewelry-accessories"],
-    [/(travel|נסיעות|office|משרד|gift|מתנה)/i,"dept-travel-office-gifts"],
-    [/(shipping|משלוח|country|מדינה|localization)/i,"supplier-shipping"],
-    [/(analytics|נתונים|data|מדידה|tracking)/i,"analytics-truth"],
-    [/(security|אבטחה|הרשאות|access)/i,"security-access"],
-    [/(bug|תקלה|כפתור|site|אתר|repair|תיקון)/i,"repair-engineering"],
-    [/(reliability|זמינות אתר|uptime|מהירות|performance)/i,"site-reliability"],
-    [/(integration|חיבור|api|connector)/i,"integration-connections"],
-    [/(research|מחקר|trend|טרנד|f35)/i,"f35-research"],
-    [/(quality|איכות|sale readiness|מוכן למכירה)/i,"sale-readiness"],
-    [/(return|refund|החזר|שירות לקוחות|customer care)/i,"returns-care"],
-    [/(feedback|like|save|לייק|שמירה)/i,"feedback-intelligence"],
-    [/(deploy|production|release|פרודקשן|השקה)/i,"release-control"]
-  ];
-  for(const [re,id] of rules)if(re.test(q))return id;
+  for(const [re,id] of ROUTE_RULES)if(re.test(q))return id;
   return "boom-super-agent";
+}
+function routeManagerDecision(message:string){
+  const q=message.toLowerCase();
+  const matched=[...new Set(ROUTE_RULES.filter(([re])=>re.test(q)).map(([,id])=>id))];
+  const dominant=matched.filter(id=>["supplier-cj","supplier-eprolo"].includes(id));
+  if(dominant.length===1)return {manager_id:dominant[0],confidence:.98,abstained:false,matched_managers:matched};
+  if(matched.length===1)return {manager_id:matched[0],confidence:.98,abstained:false,matched_managers:matched};
+  if(matched.length===0)return {manager_id:"boom-super-agent",confidence:.35,abstained:true,matched_managers:[]};
+  return {manager_id:"boom-super-agent",confidence:.45,abstained:true,matched_managers:matched};
 }
 function shouldLearnOwner(message:string){
   return /(תזכור|זכור|תמיד|מעכשיו|אל תעשה|אל תגיד|לא ככה|לא נכון|תיקון|אמרתי|שוב|אני מעדיף|אני רוצה ש|remember|always|from now on|never do|not like that|wrong|correction|i said|again|i prefer|i want you to|تذكر|دائما|من الآن|لا تعمل|مش هيك|غلط|تصحيح|بديك)/i.test(message);
@@ -229,6 +238,7 @@ async function aiReply(message:string,history:any[],ctx:any){
   },{});
   const compactCtx={
     mode:ctx.mode,
+    routing:ctx.routing||null,
     owner_command:ctx.owner_command||null,
     manager_status_counts:managerStatusCounts,
     attention_reports:(ctx.reports||[])
@@ -567,7 +577,8 @@ Deno.serve(async(req:Request)=>{
     }
     if(!conversationId)conversationId=crypto.randomUUID();
 
-    const inferredManager=routeManager(message);
+    const routeDecision=routeManagerDecision(message);
+    const inferredManager=routeDecision.manager_id;
     const [reports,managers,decisions,commands,learning,cycles,evals,historyRows,ownerMemory,projectMemory,topicRows,contextItems,capabilityPolicies,modelRoutes]=await Promise.all([
       rest("hunt_boom_live_reports?select=manager_id,status,metrics,issues,recommended_action,created_at&order=created_at.desc&limit=300"),
       rest("hunt_boom_managers?select=id,name,department,status,last_report_at,reports_to&order=department.asc"),
@@ -663,7 +674,8 @@ Deno.serve(async(req:Request)=>{
           reason:"Direct owner command from BOOM Chat/Voice. BOOM routed it to "+targetManager+" for evidence-backed handling.",
           evidence:[
             {source:"owner-chat",conversation_id:conversationId},
-            {source:"capability-policy",principal_id:targetManager,permission_level:managerPolicy.permission_level}
+            {source:"capability-policy",principal_id:targetManager,permission_level:managerPolicy.permission_level},
+            {source:"routing-confidence",confidence:routeDecision.confidence,abstained:routeDecision.abstained,matched_managers:routeDecision.matched_managers}
           ],
           expected_result:"Target manager returns an evidence-backed result linked to this owner command; gated live actions remain owner-controlled.",
           success_metric:{source:"owner-chat",mode:"command"},
@@ -683,6 +695,12 @@ Deno.serve(async(req:Request)=>{
 
     const ctx={
       mode,
+      routing:{
+        manager_id:routeDecision.manager_id,
+        confidence:routeDecision.confidence,
+        abstained:routeDecision.abstained,
+        matched_managers:routeDecision.matched_managers
+      },
       owner_command:commandRow?{
         id:commandRow.id,
         status:commandRow.status,
