@@ -347,6 +347,28 @@
       });
   }
 
+  async function invokeBoomFunction(name,body){
+    const {data:{session},error:sessionError}=await client.auth.getSession();
+    if(sessionError)throw sessionError;
+    if(!session?.access_token)throw new Error("Session expired. Please sign in again.");
+
+    const res=await fetch("https://zszlnahjqmwozwubetkm.supabase.co/functions/v1/"+name,{
+      method:"POST",
+      headers:{
+        "Authorization":"Bearer "+session.access_token,
+        "apikey":H.publishableKey,
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(body)
+    });
+
+    let data=null;
+    const raw=await res.text();
+    try{data=raw?JSON.parse(raw):null}catch{data={error:raw||("HTTP "+res.status)}}
+    if(!res.ok)throw new Error(data?.error||data?.message||("HTTP "+res.status));
+    return data||{};
+  }
+
   async function sendChat(){
     const input=$("#chat-input");
     const text=input.value.trim();
@@ -355,8 +377,7 @@
     input.value="";
     $("#chat-send").disabled=true;
     try{
-      const {data,error}=await client.functions.invoke("hunt-boom-chat",{body:{message:text,conversation_id:state.conversationId}});
-      if(error)throw error;
+      const data=await invokeBoomFunction("hunt-boom-chat",{message:text,conversation_id:state.conversationId});
       if(data?.error)throw new Error(data.error);
       if(data?.conversation_id)state.conversationId=data.conversation_id;
       $("#chat-log").insertAdjacentHTML("beforeend",'<article class="chat-message boom" dir="auto">'+esc(data.reply||"אין תשובה.")+'</article>');
@@ -410,8 +431,8 @@
           if(blob.size<800){setVoiceStatus("לא זוהה דיבור");return}
           setVoiceStatus("מתמלל אוטומטית…");
           const audio_base64=await blobToBase64(blob);
-          const {data,error}=await client.functions.invoke("hunt-boom-transcribe",{body:{audio_base64,mime_type:blob.type||"audio/webm"}});
-          if(error)throw error;if(data?.error)throw new Error(data.error);
+          const data=await invokeBoomFunction("hunt-boom-transcribe",{audio_base64,mime_type:blob.type||"audio/webm"});
+          if(data?.error)throw new Error(data.error);
           const transcript=String(data?.transcript||"").trim();
           if(!transcript)throw new Error("לא זוהה דיבור");
           $("#chat-input").value=transcript;
