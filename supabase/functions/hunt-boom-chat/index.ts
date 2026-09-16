@@ -112,7 +112,7 @@ function routeManager(message:string){
   return "boom-super-agent";
 }
 function shouldLearnOwner(message:string){
-  return /(תזכור|זכור|תמיד|מעכשיו|אל תעשה|לא ככה|אני מעדיף|אני רוצה ש|remember|always|from now on|never do|i prefer|i want you to|تذكر|دائما|من الآن|لا تعمل|مش هيك|بديك)/i.test(message);
+  return /(תזכור|זכור|תמיד|מעכשיו|אל תעשה|אל תגיד|לא ככה|לא נכון|תיקון|אמרתי|שוב|אני מעדיף|אני רוצה ש|remember|always|from now on|never do|not like that|wrong|correction|i said|again|i prefer|i want you to|تذكر|دائما|من الآن|لا تعمل|مش هيك|غلط|تصحيح|بديك)/i.test(message);
 }
 function parseJsonObject(text:string){
   let raw=String(text||"").trim();
@@ -123,9 +123,20 @@ function parseJsonObject(text:string){
 }
 async function learnOwnerMemory(message:string,ownerId:string,sourceMessageId:number|null){
   if(!shouldLearnOwner(message))return 0;
+  const existingCorrections=await rest(
+    "hunt_boom_owner_memory?owner_id=eq."+encodeURIComponent(ownerId)+
+    "&category=eq.correction&active=eq.true&select=memory_key,content,occurrence_count,recurrence_count,source_message_id,last_recurrence_at&order=updated_at.desc&limit=30"
+  ).catch(()=>[]);
+  const correctionCatalog=(existingCorrections||[]).map((x:any)=>({
+    memory_key:x.memory_key,
+    content:String(x.content||"").slice(0,240)
+  }));
   const systemPrompt=`Extract only durable NON-SENSITIVE working preferences for BOOM from the owner's message.
 Return strict JSON only: {"items":[{"memory_key":"lowercase_underscore_key","category":"communication_style|workflow|project_rule|preference|correction|decision","content":"concise durable rule","confidence":0.7}]}
 If there is no durable working preference, return {"items":[]}.
+For an explicit correction of BOOM behavior, use category "correction".
+If the correction matches one in EXISTING_CORRECTIONS, reuse its exact memory_key so recurrence can be measured.
+EXISTING_CORRECTIONS: ${JSON.stringify(correctionCatalog)}
 Never store or infer: health/medical information, finances/debts, passwords/secrets/credentials, precise location/address, religion, ethnicity, political beliefs, sexual information, criminal/legal history, or other intimate/private personal details.
 Do not infer personality traits. Store only explicit work style, project rules, durable preferences, corrections, or decisions.
 Each content <= 300 characters; each key <= 50 characters.`;
@@ -146,6 +157,19 @@ Each content <= 300 characters; each key <= 50 characters.`;
     const content=String(item?.content||"").trim().slice(0,300);
     const confidence=Math.max(.7,Math.min(1,Number(item?.confidence)||.8));
     if(!allowed.has(category)||!key||!content)continue;
+    const now=new Date().toISOString();
+    let correctionFields:any={};
+    if(category==="correction"){
+      const existing=(existingCorrections||[]).find((x:any)=>x.memory_key===key);
+      const sameSource=existing&&sourceMessageId!==null&&Number(existing.source_message_id)===Number(sourceMessageId);
+      const priorOccurrence=Math.max(1,Number(existing?.occurrence_count)||1);
+      const priorRecurrence=Math.max(0,Number(existing?.recurrence_count)||0);
+      correctionFields={
+        occurrence_count:existing?(sameSource?priorOccurrence:priorOccurrence+1):1,
+        recurrence_count:existing?(sameSource?priorRecurrence:priorRecurrence+1):0,
+        last_recurrence_at:existing&&!sameSource?now:(existing?.last_recurrence_at||null)
+      };
+    }
     await rest("hunt_boom_owner_memory?on_conflict=owner_id,memory_key",{
       method:"POST",
       headers:{Prefer:"resolution=merge-duplicates,return=minimal"},
@@ -158,8 +182,9 @@ Each content <= 300 characters; each key <= 50 characters.`;
         source_type:"owner_explicit",
         source_message_id:sourceMessageId,
         active:true,
-        last_seen_at:new Date().toISOString(),
-        updated_at:new Date().toISOString()
+        last_seen_at:now,
+        updated_at:now,
+        ...correctionFields
       }])
     });
     saved++;
