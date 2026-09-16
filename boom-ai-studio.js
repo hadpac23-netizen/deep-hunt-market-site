@@ -46,7 +46,12 @@
     mediaRecorder:null,
     micStream:null,
     micChunks:[],
-    micTimer:null
+    micTimer:null,
+    chatMode:"chat",
+    voiceLoop:false,
+    speaking:false,
+    audioContext:null,
+    vadRaf:null
   };
 
   const toolNodes=[
@@ -369,24 +374,137 @@
     return data||{};
   }
 
+  function appendChatMessage(type,text){
+    const article=document.createElement("article");
+    article.className="chat-message "+type;
+    article.dir="auto";
+    const copy=document.createElement("span");
+    copy.className="chat-copy";
+    copy.textContent=String(text||"");
+    article.appendChild(copy);
+    if(type==="boom"){
+      const speak=document.createElement("button");
+      speak.type="button";
+      speak.className="speak-btn";
+      speak.setAttribute("aria-label","השמע תשובה");
+      speak.textContent="🔊";
+      article.appendChild(speak);
+    }
+    $("#chat-log").appendChild(article);
+    $("#chat-log").scrollTop=$("#chat-log").scrollHeight;
+    return article;
+  }
+
+  function speechLanguage(text){
+    const he=(String(text).match(/[֐-׿]/g)||[]).length;
+    const ar=(String(text).match(/[؀-ۿ]/g)||[]).length;
+    if(ar>he)return "ar";
+    if(he>0)return "he-IL";
+    return "en-US";
+  }
+
+  function pickVoice(lang){
+    const voices=window.speechSynthesis?.getVoices?.()||[];
+    return voices.find(v=>v.lang?.toLowerCase()===lang.toLowerCase())
+      ||voices.find(v=>v.lang?.toLowerCase().startsWith(lang.split("-")[0].toLowerCase()))
+      ||null;
+  }
+
+  function speakText(text,{resumeListening=false}={}){
+    return new Promise(resolve=>{
+      if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){
+        setVoiceStatus("השמעת קול לא נתמכת בדפדפן הזה");
+        resolve();
+        return;
+      }
+      try{
+        if(state.mediaRecorder?.state==="recording")stopMic();
+        state.micStream?.getTracks().forEach(t=>t.stop());
+        state.micStream=null;
+        speechSynthesis.cancel();
+        const utter=new SpeechSynthesisUtterance(String(text||""));
+        utter.lang=speechLanguage(text);
+        const voice=pickVoice(utter.lang);
+        if(voice)utter.voice=voice;
+        utter.rate=1;
+        utter.pitch=1;
+        state.speaking=true;
+        setVoiceStatus("BOOM מדבר…");
+        const done=()=>{
+          state.speaking=false;
+          if(state.voiceLoop&&resumeListening){
+            setVoiceStatus("תורך לדבר…");
+            setTimeout(()=>toggleMic().catch(()=>{}),450);
+          }else{
+            setVoiceStatus("עברית · العربية · English · Auto");
+          }
+          resolve();
+        };
+        utter.onend=done;
+        utter.onerror=done;
+        speechSynthesis.speak(utter);
+      }catch{
+        state.speaking=false;
+        resolve();
+      }
+    });
+  }
+
   async function sendChat(){
     const input=$("#chat-input");
     const text=input.value.trim();
-    if(!text)return;
-    $("#chat-log").insertAdjacentHTML("beforeend",'<article class="chat-message owner" dir="auto">'+esc(text)+'</article>');
+    if(!text)return null;
+    appendChatMessage("owner",text);
     input.value="";
     $("#chat-send").disabled=true;
     try{
-      const data=await invokeBoomFunction("hunt-boom-chat",{message:text,conversation_id:state.conversationId});
+      const data=await invokeBoomFunction("hunt-boom-chat",{
+        message:text,
+        conversation_id:state.conversationId,
+        mode:state.chatMode
+      });
       if(data?.error)throw new Error(data.error);
       if(data?.conversation_id)state.conversationId=data.conversation_id;
-      $("#chat-log").insertAdjacentHTML("beforeend",'<article class="chat-message boom" dir="auto">'+esc(data.reply||"אין תשובה.")+'</article>');
-      $("#chat-log").scrollTop=$("#chat-log").scrollHeight;
+      const reply=String(data.reply||"אין תשובה.");
+      appendChatMessage("boom",reply);
+      if(state.voiceLoop)await speakText(reply,{resumeListening:true});
+      return data;
     }catch(err){
-      $("#chat-log").insertAdjacentHTML("beforeend",'<article class="chat-message boom">שגיאה: '+esc(err.message||err)+'</article>');
+      const msg="שגיאה: "+(err.message||err);
+      appendChatMessage("boom",msg);
+      if(state.voiceLoop)setVoiceStatus("השיחה הקולית נעצרה בגלל שגיאה");
+      return null;
     }finally{
       $("#chat-send").disabled=false;
     }
+  }
+
+  function setChatMode(mode){
+    state.chatMode=mode==="command"?"command":"chat";
+    $$("[data-chat-mode]").forEach(btn=>btn.classList.toggle("active",btn.dataset.chatMode===state.chatMode));
+    $("#chat-input").placeholder=state.chatMode==="command"
+      ?"תן פקודה ל־BOOM Super Agent…"
+      :"דבר או כתוב ל־BOOM…";
+    setVoiceStatus(state.chatMode==="command"
+      ?"מצב פקודה · BOOM ינתח וינתב, פעולות חיות נשארות gated"
+      :"עברית · العربية · English · Auto");
+  }
+
+  async function toggleVoiceLoop(){
+    state.voiceLoop=!state.voiceLoop;
+    const btn=$("#voice-loop");
+    btn.classList.toggle("active",state.voiceLoop);
+    btn.textContent=state.voiceLoop?"⏹ עצור שיחה קולית":"🎧 שיחה קולית";
+    if(!state.voiceLoop){
+      speechSynthesis?.cancel?.();
+      await stopMic();
+      state.micStream?.getTracks().forEach(t=>t.stop());
+      state.micStream=null;
+      setVoiceStatus("שיחה קולית כבויה");
+      return;
+    }
+    setVoiceStatus("תורך לדבר…");
+    if(!state.speaking&&state.mediaRecorder?.state!=="recording")await toggleMic();
   }
 
   function blobToBase64(blob){
@@ -402,7 +520,45 @@
 
   async function stopMic(){
     if(state.micTimer){clearTimeout(state.micTimer);state.micTimer=null}
+    if(state.vadRaf){cancelAnimationFrame(state.vadRaf);state.vadRaf=null}
+    if(state.audioContext){
+      try{await state.audioContext.close()}catch{}
+      state.audioContext=null;
+    }
     if(state.mediaRecorder&&state.mediaRecorder.state!=="inactive")state.mediaRecorder.stop();
+  }
+
+  function startVoiceActivityWatch(stream){
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtx)return;
+    try{
+      const ctx=new AudioCtx();
+      state.audioContext=ctx;
+      const source=ctx.createMediaStreamSource(stream);
+      const analyser=ctx.createAnalyser();
+      analyser.fftSize=1024;
+      source.connect(analyser);
+      const data=new Uint8Array(analyser.fftSize);
+      let speechStarted=false;
+      let lastVoiceAt=performance.now();
+      const startedAt=performance.now();
+
+      const tick=()=>{
+        if(!state.mediaRecorder||state.mediaRecorder.state!=="recording")return;
+        analyser.getByteTimeDomainData(data);
+        let sum=0;
+        for(const v of data){const n=(v-128)/128;sum+=n*n}
+        const rms=Math.sqrt(sum/data.length);
+        const now=performance.now();
+        if(rms>0.028){speechStarted=true;lastVoiceAt=now}
+        if(speechStarted&&now-startedAt>900&&now-lastVoiceAt>1150){
+          stopMic();
+          return;
+        }
+        state.vadRaf=requestAnimationFrame(tick);
+      };
+      state.vadRaf=requestAnimationFrame(tick);
+    }catch{}
   }
 
   async function toggleMic(){
@@ -443,7 +599,8 @@
         }finally{btn.disabled=false;state.mediaRecorder=null;state.micChunks=[]}
       };
       rec.start(250);
-      state.micTimer=setTimeout(()=>stopMic(),45000);
+      startVoiceActivityWatch(stream);
+      state.micTimer=setTimeout(()=>stopMic(),30000);
     }catch(err){
       btn.disabled=false;setVoiceStatus("לא התקבלה הרשאת מיקרופון: "+(err.message||err));
     }
@@ -582,6 +739,14 @@
   $("#chat-collapse").addEventListener("click",()=>setChatOpen(false));
   $("#chat-send").addEventListener("click",sendChat);
   $("#chat-mic").addEventListener("click",toggleMic);
+  $("#voice-loop").addEventListener("click",()=>toggleVoiceLoop().catch(err=>setVoiceStatus(err.message||err)));
+  $$("[data-chat-mode]").forEach(btn=>btn.addEventListener("click",()=>setChatMode(btn.dataset.chatMode)));
+  $("#chat-log").addEventListener("click",ev=>{
+    const btn=ev.target.closest(".speak-btn");
+    if(!btn)return;
+    const text=btn.closest(".chat-message")?.querySelector(".chat-copy")?.textContent||"";
+    speakText(text);
+  });
   $("#chat-input").addEventListener("keydown",ev=>{if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();sendChat()}});
   window.addEventListener("resize",()=>requestAnimationFrame(drawLinks));
 

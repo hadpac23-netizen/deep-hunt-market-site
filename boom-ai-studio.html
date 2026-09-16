@@ -141,11 +141,18 @@
 
         <div class="chat-panel" id="chat-panel">
           <div class="chat-head">
-            <div><strong>BOOM Chat</strong><small> Owner ↔ BOOM</small></div>
-            <button class="chat-collapse" id="chat-collapse" type="button" aria-label="סגור צ׳אט">×</button>
+            <div><strong>BOOM Chat</strong><small> Owner ↔ BOOM AI</small></div>
+            <div class="chat-head-actions">
+              <button class="voice-loop-btn" id="voice-loop" type="button">🎧 שיחה קולית</button>
+              <button class="chat-collapse" id="chat-collapse" type="button" aria-label="סגור צ׳אט">×</button>
+            </div>
+          </div>
+          <div class="chat-mode-switch" aria-label="מצב BOOM">
+            <button class="mode-btn active" data-chat-mode="chat" type="button">💬 שיחה</button>
+            <button class="mode-btn" data-chat-mode="command" type="button">⚡ פקודה</button>
           </div>
           <div class="chat-log" id="chat-log">
-            <article class="chat-message boom">אני כאן. דבר איתי על HUNT, המנהלים, המשימות או מה תרצה לעשות עכשיו.</article>
+            <article class="chat-message boom" dir="auto"><span class="chat-copy">אני כאן. אפשר לדבר איתי חופשי, או לעבור למצב פקודה ולתת לי משימה.</span><button class="speak-btn" type="button" aria-label="השמע תשובה">🔊</button></article>
           </div>
           <div class="voice-status" id="voice-status">עברית · العربية · English · Auto</div>
           <div class="chat-input-row">
