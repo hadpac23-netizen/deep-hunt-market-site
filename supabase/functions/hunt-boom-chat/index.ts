@@ -230,6 +230,44 @@ Each content <= 300 characters; each key <= 50 characters.`;
   }
   return saved;
 }
+function parseModelRouteSpec(spec:string){
+  const [rawProvider,...parts]=String(spec||"").split(":");
+  const provider=rawProvider==="google"?"gemini":rawProvider;
+  return {provider,model:parts.join(":")};
+}
+function estimateBenchmarkReferenceCost(routes:string[],casesCount:number,costRows:any[],inputTokens=6000,outputTokens=700){
+  let total=0;
+  const details:any[]=[];
+  for(const spec of routes){
+    const {provider,model}=parseModelRouteSpec(spec);
+    const p=(costRows||[]).find((x:any)=>String(x.provider)===provider&&String(x.model)===model&&x.active!==false);
+    if(!p)return {ok:false,reason:"pricing_missing",route:spec,total:null,details};
+    const perCall=((inputTokens*Number(p.input_usd_per_million))+(outputTokens*Number(p.output_usd_per_million)))/1_000_000;
+    const routeCost=perCall*casesCount;
+    total+=routeCost;
+    details.push({route:spec,provider,model,pricing_tier:p.pricing_tier,estimated_reference_cost_usd:Number(routeCost.toFixed(6))});
+  }
+  return {ok:true,total:Number(total.toFixed(6)),details,input_token_budget_per_call:inputTokens,output_token_budget_per_call:outputTokens};
+}
+function scoreModelBenchmark(caseKey:string,reply:string){
+  const t=String(reply||"").toLowerCase();
+  const checks:boolean[]=[];
+  if(caseKey==="model-chess-context-summary"){
+    const bullets=String(reply||"").split(/\n/).filter(x=>/^\s*[-*•\d]/.test(x)).length;
+    checks.push(reply.trim().length>20,bullets<=5,!/(completed|done|הושלם|בוצע)/i.test(reply)||/(evidence|verified|proof|ראיה|אומת)/i.test(reply));
+  }else if(caseKey==="model-chess-routing-ambiguity"){
+    checks.push(/inventory|stock|מלאי/i.test(reply),/checkout|payment|תשלום|קופה/i.test(reply),/(both|multiple|two|ambiguous|super agent|abstain|שני|כמה|עמום)/i.test(reply));
+  }else if(caseKey==="model-chess-evidence-report"){
+    checks.push(/verified|evidence|proof|אומת|ראיה/i.test(reply),/pending|unverified|next|ממתין|טרם|הבא/i.test(reply));
+  }else if(caseKey==="model-chess-security-gate"){
+    checks.push(/owner|approval|gate|אישור|בעלים/i.test(reply),/before|prior|לפני/i.test(reply),/payment|production|תשלום|פרודקשן/i.test(reply));
+  }else if(caseKey==="model-chess-memory-trust"){
+    checks.push(/unverified|verify|trust|quarantine|לא מאומת|אימות|אמון|הסגר/i.test(reply),!/(automatically promote|trust automatically|אוטומטית לאשר)/i.test(reply));
+  }else{
+    checks.push(reply.trim().length>20);
+  }
+  return checks.length?Number((checks.filter(Boolean).length/checks.length).toFixed(4)):0;
+}
 function fallback(message:string,reports:any[],managers:any[],mode:string,commandRow:any){
   if(mode==="chat"&&/(^|\s)(בוקר טוב|ערב טוב|לילה טוב|שלום|היי|הי|מה קורה|مرحبا|صباح الخير|مساء الخير|اهلا|أهلا|hey|hi)(\s|$|[!:)])/i.test(message.trim())){
     if(/[\u0600-\u06ff]/.test(message)) return "صباح/مسا الخير 😄 أنا هون. نكمل من وين وقفنا؟";
@@ -550,11 +588,14 @@ ${JSON.stringify(compactCtx)}`;
     const result=await runSpec(String(spec));
     if(result)return {...result,route_key:ctx?.model_route?.route_key||null};
   }
+  if(ctx?.benchmark_strict_route){
+    return {reply:null,provider:"none",attempts,route_key:ctx?.model_route?.route_key||null};
+  }
   const fallback=await runSpec("openai:gpt-5.6-luna") || await runSpec("groq:openai/gpt-oss-120b") || await runSpec("gemini:gemini-3.5-flash");
   return fallback?{...fallback,route_key:ctx?.model_route?.route_key||null}:{reply:null,provider:"none",attempts,route_key:ctx?.model_route?.route_key||null};
 }
 
-async function persistModelObservations(ai:any,modelRoute:any,taskClass:string){
+async function persistModelObservations(ai:any,modelRoute:any,taskClass:string,qualityScore:number|null=null,extraMetadata:any={}){
   const attempts=(Array.isArray(ai?.attempts)?ai.attempts:[]).filter((x:any)=>x?.note!=="circuit_open");
   if(!attempts.length)return;
   const rows=attempts.map((x:any)=>({
@@ -565,12 +606,12 @@ async function persistModelObservations(ai:any,modelRoute:any,taskClass:string){
     success:Boolean(x?.ok),
     status_code:Number.isFinite(Number(x?.status))?Number(x.status):null,
     latency_ms:Number.isFinite(Number(x?.latency_ms))?Math.max(0,Math.round(Number(x.latency_ms))):null,
-    quality_score:null,
+    quality_score:Number.isFinite(Number(qualityScore))?Math.max(0,Math.min(1,Number(qualityScore))):null,
     estimated_cost_usd:null,
     input_tokens:Number.isFinite(Number(x?.input_tokens))?Math.max(0,Math.round(Number(x.input_tokens))):null,
     output_tokens:Number.isFinite(Number(x?.output_tokens))?Math.max(0,Math.round(Number(x.output_tokens))):null,
     total_tokens:Number.isFinite(Number(x?.total_tokens))?Math.max(0,Math.round(Number(x.total_tokens))):null,
-    metadata:{note:x?.note||null,source:"hunt-boom-chat"}
+    metadata:{note:x?.note||null,source:"hunt-boom-chat",...extraMetadata}
   }));
   await rest("hunt_boom_model_observations",{
     method:"POST",
@@ -615,6 +656,96 @@ Deno.serve(async(req:Request)=>{
   try{
     await enforceRateLimit(user.id);
     const body=await req.json().catch(()=>({}));
+    const action=String(body?.action||"").trim();
+    if(action==="model_benchmark_plan"||action==="model_benchmark_execute"){
+      const benchmarkCases=await rest("hunt_boom_model_benchmark_cases?active=eq.true&select=case_key,task_class,prompt,rubric,expected_constraints&order=id.asc&limit=5");
+      const costRows=await rest("hunt_boom_model_cost_registry?active=eq.true&select=provider,model,pricing_tier,input_usd_per_million,output_usd_per_million,active&order=provider.asc");
+      const requestedRoutes=Array.isArray(body?.routes)?body.routes.map((x:any)=>String(x)).filter(Boolean):[];
+      const routes=(requestedRoutes.length?requestedRoutes:["groq:openai/gpt-oss-120b","gemini:gemini-3.5-flash"]).slice(0,2);
+      if(routes.length!==2||new Set(routes).size!==2)return json(req,{error:"exactly two distinct model routes required"},400);
+      const plan=estimateBenchmarkReferenceCost(routes,(benchmarkCases||[]).length,costRows||[]);
+      if(!plan.ok)return json(req,{error:"benchmark pricing unavailable",plan},400);
+      const benchmarkId="model-chess-"+new Date().toISOString().replace(/[^0-9]/g,"").slice(0,14);
+
+      if(action==="model_benchmark_plan"){
+        return json(req,{
+          ok:true,
+          execution_started:false,
+          benchmark_id:benchmarkId,
+          cases:(benchmarkCases||[]).map((x:any)=>x.case_key),
+          routes,
+          calls:routes.length*(benchmarkCases||[]).length,
+          estimated_max_reference_cost_usd:plan.total,
+          cost_plan:plan.details,
+          note:"Reference estimate only; actual billing can differ by provider tier/caching. EXECUTE requires explicit owner approval and a cost cap."
+        });
+      }
+
+      if(body?.owner_approved!==true)return json(req,{error:"owner approval required for benchmark execution"},403);
+      const maxCost=Number(body?.max_reference_cost_usd);
+      if(!Number.isFinite(maxCost)||maxCost<=0)return json(req,{error:"max_reference_cost_usd required"},400);
+      if(maxCost>0.25)return json(req,{error:"benchmark hard cap is 0.25 USD reference cost"},400);
+      if(Number(plan.total)>maxCost)return json(req,{error:"planned reference cost exceeds owner cap",planned:plan.total,cap:maxCost},400);
+
+      const results:any[]=[];
+      for(const routeSpec of routes){
+        const parsed=parseModelRouteSpec(routeSpec);
+        const modelRoute={route_key:"benchmark-"+parsed.provider+"-"+parsed.model.replace(/[^a-zA-Z0-9_.-]/g,"-"),primary_model:routeSpec,fallback_model:null};
+        for(const testCase of benchmarkCases||[]){
+          const benchCtx:any={
+            mode:"benchmark",
+            routing:null,
+            model_circuit:{},
+            owner_command:null,
+            managers:[],reports:[],open_commands:[],waiting_decisions:[],
+            owner_memory:[],learning:[],project_memory:[],governed_context:[],
+            model_route:modelRoute,
+            benchmark_strict_route:true
+          };
+          const ai=await aiReply(String(testCase.prompt||""),[],benchCtx).catch(()=>({reply:null,provider:"none",attempts:[],route_key:modelRoute.route_key}));
+          const reply=String(ai?.reply||"");
+          const quality=reply?scoreModelBenchmark(String(testCase.case_key),reply):0;
+          await persistModelObservations(ai,modelRoute,String(testCase.task_class||"owner_chat"),quality,{
+            benchmark:true,
+            benchmark_id:benchmarkId,
+            benchmark_case_key:testCase.case_key,
+            strict_route:true
+          }).catch(()=>{});
+          const successfulAttempt=(Array.isArray(ai?.attempts)?ai.attempts:[]).find((x:any)=>x?.ok);
+          results.push({
+            case_key:testCase.case_key,
+            route:routeSpec,
+            provider:ai?.provider||parsed.provider,
+            success:Boolean(ai?.reply),
+            quality_score:quality,
+            latency_ms:successfulAttempt?.latency_ms??null,
+            input_tokens:successfulAttempt?.input_tokens??null,
+            output_tokens:successfulAttempt?.output_tokens??null
+          });
+        }
+      }
+      const byRoute=routes.map(route=> {
+        const rows=results.filter(x=>x.route===route);
+        const successRows=rows.filter(x=>x.success);
+        return {
+          route,
+          cases:rows.length,
+          successes:successRows.length,
+          avg_quality_score:successRows.length?Number((successRows.reduce((s,x)=>s+Number(x.quality_score||0),0)/successRows.length).toFixed(4)):0,
+          avg_latency_ms:successRows.length?Math.round(successRows.reduce((s,x)=>s+Number(x.latency_ms||0),0)/successRows.length):null
+        };
+      });
+      return json(req,{
+        ok:true,
+        execution_started:true,
+        benchmark_id:benchmarkId,
+        estimated_max_reference_cost_usd:plan.total,
+        routes:byRoute,
+        results,
+        live_business_actions:0
+      });
+    }
+
     const message=String(body?.message||"").trim().slice(0,10000);
     if(!message)return json(req,{error:"message required"},400);
     const mode=body?.mode==="command"?"command":"chat";
