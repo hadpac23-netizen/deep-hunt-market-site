@@ -81,6 +81,18 @@ assert(report.includes("testing-10 — still testing"),"learning report truncate
 assert(!report.includes("supplier-cj"),"AI learning report leaked unrelated HUNT blocker");
 assert(!report.includes("supplier-eprolo"),"AI learning report leaked unrelated supplier blocker");
 
+const brainV2Report=c.buildCopyReport({
+  reports:[],evals:[],open_commands:[],project_memory:[],
+  learning:[
+    {domain:"brain-v2",title:"Context Governor",status:"learned",graduation_eval_key:"brain-v2-context-governor-v1"},
+    {domain:"brain-v2",title:"Model Chess Engine",status:"testing"}
+  ]
+},{...next,active_topic:"BOOM Brain v2 / F35",active_goal:"Brain v2",current_task:"graduate proven v2 modules"},null);
+assert(brainV2Report.includes("AI learning items: 2"),"Brain v2 learning items missing from copy report");
+assert(brainV2Report.includes("Learned and behavior-backed: 1"),"Brain v2 learned count missing");
+assert(brainV2Report.includes("Still testing: 1"),"Brain v2 testing count missing");
+assert(brainV2Report.includes("Model Chess Engine — still testing"),"Brain v2 blocker missing");
+
 const edge=fs.readFileSync("supabase/functions/hunt-boom-chat/index.ts","utf8");
 assert(edge.includes("display_text:reply"),"display_text API missing");
 assert(edge.includes("spoken_text:spokenText"),"spoken_text API missing");

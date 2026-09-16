@@ -172,10 +172,10 @@ export function buildCopyReport(ctx:any,topic:any,commandRow:any){
     .filter((e:any)=>String(e.metric_name)!=="attention_manager_count");
   const decisions=(ctx.project_memory||[]).filter((m:any)=>Number(m.importance)>=5&&m.status==="active").slice(0,5);
   const topicText=(String(topic?.active_topic||"")+" "+String(topic?.active_goal||"")+" "+String(topic?.current_task||"")).toLowerCase();
-  const learningMode=/(learning|ai engineering|לימוד|למידה|הנדסת ai|هندسة ai|تعلم)/i.test(topicText);
+  const learningMode=/(learning|ai engineering|brain\s*v2|brain-v2|לימוד|למידה|הנדסת ai|هندسة ai|تعلم)/i.test(topicText);
   const learningItems=(ctx.learning||[]).filter((x:any)=>{
     const d=String(x?.domain||"");
-    return ["ai-engineering","agent-architecture","agent-reliability","long-running-agents"].includes(d);
+    return ["ai-engineering","agent-architecture","agent-reliability","long-running-agents","brain-v2"].includes(d);
   });
   const learnedItems=learningItems.filter((x:any)=>["learned","adopted"].includes(x.status));
   const testingItems=learningItems.filter((x:any)=>x.status==="testing");
