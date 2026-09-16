@@ -29,6 +29,14 @@ assert(js.includes("trace-evidence"),"trace evidence rendering missing");
 assert(css.includes(".trace-summary"),"trace summary styling missing");
 assert(css.includes(".trace-filter.active"),"active trace filter styling missing");
 
+assert(html.includes('id="attention-focus"'),"attention focus control missing");
+assert(html.includes('id="attention-count"'),"attention count missing");
+assert(js.includes("function attentionReports()"),"attention severity selector missing");
+assert(js.includes("function focusAttention()"),"attention focus action missing");
+assert(js.includes("performance.now()"),"attention focus latency measurement missing");
+assert(js.includes('["critical","blocked","watch"]'),"attention severity filter missing");
+assert(css.includes(".node.attention-focus"),"attention node highlight missing");
+
 assert(html.includes("provider not enabled yet"),"truthful model connector state missing");
 assert(js.includes("provider not enabled yet"),"model inspector truth state missing");
 

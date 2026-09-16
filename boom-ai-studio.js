@@ -164,6 +164,31 @@
     });
   }
 
+  function attentionReports(){
+    return [...state.reportMap.values()]
+      .filter(r=>["critical","blocked","watch"].includes(r.status))
+      .sort((a,b)=>(statusRank[b.status]||0)-(statusRank[a.status]||0)||new Date(b.created_at)-new Date(a.created_at));
+  }
+
+  function focusAttention(){
+    const started=performance.now();
+    const list=attentionReports();
+    const report=list[0];
+    if(!report)return;
+    $$(".node.attention-focus").forEach(x=>x.classList.remove("attention-focus"));
+    inspectManager(report.manager_id);
+    const node=$("#node-"+report.manager_id);
+    if(node)node.classList.add("attention-focus");
+    requestAnimationFrame(()=>{
+      const ms=Math.max(0,Math.round(performance.now()-started));
+      const btn=$("#attention-focus");
+      if(btn){
+        btn.dataset.focusMs=String(ms);
+        btn.title="Focused "+report.manager_id+" in "+ms+" ms";
+      }
+    });
+  }
+
   function renderStudio(){
     state.managerMap=latest(state.managers,"id");
     state.reportMap=latest(state.reports,"manager_id");
@@ -181,6 +206,9 @@
     $("#command-label").textContent=state.commands.filter(x=>["queued","accepted","running","waiting_owner"].includes(x.status)).length+" OPEN COMMANDS";
     $("#memory-label").textContent=state.reports.length+" REPORTS · "+state.events.length+" EVENTS";
     $("#eval-label").textContent=state.evals.length+" EVALS";
+    const attention=attentionReports();
+    $("#attention-count").textContent=String(attention.length);
+    $("#attention-focus").disabled=attention.length===0;
 
     requestAnimationFrame(drawLinks);
   }
@@ -838,6 +866,7 @@
     location.reload();
   });
   $("#refresh").addEventListener("click",()=>loadAll().catch(showError));
+  $("#attention-focus").addEventListener("click",focusAttention);
   $("#chat-toggle").addEventListener("click",()=>setChatOpen(!$(".inspector").classList.contains("chat-open")));
   $("#chat-collapse").addEventListener("click",()=>setChatOpen(false));
   $("#chat-send").addEventListener("click",sendChat);
