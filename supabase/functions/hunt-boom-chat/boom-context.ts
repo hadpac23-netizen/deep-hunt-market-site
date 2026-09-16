@@ -75,6 +75,20 @@ export function deriveTopicState(message:string,current:any,managerId:string,con
   };
 }
 
+export function enforceEvidenceLanguage(displayText:string){
+  const evidenceHint=/(verified|evidence|runtime|database|\bdb\b|\bapi\b|repository|\brepo\b|http\s*[1-5]\d\d|error\s*code|בדק|אומת|ראיה|قاعدة البيانات|تم التحقق)/i;
+  return String(displayText||"")
+    .split("\n")
+    .map(line=>{
+      if(evidenceHint.test(line))return line;
+      return line
+        .replace(/\b(?:is|are)\s+missing\b/gi,"needs verification")
+        .replace(/(^|[:\-]\s*)Missing(?=\s|:)/gi,"$1NEEDS_VERIFICATION")
+        .replace(/\bMISSING\b/g,"NEEDS_VERIFICATION");
+    })
+    .join("\n");
+}
+
 export function toSpokenText(displayText:string){
   let text=String(displayText||"").trim();
   if(/^BOOM COPY REPORT\b/i.test(text)){

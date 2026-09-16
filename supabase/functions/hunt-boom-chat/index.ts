@@ -1,4 +1,4 @@
-import {buildCopyReport,deriveTopicState,toSpokenText,wantsCopyReport} from "./boom-context.ts";
+import {buildCopyReport,deriveTopicState,enforceEvidenceLanguage,toSpokenText,wantsCopyReport} from "./boom-context.ts";
 
 const BASE=Deno.env.get("SUPABASE_URL")||"";
 const SERVICE=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";
@@ -595,7 +595,7 @@ Deno.serve(async(req:Request)=>{
       aiReply(message,history,ctx).catch(()=>({reply:null,provider:"none",attempts:[{provider:"boom-ai",ok:false,note:"exception"}]})),
       learnOwnerMemory(message,user.id,ownerRows?.[0]?.id||null).catch(()=>0)
     ]);
-    let reply=redactSecrets(ai?.reply||fallback(message,reports||[],managers||[],mode,commandRow));
+    let reply=enforceEvidenceLanguage(redactSecrets(ai?.reply||fallback(message,reports||[],managers||[],mode,commandRow)));
     const copyReport=buildCopyReport(ctx,topicState,commandRow);
     if(wantsCopyReport(message))reply=copyReport;
     const spokenText=toSpokenText(reply);

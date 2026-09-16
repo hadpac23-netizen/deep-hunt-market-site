@@ -5,6 +5,11 @@ const cp=require("child_process");
 cp.execFileSync("npx",["--yes","esbuild","supabase/functions/hunt-boom-chat/boom-context.ts","--bundle","--platform=node","--format=cjs","--outfile=/tmp/boom-context-regression.cjs"],{stdio:"ignore"});
 const c=require("/tmp/boom-context-regression.cjs");
 
+const guarded=c.enforceEvidenceLanguage("Supplier is MISSING\nStatus: MISSING\nVerified by DB evidence: supplier is MISSING");
+assert(guarded.includes("Supplier needs verification"),"unsupported missing claim was not downgraded");
+assert(guarded.includes("Status: NEEDS_VERIFICATION"),"MISSING status was not downgraded");
+assert(guarded.includes("Verified by DB evidence: supplier is MISSING"),"verified missing claim was incorrectly downgraded");
+
 const spoken=c.toSpokenText("**HUNT**\n- Search: ✅\n# Next\nhttps://example.com\ncode sample");
 assert(!/[\*#|]/.test(spoken),"spoken_text leaked markdown");
 assert(!/https?:/.test(spoken),"spoken_text leaked URL");
