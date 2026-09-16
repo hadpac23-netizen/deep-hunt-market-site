@@ -368,16 +368,28 @@
     if(!data?.is_admin)throw new Error("נדרשת הרשאת Owner/Admin.");
   }
 
+  function setChatOpen(open=true){
+    const inspector=$(".inspector");
+    if(!inspector)return;
+    inspector.classList.toggle("chat-open",open);
+    const toggle=$("#chat-toggle");
+    if(toggle)toggle.textContent=open?"💬 BOOM Chat פתוח":"💬 BOOM Chat";
+    if(open)setTimeout(()=>$("#chat-input")?.focus(),80);
+  }
+
   function showApp(){
     $("#login-screen").hidden=true;
     $("#app-shell").hidden=false;
     $("#logout").hidden=false;
+    $("#chat-toggle").hidden=false;
+    setChatOpen(true);
   }
 
   function showLogin(){
     $("#login-screen").hidden=false;
     $("#app-shell").hidden=true;
     $("#logout").hidden=true;
+    $("#chat-toggle").hidden=true;
   }
 
   function showError(err){
@@ -479,6 +491,8 @@
     location.reload();
   });
   $("#refresh").addEventListener("click",()=>loadAll().catch(showError));
+  $("#chat-toggle").addEventListener("click",()=>setChatOpen(!$(".inspector").classList.contains("chat-open")));
+  $("#chat-collapse").addEventListener("click",()=>setChatOpen(false));
   $("#chat-send").addEventListener("click",sendChat);
   $("#chat-input").addEventListener("keydown",ev=>{if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();sendChat()}});
   window.addEventListener("resize",()=>requestAnimationFrame(drawLinks));
@@ -496,7 +510,13 @@
     const managerNode=ev.target.closest("[data-manager-id]");
     if(managerNode){inspectManager(managerNode.dataset.managerId);return}
     const special=ev.target.closest("[data-special]");
-    if(special)inspectSpecial(special.dataset.special);
+    if(special){
+      if(special.dataset.special==="owner"){
+        setChatOpen(true);
+        return;
+      }
+      inspectSpecial(special.dataset.special);
+    }
   });
 
   client.auth.onAuthStateChange((event,session)=>{

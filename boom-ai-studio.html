@@ -24,6 +24,7 @@
     </nav>
     <div class="top-actions">
       <span class="live-pill" id="live-state">CONNECTING</span>
+      <button class="top-btn boom-chat-btn" id="chat-toggle" type="button" hidden>💬 BOOM Chat</button>
       <button class="top-btn" id="refresh" type="button">רענון</button>
       <button class="top-btn" id="logout" type="button" hidden>יציאה</button>
     </div>
@@ -138,9 +139,13 @@
         </div>
         <div class="inspector-body" id="inspect-body"></div>
 
-        <div class="chat-panel">
+        <div class="chat-panel" id="chat-panel">
+          <div class="chat-head">
+            <div><strong>BOOM Chat</strong><small> Owner ↔ BOOM</small></div>
+            <button class="chat-collapse" id="chat-collapse" type="button" aria-label="סגור צ׳אט">×</button>
+          </div>
           <div class="chat-log" id="chat-log">
-            <article class="chat-message boom">BOOM Studio מחובר. שאל אותי על המערכת.</article>
+            <article class="chat-message boom">אני כאן. דבר איתי על HUNT, המנהלים, המשימות או מה תרצה לעשות עכשיו.</article>
           </div>
           <div class="chat-input-row">
             <textarea id="chat-input" rows="3" placeholder="דבר עם BOOM…"></textarea>
