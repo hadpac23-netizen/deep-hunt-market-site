@@ -271,6 +271,7 @@ async function aiReply(message:string,history:any[],ctx:any){
       freshness_score:x.freshness_score
     })),
     context_governor:ctx.context_governor||null,
+    model_route:ctx.model_route||null,
     topic_state:ctx.topic_state||null
   };
   const systemPrompt=`SYSTEM ROLE — BOOM OWNER BRAIN
@@ -373,7 +374,7 @@ ${JSON.stringify(compactCtx)}`;
     try{return await p}finally{clearTimeout(timer)}
   }
 
-  async function tryOpenAI(){
+  async function tryOpenAI(model="gpt-5.6-luna"){
     const apiKey=secrets.OPENAI_API_KEY||Deno.env.get("OPENAI_API_KEY")||"";
     if(!apiKey){attempts.push({provider:"openai",ok:false,note:"not_configured"});return null}
     try{
@@ -389,7 +390,7 @@ ${JSON.stringify(compactCtx)}`;
         method:"POST",
         headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey},
         body:JSON.stringify({
-          model:"gpt-5.6-luna",
+          model,
           input,
           reasoning:{effort:"low"},
           max_output_tokens:900
@@ -415,7 +416,7 @@ ${JSON.stringify(compactCtx)}`;
     }
   }
 
-  async function tryGroq(){
+  async function tryGroq(model="openai/gpt-oss-120b"){
     const apiKey=secrets.GROQ_API_KEY;
     if(!apiKey){attempts.push({provider:"groq",ok:false,note:"not_configured"});return null}
     try{
@@ -423,7 +424,7 @@ ${JSON.stringify(compactCtx)}`;
         method:"POST",
         headers:{"Content-Type":"application/json","Authorization":"Bearer "+apiKey},
         body:JSON.stringify({
-          model:"openai/gpt-oss-120b",
+          model,
           messages:chatMessages,
           max_completion_tokens:700,
           temperature:0.7
@@ -442,7 +443,7 @@ ${JSON.stringify(compactCtx)}`;
     }
   }
 
-  async function tryGemini(){
+  async function tryGemini(model="gemini-3.5-flash"){
     const apiKey=secrets.GEMINI_API_KEY;
     if(!apiKey){attempts.push({provider:"gemini",ok:false,note:"not_configured"});return null}
     const contents=(history||[]).slice(-8).map((m:any)=>({
@@ -451,7 +452,7 @@ ${JSON.stringify(compactCtx)}`;
     }));
     contents.push({role:"user",parts:[{text:message}]});
     try{
-      const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent",{
+      const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent",{
         method:"POST",
         headers:{"Content-Type":"application/json","x-goog-api-key":apiKey},
         body:JSON.stringify({
@@ -473,7 +474,21 @@ ${JSON.stringify(compactCtx)}`;
     }
   }
 
-  return await tryOpenAI() || await tryGroq() || await tryGemini() || {reply:null,provider:"none",attempts};
+  const runSpec=async(spec:string)=>{
+    const [provider,...parts]=String(spec||"").split(":");
+    const model=parts.join(":");
+    if(provider==="openai")return await tryOpenAI(model||"gpt-5.6-luna");
+    if(provider==="groq")return await tryGroq(model||"openai/gpt-oss-120b");
+    if(provider==="google"||provider==="gemini")return await tryGemini(model||"gemini-3.5-flash");
+    return null;
+  };
+  const routeSpecs=[ctx?.model_route?.primary_model,ctx?.model_route?.fallback_model].filter(Boolean);
+  for(const spec of routeSpecs){
+    const result=await runSpec(String(spec));
+    if(result)return {...result,route_key:ctx?.model_route?.route_key||null};
+  }
+  const fallback=await tryOpenAI() || await tryGroq() || await tryGemini();
+  return fallback?{...fallback,route_key:ctx?.model_route?.route_key||null}:{reply:null,provider:"none",attempts,route_key:ctx?.model_route?.route_key||null};
 }
 
 async function persistTopicState(ownerId:string,topic:any,ctx:any,commandRow:any,provider:string){
@@ -528,7 +543,7 @@ Deno.serve(async(req:Request)=>{
     if(!conversationId)conversationId=crypto.randomUUID();
 
     const inferredManager=routeManager(message);
-    const [reports,managers,decisions,commands,learning,cycles,evals,historyRows,ownerMemory,projectMemory,topicRows,contextItems,capabilityPolicies]=await Promise.all([
+    const [reports,managers,decisions,commands,learning,cycles,evals,historyRows,ownerMemory,projectMemory,topicRows,contextItems,capabilityPolicies,modelRoutes]=await Promise.all([
       rest("hunt_boom_live_reports?select=manager_id,status,metrics,issues,recommended_action,created_at&order=created_at.desc&limit=300"),
       rest("hunt_boom_managers?select=id,name,department,status,last_report_at,reports_to&order=department.asc"),
       rest("hunt_boom_decisions?select=id,title,status,owner_approval_required,priority&order=priority.desc,created_at.desc&limit=50"),
@@ -541,7 +556,8 @@ Deno.serve(async(req:Request)=>{
       rest("hunt_boom_project_memory?active=eq.true&select=memory_key,domain,memory_type,content,status,importance,trust_score,provenance,expires_at,quarantined,last_verified_at&order=importance.desc,updated_at.desc&limit=80"),
       rest("hunt_boom_topic_state?owner_id=eq."+encodeURIComponent(user.id)+"&select=*&limit=1"),
       rest("hunt_boom_context_items?owner_id=eq."+encodeURIComponent(user.id)+"&select=id,source_type,source_ref,content,relevance_score,freshness_score,trust_score,token_cost,expires_at,quarantined,metadata,updated_at&order=updated_at.desc&limit=100"),
-      rest("hunt_boom_capability_policies?principal_type=eq.manager&tool_key=eq.default&enabled=eq.true&select=principal_id,permission_level,allowed_actions,denied_actions,owner_gate_required,enabled&limit=100")
+      rest("hunt_boom_capability_policies?principal_type=eq.manager&tool_key=eq.default&enabled=eq.true&select=principal_id,permission_level,allowed_actions,denied_actions,owner_gate_required,enabled&limit=100"),
+      rest("hunt_boom_model_routes?enabled=eq.true&select=route_key,task_class,primary_model,fallback_model,max_latency_ms,max_cost_usd,min_quality_score,owner_gate_required,metadata&order=route_key.asc&limit=20")
     ]);
 
     const history=(historyRows||[]).reverse().map((x:any)=>({
@@ -635,6 +651,10 @@ Deno.serve(async(req:Request)=>{
     const governedOwnerMemory=governedContext.selected.filter((x:any)=>x.source_type==="owner_memory");
     const governedProjectMemory=governedContext.selected.filter((x:any)=>x.source_type==="project_memory");
     const governedExtraContext=governedContext.selected.filter((x:any)=>x.source_type==="context_item");
+    const requestedTaskClass=needsOwnerGate(message)?"critical_reasoning":"owner_chat";
+    const modelRoute=(modelRoutes||[]).find((x:any)=>String(x.task_class)===requestedTaskClass)
+      ||(modelRoutes||[]).find((x:any)=>String(x.task_class)==="owner_chat")
+      ||null;
 
     const ctx={
       mode,
@@ -683,6 +703,16 @@ Deno.serve(async(req:Request)=>{
         dropped:governedContext.dropped,
         selected_count:governedContext.selected.length
       },
+      model_route:modelRoute?{
+        route_key:modelRoute.route_key,
+        task_class:modelRoute.task_class,
+        primary_model:modelRoute.primary_model,
+        fallback_model:modelRoute.fallback_model,
+        max_latency_ms:modelRoute.max_latency_ms,
+        max_cost_usd:modelRoute.max_cost_usd,
+        min_quality_score:modelRoute.min_quality_score,
+        owner_gate_required:modelRoute.owner_gate_required
+      }:null,
       topic_state:topicState
     };
 
@@ -728,6 +758,7 @@ Deno.serve(async(req:Request)=>{
           mode,
           ai_mode:"live_ai_gateway",
           provider:ai?.provider||"fallback",
+          model_route_key:ai?.route_key||modelRoute?.route_key||null,
           ai_attempts:Array.isArray(ai?.attempts)?ai.attempts.map((x:any)=>({provider:x.provider,ok:x.ok,status:x.status||null,note:x.note||null})):[],
           command_id:commandRow?.id||null,
           active_topic:topicState.active_topic,
@@ -750,6 +781,7 @@ Deno.serve(async(req:Request)=>{
         next_expected_step:topicState.next_expected_step
       },
       provider:ai?.provider||"fallback",
+      model_route_key:ai?.route_key||modelRoute?.route_key||null,
       ai_attempts:Array.isArray(ai?.attempts)?ai.attempts:[],
       message_id:boomRows?.[0]?.id||null,
       mode,
