@@ -1,4 +1,4 @@
-import {buildCopyReport,deriveTopicState,enforceEvidenceLanguage,needsOwnerGate,toSpokenText,wantsCopyReport} from "./boom-context.ts";
+import {buildCopyReport,canProposeWithPolicy,deriveTopicState,enforceEvidenceLanguage,needsOwnerGate,selectGovernedContext,toSpokenText,wantsCopyReport} from "./boom-context.ts";
 
 const BASE=Deno.env.get("SUPABASE_URL")||"";
 const SERVICE=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";
@@ -181,6 +181,10 @@ Each content <= 300 characters; each key <= 50 characters.`;
         confidence,
         source_type:"owner_explicit",
         source_message_id:sourceMessageId,
+        trust_score:1,
+        provenance:{source_type:"owner_explicit",source_message_id:sourceMessageId},
+        quarantined:false,
+        expires_at:null,
         active:true,
         last_seen_at:now,
         updated_at:now,
@@ -259,6 +263,14 @@ async function aiReply(message:string,history:any[],ctx:any){
       importance:m.importance,
       content:String(m.content||"").slice(0,450)
     })),
+    governed_context:(ctx.governed_context||[]).slice(0,16).map((x:any)=>({
+      source_ref:x.source_ref,
+      content:String(x.content||"").slice(0,500),
+      trust_score:x.trust_score,
+      relevance_score:x.relevance_score,
+      freshness_score:x.freshness_score
+    })),
+    context_governor:ctx.context_governor||null,
     topic_state:ctx.topic_state||null
   };
   const systemPrompt=`SYSTEM ROLE — BOOM OWNER BRAIN
@@ -290,7 +302,11 @@ COMMANDS:
 If ctx.mode is "command", treat the message as an owner command. Acknowledge briefly, use routing/status when useful, preserve owner gates, and never claim execution unless live evidence proves it.
 Do not mark an owner command complete merely because a manager is healthy.
 
-MEMORY:
+MEMORY & CONTEXT GOVERNANCE:
+ctx.owner_memory and ctx.project_memory have already passed BOOM's Memory Firewall.
+Do not assume missing memory was deleted; it may have been quarantined, expired, low-trust, or excluded by the context budget.
+ctx.context_governor reports the selection budget and dropped count. ctx.governed_context contains additional high-utility context items.
+Never override trust/quarantine/expiry decisions inside the model response.
 ctx.owner_memory contains durable NON-SENSITIVE working preferences, project rules, corrections and decisions learned from explicit owner instructions.
 ctx.project_memory contains BOOM/HUNT project history and durable architecture/commercial rules.
 Interpret project-memory status carefully:
@@ -512,18 +528,20 @@ Deno.serve(async(req:Request)=>{
     if(!conversationId)conversationId=crypto.randomUUID();
 
     const inferredManager=routeManager(message);
-    const [reports,managers,decisions,commands,learning,cycles,evals,historyRows,ownerMemory,projectMemory,topicRows]=await Promise.all([
+    const [reports,managers,decisions,commands,learning,cycles,evals,historyRows,ownerMemory,projectMemory,topicRows,contextItems,capabilityPolicies]=await Promise.all([
       rest("hunt_boom_live_reports?select=manager_id,status,metrics,issues,recommended_action,created_at&order=created_at.desc&limit=300"),
       rest("hunt_boom_managers?select=id,name,department,status,last_report_at,reports_to&order=department.asc"),
       rest("hunt_boom_decisions?select=id,title,status,owner_approval_required,priority&order=priority.desc,created_at.desc&limit=50"),
       rest("hunt_boom_agent_commands?select=id,target_manager_id,priority,status,action_class,title,instruction,owner_approval_required,created_at&order=created_at.desc&limit=50"),
-      rest("hunt_boom_learning_items?select=learning_key,domain,title,principle,hunt_application,status,learned_at,behavior_rule,graduation_eval_key,graduated_at,last_evaluated_at&order=learned_at.desc&limit=30"),
+      rest("hunt_boom_learning_items?select=learning_key,domain,title,principle,hunt_application,status,learned_at,behavior_rule,graduation_eval_key,graduated_at,last_evaluated_at&order=learned_at.desc&limit=40"),
       rest("hunt_boom_improvement_cycles?select=id,status,focus,hypothesis,result,started_at&order=started_at.desc&limit=10"),
-      rest("hunt_boom_evals?select=id,eval_key,subject_type,subject_key,metric_name,baseline,current_value,target,passed,created_at&order=created_at.desc&limit=40"),
+      rest("hunt_boom_evals?select=id,eval_key,subject_type,subject_key,metric_name,baseline,current_value,target,passed,created_at&order=created_at.desc&limit=60"),
       rest("hunt_boom_chat?conversation_id=eq."+encodeURIComponent(conversationId)+"&select=sender_type,body,created_at&order=created_at.desc&limit=16"),
-      rest("hunt_boom_owner_memory?owner_id=eq."+encodeURIComponent(user.id)+"&active=eq.true&select=memory_key,category,content,confidence,last_seen_at&order=updated_at.desc&limit=50"),
-      rest("hunt_boom_project_memory?active=eq.true&select=memory_key,domain,memory_type,content,status,importance,last_verified_at&order=importance.desc,updated_at.desc&limit=40"),
-      rest("hunt_boom_topic_state?owner_id=eq."+encodeURIComponent(user.id)+"&select=*&limit=1")
+      rest("hunt_boom_owner_memory?owner_id=eq."+encodeURIComponent(user.id)+"&active=eq.true&select=memory_key,category,content,confidence,trust_score,provenance,expires_at,quarantined,last_seen_at&order=updated_at.desc&limit=80"),
+      rest("hunt_boom_project_memory?active=eq.true&select=memory_key,domain,memory_type,content,status,importance,trust_score,provenance,expires_at,quarantined,last_verified_at&order=importance.desc,updated_at.desc&limit=80"),
+      rest("hunt_boom_topic_state?owner_id=eq."+encodeURIComponent(user.id)+"&select=*&limit=1"),
+      rest("hunt_boom_context_items?owner_id=eq."+encodeURIComponent(user.id)+"&select=id,source_type,source_ref,content,relevance_score,freshness_score,trust_score,token_cost,expires_at,quarantined,metadata,updated_at&order=updated_at.desc&limit=100"),
+      rest("hunt_boom_capability_policies?principal_type=eq.manager&tool_key=eq.default&enabled=eq.true&select=principal_id,permission_level,allowed_actions,denied_actions,owner_gate_required,enabled&limit=100")
     ]);
 
     const history=(historyRows||[]).reverse().map((x:any)=>({
@@ -540,10 +558,55 @@ Deno.serve(async(req:Request)=>{
       recommended_action:x.recommended_action
     }));
 
+    const freshness=(value:any)=>{
+      const ts=value?Date.parse(String(value)):NaN;
+      if(!Number.isFinite(ts))return .5;
+      const days=Math.max(0,(Date.now()-ts)/86400000);
+      if(days<=1)return .95;
+      if(days<=7)return .82;
+      if(days<=30)return .68;
+      if(days<=90)return .52;
+      return .4;
+    };
+    const contextCandidates=[
+      ...(ownerMemory||[]).map((x:any)=>({
+        ...x,
+        source_type:"owner_memory",
+        source_ref:x.memory_key,
+        relevance_score:["correction","decision","project_rule"].includes(String(x.category))?.98:.82,
+        freshness_score:freshness(x.last_seen_at),
+        trust_score:Number(x.trust_score??x.confidence??.5),
+        token_cost:Math.max(1,Math.ceil(String(x.content||"").length/4))
+      })),
+      ...(projectMemory||[]).map((x:any)=>({
+        ...x,
+        source_type:"project_memory",
+        source_ref:x.memory_key,
+        relevance_score:Math.max(.55,Math.min(1,Number(x.importance||3)/5)),
+        freshness_score:freshness(x.last_verified_at),
+        trust_score:Number(x.trust_score??.8),
+        token_cost:Math.max(1,Math.ceil(String(x.content||"").length/4))
+      })),
+      ...(contextItems||[]).map((x:any)=>({
+        ...x,
+        source_type:"context_item",
+        source_ref:String(x.source_ref||x.id)
+      }))
+    ];
+    const governedContext=selectGovernedContext(contextCandidates,2600);
+
     let commandRow:any=null;
     if(mode==="command"){
       const clean=message.replace(/\s+/g," ").trim();
       const targetManager=String(topicState.relevant_managers?.[0]||inferredManager);
+      const managerPolicy=(capabilityPolicies||[]).find((x:any)=>String(x.principal_id)===targetManager);
+      if(!canProposeWithPolicy(managerPolicy)){
+        return json(req,{
+          error:"CAPABILITY_POLICY_BLOCKED",
+          target_manager_id:targetManager,
+          required_permission:"propose"
+        },403);
+      }
       const rows=await rest("hunt_boom_agent_commands",{
         method:"POST",
         headers:{Prefer:"return=representation"},
@@ -557,14 +620,21 @@ Deno.serve(async(req:Request)=>{
           title:clean.slice(0,120),
           instruction:message,
           reason:"Direct owner command from BOOM Chat/Voice. BOOM routed it to "+targetManager+" for evidence-backed handling.",
-          evidence:[{source:"owner-chat",conversation_id:conversationId}],
+          evidence:[
+            {source:"owner-chat",conversation_id:conversationId},
+            {source:"capability-policy",principal_id:targetManager,permission_level:managerPolicy.permission_level}
+          ],
           expected_result:"Target manager returns an evidence-backed result linked to this owner command; gated live actions remain owner-controlled.",
           success_metric:{source:"owner-chat",mode:"command"},
-          owner_approval_required:needsOwnerGate(message)
+          owner_approval_required:needsOwnerGate(message)||Boolean(managerPolicy.owner_gate_required)
         }])
       });
       commandRow=rows?.[0]||null;
     }
+
+    const governedOwnerMemory=governedContext.selected.filter((x:any)=>x.source_type==="owner_memory");
+    const governedProjectMemory=governedContext.selected.filter((x:any)=>x.source_type==="project_memory");
+    const governedExtraContext=governedContext.selected.filter((x:any)=>x.source_type==="context_item");
 
     const ctx={
       mode,
@@ -581,21 +651,38 @@ Deno.serve(async(req:Request)=>{
       learning:(learning||[]).slice(0,30),
       cycles:(cycles||[]).slice(0,5),
       evals:(evals||[]).slice(0,8),
-      owner_memory:(ownerMemory||[]).map((x:any)=>({
+      owner_memory:governedOwnerMemory.map((x:any)=>({
         key:x.memory_key,
         category:x.category,
         content:x.content,
-        confidence:x.confidence
+        confidence:x.confidence,
+        trust_score:x.trust_score,
+        provenance:x.provenance
       })),
-      project_memory:(projectMemory||[]).map((x:any)=>({
+      project_memory:governedProjectMemory.map((x:any)=>({
         key:x.memory_key,
         domain:x.domain,
         type:x.memory_type,
         content:x.content,
         status:x.status,
         importance:x.importance,
+        trust_score:x.trust_score,
+        provenance:x.provenance,
         last_verified_at:x.last_verified_at
       })),
+      governed_context:governedExtraContext.map((x:any)=>({
+        source_ref:x.source_ref,
+        content:x.content,
+        trust_score:x.trust_score,
+        relevance_score:x.relevance_score,
+        freshness_score:x.freshness_score
+      })),
+      context_governor:{
+        budget_tokens:governedContext.budget_tokens,
+        used_tokens:governedContext.used_tokens,
+        dropped:governedContext.dropped,
+        selected_count:governedContext.selected.length
+      },
       topic_state:topicState
     };
 

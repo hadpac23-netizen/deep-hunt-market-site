@@ -1,3 +1,41 @@
+export function memoryEligible(item:any,nowMs=Date.now()){
+  const trust=Math.max(0,Math.min(1,Number(item?.trust_score ?? item?.confidence ?? 0.5)));
+  if(Boolean(item?.quarantined))return false;
+  if(trust<0.65)return false;
+  const expiresAt=item?.expires_at?Date.parse(String(item.expires_at)):NaN;
+  if(Number.isFinite(expiresAt)&&expiresAt<=nowMs)return false;
+  return true;
+}
+
+export function contextUtility(item:any){
+  const relevance=Math.max(0,Math.min(1,Number(item?.relevance_score ?? 0.5)));
+  const freshness=Math.max(0,Math.min(1,Number(item?.freshness_score ?? 0.5)));
+  const trust=Math.max(0,Math.min(1,Number(item?.trust_score ?? item?.confidence ?? 0.5)));
+  const tokenCost=Math.max(1,Number(item?.token_cost)||Math.ceil(String(item?.content||"").length/4)||1);
+  return ((relevance*0.45)+(freshness*0.25)+(trust*0.30))/Math.max(1,tokenCost/100);
+}
+
+export function selectGovernedContext(items:any[],maxTokens=2600,nowMs=Date.now()){
+  const ranked=(items||[])
+    .filter((x:any)=>memoryEligible(x,nowMs))
+    .map((x:any)=>({...x,_utility:contextUtility(x),_token_cost:Math.max(1,Number(x?.token_cost)||Math.ceil(String(x?.content||"").length/4)||1)}))
+    .sort((a:any,b:any)=>b._utility-a._utility);
+  const selected:any[]=[];
+  let used=0;
+  for(const item of ranked){
+    if(used+item._token_cost>maxTokens)continue;
+    used+=item._token_cost;
+    selected.push(item);
+  }
+  return {selected,used_tokens:used,budget_tokens:maxTokens,dropped:Math.max(0,ranked.length-selected.length)};
+}
+
+export function canProposeWithPolicy(policy:any){
+  if(!policy||policy.enabled===false)return false;
+  const level=String(policy.permission_level||"observe");
+  return level==="propose"||level==="execute";
+}
+
 export function isContinuationMessage(message:string){
   return /^(?:ילה+|יאללה|תמשיך|המשך|נו+|בצע|כן|מאשר|אישור|(?:אשר|אישור)\s+.+(?:production|פרודקשן)\.?|מה עכשיו\??|מה הלאה\??|מה המצב\??|איפה זה עומד(?: עכשיו)?\??|איפה עצרנו\??|לא הבנתי|תסביר|טוב|אוקי|אוקיי|בסדר|(?:היי\s*)?ב[ו]+ם+|boom|hey\s+boom|yes|approved|confirm|confirmed|approve\s+.+production\.?|كمل|يلا|تابع|نعم|موافق|وافق\s+.+production\.?|شو هسه\??|وين وصلنا\??|مش فاهم|اشرح|continue|go on|next|what now\??|where are we\??|explain)$/i.test(String(message||"").trim());
 }
