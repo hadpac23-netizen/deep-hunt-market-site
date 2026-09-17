@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>BOOM PostHog Preview Diagnostic</title>
   <style>
-    body{font-family:system-ui,sans-serif;max-width:720px;margin:48px auto;padding:0 20px;background:#07111f;color:#eef6ff}
+    body{font-family:system-ui,sans-serif;max-width:760px;margin:48px auto;padding:0 20px;background:#07111f;color:#eef6ff}
     .card{border:1px solid #31506f;border-radius:16px;padding:24px;background:#0d1d30}
     button{margin:8px 8px 8px 0;padding:12px 16px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
-    pre{white-space:pre-wrap;background:#06101b;padding:14px;border-radius:10px;min-height:72px}
+    pre{white-space:pre-wrap;background:#06101b;padding:14px;border-radius:10px;min-height:100px}
   </style>
 </head>
 <body>
@@ -16,17 +16,29 @@
     <h1>BOOM PostHog Preview Diagnostic</h1>
     <p>Preview-only verification surface. No payment, order, supplier, or production action.</p>
     <button id="consent">Enable analytics consent</button>
+    <button id="replay">Force replay test</button>
     <button id="error">Send controlled preview exception</button>
     <button id="activity">Generate safe interaction</button>
     <pre id="status">Ready.</pre>
   </main>
-  <script src="analytics-config.js?v=analytics3"></script>
-  <script src="analytics.js?v=huntmetrics3"></script>
+  <script src="analytics-config.js?v=analytics4"></script>
+  <script src="analytics.js?v=huntmetrics4"></script>
   <script>
     const out=document.getElementById('status');
-    document.getElementById('consent').onclick=()=>{window.HuntAnalytics?.setConsent(true);out.textContent='Consent enabled. PostHog loaded: '+Boolean(window.posthog)};
-    document.getElementById('activity').onclick=()=>{out.textContent='Safe interaction recorded at '+new Date().toISOString()};
-    document.getElementById('error').onclick=()=>{const err=new Error('BOOM PREVIEW DIAGNOSTIC — controlled error tracking verification');window.posthog?.captureException?.(err,{boom_preview_diagnostic:true});out.textContent='Controlled preview exception submitted.'};
+    const show=()=>{
+      const ph=window.posthog;
+      out.textContent=JSON.stringify({
+        sdkLoaded:Boolean(ph?.__loaded),
+        optedIn:ph?.has_opted_in_capturing?.()===true,
+        recording:ph?.sessionRecordingStarted?.()===true,
+        sessionId:ph?.get_session_id?.()||null,
+        replayUrl:ph?.get_session_replay_url?.({withTimestamp:true,timestampLookBack:30})||null
+      },null,2);
+    };
+    document.getElementById('consent').onclick=()=>{window.HuntAnalytics?.setConsent?.(true);setTimeout(show,1200)};
+    document.getElementById('replay').onclick=()=>{window.posthog?.startSessionRecording?.({sampling:true,linked_flag:true});setTimeout(show,400)};
+    document.getElementById('activity').onclick=()=>{window.posthog?.capture?.('boom_posthog_sdk_probe',{probe:'preview_interaction'});show()};
+    document.getElementById('error').onclick=()=>{const err=new Error('BOOM PREVIEW DIAGNOSTIC — controlled error tracking verification');window.posthog?.captureException?.(err,{boom_preview_diagnostic:true});setTimeout(show,400)};
   </script>
 </body>
 </html>
