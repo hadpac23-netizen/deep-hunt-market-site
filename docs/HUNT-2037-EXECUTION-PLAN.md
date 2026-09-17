@@ -15,6 +15,10 @@ No giant rewrite.
 No fake completion.
 No production activation without evidence and owner approval where required.
 
+## 1A. Fast execution overlay
+
+Use `docs/HUNT-2037-7-DAY-SPRINT.md` as the aggressive Alpha execution overlay. HyperSKU is Tier 0 under `docs/HYPERSKU-HUNT-INTEGRATION-CONTRACT.md` and must pass live country/SKU/shipping truth before eligibility.
+
 ## 2. Current baseline
 
 Already available or partially available:

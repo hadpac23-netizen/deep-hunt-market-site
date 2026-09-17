@@ -107,6 +107,8 @@ For HUNT 2037 work, also load:
 - docs/HUNT-2037-MASTER-BLUEPRINT.md
 - docs/HUNT-2037-BOOM-STUDIO-BUILD-PROMPT.md
 - docs/HUNT-2037-EXECUTION-PLAN.md
+- docs/HUNT-2037-7-DAY-SPRINT.md
+- docs/HYPERSKU-HUNT-INTEGRATION-CONTRACT.md
 
 Preservation rule:
 - preserve existing approved BOOM Studio managers, gates and behavior by default,

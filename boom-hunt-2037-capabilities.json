@@ -183,6 +183,19 @@
         "source-quality"
       ],
       "notes": "Volatile facts require live verification before consequential use."
+    },
+    {
+      "id": "hypersku-integration",
+      "manager": "supplier-shipping",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": true,
+      "dependencies": [
+        "country-shipping",
+        "product-truth",
+        "integration-connections"
+      ],
+      "notes": "Tier 0 supplier lane. Open API/custom-store path verified publicly; live auth, SKU stock, shipping and fulfillment remain gated until connected and tested."
     }
   ]
 }
