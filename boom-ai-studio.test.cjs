@@ -56,6 +56,9 @@ assert(css.includes(".connection-grid"),"connection center styling missing");
 
 assert(js.includes("zszlnahjqmwozwubetkm.supabase.co/auth/v1/callback"),"OAuth callback not surfaced");
 assert(js.includes("custom:tiktok"),"TikTok custom provider identifier missing");
+assert(js.includes("hunt-auth-provider-status"),"Connection Center runtime provider status missing");
+assert(js.includes("ready:custom.tiktok===true"),"TikTok readiness is not runtime-backed");
+assert(js.includes("ready:custom.instagram===true"),"Instagram readiness is not runtime-backed");
 assert(css.includes(".connection-callback"),"connection callback styling missing");
 
 console.log("boom_ai_studio_tests=PASS");

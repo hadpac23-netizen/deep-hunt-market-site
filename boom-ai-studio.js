@@ -343,11 +343,19 @@
   }
 
   async function loadAuthConnections(){
-    let external={};
+    let external={},custom={},customStatus="unknown";
     try{
-      const res=await fetch("https://zszlnahjqmwozwubetkm.supabase.co/auth/v1/settings",{headers:{apikey:H.publishableKey},cache:"no-store"});
-      const data=await res.json();
-      external=data?.external||{};
+      const res=await fetch("https://zszlnahjqmwozwubetkm.supabase.co/functions/v1/hunt-auth-provider-status",{headers:{apikey:H.publishableKey},cache:"no-store"});
+      if(res.ok){
+        const live=await res.json();
+        external=live?.external||{};
+        custom=live?.custom||{};
+        customStatus=live?.custom_status||"unknown";
+      }else{
+        const fallback=await fetch("https://zszlnahjqmwozwubetkm.supabase.co/auth/v1/settings",{headers:{apikey:H.publishableKey},cache:"no-store"});
+        const data=await fallback.json();
+        external=data?.external||{};
+      }
     }catch{}
     const supabaseCallback="https://zszlnahjqmwozwubetkm.supabase.co/auth/v1/callback";
     const huntRedirect="https://deep-hunt-market.netlify.app/auth.html";
@@ -357,8 +365,8 @@
       {label:"GitHub",ready:external.github===true,mode:"Supabase OAuth",note:"Available; also used for BOOM owner/admin login.",callback:supabaseCallback},
       {label:"Apple",ready:external.apple===true,mode:"Supabase OAuth",note:"Requires Apple Services ID plus a valid client secret/JWT.",callback:supabaseCallback},
       {label:"Facebook",ready:external.facebook===true,mode:"Supabase OAuth / Meta",note:"Requires Meta App ID and app secret.",callback:supabaseCallback},
-      {label:"TikTok",ready:false,mode:"Custom OAuth2 · custom:tiktok",note:"Lane prepared. Create the TikTok app first, then configure the custom provider with Client Key/Secret and approved endpoints.",callback:supabaseCallback},
-      {label:"Instagram Pro",ready:false,mode:"Meta · Business/Creator",note:"Professional-account connection lane. Keep separate from ordinary consumer login until Meta app review and permissions are complete.",callback:supabaseCallback}
+      {label:"TikTok",ready:custom.tiktok===true,mode:"Custom OAuth2 · custom:tiktok",note:"Runtime status: "+customStatus+". Configure TikTok Client Key/Secret and approved endpoints.",callback:supabaseCallback},
+      {label:"Instagram Pro",ready:custom.instagram===true,mode:"Meta · Business/Creator",note:"Runtime status: "+customStatus+". Professional-account connection only; Meta review/permissions required.",callback:supabaseCallback}
     ];
     renderConnections();
   }
@@ -910,7 +918,7 @@
     await client.auth.signOut();
     location.reload();
   });
-  $("#refresh").addEventListener("click",()=>loadAll().catch(showError));
+  $("#refresh").addEventListener("click",()=>Promise.all([loadAll(),loadAuthConnections()]).catch(showError));
   $("#attention-focus").addEventListener("click",focusAttention);
   $("#chat-toggle").addEventListener("click",()=>setChatOpen(!$(".inspector").classList.contains("chat-open")));
   $("#chat-collapse").addEventListener("click",()=>setChatOpen(false));

@@ -9,12 +9,14 @@ const studioHtml=fs.readFileSync("boom-ai-studio.html","utf8");
 // Public HUNT auth stays passwordless.
 assert(publicAuth.includes("signInWithOtp"),"public auth missing email OTP");
 assert(publicAuth.includes("signInWithOAuth"),"public auth missing OAuth");
+assert(publicAuth.includes("hunt-auth-provider-status"),"public auth provider-status runtime check missing");
+assert(publicAuth.includes("custom[customKey]===true"),"custom provider readiness must come from runtime status");
 assert(!publicAuth.includes("signInWithPassword"),"public auth must not expose password login");
 assert(!publicAuth.includes(".auth.signUp("),"public auth must not expose password signup");
 for(const provider of ["google","github","apple","facebook","custom:tiktok","custom:instagram"]){
   assert(publicAuthHtml.includes(`data-oauth="${provider}"`),`public auth provider missing: ${provider}`);
 }
-assert(publicAuth.includes("customProviderReady={tiktok:false,instagram:false}"),"custom social providers must remain gated until credentials exist");
+assert(publicAuth.includes("custom[customKey]===true"),"custom social providers must remain runtime-gated until credentials exist");
 assert(publicAuthHtml.includes("Business / Creator"),"Instagram professional-account limitation must be visible in markup");
 
 // BOOM Studio may keep fallback password login, but only behind Owner/Admin verification.

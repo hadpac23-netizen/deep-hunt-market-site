@@ -12,7 +12,6 @@
   }
   const status=$("#hd-auth-status");
   const providerButtons=[...document.querySelectorAll("button[data-oauth]")];
-  const customProviderReady={tiktok:false,instagram:false};
 
   function setStatus(message,tone="") { if(!status)return; status.textContent=message||""; status.dataset.tone=tone; }
   function oauthErrorFromUrl(){
@@ -65,14 +64,24 @@
   }
 
   async function loadProviders() {
+    let external={},custom={};
     try {
-      const res=await fetch(supabaseUrl+"/auth/v1/settings",{headers:{apikey:H.publishableKey},cache:"no-store"});
-      const data=await res.json();
-      const external=data.external||{};
+      const statusRes=await fetch(supabaseUrl+"/functions/v1/hunt-auth-provider-status",{
+        headers:{apikey:H.publishableKey},cache:"no-store"
+      });
+      if(statusRes.ok){
+        const live=await statusRes.json();
+        external=live.external||{};
+        custom=live.custom||{};
+      }else{
+        const res=await fetch(supabaseUrl+"/auth/v1/settings",{headers:{apikey:H.publishableKey},cache:"no-store"});
+        const data=await res.json();
+        external=data.external||{};
+      }
       providerButtons.forEach(button=>{
         const provider=button.dataset.oauth;
-        const customKey=button.dataset.custom||"";
-        const enabled=customKey?customProviderReady[customKey]===true:external[provider]===true;
+        const customKey=button.dataset.custom;
+        const enabled=customKey?custom[customKey]===true:external[provider]===true;
         button.disabled=!enabled;
         button.hidden=!enabled;
         button.dataset.enabled=String(enabled);
