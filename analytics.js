@@ -222,6 +222,7 @@
       loadGtm();
       loadDirectGa4();
       loadPostHog();
+      try { window.posthog?.opt_in_capturing?.(); } catch {}
     }
     pageView();
     flush();
