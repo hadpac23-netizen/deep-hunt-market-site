@@ -174,5 +174,32 @@
   "owner_gate": {
     "status": "DRAFT_REVIEW",
     "next_safe_action": "Re-verify product and destination quote live in BOOM Brand Factory, review exact model compatibility, then Owner may approve creation of 2-3 product-only AI video drafts. No publishing or spend yet."
+  },
+  "video_prompt_pack": {
+    "format": "9:16 vertical short-form",
+    "rules": [
+      "Product-first visuals",
+      "No human likeness required",
+      "No fake reviews or endorsements",
+      "No unverified durability claims",
+      "No price overlay unless shipping is disclosed separately"
+    ],
+    "prompts": [
+      {
+        "name": "Phone Outfit Change",
+        "duration_seconds": 10,
+        "prompt": "Vertical 9:16 product commercial. Start with a plain smartphone on a clean neutral desk in soft daylight. A hand passes briefly across the lens as a transition. Reveal the same phone wearing a soft-shell vintage floral case with delicate botanical artwork. Smooth macro camera move over the printed flowers, TPU edge and camera cutout. Finish with a tasteful flatlay beside a notebook and dried flowers. Natural motion, realistic materials, clean ecommerce lighting, no logos, no extra text rendered into the scene. Leave negative space for later captions."
+      },
+      {
+        "name": "Tiny Art Print",
+        "duration_seconds": 12,
+        "prompt": "Vertical 9:16 aesthetic product film. Extreme macro of a vintage floral phone-case pattern, shallow depth of field, warm natural window light. Slowly rotate the phone to show the printed floral artwork, soft-shell edge and camera opening. Transition to a styled desk scene with paper, lace texture and dried flowers, keeping the phone as the clear hero. Calm premium-looking cinematography without claiming premium materials. No people, no logos, no embedded text."
+      },
+      {
+        "name": "Plain to Floral",
+        "duration_seconds": 9,
+        "prompt": "Vertical 9:16 before-and-after product ad. Begin with a generic plain phone case on a minimal desk. Use a fast swipe transition to reveal the same phone in a vintage floral soft-shell case. Show three quick detail shots: floral print, flexible-looking TPU edge, camera cutout. End on a clean product hero shot with neutral background and empty lower-third space for a later compatibility and shipping disclaimer. Realistic ecommerce style, no logos, no claims rendered into video."
+      }
+    ]
   }
 }
