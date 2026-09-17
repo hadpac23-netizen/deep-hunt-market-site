@@ -30,6 +30,7 @@ Deno.serve(async req=>{
   const user=await userFromReq(req);if(!user||!(await isAdmin(user.id)))return json(req,{error:"OWNER_ADMIN_REQUIRED"},403);
   const body=await req.json().catch(()=>({}));const action=String(body?.action||"preview_asset");
   try{
+    if(action==="readiness")return json(req,{status:"MEDIA_VAULT_READINESS",vault_runtime_active:true,runway_secret_present:Boolean(RUNWAY_SECRET),vision_enabled:OPENAI_VISION_ENABLED,vision_secret_present:Boolean(OPENAI_KEY),vision_model:OPENAI_VISION_MODEL,secret_values_exposed:false,publishing_allowed:false});
     if(action==="preview_asset")return json(req,{status:"VAULT_PLAN",...planVaultAsset(body?.asset)});
     if(action==="ingest_runway")return json(req,await ingestRunway(body,user));
     if(action==="private_preview"){const mission=String(body?.mission_id||"").trim(),asset=String(body?.asset_id||"").trim();const row=await existingAsset(mission,asset);if(!row||row.status==="GENERATED_PENDING_INGEST")return json(req,{error:"VAULT_ASSET_NOT_STORED"},404);const ttl=previewTTL(body?.ttl_seconds??60);const url=await signedPreview(row.storage_path,ttl);return json(req,{status:"PRIVATE_PREVIEW_READY",asset_id:row.id,vault_status:row.status,signed_url:url,expires_in_seconds:ttl,qa:row.qa_json||{},public_url:null,publishing_allowed:false});}

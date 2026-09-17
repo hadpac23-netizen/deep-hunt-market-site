@@ -12,6 +12,7 @@ Deno.serve(async req=>{
   const enabled=Deno.env.get("RUNWAY_VIDEO_ENABLED")==="true";
   const secret=Deno.env.get("RUNWAYML_API_SECRET")||"";
   const action=String(body?.action||"preview");
+  if(action==="readiness")return json(req,{status:"RUNWAY_READINESS",enabled,secret_present:Boolean(secret),execution_ready:enabled&&Boolean(secret),owner_approval_required_per_create:true,secret_value_exposed:false});
   if(action==="preview"){
     try{return json(req,buildRunwayCreate(body?.dispatch,{enabled,ownerApproved:body?.owner_approved===true,secretPresent:Boolean(secret)}))}catch(e){return json(req,{error:e instanceof Error?e.message:String(e)},400)}
   }

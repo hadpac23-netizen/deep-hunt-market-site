@@ -31,9 +31,10 @@ export function evaluateDeploymentReadiness(facts={}){
   const activation=checks.filter(x=>x.kind==="activation");
   const allPass=x=>x.every(c=>c.status==="PASS");
   const source_ready=allPass(source);
-  const runtime_ready=source_ready&&allPass(runtime)&&allPass(provider);
-  const generation_ready=runtime_ready&&allPass(activation);
+  const runtime_ready=source_ready&&allPass(runtime);
+  const providers_ready=runtime_ready&&allPass(provider);
+  const generation_ready=providers_ready&&allPass(activation);
   const blockers=checks.filter(c=>c.status!=="PASS").map(c=>({id:c.id,label:c.label,status:c.status,kind:c.kind}));
-  const status=!source_ready?"SOURCE_BLOCKED":!runtime_ready?"RUNTIME_BLOCKED":!generation_ready?"OWNER_ACTIVATION_REQUIRED":"READY_FOR_FIRST_GENERATION";
-  return {status,source_ready,runtime_ready,generation_ready,checks,blockers,provider_calls_made:0,spend_authorized:false,publishing_authorized:false};
+  const status=!source_ready?"SOURCE_BLOCKED":!runtime_ready?"RUNTIME_BLOCKED":!providers_ready?"PROVIDERS_BLOCKED":!generation_ready?"OWNER_ACTIVATION_REQUIRED":"READY_FOR_FIRST_GENERATION";
+  return {status,source_ready,runtime_ready,providers_ready,generation_ready,checks,blockers,provider_calls_made:0,spend_authorized:false,publishing_authorized:false};
 }
