@@ -106,6 +106,7 @@ For HUNT 2037 work, also load:
 - boom-hunt-2037-capabilities.json
 - docs/HUNT-2037-MASTER-BLUEPRINT.md
 - docs/HUNT-2037-BOOM-STUDIO-BUILD-PROMPT.md
+- docs/HUNT-2037-EXECUTION-PLAN.md
 
 Preservation rule:
 - preserve existing approved BOOM Studio managers, gates and behavior by default,
