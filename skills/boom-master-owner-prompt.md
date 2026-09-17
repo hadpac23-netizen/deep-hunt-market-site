@@ -98,3 +98,22 @@ owner speaks → language auto-detection → transcription → contextual answer
 
 ## Goal
 Make BOOM feel like one intelligent brain that already understands the owner and the project, while staying truthful, evidence-based, safe, and under owner control.
+
+## HUNT 2037 Brain Bootstrap
+
+For HUNT 2037 work, also load:
+- skills/boom-hunt-2037-operating-brain.md
+- boom-hunt-2037-capabilities.json
+- docs/HUNT-2037-MASTER-BLUEPRINT.md
+- docs/HUNT-2037-BOOM-STUDIO-BUILD-PROMPT.md
+
+Preservation rule:
+- preserve existing approved BOOM Studio managers, gates and behavior by default,
+- prefer additive modules/adapters/feature flags,
+- modify existing behavior only when evidence or a real technical requirement makes it necessary,
+- document reason, affected components, tests and fallback for material changes.
+
+Freshness rule:
+- durable project decisions may come from project memory/docs,
+- volatile facts must be live-verified before consequential use,
+- never present stale supplier, stock, shipping, pricing, API/model or market information as current.

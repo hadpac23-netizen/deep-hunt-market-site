@@ -1,0 +1,188 @@
+{
+  "version": 1,
+  "truth_states": [
+    "VERIFIED_REAL",
+    "IMPLEMENTED_BUT_UNVERIFIED",
+    "PLANNED",
+    "PILOT",
+    "BLOCKED",
+    "CANDIDATE",
+    "UNKNOWN"
+  ],
+  "rules": {
+    "brain_awareness_is_not_activation": true,
+    "production_activation_requires_evidence": true,
+    "material_activation_owner_gated": true,
+    "preserve_existing_by_default": true
+  },
+  "capabilities": [
+    {
+      "id": "decision-intelligence",
+      "manager": "decision-intelligence",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "product-truth",
+        "country-shipping"
+      ],
+      "notes": "Core scoring module exists and passes unit tests; storefront integration is staged."
+    },
+    {
+      "id": "country-shipping",
+      "manager": "country-localization",
+      "brain_status": "IMPLEMENTED_BUT_UNVERIFIED",
+      "storefront_status": "PARTIAL",
+      "owner_gate": false,
+      "dependencies": [
+        "supplier-shipping",
+        "inventory-truth"
+      ],
+      "notes": "Existing country/shipping work must be live-verified before claims of full coverage."
+    },
+    {
+      "id": "product-truth",
+      "manager": "inventory-truth",
+      "brain_status": "IMPLEMENTED_BUT_UNVERIFIED",
+      "storefront_status": "PARTIAL",
+      "owner_gate": false,
+      "dependencies": [
+        "sale-readiness"
+      ],
+      "notes": "Truth gates exist in project architecture; exact current surface coverage must be verified."
+    },
+    {
+      "id": "dynamic-worlds",
+      "manager": "hunt-worlds-flow",
+      "brain_status": "PLANNED",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "decision-intelligence",
+        "performance"
+      ],
+      "notes": "HUNT 2037 dynamic world system is specified but not production-active."
+    },
+    {
+      "id": "taste-dna",
+      "manager": "feedback-intelligence",
+      "brain_status": "CANDIDATE",
+      "storefront_status": "PARTIAL",
+      "owner_gate": false,
+      "dependencies": [
+        "analytics-truth",
+        "memory-continuity"
+      ],
+      "notes": "Current device signals exist; full Taste DNA model is not yet complete."
+    },
+    {
+      "id": "hunt-memory",
+      "manager": "memory-continuity",
+      "brain_status": "PLANNED",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "analytics-truth"
+      ],
+      "notes": "Visual history and continuity are specified for build."
+    },
+    {
+      "id": "boom-stylist",
+      "manager": "boom-stylist",
+      "brain_status": "PLANNED",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "decision-intelligence",
+        "product-truth",
+        "taste-dna"
+      ],
+      "notes": "Stylist contract defined; implementation staged."
+    },
+    {
+      "id": "boom-mirror",
+      "manager": "boom-mirror",
+      "brain_status": "PLANNED",
+      "storefront_status": "OFF",
+      "owner_gate": true,
+      "dependencies": [
+        "privacy-consent",
+        "product-truth",
+        "boom-stylist"
+      ],
+      "notes": "Try-on/Focus Engine specified; photo processing is not active."
+    },
+    {
+      "id": "look-deconstruction",
+      "manager": "boom-mirror",
+      "brain_status": "PLANNED",
+      "storefront_status": "OFF",
+      "owner_gate": true,
+      "dependencies": [
+        "boom-mirror",
+        "visual-search"
+      ],
+      "notes": "Multi-item inspiration decomposition specified."
+    },
+    {
+      "id": "creative-brand-factory",
+      "manager": "creative-brand-factory",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": true,
+      "dependencies": [
+        "visual-qa",
+        "media-vault"
+      ],
+      "notes": "Provider/QA foundation exists; no paid generation or publishing without approval."
+    },
+    {
+      "id": "share-referral",
+      "manager": "share-referral",
+      "brain_status": "PLANNED",
+      "storefront_status": "OFF",
+      "owner_gate": true,
+      "dependencies": [
+        "analytics-truth",
+        "fraud-controls"
+      ],
+      "notes": "Sharing may be safe; reward economics and points require governance."
+    },
+    {
+      "id": "experimentation-learning",
+      "manager": "experimentation-learning",
+      "brain_status": "PLANNED",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "analytics-truth",
+        "release-control"
+      ],
+      "notes": "Feature-flag/holdout framework to be integrated."
+    },
+    {
+      "id": "post-purchase-styling",
+      "manager": "boom-stylist",
+      "brain_status": "PLANNED",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "orders",
+        "returns-care",
+        "memory-continuity"
+      ],
+      "notes": "Ownership-aware styling follows verified order data."
+    },
+    {
+      "id": "knowledge-freshness",
+      "manager": "knowledge-freshness",
+      "brain_status": "PILOT",
+      "storefront_status": "N/A",
+      "owner_gate": false,
+      "dependencies": [
+        "source-quality"
+      ],
+      "notes": "Volatile facts require live verification before consequential use."
+    }
+  ]
+}
