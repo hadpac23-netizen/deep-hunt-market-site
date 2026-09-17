@@ -40,6 +40,9 @@
       category:clean(input.category),
       world:clean(input.world),
       look_id:clean(input.look_id),
+      title:clean(input.title),
+      image_url:clean(input.image_url),
+      url:clean(input.url),
       active:input.active!==false,
       source:clean(input.source||"hunt")
     });
@@ -57,6 +60,9 @@
 
   function clear(){
     if(typeof localStorage!=="undefined")try{localStorage.removeItem(STORAGE_KEY)}catch{}
+    if(typeof window!=="undefined"&&typeof window.dispatchEvent==="function"){
+      try{window.dispatchEvent(new CustomEvent("hunt:memory-reset"))}catch{}
+    }
   }
 
   function events({limit=MAX_EVENTS,type=null}={}){
