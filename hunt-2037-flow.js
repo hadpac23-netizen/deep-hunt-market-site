@@ -26,6 +26,10 @@
     return H.productUrl?.(item)||`product.html?provider=${encodeURIComponent(item.provider||"")}&id=${encodeURIComponent(item.item_id||"")}`;
   }
 
+  function laneReason(lane){
+    return ({personalized:"Matches what you explored",adjacent:"Related to recent browsing",new:"New in HUNT",wildcard:"A controlled surprise"})[lane]||"Discovery pick";
+  }
+
   function productCard(row){
     const item=row.item||{};
     const href=productUrl(item);
@@ -44,6 +48,7 @@
         <small>${H.esc(item.provider||"CATALOG")}</small>
         <a href="${H.esc(href)}">${H.esc(item.title||"Product")}</a>
         <div class="hunt2037-price"><strong>${H.esc(price)}</strong><em>${verified?"HUNT retail":"live recheck"}</em></div>
+        <small class="hunt2037-why">Why this: ${H.esc(laneReason(row.lane))}</small>
         <button class="hunt2037-share" type="button" data-hunt2037-share data-share-url="${H.esc(href)}" data-provider="${H.esc(item.provider||"")}" data-item-id="${H.esc(item.item_id||"")}" data-category="${H.esc(item.category||item._shelf_slug||"")}">Share</button>
       </div>
     </article>`;
@@ -95,7 +100,7 @@
     root.hidden=false;
     root.innerHTML=`
       <section class="hunt2037-intro">
-        <div><small>HUNT 2037 ALPHA</small><h1>Shopping that keeps changing with you.</h1><p>Dynamic worlds, real catalog products, memory-aware discovery.</p><div class="hunt2037-alpha-links"><a class="hunt2037-mirror-link" href="stylist.html?hunt2037=1">Open BOOM Stylist</a><a class="hunt2037-mirror-link" href="mirror.html?hunt2037=1">Open BOOM Mirror</a></div></div>
+        <div><small>HUNT 2037 ALPHA</small><h1>Shopping that keeps changing with you.</h1><p>Dynamic worlds, real catalog products, memory-aware discovery.</p><div class="hunt2037-alpha-links"><a class="hunt2037-mirror-link" href="history.html?hunt2037=1">Open HUNT History</a><a class="hunt2037-mirror-link" href="stylist.html?hunt2037=1">Open BOOM Stylist</a><a class="hunt2037-mirror-link" href="mirror.html?hunt2037=1">Open BOOM Mirror</a></div></div>
         <div class="hunt2037-stats"><span><b>${model.worlds.length}</b> WORLDS</span><span><b>DYNAMIC</b> CATALOG</span></div>
       </section>
       ${recentSection(shelves,context)}
@@ -142,6 +147,9 @@
           provider:u.searchParams.get("provider")||"",
           item_id:u.searchParams.get("id")||u.searchParams.get("product_id")||"",
           category:card.dataset.category||"",
+          title:card.querySelector(".hunt2037-product-body>a")?.textContent?.trim()||"",
+          image_url:card.querySelector("img")?.src||"",
+          url:link.href,
           source:"hunt2037-flow"
         });
       }catch{}
