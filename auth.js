@@ -72,11 +72,12 @@
         const provider=button.dataset.oauth;
         const enabled=external[provider]===true;
         button.disabled=!enabled;
+        button.hidden=!enabled;
         button.dataset.enabled=String(enabled);
         button.querySelector("small").textContent=enabled?"READY":"NOT CONFIGURED";
       });
     } catch {
-      providerButtons.forEach(button=>{button.disabled=true;button.querySelector("small").textContent="STATUS UNAVAILABLE";});
+      providerButtons.forEach(button=>{button.disabled=true;button.hidden=true;button.querySelector("small").textContent="STATUS UNAVAILABLE";});
     }
   }
 
