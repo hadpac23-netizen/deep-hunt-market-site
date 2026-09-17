@@ -4,6 +4,7 @@ const PROVIDERS={
 };
 
 const clean=v=>String(v??"").trim();
+const normalizeProvider=id=>id==="google-veo31"?"veo-3.1":id;
 const finite=(v,min,max)=>Number.isFinite(Number(v))&&Number(v)>=min&&Number(v)<=max;
 
 function httpsUrl(value){
@@ -13,9 +14,9 @@ function httpsUrl(value){
 }
 
 function validateShot(raw,index){
-  const provider=clean(raw?.primary_provider);
+  const provider=normalizeProvider(clean(raw?.primary_provider));
   if(!PROVIDERS[provider])throw new Error(`SHOT_${index+1}_PROVIDER_UNSUPPORTED`);
-  const fallback=clean(raw?.fallback_provider);
+  const fallback=normalizeProvider(clean(raw?.fallback_provider));
   if(fallback&&!PROVIDERS[fallback])throw new Error(`SHOT_${index+1}_FALLBACK_UNSUPPORTED`);
   const duration=Number(raw?.duration_seconds);
   if(!finite(duration,1,10))throw new Error(`SHOT_${index+1}_DURATION_INVALID`);

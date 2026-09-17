@@ -1,0 +1,116 @@
+{
+  "evidence_id": "BF-IL-0001-DRYRUN-01",
+  "created_at": "2026-09-17T19:46:02.299Z",
+  "source": "LOCAL_SERVER_CORE_SIMULATION",
+  "product_truth_verified_at": "2026-09-17T19:44:55.928Z",
+  "qa": {
+    "input_shots": 12,
+    "finalist_count": 4,
+    "generation_reduction_pct": 66.7,
+    "finalist_ids": [
+      "S2-4",
+      "S1-1",
+      "S3-1",
+      "S2-1"
+    ]
+  },
+  "dry_run": {
+    "status": "DRY_RUN",
+    "execution_allowed": false,
+    "provider_calls_made": 0,
+    "spend_authorized": false,
+    "publishing_authorized": false,
+    "owner_approval_required": true,
+    "product_truth": {
+      "provider": "CJdropshipping",
+      "item_id": "2406230329031627300",
+      "variant_id": "2406230329031627500",
+      "country_code": "IL",
+      "verified_at": "2026-09-17T19:44:55.928Z"
+    },
+    "dispatches": [
+      {
+        "sequence": 1,
+        "shot_id": "S2-4",
+        "provider": "runway-gen45",
+        "fallback_provider": "veo-3.1",
+        "adapter": "runway",
+        "operation": "image-to-video",
+        "request_preview": {
+          "duration_seconds": 2,
+          "aspect_ratio": "9:16",
+          "prompt": "Vertical 9:16 aesthetic product film. Extreme macro of a vintage floral phone-case pattern, shallow depth of field, warm natural window light. Slowly rotate the phone to show the printed floral artwork, soft-shell edge and camera opening. Transition to a styled desk scene with paper, lace texture and dried flowers, keeping the phone as the clear hero. Calm premium-looking cinematography without claiming premium materials. No people, no logos, no embedded text.",
+          "reference_image_url": "https://cf.cjdropshipping.com/quick/product/d2e7be13-d9c1-4b1a-adbd-275e06062b6c.jpg"
+        },
+        "secret_required": "RUNWAY_API_KEY",
+        "secret_present_in_response": false,
+        "cost_estimate": null,
+        "cost_status": "PROVIDER_PRICING_ADAPTER_NOT_CONNECTED",
+        "execution_status": "BLOCKED_DRY_RUN"
+      },
+      {
+        "sequence": 2,
+        "shot_id": "S1-1",
+        "provider": "runway-gen45",
+        "fallback_provider": "veo-3.1",
+        "adapter": "runway",
+        "operation": "image-to-video",
+        "request_preview": {
+          "duration_seconds": 2,
+          "aspect_ratio": "9:16",
+          "prompt": "Vertical 9:16 product commercial. Start with a plain smartphone on a clean neutral desk in soft daylight. A hand passes briefly across the lens as a transition. Reveal the same phone wearing a soft-shell vintage floral case with delicate botanical artwork. Smooth macro camera move over the printed flowers, TPU edge and camera cutout. Finish with a tasteful flatlay beside a notebook and dried flowers. Natural motion, realistic materials, clean ecommerce lighting, no logos, no extra text rendered into the scene. Leave negative space for later captions.",
+          "reference_image_url": "https://cf.cjdropshipping.com/quick/product/d2e7be13-d9c1-4b1a-adbd-275e06062b6c.jpg"
+        },
+        "secret_required": "RUNWAY_API_KEY",
+        "secret_present_in_response": false,
+        "cost_estimate": null,
+        "cost_status": "PROVIDER_PRICING_ADAPTER_NOT_CONNECTED",
+        "execution_status": "BLOCKED_DRY_RUN"
+      },
+      {
+        "sequence": 3,
+        "shot_id": "S3-1",
+        "provider": "runway-gen45",
+        "fallback_provider": "veo-3.1",
+        "adapter": "runway",
+        "operation": "image-to-video",
+        "request_preview": {
+          "duration_seconds": 2,
+          "aspect_ratio": "9:16",
+          "prompt": "Vertical 9:16 before-and-after product ad. Begin with a generic plain phone case on a minimal desk. Use a fast swipe transition to reveal the same phone in a vintage floral soft-shell case. Show three quick detail shots: floral print, flexible-looking TPU edge, camera cutout. End on a clean product hero shot with neutral background and empty lower-third space for a later compatibility and shipping disclaimer. Realistic ecommerce style, no logos, no claims rendered into video.",
+          "reference_image_url": "https://cf.cjdropshipping.com/quick/product/d2e7be13-d9c1-4b1a-adbd-275e06062b6c.jpg"
+        },
+        "secret_required": "RUNWAY_API_KEY",
+        "secret_present_in_response": false,
+        "cost_estimate": null,
+        "cost_status": "PROVIDER_PRICING_ADAPTER_NOT_CONNECTED",
+        "execution_status": "BLOCKED_DRY_RUN"
+      },
+      {
+        "sequence": 4,
+        "shot_id": "S2-1",
+        "provider": "runway-gen45",
+        "fallback_provider": "veo-3.1",
+        "adapter": "runway",
+        "operation": "image-to-video",
+        "request_preview": {
+          "duration_seconds": 3,
+          "aspect_ratio": "9:16",
+          "prompt": "Vertical 9:16 aesthetic product film. Extreme macro of a vintage floral phone-case pattern, shallow depth of field, warm natural window light. Slowly rotate the phone to show the printed floral artwork, soft-shell edge and camera opening. Transition to a styled desk scene with paper, lace texture and dried flowers, keeping the phone as the clear hero. Calm premium-looking cinematography without claiming premium materials. No people, no logos, no embedded text.",
+          "reference_image_url": "https://cf.cjdropshipping.com/quick/product/d2e7be13-d9c1-4b1a-adbd-275e06062b6c.jpg"
+        },
+        "secret_required": "RUNWAY_API_KEY",
+        "secret_present_in_response": false,
+        "cost_estimate": null,
+        "cost_status": "PROVIDER_PRICING_ADAPTER_NOT_CONNECTED",
+        "execution_status": "BLOCKED_DRY_RUN"
+      }
+    ],
+    "blockers": [
+      "OWNER_APPROVAL_REQUIRED",
+      "PROVIDER_CONNECTOR_NOT_CONNECTED",
+      "DRY_RUN_ONLY"
+    ],
+    "next_safe_action": "Review dispatch previews. Provider connection and any paid generation require explicit Owner approval."
+  }
+}

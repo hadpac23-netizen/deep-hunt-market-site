@@ -22,6 +22,8 @@ const {pathToFileURL}=require("node:url");
   assert.equal(out.dispatches.length,2);
   assert(out.dispatches.every(x=>x.execution_status==="BLOCKED_DRY_RUN"));
   assert(out.dispatches.every(x=>x.secret_present_in_response===false));
+  const aliasOut=buildDryRunPlan({...good,route_plan:{execution_allowed:false,shots:[{id:"v",primary_provider:"google-veo31",duration_seconds:4,aspect_ratio:"9:16",mode:"text-to-video",prompt:"Alias test"}]}});
+  assert.equal(aliasOut.dispatches[0].provider,"veo-3.1");
   assert(out.blockers.includes("OWNER_APPROVAL_REQUIRED"));
   assert.throws(()=>buildDryRunPlan({...good,mode:"execute"}),/DRY_RUN_ONLY/);
   assert.throws(()=>buildDryRunPlan({...good,product_truth:{...good.product_truth,source_verified:false}}),/PRODUCT_TRUTH_REVERIFY_REQUIRED/);
