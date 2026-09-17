@@ -266,7 +266,7 @@
   const observer=new MutationObserver(queueScan);
   observer.observe(document.documentElement,{childList:true,subtree:true});
 
-  window.HuntShoppingActions={snapshot:snapshotRows};
+  window.HuntShoppingActions={snapshot:snapshotRows,rescan:scan};
 
   async function init(){
     loadLocalState();

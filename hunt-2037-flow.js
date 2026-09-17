@@ -104,6 +104,7 @@
         <div class="hunt2037-discovery-head"><small>DISCOVERY ENGINE</small><h2>Keep moving.</h2></div>
         ${model.units.map(laneSection).join("")}
       </section>`;
+    window.HuntShoppingActions?.rescan?.();
   }
 
   document.addEventListener("click",async event=>{

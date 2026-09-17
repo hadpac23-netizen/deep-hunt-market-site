@@ -29,6 +29,7 @@ assert(html.includes("hunt-2037-flow.js?v=alpha1"),"Flow UI script missing");
 assert(js.includes('searchParams.get("hunt2037")==="1"'),"URL feature flag missing");
 assert(js.includes("hunt_2037_flow_enabled"),"persistent feature flag missing");
 assert(js.includes("data-hunt2037-share"),"share action missing");
+assert(js.includes("HuntShoppingActions?.rescan?.()"),"shopping action rescan hook missing");
 assert(!js.includes("PRODUCTS IN SESSION"),"visible catalog counts must stay hidden");
 assert(js.includes('type:"world_enter"'),"world memory event missing");
 assert(js.includes('type:"product_view"'),"product memory event missing");
