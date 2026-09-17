@@ -30,6 +30,11 @@ create table if not exists public.boom_media_assets (
   status text not null default 'GENERATED_PENDING_INGEST' check (status in (
     'GENERATED_PENDING_INGEST','STORED_PENDING_QA','QA_PASSED','QA_FAILED','OWNER_APPROVED','REJECTED'
   )),
+  visual_qa_json jsonb not null default '{}'::jsonb,
+  visual_qa_provider text,
+  visual_qa_model text,
+  visual_qa_completed_at timestamptz,
+  visual_qa_updated_by uuid references auth.users(id) on delete set null,
   qa_json jsonb not null default '{}'::jsonb,
   qa_completed_at timestamptz,
   qa_updated_by uuid references auth.users(id) on delete set null,

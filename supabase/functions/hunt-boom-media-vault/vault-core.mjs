@@ -35,7 +35,8 @@ export function postGenerationQA(evidence={}){
     no_unverified_claims:evidence.no_unverified_claims===true,
     no_fake_reviews:evidence.no_fake_reviews===true,
     no_unintended_branding:evidence.no_unintended_branding===true,
-    no_major_visual_defects:evidence.no_major_visual_defects===true
+    no_major_visual_defects:evidence.no_major_visual_defects===true,
+    visual_qa_passed:evidence.visual_qa_passed===true
   };
   const failed=Object.entries(hard).filter(([,v])=>!v).map(([k])=>k);
   const score=Math.round((Object.values(hard).filter(Boolean).length/Object.keys(hard).length)*100);

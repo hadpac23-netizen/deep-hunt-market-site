@@ -107,3 +107,5 @@ assert(js.includes('commitVaultOwnerDecision("approve")'),"Owner approve wiring 
 assert(js.includes('commitVaultOwnerDecision("reject")'),"Owner reject wiring missing");
 assert(html.includes("SERVER INGEST + SHA-256"),"Media ingest/checksum stage missing");
 assert(html.includes("short-lived signed URLs"),"Private preview contract missing");
+
+assert(html.includes("VISUAL QA"),"Visual QA stage missing from Media Vault flow");
