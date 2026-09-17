@@ -47,3 +47,13 @@ assert(js.includes("postgres_changes"),"realtime subscriptions missing");
 assert(js.includes("hunt-boom-chat"),"BOOM chat function missing");
 
 console.log("boom_ai_studio_tests=PASS");
+
+assert(html.includes('data-tab="brand-factory"'),"Brand Factory tab missing");
+assert(html.includes('id="brand-brief"'),"Brand Factory product truth form missing");
+assert(html.includes('data-brand-stage="red_team"'),"Brand Factory Red Team stage missing");
+assert(html.includes('data-brand-stage="owner_gate"'),"Brand Factory Owner Gate missing");
+assert(js.includes("function buildBrandPrompt"),"Brand Factory prompt builder missing");
+assert(js.includes("Never invent product claims"),"Brand Factory truth rule missing");
+assert(js.includes("DRAFT_REVIEW"),"Brand Factory draft owner gate missing");
+assert(js.includes('mode:"chat"'),"Brand Factory must stay analysis-only chat mode");
+assert(css.includes(".brand-factory-layout"),"Brand Factory layout styling missing");

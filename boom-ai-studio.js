@@ -55,7 +55,9 @@
     vadRaf:null,
     traceType:"all",
     connectRows:[],
-    connectCheckedAt:null
+    connectCheckedAt:null,
+    brandMission:null,
+    brandBusy:false
   };
 
   const toolNodes=[
@@ -802,6 +804,87 @@
     }
   }
 
+
+  function brandNum(value){
+    const n=Number(String(value||"").replace(/[^0-9.-]/g,""));
+    return Number.isFinite(n)?n:null;
+  }
+
+  function brandInputs(){
+    const price=brandNum($("#brand-price")?.value),cost=brandNum($("#brand-cost")?.value),shipping=brandNum($("#brand-shipping")?.value);
+    const gross=[price,cost,shipping].every(v=>v!==null)?price-cost-shipping:null;
+    const margin=gross!==null&&price>0?(gross/price)*100:null;
+    return {
+      product_name:$("#brand-product-name")?.value.trim()||"",category:$("#brand-category")?.value.trim()||"",target_market:$("#brand-market")?.value.trim()||"",
+      price,cost,shipping,currency:($("#brand-currency")?.value.trim()||"USD").toUpperCase(),verified_facts:$("#brand-facts")?.value.trim()||"",proof_notes:$("#brand-proof")?.value.trim()||"",gross_profit:gross,gross_margin_pct:margin
+    };
+  }
+
+  function renderBrandFinance(){
+    const x=brandInputs(),el=$("#brand-finance");if(!el)return;
+    el.textContent=x.gross_margin_pct===null?"Gross margin: — · add verified price/cost/shipping to calculate":"Gross margin: "+x.gross_margin_pct.toFixed(1)+"% · gross "+x.gross_profit.toFixed(2)+" "+x.currency;
+  }
+
+  function setBrandPipeline(mode="waiting"){
+    const stages=$$("[data-brand-stage]");
+    stages.forEach((el,i)=>{
+      el.classList.remove("running","done","blocked");
+      const label=el.querySelector("span");
+      if(mode==="running"){el.classList.add("running");if(label)label.textContent=i===7?"locked":"working"}
+      else if(mode==="done"){el.classList.add(i===7?"blocked":"done");if(label)label.textContent=i===7?"awaiting owner":"complete"}
+      else if(label)label.textContent=i===7?"locked":"waiting";
+    });
+  }
+
+  function buildBrandPrompt(x){
+    return `BOOM BRAND FACTORY V1 — ANALYSIS/DRAFT ONLY.\nDo not publish, spend money, contact suppliers, change production, or execute campaigns.\nUse ONLY the verified product facts below. Never invent product claims, prices, stock, shipping, reviews, certifications, performance, scarcity, endorsements, or evidence. Unknowns must be labelled UNKNOWN / NEEDS PROOF.\n\nPRODUCT TRUTH:\n${JSON.stringify(x,null,2)}\n\nReturn STRICT JSON only (no markdown) with exactly these top-level keys: mission, audience, positioning, hooks, concepts, scripts, red_team, score, owner_gate.\nRequirements: hooks=10 distinct hooks; concepts=5 ad concepts; scripts=3 short-form video scripts with scene arrays; red_team must identify blocked/unproven claims and missing evidence; score must contain opportunity, brand_fit, creative, proof, margin, overall as 0-100 numbers. owner_gate.status must be DRAFT_REVIEW and owner_gate.next_safe_action must require explicit Owner approval before any publishing or spend. Focus on ethical, truthful marketing and commercial usefulness.`;
+  }
+
+  function parseBrandReply(text){
+    const raw=String(text||"").trim().replace(/^```(?:json)?\s*/i,"").replace(/\s*```$/,"");
+    try{return JSON.parse(raw)}catch{}
+    const start=raw.indexOf("{"),end=raw.lastIndexOf("}");
+    if(start>=0&&end>start){try{return JSON.parse(raw.slice(start,end+1))}catch{}}
+    return null;
+  }
+
+  function renderBrandResult(result,raw){
+    const title=$("#brand-result-title"),out=$("#brand-output"),scores=$("#brand-scoreboard"),copy=$("#brand-copy");
+    if(title)title.textContent=result?.mission?.product_name||brandInputs().product_name||"Brand mission";
+    if(out)out.textContent=result?JSON.stringify(result,null,2):String(raw||"No structured output returned.");
+    if(scores){
+      const s=result?.score||{};
+      scores.innerHTML=Object.entries(s).filter(([,v])=>Number.isFinite(Number(v))).map(([k,v])=>'<span class="'+(k==="overall"?"overall":"")+'>'+esc(k.replaceAll("_"," "))+' · '+Math.max(0,Math.min(100,Number(v)))+'</span>').join("");
+    }
+    if(copy)copy.disabled=false;
+  }
+
+  async function runBrandFactory(ev){
+    ev?.preventDefault?.();
+    if(state.brandBusy)return;
+    const x=brandInputs();
+    if(!x.product_name){$("#brand-status").textContent="Product name is required.";return}
+    state.brandBusy=true;setBrandPipeline("running");
+    $("#brand-run").disabled=true;$("#brand-status").textContent="BOOM is building a draft mission · no publishing / no spend.";
+    try{
+      const data=await invokeBoomFunction("hunt-boom-chat",{message:buildBrandPrompt(x),conversation_id:state.conversationId,mode:"chat"});
+      if(data?.error)throw new Error(data.error);
+      if(data?.conversation_id)state.conversationId=data.conversation_id;
+      const raw=String(data.copy_report||data.display_text||data.reply||"");
+      const parsed=parseBrandReply(raw);
+      state.brandMission=parsed||{raw_output:raw,owner_gate:{status:"DRAFT_REVIEW"}};
+      renderBrandResult(parsed,raw);setBrandPipeline("done");
+      $("#brand-status").textContent=parsed?"Draft complete · Owner Gate locked before publishing/spend.":"Draft returned, but structured JSON parsing failed · manual review required.";
+    }catch(err){
+      setBrandPipeline("waiting");$("#brand-status").textContent="Brand Factory error: "+(err.message||err);
+    }finally{state.brandBusy=false;$("#brand-run").disabled=false}
+  }
+
+  function clearBrandFactory(){
+    $("#brand-brief")?.reset();if($("#brand-currency"))$("#brand-currency").value="USD";state.brandMission=null;setBrandPipeline("waiting");renderBrandFinance();
+    $("#brand-result-title").textContent="No mission yet";$("#brand-scoreboard").innerHTML="";$("#brand-output").textContent="Run one verified product through the factory. Output remains a draft until Owner approval.";$("#brand-copy").disabled=true;$("#brand-status").textContent="Ready · no campaign will be published.";
+  }
+
   async function ensureAdmin(session){
     const {data,error}=await client.from("profiles").select("is_admin").eq("id",session.user.id).maybeSingle();
     if(error)throw error;
@@ -931,6 +1014,10 @@
     location.reload();
   });
   $("#refresh").addEventListener("click",()=>loadAll().catch(showError));
+  $("#brand-brief")?.addEventListener("submit",runBrandFactory);
+  $("#brand-clear")?.addEventListener("click",clearBrandFactory);
+  $$("#brand-price,#brand-cost,#brand-shipping,#brand-currency").forEach(el=>el.addEventListener("input",renderBrandFinance));
+  $("#brand-copy")?.addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("#brand-output")?.textContent||"");$("#brand-copy").textContent="✓";setTimeout(()=>$("#brand-copy").textContent="COPY",1000)}catch{$("#brand-status").textContent="Copy failed · select the output manually."}});
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
@@ -984,6 +1071,7 @@
       $("#"+tab.dataset.tab).classList.add("active");
       if(tab.dataset.tab==="studio")requestAnimationFrame(drawLinks);
       if(tab.dataset.tab==="connect")renderConnect();
+      if(tab.dataset.tab==="brand-factory")renderBrandFinance();
       return;
     }
     const managerNode=ev.target.closest("[data-manager-id]");

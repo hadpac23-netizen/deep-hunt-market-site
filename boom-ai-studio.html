@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>BOOM AI Engineering Studio</title>
-  <link rel="stylesheet" href="boom-ai-studio.css?v=1">
+  <link rel="stylesheet" href="boom-ai-studio.css?v=2">
 </head>
 <body>
   <header class="topbar">
@@ -22,6 +22,7 @@
       <button class="tab" data-tab="evaluations" type="button">Evaluations</button>
       <button class="tab" data-tab="learning" type="button">Learning</button>
       <button class="tab" data-tab="connect" type="button">Connect</button>
+      <button class="tab" data-tab="brand-factory" type="button">Brand Factory</button>
     </nav>
     <div class="top-actions">
       <span class="live-pill" id="live-state">CONNECTING</span>
@@ -144,6 +145,51 @@
           <div class="learning-grid" id="learning-list"></div>
         </section>
 
+
+        <section class="view scroll-view" id="brand-factory">
+          <div class="page-head brand-factory-head">
+            <div><small>BOOM BRAND FACTORY · DRAFT ONLY</small><h1>Product → Brand → Creative Tournament</h1><p>Research · Positioning · Hooks · Concepts · Scripts · Red Team · Score · Owner Gate.</p></div>
+            <span class="brand-gate">OWNER APPROVAL REQUIRED</span>
+          </div>
+          <div class="brand-factory-layout">
+            <form class="brand-brief" id="brand-brief">
+              <h2>1. Product Truth</h2>
+              <p>מזינים רק נתונים מאומתים. BOOM לא רשאי להמציא מחיר, מלאי, משלוח, ביצועים או claims.</p>
+              <label>Product name<input id="brand-product-name" required maxlength="120" placeholder="Real HUNT product"></label>
+              <div class="brand-form-grid">
+                <label>Category<input id="brand-category" maxlength="80" placeholder="e.g. phone accessories"></label>
+                <label>Target market<input id="brand-market" maxlength="80" placeholder="e.g. Israel / Germany"></label>
+                <label>Sale price<input id="brand-price" inputmode="decimal" placeholder="0.00"></label>
+                <label>Supplier cost<input id="brand-cost" inputmode="decimal" placeholder="0.00"></label>
+                <label>Shipping cost<input id="brand-shipping" inputmode="decimal" placeholder="0.00"></label>
+                <label>Currency<input id="brand-currency" maxlength="8" value="USD"></label>
+              </div>
+              <label>Verified product facts<textarea id="brand-facts" rows="4" maxlength="1200" placeholder="Materials, sizes, compatibility, verified supplier facts..."></textarea></label>
+              <label>Evidence / missing proof<textarea id="brand-proof" rows="3" maxlength="900" placeholder="What is verified, what still needs proof"></textarea></label>
+              <div class="brand-finance" id="brand-finance">Gross margin: —</div>
+              <div class="brand-actions"><button class="brand-run" id="brand-run" type="submit">Run Brand Factory</button><button class="brand-clear" id="brand-clear" type="button">Clear</button></div>
+              <div class="brand-status" id="brand-status">Ready · no campaign will be published.</div>
+            </form>
+            <section class="brand-workbench">
+              <div class="brand-pipeline" id="brand-pipeline">
+                <article class="brand-stage" data-brand-stage="audience"><b>01</b><strong>Audience</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="positioning"><b>02</b><strong>Positioning</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="hooks"><b>03</b><strong>10 Hooks</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="concepts"><b>04</b><strong>5 Concepts</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="scripts"><b>05</b><strong>3 Scripts</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="red_team"><b>06</b><strong>Red Team</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="score"><b>07</b><strong>Score</strong><span>waiting</span></article>
+                <article class="brand-stage owner" data-brand-stage="owner_gate"><b>08</b><strong>Owner Gate</strong><span>locked</span></article>
+              </div>
+              <section class="brand-result-card">
+                <div class="brand-result-head"><div><small>MISSION OUTPUT</small><h2 id="brand-result-title">No mission yet</h2></div><button id="brand-copy" type="button" disabled>COPY</button></div>
+                <div class="brand-scoreboard" id="brand-scoreboard"></div>
+                <pre id="brand-output">Run one verified product through the factory. Output remains a draft until Owner approval.</pre>
+              </section>
+            </section>
+          </div>
+        </section>
+
         <section class="view scroll-view" id="connect">
           <div class="page-head connect-head">
             <div><small>BOOM CONNECT</small><h1>Integration Control Center</h1><p>Always-On connection truth · OAuth · APIs · suppliers · deployment · recovery.</p></div>
@@ -194,6 +240,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js"></script>
   <script src="market-core.js"></script>
-  <script src="boom-ai-studio.js?v=1"></script>
+  <script src="boom-ai-studio.js?v=2"></script>
 </body>
 </html>
