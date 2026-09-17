@@ -540,10 +540,10 @@
         invokeBoomFunction("hunt-boom-video-runway",{action:"readiness"}),
         invokeBoomFunction("hunt-boom-media-vault",{action:"readiness"})
       ]);
-      const providerSecrets=runway?.secret_present===true&&vault?.vision_secret_present===true;
+      const providerSecrets=runway?.secret_present===true&&vault?.vision_secret_present===true&&vault?.runway_output_hosts_configured===true;
       const providerFlags=runway?.enabled===true&&vault?.vision_enabled===true;
       const status=!providerSecrets?"PROVIDERS_BLOCKED":!providerFlags?"PROVIDERS_PRESENT_FLAGS_OFF":"OWNER_ACTIVATION_REQUIRED";
-      const result={status,source_ready:true,runtime_ready:true,providers:{runway:{secret_present:runway?.secret_present===true,enabled:runway?.enabled===true},vision:{secret_present:vault?.vision_secret_present===true,enabled:vault?.vision_enabled===true,model:vault?.vision_model||null}},owner_activation_required:true,provider_calls_made:0,spend_authorized:false,publishing_authorized:false};
+      const result={status,source_ready:true,runtime_ready:true,providers:{runway:{secret_present:runway?.secret_present===true,output_hosts_configured:vault?.runway_output_hosts_configured===true,enabled:runway?.enabled===true},vision:{secret_present:vault?.vision_secret_present===true,enabled:vault?.vision_enabled===true,model:vault?.vision_model||null}},owner_activation_required:true,provider_calls_made:0,spend_authorized:false,publishing_authorized:false};
       if(out)out.textContent=JSON.stringify(result,null,2);
       if(badge)badge.textContent=status.replaceAll("_"," ");
       return result;

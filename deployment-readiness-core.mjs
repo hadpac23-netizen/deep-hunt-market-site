@@ -20,6 +20,7 @@ export function evaluateDeploymentReadiness(facts={}){
     check("vault_jwt","Media Vault function requires JWT",facts.vault_verify_jwt),
     check("runway_secret","Runway server secret present",facts.runway_secret_present,"provider"),
     check("vision_secret","OpenAI Vision server secret present",facts.vision_secret_present,"provider"),
+    check("runway_output_hosts","Runway output host allowlist configured",facts.runway_output_hosts_configured,"provider"),
     check("runway_flag","Runway generation explicitly enabled",facts.runway_enabled,"activation"),
     check("vision_flag","Vision QA explicitly enabled",facts.vision_enabled,"activation"),
     check("owner_gate","Owner activation granted",facts.owner_activation_granted,"activation"),
