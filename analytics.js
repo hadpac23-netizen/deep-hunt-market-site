@@ -5,6 +5,7 @@
   const consentKey = "hunt_analytics_consent_v1";
   const queue = [];
   let pageTracked = false;
+  let canonicalPageTracked = false;
   let initialized = false;
   let posthogLoaded = false;
 
@@ -206,19 +207,24 @@
     }
   }
 
-  function pageView() {
-    if (pageTracked) return;
-    pageTracked = true;
-    dataLayerPush("page_view", {
-      page_title: clean(document.title, 160),
-      page_location_path: safePath()
+  function captureCanonicalPageView() {
+    if (canonicalPageTracked || !consentGranted || !hasValidPostHog()) return false;
+    canonicalPageTracked = posthogCapture("$pageview", {
+      $current_url: clean(location.href, 500),
+      $pathname: safePath()
     });
-    if (consentGranted && hasValidPostHog()) {
-      posthogCapture("$pageview", {
-        $current_url: clean(location.href, 500),
-        $pathname: safePath()
+    return canonicalPageTracked;
+  }
+
+  function pageView() {
+    if (!pageTracked) {
+      pageTracked = true;
+      dataLayerPush("page_view", {
+        page_title: clean(document.title, 160),
+        page_location_path: safePath()
       });
     }
+    captureCanonicalPageView();
   }
 
   function init() {
@@ -255,6 +261,7 @@
     init();
     loadPostHog();
     flush();
+    captureCanonicalPageView();
     window.dispatchEvent(new CustomEvent("hunt:analytics-consent", {detail:{granted:true}}));
     return true;
   }
