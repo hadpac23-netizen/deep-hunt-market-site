@@ -108,8 +108,9 @@
     if(typeof window==="undefined"||typeof window.addEventListener!=="function")return;
     window.addEventListener("hunt:shopping-action",event=>{
       const d=event.detail||{};
-      if(d.liked)record({type:"like",...d,active:true,source:"shopping-actions"});
-      if(d.saved)record({type:"save",...d,active:true,source:"shopping-actions"});
+      if((d.action==="like"||d.action==="save")&&d.active===true){
+        record({type:d.action,...d,active:true,source:"shopping-actions"});
+      }
     });
     window.addEventListener("hunt:share",event=>{
       record({type:"share",...(event.detail||{}),source:"share"});

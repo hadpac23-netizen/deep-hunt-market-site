@@ -44,7 +44,7 @@
         <small>${H.esc(item.provider||"CATALOG")}</small>
         <a href="${H.esc(href)}">${H.esc(item.title||"Product")}</a>
         <div class="hunt2037-price"><strong>${H.esc(price)}</strong><em>${verified?"HUNT retail":"live recheck"}</em></div>
-        <button class="hunt2037-share" type="button" data-hunt2037-share data-share-url="${H.esc(href)}">Share</button>
+        <button class="hunt2037-share" type="button" data-hunt2037-share data-share-url="${H.esc(href)}" data-provider="${H.esc(item.provider||"")}" data-item-id="${H.esc(item.item_id||"")}" data-category="${H.esc(item.category||item._shelf_slug||"")}">Share</button>
       </div>
     </article>`;
   }
@@ -117,8 +117,9 @@
       try{
         if(navigator.share)await navigator.share(payload);
         else if(navigator.clipboard)await navigator.clipboard.writeText(href);
-        Memory?.record?.({type:"share",source:"hunt2037-flow"});
-        window.dispatchEvent(new CustomEvent("hunt:share",{detail:{url:href,source:"hunt2037-flow"}}));
+        const shareDetail={url:href,provider:share.dataset.provider||"",item_id:share.dataset.itemId||"",category:share.dataset.category||"",source:"hunt2037-flow"};
+        Memory?.record?.({type:"share",...shareDetail});
+        window.dispatchEvent(new CustomEvent("hunt:share",{detail:shareDetail}));
       }catch{}
       return;
     }

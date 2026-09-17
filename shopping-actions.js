@@ -172,7 +172,7 @@
       const active=kind==="like"?Boolean(next.liked):Boolean(next.saved);
       if(active&&meta.category)H.recordSignal?.(meta.category,kind);
       window.HuntAnalytics?.shoppingAction?.({provider:meta.provider,itemId:meta.item_id,action:kind,active,category:meta.category||""});
-      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved),local:true}}));
+      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved),action:kind,active,category:meta.category||"",local:true}}));
       emitState();
       return;
     }
@@ -223,7 +223,7 @@
         active:preferenceActive,
         category:meta.category||""
       });
-      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved)}}));
+      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved),action:kind,active:preferenceActive,category:meta.category||""}}));
       emitState();
     }catch{
       state.set(k,old);
