@@ -12,6 +12,7 @@
   }
   const status=$("#hd-auth-status");
   const providerButtons=[...document.querySelectorAll("button[data-oauth]")];
+  const customProviderReady={tiktok:false,instagram:false};
 
   function setStatus(message,tone="") { if(!status)return; status.textContent=message||""; status.dataset.tone=tone; }
   function oauthErrorFromUrl(){
@@ -70,7 +71,8 @@
       const external=data.external||{};
       providerButtons.forEach(button=>{
         const provider=button.dataset.oauth;
-        const enabled=external[provider]===true;
+        const customKey=button.dataset.custom||"";
+        const enabled=customKey?customProviderReady[customKey]===true:external[provider]===true;
         button.disabled=!enabled;
         button.hidden=!enabled;
         button.dataset.enabled=String(enabled);
@@ -95,7 +97,8 @@
     if(button.disabled||button.dataset.enabled!=="true")return;
     if(!supabase){setStatus("Auth library unavailable.","error");return;}
     const provider=button.dataset.oauth;
-    setStatus("Opening "+button.querySelector("span").textContent+"…");
+    if(button.dataset.professionalOnly==="true")setStatus("Instagram connection is available for Business/Creator accounts.");
+    else setStatus("Opening "+button.querySelector("span").textContent+"…");
     const {error}=await supabase.auth.signInWithOAuth({provider,options:{redirectTo:redirectUrl()}});
     if(error)setStatus(error.message,"error");
   }));

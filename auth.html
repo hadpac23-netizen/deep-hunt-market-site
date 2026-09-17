@@ -38,12 +38,13 @@
         <div class="hd-auth-divider"><span>or</span></div>
         <div class="hd-social-grid">
           <button type="button" data-oauth="google"><b>G</b><span>Google</span><small>Checking…</small></button>
-          <button type="button" data-oauth="facebook"><b>f</b><span>Facebook</span><small>Checking…</small></button>
-          <button type="button" data-oauth="apple"><b>●</b><span>Apple</span><small>Checking…</small></button>
-          <button type="button" data-oauth="azure"><b>M</b><span>Microsoft</span><small>Checking…</small></button>
           <button type="button" data-oauth="github"><b>GH</b><span>GitHub</span><small>Checking…</small></button>
+          <button type="button" data-oauth="apple"><b>●</b><span>Apple</span><small>Checking…</small></button>
+          <button type="button" data-oauth="facebook"><b>f</b><span>Facebook</span><small>Checking…</small></button>
+          <button type="button" data-oauth="custom:tiktok" data-custom="tiktok"><b>T</b><span>TikTok</span><small>Checking…</small></button>
+          <button type="button" data-oauth="custom:instagram" data-custom="instagram" data-professional-only="true"><b>◎</b><span>Instagram Pro</span><small>Business / Creator</small></button>
         </div>
-        <p class="hd-auth-note">Social providers only activate after their official OAuth app ID/secret and redirect URLs are configured. HUNT never asks you to paste provider secrets into this page.</p>
+        <p class="hd-auth-note">Social providers activate only after their official OAuth app credentials and redirect URLs are configured. Instagram connection is for Business/Creator accounts. HUNT never asks you to paste provider secrets into this page.</p>
       </div>
 
       <div id="hd-auth-signed-in" hidden>
@@ -68,7 +69,7 @@
   <script src="market-core.js?v=boomcmd1"></script>
   <script src="analytics-config.js?v=analytics1"></script>
   <script src="analytics.js?v=ladder1"></script>
-  <script src="auth.js?v=supabase-oauth3"></script>
+  <script src="auth.js?v=supabase-oauth4"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa1"></script>
 </body>
