@@ -29,6 +29,8 @@ assert(html.includes("hunt-2037-flow.js?v=alpha1"),"Flow UI script missing");
 assert(js.includes('searchParams.get("hunt2037")==="1"'),"URL feature flag missing");
 assert(js.includes("hunt_2037_flow_enabled"),"persistent feature flag missing");
 assert(js.includes("data-hunt2037-share"),"share action missing");
+assert(js.includes("history.html?hunt2037=1"),"HUNT History entry missing");
+assert(js.includes("Why this:"),"recommendation explainability missing");
 assert(js.includes('data-provider="${H.esc(item.provider||"")}"'),"share provider metadata missing");
 assert(js.includes("share.dataset.itemId"),"share item memory metadata missing");
 assert(js.includes("HuntShoppingActions?.rescan?.()"),"shopping action rescan hook missing");
@@ -44,7 +46,9 @@ const cities=JSON.parse(fs.readFileSync("hunt-city-night-manifest.json","utf8"))
 assert(html.includes("hunt-2037-visual.js?v=alpha1"),"visual engine script missing");
 assert(visual.includes("hunt2037Wordmark"),"dynamic wordmark hook missing");
 assert(visual.includes("hunt-city-night-manifest.json"),"city manifest loader missing");
+assert(visual.includes("CITY MOOD · "),"city mood truth label missing");
 assert(css.includes("@keyframes hunt2037BrandFlow"),"dynamic HUNT animation missing");
+assert(!css.includes("\\\\n"),"literal escaped newlines must not remain in CSS");
 assert(cities.policy==="licensed_or_original_assets_only","city asset policy missing");
 assert(cities.mode==="night_only","night-only city policy missing");
 for(const city of ["Dubai","London","Tokyo","Singapore","New York","Copenhagen","Mumbai","Cape Town"])assert(cities.cities.some(x=>x.name===city),"missing city "+city);
