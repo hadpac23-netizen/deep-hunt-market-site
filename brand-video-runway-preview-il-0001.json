@@ -1,0 +1,24 @@
+{
+  "status": "CONNECTOR_PREVIEW",
+  "provider": "runway-gen45",
+  "dispatches": 4,
+  "total_estimated_credits": 108,
+  "all_blocked": true,
+  "blockers": [
+    "RUNWAY_CONNECTOR_DISABLED",
+    "OWNER_APPROVAL_REQUIRED",
+    "RUNWAY_SECRET_REQUIRED"
+  ],
+  "durations": [
+    2,
+    2,
+    2,
+    3
+  ],
+  "ratio": [
+    "720:1280"
+  ],
+  "provider_calls_made": 0,
+  "spend_authorized": false,
+  "publishing_authorized": false
+}
