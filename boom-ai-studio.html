@@ -155,6 +155,13 @@
             <form class="brand-brief" id="brand-brief">
               <h2>1. Product Truth</h2>
               <p>מזינים רק נתונים מאומתים. BOOM לא רשאי להמציא מחיר, מלאי, משלוח, ביצועים או claims.</p>
+              <div class="brand-form-grid brand-source-grid">
+                <label>Provider<input id="brand-provider" maxlength="40" value="CJdropshipping"></label>
+                <label>Country<input id="brand-country" maxlength="2" value="IL"></label>
+                <label>HUNT item ID<input id="brand-item-id" maxlength="80" placeholder="Product ID"></label>
+                <label>Variant ID<input id="brand-variant-id" maxlength="80" placeholder="Variant ID"></label>
+              </div>
+              <button class="brand-verify" id="brand-verify" type="button">Verify from HUNT</button>
               <label>Product name<input id="brand-product-name" required maxlength="120" placeholder="Real HUNT product"></label>
               <div class="brand-form-grid">
                 <label>Category<input id="brand-category" maxlength="80" placeholder="e.g. phone accessories"></label>

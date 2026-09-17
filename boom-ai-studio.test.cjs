@@ -57,3 +57,16 @@ assert(js.includes("Never invent product claims"),"Brand Factory truth rule miss
 assert(js.includes("DRAFT_REVIEW"),"Brand Factory draft owner gate missing");
 assert(js.includes('mode:"chat"'),"Brand Factory must stay analysis-only chat mode");
 assert(css.includes(".brand-factory-layout"),"Brand Factory layout styling missing");
+
+assert(html.includes('id="brand-verify"'),"Brand Factory HUNT verify button missing");
+assert(html.includes('id="brand-item-id"'),"Brand Factory HUNT item id missing");
+assert(html.includes('id="brand-variant-id"'),"Brand Factory variant id missing");
+assert(js.includes("function verifyBrandProduct"),"Brand Factory live verification missing");
+assert(js.includes('/hunt-storefront'),"Brand Factory storefront recheck missing");
+assert(js.includes('/hunt-cj-quote'),"Brand Factory CJ quote recheck missing");
+assert(js.includes("stock_verified"),"Brand Factory stock gate missing");
+assert(js.includes("shipping_verified"),"Brand Factory shipping gate missing");
+
+assert(js.includes("product_gross_margin_pct"),"Brand Factory product margin model missing");
+assert(js.includes("contribution_if_shipping_subsidized"),"Brand Factory shipping subsidy scenario missing");
+assert(js.includes("customer_total_before_tax"),"Brand Factory customer total missing");

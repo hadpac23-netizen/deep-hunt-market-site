@@ -57,7 +57,8 @@
     connectRows:[],
     connectCheckedAt:null,
     brandMission:null,
-    brandBusy:false
+    brandBusy:false,
+    brandVerified:null
   };
 
   const toolNodes=[
@@ -812,17 +813,73 @@
 
   function brandInputs(){
     const price=brandNum($("#brand-price")?.value),cost=brandNum($("#brand-cost")?.value),shipping=brandNum($("#brand-shipping")?.value);
-    const gross=[price,cost,shipping].every(v=>v!==null)?price-cost-shipping:null;
-    const margin=gross!==null&&price>0?(gross/price)*100:null;
+    const productGross=[price,cost].every(v=>v!==null)?price-cost:null;
+    const productMargin=productGross!==null&&price>0?(productGross/price)*100:null;
+    const subsidizedContribution=[price,cost,shipping].every(v=>v!==null)?price-cost-shipping:null;
+    const subsidizedMargin=subsidizedContribution!==null&&price>0?(subsidizedContribution/price)*100:null;
+    const customerTotal=[price,shipping].every(v=>v!==null)?price+shipping:null;
     return {
+      provider:$("#brand-provider")?.value.trim()||"",item_id:$("#brand-item-id")?.value.trim()||"",variant_id:$("#brand-variant-id")?.value.trim()||"",country_code:($("#brand-country")?.value.trim()||"").toUpperCase(),
       product_name:$("#brand-product-name")?.value.trim()||"",category:$("#brand-category")?.value.trim()||"",target_market:$("#brand-market")?.value.trim()||"",
-      price,cost,shipping,currency:($("#brand-currency")?.value.trim()||"USD").toUpperCase(),verified_facts:$("#brand-facts")?.value.trim()||"",proof_notes:$("#brand-proof")?.value.trim()||"",gross_profit:gross,gross_margin_pct:margin
+      price,cost,shipping,currency:($("#brand-currency")?.value.trim()||"USD").toUpperCase(),verified_facts:$("#brand-facts")?.value.trim()||"",proof_notes:$("#brand-proof")?.value.trim()||"",
+      product_gross_profit:productGross,product_gross_margin_pct:productMargin,customer_total_before_tax:customerTotal,
+      contribution_if_shipping_subsidized:subsidizedContribution,contribution_margin_if_shipping_subsidized:subsidizedMargin,
+      source_verified:Boolean(state.brandVerified),verification:state.brandVerified
     };
   }
 
   function renderBrandFinance(){
     const x=brandInputs(),el=$("#brand-finance");if(!el)return;
-    el.textContent=x.gross_margin_pct===null?"Gross margin: — · add verified price/cost/shipping to calculate":"Gross margin: "+x.gross_margin_pct.toFixed(1)+"% · gross "+x.gross_profit.toFixed(2)+" "+x.currency;
+    if(x.product_gross_margin_pct===null){el.textContent="Product margin: — · add verified price/cost to calculate";return}
+    const base="Product gross: "+x.product_gross_profit.toFixed(2)+" "+x.currency+" · "+x.product_gross_margin_pct.toFixed(1)+"% before fees/tax/ads/returns";
+    const shipping=x.shipping===null?"":" · customer total with separate shipping: "+x.customer_total_before_tax.toFixed(2)+" "+x.currency+" · if HUNT subsidizes shipping: "+x.contribution_if_shipping_subsidized.toFixed(2)+" "+x.currency;
+    el.textContent=base+shipping;
+  }
+
+  function brandPlainText(value){
+    const el=document.createElement("div");el.innerHTML=String(value||"");return (el.textContent||"").replace(/\s+/g," ").trim();
+  }
+
+  async function verifyBrandProduct(){
+    const provider=$("#brand-provider")?.value.trim()||"CJdropshipping";
+    const itemId=$("#brand-item-id")?.value.trim()||"";
+    const variantId=$("#brand-variant-id")?.value.trim()||"";
+    const country=($("#brand-country")?.value.trim()||"IL").toUpperCase();
+    const btn=$("#brand-verify"),status=$("#brand-status");
+    if(!itemId||!variantId||!/^[A-Z]{2}$/.test(country)){status.textContent="Item ID, Variant ID and a 2-letter country code are required.";return}
+    btn.disabled=true;btn.classList.remove("verified");btn.textContent="Verifying…";status.textContent="Rechecking HUNT product truth, stock and destination shipping…";
+    try{
+      const productUrl=new URL(H.functionsBase+"/hunt-storefront");
+      productUrl.searchParams.set("provider",provider);productUrl.searchParams.set("product_id",itemId);productUrl.searchParams.set("country_code",country);
+      const productRes=await fetch(productUrl,{headers:{apikey:H.publishableKey},cache:"no-store"});
+      const productBody=await productRes.json().catch(()=>({}));
+      if(!productRes.ok||!productBody?.product)throw new Error("PRODUCT_RECHECK_FAILED");
+      const product=productBody.product,variants=Array.isArray(product.variants)?product.variants:[];
+      const variant=variants.find(v=>String(v?.variant_id||"")===variantId);
+      if(!variant)throw new Error("VARIANT_RECHECK_FAILED");
+      const retailVerified=(variant.retail_price_verified??product.retail_price_verified)===true;
+      const profitPass=String(variant.profit_gate_status||product.profit_gate_status||"")==="PASS";
+      const retail=Number(variant.retail_price_amount??product.retail_price_amount);
+      const cost=Number(variant.price_amount??product.price_amount);
+      if(!retailVerified||!profitPass||!(retail>0)||!(cost>=0))throw new Error("PRICE_OR_PROFIT_GATE_NOT_READY");
+      const quoteUrl=new URL(H.functionsBase+"/hunt-cj-quote");
+      quoteUrl.searchParams.set("vid",variantId);quoteUrl.searchParams.set("country_code",country);quoteUrl.searchParams.set("quantity","1");
+      const quoteRes=await fetch(quoteUrl,{headers:{apikey:H.publishableKey},cache:"no-store"});
+      const quote=await quoteRes.json().catch(()=>({}));
+      const shipping=Array.isArray(quote.shipping_options)?quote.shipping_options[0]:null;
+      if(!quoteRes.ok||quote.stock_verified!==true||quote.stock_available!==true)throw new Error("STOCK_RECHECK_FAILED");
+      if(quote.shipping_verified!==true||!shipping||!(Number(shipping.price_usd)>=0))throw new Error("SHIPPING_RECHECK_FAILED");
+      $("#brand-product-name").value=String(product.title||"").slice(0,120);
+      $("#brand-category").value=String(product.category||"").slice(0,80);$("#brand-market").value=country;
+      $("#brand-price").value=retail.toFixed(2);$("#brand-cost").value=cost.toFixed(2);$("#brand-shipping").value=Number(shipping.price_usd).toFixed(2);
+      $("#brand-currency").value=String(variant.retail_currency||product.retail_currency||"USD").toUpperCase().slice(0,8);
+      $("#brand-facts").value=brandPlainText(product.description).slice(0,1200);
+      const origin=quote.selected_origin||{};
+      $("#brand-proof").value=("HUNT live recheck: retail verified; Profit Gate PASS; stock verified; inventory "+(origin.total_inventory??origin.storage_num??"unknown")+"; shipping verified via "+String(shipping.name||"unknown")+"; ETA "+String(shipping.aging||"unknown")+" days; origin "+String(origin.country_code||"unknown")+".").slice(0,900);
+      state.brandVerified={provider,item_id:itemId,variant_id:variantId,country_code:country,retail_price_verified:true,profit_gate_status:"PASS",stock_verified:true,shipping_verified:true,shipping_method:String(shipping.name||""),shipping_eta:String(shipping.aging||""),origin_country_code:String(origin.country_code||""),inventory:Number(origin.total_inventory??origin.storage_num)||null,verified_at:new Date().toISOString()};
+      renderBrandFinance();btn.classList.add("verified");btn.textContent="✓ Verified from HUNT";status.textContent="Product Truth verified live · safe to build a draft Brand Mission.";
+    }catch(err){state.brandVerified=null;btn.textContent="Verify from HUNT";status.textContent="Verification failed: "+(err.message||err)}
+    finally{btn.disabled=false}
   }
 
   function setBrandPipeline(mode="waiting"){
@@ -864,6 +921,7 @@
     if(state.brandBusy)return;
     const x=brandInputs();
     if(!x.product_name){$("#brand-status").textContent="Product name is required.";return}
+    if(x.item_id&&!x.source_verified){$("#brand-status").textContent="This HUNT product must be verified live before Brand Factory can run.";return}
     state.brandBusy=true;setBrandPipeline("running");
     $("#brand-run").disabled=true;$("#brand-status").textContent="BOOM is building a draft mission · no publishing / no spend.";
     try{
@@ -881,7 +939,7 @@
   }
 
   function clearBrandFactory(){
-    $("#brand-brief")?.reset();if($("#brand-currency"))$("#brand-currency").value="USD";state.brandMission=null;setBrandPipeline("waiting");renderBrandFinance();
+    $("#brand-brief")?.reset();if($("#brand-provider"))$("#brand-provider").value="CJdropshipping";if($("#brand-country"))$("#brand-country").value="IL";if($("#brand-currency"))$("#brand-currency").value="USD";state.brandMission=null;state.brandVerified=null;$("#brand-verify")?.classList.remove("verified");if($("#brand-verify"))$("#brand-verify").textContent="Verify from HUNT";setBrandPipeline("waiting");renderBrandFinance();
     $("#brand-result-title").textContent="No mission yet";$("#brand-scoreboard").innerHTML="";$("#brand-output").textContent="Run one verified product through the factory. Output remains a draft until Owner approval.";$("#brand-copy").disabled=true;$("#brand-status").textContent="Ready · no campaign will be published.";
   }
 
@@ -1015,7 +1073,9 @@
   });
   $("#refresh").addEventListener("click",()=>loadAll().catch(showError));
   $("#brand-brief")?.addEventListener("submit",runBrandFactory);
+  $("#brand-verify")?.addEventListener("click",verifyBrandProduct);
   $("#brand-clear")?.addEventListener("click",clearBrandFactory);
+  $$("#brand-provider,#brand-item-id,#brand-variant-id,#brand-country").forEach(el=>el.addEventListener("input",()=>{state.brandVerified=null;$("#brand-verify")?.classList.remove("verified");if($("#brand-verify"))$("#brand-verify").textContent="Verify from HUNT"}));
   $$("#brand-price,#brand-cost,#brand-shipping,#brand-currency").forEach(el=>el.addEventListener("input",renderBrandFinance));
   $("#brand-copy")?.addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("#brand-output")?.textContent||"");$("#brand-copy").textContent="✓";setTimeout(()=>$("#brand-copy").textContent="COPY",1000)}catch{$("#brand-status").textContent="Copy failed · select the output manually."}});
   $("#connect-refresh")?.addEventListener("click",async()=>{
