@@ -57,6 +57,7 @@
     connectRows:[],
     connectCheckedAt:null,
     brandVideoPlan:null,
+    brandCreativeQA:null,
     brandMission:null,
     brandBusy:false,
     brandVerified:null
@@ -912,9 +913,11 @@
   }
 
   function resetBrandVideoPlan(){
-    state.brandVideoPlan=null;const btn=$("#brand-video-plan"),out=$("#brand-video-output");
+    state.brandVideoPlan=null;state.brandCreativeQA=null;const btn=$("#brand-video-plan"),qaBtn=$("#brand-video-qa"),out=$("#brand-video-output"),qaOut=$("#brand-video-qa-output"),qaSummary=$("#brand-qa-summary");
     if(btn)btn.disabled=!Boolean(state.brandMission?.video_prompt_pack);
+    if(qaBtn)qaBtn.disabled=true;
     if(out)out.textContent="Complete or load a Brand Mission with a video prompt pack.";
+    if(qaOut)qaOut.textContent="No shortlist yet.";if(qaSummary)qaSummary.textContent="Creative QA waiting for a route plan.";
   }
 
   function buildBrandVideoPlan(){
@@ -923,8 +926,20 @@
     if(!state.brandMission?.video_prompt_pack){if(status)status.textContent="No video prompt pack in this mission.";return}
     const image=state.brandVerified?.image_url||state.brandMission?.product_truth_snapshot?.image_url||"";
     const plan=router.buildPlan(state.brandMission,{productImageUrl:image,ownerApproved:false});
-    state.brandVideoPlan=plan;if(out)out.textContent=JSON.stringify(plan,null,2);
+    state.brandVideoPlan=plan;state.brandCreativeQA=null;if(out)out.textContent=JSON.stringify(plan,null,2);
+    const qaBtn=$("#brand-video-qa");if(qaBtn)qaBtn.disabled=!Boolean(plan?.shots?.length);
+    if($("#brand-video-qa-output"))$("#brand-video-qa-output").textContent="No shortlist yet.";if($("#brand-qa-summary"))$("#brand-qa-summary").textContent="Route plan ready · run QA before any generation.";
     if(status)status.textContent="Video route plan ready · generation remains blocked by Owner Gate and provider connection.";
+  }
+
+  function runBrandCreativeQA(){
+    const qa=window.BoomCreativeQA,status=$("#brand-status"),out=$("#brand-video-qa-output"),summary=$("#brand-qa-summary");
+    if(!qa){if(status)status.textContent="Creative QA unavailable.";return}
+    if(!state.brandVideoPlan?.shots?.length){if(status)status.textContent="Build the Video Route Plan first.";return}
+    const result=qa.tournament(state.brandVideoPlan,state.brandMission,{limit:4,minScore:62});
+    state.brandCreativeQA=result;if(out)out.textContent=JSON.stringify(result,null,2);
+    if(summary)summary.textContent=result.input_shots+" shots → "+result.finalist_count+" finalists · "+result.generation_reduction_pct+"% fewer generations · execution blocked";
+    if(status)status.textContent="Creative QA complete · shortlist only · no generation / no spend.";
   }
 
   function renderBrandResult(result,raw){
@@ -1120,6 +1135,7 @@
   $("#brand-verify")?.addEventListener("click",verifyBrandProduct);
   $("#brand-seed")?.addEventListener("click",loadBrandSeed);
   $("#brand-video-plan")?.addEventListener("click",buildBrandVideoPlan);
+  $("#brand-video-qa")?.addEventListener("click",runBrandCreativeQA);
   $("#brand-clear")?.addEventListener("click",clearBrandFactory);
   $$("#brand-provider,#brand-item-id,#brand-variant-id,#brand-country").forEach(el=>el.addEventListener("input",()=>{state.brandVerified=null;$("#brand-verify")?.classList.remove("verified");if($("#brand-verify"))$("#brand-verify").textContent="Verify from HUNT"}));
   $$("#brand-price,#brand-cost,#brand-shipping,#brand-currency").forEach(el=>el.addEventListener("input",renderBrandFinance));

@@ -89,3 +89,8 @@ assert(js.includes("shipping_verified"),"Brand Factory shipping gate missing");
 assert(js.includes("product_gross_margin_pct"),"Brand Factory product margin model missing");
 assert(js.includes("contribution_if_shipping_subsidized"),"Brand Factory shipping subsidy scenario missing");
 assert(js.includes("customer_total_before_tax"),"Brand Factory customer total missing");
+
+assert(html.includes('id="brand-video-qa"'),"Creative QA control missing");
+assert(html.includes("brand-creative-qa.js?v=1"),"Creative QA script missing");
+assert(js.includes("function runBrandCreativeQA()"),"Creative QA integration missing");
+assert(js.includes("generation_reduction_pct"),"Creative QA savings summary missing");

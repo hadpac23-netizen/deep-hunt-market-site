@@ -66,3 +66,6 @@ button,input,textarea{font:inherit}
 
 /* BOOM Brand Factory Video Router */
 .brand-video-router-card{border:1px solid #31556d;background:#0d151d;border-radius:13px;padding:13px;margin-top:10px}.brand-video-providers{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0}.brand-video-providers span{font-size:7px;border:1px solid #2d4052;border-radius:999px;padding:4px 7px;color:#9db0c4}.brand-video-providers b{color:#dce9f5}.brand-video-actions{display:flex;gap:7px;margin:8px 0}.brand-video-actions button{border:1px solid #42647d;background:#142231;color:#dce9f5;border-radius:9px;padding:8px 10px;font-size:9px;font-weight:900;cursor:pointer}.brand-video-actions button:disabled{opacity:.45;cursor:not-allowed}.brand-video-router-card pre{white-space:pre-wrap;word-break:break-word;max-height:420px;overflow:auto;background:#080d12;border:1px solid #22303d;border-radius:9px;padding:10px;font-size:8px;color:#b7c7d7}
+
+/* BOOM Creative QA */
+.brand-qa-summary{border:1px solid #3d4f2d;background:#10170e;color:#b6d98d;border-radius:9px;padding:8px 10px;margin:8px 0;font-size:8px;font-weight:850}.brand-video-router-card #brand-video-qa-output{border-color:#314126;max-height:460px}.brand-video-actions #brand-video-qa:not(:disabled){border-color:#536f35;color:var(--lime);background:#14200f}
