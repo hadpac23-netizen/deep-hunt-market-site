@@ -116,3 +116,9 @@ assert(html.includes('brand-deployment-readiness'),"Deployment Readiness card mi
 assert(html.includes("SOURCE_READY"),"Source readiness stage missing");
 assert(html.includes("RUNTIME_READY"),"Runtime readiness stage missing");
 assert(html.includes("OWNER_ACTIVATION"),"Owner activation stage missing");
+
+assert(js.includes('vaultLive:true'),"Media Vault runtime should be marked live after deployment");
+assert(html.includes('id="deployment-readiness-refresh"'),"Provider readiness refresh control missing");
+assert(js.includes('refreshDeploymentReadiness'),"Provider readiness client missing");
+assert(js.includes('action:"readiness"'),"Server readiness action wiring missing");
+assert((js.match(/#vault-preview"\)\?\.addEventListener/g)||[]).length===1,"Vault preview listener must not be duplicated");

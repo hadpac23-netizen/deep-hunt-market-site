@@ -61,7 +61,7 @@
     brandMission:null,
     brandBusy:false,
     brandVerified:null,
-    vaultLive:false,
+    vaultLive:true,
     vaultLast:null
   };
 
@@ -532,6 +532,23 @@
   function vaultEvidence(){const out={};$$('[data-vault-qa]').forEach(el=>out[el.dataset.vaultQa]=el.checked===true);return out}
   function setVaultControls(){const on=state.vaultLive===true;["#vault-preview","#vault-visual-qa","#vault-qa-commit","#vault-owner-approve","#vault-owner-reject"].forEach(q=>{const el=$(q);if(el)el.disabled=!on});$$('[data-vault-qa]').forEach(el=>el.disabled=!on)}
   async function vaultAction(action,extra={}){if(!state.vaultLive)throw new Error("MEDIA_VAULT_NOT_DEPLOYED");const id=vaultIdentity();if(!id.mission_id||!id.asset_id)throw new Error("Mission ID and Asset ID are required.");const data=await invokeBoomFunction("hunt-boom-media-vault",{action,...id,...extra});state.vaultLast=data;setVaultOutput(data);return data}
+  async function refreshDeploymentReadiness(){
+    const out=$("#deployment-readiness-output"),badge=$("#deployment-readiness-badge");
+    if(out)out.textContent="Checking server-side provider readiness…";
+    try{
+      const [runway,vault]=await Promise.all([
+        invokeBoomFunction("hunt-boom-video-runway",{action:"readiness"}),
+        invokeBoomFunction("hunt-boom-media-vault",{action:"readiness"})
+      ]);
+      const providerSecrets=runway?.secret_present===true&&vault?.vision_secret_present===true;
+      const providerFlags=runway?.enabled===true&&vault?.vision_enabled===true;
+      const status=!providerSecrets?"PROVIDERS_BLOCKED":!providerFlags?"PROVIDERS_PRESENT_FLAGS_OFF":"OWNER_ACTIVATION_REQUIRED";
+      const result={status,source_ready:true,runtime_ready:true,providers:{runway:{secret_present:runway?.secret_present===true,enabled:runway?.enabled===true},vision:{secret_present:vault?.vision_secret_present===true,enabled:vault?.vision_enabled===true,model:vault?.vision_model||null}},owner_activation_required:true,provider_calls_made:0,spend_authorized:false,publishing_authorized:false};
+      if(out)out.textContent=JSON.stringify(result,null,2);
+      if(badge)badge.textContent=status.replaceAll("_"," ");
+      return result;
+    }catch(err){if(out)out.textContent="Readiness check failed: "+(err?.message||err);if(badge)badge.textContent="READINESS ERROR";throw err}
+  }
   async function runVaultPreview(){try{const data=await vaultAction("private_preview",{ttl_seconds:60});if(data?.signed_url)window.open(data.signed_url,"_blank","noopener,noreferrer")}catch(err){setVaultOutput(err.message||err)}}
   async function sampleVaultFrames(url){
     const ratios=[0.05,0.25,0.5,0.75,0.95],video=document.createElement("video");video.crossOrigin="anonymous";video.preload="auto";video.muted=true;video.playsInline=true;video.src=url;
@@ -1098,6 +1115,7 @@
     await ensureAdmin(session);
     showApp();
     await loadAll();
+    await refreshDeploymentReadiness().catch(()=>{});
     subscribeRealtime();
     inspectManager("boom-super-agent");
   }
@@ -1136,6 +1154,7 @@
       state.session=data.session;
       showApp();
       await loadAll();
+      await refreshDeploymentReadiness().catch(()=>{});
       subscribeRealtime();
       inspectManager("boom-super-agent");
     }catch(err){
@@ -1161,10 +1180,7 @@
   $("#vault-qa-commit")?.addEventListener("click",commitVaultQA);
   $("#vault-owner-approve")?.addEventListener("click",()=>commitVaultOwnerDecision("approve"));
   $("#vault-owner-reject")?.addEventListener("click",()=>commitVaultOwnerDecision("reject"));
-  $("#vault-preview")?.addEventListener("click",runVaultPreview);
-  $("#vault-qa-commit")?.addEventListener("click",commitVaultQA);
-  $("#vault-owner-approve")?.addEventListener("click",()=>commitVaultOwnerDecision("approve"));
-  $("#vault-owner-reject")?.addEventListener("click",()=>commitVaultOwnerDecision("reject"));
+  $("#deployment-readiness-refresh")?.addEventListener("click",()=>refreshDeploymentReadiness().catch(()=>{}));
   $("#brand-clear")?.addEventListener("click",clearBrandFactory);
   $$("#brand-provider,#brand-item-id,#brand-variant-id,#brand-country").forEach(el=>el.addEventListener("input",()=>{state.brandVerified=null;$("#brand-verify")?.classList.remove("verified");if($("#brand-verify"))$("#brand-verify").textContent="Verify from HUNT"}));
   $$("#brand-price,#brand-cost,#brand-shipping,#brand-currency").forEach(el=>el.addEventListener("input",renderBrandFinance));

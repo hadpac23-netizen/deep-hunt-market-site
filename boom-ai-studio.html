@@ -205,13 +205,15 @@
                 <div class="brand-vault-controls"><input id="vault-mission-id" placeholder="Mission ID" value="BF-IL-0001" /><input id="vault-asset-id" placeholder="Asset ID e.g. S2-4" /><button id="vault-preview" type="button" disabled>Private Preview</button><button id="vault-visual-qa" type="button" disabled>Visual QA · 5 Frames</button></div>
                 <div class="brand-vault-checks" id="vault-qa-checks"><label><input type="checkbox" data-vault-qa="product_fidelity" disabled /> Product fidelity</label><label><input type="checkbox" data-vault-qa="no_unverified_claims" disabled /> No unverified claims</label><label><input type="checkbox" data-vault-qa="no_fake_reviews" disabled /> No fake reviews</label><label><input type="checkbox" data-vault-qa="no_unintended_branding" disabled /> No unintended branding</label><label><input type="checkbox" data-vault-qa="no_major_visual_defects" disabled /> No major visual defects</label></div>
                 <div class="brand-vault-controls"><button id="vault-qa-commit" type="button" disabled>Commit QA</button><input id="vault-owner-note" maxlength="500" placeholder="Owner note (optional)" /><button id="vault-owner-approve" type="button" disabled>Owner Approve</button><button id="vault-owner-reject" type="button" disabled>Reject</button></div>
-                <pre id="vault-output">Media Vault controls are source-ready but locked until the migration and Edge Function are deployed with Owner approval.</pre>
+                <pre id="vault-output">Media Vault runtime is deployed. Controls require an authenticated Owner/Admin session and a stored asset.</pre>
                 <p>Provider output is fetched server-side only. Visual QA samples 5 short-lived private preview frames, compares them with verified product imagery, and must pass before Post-Gen QA can pass. No public media URL, and QA pass never publishes automatically.</p>
               </section>
               <section class="brand-media-vault-card" id="brand-deployment-readiness">
-                <div class="brand-result-head"><div><small>DEPLOYMENT READINESS</small><h2>Source → Runtime → Owner Activation</h2></div><span class="brand-gate">RUNTIME BLOCKED</span></div>
-                <div class="brand-vault-flow"><span>SOURCE_READY</span><b>→</b><span>RUNTIME_READY</span><b>→</b><span>OWNER_ACTIVATION</span><b>→</b><span>FIRST GENERATION</span></div>
-                <p>Current live probe: the Media Vault ledger/bucket/policies and the Runway/Vault Edge Functions are not deployed. Secrets are never exposed or inferred. Generation and publishing remain disabled.</p>
+                <div class="brand-result-head"><div><small>DEPLOYMENT READINESS</small><h2>Source → Runtime → Providers → Owner Activation</h2></div><span class="brand-gate" id="deployment-readiness-badge">RUNTIME READY</span></div>
+                <div class="brand-vault-flow"><span>SOURCE_READY</span><b>→</b><span>RUNTIME_READY</span><b>→</b><span>PROVIDERS_READY</span><b>→</b><span>OWNER_ACTIVATION</span><b>→</b><span>FIRST GENERATION</span></div>
+                <div class="brand-video-actions"><button id="deployment-readiness-refresh" type="button">Check Provider Readiness</button></div>
+                <pre id="deployment-readiness-output">Runtime infrastructure is deployed. Sign in as Owner/Admin to check secret presence and enable flags without exposing secret values.</pre>
+                <p>Readiness checks expose booleans only. They never return provider keys, never authorize spend, and never publish.</p>
               </section>
             </section>
           </div>
