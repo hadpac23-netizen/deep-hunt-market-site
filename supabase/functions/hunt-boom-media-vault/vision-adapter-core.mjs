@@ -18,7 +18,7 @@ function validateReferenceImages(values=[]){
   if(!Array.isArray(values)||values.length>3)throw new Error("VISION_REFERENCE_COUNT_INVALID");
   return values.map(v=>{const s=clean(v);if(/^data:image\/(jpeg|png);base64,/i.test(s))return dataUrlBytes(s).url;if(!/^https:\/\//i.test(s))throw new Error("VISION_REFERENCE_INVALID");return s});
 }
-const schema={type:"object",additionalProperties:false,required:["product_identity","design_pattern","color_fidelity","geometry_fidelity","script_alignment","no_unintended_text","no_unintended_branding","no_major_visual_defects","confidence","notes"],properties:{product_identity:{type:"boolean"},design_pattern:{type:"boolean"},color_fidelity:{type:"boolean"},geometry_fidelity:{type:"boolean"},script_alignment:{type:"boolean"},no_unintended_text:{type:"boolean"},no_unintended_branding:{type:"boolean"},no_major_visual_defects:{type:"boolean"},confidence:{type:"number",minimum:0,maximum:1},notes:{type:"array",maxItems:8,items:{type:"string",maxLength:240}}}};
+const schema={type:"object",additionalProperties:false,required:["product_identity","design_pattern","color_fidelity","geometry_fidelity","script_alignment","no_unintended_text","no_unintended_branding","no_major_visual_defects","confidence","notes"],properties:{product_identity:{type:"number",minimum:0,maximum:100},design_pattern:{type:"number",minimum:0,maximum:100},color_fidelity:{type:"number",minimum:0,maximum:100},geometry_fidelity:{type:"number",minimum:0,maximum:100},script_alignment:{type:"number",minimum:0,maximum:100},no_unintended_text:{type:"boolean"},no_unintended_branding:{type:"boolean"},no_major_visual_defects:{type:"boolean"},confidence:{type:"number",minimum:0,maximum:1},notes:{type:"array",maxItems:8,items:{type:"string",maxLength:240}}}};
 export function buildOpenAIVisionRequest({frames,reference_images=[],product_name="",script="",model=DEFAULT_VISION_MODEL}={}){
   const fs=validateVisionFrames(frames),refs=validateReferenceImages(reference_images);
   const instruction=`You are BOOM Visual QA. Compare generated ad frames against the verified product reference images. Be conservative and fail uncertain product fidelity. Check product identity, printed design/pattern, colors, geometry/cutouts, script alignment, unintended rendered text/logos/brands, and major visual defects. Do not infer durability or other product claims. Product: ${clean(product_name).slice(0,180)}. Planned shot/script: ${clean(script).slice(0,1200)}`;
@@ -30,8 +30,10 @@ export function parseOpenAIVisionResponse(payload={}){
   if(!text&&Array.isArray(payload?.output))for(const item of payload.output){if(item?.type!=="message"||!Array.isArray(item.content))continue;for(const c of item.content){if(c?.type==="output_text"&&c?.text){text=String(c.text);break}}if(text)break}
   if(!text)throw new Error("VISION_RESPONSE_EMPTY");
   let d;try{d=JSON.parse(text)}catch{throw new Error("VISION_RESPONSE_JSON_INVALID")}
-  const bools=["product_identity","design_pattern","color_fidelity","geometry_fidelity","script_alignment","no_unintended_text","no_unintended_branding","no_major_visual_defects"];
-  if(bools.some(k=>typeof d?.[k]!=="boolean"))throw new Error("VISION_RESPONSE_SCHEMA_INVALID");
+  const scores=["product_identity","design_pattern","color_fidelity","geometry_fidelity","script_alignment"],flags=["no_unintended_text","no_unintended_branding","no_major_visual_defects"];
+  const scoreValues=Object.fromEntries(scores.map(k=>[k,Number(d?.[k])]));
+  if(scores.some(k=>!Number.isFinite(scoreValues[k])||scoreValues[k]<0||scoreValues[k]>100))throw new Error("VISION_RESPONSE_SCORE_INVALID");
+  if(flags.some(k=>typeof d?.[k]!=="boolean"))throw new Error("VISION_RESPONSE_SCHEMA_INVALID");
   const confidence=Number(d?.confidence);if(!Number.isFinite(confidence)||confidence<0||confidence>1)throw new Error("VISION_RESPONSE_CONFIDENCE_INVALID");
-  return {...Object.fromEntries(bools.map(k=>[k,d[k]])),confidence,notes:Array.isArray(d?.notes)?d.notes.map(x=>clean(x).slice(0,240)).slice(0,8):[]};
+  return {...scoreValues,...Object.fromEntries(flags.map(k=>[k,d[k]])),confidence,notes:Array.isArray(d?.notes)?d.notes.map(x=>clean(x).slice(0,240)).slice(0,8):[]};
 }
