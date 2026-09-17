@@ -59,6 +59,22 @@
     </section>`;
   }
 
+  function recentSection(shelves,context){
+    const keys=context.recent_product_keys||[];
+    if(!keys.length)return "";
+    const all=Core.uniqueProducts(shelves);
+    const rows=[];
+    for(const key of keys){
+      const parts=String(key).split(":");
+      const prefix=(parts[0]||"").toLowerCase()+":"+(parts[1]||"");
+      const item=all.find(x=>String(x.provider||"").toLowerCase()+":"+String(x.item_id||"")===prefix);
+      if(item&&!rows.some(r=>String(r.item.item_id)===String(item.item_id)))rows.push({item,lane:"personalized",score:100});
+      if(rows.length>=10)break;
+    }
+    if(!rows.length)return "";
+    return `<section class="hunt2037-lane hunt2037-recent" data-lane="recent"><div class="hunt2037-lane-head"><small>HUNT MEMORY</small><h3>Recently explored</h3></div><div class="hunt2037-track" role="list">${rows.map(productCard).join("")}</div></section>`;
+  }
+
   function laneSection(unit){
     return `<section class="hunt2037-lane" data-lane="${H.esc(unit.lane)}">
       <div class="hunt2037-lane-head"><small>BOOM DISCOVERY</small><h3>${H.esc(unit.title)}</h3></div>
@@ -79,9 +95,10 @@
     root.hidden=false;
     root.innerHTML=`
       <section class="hunt2037-intro">
-        <div><small>HUNT 2037 ALPHA</small><h1>Shopping that keeps changing with you.</h1><p>Dynamic worlds, real catalog products, memory-aware discovery.</p><a class="hunt2037-mirror-link" href="mirror.html?hunt2037=1">Open BOOM Mirror</a></div>
+        <div><small>HUNT 2037 ALPHA</small><h1>Shopping that keeps changing with you.</h1><p>Dynamic worlds, real catalog products, memory-aware discovery.</p><div class="hunt2037-alpha-links"><a class="hunt2037-mirror-link" href="stylist.html?hunt2037=1">Open BOOM Stylist</a><a class="hunt2037-mirror-link" href="mirror.html?hunt2037=1">Open BOOM Mirror</a></div></div>
         <div class="hunt2037-stats"><span><b>${model.worlds.length}</b> WORLDS</span><span><b>${model.total_products}</b> PRODUCTS IN SESSION</span></div>
       </section>
+      ${recentSection(shelves,context)}
       ${model.worlds.slice(0,3).map(worldSection).join("")}
       <section class="hunt2037-discovery">
         <div class="hunt2037-discovery-head"><small>DISCOVERY ENGINE</small><h2>Keep moving.</h2></div>

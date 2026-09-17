@@ -84,7 +84,7 @@
       "dependencies": [
         "analytics-truth"
       ],
-      "notes": "Experience Memory core implemented for recent history, Like/Save/Share context and Decision Brain recency inputs; storefront history UI remains staged."
+      "notes": "Experience Memory core implemented with Like/Save/Share context, Decision Brain recency inputs and feature-flagged Recently Explored lane; broader account history UI remains staged."
     },
     {
       "id": "boom-stylist",
@@ -97,7 +97,7 @@
         "product-truth",
         "taste-dna"
       ],
-      "notes": "BOOM Stylist core implemented for Occasion Mode, budget planning, Look Locker contract and truthful recommendation reasons; full UI/product selection remains staged."
+      "notes": "BOOM Stylist core + Alpha mission UI implemented for Occasion Mode, budget planning, Look Locker contract and truthful recommendation reasons; live product selection remains truth-gated and staged."
     },
     {
       "id": "boom-mirror",

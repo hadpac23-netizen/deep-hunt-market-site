@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BOOM Stylist — HUNT 2037 Alpha</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo6">
+  <link rel="stylesheet" href="boom-stylist-alpha.css?v=alpha1">
+</head>
+<body class="stylist-page">
+  <header class="stylist-topbar">
+    <a class="stylist-brand" href="./?hunt2037=1">HUNT</a>
+    <span>BOOM STYLIST · ALPHA</span>
+    <a href="./?hunt2037=1">Back to HUNT 2037</a>
+  </header>
+  <main class="stylist-shell">
+    <section class="stylist-intro">
+      <small>MISSION SHOPPING</small>
+      <h1>Tell BOOM<br>what you need.</h1>
+      <p>Build a shopping mission around occasion, budget and an anchor category. Recommendations remain subject to Product Truth and country eligibility.</p>
+    </section>
+    <section class="stylist-grid">
+      <article class="stylist-panel">
+        <h2>1. Occasion</h2>
+        <label>Mission
+          <select id="stylist-occasion">
+            <option value="everyday">Everyday</option>
+            <option value="work">Work</option>
+            <option value="dinner">Dinner</option>
+            <option value="travel">Travel</option>
+            <option value="event">Event</option>
+            <option value="gift">Gift</option>
+            <option value="home_office">Home Office</option>
+          </select>
+        </label>
+        <label>Anchor category
+          <select id="stylist-category">
+            <option value="women-dresses">Dress</option>
+            <option value="women-tops">Top</option>
+            <option value="women-jeans">Jeans</option>
+            <option value="men-suits">Men's suit</option>
+            <option value="men-tops">Men's top</option>
+            <option value="jewelry-necklaces">Necklace</option>
+            <option value="phone-cases">Phone case</option>
+            <option value="travel">Travel</option>
+            <option value="home">Home</option>
+          </select>
+        </label>
+        <label>Budget
+          <input id="stylist-budget" type="number" min="0" step="1" value="150">
+        </label>
+        <label>Country code
+          <input id="stylist-country" type="text" maxlength="2" placeholder="DE">
+        </label>
+        <button id="stylist-build" type="button">Build mission</button>
+        <p class="stylist-note">BOOM explains recommendations from shopping context only. It does not judge bodies or appearance.</p>
+      </article>
+
+      <article class="stylist-panel stylist-output-panel">
+        <h2>2. Mission plan</h2>
+        <div id="stylist-status" class="stylist-status" aria-live="polite">Choose a mission and build it.</div>
+        <div id="stylist-targets" class="stylist-targets"></div>
+      </article>
+    </section>
+  </main>
+  <script src="boom-stylist-core.js?v=alpha1"></script>
+  <script src="boom-stylist-alpha.js?v=alpha1"></script>
+</body>
+</html>
