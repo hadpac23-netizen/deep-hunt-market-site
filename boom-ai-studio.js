@@ -364,6 +364,7 @@
     const primary=user.app_metadata?.provider||"unknown";
     const host=location.hostname;
     const cjRaw=statusOf("supplier-cj");
+    const hyperskuRaw=statusOf("supplier-hypersku");
     const repairRaw=statusOf("repair-engineering");
     const googleVerifiedAt=new Date("2026-09-17T12:55:00Z");
     const googleFresh=Date.now()-googleVerifiedAt.getTime()<24*60*60*1000;
@@ -373,6 +374,7 @@
       {id:"google",name:"Google OAuth",kind:"OAUTH",tone:googleFresh?"healthy":"watch",detail:googleFresh?"Fresh end-to-end login repair was verified today. Credential pairing should be rechecked after any provider change.":"Last recorded end-to-end verification is stale; BOOM CONNECT should reverify before claiming green.",evidence:"HUNT login E2E · 2026-09-17",gate:"Owner gate for client/secret changes"},
       {id:"netlify",name:"Netlify Production",kind:"DEPLOYMENT",tone:host.endsWith("netlify.app")?"healthy":"watch",detail:host.endsWith("netlify.app")?"Studio is being served from Netlify now.":"This view is not currently served from a Netlify hostname.",evidence:host||"local",gate:"Owner gate for production promotion"},
       {id:"cj",name:"CJ Supplier",kind:"SUPPLIER API",tone:connectTone(cjRaw),detail:"Status is derived from the live supplier-cj manager/report, not a hard-coded green badge.",evidence:"supplier-cj · "+cjRaw,gate:"Owner gate for supplier/order routing changes"},
+      {id:"hypersku",name:"HyperSKU Supplier",kind:"TIER 0 SUPPLIER API",tone:connectTone(hyperskuRaw),detail:"BOOM Studio recognizes HyperSKU as a Tier 0 supplier lane. Adapter foundation is ready; live Open API auth and read-only verification are not connected yet.",evidence:"supplier-hypersku · "+hyperskuRaw+" · PILOT",gate:"Read-only first · live fulfillment requires explicit Owner approval"},
       {id:"repair",name:"BOOM Repair Engineering",kind:"SELF-HEALING",tone:connectTone(repairRaw),detail:"BOOM Brain repair lane handles safe reversible incidents and escalates material changes.",evidence:"repair-engineering · "+repairRaw,gate:"Safe repair auto · material changes gated"},
       {id:"payments",name:"Live Payments",kind:"PAYMENTS",tone:"blocked",detail:"Live charging remains intentionally OFF until launch authorization and full order E2E.",evidence:"DISABLED_BY_OWNER",gate:"Explicit Owner approval required"}
     ];

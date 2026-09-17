@@ -15,6 +15,8 @@ assert(html.includes('data-manager-id="boom-super-agent"'),"Super Agent node mis
 assert(js.includes("toolNodes"),"department/tool nodes missing");
 assert(js.includes('["supplier-hypersku","HyperSKU Supplier","HyperSKU","H"]'),"HyperSKU Studio department node missing");
 assert(js.includes('department:"TIER 0 SUPPLIER"'),"HyperSKU Studio fallback inspector missing");
+assert(js.includes('id:"hypersku",name:"HyperSKU Supplier",kind:"TIER 0 SUPPLIER API"'),"HyperSKU BOOM Connect card missing");
+assert(js.includes("Read-only first · live fulfillment requires explicit Owner approval"),"HyperSKU Connect gate missing");
 
 assert(js.includes("hunt_boom_agent_commands"),"command data source missing");
 assert(js.includes("hunt_boom_improvement_cycles"),"cycle data source missing");
