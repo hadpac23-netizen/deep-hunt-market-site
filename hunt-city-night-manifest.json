@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "policy": "licensed_or_original_assets_only",
+  "mode": "night_only",
+  "cities": [
+    {
+      "id": "dubai",
+      "name": "Dubai",
+      "region": "Middle East",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "london",
+      "name": "London",
+      "region": "Europe",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "tokyo",
+      "name": "Tokyo",
+      "region": "Asia",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "seoul",
+      "name": "Seoul",
+      "region": "Asia",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "singapore",
+      "name": "Singapore",
+      "region": "Asia",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "hong-kong",
+      "name": "Hong Kong",
+      "region": "Asia",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "shanghai",
+      "name": "Shanghai",
+      "region": "China",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "shenzhen",
+      "name": "Shenzhen",
+      "region": "China",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "new-york",
+      "name": "New York",
+      "region": "USA",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "los-angeles",
+      "name": "Los Angeles",
+      "region": "USA",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "chicago",
+      "name": "Chicago",
+      "region": "USA",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "paris",
+      "name": "Paris",
+      "region": "Europe",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "milan",
+      "name": "Milan",
+      "region": "Europe",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "berlin",
+      "name": "Berlin",
+      "region": "Europe",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "copenhagen",
+      "name": "Copenhagen",
+      "region": "Europe",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "barcelona",
+      "name": "Barcelona",
+      "region": "Europe",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "mumbai",
+      "name": "Mumbai",
+      "region": "India",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    },
+    {
+      "id": "cape-town",
+      "name": "Cape Town",
+      "region": "Africa",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET"
+    }
+  ]
+}

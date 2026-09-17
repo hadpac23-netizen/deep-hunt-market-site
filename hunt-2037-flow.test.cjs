@@ -34,5 +34,14 @@ assert(js.includes('type:"product_view"'),"product memory event missing");
 assert(core.includes("Decision?.scoreCandidate"),"Decision Brain optional scoring missing");
 assert(css.includes("prefers-reduced-motion"),"reduced-motion support missing");
 assert(css.includes("body.hunt2037-active #hd-wow-showcase"),"fallback surface switch missing");
+const visual=fs.readFileSync("hunt-2037-visual.js","utf8");
+const cities=JSON.parse(fs.readFileSync("hunt-city-night-manifest.json","utf8"));
+assert(html.includes("hunt-2037-visual.js?v=alpha1"),"visual engine script missing");
+assert(visual.includes("hunt2037Wordmark"),"dynamic wordmark hook missing");
+assert(visual.includes("hunt-city-night-manifest.json"),"city manifest loader missing");
+assert(css.includes("@keyframes hunt2037BrandFlow"),"dynamic HUNT animation missing");
+assert(cities.policy==="licensed_or_original_assets_only","city asset policy missing");
+assert(cities.mode==="night_only","night-only city policy missing");
+for(const city of ["Dubai","London","Tokyo","Singapore","New York","Copenhagen","Mumbai","Cape Town"])assert(cities.cities.some(x=>x.name===city),"missing city "+city);
 
 console.log("HUNT 2037 Flow tests: PASS");

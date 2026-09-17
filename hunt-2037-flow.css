@@ -33,3 +33,13 @@ body.hunt2037-active #hd-wow-showcase{display:none}
 body.hunt2037-active .hd-live-market{margin-top:12px}
 @media(max-width:760px){.hunt2037-flow{padding:16px 12px 44px}.hunt2037-intro{display:grid;padding:24px 18px;border-radius:22px}.hunt2037-intro h1{font-size:43px}.hunt2037-world,.hunt2037-lane{padding:14px;border-radius:18px}.hunt2037-world-head{display:grid;align-items:start}.hunt2037-world-enter{justify-self:start}.hunt2037-track{grid-auto-columns:minmax(155px,72vw)}}
 @media(prefers-reduced-motion:reduce){.hunt2037-product-media img{transition:none}.hunt2037-track{scroll-behavior:auto}}
+
+:root{--hunt-brand-a:#4338ca;--hunt-brand-b:#06b6d4;--hunt-city-image:none}
+body.hunt2037-active .hd-hero{position:relative;isolation:isolate;overflow:hidden}
+body.hunt2037-active .hd-hero:before{content:"";position:absolute;inset:0;z-index:-2;background-image:linear-gradient(180deg,rgba(7,9,13,.16),rgba(7,9,13,.72)),var(--hunt-city-image);background-size:cover;background-position:center;opacity:.72;transition:opacity .8s ease,background-image .8s ease}
+body.hunt2037-active .hd-hero:after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 70% 25%,color-mix(in srgb,var(--hunt-brand-a) 32%,transparent),transparent 45%),linear-gradient(135deg,color-mix(in srgb,var(--hunt-brand-b) 18%,transparent),transparent 58%);pointer-events:none}
+body.hunt2037-active .hd-brand[data-hunt2037-wordmark="true"]{background:linear-gradient(90deg,var(--hunt-brand-a),var(--hunt-brand-b),var(--hunt-brand-a));background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hunt2037BrandFlow 5s ease-in-out infinite;transform-origin:center}
+body.hunt2037-active .hd-brand[data-hunt2037-wordmark="true"]:hover{animation-duration:1.8s}
+.hunt2037-city-badge{position:absolute;right:24px;bottom:20px;z-index:2;border:1px solid rgba(255,255,255,.18);background:rgba(7,9,13,.44);backdrop-filter:blur(12px);color:#fff;border-radius:999px;padding:7px 10px;font-size:9px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+@keyframes hunt2037BrandFlow{0%,100%{background-position:0 50%;transform:translateY(0) scale(1)}50%{background-position:100% 50%;transform:translateY(-1px) scale(1.035)}}
+@media(prefers-reduced-motion:reduce){body.hunt2037-active .hd-brand[data-hunt2037-wordmark="true"]{animation:none}body.hunt2037-active .hd-hero:before{transition:none}}
