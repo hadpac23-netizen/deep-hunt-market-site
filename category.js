@@ -38,7 +38,7 @@
     const image = product.image_url?.startsWith("https://")
       ? `<img src="${H.esc(product.image_url)}" alt="${H.esc(product.title || "Product")}" loading="lazy">`
       : `<div class="hd-market-card-placeholder">◇</div>`;
-    const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">${H.esc(product.provider || "CATALOG")}</span>`;
+    const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">HUNT</span>`;
     const newBadge = H.isNewArrival?.(product) ? `<b class="hd-new-pulse">NEW</b>` : "";
     const retail = retailState(product);
     const price = retail.ready ? H.money(retail.amount, retail.currency) : (retail.estimated ? `From ${H.money(retail.amount, retail.currency)}` : "Price pending");
@@ -52,7 +52,7 @@
     return `<article class="hd-market-product-card" data-category="${H.esc(product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${retail.amount || 0}" data-score="${score}">
       <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}${newBadge}</a>
       <div class="hd-market-card-body">
-        <small>${H.esc(product.provider || "Provider")} · ${H.esc(stateLabel)}</small>
+        <small>HUNT · ${H.esc(stateLabel)}</small>
         <a href="${H.esc(productUrl)}" class="hd-market-card-title" data-product-view="${H.esc(productKey(product))}">${H.esc(product.title || "Product")}</a>
         <div class="hd-market-card-price"><strong>${price}</strong><span>${retail.ready ? "HUNT RETAIL" : (retail.estimated ? "VERIFY ON PRODUCT" : "PRICE PENDING")}</span></div>
         <p>${H.esc(score > 0 ? H.personalReason(product) : "Open the product to inspect images, variants and availability.")}</p>
@@ -210,7 +210,7 @@
       const page=await res.json();
       const rows=Array.isArray(page?.products)?page.products:[];
       nextCatalogPageIndex+=1;
-      applyRows(rows,"CJ paged",{merge:true});
+      applyRows(rows,"Live catalog",{merge:true});
       visibleLimit=Math.min(filteredSorted().length,visibleLimit+pageSize);
       renderGrid();
     }catch(err){
@@ -263,7 +263,7 @@
 
     $("#hd-cat-title").textContent = pageTitle;
     $("#hd-cat-breadcrumb").textContent = pageTitle;
-    $("#hd-cat-copy").textContent = subDef ? `${subDef.title} inside ${def.title}. CJ-only products, organized without category mixing.` : def.description;
+    $("#hd-cat-copy").textContent = subDef ? `${subDef.title} inside ${def.title}. HUNT products, organized without category mixing.` : def.description;
     renderCategories();
     applyViewMode(viewMode);
     H.recordSignal(slug,"category");
@@ -337,12 +337,12 @@
             const first=await firstRes.json();
             const rows=Array.isArray(first?.products)?first.products:[];
             nextCatalogPageIndex=1;
-            applyRows(rows,"CJ paged");
+            applyRows(rows,"Live catalog");
             rendered=true;
             shardLoaded=true;
           }
         } else if(info && Number(info.count)===0){
-          applyRows([],"CJ paged");
+          applyRows([],"Live catalog");
           rendered=true;
           shardLoaded=true;
         }

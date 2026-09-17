@@ -207,7 +207,7 @@
     if (candidate) {
       $("#hd-best-title").textContent = candidate.title || dict.noBest;
       const retail = retailState(candidate);
-      $("#hd-best-copy").textContent = [candidate.provider, retail.ready ? money(retail.amount,retail.currency) : "Price pending"].filter(Boolean).join(" · ");
+      $("#hd-best-copy").textContent = retail.ready ? money(retail.amount,retail.currency) : "Price pending";
       $("#hd-best-status").textContent = String(top.verdict || "TEST").toUpperCase();
     }
     if (testCandidate) {
