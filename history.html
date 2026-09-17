@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HUNT History — HUNT 2037 Alpha</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo6">
+  <link rel="stylesheet" href="hunt-history.css?v=alpha1">
+</head>
+<body class="hunt-history-page">
+  <header class="hunt-history-topbar">
+    <a class="hunt-history-brand" href="./?hunt2037=1">HUNT</a>
+    <span>HISTORY · PERSONALIZATION</span>
+    <a href="./?hunt2037=1">Back to HUNT 2037</a>
+  </header>
+  <main class="hunt-history-shell">
+    <section class="hunt-history-intro">
+      <small>HUNT MEMORY</small>
+      <h1>Your trail,<br>under your control.</h1>
+      <p>Recent shopping activity can shape discovery. Resetting HUNT Memory does not delete your account, saved account data, orders, or checkout history.</p>
+      <button id="hunt-history-reset" type="button">Reset HUNT Memory</button>
+    </section>
+
+    <section class="hunt-history-grid">
+      <article class="hunt-history-panel">
+        <div class="hunt-history-head"><small>TODAY</small><h2>Today</h2></div>
+        <div id="hunt-history-today" class="hunt-history-list"></div>
+      </article>
+      <article class="hunt-history-panel">
+        <div class="hunt-history-head"><small>YESTERDAY</small><h2>Yesterday</h2></div>
+        <div id="hunt-history-yesterday" class="hunt-history-list"></div>
+      </article>
+      <article class="hunt-history-panel">
+        <div class="hunt-history-head"><small>THIS WEEK</small><h2>This week</h2></div>
+        <div id="hunt-history-week" class="hunt-history-list"></div>
+      </article>
+    </section>
+
+    <section class="hunt-history-actions">
+      <article><small>LIKED</small><h2>Liked products</h2><div id="hunt-history-liked" class="hunt-history-product-grid"></div></article>
+      <article><small>SAVED</small><h2>Saved products</h2><div id="hunt-history-saved" class="hunt-history-product-grid"></div></article>
+    </section>
+  </main>
+
+  <script src="market-core.js?v=taxonomy6"></script>
+  <script src="hunt-experience-memory.js?v=memory2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
+  <script src="shopping-actions.js?v=memory3"></script>
+  <script src="hunt-history.js?v=alpha1"></script>
+</body>
+</html>
