@@ -102,7 +102,7 @@
     {
       "id": "boom-mirror",
       "manager": "boom-mirror",
-      "brain_status": "PLANNED",
+      "brain_status": "PILOT",
       "storefront_status": "OFF",
       "owner_gate": true,
       "dependencies": [
@@ -110,7 +110,7 @@
         "product-truth",
         "boom-stylist"
       ],
-      "notes": "Try-on/Focus Engine specified; photo processing is not active."
+      "notes": "Mirror Core + local-only Alpha UI implemented with consent, no-retention default, Focus Engine and session memory. AI rendering/photo upload transport remains OFF."
     },
     {
       "id": "look-deconstruction",

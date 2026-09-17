@@ -43,3 +43,4 @@ body.hunt2037-active .hd-brand[data-hunt2037-wordmark="true"]:hover{animation-du
 .hunt2037-city-badge{position:absolute;right:24px;bottom:20px;z-index:2;border:1px solid rgba(255,255,255,.18);background:rgba(7,9,13,.44);backdrop-filter:blur(12px);color:#fff;border-radius:999px;padding:7px 10px;font-size:9px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
 @keyframes hunt2037BrandFlow{0%,100%{background-position:0 50%;transform:translateY(0) scale(1)}50%{background-position:100% 50%;transform:translateY(-1px) scale(1.035)}}
 @media(prefers-reduced-motion:reduce){body.hunt2037-active .hd-brand[data-hunt2037-wordmark="true"]{animation:none}body.hunt2037-active .hd-hero:before{transition:none}}
+.hunt2037-mirror-link{display:inline-flex;margin-top:12px;border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 11px;color:#fff;text-decoration:none;font-size:10px;font-weight:900;letter-spacing:.06em}\n
