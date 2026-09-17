@@ -98,7 +98,7 @@
       api_host: config.posthogApiHost,
       ui_host: config.posthogUiHost || "https://eu.posthog.com",
       defaults: config.posthogDefaults || "2026-05-30",
-      capture_pageview: false,
+      capture_pageview: true,
       capture_pageleave: true,
       autocapture: true,
       disable_session_recording: isReplaySensitivePath(),
