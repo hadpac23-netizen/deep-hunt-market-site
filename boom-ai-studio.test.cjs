@@ -37,8 +37,9 @@ assert(js.includes("performance.now()"),"attention focus latency measurement mis
 assert(js.includes('["critical","blocked","watch"]'),"attention severity filter missing");
 assert(css.includes(".node.attention-focus"),"attention node highlight missing");
 
-assert(html.includes("provider not enabled yet"),"truthful model connector state missing");
-assert(js.includes("provider not enabled yet"),"model inspector truth state missing");
+assert(html.includes("Live model routing from BOOM control plane"),"live model connector copy missing");
+assert(js.includes("hunt_boom_model_routes"),"model route data source missing");
+assert(js.includes("אין Groq במסלול הפעיל"),"no-Groq model truth state missing");
 
 assert(css.includes("@media(max-width:900px)"),"mobile breakpoint missing");
 assert(css.includes(".canvas-wrap"),"canvas layout missing");

@@ -37,6 +37,7 @@
     cycles:[],
     evals:[],
     learning:[],
+    modelRoutes:[],
     managerMap:new Map(),
     reportMap:new Map(),
     workerReportMap:new Map(),
@@ -197,7 +198,7 @@
     setNodeStatus($("#node-owner"),"healthy");
     setNodeStatus($("#node-meta"),statusOf("boom-meta-f35"));
     setNodeStatus($("#node-super"),statusOf("boom-super-agent"));
-    setNodeStatus($("#node-model"),"watch");
+    setNodeStatus($("#node-model"),state.modelRoutes.some(r=>r.enabled!==false)?"healthy":"watch");
     setNodeStatus($("#node-memory"),"healthy");
     setNodeStatus($("#node-eval"),state.evals.length?"healthy":"watch");
     toolNodes.forEach(t=>setNodeStatus($("#node-"+t[0]),statusOf(t[0])));
@@ -356,9 +357,11 @@
       return;
     }
     if(type==="model"){
+      const routes=state.modelRoutes.filter(r=>r.enabled!==false);
+      const routeSummary=routes.map(r=>String(r.route_key)+": "+String(r.primary_model||"—")+(r.fallback_model?" → "+String(r.fallback_model):"")).join("\n")||"No active model route";
       $("#inspect-title").textContent="LLM / Reasoning Model";
-      $("#inspect-status").innerHTML=pill("watch");
-      $("#inspect-body").innerHTML='<section class="inspect-block"><h3>Connector status</h3><p><b>Model connector ready — provider not enabled yet.</b></p><p>BOOM לא מציג מודל חיצוני כאילו הוא מחובר כשאין provider server-side פעיל.</p></section>';
+      $("#inspect-status").innerHTML=pill(routes.length?"healthy":"watch");
+      $("#inspect-body").innerHTML='<section class="inspect-block"><h3>Live routing</h3><pre>'+esc(routeSummary)+'</pre><p>המצב נקרא ישירות מ־BOOM control plane. אין Groq במסלול הפעיל.</p></section>';
       return;
     }
     if(type==="memory"){
@@ -392,7 +395,7 @@
   }
 
   async function loadAll(){
-    const [managers,workers,workerReports,reports,events,decisions,commands,cycles,evals,learning]=await Promise.all([
+    const [managers,workers,workerReports,reports,events,decisions,commands,cycles,evals,learning,modelRoutes]=await Promise.all([
       query("hunt_boom_managers","*","updated_at",200),
       query("hunt_boom_workers","*","updated_at",400),
       query("hunt_boom_worker_reports","*","created_at",900),
@@ -402,9 +405,10 @@
       query("hunt_boom_agent_commands","*","created_at",250),
       query("hunt_boom_improvement_cycles","*","started_at",100),
       query("hunt_boom_evals","*","created_at",250),
-      query("hunt_boom_learning_items","*","learned_at",150)
+      query("hunt_boom_learning_items","*","learned_at",150),
+      query("hunt_boom_model_routes","route_key,task_class,primary_model,fallback_model,enabled,updated_at","updated_at",40)
     ]);
-    Object.assign(state,{managers,workers,workerReports,reports,events,decisions,commands,cycles,evals,learning});
+    Object.assign(state,{managers,workers,workerReports,reports,events,decisions,commands,cycles,evals,learning,modelRoutes});
     state.managerMap=latest(managers,"id");
     state.reportMap=latest(reports,"manager_id");
     state.workerReportMap=latest(workerReports,"worker_id");
