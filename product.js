@@ -239,12 +239,22 @@
     }
   }
 
+  async function fetchProductDetail() {
+    try {
+      return await H.storefront({provider,product_id:id});
+    } catch (firstError) {
+      await new Promise(resolve => setTimeout(resolve, 300));
+      try { return await H.storefront({provider,product_id:id}); }
+      catch { throw firstError; }
+    }
+  }
+
   async function load() {
     if (!id) throw new Error("Missing product id");
     H.updateCartBadges();
     try {
       const cached=cachedProduct();
-      const data = await H.storefront({provider,product_id:id});
+      const data = await fetchProductDetail();
       product={...(cached || {}),...(data.product || {})};
       variants=Array.isArray(product?.variants)?product.variants:[];
       selectedVariant=(requestedVariantId?variants.find(v=>String(v?.variant_id||"")===requestedVariantId):null)||variants[0]||null;

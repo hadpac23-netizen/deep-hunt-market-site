@@ -233,6 +233,11 @@
     }
     return out;
   }  function productCard(item, label="LIVE") {
+    try {
+      if (item?.provider && item?.item_id) {
+        sessionStorage.setItem(`hunt_product_${item.provider}:${item.item_id}`, JSON.stringify(item));
+      }
+    } catch {}
     const href = H.productUrl(item);
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${H.esc(item.image_url)}" alt="${H.esc(item.title || "Product")}" loading="lazy">`

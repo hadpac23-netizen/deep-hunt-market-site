@@ -5,7 +5,9 @@
   const consentKey = "hunt_analytics_consent_v1";
   const queue = [];
   let pageTracked = false;
+  let canonicalPageTracked = false;
   let initialized = false;
+  let posthogLoaded = false;
 
   const clean = (value, max = 120) =>
     String(value ?? "")
@@ -81,7 +83,55 @@
 
   const hasValidGtm = () => /^GTM-[A-Z0-9]+$/i.test(clean(config.gtmContainerId, 32));
   const hasValidGa4 = () => /^G-[A-Z0-9]+$/i.test(clean(config.ga4MeasurementId, 32));
-  const configured = () => hasValidGtm() || hasValidGa4();
+  const hasValidPostHog = () => /^phc_[A-Za-z0-9]+$/.test(clean(config.posthogProjectToken, 160)) && /^https:\/\/eu\.i\.posthog\.com$/i.test(clean(config.posthogApiHost, 80));
+  const configured = () => hasValidGtm() || hasValidGa4() || hasValidPostHog();
+
+  function isReplaySensitivePath() {
+    const path = safePath().toLowerCase();
+    return path.startsWith("/boom-") || ["/checkout", "/auth", "/profile", "/merchant-admin", "/owner-activation", "/launch-readiness", "/review-moderation", "/partner-outreach"].some(prefix => path.startsWith(prefix));
+  }
+
+  function loadPostHog() {
+    if (!hasValidPostHog() || posthogLoaded || window.posthog?.__loaded) return;
+    posthogLoaded = true;
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog&&window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}p||((p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",p.onerror=function(){p=null;posthogLoaded=false},(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r));var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagResult isFeatureEnabled reloadFeatureFlags on onFeatureFlags onSessionId identify group reset get_distinct_id get_session_id get_session_replay_url set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException opt_in_capturing opt_out_capturing".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    window.posthog.init(config.posthogProjectToken, {
+      api_host: config.posthogApiHost,
+      ui_host: config.posthogUiHost || "https://eu.posthog.com",
+      defaults: config.posthogDefaults || "2026-05-30",
+      capture_pageview: false,
+      capture_pageleave: true,
+      autocapture: true,
+      disable_session_recording: isReplaySensitivePath(),
+      session_recording: {maskAllInputs: true},
+      person_profiles: "identified_only"
+    });
+  }
+
+  function posthogCapture(event, params = {}) {
+    if (!consentGranted || !hasValidPostHog()) return false;
+    loadPostHog();
+    try {
+      const distinctId = clean(window.posthog?.get_distinct_id?.() || sessionId(), 120);
+      fetch(config.posthogApiHost + "/i/v0/e/", {
+        method: "POST",
+        keepalive: true,
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          api_key: config.posthogProjectToken,
+          event,
+          distinct_id: distinctId,
+          properties: {
+            ...params,
+            hunt_environment: clean(config.environment || "production", 24),
+            page_path: safePath(),
+            $process_person_profile: false
+          }
+        })
+      }).catch(()=>{});
+      return true;
+    } catch { return false; }
+  }
 
   function storedConsent() {
     if (!config.consentRequired) return true;
@@ -117,8 +167,9 @@
       return false;
     }
     const firstPartySent = firstPartySignal(event, params);
-    if (!configured()) return firstPartySent;
-    return sendPayload(payload) || firstPartySent;
+    const posthogSent = posthogCapture(event, params);
+    if (!configured()) return firstPartySent || posthogSent;
+    return sendPayload(payload) || firstPartySent || posthogSent;
   }
 
   function loadGtm() {
@@ -151,17 +202,29 @@
       const payload = queue.shift();
       const {event, hunt_environment, page_path, ...params} = payload;
       firstPartySignal(event, params);
+      posthogCapture(event, params);
       if (configured()) sendPayload(payload);
     }
   }
 
-  function pageView() {
-    if (pageTracked) return;
-    pageTracked = true;
-    dataLayerPush("page_view", {
-      page_title: clean(document.title, 160),
-      page_location_path: safePath()
+  function captureCanonicalPageView() {
+    if (canonicalPageTracked || !consentGranted || !hasValidPostHog()) return false;
+    canonicalPageTracked = posthogCapture("$pageview", {
+      $current_url: clean(location.href, 500),
+      $pathname: safePath()
     });
+    return canonicalPageTracked;
+  }
+
+  function pageView() {
+    if (!pageTracked) {
+      pageTracked = true;
+      dataLayerPush("page_view", {
+        page_title: clean(document.title, 160),
+        page_location_path: safePath()
+      });
+    }
+    captureCanonicalPageView();
   }
 
   function init() {
@@ -170,6 +233,8 @@
     if (configured()) {
       loadGtm();
       loadDirectGa4();
+      loadPostHog();
+      try { window.posthog?.opt_in_capturing?.(); } catch {}
     }
     pageView();
     flush();
@@ -188,11 +253,15 @@
     dismissConsentBanner();
     if (!consentGranted) {
       queue.length = 0;
+      try { window.posthog?.stopSessionRecording?.(); window.posthog?.opt_out_capturing?.(); } catch {}
       window.dispatchEvent(new CustomEvent("hunt:analytics-consent", {detail:{granted:false}}));
       return false;
     }
+    try { window.posthog?.opt_in_capturing?.(); } catch {}
     init();
+    loadPostHog();
     flush();
+    captureCanonicalPageView();
     window.dispatchEvent(new CustomEvent("hunt:analytics-consent", {detail:{granted:true}}));
     return true;
   }
