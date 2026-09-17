@@ -46,6 +46,17 @@ assert(css.includes(".canvas-wrap"),"canvas layout missing");
 assert(js.includes("postgres_changes"),"realtime subscriptions missing");
 assert(js.includes("hunt-boom-chat"),"BOOM chat function missing");
 
+
+assert(html.includes('id="brand-seed"'),"Brand Factory F35 seed control missing");
+assert(js.includes("function loadBrandSeed()"),"Brand Factory seed loader missing");
+assert(js.includes("brand-factory-seed-il-0001.json"),"Brand Factory seed source missing");
+assert(fs.existsSync("brand-factory-seed-il-0001.json"),"Brand Factory seed fixture missing");
+const seed=JSON.parse(fs.readFileSync("brand-factory-seed-il-0001.json","utf8"));
+assert(seed.hooks?.length===10,"Brand Factory seed must contain 10 hooks");
+assert(seed.concepts?.length===5,"Brand Factory seed must contain 5 concepts");
+assert(seed.scripts?.length===3,"Brand Factory seed must contain 3 scripts");
+assert(seed.owner_gate?.status==="DRAFT_REVIEW","Brand Factory seed must remain owner-gated");
+
 console.log("boom_ai_studio_tests=PASS");
 
 assert(html.includes('data-tab="brand-factory"'),"Brand Factory tab missing");

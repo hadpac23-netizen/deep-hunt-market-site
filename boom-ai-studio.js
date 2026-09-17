@@ -916,6 +916,26 @@
     if(copy)copy.disabled=false;
   }
 
+  async function loadBrandSeed(){
+    const status=$("#brand-status");
+    try{
+      status.textContent="Loading F35 research seed…";
+      const res=await fetch("brand-factory-seed-il-0001.json?v=1",{cache:"no-store"});
+      if(!res.ok)throw new Error("SEED_LOAD_FAILED");
+      const seed=await res.json();
+      $("#brand-provider").value="CJdropshipping";$("#brand-country").value="IL";
+      $("#brand-item-id").value="2406230329031627300";$("#brand-variant-id").value="2406230329031627500";
+      $("#brand-product-name").value="Korean Vintage Floral Phone Case";
+      $("#brand-category").value="Phones & Accessories > Cases & Covers > Silicone Cases";$("#brand-market").value="IL";
+      $("#brand-price").value="5.99";$("#brand-cost").value="0.70";$("#brand-shipping").value="4.20";$("#brand-currency").value="USD";
+      $("#brand-facts").value="Supplier catalog: TPU soft-shell floral phone case; Apple-compatible variants; printed vintage/floral style. Exact model mapping must be rechecked before publish.";
+      $("#brand-proof").value="F35 seed snapshot only. Last observed: retail verified, Profit Gate PASS, stock/shipping verified to IL, CJPacket Liquid Line 9-23 day estimate. Re-verify live before rerun or publish.";
+      state.brandMission=seed;state.brandVerified=null;$("#brand-verify")?.classList.remove("verified");if($("#brand-verify"))$("#brand-verify").textContent="Verify from HUNT";
+      renderBrandFinance();renderBrandResult(seed,JSON.stringify(seed,null,2));setBrandPipeline("done");
+      status.textContent="F35 seed loaded · research draft only · Verify from HUNT required before BOOM rerun.";
+    }catch(err){status.textContent="Seed error: "+(err.message||err)}
+  }
+
   async function runBrandFactory(ev){
     ev?.preventDefault?.();
     if(state.brandBusy)return;
@@ -1074,6 +1094,7 @@
   $("#refresh").addEventListener("click",()=>loadAll().catch(showError));
   $("#brand-brief")?.addEventListener("submit",runBrandFactory);
   $("#brand-verify")?.addEventListener("click",verifyBrandProduct);
+  $("#brand-seed")?.addEventListener("click",loadBrandSeed);
   $("#brand-clear")?.addEventListener("click",clearBrandFactory);
   $$("#brand-provider,#brand-item-id,#brand-variant-id,#brand-country").forEach(el=>el.addEventListener("input",()=>{state.brandVerified=null;$("#brand-verify")?.classList.remove("verified");if($("#brand-verify"))$("#brand-verify").textContent="Verify from HUNT"}));
   $$("#brand-price,#brand-cost,#brand-shipping,#brand-currency").forEach(el=>el.addEventListener("input",renderBrandFinance));
