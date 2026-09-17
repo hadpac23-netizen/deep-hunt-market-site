@@ -7,6 +7,8 @@ const NEXT={
   OWNER_APPROVED:new Set(["REJECTED"]),
   REJECTED:new Set()
 };
+export const VAULT_BUCKET="boom-media-vault";
+export const MAX_INGEST_BYTES=50*1024*1024;
 const clean=v=>String(v??"").trim();
 const safe=v=>clean(v).replace(/[^A-Za-z0-9._-]+/g,"-").replace(/^-+|-+$/g,"").slice(0,100);
 export function storagePath({mission_id,asset_id,ext="mp4"}={}){
@@ -14,6 +16,8 @@ export function storagePath({mission_id,asset_id,ext="mp4"}={}){
   if(!m||!a||!["mp4","webm"].includes(e))throw new Error("VAULT_PATH_INVALID");
   return `missions/${m}/${a}.${e}`;
 }
+export function validateTaskId(v){const id=clean(v);if(!/^[A-Za-z0-9_-]{8,128}$/.test(id))throw new Error("PROVIDER_TASK_ID_INVALID");return id;}
+export function previewTTL(v=60){const n=Number(v);if(!Number.isInteger(n)||n<30||n>120)throw new Error("PREVIEW_TTL_INVALID");return n;}
 export function assertTransition(from,to){
   if(!STATES.has(from)||!STATES.has(to))throw new Error("VAULT_STATUS_INVALID");
   if(!NEXT[from]?.has(to))throw new Error(`VAULT_TRANSITION_BLOCKED_${from}_TO_${to}`);
@@ -33,25 +37,17 @@ export function postGenerationQA(evidence={}){
   };
   const failed=Object.entries(hard).filter(([,v])=>!v).map(([k])=>k);
   const score=Math.round((Object.values(hard).filter(Boolean).length/Object.keys(hard).length)*100);
-  return {
-    status:failed.length?"QA_FAILED":"QA_PASSED",
-    score,
-    hard_gates:hard,
-    failed_gates:failed,
-    publishing_allowed:false,
-    owner_approval_required:true,
-    next_safe_action:failed.length?"Reject or regenerate the asset; do not publish.":"Owner may review the private stored asset. Publishing remains separately gated."
-  };
+  return {status:failed.length?"QA_FAILED":"QA_PASSED",score,hard_gates:hard,failed_gates:failed,publishing_allowed:false,owner_approval_required:true,next_safe_action:failed.length?"Reject or regenerate the asset; do not publish.":"Owner may review the private stored asset. Publishing remains separately gated."};
 }
 export function planVaultAsset(input={}){
   if(input?.source_verified!==true)throw new Error("PRODUCT_TRUTH_REVERIFY_REQUIRED");
   if(input?.generation_completed!==true)throw new Error("GENERATION_COMPLETION_REQUIRED");
-  const mime=clean(input.mime_type); if(!["video/mp4","video/webm"].includes(mime))throw new Error("VAULT_MIME_INVALID");
+  const mime=clean(input.mime_type);if(!["video/mp4","video/webm"].includes(mime))throw new Error("VAULT_MIME_INVALID");
+  const duration=Number(input.duration_seconds);if(!(duration>0&&duration<=10))throw new Error("VAULT_DURATION_INVALID");
+  if(clean(input.aspect_ratio)!=="9:16")throw new Error("VAULT_ASPECT_RATIO_INVALID");
+  const verifiedAt=clean(input.product_truth_verified_at);if(!verifiedAt||Number.isNaN(Date.parse(verifiedAt)))throw new Error("PRODUCT_TRUTH_TIMESTAMP_REQUIRED");
+  if(!clean(input.product_item_id))throw new Error("PRODUCT_ITEM_REQUIRED");
   const ext=mime==="video/webm"?"webm":"mp4";
-  return {
-    storage_bucket:"boom-media-vault",storage_path:storagePath({mission_id:input.mission_id,asset_id:input.asset_id,ext}),
-    status:"GENERATED_PENDING_INGEST",public_url:null,private_only:true,publishing_allowed:false,
-    owner_approval_required:true,next_safe_action:"Ingest server-side, verify checksum, then move to STORED_PENDING_QA."
-  };
+  return {storage_bucket:VAULT_BUCKET,storage_path:storagePath({mission_id:input.mission_id,asset_id:input.asset_id,ext}),creative_asset_id:safe(input.asset_id),status:"GENERATED_PENDING_INGEST",public_url:null,private_only:true,publishing_allowed:false,owner_approval_required:true,next_safe_action:"Ingest server-side, verify checksum, then move to STORED_PENDING_QA."};
 }
 export {STATES};
