@@ -111,3 +111,8 @@ assert(html.includes("short-lived private preview frames"),"Private preview cont
 assert(html.includes("VISUAL QA"),"Visual QA stage missing from Media Vault flow");
 
 assert(html.includes('vault-visual-qa'),"Visual QA button missing");assert(js.includes("sampleVaultFrames"),"Frame sampler missing");assert(js.includes("visual_qa_analyze"),"Server Visual QA action missing");
+
+assert(html.includes('brand-deployment-readiness'),"Deployment Readiness card missing");
+assert(html.includes("SOURCE_READY"),"Source readiness stage missing");
+assert(html.includes("RUNTIME_READY"),"Runtime readiness stage missing");
+assert(html.includes("OWNER_ACTIVATION"),"Owner activation stage missing");

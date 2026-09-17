@@ -208,6 +208,11 @@
                 <pre id="vault-output">Media Vault controls are source-ready but locked until the migration and Edge Function are deployed with Owner approval.</pre>
                 <p>Provider output is fetched server-side only. Visual QA samples 5 short-lived private preview frames, compares them with verified product imagery, and must pass before Post-Gen QA can pass. No public media URL, and QA pass never publishes automatically.</p>
               </section>
+              <section class="brand-media-vault-card" id="brand-deployment-readiness">
+                <div class="brand-result-head"><div><small>DEPLOYMENT READINESS</small><h2>Source → Runtime → Owner Activation</h2></div><span class="brand-gate">RUNTIME BLOCKED</span></div>
+                <div class="brand-vault-flow"><span>SOURCE_READY</span><b>→</b><span>RUNTIME_READY</span><b>→</b><span>OWNER_ACTIVATION</span><b>→</b><span>FIRST GENERATION</span></div>
+                <p>Current live probe: the Media Vault ledger/bucket/policies and the Runway/Vault Edge Functions are not deployed. Secrets are never exposed or inferred. Generation and publishing remain disabled.</p>
+              </section>
             </section>
           </div>
         </section>
