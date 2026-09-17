@@ -18,6 +18,8 @@ export function storagePath({mission_id,asset_id,ext="mp4"}={}){
 }
 export function validateTaskId(v){const id=clean(v);if(!/^[A-Za-z0-9_-]{8,128}$/.test(id))throw new Error("PROVIDER_TASK_ID_INVALID");return id;}
 export function previewTTL(v=60){const n=Number(v);if(!Number.isInteger(n)||n<30||n>120)throw new Error("PREVIEW_TTL_INVALID");return n;}
+export function ownerDecision(v){const d=clean(v).toLowerCase();if(!["approve","reject"].includes(d))throw new Error("OWNER_DECISION_INVALID");return d;}
+export function decisionNote(v=""){const n=clean(v);if(n.length>500)throw new Error("OWNER_DECISION_NOTE_TOO_LONG");return n;}
 export function assertTransition(from,to){
   if(!STATES.has(from)||!STATES.has(to))throw new Error("VAULT_STATUS_INVALID");
   if(!NEXT[from]?.has(to))throw new Error(`VAULT_TRANSITION_BLOCKED_${from}_TO_${to}`);

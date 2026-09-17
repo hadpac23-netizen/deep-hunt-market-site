@@ -60,7 +60,9 @@
     brandCreativeQA:null,
     brandMission:null,
     brandBusy:false,
-    brandVerified:null
+    brandVerified:null,
+    vaultLive:false,
+    vaultLast:null
   };
 
   const toolNodes=[
@@ -524,6 +526,15 @@
     if(!res.ok)throw new Error(data?.error||data?.message||("HTTP "+res.status));
     return data||{};
   }
+
+  function vaultIdentity(){return {mission_id:$("#vault-mission-id")?.value.trim()||"",asset_id:$("#vault-asset-id")?.value.trim()||""}}
+  function setVaultOutput(value){const el=$("#vault-output");if(el)el.textContent=typeof value==="string"?value:JSON.stringify(value,null,2)}
+  function vaultEvidence(){const out={};$$('[data-vault-qa]').forEach(el=>out[el.dataset.vaultQa]=el.checked===true);return out}
+  function setVaultControls(){const on=state.vaultLive===true;["#vault-preview","#vault-qa-commit","#vault-owner-approve","#vault-owner-reject"].forEach(q=>{const el=$(q);if(el)el.disabled=!on});$$('[data-vault-qa]').forEach(el=>el.disabled=!on)}
+  async function vaultAction(action,extra={}){if(!state.vaultLive)throw new Error("MEDIA_VAULT_NOT_DEPLOYED");const id=vaultIdentity();if(!id.mission_id||!id.asset_id)throw new Error("Mission ID and Asset ID are required.");const data=await invokeBoomFunction("hunt-boom-media-vault",{action,...id,...extra});state.vaultLast=data;setVaultOutput(data);return data}
+  async function runVaultPreview(){try{const data=await vaultAction("private_preview",{ttl_seconds:60});if(data?.signed_url)window.open(data.signed_url,"_blank","noopener,noreferrer")}catch(err){setVaultOutput(err.message||err)}}
+  async function commitVaultQA(){try{await vaultAction("qa_commit",{evidence:vaultEvidence()})}catch(err){setVaultOutput(err.message||err)}}
+  async function commitVaultOwnerDecision(decision){try{await vaultAction("owner_decision",{decision,note:$("#vault-owner-note")?.value.trim()||""})}catch(err){setVaultOutput(err.message||err)}}
 
   async function invokeBoomAudio(name,body){
     const {data:{session},error:sessionError}=await client.auth.getSession();
@@ -1040,6 +1051,7 @@
   async function boot(){
     createToolNodes();
     renderBrandVideoProviders();
+    setVaultControls();
 
     const url=new URL(location.href);
     const oauthError=url.searchParams.get("error_description")||url.searchParams.get("error");
@@ -1136,6 +1148,10 @@
   $("#brand-seed")?.addEventListener("click",loadBrandSeed);
   $("#brand-video-plan")?.addEventListener("click",buildBrandVideoPlan);
   $("#brand-video-qa")?.addEventListener("click",runBrandCreativeQA);
+  $("#vault-preview")?.addEventListener("click",runVaultPreview);
+  $("#vault-qa-commit")?.addEventListener("click",commitVaultQA);
+  $("#vault-owner-approve")?.addEventListener("click",()=>commitVaultOwnerDecision("approve"));
+  $("#vault-owner-reject")?.addEventListener("click",()=>commitVaultOwnerDecision("reject"));
   $("#brand-clear")?.addEventListener("click",clearBrandFactory);
   $$("#brand-provider,#brand-item-id,#brand-variant-id,#brand-country").forEach(el=>el.addEventListener("input",()=>{state.brandVerified=null;$("#brand-verify")?.classList.remove("verified");if($("#brand-verify"))$("#brand-verify").textContent="Verify from HUNT"}));
   $$("#brand-price,#brand-cost,#brand-shipping,#brand-currency").forEach(el=>el.addEventListener("input",renderBrandFinance));

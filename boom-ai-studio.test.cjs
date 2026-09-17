@@ -97,5 +97,13 @@ assert(js.includes("generation_reduction_pct"),"Creative QA savings summary miss
 
 assert(html.includes('brand-media-vault-card'),"Media Vault card missing");
 assert(html.includes("POST-GEN QA"),"Post-generation QA flow missing");
+assert(html.includes('id="vault-preview"'),"Private preview control missing");
+assert(html.includes('id="vault-qa-commit"'),"QA commit control missing");
+assert(html.includes('id="vault-owner-approve"'),"Owner approve control missing");
+assert(html.includes('id="vault-owner-reject"'),"Owner reject control missing");
+assert(js.includes('function vaultAction('),"Media Vault action adapter missing");
+assert(js.includes('MEDIA_VAULT_NOT_DEPLOYED'),"Media Vault deploy lock missing");
+assert(js.includes('commitVaultOwnerDecision("approve")'),"Owner approve wiring missing");
+assert(js.includes('commitVaultOwnerDecision("reject")'),"Owner reject wiring missing");
 assert(html.includes("SERVER INGEST + SHA-256"),"Media ingest/checksum stage missing");
 assert(html.includes("short-lived signed URLs"),"Private preview contract missing");

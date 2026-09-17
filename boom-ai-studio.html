@@ -202,6 +202,10 @@
               <section class="brand-media-vault-card">
                 <div class="brand-result-head"><div><small>BOOM MEDIA VAULT</small><h2>Private storage → Post-Gen QA → Owner Gate</h2></div><span class="brand-gate">SOURCE ONLY / NOT DEPLOYED</span></div>
                 <div class="brand-vault-flow"><span>GENERATED</span><b>→</b><span>SERVER INGEST + SHA-256</span><b>→</b><span>PRIVATE VAULT</span><b>→</b><span>POST-GEN QA</span><b>→</b><span>OWNER REVIEW</span></div>
+                <div class="brand-vault-controls"><input id="vault-mission-id" placeholder="Mission ID" value="BF-IL-0001" /><input id="vault-asset-id" placeholder="Asset ID e.g. S2-4" /><button id="vault-preview" type="button" disabled>Private Preview</button></div>
+                <div class="brand-vault-checks" id="vault-qa-checks"><label><input type="checkbox" data-vault-qa="product_fidelity" disabled /> Product fidelity</label><label><input type="checkbox" data-vault-qa="no_unverified_claims" disabled /> No unverified claims</label><label><input type="checkbox" data-vault-qa="no_fake_reviews" disabled /> No fake reviews</label><label><input type="checkbox" data-vault-qa="no_unintended_branding" disabled /> No unintended branding</label><label><input type="checkbox" data-vault-qa="no_major_visual_defects" disabled /> No major visual defects</label></div>
+                <div class="brand-vault-controls"><button id="vault-qa-commit" type="button" disabled>Commit QA</button><input id="vault-owner-note" maxlength="500" placeholder="Owner note (optional)" /><button id="vault-owner-approve" type="button" disabled>Owner Approve</button><button id="vault-owner-reject" type="button" disabled>Reject</button></div>
+                <pre id="vault-output">Media Vault controls are source-ready but locked until the migration and Edge Function are deployed with Owner approval.</pre>
                 <p>Provider output is fetched server-side only. Private previews use short-lived signed URLs (30–120s). No public media URL, and QA pass never publishes automatically.</p>
               </section>
             </section>

@@ -31,7 +31,12 @@ create table if not exists public.boom_media_assets (
     'GENERATED_PENDING_INGEST','STORED_PENDING_QA','QA_PASSED','QA_FAILED','OWNER_APPROVED','REJECTED'
   )),
   qa_json jsonb not null default '{}'::jsonb,
+  qa_completed_at timestamptz,
+  qa_updated_by uuid references auth.users(id) on delete set null,
   created_by uuid references auth.users(id) on delete set null,
+  owner_decision_by uuid references auth.users(id) on delete set null,
+  owner_decision_note text check (char_length(owner_decision_note) <= 500),
+  owner_decided_at timestamptz,
   owner_approved_at timestamptz,
   ingested_at timestamptz,
   created_at timestamptz not null default now(),
