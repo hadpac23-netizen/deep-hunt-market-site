@@ -110,8 +110,26 @@
   function posthogCapture(event, params = {}) {
     if (!consentGranted || !hasValidPostHog()) return false;
     loadPostHog();
-    try { window.posthog?.capture?.(event, {...params, hunt_environment: clean(config.environment || "production", 24), page_path: safePath()}, {send_instantly:true}); return true; }
-    catch { return false; }
+    try {
+      const distinctId = clean(window.posthog?.get_distinct_id?.() || sessionId(), 120);
+      fetch(config.posthogApiHost + "/i/v0/e/", {
+        method: "POST",
+        keepalive: true,
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          api_key: config.posthogProjectToken,
+          event,
+          distinct_id: distinctId,
+          properties: {
+            ...params,
+            hunt_environment: clean(config.environment || "production", 24),
+            page_path: safePath(),
+            $process_person_profile: false
+          }
+        })
+      }).catch(()=>{});
+      return true;
+    } catch { return false; }
   }
 
   function storedConsent() {
