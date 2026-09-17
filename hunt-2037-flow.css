@@ -1,0 +1,35 @@
+.hunt2037-flow{max-width:1500px;margin:0 auto;padding:28px 22px 54px}
+.hunt2037-intro{display:flex;justify-content:space-between;gap:24px;align-items:end;padding:34px;border-radius:28px;background:linear-gradient(135deg,#0c1118,#151b24);color:#fff;border:1px solid rgba(255,255,255,.09);margin-bottom:22px;overflow:hidden;position:relative}
+.hunt2037-intro:after{content:"";position:absolute;inset:auto -10% -65% 35%;height:240px;background:radial-gradient(circle,rgba(116,95,255,.28),transparent 66%);pointer-events:none}
+.hunt2037-intro small,.hunt2037-world-head small,.hunt2037-lane-head small,.hunt2037-discovery-head small{font-size:10px;letter-spacing:.16em;font-weight:900;opacity:.68}
+.hunt2037-intro h1{font-size:clamp(34px,6vw,78px);line-height:.94;margin:10px 0 14px;max-width:900px}
+.hunt2037-intro p{max-width:650px;color:#aeb8c6;font-size:14px}
+.hunt2037-stats{display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1}
+.hunt2037-stats span{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);border-radius:999px;padding:9px 12px;font-size:9px;white-space:nowrap}
+.hunt2037-stats b{font-size:15px;margin-inline-end:4px}
+.hunt2037-world,.hunt2037-lane{margin:26px 0;padding:22px;border:1px solid rgba(80,90,105,.18);border-radius:24px;background:rgba(255,255,255,.58);backdrop-filter:blur(18px)}
+.hunt2037-world:nth-of-type(2){background:linear-gradient(145deg,rgba(23,18,35,.96),rgba(47,31,64,.91));color:#fff}
+.hunt2037-world:nth-of-type(3){background:linear-gradient(145deg,rgba(8,24,31,.96),rgba(13,49,58,.9));color:#fff}
+.hunt2037-world-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin-bottom:15px}
+.hunt2037-world-head h2,.hunt2037-discovery-head h2{font-size:clamp(28px,4vw,54px);margin:4px 0}
+.hunt2037-world-head p{margin:0;opacity:.7}
+.hunt2037-world-enter{border:1px solid currentColor;background:transparent;color:inherit;border-radius:999px;padding:9px 13px;font-weight:850;cursor:pointer}
+.hunt2037-track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(180px,235px);gap:12px;overflow-x:auto;overscroll-behavior-inline:contain;padding:3px 2px 12px;scroll-snap-type:x proximity}
+.hunt2037-product{scroll-snap-align:start;min-width:0}
+.hunt2037-product-media{aspect-ratio:4/5;overflow:hidden;border-radius:16px}
+.hunt2037-product-media img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.hunt2037-product:hover .hunt2037-product-media img{transform:scale(1.025)}
+.hunt2037-placeholder{width:100%;height:100%;display:grid;place-items:center;background:#e8ebef;font-weight:1000;font-size:42px}
+.hunt2037-product-body{display:grid;gap:5px;padding-top:9px}
+.hunt2037-product-body>a{font-size:12px;line-height:1.35;text-decoration:none;color:inherit}
+.hunt2037-product-body small{font-size:8px;opacity:.58}
+.hunt2037-price{display:flex;justify-content:space-between;gap:7px;align-items:center}
+.hunt2037-price strong{font-size:12px}.hunt2037-price em{font-size:8px;font-style:normal;opacity:.55}
+.hunt2037-share{justify-self:start;border:1px solid rgba(80,90,105,.25);background:transparent;color:inherit;border-radius:999px;padding:5px 8px;font-size:8px;font-weight:850;cursor:pointer}
+.hunt2037-discovery{margin-top:42px}
+.hunt2037-discovery-head{margin-bottom:18px}
+.hunt2037-lane-head h3{font-size:24px;margin:4px 0 12px}
+body.hunt2037-active #hd-wow-showcase{display:none}
+body.hunt2037-active .hd-live-market{margin-top:12px}
+@media(max-width:760px){.hunt2037-flow{padding:16px 12px 44px}.hunt2037-intro{display:grid;padding:24px 18px;border-radius:22px}.hunt2037-intro h1{font-size:43px}.hunt2037-world,.hunt2037-lane{padding:14px;border-radius:18px}.hunt2037-world-head{display:grid;align-items:start}.hunt2037-world-enter{justify-self:start}.hunt2037-track{grid-auto-columns:minmax(155px,72vw)}}
+@media(prefers-reduced-motion:reduce){.hunt2037-product-media img{transition:none}.hunt2037-track{scroll-behavior:auto}}
