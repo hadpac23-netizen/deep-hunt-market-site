@@ -56,6 +56,7 @@
     traceType:"all",
     connectRows:[],
     connectCheckedAt:null,
+    brandVideoPlan:null,
     brandMission:null,
     brandBusy:false,
     brandVerified:null
@@ -876,7 +877,7 @@
       $("#brand-facts").value=brandPlainText(product.description).slice(0,1200);
       const origin=quote.selected_origin||{};
       $("#brand-proof").value=("HUNT live recheck: retail verified; Profit Gate PASS; stock verified; inventory "+(origin.total_inventory??origin.storage_num??"unknown")+"; shipping verified via "+String(shipping.name||"unknown")+"; ETA "+String(shipping.aging||"unknown")+" days; origin "+String(origin.country_code||"unknown")+".").slice(0,900);
-      state.brandVerified={provider,item_id:itemId,variant_id:variantId,country_code:country,retail_price_verified:true,profit_gate_status:"PASS",stock_verified:true,shipping_verified:true,shipping_method:String(shipping.name||""),shipping_eta:String(shipping.aging||""),origin_country_code:String(origin.country_code||""),inventory:Number(origin.total_inventory??origin.storage_num)||null,verified_at:new Date().toISOString()};
+      state.brandVerified={provider,item_id:itemId,variant_id:variantId,country_code:country,retail_price_verified:true,profit_gate_status:"PASS",stock_verified:true,shipping_verified:true,shipping_method:String(shipping.name||""),shipping_eta:String(shipping.aging||""),origin_country_code:String(origin.country_code||""),inventory:Number(origin.total_inventory??origin.storage_num)||null,image_url:String(variant.image_url||product.image_url||""),verified_at:new Date().toISOString()};
       renderBrandFinance();btn.classList.add("verified");btn.textContent="✓ Verified from HUNT";status.textContent="Product Truth verified live · safe to build a draft Brand Mission.";
     }catch(err){state.brandVerified=null;btn.textContent="Verify from HUNT";status.textContent="Verification failed: "+(err.message||err)}
     finally{btn.disabled=false}
@@ -905,6 +906,27 @@
     return null;
   }
 
+  function renderBrandVideoProviders(){
+    const host=$("#brand-video-providers"),router=window.BoomVideoRouter;if(!host||!router)return;
+    host.innerHTML=Object.values(router.providers).map(p=>'<span><b>'+esc(p.label)+'</b> · '+esc(p.connection)+'</span>').join("");
+  }
+
+  function resetBrandVideoPlan(){
+    state.brandVideoPlan=null;const btn=$("#brand-video-plan"),out=$("#brand-video-output");
+    if(btn)btn.disabled=!Boolean(state.brandMission?.video_prompt_pack);
+    if(out)out.textContent="Complete or load a Brand Mission with a video prompt pack.";
+  }
+
+  function buildBrandVideoPlan(){
+    const router=window.BoomVideoRouter,out=$("#brand-video-output"),status=$("#brand-status");
+    if(!router){if(status)status.textContent="Video Router unavailable.";return}
+    if(!state.brandMission?.video_prompt_pack){if(status)status.textContent="No video prompt pack in this mission.";return}
+    const image=state.brandVerified?.image_url||state.brandMission?.product_truth_snapshot?.image_url||"";
+    const plan=router.buildPlan(state.brandMission,{productImageUrl:image,ownerApproved:false});
+    state.brandVideoPlan=plan;if(out)out.textContent=JSON.stringify(plan,null,2);
+    if(status)status.textContent="Video route plan ready · generation remains blocked by Owner Gate and provider connection.";
+  }
+
   function renderBrandResult(result,raw){
     const title=$("#brand-result-title"),out=$("#brand-output"),scores=$("#brand-scoreboard"),copy=$("#brand-copy");
     if(title)title.textContent=result?.mission?.product_name||brandInputs().product_name||"Brand mission";
@@ -914,6 +936,7 @@
       scores.innerHTML=Object.entries(s).filter(([,v])=>Number.isFinite(Number(v))).map(([k,v])=>'<span class="'+(k==="overall"?"overall":"")+'>'+esc(k.replaceAll("_"," "))+' · '+Math.max(0,Math.min(100,Number(v)))+'</span>').join("");
     }
     if(copy)copy.disabled=false;
+    const planBtn=$("#brand-video-plan");if(planBtn)planBtn.disabled=!Boolean(result?.video_prompt_pack);
   }
 
   async function loadBrandSeed(){
@@ -960,7 +983,7 @@
 
   function clearBrandFactory(){
     $("#brand-brief")?.reset();if($("#brand-provider"))$("#brand-provider").value="CJdropshipping";if($("#brand-country"))$("#brand-country").value="IL";if($("#brand-currency"))$("#brand-currency").value="USD";state.brandMission=null;state.brandVerified=null;$("#brand-verify")?.classList.remove("verified");if($("#brand-verify"))$("#brand-verify").textContent="Verify from HUNT";setBrandPipeline("waiting");renderBrandFinance();
-    $("#brand-result-title").textContent="No mission yet";$("#brand-scoreboard").innerHTML="";$("#brand-output").textContent="Run one verified product through the factory. Output remains a draft until Owner approval.";$("#brand-copy").disabled=true;$("#brand-status").textContent="Ready · no campaign will be published.";
+    $("#brand-result-title").textContent="No mission yet";$("#brand-scoreboard").innerHTML="";$("#brand-output").textContent="Run one verified product through the factory. Output remains a draft until Owner approval.";$("#brand-copy").disabled=true;resetBrandVideoPlan();$("#brand-status").textContent="Ready · no campaign will be published.";
   }
 
   async function ensureAdmin(session){
@@ -1001,6 +1024,7 @@
 
   async function boot(){
     createToolNodes();
+    renderBrandVideoProviders();
 
     const url=new URL(location.href);
     const oauthError=url.searchParams.get("error_description")||url.searchParams.get("error");
@@ -1095,6 +1119,7 @@
   $("#brand-brief")?.addEventListener("submit",runBrandFactory);
   $("#brand-verify")?.addEventListener("click",verifyBrandProduct);
   $("#brand-seed")?.addEventListener("click",loadBrandSeed);
+  $("#brand-video-plan")?.addEventListener("click",buildBrandVideoPlan);
   $("#brand-clear")?.addEventListener("click",clearBrandFactory);
   $$("#brand-provider,#brand-item-id,#brand-variant-id,#brand-country").forEach(el=>el.addEventListener("input",()=>{state.brandVerified=null;$("#brand-verify")?.classList.remove("verified");if($("#brand-verify"))$("#brand-verify").textContent="Verify from HUNT"}));
   $$("#brand-price,#brand-cost,#brand-shipping,#brand-currency").forEach(el=>el.addEventListener("input",renderBrandFinance));

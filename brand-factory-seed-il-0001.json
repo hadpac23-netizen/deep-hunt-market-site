@@ -201,5 +201,21 @@
         "prompt": "Vertical 9:16 before-and-after product ad. Begin with a generic plain phone case on a minimal desk. Use a fast swipe transition to reveal the same phone in a vintage floral soft-shell case. Show three quick detail shots: floral print, flexible-looking TPU edge, camera cutout. End on a clean product hero shot with neutral background and empty lower-third space for a later compatibility and shipping disclaimer. Realistic ecommerce style, no logos, no claims rendered into video."
       }
     ]
+  },
+  "product_truth_snapshot": {
+    "provider": "CJdropshipping",
+    "item_id": "2406230329031627300",
+    "variant_id": "2406230329031627500",
+    "country_code": "IL",
+    "retail_price_amount": 5.99,
+    "supplier_cost_amount": 0.7,
+    "shipping_amount": 4.2,
+    "currency": "USD",
+    "profit_gate_status": "PASS",
+    "inventory_observed": 13568,
+    "shipping_method": "CJPacket Liquid Line",
+    "shipping_eta_observed": "9-23",
+    "image_url": "https://cf.cjdropshipping.com/quick/product/d2e7be13-d9c1-4b1a-adbd-275e06062b6c.jpg",
+    "snapshot_policy": "STALE_UNTIL_LIVE_RECHECK"
   }
 }

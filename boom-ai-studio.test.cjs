@@ -57,6 +57,14 @@ assert(seed.concepts?.length===5,"Brand Factory seed must contain 5 concepts");
 assert(seed.scripts?.length===3,"Brand Factory seed must contain 3 scripts");
 assert(seed.owner_gate?.status==="DRAFT_REVIEW","Brand Factory seed must remain owner-gated");
 
+assert(html.includes('id="brand-video-plan"'),"Video Router plan control missing");
+
+assert(html.includes("brand-video-router.js?v=1"),"Video Router script missing");
+
+assert(js.includes("buildBrandVideoPlan"),"Video Router studio integration missing");
+
+assert(js.includes("SERVER_SIDE_PROVIDER_CONNECTOR_REQUIRED")||fs.readFileSync("brand-video-router.js","utf8").includes("SERVER_SIDE_PROVIDER_CONNECTOR_REQUIRED"),"Video Router execution gate missing");
+
 console.log("boom_ai_studio_tests=PASS");
 
 assert(html.includes('data-tab="brand-factory"'),"Brand Factory tab missing");
