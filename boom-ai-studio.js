@@ -53,7 +53,9 @@
     voiceAudio:null,
     audioContext:null,
     vadRaf:null,
-    traceType:"all"
+    traceType:"all",
+    connectRows:[],
+    connectCheckedAt:null
   };
 
   const toolNodes=[
@@ -322,6 +324,68 @@
     ).join(""):'<article class="learn-card">אין learning items.</article>';
   }
 
+  function connectTone(raw){
+    const s=String(raw||"offline").toLowerCase();
+    if(["healthy","working","connected_verified"].includes(s))return "healthy";
+    if(["critical","broken"].includes(s))return "critical";
+    if(["blocked","disabled_by_owner"].includes(s))return "blocked";
+    return "watch";
+  }
+
+  function buildConnectRows(){
+    const user=state.session?.user||{};
+    const identities=(user.identities||[]).map(x=>x.provider).filter(Boolean);
+    const primary=user.app_metadata?.provider||"unknown";
+    const host=location.hostname;
+    const cjRaw=statusOf("supplier-cj");
+    const repairRaw=statusOf("repair-engineering");
+    const googleVerifiedAt=new Date("2026-09-17T12:55:00Z");
+    const googleFresh=Date.now()-googleVerifiedAt.getTime()<24*60*60*1000;
+    return [
+      {id:"supabase",name:"Supabase Core",kind:"IDENTITY + BACKEND",tone:"healthy",detail:"Studio data loaded successfully from the live Supabase project.",evidence:"Live query + realtime channel",gate:"Owner gate for config changes"},
+      {id:"github",name:"GitHub Admin Auth",kind:"OAUTH",tone:identities.includes("github")||primary==="github"?"healthy":"watch",detail:identities.includes("github")||primary==="github"?"GitHub identity is present on the active admin session.":"Current Studio session is not proving GitHub end-to-end right now.",evidence:"Active Supabase session",gate:"Owner gate for OAuth credentials"},
+      {id:"google",name:"Google OAuth",kind:"OAUTH",tone:googleFresh?"healthy":"watch",detail:googleFresh?"Fresh end-to-end login repair was verified today. Credential pairing should be rechecked after any provider change.":"Last recorded end-to-end verification is stale; BOOM CONNECT should reverify before claiming green.",evidence:"HUNT login E2E · 2026-09-17",gate:"Owner gate for client/secret changes"},
+      {id:"netlify",name:"Netlify Production",kind:"DEPLOYMENT",tone:host.endsWith("netlify.app")?"healthy":"watch",detail:host.endsWith("netlify.app")?"Studio is being served from Netlify now.":"This view is not currently served from a Netlify hostname.",evidence:host||"local",gate:"Owner gate for production promotion"},
+      {id:"cj",name:"CJ Supplier",kind:"SUPPLIER API",tone:connectTone(cjRaw),detail:"Status is derived from the live supplier-cj manager/report, not a hard-coded green badge.",evidence:"supplier-cj · "+cjRaw,gate:"Owner gate for supplier/order routing changes"},
+      {id:"repair",name:"BOOM Repair Engineering",kind:"SELF-HEALING",tone:connectTone(repairRaw),detail:"BOOM Brain repair lane handles safe reversible incidents and escalates material changes.",evidence:"repair-engineering · "+repairRaw,gate:"Safe repair auto · material changes gated"},
+      {id:"payments",name:"Live Payments",kind:"PAYMENTS",tone:"blocked",detail:"Live charging remains intentionally OFF until launch authorization and full order E2E.",evidence:"DISABLED_BY_OWNER",gate:"Explicit Owner approval required"}
+    ];
+  }
+
+  function renderConnect(){
+    const host=$("#connect-grid");
+    const summary=$("#connect-summary");
+    if(!host||!summary)return;
+    const rows=buildConnectRows();
+    state.connectRows=rows;
+    state.connectCheckedAt=new Date();
+    const counts={healthy:0,watch:0,critical:0,blocked:0};
+    rows.forEach(x=>counts[x.tone]=(counts[x.tone]||0)+1);
+    summary.innerHTML=
+      '<article><b>'+counts.healthy+'</b><span>CONNECTED / HEALTHY</span></article>'+
+      '<article><b>'+counts.watch+'</b><span>NEEDS ATTENTION</span></article>'+
+      '<article><b>'+counts.critical+'</b><span>BROKEN</span></article>'+
+      '<article><b>'+counts.blocked+'</b><span>OWNER-GATED / OFF</span></article>';
+    host.innerHTML=rows.map(x=>
+      '<article class="connect-card '+x.tone+'" data-connect-id="'+esc(x.id)+'">'+
+        '<div class="connect-card-head"><div><h3>'+esc(x.name)+'</h3><small>'+esc(x.kind)+'</small></div>'+pill(x.tone)+'</div>'+
+        '<p>'+esc(x.detail)+'</p><div class="connect-meta"><span>'+esc(x.evidence)+'</span><span>'+esc(x.gate)+'</span></div>'+
+      '</article>'
+    ).join("");
+  }
+
+  function inspectConnection(id){
+    const row=state.connectRows.find(x=>x.id===id);
+    if(!row)return;
+    $("#inspect-title").textContent=row.name;
+    $("#inspect-status").innerHTML=pill(row.tone)+'<span class="pill">BOOM CONNECT</span>';
+    $("#inspect-body").innerHTML=
+      '<section class="inspect-block"><h3>Connection truth</h3><p>'+esc(row.detail)+'</p></section>'+
+      '<section class="inspect-block"><h3>Evidence</h3><pre>'+esc(row.evidence)+'</pre></section>'+
+      '<section class="inspect-block"><h3>Recovery policy</h3><p>'+esc(row.gate)+'</p><p>Safe reversible repair may run automatically. Secrets, provider authority, production promotion, payments and order routing remain Owner-gated.</p></section>'+
+      '<section class="inspect-block"><h3>Last Studio check</h3><pre>'+esc(state.connectCheckedAt?.toLocaleString("he-IL")||"—")+'</pre></section>';
+  }
+
   function inspectManager(id){
     const m=state.managerMap.get(id);
     if(!m)return;
@@ -379,6 +443,7 @@
     renderExecutions();
     renderEvaluations();
     renderLearning();
+    renderConnect();
     if(state.managerMap.has(state.selected))inspectManager(state.selected);
     setLive("● LIVE · "+new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"}));
   }
@@ -866,6 +931,11 @@
     location.reload();
   });
   $("#refresh").addEventListener("click",()=>loadAll().catch(showError));
+  $("#connect-refresh")?.addEventListener("click",async()=>{
+    const btn=$("#connect-refresh");
+    if(btn){btn.disabled=true;btn.textContent="בודק…"}
+    try{await loadAll();renderConnect()}catch(err){showError(err)}finally{if(btn){btn.disabled=false;btn.textContent="בדוק עכשיו"}}
+  });
   $("#attention-focus").addEventListener("click",focusAttention);
   $("#chat-toggle").addEventListener("click",()=>setChatOpen(!$(".inspector").classList.contains("chat-open")));
   $("#chat-collapse").addEventListener("click",()=>setChatOpen(false));
@@ -897,6 +967,8 @@
   window.addEventListener("resize",()=>requestAnimationFrame(drawLinks));
 
   document.addEventListener("click",ev=>{
+    const connectCard=ev.target.closest("[data-connect-id]");
+    if(connectCard){inspectConnection(connectCard.dataset.connectId);return}
     const traceFilter=ev.target.closest("[data-trace-type]");
     if(traceFilter){
       state.traceType=traceFilter.dataset.traceType||"all";
@@ -911,6 +983,7 @@
       tab.classList.add("active");
       $("#"+tab.dataset.tab).classList.add("active");
       if(tab.dataset.tab==="studio")requestAnimationFrame(drawLinks);
+      if(tab.dataset.tab==="connect")renderConnect();
       return;
     }
     const managerNode=ev.target.closest("[data-manager-id]");
@@ -944,5 +1017,6 @@
     }
   });
 
+  setInterval(()=>{if(state.session&&!$("#app-shell")?.hidden)renderConnect()},60000);
   boot().catch(showError);
 })();
