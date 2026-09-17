@@ -428,3 +428,168 @@ Support language, currency, sizing systems and country restrictions.
 Adapt media richness to device/network conditions.
 Expose Less like this / More like this / Reset taste / Reduce personalization controls.
 Protect referral points and rewards with fraud/abuse controls.
+
+## BOOM MIRROR / HUNT TRY ME DYNAMIC — REQUIRED MODULE
+
+Build a dynamic personal try-on and styling system.
+
+### Entry modes
+- Upload full-body photo
+- Take a photo
+- Upload selfie and generate a usable digital likeness
+- Optional persistent avatar later
+
+### Mirror pipeline
+1. Photo Intake
+2. Consent / retention choice
+3. Body Mapping
+4. Product anchor-zone resolution
+5. Accessory or garment try-on
+6. BOOM Focus Engine
+7. Outfit Composer
+8. Save / Share / History
+9. Taste DNA learning
+10. Product Truth recheck before purchase
+
+### BOOM Focus Engine
+The view must dynamically adapt to the selected product.
+
+Examples:
+- necklace: neck close-up -> medium portrait -> full look
+- ring: hand macro -> natural hand/arm -> full context
+- earrings: ear/face -> portrait -> full look
+- jeans: waist/legs -> full body
+- hat: head/face -> upper body -> full look
+
+Transitions should be smooth, fast and purposeful.
+Do not use random zoom merely for spectacle.
+
+### Accessory Try-On MVP
+Support first:
+- earrings
+- necklaces
+- rings
+- sunglasses
+- hats
+
+### Clothing Try-On MVP
+Support first:
+- tops
+- jeans
+- dresses
+- jackets
+
+### Privacy
+- explicit consent,
+- delete image,
+- no-retention option,
+- explain preview limitations,
+- never score or critique body traits,
+- never claim exact physical fit from visual generation alone.
+
+## LOOK DECONSTRUCTION
+
+Allow an inspiration image or screenshot to be analyzed into multiple shopping components.
+
+Identify:
+- garments,
+- shoes,
+- bags,
+- jewelry,
+- visible accessories.
+
+Then:
+- find verified HUNT matches,
+- rebuild the look,
+- create alternatives,
+- create budget variants,
+- send selected items into BOOM Mirror.
+
+Use multi-item reasoning, not one-object-at-a-time search only.
+
+## LOOK LOCKER
+
+Store complete looks with states:
+Tried / Saved / Shared / Purchased / Want Later / BOOM Created / Inspiration Rebuild.
+
+A saved look should survive individual SKU changes.
+When one item becomes unavailable, suggest a compatible replacement.
+
+## OCCASION MODE
+
+Let the user say:
+- Dress me for work
+- Build a dinner look
+- Travel outfit
+- Event look
+- Gift mission
+- Home-office setup
+
+Occasion changes ranking, categories, budget allocation and presentation.
+
+## WHY THIS SUITS YOU
+
+Expose short truthful recommendation reasons such as:
+- Matches pieces you saved
+- Completes your current look
+- Faster delivery to your country
+- New in a category you follow
+
+Do not make claims about the user's body, identity or sensitive traits.
+
+## STYLE WATCH
+
+Allow Watch on a whole look, not only one product.
+
+Monitor:
+- price,
+- stock,
+- size,
+- color,
+- shipping,
+- total look cost.
+
+Notify only on meaningful changes.
+
+## POST-PURCHASE STYLING
+
+Use owned-item context to:
+- style around purchased items,
+- suggest relevant complements,
+- help with returns/exchanges,
+- help with tracking/support,
+- avoid redundant recommendations.
+
+## CONFIDENCE LAYER
+
+For AI-generated visual or ranking output, support:
+- fidelity confidence,
+- try-on preview confidence,
+- style-match confidence,
+- freshness confidence.
+
+Low confidence must reduce automation and increase truthful fallback behavior.
+
+## MIRROR BUILD ORDER
+
+Phase M0:
+- architecture + consent + data contracts
+
+Phase M1:
+- jewelry/accessory overlay
+- Focus Engine
+- Save/Share/History
+
+Phase M2:
+- tops/jeans/dresses/jackets
+- Complete the Look
+- Look Locker
+- Occasion Mode
+
+Phase M3:
+- selfie -> digital likeness
+- Look Deconstruction
+- advanced multi-item styling
+- richer dynamic camera
+
+Do not start with full 3D, all categories, persistent avatar and real-time video simultaneously.

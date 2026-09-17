@@ -472,3 +472,130 @@ Global Brain handles language, currency, sizing systems, taxes/duties context an
 Performance Brain adapts media richness to device/network conditions.
 Users receive controls for less/more of a topic, reset preferences and reduce personalization.
 Referral and reward systems require fraud/abuse protection.
+
+## 30. BOOM Mirror / HUNT Try Me Dynamic
+
+BOOM Mirror is a dynamic try-on and styling engine, not a static image overlay.
+
+User entry modes:
+- full-body photo upload,
+- camera capture,
+- selfie-to-digital-likeness,
+- optional persistent avatar later.
+
+Core layers:
+- Photo Intake + consent,
+- Body Mapping,
+- Accessory Try-On,
+- Clothing Try-On,
+- BOOM Focus Engine,
+- Outfit Composer,
+- Mirror Session Memory,
+- Mirror Share,
+- Privacy controls.
+
+The Focus Engine changes framing by product:
+- necklace -> neck close-up -> medium -> full look,
+- ring -> hand macro -> medium -> full context,
+- earrings -> ear/face -> portrait -> full look,
+- jeans -> waist/legs -> full body,
+- hat -> head/face -> upper body -> full look.
+
+Mirror output is a visual styling preview, not a promise of exact physical fit.
+
+## 31. Look Deconstruction
+
+Allow users to upload or select a look image and let BOOM identify multiple style components:
+clothing, shoes, jewelry, accessories, bags and other visible pieces.
+
+BOOM then maps each component to verified HUNT inventory and can:
+- find similar,
+- rebuild the look,
+- create a lower-budget variation,
+- create an alternative style,
+- send components to BOOM Mirror.
+
+## 32. Look Locker
+
+Store complete looks, not only products.
+
+States include:
+- Tried
+- Saved
+- Shared
+- Purchased
+- Want Later
+- Created by BOOM
+- Created from uploaded inspiration
+
+A saved look remains editable and may be rebuilt when products become unavailable.
+
+## 33. Occasion Mode
+
+Allow users to enter a shopping context such as:
+work, travel, dinner, event, celebration, everyday, gift mission, home setup or another explicit occasion.
+
+Occasion Mode changes:
+- recommendation intent,
+- styling combinations,
+- budget allocation,
+- product categories,
+- presentation style,
+- discovery world.
+
+## 34. Recommendation Explainability
+
+BOOM may expose concise reasons such as:
+- Matches items you saved,
+- Completes your current look,
+- Faster delivery to your country,
+- New in a category you follow,
+- Similar to a style you liked.
+
+Never expose manipulative or misleading reasons.
+Never claim personal attributes that were not explicitly provided or safely inferred from shopping behavior.
+
+## 35. Style Watch
+
+Watch can operate on a product or a whole look.
+
+For a look, BOOM can monitor:
+- product availability,
+- size/color restock,
+- price changes,
+- supplier route,
+- total look cost.
+
+A user may be notified when a saved look becomes complete or meaningfully cheaper.
+
+## 36. Post-Purchase Styling
+
+After purchase, BOOM understands owned items and may suggest:
+- complementary accessories,
+- a second look around the purchased item,
+- useful replacements or reorders where appropriate,
+- care/support/returns help.
+
+Do not repeatedly resell the same category without relevance.
+
+## 37. Confidence Layer
+
+Visual AI outputs expose confidence as appropriate:
+- product fidelity confidence,
+- try-on preview confidence,
+- style-match confidence,
+- availability freshness confidence.
+
+Confidence is not a guarantee.
+When confidence is low, HUNT should say so and prefer a simpler truthful presentation.
+
+## 38. Mirror Safety + Privacy
+
+- Explicit photo consent.
+- Clear delete control.
+- Optional no-retention mode.
+- Separate source-photo retention from generated-avatar retention.
+- No body scoring.
+- No attractiveness scoring.
+- No weight-loss or appearance-pressure suggestions.
+- No claim of exact fit unless backed by real sizing evidence.
