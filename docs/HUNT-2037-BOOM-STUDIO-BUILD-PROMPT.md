@@ -398,3 +398,33 @@ The experience should make them want to keep discovering, return to things they 
 
 Build the brain first.
 Then let the visual world become alive around it.
+
+## REQUIRED ADDITIONAL BRAINS
+
+### Decision Brain
+Centralize every recommendation decision.
+Score candidates using relevance, affinity, quality, shipping, trust, freshness, novelty, creative performance and constrained margin.
+Apply hard gates for safety, market/shipping eligibility, live Product Truth, stock and verified media before scoring.
+Return score + lane + reason codes + components so every decision can be audited.
+
+### Cold Start
+Never pretend to know a new user.
+Use high-quality/diverse discovery first, then increase personalization as real interactions accumulate.
+
+### Trust Layer
+Use only real reviews, real verified-purchase evidence, real stock/shipping facts and truthful recommendation explanations.
+
+### Experiment Engine
+Put ranking mixes, world transitions, layouts and creative strategies behind feature flags and measurable experiments with holdouts.
+
+### Post-Purchase Brain
+Continue after checkout with tracking, support, returns/exchanges, useful complements and ownership-aware recommendations.
+
+### HUNT Continuity
+Resume useful prior discovery context while adding fresh controlled surprise.
+
+### Global / Performance / Customer Control
+Support language, currency, sizing systems and country restrictions.
+Adapt media richness to device/network conditions.
+Expose Less like this / More like this / Reset taste / Reduce personalization controls.
+Protect referral points and rewards with fraud/abuse controls.

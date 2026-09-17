@@ -417,3 +417,58 @@ They should want to:
 
 Final product statement:
 **HUNT 2037 = Memory + Taste + Worlds + Discovery + Stylist + Agent + Country Brain + Commerce.**
+
+## 23. Decision Brain
+
+BOOM must make every next-item decision through an explainable decision layer.
+
+Candidate scoring considers:
+- relevance,
+- Taste DNA affinity,
+- quality,
+- shipping,
+- trust,
+- freshness,
+- novelty,
+- creative performance,
+- margin as a constrained signal.
+
+Hard gates occur before scoring:
+safety, market eligibility, shipping eligibility, live Product Truth, stock, verified media.
+
+The engine returns:
+eligibility, score, discovery lane, reason codes, score components and fallback behavior.
+
+Margin may improve a tie, but may never overpower user relevance, truth, quality, shipping or trust.
+
+## 24. Cold Start
+
+New users must not receive fake personalization.
+Use balanced high-quality discovery, explicit category/context signals, and controlled exploration until sufficient behavior exists.
+
+## 25. Trust Layer
+
+Expose truthful confidence signals:
+verified product facts, real reviews only, verified purchase only when backed by a real order, return policy, shipping evidence, supplier/quality state and recommendation reasons when useful.
+
+## 26. Experiment Engine
+
+Major ranking, layout and creative decisions must be experimentable behind feature flags.
+Maintain holdouts and compare long-term outcomes, not clicks alone.
+
+## 27. Post-Purchase Brain
+
+After purchase, HUNT continues with:
+tracking, returns/exchanges, useful complements, reorder where appropriate and ownership-aware recommendations.
+
+## 28. HUNT Continuity
+
+A returning session may resume a useful discovery path while introducing fresh content.
+HUNT should remember context without trapping the user in yesterday's feed.
+
+## 29. Global + Performance + Control
+
+Global Brain handles language, currency, sizing systems, taxes/duties context and country restrictions.
+Performance Brain adapts media richness to device/network conditions.
+Users receive controls for less/more of a topic, reset preferences and reduce personalization.
+Referral and reward systems require fraud/abuse protection.
