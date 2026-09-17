@@ -47,4 +47,15 @@ assert(css.includes(".canvas-wrap"),"canvas layout missing");
 assert(js.includes("postgres_changes"),"realtime subscriptions missing");
 assert(js.includes("hunt-boom-chat"),"BOOM chat function missing");
 
+
+assert(html.includes('data-tab="connections"'),"connections tab missing");
+assert(html.includes('id="connection-list"'),"connection center missing");
+assert(js.includes("loadAuthConnections"),"auth connection live status loader missing");
+for(const provider of ["Google","GitHub","Apple","Facebook","TikTok","Instagram Pro"]){assert(js.includes('label:"'+provider+'"'),"connection lane missing: "+provider)}
+assert(css.includes(".connection-grid"),"connection center styling missing");
+
+assert(js.includes("zszlnahjqmwozwubetkm.supabase.co/auth/v1/callback"),"OAuth callback not surfaced");
+assert(js.includes("custom:tiktok"),"TikTok custom provider identifier missing");
+assert(css.includes(".connection-callback"),"connection callback styling missing");
+
 console.log("boom_ai_studio_tests=PASS");

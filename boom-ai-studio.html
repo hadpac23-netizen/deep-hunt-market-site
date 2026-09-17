@@ -21,6 +21,7 @@
       <button class="tab" data-tab="executions" type="button">Executions</button>
       <button class="tab" data-tab="evaluations" type="button">Evaluations</button>
       <button class="tab" data-tab="learning" type="button">Learning</button>
+      <button class="tab" data-tab="connections" type="button">Connections</button>
     </nav>
     <div class="top-actions">
       <span class="live-pill" id="live-state">CONNECTING</span>
@@ -141,6 +142,12 @@
         <section class="view scroll-view" id="learning">
           <div class="page-head"><h1>AI Engineering Learning Lab</h1><p>Orchestration, Tools, Memory, Evals, Observability, MCP, Workflows ו־Guardrails.</p></div>
           <div class="learning-grid" id="learning-list"></div>
+        </section>
+
+        <section class="view scroll-view" id="connections">
+          <div class="page-head"><h1>Connection Center</h1><p>Auth, social identity and external connection readiness. רק חיבורים מאומתים מסומנים READY.</p></div>
+          <div class="connection-summary" id="connection-summary"></div>
+          <div class="connection-grid" id="connection-list"></div>
         </section>
       </section>
 

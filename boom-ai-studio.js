@@ -54,7 +54,8 @@
     voiceAudio:null,
     audioContext:null,
     vadRaf:null,
-    traceType:"all"
+    traceType:"all",
+    authConnections:[]
   };
 
   const toolNodes=[
@@ -323,6 +324,45 @@
     ).join(""):'<article class="learn-card">אין learning items.</article>';
   }
 
+  function renderConnections(){
+    const rows=state.authConnections||[];
+    const ready=rows.filter(x=>x.ready).length;
+    const pending=rows.length-ready;
+    $("#connection-summary").innerHTML=
+      '<div><b>'+esc(ready)+'</b><span>READY</span></div>'+
+      '<div><b>'+esc(pending)+'</b><span>SETUP REQUIRED</span></div>'+
+      '<div><b>'+esc(rows.length)+'</b><span>TOTAL LANES</span></div>';
+    $("#connection-list").innerHTML=rows.map(x=>
+      '<article class="connection-card '+(x.ready?"ready":"pending")+'">'+
+        '<div class="connection-head"><strong>'+esc(x.label)+'</strong>'+pill(x.ready?"healthy":"watch")+'</div>'+
+        '<p>'+esc(x.note)+'</p>'+
+        '<small>'+esc(x.mode)+'</small>'+
+        (x.callback?'<pre class="connection-callback">'+esc(x.callback)+'</pre>':'')+
+      '</article>'
+    ).join("");
+  }
+
+  async function loadAuthConnections(){
+    let external={};
+    try{
+      const res=await fetch("https://zszlnahjqmwozwubetkm.supabase.co/auth/v1/settings",{headers:{apikey:H.publishableKey},cache:"no-store"});
+      const data=await res.json();
+      external=data?.external||{};
+    }catch{}
+    const supabaseCallback="https://zszlnahjqmwozwubetkm.supabase.co/auth/v1/callback";
+    const huntRedirect="https://deep-hunt-market.netlify.app/auth.html";
+    state.authConnections=[
+      {label:"Email magic link",ready:external.email===true,mode:"Supabase Auth",note:"Passwordless customer sign-in. Post-login returns to HUNT.",callback:huntRedirect},
+      {label:"Google",ready:external.google===true,mode:"Supabase OAuth",note:"Customer social login. Provider callback is handled by Supabase.",callback:supabaseCallback},
+      {label:"GitHub",ready:external.github===true,mode:"Supabase OAuth",note:"Available; also used for BOOM owner/admin login.",callback:supabaseCallback},
+      {label:"Apple",ready:external.apple===true,mode:"Supabase OAuth",note:"Requires Apple Services ID plus a valid client secret/JWT.",callback:supabaseCallback},
+      {label:"Facebook",ready:external.facebook===true,mode:"Supabase OAuth / Meta",note:"Requires Meta App ID and app secret.",callback:supabaseCallback},
+      {label:"TikTok",ready:false,mode:"Custom OAuth2 · custom:tiktok",note:"Lane prepared. Create the TikTok app first, then configure the custom provider with Client Key/Secret and approved endpoints.",callback:supabaseCallback},
+      {label:"Instagram Pro",ready:false,mode:"Meta · Business/Creator",note:"Professional-account connection lane. Keep separate from ordinary consumer login until Meta app review and permissions are complete.",callback:supabaseCallback}
+    ];
+    renderConnections();
+  }
+
   function inspectManager(id){
     const m=state.managerMap.get(id);
     if(!m)return;
@@ -382,6 +422,7 @@
     renderExecutions();
     renderEvaluations();
     renderLearning();
+    renderConnections();
     if(state.managerMap.has(state.selected))inspectManager(state.selected);
     setLive("● LIVE · "+new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"}));
   }
@@ -816,7 +857,7 @@
     state.session=session;
     await ensureAdmin(session);
     showApp();
-    await loadAll();
+    await Promise.all([loadAll(),loadAuthConnections()]);
     subscribeRealtime();
     inspectManager("boom-super-agent");
   }
@@ -854,7 +895,7 @@
       await ensureAdmin(data.session);
       state.session=data.session;
       showApp();
-      await loadAll();
+      await Promise.all([loadAll(),loadAuthConnections()]);
       subscribeRealtime();
       inspectManager("boom-super-agent");
     }catch(err){
@@ -936,7 +977,7 @@
         try{
           await ensureAdmin(session);
           showApp();
-          await loadAll();
+          await Promise.all([loadAll(),loadAuthConnections()]);
           subscribeRealtime();
           inspectManager("boom-super-agent");
         }catch(err){
