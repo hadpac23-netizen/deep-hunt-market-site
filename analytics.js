@@ -110,7 +110,7 @@
   function posthogCapture(event, params = {}) {
     if (!consentGranted || !hasValidPostHog()) return false;
     loadPostHog();
-    try { window.posthog?.capture?.(event, {...params, hunt_environment: clean(config.environment || "production", 24), page_path: safePath()}); return true; }
+    try { window.posthog?.capture?.(event, {...params, hunt_environment: clean(config.environment || "production", 24), page_path: safePath()}, {send_instantly:true}); return true; }
     catch { return false; }
   }
 
