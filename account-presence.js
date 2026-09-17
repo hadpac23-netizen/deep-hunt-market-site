@@ -97,11 +97,12 @@
     return;
   }
 
-  const client = window.supabase.createClient(supabaseUrl, publishableKey, {
+  const client = window.HuntSupabaseClient || window.supabase.createClient(supabaseUrl, publishableKey, {
     auth: {
       persistSession: true,
       autoRefreshToken: true,
-      detectSessionInUrl: false
+      detectSessionInUrl: true,
+      flowType: "pkce"
     }
   });
   window.HuntAccountClient = client;

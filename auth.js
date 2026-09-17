@@ -3,11 +3,30 @@
   const $=q=>document.querySelector(q);
   H.updateCartBadges();
   const supabaseUrl="https://zszlnahjqmwozwubetkm.supabase.co";
-  const supabase=window.supabase?.createClient(supabaseUrl,H.publishableKey);
+  const supabase=window.HuntSupabaseClient || window.supabase?.createClient(supabaseUrl,H.publishableKey,{
+    auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:"pkce"}
+  });
+  if(supabase){
+    window.HuntSupabaseClient=supabase;
+    window.HuntAccountClient=supabase;
+  }
   const status=$("#hd-auth-status");
   const providerButtons=[...document.querySelectorAll("button[data-oauth]")];
 
-  function setStatus(message,tone="") { status.textContent=message||""; status.dataset.tone=tone; }
+  function setStatus(message,tone="") { if(!status)return; status.textContent=message||""; status.dataset.tone=tone; }
+  function oauthErrorFromUrl(){
+    const query=new URLSearchParams(location.search);
+    const hash=new URLSearchParams(location.hash.replace(/^#/,""));
+    const code=query.get("error_code")||hash.get("error_code")||query.get("error")||hash.get("error");
+    const description=query.get("error_description")||hash.get("error_description");
+    return code?decodeURIComponent((description||code).replace(/\+/g," ")):"";
+  }
+  function cleanAuthErrorFromUrl(){
+    const url=new URL(location.href);
+    ["error","error_code","error_description","error_uri"].forEach(k=>url.searchParams.delete(k));
+    if(/^#(?:error|access_token|refresh_token)/.test(url.hash))url.hash="";
+    history.replaceState({},"",url.pathname+(url.search||"")+(url.hash||""));
+  }
   function nextTarget(){
     const raw=new URLSearchParams(location.search).get("next")||"";
     if(!raw)return "";
@@ -54,7 +73,7 @@
         const enabled=external[provider]===true;
         button.disabled=!enabled;
         button.dataset.enabled=String(enabled);
-        button.querySelector("small").textContent=enabled?"CONNECTED":"SETUP REQUIRED";
+        button.querySelector("small").textContent=enabled?"READY":"NOT CONFIGURED";
       });
     } catch {
       providerButtons.forEach(button=>{button.disabled=true;button.querySelector("small").textContent="STATUS UNAVAILABLE";});
@@ -87,8 +106,17 @@
   });
 
   if(supabase){
-    supabase.auth.getSession().then(({data})=>renderSession(data.session));
-    supabase.auth.onAuthStateChange((_event,session)=>renderSession(session));
+    const callbackError=oauthErrorFromUrl();
+    if(callbackError){ setStatus(callbackError,"error"); cleanAuthErrorFromUrl(); }
+    supabase.auth.getSession().then(({data,error})=>{
+      if(error)setStatus(error.message,"error");
+      renderSession(data?.session||null);
+    }).catch(err=>setStatus(err?.message||"Could not restore your session.","error"));
+    supabase.auth.onAuthStateChange((event,session)=>{
+      renderSession(session);
+      if(event==="SIGNED_IN")setStatus("Signed in successfully.","ok");
+      if(event==="SIGNED_OUT")setStatus("Signed out.","ok");
+    });
   }
   loadProviders();
 })();
