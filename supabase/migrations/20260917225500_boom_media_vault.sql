@@ -51,6 +51,10 @@ create table if not exists public.boom_media_assets (
 
 alter table public.boom_media_assets enable row level security;
 
+-- Explicit Data API grants: least privilege, independent of project default exposure settings.
+grant select, insert, update on table public.boom_media_assets to service_role;
+grant select on table public.boom_media_assets to authenticated;
+
 create policy "boom_media_assets_admin_read"
 on public.boom_media_assets for select
 to authenticated

@@ -7,6 +7,7 @@ export function evaluateDeploymentReadiness(facts={}){
     check("vault_source","Media Vault function source exists",facts.vault_source,"source"),
     check("vision_source","Vision adapter source exists",facts.vision_source,"source"),
     check("tests_passed","Brand Factory regression tests passed",facts.tests_passed,"source"),
+    check("data_api_grants","Explicit least-privilege Data API grants are present",facts.data_api_grants_source,"source"),
     check("ledger_table","boom_media_assets exists",facts.ledger_table_exists),
     check("ledger_rls","boom_media_assets RLS enabled",facts.ledger_rls_enabled),
     check("vault_bucket","boom-media-vault bucket exists",facts.vault_bucket_exists),
