@@ -130,3 +130,23 @@ HyperSKU is considered Alpha-ready when:
 - fallback to other suppliers works.
 
 Fulfillment readiness is a separate milestone.
+
+## Read-only Edge Function source
+
+Local source now exists at:
+`supabase/functions/hunt-hypersku-readonly/index.ts`
+
+Current runtime state:
+- source implemented,
+- deployment OFF,
+- provider token not assumed,
+- provider endpoint paths not guessed,
+- fulfillment OFF.
+
+Supported control actions:
+- readiness,
+- product,
+- stock,
+- shipping_quote.
+
+Until authenticated HyperSKU Open API documentation is supplied, non-readiness provider transport returns `PROVIDER_DOCS_REQUIRED` / `CONFIGURED_NOT_EXECUTED`.
