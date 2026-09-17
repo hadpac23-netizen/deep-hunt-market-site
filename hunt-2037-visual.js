@@ -29,13 +29,20 @@
   }
 
   function applyCity(city,i=index){
-    const [a,b]=FALLBACKS[Math.abs(i)%FALLBACKS.length];
+    const fallback=FALLBACKS[Math.abs(i)%FALLBACKS.length];
+    const a=city?.accent_a||fallback[0];
+    const b=city?.accent_b||fallback[1];
     document.documentElement.style.setProperty("--hunt-brand-a",a);
     document.documentElement.style.setProperty("--hunt-brand-b",b);
     document.documentElement.style.setProperty("--hunt-city-image",city?.asset_url?`url("${city.asset_url}")`:"none");
     document.body.dataset.huntCity=city?.id||"hunt";
     const badge=document.querySelector("#hunt2037-city-badge");
-    if(badge)badge.textContent=city?.name||"HUNT Night";
+    if(badge){
+      const hasAsset=Boolean(city?.asset_url);
+      badge.dataset.asset=hasAsset?"image":"mood";
+      badge.textContent=(hasAsset?"":"CITY MOOD · ")+(city?.name||"HUNT Night");
+      badge.title=city?.mood||"";
+    }
   }
 
   function nextCity(){
