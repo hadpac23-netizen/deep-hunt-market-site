@@ -214,8 +214,10 @@
       page_location_path: safePath()
     });
     if (consentGranted && hasValidPostHog()) {
-      loadPostHog();
-      try { window.posthog?.capture?.("$pageview"); } catch {}
+      posthogCapture("$pageview", {
+        $current_url: clean(location.href, 500),
+        $pathname: safePath()
+      });
     }
   }
 
