@@ -1,0 +1,12 @@
+const fs=require('node:fs');
+const assert=require('node:assert');
+const js=fs.readFileSync('account-presence.js','utf8');
+const html=fs.readFileSync('index.html','utf8');
+assert(html.includes('account-presence.js?v=profile4'),'homepage auth presence cache version not bumped');
+assert(js.includes('async function refreshPresence'),'session recovery loop missing');
+assert(js.includes('retries:4'),'initial auth recovery retries missing');
+assert(js.includes('window.addEventListener("pageshow"'),'pageshow session refresh missing');
+assert(js.includes('window.addEventListener("focus"'),'focus session refresh missing');
+assert(js.includes('onAuthStateChange'),'auth state listener missing');
+assert(js.includes('signedIn(user)'),'signed-in UI update missing');
+console.log('hunt_account_presence_tests=PASS');

@@ -108,9 +108,42 @@
   window.HuntAccountClient = client;
   window.HuntSupabaseClient = client;
 
-  client.auth.getSession()
-    .then(({ data }) => signedIn(data?.session?.user || null))
-    .catch(() => signedOut());
+  let refreshTimer=null;
+  let lastUserId=null;
 
-  client.auth.onAuthStateChange((_event, session) => signedIn(session?.user || null));
+  async function refreshPresence({retries=3}={}) {
+    clearTimeout(refreshTimer);
+    for(let attempt=0;attempt<=retries;attempt++){
+      try{
+        const {data,error}=await client.auth.getSession();
+        if(error)throw error;
+        const user=data?.session?.user||null;
+        if(user){
+          lastUserId=user.id||null;
+          signedIn(user);
+          return true;
+        }
+      }catch{}
+      if(attempt<retries)await new Promise(resolve=>setTimeout(resolve,180*(attempt+1)));
+    }
+    lastUserId=null;
+    signedOut();
+    return false;
+  }
+
+  client.auth.onAuthStateChange((_event, session) => {
+    const user=session?.user||null;
+    lastUserId=user?.id||null;
+    signedIn(user);
+  });
+
+  window.addEventListener("pageshow",()=>refreshPresence({retries:2}));
+  window.addEventListener("focus",()=>{
+    refreshTimer=setTimeout(()=>refreshPresence({retries:1}),80);
+  });
+  window.addEventListener("storage",event=>{
+    if(event.key&&event.key.includes("auth-token"))refreshPresence({retries:2});
+  });
+
+  refreshPresence({retries:4});
 })();
