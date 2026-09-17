@@ -333,7 +333,7 @@
     const cjAll = all.filter(x => String(x.provider).toLowerCase().includes("cj"));
     const cjNew = cjAll.filter(x => H.isNewArrival?.(x)).slice(0,12);
     const cj = (cjNew.length ? cjNew : cjAll).slice(0,12);
-    const cjTitle = cjNew.length ? "New arrivals from CJdropshipping" : "More from CJdropshipping";
+    const cjTitle = cjNew.length ? "New arrivals" : "More discoveries";
     const cjLabel = cjNew.length ? "NEW ARRIVALS" : "SOURCE PICKS";
     showcase.innerHTML = `
       <div class="hd-wow-head">
@@ -352,7 +352,7 @@
         </div>
         <div class="hd-wow-track" id="hd-for-you-products"></div>
       </section>
-      ${cj.length ? `<section class="hd-fresh-source"><div class="hd-wow-rail-head"><div><small>${cjLabel}</small><h3>${cjTitle}</h3></div><span>LIVE API</span></div><div class="hd-wow-track" role="list">${cj.map(x => productCard(x,cjNew.length?"NEW":"CJ LIVE")).join("")}</div></section>` : ""}`;
+      ${cj.length ? `<section class="hd-fresh-source"><div class="hd-wow-rail-head"><div><small>${cjLabel}</small><h3>${cjTitle}</h3></div><span>LIVE API</span></div><div class="hd-wow-track" role="list">${cj.map(x => productCard(x,cjNew.length?"NEW":"LIVE")).join("")}</div></section>` : ""}`;
     renderPersonalized(shelves);
   }  document.addEventListener("click", event => {
     const button = event.target.closest?.("[data-shop-mode]");

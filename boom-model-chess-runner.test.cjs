@@ -13,14 +13,14 @@ let s=src.slice(start,end)
 const helpers=new Function(s+";return {parseModelRouteSpec,estimateBenchmarkReferenceCost};")();
 
 const costs=[
- {provider:"groq",model:"openai/gpt-oss-120b",pricing_tier:"reference_standard",input_usd_per_million:.15,output_usd_per_million:.60,active:true},
+ {provider:"openai",model:"gpt-5.6-luna",pricing_tier:"reference_standard",input_usd_per_million:.20,output_usd_per_million:1.20,active:true},
  {provider:"gemini",model:"gemini-3.5-flash",pricing_tier:"reference_paid_standard",input_usd_per_million:1.50,output_usd_per_million:9.00,active:true}
 ];
 const plan=helpers.estimateBenchmarkReferenceCost(
- ["groq:openai/gpt-oss-120b","gemini:gemini-3.5-flash"],5,costs
+ ["gemini:gemini-3.5-flash","openai:gpt-5.6-luna"],5,costs
 );
 assert.equal(plan.ok,true,"benchmark plan failed");
-assert.equal(plan.total,.0831,"benchmark reference cost changed");
+assert.equal(plan.total,.0867,"benchmark reference cost changed");
 assert.equal(plan.details.length,2,"route cost details missing");
 
 assert(src.includes('action==="model_benchmark_plan"||action==="model_benchmark_execute"'),"benchmark action gate missing");
@@ -32,3 +32,5 @@ assert(src.includes('if(ctx?.benchmark_strict_route)'),"strict route fallback st
 assert(src.includes('live_business_actions:0'),"benchmark live-business assertion missing");
 
 console.log(JSON.stringify({estimated_reference_cost_usd:plan.total,calls:10,hard_cap_usd:.25},null,2));
+
+assert(!src.includes("groq:openai/gpt-oss-120b"),"Groq benchmark route must stay removed");
