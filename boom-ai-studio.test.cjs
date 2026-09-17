@@ -94,3 +94,6 @@ assert(html.includes('id="brand-video-qa"'),"Creative QA control missing");
 assert(html.includes("brand-creative-qa.js?v=1"),"Creative QA script missing");
 assert(js.includes("function runBrandCreativeQA()"),"Creative QA integration missing");
 assert(js.includes("generation_reduction_pct"),"Creative QA savings summary missing");
+
+assert(html.includes('brand-media-vault-card'),"Media Vault card missing");
+assert(html.includes("POST-GEN QA"),"Post-generation QA flow missing");
