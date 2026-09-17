@@ -646,6 +646,30 @@
       "owner_gate": [
         "OWNER_APPROVAL"
       ]
+    },
+    {
+      "id": "supplier-hypersku",
+      "name": "HyperSKU Supplier Manager",
+      "reports_to": "supplier-shipping",
+      "scope": [
+        "hypersku",
+        "product_mapping",
+        "sku_variants",
+        "inventory",
+        "shipping_quotes",
+        "orders",
+        "tracking",
+        "provider_errors"
+      ],
+      "mode": "integration_pilot",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ],
+      "owner_gate": [
+        "OWNER_APPROVAL"
+      ]
     }
   ],
   "departments": [

@@ -186,7 +186,7 @@
     },
     {
       "id": "hypersku-integration",
-      "manager": "supplier-shipping",
+      "manager": "supplier-hypersku",
       "brain_status": "PILOT",
       "storefront_status": "OFF",
       "owner_gate": true,
@@ -195,7 +195,7 @@
         "product-truth",
         "integration-connections"
       ],
-      "notes": "Tier 0 supplier lane. Open API/custom-store path verified publicly; live auth, SKU stock, shipping and fulfillment remain gated until connected and tested."
+      "notes": "Tier 0 supplier department in BOOM Studio. Adapter foundation is implemented; live auth, SKU stock, shipping and fulfillment remain gated until connected and tested."
     }
   ]
 }

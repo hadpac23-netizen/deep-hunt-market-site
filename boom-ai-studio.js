@@ -68,6 +68,7 @@
   const toolNodes=[
     ["supplier-cj","CJ Supplier","CJ","🔌"],
     ["supplier-eprolo","EPROLO Supplier","EPROLO","⬡"],
+    ["supplier-hypersku","HyperSKU Supplier","HyperSKU","H"],
     ["sales-director","Sales","Sales","$"],
     ["marketing-growth","Marketing","Marketing","◈"],
     ["category-orchestrator","Categories","Categories","▦"],
@@ -81,6 +82,24 @@
     ["security-access","Security","Security","◆"],
     ["analytics-truth","Analytics","Analytics","▥"]
   ];
+
+  const toolNodeFallbackManagers=Object.freeze({
+    "supplier-hypersku":Object.freeze({
+      id:"supplier-hypersku",
+      name:"HyperSKU Supplier",
+      department:"TIER 0 SUPPLIER",
+      status:"watch"
+    })
+  });
+  const toolNodeFallbackReports=Object.freeze({
+    "supplier-hypersku":Object.freeze({
+      manager_id:"supplier-hypersku",
+      status:"watch",
+      issues:["PILOT · Open API adapter foundation ready; live auth not connected"],
+      recommended_action:"Connect official HyperSKU Open API in read-only mode and verify SKU, stock and shipping before fulfillment.",
+      metrics:{tier:"TIER 0",storefront:"OFF",fulfillment:"OFF",country_truth:"LIVE_VERIFY_REQUIRED"}
+    })
+  });
 
   function latest(rows,key){
     const map=new Map();
@@ -103,8 +122,8 @@
   }
 
   function statusOf(id){
-    const manager=state.managerMap.get(id);
-    const report=state.reportMap.get(id);
+    const manager=state.managerMap.get(id)||toolNodeFallbackManagers[id];
+    const report=state.reportMap.get(id)||toolNodeFallbackReports[id];
     return report?.status||manager?.status||"offline";
   }
 
@@ -394,10 +413,10 @@
   }
 
   function inspectManager(id){
-    const m=state.managerMap.get(id);
+    const m=state.managerMap.get(id)||toolNodeFallbackManagers[id];
     if(!m)return;
     state.selected=id;
-    const r=state.reportMap.get(id);
+    const r=state.reportMap.get(id)||toolNodeFallbackReports[id];
     const workers=state.workers.filter(w=>w.manager_id===id);
     $("#inspect-title").textContent=m.name;
     $("#inspect-status").innerHTML=pill(statusOf(id))+'<span class="pill">'+esc(m.department)+'</span>';
@@ -451,7 +470,7 @@
     renderEvaluations();
     renderLearning();
     renderConnect();
-    if(state.managerMap.has(state.selected))inspectManager(state.selected);
+    if(state.managerMap.has(state.selected)||toolNodeFallbackManagers[state.selected])inspectManager(state.selected);
     setLive("● LIVE · "+new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"}));
   }
 

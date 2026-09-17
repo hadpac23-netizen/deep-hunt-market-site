@@ -13,7 +13,7 @@ for(const id of [
   "boom-executive","inventory-truth","supplier-shipping","checkout-payment",
   "decision-intelligence","hunt-worlds-flow","boom-stylist","boom-mirror",
   "creative-brand-factory","experimentation-learning","knowledge-freshness",
-  "memory-continuity","share-referral"
+  "memory-continuity","share-referral","supplier-hypersku"
 ]) assert.ok(ids.includes(id),"missing manager "+id);
 
 assert.equal(registry.change_policy.preserve_existing,true);

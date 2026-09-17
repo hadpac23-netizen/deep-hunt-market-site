@@ -13,6 +13,8 @@ assert(js.includes('select("is_admin")'),"admin check missing");
 assert(html.includes('data-manager-id="boom-meta-f35"'),"Meta-F35 node missing");
 assert(html.includes('data-manager-id="boom-super-agent"'),"Super Agent node missing");
 assert(js.includes("toolNodes"),"department/tool nodes missing");
+assert(js.includes('["supplier-hypersku","HyperSKU Supplier","HyperSKU","H"]'),"HyperSKU Studio department node missing");
+assert(js.includes('department:"TIER 0 SUPPLIER"'),"HyperSKU Studio fallback inspector missing");
 
 assert(js.includes("hunt_boom_agent_commands"),"command data source missing");
 assert(js.includes("hunt_boom_improvement_cycles"),"cycle data source missing");
