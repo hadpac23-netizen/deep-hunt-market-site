@@ -54,14 +54,14 @@
     {
       "id": "dynamic-worlds",
       "manager": "hunt-worlds-flow",
-      "brain_status": "PLANNED",
+      "brain_status": "PILOT",
       "storefront_status": "OFF",
       "owner_gate": false,
       "dependencies": [
         "decision-intelligence",
         "performance"
       ],
-      "notes": "HUNT 2037 dynamic world system is specified but not production-active."
+      "notes": "Feature-flagged HUNT 2037 Flow + dynamic world visual foundation implemented; production remains OFF."
     },
     {
       "id": "taste-dna",
@@ -78,18 +78,18 @@
     {
       "id": "hunt-memory",
       "manager": "memory-continuity",
-      "brain_status": "PLANNED",
+      "brain_status": "PILOT",
       "storefront_status": "OFF",
       "owner_gate": false,
       "dependencies": [
         "analytics-truth"
       ],
-      "notes": "Visual history and continuity are specified for build."
+      "notes": "Experience Memory core implemented for recent history, Like/Save/Share context and Decision Brain recency inputs; storefront history UI remains staged."
     },
     {
       "id": "boom-stylist",
       "manager": "boom-stylist",
-      "brain_status": "PLANNED",
+      "brain_status": "PILOT",
       "storefront_status": "OFF",
       "owner_gate": false,
       "dependencies": [
@@ -97,7 +97,7 @@
         "product-truth",
         "taste-dna"
       ],
-      "notes": "Stylist contract defined; implementation staged."
+      "notes": "BOOM Stylist core implemented for Occasion Mode, budget planning, Look Locker contract and truthful recommendation reasons; full UI/product selection remains staged."
     },
     {
       "id": "boom-mirror",
