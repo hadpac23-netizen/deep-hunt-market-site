@@ -530,9 +530,17 @@
   function vaultIdentity(){return {mission_id:$("#vault-mission-id")?.value.trim()||"",asset_id:$("#vault-asset-id")?.value.trim()||""}}
   function setVaultOutput(value){const el=$("#vault-output");if(el)el.textContent=typeof value==="string"?value:JSON.stringify(value,null,2)}
   function vaultEvidence(){const out={};$$('[data-vault-qa]').forEach(el=>out[el.dataset.vaultQa]=el.checked===true);return out}
-  function setVaultControls(){const on=state.vaultLive===true;["#vault-preview","#vault-qa-commit","#vault-owner-approve","#vault-owner-reject"].forEach(q=>{const el=$(q);if(el)el.disabled=!on});$$('[data-vault-qa]').forEach(el=>el.disabled=!on)}
+  function setVaultControls(){const on=state.vaultLive===true;["#vault-preview","#vault-visual-qa","#vault-qa-commit","#vault-owner-approve","#vault-owner-reject"].forEach(q=>{const el=$(q);if(el)el.disabled=!on});$$('[data-vault-qa]').forEach(el=>el.disabled=!on)}
   async function vaultAction(action,extra={}){if(!state.vaultLive)throw new Error("MEDIA_VAULT_NOT_DEPLOYED");const id=vaultIdentity();if(!id.mission_id||!id.asset_id)throw new Error("Mission ID and Asset ID are required.");const data=await invokeBoomFunction("hunt-boom-media-vault",{action,...id,...extra});state.vaultLast=data;setVaultOutput(data);return data}
   async function runVaultPreview(){try{const data=await vaultAction("private_preview",{ttl_seconds:60});if(data?.signed_url)window.open(data.signed_url,"_blank","noopener,noreferrer")}catch(err){setVaultOutput(err.message||err)}}
+  async function sampleVaultFrames(url){
+    const ratios=[0.05,0.25,0.5,0.75,0.95],video=document.createElement("video");video.crossOrigin="anonymous";video.preload="auto";video.muted=true;video.playsInline=true;video.src=url;
+    await new Promise((resolve,reject)=>{video.onloadedmetadata=resolve;video.onerror=()=>reject(new Error("FRAME_VIDEO_LOAD_FAILED"))});
+    if(!(video.duration>0&&Number.isFinite(video.duration)))throw new Error("FRAME_VIDEO_DURATION_INVALID");
+    const out=[];for(const ratio of ratios){const t=Math.min(Math.max(video.duration*ratio,0),Math.max(video.duration-0.04,0));await new Promise((resolve,reject)=>{const done=()=>{video.removeEventListener("seeked",done);resolve()};video.addEventListener("seeked",done,{once:true});video.onerror=()=>reject(new Error("FRAME_VIDEO_SEEK_FAILED"));video.currentTime=t});const max=768,scale=Math.min(1,max/Math.max(video.videoWidth||1,video.videoHeight||1)),canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(video.videoWidth*scale));canvas.height=Math.max(1,Math.round(video.videoHeight*scale));const ctx=canvas.getContext("2d");if(!ctx)throw new Error("FRAME_CANVAS_UNAVAILABLE");ctx.drawImage(video,0,0,canvas.width,canvas.height);out.push(canvas.toDataURL("image/jpeg",0.82))}video.removeAttribute("src");video.load();return out
+  }
+  function vaultVisualContext(){const id=vaultIdentity(),shot=state.brandVideoPlan?.shots?.find(x=>String(x.id||x.shot_id||"")===id.asset_id)||null;return {product_name:state.brandMission?.mission?.product_name||"",reference_images:[state.brandMission?.product_truth_snapshot?.image_url].filter(Boolean),script:shot?JSON.stringify(shot):""}}
+  async function runVaultVisualQA(){try{setVaultOutput("Sampling 5 private video frames…");const preview=await vaultAction("private_preview",{ttl_seconds:120});if(!preview?.signed_url)throw new Error("PRIVATE_PREVIEW_REQUIRED");const frames=await sampleVaultFrames(preview.signed_url);setVaultOutput("Sending sampled frames to server-side Visual QA…");await vaultAction("visual_qa_analyze",{frames,...vaultVisualContext()})}catch(err){setVaultOutput(err.message||err)}}
   async function commitVaultQA(){try{await vaultAction("qa_commit",{evidence:vaultEvidence()})}catch(err){setVaultOutput(err.message||err)}}
   async function commitVaultOwnerDecision(decision){try{await vaultAction("owner_decision",{decision,note:$("#vault-owner-note")?.value.trim()||""})}catch(err){setVaultOutput(err.message||err)}}
 
@@ -1148,6 +1156,11 @@
   $("#brand-seed")?.addEventListener("click",loadBrandSeed);
   $("#brand-video-plan")?.addEventListener("click",buildBrandVideoPlan);
   $("#brand-video-qa")?.addEventListener("click",runBrandCreativeQA);
+  $("#vault-preview")?.addEventListener("click",runVaultPreview);
+  $("#vault-visual-qa")?.addEventListener("click",runVaultVisualQA);
+  $("#vault-qa-commit")?.addEventListener("click",commitVaultQA);
+  $("#vault-owner-approve")?.addEventListener("click",()=>commitVaultOwnerDecision("approve"));
+  $("#vault-owner-reject")?.addEventListener("click",()=>commitVaultOwnerDecision("reject"));
   $("#vault-preview")?.addEventListener("click",runVaultPreview);
   $("#vault-qa-commit")?.addEventListener("click",commitVaultQA);
   $("#vault-owner-approve")?.addEventListener("click",()=>commitVaultOwnerDecision("approve"));

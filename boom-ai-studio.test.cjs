@@ -106,6 +106,8 @@ assert(js.includes('MEDIA_VAULT_NOT_DEPLOYED'),"Media Vault deploy lock missing"
 assert(js.includes('commitVaultOwnerDecision("approve")'),"Owner approve wiring missing");
 assert(js.includes('commitVaultOwnerDecision("reject")'),"Owner reject wiring missing");
 assert(html.includes("SERVER INGEST + SHA-256"),"Media ingest/checksum stage missing");
-assert(html.includes("short-lived signed URLs"),"Private preview contract missing");
+assert(html.includes("short-lived private preview frames"),"Private preview contract missing");
 
 assert(html.includes("VISUAL QA"),"Visual QA stage missing from Media Vault flow");
+
+assert(html.includes('vault-visual-qa'),"Visual QA button missing");assert(js.includes("sampleVaultFrames"),"Frame sampler missing");assert(js.includes("visual_qa_analyze"),"Server Visual QA action missing");
