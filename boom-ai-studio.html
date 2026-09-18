@@ -392,6 +392,27 @@
                 <article><small>MIRROR SAFETY DECISION</small><pre id="mirror-result">No Mirror decision simulated.</pre></article>
               </div>
             </section>
+            <section class="creative-workspace">
+              <div class="truth-workspace-head"><div><small>A6 WORKSPACE</small><h3>Creative Learning Simulation</h3><p>Plans a truthful creative tournament. Empty slots are not generated content and cannot be published.</p></div><span>PRIVATE DRAFT</span></div>
+              <div class="creative-form-grid">
+                <label>Product category<input id="creative-category" value="phone-cases" maxlength="60"></label>
+                <label>Target channel<select id="creative-channel"><option value="reels">Reels</option><option value="tiktok">TikTok</option><option value="shorts">YouTube Shorts</option><option value="product-page">Product page</option><option value="pinterest">Pinterest</option></select></label>
+                <label>Hook slots<input id="creative-hooks" type="number" min="1" max="20" value="10"></label>
+                <label>Concept slots<input id="creative-concepts" type="number" min="1" max="10" value="5"></label>
+                <label>Script slots<input id="creative-scripts" type="number" min="1" max="6" value="3"></label>
+                <label>QA threshold<input id="creative-threshold" type="number" min="0" max="100" value="75"></label>
+                <label>Test mode<select id="creative-test-mode"><option value="smallest-useful">Smallest useful test</option><option value="storyboard-only">Storyboard only</option><option value="prompt-pack-only">Prompt pack only</option></select></label>
+              </div>
+              <div class="decision-checks">
+                <label><input id="creative-truth-live" type="checkbox"> Product Truth is LIVE_VERIFIED</label>
+                <label><input id="creative-reference-locked" type="checkbox"> Exact product references locked</label>
+                <label><input id="creative-proof-ready" type="checkbox"> Claims/evidence boundary reviewed</label>
+              </div>
+              <div class="truth-actions"><button class="top-btn" id="creative-simulate" type="button">Build tournament plan</button></div>
+              <div class="truth-result-status" id="creative-result-status">NOT_PLANNED · GENERATION_OFF</div>
+              <div class="creative-tournament" id="creative-tournament"><p>No creative slots planned.</p></div>
+              <pre id="creative-result">Product truth, references and proof boundaries are required before creative planning can pass.</pre>
+            </section>
             <section class="alpha-exit-gate">
               <strong>Alpha exit gate</strong>
               <p>Real eligible products · explainable recommendations · Like/Save/Share · History · Worlds · Stylist · safe Mirror entry · stable checkout fallback · mobile/desktop QA.</p>
