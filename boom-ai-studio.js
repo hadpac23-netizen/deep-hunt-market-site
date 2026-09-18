@@ -519,14 +519,15 @@
       evals:state.evals,
       decisions:state.decisions,
       modelObservations:state.professionalEvidence.modelObservations,
+      modelRoutes:state.professionalEvidence.modelRoutes,
       shadowRuns:state.professionalEvidence.shadowRuns,
       replayRuns:state.professionalEvidence.replayRuns,
       costSamples:professionalCostSamples(),
       promptVersions:[],
       datasetStoreConnected:state.professionalEvidence.evalCases.length>0&&state.professionalEvidence.evalSuites.length>0,
-      reviewStoreConnected:false,
+      reviewStoreConnected:Boolean(state.session),
       traceSchemaConnected:false,
-      alertRulesConnected:false,
+      alertRulesConnected:state.professionalEvidence.modelRoutes.length>0,
       releaseGate:state.alphaFinalGate
     });
     state.professionalSnapshot=snapshot;
@@ -601,6 +602,7 @@
       "SHADOW RUNS: "+state.professionalEvidence.shadowRuns.length,
       "REPLAY RUNS: "+state.professionalEvidence.replayRuns.length,
       "MODEL OBSERVATIONS: "+state.professionalEvidence.modelObservations.length,
+      "MODEL ROUTE / SLO RULES: "+state.professionalEvidence.modelRoutes.length,
       "REVIEW HISTORY PERSISTED: "+snapshot.review.persisted,
       "EXPERIMENT DIFF: "+(snapshot.experiments.available?"AVAILABLE":"NEEDS_COMPARABLE_RUNS"),
       "COST/LATENCY: "+snapshot.cost.budget_state,
