@@ -32,8 +32,8 @@ body{margin:0;background:#080b10;color:#eef;font:12px system-ui;padding:16px}.qa
    const rootWidth=d.documentElement.clientWidth,scrollWidth=d.documentElement.scrollWidth;
    const pageOverflow=Math.max(0,scrollWidth-rootWidth);
    const mobileMedia=w.matchMedia("(max-width:900px)").matches;
-   const pass=Boolean(app&&!app.hidden&&login?.hidden&&groups===6&&output&&audit&&trace&&/LOCAL PREVIEW/.test(live)&&pageOverflow<=4&&mobileMedia===(spec.w<=900));
-   const r={width:spec.w,height:spec.h,pass,groups,output,audit,trace,localPreview:/LOCAL PREVIEW/.test(live),pageOverflow,mobileMedia,workspaceOverflow:workspace?Math.max(0,workspace.scrollWidth-workspace.clientWidth):null};
+   const pass=Boolean(app&&!app.hidden&&login?.hidden&&groups===6&&output&&audit&&trace&&/PREVIEW/.test(live)&&/LIVE ACTIONS OFF/.test(live)&&pageOverflow<=4&&mobileMedia===(spec.w<=900));
+   const r={width:spec.w,height:spec.h,pass,groups,output,audit,trace,safePreview:/PREVIEW/.test(live)&&/LIVE ACTIONS OFF/.test(live),pageOverflow,mobileMedia,workspaceOverflow:workspace?Math.max(0,workspace.scrollWidth-workspace.clientWidth):null};
    ui.status.className="qa-status "+(pass?"pass":"fail");ui.status.textContent=(pass?"PASS":"FAIL")+"\n"+JSON.stringify(r,null,2);return r;
  }
  (async()=>{
