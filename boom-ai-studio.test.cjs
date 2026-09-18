@@ -69,17 +69,15 @@ assert(js.includes("buildBrandVideoPlan"),"Video Router studio integration missi
 
 assert(js.includes("SERVER_SIDE_PROVIDER_CONNECTOR_REQUIRED")||fs.readFileSync("brand-video-router.js","utf8").includes("SERVER_SIDE_PROVIDER_CONNECTOR_REQUIRED"),"Video Router execution gate missing");
 
-console.log("boom_ai_studio_tests=PASS");
-
 assert(html.includes('data-tab="brand-factory"'),"Brand Factory tab missing");
 const tabOrder=[
   'data-tab="studio"',
   'data-tab="hunt-intelligence"',
-  'data-tab="brand-factory"',
   'data-tab="professional-workbench"',
+  'data-tab="brand-factory"',
   'data-tab="evaluations"',
-  'data-tab="executions"',
   'data-tab="learning"',
+  'data-tab="executions"',
   'data-tab="connect"'
 ].map(token=>html.indexOf(token));
 assert(tabOrder.every(x=>x>=0),"BOOM top navigation tab missing");
@@ -568,3 +566,10 @@ assert(baselineEvidenceMigration.includes("'brain-v2-redteam-pass'"),"Passing CI
 assert(baselineEvidenceMigration.includes("'owner-chat-quality-min'"),"Quality CI gate seed missing");
 assert(baselineEvidenceMigration.includes("'supabase-observability-autopilot'"),"F35 official source seed missing");
 assert(baselineEvidenceMigration.includes("on conflict"),"Baseline evidence seed must remain idempotent");
+const groundTruthMigration=fs.readFileSync("supabase/migrations/20260918160000_boom_human_ground_truth_labels.sql","utf8");
+assert(groundTruthMigration.includes("create table if not exists public.hunt_boom_human_labels"),"Human ground truth label ledger migration missing");
+assert(groundTruthMigration.includes("enable row level security"),"Human ground truth RLS missing");
+assert(groundTruthMigration.includes('create policy "Admins append hunt_boom_human_labels"'),"Human ground truth admin append policy missing");
+assert(!groundTruthMigration.includes("grant update on table public.hunt_boom_human_labels to authenticated"),"Human labels must remain append-only for authenticated users");
+
+console.log("boom_ai_studio_tests=PASS");
