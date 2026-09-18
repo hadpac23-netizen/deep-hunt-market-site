@@ -110,7 +110,7 @@
     chooseVariant();
     $("#hd-product-title").textContent = product.title || "Product";
     $("#hd-product-breadcrumb").textContent = product.title || "Product";
-    $("#hd-product-provider").textContent = product.provider || provider;
+    $("#hd-product-provider").textContent = "HUNT VERIFIED SOURCE";
     const providerName = String(product.provider || provider || "").toLowerCase();
     const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
     const retail = currentRetailState();
