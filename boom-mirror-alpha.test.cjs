@@ -16,6 +16,10 @@ assert(ui.includes("URL.revokeObjectURL"),"local preview cleanup missing");
 assert(!ui.includes("fetch("),"Mirror Alpha must not upload photos");
 assert(!ui.includes("localStorage.setItem"),"Mirror Alpha must not persist source photo state");
 assert(ui.includes('type:"try_on"'),"try-on memory event missing");
+assert(ui.includes('params.get("type")'),"Mirror product type query support missing");
+assert(ui.includes('params.get("provider")'),"Mirror provider query support missing");
+assert(ui.includes('params.get("id")'),"Mirror item query support missing");
+assert(ui.includes("product:selectedProduct"),"Mirror session product handoff missing");
 assert(css.includes("prefers-reduced-motion"),"Mirror reduced-motion support missing");
 assert(flow.includes("mirror.html?hunt2037=1"),"HUNT 2037 Mirror entry missing");
 
