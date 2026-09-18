@@ -514,3 +514,8 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .connect-card.healthy::before{background:#45d87d;box-shadow:0 0 12px rgba(69,216,125,.7);animation:connectPulse 1.8s ease-in-out infinite}
 .connect-card.watch::before{background:#d6a843;box-shadow:0 0 10px rgba(214,168,67,.45);animation:connectPulse 3s ease-in-out infinite}
 @keyframes connectPulse{50%{transform:scale(1.45);opacity:.55}}
+
+.node[data-status="healthy"] .status-dot,.node[data-status="working"] .status-dot{animation:nodeLivePulse 1.9s ease-in-out infinite}
+.node[data-status="watch"] .status-dot{box-shadow:0 0 8px rgba(214,168,67,.28);animation:nodeWatchPulse 3.2s ease-in-out infinite}
+@keyframes nodeLivePulse{50%{transform:scale(1.35);box-shadow:0 0 14px rgba(77,227,134,.72)}}
+@keyframes nodeWatchPulse{50%{transform:scale(1.22);opacity:.62}}
