@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Original HUNT abstract Paris night mood">
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#0d0b18"/><stop offset=".58" stop-color="#221535"/><stop offset="1" stop-color="#0c0c14"/></linearGradient><radialGradient id="moon"><stop stop-color="#fbbf24" stop-opacity=".38"/><stop offset="1" stop-color="#f59e0b" stop-opacity="0"/></radialGradient><pattern id="w" width="42" height="30" patternUnits="userSpaceOnUse"><rect x="8" y="8" width="8" height="7" fill="#fde68a" opacity=".45"/></pattern></defs>
+<rect width="1600" height="900" fill="url(#sky)"/><circle cx="1260" cy="190" r="280" fill="url(#moon)"/>
+<g fill="#12111b"><path d="M0 520h210l35-45 35 45h170l45-70 45 70h210l30-35 30 35h210l40-55 40 55h240l35-45 35 45h210v380H0z"/><path d="M735 520l65-150 65 150z" opacity=".95"/></g>
+<path d="M790 560l10-190 10 190z" fill="#262030"/><rect x="795" y="300" width="10" height="95" fill="#2f2636"/>
+<rect x="0" y="555" width="1600" height="270" fill="url(#w)" opacity=".65"/>
+<path d="M0 815 C320 770 550 865 830 815 S1290 780 1600 830" fill="none" stroke="#f59e0b" stroke-width="4" opacity=".22"/>
+</svg>
