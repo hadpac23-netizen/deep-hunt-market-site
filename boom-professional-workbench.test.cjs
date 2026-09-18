@@ -23,6 +23,9 @@ const input={
     {cost:0.01,latency_ms:300,tokens:300}
   ],
   promptVersions:[{name:"decision-brain",version:3,label:"candidate"}],
+  modelObservations:[{id:90,provider:"openai",model:"gpt",success:true,created_at:"2026-09-18T09:06:00Z",route_key:"owner-chat"}],
+  shadowRuns:[{experiment_key:"routing",status:"passed",baseline_metrics:{quality:0.8},candidate_metrics:{quality:0.9},comparison:{quality_gain:0.1}}],
+  replayRuns:[{id:4,replay_key:"command-4",verdict:"same"}],
   releaseGate:{mode:"A12_FINAL_OWNER_GO_NO_GO_GATE",final_gate_ready:true},
   datasetStoreConnected:true,
   reviewStoreConnected:true,
@@ -33,6 +36,8 @@ const input={
 const result=W.build(input);
 assert.equal(result.mode,"BOOM_PROFESSIONAL_WORKBENCH");
 assert(result.traces.rows.length>=5);
+assert(result.traces.rows.some(x=>x.kind==="model"));
+assert(result.experiments.comparisons.some(x=>x.source==="shadow"));
 assert.equal(result.failures.dataset_candidates,1);
 assert.equal(result.experiments.available,true);
 assert.equal(result.experiments.comparisons[0].metric,"quality");
