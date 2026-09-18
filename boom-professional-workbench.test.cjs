@@ -27,7 +27,10 @@ const input={
   modelRoutes:[{route_key:"owner-chat",max_latency_ms:1000,max_cost_usd:0.02,min_quality_score:0.8}],
   shadowRuns:[{experiment_key:"routing",status:"passed",baseline_metrics:{quality:0.8},candidate_metrics:{quality:0.9},comparison:{quality_gain:0.1}}],
   replayRuns:[{id:4,replay_key:"command-4",verdict:"same"}],
+  traceSpans:[{trace_id:"11111111-1111-4111-8111-111111111111",span_id:"22222222-2222-4222-8222-222222222222",session_id:"owner-session-1",name:"owner-chat-model",success:true,started_at:"2026-09-18T09:07:00Z"}],
   releaseGate:{mode:"A12_FINAL_OWNER_GO_NO_GO_GATE",final_gate_ready:true},
+  promptStoreConnected:true,
+  traceStoreConnected:true,
   datasetStoreConnected:true,
   reviewStoreConnected:true,
   traceSchemaConnected:true,
@@ -48,6 +51,11 @@ assert.equal(result.cost.total_tokens,1800);
 assert.equal(result.cost.p50_latency_ms,420);
 assert.equal(result.cost.p95_latency_ms,900);
 assert.equal(result.prompts.instrumented,true);
+assert.equal(result.prompts.status,"VERSIONED");
+assert.equal(result.traceHierarchy.spans,1);
+assert.equal(result.traceHierarchy.traces,1);
+assert.equal(result.traceHierarchy.sessions,1);
+assert(result.traces.rows.some(x=>x.kind==="span"));
 assert.equal(result.alerts.watch,1);
 assert.equal(result.gaps.length,0);
 assert.equal(result.invariants.production_change,false);
@@ -62,6 +70,8 @@ assert(gaps.gaps.includes("traces"));
 assert(gaps.gaps.includes("datasets"));
 assert(gaps.gaps.includes("review"));
 assert(gaps.gaps.includes("alerts"));
+assert.equal(gaps.prompts.status,"REGISTRY_REQUIRED");
+assert.equal(gaps.traceHierarchy.store_connected,false);
 assert.equal(gaps.invariants.mutation,false);
 
 console.log("boom_professional_workbench=PASS");
