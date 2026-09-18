@@ -205,27 +205,36 @@
     const testCandidate = topTest ? candidateOf(topTest) : null;
 
     if (candidate) {
-      $("#hd-best-title").textContent = candidate.title || dict.noBest;
+      const title=$("#hd-best-title"), copy=$("#hd-best-copy"), status=$("#hd-best-status");
+      if(title)title.textContent = candidate.title || dict.noBest;
       const retail = retailState(candidate);
-      $("#hd-best-copy").textContent = [candidate.provider, retail.ready ? money(retail.amount,retail.currency) : "Price pending"].filter(Boolean).join(" · ");
-      $("#hd-best-status").textContent = String(top.verdict || "TEST").toUpperCase();
+      if(copy)copy.textContent = [candidate.provider, retail.ready ? money(retail.amount,retail.currency) : "Price pending"].filter(Boolean).join(" · ");
+      if(status)status.textContent = String(top.verdict || "TEST").toUpperCase();
     }
     if (testCandidate) {
-      $("#hd-test-title").textContent = testCandidate.title || dict.noWorth;
-      $("#hd-test-copy").textContent = (topTest.evaluation?.gaps || []).slice(0,1).join("") || "Evidence gate passed; conversion evidence still needed.";
+      const title=$("#hd-test-title"), copy=$("#hd-test-copy");
+      if(title)title.textContent = testCandidate.title || dict.noWorth;
+      if(copy)copy.textContent = (topTest.evaluation?.gaps || []).slice(0,1).join("") || "Evidence gate passed; conversion evidence still needed.";
     }
     const confidence = top ? Math.max(0,Math.min(100,Number(top.readiness_score||0))) : 0;
-    $("#hd-confidence-number").textContent = confidence + "%";
+    const confidenceNode=$("#hd-confidence-number");
+    if(confidenceNode)confidenceNode.textContent = confidence + "%";
     document.querySelector(".hd-ring")?.style.setProperty("background",
       `conic-gradient(#4bf5a1 0 ${confidence*.3}%,#5fa8ff ${confidence*.3}% ${confidence*.65}%,#8071ff ${confidence*.65}% ${confidence}%,#10263f ${confidence}% 100%)`);
   }
 
   function renderMetrics(data) {
     const commerce = data.commerce || {};
-    $("#hd-provider-count").textContent = (data.providers || []).length;
-    $("#hd-qualified-count").textContent = commerce.public_test_sell_count || 0;
-    $("#hd-click-count").textContent = commerce.outbound_clicks || 0;
-    $("#hd-commission").textContent = money(commerce.net_confirmed_commission_usd || 0);
+    const values = {
+      "#hd-provider-count": (data.providers || []).length,
+      "#hd-qualified-count": commerce.public_test_sell_count || 0,
+      "#hd-click-count": commerce.outbound_clicks || 0,
+      "#hd-commission": money(commerce.net_confirmed_commission_usd || 0)
+    };
+    for (const [selector,value] of Object.entries(values)) {
+      const node = $(selector);
+      if (node) node.textContent = value;
+    }
   }
 
   const shelfMeta = {
