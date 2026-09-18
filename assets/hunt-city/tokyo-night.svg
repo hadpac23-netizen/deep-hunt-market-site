@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Original HUNT abstract Tokyo night mood">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#090814"/><stop offset=".55" stop-color="#1d102d"/><stop offset="1" stop-color="#090d18"/></linearGradient>
+  <radialGradient id="glow"><stop stop-color="#e11d48" stop-opacity=".55"/><stop offset="1" stop-color="#7c3aed" stop-opacity="0"/></radialGradient>
+  <pattern id="windows" width="34" height="28" patternUnits="userSpaceOnUse"><rect x="4" y="5" width="6" height="9" rx="1" fill="#fb7185" opacity=".5"/><rect x="18" y="9" width="5" height="7" rx="1" fill="#a78bfa" opacity=".42"/></pattern>
+</defs>
+<rect width="1600" height="900" fill="url(#sky)"/><ellipse cx="1220" cy="250" rx="520" ry="340" fill="url(#glow)"/>
+<g opacity=".9"><rect x="70" y="390" width="180" height="510" fill="#10111d"/><rect x="270" y="300" width="135" height="600" fill="#15111e"/><rect x="430" y="465" width="205" height="435" fill="#11131f"/><rect x="665" y="240" width="150" height="660" fill="#16111e"/><rect x="845" y="370" width="210" height="530" fill="#10131f"/><rect x="1080" y="285" width="150" height="615" fill="#15111e"/><rect x="1260" y="430" width="250" height="470" fill="#11131e"/></g>
+<g fill="url(#windows)"><rect x="90" y="420" width="140" height="440"/><rect x="290" y="330" width="95" height="530"/><rect x="455" y="495" width="150" height="365"/><rect x="690" y="275" width="100" height="585"/><rect x="875" y="400" width="150" height="460"/><rect x="1105" y="320" width="100" height="540"/><rect x="1290" y="460" width="190" height="400"/></g>
+<g opacity=".75"><rect x="0" y="742" width="1600" height="3" fill="#e11d48"/><rect x="0" y="770" width="1600" height="2" fill="#7c3aed"/><path d="M0 790 C280 730 470 850 760 785 S1280 745 1600 805" fill="none" stroke="#fb7185" stroke-width="5" opacity=".3"/></g>
+</svg>
