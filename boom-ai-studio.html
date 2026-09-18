@@ -486,6 +486,24 @@
               <div class="rc-qa-check-grid" id="alpha-rc-qa-checks"><p>Run A11 after A10 is ready.</p></div>
               <pre id="alpha-rc-qa-report">No A11 RC QA report yet.</pre>
             </section>
+            <section class="final-gate-workspace">
+              <div class="truth-workspace-head"><div><small>A12 WORKSPACE</small><h3>Final Owner Go / No-Go Gate</h3><p>Builds the final Alpha decision pack from A9–A11. Owner decision is recorded locally for planning only. GO does not merge, deploy, enable payments, route orders or activate Production.</p></div><span>OWNER DECISION REQUIRED</span></div>
+              <div class="final-gate-actions">
+                <button class="top-btn" id="alpha-final-gate-build" type="button">Build Final Owner Gate</button>
+                <div class="truth-result-status" id="alpha-final-gate-status">NOT_BUILT · OWNER_DECISION_PENDING</div>
+              </div>
+              <div class="final-gate-summary" id="alpha-final-gate-summary">
+                <article><b>LOCKED</b><span>FINAL GATE</span></article>
+                <article><b>PENDING</b><span>OWNER DECISION</span></article>
+                <article><b>OFF</b><span>MERGE / PRODUCTION</span></article>
+              </div>
+              <div class="final-gate-evidence" id="alpha-final-gate-evidence"><p>Build A12 after A11 passes.</p></div>
+              <div class="final-owner-actions">
+                <button class="top-btn" id="alpha-final-go" type="button" disabled>GO · Private Alpha Planning Only</button>
+                <button class="top-btn" id="alpha-final-no-go" type="button">NO-GO · Hold</button>
+              </div>
+              <pre id="alpha-final-gate-report">No A12 final gate report yet. No Owner decision has been recorded.</pre>
+            </section>
             <section class="alpha-exit-gate">
               <strong>Alpha exit gate</strong>
               <p>Real eligible products · explainable recommendations · Like/Save/Share · History · Worlds · Stylist · safe Mirror entry · stable checkout fallback · mobile/desktop QA.</p>
@@ -560,6 +578,6 @@
   <script src="brand-video-router.js?v=1"></script>
   <script src="brand-creative-qa.js?v=1"></script>
   <script src="brand-video-dispatch.js?v=1"></script>
-  <script src="boom-alpha-test-harness.js?v=alpha1"></script>\n  <script src="boom-alpha-evidence-pack.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-preview.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-qa.js?v=alpha1"></script>\n  <script src="boom-ai-studio.js?v=2"></script>
+  <script src="boom-alpha-test-harness.js?v=alpha1"></script>\n  <script src="boom-alpha-evidence-pack.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-preview.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-qa.js?v=alpha1"></script>\n  <script src="boom-alpha-final-gate.js?v=alpha1"></script>\n  <script src="boom-ai-studio.js?v=2"></script>
 </body>
 </html>
