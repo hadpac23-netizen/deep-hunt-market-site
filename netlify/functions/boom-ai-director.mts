@@ -8,6 +8,9 @@ const STYLES = new Set(["cinematic","editorial","quiet-luxury","electric"]);
 const ENERGY = new Set(["calm","balanced","vivid"]);
 const DENSITY = new Set(["airy","balanced","rich"]);
 const INTENTS = new Set(["discover","style","compare","complete-look","explore"]);
+const DECISION_GOALS = new Set(["explore","simplify","compare","confidence","complete"]);
+const CHOICE_MODES = new Set(["editorial","guided","comparison","evidence","minimal"]);
+const RECOMMENDATION_STRATEGIES = new Set(["relevant-mix","narrow-set","side-by-side","verified-first","complementary"]);
 const PHASES = new Set(["arrival","discover","deepen","intent"]);
 const LANGS = new Set(["en","he","ar","es","fr","ja","zh"]);
 
@@ -49,6 +52,9 @@ function sanitizeContext(raw: any) {
   const localeRaw = cleanText(raw?.locale, 8).toLowerCase();
   const marketRaw = cleanText(raw?.market, 4).toUpperCase();
   const phaseRaw = cleanText(raw?.session_phase, 20).toLowerCase();
+  const goalRaw = cleanText(raw?.decision_goal, 20).toLowerCase();
+  const choiceRaw = cleanText(raw?.choice_mode, 20).toLowerCase();
+  const interactions = raw?.interaction_summary && typeof raw.interaction_summary === "object" ? raw.interaction_summary : {};
   const page = cleanText(raw?.page, 28).toLowerCase().replace(/[^a-z0-9-]/g, "") || "home";
 
   return {
@@ -59,6 +65,14 @@ function sanitizeContext(raw: any) {
     signal_strengths: signals,
     catalog_summary: catalog,
     session_phase: PHASES.has(phaseRaw) ? phaseRaw : "arrival",
+    decision_goal: DECISION_GOALS.has(goalRaw) ? goalRaw : "explore",
+    choice_mode: CHOICE_MODES.has(choiceRaw) ? choiceRaw : "editorial",
+    interaction_summary: {
+      productClicks: num(interactions?.productClicks, 0, 50),
+      likes: num(interactions?.likes, 0, 50),
+      saves: num(interactions?.saves, 0, 50),
+      searches: num(interactions?.searches, 0, 50),
+    },
     reduced_motion: raw?.reduced_motion === true,
   };
 }
@@ -71,6 +85,9 @@ function validatePlan(raw: any, ctx: ReturnType<typeof sanitizeContext>) {
   const energy = cleanText(raw?.motion_energy, 20).toLowerCase();
   const density = cleanText(raw?.density, 20).toLowerCase();
   const intent = cleanText(raw?.intent, 24).toLowerCase();
+  const goal = cleanText(raw?.decision_goal, 20).toLowerCase();
+  const choice = cleanText(raw?.choice_mode, 20).toLowerCase();
+  const strategy = cleanText(raw?.recommendation_strategy, 24).toLowerCase();
   const night = world(raw?.night_world, primary);
 
   const codes = Array.isArray(raw?.rationale_codes)
@@ -86,6 +103,9 @@ function validatePlan(raw: any, ctx: ReturnType<typeof sanitizeContext>) {
     motion_energy: ctx.reduced_motion ? "calm" : (ENERGY.has(energy) ? energy : "balanced"),
     density: DENSITY.has(density) ? density : "balanced",
     intent: INTENTS.has(intent) ? intent : "discover",
+    decision_goal: DECISION_GOALS.has(goal) ? goal : ctx.decision_goal,
+    choice_mode: CHOICE_MODES.has(choice) ? choice : ctx.choice_mode,
+    recommendation_strategy: RECOMMENDATION_STRATEGIES.has(strategy) ? strategy : (ctx.decision_goal === "simplify" ? "narrow-set" : ctx.decision_goal === "compare" ? "side-by-side" : ctx.decision_goal === "confidence" ? "verified-first" : ctx.decision_goal === "complete" ? "complementary" : "relevant-mix"),
     microcopy: {
       headline: safeCopy(raw?.microcopy?.headline, 72),
       subline: safeCopy(raw?.microcopy?.subline, 128),
@@ -97,9 +117,19 @@ function validatePlan(raw: any, ctx: ReturnType<typeof sanitizeContext>) {
 
 const SYSTEM = `You are BOOM F35 Experience Director inside HUNT, a premium global commerce interface.
 
-Your job is PRESENTATION ONLY: choose a visual/editorial direction that improves clarity, relevance, voluntary exploration, aesthetic delight, and trust.
+Your job is DECISION SUPPORT + PRESENTATION ONLY: choose a visual/editorial direction that improves clarity, relevance, voluntary exploration, confidence, aesthetic delight, and trust without changing commerce truth.
 
 Use multidisciplinary expertise from human-computer interaction, information architecture, visual perception, cognitive psychology, behavioral economics, typography, motion design, retail merchandising, and decision science.
+
+BEHAVIORAL COMMERCE PRINCIPLES:
+- Reduce cognitive load: show fewer, clearer choices when the user is narrowing intent.
+- Reduce uncertainty: prioritize verified, explainable information when confidence matters.
+- Support comparison: make alternatives easy to compare on meaningful attributes without declaring a fake winner.
+- Use progressive disclosure: reveal more detail as intent deepens instead of overwhelming early exploration.
+- Preserve autonomy: make every recommendation easy to ignore, reverse, or leave.
+- Use relevant complements only when they genuinely fit the current product/category context.
+- Treat first-party behavior as a shopping-state signal, never as a diagnosis of personality, emotion, vulnerability, or identity.
+- Optimize for informed voluntary decisions and long-term trust, not maximum short-term conversion.
 
 STRICT ETHICAL RULES:
 - Never use pressure, fear, shame, social comparison, addiction loops, coercion, dark patterns, manipulative urgency, fake scarcity, fake popularity, or exploit vulnerabilities.
@@ -120,6 +150,9 @@ Return JSON ONLY using exactly this shape:
   "motion_energy": "calm|balanced|vivid",
   "density": "airy|balanced|rich",
   "intent": "discover|style|compare|complete-look|explore",
+  "decision_goal": "explore|simplify|compare|confidence|complete",
+  "choice_mode": "editorial|guided|comparison|evidence|minimal",
+  "recommendation_strategy": "relevant-mix|narrow-set|side-by-side|verified-first|complementary",
   "microcopy": {
     "headline": "short line in the requested locale, no claims",
     "subline": "short supporting line in the requested locale, no claims",
@@ -128,7 +161,7 @@ Return JSON ONLY using exactly this shape:
   "rationale_codes": ["explicit_interest","behavior_signal","session_phase","catalog_depth"]
 }
 
-Make the microcopy elegant and concise. Match the locale in context.locale.`;
+Choose decision_goal, choice_mode, and recommendation_strategy to support the current shopping state in context. Prefer the sanitized context values unless there is a strong usability reason to adjust them. Make the microcopy elegant and concise. Match the locale in context.locale.`;
 
 export default async (req: Request) => {
   if (req.method !== "POST") {

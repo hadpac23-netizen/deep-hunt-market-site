@@ -12,7 +12,7 @@ const category=read("category.js");
 const search=read("search.js");
 const legal=JSON.parse(read("legal-config.json"));
 
-for(const token of ["fallbackPlan","requestAI","scoreProduct","boom:plan","hunt:search-intent","boom:phase"])
+for(const token of ["fallbackPlan","requestAI","scoreProduct","decisionState","decision_goal","choice_mode","recommendation_strategy","hunt:shopping-action","boom:plan","hunt:search-intent","boom:phase"])
   assert(brain.includes(token),"Brain contract missing "+token);
 assert(brain.includes('fetch("/api/boom-ai-director"'),"AI endpoint not connected");
 assert(brain.includes("AI_TTL"),"AI cache TTL missing");
@@ -24,8 +24,10 @@ assert(fn.includes('path: "/api/boom-ai-director"'),"AI function route missing")
 assert(fn.includes("rateLimit"),"AI endpoint rate limit missing");
 assert(fn.includes('windowLimit: 6')&&fn.includes('windowSize: 60'),"AI endpoint rate limit contract wrong");
 assert(fn.includes("OPENAI_BASE_URL")&&fn.includes("OPENAI_API_KEY"),"Netlify AI Gateway env contract missing");
-for(const phrase of ["Never use pressure","Never infer sensitive traits","Never recommend payment","PRESENTATION ONLY"])
+for(const phrase of ["Never use pressure","Never infer sensitive traits","Never recommend payment","DECISION SUPPORT + PRESENTATION ONLY","Reduce cognitive load","Reduce uncertainty","Preserve autonomy"])
   assert(fn.includes(phrase),"AI ethical constraint missing: "+phrase);
+for(const token of ["decision_goal","choice_mode","recommendation_strategy","interaction_summary"])
+  assert(fn.includes(token),"AI behavioral decision contract missing "+token);
 for(const pii of ["email","phone","account_id","payment_details"])
   assert(!brain.includes('context.'+pii),"PII field leaked into AI client context: "+pii);
 
@@ -58,6 +60,7 @@ for(const page of pages){
 
 assert(fs.existsSync("docs/BOOM-HUNT-COMMERCE-BRAIN-F35-MASTER-PROMPT.md"),"BOOM master prompt missing");
 assert(fs.existsSync("docs/BOOM-STYLIST-ETHICAL-BEHAVIORAL-DESIGN-SKILL.md"),"BOOM stylist skill missing");
+assert(fs.existsSync("docs/BOOM-BEHAVIORAL-COMMERCE-INTELLIGENCE.md"),"Behavioral commerce intelligence skill missing");
 assert(legal.payments_status==="PRELAUNCH","Payment gate changed unexpectedly");
 
 console.log("boom_commerce_brain=PASS",{pages:pages.length,model:"gpt-5.6-sol"});

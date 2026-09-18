@@ -10,7 +10,10 @@
   const ENERGY=new Set(["calm","balanced","vivid"]);
   const DENSITY=new Set(["airy","balanced","rich"]);
   const INTENTS=new Set(["discover","style","compare","complete-look","explore"]);
-  const CACHE_KEY="boom_commerce_brain_plan_v1";
+  const DECISION_GOALS=new Set(["explore","simplify","compare","confidence","complete"]);
+  const CHOICE_MODES=new Set(["editorial","guided","comparison","evidence","minimal"]);
+  const RECOMMENDATION_STRATEGIES=new Set(["relevant-mix","narrow-set","side-by-side","verified-first","complementary"]);
+  const CACHE_KEY="boom_commerce_brain_plan_v2";
   const AI_TTL=12*60*1000;
   const BLOCKED_COPY=/\b(last chance|hurry|act now|only \d+ left|selling fast|everyone is buying|trending now|best seller|lowest price|guaranteed|don'?t miss|fomo)\b/i;
 
@@ -20,6 +23,7 @@
   let currentPhase="arrival";
   let searchHint=[];
   let productHint="";
+  let behavior={productClicks:0,likes:0,saves:0,searches:0};
   let aiTimer=null;
   let aiInFlight=false;
   let lastAiAt=0;
@@ -123,7 +127,22 @@
     return {verified,local};
   }
 
+  function decisionState(){
+    const page=pageName();
+    if(page==="checkout")return {goal:"confidence",choice_mode:"minimal"};
+    if(page==="product"){
+      if(currentPhase==="intent"||behavior.saves+behavior.likes>=2)return {goal:"complete",choice_mode:"evidence"};
+      return {goal:"compare",choice_mode:"comparison"};
+    }
+    if(page==="search")return {goal:"simplify",choice_mode:"guided"};
+    if(currentPhase==="arrival")return {goal:"explore",choice_mode:"editorial"};
+    if(currentPhase==="discover")return {goal:"simplify",choice_mode:"guided"};
+    if(currentPhase==="deepen")return {goal:"compare",choice_mode:"comparison"};
+    return {goal:"confidence",choice_mode:"evidence"};
+  }
+
   function context(){
+    const decision=decisionState();
     return Object.freeze({
       page:pageName(),
       locale:locale(),
@@ -132,6 +151,9 @@
       signal_strengths:signalScores(),
       catalog_summary:catalogSummary(),
       session_phase:currentPhase,
+      decision_goal:decision.goal,
+      choice_mode:decision.choice_mode,
+      interaction_summary:{...behavior},
       reduced_motion:matchMedia("(prefers-reduced-motion: reduce)").matches,
     });
   }
@@ -154,10 +176,16 @@
     if(ctx.page==="search")mode="explore";
     if(ctx.page==="product")mode="look";
     if(ctx.page==="checkout")mode=cap.verified>=4?"verified":"for-you";
+    const goal=DECISION_GOALS.has(ctx.decision_goal)?ctx.decision_goal:"explore";
+    const choice=CHOICE_MODES.has(ctx.choice_mode)?ctx.choice_mode:"editorial";
+    const strategy=goal==="simplify"?"narrow-set":goal==="compare"?"side-by-side":goal==="confidence"?"verified-first":goal==="complete"?"complementary":"relevant-mix";
     return {
       primary_world:primary,
       secondary_world:secondary,
       discovery_mode:mode,
+      decision_goal:goal,
+      choice_mode:choice,
+      recommendation_strategy:strategy,
       night_world:primary,
       style_mode:styleFor(primary),
       motion_energy:ctx.reduced_motion?"calm":(ctx.session_phase==="arrival"?"balanced":ctx.session_phase==="discover"?"vivid":"balanced"),
@@ -191,6 +219,9 @@
       motion_energy:ctx.reduced_motion?"calm":(ENERGY.has(String(raw?.motion_energy||""))?String(raw.motion_energy):base.motion_energy),
       density:DENSITY.has(String(raw?.density||""))?String(raw.density):base.density,
       intent:INTENTS.has(String(raw?.intent||""))?String(raw.intent):base.intent,
+      decision_goal:DECISION_GOALS.has(String(raw?.decision_goal||""))?String(raw.decision_goal):base.decision_goal,
+      choice_mode:CHOICE_MODES.has(String(raw?.choice_mode||""))?String(raw.choice_mode):base.choice_mode,
+      recommendation_strategy:RECOMMENDATION_STRATEGIES.has(String(raw?.recommendation_strategy||""))?String(raw.recommendation_strategy):base.recommendation_strategy,
       microcopy:{
         headline:safeCopy(raw?.microcopy?.headline,72),
         subline:safeCopy(raw?.microcopy?.subline,128),
@@ -211,6 +242,9 @@
       body.dataset.boomEnergy=currentPlan.motion_energy;
       body.dataset.boomDensity=currentPlan.density;
       body.dataset.boomIntent=currentPlan.intent;
+      body.dataset.boomDecisionGoal=currentPlan.decision_goal;
+      body.dataset.boomChoiceMode=currentPlan.choice_mode;
+      body.dataset.boomRecommendation=currentPlan.recommendation_strategy;
       body.dataset.boomBrainSource=source;
       body.dataset.boomPhase=currentPhase;
     }
@@ -220,7 +254,7 @@
 
   function signature(ctx=context()){
     return JSON.stringify([
-      ctx.page,ctx.locale,ctx.market,ctx.session_phase,
+      ctx.page,ctx.locale,ctx.market,ctx.session_phase,ctx.decision_goal,ctx.choice_mode,
       ctx.top_interests.slice(0,4),
       Object.entries(ctx.catalog_summary).map(([k,v])=>[k,Math.min(9,Math.floor(Number(v||0)/20))]),
     ]);
@@ -281,9 +315,12 @@
     if(!currentPlan)return 0;
     const w=broadWorld(item?.category||H.inferCategory?.(item));
     if(!w)return 0;
-    if(w===currentPlan.primary_world)return 24;
-    if(w===currentPlan.secondary_world)return 11;
-    return 0;
+    let score=w===currentPlan.primary_world?24:w===currentPlan.secondary_world?11:0;
+    const verified=item?.retail_price_verified===true&&String(item?.profit_gate_status||"").toUpperCase()==="PASS";
+    if(currentPlan.decision_goal==="confidence"&&verified)score+=8;
+    if(currentPlan.decision_goal==="compare"&&verified)score+=4;
+    if(currentPlan.decision_goal==="complete"&&w===currentPlan.secondary_world)score+=6;
+    return score;
   }
 
   window.addEventListener("hunt:shelves",e=>{shelves=e.detail?.shelves||shelves;refresh({reason:"shelves"});scheduleAI("shelves",1200)});
@@ -294,11 +331,19 @@
   window.addEventListener("hunt:signal",()=>refresh({reason:"signal"}));
   window.addEventListener("hunt:search-intent",e=>{
     searchHint=Array.isArray(e.detail?.categories)?e.detail.categories.slice(0,6):[];
+    behavior.searches=Math.min(50,behavior.searches+1);
     refresh({reason:"search-intent"});scheduleAI("search-intent",500);
   });
   window.addEventListener("hunt:product-loaded",e=>{
     productHint=String(e.detail?.product?.category||"");
+    behavior.productClicks=Math.min(50,behavior.productClicks+1);
     refresh({reason:"product"});scheduleAI("product",700);
+  });
+  window.addEventListener("hunt:shopping-action",e=>{
+    if(e.detail?.liked===true)behavior.likes=Math.min(50,behavior.likes+1);
+    if(e.detail?.saved===true)behavior.saves=Math.min(50,behavior.saves+1);
+    refresh({reason:"shopping-action"});
+    if(behavior.likes+behavior.saves===2)scheduleAI("shopping-action",650);
   });
   window.addEventListener("boom:phase",e=>{
     const next=String(e.detail?.phase||"");
@@ -315,6 +360,8 @@
     requestAI,
     scoreProduct,
     broadWorld,
+    decisionState,
+    behavior:()=>Object.freeze({...behavior}),
   });
 
   if(document.readyState==="loading"){
