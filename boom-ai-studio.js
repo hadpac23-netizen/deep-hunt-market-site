@@ -4,6 +4,8 @@
   const H=window.HuntCore;
   const S=window.supabase;
   const Truth=window.HuntCountryProductTruth;
+  const Taste=window.BoomTasteDNA;
+  const Decision=window.BoomDecisionBrain;
   if(!H||!S?.createClient){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -623,6 +625,74 @@
       "EXECUTION_ALLOWED: false",
       "PUBLISHED: false",
       "SUPPLIER_CALLED: false"
+    ].join("\n");
+  }
+
+  function decisionNumber(id,scale=1){
+    const value=Number(truthValue(id));
+    return Number.isFinite(value)?value/scale:0;
+  }
+
+  function evaluateDecisionWorkspace(){
+    const output=$("#decision-result");
+    const status=$("#decision-result-status");
+    if(!Taste?.candidateSignals||!Decision?.scoreCandidate){
+      status.textContent="DECISION_ENGINE_UNAVAILABLE · EXECUTION_OFF";
+      output.textContent="Decision Brain or Taste DNA is unavailable. Nothing was executed.";
+      return;
+    }
+    const category=truthValue("decision-category").toLowerCase();
+    const provider=truthValue("decision-provider").toLowerCase();
+    const interactions=Math.max(0,Math.round(decisionNumber("decision-interactions")));
+    const tasteScore=decisionNumber("decision-taste-score");
+    const profile={
+      interactions,
+      mode:Taste.modeFor(interactions),
+      confidence:Math.min(1,interactions/20),
+      categories:category?[{key:category,score:tasteScore}]:[],
+      providers:[],
+      worlds:[],
+      controls:{sensitive_traits_used:false,body_traits_used:false,reset_supported:true}
+    };
+    const taste=Taste.candidateSignals(profile,{category,provider});
+    const context={interactions,recent_categories:[],recent_suppliers:[],recent_product_keys:[],taste_profile:profile};
+    const candidate={
+      product_key:provider+":studio-simulation",
+      category,
+      supplier:provider,
+      safety_eligible:true,
+      market_eligible:Boolean($("#decision-market")?.checked),
+      shipping_eligible:Boolean($("#decision-shipping-eligible")?.checked),
+      truth_status:$("#decision-truth-live")?.checked?"live_verified":"RECHECK_REQUIRED",
+      stock_available:Boolean($("#decision-stock")?.checked),
+      image_verified:Boolean($("#decision-media")?.checked),
+      relevance:decisionNumber("decision-relevance",100),
+      affinity:taste.affinity,
+      quality:decisionNumber("decision-quality",100),
+      shipping_score:decisionNumber("decision-shipping",100),
+      trust_score:decisionNumber("decision-trust",100),
+      freshness:decisionNumber("decision-freshness",100),
+      novelty:decisionNumber("decision-novelty",100),
+      creative_performance:decisionNumber("decision-creative",100),
+      margin_ratio:decisionNumber("decision-margin",100),
+      hide_risk:taste.hide_risk
+    };
+    const result=Decision.scoreCandidate(candidate,context,0);
+    status.textContent=(result.eligible?"ELIGIBLE":"BLOCKED")+" · "+profile.mode.toUpperCase()+" · EXECUTION_OFF";
+    output.textContent=[
+      "MODE: A2_STUDIO_SIMULATION",
+      "PERSONALIZATION MODE: "+profile.mode,
+      "TASTE CONFIDENCE: "+(profile.confidence*100).toFixed(0)+"%",
+      "SENSITIVE TRAITS USED: false",
+      "BODY TRAITS USED: false",
+      "ELIGIBLE: "+result.eligible,
+      "SCORE: "+result.score,
+      "DISCOVERY LANE: "+result.lane,
+      "REASONS: "+(result.reasons||[]).join(", "),
+      "EXPLANATION: "+Decision.explain(result),
+      "COMPONENTS: "+JSON.stringify(result.components||{}),
+      "EXECUTION_ALLOWED: false",
+      "STOREFRONT_CHANGED: false"
     ].join("\n");
   }
 
@@ -1480,6 +1550,7 @@
   $("#planning-approve")?.addEventListener("click",()=>setPlanningDecision("APPROVED_FOR_IMPLEMENTATION_PLANNING"));
   $("#alpha-load-plan")?.addEventListener("click",loadAlphaPlan);
   $("#truth-simulate")?.addEventListener("click",evaluateTruthWorkspace);
+  $("#decision-simulate")?.addEventListener("click",evaluateDecisionWorkspace);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
