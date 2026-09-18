@@ -1,0 +1,43 @@
+<!doctype html><meta charset="utf-8"><title>HUNT Actions V2 QA</title>
+<style>body{font:13px system-ui;background:#111;color:#eee;margin:14px}.case{margin:12px 0;border:1px solid #444;padding:8px}.pass{color:#72e49e}.fail{color:#ff8296}.viewport{overflow:hidden;max-height:380px}iframe{border:0;background:#fff;display:block}pre{white-space:pre-wrap}</style>
+<h1>HUNT Actions V2 QA</h1><div id="host"></div><pre id="result">RUNNING</pre>
+<script>
+const widths=[390,1440],host=document.querySelector("#host"),wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function one(w){
+ localStorage.removeItem("hunt_local_product_actions_v1");
+ localStorage.setItem("hunt_theme_v1","light");
+ const box=document.createElement("section");box.className="case";
+ const status=document.createElement("div");status.textContent="RUNNING "+w;
+ const wrap=document.createElement("div");wrap.className="viewport";wrap.style.width=w+"px";
+ const f=document.createElement("iframe");f.width=w;f.height=900;f.src="./category.html?c=women";
+ wrap.appendChild(f);box.append(status,wrap);host.appendChild(box);
+ await new Promise(r=>f.addEventListener("load",r,{once:true}));await wait(5000);
+ const d=f.contentDocument,cw=f.contentWindow;
+ const first=d.querySelector("#hd-category-grid .hd-market-product-card");
+ const like=first?.querySelector('[data-shop-action="like"]');
+ const save=first?.querySelector('[data-shop-action="save"]');
+ const actionVisible=!!like&&!!save;
+ like?.click();await wait(150);
+ save?.click();await wait(150);
+ const liked=like?.getAttribute("aria-pressed")==="true";
+ const saved=save?.getAttribute("aria-pressed")==="true";
+ const local=JSON.parse(cw.localStorage.getItem("hunt_local_product_actions_v1")||"{}");
+ const persisted=Object.values(local).some(x=>x?.liked===true&&x?.saved===true);
+ const toggle=d.querySelector("[data-hunt-theme-toggle]");
+ toggle?.click();await wait(120);
+ const dark=d.documentElement.dataset.huntTheme==="dark";
+ const image=first?.querySelector("img"),media=first?.querySelector(".hd-market-card-media");
+ const style=image?cw.getComputedStyle(image):null, mediaStyle=media?cw.getComputedStyle(media):null;
+ const darkImageSafe=!!style&&style.filter==="none"&&style.opacity==="1"&&style.mixBlendMode==="normal";
+ const mediaNotBlack=!!mediaStyle&&mediaStyle.backgroundColor!=="rgb(0, 0, 0)";
+ const nav=d.querySelector(".hd-mobile-nav");
+ const navPos=nav?cw.getComputedStyle(nav).position:"";
+ const mobileNavOk=w>760||navPos==="fixed";
+ const overflow=Math.max(0,d.documentElement.scrollWidth-d.documentElement.clientWidth);
+ const pass=actionVisible&&liked&&saved&&persisted&&dark&&darkImageSafe&&mediaNotBlack&&mobileNavOk&&overflow<=4;
+ const out={width:w,pass,actionVisible,liked,saved,persisted,dark,darkImageSafe,mediaNotBlack,mobileNavOk,overflow};
+ status.className=pass?"pass":"fail";status.textContent=(pass?"PASS ":"FAIL ")+JSON.stringify(out);
+ return out;
+}
+(async()=>{const results=[];for(const w of widths)results.push(await one(w));const pass=results.every(x=>x.pass);document.body.dataset.qa=pass?"pass":"fail";document.querySelector("#result").textContent=(pass?"PASS":"FAIL")+"\n"+JSON.stringify({pass,results},null,2)})();
+</script>
