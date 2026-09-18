@@ -129,3 +129,34 @@
   .hd-hero4-media video{display:none}
   .hd-hero4-promo,.hd-hero4-peek{transition:none!important}
 }
+
+/* Urban Luxe · navigation floats inside the cinematic world */
+.hd-home3 .hd-topbar{
+  position:absolute!important;top:0;left:0;right:0;z-index:60;
+  min-height:72px!important;padding:12px clamp(18px,3vw,40px)!important;
+  background:linear-gradient(180deg,rgba(5,6,9,.48),rgba(5,6,9,.08),transparent)!important;
+  border-bottom:0!important;box-shadow:none!important;backdrop-filter:none!important;
+}
+.hd-home3 .hd-brand,.hd-home3 .hd-brand span,.hd-home3 .hd-nav a,
+.hd-home3 .hd-account-link,.hd-home3 .hd-cart-link{color:#fff!important}
+.hd-home3 .hd-brand{font-family:Georgia,"Times New Roman",serif!important;letter-spacing:.12em!important}
+.hd-home3 .hd-branch{display:none!important}
+.hd-home3 .hd-topbar .hd-search{display:none!important}
+.hd-home3 .hd-lang{
+  border-color:rgba(255,255,255,.2)!important;background:rgba(0,0,0,.24)!important;color:#fff!important;
+  backdrop-filter:blur(12px)!important;
+}
+.hd-home3 .hd-cart-link{border-color:rgba(255,255,255,.24)!important;background:rgba(0,0,0,.18)!important}
+.hd-home3 .hd-nav a:first-child:after{background:#fff!important;box-shadow:none!important}
+.hd-home3 .hd-hero4{margin-top:0}
+
+@media(max-width:760px){
+  .hd-home3 .hd-topbar{
+    min-height:58px!important;padding:10px 16px!important;grid-template-columns:1fr auto!important;
+    background:linear-gradient(180deg,rgba(5,6,9,.58),transparent)!important;
+  }
+  .hd-home3 .hd-tools{grid-column:auto!important;width:auto!important;display:flex!important;flex-wrap:nowrap!important}
+  .hd-home3 .hd-tools .hd-account-link,.hd-home3 .hd-lang{display:none!important}
+  .hd-home3 .hd-cart-link{padding:8px 10px!important}
+  .hd-home3 .hd-brand{font-size:1.08rem!important}
+}
