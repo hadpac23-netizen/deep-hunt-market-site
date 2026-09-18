@@ -371,3 +371,18 @@ assert(js.includes('url.searchParams.get("preview")==="1"'),"Local preview query
 assert(js.includes("function applyLocalPreviewSafety()"),"Local preview safety function missing");
 assert(js.includes("LOCAL PREVIEW · LIVE ACTIONS OFF"),"Local preview safety status missing");
 assert(js.includes('input.placeholder="LOCAL PREVIEW · chat execution disabled"'),"Local preview chat lock missing");
+
+assert(html.includes('id="product-trace-workspace"'),"Product trace workspace missing");
+assert(html.includes('id="product-trace-run"'),"Product trace run control missing");
+assert(html.includes('id="product-trace-timeline"'),"Product trace timeline missing");
+assert(html.includes('id="product-trace-report"'),"Product trace report missing");
+assert(js.includes("function runProductTrace()"),"Product trace runner missing");
+assert(js.includes("LIVE_ADMIN_PRODUCT_TRACE"),"Live admin product trace mode missing");
+assert(js.includes('client.from("hunt_catalog_products")'),"Product trace catalog query missing");
+assert(js.includes('client.from("hunt_orders")'),"Product trace order query missing");
+assert(js.includes('client.from("hunt_order_pipeline_runs")'),"Product trace pipeline query missing");
+assert(js.includes('client.from("hunt_order_finance_ledger")'),"Product trace finance query missing");
+assert(js.includes('LIVE QUERY: false'),"Product trace local preview guard missing");
+assert(css.includes(".product-trace-workspace"),"Product trace styling missing");
+assert(js.includes('label:"Product trace: source → shelf → checkout → order → sale",status:"PRESENT"'),"Product trace prompt status not closed");
+assert(js.includes('label:"Supplier names hidden from shopper storefront",status:"PRESENT"'),"Supplier hiding prompt status not closed");
