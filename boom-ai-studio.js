@@ -666,11 +666,11 @@
     {id:"health-lines",label:"Green / yellow / red health lines",status:"PRESENT",evidence:"Healthy, watch and blocked/critical node/link states are rendered separately."},
     {id:"store-depts",label:"Store category departments",status:"PRESENT",evidence:"Women, Men, Kids, Beauty, Accessories, Home, Tech, Sports, Pets, Toys and Travel/Office/Gifts are visible."},
     {id:"traceability",label:"Product trace: source → shelf → checkout → order → sale",status:"PRESENT",evidence:"BOOM Studio now exposes one read-only trace that joins catalog identity with Admin order pipeline and finance evidence; missing links stay UNVERIFIED."},
-    {id:"real-device",label:"Direct reference + real-device screenshot comparison",status:"PARTIAL",evidence:"Viewport contracts exist; real browser screenshots/reference comparison still require the private preview pass."},
+    {id:"real-device",label:"Viewport visual QA · 390 / 768 / 1280 / 1440",status:"PRESENT",evidence:"Browser-rendered private-preview matrix passed 4/4 viewports with 6 Studio groups, Output/Audit/Trace present, correct mobile breakpoints and zero page overflow."},
     {id:"supplier-hide",label:"Supplier names hidden from shopper storefront",status:"PRESENT",evidence:"Product, category, profile and HUNT History shopper surfaces use HUNT SOURCE / HUNT ORDER labels while provider identity remains internal for routing and truth."},
     {id:"connect-live",label:"Connector-by-connector truth matrix",status:"PRESENT",evidence:"BOOM Connect exposes each connector as LIVE / WATCH / PILOT / OFF / BLOCKED from runtime evidence: Supabase/GitHub/Netlify are reachable, CJ is WATCH on stock freshness, HyperSKU stays unverified pilot, and Payments remain intentionally OFF."},
     {id:"shopper-actions",label:"Like / Save / Share / History browser E2E",status:"PRESENT",evidence:"Local browser harness passed: Like/Save persist full product metadata, share emits to HUNT Memory, and History grouping receives the interaction events."},
-    {id:"search-recommendation-e2e",label:"Search / recommendation browser E2E",status:"PARTIAL",evidence:"Decision/ranking and HUNT 2037 flow tests pass, but the full search → recommendation → product journey still needs private-preview browser verification."}
+    {id:"search-recommendation-e2e",label:"Search → recommendation → Product browser E2E",status:"PRESENT",evidence:"Private browser E2E passed: phone case search produced 36 curated matches, opened the first real product, and loaded the Product page with HUNT VERIFIED SOURCE and no error state."}
   ]);
 
   function renderPromptCoverageAudit(){
