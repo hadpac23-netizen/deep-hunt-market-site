@@ -9,6 +9,10 @@
     "purchase","return","watch"
   ]);
   const TYPE_SET=new Set(TYPES);
+  const SIGNAL_WEIGHTS=Object.freeze({
+    purchase:8,save:6,like:5,add_to_cart:5,look_save:4,try_on:3,share:3,watch:2.5,
+    dwell:2,product_view:1.5,impression:.5,world_enter:.4,skip:-1,not_interested:-5,return:-6
+  });
   const clean=v=>String(v??"").trim();
 
   function readStore(){
@@ -79,19 +83,31 @@
   }
 
   function decisionContext(rows=events()){
-    const recent=[...rows].reverse().slice(0,120);
+    const recent=[...rows].reverse().slice(0,200);
     const products=[],categories=[],suppliers=[];
-    for(const row of recent){
+    const categoryScores=new Map(),supplierScores=new Map(),signalCounts={};
+    recent.forEach((row,index)=>{
       const key=productKey(row);
       if(key&&!products.includes(key))products.push(key);
       if(row.category&&!categories.includes(row.category))categories.push(row.category);
       if(row.provider&&!suppliers.includes(row.provider))suppliers.push(row.provider);
-    }
+      const weight=Number(SIGNAL_WEIGHTS[row.type]??1);
+      const recency=Math.max(.25,1-(index/240));
+      const score=weight*recency;
+      signalCounts[row.type]=(signalCounts[row.type]||0)+1;
+      if(row.category)categoryScores.set(row.category,(categoryScores.get(row.category)||0)+score);
+      if(row.provider)supplierScores.set(row.provider,(supplierScores.get(row.provider)||0)+score);
+    });
+    const rankedCategories=[...categoryScores.entries()].sort((a,b)=>b[1]-a[1]);
+    const rankedSuppliers=[...supplierScores.entries()].sort((a,b)=>b[1]-a[1]);
     return Object.freeze({
       interactions:rows.length,
       recent_product_keys:Object.freeze(products.slice(0,30)),
       recent_categories:Object.freeze(categories.slice(0,15)),
-      recent_suppliers:Object.freeze(suppliers.slice(0,8))
+      recent_suppliers:Object.freeze(suppliers.slice(0,8)),
+      category_affinity:Object.freeze(Object.fromEntries(rankedCategories.slice(0,20).map(([key,value])=>[key,Number(value.toFixed(3))]))),
+      supplier_affinity:Object.freeze(Object.fromEntries(rankedSuppliers.slice(0,12).map(([key,value])=>[key,Number(value.toFixed(3))]))),
+      signal_counts:Object.freeze({...signalCounts})
     });
   }
   function historyGroups(rows=events(),now=new Date()){
@@ -126,7 +142,7 @@
     });
   }
 
-  const api=Object.freeze({TYPES,normalize,record,clear,events,productKey,decisionContext,historyGroups,connectBrowserEvents});
+  const api=Object.freeze({TYPES,SIGNAL_WEIGHTS,normalize,record,clear,events,productKey,decisionContext,historyGroups,connectBrowserEvents});
   if(typeof window!=="undefined"){
     window.HuntExperienceMemory=api;
     connectBrowserEvents();
