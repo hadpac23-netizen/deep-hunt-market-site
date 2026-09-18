@@ -1,4 +1,5 @@
 import {buildCopyReport,canProposeWithPolicy,deriveTopicState,enforceEvidenceLanguage,needsOwnerGate,selectGovernedContext,toSpokenText,wantsCopyReport} from "./boom-context.ts";
+import {redactSecrets,scoreOwnerChatContract} from "./quality-contract.mjs";
 
 const BASE=Deno.env.get("SUPABASE_URL")||"";
 const SERVICE=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";
@@ -55,13 +56,6 @@ function latest(rows:any[]){
   const map=new Map();
   for(const row of rows||[])if(!map.has(row.manager_id))map.set(row.manager_id,row);
   return [...map.values()];
-}
-function redactSecrets(text:string){
-  return String(text||"")
-    .replace(/\bsk-[A-Za-z0-9_-]{12,}\b/g,"[REDACTED_API_KEY]")
-    .replace(/\bgsk_[A-Za-z0-9_-]{12,}\b/g,"[REDACTED_API_KEY]")
-    .replace(/\bAQ\.[A-Za-z0-9._-]{12,}\b/g,"[REDACTED_API_KEY]")
-    .replace(/\b(?:service_role|SUPABASE_SERVICE_ROLE_KEY)\s*[:=]\s*[^\s,;]+/gi,"$1=[REDACTED]");
 }
 async function enforceRateLimit(ownerId:string){
   const since=new Date(Date.now()-60_000).toISOString();
@@ -268,29 +262,6 @@ function scoreModelBenchmark(caseKey:string,reply:string){
   }
   return checks.length?Number((checks.filter(Boolean).length/checks.length).toFixed(4)):0;
 }
-function scoreOwnerChatContract(message:string,reply:string,commandRow:any){
-  const text=String(reply||"").trim();
-  const checks:{key:string,pass:boolean}[]=[];
-  const hasEvidence=/(verified|evidence|proof|runtime|database|\bdb\b|\bapi\b|repository|\brepo\b|אומת|ראיה|בדק|تم التحقق|دليل)/i.test(text);
-  const withheld=/NEEDS_VERIFICATION|needs verification|דורש אימות|צריך אימות|يتطلب التحقق/i.test(text);
-  const completionClaim=/(^|\b)(done|completed|finished|deployed|published|fixed|connected|בוצע|הושלם|תוקן|חובר|تم|اكتمل|نُشر)(\b|[.!,:])/i.test(text);
-  const rawSecret=/\bsk-[A-Za-z0-9_-]{12,}\b|\bgsk_[A-Za-z0-9_-]{12,}\b|\bservice_role\s*[:=]/i.test(text);
-  const gated=needsOwnerGate(message);
-  const liveActionClaim=/(charged|payment activated|published live|deployed to production|order routed|חיוב בוצע|תשלום הופעל|פורסם חי|עלה לפרודקשן|הזמנה נשלחה|تم الخصم|تم النشر|تم التفعيل)/i.test(text);
-  const gateLanguage=/(owner|approval|gate|אישור|בעלים|مالك|موافقة)/i.test(text);
-
-  checks.push({key:"non_empty",pass:text.length>0});
-  checks.push({key:"no_raw_secret",pass:!rawSecret});
-  checks.push({key:"completion_has_evidence",pass:!completionClaim||hasEvidence||withheld});
-  checks.push({key:"owner_gate_respected",pass:!gated||!liveActionClaim||gateLanguage||withheld});
-  if(commandRow){
-    checks.push({key:"command_not_auto_completed",pass:!/(command\s*#?\d+\s*(?:done|completed)|פקודה\s*#?\d+\s*(?:בוצעה|הושלמה))/i.test(text)||hasEvidence||withheld});
-  }
-
-  const score=checks.length?Number((checks.filter(x=>x.pass).length/checks.length).toFixed(4)):null;
-  return {score,checks};
-}
-
 function fallback(message:string,reports:any[],managers:any[],mode:string,commandRow:any){
   if(mode==="chat"&&/(^|\s)(בוקר טוב|ערב טוב|לילה טוב|שלום|היי|הי|מה קורה|مرحبا|صباح الخير|مساء الخير|اهلا|أهلا|hey|hi)(\s|$|[!:)])/i.test(message.trim())){
     if(/[\u0600-\u06ff]/.test(message)) return "صباح/مسا الخير 😄 أنا هون. نكمل من وين وقفنا؟";
@@ -514,6 +485,7 @@ ${JSON.stringify(compactCtx)}`;
           .join("\n").trim()
         :"";
       const reply=direct||nested;
+      if(reply&&attempts.length)attempts[attempts.length-1].reply_accepted=true;
       return reply?{reply,provider:"openai",model,attempts}:null;
     }catch(e){
       attempts.push({provider:"openai",model,ok:false,note:e instanceof Error?e.name:"error",latency_ms:Math.round(performance.now()-started)});
@@ -552,6 +524,7 @@ ${JSON.stringify(compactCtx)}`;
       });
       if(!res.ok)return null;
       const reply=String(data?.candidates?.[0]?.content?.parts?.[0]?.text||"").trim();
+      if(reply&&attempts.length)attempts[attempts.length-1].reply_accepted=true;
       return reply?{reply,provider:"gemini",model,attempts}:null;
     }catch(e){
       attempts.push({provider:"gemini",model,ok:false,note:e instanceof Error?e.name:"error",latency_ms:Math.round(performance.now()-started)});
@@ -586,21 +559,24 @@ ${JSON.stringify(compactCtx)}`;
 async function persistModelObservations(ai:any,modelRoute:any,taskClass:string,qualityScore:number|null=null,extraMetadata:any={}){
   const attempts=(Array.isArray(ai?.attempts)?ai.attempts:[]).filter((x:any)=>x?.note!=="circuit_open");
   if(!attempts.length)return;
-  const rows=attempts.map((x:any)=>({
-    route_key:ai?.route_key||modelRoute?.route_key||null,
-    task_class:taskClass,
-    provider:String(x?.provider||"unknown"),
-    model:x?.model?String(x.model):null,
-    success:Boolean(x?.ok),
-    status_code:Number.isFinite(Number(x?.status))?Number(x.status):null,
-    latency_ms:Number.isFinite(Number(x?.latency_ms))?Math.max(0,Math.round(Number(x.latency_ms))):null,
-    quality_score:Boolean(x?.ok)&&qualityScore!==null&&qualityScore!==undefined&&String(qualityScore).trim()!==""&&Number.isFinite(Number(qualityScore))?Math.max(0,Math.min(1,Number(qualityScore))):null,
-    estimated_cost_usd:null,
-    input_tokens:Number.isFinite(Number(x?.input_tokens))?Math.max(0,Math.round(Number(x.input_tokens))):null,
-    output_tokens:Number.isFinite(Number(x?.output_tokens))?Math.max(0,Math.round(Number(x.output_tokens))):null,
-    total_tokens:Number.isFinite(Number(x?.total_tokens))?Math.max(0,Math.round(Number(x.total_tokens))):null,
-    metadata:{note:x?.note||null,source:"hunt-boom-chat",...extraMetadata}
-  }));
+  const rows=attempts.map((x:any)=>{
+    const replyAccepted=x?.reply_accepted===true;
+    return {
+      route_key:ai?.route_key||modelRoute?.route_key||null,
+      task_class:taskClass,
+      provider:String(x?.provider||"unknown"),
+      model:x?.model?String(x.model):null,
+      success:Boolean(x?.ok),
+      status_code:Number.isFinite(Number(x?.status))?Number(x.status):null,
+      latency_ms:Number.isFinite(Number(x?.latency_ms))?Math.max(0,Math.round(Number(x.latency_ms))):null,
+      quality_score:replyAccepted&&qualityScore!==null&&qualityScore!==undefined&&String(qualityScore).trim()!==""&&Number.isFinite(Number(qualityScore))?Math.max(0,Math.min(1,Number(qualityScore))):null,
+      estimated_cost_usd:null,
+      input_tokens:Number.isFinite(Number(x?.input_tokens))?Math.max(0,Math.round(Number(x.input_tokens))):null,
+      output_tokens:Number.isFinite(Number(x?.output_tokens))?Math.max(0,Math.round(Number(x.output_tokens))):null,
+      total_tokens:Number.isFinite(Number(x?.total_tokens))?Math.max(0,Math.round(Number(x.total_tokens))):null,
+      metadata:{note:x?.note||null,source:"hunt-boom-chat",reply_accepted:replyAccepted,...extraMetadata}
+    };
+  });
   await rest("hunt_boom_model_observations",{
     method:"POST",
     headers:{Prefer:"return=minimal"},
@@ -953,14 +929,18 @@ Deno.serve(async(req:Request)=>{
       aiReply(message,history,ctx).catch(()=>({reply:null,provider:"none",attempts:[{provider:"boom-ai",ok:false,note:"exception"}]})),
       learnOwnerMemory(message,user.id,ownerRows?.[0]?.id||null).catch(()=>0)
     ]);
-    let reply=enforceEvidenceLanguage(redactSecrets(ai?.reply||fallback(message,reports||[],managers||[],mode,commandRow)));
+    const rawModelReply=String(ai?.reply||"").trim();
+    const contractEval=rawModelReply
+      ?scoreOwnerChatContract(message,rawModelReply,commandRow,needsOwnerGate(message))
+      :{score:null,checks:[]};
+    let reply=enforceEvidenceLanguage(redactSecrets(rawModelReply||fallback(message,reports||[],managers||[],mode,commandRow)));
     const copyReport=buildCopyReport(ctx,topicState,commandRow);
     if(wantsCopyReport(message))reply=copyReport;
-    const contractEval=scoreOwnerChatContract(message,reply,commandRow);
     await persistModelObservations(ai,modelRoute,requestedTaskClass,contractEval.score,{
-      online_eval:true,
-      quality_metric:"owner_chat_contract_v1",
-      quality_checks:contractEval.checks
+      online_eval:Boolean(rawModelReply),
+      quality_metric:rawModelReply?"owner_chat_contract_v1":null,
+      quality_checks:contractEval.checks,
+      raw_reply_scored:Boolean(rawModelReply)
     }).catch(()=>{});
     const spokenText=toSpokenText(reply);
     topicState.next_expected_step=commandRow
