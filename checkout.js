@@ -32,6 +32,34 @@
   let quoteVerified = false;
   const destinationKey = "hunt_destination_market_v1";
 
+  function readShipping(country) {
+    const value = id => String($(id)?.value || "").trim();
+    const shipping = {
+      shippingCustomerName:value("#hd-ship-name"),
+      shippingAddress:value("#hd-ship-address"),
+      shippingAddress2:value("#hd-ship-address2"),
+      shippingCity:value("#hd-ship-city"),
+      shippingProvince:value("#hd-ship-province"),
+      shippingZip:value("#hd-ship-zip"),
+      shippingPhone:value("#hd-ship-phone"),
+      shippingCountryCode:String(country || "").toUpperCase()
+    };
+    const customerEmail=value("#hd-ship-email").toLowerCase();
+    const required=[
+      ["Full name",shipping.shippingCustomerName],
+      ["Address",shipping.shippingAddress],
+      ["City",shipping.shippingCity],
+      ["Province / region",shipping.shippingProvince],
+      ["Postal code",shipping.shippingZip],
+      ["Phone",shipping.shippingPhone],
+      ["Email",customerEmail]
+    ];
+    const missing=required.filter(([,v])=>!v).map(([label])=>label);
+    if (missing.length) throw new Error("SHIPPING_ADDRESS_INCOMPLETE");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) throw new Error("CUSTOMER_EMAIL_INVALID");
+    return {shipping,customer_email:customerEmail};
+  }
+
   function rememberDestination(country) {
     try { localStorage.setItem(destinationKey, String(country || "").toUpperCase()); } catch {}
   }
@@ -81,8 +109,54 @@
     }
   }
 
+  async function checkShippingChess(cart,country) {
+    const box=$("#hd-shipping-chess");
+    const list=$("#hd-shipping-chess-list");
+    if(!box||!list){return;}
+    box.hidden=true;
+    list.innerHTML="";
+    if(!Array.isArray(cart)||!cart.length||!country)return;
+    const rows=[];
+    for(const item of cart.slice(0,3)){
+      if(!item?.provider||!item?.item_id)continue;
+      try{
+        const res=await fetch(functionsBase+"/hunt-shipping-chess-preview",{
+          method:"POST",
+          headers:{apikey:publishableKey,"content-type":"application/json"},
+          body:JSON.stringify({
+            provider:item.provider,
+            item_id:item.item_id,
+            variant_id:item.variant_id,
+            country_code:String(country).toUpperCase()
+          }),
+          cache:"no-store"
+        });
+        const data=await res.json().catch(()=>({}));
+        if(!res.ok||data?.ok!==true)continue;
+        for(const candidate of Array.isArray(data?.candidates)?data.candidates:[]){
+          const key=String(candidate?.provider||"")+":"+String(candidate?.item_id||"");
+          if(rows.some(x=>x.key===key)||cart.some(x=>String(x.provider)===String(candidate.provider)&&String(x.item_id)===String(candidate.item_id)))continue;
+          rows.push({key,candidate});
+        }
+      }catch{}
+    }
+    if(!rows.length)return;
+    list.innerHTML=rows.slice(0,3).map(({candidate})=>{
+      const saving=Number(candidate.delivered_saving||0);
+      const shippingSaving=Number(candidate.shipping_saving||0);
+      const href="product.html?provider="+encodeURIComponent(candidate.provider||"CJdropshipping")+"&id="+encodeURIComponent(candidate.item_id||"")+"&variant_id="+encodeURIComponent(candidate.variant_id||"");
+      const benefit=saving>0
+        ? "Potential delivered-cost saving "+money(saving,candidate.currency||"USD")
+        : "Potential shipping saving "+money(shippingSaving,candidate.currency||"USD");
+      return `<article class="hd-shipping-chess-card">${candidate.image_url?`<img src="${esc(candidate.image_url)}" alt="${esc(candidate.title||"Alternative")}">`:""}<div><small>VERIFIED FOR ${esc(String(country).toUpperCase())}</small><strong>${esc(candidate.title||"Alternative")}</strong><span>${esc(benefit)}</span><em>Shipping ${money(candidate.shipping_amount,candidate.currency||"USD")} · Product ${money(candidate.sale_price_per_unit,candidate.currency||"USD")}</em></div><a href="${href}">View alternative →</a></article>`;
+    }).join("");
+    box.hidden=false;
+  }
+
   function resetQuote(message="Verify price and shipping before payment.") {
     quoteVerified = false;
+    const chess=$("#hd-shipping-chess");
+    if(chess)chess.hidden=true;
     if ($("#hd-checkout-shipping")) $("#hd-checkout-shipping").textContent = "PENDING";
     if ($("#hd-checkout-discount")) $("#hd-checkout-discount").textContent = "—";
     if ($("#hd-checkout-total")) $("#hd-checkout-total").textContent = "PRE-LAUNCH";
@@ -101,7 +175,11 @@
       CURRENCY_REVIEW_REQUIRED:"This item needs a currency review before checkout.",
       SHIPPING_RECHECK_FAILED:"Shipping could not be rechecked right now.",
       OUT_OF_STOCK:"One or more selected items are currently out of stock.",
-      SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination."
+      SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination.",
+      SHIPPING_ADDRESS_INCOMPLETE:"Complete the shipping details before HUNT creates a checkout session.",
+      CUSTOMER_EMAIL_REQUIRED:"Enter an email for order updates.",
+      CUSTOMER_EMAIL_INVALID:"Enter a valid email for order updates.",
+      LIVE_PAYMENT_DISABLED:"Live payment is intentionally disabled before launch."
     };
     return messages[code] || "We could not verify this cart right now. No payment was attempted.";
   }
@@ -135,9 +213,12 @@
     if (status) status.textContent = "Rechecking HUNT retail price, supplier stock and shipping…";
 
     try {
+      const shippingInput = readShipping(country);
       const bundlePreview = await checkBundlePreview(cart, country);
       const payload = {
         country_code: country,
+        customer_email: shippingInput.customer_email,
+        shipping: shippingInput.shipping,
         idempotency_key: `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
         checkout_offer_id: bundlePreview?.offer_id || null,
         items: cart.map(item => ({
@@ -147,12 +228,18 @@
           qty:Math.max(1,Math.min(5,Number(item.qty)||1))
         }))
       };
+      const authHeaders = {
+        apikey:publishableKey,
+        "content-type":"application/json"
+      };
+      try {
+        const client = window.HuntSupabaseClient || window.HuntAccountClient;
+        const {data:{session}} = client ? await client.auth.getSession() : {data:{session:null}};
+        if (session?.access_token) authHeaders.Authorization = "Bearer " + session.access_token;
+      } catch {}
       const res = await fetch(functionsBase + "/hunt-payment-session", {
         method:"POST",
-        headers:{
-          apikey:publishableKey,
-          "content-type":"application/json"
-        },
+        headers:authHeaders,
         body:JSON.stringify(payload),
         cache:"no-store"
       });
@@ -183,6 +270,7 @@
         shippingAmount:Number(session.shipping_amount||0),
         totalAmount:Number(session.total_amount||0)
       });
+      await checkShippingChess(cart,country);
     } catch (err) {
       resetQuote(friendlyQuoteError(String(err?.message || "QUOTE_FAILED")));
     } finally {

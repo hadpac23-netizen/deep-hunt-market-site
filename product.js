@@ -5,6 +5,7 @@
   const params = new URLSearchParams(location.search);
   const provider = params.get("provider") || "CJdropshipping";
   const id = params.get("id") || "";
+  const requestedVariantId = params.get("variant_id") || "";
   let product = null;
   let variants = [];
   let selectedColor = null;
@@ -246,7 +247,7 @@
       const data = await H.storefront({provider,product_id:id});
       product={...(cached || {}),...(data.product || {})};
       variants=Array.isArray(product?.variants)?product.variants:[];
-      selectedVariant=variants[0]||null;
+      selectedVariant=(requestedVariantId?variants.find(v=>String(v?.variant_id||"")===requestedVariantId):null)||variants[0]||null;
       selectedColor=selectedVariant?.color||null;
       selectedSize=selectedVariant?.size||null;
       H.recordSignal(product,"view");

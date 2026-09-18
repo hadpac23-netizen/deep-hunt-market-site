@@ -19,6 +19,18 @@
     return Number.isFinite(n)&&n>0?`From ${H.money(n,currency)}`:"View product";
   }
   function categoryTitle(slug){return H.categoryDefs?.[slug]?.title||slug||"More"}
+  function discoverySlug(item){
+    const title=String(item?.title||"").toLowerCase();
+    if(/\b(power bank|portable charger)\b/.test(title))return "power-banks";
+    if(/\b(phone|mobile|tablet)\b.*\b(stand|holder)\b|\b(stand|holder)\b.*\b(phone|mobile|tablet)\b/.test(title))return "stands-holders";
+    if(/\b(charger|charging cable|usb-c cable|type-c cable|lightning cable)\b/.test(title))return "chargers-cables";
+    if(/\b(phone case|mobile case|case for (?:iphone|samsung)|screen protector)\b/.test(title))return "phone-cases";
+    if(/\b(earbuds?|earphones?|bluetooth headset)\b/.test(title))return "audio";
+    const stored=String(item?.category||"").trim();
+    const inferred=String(H.inferCategory(item)||"").trim();
+    const aliases={phoneaccessories:"phone-cases",phonestands:"stands-holders",powerbanks:"power-banks",chargers:"chargers-cables",earbuds:"audio",usefultech:"electronics"};
+    return aliases[stored]||stored||aliases[inferred]||inferred;
+  }
   function isWomen(item){
     const title=String(item?.title||"").toLowerCase();
     const gender=String(item?.gender||"").toLowerCase();
@@ -46,7 +58,7 @@
   }
 
   function relationScore(item,currentCategory,currentPrice,currentGender){
-    const slug=String(item?.category||H.inferCategory(item)||"");
+    const slug=discoverySlug(item);
     let score=0;
     if(slug===currentCategory)score+=100;
     if(siblingSlugs(currentCategory).includes(slug))score+=55;
@@ -73,7 +85,7 @@
   }
 
   async function buildPool(product){
-    const currentCategory=String(product?.category||H.inferCategory(product)||"");
+    const currentCategory=discoverySlug(product);
     const prefs=H.shoppingPreferences?.()||{};
     const requested=[currentCategory,...siblingSlugs(currentCategory),...(prefs.categories||[]).slice(0,3)]
       .filter(Boolean)
@@ -135,7 +147,7 @@
     const img=safeHttps(item.image_url)
       ? '<img src="'+H.esc(item.image_url)+'" alt="'+H.esc(item.title||"Product")+'" loading="lazy">'
       : '<div class="hd-profile-product-placeholder">H</div>';
-    const slug=String(item.category||H.inferCategory(item)||"");
+    const slug=discoverySlug(item);
     return '<article class="hd-shelf-card" role="listitem" data-category="'+H.esc(slug)+'" data-endless-key="'+H.esc(key(item))+'">'+
       '<a class="hd-shelf-media" href="'+H.esc(href)+'">'+img+'</a>'+
       '<div class="hd-shelf-body">'+

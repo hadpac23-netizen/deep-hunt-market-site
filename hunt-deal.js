@@ -330,8 +330,9 @@
     const retailReady = item?.retail_price_verified === true && String(item?.profit_gate_status || "").toUpperCase() === "PASS" && Number.isFinite(retailAmount) && retailAmount > 0;
     const retailEstimated = !retailReady && Number.isFinite(retailAmount) && retailAmount > 0;
     const retailText = retailReady ? money(retailAmount, item?.retail_currency || "USD") : (retailEstimated ? `From ${money(retailAmount, item?.retail_currency || "USD")}` : "Price on product");
+    const newBadge = window.HuntCore?.isNewArrival?.(item) ? `<b class="hd-new-pulse">NEW</b>` : "";
     return `<article class="hd-shelf-card" role="listitem" data-category="${esc(item.category || "")}">
-      <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(truthBadge)}</span></a>
+      <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(truthBadge)}</span>${newBadge}</a>
       <div class="hd-shelf-card-body">
         <small>${esc(item.provider || "Provider")}</small>
         <a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a>
@@ -653,7 +654,7 @@
         const categoryHref = parent
           ? `category.html?c=${encodeURIComponent(parent)}&sub=${encodeURIComponent(slug)}`
           : (window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`);
-        return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
+        return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>Real catalog picks with live product recheck before checkout.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
       }).filter(Boolean).join("");
       if (!sections) return "";
       return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
@@ -698,11 +699,10 @@
     Object.values(shelves).forEach(rows => (Array.isArray(rows) ? rows : []).forEach(item => {
       if (String(item?.provider || "").toLowerCase() === "cjdropshipping" && item?.item_id) cjKeys.add(String(item.item_id));
     }));
-    const count = Number(data?.visible_product_count || 0) || cjKeys.size;
-    const label = mode === "live" ? "CJ LIVE" : "CJ READY";
+    const label = mode === "live" ? "LIVE CATALOG" : "CATALOG READY";
     if (counter) {
-      counter.textContent = `${count.toLocaleString()} ${label}`;
-      counter.title = "Current HUNT launch phase: CJdropshipping products only.";
+      counter.textContent = label;
+      counter.title = "HUNT curates the active catalog dynamically by relevance, freshness and country readiness.";
     }
     return true;
   }
@@ -717,6 +717,32 @@
     }
   }
 
+  const SHELF_LKG_KEY = "hunt_cj_shelves_lkg_v1";
+  const SHELF_LKG_TTL_MS = 6 * 60 * 60 * 1000;
+
+  function readShelfLkg() {
+    try {
+      const row = JSON.parse(localStorage.getItem(SHELF_LKG_KEY) || "null");
+      if (!row?.saved_at || !row?.data?.shelves) return null;
+      if (Date.now() - Number(row.saved_at) > SHELF_LKG_TTL_MS) return null;
+      return row.data;
+    } catch { return null; }
+  }
+
+  function writeShelfLkg(data) {
+    try {
+      if (!data?.shelves || Number(data?.visible_product_count || 0) <= 0) return;
+      const shelves = {};
+      for (const [slug, rows] of Object.entries(data.shelves)) {
+        shelves[slug] = (Array.isArray(rows) ? rows : []).slice(0, 18);
+      }
+      localStorage.setItem(SHELF_LKG_KEY, JSON.stringify({
+        saved_at: Date.now(),
+        data: {...data, shelves, _hunt_lkg:true}
+      }));
+    } catch {}
+  }
+
   async function loadMarketShelves() {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
@@ -725,16 +751,25 @@
 
     let renderedFallback = false;
     let snapshotData = null;
+    let baseData = null;
 
     try {
       const snapshotRes = await fetch("cj-launch-home.json?v=30k1", {cache:"force-cache"});
       if (snapshotRes.ok) {
         snapshotData = await snapshotRes.json();
+        baseData = snapshotData;
         renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");
       }
     } catch {}
 
     if (snapshotData?.launch_authoritative === true && renderedFallback) return;
+
+    const lkg = readShelfLkg();
+    if (lkg?.shelves) {
+      baseData = baseData ? mergeShelfData(baseData, lkg) : lkg;
+      renderedFallback = renderMarketShelvesData(baseData, "cached") || renderedFallback;
+      if (counter) counter.title = "Live refresh pending; showing the last known good catalog snapshot.";
+    }
 
     try {
       const res = await fetchWithTimeout(publicApiUrl("hunt-storefront") + "?shelves=1", {
@@ -743,7 +778,8 @@
       }, 15000);
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Market shelves unavailable");
-      const merged = snapshotData ? mergeShelfData(snapshotData, data) : data;
+      const merged = baseData ? mergeShelfData(baseData, data) : data;
+      writeShelfLkg(merged);
       if (snapshotData && renderedFallback) {
         // Fast snapshot first, then one quality-ranked hybrid refresh when live suppliers return.
         // This keeps first paint fast without permanently hiding better live inventory.
@@ -808,13 +844,10 @@
     if (!section || !grid || !status) return;
     const results = (data.results || []).filter(item => String(item?.provider || "").toLowerCase() === "cjdropshipping");
     searchItems = results;
-    const states = (data.providers || []).map(p => {
-      const count = p.result_count ? " (" + p.result_count + ")" : "";
-      return p.provider + ": " + p.state + count;
-    }).join(" · ");
+    const states = (data.providers || []).map(p => p.provider + ": " + p.state).join(" · ");
     section.hidden = false;
     status.textContent = results.length
-      ? results.length + " discovery results · " + states
+      ? "Curated discovery results · " + states
       : (states || (dict.searchNoResults || "No live results yet."));
     grid.innerHTML = results.map(renderCard).join("");
     if (results.length) renderAdvisor({deals: results});
