@@ -24,6 +24,12 @@ const input={
   ],
   promptVersions:[{id:3,name:"decision-brain",version:3,label:"candidate"}],
   evalCases:[{id:1,suite_id:1,case_key:"truth-1",grader_type:"deterministic",weight:1}],
+  evalSuites:[{id:1,suite_key:"truth-suite",title:"Truth Suite"}],
+  evalRuns:[{id:21,suite_id:1,run_key:"run-21",target_version:"candidate-v1",score:0.95,status:"completed",completed_at:"2026-09-18T09:15:00Z"}],
+  evalDatasetVersionStoreConnected:true,
+  evalDatasetVersions:[{id:11,dataset_key:"truth-dataset",version:1,suite_id:1,case_count:1,case_manifest_hash:"sha256:abc",source_commit:"commit-1",status:"frozen",frozen_at:"2026-09-18T08:30:00Z"}],
+  evalLineageStoreConnected:true,
+  evalLineage:[{id:31,eval_run_id:21,suite_id:1,dataset_version_id:11,prompt_version_id:3,candidate_ref:"candidate-v1",source_commit:"commit-1",created_at:"2026-09-18T09:16:00Z"}],
   modelObservations:[{id:90,provider:"openai",model:"gpt",success:true,latency_ms:420,estimated_cost_usd:0.01,quality_score:0.95,created_at:"2026-09-18T09:06:00Z",route_key:"owner-chat"}],
   modelRoutes:[{route_key:"owner-chat",max_latency_ms:1000,max_cost_usd:0.02,min_quality_score:0.8}],
   shadowRuns:[{experiment_key:"routing",status:"passed",baseline_metrics:{quality:0.8},candidate_metrics:{quality:0.9},comparison:{quality_gain:0.1}}],
@@ -104,6 +110,13 @@ assert.equal(result.observability.ready,true);
 assert.equal(result.observability.clear,4);
 assert.equal(result.observability.stale,0);
 assert.equal(result.capabilities.find(x=>x.id==="observability").state,"ready");
+assert.equal(result.evalLineage.connected,true);
+assert.equal(result.evalLineage.ready,true);
+assert.equal(result.evalLineage.frozen_dataset_versions,1);
+assert.equal(result.evalLineage.linked_measured_runs,1);
+assert.equal(result.evalLineage.unlinked_measured_runs,0);
+assert.equal(result.evalLineage.orphaned_links,0);
+assert.equal(result.capabilities.find(x=>x.id==="eval-lineage").state,"ready");
 assert.equal(result.safety.redteam.ready,true);
 assert.equal(result.safety.calibration.ready,true);
 assert.equal(result.safety.team_judge.ready,true);
@@ -203,6 +216,29 @@ const disagreementGroundTruth=W.buildAnnotationGroundTruth({
 assert.equal(disagreementGroundTruth.valid_labels,1);
 assert.equal(disagreementGroundTruth.disagreements,1);
 assert.equal(disagreementGroundTruth.corrections,1);
+
+const missingEvalLineage=W.buildEvalLineageOps({
+  evalDatasetVersionStoreConnected:false,
+  evalLineageStoreConnected:false,
+  evalRuns:[],
+  evalSuites:[],
+  promptVersions:[]
+});
+assert.equal(missingEvalLineage.connected,false);
+assert.equal(missingEvalLineage.ready,false);
+
+const orphanedEvalLineage=W.buildEvalLineageOps({
+  evalDatasetVersionStoreConnected:true,
+  evalLineageStoreConnected:true,
+  evalSuites:[{id:1}],
+  evalRuns:[{id:21,suite_id:1,status:"completed",score:0.9,completed_at:"2026-09-18T09:00:00Z"}],
+  promptVersions:[{id:3}],
+  evalDatasetVersions:[{id:11,dataset_key:"d",version:1,suite_id:1,case_count:1,case_manifest_hash:"h",source_commit:"c",status:"frozen",frozen_at:"2026-09-18T08:00:00Z"}],
+  evalLineage:[{id:1,eval_run_id:999,suite_id:1,dataset_version_id:11,prompt_version_id:3,candidate_ref:"candidate",source_commit:"c"}]
+});
+assert.equal(orphanedEvalLineage.ready,false);
+assert.equal(orphanedEvalLineage.orphaned_links,1);
+assert.equal(orphanedEvalLineage.unlinked_measured_runs,1);
 
 const staleObservability=W.buildObservabilityOps({
   observabilityStoreConnected:true,
@@ -321,6 +357,7 @@ assert(gaps.gaps.includes("team-judge"));
 assert(gaps.gaps.includes("lineage"));
 assert(gaps.gaps.includes("f35-radar"));
 assert(gaps.gaps.includes("observability"));
+assert(gaps.gaps.includes("eval-lineage"));
 assert.equal(gaps.prompts.status,"REGISTRY_REQUIRED");
 assert.equal(gaps.traceHierarchy.store_connected,false);
 assert.equal(gaps.invariants.mutation,false);
