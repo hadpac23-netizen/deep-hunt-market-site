@@ -630,7 +630,13 @@
     }
     if(state.localPreview){
       if(status)status.textContent="LOCAL_PREVIEW · LIVE TRACE DISABLED";
-      if(report)report.textContent="The Product Trace UI is visible in local preview, but live database reads are disabled. Open authenticated BOOM Studio to run the read-only trace.";
+      if(report)report.textContent=[
+        "MODE: LOCAL_PREVIEW_PRODUCT_TRACE",
+        "LIVE QUERY: false",
+        "READ ONLY: true",
+        "INTEGRITY RULE: Product identity must come from hunt_fulfillment_orders.line_items before any source/shelf claim.",
+        "Open authenticated BOOM Studio to run the live trace."
+      ].join("\n");
       return null;
     }
     if(!state.session){
@@ -645,13 +651,21 @@
       let seededPaymentSessionId=null;
 
       if(!order&&traceUuidPattern.test(key)){
-        const {data:seedRows,error:seedError}=await client.from("hunt_order_pipeline_runs")
-          .select("payment_session_id,order_id,created_at")
-          .eq("payment_session_id",key)
-          .order("created_at",{ascending:false})
-          .limit(1);
-        if(seedError)throw seedError;
-        const seed=Array.isArray(seedRows)?seedRows[0]||null:null;
+        const [pipelineSeed,fulfillmentSeed]=await Promise.all([
+          client.from("hunt_order_pipeline_runs")
+            .select("payment_session_id,order_id,created_at")
+            .eq("payment_session_id",key)
+            .order("created_at",{ascending:false})
+            .limit(1),
+          client.from("hunt_fulfillment_orders")
+            .select("payment_session_id,order_id,created_at")
+            .eq("payment_session_id",key)
+            .order("created_at",{ascending:false})
+            .limit(1)
+        ]);
+        if(pipelineSeed.error)throw pipelineSeed.error;
+        if(fulfillmentSeed.error)throw fulfillmentSeed.error;
+        const seed=(Array.isArray(pipelineSeed.data)?pipelineSeed.data[0]:null)||(Array.isArray(fulfillmentSeed.data)?fulfillmentSeed.data[0]:null)||null;
         seededPaymentSessionId=seed?.payment_session_id||key;
         if(seed?.order_id)order=await traceOrderByKey(seed.order_id);
       }
@@ -663,7 +677,7 @@
         return null;
       }
 
-      const [pipelineResult,financeResult]=await Promise.all([
+      const [pipelineResult,financeResult,fulfillmentResult]=await Promise.all([
         client.from("hunt_order_pipeline_runs")
           .select("id,payment_session_id,run_mode,stage,status,provider,supplier_order_id,supplier_order_code,tracking_number,last_error,created_at,updated_at")
           .eq("order_id",order.id)
@@ -672,68 +686,115 @@
           .select("payment_session_id,currency,customer_gross,contribution_locked,available_profit,settlement_status,supplier_payment_status,owner_payout_status,is_test,calculated_at,settled_at,updated_at")
           .eq("order_id",order.id)
           .order("updated_at",{ascending:false})
-          .limit(1)
+          .limit(1),
+        client.from("hunt_fulfillment_orders")
+          .select("id,payment_session_id,order_id,provider,status,line_items,supplier_order_id,supplier_order_code,supplier_status,tracking_number,last_error,created_at,updated_at")
+          .eq("order_id",order.id)
+          .order("created_at",{ascending:true})
       ]);
       if(pipelineResult.error)throw pipelineResult.error;
       if(financeResult.error)throw financeResult.error;
+      if(fulfillmentResult.error)throw fulfillmentResult.error;
 
       const pipeline=Array.isArray(pipelineResult.data)?pipelineResult.data:[];
       const ledger=Array.isArray(financeResult.data)?financeResult.data[0]||null:null;
-      const paymentSessionId=seededPaymentSessionId||pipeline.find(row=>row.payment_session_id)?.payment_session_id||ledger?.payment_session_id||null;
+      const fulfillment=Array.isArray(fulfillmentResult.data)?fulfillmentResult.data:[];
+      const paymentSessionId=seededPaymentSessionId||
+        fulfillment.find(row=>row.payment_session_id)?.payment_session_id||
+        pipeline.find(row=>row.payment_session_id)?.payment_session_id||
+        ledger?.payment_session_id||
+        null;
 
-      let payment=null;
-      let paymentAccess=paymentSessionId?"RLS_GATED_OR_NOT_FOUND":"NO_SESSION_REFERENCE";
-      if(paymentSessionId){
-        const {data,error}=await client.from("hunt_payment_sessions")
-          .select("id,mode,status,country_code,currency,total_amount,fulfillment_status,payment_method,created_at,paid_at,updated_at")
-          .eq("id",paymentSessionId)
-          .limit(1);
-        if(!error&&Array.isArray(data)&&data[0]){
-          payment=data[0];
-          paymentAccess="VISIBLE";
-        }else if(error){
-          paymentAccess="RLS_GATED";
+      const lineRefs=[];
+      const seenRefs=new Set();
+      for(const row of fulfillment){
+        const rowProvider=String(row.provider||order.provider||"").trim();
+        const items=Array.isArray(row.line_items)?row.line_items:[];
+        for(const item of items){
+          const itemId=String(item?.item_id||"").trim();
+          if(!itemId)continue;
+          const provider=rowProvider||String(order.provider||"").trim();
+          const refKey=provider.toLowerCase()+":"+itemId;
+          if(seenRefs.has(refKey))continue;
+          seenRefs.add(refKey);
+          lineRefs.push({
+            provider,
+            item_id:itemId,
+            variant_id:String(item?.variant_id||""),
+            title:String(item?.title||""),
+            qty:Number(item?.qty||1)
+          });
         }
       }
 
+      const catalogChecks=await Promise.all(lineRefs.map(async ref=>{
+        const {data,error}=await client.from("hunt_catalog_products")
+          .select("provider,item_id,category,title,availability_verified,source_fresh_at,updated_at,stock_quantity,authenticity_status,market_eligibility_status")
+          .eq("provider",ref.provider)
+          .eq("item_id",ref.item_id)
+          .limit(1);
+        return {ref,row:!error&&Array.isArray(data)?data[0]||null:null,error:error||null};
+      }));
+      const catalogMatches=catalogChecks.filter(x=>x.row);
+      const catalogErrors=catalogChecks.filter(x=>x.error);
+      const exactProductEvidence=lineRefs.length>0;
+      const allCatalogMatched=exactProductEvidence&&catalogMatches.length===lineRefs.length;
+      const allAvailabilityVerified=allCatalogMatched&&catalogMatches.every(x=>x.row?.availability_verified===true);
+
       const latestPipeline=pipeline[pipeline.length-1]||null;
       const money=(value,currency)=>value===null||value===undefined?"—":Number(value).toFixed(2)+" "+String(currency||"USD");
+      const categories=[...new Set(catalogMatches.map(x=>x.row?.category).filter(Boolean))];
+      const providers=[...new Set(lineRefs.map(x=>x.provider).filter(Boolean))];
+
       const stages=[
         {
-          id:"SOURCE",state:order.provider?"pass":"watch",
-          title:"Internal source",
-          detail:order.provider?"Provider identity verified internally":"Provider unavailable"
+          id:"SOURCE",
+          state:exactProductEvidence?"pass":"blocked",
+          title:"Internal source + exact line items",
+          detail:exactProductEvidence
+            ? lineRefs.length+" product ref(s) from fulfillment · "+(providers.join(", ")||"provider unknown")
+            : "No exact product item_id found in fulfillment line_items"
         },
         {
-          id:"SHELF",state:order.order_source?"pass":"watch",
-          title:"HUNT shelf / order source",
-          detail:String(order.order_source||"unknown")
+          id:"SHELF",
+          state:allAvailabilityVerified?"pass":(allCatalogMatched?"watch":exactProductEvidence?"watch":"blocked"),
+          title:"HUNT catalog / shelf truth",
+          detail:exactProductEvidence
+            ? catalogMatches.length+"/"+lineRefs.length+" catalog match(es) · "+(categories.join(", ")||"category unknown")+
+              (allAvailabilityVerified?" · availability verified":" · live availability not fully verified")
+            : "Cannot claim shelf truth without exact product identity"
         },
         {
-          id:"CHECKOUT",state:payment?"pass":(paymentSessionId?"watch":"blocked"),
-          title:"Checkout session",
-          detail:payment
-            ? String(payment.mode||"unknown")+" · "+String(payment.status||"unknown")+" · "+money(payment.total_amount,payment.currency)
-            : (paymentSessionId?"Session "+paymentSessionId.slice(0,8)+"… · "+paymentAccess:"No payment-session reference")
+          id:"CHECKOUT",
+          state:paymentSessionId&&exactProductEvidence?"pass":(paymentSessionId?"watch":"blocked"),
+          title:"Checkout session link",
+          detail:paymentSessionId
+            ? "Session "+paymentSessionId.slice(0,8)+"… linked through fulfillment/pipeline evidence · session payload remains RLS-gated"
+            : "No payment-session reference"
         },
         {
-          id:"ORDER",state:"pass",
+          id:"ORDER",
+          state:exactProductEvidence?"pass":"watch",
           title:"HUNT order",
           detail:String(order.status||"unknown")+" · "+(order.is_test?"TEST":"LIVE/UNMARKED")+" · "+String(order.external_order_id||order.id)
         },
         {
-          id:"PIPELINE",state:latestPipeline?(latestPipeline.status==="pass"?"pass":latestPipeline.status==="fail"?"blocked":"watch"):"watch",
+          id:"PIPELINE",
+          state:latestPipeline?(latestPipeline.status==="pass"?"pass":latestPipeline.status==="fail"?"blocked":"watch"):"watch",
           title:"Fulfillment pipeline",
           detail:latestPipeline
             ? pipeline.length+" run(s) · "+String(latestPipeline.run_mode)+" · "+String(latestPipeline.stage)+" · "+String(latestPipeline.status)
-            : "No pipeline run recorded"
+            : fulfillment.length
+              ? fulfillment.length+" fulfillment record(s) · no pipeline run recorded"
+              : "No fulfillment/pipeline evidence recorded"
         },
         {
-          id:"FINANCE",state:ledger?(ledger.settlement_status==="settled"?"pass":"watch"):"watch",
+          id:"FINANCE",
+          state:ledger?(ledger.settlement_status==="settled"?"pass":"watch"):"watch",
           title:"Finance / sale",
           detail:ledger
             ? String(ledger.settlement_status)+" · profit "+money(ledger.available_profit,ledger.currency)+" · payout "+String(ledger.owner_payout_status)
-            : "No finance ledger row recorded"
+            : "No finance ledger row recorded — sale/profit remains UNVERIFIED"
         }
       ];
 
@@ -749,20 +810,26 @@
         "ORDER ID: "+order.id,
         "EXTERNAL ORDER: "+String(order.external_order_id||"—"),
         "ORDER STATUS: "+String(order.status||"unknown"),
-        "INTERNAL PROVIDER: "+String(order.provider||"unknown"),
+        "PRODUCT REFS FROM FULFILLMENT: "+lineRefs.length,
+        "CATALOG MATCHES: "+catalogMatches.length+"/"+lineRefs.length,
+        "CATALOG QUERY ERRORS: "+catalogErrors.length,
+        "EXACT ITEM IDS: "+(lineRefs.map(x=>x.item_id).join(", ")||"none"),
+        "INTERNAL PROVIDERS: "+(providers.join(", ")||"none"),
         "SHOPPER SUPPLIER LABEL: HIDDEN",
         "PAYMENT SESSION: "+String(paymentSessionId||"none"),
-        "PAYMENT SESSION ACCESS: "+paymentAccess,
         "PIPELINE RUNS: "+pipeline.length,
+        "FULFILLMENT RECORDS: "+fulfillment.length,
         "LATEST PIPELINE: "+(latestPipeline?String(latestPipeline.run_mode)+" / "+String(latestPipeline.stage)+" / "+String(latestPipeline.status):"none"),
         "FINANCE SETTLEMENT: "+String(ledger?.settlement_status||"none"),
         "AVAILABLE PROFIT: "+(ledger?money(ledger.available_profit,ledger.currency):"—"),
         "OWNER PAYOUT: "+String(ledger?.owner_payout_status||"none"),
         "CUSTOMER EMAIL DISPLAYED: false",
         "CUSTOMER ADDRESS DISPLAYED: false",
-        "DATA_CHANGED: false"
+        "DATA_CHANGED: false",
+        "",
+        "INTEGRITY RULE: Source/Shelf claims require exact item_id from fulfillment line_items; missing finance stays UNVERIFIED."
       ].join("\n");
-      return {order,pipeline,ledger,payment,paymentAccess,stages};
+      return {order,pipeline,ledger,fulfillment,lineRefs,catalogMatches,paymentSessionId,stages};
     }catch(err){
       if(status)status.textContent="TRACE_ERROR · READ_ONLY";
       if(report)report.textContent="Trace failed safely: "+String(err?.message||err)+"\nDATA_CHANGED: false";
