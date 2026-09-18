@@ -479,6 +479,7 @@ assert(js.includes("SUPPLIER ORDERS: false"),"Professional supplier-order guard 
 assert((js.match(/#professional-refresh"\)\?\.addEventListener/g)||[]).length===1,"Professional refresh listener must be unique");
 assert(css.includes(".professional-head"),"Professional Workbench styling missing");
 assert(css.includes(".professional-card[data-state=\"gap\"]"),"Professional gap styling missing");
+assert(css.includes(".professional-card[data-state=\"pending\"]"),"Professional pending styling missing");
 assert(fs.existsSync("boom-professional-workbench.js"),"Professional Workbench core file missing");
 assert(fs.existsSync("boom-professional-workbench.test.cjs"),"Professional Workbench unit test missing");
 
@@ -503,6 +504,8 @@ assert(js.includes("EVALUATOR GOVERNANCE: "), "Professional evaluator-governance
 assert(js.includes("ONLINE EVAL / CI GATE: "), "Professional online-eval/CI evidence missing");
 assert(js.includes("PROMPT/TRACE LINEAGE: "), "Professional lineage evidence missing");
 assert(js.includes("F35 RADAR: "), "Professional F35 freshness evidence missing");
+assert(js.includes("PENDING EVIDENCE"),"Professional pending summary missing");
+assert(js.includes('"PENDING: "+(snapshot.pending.join(", ")||"none")'),"Professional pending report missing");
 assert(js.includes('query("hunt_boom_evaluator_registry"'),"Evaluator registry evidence query missing");
 assert(js.includes('query("hunt_boom_human_alignment_runs"'),"Human alignment evidence query missing");
 assert(js.includes('query("hunt_boom_online_eval_windows"'),"Online eval evidence query missing");
