@@ -22,8 +22,8 @@ insert into public.hunt_boom_online_eval_windows
 values
 ('owner-chat-default-2026-09-17-18','owner-chat-default','owner-chat','studio','shadow',1,
  '2026-09-17T07:58:27.3923Z','2026-09-18T07:40:56.955203Z',
- 12,12,0,12,0,12015,0.081608,'completed',
- '{"source":"hunt_boom_model_observations","quality_threshold":0.8,"derived":true}'::jsonb,
+ 12,0,0,0,null,12015,0.081608,'completed',
+ '{"source":"hunt_boom_model_observations","quality_state":"UNMEASURED","derived":true,"reason":"historical quality_score=0 was instrumentation null-coercion"}'::jsonb,
  '2026-09-18T07:40:56.955203Z')
 on conflict (window_key) do update set
  sample_count=excluded.sample_count,scored_count=excluded.scored_count,
@@ -58,8 +58,8 @@ on conflict (run_key) do update set
 insert into public.hunt_boom_ci_quality_gate_runs
 (gate_id,run_key,candidate_ref,source_commit,sample_count,metric_value,passed,status,evidence,completed_at)
 select g.id,'owner-chat-default-2026-09-18-gate','owner-chat-default','observations:2026-09-17..18',
-12,0,false,'completed','{"source":"hunt_boom_online_eval_windows","window_key":"owner-chat-default-2026-09-17-18"}'::jsonb,
-'2026-09-18T07:40:56.955203Z'
+12,null,null,'pending','{"source":"hunt_boom_online_eval_windows","window_key":"owner-chat-default-2026-09-17-18","quality_state":"UNMEASURED"}'::jsonb,
+null
 from public.hunt_boom_ci_quality_gates g where g.gate_key='owner-chat-quality-min'
 on conflict (run_key) do update set
  gate_id=excluded.gate_id,candidate_ref=excluded.candidate_ref,source_commit=excluded.source_commit,
