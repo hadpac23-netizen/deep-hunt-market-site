@@ -450,3 +450,18 @@ assert(css.includes(".professional-head"),"Professional Workbench styling missin
 assert(css.includes(".professional-card[data-state=\"gap\"]"),"Professional gap styling missing");
 assert(fs.existsSync("boom-professional-workbench.js"),"Professional Workbench core file missing");
 assert(fs.existsSync("boom-professional-workbench.test.cjs"),"Professional Workbench unit test missing");
+
+assert(js.includes("async function loadProfessionalEvidence()"),"Professional evidence loader missing");
+assert(js.includes('query("hunt_boom_model_observations"'),"Model observations query missing");
+assert(js.includes('query("hunt_boom_model_cost_registry"'),"Model cost registry query missing");
+assert(js.includes('query("hunt_boom_model_routes"'),"Model routes query missing");
+assert(js.includes('query("hunt_boom_eval_cases_v2"'),"Persisted eval cases query missing");
+assert(js.includes('query("hunt_boom_eval_runs_v2"'),"Persisted eval runs query missing");
+assert(js.includes('query("hunt_boom_eval_suites"'),"Persisted eval suites query missing");
+assert(js.includes('query("hunt_boom_replay_runs"'),"Replay runs query missing");
+assert(js.includes('query("hunt_boom_shadow_runs"'),"Shadow runs query missing");
+assert(js.includes("PERSISTED EVAL CASES: "), "Professional persisted dataset evidence missing");
+assert(js.includes("SHADOW RUNS: "), "Professional shadow evidence missing");
+assert(js.includes("REPLAY RUNS: "), "Professional replay evidence missing");
+assert(js.includes("MODEL OBSERVATIONS: "), "Professional observation evidence missing");
+assert(js.includes("datasetStoreConnected:state.professionalEvidence.evalCases.length>0&&state.professionalEvidence.evalSuites.length>0"),"Professional dataset truth gate missing");
