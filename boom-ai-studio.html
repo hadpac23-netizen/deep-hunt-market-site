@@ -441,6 +441,21 @@
               <div class="harness-scenario-grid" id="alpha-harness-scenarios"><p>Run A8 to validate the positive path and three deliberate failure paths.</p></div>
               <pre id="alpha-harness-report">No A8 harness report yet.</pre>
             </section>
+            <section class="evidence-workspace">
+              <div class="truth-workspace-head"><div><small>A9 WORKSPACE</small><h3>Owner Alpha Evidence Pack & Release Gate</h3><p>Combines A1–A8 into one review snapshot with blockers, evidence fingerprint and permanent execution boundaries. This gate can authorize review only; it cannot activate Alpha, payments, order routing or Production.</p></div><span>REVIEW GATE ONLY</span></div>
+              <div class="evidence-actions">
+                <button class="top-btn" id="alpha-evidence-build" type="button">Build Owner Evidence Pack</button>
+                <div class="truth-result-status" id="alpha-evidence-status">NOT_BUILT · PRODUCTION_OFF</div>
+              </div>
+              <div class="evidence-summary" id="alpha-evidence-summary">
+                <article><b>0/8</b><span>STAGES PASSED</span></article>
+                <article><b>LOCKED</b><span>RELEASE GATE</span></article>
+                <article><b>OFF</b><span>ALPHA / PRODUCTION</span></article>
+              </div>
+              <div class="evidence-fingerprint" id="alpha-evidence-fingerprint">FINGERPRINT: —</div>
+              <div class="evidence-stage-grid" id="alpha-evidence-stages"><p>Build A9 after A7 and A8 evidence is available.</p></div>
+              <pre id="alpha-evidence-report">No Owner evidence pack yet.</pre>
+            </section>
             <section class="alpha-exit-gate">
               <strong>Alpha exit gate</strong>
               <p>Real eligible products · explainable recommendations · Like/Save/Share · History · Worlds · Stylist · safe Mirror entry · stable checkout fallback · mobile/desktop QA.</p>
@@ -515,6 +530,6 @@
   <script src="brand-video-router.js?v=1"></script>
   <script src="brand-creative-qa.js?v=1"></script>
   <script src="brand-video-dispatch.js?v=1"></script>
-  <script src="boom-alpha-test-harness.js?v=alpha1"></script>\n  <script src="boom-ai-studio.js?v=2"></script>
+  <script src="boom-alpha-test-harness.js?v=alpha1"></script>\n  <script src="boom-alpha-evidence-pack.js?v=alpha1"></script>\n  <script src="boom-ai-studio.js?v=2"></script>
 </body>
 </html>
