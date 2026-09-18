@@ -404,5 +404,5 @@ assert(js.includes('query("hunt_partner_matrix"'),"Connector partner matrix quer
 assert(js.includes('query("hunt_runtime_controls"'),"Connector runtime-control query missing");
 assert(js.includes("function buildEvidenceConnectorRows()"),"Connector evidence row builder missing");
 assert(js.includes("Verification gaps: "), "Connector verification gap reporting missing");
-assert(js.includes('label:"Connector-by-connector live evidence matrix",status:"PRESENT"'),"Connector prompt audit not closed");
+assert(js.includes('id:"connect-live",label:"Connector-by-connector truth matrix",status:"PRESENT"'),"Connector prompt audit not closed");
 assert(fs.existsSync("hunt-search-product-browser-e2e.html"),"Search→Product browser E2E harness missing");
