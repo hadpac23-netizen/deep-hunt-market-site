@@ -160,3 +160,88 @@
   .hd-home3 .hd-cart-link{padding:8px 10px!important}
   .hd-home3 .hd-brand{font-size:1.08rem!important}
 }
+
+/* HUNT HERO 4.1 · DYNAMIC WORLD */
+.hd-hero4-media{
+  background-image:var(--hero-poster);
+  background-size:cover;
+  background-position:center;
+}
+.hd-hero4-scene{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 42%;
+  filter:saturate(.82) contrast(1.02) brightness(.72);
+  opacity:0;transition:opacity 1s cubic-bezier(.2,.7,.2,1);
+  pointer-events:none;
+}
+.hd-hero4-scene.is-active{opacity:1}
+.hd-hero4-scene-chip{
+  border:1px solid rgba(255,255,255,.22);background:rgba(7,8,11,.28);color:#fff;
+  border-radius:999px;padding:7px 10px 7px 12px;display:grid;grid-template-columns:auto auto auto;align-items:center;gap:7px;
+  backdrop-filter:blur(12px);cursor:pointer;text-align:left;
+}
+.hd-hero4-scene-chip small{font-size:.39rem;letter-spacing:.13em;color:rgba(255,255,255,.58);font-weight:750}
+.hd-hero4-scene-chip strong{font-size:.52rem;letter-spacing:.12em;font-weight:850}
+.hd-hero4-scene-chip b{font-size:.66rem;font-weight:500;color:rgba(255,255,255,.72)}
+
+.hd-hero4-promo{
+  right:18px!important;top:auto!important;bottom:74px!important;
+  width:min(254px,calc(100% - 36px))!important;max-height:350px!important;
+  transform:translateX(115%)!important;border-radius:18px!important;
+}
+.hd-hero4[data-promo-state="open"] .hd-hero4-promo,
+.hd-hero4[data-promo-state="feature"] .hd-hero4-promo{
+  transform:translateX(0)!important;opacity:1;pointer-events:auto;
+}
+.hd-hero4[data-promo-state="feature"] .hd-hero4-promo{width:min(278px,calc(100% - 36px))!important}
+.hd-hero4-promo-rail{display:none!important}
+.hd-hero4-promo-media{height:104px!important}
+.hd-hero4-promo-copy{padding:12px 13px 6px!important}
+.hd-hero4-promo-copy h2{
+  font-size:1.02rem!important;line-height:1.08!important;margin:6px 0 5px!important;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.hd-hero4-promo-copy p{
+  font-size:.54rem!important;line-height:1.42!important;margin-bottom:8px!important;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.hd-hero4-promo-cta{padding:8px 11px!important;font-size:.52rem!important}
+.hd-hero4-promo-controls{padding:5px 10px 8px!important}
+.hd-hero4-promo-close{width:26px!important;height:26px!important;right:7px!important;top:7px!important}
+.hd-hero4-peek{
+  top:auto!important;bottom:105px!important;width:142px!important;
+  padding:10px 12px!important;border-radius:13px 0 0 13px!important;
+}
+.hd-hero4[data-promo-state="peek"] .hd-hero4-peek{transform:translateX(0)!important}
+.hd-hero4-peek strong{font-size:.72rem!important}
+
+.hd-hero4-scroll-cue{
+  position:absolute;z-index:4;left:50%;bottom:17px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:8px;text-decoration:none;color:rgba(255,255,255,.78);
+  font-size:.48rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  border-radius:999px;padding:7px 10px;background:rgba(8,9,12,.22);backdrop-filter:blur(8px);
+}
+.hd-hero4-scroll-cue b{
+  display:grid;place-items:center;width:20px;height:20px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.28);font-size:.65rem;animation:hd-hero4-discover 1.8s ease-in-out infinite;
+}
+@keyframes hd-hero4-discover{0%,100%{transform:translateY(-1px)}50%{transform:translateY(3px)}}
+
+@media(max-width:760px){
+  .hd-hero4-scene-chip{padding:6px 8px}.hd-hero4-scene-chip small{display:none}
+  .hd-hero4-promo{
+    left:auto!important;right:8px!important;bottom:72px!important;
+    width:min(232px,calc(100% - 26px))!important;max-height:315px!important;
+    transform:translateX(112%)!important;
+  }
+  .hd-hero4[data-promo-state="open"] .hd-hero4-promo,
+  .hd-hero4[data-promo-state="feature"] .hd-hero4-promo{transform:translateX(0)!important}
+  .hd-hero4-promo-media{height:88px!important}
+  .hd-hero4-peek{bottom:98px!important;width:132px!important}
+  .hd-hero4-scroll-cue{bottom:14px;font-size:.43rem}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hd-hero4-scene{display:none!important}
+  .hd-hero4-scroll-cue b{animation:none!important}
+}

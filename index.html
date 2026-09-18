@@ -56,14 +56,18 @@
   <main id="main-content" class="hd-home3-main">
     <section class="hd-hero4" id="hunt-hero4" aria-labelledby="hd-hero4-title" data-promo-state="idle">
       <div class="hd-hero4-media" aria-hidden="true">
-        <video id="hd-hero4-video" muted loop playsinline preload="metadata" poster="assets/hunt-hero4/urban-luxe-poster.jpg">
-          <source src="assets/hunt-hero4/urban-luxe-city.mp4" type="video/mp4">
-        </video>
+        <video id="hd-hero4-video-a" class="hd-hero4-scene is-active" muted loop playsinline preload="metadata" poster="assets/hunt-hero4/urban-luxe-poster.jpg"></video>
+        <video id="hd-hero4-video-b" class="hd-hero4-scene" muted loop playsinline preload="none"></video>
         <div class="hd-hero4-scrim"></div>
       </div>
 
-      <div class="hd-hero4-navline" aria-hidden="true">
-        <span>HUNT</span><span>URBAN LUXE · LIVING COMMERCE</span>
+      <div class="hd-hero4-navline">
+        <span aria-hidden="true">HUNT</span>
+        <button id="hd-hero4-scene-next" class="hd-hero4-scene-chip" type="button" aria-label="Show next HUNT city scene">
+          <small id="hd-hero4-scene-region">WORLD EDIT</small>
+          <strong id="hd-hero4-scene-label">URBAN LUXE</strong>
+          <b aria-hidden="true">↗</b>
+        </button>
       </div>
 
       <div class="hd-hero4-content">
@@ -113,6 +117,10 @@
       <button class="hd-hero4-peek" id="hd-hero4-peek" type="button" aria-controls="hd-hero4-promo" aria-expanded="false">
         <span>HUNT SELECTS</span><strong id="hd-hero4-peek-text">Something new for you</strong>
       </button>
+
+      <a class="hd-hero4-scroll-cue" href="#departments" aria-label="Discover more in HUNT">
+        <span>Discover your HUNT</span><b aria-hidden="true">↓</b>
+      </a>
     </section>
 
     <section class="hd-department-shell glass" id="departments" aria-label="Shop departments">
@@ -140,14 +148,14 @@
     </section>
 
     <section class="hd-home3-duo" aria-label="Accessories and beauty">
-      <article class="hd-home3-mini-world">
+      <article class="hd-home3-mini-world" id="accessories-world" data-home3-world="accessories">
         <div class="hd-home3-section-head compact">
           <div><small>ACCESSORIES</small><h2>Finish the look.</h2></div>
           <a href="category.html?c=accessories">Explore →</a>
         </div>
         <div class="hd-home3-mini-grid" id="hd-home3-accessories"></div>
       </article>
-      <article class="hd-home3-mini-world">
+      <article class="hd-home3-mini-world" id="beauty-world" data-home3-world="beauty">
         <div class="hd-home3-section-head compact">
           <div><small>BEAUTY</small><h2>Beauty, without the noise.</h2></div>
           <a href="category.html?c=beauty">Explore →</a>
@@ -163,6 +171,7 @@
           <button class="active" type="button" data-home3-mode="for-you">For You</button>
           <button type="button" data-home3-mode="women">Women</button>
           <button type="button" data-home3-mode="men">Men</button>
+          <button type="button" data-home3-mode="beauty">Beauty</button>
           <button type="button" data-home3-mode="home">Home</button>
           <button type="button" data-home3-mode="tech">Tech</button>
         </div>

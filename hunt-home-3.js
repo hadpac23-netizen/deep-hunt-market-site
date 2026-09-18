@@ -124,6 +124,53 @@
     ];
   }
 
+  const priorityDepartments=["women","men","beauty","tech","home","accessories","sports","kids"];
+
+  function destinationMarket() {
+    try { return String(localStorage.getItem("hunt_destination_market_v1")||"").toUpperCase(); }
+    catch { return ""; }
+  }
+
+  function broadPriority(slug) {
+    if(priorityDepartments.includes(slug)) return slug;
+    return priorityDepartments.find(parent => (H.departmentSubcategories?.[parent]||[]).includes(slug)) || "";
+  }
+
+  function topPreference() {
+    const ranked=Object.entries(H.signals?.()||{})
+      .filter(([slug,score])=>H.categoryDefs?.[slug]&&Number(score)>0)
+      .sort((a,b)=>Number(b[1])-Number(a[1]));
+    for(const [slug] of ranked){
+      const broad=broadPriority(slug);
+      if(broad)return broad;
+    }
+    return "";
+  }
+
+  function applyPersonalLayout() {
+    const departments=$("#departments"), women=$("#women-edit"), duo=document.querySelector(".hd-home3-duo"), personal=$("#for-you");
+    if(!departments||!women||!duo||!personal)return;
+
+    const top=topPreference();
+    document.body.dataset.huntPriority=top||"balanced";
+
+    if(top && top!=="women"){
+      departments.after(personal);
+      personal.after(women);
+      women.after(duo);
+    }else{
+      departments.after(women);
+      women.after(duo);
+      duo.after(personal);
+    }
+
+    const accessories=$("#accessories-world"), beauty=$("#beauty-world");
+    if(accessories&&beauty){
+      if(top==="beauty") duo.prepend(beauty);
+      else if(top==="accessories") duo.prepend(accessories);
+    }
+  }
+
   function renderForYou(shelves) {
     const mode=localStorage.getItem(HOME_MODE_KEY)||"for-you";
     const buttons=[...document.querySelectorAll("[data-home3-mode]")];
@@ -135,9 +182,19 @@
     const host=$("#hd-home3-for-you");
     if(host)host.innerHTML=rows.map(item=>card(item,{label:mode==="for-you"?"FOR YOU":""})).join("");
     const copy=$("#hd-home3-for-you-copy");
-    if(copy)copy.textContent=mode==="for-you"
-      ? (Object.keys(H.signals?.()||{}).length?"Based on categories you opened, liked or saved on this device.":"A balanced mix while HUNT learns what you browse.")
-      : `Showing ${mode} because you chose it.`;
+    if(copy){
+      const top=topPreference();
+      const country=destinationMarket();
+      if(mode==="for-you"){
+        const topTitle=H.categoryDefs?.[top]?.title||top;
+        const base=topTitle
+          ? `Built around your strongest ${topTitle} activity on this device.`
+          : "A balanced mix while HUNT learns what you browse.";
+        copy.textContent=country ? `${base} Destination market: ${country}.` : base;
+      }else{
+        copy.textContent=`Showing ${H.categoryDefs?.[mode]?.title||mode} because you chose it.`;
+      }
+    }
   }
 
   function renderLook(shelves) {
@@ -186,6 +243,7 @@
     renderForYou(latestShelves);
     renderLook(latestShelves);
     renderFresh(latestShelves);
+    applyPersonalLayout();
   }
 
   document.addEventListener("click",event=>{
