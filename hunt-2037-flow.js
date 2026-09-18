@@ -26,10 +26,6 @@
     return H.productUrl?.(item)||`product.html?provider=${encodeURIComponent(item.provider||"")}&id=${encodeURIComponent(item.item_id||"")}`;
   }
 
-  function laneReason(lane){
-    return ({personalized:"Matches what you explored",adjacent:"Related to recent browsing",new:"New in HUNT",wildcard:"A controlled surprise"})[lane]||"Discovery pick";
-  }
-
   function productCard(row){
     const item=row.item||{};
     const href=productUrl(item);
@@ -48,7 +44,7 @@
         <small>${H.esc(item.provider||"CATALOG")}</small>
         <a href="${H.esc(href)}">${H.esc(item.title||"Product")}</a>
         <div class="hunt2037-price"><strong>${H.esc(price)}</strong><em>${verified?"HUNT retail":"live recheck"}</em></div>
-        <small class="hunt2037-why">Why this: ${H.esc(laneReason(row.lane))}</small>
+        <small class="hunt2037-why">Why this: ${H.esc(row.reason||Core.reasonFor?.(item,row.lane,{})||"Discovery pick")}</small>
         <button class="hunt2037-share" type="button" data-hunt2037-share data-share-url="${H.esc(href)}" data-provider="${H.esc(item.provider||"")}" data-item-id="${H.esc(item.item_id||"")}" data-category="${H.esc(item.category||item._shelf_slug||"")}">Share</button>
       </div>
     </article>`;
@@ -58,7 +54,7 @@
     return `<section class="hunt2037-world" data-world="${H.esc(world.id)}">
       <div class="hunt2037-world-head">
         <div><small>HUNT WORLD ${String(index+1).padStart(2,"0")}</small><h2>${H.esc(world.title)}</h2><p>${H.esc(world.copy)}</p></div>
-        <button class="hunt2037-world-enter" type="button" data-world-enter="${H.esc(world.id)}">Enter world</button>
+        <button class="hunt2037-world-enter" type="button" data-world-enter="${H.esc(world.id)}" aria-pressed="false">Enter world</button>
       </div>
       <div class="hunt2037-track" role="list">${world.products.map(productCard).join("")}</div>
     </section>`;
@@ -103,6 +99,7 @@
         <div><small>HUNT 2037 ALPHA</small><h1>Shopping that keeps changing with you.</h1><p>Dynamic worlds, real catalog products, memory-aware discovery.</p><div class="hunt2037-alpha-links"><a class="hunt2037-mirror-link" href="history.html?hunt2037=1">Open HUNT History</a><a class="hunt2037-mirror-link" href="stylist.html?hunt2037=1">Open BOOM Stylist</a><a class="hunt2037-mirror-link" href="mirror.html?hunt2037=1">Open BOOM Mirror</a></div></div>
         <div class="hunt2037-stats"><span><b>${model.worlds.length}</b> WORLDS</span><span><b>DYNAMIC</b> CATALOG</span></div>
       </section>
+      <div class="hunt2037-world-mode-bar" id="hunt2037-world-mode-bar" hidden><div><small>ACTIVE WORLD</small><strong id="hunt2037-active-world-title">HUNT World</strong></div><div class="hunt2037-world-mode-actions"><a id="hunt2037-style-world" href="stylist.html?hunt2037=1">Style this world</a><button type="button" data-world-exit>Back to all worlds</button></div></div>
       ${recentSection(shelves,context)}
       ${model.worlds.slice(0,3).map(worldSection).join("")}
       <section class="hunt2037-discovery">
@@ -110,6 +107,26 @@
         ${model.units.map(laneSection).join("")}
       </section>`;
     window.HuntShoppingActions?.rescan?.();
+  }
+
+  function setWorldMode(worldId){
+    const root=$("#hunt-2037-flow");
+    const bar=$("#hunt2037-world-mode-bar");
+    const title=$("#hunt2037-active-world-title");
+    const styleLink=$("#hunt2037-style-world");
+    const world=Core.WORLDS.find(x=>x.id===worldId)||null;
+    if(!root)return;
+    root.dataset.activeWorld=world?.id||"";
+    document.body.classList.toggle("hunt2037-world-mode",Boolean(world));
+    root.querySelectorAll(".hunt2037-world").forEach(section=>section.classList.toggle("hunt2037-world-selected",Boolean(world&&section.dataset.world===world.id)));
+    root.querySelectorAll("[data-world-enter]").forEach(btn=>btn.setAttribute("aria-pressed",String(Boolean(world&&btn.dataset.worldEnter===world.id))));
+    if(bar)bar.hidden=!world;
+    if(title)title.textContent=world?.title||"HUNT World";
+    if(styleLink){
+      const q=new URLSearchParams({hunt2037:"1",world:world?.id||"",occasion:world?.id==="travel"?"travel":"everyday"});
+      styleLink.href="stylist.html?"+q.toString();
+    }
+    window.dispatchEvent(new CustomEvent("hunt:world-mode",{detail:{active:Boolean(world),world:world?.id||"",title:world?.title||""}}));
   }
 
   document.addEventListener("click",async event=>{
@@ -129,9 +146,17 @@
       return;
     }
 
+    const exit=event.target.closest?.("[data-world-exit]");
+    if(exit){
+      setWorldMode("");
+      document.querySelector(".hunt2037-intro")?.scrollIntoView({behavior:"smooth",block:"start"});
+      return;
+    }
+
     const enter=event.target.closest?.("[data-world-enter]");
     if(enter){
       const world=clean(enter.dataset.worldEnter);
+      setWorldMode(world);
       Memory?.record?.({type:"world_enter",world,source:"hunt2037-flow"});
       document.querySelector(`[data-world="${CSS.escape(world)}"]`)?.scrollIntoView({behavior:"smooth",block:"start"});
       return;
@@ -156,7 +181,7 @@
     }
   });
 
-  window.Hunt2037Flow=Object.freeze({enabled,setFlag,render});
+  window.Hunt2037Flow=Object.freeze({enabled,setFlag,render,setWorldMode});
 
   if(enabled()){
     window.addEventListener("hunt:shelves",event=>render(event.detail));
