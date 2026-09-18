@@ -304,6 +304,7 @@
     addLine(svg,$("#node-super"),$("#node-model"),"watch");
     addLine(svg,$("#node-super"),$("#node-memory"),"live");
     addLine(svg,$("#node-super"),$("#node-eval"),state.evals.length?"live":"watch");
+    addLine(svg,$("#node-eval"),$("#node-output"),"watch");
     for(const group of studioNodeGroups){
       const first=group.nodes[0];
       if(!first)continue;
@@ -355,6 +356,7 @@
     setNodeStatus($("#node-model"),"watch");
     setNodeStatus($("#node-memory"),"healthy");
     setNodeStatus($("#node-eval"),state.evals.length?"healthy":"watch");
+    setNodeStatus($("#node-output"),"watch");
     toolNodes.forEach(t=>setNodeStatus($("#node-"+t[0]),statusOf(t[0])));
 
     $("#meta-label").textContent=state.learning.filter(x=>x.domain==="ai-engineering").length+" AI MODULES";
@@ -565,6 +567,48 @@
     "boom-mirror":{inputs:["explicit consent","retention choice","verified product anchor"],outputs:["private preview plan","focus mode"],forbidden:["exact-fit claims","retain images without consent","activate provider without approval"]},
     "creative-brand-factory":{inputs:["verified product truth","human idea","references"],outputs:["hooks","storyboard","QA shortlist"],forbidden:["paid generation","publishing","fake claims without Owner approval"]}
   });
+  const promptCoverageItems=Object.freeze([
+    {id:"studio-first",label:"Studio-first governance",status:"PRESENT",evidence:"Plan and inspect in BOOM Studio before HUNT/Production."},
+    {id:"input-output",label:"Input → BOOM Brain → Decision → Output",status:"PRESENT",evidence:"Owner Input, Meta-F35, Super Agent, Eval Guardian and Decision/Owner Output are visible on the canvas."},
+    {id:"departments",label:"Ordered department architecture",status:"PRESENT",evidence:"Intelligence A1–A6 → Release A7–A12 → Commerce → F35 → Suppliers → Store Departments."},
+    {id:"alpha",label:"A1–A12 Alpha pipeline",status:"PRESENT",evidence:"Truth, Decision/Taste, Memory, Worlds, Stylist/Mirror, Creative, Integration QA, Harness, Evidence, RC Preview, RC QA and Final Gate."},
+    {id:"owner-gates",label:"Owner approval / Production separation",status:"PRESENT",evidence:"Merge, Production, payments, order routing, spend and publishing remain separately gated."},
+    {id:"connect",label:"BOOM Connect control center",status:"PRESENT",evidence:"OAuth/API/supplier/deployment connection truth has a dedicated Studio surface."},
+    {id:"freshness",label:"Knowledge freshness / live verification",status:"PRESENT",evidence:"Knowledge Freshness, Product Truth and supplier/shipping verification are represented."},
+    {id:"health-lines",label:"Green / yellow / red health lines",status:"PRESENT",evidence:"Healthy, watch and blocked/critical node/link states are rendered separately."},
+    {id:"store-depts",label:"Store category departments",status:"PRESENT",evidence:"Women, Men, Kids, Beauty, Accessories, Home, Tech, Sports, Pets, Toys and Travel/Office/Gifts are visible."},
+    {id:"traceability",label:"Product trace: source → shelf → checkout → order → sale",status:"PARTIAL",evidence:"Managers exist across the chain, but one unified per-product trace timeline is not yet exposed in Studio."},
+    {id:"real-device",label:"Direct reference + real-device screenshot comparison",status:"PARTIAL",evidence:"Viewport contracts exist; real browser screenshots/reference comparison still require the private preview pass."},
+    {id:"supplier-hide",label:"Supplier names hidden from shopper storefront",status:"PARTIAL",evidence:"Studio is admin-only and may show suppliers; storefront hiding must be verified in private preview."},
+    {id:"connect-live",label:"Every external connector live-verified",status:"PARTIAL",evidence:"BOOM Connect exists, but each OAuth/API/provider must be checked individually before calling it live."},
+    {id:"shopper-actions",label:"Search / recommendation / Like / Save / Share / History E2E",status:"PARTIAL",evidence:"Decision, Memory and Share managers are represented; end-to-end shopper behavior still needs private-preview validation."}
+  ]);
+
+  function renderPromptCoverageAudit(){
+    const host=$("#prompt-audit-grid"),summary=$("#prompt-audit-summary"),report=$("#prompt-audit-report");
+    if(!host||!summary||!report)return;
+    const counts={PRESENT:0,PARTIAL:0,MISSING:0};
+    for(const item of promptCoverageItems)counts[item.status]=(counts[item.status]||0)+1;
+    summary.innerHTML=
+      '<article><b>'+counts.PRESENT+'</b><span>PRESENT</span></article>'+
+      '<article><b>'+counts.PARTIAL+'</b><span>PARTIAL / VERIFY</span></article>'+
+      '<article><b>'+counts.MISSING+'</b><span>MISSING</span></article>';
+    host.innerHTML=promptCoverageItems.map(item=>
+      '<article class="prompt-audit-item" data-state="'+esc(item.status.toLowerCase())+'">'+
+      '<small>'+esc(item.status)+'</small><strong>'+esc(item.label)+'</strong><p>'+esc(item.evidence)+'</p></article>'
+    ).join("");
+    report.textContent=[
+      "MODE: OWNER_PROMPT_COVERAGE_AUDIT",
+      "PRESENT: "+counts.PRESENT,
+      "PARTIAL / VERIFY: "+counts.PARTIAL,
+      "MISSING: "+counts.MISSING,
+      "",
+      ...promptCoverageItems.map(item=>item.status+" · "+item.label+" · "+item.evidence),
+      "",
+      "NEXT SAFE ACTION: Resolve PARTIAL items in the private BOOM Studio preview before any Production decision."
+    ].join("\n");
+  }
+
   const huntAlphaStages=Object.freeze([
     {id:"A1",name:"Truth Foundation",brains:["country-shipping","product-truth"],goal:"Normalize exact SKU, stock, country, shipping, landed cost and freshness.",gate:"No stale or ineligible product enters Alpha."},
     {id:"A2",name:"Decision & Taste",brains:["decision-intelligence","taste-dna"],goal:"Explainable ranking with cold-start, affinity, novelty and fatigue controls.",gate:"Every recommendation returns reasons and hard-gate evidence."},
@@ -1586,6 +1630,12 @@
       $("#inspect-status").innerHTML=pill(state.evals.length?"healthy":"watch");
       $("#inspect-body").innerHTML='<section class="inspect-block"><h3>Rule</h3><p>שדרוג נשמר רק עם evidence + eval. Regression → kill/rollback.</p></section><section class="inspect-block"><h3>Latest evals</h3><pre>'+esc(JSON.stringify(state.evals.slice(0,8),null,2))+'</pre></section>';
     }
+    if(type==="output"){
+      $("#inspect-title").textContent="Decision / Owner Output";
+      $("#inspect-status").innerHTML=pill("watch");
+      $("#inspect-body").innerHTML='<section class="inspect-block"><h3>Decision contract</h3><p>BOOM may propose, block, repair or prepare an Owner-gated action. Publish, payment, Production, permissions and other material actions remain separate Owner decisions.</p></section><section class="inspect-block"><h3>Authority boundary</h3><pre>KNOWLEDGE != AUTHORITY\nAUTO-PUBLISH: false\nAUTO-PAYMENT: false\nAUTO-PRODUCTION: false</pre></section>';
+      return;
+    }
   }
 
   function renderAll(){
@@ -1594,7 +1644,8 @@
     renderEvaluations();
     renderLearning();
     renderConnect();
-    if(state.managerMap.has(state.selected)||toolNodeFallbackManagers[state.selected])inspectManager(state.selected);
+    renderPromptCoverageAudit();
+    if(state.managerMap.has(state.selected)||toolNodeFallbackManagers[state.selected]||studioNodeGroupById.has(state.selected))inspectManager(state.selected);
     setLive("● LIVE · "+new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"}));
   }
 
@@ -2406,6 +2457,7 @@
       if(tab.dataset.tab==="hunt-intelligence")renderHuntIntelligence();
       if(tab.dataset.tab==="hunt-intelligence")renderApprovalQueue();
       if(tab.dataset.tab==="hunt-intelligence")renderAlphaBlueprint();
+      if(tab.dataset.tab==="hunt-intelligence")renderPromptCoverageAudit();
       if(tab.dataset.tab==="brand-factory")renderBrandFinance();
       return;
     }
