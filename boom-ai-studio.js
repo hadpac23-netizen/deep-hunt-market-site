@@ -62,7 +62,8 @@
     brandBusy:false,
     brandVerified:null,
     vaultLive:true,
-    vaultLast:null
+    vaultLast:null,
+    huntCapabilities:[]
   };
 
   const toolNodes=[
@@ -378,6 +379,74 @@
       {id:"repair",name:"BOOM Repair Engineering",kind:"SELF-HEALING",tone:connectTone(repairRaw),detail:"BOOM Brain repair lane handles safe reversible incidents and escalates material changes.",evidence:"repair-engineering · "+repairRaw,gate:"Safe repair auto · material changes gated"},
       {id:"payments",name:"Live Payments",kind:"PAYMENTS",tone:"blocked",detail:"Live charging remains intentionally OFF until launch authorization and full order E2E.",evidence:"DISABLED_BY_OWNER",gate:"Explicit Owner approval required"}
     ];
+  }
+
+
+  function intelligenceTone(capability={}){
+    const status=String(capability.brain_status||"UNKNOWN").toUpperCase();
+    if(status==="VERIFIED_REAL")return "healthy";
+    if(status==="PILOT"||status==="IMPLEMENTED_BUT_UNVERIFIED")return "watch";
+    if(status==="BLOCKED")return "blocked";
+    return "offline";
+  }
+
+  async function renderHuntIntelligence(){
+    const host=$("#intelligence-grid");
+    const summary=$("#intelligence-summary");
+    if(!host||!summary)return;
+    try{
+      const response=await fetch("boom-hunt-2037-capabilities.json?v=2",{cache:"no-store"});
+      if(!response.ok)throw new Error("CAPABILITY_MANIFEST_UNAVAILABLE");
+      const manifest=await response.json();
+      const rows=Array.isArray(manifest.capabilities)?manifest.capabilities:[];
+      state.huntCapabilities=rows;
+      const counts={ready:0,pilot:0,planned:0,gated:0};
+      rows.forEach(row=>{
+        const status=String(row.brain_status||"UNKNOWN").toUpperCase();
+        if(status==="VERIFIED_REAL")counts.ready++;
+        else if(status==="PILOT"||status==="IMPLEMENTED_BUT_UNVERIFIED")counts.pilot++;
+        else counts.planned++;
+        if(row.owner_gate)counts.gated++;
+      });
+      summary.innerHTML=
+        '<article><b>'+counts.ready+'</b><span>VERIFIED REAL</span></article>'+
+        '<article><b>'+counts.pilot+'</b><span>PILOT / UNVERIFIED</span></article>'+
+        '<article><b>'+counts.planned+'</b><span>PLANNED / BLOCKED</span></article>'+
+        '<article><b>'+counts.gated+'</b><span>OWNER-GATED</span></article>';
+      host.innerHTML=rows.map(row=>
+        '<article class="intelligence-card" data-state="'+esc(String(row.brain_status||"UNKNOWN").toUpperCase())+'">'+
+          '<div class="intelligence-card-head"><div><h3>'+esc(row.id)+'</h3><small>'+esc(row.manager||"unassigned")+'</small></div>'+pill(intelligenceTone(row))+'</div>'+
+          '<p>'+esc(row.notes||"No evidence note recorded.")+'</p>'+
+          '<div class="intelligence-deps">'+(row.dependencies||[]).map(dep=>'<span>'+esc(dep)+'</span>').join("")+'</div>'+
+        '</article>'
+      ).join("");
+    }catch(err){
+      state.huntCapabilities=[];
+      summary.innerHTML="";
+      host.innerHTML='<article class="intelligence-card" data-state="BLOCKED"><h3>Capability truth unavailable</h3><p>'+esc(err.message||err)+'</p></article>';
+    }
+  }
+
+  function simulateHuntIntelligence(){
+    const output=$("#intelligence-simulation");
+    const rows=state.huntCapabilities||[];
+    if(!output)return;
+    if(!rows.length){output.textContent="Simulation blocked: capability truth is unavailable. Execution remains OFF.";return}
+    const order=["decision-intelligence","country-shipping","product-truth","taste-dna","hunt-memory","dynamic-worlds","boom-stylist","boom-mirror","creative-brand-factory"];
+    const selected=order.map(id=>rows.find(row=>row.id===id)).filter(Boolean);
+    const blocked=selected.filter(row=>["PLANNED","BLOCKED","UNKNOWN"].includes(String(row.brain_status||"").toUpperCase()));
+    const gated=selected.filter(row=>row.owner_gate);
+    output.textContent=[
+      "MODE: SIMULATION_ONLY",
+      "EXECUTION_ALLOWED: false",
+      "PRODUCTION_CHANGED: false",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "ROUTE: "+selected.map(row=>row.id+"["+row.brain_status+"]").join(" → "),
+      "BLOCKERS: "+(blocked.map(row=>row.id).join(", ")||"none in simulated route"),
+      "OWNER_GATES: "+(gated.map(row=>row.id).join(", ")||"none"),
+      "NEXT SAFE ACTION: Review capability evidence in BOOM Studio. Owner approval is required before any execution."
+    ].join("\n");
   }
 
   function renderConnect(){
@@ -1206,6 +1275,7 @@
   $$("#brand-provider,#brand-item-id,#brand-variant-id,#brand-country").forEach(el=>el.addEventListener("input",()=>{state.brandVerified=null;$("#brand-verify")?.classList.remove("verified");if($("#brand-verify"))$("#brand-verify").textContent="Verify from HUNT"}));
   $$("#brand-price,#brand-cost,#brand-shipping,#brand-currency").forEach(el=>el.addEventListener("input",renderBrandFinance));
   $("#brand-copy")?.addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("#brand-output")?.textContent||"");$("#brand-copy").textContent="✓";setTimeout(()=>$("#brand-copy").textContent="COPY",1000)}catch{$("#brand-status").textContent="Copy failed · select the output manually."}});
+  $("#intelligence-simulate")?.addEventListener("click",simulateHuntIntelligence);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
@@ -1259,6 +1329,7 @@
       $("#"+tab.dataset.tab).classList.add("active");
       if(tab.dataset.tab==="studio")requestAnimationFrame(drawLinks);
       if(tab.dataset.tab==="connect")renderConnect();
+      if(tab.dataset.tab==="hunt-intelligence")renderHuntIntelligence();
       if(tab.dataset.tab==="brand-factory")renderBrandFinance();
       return;
     }
