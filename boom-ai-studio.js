@@ -2720,8 +2720,9 @@
     setChatOpen(true);
   }
 
-  function applyLocalPreviewSafety(){
-    document.body.dataset.previewMode="local";
+  function applyLocalPreviewSafety(mode="local"){
+    const label=mode==="draft"?"DRAFT":"LOCAL";
+    document.body.dataset.previewMode=mode;
     const disabledSelectors=[
       "#refresh","#logout","#chat-send","#chat-mic","#voice-loop",
       "#brand-run","#brand-verify","#brand-video-plan","#brand-video-qa",
@@ -2732,15 +2733,15 @@
       const el=$(selector);
       if(!el)continue;
       el.disabled=true;
-      el.title="LOCAL PREVIEW · external/live action disabled";
+      el.title=label+" PREVIEW · external/live action disabled";
     }
     $("#logout").hidden=true;
     const input=$("#chat-input");
     if(input){
       input.disabled=true;
-      input.placeholder="LOCAL PREVIEW · chat execution disabled";
+      input.placeholder=label+" PREVIEW · chat execution disabled";
     }
-    setLive("● LOCAL PREVIEW · LIVE ACTIONS OFF","watch");
+    setLive("● "+label+" PREVIEW · LIVE ACTIONS OFF","watch");
   }
 
   function showLogin(){
@@ -2762,18 +2763,19 @@
     setVaultControls();
 
     const url=new URL(location.href);
-    const localPreview=["127.0.0.1","localhost"].includes(location.hostname)&&url.searchParams.get("preview")==="1";
-    if(localPreview){
+    const localHost=["127.0.0.1","localhost"].includes(location.hostname);
+    const netlifyDraft=/^[a-z0-9]+--deep-hunt-market\.netlify\.app$/i.test(location.hostname);
+    const safePreview=(localHost||netlifyDraft)&&url.searchParams.get("preview")==="1";
+    if(safePreview){
       state.localPreview=true;
       showApp();
-      applyLocalPreviewSafety();
+      applyLocalPreviewSafety(netlifyDraft?"draft":"local");
       renderAll();
       await renderHuntIntelligence();
       renderApprovalQueue();
       renderAlphaBlueprint();
       renderPromptCoverageAudit();
       inspectSpecial("output");
-      setLive("● LOCAL PREVIEW · LIVE ACTIONS OFF","watch");
       return;
     }
     const oauthError=url.searchParams.get("error_description")||url.searchParams.get("error");
