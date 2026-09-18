@@ -66,14 +66,14 @@
     {
       "id": "taste-dna",
       "manager": "feedback-intelligence",
-      "brain_status": "CANDIDATE",
+      "brain_status": "PILOT",
       "storefront_status": "PARTIAL",
       "owner_gate": false,
       "dependencies": [
         "analytics-truth",
         "memory-continuity"
       ],
-      "notes": "Current device signals exist; full Taste DNA model is not yet complete."
+      "notes": "Taste DNA Alpha converts real interaction events into confidence-gated category/provider affinity and negative signals for the feature-flagged HUNT Flow. Account sync and experiment calibration remain staged."
     },
     {
       "id": "hunt-memory",
