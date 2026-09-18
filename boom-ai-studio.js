@@ -13,6 +13,7 @@
   const AlphaHarness=window.BoomAlphaTestHarness;
   const EvidencePack=window.BoomAlphaEvidencePack;
   const RCPreview=window.BoomAlphaRCPreview;
+  const RCQA=window.BoomAlphaRCQA;
   if(!H||!S?.createClient){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -79,7 +80,8 @@
     planningDraft:null,
     simulatedMemoryEvents:[],
     alphaEvidencePack:null,
-    alphaRCPreview:null
+    alphaRCPreview:null,
+    alphaRCQA:null
   };
 
   const toolNodes=[
@@ -1185,6 +1187,94 @@
     return {preview,verification};
   }
 
+  function alphaRCDomAudit(){
+    const ids=[...document.querySelectorAll("[id]")].map(node=>node.id).filter(Boolean);
+    const seen=new Set(),duplicates=new Set();
+    for(const id of ids){if(seen.has(id))duplicates.add(id);else seen.add(id)}
+    const alphaButtons=[...document.querySelectorAll(
+      "#truth-simulate,#decision-simulate,#memory-add-event,#memory-reset-simulation,#flow-simulate,#personal-simulate,#creative-simulate,#alpha-integration-qa,#alpha-harness-run,#alpha-evidence-build,#alpha-rc-preview-build,#alpha-rc-qa-run"
+    )];
+    return {
+      lang:String(document.documentElement.lang||"").toLowerCase(),
+      dir:String(document.documentElement.dir||"").toLowerCase(),
+      viewport:Boolean(document.querySelector('meta[name="viewport"]')),
+      duplicate_ids:duplicates.size,
+      duplicate_id_values:[...duplicates],
+      alpha_buttons_without_type:alphaButtons.filter(button=>String(button.getAttribute("type")||"").toLowerCase()!=="button").length
+    };
+  }
+
+  function runAlphaRCQA(){
+    const status=$("#alpha-rc-qa-status"),summary=$("#alpha-rc-qa-summary"),groups=$("#alpha-rc-qa-groups"),checks=$("#alpha-rc-qa-checks"),report=$("#alpha-rc-qa-report");
+    if(!RCQA?.run||!AlphaHarness?.runAll||!EvidencePack?.build||!RCPreview?.build){
+      if(status)status.textContent="RC_QA_UNAVAILABLE · A12_BLOCKED";
+      if(report)report.textContent="A11 core or prerequisite core is unavailable. A12 remains blocked.";
+      return null;
+    }
+
+    if(!state.alphaEvidencePack)buildOwnerAlphaEvidencePack();
+    if(!state.alphaRCPreview)buildAlphaRCPreview();
+
+    const evidencePack=state.alphaEvidencePack;
+    const preview=state.alphaRCPreview;
+    const harness=AlphaHarness.runAll();
+    const domAudit=alphaRCDomAudit();
+    const result=RCQA.run({preview,evidencePack,harness,domAudit});
+    state.alphaRCQA=result;
+
+    if(groups)groups.innerHTML=result.groups.map(group=>
+      '<article class="rc-qa-group" data-state="'+(group.pass?"pass":"blocked")+'">'+
+      '<small>'+esc(group.category.toUpperCase())+'</small>'+
+      '<strong>'+esc(group.passed+"/"+group.total)+'</strong>'+
+      '<span>'+esc(group.pass?"PASS":"BLOCKED")+'</span></article>'
+    ).join("");
+
+    if(checks)checks.innerHTML=result.checks.map(row=>
+      '<article class="rc-qa-check" data-state="'+(row.pass?"pass":"blocked")+'">'+
+      '<small>'+esc(row.id+" · "+row.category.toUpperCase())+'</small>'+
+      '<strong>'+esc(row.label)+'</strong>'+
+      '<span>'+esc(row.pass?"PASS":"FAIL")+'</span>'+
+      '<p>'+esc(row.evidence)+'</p></article>'
+    ).join("");
+
+    const groupPass=result.groups.filter(x=>x.pass).length;
+    if(summary)summary.innerHTML=
+      '<article><b>'+result.passed+'/'+result.total+'</b><span>CHECKS PASSED</span></article>'+
+      '<article><b>'+groupPass+'/'+result.groups.length+'</b><span>QA GROUPS PASSED</span></article>'+
+      '<article><b>'+(result.a12_eligible?"ELIGIBLE":"LOCKED")+'</b><span>A12 ELIGIBILITY</span></article>';
+
+    if(status)status.textContent=result.rc_qa_pass
+      ?"A11_PASS · A12_ELIGIBLE · PRODUCTION_OFF"
+      :"A11_BLOCKED · "+result.blockers.length+" CHECK(S) FAILED · A12_BLOCKED";
+
+    if(report)report.textContent=[
+      "MODE: "+result.mode,
+      "RC QA PASS: "+result.rc_qa_pass,
+      "CHECKS PASSED: "+result.passed+"/"+result.total,
+      "QA GROUPS PASSED: "+groupPass+"/"+result.groups.length,
+      "A12 ELIGIBLE: "+result.a12_eligible,
+      "DOM LANG: "+domAudit.lang,
+      "DOM DIR: "+domAudit.dir,
+      "VIEWPORT META: "+domAudit.viewport,
+      "DUPLICATE IDS: "+domAudit.duplicate_ids+(domAudit.duplicate_id_values.length?" · "+domAudit.duplicate_id_values.join(", "):""),
+      "ALPHA BUTTONS WITHOUT TYPE: "+domAudit.alpha_buttons_without_type,
+      "ALPHA ACTIVATION AUTHORIZED: false",
+      "PRODUCTION READY: false",
+      "PRODUCTION_CHANGED: false",
+      "PAYMENTS_ACTIVATED: false",
+      "ORDER_ROUTING_ACTIVATED: false",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "OWNER_GATE: "+result.owner_gate,
+      "",
+      ...result.groups.map(group=>group.category+" · "+(group.pass?"PASS":"BLOCKED")+" · "+group.passed+"/"+group.total),
+      "",
+      "BLOCKERS: "+(result.blockers.join(", ")||"none"),
+      "NEXT SAFE ACTION: "+result.next_safe_action
+    ].join("\n");
+    return {result,domAudit};
+  }
+
   function simulateHuntIntelligence(){
     const output=$("#intelligence-simulation");
     const rows=state.huntCapabilities||[];
@@ -2049,6 +2139,7 @@
   $("#alpha-harness-run")?.addEventListener("click",runAlphaHarnessUI);
   $("#alpha-evidence-build")?.addEventListener("click",buildOwnerAlphaEvidencePack);
   $("#alpha-rc-preview-build")?.addEventListener("click",buildAlphaRCPreview);
+  $("#alpha-rc-qa-run")?.addEventListener("click",runAlphaRCQA);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
