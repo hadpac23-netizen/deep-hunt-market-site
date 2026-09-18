@@ -6,4 +6,5 @@ assert(shopping.includes("action:kind,active"),"shopping action must emit change
 assert(shopping.includes("action:kind,active:preferenceActive"),"account shopping action must emit changed action");
 assert(memory.includes('d.action==="like"||d.action==="save"'),"memory must read changed shopping action");
 assert(memory.includes("d.active===true"),"memory must ignore deactivation as a positive taste signal");
+assert(shopping.includes('state.set(k,{...meta,...next})'),"local state must preserve product metadata for immediate snapshots");
 console.log("HUNT Shopping/Memory integration tests: PASS");
