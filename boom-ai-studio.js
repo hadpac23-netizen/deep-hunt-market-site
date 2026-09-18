@@ -2270,7 +2270,8 @@
     renderConnect();
     renderPromptCoverageAudit();
     if(state.managerMap.has(state.selected)||toolNodeFallbackManagers[state.selected]||studioNodeGroupById.has(state.selected))inspectManager(state.selected);
-    setLive("● LIVE · "+new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"}));
+    if(state.localPreview)setLive("● PREVIEW · LIVE ACTIONS OFF","watch");
+    else setLive("● LIVE · "+new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"}));
   }
 
   async function query(table,columns="*",orderColumn=null,limit=300){
