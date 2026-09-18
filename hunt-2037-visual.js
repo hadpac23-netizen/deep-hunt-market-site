@@ -77,7 +77,8 @@
     }
 
     await loadManifest();
-    applyCity(cityAt(0),0);
+    const requestedWorld=new URL(location.href).searchParams.get("world")||"";
+    if(requestedWorld){worldLock=true;applyWorldMood(requestedWorld)}else applyCity(cityAt(0),0);
 
     window.addEventListener("hunt:world-mode",event=>{
       worldLock=event.detail?.active===true;
