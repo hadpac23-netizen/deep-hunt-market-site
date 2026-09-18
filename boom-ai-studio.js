@@ -24,6 +24,7 @@
   const $$=q=>[...document.querySelectorAll(q)];
   const esc=v=>H.esc?.(v)??String(v??"");
   const statusRank={critical:5,blocked:4,watch:3,healthy:2,working:1,offline:0};
+  const PLANNING_HISTORY_KEY="boom_hunt_planning_history_v1";
 
   const state={
     session:null,
@@ -467,7 +468,7 @@
       .map(id=>rows.find(row=>row.id===id)).filter(Boolean);
     const blockers=route.filter(row=>["PLANNED","BLOCKED","UNKNOWN"].includes(String(row.brain_status||"").toUpperCase()));
     const gates=route.filter(row=>row.owner_gate);
-    state.planningDraft={objective,status:"DRAFT_REVIEW",created_at:new Date().toISOString(),execution_allowed:false};
+    state.planningDraft={id:"PLAN-"+Date.now(),version:nextPlanningVersion(),objective,status:"DRAFT_REVIEW",created_at:new Date().toISOString(),execution_allowed:false};
     output.textContent=[
       "PLAN STATUS: DRAFT_REVIEW",
       "OBJECTIVE: "+objective,
@@ -493,6 +494,7 @@
     $("#planning-status").textContent="DRAFT_REVIEW · OWNER DECISION REQUIRED · EXECUTION_OFF";
     $("#planning-revision").disabled=false;
     $("#planning-approve").disabled=false;
+    appendPlanningHistory(state.planningDraft);
   }
 
   function setPlanningDecision(status){
@@ -501,6 +503,50 @@
     $("#planning-status").textContent=status+" · IMPLEMENTATION PLANNING ONLY · EXECUTION_OFF";
     const output=$("#planning-output");
     output.textContent+="\n\nOWNER DECISION: "+status+"\nLIVE EXECUTION REMAINS BLOCKED.";
+    appendPlanningHistory(state.planningDraft);
+  }
+
+  function readPlanningHistory(){
+    try{
+      const rows=JSON.parse(localStorage.getItem(PLANNING_HISTORY_KEY)||"[]");
+      return Array.isArray(rows)?rows:[];
+    }catch{return []}
+  }
+
+  function nextPlanningVersion(){
+    return readPlanningHistory().reduce((max,row)=>Math.max(max,Number(row.version)||0),0)+1;
+  }
+
+  function appendPlanningHistory(entry){
+    const rows=readPlanningHistory();
+    const snapshot=Object.freeze({
+      id:String(entry.id||"PLAN-"+Date.now()),
+      version:Number(entry.version)||nextPlanningVersion(),
+      objective:String(entry.objective||""),
+      status:String(entry.status||"DRAFT_REVIEW"),
+      recorded_at:String(entry.decided_at||entry.created_at||new Date().toISOString()),
+      execution_allowed:false,
+      production_changed:false,
+      spend_authorized:false,
+      publishing_authorized:false
+    });
+    rows.unshift(snapshot);
+    try{localStorage.setItem(PLANNING_HISTORY_KEY,JSON.stringify(rows.slice(0,100)))}catch{}
+    renderApprovalQueue(rows.slice(0,100));
+    return snapshot;
+  }
+
+  function renderApprovalQueue(rows=readPlanningHistory()){
+    const host=$("#approval-queue");
+    if(!host)return;
+    if(!rows.length){host.innerHTML='<p class="approval-empty">No planning decisions yet.</p>';return}
+    host.innerHTML=rows.map(row=>
+      '<article class="approval-entry" data-status="'+esc(row.status)+'">'+
+        '<div class="approval-entry-head"><strong>Version '+esc(row.version)+'</strong><small>'+esc(row.status)+'</small></div>'+
+        '<p>'+esc(row.objective||"Untitled planning objective")+'</p>'+
+        '<footer><span>'+esc(new Date(row.recorded_at).toLocaleString())+'</span><span>EXECUTION OFF</span></footer>'+
+      '</article>'
+    ).join("");
   }
 
   function simulateHuntIntelligence(){
@@ -1411,6 +1457,7 @@
       if(tab.dataset.tab==="studio")requestAnimationFrame(drawLinks);
       if(tab.dataset.tab==="connect")renderConnect();
       if(tab.dataset.tab==="hunt-intelligence")renderHuntIntelligence();
+      if(tab.dataset.tab==="hunt-intelligence")renderApprovalQueue();
       if(tab.dataset.tab==="brand-factory")renderBrandFinance();
       return;
     }
