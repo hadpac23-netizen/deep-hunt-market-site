@@ -148,3 +148,12 @@ assert(js.includes("APPROVED_FOR_IMPLEMENTATION_PLANNING"),"Planning-only approv
 assert(js.includes("LIVE EXECUTION REMAINS BLOCKED"),"Live execution guard missing");
 assert(css.includes(".brain-detail-grid"),"Brain Detail layout missing");
 assert(css.includes(".planning-board"),"Planning Board layout missing");
+assert(html.includes('id="approval-queue"'),"Owner Approval Queue missing");
+assert(html.includes("Approval Queue & Version History"),"Version History heading missing");
+assert(js.includes("PLANNING_HISTORY_KEY"),"Planning history storage contract missing");
+assert(js.includes("function appendPlanningHistory"),"Planning history append missing");
+assert(js.includes("function renderApprovalQueue"),"Approval Queue renderer missing");
+assert(js.includes("production_changed:false"),"Production boundary evidence missing");
+assert(js.includes("spend_authorized:false"),"Spend boundary evidence missing");
+assert(js.includes("publishing_authorized:false"),"Publishing boundary evidence missing");
+assert(css.includes(".approval-entry"),"Approval history styling missing");
