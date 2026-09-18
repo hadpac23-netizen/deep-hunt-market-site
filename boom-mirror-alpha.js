@@ -16,11 +16,22 @@
   const plan=$("#mirror-focus-plan");
   const status=$("#mirror-status");
 
+  const params=new URLSearchParams(location.search);
+  const selectedProduct=Object.freeze({
+    provider:String(params.get("provider")||"").trim(),
+    item_id:String(params.get("id")||"").trim()
+  });
   let objectUrl=null;
   let activeSession=null;
 
   function revoke(){
     if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null;}
+  }
+
+  function applyContext(){
+    const requested=Mirror.normalizeType(params.get("type")||"");
+    if(requested&&type&&Array.from(type.options||[]).some(option=>option.value===requested))type.value=requested;
+    return requested;
   }
 
   function currentConsent(){
@@ -36,7 +47,11 @@
     const allowed=Mirror.validateConsent(currentConsent()).valid;
     if(photo)photo.disabled=!allowed;
     if(start)start.disabled=!allowed||!(photo&&photo.files&&photo.files.length);
-    if(!allowed&&status)status.textContent="Waiting for consent.";
+    if(!allowed&&status){
+      status.textContent=selectedProduct.provider&&selectedProduct.item_id
+        ?"HUNT product selected ("+selectedProduct.provider+" / "+selectedProduct.item_id+"). Waiting for consent."
+        :"Waiting for consent.";
+    }
   }
 
   function renderFocus(){
@@ -79,7 +94,7 @@
 
   function startSession(){
     const c=currentConsent();
-    const session=Mirror.createSession({consent:c,inputMode:"upload"});
+    const session=Mirror.createSession({consent:c,inputMode:"upload",product:selectedProduct});
     if(!session.created){
       if(status)status.textContent="Consent is required before starting a preview.";
       return;
@@ -88,7 +103,7 @@
     const reduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches===true;
     const focus=Mirror.focusPlan(type?type.value:"necklace",{reducedMotion:reduced});
     if(Memory&&Memory.record){
-      Memory.record({type:"try_on",category:focus.product_type||"",source:"boom-mirror-alpha"});
+      Memory.record({type:"try_on",provider:selectedProduct.provider,item_id:selectedProduct.item_id,category:focus.product_type||"",source:"boom-mirror-alpha"});
     }
     if(status){
       status.textContent="Mirror session created. Focus plan: "+(focus.frames||[]).join(" → ")+
@@ -105,6 +120,7 @@
   window.addEventListener("beforeunload",revoke);
 
   window.BoomMirrorAlpha=Object.freeze({currentConsent,clearPhoto,getSession:function(){return activeSession;}});
+  applyContext();
   renderFocus();
   updateControls();
 })();
