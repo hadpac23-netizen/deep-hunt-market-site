@@ -2908,6 +2908,15 @@
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
     try{await loadAll();renderConnect()}catch(err){showError(err)}finally{if(btn){btn.disabled=false;btn.textContent="בדוק עכשיו"}}
   });
+  function focusStudioGroup(id){
+    const studio=$("#studio");
+    const target=$(".studio-node-group").find(node=>node.dataset.groupId===id);
+    if(!studio||!target)return;
+    const top=studio.scrollTop+target.getBoundingClientRect().top-studio.getBoundingClientRect().top-58;
+    studio.scrollTo({top:Math.max(0,top),behavior:"smooth"});
+    $("#studio-department-nav [data-studio-group]").forEach(button=>button.classList.toggle("active",button.dataset.studioGroup===id));
+  }
+
   $("#attention-focus").addEventListener("click",focusAttention);
   $("#chat-toggle").addEventListener("click",()=>setChatOpen(!$(".inspector").classList.contains("chat-open")));
   $("#chat-collapse").addEventListener("click",()=>setChatOpen(false));
@@ -2939,6 +2948,8 @@
   window.addEventListener("resize",()=>requestAnimationFrame(drawLinks));
 
   document.addEventListener("click",ev=>{
+    const studioJump=ev.target.closest("[data-studio-group]");
+    if(studioJump){focusStudioGroup(studioJump.dataset.studioGroup);return}
     const connectCard=ev.target.closest("[data-connect-id]");
     if(connectCard){inspectConnection(connectCard.dataset.connectId);return}
     const capabilityCard=ev.target.closest("[data-capability-id]");
