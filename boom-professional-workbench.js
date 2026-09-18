@@ -222,16 +222,70 @@
   function buildEvaluatorOps(input={}){
     const cases=safeArray(input.evalCases);
     const graderTypes=[...new Set(cases.map(x=>clean(x.grader_type).toLowerCase()).filter(Boolean))].sort();
-    const evaluatorRegistryConnected=input.evaluatorRegistryConnected===true;
-    const humanAlignmentConnected=input.humanAlignmentConnected===true;
-    const onlineEvalConnected=input.onlineEvalConnected===true;
-    const ciEvalGateConnected=input.ciEvalGateConnected===true;
+
+    const registry=safeArray(input.evaluatorRegistry);
+    const alignments=safeArray(input.humanAlignmentRuns);
+    const online=safeArray(input.onlineEvalWindows);
+    const gates=safeArray(input.ciQualityGates).filter(x=>x.enabled!==false);
+    const gateRuns=safeArray(input.ciQualityGateRuns);
+
+    const activeEvaluators=registry.filter(x=>clean(x.status).toLowerCase()==="active"&&Boolean(x.activated_at));
+    const activeIds=new Set(activeEvaluators.map(x=>String(x.id??"")).filter(Boolean));
+    const validAlignments=alignments.filter(x=>{
+      const sampleCount=Number(x.sample_count);
+      const agreement=Number(x.agreement_rate);
+      return activeIds.has(String(x.evaluator_id??""))&&
+        clean(x.status).toLowerCase()==="completed"&&Boolean(x.completed_at)&&
+        x.owner_approved===true&&Number.isFinite(sampleCount)&&sampleCount>0&&
+        x.agreement_rate!==null&&x.agreement_rate!==undefined&&String(x.agreement_rate).trim()!==""&&
+        Number.isFinite(agreement)&&agreement>=0&&agreement<=1;
+    });
+    const alignedIds=new Set(validAlignments.map(x=>String(x.evaluator_id??"")));
+    const calibrationRequired=activeEvaluators.filter(x=>x.calibration_required!==false);
+    const missingAlignment=calibrationRequired.filter(x=>!alignedIds.has(String(x.id??"")));
+
+    const completedOnline=online.filter(x=>{
+      const samples=Number(x.sample_count),scored=Number(x.scored_count);
+      const passed=Number(x.passed_count),failed=Number(x.failed_count);
+      return clean(x.status).toLowerCase()==="completed"&&Boolean(x.completed_at)&&
+        Number.isFinite(samples)&&samples>0&&Number.isFinite(scored)&&scored>0&&scored<=samples&&
+        Number.isFinite(passed)&&passed>=0&&Number.isFinite(failed)&&failed>=0&&passed+failed<=scored;
+    });
+
+    const blockingGates=gates.filter(x=>x.blocks_merge===true);
+    const completedGateRuns=gateRuns.filter(x=>{
+      const gate=blockingGates.find(g=>String(g.id??"")===String(x.gate_id??""));
+      const samples=Number(x.sample_count);
+      return Boolean(gate)&&clean(x.status).toLowerCase()==="completed"&&Boolean(x.completed_at)&&
+        x.passed===true&&x.metric_value!==null&&x.metric_value!==undefined&&String(x.metric_value).trim()!==""&&
+        Number.isFinite(Number(x.metric_value))&&Number.isFinite(samples)&&samples>=Number(gate.min_samples||1);
+    });
+    const passedGateIds=new Set(completedGateRuns.map(x=>String(x.gate_id??"")));
+    const uncoveredGates=blockingGates.filter(g=>!passedGateIds.has(String(g.id??"")));
+
+    const evaluatorRegistryConnected=activeEvaluators.length>0;
+    const humanAlignmentConnected=evaluatorRegistryConnected&&missingAlignment.length===0;
+    const onlineEvalConnected=completedOnline.length>0;
+    const ciEvalGateConnected=blockingGates.length>0&&uncoveredGates.length===0;
+
     return Object.freeze({
       grader_types:Object.freeze(graderTypes),
       evaluator_registry_connected:evaluatorRegistryConnected,
+      evaluator_registry_rows:registry.length,
+      active_evaluators:activeEvaluators.length,
+      calibration_required:calibrationRequired.length,
       human_alignment_connected:humanAlignmentConnected,
+      alignment_runs:alignments.length,
+      valid_alignment_runs:validAlignments.length,
+      missing_alignment:missingAlignment.length,
       online_eval_connected:onlineEvalConnected,
+      online_windows:online.length,
+      completed_online_windows:completedOnline.length,
       ci_eval_gate_connected:ciEvalGateConnected,
+      ci_gates:blockingGates.length,
+      ci_gate_runs:gateRuns.length,
+      passed_ci_gates:passedGateIds.size,
+      uncovered_ci_gates:uncoveredGates.length,
       governance_ready:graderTypes.length>0&&evaluatorRegistryConnected&&humanAlignmentConnected,
       continuous_gate_ready:onlineEvalConnected&&ciEvalGateConnected
     });
@@ -324,6 +378,38 @@
     });
   }
 
+  function buildKnowledgeRadar(input={}){
+    const sources=safeArray(input.f35Sources).filter(x=>x.enabled!==false);
+    const findings=safeArray(input.f35Findings);
+    const now=Number.isFinite(Number(input.nowMs))?Number(input.nowMs):Date.now();
+    const fresh=[],stale=[],never=[];
+    for(const source of sources){
+      const checked=new Date(source.last_checked_at||0).getTime();
+      const freshnessHours=Number(source.freshness_hours||168);
+      if(!Number.isFinite(checked)||checked<=0){never.push(source);continue}
+      const ageHours=Math.max(0,(now-checked)/36e5);
+      if(Number.isFinite(freshnessHours)&&ageHours<=freshnessHours)fresh.push(source);
+      else stale.push(source);
+    }
+    const verified=findings.filter(x=>["verified_official","cross_verified"].includes(clean(x.confidence).toLowerCase()));
+    const review=findings.filter(x=>clean(x.action_state).toLowerCase()==="review"||x.requires_owner_review===true);
+    const latest=verified
+      .slice()
+      .sort((a,b)=>new Date(b.observed_at||0)-new Date(a.observed_at||0))
+      .slice(0,12);
+    return Object.freeze({
+      sources:sources.length,
+      fresh:fresh.length,
+      stale:stale.length,
+      never_checked:never.length,
+      findings:findings.length,
+      verified_findings:verified.length,
+      review_queue:review.length,
+      latest:Object.freeze(latest),
+      ready:sources.length>0&&stale.length===0&&never.length===0
+    });
+  }
+
   function build(input={}){
     const traces=buildTraceExplorer(input);
     const failures=buildFailureInbox(input);
@@ -335,6 +421,7 @@
     const evaluators=buildEvaluatorOps(input);
     const safety=buildSafetyOps(input);
     const lineage=buildLineage(input);
+    const radar=buildKnowledgeRadar(input);
     const replayRuns=safeArray(input.replayRuns);
     const release=input.releaseGate||(replayRuns.length?{replay_runs:replayRuns.length,latest:replayRuns[0]}:null);
     const spanRows=safeArray(input.traceSpans);
@@ -351,11 +438,12 @@
       {id:"datasets",label:"Failure Inbox → Eval Dataset",state:failures.persisted_dataset?"ready":"gap",evidence:failures.dataset_candidates+" dataset candidate(s) · persisted dataset="+String(failures.persisted_dataset)},
       {id:"evaluators",label:"Evaluator Registry + Human Alignment",state:evaluators.governance_ready?"ready":"gap",evidence:evaluators.grader_types.length+" grader type(s) · registry="+String(evaluators.evaluator_registry_connected)+" · human alignment="+String(evaluators.human_alignment_connected)},
       {id:"experiments",label:"Experiment Diff",state:experiments.available?"ready":"gap",evidence:experiments.available?experiments.comparisons.length+" comparable metric(s)":"Need 2+ comparable eval runs per metric"},
-      {id:"online-ci",label:"Online Evals + CI Quality Gate",state:evaluators.continuous_gate_ready?"ready":"gap",evidence:"online eval="+String(evaluators.online_eval_connected)+" · CI gate="+String(evaluators.ci_eval_gate_connected)},
+      {id:"online-ci",label:"Online Evals + CI Quality Gate",state:evaluators.continuous_gate_ready?"ready":"gap",evidence:"online="+evaluators.completed_online_windows+"/"+evaluators.online_windows+" completed · CI gates="+evaluators.passed_ci_gates+"/"+evaluators.ci_gates+" passed · uncovered="+evaluators.uncovered_ci_gates},
       {id:"redteam",label:"Red Team Regression",state:safety.redteam.ready?"ready":safety.redteam.failed?"blocked":"gap",evidence:safety.redteam.covered_cases+"/"+safety.redteam.cases+" active case(s) covered · completed="+safety.redteam.completed_linked+" · pending="+safety.redteam.pending+" · unlinked="+safety.redteam.unlinked+" · failed="+safety.redteam.failed},
       {id:"calibration",label:"Confidence Calibration",state:safety.calibration.ready?"ready":"gap",evidence:safety.calibration.valid_rows+"/"+safety.calibration.rows+" valid measured row(s) · invalid="+safety.calibration.invalid_rows+" · max error="+String(safety.calibration.max_error??"unmeasured")},
       {id:"team-judge",label:"Multi-Agent Judge Runs",state:safety.team_judge.ready?"ready":"gap",evidence:safety.team_judge.judged+"/"+safety.team_judge.runs+" completed run(s) have non-empty final verdicts · incomplete="+safety.team_judge.incomplete},
       {id:"lineage",label:"Prompt → Trace Lineage",state:lineage.ready?"ready":"gap",evidence:lineage.linked_spans+"/"+lineage.versioned_spans+" versioned spans linked · orphaned="+lineage.orphaned_spans+" · stores="+String(lineage.connected)},
+      {id:"f35-radar",label:"F35 Knowledge Freshness",state:radar.ready?"ready":"gap",evidence:radar.fresh+"/"+radar.sources+" source(s) fresh · stale="+radar.stale+" · never="+radar.never_checked+" · findings="+radar.verified_findings},
       {id:"review",label:"Human / Owner Review Queue",state:review.persisted?"ready":"gap",evidence:review.count+" review item(s) · annotation history persisted="+String(review.persisted)},
       {id:"cost",label:"Cost / Latency Budget",state:cost.instrumented?"ready":"gap",evidence:cost.instrumented?cost.sample_count+" measured samples":"Token/cost/latency instrumentation not connected"},
       {id:"alerts",label:"Alerts / SLO Inbox",state:input.alertRulesConnected===true?(alerts.critical?"blocked":alerts.watch?"watch":"ready"):"gap",evidence:alerts.critical+" critical · "+alerts.watch+" watch · threshold/rule history="+String(input.alertRulesConnected===true)},
@@ -365,7 +453,7 @@
     return Object.freeze({
       mode:"BOOM_PROFESSIONAL_WORKBENCH",
       capabilities,
-      traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,evaluators,safety,lineage,release,
+      traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,evaluators,safety,lineage,radar,release,
       professional_ready:capabilities.every(x=>x.state==="ready"||x.state==="empty"),
       gaps:Object.freeze(capabilities.filter(x=>x.state==="gap").map(x=>x.id)),
       invariants:Object.freeze({
@@ -380,7 +468,7 @@
     });
   }
 
-  const api=Object.freeze({build,buildTraceExplorer,buildFailureInbox,buildExperimentDiff,buildReviewQueue,buildCostLatency,buildPromptRegistry,buildAlerts,buildEvaluatorOps,buildSafetyOps,buildLineage,percentile});
+  const api=Object.freeze({build,buildTraceExplorer,buildFailureInbox,buildExperimentDiff,buildReviewQueue,buildCostLatency,buildPromptRegistry,buildAlerts,buildEvaluatorOps,buildSafetyOps,buildLineage,buildKnowledgeRadar,percentile});
   if(typeof window!=="undefined")window.BoomProfessionalWorkbench=api;
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
 })();
