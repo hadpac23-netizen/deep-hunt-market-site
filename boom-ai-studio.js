@@ -442,6 +442,15 @@
     "boom-mirror":{inputs:["explicit consent","retention choice","verified product anchor"],outputs:["private preview plan","focus mode"],forbidden:["exact-fit claims","retain images without consent","activate provider without approval"]},
     "creative-brand-factory":{inputs:["verified product truth","human idea","references"],outputs:["hooks","storyboard","QA shortlist"],forbidden:["paid generation","publishing","fake claims without Owner approval"]}
   });
+  const huntAlphaStages=Object.freeze([
+    {id:"A1",name:"Truth Foundation",brains:["country-shipping","product-truth"],goal:"Normalize exact SKU, stock, country, shipping, landed cost and freshness.",gate:"No stale or ineligible product enters Alpha."},
+    {id:"A2",name:"Decision & Taste",brains:["decision-intelligence","taste-dna"],goal:"Explainable ranking with cold-start, affinity, novelty and fatigue controls.",gate:"Every recommendation returns reasons and hard-gate evidence."},
+    {id:"A3",name:"Memory & Actions",brains:["hunt-memory"],goal:"Connect real impression, dwell, Like, Save, Share and History signals.",gate:"No fabricated behavior; user controls remain available."},
+    {id:"A4",name:"Dynamic Flow",brains:["dynamic-worlds"],goal:"One reversible HUNT 2037 session with real products and stable facts.",gate:"Feature flag ON only in Alpha; current storefront stays fallback."},
+    {id:"A5",name:"Personal Studio",brains:["boom-stylist","boom-mirror"],goal:"Stylist flow and privacy-safe Mirror entry using verified product anchors.",gate:"Consent required; rendering provider and exact-fit claims remain OFF."},
+    {id:"A6",name:"Creative Learning",brains:["creative-brand-factory"],goal:"Prepare small truthful creative tests for selected Hero Products.",gate:"Private QA and Owner review before any paid generation or publishing."},
+    {id:"A7",name:"Integration QA",brains:["decision-intelligence","product-truth","dynamic-worlds"],goal:"Verify mobile, desktop, keyboard, performance, fallbacks and checkout preservation.",gate:"Alpha report required before any production decision."}
+  ]);
 
   function renderBrainDetail(id){
     const row=state.huntCapabilities.find(item=>item.id===id);
@@ -547,6 +556,21 @@
         '<footer><span>'+esc(new Date(row.recorded_at).toLocaleString())+'</span><span>EXECUTION OFF</span></footer>'+
       '</article>'
     ).join("");
+  }
+
+  function renderAlphaBlueprint(){
+    const host=$("#alpha-stage-grid");
+    if(!host)return;
+    host.innerHTML=huntAlphaStages.map(stage=>
+      '<article class="alpha-stage"><header><b>'+esc(stage.id+" · "+stage.name)+'</b><em>PLANNED</em></header>'+
+      '<p>'+esc(stage.goal)+'</p><footer>'+esc(stage.brains.join(" → "))+'<br>GATE: '+esc(stage.gate)+'</footer></article>'
+    ).join("");
+  }
+
+  function loadAlphaPlan(){
+    const input=$("#planning-objective");
+    if(input)input.value="Prepare HUNT 2037 Alpha inside BOOM Studio using verified real products, explainable intelligence, memory, Worlds, Stylist, privacy-safe Mirror entry and preserved checkout fallback. No production activation.";
+    buildPlanningDraft();
   }
 
   function simulateHuntIntelligence(){
@@ -1401,6 +1425,7 @@
   $("#planning-build")?.addEventListener("click",buildPlanningDraft);
   $("#planning-revision")?.addEventListener("click",()=>setPlanningDecision("NEEDS_REVISION"));
   $("#planning-approve")?.addEventListener("click",()=>setPlanningDecision("APPROVED_FOR_IMPLEMENTATION_PLANNING"));
+  $("#alpha-load-plan")?.addEventListener("click",loadAlphaPlan);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
@@ -1458,6 +1483,7 @@
       if(tab.dataset.tab==="connect")renderConnect();
       if(tab.dataset.tab==="hunt-intelligence")renderHuntIntelligence();
       if(tab.dataset.tab==="hunt-intelligence")renderApprovalQueue();
+      if(tab.dataset.tab==="hunt-intelligence")renderAlphaBlueprint();
       if(tab.dataset.tab==="brand-factory")renderBrandFinance();
       return;
     }
