@@ -301,6 +301,33 @@
               <div class="truth-result-status" id="truth-result-status">NOT_EVALUATED · EXECUTION_OFF</div>
               <pre id="truth-result">Enter verified evidence to simulate the Product Truth gate.</pre>
             </section>
+            <section class="decision-workspace">
+              <div class="truth-workspace-head"><div><small>A2 WORKSPACE</small><h3>Decision Brain & Taste DNA Simulation</h3><p>Explainable scoring only. Sensitive traits are never accepted as ranking inputs.</p></div><span>SIMULATION ONLY</span></div>
+              <div class="decision-form-grid">
+                <label>Category<input id="decision-category" value="fashion" maxlength="60"></label>
+                <label>Provider<input id="decision-provider" value="CJdropshipping" maxlength="40"></label>
+                <label>Recorded interactions<input id="decision-interactions" type="number" min="0" step="1" value="0"></label>
+                <label>Category taste score<input id="decision-taste-score" type="number" step=".1" value="0"></label>
+                <label>Relevance 0–100<input id="decision-relevance" type="number" min="0" max="100" value="70"></label>
+                <label>Quality 0–100<input id="decision-quality" type="number" min="0" max="100" value="80"></label>
+                <label>Shipping 0–100<input id="decision-shipping" type="number" min="0" max="100" value="70"></label>
+                <label>Trust 0–100<input id="decision-trust" type="number" min="0" max="100" value="80"></label>
+                <label>Freshness 0–100<input id="decision-freshness" type="number" min="0" max="100" value="70"></label>
+                <label>Novelty 0–100<input id="decision-novelty" type="number" min="0" max="100" value="60"></label>
+                <label>Creative 0–100<input id="decision-creative" type="number" min="0" max="100" value="50"></label>
+                <label>Margin rate %<input id="decision-margin" type="number" min="0" max="100" value="25"></label>
+              </div>
+              <div class="decision-checks">
+                <label><input id="decision-truth-live" type="checkbox"> Product Truth is LIVE_VERIFIED</label>
+                <label><input id="decision-market" type="checkbox" checked> Market eligible</label>
+                <label><input id="decision-shipping-eligible" type="checkbox" checked> Shipping eligible</label>
+                <label><input id="decision-stock" type="checkbox" checked> Stock available</label>
+                <label><input id="decision-media" type="checkbox" checked> Media verified</label>
+              </div>
+              <div class="truth-actions"><button class="top-btn" id="decision-simulate" type="button">Simulate decision</button></div>
+              <div class="truth-result-status" id="decision-result-status">NOT_EVALUATED · EXECUTION_OFF</div>
+              <pre id="decision-result">Set evidence and taste context to preview BOOM's decision.</pre>
+            </section>
             <section class="alpha-exit-gate">
               <strong>Alpha exit gate</strong>
               <p>Real eligible products · explainable recommendations · Like/Save/Share · History · Worlds · Stylist · safe Mirror entry · stable checkout fallback · mobile/desktop QA.</p>
@@ -366,6 +393,8 @@
   <script src="market-core.js"></script>
   <script src="hunt-supplier-core.js?v=alpha1"></script>
   <script src="hunt-country-product-truth.js?v=alpha1"></script>
+  <script src="boom-taste-dna.js?v=alpha1"></script>
+  <script src="boom-decision-brain.js?v=brain1"></script>
   <script src="brand-video-router.js?v=1"></script>
   <script src="brand-creative-qa.js?v=1"></script>
   <script src="brand-video-dispatch.js?v=1"></script>
