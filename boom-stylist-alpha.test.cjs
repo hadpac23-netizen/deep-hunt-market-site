@@ -13,6 +13,7 @@ assert(html.includes("does not judge bodies or appearance"),"Stylist safety copy
 assert(js.includes("Core.createMission"),"Stylist mission builder missing");
 assert(html.includes("hunt-experience-memory.js?v=memory2"),"Stylist memory bridge missing");
 assert(js.includes("WORLD_ANCHORS"),"World-to-Stylist anchor mapping missing");
+assert(js.includes('params.get("anchor")'),"Product anchor query support missing");
 assert(js.includes("Memory?.decisionContext?.()"),"Stylist must use HUNT memory context");
 assert(js.includes('fashion:"women-dresses"'),"Fashion world Stylist mapping missing");
 assert(js.includes('"tech-home":"home"'),"Future Living Stylist mapping missing");
