@@ -75,10 +75,10 @@ const tabOrder=[
   'data-tab="hunt-intelligence"',
   'data-tab="professional-workbench"',
   'data-tab="brand-factory"',
-  'data-tab="evaluations"',
-  'data-tab="learning"',
+  'data-tab="connect"',
   'data-tab="executions"',
-  'data-tab="connect"'
+  'data-tab="evaluations"',
+  'data-tab="learning"'
 ].map(token=>html.indexOf(token));
 assert(tabOrder.every(x=>x>=0),"BOOM top navigation tab missing");
 assert(tabOrder.every((x,i)=>i===0||x>tabOrder[i-1]),"BOOM top navigation order regressed");
@@ -615,5 +615,12 @@ assert(js.includes("function renderB13Closure()"),"B13 renderer missing");
 for(const id of ["hunt-watch","style-watch","look-locker","look-deconstruction","customer-controls","post-purchase","referral-collaboration","professional-foundation"]){
   assert(js.includes('id:"'+id+'"'),"Expanded Master Prompt audit item missing: "+id);
 }
+
+
+assert(html.includes('class="studio-phase-strip"'),"Studio phase status strip missing");
+assert(html.includes("B13 · BRAIN SOURCE COMPLETE"),"B13 architecture-complete design status missing");
+assert(html.indexOf('data-studio-group="intelligence"')<html.indexOf('data-studio-view="professional-workbench"'),"Studio navigation must follow Brain → Intelligence → Release → Professional flow");
+assert(css.includes("DESIGN PASS 1 · INFORMATION HIERARCHY"),"Design Pass 1 CSS missing");
+assert(css.includes("#b13-master-prompt-closure"),"B13 visual hierarchy styling missing");
 
 console.log("boom_ai_studio_tests=PASS");
