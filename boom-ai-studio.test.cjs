@@ -236,3 +236,22 @@ assert(js.includes("PUBLISHING_AUTHORIZED: false"),"A7 publishing guard missing"
 assert(js.includes("OWNER_GATE: OWNER_REVIEW_REQUIRED"),"A7 Owner Gate missing");
 assert(css.includes(".integration-workspace"),"A7 workspace styling missing");
 assert(css.includes(".integration-stage[data-state=\"blocked\"]"),"A7 blocker styling missing");
+
+assert(html.includes('id="alpha-harness-run"'),"A8 Alpha Test Harness control missing");
+assert(html.includes('id="alpha-harness-status"'),"A8 harness status missing");
+assert(html.includes('id="alpha-harness-scenarios"'),"A8 scenario grid missing");
+assert(html.includes('id="alpha-harness-report"'),"A8 report missing");
+assert(html.includes("boom-alpha-test-harness.js?v=alpha1"),"A8 harness core script missing");
+assert(js.includes("const AlphaHarness=window.BoomAlphaTestHarness"),"A8 harness binding missing");
+assert(js.includes("function runAlphaHarnessUI()"),"A8 harness UI runner missing");
+assert(js.includes("A8_PASS"),"A8 pass state missing");
+assert((js.match(/#alpha-harness-run"\)\?\.addEventListener/g)||[]).length===1,"A8 harness listener must be unique");
+assert(js.includes("PRODUCTION READY: false"),"A8 production readiness guard missing");
+assert(js.includes("SUPPLIER_CALLS: 0"),"A8 supplier-call guard missing");
+assert(js.includes("AI_PROVIDER_CALLS: 0"),"A8 AI-provider-call guard missing");
+assert(js.includes("SPEND_AUTHORIZED: false"),"A8 spend guard missing");
+assert(js.includes("PUBLISHING_AUTHORIZED: false"),"A8 publishing guard missing");
+assert(css.includes(".harness-workspace"),"A8 harness styling missing");
+assert(css.includes(".harness-scenario[data-state=\"blocked\"]"),"A8 fail-closed styling missing");
+assert(fs.existsSync("boom-alpha-test-harness.js"),"A8 harness core file missing");
+assert(fs.existsSync("boom-alpha-test-harness.test.cjs"),"A8 harness unit test missing");
