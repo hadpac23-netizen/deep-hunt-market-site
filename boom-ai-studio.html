@@ -107,6 +107,13 @@
               <div class="node-body"><p>Before/after · Regression · Keep/Kill</p><footer><span id="eval-label">EVALS</span><span class="status-dot"></span></footer></div>
             </article>
 
+            <div class="section-label label-output">DECISION / OUTPUT</div>
+            <article class="node node-output" id="node-output" data-special="output">
+              <span class="port in"></span>
+              <div class="node-head"><span class="node-icon">→</span><span class="node-title">Decision / Owner Output</span></div>
+              <div class="node-body"><p>Approve · Block · Repair · Owner Gate</p><footer><span>NO AUTO-PUBLISH</span><span class="status-dot"></span></footer></div>
+            </article>
+
             <div id="tool-nodes"></div>
 
             <button class="attention-focus-btn" id="attention-focus" type="button">
@@ -503,6 +510,12 @@
                 <button class="top-btn" id="alpha-final-no-go" type="button">NO-GO · Hold</button>
               </div>
               <pre id="alpha-final-gate-report">No A12 final gate report yet. No Owner decision has been recorded.</pre>
+            </section>
+            <section class="prompt-audit-workspace" id="prompt-coverage-audit">
+              <div class="truth-workspace-head"><div><small>OWNER PROMPT COVERAGE</small><h3>BOOM Studio Prompt Audit</h3><p>Checks the Studio structure against the approved BOOM/HUNT direction. PRESENT means structurally represented; PARTIAL means the Studio has the control but still needs private-preview/runtime verification.</p></div><span>NO CLAIM WITHOUT EVIDENCE</span></div>
+              <div class="prompt-audit-summary" id="prompt-audit-summary"></div>
+              <div class="prompt-audit-grid" id="prompt-audit-grid"></div>
+              <pre id="prompt-audit-report">Prompt coverage audit has not rendered yet.</pre>
             </section>
             <section class="alpha-exit-gate">
               <strong>Alpha exit gate</strong>
