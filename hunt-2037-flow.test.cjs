@@ -38,6 +38,8 @@ assert(js.includes('searchParams.get("hunt2037")==="1"'),"URL feature flag missi
 assert(js.includes("hunt_2037_flow_enabled"),"persistent feature flag missing");
 assert(js.includes("data-hunt2037-share"),"share action missing");
 assert(js.includes("Style it"),"product-to-Stylist action missing");
+assert(js.includes("hunt2037-world-visual"),"visible World art panel missing");
+assert(js.includes("ORIGINAL HUNT NIGHT ART"),"visible World art truth label missing");
 assert(js.includes("Try in Mirror"),"eligible product-to-Mirror action missing");
 assert(js.includes("function mirrorTypeFor"),"Mirror product type mapper missing");
 assert(js.includes("anchor:category"),"Stylist product anchor query missing");
@@ -64,6 +66,7 @@ assert(css.includes("prefers-reduced-motion"),"reduced-motion support missing");
 assert(css.includes("content-visibility:auto"),"offscreen rendering optimization missing");
 assert(css.includes(".hunt2037-world-mode-bar"),"world mode bar styles missing");
 assert(css.includes(".hunt2037-card-actions"),"product action row styles missing");
+assert(css.includes(".hunt2037-world-visual{"),"visible World art CSS missing");
 assert(css.includes("body.hunt2037-active #hd-wow-showcase"),"fallback surface switch missing");
 const visual=fs.readFileSync("hunt-2037-visual.js","utf8");
 const cities=JSON.parse(fs.readFileSync("hunt-city-night-manifest.json","utf8"));
@@ -82,6 +85,10 @@ assert(!css.includes("\\\\n"),"literal escaped newlines must not remain in CSS")
 assert(cities.policy==="licensed_or_original_assets_only","city asset policy missing");
 assert(cities.mode==="night_only","night-only city policy missing");
 for(const city of ["Dubai","London","Tokyo","Singapore","New York","Copenhagen","Mumbai","Cape Town"])assert(cities.cities.some(x=>x.name===city),"missing city "+city);
+assert.equal(Core.WORLDS.find(x=>x.id==="fashion").visual,"assets/hunt-city/tokyo-night.svg");
+assert.equal(Core.WORLDS.find(x=>x.id==="jewelry").visual,"assets/hunt-city/paris-night.svg");
+assert.equal(Core.WORLDS.find(x=>x.id==="tech-home").visual,"assets/hunt-city/shenzhen-night.svg");
+assert.equal(Core.WORLDS.find(x=>x.id==="travel").visual,"assets/hunt-city/dubai-night.svg");
 for(const id of ["tokyo","paris","shenzhen","dubai"]){
   const city=cities.cities.find(x=>x.id===id);
   assert.equal(city.status,"ORIGINAL_HUNT_ASSET","original city asset status missing for "+id);
