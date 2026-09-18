@@ -7,6 +7,7 @@
   const previewLocalHost=["127.0.0.1","localhost"].includes(location.hostname);
   const previewNetlifyDraft=/^[a-z0-9-]+--deep-hunt-market\.netlify\.app$/i.test(location.hostname);
   const SAFE_PREVIEW_BOOT=(previewLocalHost||previewNetlifyDraft)&&previewUrl.searchParams.get("preview")==="1";
+  const READ_ONLY_LIVE_PREVIEW=previewNetlifyDraft&&previewUrl.searchParams.get("readonly")==="1";
   const Truth=window.HuntCountryProductTruth;
   const Taste=window.BoomTasteDNA;
   const Decision=window.BoomDecisionBrain;
@@ -93,6 +94,7 @@
     alphaRCQA:null,
     alphaFinalGate:null,
     localPreview:false,
+    readOnlyPreview:READ_ONLY_LIVE_PREVIEW,
     professionalSnapshot:null,
     professionalEvidence:{
       modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
@@ -250,6 +252,18 @@
     return report?.status||manager?.status||"offline";
   }
 
+  function freshStatusOf(id,maxMinutes=30){
+    const manager=state.managerMap.get(id)||toolNodeFallbackManagers[id];
+    const report=state.reportMap.get(id)||toolNodeFallbackReports[id];
+    const raw=String(report?.status||manager?.status||"offline").toLowerCase();
+    if(["blocked","critical","offline"].includes(raw))return raw;
+    const times=[report?.created_at,manager?.updated_at].filter(Boolean).map(x=>new Date(x).getTime()).filter(Number.isFinite);
+    if(!times.length)return raw==="watch"?"watch":"offline";
+    const ageMinutes=Math.max(0,(Date.now()-Math.max(...times))/60000);
+    if(ageMinutes>maxMinutes)return "watch";
+    return raw;
+  }
+
   function setNodeStatus(el,status){
     if(el)el.dataset.status=status;
   }
@@ -313,28 +327,44 @@
     svg.appendChild(p);
   }
 
+  function linkTone(status){
+    const s=String(status||"offline").toLowerCase();
+    if(["healthy","working","running"].includes(s))return "live";
+    if(["watch","queued","accepted","waiting_owner"].includes(s))return "watch";
+    if(["blocked","critical"].includes(s))return s;
+    return "offline";
+  }
+
   function drawLinks(){
     const svg=$("#links");
     const canvas=$("#canvas");
     if(!svg||!canvas)return;
     svg.innerHTML="";
     svg.setAttribute("viewBox","0 0 "+canvas.clientWidth+" "+canvas.clientHeight);
-    addLine(svg,$("#node-owner"),$("#node-meta"),"live");
-    addLine(svg,$("#node-meta"),$("#node-super"),"live");
-    addLine(svg,$("#node-super"),$("#node-model"),"watch");
-    addLine(svg,$("#node-super"),$("#node-memory"),"live");
-    addLine(svg,$("#node-super"),$("#node-eval"),state.evals.length?"live":"watch");
-    addLine(svg,$("#node-eval"),$("#node-output"),"watch");
+
+    const metaStatus=state.localPreview?"watch":freshStatusOf("boom-meta-f35");
+    const superStatus=state.localPreview?"watch":freshStatusOf("boom-super-agent");
+    const modelEvidence=(state.professionalEvidence?.modelObservations||[]).find(x=>x.success===true&&connectorFresh(x.created_at,24));
+    const modelStatus=state.localPreview?"watch":(modelEvidence?"healthy":"watch");
+    const memoryStatus=state.localPreview?"watch":((state.reports.length||state.events.length)?"healthy":"offline");
+    const evalStatus=state.localPreview?"watch":(state.evals.length?"healthy":"offline");
+    const outputStatus=state.localPreview?"watch":(state.commands.some(x=>["waiting_owner","running","accepted","queued"].includes(x.status))?"working":(state.evals.length?"healthy":"offline"));
+
+    addLine(svg,$("#node-owner"),$("#node-meta"),linkTone(metaStatus));
+    addLine(svg,$("#node-meta"),$("#node-super"),linkTone(superStatus));
+    addLine(svg,$("#node-super"),$("#node-model"),linkTone(modelStatus));
+    addLine(svg,$("#node-super"),$("#node-memory"),linkTone(memoryStatus));
+    addLine(svg,$("#node-super"),$("#node-eval"),linkTone(evalStatus));
+    addLine(svg,$("#node-eval"),$("#node-output"),linkTone(outputStatus));
+
     for(const group of studioNodeGroups){
       const first=group.nodes[0];
       if(!first)continue;
-      const firstStatus=statusOf(first[0]);
-      addLine(svg,$("#node-super"),$("#node-"+first[0]),["healthy","working"].includes(firstStatus)?"live":firstStatus);
+      addLine(svg,$("#node-super"),$("#node-"+first[0]),linkTone(state.localPreview?"watch":freshStatusOf(first[0])));
       if(["intelligence","release"].includes(group.id)){
         for(let i=1;i<group.nodes.length;i++){
           const prev=group.nodes[i-1],current=group.nodes[i];
-          const st=statusOf(current[0]);
-          addLine(svg,$("#node-"+prev[0]),$("#node-"+current[0]),["healthy","working"].includes(st)?"live":st);
+          addLine(svg,$("#node-"+prev[0]),$("#node-"+current[0]),linkTone(state.localPreview?"watch":freshStatusOf(current[0])));
         }
       }
     }
@@ -370,14 +400,19 @@
     state.reportMap=latest(state.reports,"manager_id");
     state.workerReportMap=latest(state.workerReports,"worker_id");
 
-    setNodeStatus($("#node-owner"),"healthy");
-    setNodeStatus($("#node-meta"),statusOf("boom-meta-f35"));
-    setNodeStatus($("#node-super"),statusOf("boom-super-agent"));
-    setNodeStatus($("#node-model"),"watch");
-    setNodeStatus($("#node-memory"),"healthy");
-    setNodeStatus($("#node-eval"),state.evals.length?"healthy":"watch");
-    setNodeStatus($("#node-output"),"watch");
-    toolNodes.forEach(t=>setNodeStatus($("#node-"+t[0]),statusOf(t[0])));
+    const modelLive=(state.professionalEvidence?.modelObservations||[]).some(x=>x.success===true&&connectorFresh(x.created_at,24));
+    const hasMemoryEvidence=Boolean(state.reports.length||state.events.length);
+    const hasEvalEvidence=Boolean(state.evals.length);
+    const hasOpenOutput=state.commands.some(x=>["queued","accepted","running","waiting_owner"].includes(x.status));
+
+    setNodeStatus($("#node-owner"),state.localPreview?"watch":"healthy");
+    setNodeStatus($("#node-meta"),state.localPreview?"watch":freshStatusOf("boom-meta-f35"));
+    setNodeStatus($("#node-super"),state.localPreview?"watch":freshStatusOf("boom-super-agent"));
+    setNodeStatus($("#node-model"),state.localPreview?"watch":(modelLive?"healthy":"watch"));
+    setNodeStatus($("#node-memory"),state.localPreview?"watch":(hasMemoryEvidence?"healthy":"offline"));
+    setNodeStatus($("#node-eval"),state.localPreview?"watch":(hasEvalEvidence?"healthy":"offline"));
+    setNodeStatus($("#node-output"),state.localPreview?"watch":(hasOpenOutput?"working":(hasEvalEvidence?"healthy":"offline")));
+    toolNodes.forEach(t=>setNodeStatus($("#node-"+t[0]),state.localPreview?"watch":freshStatusOf(t[0])));
 
     $("#meta-label").textContent=state.learning.filter(x=>x.domain==="ai-engineering").length+" AI MODULES";
     $("#command-label").textContent=state.commands.filter(x=>["queued","accepted","running","waiting_owner"].includes(x.status)).length+" OPEN COMMANDS";
@@ -938,6 +973,7 @@
     const controlMap=new Map((state.connectorEvidence.controls||[]).map(x=>[String(x.key||""),x]));
     const paymentControl=controlMap.get("hunt_payment_live");
     const supplierLiveControl=controlMap.get("hunt_supplier_order_live");
+    const supplierSandboxControl=controlMap.get("hunt_supplier_order_sandbox");
 
     const base=[
       {id:"supabase",name:"Supabase Core",kind:"IDENTITY + BACKEND",tone:state.localPreview?"watch":"healthy",detail:state.localPreview?"Local Preview does not query live Supabase.":"Studio data loaded successfully from the live Supabase project.",evidence:state.localPreview?"LOCAL_PREVIEW":"Live authenticated query + realtime channel",gate:"Owner gate for config changes"},
@@ -948,6 +984,7 @@
       {id:"hypersku",name:"HyperSKU Supplier",kind:"TIER 0 SUPPLIER API",tone:connectTone(hyperskuRaw),detail:"Adapter foundation exists; live Open API auth/read-only verification are not proven.",evidence:"supplier-hypersku · "+hyperskuRaw+" · PILOT",gate:"Read-only first · fulfillment requires explicit Owner approval"},
       {id:"repair",name:"BOOM Repair Engineering",kind:"SELF-HEALING",tone:connectTone(repairRaw),detail:"Safe reversible incidents may be repaired; material changes escalate.",evidence:"repair-engineering · "+repairRaw,gate:"Safe repair auto · material changes gated"},
       {id:"payments",name:"Live Payments",kind:"PAYMENTS",tone:paymentControl?.enabled===true&&paymentControl?.owner_approved===true?"watch":"blocked",detail:paymentControl?.enabled===true?"Runtime control enabled; launch evidence still required.":"Live charging remains intentionally OFF.",evidence:paymentControl?"hunt_payment_live · enabled="+String(paymentControl.enabled)+" · owner="+String(paymentControl.owner_approved):"runtime control unavailable",gate:"Explicit Owner approval required"},
+      {id:"supplier-sandbox",name:"Supplier Order Sandbox",kind:"FULFILLMENT · SANDBOX",tone:supplierSandboxControl?.enabled===true&&supplierSandboxControl?.owner_approved===true?"healthy":"watch",detail:supplierSandboxControl?.enabled===true&&supplierSandboxControl?.owner_approved===true?"Sandbox supplier-order path is enabled and Owner-approved for non-live testing.":"Sandbox supplier-order path is not fully enabled.",evidence:supplierSandboxControl?"hunt_supplier_order_sandbox · enabled="+String(supplierSandboxControl.enabled)+" · owner="+String(supplierSandboxControl.owner_approved):"runtime control unavailable",gate:"Sandbox only · no real supplier order"},
       {id:"supplier-orders",name:"Live Supplier Orders",kind:"FULFILLMENT",tone:supplierLiveControl?.enabled===true&&supplierLiveControl?.owner_approved===true?"watch":"blocked",detail:supplierLiveControl?.enabled===true?"Live supplier order gate enabled; E2E evidence still required.":"Real supplier order creation remains OFF.",evidence:supplierLiveControl?"hunt_supplier_order_live · enabled="+String(supplierLiveControl.enabled)+" · owner="+String(supplierLiveControl.owner_approved):"runtime control unavailable",gate:"Explicit Owner approval required"}
     ];
 
@@ -2349,7 +2386,210 @@
     }
   }
 
+
+  function ownerControl(key){
+    return (state.connectorEvidence?.controls||[]).find(x=>x.key===key)||null;
+  }
+
+  function ownerOpenCommands(){
+    return (state.commands||[]).filter(x=>["queued","accepted","running","waiting_owner"].includes(String(x.status||"").toLowerCase()));
+  }
+
+  function ownerWaitingCommands(){
+    return ownerOpenCommands().filter(x=>String(x.status||"").toLowerCase()==="waiting_owner");
+  }
+
+  function ownerHuntState(){
+    if(state.localPreview)return {label:"SAFE PREVIEW",note:"Live actions כבויות בתצוגה"};
+    const payment=ownerControl("hunt_payment_live");
+    const supplier=ownerControl("hunt_supplier_order_live");
+    const paymentOn=payment?.enabled===true&&payment?.owner_approved===true;
+    const supplierOn=supplier?.enabled===true&&supplier?.owner_approved===true;
+    if(paymentOn&&supplierOn)return {label:"LIVE",note:"תשלום והזמנות ספק פעילים"};
+    return {label:"PRELAUNCH",note:"Live money / supplier order עדיין סגורים"};
+  }
+
+  function ownerPrimaryMission(){
+    const open=ownerOpenCommands().slice().sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
+    if(open.length){
+      const x=open[0];
+      return {
+        title:x.title||x.instruction||"משימת BOOM פעילה",
+        description:x.instruction||"BOOM עובד על המשימה ומעדכן את הראיות.",
+        status:String(x.status||"working").toLowerCase(),
+        meta:(x.target_manager_id?("מנהל: "+x.target_manager_id+" · "):"")+(x.created_at?("התחיל "+ago(x.created_at)):"")
+      };
+    }
+    const report=(state.reports||[])[0];
+    if(report&&["working","watch","blocked","critical"].includes(String(report.status||"").toLowerCase())){
+      return {
+        title:report.title||report.manager_id||"בדיקה פעילה",
+        description:report.recommended_action||report.summary||"BOOM בודק את המצב ומרכז evidence.",
+        status:String(report.status||"watch").toLowerCase(),
+        meta:(report.manager_id?("מנהל: "+report.manager_id+" · "):"")+(report.created_at?ago(report.created_at):"")
+      };
+    }
+    return {
+      title:state.localPreview?"Owner Mode Preview":"אין משימה פעילה כרגע",
+      description:state.localPreview
+        ?"זו תצוגה בטוחה של המסך החדש. נתוני Live ופעולות חיצוניות אינם נטענים כאן."
+        :"BOOM מוכן. אפשר לתת משימה מהכפתורים למטה או דרך BOOM Chat.",
+      status:state.localPreview?"watch":"healthy",
+      meta:state.localPreview?"DRAFT PREVIEW · LIVE ACTIONS OFF":"מוכן למשימה חדשה"
+    };
+  }
+
+  function ownerActivityRows(){
+    const rows=[
+      ...(state.commands||[]).slice(0,12).map(x=>({title:x.title||x.instruction||"Command",meta:"פקודה · "+(x.target_manager_id||"BOOM"),time:x.created_at,status:x.status||"working"})),
+      ...(state.events||[]).slice(0,12).map(x=>({title:x.title||x.event_type||"Event",meta:"אירוע · "+(x.source_manager_id||"system"),time:x.created_at,status:x.severity||"healthy"})),
+      ...(state.reports||[]).slice(0,12).map(x=>({title:x.title||x.manager_id||"Report",meta:"דוח · "+(x.manager_id||"BOOM"),time:x.created_at,status:x.status||"healthy"}))
+    ];
+    return rows.sort((a,b)=>new Date(b.time||0)-new Date(a.time||0)).slice(0,6);
+  }
+
+  function ownerStatusLabel(status){
+    const s=String(status||"offline").toLowerCase();
+    if(s==="healthy")return "READY";
+    if(s==="working"||s==="running"||s==="accepted")return "RUNNING";
+    if(s==="queued")return "QUEUED";
+    if(s==="waiting_owner")return "OWNER";
+    if(s==="critical")return "CRITICAL";
+    if(s==="blocked")return "BLOCKED";
+    if(s==="watch")return "WATCH";
+    return s.toUpperCase();
+  }
+
+  function renderOwnerMissionFlow(status){
+    const flow=$("#owner-mission-flow");
+    if(!flow)return;
+    const steps=[...flow.querySelectorAll("[data-mission-step]")];
+    steps.forEach(x=>x.classList.remove("done","active","watch"));
+    if(state.localPreview){
+      steps.forEach(x=>x.classList.add("watch"));
+      return;
+    }
+    const s=String(status||"offline").toLowerCase();
+    const mark=(doneCount,activeIndex)=>{
+      steps.forEach((node,index)=>{
+        if(index<doneCount)node.classList.add("done");
+        else if(index===activeIndex)node.classList.add("active");
+      });
+    };
+    if(s==="queued")mark(0,0);
+    else if(["accepted","running","working"].includes(s))mark(1,1);
+    else if(s==="waiting_owner")mark(3,3);
+    else if(s==="healthy")mark(4,-1);
+    else steps.forEach(x=>x.classList.add("watch"));
+  }
+
+  function renderOwnerHome(){
+    const open=ownerOpenCommands();
+    const waiting=ownerWaitingCommands();
+    const attention=attentionReports();
+    const hunt=ownerHuntState();
+    if(state.readOnlyPreview)hunt.note="Live evidence · external actions disabled";
+    const mission=ownerPrimaryMission();
+
+    const setText=(id,value)=>{const el=$("#"+id);if(el)el.textContent=String(value)};
+    setText("owner-active-count",state.localPreview?"—":open.length);
+    setText("owner-active-note",state.localPreview?"Live data לא נטען ב־Preview":(open.length?"BOOM מטפל כעת":"אין משימות פתוחות"));
+    setText("owner-approval-count",state.localPreview?"—":waiting.length);
+    setText("owner-approval-note",state.localPreview?"Owner Gate נשאר פעיל":(waiting.length?"ממתינות להחלטה שלך":"אין אישורים ממתינים"));
+    setText("owner-attention-count",state.localPreview?"—":attention.length);
+    setText("owner-attention-note",state.localPreview?"התראות Live מוסתרות":(attention.length?"דורשות בדיקה":"הכול שקט"));
+    setText("owner-hunt-state",hunt.label);
+    setText("owner-hunt-note",hunt.note);
+    setText("owner-mission-title",mission.title);
+    setText("owner-mission-description",mission.description);
+    setText("owner-mission-meta",mission.meta);
+
+    const missionState=$("#owner-mission-state");
+    if(missionState){
+      missionState.textContent=ownerStatusLabel(mission.status);
+      missionState.className="owner-state-pill "+esc(mission.status);
+    }
+    renderOwnerMissionFlow(mission.status);
+
+    const prod=ownerControl("hunt_supplier_order_live");
+    const pay=ownerControl("hunt_payment_live");
+    const prodBadge=$("#owner-production-badge");
+    const payBadge=$("#owner-payments-badge");
+    if(prodBadge)prodBadge.textContent=(prod?.enabled===true&&prod?.owner_approved===true)?"SUPPLIER LIVE":"PRODUCTION OFF";
+    if(payBadge)payBadge.textContent=(pay?.enabled===true&&pay?.owner_approved===true)?"PAYMENTS LIVE":"PAYMENTS OFF";
+
+    const approvals=$("#owner-approval-list");
+    if(approvals){
+      if(state.localPreview){
+        approvals.innerHTML='<div class="owner-empty">Safe Preview · אישורי Live אינם נטענים כאן.</div>';
+      }else if(!waiting.length){
+        approvals.innerHTML='<div class="owner-empty">אין החלטות שממתינות כרגע.</div>';
+      }else{
+        approvals.innerHTML=waiting.slice(0,4).map(x=>
+          '<article class="owner-approval-row"><div><strong>'+esc(x.title||x.instruction||"Owner decision")+'</strong><small>'+esc((x.target_manager_id||"BOOM")+" · "+ago(x.created_at))+'</small></div><button type="button" data-owner-command="'+esc(x.id||"")+'">פתח</button></article>'
+        ).join("");
+      }
+    }
+
+    const agents=[
+      ["boom-super-agent","BOOM Brain","Orchestrator","B"],
+      ["f35-research","F35 Research","Research","⌕"],
+      ["supplier-shipping","Supplier Brain","Supply","◇"],
+      ["pricing-profit","Profit Brain","Commerce","$"],
+      ["checkout-payment","Checkout Brain","Launch","✓"]
+    ];
+    const agentGrid=$("#owner-agent-grid");
+    if(agentGrid){
+      agentGrid.innerHTML=agents.map(([id,name,role,icon])=>{
+        const st=state.localPreview?"watch":freshStatusOf(id);
+        return '<article class="owner-agent-card" data-owner-agent="'+esc(id)+'"><div class="owner-agent-head"><span class="owner-agent-icon">'+esc(icon)+'</span><div><strong>'+esc(name)+'</strong><small>'+esc(role)+'</small></div></div><span class="owner-agent-status '+esc(st)+'">'+esc(ownerStatusLabel(st))+'</span></article>';
+      }).join("");
+    }
+
+    const activity=$("#owner-activity-list");
+    const activityRows=ownerActivityRows();
+    if(activity){
+      activity.innerHTML=state.localPreview
+        ?'<div class="owner-empty">Safe Preview · פעילות Live אינה נטענת.</div>'
+        :activityRows.length
+          ?activityRows.map(x=>'<article class="owner-activity-row" data-status="'+esc(x.status)+'"><span class="owner-activity-dot"></span><div><strong>'+esc(x.title)+'</strong><small>'+esc(x.meta)+'</small></div><span class="owner-activity-time">'+esc(ago(x.time))+'</span></article>').join("")
+          :'<div class="owner-empty">אין פעילות אחרונה להצגה.</div>';
+    }
+
+    const alerts=$("#owner-alert-list");
+    if(alerts){
+      alerts.innerHTML=state.localPreview
+        ?'<div class="owner-empty">Safe Preview · התראות Live אינן נטענות.</div>'
+        :attention.length
+          ?attention.slice(0,5).map(x=>'<article class="owner-alert-row" data-status="'+esc(x.status)+'"><strong>'+esc(x.title||x.manager_id||"Attention")+'</strong><small>'+esc(x.recommended_action||x.issues?.[0]||ownerStatusLabel(x.status))+'</small></article>').join("")
+          :'<div class="owner-empty">אין התראות פעילות.</div>';
+    }
+  }
+
+  function ownerPrepareChat(text){
+    activateStudioView("owner-home");
+    setChatOpen(true);
+    const input=$("#chat-input");
+    if(input&&!input.disabled){
+      input.value=text;
+      input.focus();
+    }
+  }
+
+  function handleOwnerAction(action){
+    if(action==="chat"){setChatOpen(true);$("#chat-input")?.focus();return}
+    if(action==="hunt-check"){ownerPrepareChat("בדוק את HUNT עכשיו וסכם לי בפשטות: מה עובד, מה חסר להשקה, ומה דורש ממני החלטה.");return}
+    if(action==="opportunity"){ownerPrepareChat("צא ל־F35 וחפש הזדמנות אחת חזקה ורלוונטית עכשיו. תחזור עם evidence, סיכון והצעד הבא.");return}
+    if(action==="suppliers"){ownerPrepareChat("בדוק את מצב הספקים של HUNT: API, מלאי, משלוח, freshness וחסמים. הצג לי רק מה חשוב.");return}
+    if(action==="campaign"){ownerPrepareChat("בנה הצעת קמפיין אחת ל־HUNT כטיוטה בלבד. אל תפרסם ואל תוציא כסף בלי אישור שלי.");return}
+    if(action==="ask-status"){ownerPrepareChat("מה BOOM עושה עכשיו? תסביר לי בשפה פשוטה מה המצב, מה מצאת ומה צריך ממני.");return}
+    if(action==="open-output"){activateStudioView("hunt-intelligence","approval-queue");return}
+    if(action==="open-runs"){activateStudioView("executions");return}
+    if(action==="open-pro"){activateStudioView("studio");return}
+  }
+
   function renderAll(){
+    renderOwnerHome();
     renderStudio();
     renderExecutions();
     renderEvaluations();
@@ -2360,6 +2600,7 @@
     renderPromptCoverageAudit();
     if(state.managerMap.has(state.selected)||toolNodeFallbackManagers[state.selected]||studioNodeGroupById.has(state.selected))inspectManager(state.selected);
     if(state.localPreview)setLive("● PREVIEW · LIVE ACTIONS OFF","watch");
+    else if(state.readOnlyPreview)setLive("● READ-ONLY LIVE · ACTIONS OFF","healthy");
     else setLive("● LIVE · "+new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"}));
   }
 
@@ -2518,11 +2759,12 @@
       .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_evals"},scheduleReload)
       .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_learning_items"},scheduleReload)
       .subscribe(status=>{
-        if(status==="SUBSCRIBED")setLive("● REALTIME");
+        if(status==="SUBSCRIBED")setLive(state.readOnlyPreview?"● READ-ONLY REALTIME · ACTIONS OFF":"● REALTIME",state.readOnlyPreview?"healthy":"healthy");
       });
   }
 
   async function invokeBoomFunction(name,body){
+    if(state.readOnlyPreview)throw new Error("READ_ONLY_LIVE_PREVIEW · external actions are disabled");
     const {data:{session},error:sessionError}=await client.auth.getSession();
     if(sessionError)throw sessionError;
     if(!session?.access_token)throw new Error("Session expired. Please sign in again.");
@@ -3078,27 +3320,29 @@
   }
 
   function applyLocalPreviewSafety(mode="local"){
-    const label=mode==="draft"?"DRAFT":"LOCAL";
+    const readOnly=mode==="readonly";
+    const label=readOnly?"READ-ONLY LIVE":(mode==="draft"?"DRAFT":"LOCAL");
     document.body.dataset.previewMode=mode;
     const disabledSelectors=[
-      "#refresh","#logout","#chat-send","#chat-mic","#voice-loop",
+      "#chat-send","#chat-mic","#voice-loop",
       "#brand-run","#brand-verify","#brand-video-plan","#brand-video-qa",
       "#vault-preview","#vault-visual-qa","#vault-qa-commit","#vault-owner-approve","#vault-owner-reject",
-      "#deployment-readiness-refresh","#connect-refresh"
+      "#deployment-readiness-refresh"
     ];
+    if(!readOnly)disabledSelectors.push("#refresh","#logout","#connect-refresh");
     for(const selector of disabledSelectors){
       const el=$(selector);
       if(!el)continue;
       el.disabled=true;
-      el.title=label+" PREVIEW · external/live action disabled";
+      el.title=label+" · external/live action disabled";
     }
-    $("#logout").hidden=true;
+    $("#logout").hidden=!readOnly;
     const input=$("#chat-input");
     if(input){
       input.disabled=true;
-      input.placeholder=label+" PREVIEW · chat execution disabled";
+      input.placeholder=label+" · chat execution disabled";
     }
-    setLive("● "+label+" PREVIEW · LIVE ACTIONS OFF","watch");
+    setLive(readOnly?"● READ-ONLY LIVE · ACTIONS OFF":"● "+label+" PREVIEW · LIVE ACTIONS OFF",readOnly?"healthy":"watch");
   }
 
   function showLogin(){
@@ -3169,8 +3413,12 @@
     state.session=session;
     await ensureAdmin(session);
     showApp();
+    if(READ_ONLY_LIVE_PREVIEW){
+      state.readOnlyPreview=true;
+      applyLocalPreviewSafety("readonly");
+    }
     await loadAll();
-    await refreshDeploymentReadiness().catch(()=>{});
+    if(!state.readOnlyPreview)await refreshDeploymentReadiness().catch(()=>{});
     subscribeRealtime();
     inspectManager("boom-super-agent");
   }
@@ -3181,7 +3429,7 @@
     button.disabled=true;
     error.textContent="";
     try{
-      const redirectTo=location.origin+location.pathname;
+      const redirectTo=location.origin+location.pathname+(READ_ONLY_LIVE_PREVIEW?"?readonly=1":"");
       const {error:oauthError}=await client.auth.signInWithOAuth({
         provider:"github",
         options:{redirectTo}
@@ -3208,8 +3456,12 @@
       await ensureAdmin(data.session);
       state.session=data.session;
       showApp();
+      if(READ_ONLY_LIVE_PREVIEW){
+        state.readOnlyPreview=true;
+        applyLocalPreviewSafety("readonly");
+      }
       await loadAll();
-      await refreshDeploymentReadiness().catch(()=>{});
+      if(!state.readOnlyPreview)await refreshDeploymentReadiness().catch(()=>{});
       subscribeRealtime();
       inspectManager("boom-super-agent");
     }catch(err){
@@ -3270,8 +3522,9 @@
   function activateStudioView(viewId,anchorId=""){
     const targetView=$("#"+viewId);
     if(!targetView)return;
-    $(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===viewId));
-    $(".view").forEach(x=>x.classList.toggle("active",x.id===viewId));
+    $$(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===viewId));
+    $$(".view").forEach(x=>x.classList.toggle("active",x.id===viewId));
+    if(viewId==="owner-home")renderOwnerHome();
     if(viewId==="studio")requestAnimationFrame(drawLinks);
     if(viewId==="connect")renderConnect();
     if(viewId==="professional-workbench")renderProfessionalWorkbench();
@@ -3293,11 +3546,11 @@
 
   function focusStudioGroup(id){
     const studio=$("#studio");
-    const target=$(".studio-node-group").find(node=>node.dataset.groupId===id);
+    const target=$$(".studio-node-group").find(node=>node.dataset.groupId===id);
     if(!studio||!target)return;
     const top=studio.scrollTop+target.getBoundingClientRect().top-studio.getBoundingClientRect().top-58;
     studio.scrollTo({top:Math.max(0,top),behavior:"smooth"});
-    $("#studio-department-nav [data-studio-group]").forEach(button=>button.classList.toggle("active",button.dataset.studioGroup===id));
+    $$("#studio-department-nav [data-studio-group]").forEach(button=>button.classList.toggle("active",button.dataset.studioGroup===id));
   }
 
   $("#attention-focus").addEventListener("click",focusAttention);
@@ -3328,9 +3581,28 @@
     speakText(text);
   });
   $("#chat-input").addEventListener("keydown",ev=>{if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();sendChat()}});
+  document.addEventListener("keydown",ev=>{
+    if((ev.metaKey||ev.ctrlKey)&&String(ev.key).toLowerCase()==="k"){
+      ev.preventDefault();
+      activateStudioView("owner-home");
+      setChatOpen(true);
+      $("#chat-input")?.focus();
+    }
+  });
   window.addEventListener("resize",()=>requestAnimationFrame(drawLinks));
 
   document.addEventListener("click",ev=>{
+    const ownerAction=ev.target.closest("[data-owner-action]");
+    if(ownerAction){handleOwnerAction(ownerAction.dataset.ownerAction);return}
+    const ownerCommand=ev.target.closest("[data-owner-command]");
+    if(ownerCommand){
+      const row=(state.commands||[]).find(x=>String(x.id||"")===String(ownerCommand.dataset.ownerCommand||""));
+      if(row?.target_manager_id)inspectManager(row.target_manager_id);
+      setChatOpen(false);
+      return;
+    }
+    const ownerAgent=ev.target.closest("[data-owner-agent]");
+    if(ownerAgent){inspectManager(ownerAgent.dataset.ownerAgent);setChatOpen(false);return}
     const studioViewJump=ev.target.closest("[data-studio-view]");
     if(studioViewJump){
       activateStudioView(studioViewJump.dataset.studioView,studioViewJump.dataset.studioAnchor||"");
@@ -3373,6 +3645,10 @@
         try{
           await ensureAdmin(session);
           showApp();
+          if(READ_ONLY_LIVE_PREVIEW){
+            state.readOnlyPreview=true;
+            applyLocalPreviewSafety("readonly");
+          }
           await loadAll();
           subscribeRealtime();
           inspectManager("boom-super-agent");

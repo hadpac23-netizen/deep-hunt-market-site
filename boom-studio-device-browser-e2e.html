@@ -31,14 +31,28 @@ body{margin:0;background:#080b10;color:#eef;font:12px system-ui;padding:16px}.qa
      await wait(120);
    }
    const app=d.querySelector(".app-shell"),login=d.querySelector(".login-screen"),workspace=d.querySelector(".workspace");
+   const ownerHome=d.querySelector("#owner-home");
+   const ownerDefault=Boolean(ownerHome?.classList.contains("active"));
+   const ownerMission=Boolean(d.querySelector("#owner-mission-title"));
+   const ownerQuick=Boolean(d.querySelector(".owner-quick-grid"));
+   const ownerCountsSafe=(d.querySelector("#owner-active-count")?.textContent?.trim()==="—")
+     &&(d.querySelector("#owner-approval-count")?.textContent?.trim()==="—")
+     &&(d.querySelector("#owner-attention-count")?.textContent?.trim()==="—");
+
+   d.querySelector('[data-tab="studio"]')?.click();
+   await wait(80);
+
+   const groupsAfterPro=d.querySelectorAll(".studio-node-group").length;
+   const studioActive=Boolean(d.querySelector("#studio")?.classList.contains("active"));
    const output=Boolean(d.querySelector("#node-output"));
    const audit=Boolean(d.querySelector("#prompt-coverage-audit"));
    const trace=Boolean(d.querySelector("#product-trace-workspace"));
    const rootWidth=d.documentElement.clientWidth,scrollWidth=d.documentElement.scrollWidth;
    const pageOverflow=Math.max(0,scrollWidth-rootWidth);
    const mobileMedia=w.matchMedia("(max-width:900px)").matches;
-   const pass=Boolean(app&&!app.hidden&&login?.hidden&&groups===6&&output&&audit&&trace&&/PREVIEW/.test(live)&&/LIVE ACTIONS OFF/.test(live)&&pageOverflow<=4&&mobileMedia===(spec.w<=900));
-   const r={width:spec.w,height:spec.h,pass,groups,output,audit,trace,safePreview:/PREVIEW/.test(live)&&/LIVE ACTIONS OFF/.test(live),pageOverflow,mobileMedia,workspaceOverflow:workspace?Math.max(0,workspace.scrollWidth-workspace.clientWidth):null};
+   const safePreview=/PREVIEW/.test(live)&&/LIVE ACTIONS OFF/.test(live);
+   const pass=Boolean(app&&!app.hidden&&login?.hidden&&ownerDefault&&ownerMission&&ownerQuick&&ownerCountsSafe&&studioActive&&groupsAfterPro===6&&output&&audit&&trace&&safePreview&&pageOverflow<=4&&mobileMedia===(spec.w<=900));
+   const r={width:spec.w,height:spec.h,pass,ownerDefault,ownerMission,ownerQuick,ownerCountsSafe,studioActive,groups:groupsAfterPro,output,audit,trace,safePreview,pageOverflow,mobileMedia,workspaceOverflow:workspace?Math.max(0,workspace.scrollWidth-workspace.clientWidth):null};
    ui.status.className="qa-status "+(pass?"pass":"fail");ui.status.textContent=(pass?"PASS":"FAIL")+"\n"+JSON.stringify(r,null,2);return r;
  }
  (async()=>{
