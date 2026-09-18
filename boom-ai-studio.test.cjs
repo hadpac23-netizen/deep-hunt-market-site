@@ -166,3 +166,11 @@ assert(js.includes("function loadAlphaPlan"),"HUNT Alpha planning handoff missin
 assert(js.includes("current storefront stays fallback"),"Storefront fallback gate missing");
 assert(js.includes("No production activation"),"Alpha execution boundary missing");
 assert(css.includes(".alpha-stage-grid"),"HUNT Alpha Blueprint layout missing");
+assert(html.includes('id="truth-simulate"'),"A1 Product Truth simulator missing");
+assert(html.includes("hunt-supplier-core.js?v=alpha1"),"Supplier normalization engine missing from Studio");
+assert(html.includes("hunt-country-product-truth.js?v=alpha1"),"Country/Product Truth engine missing from Studio");
+assert(js.includes("function evaluateTruthWorkspace"),"A1 truth evaluator missing");
+assert(js.includes("A1_STUDIO_SIMULATION"),"A1 simulation-only mode missing");
+assert(js.includes("SUPPLIER_CALLED: false"),"Supplier execution guard missing");
+assert(js.includes("EXECUTION_ALLOWED: false"),"A1 execution guard missing");
+assert(css.includes(".truth-workspace"),"A1 truth workspace styling missing");
