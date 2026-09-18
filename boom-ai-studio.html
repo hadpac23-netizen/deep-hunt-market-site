@@ -363,6 +363,35 @@
               <div class="flow-preview" id="flow-preview"><p>Compose a structural preview. No products will be created.</p></div>
               <pre id="flow-result">All preview slots require Product Truth before future population.</pre>
             </section>
+            <section class="personal-workspace">
+              <div class="truth-workspace-head"><div><small>A5 WORKSPACE</small><h3>Stylist & Safe Mirror Simulation</h3><p>Mission and focus-plan preview only. No image upload, camera access, body analysis or AI rendering.</p></div><span>PRIVACY FIRST</span></div>
+              <div class="personal-form-grid">
+                <label>Occasion<select id="personal-occasion"><option value="everyday">Everyday</option><option value="work">Work</option><option value="dinner">Dinner</option><option value="travel">Travel</option><option value="event">Event</option><option value="gift">Gift</option><option value="home_office">Home Office</option></select></label>
+                <label>Anchor category<input id="personal-category" value="women-dresses" maxlength="60"></label>
+                <label>Total budget<input id="personal-budget" type="number" min="0" step=".01" value="150"></label>
+                <label>Anchor price<input id="personal-anchor-price" type="number" min="0" step=".01" value="50"></label>
+                <label>Country<input id="personal-country" value="IL" maxlength="2"></label>
+                <label>Mirror product type<select id="personal-product-type"><option value="earrings">Earrings</option><option value="necklace">Necklace</option><option value="ring">Ring</option><option value="sunglasses">Sunglasses</option><option value="hat">Hat</option><option value="top">Top</option><option value="jeans">Jeans</option><option value="dress">Dress</option><option value="jacket">Jacket</option></select></label>
+                <label>Provider<input id="personal-provider" value="CJdropshipping" maxlength="40"></label>
+                <label>Item ID<input id="personal-item-id" maxlength="90"></label>
+                <label>Variant ID<input id="personal-variant-id" maxlength="90"></label>
+                <label>Preview confidence %<input id="personal-confidence" type="number" min="0" max="100" value="80"></label>
+                <label>Retention<select id="personal-retention"><option value="none">No retention</option><option value="session">Session only</option></select></label>
+              </div>
+              <div class="decision-checks">
+                <label><input id="personal-truth-live" type="checkbox"> Exact product is LIVE_VERIFIED</label>
+                <label><input id="personal-image-verified" type="checkbox"> Product image is verified</label>
+                <label><input id="personal-consent" type="checkbox"> Consent contract accepted</label>
+                <label><input id="personal-preview-permission" type="checkbox"> Preview permission granted</label>
+                <label><input id="personal-reduced-motion" type="checkbox"> Reduced motion</label>
+              </div>
+              <div class="truth-actions"><button class="top-btn" id="personal-simulate" type="button">Simulate Stylist & Mirror</button></div>
+              <div class="truth-result-status" id="personal-result-status">NOT_EVALUATED · PROVIDER_OFF</div>
+              <div class="personal-preview-grid">
+                <article><small>STYLIST MISSION</small><pre id="stylist-result">No mission simulated.</pre></article>
+                <article><small>MIRROR SAFETY DECISION</small><pre id="mirror-result">No Mirror decision simulated.</pre></article>
+              </div>
+            </section>
             <section class="alpha-exit-gate">
               <strong>Alpha exit gate</strong>
               <p>Real eligible products · explainable recommendations · Like/Save/Share · History · Worlds · Stylist · safe Mirror entry · stable checkout fallback · mobile/desktop QA.</p>
@@ -432,6 +461,8 @@
   <script src="boom-decision-brain.js?v=brain1"></script>
   <script src="hunt-2037-flow-core.js?v=alpha1"></script>
   <script src="hunt-experience-memory.js?v=memory1"></script>
+  <script src="boom-stylist-core.js?v=alpha1"></script>
+  <script src="boom-mirror-core.js?v=alpha1"></script>
   <script src="brand-video-router.js?v=1"></script>
   <script src="brand-creative-qa.js?v=1"></script>
   <script src="brand-video-dispatch.js?v=1"></script>
