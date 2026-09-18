@@ -64,6 +64,8 @@
     const category=clean(item?.category||item?._shelf_slug);
     const recentCategories=context.recent_categories||[];
     const recentSuppliers=context.recent_suppliers||[];
+    const affinity=Number(context.category_affinity?.[category]||0);
+    if(category&&affinity>=4)return "Strong match with your recent "+category.replace(/-/g," ")+" activity";
     if(category&&recentCategories.includes(category))return "Because you explored "+category.replace(/-/g," ");
     if(lane==="new")return "New in HUNT";
     if(lane==="adjacent")return recentCategories.length?"Related to your recent browsing":"A nearby category to explore";
@@ -80,8 +82,14 @@
     if(verifiedCandidate?.eligible)score+=Math.min(40,Number(verifiedCandidate.score||0)*0.4);
     const category=clean(item?.category||item?._shelf_slug);
     const provider=clean(item?.provider).toLowerCase();
-    if((context.recent_categories||[]).includes(category))score+=28;
-    if((context.recent_suppliers||[]).includes(provider))score+=6;
+    if((context.recent_categories||[]).includes(category))score+=18;
+    const categoryAffinity=Number(context.category_affinity?.[category]||0);
+    const supplierAffinity=Number(context.supplier_affinity?.[provider]||0);
+    if(categoryAffinity>0)score+=Math.min(28,categoryAffinity*2.4);
+    if(categoryAffinity<0)score-=Math.min(35,Math.abs(categoryAffinity)*3);
+    if((context.recent_suppliers||[]).includes(provider))score+=4;
+    if(supplierAffinity>0)score+=Math.min(10,supplierAffinity);
+    if(supplierAffinity<0)score-=Math.min(14,Math.abs(supplierAffinity)*1.5);
     if(item?.is_new===true||item?.new_arrival===true)score+=20;
     if(item?.availability_verified===true)score+=12;
     if(item?.retail_price_verified===true)score+=8;
