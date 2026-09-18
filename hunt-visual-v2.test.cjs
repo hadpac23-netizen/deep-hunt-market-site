@@ -43,4 +43,8 @@ assert(css.includes("HUNT V2 · PROFILE"),"Profile V2 styling missing");
 assert(css.includes("@media(max-width:760px)"),"Mobile styling contract missing");
 assert(css.includes('html[data-hunt-theme="dark"]'),"Dark mode support missing");
 
+
+assert(css.includes("HUNT V2 · SHOPPER ACTIONS + DARK MEDIA SAFETY"),"Shopper action / dark media V2 styling missing");
+assert(css.includes('mix-blend-mode:normal!important;filter:none!important;opacity:1!important'),"Dark mode image safety contract missing");
+
 console.log("hunt_visual_v2=PASS");
