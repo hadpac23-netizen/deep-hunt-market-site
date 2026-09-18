@@ -63,10 +63,7 @@
       order_routing_activated:false
     });
 
-    const material=JSON.stringify({
-      stages:stages.map(x=>({id:x.id,pass:x.pass,evidence:x.evidence})),
-      boundaries
-    });
+    const material=canonicalMaterial(stages,boundaries);
     const fingerprint="A9-"+fnv1a(material).toUpperCase();
 
     return Object.freeze({
@@ -88,6 +85,17 @@
     });
   }
 
+  function canonicalMaterial(stages=[],boundaries={}){
+    return JSON.stringify({
+      stages:(Array.isArray(stages)?stages:[]).map(x=>({
+        id:clean(x?.id).toUpperCase(),
+        pass:x?.pass===true,
+        evidence:clean(x?.evidence)
+      })),
+      boundaries
+    });
+  }
+
   function verifyBoundaries(pack={}){
     const b=pack.boundaries||{};
     const issues=[];
@@ -105,7 +113,48 @@
     return Object.freeze({valid:issues.length===0,issues:Object.freeze(issues)});
   }
 
-  const api=Object.freeze({fnv1a,normalizedStage,build,verifyBoundaries});
+  function verifyIntegrity(pack={}){
+    const issues=[...verifyBoundaries(pack).issues];
+    const stages=(Array.isArray(pack.stages)?pack.stages:[]).map(normalizedStage);
+    const expectedIds=["A1","A2","A3","A4","A5","A6","A7","A8"];
+    const actualIds=stages.map(x=>x.id);
+
+    if(pack.mode!=="A9_OWNER_ALPHA_EVIDENCE_PACK")issues.push("MODE_INVALID");
+    if(stages.length!==8)issues.push("STAGE_COUNT_INVALID");
+    if(Number(pack.stage_count)!==stages.length)issues.push("STAGE_COUNT_MISMATCH");
+    if(JSON.stringify(actualIds)!==JSON.stringify(expectedIds))issues.push("STAGE_SEQUENCE_INVALID");
+
+    const expectedBlockers=stages.filter(x=>!x.pass).map(x=>({
+      id:x.id,
+      name:x.name,
+      evidence:x.evidence||"No passing evidence"
+    }));
+    const actualBlockers=(Array.isArray(pack.blockers)?pack.blockers:[]).map(x=>({
+      id:clean(x?.id).toUpperCase(),
+      name:clean(x?.name),
+      evidence:clean(x?.evidence)
+    }));
+    if(JSON.stringify(actualBlockers)!==JSON.stringify(expectedBlockers))issues.push("BLOCKERS_MISMATCH");
+
+    const ownerReviewReady=stages.length===8&&stages.every(x=>x.pass);
+    const expectedReleaseGate=ownerReviewReady?"ALPHA_OWNER_REVIEW_READY":"BLOCKED_EVIDENCE_REQUIRED";
+    if(pack.owner_review_ready!==ownerReviewReady)issues.push("OWNER_REVIEW_READY_MISMATCH");
+    if(pack.release_gate!==expectedReleaseGate)issues.push("RELEASE_GATE_MISMATCH");
+    if(pack.owner_gate!=="OWNER_REVIEW_REQUIRED")issues.push("OWNER_GATE_INVALID");
+
+    const expectedFingerprint="A9-"+fnv1a(canonicalMaterial(stages,pack.boundaries||{})).toUpperCase();
+    if(pack.evidence_fingerprint!==expectedFingerprint)issues.push("EVIDENCE_FINGERPRINT_MISMATCH");
+
+    return Object.freeze({
+      valid:issues.length===0,
+      issues:Object.freeze(issues),
+      expected_fingerprint:expectedFingerprint,
+      derived_owner_review_ready:ownerReviewReady,
+      derived_release_gate:expectedReleaseGate
+    });
+  }
+
+  const api=Object.freeze({fnv1a,normalizedStage,canonicalMaterial,build,verifyBoundaries,verifyIntegrity});
   if(typeof window!=="undefined")window.BoomAlphaEvidencePack=api;
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
 })();
