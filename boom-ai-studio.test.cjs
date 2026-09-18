@@ -441,9 +441,10 @@ assert(html.includes('data-studio-view="professional-workbench"'),"Studio Profes
 assert(html.includes('data-studio-anchor="professional-radar-report"'),"Studio F35 Radar shortcut missing");
 assert(js.includes("function activateStudioView("),"Studio view router missing");
 assert(js.includes('const studioViewJump=ev.target.closest("[data-studio-view]")'),"Studio view shortcut routing missing");
-for(const id of ["intelligence","release","commerce","missions","suppliers","store"]){
+for(const id of ["intelligence","release","commerce","suppliers","store"]){
   assert(html.includes('data-studio-group="'+id+'"'),"Studio navigator target missing: "+id);
 }
+assert(js.includes('id:"missions"'),"F35 / Growth Missions canvas group missing");
 assert(js.includes("function focusStudioGroup("),"Studio navigator focus function missing");
 assert(js.includes('const studioJump=ev.target.closest("[data-studio-group]")'),"Studio navigator click routing missing");
 assert(css.includes(".studio-department-nav"),"Studio navigator styling missing");
