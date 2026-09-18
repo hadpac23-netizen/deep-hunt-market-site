@@ -219,6 +219,69 @@
     });
   }
 
+  function buildEvaluatorOps(input={}){
+    const cases=safeArray(input.evalCases);
+    const graderTypes=[...new Set(cases.map(x=>clean(x.grader_type).toLowerCase()).filter(Boolean))].sort();
+    const evaluatorRegistryConnected=input.evaluatorRegistryConnected===true;
+    const humanAlignmentConnected=input.humanAlignmentConnected===true;
+    const onlineEvalConnected=input.onlineEvalConnected===true;
+    const ciEvalGateConnected=input.ciEvalGateConnected===true;
+    return Object.freeze({
+      grader_types:Object.freeze(graderTypes),
+      evaluator_registry_connected:evaluatorRegistryConnected,
+      human_alignment_connected:humanAlignmentConnected,
+      online_eval_connected:onlineEvalConnected,
+      ci_eval_gate_connected:ciEvalGateConnected,
+      governance_ready:graderTypes.length>0&&evaluatorRegistryConnected&&humanAlignmentConnected,
+      continuous_gate_ready:onlineEvalConnected&&ciEvalGateConnected
+    });
+  }
+
+  function buildSafetyOps(input={}){
+    const cases=safeArray(input.redTeamCases).filter(x=>x.active!==false);
+    const runs=safeArray(input.redTeamRuns);
+    const failedRuns=runs.filter(x=>["failed","fail","blocked","unsafe","error"].includes(clean(x.result_status).toLowerCase()));
+    const calibration=safeArray(input.confidenceCalibration);
+    const teamRuns=safeArray(input.teamRuns);
+    const judgedTeamRuns=teamRuns.filter(x=>x.judge_verdict&&typeof x.judge_verdict==="object");
+    return Object.freeze({
+      redteam:Object.freeze({
+        cases:cases.length,
+        runs:runs.length,
+        failed:failedRuns.length,
+        ready:cases.length>0&&runs.length>0&&failedRuns.length===0
+      }),
+      calibration:Object.freeze({
+        rows:calibration.length,
+        ready:calibration.length>0,
+        max_error:calibration.length?Math.max(...calibration.map(x=>Number(x.calibration_error)).filter(Number.isFinite),0):null
+      }),
+      team_judge:Object.freeze({
+        runs:teamRuns.length,
+        judged:judgedTeamRuns.length,
+        ready:teamRuns.length>0&&judgedTeamRuns.length>0
+      })
+    });
+  }
+
+  function buildLineage(input={}){
+    const prompts=safeArray(input.promptVersions);
+    const spans=safeArray(input.traceSpans);
+    const promptIds=new Set(prompts.map(x=>String(x.id??"")).filter(Boolean));
+    const versionedSpans=spans.filter(x=>x.prompt_version_id!==null&&x.prompt_version_id!==undefined);
+    const linked=versionedSpans.filter(x=>promptIds.has(String(x.prompt_version_id))).length;
+    const orphaned=versionedSpans.length-linked;
+    const connected=input.promptStoreConnected===true&&input.traceStoreConnected===true;
+    return Object.freeze({
+      connected,
+      prompt_versions:prompts.length,
+      versioned_spans:versionedSpans.length,
+      linked_spans:linked,
+      orphaned_spans:orphaned,
+      ready:connected&&prompts.length>0&&linked>0&&orphaned===0
+    });
+  }
+
   function build(input={}){
     const traces=buildTraceExplorer(input);
     const failures=buildFailureInbox(input);
@@ -227,6 +290,9 @@
     const cost=buildCostLatency(input);
     const prompts=buildPromptRegistry(input);
     const alerts=buildAlerts(input);
+    const evaluators=buildEvaluatorOps(input);
+    const safety=buildSafetyOps(input);
+    const lineage=buildLineage(input);
     const replayRuns=safeArray(input.replayRuns);
     const release=input.releaseGate||(replayRuns.length?{replay_runs:replayRuns.length,latest:replayRuns[0]}:null);
     const spanRows=safeArray(input.traceSpans);
@@ -241,7 +307,13 @@
       {id:"traces",label:"Trace Explorer",state:input.traceSchemaConnected===true?"ready":"gap",evidence:traceHierarchy.spans+" nested spans · "+traceHierarchy.traces+" traces · "+traceHierarchy.sessions+" sessions · store="+String(traceHierarchy.store_connected)},
       {id:"prompts",label:"Prompt Registry / Versions",state:prompts.instrumented?"ready":"gap",evidence:prompts.instrumented?prompts.rows.length+" versioned prompts":"No persisted prompt-version registry connected"},
       {id:"datasets",label:"Failure Inbox → Eval Dataset",state:failures.persisted_dataset?"ready":"gap",evidence:failures.dataset_candidates+" dataset candidate(s) · persisted dataset="+String(failures.persisted_dataset)},
+      {id:"evaluators",label:"Evaluator Registry + Human Alignment",state:evaluators.governance_ready?"ready":"gap",evidence:evaluators.grader_types.length+" grader type(s) · registry="+String(evaluators.evaluator_registry_connected)+" · human alignment="+String(evaluators.human_alignment_connected)},
       {id:"experiments",label:"Experiment Diff",state:experiments.available?"ready":"gap",evidence:experiments.available?experiments.comparisons.length+" comparable metric(s)":"Need 2+ comparable eval runs per metric"},
+      {id:"online-ci",label:"Online Evals + CI Quality Gate",state:evaluators.continuous_gate_ready?"ready":"gap",evidence:"online eval="+String(evaluators.online_eval_connected)+" · CI gate="+String(evaluators.ci_eval_gate_connected)},
+      {id:"redteam",label:"Red Team Regression",state:safety.redteam.ready?"ready":safety.redteam.failed?"blocked":"gap",evidence:safety.redteam.cases+" case(s) · "+safety.redteam.runs+" run(s) · "+safety.redteam.failed+" failed"},
+      {id:"calibration",label:"Confidence Calibration",state:safety.calibration.ready?"ready":"gap",evidence:safety.calibration.rows+" calibration row(s) · max error="+String(safety.calibration.max_error??"unmeasured")},
+      {id:"team-judge",label:"Multi-Agent Judge Runs",state:safety.team_judge.ready?"ready":"gap",evidence:safety.team_judge.judged+"/"+safety.team_judge.runs+" run(s) include judge verdicts"},
+      {id:"lineage",label:"Prompt → Trace Lineage",state:lineage.ready?"ready":"gap",evidence:lineage.linked_spans+"/"+lineage.versioned_spans+" versioned spans linked · orphaned="+lineage.orphaned_spans+" · stores="+String(lineage.connected)},
       {id:"review",label:"Human / Owner Review Queue",state:review.persisted?"ready":"gap",evidence:review.count+" review item(s) · annotation history persisted="+String(review.persisted)},
       {id:"cost",label:"Cost / Latency Budget",state:cost.instrumented?"ready":"gap",evidence:cost.instrumented?cost.sample_count+" measured samples":"Token/cost/latency instrumentation not connected"},
       {id:"alerts",label:"Alerts / SLO Inbox",state:input.alertRulesConnected===true?(alerts.critical?"blocked":alerts.watch?"watch":"ready"):"gap",evidence:alerts.critical+" critical · "+alerts.watch+" watch · threshold/rule history="+String(input.alertRulesConnected===true)},
@@ -251,7 +323,7 @@
     return Object.freeze({
       mode:"BOOM_PROFESSIONAL_WORKBENCH",
       capabilities,
-      traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,release,
+      traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,evaluators,safety,lineage,release,
       professional_ready:capabilities.every(x=>x.state==="ready"||x.state==="empty"),
       gaps:Object.freeze(capabilities.filter(x=>x.state==="gap").map(x=>x.id)),
       invariants:Object.freeze({
@@ -266,7 +338,7 @@
     });
   }
 
-  const api=Object.freeze({build,buildTraceExplorer,buildFailureInbox,buildExperimentDiff,buildReviewQueue,buildCostLatency,buildPromptRegistry,buildAlerts,percentile});
+  const api=Object.freeze({build,buildTraceExplorer,buildFailureInbox,buildExperimentDiff,buildReviewQueue,buildCostLatency,buildPromptRegistry,buildAlerts,buildEvaluatorOps,buildSafetyOps,buildLineage,percentile});
   if(typeof window!=="undefined")window.BoomProfessionalWorkbench=api;
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
 })();
