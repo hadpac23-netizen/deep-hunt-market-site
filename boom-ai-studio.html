@@ -275,6 +275,32 @@
               <button class="top-btn" id="alpha-load-plan" type="button">Load into Planning Board</button>
             </div>
             <div class="alpha-stage-grid" id="alpha-stage-grid"></div>
+            <section class="truth-workspace">
+              <div class="truth-workspace-head"><div><small>A1 WORKSPACE</small><h3>Product Truth & Country Simulation</h3><p>Manual verified evidence only. This form never contacts a supplier and never publishes a product.</p></div><span>SIMULATION ONLY</span></div>
+              <div class="truth-form-grid">
+                <label>Provider<input id="truth-provider" value="CJdropshipping" maxlength="40"></label>
+                <label>Destination country<input id="truth-country" value="IL" maxlength="2"></label>
+                <label>Item ID<input id="truth-item-id" maxlength="90"></label>
+                <label>SKU<input id="truth-sku" maxlength="90"></label>
+                <label>Variant ID<input id="truth-variant-id" maxlength="90"></label>
+                <label>Warehouse<input id="truth-warehouse" maxlength="80"></label>
+                <label>Stock<input id="truth-stock" type="number" min="0" step="1"></label>
+                <label>Evidence checked at<input id="truth-checked-at" type="datetime-local"></label>
+                <label>Supplier cost<input id="truth-cost" type="number" min="0" step=".01"></label>
+                <label>Shipping cost<input id="truth-shipping" type="number" min="0" step=".01"></label>
+                <label>Landed cost<input id="truth-landed" type="number" min="0" step=".01"></label>
+                <label>HUNT retail price<input id="truth-retail" type="number" min="0" step=".01"></label>
+                <label>Shipping method<input id="truth-shipping-method" maxlength="80"></label>
+                <label>ETA minimum days<input id="truth-eta-min" type="number" min="0" step="1"></label>
+                <label>ETA maximum days<input id="truth-eta-max" type="number" min="0" step="1"></label>
+                <label>Returns state<input id="truth-returns" maxlength="80"></label>
+              </div>
+              <label class="truth-check"><input id="truth-country-supported" type="checkbox" checked> Exact SKU is supported for this destination</label>
+              <label class="truth-check"><input id="truth-restricted" type="checkbox"> Restrictions exist for this product/destination</label>
+              <div class="truth-actions"><button class="top-btn" id="truth-simulate" type="button">Evaluate evidence</button></div>
+              <div class="truth-result-status" id="truth-result-status">NOT_EVALUATED · EXECUTION_OFF</div>
+              <pre id="truth-result">Enter verified evidence to simulate the Product Truth gate.</pre>
+            </section>
             <section class="alpha-exit-gate">
               <strong>Alpha exit gate</strong>
               <p>Real eligible products · explainable recommendations · Like/Save/Share · History · Worlds · Stylist · safe Mirror entry · stable checkout fallback · mobile/desktop QA.</p>
@@ -338,6 +364,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js"></script>
   <script src="market-core.js"></script>
+  <script src="hunt-supplier-core.js?v=alpha1"></script>
+  <script src="hunt-country-product-truth.js?v=alpha1"></script>
   <script src="brand-video-router.js?v=1"></script>
   <script src="brand-creative-qa.js?v=1"></script>
   <script src="brand-video-dispatch.js?v=1"></script>
