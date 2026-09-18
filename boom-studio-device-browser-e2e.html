@@ -37,8 +37,10 @@ body{margin:0;background:#080b10;color:#eef;font:12px system-ui;padding:16px}.qa
    ui.status.className="qa-status "+(pass?"pass":"fail");ui.status.textContent=(pass?"PASS":"FAIL")+"\n"+JSON.stringify(r,null,2);return r;
  }
  (async()=>{
-   const uis=specs.map(add);
-   for(let i=0;i<specs.length;i++)results.push(await inspect(specs[i],uis[i]));
+   for(const spec of specs){
+     const ui=add(spec);
+     results.push(await inspect(spec,ui));
+   }
    const pass=results.every(x=>x.pass);
    document.body.dataset.qa=pass?"pass":"fail";
    out.textContent=(pass?"PASS":"FAIL")+"\n"+JSON.stringify({pass,results},null,2);
