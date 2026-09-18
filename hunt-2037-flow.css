@@ -60,3 +60,7 @@ body.hunt2037-world-mode .hunt2037-lane,body.hunt2037-world-mode .hunt2037-disco
 .hunt2037-world-enter[aria-pressed="true"]{background:currentColor;color:#0b0e12}
 @media(max-width:760px){.hunt2037-world-mode-bar{top:62px;align-items:flex-start;flex-direction:column}.hunt2037-world-mode-actions{width:100%}}
 @media(prefers-reduced-motion:reduce){body.hunt2037-world-mode .hunt2037-world{transition:none;transform:none}}
+
+.hunt2037-card-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:2px}
+.hunt2037-card-action{border:1px solid rgba(80,90,105,.2);background:transparent;color:inherit;border-radius:999px;padding:5px 8px;font-size:8px;font-weight:850;text-decoration:none;cursor:pointer;line-height:1}
+.hunt2037-card-action:hover{border-color:currentColor}
