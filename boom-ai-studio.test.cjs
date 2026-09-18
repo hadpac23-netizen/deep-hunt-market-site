@@ -157,3 +157,12 @@ assert(js.includes("production_changed:false"),"Production boundary evidence mis
 assert(js.includes("spend_authorized:false"),"Spend boundary evidence missing");
 assert(js.includes("publishing_authorized:false"),"Publishing boundary evidence missing");
 assert(css.includes(".approval-entry"),"Approval history styling missing");
+assert(html.includes("HUNT 2037 Alpha Blueprint"),"HUNT Alpha Blueprint missing");
+assert(html.includes('id="alpha-load-plan"'),"HUNT Alpha plan loader missing");
+assert(html.includes("OWNER REVIEW REQUIRED · PRODUCTION OFF"),"Alpha production gate missing");
+assert(js.includes("huntAlphaStages"),"HUNT Alpha stage contract missing");
+assert(js.includes("function renderAlphaBlueprint"),"HUNT Alpha renderer missing");
+assert(js.includes("function loadAlphaPlan"),"HUNT Alpha planning handoff missing");
+assert(js.includes("current storefront stays fallback"),"Storefront fallback gate missing");
+assert(js.includes("No production activation"),"Alpha execution boundary missing");
+assert(css.includes(".alpha-stage-grid"),"HUNT Alpha Blueprint layout missing");
