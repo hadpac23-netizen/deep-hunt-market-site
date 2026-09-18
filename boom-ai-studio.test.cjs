@@ -210,3 +210,11 @@ assert(js.includes("ATTRACTIVENESS SCORING: false"),"Attractiveness-scoring guar
 assert(js.includes("SENSITIVE ATTRIBUTE INFERENCE: false"),"Sensitive inference guard missing");
 assert(js.includes("AI PROVIDER CALLED: false"),"AI provider guard missing");
 assert(css.includes(".personal-workspace"),"A5 workspace styling missing");
+assert(html.includes('id="creative-simulate"'),"A6 Creative Learning simulator missing");
+assert(js.includes("function simulateCreativeLearning"),"A6 creative simulator missing");
+assert(js.includes("A6_CREATIVE_STRUCTURE_SIMULATION"),"Creative structural mode missing");
+assert(js.includes("CONTENT GENERATED: 0"),"No-generated-content guard missing");
+assert(js.includes("VIDEO GENERATED: 0"),"No-video-generation guard missing");
+assert(js.includes("PROVIDER CALLS: 0"),"Provider-call guard missing");
+assert(js.includes("OWNER GATE: DRAFT_REVIEW"),"Creative Owner Gate missing");
+assert(css.includes(".creative-workspace"),"A6 workspace styling missing");
