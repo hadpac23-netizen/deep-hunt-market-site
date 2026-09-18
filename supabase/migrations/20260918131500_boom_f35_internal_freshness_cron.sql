@@ -154,6 +154,7 @@ begin
       where id = source_row.id;
     end if;
 
+    delete from net._http_response where id = source_row.last_request_id;
     processed := processed + 1;
   end loop;
 
@@ -164,14 +165,15 @@ $$;
 revoke all on function boom_internal.enqueue_f35_source_checks() from public, anon, authenticated;
 revoke all on function boom_internal.collect_f35_source_checks() from public, anon, authenticated;
 
-select cron.schedule(
-  'boom-f35-source-enqueue',
-  '17 */6 * * *',
-  $$select boom_internal.enqueue_f35_source_checks();$$
-);
-
-select cron.schedule(
-  'boom-f35-source-collect',
-  '*/10 * * * *',
-  $$select boom_internal.collect_f35_source_checks();$$
-);
+do $cron$
+begin
+  if exists(select 1 from cron.job where jobname='boom-f35-source-enqueue') then
+    perform cron.unschedule('boom-f35-source-enqueue');
+  end if;
+  if exists(select 1 from cron.job where jobname='boom-f35-source-collect') then
+    perform cron.unschedule('boom-f35-source-collect');
+  end if;
+  perform cron.schedule('boom-f35-source-enqueue','17 */6 * * *','select boom_internal.enqueue_f35_source_checks();');
+  perform cron.schedule('boom-f35-source-collect','*/10 * * * *','select boom_internal.collect_f35_source_checks();');
+end
+$cron$;
