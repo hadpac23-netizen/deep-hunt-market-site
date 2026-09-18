@@ -621,6 +621,1077 @@
   }
 
   async function runProductTrace(){
+    const input=$("#product-trace-key"),button=$("#product-trace-run"),status=$("#product-trace-status"),grid=$("#product-trace-grid"),report=$("#product-trace-report");
+    const key=String(input?.value||"").trim();
+    if(!key){
+      if(status)status.textContent="REFERENCE_REQUIRED · READ_ONLY";
+      if(report)report.textContent="Enter an Order UUID, External Order ID or Payment Session UUID.";
+      return null;
+    }
+    if(state.localPreview){
+      if(status)status.textContent="LOCAL_PREVIEW · LIVE TRACE DISABLED";
+      if(report)report.textContent="The Product Trace UI is visible in local preview, but live database reads are disabled. Open authenticated BOOM Studio to run the read-only trace.";
+      return null;
+    }
+    if(!state.session){
+      if(status)status.textContent="AUTH_REQUIRED · READ_ONLY";
+      return null;
+    }
+
+    if(button)button.disabled=true;
+    if(status)status.textContent="TRACING · READ_ONLY";
+    try{
+      let order=await traceOrderByKey(key);
+      let seededPaymentSessionId=null;
+
+      if(!order&&traceUuidPattern.test(key)){
+        const {data:seedRows,error:seedError}=await client.from("hunt_order_pipeline_runs")
+          .select("payment_session_id,order_id,created_at")
+          .eq("payment_session_id",key)
+          .order("created_at",{ascending:false})
+          .limit(1);
+        if(seedError)throw seedError;
+        const seed=Array.isArray(seedRows)?seedRows[0]||null:null;
+        seededPaymentSessionId=seed?.payment_session_id||key;
+        if(seed?.order_id)order=await traceOrderByKey(seed.order_id);
+      }
+
+      if(!order){
+        if(status)status.textContent="NOT_FOUND_OR_NOT_AUTHORIZED · READ_ONLY";
+        if(grid)grid.innerHTML='<article class="product-trace-stage" data-state="blocked"><small>TRACE</small><strong>No order evidence found</strong><p>The reference may not exist or may not be visible under current RLS.</p></article>';
+        if(report)report.textContent="No readable HUNT order was resolved from the supplied reference. No data was changed.";
+        return null;
+      }
+
+      const [pipelineResult,financeResult]=await Promise.all([
+        client.from("hunt_order_pipeline_runs")
+          .select("id,payment_session_id,run_mode,stage,status,provider,supplier_order_id,supplier_order_code,tracking_number,last_error,created_at,updated_at")
+          .eq("order_id",order.id)
+          .order("created_at",{ascending:true}),
+        client.from("hunt_order_finance_ledger")
+          .select("payment_session_id,currency,customer_gross,contribution_locked,available_profit,settlement_status,supplier_payment_status,owner_payout_status,is_test,calculated_at,settled_at,updated_at")
+          .eq("order_id",order.id)
+          .order("updated_at",{ascending:false})
+          .limit(1)
+      ]);
+      if(pipelineResult.error)throw pipelineResult.error;
+      if(financeResult.error)throw financeResult.error;
+
+      const pipeline=Array.isArray(pipelineResult.data)?pipelineResult.data:[];
+      const ledger=Array.isArray(financeResult.data)?financeResult.data[0]||null:null;
+      const paymentSessionId=seededPaymentSessionId||pipeline.find(row=>row.payment_session_id)?.payment_session_id||ledger?.payment_session_id||null;
+
+      let payment=null;
+      let paymentAccess=paymentSessionId?"RLS_GATED_OR_NOT_FOUND":"NO_SESSION_REFERENCE";
+      if(paymentSessionId){
+        const {data,error}=await client.from("hunt_payment_sessions")
+          .select("id,mode,status,country_code,currency,total_amount,fulfillment_status,payment_method,created_at,paid_at,updated_at")
+          .eq("id",paymentSessionId)
+          .limit(1);
+        if(!error&&Array.isArray(data)&&data[0]){
+          payment=data[0];
+          paymentAccess="VISIBLE";
+        }else if(error){
+          paymentAccess="RLS_GATED";
+        }
+      }
+
+      const latestPipeline=pipeline[pipeline.length-1]||null;
+      const money=(value,currency)=>value===null||value===undefined?"—":Number(value).toFixed(2)+" "+String(currency||"USD");
+      const stages=[
+        {
+          id:"SOURCE",state:order.provider?"pass":"watch",
+          title:"Internal source",
+          detail:order.provider?"Provider identity verified internally":"Provider unavailable"
+        },
+        {
+          id:"SHELF",state:order.order_source?"pass":"watch",
+          title:"HUNT shelf / order source",
+          detail:String(order.order_source||"unknown")
+        },
+        {
+          id:"CHECKOUT",state:payment?"pass":(paymentSessionId?"watch":"blocked"),
+          title:"Checkout session",
+          detail:payment
+            ? String(payment.mode||"unknown")+" · "+String(payment.status||"unknown")+" · "+money(payment.total_amount,payment.currency)
+            : (paymentSessionId?"Session "+paymentSessionId.slice(0,8)+"… · "+paymentAccess:"No payment-session reference")
+        },
+        {
+          id:"ORDER",state:"pass",
+          title:"HUNT order",
+          detail:String(order.status||"unknown")+" · "+(order.is_test?"TEST":"LIVE/UNMARKED")+" · "+String(order.external_order_id||order.id)
+        },
+        {
+          id:"PIPELINE",state:latestPipeline?(latestPipeline.status==="pass"?"pass":latestPipeline.status==="fail"?"blocked":"watch"):"watch",
+          title:"Fulfillment pipeline",
+          detail:latestPipeline
+            ? pipeline.length+" run(s) · "+String(latestPipeline.run_mode)+" · "+String(latestPipeline.stage)+" · "+String(latestPipeline.status)
+            : "No pipeline run recorded"
+        },
+        {
+          id:"FINANCE",state:ledger?(ledger.settlement_status==="settled"?"pass":"watch"):"watch",
+          title:"Finance / sale",
+          detail:ledger
+            ? String(ledger.settlement_status)+" · profit "+money(ledger.available_profit,ledger.currency)+" · payout "+String(ledger.owner_payout_status)
+            : "No finance ledger row recorded"
+        }
+      ];
+
+      if(grid)grid.innerHTML=stages.map(stage=>
+        '<article class="product-trace-stage" data-state="'+esc(stage.state)+'">'+
+        '<small>'+esc(stage.id)+'</small><strong>'+esc(stage.title)+'</strong><p>'+esc(stage.detail)+'</p></article>'
+      ).join("");
+
+      if(status)status.textContent="TRACE_READY · "+stages.filter(x=>x.state==="pass").length+"/"+stages.length+" VERIFIED/RESOLVED · READ_ONLY";
+      if(report)report.textContent=[
+        "MODE: BOOM_INTERNAL_PRODUCT_TRACE",
+        "READ_ONLY: true",
+        "ORDER ID: "+order.id,
+        "EXTERNAL ORDER: "+String(order.external_order_id||"—"),
+        "ORDER STATUS: "+String(order.status||"unknown"),
+        "INTERNAL PROVIDER: "+String(order.provider||"unknown"),
+        "SHOPPER SUPPLIER LABEL: HIDDEN",
+        "PAYMENT SESSION: "+String(paymentSessionId||"none"),
+        "PAYMENT SESSION ACCESS: "+paymentAccess,
+        "PIPELINE RUNS: "+pipeline.length,
+        "LATEST PIPELINE: "+(latestPipeline?String(latestPipeline.run_mode)+" / "+String(latestPipeline.stage)+" / "+String(latestPipeline.status):"none"),
+        "FINANCE SETTLEMENT: "+String(ledger?.settlement_status||"none"),
+        "AVAILABLE PROFIT: "+(ledger?money(ledger.available_profit,ledger.currency):"—"),
+        "OWNER PAYOUT: "+String(ledger?.owner_payout_status||"none"),
+        "CUSTOMER EMAIL DISPLAYED: false",
+        "CUSTOMER ADDRESS DISPLAYED: false",
+        "DATA_CHANGED: false"
+      ].join("\n");
+      return {order,pipeline,ledger,payment,paymentAccess,stages};
+    }catch(err){
+      if(status)status.textContent="TRACE_ERROR · READ_ONLY";
+      if(report)report.textContent="Trace failed safely: "+String(err?.message||err)+"\nDATA_CHANGED: false";
+      return null;
+    }finally{
+      if(button)button.disabled=false;
+    }
+  }
+
+  const huntAlphaStages=Object.freeze([
+    {id:"A1",name:"Truth Foundation",brains:["country-shipping","product-truth"],goal:"Normalize exact SKU, stock, country, shipping, landed cost and freshness.",gate:"No stale or ineligible product enters Alpha."},
+    {id:"A2",name:"Decision & Taste",brains:["decision-intelligence","taste-dna"],goal:"Explainable ranking with cold-start, affinity, novelty and fatigue controls.",gate:"Every recommendation returns reasons and hard-gate evidence."},
+    {id:"A3",name:"Memory & Actions",brains:["hunt-memory"],goal:"Connect real impression, dwell, Like, Save, Share and History signals.",gate:"No fabricated behavior; user controls remain available."},
+    {id:"A4",name:"Dynamic Flow",brains:["dynamic-worlds"],goal:"One reversible HUNT 2037 session with real products and stable facts.",gate:"Feature flag ON only in Alpha; current storefront stays fallback."},
+    {id:"A5",name:"Personal Studio",brains:["boom-stylist","boom-mirror"],goal:"Stylist flow and privacy-safe Mirror entry using verified product anchors.",gate:"Consent required; rendering provider and exact-fit claims remain OFF."},
+    {id:"A6",name:"Creative Learning",brains:["creative-brand-factory"],goal:"Prepare small truthful creative tests for selected Hero Products.",gate:"Private QA and Owner review before any paid generation or publishing."},
+    {id:"A7",name:"Integration QA",brains:["decision-intelligence","product-truth","dynamic-worlds"],goal:"Verify mobile, desktop, keyboard, performance, fallbacks and checkout preservation.",gate:"Alpha report required before any production decision."}
+  ]);
+
+  function renderBrainDetail(id){
+    const row=state.huntCapabilities.find(item=>item.id===id);
+    const host=$("#brain-detail");
+    if(!row||!host)return;
+    state.selectedCapability=id;
+    $$(".intelligence-card").forEach(card=>card.classList.toggle("selected",card.dataset.capabilityId===id));
+    const contract=capabilityContracts[id]||{inputs:["Capability evidence"],outputs:["Auditable plan"],forbidden:["Live execution without explicit Owner approval"]};
+    const list=items=>'<ul>'+items.map(item=>'<li>'+esc(item)+'</li>').join("")+'</ul>';
+    host.innerHTML=
+      '<div class="brain-detail-grid">'+
+        '<article><small>'+esc(row.manager||"unassigned")+'</small><h2>'+esc(row.id)+'</h2><p>'+esc(row.notes||"No evidence recorded.")+'</p><div class="status-wrap">'+pill(intelligenceTone(row))+'</div></article>'+
+        '<article><h3>INPUT CONTRACT</h3>'+list(contract.inputs)+'<h3>OUTPUT CONTRACT</h3>'+list(contract.outputs)+'</article>'+
+        '<article><h3>DEPENDENCIES</h3>'+list(row.dependencies||["none recorded"])+'<h3>FORBIDDEN</h3>'+list(contract.forbidden)+'</article>'+
+      '</div>';
+  }
+
+  function buildPlanningDraft(){
+    const objective=String($("#planning-objective")?.value||"").trim();
+    const output=$("#planning-output");
+    if(!objective){$("#planning-status").textContent="OBJECTIVE_REQUIRED · EXECUTION_OFF";return}
+    const rows=state.huntCapabilities||[];
+    const route=["decision-intelligence","country-shipping","product-truth","taste-dna","hunt-memory","dynamic-worlds","boom-stylist","boom-mirror","creative-brand-factory"]
+      .map(id=>rows.find(row=>row.id===id)).filter(Boolean);
+    const blockers=route.filter(row=>["PLANNED","BLOCKED","UNKNOWN"].includes(String(row.brain_status||"").toUpperCase()));
+    const gates=route.filter(row=>row.owner_gate);
+    state.planningDraft={id:"PLAN-"+Date.now(),version:nextPlanningVersion(),objective,status:"DRAFT_REVIEW",created_at:new Date().toISOString(),execution_allowed:false};
+    output.textContent=[
+      "PLAN STATUS: DRAFT_REVIEW",
+      "OBJECTIVE: "+objective,
+      "MODE: STUDIO_PLANNING_ONLY",
+      "",
+      "PROPOSED BRAIN ROUTE:",
+      ...route.map((row,index)=>(index+1)+". "+row.id+" — "+row.brain_status),
+      "",
+      "BLOCKERS: "+(blockers.map(row=>row.id).join(", ")||"none recorded"),
+      "OWNER GATES: "+(gates.map(row=>row.id).join(", ")||"none"),
+      "",
+      "SUCCESS EVIDENCE REQUIRED:",
+      "- Product Truth remains live and exact",
+      "- Tests pass with no storefront regression",
+      "- Mobile, desktop, keyboard and reduced-motion QA",
+      "- Existing checkout remains unchanged",
+      "",
+      "EXECUTION_ALLOWED: false",
+      "PRODUCTION_CHANGED: false",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false"
+    ].join("\n");
+    $("#planning-status").textContent="DRAFT_REVIEW · OWNER DECISION REQUIRED · EXECUTION_OFF";
+    $("#planning-revision").disabled=false;
+    $("#planning-approve").disabled=false;
+    appendPlanningHistory(state.planningDraft);
+  }
+
+  function setPlanningDecision(status){
+    if(!state.planningDraft)return;
+    state.planningDraft={...state.planningDraft,status,execution_allowed:false,decided_at:new Date().toISOString()};
+    $("#planning-status").textContent=status+" · IMPLEMENTATION PLANNING ONLY · EXECUTION_OFF";
+    const output=$("#planning-output");
+    output.textContent+="\n\nOWNER DECISION: "+status+"\nLIVE EXECUTION REMAINS BLOCKED.";
+    appendPlanningHistory(state.planningDraft);
+  }
+
+  function readPlanningHistory(){
+    try{
+      const rows=JSON.parse(localStorage.getItem(PLANNING_HISTORY_KEY)||"[]");
+      return Array.isArray(rows)?rows:[];
+    }catch{return []}
+  }
+
+  function nextPlanningVersion(){
+    return readPlanningHistory().reduce((max,row)=>Math.max(max,Number(row.version)||0),0)+1;
+  }
+
+  function appendPlanningHistory(entry){
+    const rows=readPlanningHistory();
+    const snapshot=Object.freeze({
+      id:String(entry.id||"PLAN-"+Date.now()),
+      version:Number(entry.version)||nextPlanningVersion(),
+      objective:String(entry.objective||""),
+      status:String(entry.status||"DRAFT_REVIEW"),
+      recorded_at:String(entry.decided_at||entry.created_at||new Date().toISOString()),
+      execution_allowed:false,
+      production_changed:false,
+      spend_authorized:false,
+      publishing_authorized:false
+    });
+    rows.unshift(snapshot);
+    try{localStorage.setItem(PLANNING_HISTORY_KEY,JSON.stringify(rows.slice(0,100)))}catch{}
+    renderApprovalQueue(rows.slice(0,100));
+    return snapshot;
+  }
+
+  function renderApprovalQueue(rows=readPlanningHistory()){
+    const host=$("#approval-queue");
+    if(!host)return;
+    if(!rows.length){host.innerHTML='<p class="approval-empty">No planning decisions yet.</p>';return}
+    host.innerHTML=rows.map(row=>
+      '<article class="approval-entry" data-status="'+esc(row.status)+'">'+
+        '<div class="approval-entry-head"><strong>Version '+esc(row.version)+'</strong><small>'+esc(row.status)+'</small></div>'+
+        '<p>'+esc(row.objective||"Untitled planning objective")+'</p>'+
+        '<footer><span>'+esc(new Date(row.recorded_at).toLocaleString())+'</span><span>EXECUTION OFF</span></footer>'+
+      '</article>'
+    ).join("");
+  }
+
+  function renderAlphaBlueprint(){
+    const host=$("#alpha-stage-grid");
+    if(!host)return;
+    host.innerHTML=huntAlphaStages.map(stage=>
+      '<article class="alpha-stage"><header><b>'+esc(stage.id+" · "+stage.name)+'</b><em>PLANNED</em></header>'+
+      '<p>'+esc(stage.goal)+'</p><footer>'+esc(stage.brains.join(" → "))+'<br>GATE: '+esc(stage.gate)+'</footer></article>'
+    ).join("");
+  }
+
+  function loadAlphaPlan(){
+    const input=$("#planning-objective");
+    if(input)input.value="Prepare HUNT 2037 Alpha inside BOOM Studio using verified real products, explainable intelligence, memory, Worlds, Stylist, privacy-safe Mirror entry and preserved checkout fallback. No production activation.";
+    buildPlanningDraft();
+  }
+
+  function truthValue(id){
+    return String($("#"+id)?.value||"").trim();
+  }
+
+  function evaluateTruthWorkspace(){
+    const output=$("#truth-result");
+    const status=$("#truth-result-status");
+    if(!Truth?.evaluate){
+      status.textContent="TRUTH_ENGINE_UNAVAILABLE · EXECUTION_OFF";
+      output.textContent="The Product Truth engine is unavailable. Nothing was executed.";
+      return;
+    }
+    const checked=truthValue("truth-checked-at");
+    const input={
+      provider:truthValue("truth-provider"),
+      destination_country:truthValue("truth-country"),
+      item_id:truthValue("truth-item-id"),
+      sku:truthValue("truth-sku"),
+      variant_id:truthValue("truth-variant-id"),
+      warehouse:truthValue("truth-warehouse"),
+      stock:truthValue("truth-stock"),
+      stock_checked_at:checked?new Date(checked).toISOString():null,
+      source_checked_at:checked?new Date(checked).toISOString():null,
+      supplier_cost:truthValue("truth-cost"),
+      shipping_cost:truthValue("truth-shipping"),
+      landed_cost:truthValue("truth-landed"),
+      retail_price:truthValue("truth-retail"),
+      shipping_method:truthValue("truth-shipping-method"),
+      eta_min_days:truthValue("truth-eta-min"),
+      eta_max_days:truthValue("truth-eta-max"),
+      returns_state:truthValue("truth-returns"),
+      country_supported:Boolean($("#truth-country-supported")?.checked),
+      restrictions:$("#truth-restricted")?.checked?["OWNER_REVIEW_REQUIRED"]:[]
+    };
+    const result=Truth.evaluate(input,{requireEconomics:true,minContribution:1.5,minMarginRate:.12});
+    status.textContent=result.truth_status+" · "+(result.eligible?"EVIDENCE PASSED":"BLOCKED / RECHECK")+" · EXECUTION_OFF";
+    output.textContent=[
+      "MODE: A1_STUDIO_SIMULATION",
+      "TRUTH STATUS: "+result.truth_status,
+      "ELIGIBLE FOR ALPHA PLANNING: "+result.eligible,
+      "ISSUES: "+(result.issues.join(", ")||"none"),
+      "CONTRIBUTION: "+(result.economics.contribution??"UNKNOWN"),
+      "MARGIN RATE: "+(result.economics.margin_rate===null?"UNKNOWN":(result.economics.margin_rate*100).toFixed(2)+"%"),
+      "PROVIDER: "+result.product.provider,
+      "ITEM / VARIANT: "+result.product.item_id+" / "+(result.product.variant_id||result.product.sku||"UNKNOWN"),
+      "DESTINATION: "+result.product.destination_country,
+      "EXECUTION_ALLOWED: false",
+      "PUBLISHED: false",
+      "SUPPLIER_CALLED: false"
+    ].join("\n");
+  }
+
+  function decisionNumber(id,scale=1){
+    const value=Number(truthValue(id));
+    return Number.isFinite(value)?value/scale:0;
+  }
+
+  function evaluateDecisionWorkspace(){
+    const output=$("#decision-result");
+    const status=$("#decision-result-status");
+    if(!Taste?.candidateSignals||!Decision?.scoreCandidate){
+      status.textContent="DECISION_ENGINE_UNAVAILABLE · EXECUTION_OFF";
+      output.textContent="Decision Brain or Taste DNA is unavailable. Nothing was executed.";
+      return;
+    }
+    const category=truthValue("decision-category").toLowerCase();
+    const provider=truthValue("decision-provider").toLowerCase();
+    const interactions=Math.max(0,Math.round(decisionNumber("decision-interactions")));
+    const tasteScore=decisionNumber("decision-taste-score");
+    const profile={
+      interactions,
+      mode:Taste.modeFor(interactions),
+      confidence:Math.min(1,interactions/20),
+      categories:category?[{key:category,score:tasteScore}]:[],
+      providers:[],
+      worlds:[],
+      controls:{sensitive_traits_used:false,body_traits_used:false,reset_supported:true}
+    };
+    const taste=Taste.candidateSignals(profile,{category,provider});
+    const context={interactions,recent_categories:[],recent_suppliers:[],recent_product_keys:[],taste_profile:profile};
+    const candidate={
+      product_key:provider+":studio-simulation",
+      category,
+      supplier:provider,
+      safety_eligible:true,
+      market_eligible:Boolean($("#decision-market")?.checked),
+      shipping_eligible:Boolean($("#decision-shipping-eligible")?.checked),
+      truth_status:$("#decision-truth-live")?.checked?"live_verified":"RECHECK_REQUIRED",
+      stock_available:Boolean($("#decision-stock")?.checked),
+      image_verified:Boolean($("#decision-media")?.checked),
+      relevance:decisionNumber("decision-relevance",100),
+      affinity:taste.affinity,
+      quality:decisionNumber("decision-quality",100),
+      shipping_score:decisionNumber("decision-shipping",100),
+      trust_score:decisionNumber("decision-trust",100),
+      freshness:decisionNumber("decision-freshness",100),
+      novelty:decisionNumber("decision-novelty",100),
+      creative_performance:decisionNumber("decision-creative",100),
+      margin_ratio:decisionNumber("decision-margin",100),
+      hide_risk:taste.hide_risk
+    };
+    const result=Decision.scoreCandidate(candidate,context,0);
+    status.textContent=(result.eligible?"ELIGIBLE":"BLOCKED")+" · "+profile.mode.toUpperCase()+" · EXECUTION_OFF";
+    output.textContent=[
+      "MODE: A2_STUDIO_SIMULATION",
+      "PERSONALIZATION MODE: "+profile.mode,
+      "TASTE CONFIDENCE: "+(profile.confidence*100).toFixed(0)+"%",
+      "SENSITIVE TRAITS USED: false",
+      "BODY TRAITS USED: false",
+      "ELIGIBLE: "+result.eligible,
+      "SCORE: "+result.score,
+      "DISCOVERY LANE: "+result.lane,
+      "REASONS: "+(result.reasons||[]).join(", "),
+      "EXPLANATION: "+Decision.explain(result),
+      "COMPONENTS: "+JSON.stringify(result.components||{}),
+      "EXECUTION_ALLOWED: false",
+      "STOREFRONT_CHANGED: false"
+    ].join("\n");
+  }
+
+  function renderMemorySimulation(){
+    const list=$("#memory-event-list");
+    const output=$("#memory-context-result");
+    if(!list||!output)return;
+    const rows=state.simulatedMemoryEvents;
+    list.innerHTML=rows.length?rows.slice().reverse().map(row=>
+      '<div class="memory-event"><span>'+esc(row.category||"uncategorized")+' · '+esc(row.item_id||"no item")+'</span><em>'+esc(row.type)+'</em></div>'
+    ).join(""):'<p>No simulated events.</p>';
+    const context=Memory?.decisionContext?.(rows)||{interactions:0,category_affinity:{},supplier_affinity:{},signal_counts:{}};
+    const profile=Taste?.buildProfile?.(rows)||{mode:"cold_start",confidence:0,categories:[]};
+    output.textContent=[
+      "MODE: A3_ISOLATED_MEMORY_SIMULATION",
+      "INTERACTIONS: "+context.interactions,
+      "PERSONALIZATION MODE: "+String(profile.mode||"cold_start").toUpperCase(),
+      "CONFIDENCE: "+((Number(profile.confidence)||0)*100).toFixed(0)+"%",
+      "CATEGORY AFFINITY: "+JSON.stringify(context.category_affinity||{}),
+      "SUPPLIER AFFINITY: "+JSON.stringify(context.supplier_affinity||{}),
+      "SIGNAL COUNTS: "+JSON.stringify(context.signal_counts||{}),
+      "RECENT PRODUCTS: "+(context.recent_product_keys||[]).join(", "),
+      "REAL PROFILE WRITTEN: false",
+      "HUNT HISTORY CHANGED: false",
+      "EXECUTION_ALLOWED: false"
+    ].join("\n");
+  }
+
+  function addSimulatedMemoryEvent(){
+    if(!Memory?.normalize)return;
+    const row=Memory.normalize({
+      type:truthValue("memory-action"),
+      category:truthValue("memory-category"),
+      provider:truthValue("memory-provider"),
+      item_id:truthValue("memory-item-id"),
+      source:"boom-studio-isolated-simulation"
+    });
+    state.simulatedMemoryEvents.push(row);
+    if(state.simulatedMemoryEvents.length>100)state.simulatedMemoryEvents.shift();
+    renderMemorySimulation();
+  }
+
+  function resetMemorySimulation(){
+    state.simulatedMemoryEvents=[];
+    renderMemorySimulation();
+  }
+
+  function simulateDynamicFlow(){
+    const preview=$("#flow-preview");
+    const output=$("#flow-result");
+    const status=$("#flow-result-status");
+    if(!Decision?.laneFor||!Flow?.WORLDS){
+      status.textContent="FLOW_ENGINE_UNAVAILABLE · STOREFRONT_OFF";
+      output.textContent="Dynamic Flow engine is unavailable. HUNT was not changed.";
+      return;
+    }
+    const interactions=Math.max(0,Math.round(decisionNumber("flow-interactions")));
+    const context={interactions};
+    const mode=Decision.modeFor(context);
+    const slots=Math.max(4,Math.min(18,Math.round(decisionNumber("flow-slots"))||10));
+    const allowSurprise=Boolean($("#flow-surprise")?.checked);
+    const allowNew=Boolean($("#flow-new")?.checked);
+    const reducedMotion=Boolean($("#flow-reduced-motion")?.checked);
+    const worldId=truthValue("flow-world");
+    const worlds=(worldId==="all"?Flow.WORLDS:Flow.WORLDS.filter(world=>world.id===worldId));
+    const rows=Array.from({length:slots},(_,index)=>{
+      let lane=Decision.laneFor(index,context);
+      if(lane==="wildcard"&&!allowSurprise)lane="adjacent";
+      if(lane==="new"&&!allowNew)lane="quality";
+      const world=worlds[index%Math.max(1,worlds.length)]||Flow.WORLDS[0];
+      return {position:index+1,lane,world};
+    });
+    preview.innerHTML=rows.map(row=>
+      '<article class="flow-slot" data-lane="'+esc(row.lane)+'"><small>SLOT '+row.position+' · '+esc(row.world?.title||"HUNT World")+'</small>'+
+      '<strong>'+esc(String(row.lane).toUpperCase())+'</strong><span>VERIFIED ELIGIBLE PRODUCT REQUIRED</span></article>'
+    ).join("");
+    status.textContent="COMPOSED · "+mode.toUpperCase()+" · "+slots+" EMPTY VERIFIED-PRODUCT SLOTS · STOREFRONT_OFF";
+    output.textContent=[
+      "MODE: A4_STRUCTURE_SIMULATION",
+      "SESSION SEED: "+truthValue("flow-seed"),
+      "PERSONALIZATION MODE: "+mode,
+      "WORLD ORDER: "+worlds.map(world=>world.id).join(" → "),
+      "LANE ORDER: "+rows.map(row=>row.lane).join(" → "),
+      "CONTROLLED SURPRISE: "+allowSurprise,
+      "NEW LANE: "+allowNew,
+      "REDUCED MOTION: "+reducedMotion,
+      "PRODUCTS INVENTED: 0",
+      "VERIFIED PRODUCT REQUIRED PER SLOT: true",
+      "STOREFRONT_CHANGED: false",
+      "FEATURE_FLAG_CHANGED: false",
+      "EXECUTION_ALLOWED: false"
+    ].join("\n");
+  }
+
+  function simulatePersonalStudio(){
+    const stylistOutput=$("#stylist-result");
+    const mirrorOutput=$("#mirror-result");
+    const status=$("#personal-result-status");
+    if(!Stylist?.createMission||!Mirror?.renderDecision){
+      status.textContent="PERSONAL_ENGINES_UNAVAILABLE · PROVIDER_OFF";
+      return;
+    }
+    const category=truthValue("personal-category");
+    const provider=truthValue("personal-provider");
+    const itemId=truthValue("personal-item-id");
+    const variantId=truthValue("personal-variant-id");
+    const occasion=truthValue("personal-occasion");
+    const productType=truthValue("personal-product-type");
+    const country=truthValue("personal-country");
+    const mission=Stylist.createMission({
+      anchor:{provider,item_id:itemId,category,price:decisionNumber("personal-anchor-price")},
+      occasion,
+      budget:decisionNumber("personal-budget"),
+      country,
+      context:{recent_categories:[],saved_categories:[]}
+    });
+    const consent=Mirror.createConsent({
+      accepted:Boolean($("#personal-consent")?.checked),
+      photo_preview:Boolean($("#personal-preview-permission")?.checked),
+      retention:truthValue("personal-retention"),
+      share_allowed:false
+    });
+    const consentCheck=Mirror.validateConsent(consent);
+    const product={
+      provider,item_id:itemId,variant_id:variantId,
+      image_verified:Boolean($("#personal-image-verified")?.checked),
+      truth_status:$("#personal-truth-live")?.checked?"live_verified":"RECHECK_REQUIRED"
+    };
+    const decision=Mirror.renderDecision({
+      productType,product,
+      confidence:decisionNumber("personal-confidence",100),
+      reducedMotion:Boolean($("#personal-reduced-motion")?.checked)
+    });
+    const safePreview=consentCheck.valid&&decision.can_render;
+    status.textContent=(safePreview?"SAFE_PREVIEW_PLAN_READY":"BLOCKED / FALLBACK")+" · PROVIDER_OFF · EXECUTION_OFF";
+    stylistOutput.textContent=[
+      "MODE: A5_STYLIST_SIMULATION",
+      "OCCASION: "+mission.occasion_label,
+      "TARGET CATEGORIES: "+(mission.target_categories.join(", ")||"NO COMPLEMENT MAP"),
+      "BUDGET TOTAL: "+mission.budget.budget_total,
+      "ANCHOR RESERVED: "+mission.budget.anchor_reserved,
+      "REMAINING: "+mission.budget.remaining,
+      "TARGET PER ITEM: "+mission.budget.target_per_item,
+      "COUNTRY PRODUCT TRUTH REQUIRED: "+mission.requires_country_product_truth,
+      "EXACT FIT CLAIM: "+mission.exact_fit_claim,
+      "PRODUCTS SELECTED: 0"
+    ].join("\n");
+    mirrorOutput.textContent=[
+      "MODE: A5_SAFE_MIRROR_SIMULATION",
+      "CONSENT VALID: "+consentCheck.valid,
+      "CONSENT ISSUES: "+(consentCheck.issues.join(", ")||"none"),
+      "RETENTION: "+consent.retention,
+      "FOCUS ANCHOR: "+(decision.focus.anchor||"UNAVAILABLE"),
+      "FRAME PLAN: "+(decision.focus.frames||[]).join(" → "),
+      "TRANSITION: "+(decision.focus.transition||"none"),
+      "PRODUCT TRUTH ISSUES: "+(decision.truth.issues||[]).join(", "),
+      "SAFE PREVIEW PLAN: "+safePreview,
+      "FALLBACK: "+decision.fallback,
+      "BODY SCORING: false",
+      "ATTRACTIVENESS SCORING: false",
+      "SENSITIVE ATTRIBUTE INFERENCE: false",
+      "EXACT FIT CLAIM: false",
+      "PHOTO REQUESTED: false",
+      "AI PROVIDER CALLED: false"
+    ].join("\n");
+  }
+
+  function simulateCreativeLearning(){
+    const host=$("#creative-tournament");
+    const output=$("#creative-result");
+    const status=$("#creative-result-status");
+    const hooks=Math.max(1,Math.min(20,Math.round(decisionNumber("creative-hooks"))||10));
+    const concepts=Math.max(1,Math.min(10,Math.round(decisionNumber("creative-concepts"))||5));
+    const scripts=Math.max(1,Math.min(6,Math.round(decisionNumber("creative-scripts"))||3));
+    const threshold=Math.max(0,Math.min(100,decisionNumber("creative-threshold")));
+    const gates={
+      truth:Boolean($("#creative-truth-live")?.checked),
+      reference:Boolean($("#creative-reference-locked")?.checked),
+      proof:Boolean($("#creative-proof-ready")?.checked)
+    };
+    const passed=gates.truth&&gates.reference&&gates.proof;
+    const stages=[
+      {name:"Hook Tournament",count:hooks,rule:"Distinct empty idea slots"},
+      {name:"Concept Tournament",count:concepts,rule:"Storyboard-ready slots"},
+      {name:"Script Tournament",count:scripts,rule:"Short-form draft slots"},
+      {name:"Red Team",count:1,rule:"Claims and missing-proof review"},
+      {name:"Visual QA",count:scripts,rule:"Fidelity threshold "+threshold},
+      {name:"Owner Gate",count:1,rule:"DRAFT_REVIEW only"}
+    ];
+    host.innerHTML=stages.map(stage=>
+      '<article class="creative-stage"><small>'+esc(String(stage.count))+' EMPTY SLOT'+(stage.count===1?"":"S")+'</small><strong>'+esc(stage.name)+'</strong><span>'+esc(stage.rule)+'</span></article>'
+    ).join("");
+    status.textContent=(passed?"PLAN_READY_FOR_OWNER_REVIEW":"BLOCKED / EVIDENCE_REQUIRED")+" · GENERATION_OFF";
+    output.textContent=[
+      "MODE: A6_CREATIVE_STRUCTURE_SIMULATION",
+      "CATEGORY: "+truthValue("creative-category"),
+      "CHANNEL: "+truthValue("creative-channel"),
+      "TEST MODE: "+truthValue("creative-test-mode"),
+      "PRODUCT TRUTH LIVE: "+gates.truth,
+      "EXACT REFERENCES LOCKED: "+gates.reference,
+      "PROOF BOUNDARY REVIEWED: "+gates.proof,
+      "TOURNAMENT MAY PROCEED TO PRIVATE DRAFT: "+passed,
+      "CONTENT GENERATED: 0",
+      "VIDEO GENERATED: 0",
+      "PROVIDER CALLS: 0",
+      "SPEND AUTHORIZED: false",
+      "PUBLISHING AUTHORIZED: false",
+      "OWNER GATE: DRAFT_REVIEW"
+    ].join("\n");
+  }
+
+  function alphaEvidenceText(id){
+    return String($("#"+id)?.textContent||"").trim();
+  }
+
+  function alphaIntegrationStages(){
+    const a1Status=alphaEvidenceText("truth-result-status"),a1=alphaEvidenceText("truth-result");
+    const a2Status=alphaEvidenceText("decision-result-status"),a2=alphaEvidenceText("decision-result");
+    const a3=alphaEvidenceText("memory-context-result");
+    const a4Status=alphaEvidenceText("flow-result-status"),a4=alphaEvidenceText("flow-result");
+    const a5Status=alphaEvidenceText("personal-result-status"),a5=alphaEvidenceText("mirror-result");
+    const a6Status=alphaEvidenceText("creative-result-status"),a6=alphaEvidenceText("creative-result");
+    return [
+      {
+        id:"A1",name:"Product Truth",
+        pass:a1Status.includes("LIVE_VERIFIED")&&a1Status.includes("EVIDENCE PASSED")&&a1.includes("EXECUTION_ALLOWED: false")&&a1.includes("SUPPLIER_CALLED: false"),
+        evidence:a1Status||"NOT_EVALUATED",
+        blocker:"Run A1 with fresh Product Truth evidence until LIVE_VERIFIED / EVIDENCE PASSED."
+      },
+      {
+        id:"A2",name:"Decision Brain + Taste DNA",
+        pass:a2Status.startsWith("ELIGIBLE")&&a2.includes("SENSITIVE TRAITS USED: false")&&a2.includes("BODY TRAITS USED: false")&&a2.includes("STOREFRONT_CHANGED: false"),
+        evidence:a2Status||"NOT_EVALUATED",
+        blocker:"Run A2 with a live-verified eligible candidate and preserve the sensitive/body-trait guards."
+      },
+      {
+        id:"A3",name:"Memory & Actions",
+        pass:Boolean(Memory?.decisionContext)&&state.simulatedMemoryEvents.length>0&&a3.includes("REAL PROFILE WRITTEN: false")&&a3.includes("HUNT HISTORY CHANGED: false")&&a3.includes("EXECUTION_ALLOWED: false"),
+        evidence:(state.simulatedMemoryEvents.length+" isolated event(s) · ")+(a3.split("\n")[0]||"NOT_EVALUATED"),
+        blocker:"Add at least one isolated A3 event and confirm no real profile/history writes."
+      },
+      {
+        id:"A4",name:"Dynamic Flow & Worlds",
+        pass:a4Status.startsWith("COMPOSED")&&a4.includes("PRODUCTS INVENTED: 0")&&a4.includes("VERIFIED PRODUCT REQUIRED PER SLOT: true")&&a4.includes("STOREFRONT_CHANGED: false")&&a4.includes("FEATURE_FLAG_CHANGED: false"),
+        evidence:a4Status||"NOT_COMPOSED",
+        blocker:"Compose A4 and preserve empty verified-product slots with storefront/feature flags unchanged."
+      },
+      {
+        id:"A5",name:"Stylist & Safe Mirror",
+        pass:a5Status.startsWith("SAFE_PREVIEW_PLAN_READY")&&a5.includes("BODY SCORING: false")&&a5.includes("ATTRACTIVENESS SCORING: false")&&a5.includes("SENSITIVE ATTRIBUTE INFERENCE: false")&&a5.includes("AI PROVIDER CALLED: false"),
+        evidence:a5Status||"NOT_EVALUATED",
+        blocker:"Complete A5 consent + exact-product truth/image checks until SAFE_PREVIEW_PLAN_READY."
+      },
+      {
+        id:"A6",name:"Creative Learning",
+        pass:a6Status.startsWith("PLAN_READY_FOR_OWNER_REVIEW")&&a6.includes("CONTENT GENERATED: 0")&&a6.includes("VIDEO GENERATED: 0")&&a6.includes("PROVIDER CALLS: 0")&&a6.includes("SPEND AUTHORIZED: false")&&a6.includes("PUBLISHING AUTHORIZED: false")&&a6.includes("OWNER GATE: DRAFT_REVIEW"),
+        evidence:a6Status||"NOT_PLANNED",
+        blocker:"Complete Product Truth + locked references + proof boundary in A6; keep generation/publishing/spend off."
+      }
+    ];
+  }
+
+  function runAlphaIntegrationQA(){
+    const stages=alphaIntegrationStages();
+    const passed=stages.filter(x=>x.pass);
+    const blocked=stages.filter(x=>!x.pass);
+    const ready=blocked.length===0;
+    const host=$("#alpha-integration-stage-grid"),summary=$("#alpha-integration-summary"),status=$("#alpha-integration-status"),report=$("#alpha-integration-report");
+    if(host)host.innerHTML=stages.map(stage=>
+      '<article class="integration-stage" data-state="'+(stage.pass?"pass":"blocked")+'"><small>'+esc(stage.id)+'</small><strong>'+esc(stage.name)+'</strong><span>'+(stage.pass?"PASS":"BLOCKED")+'</span><p>'+esc(stage.evidence)+'</p></article>'
+    ).join("");
+    if(summary)summary.innerHTML=
+      '<article><b>'+passed.length+'/6</b><span>STAGES PASSED</span></article>'+
+      '<article><b>'+(ready?"REVIEW":"LOCKED")+'</b><span>OWNER GATE</span></article>'+
+      '<article><b>OFF</b><span>PRODUCTION</span></article>';
+    if(status)status.textContent=ready
+      ?"READY_FOR_OWNER_ALPHA_REVIEW · OWNER_GATE_LOCKED · PRODUCTION_OFF"
+      :"BLOCKED · "+blocked.length+" STAGE(S) REQUIRE EVIDENCE · PRODUCTION_OFF";
+    if(report)report.textContent=[
+      "MODE: A7_INTEGRATION_QA",
+      "STAGES PASSED: "+passed.length+"/6",
+      "READY FOR OWNER ALPHA REVIEW: "+ready,
+      "PRODUCTION READY: false",
+      "PRODUCTION_CHANGED: false",
+      "EXECUTION_ALLOWED: false",
+      "SUPPLIER_CALLS: 0",
+      "AI_PROVIDER_CALLS: 0",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "OWNER_GATE: OWNER_REVIEW_REQUIRED",
+      "",
+      ...stages.map(stage=>stage.id+" "+(stage.pass?"PASS":"BLOCKED")+" · "+stage.name+" · "+stage.evidence),
+      "",
+      "BLOCKERS: "+(blocked.length?blocked.map(stage=>stage.id+": "+stage.blocker).join(" | "):"none inside A1–A6 simulation evidence"),
+      "NEXT SAFE ACTION: "+(ready
+        ?"Owner reviews the A7 evidence pack. Any implementation remains a separate explicit approval; Production stays OFF."
+        :"Resolve only the listed simulation/evidence blockers, then rerun A7. Do not activate providers, spend, publishing or Production.")
+    ].join("\n");
+    return {ready,passed:passed.length,blocked:blocked.map(x=>x.id),stages};
+  }
+
+  function runAlphaHarnessUI(){
+    const status=$("#alpha-harness-status"),summary=$("#alpha-harness-summary"),host=$("#alpha-harness-scenarios"),report=$("#alpha-harness-report");
+    if(!AlphaHarness?.runAll){
+      if(status)status.textContent="HARNESS_UNAVAILABLE · PRODUCTION_OFF";
+      if(report)report.textContent="A8 core is unavailable. Nothing was executed.";
+      return null;
+    }
+    const result=AlphaHarness.runAll();
+    if(host)host.innerHTML=result.scenarios.map(row=>
+      '<article class="harness-scenario" data-state="'+(row.harness_pass?"pass":"blocked")+'">'+
+      '<small>'+esc(row.id.replaceAll("_"," ").toUpperCase())+'</small>'+
+      '<strong>'+esc(row.label)+'</strong>'+
+      '<span>'+esc(row.harness_pass?"PASS":"FAIL")+'</span>'+
+      '<p>Expected ready: '+esc(String(row.expected_ready))+' · Actual ready: '+esc(String(row.actual_ready))+
+      ' · Blocked: '+esc(row.blocked.join(", ")||"none")+'</p></article>'
+    ).join("");
+    if(summary)summary.innerHTML=
+      '<article><b>'+result.passed+'/'+result.total+'</b><span>SCENARIOS PASSED</span></article>'+
+      '<article><b>'+(result.harness_pass?"REVIEW":"LOCKED")+'</b><span>OWNER GATE</span></article>'+
+      '<article><b>OFF</b><span>PRODUCTION</span></article>';
+    if(status)status.textContent=(result.harness_pass?"A8_PASS":"A8_FAIL")+" · "+result.passed+"/"+result.total+" · PRODUCTION_OFF";
+    if(report)report.textContent=[
+      "MODE: "+result.mode,
+      "HARNESS PASS: "+result.harness_pass,
+      "SCENARIOS PASSED: "+result.passed+"/"+result.total,
+      "PRODUCTION READY: false",
+      "PRODUCTION_CHANGED: false",
+      "EXECUTION_ALLOWED: false",
+      "SUPPLIER_CALLS: 0",
+      "AI_PROVIDER_CALLS: 0",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "OWNER_GATE: "+result.owner_gate,
+      "",
+      ...result.scenarios.map(row=>
+        row.id+" · "+(row.harness_pass?"PASS":"FAIL")+" · expected_ready="+row.expected_ready+
+        " · actual_ready="+row.actual_ready+" · blocked="+(row.blocked.join(",")||"none")
+      ),
+      "",
+      "NEXT SAFE ACTION: "+(result.harness_pass
+        ?"Owner may review the Alpha evidence pack. Merge/activation/Production remain separate explicit decisions."
+        :"Fix only the failed harness scenario or engine regression, then rerun A8. Do not activate Production.")
+    ].join("\n");
+    return result;
+  }
+
+  function buildOwnerAlphaEvidencePack(){
+    const status=$("#alpha-evidence-status"),summary=$("#alpha-evidence-summary"),host=$("#alpha-evidence-stages"),report=$("#alpha-evidence-report"),fingerprint=$("#alpha-evidence-fingerprint");
+    if(!EvidencePack?.build||!EvidencePack?.verifyBoundaries||!AlphaHarness?.runAll){
+      if(status)status.textContent="EVIDENCE_PACK_UNAVAILABLE · PRODUCTION_OFF";
+      if(report)report.textContent="A9 core or A8 harness is unavailable. Nothing was activated.";
+      return null;
+    }
+    const integrationStages=alphaIntegrationStages();
+    const harness=AlphaHarness.runAll();
+    const pack=EvidencePack.build({integrationStages,harness});
+    const boundaryCheck=EvidencePack.verifyBoundaries(pack);
+    const valid=boundaryCheck.valid===true;
+    state.alphaEvidencePack=valid?pack:null;
+
+    if(host)host.innerHTML=pack.stages.map(stage=>
+      '<article class="evidence-stage" data-state="'+(stage.pass?"pass":"blocked")+'">'+
+      '<small>'+esc(stage.id)+'</small><strong>'+esc(stage.name)+'</strong>'+
+      '<span>'+esc(stage.pass?"PASS":"BLOCKED")+'</span><p>'+esc(stage.evidence||"No evidence")+'</p></article>'
+    ).join("");
+    const passed=pack.stages.filter(x=>x.pass).length;
+    if(summary)summary.innerHTML=
+      '<article><b>'+passed+'/'+pack.stage_count+'</b><span>STAGES PASSED</span></article>'+
+      '<article><b>'+(valid&&pack.owner_review_ready?"REVIEW":"LOCKED")+'</b><span>RELEASE GATE</span></article>'+
+      '<article><b>OFF</b><span>ALPHA / PRODUCTION</span></article>';
+    if(fingerprint)fingerprint.textContent="FINGERPRINT: "+pack.evidence_fingerprint+" · snapshot only";
+    if(status)status.textContent=!valid
+      ?"BLOCKED_BOUNDARY_VIOLATION · PRODUCTION_OFF"
+      :(pack.owner_review_ready
+        ?"ALPHA_OWNER_REVIEW_READY · OWNER_GATE_LOCKED · PRODUCTION_OFF"
+        :"BLOCKED_EVIDENCE_REQUIRED · "+pack.blockers.length+" BLOCKER(S) · PRODUCTION_OFF");
+    if(report)report.textContent=[
+      "MODE: "+pack.mode,
+      "EVIDENCE FINGERPRINT: "+pack.evidence_fingerprint,
+      "GENERATED AT: "+pack.generated_at,
+      "STAGES PASSED: "+passed+"/"+pack.stage_count,
+      "OWNER REVIEW READY: "+pack.owner_review_ready,
+      "RELEASE GATE: "+pack.release_gate,
+      "BOUNDARY CHECK: "+(valid?"PASS":"FAIL"),
+      "BOUNDARY ISSUES: "+(boundaryCheck.issues.join(", ")||"none"),
+      "ALPHA ACTIVATION AUTHORIZED: false",
+      "PRODUCTION READY: false",
+      "PRODUCTION_CHANGED: false",
+      "EXECUTION_ALLOWED: false",
+      "PAYMENTS_ACTIVATED: false",
+      "ORDER_ROUTING_ACTIVATED: false",
+      "SUPPLIER_CALLS: 0",
+      "AI_PROVIDER_CALLS: 0",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "OWNER_GATE: "+pack.owner_gate,
+      "",
+      ...pack.stages.map(stage=>stage.id+" "+(stage.pass?"PASS":"BLOCKED")+" · "+stage.name+" · "+stage.evidence),
+      "",
+      "BLOCKERS: "+(pack.blockers.length?pack.blockers.map(x=>x.id+": "+x.evidence).join(" | "):"none"),
+      "NEXT SAFE ACTION: "+pack.next_safe_action
+    ].join("\n");
+    return {pack,boundaryCheck};
+  }
+
+  function buildAlphaRCPreview(){
+    const status=$("#alpha-rc-preview-status"),summary=$("#alpha-rc-preview-summary"),devices=$("#alpha-rc-devices"),journey=$("#alpha-rc-journey"),report=$("#alpha-rc-preview-report");
+    if(!RCPreview?.build||!RCPreview?.verify||!AlphaHarness?.runAll){
+      if(status)status.textContent="RC_PREVIEW_UNAVAILABLE · PRODUCTION_OFF";
+      if(report)report.textContent="A10 core is unavailable. No preview or live action was created.";
+      return null;
+    }
+
+    if(!state.alphaEvidencePack){
+      buildOwnerAlphaEvidencePack();
+    }
+    const evidencePack=state.alphaEvidencePack;
+    const harness=AlphaHarness.runAll();
+    const preview=RCPreview.build({evidencePack,harness});
+    const verification=RCPreview.verify(preview);
+    const valid=verification.valid===true;
+    state.alphaRCPreview=valid?preview:null;
+
+    if(devices)devices.innerHTML=preview.devices.map(device=>
+      '<article class="rc-device" data-state="'+(preview.preview_ready?"pass":"blocked")+'">'+
+      '<small>'+esc(device.id.toUpperCase())+'</small>'+
+      '<strong>'+esc(device.label)+'</strong>'+
+      '<span>'+esc(String(device.width))+'×'+esc(String(device.height))+'</span></article>'
+    ).join("");
+
+    if(journey)journey.innerHTML=preview.journey.map(step=>
+      '<article class="rc-journey-step" data-state="'+(step.ready?"pass":"blocked")+'">'+
+      '<small>'+esc(step.id.toUpperCase())+'</small>'+
+      '<strong>'+esc(step.label)+'</strong>'+
+      '<span>'+esc(step.ready?"READY":"BLOCKED")+'</span>'+
+      '<p>'+esc(step.contract)+'</p>'+
+      '<footer>'+esc(step.missing.length?"Missing: "+step.missing.join(", "):"Snapshot-only · no live mutation")+'</footer></article>'
+    ).join("");
+
+    const readySteps=preview.journey.filter(x=>x.ready).length;
+    if(summary)summary.innerHTML=
+      '<article><b>'+readySteps+'/'+preview.journey.length+'</b><span>JOURNEY STEPS READY</span></article>'+
+      '<article><b>'+(preview.preview_ready?preview.devices.length:0)+'/'+preview.devices.length+'</b><span>VIEWPORT CONTRACTS</span></article>'+
+      '<article><b>OFF</b><span>CHECKOUT / PRODUCTION</span></article>';
+
+    if(status)status.textContent=!valid
+      ?"BLOCKED_PREVIEW_BOUNDARY_VIOLATION · PRODUCTION_OFF"
+      :(preview.preview_ready
+        ?"A10_PRIVATE_RC_READY · OWNER_ONLY · PRODUCTION_OFF"
+        :"BLOCKED_EVIDENCE_REQUIRED · "+preview.blockers.length+" BLOCKER(S) · PRODUCTION_OFF");
+
+    if(report)report.textContent=[
+      "MODE: "+preview.mode,
+      "PRIVATE PREVIEW READY: "+preview.preview_ready,
+      "VISIBILITY: "+preview.visibility,
+      "EVIDENCE FINGERPRINT: "+(preview.evidence_fingerprint||"none"),
+      "RC BOUNDARY CHECK: "+(valid?"PASS":"FAIL"),
+      "RC BOUNDARY ISSUES: "+(verification.issues.join(", ")||"none"),
+      "CURRENT STOREFRONT FALLBACK: "+preview.current_storefront_fallback,
+      "CHECKOUT MODE: "+preview.checkout_mode,
+      "PAYMENTS_ACTIVATED: false",
+      "ORDER_ROUTING_ACTIVATED: false",
+      "PROVIDER_CALLS: 0",
+      "SUPPLIER_CALLS: 0",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "ALPHA_ACTIVATION_AUTHORIZED: false",
+      "PRODUCTION READY: false",
+      "PRODUCTION_CHANGED: false",
+      "OWNER_GATE: "+preview.owner_gate,
+      "",
+      ...preview.devices.map(device=>"VIEWPORT "+device.id+" · "+device.width+"x"+device.height+" · CONTRACT_ONLY"),
+      "",
+      ...preview.journey.map(step=>step.id+" · "+(step.ready?"READY":"BLOCKED")+" · "+step.contract+" · missing="+(step.missing.join(",")||"none")),
+      "",
+      "BLOCKERS: "+(preview.blockers.join(" | ")||"none"),
+      "NEXT SAFE ACTION: "+preview.next_safe_action
+    ].join("\n");
+    return {preview,verification};
+  }
+
+  function alphaRCDomAudit(){
+    const ids=[...document.querySelectorAll("[id]")].map(node=>node.id).filter(Boolean);
+    const seen=new Set(),duplicates=new Set();
+    for(const id of ids){if(seen.has(id))duplicates.add(id);else seen.add(id)}
+    const alphaButtons=[...document.querySelectorAll(
+      "#truth-simulate,#decision-simulate,#memory-add-event,#memory-reset-simulation,#flow-simulate,#personal-simulate,#creative-simulate,#alpha-integration-qa,#alpha-harness-run,#alpha-evidence-build,#alpha-rc-preview-build,#alpha-rc-qa-run"
+    )];
+    return {
+      lang:String(document.documentElement.lang||"").toLowerCase(),
+      dir:String(document.documentElement.dir||"").toLowerCase(),
+      viewport:Boolean(document.querySelector('meta[name="viewport"]')),
+      duplicate_ids:duplicates.size,
+      duplicate_id_values:[...duplicates],
+      alpha_buttons_without_type:alphaButtons.filter(button=>String(button.getAttribute("type")||"").toLowerCase()!=="button").length
+    };
+  }
+
+  function runAlphaRCQA(){
+    const status=$("#alpha-rc-qa-status"),summary=$("#alpha-rc-qa-summary"),groups=$("#alpha-rc-qa-groups"),checks=$("#alpha-rc-qa-checks"),report=$("#alpha-rc-qa-report");
+    if(!RCQA?.run||!AlphaHarness?.runAll||!EvidencePack?.build||!RCPreview?.build){
+      if(status)status.textContent="RC_QA_UNAVAILABLE · A12_BLOCKED";
+      if(report)report.textContent="A11 core or prerequisite core is unavailable. A12 remains blocked.";
+      return null;
+    }
+
+    if(!state.alphaEvidencePack)buildOwnerAlphaEvidencePack();
+    if(!state.alphaRCPreview)buildAlphaRCPreview();
+
+    const evidencePack=state.alphaEvidencePack;
+    const preview=state.alphaRCPreview;
+    const harness=AlphaHarness.runAll();
+    const domAudit=alphaRCDomAudit();
+    const result=RCQA.run({preview,evidencePack,harness,domAudit});
+    state.alphaRCQA=result;
+
+    if(groups)groups.innerHTML=result.groups.map(group=>
+      '<article class="rc-qa-group" data-state="'+(group.pass?"pass":"blocked")+'">'+
+      '<small>'+esc(group.category.toUpperCase())+'</small>'+
+      '<strong>'+esc(group.passed+"/"+group.total)+'</strong>'+
+      '<span>'+esc(group.pass?"PASS":"BLOCKED")+'</span></article>'
+    ).join("");
+
+    if(checks)checks.innerHTML=result.checks.map(row=>
+      '<article class="rc-qa-check" data-state="'+(row.pass?"pass":"blocked")+'">'+
+      '<small>'+esc(row.id+" · "+row.category.toUpperCase())+'</small>'+
+      '<strong>'+esc(row.label)+'</strong>'+
+      '<span>'+esc(row.pass?"PASS":"FAIL")+'</span>'+
+      '<p>'+esc(row.evidence)+'</p></article>'
+    ).join("");
+
+    const groupPass=result.groups.filter(x=>x.pass).length;
+    if(summary)summary.innerHTML=
+      '<article><b>'+result.passed+'/'+result.total+'</b><span>CHECKS PASSED</span></article>'+
+      '<article><b>'+groupPass+'/'+result.groups.length+'</b><span>QA GROUPS PASSED</span></article>'+
+      '<article><b>'+(result.a12_eligible?"ELIGIBLE":"LOCKED")+'</b><span>A12 ELIGIBILITY</span></article>';
+
+    if(status)status.textContent=result.rc_qa_pass
+      ?"A11_PASS · A12_ELIGIBLE · PRODUCTION_OFF"
+      :"A11_BLOCKED · "+result.blockers.length+" CHECK(S) FAILED · A12_BLOCKED";
+
+    if(report)report.textContent=[
+      "MODE: "+result.mode,
+      "RC QA PASS: "+result.rc_qa_pass,
+      "CHECKS PASSED: "+result.passed+"/"+result.total,
+      "QA GROUPS PASSED: "+groupPass+"/"+result.groups.length,
+      "A12 ELIGIBLE: "+result.a12_eligible,
+      "DOM LANG: "+domAudit.lang,
+      "DOM DIR: "+domAudit.dir,
+      "VIEWPORT META: "+domAudit.viewport,
+      "DUPLICATE IDS: "+domAudit.duplicate_ids+(domAudit.duplicate_id_values.length?" · "+domAudit.duplicate_id_values.join(", "):""),
+      "ALPHA BUTTONS WITHOUT TYPE: "+domAudit.alpha_buttons_without_type,
+      "ALPHA ACTIVATION AUTHORIZED: false",
+      "PRODUCTION READY: false",
+      "PRODUCTION_CHANGED: false",
+      "PAYMENTS_ACTIVATED: false",
+      "ORDER_ROUTING_ACTIVATED: false",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "OWNER_GATE: "+result.owner_gate,
+      "",
+      ...result.groups.map(group=>group.category+" · "+(group.pass?"PASS":"BLOCKED")+" · "+group.passed+"/"+group.total),
+      "",
+      "BLOCKERS: "+(result.blockers.join(", ")||"none"),
+      "NEXT SAFE ACTION: "+result.next_safe_action
+    ].join("\n");
+    return {result,domAudit};
+  }
+
+  function renderAlphaFinalGate(gate,verification){
+    const status=$("#alpha-final-gate-status"),summary=$("#alpha-final-gate-summary"),evidence=$("#alpha-final-gate-evidence"),report=$("#alpha-final-gate-report");
+    const go=$("#alpha-final-go"),noGo=$("#alpha-final-no-go");
+    const valid=verification?.valid===true;
+    const decision=gate?.decision_status||"PENDING_OWNER";
+    if(evidence)evidence.innerHTML=[
+      ["A9",gate?.evidence?.a9_fingerprint||"missing"],
+      ["A10",String(gate?.evidence?.a10_journey_ready||0)+"/"+String(gate?.evidence?.a10_journey_total||0)+" journey · "+String(gate?.evidence?.a10_viewports||0)+" viewports"],
+      ["A11",String(gate?.evidence?.a11_checks_passed||0)+"/"+String(gate?.evidence?.a11_checks_total||0)+" checks · "+String(gate?.evidence?.a11_groups_passed||0)+"/"+String(gate?.evidence?.a11_groups_total||0)+" groups"]
+    ].map(row=>'<article><small>'+esc(row[0])+'</small><strong>'+esc(row[1])+'</strong></article>').join("");
+    if(summary)summary.innerHTML=
+      '<article><b>'+(gate?.final_gate_ready?"READY":"LOCKED")+'</b><span>FINAL GATE</span></article>'+
+      '<article><b>'+esc(decision==="PENDING_OWNER"?"PENDING":decision.startsWith("GO_")?"GO":"NO-GO")+'</b><span>OWNER DECISION</span></article>'+
+      '<article><b>OFF</b><span>MERGE / PRODUCTION</span></article>';
+    if(status)status.textContent=!valid
+      ?"BLOCKED_FINAL_BOUNDARY_VIOLATION · OWNER_DECISION_PENDING"
+      :(gate?.decision_recorded
+        ?"OWNER_DECISION_RECORDED · "+decision+" · PRODUCTION_OFF"
+        :(gate?.final_gate_ready
+          ?"A12_READY · OWNER_DECISION_PENDING · PRODUCTION_OFF"
+          :"A12_BLOCKED · "+String(gate?.blockers?.length||0)+" BLOCKER(S) · PRODUCTION_OFF"));
+    if(go)go.disabled=!(valid&&gate?.final_gate_ready===true&&decision==="PENDING_OWNER");
+    if(noGo)noGo.disabled=!(valid&&decision==="PENDING_OWNER");
+    if(report)report.textContent=[
+      "MODE: "+String(gate?.mode||"A12_FINAL_OWNER_GO_NO_GO_GATE"),
+      "FINAL GATE READY: "+String(gate?.final_gate_ready===true),
+      "OWNER DECISION REQUIRED: "+String(gate?.owner_decision_required===true),
+      "DECISION STATUS: "+decision,
+      "BOUNDARY CHECK: "+(valid?"PASS":"FAIL"),
+      "BOUNDARY ISSUES: "+((verification?.issues||[]).join(", ")||"none"),
+      "A9 FINGERPRINT: "+String(gate?.evidence?.a9_fingerprint||"missing"),
+      "A10 JOURNEY: "+String(gate?.evidence?.a10_journey_ready||0)+"/"+String(gate?.evidence?.a10_journey_total||0),
+      "A10 VIEWPORTS: "+String(gate?.evidence?.a10_viewports||0),
+      "A11 CHECKS: "+String(gate?.evidence?.a11_checks_passed||0)+"/"+String(gate?.evidence?.a11_checks_total||0),
+      "A11 GROUPS: "+String(gate?.evidence?.a11_groups_passed||0)+"/"+String(gate?.evidence?.a11_groups_total||0),
+      "MERGE AUTHORIZED: false",
+      "PRIVATE ALPHA ACTIVATION AUTHORIZED: false",
+      "PRODUCTION ACTIVATION AUTHORIZED: false",
+      "PAYMENTS_ACTIVATED: false",
+      "ORDER_ROUTING_ACTIVATED: false",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "PROVIDER_EXECUTION_AUTHORIZED: false",
+      "SUPPLIER_EXECUTION_AUTHORIZED: false",
+      "",
+      "BLOCKERS: "+((gate?.blockers||[]).join(", ")||"none"),
+      "NEXT SAFE ACTION: "+String(gate?.next_safe_action||"Owner review required.")
+    ].join("\n");
+  }
+
+  function buildAlphaFinalGate(){
+    if(!FinalGate?.build||!FinalGate?.verifyBoundaries){
+      const status=$("#alpha-final-gate-status"),report=$("#alpha-final-gate-report");
+      if(status)status.textContent="FINAL_GATE_UNAVAILABLE · OWNER_DECISION_PENDING";
+      if(report)report.textContent="A12 core is unavailable. No decision or activation was performed.";
+      return null;
+    }
+    if(!state.alphaEvidencePack)buildOwnerAlphaEvidencePack();
+    if(!state.alphaRCPreview)buildAlphaRCPreview();
+    if(!state.alphaRCQA)runAlphaRCQA();
+    const gate=FinalGate.build({
+      qa:state.alphaRCQA,
+      preview:state.alphaRCPreview,
+      evidencePack:state.alphaEvidencePack
+    });
+    const verification=FinalGate.verifyBoundaries(gate);
+    state.alphaFinalGate=verification.valid?gate:null;
+    renderAlphaFinalGate(gate,verification);
+    return {gate,verification};
+  }
+
+  function recordAlphaFinalDecision(decision){
+    if(!FinalGate?.recordDecision||!FinalGate?.verifyBoundaries)return null;
+    if(!state.alphaFinalGate){
+      const built=buildAlphaFinalGate();
+      if(!built?.gate||!built?.verification?.valid)return null;
+    }
+    const next=FinalGate.recordDecision(state.alphaFinalGate,decision);
+    const verification=FinalGate.verifyBoundaries(next);
+    if(verification.valid)state.alphaFinalGate=next;
+    renderAlphaFinalGate(next,verification);
+    return {gate:next,verification};
+  }
+
+  function productTraceStage(step,label,state,evidence){
+    return {step,label,state,evidence:String(evidence||"")};
+  }
+
+  function renderProductTrace(stages,reportLines=[]){
+    const host=$("#product-trace-timeline"),status=$("#product-trace-status"),report=$("#product-trace-report");
+    if(host)host.innerHTML=stages.map(row=>
+      '<article data-state="'+esc(row.state)+'"><small>'+esc(row.step)+'</small><strong>'+esc(row.label)+'</strong><span>'+esc(row.state.toUpperCase())+'</span><p>'+esc(row.evidence||"No evidence")+'</p></article>'
+    ).join("");
+    const verified=stages.filter(x=>["verified","present","linked"].includes(x.state)).length;
+    const blocked=stages.filter(x=>x.state==="blocked").length;
+    if(status)status.textContent=blocked
+      ?"TRACE_BLOCKED · "+blocked+" BLOCKER(S)"
+      :"TRACE_READ_ONLY · "+verified+"/"+stages.length+" LINK(S) EVIDENCED";
+    if(report)report.textContent=reportLines.join("\n");
+  }
+
+  async function runProductTrace(){
     const provider=String($("#product-trace-provider")?.value||"").trim();
     const itemId=String($("#product-trace-item")?.value||"").trim();
     const orderRef=String($("#product-trace-order")?.value||"").trim();
@@ -629,7 +1700,7 @@
       const stages=[
         productTraceStage("1","SOURCE","present","Local Preview structure only · live catalog query disabled"),
         productTraceStage("2","SHELF / TRUTH","unknown","Enter authenticated Studio for live catalog evidence"),
-        productTraceStage("3","CHECKOUT","unknown","Exact fulfillment line-item check disabled in Local Preview"),
+        productTraceStage("3","CHECKOUT","unknown","Live order pipeline query disabled in Local Preview"),
         productTraceStage("4","ORDER","unknown","Live order query disabled in Local Preview"),
         productTraceStage("5","FINANCE / SALE","unknown","Live finance query disabled in Local Preview")
       ];
@@ -638,7 +1709,6 @@
         "READ ONLY: true",
         "LIVE QUERY: false",
         "MUTATION: false",
-        "INTEGRITY RULE: Checkout/Order link requires exact provider + item_id match in hunt_fulfillment_orders.line_items.",
         "NEXT SAFE ACTION: Sign in to Owner/Admin Studio to run live evidence trace."
       ]);
       return {stages,localPreview:true};
@@ -661,8 +1731,7 @@
     if(catalogQuery.error)throw catalogQuery.error;
     const catalog=catalogQuery.data||null;
 
-    let order=null,fulfillment=null,pipeline=[],finance=null;
-
+    let order=null,pipeline=[],finance=null;
     if(orderRef){
       let q=client.from("hunt_orders")
         .select("id,external_order_id,status,total_amount,currency,placed_at,updated_at,is_test,order_source,provider");
@@ -671,72 +1740,31 @@
       const orderResult=await q.maybeSingle();
       if(orderResult.error)throw orderResult.error;
       order=orderResult.data||null;
-    }
 
-    if(order?.id){
-      const fulfillmentResult=await client.from("hunt_fulfillment_orders")
-        .select("id,payment_session_id,order_id,provider,status,line_items,supplier_order_id,supplier_status,tracking_number,last_error,created_at,updated_at")
-        .eq("order_id",order.id).order("updated_at",{ascending:false}).limit(12);
-      if(fulfillmentResult.error)throw fulfillmentResult.error;
-      const rows=fulfillmentResult.data||[];
-      fulfillment=rows.find(row=>
-        String(row.provider||"").toLowerCase()===provider.toLowerCase() &&
-        Array.isArray(row.line_items) &&
-        row.line_items.some(item=>String(item?.item_id||"")===itemId)
-      )||null;
-    }else if(!orderRef){
-      const fulfillmentResult=await client.from("hunt_fulfillment_orders")
-        .select("id,payment_session_id,order_id,provider,status,line_items,supplier_order_id,supplier_status,tracking_number,last_error,created_at,updated_at")
-        .eq("provider",provider)
-        .contains("line_items",[{item_id:itemId}])
-        .order("updated_at",{ascending:false}).limit(1);
-      if(fulfillmentResult.error)throw fulfillmentResult.error;
-      fulfillment=fulfillmentResult.data?.[0]||null;
-
-      if(fulfillment?.order_id){
-        const orderResult=await client.from("hunt_orders")
-          .select("id,external_order_id,status,total_amount,currency,placed_at,updated_at,is_test,order_source,provider")
-          .eq("id",fulfillment.order_id).maybeSingle();
-        if(orderResult.error)throw orderResult.error;
-        order=orderResult.data||null;
+      if(order?.id){
+        const [pipelineResult,financeResult]=await Promise.all([
+          client.from("hunt_order_pipeline_runs")
+            .select("id,payment_session_id,order_id,run_mode,stage,status,provider,supplier_order_id,tracking_number,last_error,created_at,updated_at")
+            .eq("order_id",order.id).order("updated_at",{ascending:false}).limit(8),
+          client.from("hunt_order_finance_ledger")
+            .select("payment_session_id,order_id,currency,customer_gross,contribution_locked,available_profit,settlement_status,supplier_payment_status,owner_payout_status,is_test,calculated_at,settled_at,updated_at")
+            .eq("order_id",order.id).maybeSingle()
+        ]);
+        if(pipelineResult.error)throw pipelineResult.error;
+        if(financeResult.error)throw financeResult.error;
+        pipeline=pipelineResult.data||[];
+        finance=financeResult.data||null;
       }
     }
 
-    const lineItemMatch=Boolean(
-      fulfillment &&
-      String(fulfillment.provider||"").toLowerCase()===provider.toLowerCase() &&
-      Array.isArray(fulfillment.line_items) &&
-      fulfillment.line_items.some(item=>String(item?.item_id||"")===itemId)
-    );
-
-    if(order?.id&&lineItemMatch){
-      const [pipelineResult,financeResult]=await Promise.all([
-        client.from("hunt_order_pipeline_runs")
-          .select("id,payment_session_id,order_id,run_mode,stage,status,provider,supplier_order_id,tracking_number,last_error,created_at,updated_at")
-          .eq("order_id",order.id).order("updated_at",{ascending:false}).limit(8),
-        client.from("hunt_order_finance_ledger")
-          .select("payment_session_id,order_id,currency,customer_gross,contribution_locked,available_profit,settlement_status,supplier_payment_status,owner_payout_status,is_test,calculated_at,settled_at,updated_at")
-          .eq("order_id",order.id).maybeSingle()
-      ]);
-      if(pipelineResult.error)throw pipelineResult.error;
-      if(financeResult.error)throw financeResult.error;
-      pipeline=pipelineResult.data||[];
-      finance=financeResult.data||null;
-    }
-
-    const checkoutLinked=Boolean(lineItemMatch&&fulfillment?.payment_session_id);
-    const orderMismatch=Boolean(order&& !lineItemMatch);
+    const checkoutLinked=Boolean(finance?.payment_session_id||pipeline.some(x=>x.payment_session_id));
     const sourceState=catalog?"verified":"unknown";
     const shelfState=catalog?.category?"present":"unknown";
-    const checkoutState=orderMismatch?"blocked":(checkoutLinked?"linked":"unknown");
-    const orderState=orderMismatch?"blocked":(order&&lineItemMatch?"linked":"unknown");
+    const checkoutState=checkoutLinked?"linked":(order?"unknown":"unknown");
+    const orderState=order?"linked":"unknown";
     const financeState=finance
       ?(["settled"].includes(String(finance.settlement_status||"").toLowerCase())?"verified":"present")
       :"unknown";
-
-    const matchedLineItem=lineItemMatch
-      ? fulfillment.line_items.find(item=>String(item?.item_id||"")===itemId)
-      : null;
 
     const stages=[
       productTraceStage("1","SOURCE",sourceState,catalog
@@ -745,19 +1773,15 @@
       productTraceStage("2","SHELF / TRUTH",shelfState,catalog
         ? "category="+String(catalog.category||"unknown")+" · availability_verified="+String(catalog.availability_verified===true)+" · market="+String(catalog.market_eligibility_status||"unknown")
         :"No catalog shelf evidence"),
-      productTraceStage("3","CHECKOUT",checkoutState,orderMismatch
-        ? "BLOCKED: supplied Order does not contain this provider + item_id in fulfillment line_items"
-        : checkoutLinked
-          ? "payment_session_id="+String(fulfillment.payment_session_id)+" · exact line item="+itemId+" · variant="+String(matchedLineItem?.variant_id||"unknown")
-          :"No exact fulfillment/payment-session evidence for this product"),
-      productTraceStage("4","ORDER",orderState,orderMismatch
-        ? "BLOCKED: Order/product mismatch"
-        : order&&lineItemMatch
-          ? "order="+String(order.external_order_id||order.id)+" · status="+String(order.status||"unknown")+" · fulfillment="+String(fulfillment.status||"unknown")+" · test="+String(order.is_test===true)
-          :"No exact product-linked order found"),
+      productTraceStage("3","CHECKOUT",checkoutState,checkoutLinked
+        ? "payment_session_id linked through Admin-only order pipeline / finance evidence"
+        :"No linked payment session evidence supplied"),
+      productTraceStage("4","ORDER",orderState,order
+        ? "order="+String(order.external_order_id||order.id)+" · status="+String(order.status||"unknown")+" · test="+String(order.is_test===true)
+        :"No matching order reference supplied/found"),
       productTraceStage("5","FINANCE / SALE",financeState,finance
         ? "settlement="+String(finance.settlement_status||"unknown")+" · owner_payout="+String(finance.owner_payout_status||"unknown")+" · available_profit="+String(finance.available_profit??"unknown")+" "+String(finance.currency||"")
-        :"No finance ledger row linked to this exact product/order")
+        :"No finance ledger row linked to this order")
     ];
 
     renderProductTrace(stages,[
@@ -770,21 +1794,16 @@
       "CATEGORY: "+String(catalog?.category||"unknown"),
       "AVAILABILITY VERIFIED: "+String(catalog?.availability_verified===true),
       "ORDER FOUND: "+String(Boolean(order)),
-      "FULFILLMENT FOUND: "+String(Boolean(fulfillment)),
-      "EXACT LINE ITEM MATCH: "+String(lineItemMatch),
-      "ORDER / PRODUCT MISMATCH: "+String(orderMismatch),
       "ORDER STATUS: "+String(order?.status||"unknown"),
-      "FULFILLMENT STATUS: "+String(fulfillment?.status||"unknown"),
       "PIPELINE RUNS: "+String(pipeline.length),
       "CHECKOUT LINKED: "+String(checkoutLinked),
       "FINANCE LEDGER FOUND: "+String(Boolean(finance)),
       "SETTLEMENT STATUS: "+String(finance?.settlement_status||"unknown"),
       "OWNER PAYOUT STATUS: "+String(finance?.owner_payout_status||"unknown"),
       "",
-      "INTEGRITY RULE: Checkout/Order is linked only when exact provider + item_id exists in hunt_fulfillment_orders.line_items.",
       "NOTE: Missing links remain UNVERIFIED; no table writes or runtime controls were changed."
     ]);
-    return {catalog,order,fulfillment,pipeline,finance,lineItemMatch,orderMismatch,stages};
+    return {catalog,order,pipeline,finance,stages};
   }
 
   function simulateHuntIntelligence(){
