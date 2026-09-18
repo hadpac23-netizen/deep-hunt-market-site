@@ -386,3 +386,10 @@ assert(js.includes('LIVE QUERY: false'),"Product trace local preview guard missi
 assert(css.includes(".product-trace-workspace"),"Product trace styling missing");
 assert(js.includes('label:"Product trace: source → shelf → checkout → order → sale",status:"PRESENT"'),"Product trace prompt status not closed");
 assert(js.includes('label:"Supplier names hidden from shopper storefront",status:"PRESENT"'),"Supplier hiding prompt status not closed");
+
+assert(js.includes('client.from("hunt_fulfillment_orders")'),"Product Trace fulfillment query missing");
+assert(js.includes('.contains("line_items",[{item_id:itemId}])'),"Product Trace exact item lookup missing");
+assert(js.includes("EXACT LINE ITEM MATCH: "), "Product Trace exact-match evidence missing");
+assert(js.includes("ORDER / PRODUCT MISMATCH: "), "Product Trace mismatch evidence missing");
+assert(js.includes("Checkout/Order is linked only when exact provider + item_id exists in hunt_fulfillment_orders.line_items."),"Exact fulfillment line-item Product Trace guard missing");
+assert(js.includes('orderMismatch?"blocked"'),"Product Trace mismatch fail-closed state missing");
