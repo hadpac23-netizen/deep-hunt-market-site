@@ -96,6 +96,8 @@
       modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
       evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[],
       redTeamCases:[],redTeamRuns:[],confidenceCalibration:[],teamRuns:[],
+      evaluatorRegistry:[],humanAlignmentRuns:[],onlineEvalWindows:[],ciQualityGates:[],ciQualityGateRuns:[],
+      f35Sources:[],f35Findings:[],
       promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
     }
   };
@@ -528,6 +530,13 @@
       redTeamRuns:state.professionalEvidence.redTeamRuns,
       confidenceCalibration:state.professionalEvidence.confidenceCalibration,
       teamRuns:state.professionalEvidence.teamRuns,
+      evaluatorRegistry:state.professionalEvidence.evaluatorRegistry,
+      humanAlignmentRuns:state.professionalEvidence.humanAlignmentRuns,
+      onlineEvalWindows:state.professionalEvidence.onlineEvalWindows,
+      ciQualityGates:state.professionalEvidence.ciQualityGates,
+      ciQualityGateRuns:state.professionalEvidence.ciQualityGateRuns,
+      f35Sources:state.professionalEvidence.f35Sources,
+      f35Findings:state.professionalEvidence.f35Findings,
       traceSpans:state.professionalEvidence.traceSpans,
       costSamples:professionalCostSamples(),
       promptVersions:state.professionalEvidence.promptVersions,
@@ -537,10 +546,6 @@
       reviewStoreConnected:Boolean(state.session),
       traceSchemaConnected:state.professionalEvidence.traceStoreConnected&&state.professionalEvidence.traceSpans.length>0,
       alertRulesConnected:state.professionalEvidence.modelRoutes.length>0,
-      evaluatorRegistryConnected:false,
-      humanAlignmentConnected:false,
-      onlineEvalConnected:false,
-      ciEvalGateConnected:false,
       releaseGate:state.alphaFinalGate
     });
     state.professionalSnapshot=snapshot;
@@ -602,10 +607,10 @@
     const evaluatorReport=$("#professional-evaluator-report");
     if(evaluatorReport)evaluatorReport.textContent=[
       "GRADER TYPES: "+(snapshot.evaluators.grader_types.join(", ")||"none"),
-      "VERSIONED EVALUATOR REGISTRY: "+snapshot.evaluators.evaluator_registry_connected,
-      "HUMAN ALIGNMENT / AGREEMENT: "+snapshot.evaluators.human_alignment_connected,
-      "ONLINE PRODUCTION EVALS: "+snapshot.evaluators.online_eval_connected,
-      "CI QUALITY GATE: "+snapshot.evaluators.ci_eval_gate_connected,
+      "VERSIONED EVALUATOR REGISTRY: "+snapshot.evaluators.evaluator_registry_connected+" · active="+snapshot.evaluators.active_evaluators+"/"+snapshot.evaluators.evaluator_registry_rows,
+      "HUMAN ALIGNMENT: "+snapshot.evaluators.human_alignment_connected+" · valid="+snapshot.evaluators.valid_alignment_runs+"/"+snapshot.evaluators.alignment_runs+" · missing="+snapshot.evaluators.missing_alignment,
+      "ONLINE EVALS: "+snapshot.evaluators.online_eval_connected+" · completed="+snapshot.evaluators.completed_online_windows+"/"+snapshot.evaluators.online_windows,
+      "CI QUALITY GATE: "+snapshot.evaluators.ci_eval_gate_connected+" · passed="+snapshot.evaluators.passed_ci_gates+"/"+snapshot.evaluators.ci_gates+" · uncovered="+snapshot.evaluators.uncovered_ci_gates,
       "",
       snapshot.evaluators.governance_ready
         ?"Evaluator governance is evidenced."
@@ -632,6 +637,22 @@
       "AUTO-PUBLISH: false",
       "AUTO-SPEND: false",
       "OWNER GATE: required"
+    ].join("\n");
+
+    const radarReport=$("#professional-radar-report");
+    if(radarReport)radarReport.textContent=[
+      "SOURCES: "+snapshot.radar.sources,
+      "FRESH: "+snapshot.radar.fresh,
+      "STALE: "+snapshot.radar.stale,
+      "NEVER CHECKED: "+snapshot.radar.never_checked,
+      "VERIFIED FINDINGS: "+snapshot.radar.verified_findings,
+      "OWNER REVIEW QUEUE: "+snapshot.radar.review_queue,
+      "",
+      snapshot.radar.ready
+        ?"F35 knowledge sources are inside their freshness windows."
+        :"F35 GAP: one or more sources are stale or have never been checked.",
+      "AUTO-IMPLEMENT: false",
+      "OWNER REVIEW: required"
     ].join("\n");
 
     report.textContent=[
@@ -662,6 +683,7 @@
       "MULTI-AGENT JUDGE: completed="+snapshot.safety.team_judge.judged+"/"+snapshot.safety.team_judge.runs+" incomplete="+snapshot.safety.team_judge.incomplete,
       "EVALUATOR GOVERNANCE: registry="+snapshot.evaluators.evaluator_registry_connected+" human_alignment="+snapshot.evaluators.human_alignment_connected+" graders="+snapshot.evaluators.grader_types.join(","),
       "ONLINE EVAL / CI GATE: online="+snapshot.evaluators.online_eval_connected+" ci="+snapshot.evaluators.ci_eval_gate_connected,
+      "F35 RADAR: fresh="+snapshot.radar.fresh+"/"+snapshot.radar.sources+" stale="+snapshot.radar.stale+" never="+snapshot.radar.never_checked+" verified_findings="+snapshot.radar.verified_findings,
       "PROMPT/TRACE LINEAGE: linked="+snapshot.lineage.linked_spans+"/"+snapshot.lineage.versioned_spans+" orphaned="+snapshot.lineage.orphaned_spans,
       "REVIEW HISTORY PERSISTED: "+snapshot.review.persisted,
       "EXPERIMENT DIFF: "+(snapshot.experiments.available?"AVAILABLE":"NEEDS_COMPARABLE_RUNS"),
@@ -2230,6 +2252,8 @@
         modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
         evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[],
         redTeamCases:[],redTeamRuns:[],confidenceCalibration:[],teamRuns:[],
+        evaluatorRegistry:[],humanAlignmentRuns:[],onlineEvalWindows:[],ciQualityGates:[],ciQualityGateRuns:[],
+        f35Sources:[],f35Findings:[],
         promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
       };
       return state.professionalEvidence;
@@ -2239,6 +2263,8 @@
       modelObservations,modelCosts,modelRoutes,benchmarkCases,
       evalCases,evalRuns,evalSuites,replayRuns,shadowRuns,
       redTeamCases,redTeamRuns,confidenceCalibration,teamRuns,
+      evaluatorRegistry,humanAlignmentRuns,onlineEvalWindows,ciQualityGates,ciQualityGateRuns,
+      f35Sources,f35Findings,
       promptStore,traceStore
     ]=await Promise.all([
       query("hunt_boom_model_observations","id,route_key,task_class,provider,model,success,status_code,latency_ms,quality_score,estimated_cost_usd,created_at,input_tokens,output_tokens,total_tokens","created_at",220),
@@ -2254,6 +2280,13 @@
       query("hunt_boom_redteam_runs","id,run_key,case_id,target_version,result_status,latency_ms,created_at,completed_at","created_at",160),
       query("hunt_boom_confidence_calibration","id,task_class,bucket_low,bucket_high,samples,correct_samples,mean_confidence,observed_accuracy,calibration_error,updated_at","updated_at",120),
       query("hunt_boom_team_runs","id,run_key,task,judge_id,run_mode,status,judge_verdict,owner_gate_required,created_at,completed_at","created_at",120),
+      query("hunt_boom_evaluator_registry","id,evaluator_key,version,evaluator_type,status,calibration_required,owner_approval_required,source_commit,created_at,updated_at,activated_at","updated_at",160),
+      query("hunt_boom_human_alignment_runs","id,evaluator_id,run_key,dataset_ref,sample_count,human_reviewers,agreement_rate,kappa,false_positive_rate,false_negative_rate,status,owner_approved,created_at,completed_at","created_at",160),
+      query("hunt_boom_online_eval_windows","id,window_key,route_key,task_class,environment,sampling_mode,sample_rate,window_start,window_end,sample_count,scored_count,passed_count,failed_count,average_score,p95_latency_ms,estimated_cost_usd,status,created_at,completed_at","window_end",160),
+      query("hunt_boom_ci_quality_gates","id,gate_key,scope,metric_key,operator,threshold,min_samples,blocks_merge,enabled,owner_approval_required,updated_at","updated_at",120),
+      query("hunt_boom_ci_quality_gate_runs","id,gate_id,run_key,candidate_ref,source_commit,sample_count,metric_value,passed,status,created_at,completed_at","created_at",160),
+      query("hunt_boom_f35_sources","id,source_key,display_name,source_type,canonical_url,domain,priority,freshness_hours,enabled,owner_approved,last_checked_at,last_changed_at,updated_at","priority",120),
+      query("hunt_boom_f35_findings","id,source_id,finding_key,observed_at,published_at,title,summary,evidence_url,impact_area,relevance_score,confidence,action_state,requires_owner_review,created_at","observed_at",240),
       optionalQuery("hunt_boom_prompt_versions","id,prompt_key,version,status,environment,template_hash,variables,model_preferences,change_note,source_commit,owner_approval_required,created_at,updated_at,activated_at","updated_at",160),
       optionalQuery("hunt_boom_trace_spans","id,trace_id,span_id,parent_span_id,session_id,span_type,name,route_key,provider,model,prompt_version_id,status,success,latency_ms,input_tokens,output_tokens,total_tokens,estimated_cost_usd,error_code,started_at,ended_at","started_at",400)
     ]);
@@ -2262,6 +2295,8 @@
       modelObservations,modelCosts,modelRoutes,benchmarkCases,
       evalCases,evalRuns,evalSuites,replayRuns,shadowRuns,
       redTeamCases,redTeamRuns,confidenceCalibration,teamRuns,
+      evaluatorRegistry,humanAlignmentRuns,onlineEvalWindows,ciQualityGates,ciQualityGateRuns,
+      f35Sources,f35Findings,
       promptVersions:promptStore.rows,
       traceSpans:traceStore.rows,
       promptStoreConnected:promptStore.connected,
