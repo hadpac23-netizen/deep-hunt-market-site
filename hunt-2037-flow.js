@@ -107,6 +107,8 @@
         ${model.units.map(laneSection).join("")}
       </section>`;
     window.HuntShoppingActions?.rescan?.();
+    const requestedWorld=new URL(location.href).searchParams.get("world")||"";
+    if(requestedWorld&&!root.dataset.activeWorld)setWorldMode(requestedWorld);
   }
 
   function setWorldMode(worldId){
@@ -117,6 +119,9 @@
     const world=Core.WORLDS.find(x=>x.id===worldId)||null;
     if(!root)return;
     root.dataset.activeWorld=world?.id||"";
+    const nextUrl=new URL(location.href);
+    if(world)nextUrl.searchParams.set("world",world.id);else nextUrl.searchParams.delete("world");
+    history.replaceState(null,"",nextUrl.pathname+nextUrl.search+nextUrl.hash);
     document.body.classList.toggle("hunt2037-world-mode",Boolean(world));
     root.querySelectorAll(".hunt2037-world").forEach(section=>section.classList.toggle("hunt2037-world-selected",Boolean(world&&section.dataset.world===world.id)));
     root.querySelectorAll("[data-world-enter]").forEach(btn=>btn.setAttribute("aria-pressed",String(Boolean(world&&btn.dataset.worldEnter===world.id))));
