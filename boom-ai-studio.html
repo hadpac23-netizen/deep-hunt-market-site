@@ -427,6 +427,20 @@
               <div class="integration-stage-grid" id="alpha-integration-stage-grid"><p>Run A7 after exercising the A1–A6 simulation workspaces.</p></div>
               <pre id="alpha-integration-report">No integration QA report yet. A7 will only inspect local Studio evidence.</pre>
             </section>
+            <section class="harness-workspace">
+              <div class="truth-workspace-head"><div><small>A8 WORKSPACE</small><h3>Alpha Test Harness</h3><p>Runs one positive Alpha path plus fail-closed Truth, Privacy and Creative-proof scenarios entirely in simulation. No provider, publishing, spend or Production action is allowed.</p></div><span>4 SCENARIOS · SIMULATION ONLY</span></div>
+              <div class="harness-actions">
+                <button class="top-btn" id="alpha-harness-run" type="button">Run Alpha Test Harness</button>
+                <div class="truth-result-status" id="alpha-harness-status">NOT_RUN · PRODUCTION_OFF</div>
+              </div>
+              <div class="harness-summary" id="alpha-harness-summary">
+                <article><b>0/4</b><span>SCENARIOS PASSED</span></article>
+                <article><b>LOCKED</b><span>OWNER GATE</span></article>
+                <article><b>OFF</b><span>PRODUCTION</span></article>
+              </div>
+              <div class="harness-scenario-grid" id="alpha-harness-scenarios"><p>Run A8 to validate the positive path and three deliberate failure paths.</p></div>
+              <pre id="alpha-harness-report">No A8 harness report yet.</pre>
+            </section>
             <section class="alpha-exit-gate">
               <strong>Alpha exit gate</strong>
               <p>Real eligible products · explainable recommendations · Like/Save/Share · History · Worlds · Stylist · safe Mirror entry · stable checkout fallback · mobile/desktop QA.</p>
@@ -501,6 +515,6 @@
   <script src="brand-video-router.js?v=1"></script>
   <script src="brand-creative-qa.js?v=1"></script>
   <script src="brand-video-dispatch.js?v=1"></script>
-  <script src="boom-ai-studio.js?v=2"></script>
+  <script src="boom-alpha-test-harness.js?v=alpha1"></script>\n  <script src="boom-ai-studio.js?v=2"></script>
 </body>
 </html>
