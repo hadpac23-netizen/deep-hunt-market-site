@@ -223,7 +223,7 @@
     banner.setAttribute("role", "dialog");
     banner.setAttribute("aria-label", "Analytics preference");
     banner.innerHTML =
-      '<div><strong>Help HUNT DEAL improve</strong><p>Allow privacy-conscious analytics so we can understand which products, countries and channels perform best. No payment data is collected here.</p></div>' +
+      '<div><strong>Help HUNT improve</strong><p>Allow privacy-conscious analytics so we can understand which products, countries and channels perform best. No payment data is collected here.</p></div>' +
       '<div class="hunt-consent-actions"><button type="button" data-consent="decline">Decline</button><button type="button" data-consent="accept">Allow analytics</button></div>';
     banner.addEventListener("click", event => {
       const button = event.target.closest?.("[data-consent]");

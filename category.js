@@ -233,7 +233,7 @@
   async function load() {
     const subDef = sub && H.categoryDefs[sub] ? H.categoryDefs[sub] : null;
     const pageTitle = subDef ? `${def.title} · ${subDef.title}` : def.title;
-    document.title = `${pageTitle} — HUNT DEAL`;
+    document.title = `${pageTitle} — HUNT`;
 
     const canonicalUrl = new URL("/category.html", PROD_ORIGIN);
     canonicalUrl.searchParams.set("c", slug);
@@ -258,7 +258,7 @@
       "@type":"CollectionPage",
       name:pageTitle,
       url:canonicalUrl.toString(),
-      description:subDef ? `${subDef.title} inside ${def.title} on HUNT DEAL.` : String(def.description || pageTitle)
+      description:subDef ? `${subDef.title} inside ${def.title} on HUNT.` : String(def.description || pageTitle)
     });
 
     $("#hd-cat-title").textContent = pageTitle;

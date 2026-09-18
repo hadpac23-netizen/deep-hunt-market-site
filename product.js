@@ -124,7 +124,7 @@
     $("#hd-product-price").textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
     syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);
-    $("#hd-product-description").textContent = product.description || "The provider has not supplied a full description to HUNT DEAL yet.";
+    $("#hd-product-description").textContent = product.description || "The provider has not supplied a full description to HUNT yet.";
     $("#hd-product-gaps").innerHTML = (product.gaps || ["Provider variant feed is incomplete."]).map(x=>`<li>${H.esc(x)}</li>`).join("");
     const facts = [
       ["Brand",product.brand],["Type",product.type_name],["Model",product.model],["Origin",product.origin_country],
@@ -133,7 +133,7 @@
     $("#hd-product-facts").innerHTML = facts.map(([k,v])=>`<div><span>${H.esc(k)}</span><strong>${H.esc(v)}</strong></div>`).join("");
     const cat=H.inferCategory(product); const def=H.categoryDefs[cat] || H.categoryDefs.women;
     $("#hd-product-category-link").href=H.categoryUrl(cat); $("#hd-product-category-link").textContent=def.title;
-    document.title=`${product.title || "Product"} — HUNT DEAL`;
+    document.title=`${product.title || "Product"} — HUNT`;
     renderOptions(); renderGallery(); renderProductStructuredData();
     const externalVisit = typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
     const cjCheckoutReady = String(product.provider || provider || "").toLowerCase().includes("cj");

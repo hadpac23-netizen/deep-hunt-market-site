@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,follow">
-  <meta name="description" content="Inspect live product images, variants, availability and source pricing on HUNT DEAL.">
-  <title>Product — HUNT DEAL</title>
+  <meta name="description" content="Inspect live product images, variants, availability and source pricing on HUNT.">
+  <title>Product — HUNT</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
   <link rel="stylesheet" href="hunt-wow.css?v=launchqa5">
   <link rel="stylesheet" href="hunt-shop.css?v=dynamic1">
@@ -18,7 +18,7 @@
   <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
   <div class="hd-space"></div>
   <header class="hd-topbar">
-    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">PRODUCT INTELLIGENCE</div></div>
+    <div class="hd-brand-wrap"><a class="hd-brand hd-hunt-wordmark" href="./" aria-label="HUNT"><span aria-hidden="true">H</span><span aria-hidden="true">U</span><span aria-hidden="true">N</span><span aria-hidden="true">T</span></a><div class="hd-branch">PRODUCT INTELLIGENCE</div></div>
     <nav class="hd-nav" aria-label="Primary"><a href="./#shop">Shop</a><a href="category.html?c=women">Women</a><a href="category.html?c=accessories">Accessories</a><a href="category.html?c=beauty">Beauty</a><a href="category.html?c=men">Men</a><a href="search.html">AI Find</a></nav>
     <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a></div>
   </header>
@@ -49,9 +49,9 @@
       </div>
     </section>
 
-    <a class="hd-product-discover-cue" href="#hd-endless-discovery">
-      <small>YOUR HUNT CONTINUES</small>
-      <strong>Discover more for you</strong>
+    <a class="hd-product-discover-cue" id="hd-product-discover-cue" href="#hd-endless-discovery">
+      <small data-hunt-i18n="productCueTop">YOUR HUNT CONTINUES</small>
+      <strong data-hunt-i18n="productCue">Discover more for you</strong>
       <span aria-hidden="true">↓</span>
     </a>
 
@@ -103,14 +103,14 @@
 
     <section class="hd-endless-discovery" id="hd-endless-discovery" aria-labelledby="hd-endless-title">
       <div class="hd-product-section-head">
-        <div><div class="hd-kicker hd-kicker-small">BOOM ENDLESS DISCOVERY</div><h2 id="hd-endless-title">Keep discovering</h2><p id="hd-endless-copy">BOOM opens more relevant products as you scroll.</p></div>
+        <div><div class="hd-kicker hd-kicker-small">BOOM ENDLESS DISCOVERY</div><h2 id="hd-endless-title" data-hunt-i18n="endlessTitle">Keep discovering</h2><p id="hd-endless-copy" data-hunt-i18n="endlessCopy">HUNT opens more relevant products as you scroll.</p></div>
       </div>
       <div class="hd-endless-grid" id="hd-endless-grid"></div>
       <div class="hd-endless-sentinel" id="hd-endless-sentinel" aria-live="polite"><span></span><strong>Loading more for you…</strong></div>
     </section>
 
     <section class="hd-product-loading glass" id="hd-product-loading"><span>◉</span><strong>Loading live product detail…</strong></section>
-    <section class="hd-category-empty glass" id="hd-product-error" hidden><span>◇</span><h2>Product detail is not available yet.</h2><p id="hd-product-error-copy">This provider has not exposed an approved detail feed to HUNT DEAL.</p><a class="hd-btn" href="./">Back to market</a></section>
+    <section class="hd-category-empty glass" id="hd-product-error" hidden><span>◇</span><h2>Product detail is not available yet.</h2><p id="hd-product-error-copy">This provider has not exposed an approved detail feed to HUNT.</p><a class="hd-btn" href="./">Back to market</a></section>
   <nav class="hd-legal-links" aria-label="Legal and customer policies"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="returns.html">Returns & Cancellation</a><a href="shipping.html">Shipping</a><a href="withdrawal.html">Withdrawal / Return request</a></nav>
   </main>
   <div class="hd-image-zoom" id="hd-image-zoom" hidden role="dialog" aria-modal="true" aria-label="Product image zoom">
@@ -129,6 +129,16 @@
     <div><small>Source price</small><strong id="hd-mobile-price">--</strong></div>
     <button id="hd-mobile-add" class="hd-btn hd-btn-primary" type="button">Add to Cart</button>
   </div>
+
+  <aside class="hd-product-pulse" id="hd-product-pulse" aria-live="polite">
+    <button class="hd-product-pulse-close" type="button" data-product-pulse-close aria-label="Close suggestion">×</button>
+    <img data-product-pulse-media alt="" hidden>
+    <div>
+      <small data-hunt-i18n="productPulse">Maybe interesting for you</small>
+      <strong data-product-pulse-title data-hunt-i18n="productCue">Discover more for you</strong>
+      <a href="#hd-endless-discovery" data-product-pulse-link><span data-hunt-i18n="productPulseCta">Discover ↓</span></a>
+    </div>
+  </aside>
   <nav class="hd-mobile-nav" aria-label="Mobile navigation">
     <a href="./"><span>&#8962;</span><small>Home</small></a>
     <a href="category.html?c=women"><span>&#9638;</span><small>Categories</small></a>
@@ -138,6 +148,7 @@
     <a href="auth.html"><span>&#9675;</span><small>Sign in</small></a>
   </nav>
 
+  <script src="hunt-experience-i18n.js?v=1"></script>
   <script src="market-core.js?v=dynamic2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="account-presence.js?v=profile2"></script>
@@ -149,6 +160,7 @@
   <script src="reviews.js?v=reviews2"></script>
   <script src="shopping-actions.js?v=launchqa5"></script>
   <script src="hunt-theme.js?v=shop5"></script>
+  <script src="hunt-product-pulse.js?v=1"></script>
   <script src="pwa.js?v=pwa2"></script>
 </body>
 </html>

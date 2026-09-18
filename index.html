@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="HUNT DEAL — evidence-first price comparison and smart commerce intelligence.">
+  <meta name="description" content="HUNT — evidence-first price comparison and smart commerce intelligence.">
   <link rel="canonical" href="https://deep-hunt-market.netlify.app/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="HUNT DEAL — Smarter Shopping Intelligence">
+  <meta property="og:title" content="HUNT — Smarter Shopping Intelligence">
   <meta property="og:description" content="Compare verified offers, keep risks visible, and find smarter shopping choices across approved commerce providers.">
   <meta property="og:url" content="https://deep-hunt-market.netlify.app/">
   <meta property="og:image" content="https://deep-hunt-market.netlify.app/earth-night.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <title>HUNT DEAL — Smarter Shopping Intelligence</title>
+  <title>HUNT — Smarter Shopping Intelligence</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
   <link rel="stylesheet" href="hunt-wow.css?v=launchqa5">
   <link rel="stylesheet" href="hunt-shop.css?v=dynamic1">
   <link rel="stylesheet" href="hunt-visual-v2.css?v=1">
   <link rel="stylesheet" href="hunt-home-3.css?v=1">
   <link rel="stylesheet" href="hunt-hero4.css?v=1">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"HUNT DEAL","url":"https://deep-hunt-market.netlify.app/","description":"Evidence-first shopping and commerce intelligence."}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"HUNT","url":"https://deep-hunt-market.netlify.app/","description":"Evidence-first shopping and commerce intelligence."}</script>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="hunt-icon-192.png">
   <meta name="theme-color" content="#111111">
@@ -28,7 +28,7 @@
   <div class="hd-space"></div>
   <header class="hd-topbar">
     <div class="hd-brand-wrap">
-      <a class="hd-brand" href="./">HUNT <span>DEAL</span></a>
+      <a class="hd-brand hd-hunt-wordmark" href="./" aria-label="HUNT"><span aria-hidden="true">H</span><span aria-hidden="true">U</span><span aria-hidden="true">N</span><span aria-hidden="true">T</span></a>
       <div class="hd-branch" data-i18n="branch">A BOOM branch · full BOOM coming later.</div>
     </div>
     <nav class="hd-nav" aria-label="Primary">
@@ -46,7 +46,7 @@
         <input id="hd-search-input" aria-label="Search products, brands, or categories" data-i18n-placeholder="search" placeholder="Search products, brands, or categories…">
       </label>
       <select class="hd-lang" data-lang-select aria-label="Language">
-        <option value="en">EN</option><option value="ar">AR</option><option value="he">HE</option><option value="es">ES</option><option value="fr">FR</option>
+        <option value="en">EN</option><option value="ar">AR</option><option value="he">HE</option><option value="es">ES</option><option value="fr">FR</option><option value="ja">JA</option><option value="zh">中文</option>
       </select>
       <a class="hd-account-link" href="auth.html">Sign in</a>
       <a class="hd-cart-link" href="checkout.html" aria-label="Cart and checkout preview">Cart <span id="hd-cart-count" data-cart-count>0</span></a>
@@ -56,13 +56,12 @@
   <main id="main-content" class="hd-home3-main">
     <section class="hd-hero4" id="hunt-hero4" aria-labelledby="hd-hero4-title" data-promo-state="idle">
       <div class="hd-hero4-media" aria-hidden="true">
-        <video id="hd-hero4-video-a" class="hd-hero4-scene is-active" muted loop playsinline preload="metadata" poster="assets/hunt-hero4/urban-luxe-poster.jpg"></video>
-        <video id="hd-hero4-video-b" class="hd-hero4-scene" muted loop playsinline preload="none"></video>
+        <div id="hd-city-scene-a" class="hd-city-scene is-active"></div>
+        <div id="hd-city-scene-b" class="hd-city-scene"></div>
         <div class="hd-hero4-scrim"></div>
       </div>
 
-      <div class="hd-hero4-navline">
-        <span aria-hidden="true">HUNT</span>
+      <div class="hd-hero4-navline hd-hero4-navline-clean">
         <button id="hd-hero4-scene-next" class="hd-hero4-scene-chip" type="button" aria-label="Show next HUNT city scene">
           <small id="hd-hero4-scene-region">WORLD EDIT</small>
           <strong id="hd-hero4-scene-label">URBAN LUXE</strong>
@@ -71,55 +70,26 @@
       </div>
 
       <div class="hd-hero4-content">
-        <div class="hd-hero4-kicker">FASHION LIVES HERE</div>
-        <h1 id="hd-hero4-title">Style without<br><em>limits.</em></h1>
-        <p>Discover fashion, accessories and beauty through a storefront that changes as you browse.</p>
+        <div class="hd-hero4-kicker" data-hunt-i18n="heroKicker">YOUR WORLD · YOUR HUNT</div>
+        <h1 id="hd-hero4-title"><span data-hunt-i18n="heroTitle1">Find what</span><br><em data-hunt-i18n="heroTitle2">fits you.</em></h1>
+        <p data-hunt-i18n="heroCopy">Fashion, beauty, home, tech and more — reshaped around what you actually explore.</p>
 
         <form class="hd-hero4-search" action="search.html" method="get" role="search">
           <label class="sr-only" for="hd-hero4-search-input">Search HUNT</label>
-          <input id="hd-hero4-search-input" name="q" type="search" autocomplete="off" placeholder="Search products, styles, brands or ideas…">
+          <input id="hd-hero4-search-input" name="q" type="search" autocomplete="off" data-hunt-i18n-placeholder="search" placeholder="Search products, styles, brands or ideas…">
           <button type="submit" aria-label="Search HUNT">→</button>
         </form>
 
         <nav class="hd-hero4-categories" aria-label="Featured shopping categories">
-          <a href="category.html?c=women">Women</a>
-          <a href="category.html?c=accessories">Accessories</a>
-          <a href="category.html?c=beauty">Beauty</a>
-          <a href="category.html?c=men">Men</a>
-          <a href="category.html?c=kids">Kids</a>
+          <a href="category.html?c=women" data-hunt-i18n="women">Women</a>
+          <a href="category.html?c=accessories" data-hunt-i18n="accessories">Accessories</a>
+          <a href="category.html?c=beauty" data-hunt-i18n="beauty">Beauty</a>
+          <a href="category.html?c=men" data-hunt-i18n="men">Men</a>
+          <a href="category.html?c=kids" data-hunt-i18n="kids">Kids</a>
         </nav>
 
-        <button class="hd-hero4-status" id="hd-hero4-status" type="button" aria-controls="hd-hero4-promo" aria-expanded="false">
-          <span class="hd-hero4-status-dot"></span>
-          <span id="hd-hero4-status-text">HUNT is curating your next edit</span>
-        </button>
-      </div>
-
-      <aside class="hd-hero4-promo" id="hd-hero4-promo" aria-live="polite" aria-label="HUNT dynamic promotion">
-        <div class="hd-hero4-promo-rail" aria-hidden="true">
-          <span></span><span></span><span></span><span></span>
-        </div>
-        <button class="hd-hero4-promo-close" id="hd-hero4-promo-close" type="button" aria-label="Close promotion">×</button>
-        <div class="hd-hero4-promo-media" id="hd-hero4-promo-media"></div>
-        <div class="hd-hero4-promo-copy">
-          <small id="hd-hero4-promo-eyebrow">HUNT SELECTS</small>
-          <h2 id="hd-hero4-promo-title">Your next edit is loading.</h2>
-          <p id="hd-hero4-promo-copy">A verified catalog suggestion will appear here.</p>
-          <a class="hd-hero4-promo-cta" id="hd-hero4-promo-cta" href="#shop">Explore HUNT →</a>
-        </div>
-        <div class="hd-hero4-promo-controls">
-          <button id="hd-hero4-prev" type="button" aria-label="Previous promotion">←</button>
-          <span id="hd-hero4-promo-position">1 / 1</span>
-          <button id="hd-hero4-next" type="button" aria-label="Next promotion">→</button>
-        </div>
-      </aside>
-
-      <button class="hd-hero4-peek" id="hd-hero4-peek" type="button" aria-controls="hd-hero4-promo" aria-expanded="false">
-        <span>HUNT SELECTS</span><strong id="hd-hero4-peek-text">Something new for you</strong>
-      </button>
-
       <a class="hd-hero4-scroll-cue" href="#departments" aria-label="Discover more in HUNT">
-        <span>Discover your HUNT</span><b aria-hidden="true">↓</b>
+        <span id="hd-hero4-discover-text">Discover your HUNT</span><b aria-hidden="true">↓</b>
       </a>
     </section>
 
@@ -137,6 +107,45 @@
         <a href="category.html?c=sports">Sports</a>
       </div>
       <div class="hd-mega-menu" id="hd-mega-menu" hidden></div>
+    </section>
+
+    <section class="hd-lifestyle-stream" id="hunt-lifestyle-stream" data-promo-state="idle" aria-labelledby="hd-lifestyle-title">
+      <div class="hd-lifestyle-stream-head">
+        <div>
+          <small data-hunt-i18n="promoLifestyle">BOOM LIFESTYLE</small>
+          <h2 id="hd-lifestyle-title" data-hunt-i18n="maybe">Maybe for you</h2>
+          <p>Personalized discovery begins here as you scroll. Real catalog products only.</p>
+        </div>
+        <button class="hd-lifestyle-trigger" id="hd-hero4-status" type="button" aria-controls="hd-hero4-promo" aria-expanded="false">
+          <span class="hd-hero4-status-dot"></span>
+          <span id="hd-hero4-status-text" data-hunt-i18n="maybe">Maybe for you</span>
+        </button>
+      </div>
+      <div class="hd-lifestyle-stage">
+        <aside class="hd-hero4-promo" id="hd-hero4-promo" aria-live="polite" aria-label="HUNT dynamic promotion">
+          <button class="hd-hero4-promo-close" id="hd-hero4-promo-close" type="button" aria-label="Close promotion">×</button>
+          <div class="hd-hero4-promo-media" id="hd-hero4-promo-media"></div>
+          <div class="hd-hero4-promo-live"><i aria-hidden="true"></i><span data-hunt-i18n="promoLifestyle">BOOM LIFESTYLE</span></div>
+          <div class="hd-hero4-promo-stack" id="hd-hero4-promo-stack" aria-label="More HUNT suggestions"></div>
+          <div class="hd-hero4-promo-copy">
+            <small id="hd-hero4-promo-eyebrow" data-hunt-i18n="promoSelects">HUNT SELECTS</small>
+            <h2 id="hd-hero4-promo-title">Your next edit is loading.</h2>
+            <p id="hd-hero4-promo-copy">A verified catalog suggestion will appear here.</p>
+            <strong class="hd-hero4-promo-price" id="hd-hero4-promo-price"></strong>
+            <a class="hd-hero4-promo-cta" id="hd-hero4-promo-cta" href="#shop"><span data-hunt-i18n="explore">Explore HUNT</span> →</a>
+          </div>
+          <div class="hd-hero4-promo-controls">
+            <button id="hd-hero4-prev" type="button" aria-label="Previous promotion">←</button>
+            <span id="hd-hero4-promo-position">1 / 1</span>
+            <button id="hd-hero4-next" type="button" aria-label="Next promotion">→</button>
+          </div>
+        </aside>
+
+        <button class="hd-hero4-peek" id="hd-hero4-peek" type="button" aria-controls="hd-hero4-promo" aria-expanded="false">
+          <span data-hunt-i18n="promoLifestyle">BOOM LIFESTYLE</span>
+          <strong id="hd-hero4-peek-text" data-hunt-i18n="maybe">Maybe for you</strong>
+        </button>
+      </div>
     </section>
 
     <section class="hd-home3-world hd-home3-women-world" id="women-edit">
@@ -221,7 +230,7 @@
           <button data-category="home">Home</button>
         </div>
       </div>
-      <p class="hd-inline-disclosure">Affiliate disclosure: qualifying outbound links may earn HUNT DEAL a commission at no extra cost to you.</p>
+      <p class="hd-inline-disclosure">Affiliate disclosure: qualifying outbound links may earn HUNT a commission at no extra cost to you.</p>
       <div class="hd-deal-grid" id="hd-deal-grid"></div>
       <div class="hd-empty glass" id="hd-empty">
         <span>✦</span>
@@ -241,22 +250,23 @@
 
   <nav class="hd-legal-links" aria-label="Legal and customer policies"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="returns.html">Returns & Cancellation</a><a href="shipping.html">Shipping</a><a href="withdrawal.html">Withdrawal / Return request</a></nav>
   <footer class="hd-footer">
-    <div><strong>HUNT DEAL</strong><small data-i18n="footerTag">A BOOM branch · commerce intelligence now, full BOOM later.</small></div>
-    <div class="hd-disclosure"><span data-i18n="affiliateDisclosure">Affiliate disclosure: qualifying outbound links may earn HUNT DEAL a commission at no extra cost to you.</span><small data-i18n="nasaCredit">Earth imagery: NASA / Earth Observatory.</small></div>
+    <div><strong>HUNT</strong><small data-i18n="footerTag">A BOOM branch · commerce intelligence now, full BOOM later.</small></div>
+    <div class="hd-disclosure"><span data-i18n="affiliateDisclosure">Affiliate disclosure: qualifying outbound links may earn HUNT a commission at no extra cost to you.</span><small data-i18n="nasaCredit">Earth imagery: NASA / Earth Observatory.</small></div>
     <nav><a href="#deals">Deals</a><a href="#deals">Price Lens</a><a href="partners.html">Partners</a></nav>
   </footer>
 
   <script src="i18n.js"></script>
+  <script src="hunt-experience-i18n.js?v=1"></script>
   <script src="market-core.js?v=dynamic2"></script>
+  <script src="hunt-home-3.js?v=1"></script>
+  <script src="hunt-hero4.js?v=1"></script>
+  <script src="hunt-deal.js?v=boomet3"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="account-presence.js?v=profile3"></script>
   <script src="shopping-actions.js?v=launchqa5"></script>
   <script src="analytics-config.js?v=analytics1"></script>
   <script src="analytics.js?v=huntmetrics1"></script>
   <script src="boom-net.js?v=boomet1"></script>
-  <script src="hunt-deal.js?v=boomet3"></script>
-  <script src="hunt-home-3.js?v=1"></script>
-  <script src="hunt-hero4.js?v=1"></script>
   <script src="boom-promotions.js?v=promo2"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa2"></script>
