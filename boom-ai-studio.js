@@ -97,7 +97,7 @@
       modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
       evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[],
       redTeamCases:[],redTeamRuns:[],confidenceCalibration:[],teamRuns:[],
-      evaluatorRegistry:[],humanAlignmentRuns:[],onlineEvalWindows:[],ciQualityGates:[],ciQualityGateRuns:[],
+      evaluatorRegistry:[],humanAlignmentRuns:[],humanLabels:[],humanLabelStoreConnected:false,onlineEvalWindows:[],ciQualityGates:[],ciQualityGateRuns:[],
       f35Sources:[],f35Findings:[],
       promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
     }
@@ -533,6 +533,8 @@
       teamRuns:state.professionalEvidence.teamRuns,
       evaluatorRegistry:state.professionalEvidence.evaluatorRegistry,
       humanAlignmentRuns:state.professionalEvidence.humanAlignmentRuns,
+      humanLabels:state.professionalEvidence.humanLabels,
+      humanLabelStoreConnected:state.professionalEvidence.humanLabelStoreConnected,
       onlineEvalWindows:state.professionalEvidence.onlineEvalWindows,
       ciQualityGates:state.professionalEvidence.ciQualityGates,
       ciQualityGateRuns:state.professionalEvidence.ciQualityGateRuns,
@@ -613,6 +615,8 @@
       "GRADER TYPES: "+(snapshot.evaluators.grader_types.join(", ")||"none"),
       "VERSIONED EVALUATOR REGISTRY: "+snapshot.evaluators.evaluator_registry_connected+" · active="+snapshot.evaluators.active_evaluators+"/"+snapshot.evaluators.evaluator_registry_rows,
       "HUMAN ALIGNMENT: state="+snapshot.evaluators.alignment_state+" · valid="+snapshot.evaluators.valid_alignment_runs+"/"+snapshot.evaluators.alignment_runs+" · missing="+snapshot.evaluators.missing_alignment,
+      "GROUND TRUTH STORE: "+snapshot.annotation.evidence_state+" · labels="+snapshot.annotation.valid_labels+" · observations="+snapshot.annotation.labeled_observations+" · reviewers="+snapshot.annotation.reviewers,
+      "GROUND TRUTH DISAGREEMENTS: "+snapshot.annotation.disagreements+" · uncertain="+snapshot.annotation.uncertain+" · corrections="+snapshot.annotation.corrections,
       "ONLINE EVALS: "+snapshot.evaluators.online_eval_connected+" · completed="+snapshot.evaluators.completed_online_windows+"/"+snapshot.evaluators.online_windows+" · pending="+snapshot.evaluators.pending_online_windows,
       "CI QUALITY GATE: "+snapshot.evaluators.ci_gate_state+" · passed="+snapshot.evaluators.passed_ci_gates+"/"+snapshot.evaluators.ci_gates+" · failed="+snapshot.evaluators.failed_ci_gates+" · pending="+snapshot.evaluators.pending_ci_gates,
       "",
@@ -679,6 +683,8 @@
       "PROMPT STORE CONNECTED: "+state.professionalEvidence.promptStoreConnected,
       "PROMPT VERSIONS: "+state.professionalEvidence.promptVersions.length,
       "PROMPT REGISTRY: "+snapshot.prompts.status,
+      "GROUND TRUTH STORE CONNECTED: "+state.professionalEvidence.humanLabelStoreConnected,
+      "GROUND TRUTH LABELS: "+snapshot.annotation.valid_labels+" · invalid="+snapshot.annotation.invalid_labels+" · disagreements="+snapshot.annotation.disagreements,
       "DATASET CANDIDATES: "+snapshot.failures.dataset_candidates+" · PERSISTED DATASET: "+snapshot.failures.persisted_dataset,
       "PERSISTED EVAL SUITES: "+state.professionalEvidence.evalSuites.length,
       "PERSISTED EVAL CASES: "+state.professionalEvidence.evalCases.length,
@@ -2314,7 +2320,7 @@
         modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
         evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[],
         redTeamCases:[],redTeamRuns:[],confidenceCalibration:[],teamRuns:[],
-        evaluatorRegistry:[],humanAlignmentRuns:[],onlineEvalWindows:[],ciQualityGates:[],ciQualityGateRuns:[],
+        evaluatorRegistry:[],humanAlignmentRuns:[],humanLabels:[],humanLabelStoreConnected:false,onlineEvalWindows:[],ciQualityGates:[],ciQualityGateRuns:[],
         f35Sources:[],f35Findings:[],
         promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
       };
@@ -2325,7 +2331,7 @@
       modelObservations,modelCosts,modelRoutes,benchmarkCases,
       evalCases,evalRuns,evalSuites,replayRuns,shadowRuns,
       redTeamCases,redTeamRuns,confidenceCalibration,teamRuns,
-      evaluatorRegistry,humanAlignmentRuns,onlineEvalWindows,ciQualityGates,ciQualityGateRuns,
+      evaluatorRegistry,humanAlignmentRuns,humanLabelStore,onlineEvalWindows,ciQualityGates,ciQualityGateRuns,
       f35Sources,f35Findings,
       promptStore,traceStore
     ]=await Promise.all([
@@ -2344,6 +2350,7 @@
       query("hunt_boom_team_runs","id,run_key,task,judge_id,run_mode,status,judge_verdict,owner_gate_required,created_at,completed_at","created_at",120),
       query("hunt_boom_evaluator_registry","id,evaluator_key,version,evaluator_type,status,calibration_required,owner_approval_required,source_commit,created_at,updated_at,activated_at","updated_at",160),
       query("hunt_boom_human_alignment_runs","id,evaluator_id,run_key,dataset_ref,sample_count,human_reviewers,agreement_rate,kappa,false_positive_rate,false_negative_rate,status,owner_approved,created_at,completed_at","created_at",160),
+      optionalQuery("hunt_boom_human_labels","id,evaluator_id,observation_id,trace_ref,route_key,rubric_key,automated_label,automated_score,human_label,human_score,rationale,correction,reviewer_id,metadata,reviewed_at","reviewed_at",400),
       query("hunt_boom_online_eval_windows","id,window_key,route_key,task_class,environment,sampling_mode,sample_rate,window_start,window_end,sample_count,scored_count,passed_count,failed_count,average_score,p95_latency_ms,estimated_cost_usd,status,created_at,completed_at","window_end",160),
       query("hunt_boom_ci_quality_gates","id,gate_key,scope,metric_key,operator,threshold,min_samples,blocks_merge,enabled,owner_approval_required,updated_at","updated_at",120),
       query("hunt_boom_ci_quality_gate_runs","id,gate_id,run_key,candidate_ref,source_commit,sample_count,metric_value,passed,status,created_at,completed_at","created_at",160),
@@ -2357,7 +2364,10 @@
       modelObservations,modelCosts,modelRoutes,benchmarkCases,
       evalCases,evalRuns,evalSuites,replayRuns,shadowRuns,
       redTeamCases,redTeamRuns,confidenceCalibration,teamRuns,
-      evaluatorRegistry,humanAlignmentRuns,onlineEvalWindows,ciQualityGates,ciQualityGateRuns,
+      evaluatorRegistry,humanAlignmentRuns,
+      humanLabels:humanLabelStore.rows,
+      humanLabelStoreConnected:humanLabelStore.connected,
+      onlineEvalWindows,ciQualityGates,ciQualityGateRuns,
       f35Sources,f35Findings,
       promptVersions:promptStore.rows,
       traceSpans:traceStore.rows,
