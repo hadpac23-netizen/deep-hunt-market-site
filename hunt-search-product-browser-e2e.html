@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HUNT Search → Product Browser E2E</title>
+<style>iframe{width:1px;height:1px;border:0;position:absolute;left:-9999px}pre{white-space:pre-wrap}</style>
+</head><body data-qa="running">
+<h1>HUNT Search → Recommendation → Product Browser E2E</h1>
+<iframe id="search-frame" src="search.html?q=phone%20case"></iframe>
+<div id="product-host"></div>
+<pre id="qa-result">RUNNING</pre>
+<script src="market-core.js"></script>
+<script>
+(async()=>{
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  const out=document.querySelector("#qa-result");
+  const searchFrame=document.querySelector("#search-frame");
+  async function until(fn,ms=10000){const end=Date.now()+ms;while(Date.now()<end){try{const v=fn();if(v)return v}catch{}await wait(120)}return null}
+  await new Promise(resolve=>{if(searchFrame.contentDocument?.readyState==="complete")resolve();else searchFrame.addEventListener("load",resolve,{once:true})});
+  const firstLink=await until(()=>searchFrame.contentDocument.querySelector("#hd-ai-results-grid a[href*=\"product.html?\"]"),12000);
+  const intentTitle=searchFrame.contentDocument.querySelector("#hd-ai-intent-title")?.textContent?.trim()||"";
+  const intentCopy=searchFrame.contentDocument.querySelector("#hd-ai-intent-copy")?.textContent?.trim()||"";
+  const resultCount=searchFrame.contentDocument.querySelectorAll("#hd-ai-results-grid .hd-market-product-card").length;
+  if(!firstLink){const result={pass:false,stage:"search",intentTitle,intentCopy,resultCount};document.body.dataset.qa="fail";out.textContent="FAIL\n"+JSON.stringify(result,null,2);return}
+  const productUrl=new URL(firstLink.getAttribute("href"),location.href);
+  const provider=productUrl.searchParams.get("provider")||"";
+  const itemId=productUrl.searchParams.get("id")||"";
+  const searchTitle=firstLink.closest(".hd-market-product-card")?.querySelector(".hd-market-card-title")?.textContent?.trim()||"";
+  let cached=null;
+  try{
+    const manifest=await fetch("catalog-manifest.json",{cache:"no-store"}).then(r=>r.json());
+    const pages=[...new Set(Object.values(manifest.categories||{}).flatMap(x=>Array.isArray(x?.pages)?x.pages:[]))];
+    for(const page of pages){
+      const doc=await fetch(page,{cache:"force-cache"}).then(r=>r.json()).catch(()=>({products:[]}));
+      cached=(doc.products||[]).find(p=>String(p.item_id||"")===itemId&&String(p.provider||"")===provider)||null;
+      if(cached)break;
+    }
+  }catch{}
+  if(cached)sessionStorage.setItem(`hunt_product_${provider}:${itemId}`,JSON.stringify(cached));
+  const productFrame=document.createElement("iframe");
+  productFrame.id="product-frame"; productFrame.src=productUrl.pathname+productUrl.search;
+  document.querySelector("#product-host").appendChild(productFrame);
+  await new Promise(resolve=>productFrame.addEventListener("load",resolve,{once:true}));
+  const productReady=await until(()=>{
+    const d=productFrame.contentDocument;
+    const title=d?.querySelector("#hd-product-title")?.textContent?.trim()||"";
+    const loading=d?.querySelector("#hd-product-loading");
+    const error=d?.querySelector("#hd-product-error");
+    return title&&loading?.hidden&&error?.hidden?{title,source:d.querySelector("#hd-product-provider")?.textContent?.trim()||"",errorHidden:error.hidden}:null;
+  },12000);
+  const pass=Boolean(resultCount>0&&/Curated matches/i.test(intentTitle)&&intentCopy&&provider&&itemId&&productReady?.title&&productReady?.source==="HUNT VERIFIED SOURCE");
+  const result={pass,query:"phone case",intentTitle,intentCopy,resultCount,searchTitle,provider,itemId,cachedCatalog:Boolean(cached),product:productReady};
+  document.body.dataset.qa=pass?"pass":"fail";
+  out.textContent=(pass?"PASS":"FAIL")+"\n"+JSON.stringify(result,null,2);
+})().catch(err=>{document.body.dataset.qa="fail";document.querySelector("#qa-result").textContent="FAIL\n"+String(err?.stack||err)});
+</script></body></html>
