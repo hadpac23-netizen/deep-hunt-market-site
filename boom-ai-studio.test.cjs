@@ -435,6 +435,11 @@ assert(js.includes('id:"connect-live",label:"Connector-by-connector truth matrix
 assert(fs.existsSync("hunt-search-product-browser-e2e.html"),"Search→Product browser E2E harness missing");
 
 assert(html.includes('id="studio-department-nav"'),"Studio department navigator missing");
+assert(html.includes('data-studio-view="hunt-intelligence"'),"Studio Brain shortcut missing");
+assert(html.includes('data-studio-view="professional-workbench"'),"Studio Professional shortcut missing");
+assert(html.includes('data-studio-anchor="professional-radar-report"'),"Studio F35 Radar shortcut missing");
+assert(js.includes("function activateStudioView("),"Studio view router missing");
+assert(js.includes('const studioViewJump=ev.target.closest("[data-studio-view]")'),"Studio view shortcut routing missing");
 for(const id of ["intelligence","release","commerce","missions","suppliers","store"]){
   assert(html.includes('data-studio-group="'+id+'"'),"Studio navigator target missing: "+id);
 }
