@@ -21,16 +21,16 @@ assert(!html.includes('HUNT <span>DEAL</span>'),'DEAL wordmark must remain remov
 
 for(const scene of ['dubai','hong-kong','new-york','paris','madrid','london','singapore','seoul','shanghai','tokyo']) assert(js.includes('id:"'+scene+'"'),'Missing city scene '+scene);
 for(const banned of ['mountains','852369','7062425','NIGHT MOUNTAINS']) assert(!js.includes(banned),'Banned background remains: '+banned);
-assert((js.match(/w=2400/g)||[]).length>=10,'All approved city images should request high-res 2400px derivatives');
-assert(js.includes('naturalWidth<1800')&&js.includes('naturalHeight<900'),'Runtime visual quality gate missing');
-assert(js.includes('loadSceneImage'),'Image preload quality gate missing');
-assert(js.includes('setTimeout(()=>showScene(sceneIndex+1),9200)'),'Auto city rotation missing');
+assert((js.match(/w=5120&q=92/g)||[]).length===10,'All approved city images should request high-res 5K derivatives');
+assert(js.includes('width<3000')&&js.includes('height<1800'),'Runtime visual quality gate missing');
+assert(js.includes('loadSceneImage')&&js.includes('preloadNextScene'),'Image preload quality gate missing');
+assert(js.includes('setTimeout(()=>showScene(sceneIndex+1),8600)'),'Auto city rotation missing');
 assert(js.includes('preferredSceneId'),'Country city priority missing');
 assert(js.includes('promoObserver'),'Below-fold scroll promo observer missing');
 assert(js.includes('promoVisible'),'Promo visibility gate missing');
 assert(js.includes('buildItems')&&js.includes('slice(0,12)'),'Personalized lifestyle queue missing');
 assert(css.includes('HUNT 4.2.1 · CLEAN CITY QUALITY GATE'),'4.2.1 visual contract missing');
-assert(css.includes('@keyframes hd-city-pan-421'),'Premium city pan missing');
+assert(css.includes('@keyframes hd-city-drift-right')&&css.includes('@keyframes hd-city-rise-left'),'Premium multi-direction city motion missing');
 assert(css.includes('.hd-lifestyle-stream'),'Below-fold promo styling missing');
 
 assert(i18n.includes('const EN={'),'English base dictionary missing');

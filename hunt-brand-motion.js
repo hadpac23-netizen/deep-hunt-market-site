@@ -3,21 +3,27 @@
   const SELECTOR=".hd-brand,.hd-footer strong";
 
   function markup(){
-    return [..."HUNT"].map((letter,index)=>
-      '<span class="hd-hunt-letter" style="--hunt-letter-index:'+index+'" aria-hidden="true">'+letter+'</span>'
-    ).join("")+
+    return [..."HUNT"].map((letter,index)=>{
+      const t=letter==="T";
+      return '<span class="hd-hunt-letter'+(t?' is-hunt-t':'')+'" style="--hunt-letter-index:'+index+'" aria-hidden="true">'+
+        '<span class="hd-hunt-glyph">'+letter+'</span>'+
+        (t?'<span class="hd-hunt-face" aria-hidden="true"><i class="hd-hunt-eye"></i><i class="hd-hunt-smile"></i></span>':'')+
+      '</span>';
+    }).join("")+
       '<span class="hd-hunt-glass" aria-hidden="true">HUNT</span>'+
-      '<span class="hd-hunt-star" aria-hidden="true"></span>';
+      '<span class="hd-hunt-star" aria-hidden="true"><i></i></span>';
   }
 
   function activate(el){
     if(reduce.matches){
-      el.classList.add("is-signature-active");
+      el.classList.add("is-signature-active","is-signature-complete");
       return;
     }
-    el.classList.remove("is-signature-active");
+    el.classList.remove("is-signature-active","is-signature-complete");
     void el.offsetWidth;
     el.classList.add("is-signature-active");
+    clearTimeout(el._huntCompleteTimer);
+    el._huntCompleteTimer=setTimeout(()=>el.classList.add("is-signature-complete"),3350);
   }
 
   function upgrade(el){

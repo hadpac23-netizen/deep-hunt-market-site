@@ -542,3 +542,97 @@
 @media(max-width:760px){
   .hd-creative-duo,.hd-creative-mosaic,.hd-creative-look{grid-template-columns:1fr 1fr}
 }
+
+
+/* HUNT ALIVE 2.0 · CINEMATIC NIGHT WORLD */
+.hd-city-scene{
+  inset:-3.2%!important;
+  width:106.4%!important;
+  height:106.4%!important;
+  opacity:0;
+  transform:scale(1.028) translate3d(0,0,0);
+  transition:
+    opacity 1.6s cubic-bezier(.18,.72,.18,1),
+    filter 1.6s ease!important;
+  filter:saturate(.94) contrast(1.075) brightness(.78);
+  background-repeat:no-repeat;
+  image-rendering:auto;
+  backface-visibility:hidden;
+}
+.hd-city-scene.is-active{opacity:1}
+.hd-city-scene[data-quality-tier="ultra-5k"]{
+  filter:saturate(.96) contrast(1.09) brightness(.79);
+}
+.hd-city-scene[data-quality-tier="premium-3k"]{
+  filter:saturate(.92) contrast(1.065) brightness(.77);
+}
+.hd-city-scene.is-panning[data-pan="drift-right"]{animation:hd-city-drift-right 8.9s cubic-bezier(.22,.65,.24,1) both}
+.hd-city-scene.is-panning[data-pan="drift-left"]{animation:hd-city-drift-left 8.9s cubic-bezier(.22,.65,.24,1) both}
+.hd-city-scene.is-panning[data-pan="rise-left"]{animation:hd-city-rise-left 8.9s cubic-bezier(.22,.65,.24,1) both}
+.hd-city-scene.is-panning[data-pan="rise-right"]{animation:hd-city-rise-right 8.9s cubic-bezier(.22,.65,.24,1) both}
+.hd-city-scene.is-panning[data-pan="push-in"]{animation:hd-city-push-in 8.9s cubic-bezier(.22,.65,.24,1) both}
+
+@keyframes hd-city-drift-right{
+  0%{transform:scale(1.04) translate3d(-.9%,.18%,0)}
+  52%{transform:scale(1.075) translate3d(.22%,-.22%,0)}
+  100%{transform:scale(1.055) translate3d(.85%,.1%,0)}
+}
+@keyframes hd-city-drift-left{
+  0%{transform:scale(1.045) translate3d(.9%,.1%,0)}
+  52%{transform:scale(1.078) translate3d(-.16%,-.28%,0)}
+  100%{transform:scale(1.052) translate3d(-.88%,.16%,0)}
+}
+@keyframes hd-city-rise-left{
+  0%{transform:scale(1.042) translate3d(.55%,.72%,0)}
+  55%{transform:scale(1.08) translate3d(-.18%,-.15%,0)}
+  100%{transform:scale(1.056) translate3d(-.66%,-.58%,0)}
+}
+@keyframes hd-city-rise-right{
+  0%{transform:scale(1.042) translate3d(-.5%,.7%,0)}
+  55%{transform:scale(1.08) translate3d(.18%,-.18%,0)}
+  100%{transform:scale(1.056) translate3d(.66%,-.56%,0)}
+}
+@keyframes hd-city-push-in{
+  0%{transform:scale(1.035) translate3d(0,.16%,0)}
+  58%{transform:scale(1.084) translate3d(0,-.12%,0)}
+  100%{transform:scale(1.07) translate3d(0,-.25%,0)}
+}
+
+.hd-hero4-media::after{
+  content:"";
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(circle at 72% 26%,rgba(113,164,255,.08),transparent 26%),
+    linear-gradient(112deg,transparent 28%,rgba(255,255,255,.025) 46%,transparent 63%);
+  mix-blend-mode:screen;
+  opacity:.75;
+}
+.hd-hero4-scrim{
+  background:
+    linear-gradient(90deg,rgba(3,5,9,.62) 0%,rgba(3,5,9,.2) 42%,rgba(3,5,9,.1) 67%,rgba(3,5,9,.32) 100%),
+    linear-gradient(0deg,rgba(2,3,7,.54) 0%,transparent 49%,rgba(2,3,7,.12) 100%)!important;
+}
+.hd-hero4[data-scene-quality-tier="ultra-5k"] .hd-hero4-scene-chip::after{
+  content:"5K SOURCE";
+  display:inline-flex;
+  margin-left:6px;
+  padding:3px 5px;
+  border-radius:99px;
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.62);
+  font-size:.34rem;
+  letter-spacing:.08em;
+}
+@media(max-width:620px){
+  .hd-city-scene{inset:-2.4%!important;width:104.8%!important;height:104.8%!important}
+  .hd-hero4[data-scene-quality-tier="ultra-5k"] .hd-hero4-scene-chip::after{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  .hd-city-scene,
+  .hd-city-scene.is-panning,
+  .hd-city-scene.is-panning[data-pan]{
+    animation:none!important;
+    transition:opacity .25s linear!important;
+    transform:scale(1.035)!important;
+  }
+}

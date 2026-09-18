@@ -1,0 +1,181 @@
+/* HUNT ALIVE 2.0 · NIGHT EDIT LOOKBOOK */
+.hd-night-edit{
+  position:relative;
+  width:min(1480px,calc(100% - 48px));
+  margin:30px auto 26px;
+  padding:clamp(22px,3vw,38px);
+  border-radius:30px;
+  overflow:hidden;
+  isolation:isolate;
+  color:#fff;
+  background:
+    radial-gradient(circle at 78% 14%,rgba(93,143,255,.19),transparent 30%),
+    radial-gradient(circle at 16% 92%,rgba(119,80,255,.13),transparent 34%),
+    linear-gradient(138deg,#07090f 0%,#0c1019 58%,#090b12 100%);
+  border:1px solid rgba(255,255,255,.09);
+  box-shadow:0 32px 90px rgba(5,8,18,.2);
+}
+.hd-night-edit::before{
+  content:"";
+  position:absolute;
+  width:520px;height:520px;
+  right:-190px;top:-330px;
+  border-radius:50%;
+  border:1px solid rgba(143,191,255,.18);
+  box-shadow:
+    0 0 0 38px rgba(122,141,255,.035),
+    0 0 0 82px rgba(122,141,255,.02),
+    0 0 90px rgba(86,119,255,.08);
+  pointer-events:none;
+  animation:hd-night-orbit 17s ease-in-out infinite alternate;
+}
+.hd-night-edit-head{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  gap:18px;align-items:end;margin-bottom:17px;
+}
+.hd-night-edit-kicker{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:7px;color:rgba(255,255,255,.56);
+  font-size:.48rem;font-weight:900;letter-spacing:.19em;
+}
+.hd-night-edit-kicker i{
+  width:7px;height:7px;border-radius:50%;
+  background:#a8dfff;
+  box-shadow:0 0 14px rgba(168,223,255,.74);
+}
+.hd-night-edit h2{
+  margin:0;max-width:720px;
+  font-family:Georgia,"Times New Roman",serif;
+  font-weight:400;letter-spacing:-.035em;
+  font-size:clamp(2rem,4vw,4rem);
+  line-height:.98;
+}
+.hd-night-edit-head p{
+  max-width:650px;margin:9px 0 0;
+  color:rgba(255,255,255,.58);
+  font-size:.7rem;line-height:1.6;
+}
+.hd-night-edit-worlds{
+  display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;
+  max-width:520px;
+}
+.hd-night-edit-worlds button{
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.055);
+  color:rgba(255,255,255,.72);
+  border-radius:999px;padding:8px 11px;
+  font:inherit;font-size:.48rem;font-weight:850;
+  cursor:pointer;
+  transition:.2s ease;
+}
+.hd-night-edit-worlds button:hover,.hd-night-edit-worlds button:focus-visible{
+  outline:0;border-color:rgba(168,223,255,.48);color:#fff;transform:translateY(-1px)
+}
+.hd-night-edit-worlds button.active{
+  color:#07101a;
+  background:linear-gradient(110deg,#dff7ff,#a6cfff);
+  border-color:transparent;
+  box-shadow:0 8px 24px rgba(113,175,255,.14);
+}
+.hd-night-edit-grid{
+  position:relative;z-index:2;
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(260px,.8fr);
+  grid-template-rows:repeat(2,minmax(220px,1fr));
+  gap:12px;
+  min-height:540px;
+}
+.hd-night-card{
+  position:relative;overflow:hidden;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.10);
+  background:#10141d;
+  opacity:0;transform:translateY(18px) scale(.99);
+  box-shadow:0 16px 46px rgba(0,0,0,.18);
+}
+.hd-night-edit-grid.is-live .hd-night-card{
+  animation:hd-night-card-in .72s cubic-bezier(.17,.82,.21,1) calc(var(--night-i) * 90ms) both;
+}
+.hd-night-card:first-child{grid-row:1/3}
+.hd-night-card-media{position:absolute;inset:0;display:block;overflow:hidden}
+.hd-night-card-media::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(180deg,rgba(4,6,10,.02) 30%,rgba(4,6,10,.2) 58%,rgba(4,6,10,.83) 100%),
+    linear-gradient(90deg,rgba(4,6,10,.18),transparent 44%);
+}
+.hd-night-card img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(.92) contrast(1.035);
+  transform:scale(1.005);
+  transition:transform .85s cubic-bezier(.2,.75,.2,1),filter .35s ease;
+}
+.hd-night-card:hover img{transform:scale(1.045);filter:saturate(1.02) contrast(1.06)}
+.hd-night-card-copy{
+  position:absolute;z-index:3;left:18px;right:18px;bottom:17px;
+  display:grid;gap:6px;
+}
+.hd-night-card small{
+  color:rgba(255,255,255,.62);
+  font-size:.42rem;font-weight:850;letter-spacing:.14em;
+}
+.hd-night-card a{color:#fff;text-decoration:none}
+.hd-night-card strong{
+  max-width:82%;
+  font-size:.8rem;line-height:1.28;font-weight:850;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  text-shadow:0 2px 16px rgba(0,0,0,.42);
+}
+.hd-night-card:first-child strong{
+  max-width:72%;font-size:clamp(1.1rem,2vw,1.65rem);line-height:1.15;
+}
+.hd-night-card-price{font-size:.54rem;color:rgba(255,255,255,.78);font-weight:760}
+.hd-night-index{
+  position:absolute;top:14px;right:14px;z-index:3;
+  display:grid;place-items:center;
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(5,8,13,.36);backdrop-filter:blur(12px);
+  color:#fff;font-size:.46rem;font-weight:900;
+}
+.hd-night-edit-foot{
+  position:relative;z-index:2;
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  margin-top:14px;color:rgba(255,255,255,.48);font-size:.5rem;
+}
+.hd-night-edit-foot button{
+  border:0;background:transparent;color:#fff;
+  font:inherit;font-size:.5rem;font-weight:850;cursor:pointer;
+}
+.hd-night-edit[data-switching="true"] .hd-night-edit-kicker i{animation:hd-night-dot .7s ease both}
+@keyframes hd-night-card-in{to{opacity:1;transform:none}}
+@keyframes hd-night-orbit{to{transform:translate3d(-28px,24px,0) scale(1.05)}}
+@keyframes hd-night-dot{50%{transform:scale(1.75);box-shadow:0 0 24px rgba(168,223,255,1)}}
+@media(max-width:880px){
+  .hd-night-edit-head{grid-template-columns:1fr}
+  .hd-night-edit-worlds{justify-content:flex-start;max-width:none;overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}
+  .hd-night-edit-worlds::-webkit-scrollbar{display:none}
+  .hd-night-edit-worlds button{white-space:nowrap}
+}
+@media(max-width:620px){
+  .hd-night-edit{width:calc(100% - 20px);padding:17px 12px 19px;border-radius:20px}
+  .hd-night-edit h2{font-size:2.25rem}
+  .hd-night-edit-grid{
+    display:flex;min-height:0;gap:9px;overflow-x:auto;padding:1px 1px 11px;
+    scroll-snap-type:x mandatory;scrollbar-width:none;
+  }
+  .hd-night-edit-grid::-webkit-scrollbar{display:none}
+  .hd-night-card,.hd-night-card:first-child{
+    flex:0 0 82%;height:360px;grid-row:auto;scroll-snap-align:center;
+  }
+  .hd-night-card:first-child{flex-basis:90%}
+  .hd-night-card:first-child strong{max-width:88%;font-size:1.08rem}
+  .hd-night-edit-foot{align-items:flex-start;flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){
+  .hd-night-edit::before,.hd-night-edit-grid.is-live .hd-night-card,.hd-night-edit[data-switching="true"] .hd-night-edit-kicker i{
+    animation:none!important;transition:none!important
+  }
+  .hd-night-card{opacity:1!important;transform:none!important}
+}

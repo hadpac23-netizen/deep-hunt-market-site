@@ -28,53 +28,53 @@
 
   const SCENES=[
     {
-      id:"dubai",label:"DUBAI",region:"MIDDLE EAST",
-      poster:"https://images.pexels.com/photos/13256066/pexels-photo-13256066.jpeg?auto=compress&cs=tinysrgb&w=2400",
+      id:"dubai",label:"DUBAI",region:"MIDDLE EAST",pan:"drift-right",
+      poster:"https://images.pexels.com/photos/13256066/pexels-photo-13256066.jpeg?auto=compress&cs=tinysrgb&w=5120&q=92",
       source:"https://www.pexels.com/photo/dubai-skyline-at-night-13256066/"
     },
     {
-      id:"hong-kong",label:"HONG KONG",region:"EAST ASIA",
-      poster:"https://images.pexels.com/photos/5066398/pexels-photo-5066398.jpeg?auto=compress&cs=tinysrgb&w=2400",
+      id:"hong-kong",label:"HONG KONG",region:"EAST ASIA",pan:"rise-left",
+      poster:"https://images.pexels.com/photos/5066398/pexels-photo-5066398.jpeg?auto=compress&cs=tinysrgb&w=5120&q=92",
       source:"https://www.pexels.com/photo/city-skyline-in-hongkong-during-night-time-5066398/"
     },
     {
-      id:"new-york",label:"NEW YORK",region:"NORTH AMERICA",
-      poster:"https://images.pexels.com/photos/10554403/pexels-photo-10554403.jpeg?auto=compress&cs=tinysrgb&w=2400",
+      id:"new-york",label:"NEW YORK",region:"NORTH AMERICA",pan:"push-in",
+      poster:"https://images.pexels.com/photos/10554403/pexels-photo-10554403.jpeg?auto=compress&cs=tinysrgb&w=5120&q=92",
       source:"https://www.pexels.com/photo/new-york-city-skyline-during-night-time-10554403/"
     },
     {
-      id:"paris",label:"PARIS",region:"EUROPE",
-      poster:"https://images.pexels.com/photos/31102296/pexels-photo-31102296.jpeg?auto=compress&cs=tinysrgb&w=2400",
+      id:"paris",label:"PARIS",region:"EUROPE",pan:"drift-left",
+      poster:"https://images.pexels.com/photos/31102296/pexels-photo-31102296.jpeg?auto=compress&cs=tinysrgb&w=5120&q=92",
       source:"https://www.pexels.com/photo/paris-night-skyline-captured-from-eiffel-tower-31102296/"
     },
     {
-      id:"madrid",label:"MADRID",region:"EUROPE",
-      poster:"https://images.pexels.com/photos/11269164/pexels-photo-11269164.jpeg?auto=compress&cs=tinysrgb&w=2400",
+      id:"madrid",label:"MADRID",region:"EUROPE",pan:"rise-right",
+      poster:"https://images.pexels.com/photos/11269164/pexels-photo-11269164.jpeg?auto=compress&cs=tinysrgb&w=5120&q=92",
       source:"https://www.pexels.com/photo/city-skyline-at-night-11269164/"
     },
     {
-      id:"london",label:"LONDON",region:"EUROPE",
-      poster:"https://images.pexels.com/photos/37713883/pexels-photo-37713883.jpeg?auto=compress&cs=tinysrgb&w=2400",
+      id:"london",label:"LONDON",region:"EUROPE",pan:"push-in",
+      poster:"https://images.pexels.com/photos/37713883/pexels-photo-37713883.jpeg?auto=compress&cs=tinysrgb&w=5120&q=92",
       source:"https://www.pexels.com/photo/skyline-of-london-s-iconic-cityscape-at-night-37713883/"
     },
     {
-      id:"singapore",label:"SINGAPORE",region:"SOUTHEAST ASIA",
-      poster:"https://images.pexels.com/photos/18095413/pexels-photo-18095413.jpeg?auto=compress&cs=tinysrgb&w=2400",
+      id:"singapore",label:"SINGAPORE",region:"SOUTHEAST ASIA",pan:"drift-right",
+      poster:"https://images.pexels.com/photos/18095413/pexels-photo-18095413.jpeg?auto=compress&cs=tinysrgb&w=5120&q=92",
       source:"https://www.pexels.com/photo/singapore-city-skyline-at-night-18095413/"
     },
     {
-      id:"seoul",label:"SEOUL",region:"EAST ASIA",
-      poster:"https://images.pexels.com/photos/38650647/pexels-photo-38650647.jpeg?auto=compress&cs=tinysrgb&w=2400",
+      id:"seoul",label:"SEOUL",region:"EAST ASIA",pan:"rise-left",
+      poster:"https://images.pexels.com/photos/38650647/pexels-photo-38650647.jpeg?auto=compress&cs=tinysrgb&w=5120&q=92",
       source:"https://www.pexels.com/photo/seoul-skyline-at-night-with-han-river-view-38650647/"
     },
     {
-      id:"shanghai",label:"SHANGHAI",region:"EAST ASIA",
-      poster:"https://images.pexels.com/photos/37011820/pexels-photo-37011820.jpeg?auto=compress&cs=tinysrgb&w=2400",
+      id:"shanghai",label:"SHANGHAI",region:"EAST ASIA",pan:"drift-left",
+      poster:"https://images.pexels.com/photos/37011820/pexels-photo-37011820.jpeg?auto=compress&cs=tinysrgb&w=5120&q=92",
       source:"https://www.pexels.com/photo/shanghai-pudong-skyline-at-night-37011820/"
     },
     {
-      id:"tokyo",label:"TOKYO",region:"EAST ASIA",
-      poster:"https://images.pexels.com/photos/31558042/pexels-photo-31558042.jpeg?auto=compress&cs=tinysrgb&w=2400",
+      id:"tokyo",label:"TOKYO",region:"EAST ASIA",pan:"rise-right",
+      poster:"https://images.pexels.com/photos/31558042/pexels-photo-31558042.jpeg?auto=compress&cs=tinysrgb&w=5120&q=92",
       source:"https://www.pexels.com/photo/tokyo-skyline-at-night-with-tokyo-tower-31558042/"
     }
   ];
@@ -141,23 +141,32 @@
       const img=new Image();
       img.decoding="async";
       img.onload=()=>{
-        const ratio=img.naturalWidth/Math.max(img.naturalHeight,1);
-        if(img.naturalWidth<1800||img.naturalHeight<900||ratio<1.35){
+        const width=img.naturalWidth,height=img.naturalHeight;
+        const ratio=width/Math.max(height,1);
+        if(width<3000||height<1800||ratio<1.35){
           reject(new Error("quality_gate"));
           return;
         }
-        resolve(scene);
+        resolve({scene,width,height,tier:width>=4800?"ultra-5k":"premium-3k"});
       };
       img.onerror=()=>reject(new Error("load_failed"));
       img.src=scene.poster;
     });
   }
 
+  function preloadNextScene(){
+    if(reduce||sceneOrder.length<2)return;
+    const next=sceneOrder[(sceneIndex+1)%sceneOrder.length];
+    const run=()=>{const img=new Image();img.decoding="async";img.src=next.poster};
+    if("requestIdleCallback" in window)requestIdleCallback(run,{timeout:1800});
+    else setTimeout(run,450);
+  }
+
   function stopSceneTimer(){if(sceneTimer){clearTimeout(sceneTimer);sceneTimer=null}}
   function scheduleScene(){
     stopSceneTimer();
     if(reduce||!sceneVisible||sceneOrder.length<2)return;
-    sceneTimer=setTimeout(()=>showScene(sceneIndex+1),9200);
+    sceneTimer=setTimeout(()=>showScene(sceneIndex+1),8600);
   }
 
   async function showScene(nextIndex){
@@ -167,8 +176,9 @@
     const token=++sceneToken;
     root.dataset.sceneQuality="checking";
 
+    let quality;
     try{
-      await loadSceneImage(scene);
+      quality=await loadSceneImage(scene);
     }catch{
       if(token!==sceneToken)return;
       root.dataset.sceneQuality="rejected";
@@ -181,12 +191,17 @@
     const outgoing=sceneLayers[activeSceneLayer]||null;
     incoming.style.backgroundImage=`url("${scene.poster}")`;
     incoming.dataset.scene=scene.id;
+    incoming.dataset.pan=scene.pan||"push-in";
+    incoming.dataset.qualityTier=quality?.tier||"premium-3k";
+    root.dataset.sceneQualityTier=quality?.tier||"premium-3k";
+    root.dataset.scenePixels=quality?quality.width+"x"+quality.height:"";
     incoming.classList.remove("is-panning");
     void incoming.offsetWidth;
     incoming.classList.add("is-active","is-panning");
     outgoing?.classList.remove("is-active","is-panning");
     activeSceneLayer=sceneLayers.indexOf(incoming);
     setSceneMeta(scene);
+    preloadNextScene();
     scheduleScene();
   }
 
