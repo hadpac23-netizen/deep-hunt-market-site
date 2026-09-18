@@ -254,7 +254,10 @@
     const pendingRuns=runs.filter(x=>!x.completed_at||!finalStatuses.has(clean(x.result_status).toLowerCase()));
 
     const calibration=safeArray(input.confidenceCalibration);
+    const hasMeasuredValue=value=>value!==null&&value!==undefined&&!(typeof value==="string"&&value.trim()==="");
     const validCalibration=calibration.filter(x=>{
+      const required=[x.samples,x.correct_samples,x.mean_confidence,x.observed_accuracy,x.calibration_error];
+      if(required.some(value=>!hasMeasuredValue(value)))return false;
       const samples=Number(x.samples);
       const correct=Number(x.correct_samples);
       const mean=Number(x.mean_confidence);
@@ -285,7 +288,7 @@
         unlinked:unlinkedRuns.length,
         pending:pendingRuns.length,
         failed:failedRuns.length,
-        ready:cases.length>0&&coveredCases.size===cases.length&&completedLinked.length>0&&failedRuns.length===0
+        ready:cases.length>0&&coveredCases.size===cases.length&&completedLinked.length>0&&failedRuns.length===0&&pendingRuns.length===0&&unlinkedRuns.length===0
       }),
       calibration:Object.freeze({
         rows:calibration.length,
