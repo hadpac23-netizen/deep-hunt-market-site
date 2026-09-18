@@ -34,3 +34,10 @@ export function scoreOwnerChatContract(message,reply,commandRow,ownerGateRequire
     checks
   };
 }
+
+export function qualityForAttempt(attempt,qualityScore){
+  if(attempt?.reply_accepted!==true)return null;
+  if(qualityScore===null||qualityScore===undefined||String(qualityScore).trim()==="")return null;
+  const n=Number(qualityScore);
+  return Number.isFinite(n)?Math.max(0,Math.min(1,n)):null;
+}
