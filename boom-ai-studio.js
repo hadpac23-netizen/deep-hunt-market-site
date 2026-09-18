@@ -7,6 +7,7 @@
   const Taste=window.BoomTasteDNA;
   const Decision=window.BoomDecisionBrain;
   const Memory=window.HuntExperienceMemory;
+  const Flow=window.Hunt2037FlowCore;
   if(!H||!S?.createClient){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -740,6 +741,53 @@
   function resetMemorySimulation(){
     state.simulatedMemoryEvents=[];
     renderMemorySimulation();
+  }
+
+  function simulateDynamicFlow(){
+    const preview=$("#flow-preview");
+    const output=$("#flow-result");
+    const status=$("#flow-result-status");
+    if(!Decision?.laneFor||!Flow?.WORLDS){
+      status.textContent="FLOW_ENGINE_UNAVAILABLE · STOREFRONT_OFF";
+      output.textContent="Dynamic Flow engine is unavailable. HUNT was not changed.";
+      return;
+    }
+    const interactions=Math.max(0,Math.round(decisionNumber("flow-interactions")));
+    const context={interactions};
+    const mode=Decision.modeFor(context);
+    const slots=Math.max(4,Math.min(18,Math.round(decisionNumber("flow-slots"))||10));
+    const allowSurprise=Boolean($("#flow-surprise")?.checked);
+    const allowNew=Boolean($("#flow-new")?.checked);
+    const reducedMotion=Boolean($("#flow-reduced-motion")?.checked);
+    const worldId=truthValue("flow-world");
+    const worlds=(worldId==="all"?Flow.WORLDS:Flow.WORLDS.filter(world=>world.id===worldId));
+    const rows=Array.from({length:slots},(_,index)=>{
+      let lane=Decision.laneFor(index,context);
+      if(lane==="wildcard"&&!allowSurprise)lane="adjacent";
+      if(lane==="new"&&!allowNew)lane="quality";
+      const world=worlds[index%Math.max(1,worlds.length)]||Flow.WORLDS[0];
+      return {position:index+1,lane,world};
+    });
+    preview.innerHTML=rows.map(row=>
+      '<article class="flow-slot" data-lane="'+esc(row.lane)+'"><small>SLOT '+row.position+' · '+esc(row.world?.title||"HUNT World")+'</small>'+
+      '<strong>'+esc(String(row.lane).toUpperCase())+'</strong><span>VERIFIED ELIGIBLE PRODUCT REQUIRED</span></article>'
+    ).join("");
+    status.textContent="COMPOSED · "+mode.toUpperCase()+" · "+slots+" EMPTY VERIFIED-PRODUCT SLOTS · STOREFRONT_OFF";
+    output.textContent=[
+      "MODE: A4_STRUCTURE_SIMULATION",
+      "SESSION SEED: "+truthValue("flow-seed"),
+      "PERSONALIZATION MODE: "+mode,
+      "WORLD ORDER: "+worlds.map(world=>world.id).join(" → "),
+      "LANE ORDER: "+rows.map(row=>row.lane).join(" → "),
+      "CONTROLLED SURPRISE: "+allowSurprise,
+      "NEW LANE: "+allowNew,
+      "REDUCED MOTION: "+reducedMotion,
+      "PRODUCTS INVENTED: 0",
+      "VERIFIED PRODUCT REQUIRED PER SLOT: true",
+      "STOREFRONT_CHANGED: false",
+      "FEATURE_FLAG_CHANGED: false",
+      "EXECUTION_ALLOWED: false"
+    ].join("\n");
   }
 
   function simulateHuntIntelligence(){
@@ -1599,6 +1647,7 @@
   $("#decision-simulate")?.addEventListener("click",evaluateDecisionWorkspace);
   $("#memory-add-event")?.addEventListener("click",addSimulatedMemoryEvent);
   $("#memory-reset-simulation")?.addEventListener("click",resetMemorySimulation);
+  $("#flow-simulate")?.addEventListener("click",simulateDynamicFlow);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
