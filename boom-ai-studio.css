@@ -73,3 +73,20 @@ button,input,textarea{font:inherit}
 .brand-media-vault-card{border:1px solid #35563f;background:#0d1712;border-radius:13px;padding:13px;margin-top:10px}.brand-media-vault-card p{font-size:8px;color:#91a79a;margin:8px 0 0}.brand-vault-flow{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:10px}.brand-vault-flow span{border:1px solid #2d5038;border-radius:999px;padding:5px 8px;font-size:7px;color:#a9d2b5}.brand-vault-flow b{font-size:8px;color:#587563}
 
 .brand-vault-controls{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:9px}.brand-vault-controls input{min-width:130px;flex:1;background:#08100b;border:1px solid #294433;border-radius:8px;color:#cde3d3;padding:7px 8px;font-size:8px}.brand-vault-controls button{border:1px solid #355d43;background:#102017;color:#c3dfcb;border-radius:8px;padding:7px 9px;font-size:8px}.brand-vault-controls button:disabled{opacity:.42;cursor:not-allowed}.brand-vault-checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:5px;margin-top:9px}.brand-vault-checks label{font-size:7px;color:#9cb7a4;border:1px solid #20382a;border-radius:7px;padding:6px;background:#0a120d}.brand-vault-checks input{vertical-align:middle}#vault-output{margin-top:9px;max-height:170px;overflow:auto;font-size:7px;white-space:pre-wrap;color:#9ebaa6;background:#08100b;border:1px solid #20382a;border-radius:8px;padding:8px}
+
+/* HUNT INTELLIGENCE CONTROL PLANE */
+.intelligence-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.intelligence-head small,.intelligence-simulator small{display:block;color:var(--lime);font-size:8px;font-weight:950;letter-spacing:.14em;margin-bottom:5px}
+.intelligence-policy,.intelligence-simulator{max-width:1160px;margin:0 auto 12px;border:1px solid #3d4d2b;background:linear-gradient(135deg,#111a13,#10151d);border-radius:13px;padding:13px 15px}
+.intelligence-policy strong{color:var(--lime);font-size:11px}.intelligence-policy p,.intelligence-simulator p{color:#9eabb9;font-size:9px;line-height:1.55;margin:5px 0 0}
+.intelligence-summary{max-width:1160px;margin:0 auto 12px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.intelligence-summary article{border:1px solid var(--line);background:#0f141c;border-radius:11px;padding:11px}
+.intelligence-summary b{display:block;font-size:18px}.intelligence-summary span{color:#7e8998;font-size:7px;font-weight:900;letter-spacing:.08em}
+.intelligence-grid{max-width:1160px;margin:0 auto 12px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.intelligence-card{border:1px solid var(--line);background:#10151d;border-radius:13px;padding:12px}
+.intelligence-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.intelligence-card h3{font-size:11px;margin:0 0 4px}.intelligence-card small{color:#778496;font-size:7px}.intelligence-card p{color:#9ca8b7;font-size:9px;line-height:1.5;min-height:40px}
+.intelligence-deps{display:flex;flex-wrap:wrap;gap:4px}.intelligence-deps span{border:1px solid #293341;border-radius:999px;padding:3px 6px;color:#8794a5;font-size:7px}
+.intelligence-card[data-state="PILOT"]{border-color:#587037}.intelligence-card[data-state="BLOCKED"]{border-color:#743d3d}.intelligence-card[data-state="PLANNED"]{border-color:#37465a}
+.intelligence-simulator{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start}.intelligence-simulator pre{grid-column:1/-1;white-space:pre-wrap;background:#090c11;border:1px solid #202733;border-radius:9px;padding:10px;color:#c7d2df;font-size:9px;line-height:1.55}
+@media(max-width:1000px){.intelligence-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.intelligence-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.intelligence-head{display:block}.intelligence-head .brand-gate{display:inline-flex;margin-top:8px}.intelligence-grid{grid-template-columns:1fr}.intelligence-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.intelligence-simulator{grid-template-columns:1fr}}
