@@ -274,6 +274,13 @@
   window.addEventListener("hunt:personalization-ready",()=>{if(Object.keys(shelves).length)render("for-you")});
   window.addEventListener("hunt:country-changed",()=>{if(Object.keys(shelves).length)render(mode)});
   window.addEventListener("hunt:experience-language",()=>{if(Object.keys(shelves).length)render(mode)});
+  window.addEventListener("boom:plan",event=>{
+    const next=String(event.detail?.plan?.discovery_mode||"");
+    if(!Object.keys(shelves).length||!next)return;
+    const modes=availableModes();
+    if(!modes.includes(next))return;
+    mode=next;render(next);schedule();
+  });
 
   setupExistingSectionMotion();
   if(window.HuntMarketShelves)setShelves(window.HuntMarketShelves);

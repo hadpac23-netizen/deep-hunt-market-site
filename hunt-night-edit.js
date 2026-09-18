@@ -114,5 +114,12 @@
   window.addEventListener("hunt:personalization-ready",()=>{if(Object.keys(shelves).length)setShelves({shelves})});
   window.addEventListener("hunt:country-changed",()=>{if(Object.keys(shelves).length)renderWorld(WORLDS[worldIndex])});
   window.addEventListener("hunt:experience-language",()=>{if(Object.keys(shelves).length)renderWorld(WORLDS[worldIndex])});
+  window.addEventListener("boom:plan",event=>{
+    const world=String(event.detail?.plan?.night_world||"");
+    if(!WORLDS.includes(world)||!Object.keys(shelves).length)return;
+    if(rowsFor(world).length<2)return;
+    worldIndex=Math.max(0,WORLDS.indexOf(world));
+    renderWorld(world);schedule();
+  });
   if(window.HuntMarketShelves)setShelves(window.HuntMarketShelves);
 })();

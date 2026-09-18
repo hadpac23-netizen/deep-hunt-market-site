@@ -167,6 +167,7 @@
     else if (sort === "price-high") items.sort((a,b)=>(retailState(b).amount??-Infinity)-(retailState(a).amount??-Infinity));
     else if (sort === "for-you") items.sort((a,b)=>
       H.personalScore(b)-H.personalScore(a) ||
+      Number(window.BoomCommerceBrain?.scoreProduct?.(b)||0)-Number(window.BoomCommerceBrain?.scoreProduct?.(a)||0) ||
       Number(window.HuntCountry?.score?.(b)||0)-Number(window.HuntCountry?.score?.(a)||0) ||
       listingReadiness(b)-listingReadiness(a) ||
       (resultOrder.get(productKey(a))||0)-(resultOrder.get(productKey(b))||0)

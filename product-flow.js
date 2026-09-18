@@ -73,6 +73,7 @@
       score+=Math.max(0,18-Math.round(ratio*18));
     }
     score+=Number(window.HuntCountry?.score?.(item)||0);
+    score+=Number(window.BoomCommerceBrain?.scoreProduct?.(item)||0);
     if(item?.availability_verified)score+=6;
     if(String(item?.price_basis||"").toUpperCase()==="MERCHANT_RETAIL")score+=4;
     return score;

@@ -1,0 +1,55 @@
+/* BOOM F35 STYLIST · ethical dynamic presentation */
+:root{
+  --boom-accent:#85d6ff;
+  --boom-accent-2:#8d82ff;
+  --boom-glow:rgba(107,160,255,.18);
+  --boom-surface:rgba(12,16,25,.94);
+}
+.hd-boom-whisper{
+  position:relative;z-index:3;
+  display:flex;align-items:center;gap:9px;
+  min-height:28px;margin:-2px 0 14px;
+  color:var(--shop-muted);font-size:.54rem;font-weight:750;
+}
+.hd-boom-whisper i{
+  flex:0 0 auto;width:6px;height:6px;border-radius:50%;
+  background:linear-gradient(135deg,var(--boom-accent),var(--boom-accent-2));
+  box-shadow:0 0 0 5px color-mix(in srgb,var(--boom-accent) 8%,transparent),0 0 18px var(--boom-glow);
+}
+.hd-boom-whisper span.is-switching{animation:boom-whisper-in .44s cubic-bezier(.2,.8,.2,1) both}
+body[data-boom-style="quiet-luxury"] .hd-discovery-live,
+body[data-boom-style="quiet-luxury"] .hd-night-edit{
+  box-shadow:0 34px 88px rgba(9,10,18,.13),0 0 52px var(--boom-glow);
+}
+body[data-boom-style="electric"] .hd-discovery-live::before{
+  box-shadow:0 0 0 42px rgba(127,231,255,.035),0 0 0 86px rgba(158,128,255,.025),0 0 72px var(--boom-glow);
+}
+body[data-boom-style="editorial"] .hd-discovery-head h2,
+body[data-boom-style="editorial"] .hd-night-edit h2{letter-spacing:-.025em}
+body[data-boom-density="airy"] .hd-discovery-live{padding-top:clamp(28px,4vw,48px);padding-bottom:clamp(28px,4vw,48px)}
+body[data-boom-density="rich"] .hd-discovery-card:first-child .hd-discovery-title{max-width:82%}
+body[data-boom-energy="vivid"] [data-boom-focus="true"]{
+  box-shadow:0 28px 78px rgba(9,14,28,.1),0 0 44px var(--boom-glow);
+}
+[data-boom-focus="true"]{
+  transition:box-shadow .55s ease,border-color .55s ease;
+}
+#hunt-now[data-boom-style="electric"] .hd-discovery-kicker i,
+#hunt-night-edit[data-boom-style="electric"] .hd-night-edit-kicker i{
+  background:linear-gradient(135deg,#7fe7ff,#9e80ff);
+  box-shadow:0 0 18px rgba(127,231,255,.58);
+}
+#hunt-now[data-boom-style="quiet-luxury"] .hd-discovery-kicker i,
+#hunt-night-edit[data-boom-style="quiet-luxury"] .hd-night-edit-kicker i{
+  background:linear-gradient(135deg,#e9fbff,#b7a8ff);
+}
+@keyframes boom-whisper-in{
+  from{opacity:.16;transform:translateY(4px)}
+  to{opacity:1;transform:none}
+}
+@media(max-width:620px){
+  .hd-boom-whisper{margin-left:2px;margin-right:2px;font-size:.51rem}
+}
+@media(prefers-reduced-motion:reduce){
+  .hd-boom-whisper span.is-switching,[data-boom-focus="true"]{animation:none!important;transition:none!important}
+}

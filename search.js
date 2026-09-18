@@ -221,6 +221,13 @@
     ].filter(Boolean).join(" · ");
     $("#hd-ai-sentinel strong").textContent="Finding products…";
     H.recordSignal?.(i.cats[0]||"women","search");
+    window.dispatchEvent(new CustomEvent("hunt:search-intent",{detail:{
+      categories:i.cats.slice(0,6),
+      mission:Boolean(i.mission),
+      has_budget:Boolean(i.max),
+      style_count:i.styles.length,
+      color_count:i.colors.length
+    }}));
     try{S.results=await load(i);$("#hd-ai-intent-title").textContent=S.results.length?"Curated matches":"No matching products";renderMission(i);more();observe();}
     catch(e){$("#hd-ai-intent-title").textContent="Search unavailable";$("#hd-ai-intent-copy").textContent=e?.message||"Try again.";}
     history.replaceState(null,"","search.html?q="+encodeURIComponent(q));
