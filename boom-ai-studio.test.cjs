@@ -365,3 +365,9 @@ assert(js.includes("Supplier names hidden from shopper storefront"),"Supplier hi
 assert(js.includes("Search / recommendation / Like / Save / Share / History E2E"),"Shopper actions prompt item missing");
 assert(js.includes("function renderPromptCoverageAudit()"),"Prompt audit renderer missing");
 assert(css.includes(".prompt-audit-workspace"),"Prompt audit styling missing");
+
+assert(js.includes('localPreview:["127.0.0.1"'),"Safe localhost preview mode missing");
+assert(js.includes('url.searchParams.get("preview")==="1"'),"Local preview query gate missing");
+assert(js.includes("function applyLocalPreviewSafety()"),"Local preview safety function missing");
+assert(js.includes("LOCAL PREVIEW · LIVE ACTIONS OFF"),"Local preview safety status missing");
+assert(js.includes('input.placeholder="LOCAL PREVIEW · chat execution disabled"'),"Local preview chat lock missing");
