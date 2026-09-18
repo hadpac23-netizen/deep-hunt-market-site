@@ -623,4 +623,12 @@ assert(html.indexOf('data-studio-group="intelligence"')<html.indexOf('data-studi
 assert(css.includes("DESIGN PASS 1 · INFORMATION HIERARCHY"),"Design Pass 1 CSS missing");
 assert(css.includes("#b13-master-prompt-closure"),"B13 visual hierarchy styling missing");
 
+
+assert(html.includes("boom-ai-studio.css?v=4"),"Design Pass 2 stylesheet version missing");
+assert(css.includes("DESIGN PASS 2 · POLISH, FOCUS, ACCESSIBILITY"),"Design Pass 2 styling missing");
+assert(css.includes("button:focus-visible"),"Keyboard focus treatment missing");
+assert(css.includes("@media(prefers-reduced-motion:reduce)"),"Reduced-motion accessibility guard missing");
+assert(css.includes(".chat-message.owner")&&css.includes(".chat-message.boom"),"BOOM Chat message hierarchy missing");
+assert(css.includes(".professional-card[data-state=\"ready\"]"),"Professional status hierarchy missing");
+
 console.log("boom_ai_studio_tests=PASS");
