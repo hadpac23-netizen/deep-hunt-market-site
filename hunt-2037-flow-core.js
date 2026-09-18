@@ -5,6 +5,9 @@
   const Decision=typeof module!=="undefined"&&module.exports
     ? require("./boom-decision-brain.js")
     : globalThis.BoomDecisionBrain;
+  const Taste=typeof module!=="undefined"&&module.exports
+    ? require("./boom-taste-dna.js")
+    : globalThis.BoomTasteDNA;
   const hash=value=>{
     let h=2166136261;
     for(const ch of clean(value)){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)}
@@ -76,10 +79,12 @@
 
   function discoveryScore(item,lane,context={}){
     let score=0;
+    const taste=Taste?.candidateSignals?.(context.taste_profile||{},item)||null;
     const verifiedCandidate=item?.decision_candidate&&typeof item.decision_candidate==="object"
       ? Decision?.scoreCandidate?.(item.decision_candidate,context)
       : null;
     if(verifiedCandidate?.eligible)score+=Math.min(40,Number(verifiedCandidate.score||0)*0.4);
+    if(taste){score+=(taste.affinity-.5)*36;score-=taste.hide_risk*30;}
     const category=clean(item?.category||item?._shelf_slug);
     const provider=clean(item?.provider).toLowerCase();
     if((context.recent_categories||[]).includes(category))score+=18;
