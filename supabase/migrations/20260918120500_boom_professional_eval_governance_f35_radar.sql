@@ -222,19 +222,19 @@ begin
   ]
   loop
     execute format(
-      'create policy %L on public.%I for select to authenticated using (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.is_admin = true))',
+      'create policy %I on public.%I for select to authenticated using (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.is_admin = true))',
       'Admins read ' || t, t
     );
     execute format(
-      'create policy %L on public.%I for insert to authenticated with check (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.is_admin = true))',
+      'create policy %I on public.%I for insert to authenticated with check (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.is_admin = true))',
       'Admins create ' || t, t
     );
     execute format(
-      'create policy %L on public.%I for update to authenticated using (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.is_admin = true)) with check (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.is_admin = true))',
+      'create policy %I on public.%I for update to authenticated using (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.is_admin = true)) with check (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.is_admin = true))',
       'Admins update ' || t, t
     );
     execute format(
-      'create policy %L on public.%I for delete to authenticated using (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.is_admin = true))',
+      'create policy %I on public.%I for delete to authenticated using (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.is_admin = true))',
       'Admins delete ' || t, t
     );
   end loop;
