@@ -72,6 +72,18 @@ assert(js.includes("SERVER_SIDE_PROVIDER_CONNECTOR_REQUIRED")||fs.readFileSync("
 console.log("boom_ai_studio_tests=PASS");
 
 assert(html.includes('data-tab="brand-factory"'),"Brand Factory tab missing");
+const tabOrder=[
+  'data-tab="studio"',
+  'data-tab="hunt-intelligence"',
+  'data-tab="brand-factory"',
+  'data-tab="professional-workbench"',
+  'data-tab="evaluations"',
+  'data-tab="executions"',
+  'data-tab="learning"',
+  'data-tab="connect"'
+].map(token=>html.indexOf(token));
+assert(tabOrder.every(x=>x>=0),"BOOM top navigation tab missing");
+assert(tabOrder.every((x,i)=>i===0||x>tabOrder[i-1]),"BOOM top navigation order regressed");
 assert(html.includes('id="brand-brief"'),"Brand Factory product truth form missing");
 assert(html.includes('data-brand-stage="red_team"'),"Brand Factory Red Team stage missing");
 assert(html.includes('data-brand-stage="owner_gate"'),"Brand Factory Owner Gate missing");
