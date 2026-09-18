@@ -42,6 +42,13 @@ const input={
   alertRulesConnected:true,
   evaluatorRegistry:[{id:1,evaluator_key:"truth-contract",status:"active",activated_at:"2026-09-18T08:00:00Z",calibration_required:false}],
   humanAlignmentRuns:[],
+  humanLabelStoreConnected:true,
+  humanLabels:[{
+    id:1,evaluator_id:1,observation_id:90,trace_ref:null,route_key:"owner-chat",
+    rubric_key:"owner_chat_contract_v1",automated_label:"pass",automated_score:0.95,
+    human_label:"pass",human_score:1,rationale:"Matches rubric",correction:null,
+    reviewer_id:"11111111-1111-4111-8111-111111111111",reviewed_at:"2026-09-18T09:12:00Z"
+  }],
   onlineEvalWindows:[{id:1,status:"completed",completed_at:"2026-09-18T09:10:00Z",sample_count:20,scored_count:20,passed_count:19,failed_count:1}],
   ciQualityGates:[{id:1,gate_key:"quality",enabled:true,blocks_merge:true,min_samples:10}],
   ciQualityGateRuns:[{id:1,gate_id:1,status:"completed",completed_at:"2026-09-18T09:11:00Z",sample_count:20,metric_value:0.95,passed:true}],
@@ -78,6 +85,11 @@ assert.equal(result.evaluators.active_evaluators,1);
 assert.equal(result.evaluators.missing_alignment,0);
 assert.equal(result.evaluators.completed_online_windows,1);
 assert.equal(result.evaluators.passed_ci_gates,1);
+assert.equal(result.annotation.connected,true);
+assert.equal(result.annotation.valid_labels,1);
+assert.equal(result.annotation.labeled_observations,1);
+assert.equal(result.annotation.disagreements,0);
+assert.equal(result.annotation.evidence_state,"LABELED");
 assert.equal(result.radar.ready,true);
 assert.equal(result.radar.fresh,1);
 assert.equal(result.safety.redteam.ready,true);
@@ -159,6 +171,26 @@ assert.equal(failedGate.uncovered_ci_gates,1);
 assert.equal(failedGate.continuous_gate_ready,false);
 assert.equal(failedGate.ci_gate_state,"blocked");
 assert.equal(failedGate.failed_ci_gates,1);
+
+const missingGroundTruth=W.buildAnnotationGroundTruth({
+  humanLabels:[],
+  humanLabelStoreConnected:false
+});
+assert.equal(missingGroundTruth.connected,false);
+assert.equal(missingGroundTruth.evidence_state,"STORE_MISSING");
+
+const disagreementGroundTruth=W.buildAnnotationGroundTruth({
+  humanLabelStoreConnected:true,
+  humanLabels:[{
+    evaluator_id:1,observation_id:90,rubric_key:"owner_chat_contract_v1",
+    automated_label:"pass",automated_score:0.95,human_label:"fail",human_score:0,
+    reviewer_id:"11111111-1111-4111-8111-111111111111",reviewed_at:"2026-09-18T10:00:00Z",
+    correction:"Expected a fail-closed answer"
+  }]
+});
+assert.equal(disagreementGroundTruth.valid_labels,1);
+assert.equal(disagreementGroundTruth.disagreements,1);
+assert.equal(disagreementGroundTruth.corrections,1);
 
 const staleRadar=W.buildKnowledgeRadar({
   f35Sources:[{enabled:true,last_checked_at:"2026-09-10T00:00:00Z",freshness_hours:24}],
@@ -255,6 +287,7 @@ assert(gaps.gaps.includes("datasets"));
 assert(gaps.gaps.includes("review"));
 assert(gaps.gaps.includes("alerts"));
 assert(gaps.gaps.includes("evaluators"));
+assert(gaps.gaps.includes("ground-truth"));
 assert(gaps.gaps.includes("online-ci"));
 assert(gaps.gaps.includes("redteam"));
 assert(gaps.gaps.includes("calibration"));
