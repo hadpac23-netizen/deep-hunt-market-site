@@ -7,6 +7,7 @@
   const previewLocalHost=["127.0.0.1","localhost"].includes(location.hostname);
   const previewNetlifyDraft=/^[a-z0-9-]+--deep-hunt-market\.netlify\.app$/i.test(location.hostname);
   const SAFE_PREVIEW_BOOT=(previewLocalHost||previewNetlifyDraft)&&previewUrl.searchParams.get("preview")==="1";
+  const READ_ONLY_LIVE_PREVIEW=previewNetlifyDraft&&previewUrl.searchParams.get("readonly")==="1";
   const Truth=window.HuntCountryProductTruth;
   const Taste=window.BoomTasteDNA;
   const Decision=window.BoomDecisionBrain;
@@ -93,6 +94,7 @@
     alphaRCQA:null,
     alphaFinalGate:null,
     localPreview:false,
+    readOnlyPreview:READ_ONLY_LIVE_PREVIEW,
     professionalSnapshot:null,
     professionalEvidence:{
       modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
@@ -2486,6 +2488,7 @@
     const waiting=ownerWaitingCommands();
     const attention=attentionReports();
     const hunt=ownerHuntState();
+    if(state.readOnlyPreview)hunt.note="Live evidence · external actions disabled";
     const mission=ownerPrimaryMission();
 
     const setText=(id,value)=>{const el=$("#"+id);if(el)el.textContent=String(value)};
@@ -2538,7 +2541,7 @@
     const agentGrid=$("#owner-agent-grid");
     if(agentGrid){
       agentGrid.innerHTML=agents.map(([id,name,role,icon])=>{
-        const st=statusOf(id);
+        const st=state.localPreview?"watch":freshStatusOf(id);
         return '<article class="owner-agent-card" data-owner-agent="'+esc(id)+'"><div class="owner-agent-head"><span class="owner-agent-icon">'+esc(icon)+'</span><div><strong>'+esc(name)+'</strong><small>'+esc(role)+'</small></div></div><span class="owner-agent-status '+esc(st)+'">'+esc(ownerStatusLabel(st))+'</span></article>';
       }).join("");
     }
@@ -2597,6 +2600,7 @@
     renderPromptCoverageAudit();
     if(state.managerMap.has(state.selected)||toolNodeFallbackManagers[state.selected]||studioNodeGroupById.has(state.selected))inspectManager(state.selected);
     if(state.localPreview)setLive("● PREVIEW · LIVE ACTIONS OFF","watch");
+    else if(state.readOnlyPreview)setLive("● READ-ONLY LIVE · ACTIONS OFF","healthy");
     else setLive("● LIVE · "+new Date().toLocaleTimeString("he-IL",{hour:"2-digit",minute:"2-digit",second:"2-digit"}));
   }
 
@@ -2755,11 +2759,12 @@
       .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_evals"},scheduleReload)
       .on("postgres_changes",{event:"*",schema:"public",table:"hunt_boom_learning_items"},scheduleReload)
       .subscribe(status=>{
-        if(status==="SUBSCRIBED")setLive("● REALTIME");
+        if(status==="SUBSCRIBED")setLive(state.readOnlyPreview?"● READ-ONLY REALTIME · ACTIONS OFF":"● REALTIME",state.readOnlyPreview?"healthy":"healthy");
       });
   }
 
   async function invokeBoomFunction(name,body){
+    if(state.readOnlyPreview)throw new Error("READ_ONLY_LIVE_PREVIEW · external actions are disabled");
     const {data:{session},error:sessionError}=await client.auth.getSession();
     if(sessionError)throw sessionError;
     if(!session?.access_token)throw new Error("Session expired. Please sign in again.");
@@ -3315,27 +3320,29 @@
   }
 
   function applyLocalPreviewSafety(mode="local"){
-    const label=mode==="draft"?"DRAFT":"LOCAL";
+    const readOnly=mode==="readonly";
+    const label=readOnly?"READ-ONLY LIVE":(mode==="draft"?"DRAFT":"LOCAL");
     document.body.dataset.previewMode=mode;
     const disabledSelectors=[
-      "#refresh","#logout","#chat-send","#chat-mic","#voice-loop",
+      "#chat-send","#chat-mic","#voice-loop",
       "#brand-run","#brand-verify","#brand-video-plan","#brand-video-qa",
       "#vault-preview","#vault-visual-qa","#vault-qa-commit","#vault-owner-approve","#vault-owner-reject",
-      "#deployment-readiness-refresh","#connect-refresh"
+      "#deployment-readiness-refresh"
     ];
+    if(!readOnly)disabledSelectors.push("#refresh","#logout","#connect-refresh");
     for(const selector of disabledSelectors){
       const el=$(selector);
       if(!el)continue;
       el.disabled=true;
-      el.title=label+" PREVIEW · external/live action disabled";
+      el.title=label+" · external/live action disabled";
     }
-    $("#logout").hidden=true;
+    $("#logout").hidden=!readOnly;
     const input=$("#chat-input");
     if(input){
       input.disabled=true;
-      input.placeholder=label+" PREVIEW · chat execution disabled";
+      input.placeholder=label+" · chat execution disabled";
     }
-    setLive("● "+label+" PREVIEW · LIVE ACTIONS OFF","watch");
+    setLive(readOnly?"● READ-ONLY LIVE · ACTIONS OFF":"● "+label+" PREVIEW · LIVE ACTIONS OFF",readOnly?"healthy":"watch");
   }
 
   function showLogin(){
@@ -3406,8 +3413,12 @@
     state.session=session;
     await ensureAdmin(session);
     showApp();
+    if(READ_ONLY_LIVE_PREVIEW){
+      state.readOnlyPreview=true;
+      applyLocalPreviewSafety("readonly");
+    }
     await loadAll();
-    await refreshDeploymentReadiness().catch(()=>{});
+    if(!state.readOnlyPreview)await refreshDeploymentReadiness().catch(()=>{});
     subscribeRealtime();
     inspectManager("boom-super-agent");
   }
@@ -3418,7 +3429,7 @@
     button.disabled=true;
     error.textContent="";
     try{
-      const redirectTo=location.origin+location.pathname;
+      const redirectTo=location.origin+location.pathname+(READ_ONLY_LIVE_PREVIEW?"?readonly=1":"");
       const {error:oauthError}=await client.auth.signInWithOAuth({
         provider:"github",
         options:{redirectTo}
@@ -3445,8 +3456,12 @@
       await ensureAdmin(data.session);
       state.session=data.session;
       showApp();
+      if(READ_ONLY_LIVE_PREVIEW){
+        state.readOnlyPreview=true;
+        applyLocalPreviewSafety("readonly");
+      }
       await loadAll();
-      await refreshDeploymentReadiness().catch(()=>{});
+      if(!state.readOnlyPreview)await refreshDeploymentReadiness().catch(()=>{});
       subscribeRealtime();
       inspectManager("boom-super-agent");
     }catch(err){
@@ -3630,6 +3645,10 @@
         try{
           await ensureAdmin(session);
           showApp();
+          if(READ_ONLY_LIVE_PREVIEW){
+            state.readOnlyPreview=true;
+            applyLocalPreviewSafety("readonly");
+          }
           await loadAll();
           subscribeRealtime();
           inspectManager("boom-super-agent");

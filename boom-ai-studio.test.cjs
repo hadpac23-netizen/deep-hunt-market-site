@@ -386,8 +386,8 @@ assert(css.includes(".prompt-audit-workspace"),"Prompt audit styling missing");
 assert(js.includes('const previewLocalHost=["127.0.0.1","localhost"].includes(location.hostname);'),"Safe localhost preview mode missing");
 assert(js.includes('previewUrl.searchParams.get("preview")==="1"'),"Safe preview query gate missing");
 assert(js.includes('function applyLocalPreviewSafety(mode="local")'),"Safe preview safety function missing");
-assert(js.includes('label+" PREVIEW · LIVE ACTIONS OFF"'),"Preview safety status missing");
-assert(js.includes('input.placeholder=label+" PREVIEW · chat execution disabled"'),"Preview chat lock missing");
+assert(js.includes('READ-ONLY LIVE · ACTIONS OFF')&&js.includes('LIVE ACTIONS OFF'),"Preview safety status missing");
+assert(js.includes('input.placeholder=label+" · chat execution disabled"'),"Preview chat lock missing");
 
 assert(html.includes('id="product-trace-workspace"'),"Product trace workspace missing");
 assert(html.includes('id="product-trace-key"'),"Product trace reference input missing");
@@ -624,7 +624,7 @@ assert(css.includes("DESIGN PASS 1 · INFORMATION HIERARCHY"),"Design Pass 1 CSS
 assert(css.includes("#b13-master-prompt-closure"),"B13 visual hierarchy styling missing");
 
 
-assert(html.includes("boom-ai-studio.css?v=6"),"BOOM Visual System 2.0 stylesheet version missing");
+assert(html.includes("boom-ai-studio.css?v=7"),"BOOM Visual System 2.0 Pro/Connect stylesheet version missing");
 assert(css.includes("DESIGN PASS 2 · POLISH, FOCUS, ACCESSIBILITY"),"Design Pass 2 styling missing");
 assert(css.includes("button:focus-visible"),"Keyboard focus treatment missing");
 assert(css.includes("@media(prefers-reduced-motion:reduce)"),"Reduced-motion accessibility guard missing");
@@ -687,5 +687,17 @@ assert(js.includes("function renderOwnerMissionFlow(status)"),"Live mission flow
 assert(js.includes('String(ev.key).toLowerCase()==="k"'),"Command K shortcut missing");
 assert(css.includes("BOOM LIVE MISSION + CHAT 2.0"),"BOOM Chat 2.0 styling missing");
 assert(css.includes(".owner-mission-flow span.active"),"Live mission active state styling missing");
+
+
+assert(js.includes("const READ_ONLY_LIVE_PREVIEW="),"Read-only live preview mode missing");
+assert(js.includes("readOnlyPreview:READ_ONLY_LIVE_PREVIEW"),"Read-only preview state missing");
+assert(js.includes("READ_ONLY_LIVE_PREVIEW · external actions are disabled"),"Read-only external action guard missing");
+assert(js.includes('applyLocalPreviewSafety("readonly")'),"Read-only preview safety application missing");
+assert(js.includes("● READ-ONLY LIVE · ACTIONS OFF"),"Read-only live status badge missing");
+assert(css.includes("BOOM VISUAL SYSTEM 2.0 · PRO STUDIO + CONNECT"),"Pro Studio + Connect Visual System 2.0 missing");
+assert(css.includes('body[data-preview-mode="readonly"] .live-pill'),"Read-only live visual state missing");
+
+
+assert(js.includes('const st=state.localPreview?"watch":freshStatusOf(id);'),"Owner agent cards must use fresh runtime status");
 
 console.log("boom_ai_studio_tests=PASS");
