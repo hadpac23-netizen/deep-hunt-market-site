@@ -2226,7 +2226,10 @@
   $("#alpha-evidence-build")?.addEventListener("click",buildOwnerAlphaEvidencePack);
   $("#alpha-rc-preview-build")?.addEventListener("click",buildAlphaRCPreview);
   $("#alpha-rc-qa-run")?.addEventListener("click",runAlphaRCQA);
-  $("#alpha-final-gate-build")?.addEventListener("click",buildAlphaFinalGate);\n  $("#alpha-final-go")?.addEventListener("click",()=>recordAlphaFinalDecision(FinalGate?.DECISIONS?.GO));\n  $("#alpha-final-no-go")?.addEventListener("click",()=>recordAlphaFinalDecision(FinalGate?.DECISIONS?.NO_GO));\n  $("#connect-refresh")?.addEventListener("click",async()=>{
+  $("#alpha-final-gate-build")?.addEventListener("click",buildAlphaFinalGate);
+  $("#alpha-final-go")?.addEventListener("click",()=>recordAlphaFinalDecision(FinalGate?.DECISIONS?.GO));
+  $("#alpha-final-no-go")?.addEventListener("click",()=>recordAlphaFinalDecision(FinalGate?.DECISIONS?.NO_GO));
+  $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
     try{await loadAll();renderConnect()}catch(err){showError(err)}finally{if(btn){btn.disabled=false;btn.textContent="בדוק עכשיו"}}
