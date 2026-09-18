@@ -192,3 +192,11 @@ assert(js.includes("function renderMemorySimulation"),"A3 context renderer missi
 assert(js.includes("REAL PROFILE WRITTEN: false"),"Real-profile isolation guard missing");
 assert(js.includes("HUNT HISTORY CHANGED: false"),"HUNT history isolation guard missing");
 assert(css.includes(".memory-workspace"),"A3 memory workspace styling missing");
+assert(html.includes('id="flow-simulate"'),"A4 Dynamic Flow simulator missing");
+assert(html.includes("hunt-2037-flow-core.js?v=alpha1"),"HUNT Flow engine missing from Studio");
+assert(js.includes("function simulateDynamicFlow"),"A4 Flow simulator missing");
+assert(js.includes("A4_STRUCTURE_SIMULATION"),"A4 structural simulation mode missing");
+assert(js.includes("PRODUCTS INVENTED: 0"),"No-fake-product guard missing");
+assert(js.includes("VERIFIED PRODUCT REQUIRED PER SLOT: true"),"Verified-slot gate missing");
+assert(js.includes("FEATURE_FLAG_CHANGED: false"),"Feature flag guard missing");
+assert(css.includes(".flow-workspace"),"A4 Flow workspace styling missing");
