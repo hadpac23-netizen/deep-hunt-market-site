@@ -83,7 +83,8 @@
     alphaEvidencePack:null,
     alphaRCPreview:null,
     alphaRCQA:null,
-    alphaFinalGate:null
+    alphaFinalGate:null,
+    localPreview:false
   };
 
   const studioNodeGroups=[
@@ -2254,6 +2255,29 @@
     setChatOpen(true);
   }
 
+  function applyLocalPreviewSafety(){
+    document.body.dataset.previewMode="local";
+    const disabledSelectors=[
+      "#refresh","#logout","#chat-send","#chat-mic","#voice-loop",
+      "#brand-run","#brand-verify","#brand-video-plan","#brand-video-qa",
+      "#vault-preview","#vault-visual-qa","#vault-qa-commit","#vault-owner-approve","#vault-owner-reject",
+      "#deployment-readiness-refresh","#connect-refresh"
+    ];
+    for(const selector of disabledSelectors){
+      const el=$(selector);
+      if(!el)continue;
+      el.disabled=true;
+      el.title="LOCAL PREVIEW · external/live action disabled";
+    }
+    $("#logout").hidden=true;
+    const input=$("#chat-input");
+    if(input){
+      input.disabled=true;
+      input.placeholder="LOCAL PREVIEW · chat execution disabled";
+    }
+    setLive("● LOCAL PREVIEW · LIVE ACTIONS OFF","watch");
+  }
+
   function showLogin(){
     $("#login-screen").hidden=false;
     $("#app-shell").hidden=true;
@@ -2273,6 +2297,20 @@
     setVaultControls();
 
     const url=new URL(location.href);
+    const localPreview=["127.0.0.1","localhost"].includes(location.hostname)&&url.searchParams.get("preview")==="1";
+    if(localPreview){
+      state.localPreview=true;
+      showApp();
+      applyLocalPreviewSafety();
+      renderAll();
+      await renderHuntIntelligence();
+      renderApprovalQueue();
+      renderAlphaBlueprint();
+      renderPromptCoverageAudit();
+      inspectSpecial("output");
+      setLive("● LOCAL PREVIEW · LIVE ACTIONS OFF","watch");
+      return;
+    }
     const oauthError=url.searchParams.get("error_description")||url.searchParams.get("error");
     if(oauthError){
       showLogin();
