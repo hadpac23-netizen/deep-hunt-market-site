@@ -31,6 +31,7 @@ const core=fs.readFileSync("hunt-2037-flow-core.js","utf8");
 
 assert(html.includes('id="hunt-2037-flow"'),"HUNT 2037 root missing");
 assert(html.includes("hunt-experience-memory.js?v=memory1"),"Memory script missing");
+assert(html.includes("boom-taste-dna.js?v=alpha1"),"Taste DNA script missing");
 assert(html.includes("boom-decision-brain.js?v=brain1"),"Decision Brain script missing");
 assert(html.includes("hunt-2037-flow-core.js?v=alpha1"),"Flow core script missing");
 assert(html.includes("hunt-2037-flow.js?v=alpha1"),"Flow UI script missing");
@@ -62,6 +63,7 @@ assert(js.includes("impressionSeen"),"impression dedupe missing");
 assert(js.includes("dwellSeen"),"dwell dedupe missing");
 assert(js.includes("2500"),"dwell threshold missing");
 assert(core.includes("Decision?.scoreCandidate"),"Decision Brain optional scoring missing");
+assert(core.includes("Taste?.candidateSignals"),"Taste DNA scoring connection missing");
 assert(css.includes("prefers-reduced-motion"),"reduced-motion support missing");
 assert(css.includes("content-visibility:auto"),"offscreen rendering optimization missing");
 assert(css.includes(".hunt2037-world-mode-bar"),"world mode bar styles missing");
