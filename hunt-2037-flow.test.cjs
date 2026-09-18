@@ -31,6 +31,10 @@ assert(html.includes("hunt-2037-flow.js?v=alpha1"),"Flow UI script missing");
 assert(js.includes('searchParams.get("hunt2037")==="1"'),"URL feature flag missing");
 assert(js.includes("hunt_2037_flow_enabled"),"persistent feature flag missing");
 assert(js.includes("data-hunt2037-share"),"share action missing");
+assert(js.includes("Style it"),"product-to-Stylist action missing");
+assert(js.includes("Try in Mirror"),"eligible product-to-Mirror action missing");
+assert(js.includes("function mirrorTypeFor"),"Mirror product type mapper missing");
+assert(js.includes("anchor:category"),"Stylist product anchor query missing");
 assert(js.includes("history.html?hunt2037=1"),"HUNT History entry missing");
 assert(js.includes("Why this:"),"recommendation explainability missing");
 assert(js.includes('data-provider="${H.esc(item.provider||"")}"'),"share provider metadata missing");
@@ -47,6 +51,7 @@ assert(core.includes("Decision?.scoreCandidate"),"Decision Brain optional scorin
 assert(css.includes("prefers-reduced-motion"),"reduced-motion support missing");
 assert(css.includes("content-visibility:auto"),"offscreen rendering optimization missing");
 assert(css.includes(".hunt2037-world-mode-bar"),"world mode bar styles missing");
+assert(css.includes(".hunt2037-card-actions"),"product action row styles missing");
 assert(css.includes("body.hunt2037-active #hd-wow-showcase"),"fallback surface switch missing");
 const visual=fs.readFileSync("hunt-2037-visual.js","utf8");
 const cities=JSON.parse(fs.readFileSync("hunt-city-night-manifest.json","utf8"));
