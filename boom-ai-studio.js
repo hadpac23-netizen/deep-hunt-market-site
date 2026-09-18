@@ -99,6 +99,7 @@
       redTeamCases:[],redTeamRuns:[],confidenceCalibration:[],teamRuns:[],
       evaluatorRegistry:[],humanAlignmentRuns:[],humanLabels:[],humanLabelStoreConnected:false,onlineEvalWindows:[],ciQualityGates:[],ciQualityGateRuns:[],
       observabilitySnapshots:[],observabilityStoreConnected:false,
+      evalDatasetVersions:[],evalDatasetVersionStoreConnected:false,evalLineage:[],evalLineageStoreConnected:false,
       f35Sources:[],f35Findings:[],
       promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
     }
@@ -538,6 +539,12 @@
       humanLabelStoreConnected:state.professionalEvidence.humanLabelStoreConnected,
       observabilitySnapshots:state.professionalEvidence.observabilitySnapshots,
       observabilityStoreConnected:state.professionalEvidence.observabilityStoreConnected,
+      evalDatasetVersions:state.professionalEvidence.evalDatasetVersions,
+      evalDatasetVersionStoreConnected:state.professionalEvidence.evalDatasetVersionStoreConnected,
+      evalLineage:state.professionalEvidence.evalLineage,
+      evalLineageStoreConnected:state.professionalEvidence.evalLineageStoreConnected,
+      evalRuns:state.professionalEvidence.evalRuns,
+      evalSuites:state.professionalEvidence.evalSuites,
       onlineEvalWindows:state.professionalEvidence.onlineEvalWindows,
       ciQualityGates:state.professionalEvidence.ciQualityGates,
       ciQualityGateRuns:state.professionalEvidence.ciQualityGateRuns,
@@ -654,6 +661,22 @@
       "OWNER GATE: required"
     ].join("\n");
 
+    const evalLineageReport=$("#professional-lineage-report");
+    if(evalLineageReport)evalLineageReport.textContent=[
+      "DATASET VERSION STORE: "+snapshot.evalLineage.dataset_store_connected,
+      "EVAL LINEAGE STORE: "+snapshot.evalLineage.lineage_store_connected,
+      "DATASET VERSIONS: "+snapshot.evalLineage.frozen_dataset_versions+"/"+snapshot.evalLineage.dataset_versions+" frozen",
+      "MEASURED RUNS LINKED: "+snapshot.evalLineage.linked_measured_runs+"/"+snapshot.evalLineage.measured_runs,
+      "UNLINKED MEASURED RUNS: "+snapshot.evalLineage.unlinked_measured_runs,
+      "ORPHANED LINKS: "+snapshot.evalLineage.orphaned_links,
+      "PROMPT LINKS: "+snapshot.evalLineage.prompt_linked,
+      "SOURCE COMMIT LINKS: "+snapshot.evalLineage.commit_linked,
+      "",
+      "REPRODUCIBLE: "+snapshot.evalLineage.ready,
+      "MUTATION: false",
+      "OWNER GATE: required before activation"
+    ].join("\n");
+
     const observabilityReport=$("#professional-observability-report");
     if(observabilityReport)observabilityReport.textContent=[
       "STORE CONNECTED: "+snapshot.observability.connected,
@@ -709,6 +732,9 @@
       "GROUND TRUTH LABELS: "+snapshot.annotation.valid_labels+" · invalid="+snapshot.annotation.invalid_labels+" · disagreements="+snapshot.annotation.disagreements,
       "OBSERVABILITY STORE CONNECTED: "+state.professionalEvidence.observabilityStoreConnected,
       "OBSERVABILITY LANES: clear="+snapshot.observability.clear+"/"+snapshot.observability.required+" · watch="+snapshot.observability.watch+" · critical="+snapshot.observability.critical+" · stale="+snapshot.observability.stale+" · missing="+snapshot.observability.missing,
+      "EVAL DATASET VERSION STORE CONNECTED: "+state.professionalEvidence.evalDatasetVersionStoreConnected,
+      "EVAL LINEAGE STORE CONNECTED: "+state.professionalEvidence.evalLineageStoreConnected,
+      "EVAL REPRODUCIBILITY: linked="+snapshot.evalLineage.linked_measured_runs+"/"+snapshot.evalLineage.measured_runs+" · orphaned="+snapshot.evalLineage.orphaned_links+" · prompt links="+snapshot.evalLineage.prompt_linked+" · commit links="+snapshot.evalLineage.commit_linked,
       "DATASET CANDIDATES: "+snapshot.failures.dataset_candidates+" · PERSISTED DATASET: "+snapshot.failures.persisted_dataset,
       "PERSISTED EVAL SUITES: "+state.professionalEvidence.evalSuites.length,
       "PERSISTED EVAL CASES: "+state.professionalEvidence.evalCases.length,
@@ -2347,6 +2373,7 @@
         redTeamCases:[],redTeamRuns:[],confidenceCalibration:[],teamRuns:[],
         evaluatorRegistry:[],humanAlignmentRuns:[],humanLabels:[],humanLabelStoreConnected:false,onlineEvalWindows:[],ciQualityGates:[],ciQualityGateRuns:[],
         observabilitySnapshots:[],observabilityStoreConnected:false,
+        evalDatasetVersions:[],evalDatasetVersionStoreConnected:false,evalLineage:[],evalLineageStoreConnected:false,
         f35Sources:[],f35Findings:[],
         promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
       };
@@ -2358,7 +2385,7 @@
       evalCases,evalRuns,evalSuites,replayRuns,shadowRuns,
       redTeamCases,redTeamRuns,confidenceCalibration,teamRuns,
       evaluatorRegistry,humanAlignmentRuns,humanLabelStore,onlineEvalWindows,ciQualityGates,ciQualityGateRuns,
-      observabilityStore,
+      observabilityStore,evalDatasetVersionStore,evalLineageStore,
       f35Sources,f35Findings,
       promptStore,traceStore
     ]=await Promise.all([
@@ -2382,6 +2409,8 @@
       query("hunt_boom_ci_quality_gates","id,gate_key,scope,metric_key,operator,threshold,min_samples,blocks_merge,enabled,owner_approval_required,updated_at","updated_at",120),
       query("hunt_boom_ci_quality_gate_runs","id,gate_id,run_key,candidate_ref,source_commit,sample_count,metric_value,passed,status,created_at,completed_at","created_at",160),
       optionalQuery("hunt_boom_observability_snapshots","id,monitor_type,project_ref,observed_at,window_start,window_end,state,findings_count,unavailable_checks,evidence,evidence_fingerprint,source_ref,review_required,created_at","observed_at",240),
+      optionalQuery("hunt_boom_eval_dataset_versions","id,dataset_key,version,suite_id,case_count,case_manifest_hash,source_ref,source_commit,status,metadata,owner_approval_required,created_at,frozen_at","created_at",200),
+      optionalQuery("hunt_boom_eval_lineage","id,eval_run_id,suite_id,dataset_version_id,prompt_version_id,candidate_ref,source_commit,evidence,created_at","created_at",240),
       query("hunt_boom_f35_sources","id,source_key,display_name,source_type,canonical_url,domain,priority,freshness_hours,enabled,owner_approved,last_checked_at,last_changed_at,updated_at","priority",120),
       query("hunt_boom_f35_findings","id,source_id,finding_key,observed_at,published_at,title,summary,evidence_url,impact_area,relevance_score,confidence,action_state,requires_owner_review,created_at","observed_at",240),
       optionalQuery("hunt_boom_prompt_versions","id,prompt_key,version,status,environment,template_hash,variables,model_preferences,change_note,source_commit,owner_approval_required,created_at,updated_at,activated_at","updated_at",160),
@@ -2398,6 +2427,10 @@
       onlineEvalWindows,ciQualityGates,ciQualityGateRuns,
       observabilitySnapshots:observabilityStore.rows,
       observabilityStoreConnected:observabilityStore.connected,
+      evalDatasetVersions:evalDatasetVersionStore.rows,
+      evalDatasetVersionStoreConnected:evalDatasetVersionStore.connected,
+      evalLineage:evalLineageStore.rows,
+      evalLineageStoreConnected:evalLineageStore.connected,
       f35Sources,f35Findings,
       promptVersions:promptStore.rows,
       traceSpans:traceStore.rows,
