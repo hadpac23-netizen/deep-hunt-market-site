@@ -40,10 +40,14 @@ const input={
   reviewStoreConnected:true,
   traceSchemaConnected:true,
   alertRulesConnected:true,
-  evaluatorRegistryConnected:true,
-  humanAlignmentConnected:true,
-  onlineEvalConnected:true,
-  ciEvalGateConnected:true
+  evaluatorRegistry:[{id:1,evaluator_key:"truth-contract",status:"active",activated_at:"2026-09-18T08:00:00Z",calibration_required:false}],
+  humanAlignmentRuns:[],
+  onlineEvalWindows:[{id:1,status:"completed",completed_at:"2026-09-18T09:10:00Z",sample_count:20,scored_count:20,passed_count:19,failed_count:1}],
+  ciQualityGates:[{id:1,gate_key:"quality",enabled:true,blocks_merge:true,min_samples:10}],
+  ciQualityGateRuns:[{id:1,gate_id:1,status:"completed",completed_at:"2026-09-18T09:11:00Z",sample_count:20,metric_value:0.95,passed:true}],
+  f35Sources:[{id:1,enabled:true,last_checked_at:"2026-09-18T09:00:00Z",freshness_hours:72}],
+  f35Findings:[{id:1,confidence:"verified_official",action_state:"review",requires_owner_review:true,observed_at:"2026-09-18T09:00:00Z"}],
+  nowMs:Date.parse("2026-09-18T10:00:00Z")
 };
 
 const result=W.build(input);
@@ -68,6 +72,12 @@ assert(result.traces.rows.some(x=>x.kind==="span"));
 assert.equal(result.alerts.watch,1);
 assert.equal(result.evaluators.governance_ready,true);
 assert.equal(result.evaluators.continuous_gate_ready,true);
+assert.equal(result.evaluators.active_evaluators,1);
+assert.equal(result.evaluators.missing_alignment,0);
+assert.equal(result.evaluators.completed_online_windows,1);
+assert.equal(result.evaluators.passed_ci_gates,1);
+assert.equal(result.radar.ready,true);
+assert.equal(result.radar.fresh,1);
 assert.equal(result.safety.redteam.ready,true);
 assert.equal(result.safety.calibration.ready,true);
 assert.equal(result.safety.team_judge.ready,true);
@@ -79,6 +89,45 @@ assert.equal(result.safety.team_judge.judged,1);
 assert.equal(result.gaps.length,0);
 assert.equal(result.invariants.production_change,false);
 assert.equal(result.invariants.payments,false);
+
+const missingAlignment=W.buildEvaluatorOps({
+  evalCases:[{grader_type:"llm_judge"}],
+  evaluatorRegistry:[{id:7,status:"active",activated_at:"2026-09-18T08:00:00Z",calibration_required:true}],
+  humanAlignmentRuns:[]
+});
+assert.equal(missingAlignment.evaluator_registry_connected,true);
+assert.equal(missingAlignment.human_alignment_connected,false);
+assert.equal(missingAlignment.governance_ready,false);
+assert.equal(missingAlignment.missing_alignment,1);
+
+const pendingOnline=W.buildEvaluatorOps({
+  evalCases:[{grader_type:"deterministic"}],
+  evaluatorRegistry:[{id:1,status:"active",activated_at:"2026-09-18T08:00:00Z",calibration_required:false}],
+  onlineEvalWindows:[{status:"running",sample_count:20,scored_count:10,passed_count:10,failed_count:0}],
+  ciQualityGates:[{id:1,enabled:true,blocks_merge:true,min_samples:10}],
+  ciQualityGateRuns:[{gate_id:1,status:"completed",completed_at:"2026-09-18T09:00:00Z",sample_count:20,metric_value:1,passed:true}]
+});
+assert.equal(pendingOnline.online_eval_connected,false);
+assert.equal(pendingOnline.continuous_gate_ready,false);
+
+const failedGate=W.buildEvaluatorOps({
+  evalCases:[{grader_type:"deterministic"}],
+  evaluatorRegistry:[{id:1,status:"active",activated_at:"2026-09-18T08:00:00Z",calibration_required:false}],
+  onlineEvalWindows:[{status:"completed",completed_at:"2026-09-18T09:00:00Z",sample_count:20,scored_count:20,passed_count:20,failed_count:0}],
+  ciQualityGates:[{id:1,enabled:true,blocks_merge:true,min_samples:10}],
+  ciQualityGateRuns:[{gate_id:1,status:"completed",completed_at:"2026-09-18T09:00:00Z",sample_count:20,metric_value:0.4,passed:false}]
+});
+assert.equal(failedGate.ci_eval_gate_connected,false);
+assert.equal(failedGate.uncovered_ci_gates,1);
+assert.equal(failedGate.continuous_gate_ready,false);
+
+const staleRadar=W.buildKnowledgeRadar({
+  f35Sources:[{enabled:true,last_checked_at:"2026-09-10T00:00:00Z",freshness_hours:24}],
+  f35Findings:[],
+  nowMs:Date.parse("2026-09-18T10:00:00Z")
+});
+assert.equal(staleRadar.ready,false);
+assert.equal(staleRadar.stale,1);
 
 const pendingSafety=W.buildSafetyOps({
   redTeamCases:[{id:1,active:true}],
@@ -172,6 +221,7 @@ assert(gaps.gaps.includes("redteam"));
 assert(gaps.gaps.includes("calibration"));
 assert(gaps.gaps.includes("team-judge"));
 assert(gaps.gaps.includes("lineage"));
+assert(gaps.gaps.includes("f35-radar"));
 assert.equal(gaps.prompts.status,"REGISTRY_REQUIRED");
 assert.equal(gaps.traceHierarchy.store_connected,false);
 assert.equal(gaps.invariants.mutation,false);
