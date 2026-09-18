@@ -12,10 +12,10 @@
   };
 
   const WORLDS=Object.freeze([
-    {id:"fashion",title:"Fashion After Dark",copy:"Fashion, bags and accessories in one living edit.",visual:"assets/hunt-city/tokyo-night.svg",visual_label:"HUNT Tokyo night mood",slugs:["women","women-tops","women-jeans","bags","jewelry","women-shoes"]},
-    {id:"jewelry",title:"Jewelry Close-Up",copy:"Small details, stronger focus.",visual:"assets/hunt-city/paris-night.svg",visual_label:"HUNT Paris night mood",slugs:["jewelry","jewelry-necklaces","jewelry-earrings","jewelry-rings","watches"]},
-    {id:"tech-home",title:"Future Living",copy:"Useful tech and home upgrades.",visual:"assets/hunt-city/shenzhen-night.svg",visual_label:"HUNT Shenzhen night mood",slugs:["tech","phone-cases","power-banks","home","lighting","computer-accessories"]},
-    {id:"travel",title:"Night Departure",copy:"Travel-ready essentials with a global feel.",visual:"assets/hunt-city/dubai-night.svg",visual_label:"HUNT Dubai night mood",slugs:["travel","luggage","bags","power-banks","drinkware"]}
+    {id:"fashion",title:"Fashion After Dark",copy:"Fashion, bags and accessories in one living edit.",visual:"assets/hunt-city/real/tokyo.jpg",visual_fallback:"assets/hunt-city/tokyo-night.svg",visual_label:"Tokyo night skyline · Pexels",slugs:["women","women-tops","women-jeans","bags","jewelry","women-shoes"]},
+    {id:"jewelry",title:"Jewelry Close-Up",copy:"Small details, stronger focus.",visual:"assets/hunt-city/real/paris.jpg",visual_fallback:"assets/hunt-city/paris-night.svg",visual_label:"Paris skyline · Pexels",slugs:["jewelry","jewelry-necklaces","jewelry-earrings","jewelry-rings","watches"]},
+    {id:"tech-home",title:"Future Living",copy:"Useful tech and home upgrades.",visual:"assets/hunt-city/real/shenzhen.jpg",visual_fallback:"assets/hunt-city/shenzhen-night.svg",visual_label:"Shenzhen night skyline · Pexels",slugs:["tech","phone-cases","power-banks","home","lighting","computer-accessories"]},
+    {id:"travel",title:"Night Departure",copy:"Travel-ready essentials with a global feel.",visual:"assets/hunt-city/real/dubai.jpg",visual_fallback:"assets/hunt-city/dubai-night.svg",visual_label:"Dubai night skyline · Pexels",slugs:["travel","luggage","bags","power-banks","drinkware"]}
   ]);
 
   function uniqueProducts(shelves={}){
