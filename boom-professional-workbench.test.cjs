@@ -29,9 +29,9 @@ const input={
   shadowRuns:[{experiment_key:"routing",status:"passed",baseline_metrics:{quality:0.8},candidate_metrics:{quality:0.9},comparison:{quality_gain:0.1}}],
   replayRuns:[{id:4,replay_key:"command-4",verdict:"same"}],
   redTeamCases:[{id:1,case_key:"rt-1",active:true}],
-  redTeamRuns:[{id:1,case_id:1,result_status:"passed"}],
-  confidenceCalibration:[{id:1,task_class:"owner-chat",calibration_error:0.04}],
-  teamRuns:[{id:1,run_key:"team-1",judge_verdict:{winner:"candidate-a"}}],
+  redTeamRuns:[{id:1,case_id:1,result_status:"passed",completed_at:"2026-09-18T09:08:00Z"}],
+  confidenceCalibration:[{id:1,task_class:"owner-chat",samples:100,correct_samples:91,mean_confidence:0.89,observed_accuracy:0.91,calibration_error:0.02}],
+  teamRuns:[{id:1,run_key:"team-1",status:"completed",judge_verdict:{winner:"candidate-a"},completed_at:"2026-09-18T09:09:00Z"}],
   traceSpans:[{trace_id:"11111111-1111-4111-8111-111111111111",span_id:"22222222-2222-4222-8222-222222222222",session_id:"owner-session-1",name:"owner-chat-model",success:true,prompt_version_id:3,started_at:"2026-09-18T09:07:00Z"}],
   releaseGate:{mode:"A12_FINAL_OWNER_GO_NO_GO_GATE",final_gate_ready:true},
   promptStoreConnected:true,
@@ -72,9 +72,42 @@ assert.equal(result.safety.redteam.ready,true);
 assert.equal(result.safety.calibration.ready,true);
 assert.equal(result.safety.team_judge.ready,true);
 assert.equal(result.lineage.ready,true);
+assert.equal(result.safety.redteam.completed_linked,1);
+assert.equal(result.safety.redteam.covered_cases,1);
+assert.equal(result.safety.calibration.valid_rows,1);
+assert.equal(result.safety.team_judge.judged,1);
 assert.equal(result.gaps.length,0);
 assert.equal(result.invariants.production_change,false);
 assert.equal(result.invariants.payments,false);
+
+const pendingSafety=W.buildSafetyOps({
+  redTeamCases:[{id:1,active:true}],
+  redTeamRuns:[{case_id:1,result_status:"passed",completed_at:null}]
+});
+assert.equal(pendingSafety.redteam.ready,false);
+assert.equal(pendingSafety.redteam.pending,1);
+
+const unlinkedSafety=W.buildSafetyOps({
+  redTeamCases:[{id:1,active:true}],
+  redTeamRuns:[{case_id:999,result_status:"passed",completed_at:"2026-09-18T10:00:00Z"}]
+});
+assert.equal(unlinkedSafety.redteam.ready,false);
+assert.equal(unlinkedSafety.redteam.unlinked,1);
+
+const emptyCalibration=W.buildSafetyOps({confidenceCalibration:[{}]});
+assert.equal(emptyCalibration.calibration.ready,false);
+assert.equal(emptyCalibration.calibration.invalid_rows,1);
+
+const zeroSampleCalibration=W.buildSafetyOps({
+  confidenceCalibration:[{samples:0,correct_samples:0,mean_confidence:0.5,observed_accuracy:0.5,calibration_error:0}]
+});
+assert.equal(zeroSampleCalibration.calibration.ready,false);
+
+const emptyJudge=W.buildSafetyOps({
+  teamRuns:[{status:"completed",completed_at:"2026-09-18T10:00:00Z",judge_verdict:{}}]
+});
+assert.equal(emptyJudge.team_judge.ready,false);
+assert.equal(emptyJudge.team_judge.incomplete,1);
 
 const gaps=W.build({reports:[],evals:[],commands:[],events:[],workerReports:[],cycles:[],decisions:[]});
 assert(gaps.gaps.includes("prompts"));
