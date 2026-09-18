@@ -14,7 +14,7 @@
     Object.freeze({id:"memory",label:"Like / Save / History",requires:["A3"],contract:"User-controlled memory with no hidden profile write"}),
     Object.freeze({id:"stylist",label:"Stylist / Safe Mirror",requires:["A5"],contract:"Consent-first preview; no body or attractiveness scoring"}),
     Object.freeze({id:"creative",label:"Creative",requires:["A6"],contract:"Draft-only creative with proof boundary and Owner Gate"}),
-    Object.freeze({id:"checkout",label:"Checkout Fallback",requires:["A7","A8","A9"],contract:"No live payment; existing storefront remains fallback"})
+    Object.freeze({id:"checkout",label:"Checkout Fallback",requires:["A7","A8"],contract:"A9 evidence pack required separately; no live payment; existing storefront remains fallback"})
   ]);
 
   function build({evidencePack=null,harness=null}={}){
