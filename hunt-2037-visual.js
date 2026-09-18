@@ -13,6 +13,8 @@
   ];
   let cities=[];
   let index=0;
+  let worldLock=false;
+  const WORLD_CITY=Object.freeze({fashion:"tokyo",jewelry:"paris","tech-home":"shenzhen",travel:"dubai"});
 
   async function loadManifest(){
     try{
@@ -45,6 +47,17 @@
     }
   }
 
+  function cityById(id){return cities.find(city=>city.id===id)||null;}
+
+  function applyWorldMood(worldId){
+    const cityId=WORLD_CITY[worldId]||"";
+    const city=cityById(cityId);
+    if(city){
+      index=Math.max(0,cities.indexOf(city));
+      applyCity(city,index);
+    }
+  }
+
   function nextCity(){
     index=(index+1)%Math.max(1,cities.length);
     applyCity(cityAt(index),index);
@@ -66,15 +79,20 @@
     await loadManifest();
     applyCity(cityAt(0),0);
 
+    window.addEventListener("hunt:world-mode",event=>{
+      worldLock=event.detail?.active===true;
+      if(worldLock)applyWorldMood(event.detail?.world||"");
+    });
     window.addEventListener("hunt:experience-event",event=>{
-      if(event.detail?.type==="world_enter")nextCity();
+      if(event.detail?.type==="world_enter"&&!worldLock)nextCity();
     });
     window.addEventListener("scroll",()=>{
+      if(worldLock)return;
       const y=Math.floor(window.scrollY/900);
       if(y!==index&&cities.length){index=y%cities.length;applyCity(cityAt(index),index)}
     },{passive:true});
   }
 
-  window.Hunt2037Visual=Object.freeze({loadManifest,applyCity,nextCity});
+  window.Hunt2037Visual=Object.freeze({loadManifest,applyCity,applyWorldMood,nextCity});
   init();
 })();
