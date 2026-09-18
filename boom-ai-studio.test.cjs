@@ -274,3 +274,22 @@ assert(css.includes(".evidence-workspace"),"A9 evidence workspace styling missin
 assert(css.includes(".evidence-stage[data-state=\"blocked\"]"),"A9 blocked evidence styling missing");
 assert(fs.existsSync("boom-alpha-evidence-pack.js"),"A9 evidence core file missing");
 assert(fs.existsSync("boom-alpha-evidence-pack.test.cjs"),"A9 evidence unit test missing");
+
+assert(html.includes('id="alpha-rc-preview-build"'),"A10 RC preview control missing");
+assert(html.includes('id="alpha-rc-preview-status"'),"A10 RC preview status missing");
+assert(html.includes('id="alpha-rc-devices"'),"A10 device grid missing");
+assert(html.includes('id="alpha-rc-journey"'),"A10 journey grid missing");
+assert(html.includes('id="alpha-rc-preview-report"'),"A10 preview report missing");
+assert(html.includes("boom-alpha-rc-preview.js?v=alpha1"),"A10 RC preview core script missing");
+assert(js.includes("const RCPreview=window.BoomAlphaRCPreview"),"A10 RC preview binding missing");
+assert(js.includes("function buildAlphaRCPreview()"),"A10 RC preview builder missing");
+assert(js.includes("A10_PRIVATE_RC_READY"),"A10 private ready state missing");
+assert(js.includes("CHECKOUT MODE: "), "A10 checkout evidence missing");
+assert(js.includes("PAYMENTS_ACTIVATED: false"),"A10 payment-off guard missing");
+assert(js.includes("ORDER_ROUTING_ACTIVATED: false"),"A10 order-routing guard missing");
+assert(js.includes("ALPHA_ACTIVATION_AUTHORIZED: false"),"A10 alpha activation guard missing");
+assert((js.match(/#alpha-rc-preview-build"\)\?\.addEventListener/g)||[]).length===1,"A10 preview listener must be unique");
+assert(css.includes(".rc-preview-workspace"),"A10 preview styling missing");
+assert(css.includes(".rc-journey-step[data-state=\"blocked\"]"),"A10 blocked journey styling missing");
+assert(fs.existsSync("boom-alpha-rc-preview.js"),"A10 preview core file missing");
+assert(fs.existsSync("boom-alpha-rc-preview.test.cjs"),"A10 preview unit test missing");
