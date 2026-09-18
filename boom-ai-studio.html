@@ -232,6 +232,25 @@
           </section>
           <div class="intelligence-summary" id="intelligence-summary"></div>
           <div class="intelligence-grid" id="intelligence-grid"></div>
+          <section class="brain-detail" id="brain-detail" aria-live="polite">
+            <div class="brain-detail-empty">Select a brain to inspect its contract, evidence, dependencies and execution gates.</div>
+          </section>
+          <section class="planning-board">
+            <div class="planning-board-head">
+              <div><small>BOOM PLANNING BOARD</small><h2>Plan before execution</h2><p>BOOM prepares an auditable plan here. Approval permits implementation planning only — never live execution.</p></div>
+              <span class="brand-gate">NO LIVE ACTIONS</span>
+            </div>
+            <label class="planning-objective">Owner objective
+              <textarea id="planning-objective" rows="3" maxlength="600" placeholder="Example: Prepare the HUNT 2037 Alpha plan inside BOOM Studio."></textarea>
+            </label>
+            <div class="planning-actions">
+              <button class="top-btn" id="planning-build" type="button">Build draft plan</button>
+              <button class="top-btn" id="planning-revision" type="button" disabled>Request revision</button>
+              <button class="top-btn" id="planning-approve" type="button" disabled>Approve planning</button>
+            </div>
+            <div class="planning-status" id="planning-status">DRAFT_NOT_CREATED · EXECUTION_OFF</div>
+            <pre id="planning-output">No plan exists yet.</pre>
+          </section>
           <section class="intelligence-simulator">
             <div><small>SAFE ORCHESTRATION PREVIEW</small><h2>Owner-Gated Simulation</h2><p>בדיקה יבשה של סדר המוחות והחסמים לפני ביצוע.</p></div>
             <button class="top-btn" id="intelligence-simulate" type="button">Run simulation</button>
