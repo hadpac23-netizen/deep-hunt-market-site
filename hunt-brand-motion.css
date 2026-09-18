@@ -1,0 +1,154 @@
+/* HUNT ALIVE · GLOBAL SIGNATURE MOTION
+   Drop → glass shimmer → T star. One premium sequence per visible brand mark. */
+.hd-hunt-wordmark:not(.hd-hunt-signature)>span{animation:none!important}
+.hd-hunt-wordmark:not(.hd-hunt-signature)::after{display:none!important}
+
+.hd-hunt-signature{
+  position:relative;
+  display:inline-flex!important;
+  align-items:baseline;
+  gap:.012em;
+  direction:ltr!important;
+  isolation:isolate;
+  overflow:visible!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  text-decoration:none;
+  perspective:420px;
+}
+.hd-hunt-signature.hd-hunt-wordmark::after{display:none!important}
+.hd-hunt-signature .hd-hunt-letter{
+  position:relative;
+  display:inline-block!important;
+  min-width:.58em;
+  text-align:center;
+  background:linear-gradient(112deg,#8ad7ff 0%,#d9e8ff 38%,#8d82ff 70%,#7cc9ff 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  filter:drop-shadow(0 5px 18px rgba(112,151,255,.16));
+  opacity:1;
+  transform:none;
+  will-change:transform,opacity,filter;
+}
+.hd-hunt-signature.is-signature-active .hd-hunt-letter{
+  animation:hd-hunt-signature-drop .72s cubic-bezier(.16,.86,.22,1.08) both;
+  animation-delay:calc(var(--hunt-letter-index) * 86ms);
+}
+.hd-hunt-signature .hd-hunt-glass{
+  position:absolute;
+  inset:-.02em -.04em -.04em;
+  display:block;
+  pointer-events:none;
+  user-select:none;
+  white-space:nowrap;
+  font:inherit;
+  font-weight:inherit;
+  letter-spacing:inherit;
+  line-height:inherit;
+  text-align:center;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+  background:
+    linear-gradient(104deg,
+      transparent 0%,
+      transparent 34%,
+      rgba(255,255,255,.15) 41%,
+      rgba(255,255,255,.98) 49%,
+      rgba(178,226,255,.92) 54%,
+      rgba(255,255,255,.13) 61%,
+      transparent 69%,
+      transparent 100%);
+  background-size:260% 100%;
+  background-position:150% 0;
+  -webkit-background-clip:text;
+  background-clip:text;
+  opacity:0;
+  filter:drop-shadow(0 0 9px rgba(193,232,255,.36));
+  z-index:3;
+}
+.hd-hunt-signature.is-signature-active .hd-hunt-glass{
+  animation:hd-hunt-signature-glass .92s cubic-bezier(.24,.75,.24,1) 1.02s both;
+}
+.hd-hunt-signature .hd-hunt-star{
+  position:absolute;
+  z-index:5;
+  width:.34em;
+  height:.34em;
+  right:-.12em;
+  top:-.36em;
+  opacity:0;
+  transform:scale(.05) rotate(-36deg);
+  background:linear-gradient(135deg,#fff 0%,#dff7ff 42%,#9f9cff 100%);
+  clip-path:polygon(50% 0%,59% 39%,100% 50%,59% 61%,50% 100%,41% 61%,0% 50%,41% 39%);
+  filter:
+    drop-shadow(0 0 3px rgba(255,255,255,.95))
+    drop-shadow(0 0 9px rgba(142,174,255,.72));
+  transform-origin:center;
+  pointer-events:none;
+}
+.hd-hunt-signature .hd-hunt-star::before,
+.hd-hunt-signature .hd-hunt-star::after{
+  content:"";
+  position:absolute;
+  width:36%;
+  height:36%;
+  background:#fff;
+  clip-path:inherit;
+  opacity:0;
+}
+.hd-hunt-signature .hd-hunt-star::before{left:-48%;top:52%}
+.hd-hunt-signature .hd-hunt-star::after{right:-52%;top:-24%}
+.hd-hunt-signature.is-signature-active .hd-hunt-star{
+  animation:
+    hd-hunt-signature-star 1.06s cubic-bezier(.14,.84,.26,1.18) 1.82s both,
+    hd-hunt-star-idle 15s ease-in-out 4.5s infinite;
+}
+.hd-hunt-signature.is-signature-active .hd-hunt-star::before{
+  animation:hd-hunt-mini-star .62s ease 2.02s both;
+}
+.hd-hunt-signature.is-signature-active .hd-hunt-star::after{
+  animation:hd-hunt-mini-star .7s ease 2.18s both;
+}
+@keyframes hd-hunt-signature-drop{
+  0%{opacity:0;transform:translate3d(0,-1.25em,0) rotateX(-18deg) scale(.92);filter:blur(3px) brightness(1.2)}
+  62%{opacity:1;transform:translate3d(0,.07em,0) rotateX(2deg) scale(1.015);filter:blur(0) brightness(1.06)}
+  100%{opacity:1;transform:none;filter:drop-shadow(0 5px 18px rgba(112,151,255,.16))}
+}
+@keyframes hd-hunt-signature-glass{
+  0%{opacity:0;background-position:150% 0}
+  16%{opacity:.92}
+  78%{opacity:.92}
+  100%{opacity:0;background-position:-60% 0}
+}
+@keyframes hd-hunt-signature-star{
+  0%{opacity:0;transform:scale(.05) rotate(-36deg)}
+  33%{opacity:1;transform:scale(1.28) rotate(12deg)}
+  56%{opacity:1;transform:scale(.78) rotate(-5deg)}
+  72%{opacity:1;transform:scale(1.05) rotate(3deg)}
+  100%{opacity:.88;transform:scale(.72) rotate(0)}
+}
+@keyframes hd-hunt-mini-star{
+  0%,100%{opacity:0;transform:scale(.1) rotate(0)}
+  45%{opacity:1;transform:scale(1.15) rotate(48deg)}
+}
+@keyframes hd-hunt-star-idle{
+  0%,92%,100%{opacity:.66;transform:scale(.66) rotate(0)}
+  95%{opacity:1;transform:scale(1.12) rotate(22deg)}
+  97%{opacity:.82;transform:scale(.78) rotate(-8deg)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hd-hunt-signature .hd-hunt-letter,
+  .hd-hunt-signature .hd-hunt-glass,
+  .hd-hunt-signature .hd-hunt-star,
+  .hd-hunt-signature .hd-hunt-star::before,
+  .hd-hunt-signature .hd-hunt-star::after{
+    animation:none!important;
+    transition:none!important;
+  }
+  .hd-hunt-signature .hd-hunt-letter{opacity:1!important;transform:none!important}
+  .hd-hunt-signature .hd-hunt-glass{display:none!important}
+  .hd-hunt-signature .hd-hunt-star{opacity:.72!important;transform:scale(.62)!important}
+}

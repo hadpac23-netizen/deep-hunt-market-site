@@ -23,6 +23,8 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="hunt-icon-192.png">
   <meta name="theme-color" content="#111111">
+  <link rel="stylesheet" href="hunt-brand-motion.css?v=1">
+  <link rel="stylesheet" href="hunt-discovery-engine.css?v=1">
 </head>
 <body class="hd-page hd-home-clean hd-market-v2 hd-commerce-v2 hd-home3">
   <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
@@ -149,6 +151,37 @@
       </div>
     </section>
 
+
+
+    <section class="hd-discovery-live" id="hunt-now" aria-labelledby="hd-discovery-title" data-discovery-mode="for-you">
+      <div class="hd-discovery-head">
+        <div>
+          <div class="hd-discovery-kicker"><i aria-hidden="true"></i><span id="hd-discovery-kicker">HUNT NOW · LIVING DISCOVERY</span></div>
+          <h2 id="hd-discovery-title">The catalog should move with you.</h2>
+          <p id="hd-discovery-copy">A quieter kind of energy: personalized edits, fresh catalog turns and complementary products — using real HUNT inventory only.</p>
+        </div>
+        <div class="hd-discovery-modebar" id="hd-discovery-modes" role="tablist" aria-label="HUNT discovery modes">
+          <button type="button" class="active" data-discovery-mode="for-you" role="tab" aria-selected="true">For You Now</button>
+          <button type="button" data-discovery-mode="fresh" role="tab" aria-selected="false">Fresh Mix</button>
+          <button type="button" data-discovery-mode="look" role="tab" aria-selected="false">Complete the Look</button>
+          <button type="button" data-discovery-mode="explore" role="tab" aria-selected="false">Switch the Vibe</button>
+          <button type="button" data-discovery-mode="verified" role="tab" aria-selected="false" hidden>Verified Picks</button>
+          <button type="button" data-discovery-mode="local" role="tab" aria-selected="false" hidden>Ships to your market</button>
+        </div>
+      </div>
+      <div class="hd-discovery-status">
+        <span id="hd-discovery-status-text"><strong>Live discovery</strong></span>
+        <span class="hd-discovery-dots" id="hd-discovery-dots" aria-hidden="true"></span>
+      </div>
+      <div class="hd-discovery-stage">
+        <div class="hd-discovery-grid" id="hd-discovery-grid" aria-live="off"></div>
+      </div>
+      <div class="hd-discovery-foot">
+        <span id="hd-discovery-truth">Real catalog · country-aware only when verified</span>
+        <a href="#shop" id="hd-discovery-open">Open the full HUNT catalog ↓</a>
+      </div>
+    </section>
+
     <section class="hd-home3-world hd-home3-women-world" id="women-edit">
       <div class="hd-home3-section-head">
         <div><small>WOMEN · HUNT EDIT</small><h2>Start with style.</h2><p>Dresses, tops, shoes and everyday fashion pulled directly from the live catalog.</p></div>
@@ -262,6 +295,7 @@
   <script src="hunt-catalog-quality.js?v=1"></script>
   <script src="hunt-country-brain.js?v=1"></script>
   <script src="hunt-home-3.js?v=1"></script>
+  <script src="hunt-discovery-engine.js?v=1"></script>
   <script src="hunt-creative-engine.js?v=1"></script>
   <script src="hunt-hero4.js?v=1"></script>
   <script src="hunt-deal.js?v=boomet3"></script>
@@ -275,5 +309,6 @@
   <script src="boom-promotions.js?v=promo2"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa2"></script>
+  <script src="hunt-brand-motion.js?v=1"></script>
 </body>
 </html>
