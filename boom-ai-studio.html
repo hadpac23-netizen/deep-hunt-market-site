@@ -21,6 +21,7 @@
       <button class="tab" data-tab="executions" type="button">Executions</button>
       <button class="tab" data-tab="evaluations" type="button">Evaluations</button>
       <button class="tab" data-tab="learning" type="button">Learning</button>
+      <button class="tab" data-tab="professional-workbench" type="button">Professional</button>
       <button class="tab" data-tab="hunt-intelligence" type="button">HUNT Intelligence</button>
       <button class="tab" data-tab="connect" type="button">Connect</button>
       <button class="tab" data-tab="brand-factory" type="button">Brand Factory</button>
@@ -161,6 +162,46 @@
           <div class="learning-grid" id="learning-list"></div>
         </section>
 
+
+        <section class="view scroll-view" id="professional-workbench">
+          <div class="page-head professional-head">
+            <div><small>F35 · PROFESSIONAL AI ENGINEERING</small><h1>Professional Workbench</h1><p>Observe → Triage → Dataset → Experiment → Human Review → Budget → Release. Read-only unless a separate Owner action explicitly enables a workflow.</p></div>
+            <span class="professional-gate">NO AUTO-PUBLISH · NO SPEND</span>
+          </div>
+          <div class="professional-loop" aria-label="Professional engineering loop">
+            <span>OBSERVE</span><b>→</b><span>TRIAGE</span><b>→</b><span>DATASET</span><b>→</b><span>EXPERIMENT</span><b>→</b><span>REVIEW</span><b>→</b><span>GATE</span>
+          </div>
+          <div class="professional-summary" id="professional-summary"></div>
+          <div class="professional-grid" id="professional-grid"></div>
+          <section class="professional-panel">
+            <div class="professional-panel-head"><div><small>TRACE EXPLORER</small><h2>Latest agent / worker / eval traces</h2></div><span id="professional-trace-meta">—</span></div>
+            <div class="professional-trace-list" id="professional-trace-list"></div>
+          </section>
+          <section class="professional-split">
+            <article class="professional-panel">
+              <div class="professional-panel-head"><div><small>FAILURE INBOX → DATASET</small><h2>What should become a regression test?</h2></div><span id="professional-dataset-meta">—</span></div>
+              <div class="professional-mini-list" id="professional-failure-list"></div>
+            </article>
+            <article class="professional-panel">
+              <div class="professional-panel-head"><div><small>EXPERIMENT DIFF</small><h2>Baseline vs candidate</h2></div><span id="professional-experiment-meta">—</span></div>
+              <div class="professional-mini-list" id="professional-experiment-list"></div>
+            </article>
+          </section>
+          <section class="professional-split">
+            <article class="professional-panel">
+              <div class="professional-panel-head"><div><small>HUMAN / OWNER REVIEW</small><h2>Annotation & decision queue</h2></div><span id="professional-review-meta">—</span></div>
+              <div class="professional-mini-list" id="professional-review-list"></div>
+            </article>
+            <article class="professional-panel">
+              <div class="professional-panel-head"><div><small>COST / LATENCY</small><h2>Budget & performance truth</h2></div><span id="professional-cost-meta">—</span></div>
+              <pre id="professional-cost-report">Instrumentation not evaluated yet.</pre>
+            </article>
+          </section>
+          <section class="professional-panel professional-contract">
+            <div class="professional-panel-head"><div><small>PROFESSIONAL GAPS</small><h2>Prompt Registry · Cost Instrumentation · Release Replay</h2></div><button class="top-btn" id="professional-refresh" type="button">Refresh Workbench</button></div>
+            <pre id="professional-report">No professional snapshot yet.</pre>
+          </section>
+        </section>
 
         <section class="view scroll-view" id="brand-factory">
           <div class="page-head brand-factory-head">
@@ -609,6 +650,7 @@
   <script src="brand-video-router.js?v=1"></script>
   <script src="brand-creative-qa.js?v=1"></script>
   <script src="brand-video-dispatch.js?v=1"></script>
-  <script src="boom-alpha-test-harness.js?v=alpha1"></script>\n  <script src="boom-alpha-evidence-pack.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-preview.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-qa.js?v=alpha1"></script>\n  <script src="boom-alpha-final-gate.js?v=alpha1"></script>\n  <script src="boom-ai-studio.js?v=2"></script>
+  <script src="boom-alpha-test-harness.js?v=alpha1"></script>\n  <script src="boom-alpha-evidence-pack.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-preview.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-qa.js?v=alpha1"></script>\n  <script src="boom-alpha-final-gate.js?v=alpha1"></script>
+  <script src="boom-professional-workbench.js?v=1"></script>\n  <script src="boom-ai-studio.js?v=2"></script>
 </body>
 </html>
