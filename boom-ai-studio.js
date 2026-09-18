@@ -504,6 +504,8 @@
       decisions:state.decisions,
       costSamples:professionalCostSamples(),
       promptVersions:[],
+      datasetStoreConnected:false,
+      reviewStoreConnected:false,
       releaseGate:state.alphaFinalGate
     });
     state.professionalSnapshot=snapshot;
@@ -570,7 +572,8 @@
       "BLOCKED: "+blocked,
       "",
       "PROMPT REGISTRY: "+snapshot.prompts.status,
-      "DATASET CANDIDATES: "+snapshot.failures.dataset_candidates+" · PERSISTED DATASET: false",
+      "DATASET CANDIDATES: "+snapshot.failures.dataset_candidates+" · PERSISTED DATASET: "+snapshot.failures.persisted_dataset,
+      "REVIEW HISTORY PERSISTED: "+snapshot.review.persisted,
       "EXPERIMENT DIFF: "+(snapshot.experiments.available?"AVAILABLE":"NEEDS_COMPARABLE_RUNS"),
       "COST/LATENCY: "+snapshot.cost.budget_state,
       "ALERTS: critical="+snapshot.alerts.critical+" watch="+snapshot.alerts.watch,
