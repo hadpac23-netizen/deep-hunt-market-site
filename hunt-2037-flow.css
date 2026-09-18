@@ -68,3 +68,13 @@ body.hunt2037-world-mode .hunt2037-lane,body.hunt2037-world-mode .hunt2037-disco
 body.hunt2037-active .hd-hero.hunt2037-city-switching:before{opacity:0}
 .hunt2037-city-badge[data-asset="original"]{border-style:solid;background:rgba(9,12,18,.58)}
 body.hunt2037-world-mode .hd-hero:after{background:radial-gradient(circle at 70% 25%,color-mix(in srgb,var(--hunt-brand-a) 42%,transparent),transparent 42%),linear-gradient(135deg,color-mix(in srgb,var(--hunt-brand-b) 24%,transparent),transparent 62%)}
+
+.hunt2037-world-visual{position:relative;min-height:220px;margin:-6px -6px 18px;border-radius:20px;overflow:hidden;background:#0a0d13;border:1px solid rgba(255,255,255,.08)}
+.hunt2037-world-visual img{display:block;width:100%;height:100%;min-height:220px;max-height:360px;object-fit:cover;object-position:center;opacity:.98;filter:saturate(1.08) contrast(1.04)}
+.hunt2037-world-visual:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,8,12,.02),rgba(6,8,12,.18) 48%,rgba(6,8,12,.74));pointer-events:none}
+.hunt2037-world-visual-overlay{position:absolute;left:18px;right:18px;bottom:16px;z-index:2;display:grid;gap:3px;color:#fff;text-shadow:0 3px 16px rgba(0,0,0,.55)}
+.hunt2037-world-visual-overlay small{font-size:8px;letter-spacing:.16em;font-weight:900;opacity:.68}.hunt2037-world-visual-overlay strong{font-size:clamp(20px,3vw,34px);letter-spacing:-.03em}
+body.hunt2037-world-mode .hunt2037-world.hunt2037-world-selected .hunt2037-world-visual{min-height:320px}
+body.hunt2037-world-mode .hunt2037-world.hunt2037-world-selected .hunt2037-world-visual img{max-height:480px;transform:scale(1.01);transition:transform .5s ease}
+@media(max-width:760px){.hunt2037-world-visual{min-height:180px}.hunt2037-world-visual img{min-height:180px;max-height:240px}.hunt2037-world-visual-overlay{left:13px;bottom:12px}}
+@media(prefers-reduced-motion:reduce){body.hunt2037-world-mode .hunt2037-world.hunt2037-world-selected .hunt2037-world-visual img{transition:none;transform:none}}
