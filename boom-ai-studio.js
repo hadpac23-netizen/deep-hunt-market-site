@@ -2458,6 +2458,29 @@
     return s.toUpperCase();
   }
 
+  function renderOwnerMissionFlow(status){
+    const flow=$("#owner-mission-flow");
+    if(!flow)return;
+    const steps=[...flow.querySelectorAll("[data-mission-step]")];
+    steps.forEach(x=>x.classList.remove("done","active","watch"));
+    if(state.localPreview){
+      steps.forEach(x=>x.classList.add("watch"));
+      return;
+    }
+    const s=String(status||"offline").toLowerCase();
+    const mark=(doneCount,activeIndex)=>{
+      steps.forEach((node,index)=>{
+        if(index<doneCount)node.classList.add("done");
+        else if(index===activeIndex)node.classList.add("active");
+      });
+    };
+    if(s==="queued")mark(0,0);
+    else if(["accepted","running","working"].includes(s))mark(1,1);
+    else if(s==="waiting_owner")mark(3,3);
+    else if(s==="healthy")mark(4,-1);
+    else steps.forEach(x=>x.classList.add("watch"));
+  }
+
   function renderOwnerHome(){
     const open=ownerOpenCommands();
     const waiting=ownerWaitingCommands();
@@ -2483,6 +2506,7 @@
       missionState.textContent=ownerStatusLabel(mission.status);
       missionState.className="owner-state-pill "+esc(mission.status);
     }
+    renderOwnerMissionFlow(mission.status);
 
     const prod=ownerControl("hunt_supplier_order_live");
     const pay=ownerControl("hunt_payment_live");
@@ -3542,6 +3566,14 @@
     speakText(text);
   });
   $("#chat-input").addEventListener("keydown",ev=>{if(ev.key==="Enter"&&!ev.shiftKey){ev.preventDefault();sendChat()}});
+  document.addEventListener("keydown",ev=>{
+    if((ev.metaKey||ev.ctrlKey)&&String(ev.key).toLowerCase()==="k"){
+      ev.preventDefault();
+      activateStudioView("owner-home");
+      setChatOpen(true);
+      $("#chat-input")?.focus();
+    }
+  });
   window.addEventListener("resize",()=>requestAnimationFrame(drawLinks));
 
   document.addEventListener("click",ev=>{

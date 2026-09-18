@@ -681,4 +681,11 @@ assert(html.includes("owner-orbit-ring-c"),"BOOM living orbit layer missing");
 assert(css.includes("BOOM VISUAL SYSTEM 2.0 · OWNER CONTROL ROOM"),"BOOM Visual System 2.0 missing");
 assert(css.includes("@keyframes boomCorePulse"),"BOOM ambient pulse missing");
 
+
+assert(html.includes('data-mission-step="goal"'),"Live mission step markers missing");
+assert(js.includes("function renderOwnerMissionFlow(status)"),"Live mission flow renderer missing");
+assert(js.includes('String(ev.key).toLowerCase()==="k"'),"Command K shortcut missing");
+assert(css.includes("BOOM LIVE MISSION + CHAT 2.0"),"BOOM Chat 2.0 styling missing");
+assert(css.includes(".owner-mission-flow span.active"),"Live mission active state styling missing");
+
 console.log("boom_ai_studio_tests=PASS");
