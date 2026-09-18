@@ -3099,6 +3099,29 @@
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
     try{await loadAll();renderConnect()}catch(err){showError(err)}finally{if(btn){btn.disabled=false;btn.textContent="בדוק עכשיו"}}
   });
+  function activateStudioView(viewId,anchorId=""){
+    const targetView=$("#"+viewId);
+    if(!targetView)return;
+    $(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===viewId));
+    $(".view").forEach(x=>x.classList.toggle("active",x.id===viewId));
+    if(viewId==="studio")requestAnimationFrame(drawLinks);
+    if(viewId==="connect")renderConnect();
+    if(viewId==="professional-workbench")renderProfessionalWorkbench();
+    if(viewId==="hunt-intelligence"){
+      renderHuntIntelligence();
+      renderApprovalQueue();
+      renderAlphaBlueprint();
+      renderPromptCoverageAudit();
+    }
+    if(viewId==="brand-factory")renderBrandFinance();
+    if(anchorId){
+      requestAnimationFrame(()=>{
+        const anchor=$("#"+anchorId);
+        anchor?.scrollIntoView({behavior:"smooth",block:"start"});
+      });
+    }
+  }
+
   function focusStudioGroup(id){
     const studio=$("#studio");
     const target=$(".studio-node-group").find(node=>node.dataset.groupId===id);
@@ -3139,6 +3162,11 @@
   window.addEventListener("resize",()=>requestAnimationFrame(drawLinks));
 
   document.addEventListener("click",ev=>{
+    const studioViewJump=ev.target.closest("[data-studio-view]");
+    if(studioViewJump){
+      activateStudioView(studioViewJump.dataset.studioView,studioViewJump.dataset.studioAnchor||"");
+      return;
+    }
     const studioJump=ev.target.closest("[data-studio-group]");
     if(studioJump){focusStudioGroup(studioJump.dataset.studioGroup);return}
     const connectCard=ev.target.closest("[data-connect-id]");
@@ -3154,18 +3182,7 @@
     }
     const tab=ev.target.closest(".tab");
     if(tab){
-      $$(".tab").forEach(x=>x.classList.remove("active"));
-      $$(".view").forEach(x=>x.classList.remove("active"));
-      tab.classList.add("active");
-      $("#"+tab.dataset.tab).classList.add("active");
-      if(tab.dataset.tab==="studio")requestAnimationFrame(drawLinks);
-      if(tab.dataset.tab==="connect")renderConnect();
-      if(tab.dataset.tab==="professional-workbench")renderProfessionalWorkbench();
-      if(tab.dataset.tab==="hunt-intelligence")renderHuntIntelligence();
-      if(tab.dataset.tab==="hunt-intelligence")renderApprovalQueue();
-      if(tab.dataset.tab==="hunt-intelligence")renderAlphaBlueprint();
-      if(tab.dataset.tab==="hunt-intelligence")renderPromptCoverageAudit();
-      if(tab.dataset.tab==="brand-factory")renderBrandFinance();
+      activateStudioView(tab.dataset.tab);
       return;
     }
     const managerNode=ev.target.closest("[data-manager-id]");
