@@ -477,6 +477,17 @@ assert(js.includes("PERSISTED EVAL CASES: "), "Professional persisted dataset ev
 assert(js.includes("SHADOW RUNS: "), "Professional shadow evidence missing");
 assert(js.includes("REPLAY RUNS: "), "Professional replay evidence missing");
 assert(js.includes("MODEL OBSERVATIONS: "), "Professional observation evidence missing");
+assert(js.includes('query("hunt_boom_redteam_cases"'),"Professional Red Team evidence query missing");
+assert(js.includes('query("hunt_boom_redteam_runs"'),"Professional Red Team run query missing");
+assert(js.includes('query("hunt_boom_confidence_calibration"'),"Professional confidence calibration query missing");
+assert(js.includes('query("hunt_boom_team_runs"'),"Professional multi-agent judge query missing");
+assert(js.includes("EVALUATOR GOVERNANCE: "), "Professional evaluator-governance evidence missing");
+assert(js.includes("ONLINE EVAL / CI GATE: "), "Professional online-eval/CI evidence missing");
+assert(js.includes("PROMPT/TRACE LINEAGE: "), "Professional lineage evidence missing");
+assert(js.includes("evaluatorRegistryConnected:false"),"Evaluator registry must fail closed until a real registry is connected");
+assert(js.includes("humanAlignmentConnected:false"),"Evaluator alignment must fail closed until human calibration is connected");
+assert(js.includes("onlineEvalConnected:false"),"Online evals must remain unverified until connected");
+assert(js.includes("ciEvalGateConnected:false"),"CI eval gate must remain unverified until connected");
 assert(js.includes("datasetStoreConnected:state.professionalEvidence.evalCases.length>0&&state.professionalEvidence.evalSuites.length>0"),"Professional dataset truth gate missing");
 
 assert(js.includes("async function optionalQuery("),"Optional professional store query missing");
