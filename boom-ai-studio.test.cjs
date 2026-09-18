@@ -624,7 +624,7 @@ assert(css.includes("DESIGN PASS 1 · INFORMATION HIERARCHY"),"Design Pass 1 CSS
 assert(css.includes("#b13-master-prompt-closure"),"B13 visual hierarchy styling missing");
 
 
-assert(html.includes("boom-ai-studio.css?v=5"),"Owner Mode stylesheet version missing");
+assert(html.includes("boom-ai-studio.css?v=6"),"BOOM Visual System 2.0 stylesheet version missing");
 assert(css.includes("DESIGN PASS 2 · POLISH, FOCUS, ACCESSIBILITY"),"Design Pass 2 styling missing");
 assert(css.includes("button:focus-visible"),"Keyboard focus treatment missing");
 assert(css.includes("@media(prefers-reduced-motion:reduce)"),"Reduced-motion accessibility guard missing");
@@ -638,7 +638,7 @@ assert(deviceHarness.includes("for(let attempt=0;attempt<50;attempt++)"),"Device
 
 assert(html.includes('id="owner-home"'),"Owner Mode home view missing");
 assert(html.includes('data-tab="owner-home"'),"Owner Mode top tab missing");
-assert(html.includes("BOOM OWNER MODE · SIMPLE VIEW"),"Owner Mode simple-view contract missing");
+assert(html.includes("BOOM · OWNER CONTROL ROOM"),"Owner Control Room contract missing");
 assert(html.includes('id="owner-mission-title"'),"Owner current mission panel missing");
 assert(html.includes('id="owner-approval-list"'),"Owner approvals panel missing");
 assert(html.includes('id="owner-agent-grid"'),"Owner agent overview missing");
@@ -673,5 +673,12 @@ assert(css.includes("@keyframes watchFlow"),"Active-watch connection animation m
 assert(js.includes('hunt_supplier_order_sandbox'),"Sandbox supplier runtime truth missing from Connect");
 assert(js.includes('name:"Supplier Order Sandbox"'),"Sandbox supplier connection card missing");
 assert(css.includes("@keyframes connectPulse"),"Live connector pulse styling missing");
+
+
+assert(html.includes('class="owner-command-surface"'),"Owner Command Surface missing");
+assert(html.includes("BOOM · OWNER CONTROL ROOM"),"Owner Control Room identity missing");
+assert(html.includes("owner-orbit-ring-c"),"BOOM living orbit layer missing");
+assert(css.includes("BOOM VISUAL SYSTEM 2.0 · OWNER CONTROL ROOM"),"BOOM Visual System 2.0 missing");
+assert(css.includes("@keyframes boomCorePulse"),"BOOM ambient pulse missing");
 
 console.log("boom_ai_studio_tests=PASS");

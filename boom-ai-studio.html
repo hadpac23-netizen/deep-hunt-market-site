@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>BOOM AI Engineering Studio</title>
-  <link rel="stylesheet" href="boom-ai-studio.css?v=5">
+  <link rel="stylesheet" href="boom-ai-studio.css?v=6">
 </head>
 <body>
   <header class="topbar">
@@ -68,9 +68,14 @@
           <div class="owner-home-shell">
             <section class="owner-hero">
               <div class="owner-hero-copy">
-                <small>BOOM OWNER MODE · SIMPLE VIEW</small>
-                <h1>שלום עדי <span aria-hidden="true">👋</span></h1>
-                <p>כאן רואים רק מה BOOM עושה, מה דורש תשומת לב ומה הצעד הבא.</p>
+                <small>BOOM · OWNER CONTROL ROOM</small>
+                <h1>השליטה שלך ב־BOOM</h1>
+                <p>מסך אחד להבין מה קורה, לדבר עם BOOM ולקבל החלטות — בלי לראות את כל המורכבות שמאחור.</p>
+                <button class="owner-command-surface" type="button" data-owner-action="chat" aria-label="פתח שיחה עם BOOM">
+                  <span class="owner-command-mark" aria-hidden="true">B</span>
+                  <span class="owner-command-copy"><b>מה תרצה ש־BOOM יעשה?</b><small>שאל, בדוק, חפש, בנה או בקש הסבר</small></span>
+                  <span class="owner-command-key">⌘ K</span>
+                </button>
                 <div class="owner-hero-badges">
                   <span class="owner-baseline-ok">STUDIO COMPLETE</span>
                   <span id="owner-production-badge">PRODUCTION OFF</span>
@@ -78,9 +83,15 @@
                 </div>
               </div>
               <div class="owner-hero-orbit" aria-hidden="true">
+                <div class="owner-orbit-ambient"></div>
                 <div class="owner-orbit-ring owner-orbit-ring-a"></div>
                 <div class="owner-orbit-ring owner-orbit-ring-b"></div>
-                <div class="owner-orbit-core">B</div>
+                <div class="owner-orbit-ring owner-orbit-ring-c"></div>
+                <div class="owner-orbit-core"><span>B</span><small>BOOM</small></div>
+                <span class="owner-orbit-node node-owner">OWNER</span>
+                <span class="owner-orbit-node node-f35">F35</span>
+                <span class="owner-orbit-node node-hunt">HUNT</span>
+                <span class="owner-orbit-node node-qa">QA</span>
                 <span class="owner-orbit-dot d1"></span><span class="owner-orbit-dot d2"></span><span class="owner-orbit-dot d3"></span>
               </div>
             </section>
@@ -169,7 +180,7 @@
                 <div><small>פעולה מהירה</small><h2>מה תרצה לעשות עכשיו?</h2></div>
               </div>
               <div class="owner-quick-grid">
-                <button type="button" data-owner-action="chat"><b>💬</b><span>דבר עם BOOM</span><small>שאלה חופשית</small></button>
+                <button type="button" data-owner-action="chat"><b>◉</b><span>דבר עם BOOM</span><small>שאלה חופשית</small></button>
                 <button type="button" data-owner-action="hunt-check"><b>◎</b><span>בדוק HUNT</span><small>מה חסר להשקה</small></button>
                 <button type="button" data-owner-action="opportunity"><b>⌕</b><span>חפש הזדמנות</span><small>F35 מחקר עמוק</small></button>
                 <button type="button" data-owner-action="suppliers"><b>◇</b><span>בדוק ספקים</span><small>API · מלאי · משלוח</small></button>
