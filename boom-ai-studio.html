@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>BOOM AI Engineering Studio</title>
-  <link rel="stylesheet" href="boom-ai-studio.css?v=2">
+  <link rel="stylesheet" href="boom-ai-studio.css?v=4">
 </head>
 <body>
   <header class="topbar">
@@ -21,10 +21,10 @@
       <button class="tab" data-tab="hunt-intelligence" type="button">Brain</button>
       <button class="tab" data-tab="professional-workbench" type="button">Professional</button>
       <button class="tab" data-tab="brand-factory" type="button">Brand Factory</button>
+      <button class="tab" data-tab="connect" type="button">Connect</button>
+      <button class="tab" data-tab="executions" type="button">Executions</button>
       <button class="tab" data-tab="evaluations" type="button">Evaluations</button>
       <button class="tab" data-tab="learning" type="button">Learning</button>
-      <button class="tab" data-tab="executions" type="button">Executions</button>
-      <button class="tab" data-tab="connect" type="button">Connect</button>
     </nav>
     <div class="top-actions">
       <span class="live-pill" id="live-state">CONNECTING</span>
@@ -66,14 +66,20 @@
         <section class="view active" id="studio">
           <nav class="studio-department-nav" id="studio-department-nav" aria-label="BOOM Studio control and departments">
             <button type="button" data-studio-view="hunt-intelligence"><b>01</b><span>Brain</span><small>Decision & Orchestration</small></button>
-            <button type="button" data-studio-view="professional-workbench"><b>02</b><span>Professional</span><small>Engineering Control</small></button>
-            <button type="button" data-studio-view="professional-workbench" data-studio-anchor="professional-radar-report"><b>03</b><span>F35 Radar</span><small>Fresh Knowledge</small></button>
-            <button type="button" data-studio-group="intelligence"><b>04</b><span>Intelligence</span><small>A1–A6</small></button>
-            <button type="button" data-studio-group="release"><b>05</b><span>Release / QA</span><small>A7–A12</small></button>
+            <button type="button" data-studio-group="intelligence"><b>02</b><span>Intelligence</span><small>A1–A6 · Build</small></button>
+            <button type="button" data-studio-group="release"><b>03</b><span>Release / QA</span><small>A7–A12 · Prove</small></button>
+            <button type="button" data-studio-view="professional-workbench"><b>04</b><span>Professional</span><small>Evidence & Engineering</small></button>
+            <button type="button" data-studio-view="professional-workbench" data-studio-anchor="professional-radar-report"><b>05</b><span>F35 Radar</span><small>Fresh Knowledge</small></button>
             <button type="button" data-studio-group="commerce"><b>06</b><span>Commerce</span><small>Operations</small></button>
             <button type="button" data-studio-group="suppliers"><b>07</b><span>Suppliers</span><small>Connectors</small></button>
             <button type="button" data-studio-group="store"><b>08</b><span>Store</span><small>Departments</small></button>
           </nav>
+          <section class="studio-phase-strip" aria-label="BOOM Studio phase status">
+            <div class="studio-phase-primary"><small>ARCHITECTURE</small><strong>B13 · BRAIN SOURCE COMPLETE</strong><span>Master Prompt contracts closed · runtime activation remains separate</span></div>
+            <div><small>RUNTIME</small><strong>OWNER-GATED</strong><span>No autonomous live actions</span></div>
+            <div><small>PRODUCTION</small><strong>OFF</strong><span>No merge · no live payment</span></div>
+            <button type="button" data-studio-view="hunt-intelligence" data-studio-anchor="b13-master-prompt-closure">Open B13</button>
+          </section>
           <div class="canvas-wrap" id="canvas">
             <svg class="links" id="links" aria-hidden="true"></svg>
 

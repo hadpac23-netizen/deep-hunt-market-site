@@ -75,10 +75,10 @@ const tabOrder=[
   'data-tab="hunt-intelligence"',
   'data-tab="professional-workbench"',
   'data-tab="brand-factory"',
-  'data-tab="evaluations"',
-  'data-tab="learning"',
+  'data-tab="connect"',
   'data-tab="executions"',
-  'data-tab="connect"'
+  'data-tab="evaluations"',
+  'data-tab="learning"'
 ].map(token=>html.indexOf(token));
 assert(tabOrder.every(x=>x>=0),"BOOM top navigation tab missing");
 assert(tabOrder.every((x,i)=>i===0||x>tabOrder[i-1]),"BOOM top navigation order regressed");
@@ -449,7 +449,7 @@ assert(js.includes("function focusStudioGroup("),"Studio navigator focus functio
 assert(js.includes('const studioJump=ev.target.closest("[data-studio-group]")'),"Studio navigator click routing missing");
 assert(css.includes(".studio-department-nav"),"Studio navigator styling missing");
 
-assert(js.includes('const previewNetlifyDraft=/^[a-z0-9]+--deep-hunt-market\\.netlify\\.app$/i.test(location.hostname);'),"Netlify draft preview hostname gate missing");
+assert(js.includes('const previewNetlifyDraft=/^[a-z0-9-]+--deep-hunt-market\\.netlify\\.app$/i.test(location.hostname);'),"Netlify draft preview hostname gate missing");
 assert(js.includes('applyLocalPreviewSafety(previewNetlifyDraft?"draft":"local")'),"Draft preview safety mode missing");
 assert(js.includes('const SAFE_PREVIEW_BOOT=(previewLocalHost||previewNetlifyDraft)&&previewUrl.searchParams.get("preview")==="1";'),"Safe preview query gate missing");
 assert(js.includes('if(state.localPreview)setLive("● PREVIEW · LIVE ACTIONS OFF","watch");'),"renderAll must preserve safe preview live-state");
@@ -615,5 +615,24 @@ assert(js.includes("function renderB13Closure()"),"B13 renderer missing");
 for(const id of ["hunt-watch","style-watch","look-locker","look-deconstruction","customer-controls","post-purchase","referral-collaboration","professional-foundation"]){
   assert(js.includes('id:"'+id+'"'),"Expanded Master Prompt audit item missing: "+id);
 }
+
+
+assert(html.includes('class="studio-phase-strip"'),"Studio phase status strip missing");
+assert(html.includes("B13 · BRAIN SOURCE COMPLETE"),"B13 architecture-complete design status missing");
+assert(html.indexOf('data-studio-group="intelligence"')<html.indexOf('data-studio-view="professional-workbench"'),"Studio navigation must follow Brain → Intelligence → Release → Professional flow");
+assert(css.includes("DESIGN PASS 1 · INFORMATION HIERARCHY"),"Design Pass 1 CSS missing");
+assert(css.includes("#b13-master-prompt-closure"),"B13 visual hierarchy styling missing");
+
+
+assert(html.includes("boom-ai-studio.css?v=4"),"Design Pass 2 stylesheet version missing");
+assert(css.includes("DESIGN PASS 2 · POLISH, FOCUS, ACCESSIBILITY"),"Design Pass 2 styling missing");
+assert(css.includes("button:focus-visible"),"Keyboard focus treatment missing");
+assert(css.includes("@media(prefers-reduced-motion:reduce)"),"Reduced-motion accessibility guard missing");
+assert(css.includes(".chat-message.owner")&&css.includes(".chat-message.boom"),"BOOM Chat message hierarchy missing");
+assert(css.includes(".professional-card[data-state=\"ready\"]"),"Professional status hierarchy missing");
+
+
+const deviceHarness=fs.readFileSync("boom-studio-device-browser-e2e.html","utf8");
+assert(deviceHarness.includes("for(let attempt=0;attempt<50;attempt++)"),"Device browser QA must wait for Safe Preview readiness instead of fixed timing");
 
 console.log("boom_ai_studio_tests=PASS");
