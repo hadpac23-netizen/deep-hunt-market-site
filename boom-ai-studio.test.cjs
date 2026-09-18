@@ -423,3 +423,30 @@ assert(js.includes('const SAFE_PREVIEW_BOOT=(previewLocalHost||previewNetlifyDra
 
 assert(js.includes('(!S?.createClient&&!SAFE_PREVIEW_BOOT)'),"Safe preview Supabase decoupling missing");
 assert(js.includes('const client=S?.createClient?S.createClient('),"Optional preview Supabase client missing");
+
+assert(html.includes('data-tab="professional-workbench"'),"Professional Workbench tab missing");
+assert(html.includes('id="professional-workbench"'),"Professional Workbench view missing");
+assert(html.includes('id="professional-summary"'),"Professional Workbench summary missing");
+assert(html.includes('id="professional-grid"'),"Professional capability grid missing");
+assert(html.includes('id="professional-trace-list"'),"Professional trace explorer missing");
+assert(html.includes('id="professional-failure-list"'),"Professional failure inbox missing");
+assert(html.includes('id="professional-experiment-list"'),"Professional experiment diff missing");
+assert(html.includes('id="professional-review-list"'),"Professional review queue missing");
+assert(html.includes('id="professional-cost-report"'),"Professional cost report missing");
+assert(html.includes('id="professional-report"'),"Professional contract report missing");
+assert(html.includes("boom-professional-workbench.js?v=1"),"Professional Workbench core script missing");
+assert(js.includes("const ProfessionalWorkbench=window.BoomProfessionalWorkbench"),"Professional Workbench binding missing");
+assert(js.includes("function professionalCostSamples()"),"Professional cost sample extractor missing");
+assert(js.includes("function renderProfessionalWorkbench()"),"Professional Workbench renderer missing");
+assert(js.includes("PROMPT REGISTRY: "), "Professional prompt registry evidence missing");
+assert(js.includes("DATASET CANDIDATES: "), "Professional dataset evidence missing");
+assert(js.includes("EXPERIMENT DIFF: "), "Professional experiment evidence missing");
+assert(js.includes("COST/LATENCY: "), "Professional cost/latency evidence missing");
+assert(js.includes("OWNER GATE REQUIRED: true"),"Professional Owner gate invariant missing");
+assert(js.includes("PRODUCTION CHANGE: false"),"Professional Production guard missing");
+assert(js.includes("SUPPLIER ORDERS: false"),"Professional supplier-order guard missing");
+assert((js.match(/#professional-refresh"\)\?\.addEventListener/g)||[]).length===1,"Professional refresh listener must be unique");
+assert(css.includes(".professional-head"),"Professional Workbench styling missing");
+assert(css.includes(".professional-card[data-state=\"gap\"]"),"Professional gap styling missing");
+assert(fs.existsSync("boom-professional-workbench.js"),"Professional Workbench core file missing");
+assert(fs.existsSync("boom-professional-workbench.test.cjs"),"Professional Workbench unit test missing");
