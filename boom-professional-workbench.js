@@ -240,26 +240,65 @@
   function buildSafetyOps(input={}){
     const cases=safeArray(input.redTeamCases).filter(x=>x.active!==false);
     const runs=safeArray(input.redTeamRuns);
-    const failedRuns=runs.filter(x=>["failed","fail","blocked","unsafe","error"].includes(clean(x.result_status).toLowerCase()));
+    const caseIds=new Set(cases.map(x=>String(x.id??"")).filter(Boolean));
+    const passStatuses=new Set(["passed","pass","safe","success"]);
+    const failStatuses=new Set(["failed","fail","blocked","unsafe","error"]);
+    const finalStatuses=new Set([...passStatuses,...failStatuses]);
+    const completedLinked=runs.filter(x=>{
+      const status=clean(x.result_status).toLowerCase();
+      return caseIds.has(String(x.case_id??""))&&Boolean(x.completed_at)&&finalStatuses.has(status);
+    });
+    const failedRuns=completedLinked.filter(x=>failStatuses.has(clean(x.result_status).toLowerCase()));
+    const coveredCases=new Set(completedLinked.map(x=>String(x.case_id??"")));
+    const unlinkedRuns=runs.filter(x=>!caseIds.has(String(x.case_id??"")));
+    const pendingRuns=runs.filter(x=>!x.completed_at||!finalStatuses.has(clean(x.result_status).toLowerCase()));
+
     const calibration=safeArray(input.confidenceCalibration);
+    const validCalibration=calibration.filter(x=>{
+      const samples=Number(x.samples);
+      const correct=Number(x.correct_samples);
+      const mean=Number(x.mean_confidence);
+      const observed=Number(x.observed_accuracy);
+      const error=Number(x.calibration_error);
+      return Number.isFinite(samples)&&samples>0&&
+        Number.isFinite(correct)&&correct>=0&&correct<=samples&&
+        Number.isFinite(mean)&&mean>=0&&mean<=1&&
+        Number.isFinite(observed)&&observed>=0&&observed<=1&&
+        Number.isFinite(error)&&error>=0;
+    });
+
     const teamRuns=safeArray(input.teamRuns);
-    const judgedTeamRuns=teamRuns.filter(x=>x.judge_verdict&&typeof x.judge_verdict==="object");
+    const teamFinalStatuses=new Set(["completed","complete","done","passed","pass","success"]);
+    const judgedTeamRuns=teamRuns.filter(x=>{
+      const verdict=x.judge_verdict;
+      const verdictReady=Boolean(verdict&&typeof verdict==="object"&&!Array.isArray(verdict)&&Object.keys(verdict).length>0);
+      return Boolean(x.completed_at)&&teamFinalStatuses.has(clean(x.status).toLowerCase())&&verdictReady;
+    });
+
+    const validErrors=validCalibration.map(x=>Number(x.calibration_error)).filter(Number.isFinite);
     return Object.freeze({
       redteam:Object.freeze({
         cases:cases.length,
         runs:runs.length,
+        completed_linked:completedLinked.length,
+        covered_cases:coveredCases.size,
+        unlinked:unlinkedRuns.length,
+        pending:pendingRuns.length,
         failed:failedRuns.length,
-        ready:cases.length>0&&runs.length>0&&failedRuns.length===0
+        ready:cases.length>0&&coveredCases.size===cases.length&&completedLinked.length>0&&failedRuns.length===0
       }),
       calibration:Object.freeze({
         rows:calibration.length,
-        ready:calibration.length>0,
-        max_error:calibration.length?Math.max(...calibration.map(x=>Number(x.calibration_error)).filter(Number.isFinite),0):null
+        valid_rows:validCalibration.length,
+        invalid_rows:calibration.length-validCalibration.length,
+        ready:calibration.length>0&&validCalibration.length===calibration.length,
+        max_error:validErrors.length?Math.max(...validErrors):null
       }),
       team_judge:Object.freeze({
         runs:teamRuns.length,
         judged:judgedTeamRuns.length,
-        ready:teamRuns.length>0&&judgedTeamRuns.length>0
+        incomplete:teamRuns.length-judgedTeamRuns.length,
+        ready:teamRuns.length>0&&judgedTeamRuns.length===teamRuns.length
       })
     });
   }
@@ -310,9 +349,9 @@
       {id:"evaluators",label:"Evaluator Registry + Human Alignment",state:evaluators.governance_ready?"ready":"gap",evidence:evaluators.grader_types.length+" grader type(s) · registry="+String(evaluators.evaluator_registry_connected)+" · human alignment="+String(evaluators.human_alignment_connected)},
       {id:"experiments",label:"Experiment Diff",state:experiments.available?"ready":"gap",evidence:experiments.available?experiments.comparisons.length+" comparable metric(s)":"Need 2+ comparable eval runs per metric"},
       {id:"online-ci",label:"Online Evals + CI Quality Gate",state:evaluators.continuous_gate_ready?"ready":"gap",evidence:"online eval="+String(evaluators.online_eval_connected)+" · CI gate="+String(evaluators.ci_eval_gate_connected)},
-      {id:"redteam",label:"Red Team Regression",state:safety.redteam.ready?"ready":safety.redteam.failed?"blocked":"gap",evidence:safety.redteam.cases+" case(s) · "+safety.redteam.runs+" run(s) · "+safety.redteam.failed+" failed"},
-      {id:"calibration",label:"Confidence Calibration",state:safety.calibration.ready?"ready":"gap",evidence:safety.calibration.rows+" calibration row(s) · max error="+String(safety.calibration.max_error??"unmeasured")},
-      {id:"team-judge",label:"Multi-Agent Judge Runs",state:safety.team_judge.ready?"ready":"gap",evidence:safety.team_judge.judged+"/"+safety.team_judge.runs+" run(s) include judge verdicts"},
+      {id:"redteam",label:"Red Team Regression",state:safety.redteam.ready?"ready":safety.redteam.failed?"blocked":"gap",evidence:safety.redteam.covered_cases+"/"+safety.redteam.cases+" active case(s) covered · completed="+safety.redteam.completed_linked+" · pending="+safety.redteam.pending+" · unlinked="+safety.redteam.unlinked+" · failed="+safety.redteam.failed},
+      {id:"calibration",label:"Confidence Calibration",state:safety.calibration.ready?"ready":"gap",evidence:safety.calibration.valid_rows+"/"+safety.calibration.rows+" valid measured row(s) · invalid="+safety.calibration.invalid_rows+" · max error="+String(safety.calibration.max_error??"unmeasured")},
+      {id:"team-judge",label:"Multi-Agent Judge Runs",state:safety.team_judge.ready?"ready":"gap",evidence:safety.team_judge.judged+"/"+safety.team_judge.runs+" completed run(s) have non-empty final verdicts · incomplete="+safety.team_judge.incomplete},
       {id:"lineage",label:"Prompt → Trace Lineage",state:lineage.ready?"ready":"gap",evidence:lineage.linked_spans+"/"+lineage.versioned_spans+" versioned spans linked · orphaned="+lineage.orphaned_spans+" · stores="+String(lineage.connected)},
       {id:"review",label:"Human / Owner Review Queue",state:review.persisted?"ready":"gap",evidence:review.count+" review item(s) · annotation history persisted="+String(review.persisted)},
       {id:"cost",label:"Cost / Latency Budget",state:cost.instrumented?"ready":"gap",evidence:cost.instrumented?cost.sample_count+" measured samples":"Token/cost/latency instrumentation not connected"},
