@@ -2349,7 +2349,185 @@
     }
   }
 
+
+  function ownerControl(key){
+    return (state.connectorEvidence?.controls||[]).find(x=>x.key===key)||null;
+  }
+
+  function ownerOpenCommands(){
+    return (state.commands||[]).filter(x=>["queued","accepted","running","waiting_owner"].includes(String(x.status||"").toLowerCase()));
+  }
+
+  function ownerWaitingCommands(){
+    return ownerOpenCommands().filter(x=>String(x.status||"").toLowerCase()==="waiting_owner");
+  }
+
+  function ownerHuntState(){
+    if(state.localPreview)return {label:"SAFE PREVIEW",note:"Live actions כבויות בתצוגה"};
+    const payment=ownerControl("hunt_payment_live");
+    const supplier=ownerControl("hunt_supplier_order_live");
+    const paymentOn=payment?.enabled===true&&payment?.owner_approved===true;
+    const supplierOn=supplier?.enabled===true&&supplier?.owner_approved===true;
+    if(paymentOn&&supplierOn)return {label:"LIVE",note:"תשלום והזמנות ספק פעילים"};
+    return {label:"PRELAUNCH",note:"Live money / supplier order עדיין סגורים"};
+  }
+
+  function ownerPrimaryMission(){
+    const open=ownerOpenCommands().slice().sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
+    if(open.length){
+      const x=open[0];
+      return {
+        title:x.title||x.instruction||"משימת BOOM פעילה",
+        description:x.instruction||"BOOM עובד על המשימה ומעדכן את הראיות.",
+        status:String(x.status||"working").toLowerCase(),
+        meta:(x.target_manager_id?("מנהל: "+x.target_manager_id+" · "):"")+(x.created_at?("התחיל "+ago(x.created_at)):"")
+      };
+    }
+    const report=(state.reports||[])[0];
+    if(report&&["working","watch","blocked","critical"].includes(String(report.status||"").toLowerCase())){
+      return {
+        title:report.title||report.manager_id||"בדיקה פעילה",
+        description:report.recommended_action||report.summary||"BOOM בודק את המצב ומרכז evidence.",
+        status:String(report.status||"watch").toLowerCase(),
+        meta:(report.manager_id?("מנהל: "+report.manager_id+" · "):"")+(report.created_at?ago(report.created_at):"")
+      };
+    }
+    return {
+      title:state.localPreview?"Owner Mode Preview":"אין משימה פעילה כרגע",
+      description:state.localPreview
+        ?"זו תצוגה בטוחה של המסך החדש. נתוני Live ופעולות חיצוניות אינם נטענים כאן."
+        :"BOOM מוכן. אפשר לתת משימה מהכפתורים למטה או דרך BOOM Chat.",
+      status:state.localPreview?"watch":"healthy",
+      meta:state.localPreview?"DRAFT PREVIEW · LIVE ACTIONS OFF":"מוכן למשימה חדשה"
+    };
+  }
+
+  function ownerActivityRows(){
+    const rows=[
+      ...(state.commands||[]).slice(0,12).map(x=>({title:x.title||x.instruction||"Command",meta:"פקודה · "+(x.target_manager_id||"BOOM"),time:x.created_at,status:x.status||"working"})),
+      ...(state.events||[]).slice(0,12).map(x=>({title:x.title||x.event_type||"Event",meta:"אירוע · "+(x.source_manager_id||"system"),time:x.created_at,status:x.severity||"healthy"})),
+      ...(state.reports||[]).slice(0,12).map(x=>({title:x.title||x.manager_id||"Report",meta:"דוח · "+(x.manager_id||"BOOM"),time:x.created_at,status:x.status||"healthy"}))
+    ];
+    return rows.sort((a,b)=>new Date(b.time||0)-new Date(a.time||0)).slice(0,6);
+  }
+
+  function ownerStatusLabel(status){
+    const s=String(status||"offline").toLowerCase();
+    if(s==="healthy")return "READY";
+    if(s==="working"||s==="running"||s==="accepted")return "RUNNING";
+    if(s==="queued")return "QUEUED";
+    if(s==="waiting_owner")return "OWNER";
+    if(s==="critical")return "CRITICAL";
+    if(s==="blocked")return "BLOCKED";
+    if(s==="watch")return "WATCH";
+    return s.toUpperCase();
+  }
+
+  function renderOwnerHome(){
+    const open=ownerOpenCommands();
+    const waiting=ownerWaitingCommands();
+    const attention=attentionReports();
+    const hunt=ownerHuntState();
+    const mission=ownerPrimaryMission();
+
+    const setText=(id,value)=>{const el=$("#"+id);if(el)el.textContent=String(value)};
+    setText("owner-active-count",state.localPreview?"—":open.length);
+    setText("owner-active-note",state.localPreview?"Live data לא נטען ב־Preview":(open.length?"BOOM מטפל כעת":"אין משימות פתוחות"));
+    setText("owner-approval-count",state.localPreview?"—":waiting.length);
+    setText("owner-approval-note",state.localPreview?"Owner Gate נשאר פעיל":(waiting.length?"ממתינות להחלטה שלך":"אין אישורים ממתינים"));
+    setText("owner-attention-count",state.localPreview?"—":attention.length);
+    setText("owner-attention-note",state.localPreview?"התראות Live מוסתרות":(attention.length?"דורשות בדיקה":"הכול שקט"));
+    setText("owner-hunt-state",hunt.label);
+    setText("owner-hunt-note",hunt.note);
+    setText("owner-mission-title",mission.title);
+    setText("owner-mission-description",mission.description);
+    setText("owner-mission-meta",mission.meta);
+
+    const missionState=$("#owner-mission-state");
+    if(missionState){
+      missionState.textContent=ownerStatusLabel(mission.status);
+      missionState.className="owner-state-pill "+esc(mission.status);
+    }
+
+    const prod=ownerControl("hunt_supplier_order_live");
+    const pay=ownerControl("hunt_payment_live");
+    const prodBadge=$("#owner-production-badge");
+    const payBadge=$("#owner-payments-badge");
+    if(prodBadge)prodBadge.textContent=(prod?.enabled===true&&prod?.owner_approved===true)?"SUPPLIER LIVE":"PRODUCTION OFF";
+    if(payBadge)payBadge.textContent=(pay?.enabled===true&&pay?.owner_approved===true)?"PAYMENTS LIVE":"PAYMENTS OFF";
+
+    const approvals=$("#owner-approval-list");
+    if(approvals){
+      if(state.localPreview){
+        approvals.innerHTML='<div class="owner-empty">Safe Preview · אישורי Live אינם נטענים כאן.</div>';
+      }else if(!waiting.length){
+        approvals.innerHTML='<div class="owner-empty">אין החלטות שממתינות כרגע.</div>';
+      }else{
+        approvals.innerHTML=waiting.slice(0,4).map(x=>
+          '<article class="owner-approval-row"><div><strong>'+esc(x.title||x.instruction||"Owner decision")+'</strong><small>'+esc((x.target_manager_id||"BOOM")+" · "+ago(x.created_at))+'</small></div><button type="button" data-owner-command="'+esc(x.id||"")+'">פתח</button></article>'
+        ).join("");
+      }
+    }
+
+    const agents=[
+      ["boom-super-agent","BOOM Brain","Orchestrator","B"],
+      ["f35-research","F35 Research","Research","⌕"],
+      ["supplier-shipping","Supplier Brain","Supply","◇"],
+      ["pricing-profit","Profit Brain","Commerce","$"],
+      ["checkout-payment","Checkout Brain","Launch","✓"]
+    ];
+    const agentGrid=$("#owner-agent-grid");
+    if(agentGrid){
+      agentGrid.innerHTML=agents.map(([id,name,role,icon])=>{
+        const st=statusOf(id);
+        return '<article class="owner-agent-card" data-owner-agent="'+esc(id)+'"><div class="owner-agent-head"><span class="owner-agent-icon">'+esc(icon)+'</span><div><strong>'+esc(name)+'</strong><small>'+esc(role)+'</small></div></div><span class="owner-agent-status '+esc(st)+'">'+esc(ownerStatusLabel(st))+'</span></article>';
+      }).join("");
+    }
+
+    const activity=$("#owner-activity-list");
+    const activityRows=ownerActivityRows();
+    if(activity){
+      activity.innerHTML=state.localPreview
+        ?'<div class="owner-empty">Safe Preview · פעילות Live אינה נטענת.</div>'
+        :activityRows.length
+          ?activityRows.map(x=>'<article class="owner-activity-row" data-status="'+esc(x.status)+'"><span class="owner-activity-dot"></span><div><strong>'+esc(x.title)+'</strong><small>'+esc(x.meta)+'</small></div><span class="owner-activity-time">'+esc(ago(x.time))+'</span></article>').join("")
+          :'<div class="owner-empty">אין פעילות אחרונה להצגה.</div>';
+    }
+
+    const alerts=$("#owner-alert-list");
+    if(alerts){
+      alerts.innerHTML=state.localPreview
+        ?'<div class="owner-empty">Safe Preview · התראות Live אינן נטענות.</div>'
+        :attention.length
+          ?attention.slice(0,5).map(x=>'<article class="owner-alert-row" data-status="'+esc(x.status)+'"><strong>'+esc(x.title||x.manager_id||"Attention")+'</strong><small>'+esc(x.recommended_action||x.issues?.[0]||ownerStatusLabel(x.status))+'</small></article>').join("")
+          :'<div class="owner-empty">אין התראות פעילות.</div>';
+    }
+  }
+
+  function ownerPrepareChat(text){
+    activateStudioView("owner-home");
+    setChatOpen(true);
+    const input=$("#chat-input");
+    if(input&&!input.disabled){
+      input.value=text;
+      input.focus();
+    }
+  }
+
+  function handleOwnerAction(action){
+    if(action==="chat"){setChatOpen(true);$("#chat-input")?.focus();return}
+    if(action==="hunt-check"){ownerPrepareChat("בדוק את HUNT עכשיו וסכם לי בפשטות: מה עובד, מה חסר להשקה, ומה דורש ממני החלטה.");return}
+    if(action==="opportunity"){ownerPrepareChat("צא ל־F35 וחפש הזדמנות אחת חזקה ורלוונטית עכשיו. תחזור עם evidence, סיכון והצעד הבא.");return}
+    if(action==="suppliers"){ownerPrepareChat("בדוק את מצב הספקים של HUNT: API, מלאי, משלוח, freshness וחסמים. הצג לי רק מה חשוב.");return}
+    if(action==="campaign"){ownerPrepareChat("בנה הצעת קמפיין אחת ל־HUNT כטיוטה בלבד. אל תפרסם ואל תוציא כסף בלי אישור שלי.");return}
+    if(action==="ask-status"){ownerPrepareChat("מה BOOM עושה עכשיו? תסביר לי בשפה פשוטה מה המצב, מה מצאת ומה צריך ממני.");return}
+    if(action==="open-output"){activateStudioView("hunt-intelligence","approval-queue");return}
+    if(action==="open-runs"){activateStudioView("executions");return}
+    if(action==="open-pro"){activateStudioView("studio");return}
+  }
+
   function renderAll(){
+    renderOwnerHome();
     renderStudio();
     renderExecutions();
     renderEvaluations();
@@ -3270,8 +3448,9 @@
   function activateStudioView(viewId,anchorId=""){
     const targetView=$("#"+viewId);
     if(!targetView)return;
-    $(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===viewId));
-    $(".view").forEach(x=>x.classList.toggle("active",x.id===viewId));
+    $$(".tab").forEach(x=>x.classList.toggle("active",x.dataset.tab===viewId));
+    $$(".view").forEach(x=>x.classList.toggle("active",x.id===viewId));
+    if(viewId==="owner-home")renderOwnerHome();
     if(viewId==="studio")requestAnimationFrame(drawLinks);
     if(viewId==="connect")renderConnect();
     if(viewId==="professional-workbench")renderProfessionalWorkbench();
@@ -3293,11 +3472,11 @@
 
   function focusStudioGroup(id){
     const studio=$("#studio");
-    const target=$(".studio-node-group").find(node=>node.dataset.groupId===id);
+    const target=$$(".studio-node-group").find(node=>node.dataset.groupId===id);
     if(!studio||!target)return;
     const top=studio.scrollTop+target.getBoundingClientRect().top-studio.getBoundingClientRect().top-58;
     studio.scrollTo({top:Math.max(0,top),behavior:"smooth"});
-    $("#studio-department-nav [data-studio-group]").forEach(button=>button.classList.toggle("active",button.dataset.studioGroup===id));
+    $$("#studio-department-nav [data-studio-group]").forEach(button=>button.classList.toggle("active",button.dataset.studioGroup===id));
   }
 
   $("#attention-focus").addEventListener("click",focusAttention);
@@ -3331,6 +3510,17 @@
   window.addEventListener("resize",()=>requestAnimationFrame(drawLinks));
 
   document.addEventListener("click",ev=>{
+    const ownerAction=ev.target.closest("[data-owner-action]");
+    if(ownerAction){handleOwnerAction(ownerAction.dataset.ownerAction);return}
+    const ownerCommand=ev.target.closest("[data-owner-command]");
+    if(ownerCommand){
+      const row=(state.commands||[]).find(x=>String(x.id||"")===String(ownerCommand.dataset.ownerCommand||""));
+      if(row?.target_manager_id)inspectManager(row.target_manager_id);
+      setChatOpen(false);
+      return;
+    }
+    const ownerAgent=ev.target.closest("[data-owner-agent]");
+    if(ownerAgent){inspectManager(ownerAgent.dataset.ownerAgent);setChatOpen(false);return}
     const studioViewJump=ev.target.closest("[data-studio-view]");
     if(studioViewJump){
       activateStudioView(studioViewJump.dataset.studioView,studioViewJump.dataset.studioAnchor||"");

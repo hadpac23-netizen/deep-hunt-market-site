@@ -624,7 +624,7 @@ assert(css.includes("DESIGN PASS 1 · INFORMATION HIERARCHY"),"Design Pass 1 CSS
 assert(css.includes("#b13-master-prompt-closure"),"B13 visual hierarchy styling missing");
 
 
-assert(html.includes("boom-ai-studio.css?v=4"),"Design Pass 2 stylesheet version missing");
+assert(html.includes("boom-ai-studio.css?v=5"),"Owner Mode stylesheet version missing");
 assert(css.includes("DESIGN PASS 2 · POLISH, FOCUS, ACCESSIBILITY"),"Design Pass 2 styling missing");
 assert(css.includes("button:focus-visible"),"Keyboard focus treatment missing");
 assert(css.includes("@media(prefers-reduced-motion:reduce)"),"Reduced-motion accessibility guard missing");
@@ -634,5 +634,32 @@ assert(css.includes(".professional-card[data-state=\"ready\"]"),"Professional st
 
 const deviceHarness=fs.readFileSync("boom-studio-device-browser-e2e.html","utf8");
 assert(deviceHarness.includes("for(let attempt=0;attempt<50;attempt++)"),"Device browser QA must wait for Safe Preview readiness instead of fixed timing");
+
+
+assert(html.includes('id="owner-home"'),"Owner Mode home view missing");
+assert(html.includes('data-tab="owner-home"'),"Owner Mode top tab missing");
+assert(html.includes("BOOM OWNER MODE · SIMPLE VIEW"),"Owner Mode simple-view contract missing");
+assert(html.includes('id="owner-mission-title"'),"Owner current mission panel missing");
+assert(html.includes('id="owner-approval-list"'),"Owner approvals panel missing");
+assert(html.includes('id="owner-agent-grid"'),"Owner agent overview missing");
+assert(html.includes('data-owner-action="open-pro"'),"Owner → Pro Studio escape hatch missing");
+assert(js.includes("function renderOwnerHome()"),"Owner Mode renderer missing");
+assert(js.includes("function handleOwnerAction(action)"),"Owner quick-action router missing");
+assert(js.includes("renderOwnerHome();\n    renderStudio();"),"Owner Mode must refresh with Studio evidence");
+assert(js.includes('activateStudioView("studio")'),"Owner Mode must preserve Pro Studio access");
+assert(js.includes('state.localPreview?"—":open.length'),"Owner Preview must not invent active task counts");
+assert(css.includes("OWNER MODE · SIMPLE AI CONTROL ROOM"),"Owner Mode design system missing");
+assert(css.includes(".owner-main-grid"),"Owner Mode layout missing");
+
+
+const ownerDeviceHarness=fs.readFileSync("boom-studio-device-browser-e2e.html","utf8");
+assert(ownerDeviceHarness.includes("ownerDefault"),"Device QA must verify Owner Mode is the default view");
+assert(ownerDeviceHarness.includes("ownerCountsSafe"),"Device QA must verify Preview does not invent Owner counts");
+assert(ownerDeviceHarness.includes("studioActive"),"Device QA must verify Owner → Pro Studio navigation");
+
+
+assert(js.includes('$$(".tab").forEach'),"View navigation must iterate all tabs");
+assert(js.includes('$$(".view").forEach'),"View navigation must iterate all views");
+assert(js.includes('$$(".studio-node-group").find'),"Studio group navigation must search the full node-group collection");
 
 console.log("boom_ai_studio_tests=PASS");

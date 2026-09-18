@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>BOOM AI Engineering Studio</title>
-  <link rel="stylesheet" href="boom-ai-studio.css?v=4">
+  <link rel="stylesheet" href="boom-ai-studio.css?v=5">
 </head>
 <body>
   <header class="topbar">
@@ -17,7 +17,8 @@
       </div>
     </div>
     <nav class="tabs" aria-label="BOOM views">
-      <button class="tab active" data-tab="studio" type="button">Studio</button>
+      <button class="tab active owner-tab" data-tab="owner-home" type="button">Owner</button>
+      <button class="tab" data-tab="studio" type="button">Pro Studio</button>
       <button class="tab" data-tab="hunt-intelligence" type="button">Brain</button>
       <button class="tab" data-tab="professional-workbench" type="button">Professional</button>
       <button class="tab" data-tab="brand-factory" type="button">Brand Factory</button>
@@ -63,7 +64,123 @@
 
     <section class="app-shell" id="app-shell" hidden>
       <section class="workspace">
-        <section class="view active" id="studio">
+        <section class="view owner-home-view active" id="owner-home">
+          <div class="owner-home-shell">
+            <section class="owner-hero">
+              <div class="owner-hero-copy">
+                <small>BOOM OWNER MODE · SIMPLE VIEW</small>
+                <h1>שלום עדי <span aria-hidden="true">👋</span></h1>
+                <p>כאן רואים רק מה BOOM עושה, מה דורש תשומת לב ומה הצעד הבא.</p>
+                <div class="owner-hero-badges">
+                  <span class="owner-baseline-ok">STUDIO COMPLETE</span>
+                  <span id="owner-production-badge">PRODUCTION OFF</span>
+                  <span id="owner-payments-badge">PAYMENTS OFF</span>
+                </div>
+              </div>
+              <div class="owner-hero-orbit" aria-hidden="true">
+                <div class="owner-orbit-ring owner-orbit-ring-a"></div>
+                <div class="owner-orbit-ring owner-orbit-ring-b"></div>
+                <div class="owner-orbit-core">B</div>
+                <span class="owner-orbit-dot d1"></span><span class="owner-orbit-dot d2"></span><span class="owner-orbit-dot d3"></span>
+              </div>
+            </section>
+
+            <section class="owner-stat-grid" aria-label="Owner summary">
+              <article>
+                <small>משימות פעילות</small>
+                <strong id="owner-active-count">—</strong>
+                <span id="owner-active-note">טוען מצב BOOM…</span>
+              </article>
+              <article>
+                <small>דורש ממך</small>
+                <strong id="owner-approval-count">—</strong>
+                <span id="owner-approval-note">אישורי Owner</span>
+              </article>
+              <article>
+                <small>התראות</small>
+                <strong id="owner-attention-count">—</strong>
+                <span id="owner-attention-note">רק מה שדורש תשומת לב</span>
+              </article>
+              <article>
+                <small>מצב HUNT</small>
+                <strong id="owner-hunt-state">—</strong>
+                <span id="owner-hunt-note">מצב השקה ותשלומים</span>
+              </article>
+            </section>
+
+            <div class="owner-main-grid">
+              <section class="owner-mission-card">
+                <div class="owner-section-head">
+                  <div><small>מה BOOM עושה עכשיו</small><h2 id="owner-mission-title">אין משימה פעילה</h2></div>
+                  <span class="owner-state-pill" id="owner-mission-state">IDLE</span>
+                </div>
+                <p id="owner-mission-description">כאשר BOOM יריץ משימה, היא תופיע כאן בשפה פשוטה.</p>
+                <div class="owner-mission-flow" id="owner-mission-flow">
+                  <span class="done">מטרה</span><i>→</i><span>בדיקה</span><i>→</i><span>החלטה</span><i>→</i><span>Owner</span>
+                </div>
+                <div class="owner-mission-footer">
+                  <span id="owner-mission-meta">אין נתוני Live כרגע</span>
+                  <button type="button" data-owner-action="ask-status">תסביר לי מה קורה</button>
+                </div>
+              </section>
+
+              <section class="owner-approvals-card">
+                <div class="owner-section-head">
+                  <div><small>צריך החלטה שלך</small><h2>Owner Approvals</h2></div>
+                  <button type="button" data-owner-action="open-output">הצג הכל</button>
+                </div>
+                <div class="owner-approval-list" id="owner-approval-list">
+                  <div class="owner-empty">אין החלטות שממתינות כרגע.</div>
+                </div>
+              </section>
+            </div>
+
+            <section class="owner-agents-section">
+              <div class="owner-section-head">
+                <div><small>הצוות של BOOM</small><h2>מי עובד בשבילך</h2></div>
+                <button type="button" data-owner-action="open-pro">מצב מקצועי</button>
+              </div>
+              <div class="owner-agent-grid" id="owner-agent-grid"></div>
+            </section>
+
+            <div class="owner-lower-grid">
+              <section class="owner-activity-card">
+                <div class="owner-section-head">
+                  <div><small>מה קרה לאחרונה</small><h2>פעילות אחרונה</h2></div>
+                  <button type="button" data-owner-action="open-runs">כל הפעילות</button>
+                </div>
+                <div class="owner-activity-list" id="owner-activity-list">
+                  <div class="owner-empty">אין פעילות Live בתצוגה הזו.</div>
+                </div>
+              </section>
+
+              <section class="owner-alerts-card">
+                <div class="owner-section-head">
+                  <div><small>רק מה שחשוב</small><h2>התראות</h2></div>
+                </div>
+                <div class="owner-alert-list" id="owner-alert-list">
+                  <div class="owner-empty">אין התראות פעילות.</div>
+                </div>
+              </section>
+            </div>
+
+            <section class="owner-quick-section">
+              <div class="owner-section-head">
+                <div><small>פעולה מהירה</small><h2>מה תרצה לעשות עכשיו?</h2></div>
+              </div>
+              <div class="owner-quick-grid">
+                <button type="button" data-owner-action="chat"><b>💬</b><span>דבר עם BOOM</span><small>שאלה חופשית</small></button>
+                <button type="button" data-owner-action="hunt-check"><b>◎</b><span>בדוק HUNT</span><small>מה חסר להשקה</small></button>
+                <button type="button" data-owner-action="opportunity"><b>⌕</b><span>חפש הזדמנות</span><small>F35 מחקר עמוק</small></button>
+                <button type="button" data-owner-action="suppliers"><b>◇</b><span>בדוק ספקים</span><small>API · מלאי · משלוח</small></button>
+                <button type="button" data-owner-action="campaign"><b>✦</b><span>בנה קמפיין</span><small>רעיון → בדיקה → אישור</small></button>
+                <button type="button" data-owner-action="open-pro"><b>⌘</b><span>מצב מקצועי</span><small>Agents · Traces · Evals</small></button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="studio">
           <nav class="studio-department-nav" id="studio-department-nav" aria-label="BOOM Studio control and departments">
             <button type="button" data-studio-view="hunt-intelligence"><b>01</b><span>Brain</span><small>Decision & Orchestration</small></button>
             <button type="button" data-studio-group="intelligence"><b>02</b><span>Intelligence</span><small>A1–A6 · Build</small></button>
@@ -687,6 +804,6 @@
   <script src="brand-creative-qa.js?v=1"></script>
   <script src="brand-video-dispatch.js?v=1"></script>
   <script src="boom-alpha-test-harness.js?v=alpha1"></script>\n  <script src="boom-alpha-evidence-pack.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-preview.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-qa.js?v=alpha1"></script>\n  <script src="boom-alpha-final-gate.js?v=alpha1"></script>
-  <script src="boom-professional-workbench.js?v=1"></script>\n  <script src="boom-b13-master-prompt.js?v=1"></script>\n  <script src="boom-ai-studio.js?v=3"></script>
+  <script src="boom-professional-workbench.js?v=1"></script>\n  <script src="boom-b13-master-prompt.js?v=1"></script>\n  <script src="boom-ai-studio.js?v=4"></script>
 </body>
 </html>
