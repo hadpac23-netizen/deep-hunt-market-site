@@ -370,7 +370,7 @@ assert(fs.existsSync("hunt-shopper-browser-e2e.html"),"Shopper browser E2E harne
 assert(js.includes("function renderPromptCoverageAudit()"),"Prompt audit renderer missing");
 assert(css.includes(".prompt-audit-workspace"),"Prompt audit styling missing");
 
-assert(js.includes('const localHost=["127.0.0.1","localhost"].includes(location.hostname);'),"Safe localhost preview mode missing");
+assert(js.includes('const previewLocalHost=["127.0.0.1","localhost"].includes(location.hostname);'),"Safe localhost preview mode missing");
 assert(js.includes('url.searchParams.get("preview")==="1"'),"Local preview query gate missing");
 assert(js.includes('function applyLocalPreviewSafety(mode="local")'),"Safe preview safety function missing");
 assert(js.includes('label+" PREVIEW · LIVE ACTIONS OFF"'),"Preview safety status missing");
@@ -417,6 +417,9 @@ assert(js.includes("function focusStudioGroup("),"Studio navigator focus functio
 assert(js.includes('const studioJump=ev.target.closest("[data-studio-group]")'),"Studio navigator click routing missing");
 assert(css.includes(".studio-department-nav"),"Studio navigator styling missing");
 
-assert(js.includes('const netlifyDraft=/^[a-z0-9]+--deep-hunt-market\\.netlify\\.app$/i.test(location.hostname);'),"Netlify draft preview hostname gate missing");
-assert(js.includes('applyLocalPreviewSafety(netlifyDraft?"draft":"local")'),"Draft preview safety mode missing");
-assert(js.includes('const safePreview=(localHost||netlifyDraft)&&url.searchParams.get("preview")==="1";'),"Safe preview query gate missing");
+assert(js.includes('const previewNetlifyDraft=/^[a-z0-9]+--deep-hunt-market\\.netlify\\.app$/i.test(location.hostname);'),"Netlify draft preview hostname gate missing");
+assert(js.includes('applyLocalPreviewSafety(previewNetlifyDraft?"draft":"local")'),"Draft preview safety mode missing");
+assert(js.includes('const SAFE_PREVIEW_BOOT=(previewLocalHost||previewNetlifyDraft)&&previewUrl.searchParams.get("preview")==="1";'),"Safe preview query gate missing");
+
+assert(js.includes('(!S?.createClient&&!SAFE_PREVIEW_BOOT)'),"Safe preview Supabase decoupling missing");
+assert(js.includes('const client=S?.createClient?S.createClient('),"Optional preview Supabase client missing");
