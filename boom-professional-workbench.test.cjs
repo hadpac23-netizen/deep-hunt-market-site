@@ -54,6 +54,13 @@ const input={
   ciQualityGateRuns:[{id:1,gate_id:1,status:"completed",completed_at:"2026-09-18T09:11:00Z",sample_count:20,metric_value:0.95,passed:true}],
   f35Sources:[{id:1,enabled:true,last_checked_at:"2026-09-18T09:00:00Z",freshness_hours:72}],
   f35Findings:[{id:1,confidence:"verified_official",action_state:"review",requires_owner_review:true,observed_at:"2026-09-18T09:00:00Z"}],
+  observabilityStoreConnected:true,
+  observabilitySnapshots:[
+    {monitor_type:"health",observed_at:"2026-09-18T09:30:00Z",state:"clear",findings_count:0,unavailable_checks:0,review_required:false},
+    {monitor_type:"security",observed_at:"2026-09-18T09:00:00Z",state:"clear",findings_count:0,unavailable_checks:0,review_required:false},
+    {monitor_type:"performance",observed_at:"2026-09-18T09:20:00Z",state:"clear",findings_count:0,unavailable_checks:0,review_required:false},
+    {monitor_type:"capacity",observed_at:"2026-09-18T08:00:00Z",state:"clear",findings_count:0,unavailable_checks:0,review_required:false}
+  ],
   nowMs:Date.parse("2026-09-18T10:00:00Z")
 };
 
@@ -92,6 +99,11 @@ assert.equal(result.annotation.disagreements,0);
 assert.equal(result.annotation.evidence_state,"LABELED");
 assert.equal(result.radar.ready,true);
 assert.equal(result.radar.fresh,1);
+assert.equal(result.observability.connected,true);
+assert.equal(result.observability.ready,true);
+assert.equal(result.observability.clear,4);
+assert.equal(result.observability.stale,0);
+assert.equal(result.capabilities.find(x=>x.id==="observability").state,"ready");
 assert.equal(result.safety.redteam.ready,true);
 assert.equal(result.safety.calibration.ready,true);
 assert.equal(result.safety.team_judge.ready,true);
@@ -191,6 +203,20 @@ const disagreementGroundTruth=W.buildAnnotationGroundTruth({
 assert.equal(disagreementGroundTruth.valid_labels,1);
 assert.equal(disagreementGroundTruth.disagreements,1);
 assert.equal(disagreementGroundTruth.corrections,1);
+
+const staleObservability=W.buildObservabilityOps({
+  observabilityStoreConnected:true,
+  observabilitySnapshots:[
+    {monitor_type:"health",observed_at:"2026-09-18T01:00:00Z",state:"clear",findings_count:0,unavailable_checks:0},
+    {monitor_type:"security",observed_at:"2026-09-18T09:00:00Z",state:"clear",findings_count:0,unavailable_checks:0},
+    {monitor_type:"performance",observed_at:"2026-09-18T09:30:00Z",state:"clear",findings_count:0,unavailable_checks:0},
+    {monitor_type:"capacity",observed_at:"2026-09-18T08:00:00Z",state:"clear",findings_count:0,unavailable_checks:0}
+  ],
+  nowMs:Date.parse("2026-09-18T10:00:00Z")
+});
+assert.equal(staleObservability.ready,false);
+assert.equal(staleObservability.stale,1);
+assert.equal(staleObservability.lanes.find(x=>x.type==="health").state,"stale");
 
 const staleRadar=W.buildKnowledgeRadar({
   f35Sources:[{enabled:true,last_checked_at:"2026-09-10T00:00:00Z",freshness_hours:24}],
@@ -294,6 +320,7 @@ assert(gaps.gaps.includes("calibration"));
 assert(gaps.gaps.includes("team-judge"));
 assert(gaps.gaps.includes("lineage"));
 assert(gaps.gaps.includes("f35-radar"));
+assert(gaps.gaps.includes("observability"));
 assert.equal(gaps.prompts.status,"REGISTRY_REQUIRED");
 assert.equal(gaps.traceHierarchy.store_connected,false);
 assert.equal(gaps.invariants.mutation,false);
