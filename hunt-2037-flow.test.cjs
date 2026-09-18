@@ -17,6 +17,12 @@ assert.ok(model.units.some(x=>x.lane==="new"));
 assert.equal(Core.laneLabel("wildcard"),"SURPRISE");
 assert.equal(Core.reasonFor({category:"bags"},"personalized",{recent_categories:["bags"]}),"Because you explored bags");
 assert.equal(Core.reasonFor({category:"tech"},"wildcard",{}),"A controlled surprise outside your usual lane");
+const affinityItem={provider:"HyperSKU",item_id:"aff-1",category:"bags",image_url:"https://example.com/a.jpg"};
+const neutralScore=Core.discoveryScore(affinityItem,"personalized",{});
+const positiveScore=Core.discoveryScore(affinityItem,"personalized",{category_affinity:{bags:8}});
+const negativeScore=Core.discoveryScore(affinityItem,"personalized",{category_affinity:{bags:-8}});
+assert.ok(positiveScore>neutralScore);
+assert.ok(negativeScore<neutralScore);
 
 const html=fs.readFileSync("index.html","utf8");
 const js=fs.readFileSync("hunt-2037-flow.js","utf8");
