@@ -1,0 +1,46 @@
+<!doctype html><meta charset="utf-8"><title>HUNT Home V2 Device QA</title>
+<style>
+body{font:14px system-ui;background:#111;color:#eee;margin:16px}#frames{display:grid;gap:16px}
+.case{border:1px solid #444;padding:10px}.frame-wrap{overflow:hidden;background:#fff}
+iframe{border:0;display:block;transform-origin:top left}.pass{color:#71e39d}.fail{color:#ff7d91}pre{white-space:pre-wrap}
+</style>
+<h1>HUNT Home V2 Device QA</h1><div id="frames"></div><pre id="qa-result">RUNNING</pre>
+<script>
+const specs=[{w:390,h:844},{w:768,h:1024},{w:1280,h:900},{w:1440,h:900}];
+const host=document.querySelector("#frames");
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function inspect(spec,frame,status){
+  await new Promise(resolve=>{if(frame.contentDocument?.readyState==="complete")resolve();else frame.addEventListener("load",resolve,{once:true})});
+  await wait(5000);
+  const d=frame.contentDocument,w=frame.contentWindow;
+  const rootWidth=d.documentElement.clientWidth;
+  const pageOverflow=Math.max(0,d.documentElement.scrollWidth-rootWidth);
+  const css=Boolean([...d.querySelectorAll('link[rel="stylesheet"]')].some(x=>String(x.href).includes("hunt-visual-v2.css")));
+  const commerce=Boolean(d.body?.classList.contains("hd-commerce-v2"));
+  const hero=Boolean(d.querySelector(".hd-hero-copy"));
+  const heroLinks=d.querySelectorAll(".hd-hero-category-links a").length;
+  const womenFirst=d.querySelector(".hd-hero-category-links a")?.getAttribute("href")?.includes("c=women")===true;
+  const productCount=d.querySelectorAll(".hd-shelf-card,.hd-market-product-card,.hd-wow-product,.hd-shop-card").length;
+  const grid=d.querySelector("#hd-home-random-grid");
+  const cols=grid?getComputedStyle(grid).gridTemplateColumns.split(" ").filter(Boolean).length:0;
+  const mobileNav=Boolean(d.querySelector(".hd-mobile-nav"));
+  const pass=css&&commerce&&hero&&heroLinks===5&&womenFirst&&pageOverflow<=4&&mobileNav&&((spec.w<=760&&cols<=2)||(spec.w>760&&cols>=2));
+  const result={width:spec.w,height:spec.h,pass,pageOverflow,css,commerce,hero,heroLinks,womenFirst,productCount,columns:cols,mobileNav};
+  status.className=pass?"pass":"fail";status.textContent=(pass?"PASS ":"FAIL ")+JSON.stringify(result);
+  return result;
+}
+(async()=>{
+ const results=[];
+ for(const spec of specs){
+   const box=document.createElement("section");box.className="case";
+   const status=document.createElement("div");status.textContent="RUNNING "+spec.w+"x"+spec.h;
+   const wrap=document.createElement("div");wrap.className="frame-wrap";wrap.style.width=spec.w+"px";wrap.style.height=Math.min(420,spec.h)+"px";
+   const frame=document.createElement("iframe");frame.width=spec.w;frame.height=spec.h;frame.src="./index.html";
+   wrap.appendChild(frame);box.append(status,wrap);host.appendChild(box);
+   results.push(await inspect(spec,frame,status));
+ }
+ const pass=results.every(x=>x.pass);
+ document.body.dataset.qa=pass?"pass":"fail";
+ document.querySelector("#qa-result").textContent=(pass?"PASS":"FAIL")+"\n"+JSON.stringify({pass,results},null,2);
+})();
+</script>

@@ -87,8 +87,8 @@
     });
 
     const order = [
-      "women","men","beauty","home","tech","kids","shoes","bags","jewelry",
-      "kitchen","travel","pets","sports","office","toys"
+      "women","bags","jewelry","beauty","shoes","men","kids","home","tech",
+      "sports","travel","pets","kitchen","office","toys"
     ];
     for (let round = 0; round < 4 && picks.length < 30; round += 1) {
       for (const slug of order) {
@@ -109,15 +109,15 @@
       <div class="hd-shop-more-grid">${picks.map(card).join("")}</div>`;
   }  function simplifyCopy() {
     const h1 = document.querySelector(".hd-hero h1");
-    if (h1) h1.innerHTML = 'Shop more.<br><em>Find it faster.</em>';
+    if (h1) h1.innerHTML = 'Find your next favorite.<br><em>HUNT the better deal.</em>';
 
     const heroCopy = document.querySelector(".hd-hero-copy>p");
     if (heroCopy) {
-      heroCopy.textContent = "Fashion, beauty, home, tech, gifts and everyday finds — organized clearly with real catalog products.";
+      heroCopy.textContent = "Fashion first, then beauty, accessories, home, tech and everyday finds — real catalog products, organized around what you want.";
     }
 
     const kicker = document.querySelector(".hd-hero .hd-kicker");
-    if (kicker) kicker.textContent = "HUNT DEAL · SHOPPING, ORGANIZED";
+    if (kicker) kicker.textContent = "HUNT DEAL · DISCOVER BETTER";
 
     const mainHead = document.querySelector("#shop .hd-section-head h2");
     if (mainHead) mainHead.textContent = "Popular departments";
