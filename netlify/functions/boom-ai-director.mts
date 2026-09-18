@@ -11,6 +11,9 @@ const INTENTS = new Set(["discover","style","compare","complete-look","explore"]
 const DECISION_GOALS = new Set(["explore","simplify","compare","confidence","complete"]);
 const CHOICE_MODES = new Set(["editorial","guided","comparison","evidence","minimal"]);
 const RECOMMENDATION_STRATEGIES = new Set(["relevant-mix","narrow-set","side-by-side","verified-first","complementary"]);
+const CLARIFY_MODES = new Set(["none","ask-one"]);
+const DIVERSITY_MODES = new Set(["accuracy","balanced","serendipity"]);
+const EXPLANATION_MODES = new Set(["none","why-this","compare-facts","why-verified"]);
 const PHASES = new Set(["arrival","discover","deepen","intent"]);
 const LANGS = new Set(["en","he","ar","es","fr","ja","zh"]);
 
@@ -54,6 +57,9 @@ function sanitizeContext(raw: any) {
   const phaseRaw = cleanText(raw?.session_phase, 20).toLowerCase();
   const goalRaw = cleanText(raw?.decision_goal, 20).toLowerCase();
   const choiceRaw = cleanText(raw?.choice_mode, 20).toLowerCase();
+  const clarifyRaw = cleanText(raw?.clarify_mode, 20).toLowerCase();
+  const diversityRaw = cleanText(raw?.diversity_mode, 20).toLowerCase();
+  const explanationRaw = cleanText(raw?.explanation_mode, 24).toLowerCase();
   const interactions = raw?.interaction_summary && typeof raw.interaction_summary === "object" ? raw.interaction_summary : {};
   const page = cleanText(raw?.page, 28).toLowerCase().replace(/[^a-z0-9-]/g, "") || "home";
 
@@ -67,6 +73,9 @@ function sanitizeContext(raw: any) {
     session_phase: PHASES.has(phaseRaw) ? phaseRaw : "arrival",
     decision_goal: DECISION_GOALS.has(goalRaw) ? goalRaw : "explore",
     choice_mode: CHOICE_MODES.has(choiceRaw) ? choiceRaw : "editorial",
+    clarify_mode: CLARIFY_MODES.has(clarifyRaw) ? clarifyRaw : "none",
+    diversity_mode: DIVERSITY_MODES.has(diversityRaw) ? diversityRaw : "balanced",
+    explanation_mode: EXPLANATION_MODES.has(explanationRaw) ? explanationRaw : "none",
     interaction_summary: {
       productClicks: num(interactions?.productClicks, 0, 50),
       likes: num(interactions?.likes, 0, 50),
@@ -88,6 +97,9 @@ function validatePlan(raw: any, ctx: ReturnType<typeof sanitizeContext>) {
   const goal = cleanText(raw?.decision_goal, 20).toLowerCase();
   const choice = cleanText(raw?.choice_mode, 20).toLowerCase();
   const strategy = cleanText(raw?.recommendation_strategy, 24).toLowerCase();
+  const clarify = cleanText(raw?.clarify_mode, 20).toLowerCase();
+  const diversity = cleanText(raw?.diversity_mode, 20).toLowerCase();
+  const explanation = cleanText(raw?.explanation_mode, 24).toLowerCase();
   const night = world(raw?.night_world, primary);
 
   const codes = Array.isArray(raw?.rationale_codes)
@@ -106,6 +118,9 @@ function validatePlan(raw: any, ctx: ReturnType<typeof sanitizeContext>) {
     decision_goal: DECISION_GOALS.has(goal) ? goal : ctx.decision_goal,
     choice_mode: CHOICE_MODES.has(choice) ? choice : ctx.choice_mode,
     recommendation_strategy: RECOMMENDATION_STRATEGIES.has(strategy) ? strategy : (ctx.decision_goal === "simplify" ? "narrow-set" : ctx.decision_goal === "compare" ? "side-by-side" : ctx.decision_goal === "confidence" ? "verified-first" : ctx.decision_goal === "complete" ? "complementary" : "relevant-mix"),
+    clarify_mode: CLARIFY_MODES.has(clarify) ? clarify : ctx.clarify_mode,
+    diversity_mode: DIVERSITY_MODES.has(diversity) ? diversity : ctx.diversity_mode,
+    explanation_mode: EXPLANATION_MODES.has(explanation) ? explanation : ctx.explanation_mode,
     microcopy: {
       headline: safeCopy(raw?.microcopy?.headline, 72),
       subline: safeCopy(raw?.microcopy?.subline, 128),
@@ -125,6 +140,9 @@ BEHAVIORAL COMMERCE PRINCIPLES:
 - Reduce cognitive load: show fewer, clearer choices when the user is narrowing intent.
 - Reduce uncertainty: prioritize verified, explainable information when confidence matters.
 - Support comparison: make alternatives easy to compare on meaningful attributes without declaring a fake winner.
+- Clarify before guessing when intent is materially ambiguous; ask at most one concise, optional question before recommending.
+- Balance relevance with diversity: use serendipity during exploration, balanced variety during comparison, and accuracy near decision.
+- Explain outcomes briefly when it helps trust: why an item appears, why it is verified, or which factual attributes differ.
 - Use progressive disclosure: reveal more detail as intent deepens instead of overwhelming early exploration.
 - Preserve autonomy: make every recommendation easy to ignore, reverse, or leave.
 - Use relevant complements only when they genuinely fit the current product/category context.
@@ -153,6 +171,9 @@ Return JSON ONLY using exactly this shape:
   "decision_goal": "explore|simplify|compare|confidence|complete",
   "choice_mode": "editorial|guided|comparison|evidence|minimal",
   "recommendation_strategy": "relevant-mix|narrow-set|side-by-side|verified-first|complementary",
+  "clarify_mode": "none|ask-one",
+  "diversity_mode": "accuracy|balanced|serendipity",
+  "explanation_mode": "none|why-this|compare-facts|why-verified",
   "microcopy": {
     "headline": "short line in the requested locale, no claims",
     "subline": "short supporting line in the requested locale, no claims",
@@ -161,7 +182,7 @@ Return JSON ONLY using exactly this shape:
   "rationale_codes": ["explicit_interest","behavior_signal","session_phase","catalog_depth"]
 }
 
-Choose decision_goal, choice_mode, and recommendation_strategy to support the current shopping state in context. Prefer the sanitized context values unless there is a strong usability reason to adjust them. Make the microcopy elegant and concise. Match the locale in context.locale.`;
+Choose decision_goal, choice_mode, recommendation_strategy, clarify_mode, diversity_mode, and explanation_mode to support the current shopping state in context. Prefer the sanitized context values unless there is a strong usability reason to adjust them. Never ask more than one clarification step. Make the microcopy elegant and concise. Match the locale in context.locale.`;
 
 export default async (req: Request) => {
   if (req.method !== "POST") {

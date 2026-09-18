@@ -13,7 +13,10 @@
   const DECISION_GOALS=new Set(["explore","simplify","compare","confidence","complete"]);
   const CHOICE_MODES=new Set(["editorial","guided","comparison","evidence","minimal"]);
   const RECOMMENDATION_STRATEGIES=new Set(["relevant-mix","narrow-set","side-by-side","verified-first","complementary"]);
-  const CACHE_KEY="boom_commerce_brain_plan_v2";
+  const CLARIFY_MODES=new Set(["none","ask-one"]);
+  const DIVERSITY_MODES=new Set(["accuracy","balanced","serendipity"]);
+  const EXPLANATION_MODES=new Set(["none","why-this","compare-facts","why-verified"]);
+  const CACHE_KEY="boom_commerce_brain_plan_v3";
   const AI_TTL=12*60*1000;
   const BLOCKED_COPY=/\b(last chance|hurry|act now|only \d+ left|selling fast|everyone is buying|trending now|best seller|lowest price|guaranteed|don'?t miss|fomo)\b/i;
 
@@ -141,8 +144,20 @@
     return {goal:"confidence",choice_mode:"evidence"};
   }
 
+  function decisionSupport(){
+    const scores=Object.values(signalScores()).map(Number).sort((a,b)=>b-a);
+    const gap=scores.length>1?scores[0]-scores[1]:(scores[0]||0);
+    const ambiguous=topInterests().length===0||(topInterests().length>1&&gap<8);
+    const page=pageName(),goal=decisionState().goal;
+    const clarify=(ambiguous&&(page==="home"||page==="search")&&behavior.searches<=2)?"ask-one":"none";
+    const diversity=goal==="explore"?"serendipity":goal==="simplify"||goal==="confidence"?"accuracy":"balanced";
+    const explanation=goal==="compare"?"compare-facts":goal==="confidence"?"why-verified":goal==="complete"?"why-this":"none";
+    return {clarify_mode:clarify,diversity_mode:diversity,explanation_mode:explanation,interest_gap:Math.round(gap)};
+  }
+
   function context(){
     const decision=decisionState();
+    const support=decisionSupport();
     return Object.freeze({
       page:pageName(),
       locale:locale(),
@@ -153,6 +168,9 @@
       session_phase:currentPhase,
       decision_goal:decision.goal,
       choice_mode:decision.choice_mode,
+      clarify_mode:support.clarify_mode,
+      diversity_mode:support.diversity_mode,
+      explanation_mode:support.explanation_mode,
       interaction_summary:{...behavior},
       reduced_motion:matchMedia("(prefers-reduced-motion: reduce)").matches,
     });
@@ -179,6 +197,7 @@
     const goal=DECISION_GOALS.has(ctx.decision_goal)?ctx.decision_goal:"explore";
     const choice=CHOICE_MODES.has(ctx.choice_mode)?ctx.choice_mode:"editorial";
     const strategy=goal==="simplify"?"narrow-set":goal==="compare"?"side-by-side":goal==="confidence"?"verified-first":goal==="complete"?"complementary":"relevant-mix";
+    const support=decisionSupport();
     return {
       primary_world:primary,
       secondary_world:secondary,
@@ -186,6 +205,9 @@
       decision_goal:goal,
       choice_mode:choice,
       recommendation_strategy:strategy,
+      clarify_mode:support.clarify_mode,
+      diversity_mode:support.diversity_mode,
+      explanation_mode:support.explanation_mode,
       night_world:primary,
       style_mode:styleFor(primary),
       motion_energy:ctx.reduced_motion?"calm":(ctx.session_phase==="arrival"?"balanced":ctx.session_phase==="discover"?"vivid":"balanced"),
@@ -222,6 +244,9 @@
       decision_goal:DECISION_GOALS.has(String(raw?.decision_goal||""))?String(raw.decision_goal):base.decision_goal,
       choice_mode:CHOICE_MODES.has(String(raw?.choice_mode||""))?String(raw.choice_mode):base.choice_mode,
       recommendation_strategy:RECOMMENDATION_STRATEGIES.has(String(raw?.recommendation_strategy||""))?String(raw.recommendation_strategy):base.recommendation_strategy,
+      clarify_mode:CLARIFY_MODES.has(String(raw?.clarify_mode||""))?String(raw.clarify_mode):base.clarify_mode,
+      diversity_mode:DIVERSITY_MODES.has(String(raw?.diversity_mode||""))?String(raw.diversity_mode):base.diversity_mode,
+      explanation_mode:EXPLANATION_MODES.has(String(raw?.explanation_mode||""))?String(raw.explanation_mode):base.explanation_mode,
       microcopy:{
         headline:safeCopy(raw?.microcopy?.headline,72),
         subline:safeCopy(raw?.microcopy?.subline,128),
@@ -245,6 +270,9 @@
       body.dataset.boomDecisionGoal=currentPlan.decision_goal;
       body.dataset.boomChoiceMode=currentPlan.choice_mode;
       body.dataset.boomRecommendation=currentPlan.recommendation_strategy;
+      body.dataset.boomClarify=currentPlan.clarify_mode;
+      body.dataset.boomDiversity=currentPlan.diversity_mode;
+      body.dataset.boomExplanation=currentPlan.explanation_mode;
       body.dataset.boomBrainSource=source;
       body.dataset.boomPhase=currentPhase;
     }
@@ -255,7 +283,7 @@
   function signature(ctx=context()){
     return JSON.stringify([
       ctx.page,ctx.locale,ctx.market,ctx.session_phase,ctx.decision_goal,ctx.choice_mode,
-      ctx.top_interests.slice(0,4),
+      ctx.clarify_mode,ctx.diversity_mode,ctx.explanation_mode,ctx.top_interests.slice(0,4),
       Object.entries(ctx.catalog_summary).map(([k,v])=>[k,Math.min(9,Math.floor(Number(v||0)/20))]),
     ]);
   }
@@ -320,7 +348,22 @@
     if(currentPlan.decision_goal==="confidence"&&verified)score+=8;
     if(currentPlan.decision_goal==="compare"&&verified)score+=4;
     if(currentPlan.decision_goal==="complete"&&w===currentPlan.secondary_world)score+=6;
+    if(currentPlan.diversity_mode==="accuracy"&&w===currentPlan.primary_world)score+=5;
+    if(currentPlan.diversity_mode==="serendipity"&&w===currentPlan.secondary_world)score+=5;
+    if(currentPlan.diversity_mode==="balanced"&&verified)score+=2;
     return score;
+  }
+
+  function explainProduct(item){
+    if(!currentPlan)return [];
+    const reasons=[];
+    const w=broadWorld(item?.category||H.inferCategory?.(item));
+    const verified=item?.retail_price_verified===true&&String(item?.profit_gate_status||"").toUpperCase()==="PASS";
+    if(w===currentPlan.primary_world)reasons.push("interest-match");
+    if(w===currentPlan.secondary_world&&currentPlan.decision_goal==="complete")reasons.push("complementary");
+    if(verified)reasons.push("verified-commerce");
+    if(currentPlan.diversity_mode==="serendipity"&&w!==currentPlan.primary_world)reasons.push("fresh-discovery");
+    return reasons.slice(0,2);
   }
 
   window.addEventListener("hunt:shelves",e=>{shelves=e.detail?.shelves||shelves;refresh({reason:"shelves"});scheduleAI("shelves",1200)});
@@ -359,8 +402,10 @@
     refresh,
     requestAI,
     scoreProduct,
+    explainProduct,
     broadWorld,
     decisionState,
+    decisionSupport,
     behavior:()=>Object.freeze({...behavior}),
   });
 
