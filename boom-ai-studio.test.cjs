@@ -371,7 +371,7 @@ assert(js.includes("function renderPromptCoverageAudit()"),"Prompt audit rendere
 assert(css.includes(".prompt-audit-workspace"),"Prompt audit styling missing");
 
 assert(js.includes('const previewLocalHost=["127.0.0.1","localhost"].includes(location.hostname);'),"Safe localhost preview mode missing");
-assert(js.includes('url.searchParams.get("preview")==="1"'),"Local preview query gate missing");
+assert(js.includes('previewUrl.searchParams.get("preview")==="1"'),"Safe preview query gate missing");
 assert(js.includes('function applyLocalPreviewSafety(mode="local")'),"Safe preview safety function missing");
 assert(js.includes('label+" PREVIEW · LIVE ACTIONS OFF"'),"Preview safety status missing");
 assert(js.includes('input.placeholder=label+" PREVIEW · chat execution disabled"'),"Preview chat lock missing");
