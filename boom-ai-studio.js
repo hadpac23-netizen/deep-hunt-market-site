@@ -551,12 +551,15 @@
     state.professionalSnapshot=snapshot;
 
     const ready=snapshot.capabilities.filter(x=>x.state==="ready").length;
+    const pending=snapshot.capabilities.filter(x=>x.state==="pending").length;
     const gaps=snapshot.capabilities.filter(x=>x.state==="gap").length;
     const blocked=snapshot.capabilities.filter(x=>x.state==="blocked").length;
     summary.innerHTML=
       '<article><b>'+snapshot.traces.rows.length+'</b><span>TRACE ROWS</span></article>'+
       '<article><b>'+snapshot.failures.dataset_candidates+'</b><span>DATASET CANDIDATES</span></article>'+
       '<article><b>'+ready+'/'+snapshot.capabilities.length+'</b><span>PRO TOOLS READY</span></article>'+
+      '<article><b>'+pending+'</b><span>PENDING EVIDENCE</span></article>'+
+      '<article><b>'+blocked+'</b><span>BLOCKED</span></article>'+
       '<article><b>'+gaps+'</b><span>INSTRUMENTATION GAPS</span></article>';
 
     grid.innerHTML=snapshot.capabilities.map(item=>
@@ -608,16 +611,20 @@
     if(evaluatorReport)evaluatorReport.textContent=[
       "GRADER TYPES: "+(snapshot.evaluators.grader_types.join(", ")||"none"),
       "VERSIONED EVALUATOR REGISTRY: "+snapshot.evaluators.evaluator_registry_connected+" · active="+snapshot.evaluators.active_evaluators+"/"+snapshot.evaluators.evaluator_registry_rows,
-      "HUMAN ALIGNMENT: "+snapshot.evaluators.human_alignment_connected+" · valid="+snapshot.evaluators.valid_alignment_runs+"/"+snapshot.evaluators.alignment_runs+" · missing="+snapshot.evaluators.missing_alignment,
-      "ONLINE EVALS: "+snapshot.evaluators.online_eval_connected+" · completed="+snapshot.evaluators.completed_online_windows+"/"+snapshot.evaluators.online_windows,
-      "CI QUALITY GATE: "+snapshot.evaluators.ci_eval_gate_connected+" · passed="+snapshot.evaluators.passed_ci_gates+"/"+snapshot.evaluators.ci_gates+" · uncovered="+snapshot.evaluators.uncovered_ci_gates,
+      "HUMAN ALIGNMENT: state="+snapshot.evaluators.alignment_state+" · valid="+snapshot.evaluators.valid_alignment_runs+"/"+snapshot.evaluators.alignment_runs+" · missing="+snapshot.evaluators.missing_alignment,
+      "ONLINE EVALS: "+snapshot.evaluators.online_eval_connected+" · completed="+snapshot.evaluators.completed_online_windows+"/"+snapshot.evaluators.online_windows+" · pending="+snapshot.evaluators.pending_online_windows,
+      "CI QUALITY GATE: "+snapshot.evaluators.ci_gate_state+" · passed="+snapshot.evaluators.passed_ci_gates+"/"+snapshot.evaluators.ci_gates+" · failed="+snapshot.evaluators.failed_ci_gates+" · pending="+snapshot.evaluators.pending_ci_gates,
       "",
       snapshot.evaluators.governance_ready
         ?"Evaluator governance is evidenced."
         :"GAP: version scorers/evaluators and calibrate automated judgments against human labels before promotion.",
       snapshot.evaluators.continuous_gate_ready
         ?"Continuous eval + CI gate are evidenced."
-        :"GAP: production sampling/online eval and merge-blocking quality gates are not connected."
+        :snapshot.evaluators.ci_gate_state==="blocked"
+          ?"BLOCKED: at least one measured CI quality gate failed."
+          :snapshot.evaluators.ci_gate_state==="pending"||snapshot.evaluators.pending_online_windows>0
+            ?"PENDING: collecting enough measured online evidence before a CI verdict."
+            :"GAP: online eval or CI evidence is not connected."
     ].join("\n");
 
     const safetyReport=$("#professional-safety-report");
@@ -660,6 +667,7 @@
       "PROFESSIONAL READY: "+snapshot.professional_ready,
       "READY TOOLS: "+ready+"/"+snapshot.capabilities.length,
       "GAPS: "+(snapshot.gaps.join(", ")||"none"),
+      "PENDING: "+(snapshot.pending.join(", ")||"none"),
       "BLOCKED: "+blocked,
       "",
       "TRACE SCHEMA: "+(snapshot.capabilities.find(x=>x.id==="traces")?.state||"unknown"),
