@@ -11,6 +11,7 @@
   const Stylist=window.BoomStylistCore;
   const Mirror=window.BoomMirrorCore;
   const AlphaHarness=window.BoomAlphaTestHarness;
+  const EvidencePack=window.BoomAlphaEvidencePack;
   if(!H||!S?.createClient){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -75,7 +76,8 @@
     huntCapabilities:[],
     selectedCapability:null,
     planningDraft:null,
-    simulatedMemoryEvents:[]
+    simulatedMemoryEvents:[],
+    alphaEvidencePack:null
   };
 
   const toolNodes=[
@@ -1046,6 +1048,65 @@
     return result;
   }
 
+  function buildOwnerAlphaEvidencePack(){
+    const status=$("#alpha-evidence-status"),summary=$("#alpha-evidence-summary"),host=$("#alpha-evidence-stages"),report=$("#alpha-evidence-report"),fingerprint=$("#alpha-evidence-fingerprint");
+    if(!EvidencePack?.build||!EvidencePack?.verifyBoundaries||!AlphaHarness?.runAll){
+      if(status)status.textContent="EVIDENCE_PACK_UNAVAILABLE · PRODUCTION_OFF";
+      if(report)report.textContent="A9 core or A8 harness is unavailable. Nothing was activated.";
+      return null;
+    }
+    const integrationStages=alphaIntegrationStages();
+    const harness=AlphaHarness.runAll();
+    const pack=EvidencePack.build({integrationStages,harness});
+    const boundaryCheck=EvidencePack.verifyBoundaries(pack);
+    const valid=boundaryCheck.valid===true;
+    state.alphaEvidencePack=valid?pack:null;
+
+    if(host)host.innerHTML=pack.stages.map(stage=>
+      '<article class="evidence-stage" data-state="'+(stage.pass?"pass":"blocked")+'">'+
+      '<small>'+esc(stage.id)+'</small><strong>'+esc(stage.name)+'</strong>'+
+      '<span>'+esc(stage.pass?"PASS":"BLOCKED")+'</span><p>'+esc(stage.evidence||"No evidence")+'</p></article>'
+    ).join("");
+    const passed=pack.stages.filter(x=>x.pass).length;
+    if(summary)summary.innerHTML=
+      '<article><b>'+passed+'/'+pack.stage_count+'</b><span>STAGES PASSED</span></article>'+
+      '<article><b>'+(valid&&pack.owner_review_ready?"REVIEW":"LOCKED")+'</b><span>RELEASE GATE</span></article>'+
+      '<article><b>OFF</b><span>ALPHA / PRODUCTION</span></article>';
+    if(fingerprint)fingerprint.textContent="FINGERPRINT: "+pack.evidence_fingerprint+" · snapshot only";
+    if(status)status.textContent=!valid
+      ?"BLOCKED_BOUNDARY_VIOLATION · PRODUCTION_OFF"
+      :(pack.owner_review_ready
+        ?"ALPHA_OWNER_REVIEW_READY · OWNER_GATE_LOCKED · PRODUCTION_OFF"
+        :"BLOCKED_EVIDENCE_REQUIRED · "+pack.blockers.length+" BLOCKER(S) · PRODUCTION_OFF");
+    if(report)report.textContent=[
+      "MODE: "+pack.mode,
+      "EVIDENCE FINGERPRINT: "+pack.evidence_fingerprint,
+      "GENERATED AT: "+pack.generated_at,
+      "STAGES PASSED: "+passed+"/"+pack.stage_count,
+      "OWNER REVIEW READY: "+pack.owner_review_ready,
+      "RELEASE GATE: "+pack.release_gate,
+      "BOUNDARY CHECK: "+(valid?"PASS":"FAIL"),
+      "BOUNDARY ISSUES: "+(boundaryCheck.issues.join(", ")||"none"),
+      "ALPHA ACTIVATION AUTHORIZED: false",
+      "PRODUCTION READY: false",
+      "PRODUCTION_CHANGED: false",
+      "EXECUTION_ALLOWED: false",
+      "PAYMENTS_ACTIVATED: false",
+      "ORDER_ROUTING_ACTIVATED: false",
+      "SUPPLIER_CALLS: 0",
+      "AI_PROVIDER_CALLS: 0",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "OWNER_GATE: "+pack.owner_gate,
+      "",
+      ...pack.stages.map(stage=>stage.id+" "+(stage.pass?"PASS":"BLOCKED")+" · "+stage.name+" · "+stage.evidence),
+      "",
+      "BLOCKERS: "+(pack.blockers.length?pack.blockers.map(x=>x.id+": "+x.evidence).join(" | "):"none"),
+      "NEXT SAFE ACTION: "+pack.next_safe_action
+    ].join("\n");
+    return {pack,boundaryCheck};
+  }
+
   function simulateHuntIntelligence(){
     const output=$("#intelligence-simulation");
     const rows=state.huntCapabilities||[];
@@ -1908,6 +1969,7 @@
   $("#creative-simulate")?.addEventListener("click",simulateCreativeLearning);
   $("#alpha-integration-qa")?.addEventListener("click",runAlphaIntegrationQA);
   $("#alpha-harness-run")?.addEventListener("click",runAlphaHarnessUI);
+  $("#alpha-evidence-build")?.addEventListener("click",buildOwnerAlphaEvidencePack);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
