@@ -446,6 +446,8 @@ assert(html.includes('id="professional-failure-list"'),"Professional failure inb
 assert(html.includes('id="professional-experiment-list"'),"Professional experiment diff missing");
 assert(html.includes('id="professional-review-list"'),"Professional review queue missing");
 assert(html.includes('id="professional-cost-report"'),"Professional cost report missing");
+assert(html.includes('id="professional-evaluator-report"'),"Professional evaluator governance panel missing");
+assert(html.includes('id="professional-safety-report"'),"Professional safety engineering panel missing");
 assert(html.includes('id="professional-report"'),"Professional contract report missing");
 assert(html.includes("boom-professional-workbench.js?v=1"),"Professional Workbench core script missing");
 assert(js.includes("const ProfessionalWorkbench=window.BoomProfessionalWorkbench"),"Professional Workbench binding missing");
@@ -455,6 +457,8 @@ assert(js.includes("PROMPT REGISTRY: "), "Professional prompt registry evidence 
 assert(js.includes("DATASET CANDIDATES: "), "Professional dataset evidence missing");
 assert(js.includes("EXPERIMENT DIFF: "), "Professional experiment evidence missing");
 assert(js.includes("COST/LATENCY: "), "Professional cost/latency evidence missing");
+assert(js.includes('const evaluatorReport=$("#professional-evaluator-report")'),"Evaluator governance renderer missing");
+assert(js.includes('const safetyReport=$("#professional-safety-report")'),"Safety engineering renderer missing");
 assert(js.includes("OWNER GATE REQUIRED: true"),"Professional Owner gate invariant missing");
 assert(js.includes("PRODUCTION CHANGE: false"),"Professional Production guard missing");
 assert(js.includes("SUPPLIER ORDERS: false"),"Professional supplier-order guard missing");
