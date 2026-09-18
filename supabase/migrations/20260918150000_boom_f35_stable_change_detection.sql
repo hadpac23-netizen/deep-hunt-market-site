@@ -102,6 +102,7 @@ begin
       where id = source_row.id;
     end if;
 
+    delete from net._http_response where id = source_row.last_request_id;
     processed := processed + 1;
   end loop;
 
