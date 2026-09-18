@@ -10,6 +10,7 @@
   const Flow=window.Hunt2037FlowCore;
   const Stylist=window.BoomStylistCore;
   const Mirror=window.BoomMirrorCore;
+  const AlphaHarness=window.BoomAlphaTestHarness;
   if(!H||!S?.createClient){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -999,6 +1000,52 @@
     return {ready,passed:passed.length,blocked:blocked.map(x=>x.id),stages};
   }
 
+  function runAlphaHarnessUI(){
+    const status=$("#alpha-harness-status"),summary=$("#alpha-harness-summary"),host=$("#alpha-harness-scenarios"),report=$("#alpha-harness-report");
+    if(!AlphaHarness?.runAll){
+      if(status)status.textContent="HARNESS_UNAVAILABLE · PRODUCTION_OFF";
+      if(report)report.textContent="A8 core is unavailable. Nothing was executed.";
+      return null;
+    }
+    const result=AlphaHarness.runAll();
+    if(host)host.innerHTML=result.scenarios.map(row=>
+      '<article class="harness-scenario" data-state="'+(row.harness_pass?"pass":"blocked")+'">'+
+      '<small>'+esc(row.id.replaceAll("_"," ").toUpperCase())+'</small>'+
+      '<strong>'+esc(row.label)+'</strong>'+
+      '<span>'+esc(row.harness_pass?"PASS":"FAIL")+'</span>'+
+      '<p>Expected ready: '+esc(String(row.expected_ready))+' · Actual ready: '+esc(String(row.actual_ready))+
+      ' · Blocked: '+esc(row.blocked.join(", ")||"none")+'</p></article>'
+    ).join("");
+    if(summary)summary.innerHTML=
+      '<article><b>'+result.passed+'/'+result.total+'</b><span>SCENARIOS PASSED</span></article>'+
+      '<article><b>'+(result.harness_pass?"REVIEW":"LOCKED")+'</b><span>OWNER GATE</span></article>'+
+      '<article><b>OFF</b><span>PRODUCTION</span></article>';
+    if(status)status.textContent=(result.harness_pass?"A8_PASS":"A8_FAIL")+" · "+result.passed+"/"+result.total+" · PRODUCTION_OFF";
+    if(report)report.textContent=[
+      "MODE: "+result.mode,
+      "HARNESS PASS: "+result.harness_pass,
+      "SCENARIOS PASSED: "+result.passed+"/"+result.total,
+      "PRODUCTION READY: false",
+      "PRODUCTION_CHANGED: false",
+      "EXECUTION_ALLOWED: false",
+      "SUPPLIER_CALLS: 0",
+      "AI_PROVIDER_CALLS: 0",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "OWNER_GATE: "+result.owner_gate,
+      "",
+      ...result.scenarios.map(row=>
+        row.id+" · "+(row.harness_pass?"PASS":"FAIL")+" · expected_ready="+row.expected_ready+
+        " · actual_ready="+row.actual_ready+" · blocked="+(row.blocked.join(",")||"none")
+      ),
+      "",
+      "NEXT SAFE ACTION: "+(result.harness_pass
+        ?"Owner may review the Alpha evidence pack. Merge/activation/Production remain separate explicit decisions."
+        :"Fix only the failed harness scenario or engine regression, then rerun A8. Do not activate Production.")
+    ].join("\n");
+    return result;
+  }
+
   function simulateHuntIntelligence(){
     const output=$("#intelligence-simulation");
     const rows=state.huntCapabilities||[];
@@ -1860,6 +1907,7 @@
   $("#personal-simulate")?.addEventListener("click",simulatePersonalStudio);
   $("#creative-simulate")?.addEventListener("click",simulateCreativeLearning);
   $("#alpha-integration-qa")?.addEventListener("click",runAlphaIntegrationQA);
+  $("#alpha-harness-run")?.addEventListener("click",runAlphaHarnessUI);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
