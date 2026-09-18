@@ -582,7 +582,8 @@
     {id:"real-device",label:"Direct reference + real-device screenshot comparison",status:"PARTIAL",evidence:"Viewport contracts exist; real browser screenshots/reference comparison still require the private preview pass."},
     {id:"supplier-hide",label:"Supplier names hidden from shopper storefront",status:"PRESENT",evidence:"Product, category, profile and HUNT History shopper surfaces use HUNT SOURCE / HUNT ORDER labels while provider identity remains internal for routing and truth."},
     {id:"connect-live",label:"Every external connector live-verified",status:"PARTIAL",evidence:"BOOM Connect exists, but each OAuth/API/provider must be checked individually before calling it live."},
-    {id:"shopper-actions",label:"Search / recommendation / Like / Save / Share / History E2E",status:"PARTIAL",evidence:"Decision, Memory and Share managers are represented; end-to-end shopper behavior still needs private-preview validation."}
+    {id:"shopper-actions",label:"Like / Save / Share / History browser E2E",status:"PRESENT",evidence:"Local browser harness passed: Like/Save persist full product metadata, share emits to HUNT Memory, and History grouping receives the interaction events."},
+    {id:"search-recommendation-e2e",label:"Search / recommendation browser E2E",status:"PARTIAL",evidence:"Decision/ranking and HUNT 2037 flow tests pass, but the full search → recommendation → product journey still needs private-preview browser verification."}
   ]);
 
   function renderPromptCoverageAudit(){
