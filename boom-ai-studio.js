@@ -506,6 +506,8 @@
       promptVersions:[],
       datasetStoreConnected:false,
       reviewStoreConnected:false,
+      traceSchemaConnected:false,
+      alertRulesConnected:false,
       releaseGate:state.alphaFinalGate
     });
     state.professionalSnapshot=snapshot;
@@ -571,12 +573,13 @@
       "GAPS: "+(snapshot.gaps.join(", ")||"none"),
       "BLOCKED: "+blocked,
       "",
+      "TRACE SCHEMA: "+(snapshot.capabilities.find(x=>x.id==="traces")?.state||"unknown"),
       "PROMPT REGISTRY: "+snapshot.prompts.status,
       "DATASET CANDIDATES: "+snapshot.failures.dataset_candidates+" · PERSISTED DATASET: "+snapshot.failures.persisted_dataset,
       "REVIEW HISTORY PERSISTED: "+snapshot.review.persisted,
       "EXPERIMENT DIFF: "+(snapshot.experiments.available?"AVAILABLE":"NEEDS_COMPARABLE_RUNS"),
       "COST/LATENCY: "+snapshot.cost.budget_state,
-      "ALERTS: critical="+snapshot.alerts.critical+" watch="+snapshot.alerts.watch,
+      "ALERTS: critical="+snapshot.alerts.critical+" watch="+snapshot.alerts.watch+" · RULES="+(snapshot.capabilities.find(x=>x.id==="alerts")?.state||"unknown"),
       "RELEASE REPLAY: "+(snapshot.release?"ATTACHED":"NO_GATE_SNAPSHOT"),
       "",
       "MUTATION: false",
