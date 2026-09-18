@@ -6,6 +6,7 @@
   const Truth=window.HuntCountryProductTruth;
   const Taste=window.BoomTasteDNA;
   const Decision=window.BoomDecisionBrain;
+  const Memory=window.HuntExperienceMemory;
   if(!H||!S?.createClient){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -69,7 +70,8 @@
     vaultLast:null,
     huntCapabilities:[],
     selectedCapability:null,
-    planningDraft:null
+    planningDraft:null,
+    simulatedMemoryEvents:[]
   };
 
   const toolNodes=[
@@ -694,6 +696,50 @@
       "EXECUTION_ALLOWED: false",
       "STOREFRONT_CHANGED: false"
     ].join("\n");
+  }
+
+  function renderMemorySimulation(){
+    const list=$("#memory-event-list");
+    const output=$("#memory-context-result");
+    if(!list||!output)return;
+    const rows=state.simulatedMemoryEvents;
+    list.innerHTML=rows.length?rows.slice().reverse().map(row=>
+      '<div class="memory-event"><span>'+esc(row.category||"uncategorized")+' · '+esc(row.item_id||"no item")+'</span><em>'+esc(row.type)+'</em></div>'
+    ).join(""):'<p>No simulated events.</p>';
+    const context=Memory?.decisionContext?.(rows)||{interactions:0,category_affinity:{},supplier_affinity:{},signal_counts:{}};
+    const profile=Taste?.buildProfile?.(rows)||{mode:"cold_start",confidence:0,categories:[]};
+    output.textContent=[
+      "MODE: A3_ISOLATED_MEMORY_SIMULATION",
+      "INTERACTIONS: "+context.interactions,
+      "PERSONALIZATION MODE: "+String(profile.mode||"cold_start").toUpperCase(),
+      "CONFIDENCE: "+((Number(profile.confidence)||0)*100).toFixed(0)+"%",
+      "CATEGORY AFFINITY: "+JSON.stringify(context.category_affinity||{}),
+      "SUPPLIER AFFINITY: "+JSON.stringify(context.supplier_affinity||{}),
+      "SIGNAL COUNTS: "+JSON.stringify(context.signal_counts||{}),
+      "RECENT PRODUCTS: "+(context.recent_product_keys||[]).join(", "),
+      "REAL PROFILE WRITTEN: false",
+      "HUNT HISTORY CHANGED: false",
+      "EXECUTION_ALLOWED: false"
+    ].join("\n");
+  }
+
+  function addSimulatedMemoryEvent(){
+    if(!Memory?.normalize)return;
+    const row=Memory.normalize({
+      type:truthValue("memory-action"),
+      category:truthValue("memory-category"),
+      provider:truthValue("memory-provider"),
+      item_id:truthValue("memory-item-id"),
+      source:"boom-studio-isolated-simulation"
+    });
+    state.simulatedMemoryEvents.push(row);
+    if(state.simulatedMemoryEvents.length>100)state.simulatedMemoryEvents.shift();
+    renderMemorySimulation();
+  }
+
+  function resetMemorySimulation(){
+    state.simulatedMemoryEvents=[];
+    renderMemorySimulation();
   }
 
   function simulateHuntIntelligence(){
@@ -1551,6 +1597,8 @@
   $("#alpha-load-plan")?.addEventListener("click",loadAlphaPlan);
   $("#truth-simulate")?.addEventListener("click",evaluateTruthWorkspace);
   $("#decision-simulate")?.addEventListener("click",evaluateDecisionWorkspace);
+  $("#memory-add-event")?.addEventListener("click",addSimulatedMemoryEvent);
+  $("#memory-reset-simulation")?.addEventListener("click",resetMemorySimulation);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
