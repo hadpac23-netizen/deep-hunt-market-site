@@ -86,23 +86,105 @@
     alphaFinalGate:null
   };
 
-  const toolNodes=[
-    ["supplier-cj","CJ Supplier","CJ","🔌"],
-    ["supplier-eprolo","EPROLO Supplier","EPROLO","⬡"],
-    ["supplier-hypersku","HyperSKU Supplier","HyperSKU","H"],
-    ["sales-director","Sales","Sales","$"],
-    ["marketing-growth","Marketing","Marketing","◈"],
-    ["category-orchestrator","Categories","Categories","▦"],
-    ["dynamic-merchandising","Dynamic","Dynamic","↻"],
-    ["site-reliability","Reliability","Reliability","✓"],
-    ["f35-research","F35 Research","F35 Research","⚡"],
-    ["f35-acquisition","F35 Acquisition","Acquisition","◎"],
-    ["daily-10k-mission","$10K Mission","$10K","$"],
-    ["checkout-payment","Checkout","Checkout","▣"],
-    ["repair-engineering","Repair","Repair","🔧"],
-    ["security-access","Security","Security","◆"],
-    ["analytics-truth","Analytics","Analytics","▥"]
+  const studioNodeGroups=[
+    {
+      id:"intelligence",
+      label:"HUNT INTELLIGENCE PIPELINE · A1 → A6",
+      tone:"intelligence",
+      top:540,
+      nodes:[
+        ["inventory-truth","A1 Product Truth","Stock · variants · provider truth","✓"],
+        ["decision-intelligence","A2 Decision Brain","Ranking · reason codes · confidence","◆"],
+        ["feedback-intelligence","A2 Taste DNA","Likes · saves · demand signals","◈"],
+        ["memory-continuity","A3 Memory & Actions","History · continuity · corrections","▤"],
+        ["hunt-worlds-flow","A4 Dynamic Worlds","Worlds · discovery · controlled surprise","↻"],
+        ["boom-stylist","A5 BOOM Stylist","Complete the Look · occasions","✦"],
+        ["boom-mirror","A5 Safe Mirror","Consent-first preview · privacy","◉"],
+        ["creative-brand-factory","A6 Creative Learning","Brand · creative · visual QA","▶"]
+      ]
+    },
+    {
+      id:"release",
+      label:"ALPHA QA / RELEASE CONTROL · A7 → A12",
+      tone:"release",
+      top:825,
+      nodes:[
+        ["experimentation-learning","A7–A8 Integration & Harness","Experiments · holdouts · fail-closed QA","⌁"],
+        ["analytics-truth","A9 Evidence & Analytics","Evidence pack · metric truth","▥"],
+        ["merchandising-ux","A10 RC Preview / UX","Private RC · mobile · desktop","▦"],
+        ["site-reliability","A11 Full RC QA","Regression · broken flows · health","✓"],
+        ["release-control","A12 Final Owner Gate","Go / No-Go · rollback · release","⬢"],
+        ["trust-compliance","Trust & Compliance","Claims · privacy · authenticity","◆"]
+      ]
+    },
+    {
+      id:"commerce",
+      label:"COMMERCE & OPERATIONS CONTROL",
+      tone:"commerce",
+      top:1010,
+      nodes:[
+        ["category-orchestrator","Categories","Taxonomy · gaps · rotation","▦"],
+        ["sale-readiness","Sale Readiness","Images · variants · product quality","✓"],
+        ["pricing-profit","Pricing & Profit","Landed cost · margin · bundles","$"],
+        ["supplier-shipping","Supplier & Shipping","Country delivery · tracking · risk","⇄"],
+        ["country-localization","Country & Localization","Currency · language · market rules","◎"],
+        ["checkout-payment","Checkout & Payment","Cart · callbacks · order creation","▣"],
+        ["sales-conversion","Sales & Conversion","Conversion · AOV · offer fit","$"],
+        ["marketing-growth","Marketing & Growth","SEO · social · campaigns · learning","◈"],
+        ["finance-reconciliation","Finance & Reconciliation","Ledger · settlements · profit release","≡"],
+        ["returns-care","Returns & Customer Care","Returns · complaints · delivery issues","↩"],
+        ["integration-connections","Integrations","OAuth · APIs · feeds · webhooks","⌘"],
+        ["security-access","Security & Access","Auth · RLS · secrets · permissions","◆"],
+        ["knowledge-freshness","Knowledge Freshness","Live verification · volatile facts","⟳"],
+        ["share-referral","Share & Referral","Sharing · referrals · abuse guard","↗"],
+        ["repair-engineering","Repair & Engineering","Bugs · regressions · staged fixes","🔧"]
+      ]
+    },
+    {
+      id:"missions",
+      label:"F35 / GROWTH MISSIONS",
+      tone:"missions",
+      top:1395,
+      nodes:[
+        ["f35-research","F35 Research","Deep research · evidence · opportunities","⚡"],
+        ["f35-acquisition","F35 Acquisition","Acquisition opportunities · channels","◎"],
+        ["daily-10k-mission","$10K Mission","Daily profit mission · planning only","$"]
+      ]
+    },
+    {
+      id:"suppliers",
+      label:"SUPPLIER CONNECTORS · STUDIO ONLY",
+      tone:"suppliers",
+      top:1575,
+      nodes:[
+        ["supplier-cj","CJ Supplier","Official supplier connector","🔌"],
+        ["supplier-eprolo","EPROLO Supplier","Official supplier connector","⬡"],
+        ["supplier-hypersku","HyperSKU Supplier","Read-only pilot · Owner-gated","H"]
+      ]
+    },
+    {
+      id:"store",
+      label:"STORE DEPARTMENTS · CATEGORY OWNERS",
+      tone:"store",
+      top:1755,
+      nodes:[
+        ["dept-women","Women","Fashion · shoes · lingerie · accessories","W"],
+        ["dept-men","Men","Fashion · suits · shoes · accessories","M"],
+        ["dept-kids-baby","Kids & Baby","Kids · baby · family shopping","K"],
+        ["dept-beauty","Beauty & Personal Care","Beauty · makeup · fragrances","B"],
+        ["dept-jewelry-accessories","Jewelry & Accessories","Jewelry · watches · bags","J"],
+        ["dept-home","Home & Living","Home · lighting · office","H"],
+        ["dept-tech","Tech & Electronics","Phones · accessories · electronics","T"],
+        ["dept-sports","Sports & Outdoors","Gym · sportswear · equipment","S"],
+        ["dept-pets","Pets","Cats · dogs · pet living","P"],
+        ["dept-toys","Toys","Quality toys · discovery","T"],
+        ["dept-travel-office-gifts","Travel / Office / Gifts","Travel · luggage · office · gifts","G"]
+      ]
+    }
   ];
+  const toolNodes=studioNodeGroups.flatMap(group=>group.nodes);
+  const studioNodeGroupById=new Map();
+  for(const group of studioNodeGroups)for(const node of group.nodes)studioNodeGroupById.set(node[0],group);
 
   const toolNodeFallbackManagers=Object.freeze({
     "supplier-hypersku":Object.freeze({
@@ -162,21 +244,37 @@
   function createToolNodes(){
     const host=$("#tool-nodes");
     host.innerHTML="";
-    toolNodes.forEach((t,i)=>{
-      const col=i%7;
-      const row=Math.floor(i/7);
-      const el=document.createElement("article");
-      el.className="node";
-      el.id="node-"+t[0];
-      el.dataset.managerId=t[0];
-      el.style.right=(35+col*175)+"px";
-      el.style.top=(560+row*135)+"px";
-      el.innerHTML=
-        '<span class="port top"></span>'+
-        '<div class="node-head"><span class="node-icon">'+t[3]+'</span><span class="node-title">'+esc(t[1])+'</span></div>'+
-        '<div class="node-body"><p>'+esc(t[2])+' department</p><footer><span>'+esc(t[0])+'</span><span class="status-dot"></span></footer></div>';
-      host.appendChild(el);
-    });
+    const columns=6;
+    const colGap=190;
+    const rowGap=112;
+    const rightStart=35;
+    for(const group of studioNodeGroups){
+      const rows=Math.ceil(group.nodes.length/columns);
+      const frame=document.createElement("section");
+      frame.className="studio-node-group studio-node-group-"+group.tone;
+      frame.dataset.groupId=group.id;
+      frame.style.top=(group.top-32)+"px";
+      frame.style.right="20px";
+      frame.style.height=(rows*rowGap+74)+"px";
+      frame.innerHTML='<div class="studio-node-group-label">'+esc(group.label)+'</div>';
+      host.appendChild(frame);
+      group.nodes.forEach((node,index)=>{
+        const col=index%columns;
+        const row=Math.floor(index/columns);
+        const el=document.createElement("article");
+        el.className="node studio-tool-node";
+        el.id="node-"+node[0];
+        el.dataset.managerId=node[0];
+        el.dataset.groupId=group.id;
+        el.style.right=(rightStart+col*colGap)+"px";
+        el.style.top=(group.top+row*rowGap)+"px";
+        el.innerHTML=
+          '<span class="port top"></span>'+
+          '<div class="node-head"><span class="node-icon">'+esc(node[3])+'</span><span class="node-title">'+esc(node[1])+'</span></div>'+
+          '<div class="node-body"><p>'+esc(node[2])+'</p><footer><span>'+esc(group.label.split(" · ")[0])+'</span><span class="status-dot"></span></footer></div>';
+        host.appendChild(el);
+      });
+    }
   }
 
   function center(el){
@@ -206,11 +304,19 @@
     addLine(svg,$("#node-super"),$("#node-model"),"watch");
     addLine(svg,$("#node-super"),$("#node-memory"),"live");
     addLine(svg,$("#node-super"),$("#node-eval"),state.evals.length?"live":"watch");
-    toolNodes.forEach(t=>{
-      const st=statusOf(t[0]);
-      const cls=["healthy","working"].includes(st)?"live":st;
-      addLine(svg,$("#node-super"),$("#node-"+t[0]),cls);
-    });
+    for(const group of studioNodeGroups){
+      const first=group.nodes[0];
+      if(!first)continue;
+      const firstStatus=statusOf(first[0]);
+      addLine(svg,$("#node-super"),$("#node-"+first[0]),["healthy","working"].includes(firstStatus)?"live":firstStatus);
+      if(["intelligence","release"].includes(group.id)){
+        for(let i=1;i<group.nodes.length;i++){
+          const prev=group.nodes[i-1],current=group.nodes[i];
+          const st=statusOf(current[0]);
+          addLine(svg,$("#node-"+prev[0]),$("#node-"+current[0]),["healthy","working"].includes(st)?"live":st);
+        }
+      }
+    }
   }
 
   function attentionReports(){
@@ -1418,10 +1524,23 @@
   }
 
   function inspectManager(id){
-    const m=state.managerMap.get(id)||toolNodeFallbackManagers[id];
+    const group=studioNodeGroupById.get(id);
+    const catalogNode=group?.nodes.find(node=>node[0]===id);
+    const m=state.managerMap.get(id)||toolNodeFallbackManagers[id]||(catalogNode?{
+      id,
+      name:catalogNode[1],
+      department:group.label,
+      status:"offline"
+    }:null);
     if(!m)return;
     state.selected=id;
-    const r=state.reportMap.get(id)||toolNodeFallbackReports[id];
+    const r=state.reportMap.get(id)||toolNodeFallbackReports[id]||(catalogNode?{
+      manager_id:id,
+      status:"offline",
+      issues:["No live manager report is loaded for this Studio node in the current runtime."],
+      recommended_action:"Review the Studio contract and connect live runtime evidence before treating this node as active.",
+      metrics:{studio_group:group.id,runtime:"OFFLINE_OR_UNVERIFIED"}
+    }:null);
     const workers=state.workers.filter(w=>w.manager_id===id);
     $("#inspect-title").textContent=m.name;
     $("#inspect-status").innerHTML=pill(statusOf(id))+'<span class="pill">'+esc(m.department)+'</span>';
