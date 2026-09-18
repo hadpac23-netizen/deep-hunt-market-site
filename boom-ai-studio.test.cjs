@@ -13,7 +13,7 @@ assert(js.includes('select("is_admin")'),"admin check missing");
 assert(html.includes('data-manager-id="boom-meta-f35"'),"Meta-F35 node missing");
 assert(html.includes('data-manager-id="boom-super-agent"'),"Super Agent node missing");
 assert(js.includes("toolNodes"),"department/tool nodes missing");
-assert(js.includes('["supplier-hypersku","HyperSKU Supplier","HyperSKU","H"]'),"HyperSKU Studio department node missing");
+assert(js.includes('["supplier-hypersku","HyperSKU Supplier","Read-only pilot · Owner-gated","H"]'),"HyperSKU Studio department node missing");
 assert(js.includes('department:"TIER 0 SUPPLIER"'),"HyperSKU Studio fallback inspector missing");
 assert(js.includes('id:"hypersku",name:"HyperSKU Supplier",kind:"TIER 0 SUPPLIER API"'),"HyperSKU BOOM Connect card missing");
 assert(js.includes("Read-only first · live fulfillment requires explicit Owner approval"),"HyperSKU Connect gate missing");
@@ -334,3 +334,18 @@ assert((js.match(/#alpha-final-no-go"\)\?\.addEventListener/g)||[]).length===1,"
 assert(css.includes(".final-gate-workspace"),"A12 final gate styling missing");
 assert(fs.existsSync("boom-alpha-final-gate.js"),"A12 final gate core file missing");
 assert(fs.existsSync("boom-alpha-final-gate.test.cjs"),"A12 final gate unit test missing");
+
+assert(html.includes("BOOM DEPARTMENTS · ORDERED FLOW"),"Ordered Studio label missing");
+assert(js.includes('id:"intelligence"')&&js.includes("HUNT INTELLIGENCE PIPELINE · A1 → A6"),"Ordered Studio intelligence group missing");
+assert(js.includes('id:"release"')&&js.includes("ALPHA QA / RELEASE CONTROL · A7 → A12"),"Ordered Studio release group missing");
+assert(js.includes('id:"commerce"')&&js.includes("COMMERCE & OPERATIONS CONTROL"),"Ordered Studio commerce group missing");
+assert(js.includes('id:"missions"')&&js.includes("F35 / GROWTH MISSIONS"),"Ordered Studio missions group missing");
+assert(js.includes('id:"suppliers"')&&js.includes("SUPPLIER CONNECTORS · STUDIO ONLY"),"Ordered Studio supplier group missing");
+assert(js.includes('id:"store"')&&js.includes("STORE DEPARTMENTS · CATEGORY OWNERS"),"Ordered Studio store group missing");
+for(const id of ["inventory-truth","decision-intelligence","feedback-intelligence","memory-continuity","hunt-worlds-flow","boom-stylist","boom-mirror","creative-brand-factory","release-control","trust-compliance","finance-reconciliation","country-localization","knowledge-freshness","dept-women","dept-men","dept-tech","dept-toys"]){
+  assert(js.includes('["'+id+'"'),"Ordered Studio node missing: "+id);
+}
+assert(js.includes("const studioNodeGroupById=new Map()"),"Studio node catalog map missing");
+assert(js.includes("No live manager report is loaded for this Studio node in the current runtime."),"Truthful offline Studio fallback missing");
+assert(css.includes(".studio-node-group"),"Studio group lane styling missing");
+assert(css.includes("min-height:2180px"),"Expanded Studio canvas height missing");
