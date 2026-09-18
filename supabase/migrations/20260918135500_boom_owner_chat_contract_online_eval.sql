@@ -56,6 +56,7 @@ begin
     and success is true
     and metadata->>'online_eval'='true'
     and metadata->>'quality_metric'='owner_chat_contract_v1'
+    and metadata->>'reply_accepted'='true'
     and created_at >= now()-interval '24 hours';
 
   samples:=coalesce(samples,0);
@@ -138,10 +139,13 @@ $$;
 
 revoke all on function boom_internal.refresh_owner_chat_contract_eval() from public, anon, authenticated;
 
-select cron.schedule(
-  'boom-owner-chat-contract-eval',
-  '*/15 * * * *',
-  $$select boom_internal.refresh_owner_chat_contract_eval();$$
-);
+do $cron$
+begin
+  if exists(select 1 from cron.job where jobname='boom-owner-chat-contract-eval') then
+    perform cron.unschedule('boom-owner-chat-contract-eval');
+  end if;
+  perform cron.schedule('boom-owner-chat-contract-eval','*/15 * * * *','select boom_internal.refresh_owner_chat_contract_eval();');
+end
+$cron$;
 
 select boom_internal.refresh_owner_chat_contract_eval();
