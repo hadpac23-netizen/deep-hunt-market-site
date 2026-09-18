@@ -3,6 +3,10 @@
 
   const H=window.HuntCore;
   const S=window.supabase;
+  const previewUrl=new URL(location.href);
+  const previewLocalHost=["127.0.0.1","localhost"].includes(location.hostname);
+  const previewNetlifyDraft=/^[a-z0-9]+--deep-hunt-market\.netlify\.app$/i.test(location.hostname);
+  const SAFE_PREVIEW_BOOT=(previewLocalHost||previewNetlifyDraft)&&previewUrl.searchParams.get("preview")==="1";
   const Truth=window.HuntCountryProductTruth;
   const Taste=window.BoomTasteDNA;
   const Decision=window.BoomDecisionBrain;
@@ -15,12 +19,12 @@
   const RCPreview=window.BoomAlphaRCPreview;
   const RCQA=window.BoomAlphaRCQA;
   const FinalGate=window.BoomAlphaFinalGate;
-  if(!H||!S?.createClient){
+  if(!H||(!S?.createClient&&!SAFE_PREVIEW_BOOT)){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
   }
 
-  const client=S.createClient(
+  const client=S?.createClient?S.createClient(
     "https://zszlnahjqmwozwubetkm.supabase.co",
     H.publishableKey,
     {
@@ -31,7 +35,7 @@
         autoRefreshToken:true
       }
     }
-  );
+  ):null;
   const $=q=>document.querySelector(q);
   const $$=q=>[...document.querySelectorAll(q)];
   const esc=v=>H.esc?.(v)??String(v??"");
@@ -2762,14 +2766,11 @@
     renderBrandVideoProviders();
     setVaultControls();
 
-    const url=new URL(location.href);
-    const localHost=["127.0.0.1","localhost"].includes(location.hostname);
-    const netlifyDraft=/^[a-z0-9]+--deep-hunt-market\.netlify\.app$/i.test(location.hostname);
-    const safePreview=(localHost||netlifyDraft)&&url.searchParams.get("preview")==="1";
-    if(safePreview){
+    const url=previewUrl;
+    if(SAFE_PREVIEW_BOOT){
       state.localPreview=true;
       showApp();
-      applyLocalPreviewSafety(netlifyDraft?"draft":"local");
+      applyLocalPreviewSafety(previewNetlifyDraft?"draft":"local");
       renderAll();
       await renderHuntIntelligence();
       renderApprovalQueue();
