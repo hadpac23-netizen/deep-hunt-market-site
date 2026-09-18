@@ -865,6 +865,50 @@
     ].join("\n");
   }
 
+  function simulateCreativeLearning(){
+    const host=$("#creative-tournament");
+    const output=$("#creative-result");
+    const status=$("#creative-result-status");
+    const hooks=Math.max(1,Math.min(20,Math.round(decisionNumber("creative-hooks"))||10));
+    const concepts=Math.max(1,Math.min(10,Math.round(decisionNumber("creative-concepts"))||5));
+    const scripts=Math.max(1,Math.min(6,Math.round(decisionNumber("creative-scripts"))||3));
+    const threshold=Math.max(0,Math.min(100,decisionNumber("creative-threshold")));
+    const gates={
+      truth:Boolean($("#creative-truth-live")?.checked),
+      reference:Boolean($("#creative-reference-locked")?.checked),
+      proof:Boolean($("#creative-proof-ready")?.checked)
+    };
+    const passed=gates.truth&&gates.reference&&gates.proof;
+    const stages=[
+      {name:"Hook Tournament",count:hooks,rule:"Distinct empty idea slots"},
+      {name:"Concept Tournament",count:concepts,rule:"Storyboard-ready slots"},
+      {name:"Script Tournament",count:scripts,rule:"Short-form draft slots"},
+      {name:"Red Team",count:1,rule:"Claims and missing-proof review"},
+      {name:"Visual QA",count:scripts,rule:"Fidelity threshold "+threshold},
+      {name:"Owner Gate",count:1,rule:"DRAFT_REVIEW only"}
+    ];
+    host.innerHTML=stages.map(stage=>
+      '<article class="creative-stage"><small>'+esc(String(stage.count))+' EMPTY SLOT'+(stage.count===1?"":"S")+'</small><strong>'+esc(stage.name)+'</strong><span>'+esc(stage.rule)+'</span></article>'
+    ).join("");
+    status.textContent=(passed?"PLAN_READY_FOR_OWNER_REVIEW":"BLOCKED / EVIDENCE_REQUIRED")+" · GENERATION_OFF";
+    output.textContent=[
+      "MODE: A6_CREATIVE_STRUCTURE_SIMULATION",
+      "CATEGORY: "+truthValue("creative-category"),
+      "CHANNEL: "+truthValue("creative-channel"),
+      "TEST MODE: "+truthValue("creative-test-mode"),
+      "PRODUCT TRUTH LIVE: "+gates.truth,
+      "EXACT REFERENCES LOCKED: "+gates.reference,
+      "PROOF BOUNDARY REVIEWED: "+gates.proof,
+      "TOURNAMENT MAY PROCEED TO PRIVATE DRAFT: "+passed,
+      "CONTENT GENERATED: 0",
+      "VIDEO GENERATED: 0",
+      "PROVIDER CALLS: 0",
+      "SPEND AUTHORIZED: false",
+      "PUBLISHING AUTHORIZED: false",
+      "OWNER GATE: DRAFT_REVIEW"
+    ].join("\n");
+  }
+
   function simulateHuntIntelligence(){
     const output=$("#intelligence-simulation");
     const rows=state.huntCapabilities||[];
@@ -1724,6 +1768,7 @@
   $("#memory-reset-simulation")?.addEventListener("click",resetMemorySimulation);
   $("#flow-simulate")?.addEventListener("click",simulateDynamicFlow);
   $("#personal-simulate")?.addEventListener("click",simulatePersonalStudio);
+  $("#creative-simulate")?.addEventListener("click",simulateCreativeLearning);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
