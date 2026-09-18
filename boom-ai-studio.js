@@ -91,7 +91,11 @@
     alphaRCQA:null,
     alphaFinalGate:null,
     localPreview:false,
-    professionalSnapshot:null
+    professionalSnapshot:null,
+    professionalEvidence:{
+      modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
+      evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[]
+    }
   };
 
   const studioNodeGroups=[
@@ -473,6 +477,18 @@
 
   function professionalCostSamples(){
     const samples=[];
+    for(const row of state.professionalEvidence.modelObservations||[]){
+      const latency=Number(row.latency_ms);
+      const cost=Number(row.estimated_cost_usd);
+      const tokens=Number(row.total_tokens);
+      if([latency,cost,tokens].some(Number.isFinite)){
+        samples.push({
+          latency_ms:Number.isFinite(latency)?latency:null,
+          cost:Number.isFinite(cost)?cost:null,
+          tokens:Number.isFinite(tokens)?tokens:null
+        });
+      }
+    }
     const candidates=[...state.events,...state.workerReports,...state.reports];
     for(const row of candidates){
       const meta=row?.metrics||row?.metadata||row?.result||{};
@@ -502,9 +518,12 @@
       cycles:state.cycles,
       evals:state.evals,
       decisions:state.decisions,
+      modelObservations:state.professionalEvidence.modelObservations,
+      shadowRuns:state.professionalEvidence.shadowRuns,
+      replayRuns:state.professionalEvidence.replayRuns,
       costSamples:professionalCostSamples(),
       promptVersions:[],
-      datasetStoreConnected:false,
+      datasetStoreConnected:state.professionalEvidence.evalCases.length>0&&state.professionalEvidence.evalSuites.length>0,
       reviewStoreConnected:false,
       traceSchemaConnected:false,
       alertRulesConnected:false,
@@ -576,6 +595,12 @@
       "TRACE SCHEMA: "+(snapshot.capabilities.find(x=>x.id==="traces")?.state||"unknown"),
       "PROMPT REGISTRY: "+snapshot.prompts.status,
       "DATASET CANDIDATES: "+snapshot.failures.dataset_candidates+" · PERSISTED DATASET: "+snapshot.failures.persisted_dataset,
+      "PERSISTED EVAL SUITES: "+state.professionalEvidence.evalSuites.length,
+      "PERSISTED EVAL CASES: "+state.professionalEvidence.evalCases.length,
+      "PERSISTED EVAL RUNS: "+state.professionalEvidence.evalRuns.length,
+      "SHADOW RUNS: "+state.professionalEvidence.shadowRuns.length,
+      "REPLAY RUNS: "+state.professionalEvidence.replayRuns.length,
+      "MODEL OBSERVATIONS: "+state.professionalEvidence.modelObservations.length,
       "REVIEW HISTORY PERSISTED: "+snapshot.review.persisted,
       "EXPERIMENT DIFF: "+(snapshot.experiments.available?"AVAILABLE":"NEEDS_COMPARABLE_RUNS"),
       "COST/LATENCY: "+snapshot.cost.budget_state,
@@ -2251,6 +2276,29 @@
     return state.connectorEvidence;
   }
 
+  async function loadProfessionalEvidence(){
+    if(state.localPreview){
+      state.professionalEvidence={
+        modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
+        evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[]
+      };
+      return state.professionalEvidence;
+    }
+    const [modelObservations,modelCosts,modelRoutes,benchmarkCases,evalCases,evalRuns,evalSuites,replayRuns,shadowRuns]=await Promise.all([
+      query("hunt_boom_model_observations","id,route_key,task_class,provider,model,success,status_code,latency_ms,quality_score,estimated_cost_usd,created_at,input_tokens,output_tokens,total_tokens","created_at",220),
+      query("hunt_boom_model_cost_registry","id,provider,model,pricing_tier,input_usd_per_million,output_usd_per_million,verified_at,active","verified_at",80),
+      query("hunt_boom_model_routes","id,route_key,task_class,primary_model,fallback_model,max_latency_ms,max_cost_usd,min_quality_score,enabled,owner_gate_required,updated_at","updated_at",80),
+      query("hunt_boom_model_benchmark_cases","id,case_key,task_class,active,created_at","created_at",120),
+      query("hunt_boom_eval_cases_v2","id,suite_id,case_key,grader_type,weight,metadata","id",300),
+      query("hunt_boom_eval_runs_v2","id,suite_id,run_key,target_version,trials_planned,trials_completed,passed_trials,score,status,evidence,created_at,completed_at","created_at",160),
+      query("hunt_boom_eval_suites","id,suite_key,title,domain,trials_per_case,pass_threshold,active,created_at,updated_at","updated_at",80),
+      query("hunt_boom_replay_runs","id,replay_key,source_type,source_id,baseline_version,candidate_version,run_mode,comparison,verdict,evidence,created_at,completed_at","created_at",120),
+      query("hunt_boom_shadow_runs","id,run_key,experiment_key,target_type,target_ref,baseline_version,candidate_version,traffic_percent,run_mode,status,baseline_metrics,candidate_metrics,comparison,evidence,owner_gate_required,created_at,completed_at","created_at",120)
+    ]);
+    state.professionalEvidence={modelObservations,modelCosts,modelRoutes,benchmarkCases,evalCases,evalRuns,evalSuites,replayRuns,shadowRuns};
+    return state.professionalEvidence;
+  }
+
   async function loadAll(){
     const [managers,workers,workerReports,reports,events,decisions,commands,cycles,evals,learning]=await Promise.all([
       query("hunt_boom_managers","*","updated_at",200),
@@ -2265,7 +2313,7 @@
       query("hunt_boom_learning_items","*","learned_at",150)
     ]);
     Object.assign(state,{managers,workers,workerReports,reports,events,decisions,commands,cycles,evals,learning});
-    await loadConnectorEvidence();
+    await Promise.all([loadConnectorEvidence(),loadProfessionalEvidence()]);
     state.managerMap=latest(managers,"id");
     state.reportMap=latest(reports,"manager_id");
     state.workerReportMap=latest(workerReports,"worker_id");
