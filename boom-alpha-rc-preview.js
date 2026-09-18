@@ -1,6 +1,10 @@
 (() => {
   "use strict";
 
+  const EvidencePack=typeof window!=="undefined"
+    ? window.BoomAlphaEvidencePack
+    : (typeof require==="function"?require("./boom-alpha-evidence-pack.js"):null);
+
   const DEVICES=Object.freeze([
     Object.freeze({id:"mobile",label:"Mobile",width:390,height:844}),
     Object.freeze({id:"tablet",label:"Tablet",width:768,height:1024}),
@@ -18,7 +22,11 @@
   ]);
 
   function build({evidencePack=null,harness=null}={}){
+    const evidenceIntegrity=EvidencePack?.verifyIntegrity
+      ? EvidencePack.verifyIntegrity(evidencePack||{})
+      : Object.freeze({valid:false,issues:Object.freeze(["A9_INTEGRITY_VALIDATOR_UNAVAILABLE"])});
     const evidenceOk=Boolean(
+      evidenceIntegrity.valid===true &&
       evidencePack?.mode==="A9_OWNER_ALPHA_EVIDENCE_PACK" &&
       evidencePack?.owner_review_ready===true &&
       evidencePack?.release_gate==="ALPHA_OWNER_REVIEW_READY" &&
@@ -52,6 +60,8 @@
       visibility:"OWNER_PRIVATE_STUDIO",
       source:"A9_EVIDENCE_SNAPSHOT",
       evidence_fingerprint:String(evidencePack?.evidence_fingerprint||""),
+      evidence_integrity_valid:evidenceIntegrity.valid===true,
+      evidence_integrity_issues:Object.freeze([...(evidenceIntegrity.issues||[])]),
       devices:DEVICES,
       journey:Object.freeze(screens),
       blockers:Object.freeze(blockers),
