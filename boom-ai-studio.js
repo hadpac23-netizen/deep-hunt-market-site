@@ -578,7 +578,7 @@
     {id:"freshness",label:"Knowledge freshness / live verification",status:"PRESENT",evidence:"Knowledge Freshness, Product Truth and supplier/shipping verification are represented."},
     {id:"health-lines",label:"Green / yellow / red health lines",status:"PRESENT",evidence:"Healthy, watch and blocked/critical node/link states are rendered separately."},
     {id:"store-depts",label:"Store category departments",status:"PRESENT",evidence:"Women, Men, Kids, Beauty, Accessories, Home, Tech, Sports, Pets, Toys and Travel/Office/Gifts are visible."},
-    {id:"traceability",label:"Product trace: source → shelf → checkout → order → sale",status:"PARTIAL",evidence:"Managers exist across the chain, but one unified per-product trace timeline is not yet exposed in Studio."},
+    {id:"traceability",label:"Product trace: source → shelf → checkout → order → sale",status:"PRESENT",evidence:"BOOM Studio now exposes one read-only trace that joins catalog identity with Admin order pipeline and finance evidence; missing links stay UNVERIFIED."},
     {id:"real-device",label:"Direct reference + real-device screenshot comparison",status:"PARTIAL",evidence:"Viewport contracts exist; real browser screenshots/reference comparison still require the private preview pass."},
     {id:"supplier-hide",label:"Supplier names hidden from shopper storefront",status:"PRESENT",evidence:"Product, category, profile and HUNT History shopper surfaces use HUNT SOURCE / HUNT ORDER labels while provider identity remains internal for routing and truth."},
     {id:"connect-live",label:"Every external connector live-verified",status:"PARTIAL",evidence:"BOOM Connect exists, but each OAuth/API/provider must be checked individually before calling it live."},
