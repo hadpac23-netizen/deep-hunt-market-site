@@ -63,7 +63,9 @@
     brandVerified:null,
     vaultLive:true,
     vaultLast:null,
-    huntCapabilities:[]
+    huntCapabilities:[],
+    selectedCapability:null,
+    planningDraft:null
   };
 
   const toolNodes=[
@@ -414,17 +416,91 @@
         '<article><b>'+counts.planned+'</b><span>PLANNED / BLOCKED</span></article>'+
         '<article><b>'+counts.gated+'</b><span>OWNER-GATED</span></article>';
       host.innerHTML=rows.map(row=>
-        '<article class="intelligence-card" data-state="'+esc(String(row.brain_status||"UNKNOWN").toUpperCase())+'">'+
+        '<article class="intelligence-card" data-capability-id="'+esc(row.id)+'" data-state="'+esc(String(row.brain_status||"UNKNOWN").toUpperCase())+'">'+
           '<div class="intelligence-card-head"><div><h3>'+esc(row.id)+'</h3><small>'+esc(row.manager||"unassigned")+'</small></div>'+pill(intelligenceTone(row))+'</div>'+
           '<p>'+esc(row.notes||"No evidence note recorded.")+'</p>'+
           '<div class="intelligence-deps">'+(row.dependencies||[]).map(dep=>'<span>'+esc(dep)+'</span>').join("")+'</div>'+
         '</article>'
       ).join("");
+      if(state.selectedCapability)renderBrainDetail(state.selectedCapability);
     }catch(err){
       state.huntCapabilities=[];
       summary.innerHTML="";
       host.innerHTML='<article class="intelligence-card" data-state="BLOCKED"><h3>Capability truth unavailable</h3><p>'+esc(err.message||err)+'</p></article>';
     }
+  }
+
+  const capabilityContracts=Object.freeze({
+    "decision-intelligence":{inputs:["verified candidate","country eligibility","taste context","quality and trust"],outputs:["eligible / blocked","score and lane","reason codes"],forbidden:["bypass Product Truth","rank unsafe or unavailable items"]},
+    "country-shipping":{inputs:["country","exact SKU and variant","warehouse","live quote evidence"],outputs:["shipping eligibility","landed cost","ETA evidence"],forbidden:["infer local stock","invent delivery promises"]},
+    "product-truth":{inputs:["supplier identity","SKU / variant","stock","price","media","facts"],outputs:["LIVE_VERIFIED / RECHECK_REQUIRED","truth timestamp","blocked claims"],forbidden:["publish stale facts","invent claims or reviews"]},
+    "taste-dna":{inputs:["views","dwell","likes","saves","shares","negative signals"],outputs:["confidence-gated affinity","discovery context"],forbidden:["use sensitive traits","judge body traits","pretend cold-start knowledge"]},
+    "hunt-memory":{inputs:["real interaction events","session context"],outputs:["history","continuity","recent exposure"],forbidden:["fabricate behavior","spam reminders"]},
+    "dynamic-worlds":{inputs:["eligible products","Decision Brain lanes","performance budget"],outputs:["feature-flagged discovery composition"],forbidden:["replace production without approval","hide product facts"]},
+    "boom-stylist":{inputs:["occasion","budget","verified products","taste"],outputs:["truthful looks","reasons","alternatives"],forbidden:["body criticism","unverified availability"]},
+    "boom-mirror":{inputs:["explicit consent","retention choice","verified product anchor"],outputs:["private preview plan","focus mode"],forbidden:["exact-fit claims","retain images without consent","activate provider without approval"]},
+    "creative-brand-factory":{inputs:["verified product truth","human idea","references"],outputs:["hooks","storyboard","QA shortlist"],forbidden:["paid generation","publishing","fake claims without Owner approval"]}
+  });
+
+  function renderBrainDetail(id){
+    const row=state.huntCapabilities.find(item=>item.id===id);
+    const host=$("#brain-detail");
+    if(!row||!host)return;
+    state.selectedCapability=id;
+    $$(".intelligence-card").forEach(card=>card.classList.toggle("selected",card.dataset.capabilityId===id));
+    const contract=capabilityContracts[id]||{inputs:["Capability evidence"],outputs:["Auditable plan"],forbidden:["Live execution without explicit Owner approval"]};
+    const list=items=>'<ul>'+items.map(item=>'<li>'+esc(item)+'</li>').join("")+'</ul>';
+    host.innerHTML=
+      '<div class="brain-detail-grid">'+
+        '<article><small>'+esc(row.manager||"unassigned")+'</small><h2>'+esc(row.id)+'</h2><p>'+esc(row.notes||"No evidence recorded.")+'</p><div class="status-wrap">'+pill(intelligenceTone(row))+'</div></article>'+
+        '<article><h3>INPUT CONTRACT</h3>'+list(contract.inputs)+'<h3>OUTPUT CONTRACT</h3>'+list(contract.outputs)+'</article>'+
+        '<article><h3>DEPENDENCIES</h3>'+list(row.dependencies||["none recorded"])+'<h3>FORBIDDEN</h3>'+list(contract.forbidden)+'</article>'+
+      '</div>';
+  }
+
+  function buildPlanningDraft(){
+    const objective=String($("#planning-objective")?.value||"").trim();
+    const output=$("#planning-output");
+    if(!objective){$("#planning-status").textContent="OBJECTIVE_REQUIRED · EXECUTION_OFF";return}
+    const rows=state.huntCapabilities||[];
+    const route=["decision-intelligence","country-shipping","product-truth","taste-dna","hunt-memory","dynamic-worlds","boom-stylist","boom-mirror","creative-brand-factory"]
+      .map(id=>rows.find(row=>row.id===id)).filter(Boolean);
+    const blockers=route.filter(row=>["PLANNED","BLOCKED","UNKNOWN"].includes(String(row.brain_status||"").toUpperCase()));
+    const gates=route.filter(row=>row.owner_gate);
+    state.planningDraft={objective,status:"DRAFT_REVIEW",created_at:new Date().toISOString(),execution_allowed:false};
+    output.textContent=[
+      "PLAN STATUS: DRAFT_REVIEW",
+      "OBJECTIVE: "+objective,
+      "MODE: STUDIO_PLANNING_ONLY",
+      "",
+      "PROPOSED BRAIN ROUTE:",
+      ...route.map((row,index)=>(index+1)+". "+row.id+" — "+row.brain_status),
+      "",
+      "BLOCKERS: "+(blockers.map(row=>row.id).join(", ")||"none recorded"),
+      "OWNER GATES: "+(gates.map(row=>row.id).join(", ")||"none"),
+      "",
+      "SUCCESS EVIDENCE REQUIRED:",
+      "- Product Truth remains live and exact",
+      "- Tests pass with no storefront regression",
+      "- Mobile, desktop, keyboard and reduced-motion QA",
+      "- Existing checkout remains unchanged",
+      "",
+      "EXECUTION_ALLOWED: false",
+      "PRODUCTION_CHANGED: false",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false"
+    ].join("\n");
+    $("#planning-status").textContent="DRAFT_REVIEW · OWNER DECISION REQUIRED · EXECUTION_OFF";
+    $("#planning-revision").disabled=false;
+    $("#planning-approve").disabled=false;
+  }
+
+  function setPlanningDecision(status){
+    if(!state.planningDraft)return;
+    state.planningDraft={...state.planningDraft,status,execution_allowed:false,decided_at:new Date().toISOString()};
+    $("#planning-status").textContent=status+" · IMPLEMENTATION PLANNING ONLY · EXECUTION_OFF";
+    const output=$("#planning-output");
+    output.textContent+="\n\nOWNER DECISION: "+status+"\nLIVE EXECUTION REMAINS BLOCKED.";
   }
 
   function simulateHuntIntelligence(){
@@ -1276,6 +1352,9 @@
   $$("#brand-price,#brand-cost,#brand-shipping,#brand-currency").forEach(el=>el.addEventListener("input",renderBrandFinance));
   $("#brand-copy")?.addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("#brand-output")?.textContent||"");$("#brand-copy").textContent="✓";setTimeout(()=>$("#brand-copy").textContent="COPY",1000)}catch{$("#brand-status").textContent="Copy failed · select the output manually."}});
   $("#intelligence-simulate")?.addEventListener("click",simulateHuntIntelligence);
+  $("#planning-build")?.addEventListener("click",buildPlanningDraft);
+  $("#planning-revision")?.addEventListener("click",()=>setPlanningDecision("NEEDS_REVISION"));
+  $("#planning-approve")?.addEventListener("click",()=>setPlanningDecision("APPROVED_FOR_IMPLEMENTATION_PLANNING"));
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
@@ -1314,6 +1393,8 @@
   document.addEventListener("click",ev=>{
     const connectCard=ev.target.closest("[data-connect-id]");
     if(connectCard){inspectConnection(connectCard.dataset.connectId);return}
+    const capabilityCard=ev.target.closest("[data-capability-id]");
+    if(capabilityCard){renderBrainDetail(capabilityCard.dataset.capabilityId);return}
     const traceFilter=ev.target.closest("[data-trace-type]");
     if(traceFilter){
       state.traceType=traceFilter.dataset.traceType||"all";
