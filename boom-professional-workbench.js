@@ -20,7 +20,8 @@
       ...safeArray(input.workerReports).map(x=>({kind:"worker",id:x.id,title:x.finding||x.worker_id||"Worker report",status:x.status||"healthy",time:x.created_at,actor:x.worker_id||x.manager_id||"worker"})),
       ...safeArray(input.cycles).map(x=>({kind:"cycle",id:x.id,title:x.focus||x.cycle_key||"Cycle",status:x.status||"open",time:x.evaluated_at||x.started_at,actor:x.started_by||"BOOM"})),
       ...safeArray(input.evals).map(x=>({kind:"eval",id:x.id,title:x.metric_name||x.eval_key||"Eval",status:x.passed===true?"pass":x.passed===false?"fail":"open",time:x.created_at,actor:x.subject_key||x.subject_type||"eval"})),
-      ...safeArray(input.modelObservations).map(x=>({kind:"model",id:x.id,title:(x.provider||"model")+"/"+(x.model||"unknown"),status:x.success===true?"pass":x.success===false?"fail":"open",time:x.created_at,actor:x.route_key||x.task_class||"model"}))
+      ...safeArray(input.modelObservations).map(x=>({kind:"model",id:x.id,title:(x.provider||"model")+"/"+(x.model||"unknown"),status:x.success===true?"pass":x.success===false?"fail":"open",time:x.created_at,actor:x.route_key||x.task_class||"model"})),
+      ...safeArray(input.traceSpans).map(x=>({kind:"span",id:x.span_id||x.id,title:x.name||x.span_type||"Span",status:x.success===true?"pass":x.success===false?"fail":x.status||"open",time:x.started_at,actor:x.route_key||x.session_id||x.trace_id||"trace"}))
     ].filter(x=>x.time).sort((a,b)=>new Date(b.time)-new Date(a.time));
     return Object.freeze({
       rows:Object.freeze(rows.slice(0,160)),
@@ -154,10 +155,12 @@
 
   function buildPromptRegistry(input={}){
     const rows=safeArray(input.promptVersions);
+    const connected=input.promptStoreConnected===true;
     return Object.freeze({
-      instrumented:rows.length>0,
+      instrumented:connected&&rows.length>0,
+      connected,
       rows:Object.freeze(rows),
-      status:rows.length?"VERSIONED":"REGISTRY_REQUIRED"
+      status:rows.length?"VERSIONED":connected?"EMPTY_REGISTRY":"REGISTRY_REQUIRED"
     });
   }
 
@@ -226,9 +229,16 @@
     const alerts=buildAlerts(input);
     const replayRuns=safeArray(input.replayRuns);
     const release=input.releaseGate||(replayRuns.length?{replay_runs:replayRuns.length,latest:replayRuns[0]}:null);
+    const spanRows=safeArray(input.traceSpans);
+    const traceHierarchy=Object.freeze({
+      store_connected:input.traceStoreConnected===true,
+      spans:spanRows.length,
+      traces:new Set(spanRows.map(x=>clean(x.trace_id)).filter(Boolean)).size,
+      sessions:new Set(spanRows.map(x=>clean(x.session_id)).filter(Boolean)).size
+    });
 
     const capabilities=Object.freeze([
-      {id:"traces",label:"Trace Explorer",state:input.traceSchemaConnected===true?"ready":"gap",evidence:traces.rows.length+" activity rows · nested trace/span/session schema="+String(input.traceSchemaConnected===true)},
+      {id:"traces",label:"Trace Explorer",state:input.traceSchemaConnected===true?"ready":"gap",evidence:traceHierarchy.spans+" nested spans · "+traceHierarchy.traces+" traces · "+traceHierarchy.sessions+" sessions · store="+String(traceHierarchy.store_connected)},
       {id:"prompts",label:"Prompt Registry / Versions",state:prompts.instrumented?"ready":"gap",evidence:prompts.instrumented?prompts.rows.length+" versioned prompts":"No persisted prompt-version registry connected"},
       {id:"datasets",label:"Failure Inbox → Eval Dataset",state:failures.persisted_dataset?"ready":"gap",evidence:failures.dataset_candidates+" dataset candidate(s) · persisted dataset="+String(failures.persisted_dataset)},
       {id:"experiments",label:"Experiment Diff",state:experiments.available?"ready":"gap",evidence:experiments.available?experiments.comparisons.length+" comparable metric(s)":"Need 2+ comparable eval runs per metric"},
@@ -241,7 +251,7 @@
     return Object.freeze({
       mode:"BOOM_PROFESSIONAL_WORKBENCH",
       capabilities,
-      traces,failures,experiments,review,cost,prompts,alerts,release,
+      traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,release,
       professional_ready:capabilities.every(x=>x.state==="ready"||x.state==="empty"),
       gaps:Object.freeze(capabilities.filter(x=>x.state==="gap").map(x=>x.id)),
       invariants:Object.freeze({
