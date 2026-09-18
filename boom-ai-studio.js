@@ -580,7 +580,7 @@
     {id:"store-depts",label:"Store category departments",status:"PRESENT",evidence:"Women, Men, Kids, Beauty, Accessories, Home, Tech, Sports, Pets, Toys and Travel/Office/Gifts are visible."},
     {id:"traceability",label:"Product trace: source → shelf → checkout → order → sale",status:"PARTIAL",evidence:"Managers exist across the chain, but one unified per-product trace timeline is not yet exposed in Studio."},
     {id:"real-device",label:"Direct reference + real-device screenshot comparison",status:"PARTIAL",evidence:"Viewport contracts exist; real browser screenshots/reference comparison still require the private preview pass."},
-    {id:"supplier-hide",label:"Supplier names hidden from shopper storefront",status:"PARTIAL",evidence:"Studio is admin-only and may show suppliers; storefront hiding must be verified in private preview."},
+    {id:"supplier-hide",label:"Supplier names hidden from shopper storefront",status:"PRESENT",evidence:"Product, category, profile and HUNT History shopper surfaces use HUNT SOURCE / HUNT ORDER labels while provider identity remains internal for routing and truth."},
     {id:"connect-live",label:"Every external connector live-verified",status:"PARTIAL",evidence:"BOOM Connect exists, but each OAuth/API/provider must be checked individually before calling it live."},
     {id:"shopper-actions",label:"Search / recommendation / Like / Save / Share / History E2E",status:"PARTIAL",evidence:"Decision, Memory and Share managers are represented; end-to-end shopper behavior still needs private-preview validation."}
   ]);
@@ -608,6 +608,168 @@
       "",
       "NEXT SAFE ACTION: Resolve PARTIAL items in the private BOOM Studio preview before any Production decision."
     ].join("\n");
+  }
+
+  const traceUuidPattern=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  async function traceOrderByKey(key){
+    let query=client.from("hunt_orders").select("id,provider,external_order_id,status,total_amount,currency,carrier,tracking_number,estimated_delivery_at,placed_at,updated_at,is_test,order_source");
+    query=traceUuidPattern.test(key)?query.eq("id",key):query.eq("external_order_id",key);
+    const {data,error}=await query.order("updated_at",{ascending:false}).limit(1);
+    if(error)throw error;
+    return Array.isArray(data)?data[0]||null:null;
+  }
+
+  async function runProductTrace(){
+    const input=$("#product-trace-key"),button=$("#product-trace-run"),status=$("#product-trace-status"),grid=$("#product-trace-grid"),report=$("#product-trace-report");
+    const key=String(input?.value||"").trim();
+    if(!key){
+      if(status)status.textContent="REFERENCE_REQUIRED · READ_ONLY";
+      if(report)report.textContent="Enter an Order UUID, External Order ID or Payment Session UUID.";
+      return null;
+    }
+    if(state.localPreview){
+      if(status)status.textContent="LOCAL_PREVIEW · LIVE TRACE DISABLED";
+      if(report)report.textContent="The Product Trace UI is visible in local preview, but live database reads are disabled. Open authenticated BOOM Studio to run the read-only trace.";
+      return null;
+    }
+    if(!state.session){
+      if(status)status.textContent="AUTH_REQUIRED · READ_ONLY";
+      return null;
+    }
+
+    if(button)button.disabled=true;
+    if(status)status.textContent="TRACING · READ_ONLY";
+    try{
+      let order=await traceOrderByKey(key);
+      let seededPaymentSessionId=null;
+
+      if(!order&&traceUuidPattern.test(key)){
+        const {data:seedRows,error:seedError}=await client.from("hunt_order_pipeline_runs")
+          .select("payment_session_id,order_id,created_at")
+          .eq("payment_session_id",key)
+          .order("created_at",{ascending:false})
+          .limit(1);
+        if(seedError)throw seedError;
+        const seed=Array.isArray(seedRows)?seedRows[0]||null:null;
+        seededPaymentSessionId=seed?.payment_session_id||key;
+        if(seed?.order_id)order=await traceOrderByKey(seed.order_id);
+      }
+
+      if(!order){
+        if(status)status.textContent="NOT_FOUND_OR_NOT_AUTHORIZED · READ_ONLY";
+        if(grid)grid.innerHTML='<article class="product-trace-stage" data-state="blocked"><small>TRACE</small><strong>No order evidence found</strong><p>The reference may not exist or may not be visible under current RLS.</p></article>';
+        if(report)report.textContent="No readable HUNT order was resolved from the supplied reference. No data was changed.";
+        return null;
+      }
+
+      const [pipelineResult,financeResult]=await Promise.all([
+        client.from("hunt_order_pipeline_runs")
+          .select("id,payment_session_id,run_mode,stage,status,provider,supplier_order_id,supplier_order_code,tracking_number,last_error,created_at,updated_at")
+          .eq("order_id",order.id)
+          .order("created_at",{ascending:true}),
+        client.from("hunt_order_finance_ledger")
+          .select("payment_session_id,currency,customer_gross,contribution_locked,available_profit,settlement_status,supplier_payment_status,owner_payout_status,is_test,calculated_at,settled_at,updated_at")
+          .eq("order_id",order.id)
+          .order("updated_at",{ascending:false})
+          .limit(1)
+      ]);
+      if(pipelineResult.error)throw pipelineResult.error;
+      if(financeResult.error)throw financeResult.error;
+
+      const pipeline=Array.isArray(pipelineResult.data)?pipelineResult.data:[];
+      const ledger=Array.isArray(financeResult.data)?financeResult.data[0]||null:null;
+      const paymentSessionId=seededPaymentSessionId||pipeline.find(row=>row.payment_session_id)?.payment_session_id||ledger?.payment_session_id||null;
+
+      let payment=null;
+      let paymentAccess=paymentSessionId?"RLS_GATED_OR_NOT_FOUND":"NO_SESSION_REFERENCE";
+      if(paymentSessionId){
+        const {data,error}=await client.from("hunt_payment_sessions")
+          .select("id,mode,status,country_code,currency,total_amount,fulfillment_status,payment_method,created_at,paid_at,updated_at")
+          .eq("id",paymentSessionId)
+          .limit(1);
+        if(!error&&Array.isArray(data)&&data[0]){
+          payment=data[0];
+          paymentAccess="VISIBLE";
+        }else if(error){
+          paymentAccess="RLS_GATED";
+        }
+      }
+
+      const latestPipeline=pipeline[pipeline.length-1]||null;
+      const money=(value,currency)=>value===null||value===undefined?"—":Number(value).toFixed(2)+" "+String(currency||"USD");
+      const stages=[
+        {
+          id:"SOURCE",state:order.provider?"pass":"watch",
+          title:"Internal source",
+          detail:order.provider?"Provider identity verified internally":"Provider unavailable"
+        },
+        {
+          id:"SHELF",state:order.order_source?"pass":"watch",
+          title:"HUNT shelf / order source",
+          detail:String(order.order_source||"unknown")
+        },
+        {
+          id:"CHECKOUT",state:payment?"pass":(paymentSessionId?"watch":"blocked"),
+          title:"Checkout session",
+          detail:payment
+            ? String(payment.mode||"unknown")+" · "+String(payment.status||"unknown")+" · "+money(payment.total_amount,payment.currency)
+            : (paymentSessionId?"Session "+paymentSessionId.slice(0,8)+"… · "+paymentAccess:"No payment-session reference")
+        },
+        {
+          id:"ORDER",state:"pass",
+          title:"HUNT order",
+          detail:String(order.status||"unknown")+" · "+(order.is_test?"TEST":"LIVE/UNMARKED")+" · "+String(order.external_order_id||order.id)
+        },
+        {
+          id:"PIPELINE",state:latestPipeline?(latestPipeline.status==="pass"?"pass":latestPipeline.status==="fail"?"blocked":"watch"):"watch",
+          title:"Fulfillment pipeline",
+          detail:latestPipeline
+            ? pipeline.length+" run(s) · "+String(latestPipeline.run_mode)+" · "+String(latestPipeline.stage)+" · "+String(latestPipeline.status)
+            : "No pipeline run recorded"
+        },
+        {
+          id:"FINANCE",state:ledger?(ledger.settlement_status==="settled"?"pass":"watch"):"watch",
+          title:"Finance / sale",
+          detail:ledger
+            ? String(ledger.settlement_status)+" · profit "+money(ledger.available_profit,ledger.currency)+" · payout "+String(ledger.owner_payout_status)
+            : "No finance ledger row recorded"
+        }
+      ];
+
+      if(grid)grid.innerHTML=stages.map(stage=>
+        '<article class="product-trace-stage" data-state="'+esc(stage.state)+'">'+
+        '<small>'+esc(stage.id)+'</small><strong>'+esc(stage.title)+'</strong><p>'+esc(stage.detail)+'</p></article>'
+      ).join("");
+
+      if(status)status.textContent="TRACE_READY · "+stages.filter(x=>x.state==="pass").length+"/"+stages.length+" VERIFIED/RESOLVED · READ_ONLY";
+      if(report)report.textContent=[
+        "MODE: BOOM_INTERNAL_PRODUCT_TRACE",
+        "READ_ONLY: true",
+        "ORDER ID: "+order.id,
+        "EXTERNAL ORDER: "+String(order.external_order_id||"—"),
+        "ORDER STATUS: "+String(order.status||"unknown"),
+        "INTERNAL PROVIDER: "+String(order.provider||"unknown"),
+        "SHOPPER SUPPLIER LABEL: HIDDEN",
+        "PAYMENT SESSION: "+String(paymentSessionId||"none"),
+        "PAYMENT SESSION ACCESS: "+paymentAccess,
+        "PIPELINE RUNS: "+pipeline.length,
+        "LATEST PIPELINE: "+(latestPipeline?String(latestPipeline.run_mode)+" / "+String(latestPipeline.stage)+" / "+String(latestPipeline.status):"none"),
+        "FINANCE SETTLEMENT: "+String(ledger?.settlement_status||"none"),
+        "AVAILABLE PROFIT: "+(ledger?money(ledger.available_profit,ledger.currency):"—"),
+        "OWNER PAYOUT: "+String(ledger?.owner_payout_status||"none"),
+        "CUSTOMER EMAIL DISPLAYED: false",
+        "CUSTOMER ADDRESS DISPLAYED: false",
+        "DATA_CHANGED: false"
+      ].join("\n");
+      return {order,pipeline,ledger,payment,paymentAccess,stages};
+    }catch(err){
+      if(status)status.textContent="TRACE_ERROR · READ_ONLY";
+      if(report)report.textContent="Trace failed safely: "+String(err?.message||err)+"\nDATA_CHANGED: false";
+      return null;
+    }finally{
+      if(button)button.disabled=false;
+    }
   }
 
   const huntAlphaStages=Object.freeze([
@@ -2437,6 +2599,7 @@
   $("#alpha-final-gate-build")?.addEventListener("click",buildAlphaFinalGate);
   $("#alpha-final-go")?.addEventListener("click",()=>recordAlphaFinalDecision(FinalGate?.DECISIONS?.GO));
   $("#alpha-final-no-go")?.addEventListener("click",()=>recordAlphaFinalDecision(FinalGate?.DECISIONS?.NO_GO));
+  $("#product-trace-run")?.addEventListener("click",()=>runProductTrace());
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
