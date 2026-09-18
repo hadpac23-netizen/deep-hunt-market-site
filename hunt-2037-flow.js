@@ -132,7 +132,14 @@
   }
 
   function worldSection(world,index){
+    const art=clean(world.visual);
+    const artLabel=clean(world.visual_label||world.title+" night mood");
+    const loading=index===0?"eager":"lazy";
     return `<section class="hunt2037-world" data-world="${H.esc(world.id)}">
+      <div class="hunt2037-world-visual" aria-label="${H.esc(artLabel)}">
+        ${art?`<img src="${H.esc(art)}" alt="" loading="${loading}" decoding="async">`:""}
+        <div class="hunt2037-world-visual-overlay"><small>ORIGINAL HUNT NIGHT ART</small><strong>${H.esc(world.title)}</strong></div>
+      </div>
       <div class="hunt2037-world-head">
         <div><small>HUNT WORLD ${String(index+1).padStart(2,"0")}</small><h2>${H.esc(world.title)}</h2><p>${H.esc(world.copy)}</p></div>
         <button class="hunt2037-world-enter" type="button" data-world-enter="${H.esc(world.id)}" aria-pressed="false">Enter world</button>
