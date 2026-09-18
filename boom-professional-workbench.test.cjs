@@ -92,6 +92,27 @@ assert.equal(result.gaps.length,0);
 assert.equal(result.invariants.production_change,false);
 assert.equal(result.invariants.payments,false);
 
+const nullOnlyAlerts=W.buildAlerts({
+  modelObservations:[
+    {route_key:"owner-chat",quality_score:null,latency_ms:null,estimated_cost_usd:null,success:true,created_at:"2026-09-18T10:00:00Z"},
+    {route_key:"owner-chat",quality_score:"",latency_ms:null,estimated_cost_usd:null,success:true,created_at:"2026-09-18T09:59:00Z"}
+  ],
+  modelRoutes:[{route_key:"owner-chat",min_quality_score:0.8,max_latency_ms:1000,max_cost_usd:1}]
+});
+assert.equal(nullOnlyAlerts.unmeasured,1);
+assert.equal(nullOnlyAlerts.watch,0);
+assert(nullOnlyAlerts.alerts.some(x=>x.message.includes("UNMEASURED")));
+
+const mixedQualityAlerts=W.buildAlerts({
+  modelObservations:[
+    {route_key:"owner-chat",quality_score:null,success:true,created_at:"2026-09-18T10:00:00Z"},
+    {route_key:"owner-chat",quality_score:0.9,success:true,created_at:"2026-09-18T09:59:00Z"}
+  ],
+  modelRoutes:[{route_key:"owner-chat",min_quality_score:0.8}]
+});
+assert.equal(mixedQualityAlerts.unmeasured,0);
+assert.equal(mixedQualityAlerts.watch,0);
+
 const missingAlignment=W.buildEvaluatorOps({
   evalCases:[{grader_type:"llm_judge"}],
   evaluatorRegistry:[{id:7,status:"active",activated_at:"2026-09-18T08:00:00Z",calibration_required:true}],
