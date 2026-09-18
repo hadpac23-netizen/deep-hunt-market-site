@@ -276,7 +276,7 @@ assert(html.includes('id="alpha-evidence-report"'),"A9 evidence report missing")
 assert(html.includes("boom-alpha-evidence-pack.js?v=alpha1"),"A9 evidence core script missing");
 assert(js.includes("const EvidencePack=window.BoomAlphaEvidencePack"),"A9 evidence binding missing");
 assert(js.includes("function buildOwnerAlphaEvidencePack()"),"A9 evidence builder missing");
-assert(js.includes("BLOCKED_BOUNDARY_VIOLATION"),"A9 boundary violation fail-closed state missing");
+assert(js.includes("BLOCKED_EVIDENCE_INTEGRITY"),"A9 evidence integrity fail-closed state missing");
 assert(js.includes("ALPHA_OWNER_REVIEW_READY"),"A9 owner-review release gate missing");
 assert(js.includes("ALPHA ACTIVATION AUTHORIZED: false"),"A9 alpha activation guard missing");
 assert(js.includes("PAYMENTS_ACTIVATED: false"),"A9 payments guard missing");
