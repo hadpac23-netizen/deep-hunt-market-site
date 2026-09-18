@@ -69,6 +69,7 @@
     traceType:"all",
     connectRows:[],
     connectCheckedAt:null,
+    connectorEvidence:{apiLogs:[],sources:[],partners:[],controls:[]},
     brandVideoPlan:null,
     brandCreativeQA:null,
     brandMission:null,
@@ -488,6 +489,88 @@
     return "watch";
   }
 
+  function connectorAgeLabel(value){
+    if(!value)return "never";
+    const t=new Date(value).getTime();
+    if(!Number.isFinite(t))return "unknown";
+    const hours=Math.max(0,(Date.now()-t)/36e5);
+    if(hours<1)return "<1h";
+    if(hours<24)return Math.floor(hours)+"h";
+    return Math.floor(hours/24)+"d";
+  }
+
+  function connectorFresh(value,maxHours=168){
+    if(!value)return false;
+    const t=new Date(value).getTime();
+    return Number.isFinite(t)&&Date.now()-t<=maxHours*36e5;
+  }
+
+  function latestApiBySource(){
+    const map=new Map();
+    for(const row of state.connectorEvidence.apiLogs||[]){
+      const key=String(row.source||"").toLowerCase();
+      if(key&&!map.has(key))map.set(key,row);
+    }
+    return map;
+  }
+
+  function buildEvidenceConnectorRows(){
+    const apiMap=latestApiBySource();
+    const rows=[];
+
+    for(const partner of state.connectorEvidence.partners||[]){
+      const status=String(partner.integration_status||"unknown").toLowerCase();
+      const apiVerified=Boolean(partner.order_api_verified_at);
+      const trackingVerified=Boolean(partner.tracking_verified_at);
+      const termsVerified=Boolean(partner.terms_verified_at);
+      const mediaVerified=Boolean(partner.media_rights_verified_at);
+      const complete=termsVerified&&mediaVerified&&(!partner.official_api_required||apiVerified)&&(!partner.official_api_required||trackingVerified);
+      let tone="watch";
+      if(["auth_required","blocked"].includes(status))tone="blocked";
+      else if(["terms_review","hold"].includes(status))tone="watch";
+      else if(["connected","ready"].includes(status)&&complete)tone="healthy";
+      const gaps=[
+        termsVerified?"":"terms",
+        mediaVerified?"":"media",
+        partner.official_api_required&&!apiVerified?"order API":"",
+        partner.official_api_required&&!trackingVerified?"tracking":""
+      ].filter(Boolean);
+      rows.push({
+        id:"partner-"+String(partner.partner_name||"").toLowerCase().replace(/[^a-z0-9]+/g,"-"),
+        name:String(partner.partner_name||"Partner"),
+        kind:"PARTNER · "+String(partner.partner_type||"unknown").toUpperCase(),
+        tone,
+        detail:"Integration="+status+" · lane="+String(partner.lane||"unknown")+" · checkout="+String(partner.checkout_mode||"unknown"),
+        evidence:gaps.length
+          ?"Verification gaps: "+gaps.join(", ")+" · updated "+connectorAgeLabel(partner.updated_at)+" ago"
+          :"Terms/media/API/tracking evidence complete · updated "+connectorAgeLabel(partner.updated_at)+" ago",
+        gate:partner.owner_approval_required?"Owner approval required":"No extra owner gate recorded"
+      });
+    }
+
+    for(const source of state.connectorEvidence.sources||[]){
+      const key=String(source.source_name||"").toLowerCase();
+      const api=apiMap.get(key);
+      const last=source.last_success||source.last_sync||api?.attempted_at||source.updated_at;
+      const verified=String(source.health_status||"").toLowerCase()==="verified_real";
+      const fresh=connectorFresh(last,168);
+      const enabled=source.enabled===true;
+      const tone=enabled&&verified&&fresh?"healthy":(String(source.health_status||"").toLowerCase()==="not_started"?"blocked":"watch");
+      rows.push({
+        id:"source-"+key.replace(/[^a-z0-9]+/g,"-"),
+        name:String(source.provider||source.source_name||"Source"),
+        kind:"SOURCE · "+String(source.category||"unknown").toUpperCase(),
+        tone,
+        detail:"Registry="+String(source.health_status||"unknown")+" · enabled="+String(enabled),
+        evidence:"Last success/sync "+connectorAgeLabel(last)+" ago"+
+          (api?" · latest API="+String(api.result||"unknown")+" / HTTP "+String(api.http_status??"—"):" · no API log"),
+        gate:enabled?"Read-only source use allowed by registry":"Source currently disabled"
+      });
+    }
+
+    return rows;
+  }
+
   function buildConnectRows(){
     const user=state.session?.user||{};
     const identities=(user.identities||[]).map(x=>x.provider).filter(Boolean);
@@ -496,20 +579,24 @@
     const cjRaw=statusOf("supplier-cj");
     const hyperskuRaw=statusOf("supplier-hypersku");
     const repairRaw=statusOf("repair-engineering");
-    const googleVerifiedAt=new Date("2026-09-17T12:55:00Z");
-    const googleFresh=Date.now()-googleVerifiedAt.getTime()<24*60*60*1000;
-    return [
-      {id:"supabase",name:"Supabase Core",kind:"IDENTITY + BACKEND",tone:"healthy",detail:"Studio data loaded successfully from the live Supabase project.",evidence:"Live query + realtime channel",gate:"Owner gate for config changes"},
-      {id:"github",name:"GitHub Admin Auth",kind:"OAUTH",tone:identities.includes("github")||primary==="github"?"healthy":"watch",detail:identities.includes("github")||primary==="github"?"GitHub identity is present on the active admin session.":"Current Studio session is not proving GitHub end-to-end right now.",evidence:"Active Supabase session",gate:"Owner gate for OAuth credentials"},
-      {id:"google",name:"Google OAuth",kind:"OAUTH",tone:googleFresh?"healthy":"watch",detail:googleFresh?"Fresh end-to-end login repair was verified today. Credential pairing should be rechecked after any provider change.":"Last recorded end-to-end verification is stale; BOOM CONNECT should reverify before claiming green.",evidence:"HUNT login E2E · 2026-09-17",gate:"Owner gate for client/secret changes"},
-      {id:"netlify",name:"Netlify Production",kind:"DEPLOYMENT",tone:host.endsWith("netlify.app")?"healthy":"watch",detail:host.endsWith("netlify.app")?"Studio is being served from Netlify now.":"This view is not currently served from a Netlify hostname.",evidence:host||"local",gate:"Owner gate for production promotion"},
-      {id:"cj",name:"CJ Supplier",kind:"SUPPLIER API",tone:connectTone(cjRaw),detail:"Status is derived from the live supplier-cj manager/report, not a hard-coded green badge.",evidence:"supplier-cj · "+cjRaw,gate:"Owner gate for supplier/order routing changes"},
-      {id:"hypersku",name:"HyperSKU Supplier",kind:"TIER 0 SUPPLIER API",tone:connectTone(hyperskuRaw),detail:"BOOM Studio recognizes HyperSKU as a Tier 0 supplier lane. Adapter foundation is ready; live Open API auth and read-only verification are not connected yet.",evidence:"supplier-hypersku · "+hyperskuRaw+" · PILOT",gate:"Read-only first · live fulfillment requires explicit Owner approval"},
-      {id:"repair",name:"BOOM Repair Engineering",kind:"SELF-HEALING",tone:connectTone(repairRaw),detail:"BOOM Brain repair lane handles safe reversible incidents and escalates material changes.",evidence:"repair-engineering · "+repairRaw,gate:"Safe repair auto · material changes gated"},
-      {id:"payments",name:"Live Payments",kind:"PAYMENTS",tone:"blocked",detail:"Live charging remains intentionally OFF until launch authorization and full order E2E.",evidence:"DISABLED_BY_OWNER",gate:"Explicit Owner approval required"}
-    ];
-  }
+    const controlMap=new Map((state.connectorEvidence.controls||[]).map(x=>[String(x.key||""),x]));
+    const paymentControl=controlMap.get("hunt_payment_live");
+    const supplierLiveControl=controlMap.get("hunt_supplier_order_live");
 
+    const base=[
+      {id:"supabase",name:"Supabase Core",kind:"IDENTITY + BACKEND",tone:state.localPreview?"watch":"healthy",detail:state.localPreview?"Local Preview does not query live Supabase.":"Studio data loaded successfully from the live Supabase project.",evidence:state.localPreview?"LOCAL_PREVIEW":"Live authenticated query + realtime channel",gate:"Owner gate for config changes"},
+      {id:"github",name:"GitHub Admin Auth",kind:"OAUTH",tone:identities.includes("github")||primary==="github"?"healthy":"watch",detail:identities.includes("github")||primary==="github"?"GitHub identity is present on the active admin session.":"Active Studio session does not prove GitHub OAuth end-to-end.",evidence:"Active Supabase identity",gate:"Owner gate for OAuth credentials"},
+      {id:"google",name:"Google OAuth",kind:"OAUTH",tone:identities.includes("google")||primary==="google"?"healthy":"watch",detail:identities.includes("google")||primary==="google"?"Google identity is present on the active admin session.":"No current-session Google identity evidence; do not claim green.",evidence:"Active Supabase identity only",gate:"Owner gate for client/secret changes"},
+      {id:"netlify",name:"Netlify Hosting",kind:"DEPLOYMENT",tone:host.endsWith("netlify.app")?"healthy":"watch",detail:host.endsWith("netlify.app")?"Studio is currently served from a Netlify hostname.":"Current view is not proving Netlify serving; verify via deploy evidence.",evidence:host||"local",gate:"Owner gate for production promotion"},
+      {id:"cj-manager",name:"CJ Supplier Runtime",kind:"SUPPLIER MANAGER",tone:connectTone(cjRaw),detail:"Manager/report state only; partner verification matrix below is authoritative for API/terms/tracking completeness.",evidence:"supplier-cj · "+cjRaw,gate:"Owner gate for supplier/order routing changes"},
+      {id:"hypersku",name:"HyperSKU Supplier",kind:"TIER 0 SUPPLIER API",tone:connectTone(hyperskuRaw),detail:"Adapter foundation exists; live Open API auth/read-only verification are not proven.",evidence:"supplier-hypersku · "+hyperskuRaw+" · PILOT",gate:"Read-only first · fulfillment requires explicit Owner approval"},
+      {id:"repair",name:"BOOM Repair Engineering",kind:"SELF-HEALING",tone:connectTone(repairRaw),detail:"Safe reversible incidents may be repaired; material changes escalate.",evidence:"repair-engineering · "+repairRaw,gate:"Safe repair auto · material changes gated"},
+      {id:"payments",name:"Live Payments",kind:"PAYMENTS",tone:paymentControl?.enabled===true&&paymentControl?.owner_approved===true?"watch":"blocked",detail:paymentControl?.enabled===true?"Runtime control enabled; launch evidence still required.":"Live charging remains intentionally OFF.",evidence:paymentControl?"hunt_payment_live · enabled="+String(paymentControl.enabled)+" · owner="+String(paymentControl.owner_approved):"runtime control unavailable",gate:"Explicit Owner approval required"},
+      {id:"supplier-orders",name:"Live Supplier Orders",kind:"FULFILLMENT",tone:supplierLiveControl?.enabled===true&&supplierLiveControl?.owner_approved===true?"watch":"blocked",detail:supplierLiveControl?.enabled===true?"Live supplier order gate enabled; E2E evidence still required.":"Real supplier order creation remains OFF.",evidence:supplierLiveControl?"hunt_supplier_order_live · enabled="+String(supplierLiveControl.enabled)+" · owner="+String(supplierLiveControl.owner_approved):"runtime control unavailable",gate:"Explicit Owner approval required"}
+    ];
+
+    return [...base,...buildEvidenceConnectorRows()];
+  }
 
   function intelligenceTone(capability={}){
     const status=String(capability.brain_status||"UNKNOWN").toUpperCase();
@@ -2020,6 +2107,21 @@
     return data||[];
   }
 
+  async function loadConnectorEvidence(){
+    if(state.localPreview){
+      state.connectorEvidence={apiLogs:[],sources:[],partners:[],controls:[]};
+      return state.connectorEvidence;
+    }
+    const [apiLogs,sources,partners,controls]=await Promise.all([
+      query("api_integration_log","source,attempted_at,result,http_status,items_returned,error_message","attempted_at",120),
+      query("source_registry","source_name,category,provider,enabled,health_status,last_success,last_error,last_sync,updated_at","updated_at",120),
+      query("hunt_partner_matrix","partner_name,partner_type,lane,integration_status,official_api_required,checkout_mode,terms_verified_at,media_rights_verified_at,order_api_verified_at,tracking_verified_at,notes,owner_approval_required,updated_at","updated_at",120),
+      query("hunt_runtime_controls","key,enabled,owner_approved,note,updated_at","updated_at",120)
+    ]);
+    state.connectorEvidence={apiLogs,sources,partners,controls};
+    return state.connectorEvidence;
+  }
+
   async function loadAll(){
     const [managers,workers,workerReports,reports,events,decisions,commands,cycles,evals,learning]=await Promise.all([
       query("hunt_boom_managers","*","updated_at",200),
@@ -2034,6 +2136,7 @@
       query("hunt_boom_learning_items","*","learned_at",150)
     ]);
     Object.assign(state,{managers,workers,workerReports,reports,events,decisions,commands,cycles,evals,learning});
+    await loadConnectorEvidence();
     state.managerMap=latest(managers,"id");
     state.reportMap=latest(reports,"manager_id");
     state.workerReportMap=latest(workerReports,"worker_id");
