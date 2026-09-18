@@ -449,7 +449,7 @@ assert(js.includes("function focusStudioGroup("),"Studio navigator focus functio
 assert(js.includes('const studioJump=ev.target.closest("[data-studio-group]")'),"Studio navigator click routing missing");
 assert(css.includes(".studio-department-nav"),"Studio navigator styling missing");
 
-assert(js.includes('const previewNetlifyDraft=/^[a-z0-9]+--deep-hunt-market\\.netlify\\.app$/i.test(location.hostname);'),"Netlify draft preview hostname gate missing");
+assert(js.includes('const previewNetlifyDraft=/^[a-z0-9-]+--deep-hunt-market\\.netlify\\.app$/i.test(location.hostname);'),"Netlify draft preview hostname gate missing");
 assert(js.includes('applyLocalPreviewSafety(previewNetlifyDraft?"draft":"local")'),"Draft preview safety mode missing");
 assert(js.includes('const SAFE_PREVIEW_BOOT=(previewLocalHost||previewNetlifyDraft)&&previewUrl.searchParams.get("preview")==="1";'),"Safe preview query gate missing");
 assert(js.includes('if(state.localPreview)setLive("● PREVIEW · LIVE ACTIONS OFF","watch");'),"renderAll must preserve safe preview live-state");

@@ -5,7 +5,7 @@
   const S=window.supabase;
   const previewUrl=new URL(location.href);
   const previewLocalHost=["127.0.0.1","localhost"].includes(location.hostname);
-  const previewNetlifyDraft=/^[a-z0-9]+--deep-hunt-market\.netlify\.app$/i.test(location.hostname);
+  const previewNetlifyDraft=/^[a-z0-9-]+--deep-hunt-market\.netlify\.app$/i.test(location.hostname);
   const SAFE_PREVIEW_BOOT=(previewLocalHost||previewNetlifyDraft)&&previewUrl.searchParams.get("preview")==="1";
   const Truth=window.HuntCountryProductTruth;
   const Taste=window.BoomTasteDNA;
