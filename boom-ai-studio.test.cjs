@@ -370,11 +370,11 @@ assert(fs.existsSync("hunt-shopper-browser-e2e.html"),"Shopper browser E2E harne
 assert(js.includes("function renderPromptCoverageAudit()"),"Prompt audit renderer missing");
 assert(css.includes(".prompt-audit-workspace"),"Prompt audit styling missing");
 
-assert(js.includes('localPreview=["127.0.0.1"'),"Safe localhost preview mode missing");
+assert(js.includes('const localHost=["127.0.0.1","localhost"].includes(location.hostname);'),"Safe localhost preview mode missing");
 assert(js.includes('url.searchParams.get("preview")==="1"'),"Local preview query gate missing");
 assert(js.includes("function applyLocalPreviewSafety()"),"Local preview safety function missing");
-assert(js.includes("LOCAL PREVIEW · LIVE ACTIONS OFF"),"Local preview safety status missing");
-assert(js.includes('input.placeholder="LOCAL PREVIEW · chat execution disabled"'),"Local preview chat lock missing");
+assert(js.includes('label+" PREVIEW · LIVE ACTIONS OFF"'),"Preview safety status missing");
+assert(js.includes('input.placeholder=label+" PREVIEW · chat execution disabled"'),"Preview chat lock missing");
 
 assert(html.includes('id="product-trace-workspace"'),"Product trace workspace missing");
 assert(html.includes('id="product-trace-key"'),"Product trace reference input missing");
@@ -416,3 +416,7 @@ for(const id of ["intelligence","release","commerce","missions","suppliers","sto
 assert(js.includes("function focusStudioGroup("),"Studio navigator focus function missing");
 assert(js.includes('const studioJump=ev.target.closest("[data-studio-group]")'),"Studio navigator click routing missing");
 assert(css.includes(".studio-department-nav"),"Studio navigator styling missing");
+
+assert(js.includes('const netlifyDraft=/^[a-z0-9]+--deep-hunt-market\\.netlify\\.app$/i.test(location.hostname);'),"Netlify draft preview hostname gate missing");
+assert(js.includes('applyLocalPreviewSafety(netlifyDraft?"draft":"local")'),"Draft preview safety mode missing");
+assert(js.includes('const safePreview=(localHost||netlifyDraft)&&url.searchParams.get("preview")==="1";'),"Safe preview query gate missing");
