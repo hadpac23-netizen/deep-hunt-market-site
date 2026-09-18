@@ -599,6 +599,37 @@
         :"GAP: add token, model, prompt-version, cost and latency fields to every model/tool trace before using budgets or alerts."
     ].join("\n");
 
+    const evaluatorReport=$("#professional-evaluator-report");
+    if(evaluatorReport)evaluatorReport.textContent=[
+      "GRADER TYPES: "+(snapshot.evaluators.grader_types.join(", ")||"none"),
+      "VERSIONED EVALUATOR REGISTRY: "+snapshot.evaluators.evaluator_registry_connected,
+      "HUMAN ALIGNMENT / AGREEMENT: "+snapshot.evaluators.human_alignment_connected,
+      "ONLINE PRODUCTION EVALS: "+snapshot.evaluators.online_eval_connected,
+      "CI QUALITY GATE: "+snapshot.evaluators.ci_eval_gate_connected,
+      "",
+      snapshot.evaluators.governance_ready
+        ?"Evaluator governance is evidenced."
+        :"GAP: version scorers/evaluators and calibrate automated judgments against human labels before promotion.",
+      snapshot.evaluators.continuous_gate_ready
+        ?"Continuous eval + CI gate are evidenced."
+        :"GAP: production sampling/online eval and merge-blocking quality gates are not connected."
+    ].join("\n");
+
+    const safetyReport=$("#professional-safety-report");
+    if(safetyReport)safetyReport.textContent=[
+      "RED TEAM CASES: "+snapshot.safety.redteam.cases,
+      "RED TEAM RUNS: "+snapshot.safety.redteam.runs,
+      "RED TEAM FAILURES: "+snapshot.safety.redteam.failed,
+      "CONFIDENCE CALIBRATION ROWS: "+snapshot.safety.calibration.rows,
+      "MAX CALIBRATION ERROR: "+String(snapshot.safety.calibration.max_error??"unmeasured"),
+      "MULTI-AGENT JUDGE RUNS: "+snapshot.safety.team_judge.judged+"/"+snapshot.safety.team_judge.runs,
+      "",
+      "READ ONLY: true",
+      "AUTO-PUBLISH: false",
+      "AUTO-SPEND: false",
+      "OWNER GATE: required"
+    ].join("\n");
+
     report.textContent=[
       "MODE: "+snapshot.mode,
       "PROFESSIONAL READY: "+snapshot.professional_ready,
