@@ -696,7 +696,7 @@
       "REVIEW HISTORY PERSISTED: "+snapshot.review.persisted,
       "EXPERIMENT DIFF: "+(snapshot.experiments.available?"AVAILABLE":"NEEDS_COMPARABLE_RUNS"),
       "COST/LATENCY: "+snapshot.cost.budget_state,
-      "ALERTS: critical="+snapshot.alerts.critical+" watch="+snapshot.alerts.watch+" · RULES="+(snapshot.capabilities.find(x=>x.id==="alerts")?.state||"unknown"),
+      "ALERTS: critical="+snapshot.alerts.critical+" watch="+snapshot.alerts.watch+" unmeasured="+snapshot.alerts.unmeasured+" · RULES="+(snapshot.capabilities.find(x=>x.id==="alerts")?.state||"unknown"),
       "RELEASE REPLAY: "+(snapshot.release?"ATTACHED":"NO_GATE_SNAPSHOT"),
       "",
       "MUTATION: false",
