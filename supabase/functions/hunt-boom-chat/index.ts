@@ -1,5 +1,5 @@
 import {buildCopyReport,canProposeWithPolicy,deriveTopicState,enforceEvidenceLanguage,needsOwnerGate,selectGovernedContext,toSpokenText,wantsCopyReport} from "./boom-context.ts";
-import {redactSecrets,scoreOwnerChatContract} from "./quality-contract.mjs";
+import {qualityForAttempt,redactSecrets,scoreOwnerChatContract} from "./quality-contract.mjs";
 
 const BASE=Deno.env.get("SUPABASE_URL")||"";
 const SERVICE=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";
@@ -569,7 +569,7 @@ async function persistModelObservations(ai:any,modelRoute:any,taskClass:string,q
       success:Boolean(x?.ok),
       status_code:Number.isFinite(Number(x?.status))?Number(x.status):null,
       latency_ms:Number.isFinite(Number(x?.latency_ms))?Math.max(0,Math.round(Number(x.latency_ms))):null,
-      quality_score:replyAccepted&&qualityScore!==null&&qualityScore!==undefined&&String(qualityScore).trim()!==""&&Number.isFinite(Number(qualityScore))?Math.max(0,Math.min(1,Number(qualityScore))):null,
+      quality_score:qualityForAttempt(x,qualityScore),
       estimated_cost_usd:null,
       input_tokens:Number.isFinite(Number(x?.input_tokens))?Math.max(0,Math.round(Number(x.input_tokens))):null,
       output_tokens:Number.isFinite(Number(x?.output_tokens))?Math.max(0,Math.round(Number(x.output_tokens))):null,
