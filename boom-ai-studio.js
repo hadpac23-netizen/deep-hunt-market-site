@@ -98,6 +98,7 @@
       evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[],
       redTeamCases:[],redTeamRuns:[],confidenceCalibration:[],teamRuns:[],
       evaluatorRegistry:[],humanAlignmentRuns:[],humanLabels:[],humanLabelStoreConnected:false,onlineEvalWindows:[],ciQualityGates:[],ciQualityGateRuns:[],
+      observabilitySnapshots:[],observabilityStoreConnected:false,
       f35Sources:[],f35Findings:[],
       promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
     }
@@ -535,6 +536,8 @@
       humanAlignmentRuns:state.professionalEvidence.humanAlignmentRuns,
       humanLabels:state.professionalEvidence.humanLabels,
       humanLabelStoreConnected:state.professionalEvidence.humanLabelStoreConnected,
+      observabilitySnapshots:state.professionalEvidence.observabilitySnapshots,
+      observabilityStoreConnected:state.professionalEvidence.observabilityStoreConnected,
       onlineEvalWindows:state.professionalEvidence.onlineEvalWindows,
       ciQualityGates:state.professionalEvidence.ciQualityGates,
       ciQualityGateRuns:state.professionalEvidence.ciQualityGateRuns,
@@ -651,6 +654,25 @@
       "OWNER GATE: required"
     ].join("\n");
 
+    const observabilityReport=$("#professional-observability-report");
+    if(observabilityReport)observabilityReport.textContent=[
+      "STORE CONNECTED: "+snapshot.observability.connected,
+      "LANES CLEAR: "+snapshot.observability.clear+"/"+snapshot.observability.required,
+      "WATCH: "+snapshot.observability.watch,
+      "CRITICAL: "+snapshot.observability.critical,
+      "STALE: "+snapshot.observability.stale,
+      "MISSING: "+snapshot.observability.missing,
+      "UNABLE TO ASSESS: "+snapshot.observability.unable_to_assess,
+      "FINDINGS: "+snapshot.observability.findings,
+      "REVIEW REQUIRED: "+snapshot.observability.review_required,
+      "",
+      ...snapshot.observability.lanes.map(x=>x.type.toUpperCase()+" · "+x.state+" · fresh="+x.fresh+" · age_h="+String(x.age_hours??"—")+" · max_h="+String(x.max_age_hours)),
+      "",
+      "READ ONLY: true",
+      "AUTO-FIX: false",
+      "OWNER GATE: required for any mutation"
+    ].join("\n");
+
     const radarReport=$("#professional-radar-report");
     if(radarReport)radarReport.textContent=[
       "SOURCES: "+snapshot.radar.sources,
@@ -685,6 +707,8 @@
       "PROMPT REGISTRY: "+snapshot.prompts.status,
       "GROUND TRUTH STORE CONNECTED: "+state.professionalEvidence.humanLabelStoreConnected,
       "GROUND TRUTH LABELS: "+snapshot.annotation.valid_labels+" · invalid="+snapshot.annotation.invalid_labels+" · disagreements="+snapshot.annotation.disagreements,
+      "OBSERVABILITY STORE CONNECTED: "+state.professionalEvidence.observabilityStoreConnected,
+      "OBSERVABILITY LANES: clear="+snapshot.observability.clear+"/"+snapshot.observability.required+" · watch="+snapshot.observability.watch+" · critical="+snapshot.observability.critical+" · stale="+snapshot.observability.stale+" · missing="+snapshot.observability.missing,
       "DATASET CANDIDATES: "+snapshot.failures.dataset_candidates+" · PERSISTED DATASET: "+snapshot.failures.persisted_dataset,
       "PERSISTED EVAL SUITES: "+state.professionalEvidence.evalSuites.length,
       "PERSISTED EVAL CASES: "+state.professionalEvidence.evalCases.length,
@@ -2322,6 +2346,7 @@
         evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[],
         redTeamCases:[],redTeamRuns:[],confidenceCalibration:[],teamRuns:[],
         evaluatorRegistry:[],humanAlignmentRuns:[],humanLabels:[],humanLabelStoreConnected:false,onlineEvalWindows:[],ciQualityGates:[],ciQualityGateRuns:[],
+        observabilitySnapshots:[],observabilityStoreConnected:false,
         f35Sources:[],f35Findings:[],
         promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
       };
@@ -2333,6 +2358,7 @@
       evalCases,evalRuns,evalSuites,replayRuns,shadowRuns,
       redTeamCases,redTeamRuns,confidenceCalibration,teamRuns,
       evaluatorRegistry,humanAlignmentRuns,humanLabelStore,onlineEvalWindows,ciQualityGates,ciQualityGateRuns,
+      observabilityStore,
       f35Sources,f35Findings,
       promptStore,traceStore
     ]=await Promise.all([
@@ -2355,6 +2381,7 @@
       query("hunt_boom_online_eval_windows","id,window_key,route_key,task_class,environment,sampling_mode,sample_rate,window_start,window_end,sample_count,scored_count,passed_count,failed_count,average_score,p95_latency_ms,estimated_cost_usd,status,created_at,completed_at","window_end",160),
       query("hunt_boom_ci_quality_gates","id,gate_key,scope,metric_key,operator,threshold,min_samples,blocks_merge,enabled,owner_approval_required,updated_at","updated_at",120),
       query("hunt_boom_ci_quality_gate_runs","id,gate_id,run_key,candidate_ref,source_commit,sample_count,metric_value,passed,status,created_at,completed_at","created_at",160),
+      optionalQuery("hunt_boom_observability_snapshots","id,monitor_type,project_ref,observed_at,window_start,window_end,state,findings_count,unavailable_checks,evidence,evidence_fingerprint,source_ref,review_required,created_at","observed_at",240),
       query("hunt_boom_f35_sources","id,source_key,display_name,source_type,canonical_url,domain,priority,freshness_hours,enabled,owner_approved,last_checked_at,last_changed_at,updated_at","priority",120),
       query("hunt_boom_f35_findings","id,source_id,finding_key,observed_at,published_at,title,summary,evidence_url,impact_area,relevance_score,confidence,action_state,requires_owner_review,created_at","observed_at",240),
       optionalQuery("hunt_boom_prompt_versions","id,prompt_key,version,status,environment,template_hash,variables,model_preferences,change_note,source_commit,owner_approval_required,created_at,updated_at,activated_at","updated_at",160),
@@ -2369,6 +2396,8 @@
       humanLabels:humanLabelStore.rows,
       humanLabelStoreConnected:humanLabelStore.connected,
       onlineEvalWindows,ciQualityGates,ciQualityGateRuns,
+      observabilitySnapshots:observabilityStore.rows,
+      observabilityStoreConnected:observabilityStore.connected,
       f35Sources,f35Findings,
       promptVersions:promptStore.rows,
       traceSpans:traceStore.rows,
