@@ -8,6 +8,8 @@
   const Decision=window.BoomDecisionBrain;
   const Memory=window.HuntExperienceMemory;
   const Flow=window.Hunt2037FlowCore;
+  const Stylist=window.BoomStylistCore;
+  const Mirror=window.BoomMirrorCore;
   if(!H||!S?.createClient){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -787,6 +789,79 @@
       "STOREFRONT_CHANGED: false",
       "FEATURE_FLAG_CHANGED: false",
       "EXECUTION_ALLOWED: false"
+    ].join("\n");
+  }
+
+  function simulatePersonalStudio(){
+    const stylistOutput=$("#stylist-result");
+    const mirrorOutput=$("#mirror-result");
+    const status=$("#personal-result-status");
+    if(!Stylist?.createMission||!Mirror?.renderDecision){
+      status.textContent="PERSONAL_ENGINES_UNAVAILABLE · PROVIDER_OFF";
+      return;
+    }
+    const category=truthValue("personal-category");
+    const provider=truthValue("personal-provider");
+    const itemId=truthValue("personal-item-id");
+    const variantId=truthValue("personal-variant-id");
+    const occasion=truthValue("personal-occasion");
+    const productType=truthValue("personal-product-type");
+    const country=truthValue("personal-country");
+    const mission=Stylist.createMission({
+      anchor:{provider,item_id:itemId,category,price:decisionNumber("personal-anchor-price")},
+      occasion,
+      budget:decisionNumber("personal-budget"),
+      country,
+      context:{recent_categories:[],saved_categories:[]}
+    });
+    const consent=Mirror.createConsent({
+      accepted:Boolean($("#personal-consent")?.checked),
+      photo_preview:Boolean($("#personal-preview-permission")?.checked),
+      retention:truthValue("personal-retention"),
+      share_allowed:false
+    });
+    const consentCheck=Mirror.validateConsent(consent);
+    const product={
+      provider,item_id:itemId,variant_id:variantId,
+      image_verified:Boolean($("#personal-image-verified")?.checked),
+      truth_status:$("#personal-truth-live")?.checked?"live_verified":"RECHECK_REQUIRED"
+    };
+    const decision=Mirror.renderDecision({
+      productType,product,
+      confidence:decisionNumber("personal-confidence",100),
+      reducedMotion:Boolean($("#personal-reduced-motion")?.checked)
+    });
+    const safePreview=consentCheck.valid&&decision.can_render;
+    status.textContent=(safePreview?"SAFE_PREVIEW_PLAN_READY":"BLOCKED / FALLBACK")+" · PROVIDER_OFF · EXECUTION_OFF";
+    stylistOutput.textContent=[
+      "MODE: A5_STYLIST_SIMULATION",
+      "OCCASION: "+mission.occasion_label,
+      "TARGET CATEGORIES: "+(mission.target_categories.join(", ")||"NO COMPLEMENT MAP"),
+      "BUDGET TOTAL: "+mission.budget.budget_total,
+      "ANCHOR RESERVED: "+mission.budget.anchor_reserved,
+      "REMAINING: "+mission.budget.remaining,
+      "TARGET PER ITEM: "+mission.budget.target_per_item,
+      "COUNTRY PRODUCT TRUTH REQUIRED: "+mission.requires_country_product_truth,
+      "EXACT FIT CLAIM: "+mission.exact_fit_claim,
+      "PRODUCTS SELECTED: 0"
+    ].join("\n");
+    mirrorOutput.textContent=[
+      "MODE: A5_SAFE_MIRROR_SIMULATION",
+      "CONSENT VALID: "+consentCheck.valid,
+      "CONSENT ISSUES: "+(consentCheck.issues.join(", ")||"none"),
+      "RETENTION: "+consent.retention,
+      "FOCUS ANCHOR: "+(decision.focus.anchor||"UNAVAILABLE"),
+      "FRAME PLAN: "+(decision.focus.frames||[]).join(" → "),
+      "TRANSITION: "+(decision.focus.transition||"none"),
+      "PRODUCT TRUTH ISSUES: "+(decision.truth.issues||[]).join(", "),
+      "SAFE PREVIEW PLAN: "+safePreview,
+      "FALLBACK: "+decision.fallback,
+      "BODY SCORING: false",
+      "ATTRACTIVENESS SCORING: false",
+      "SENSITIVE ATTRIBUTE INFERENCE: false",
+      "EXACT FIT CLAIM: false",
+      "PHOTO REQUESTED: false",
+      "AI PROVIDER CALLED: false"
     ].join("\n");
   }
 
@@ -1648,6 +1723,7 @@
   $("#memory-add-event")?.addEventListener("click",addSimulatedMemoryEvent);
   $("#memory-reset-simulation")?.addEventListener("click",resetMemorySimulation);
   $("#flow-simulate")?.addEventListener("click",simulateDynamicFlow);
+  $("#personal-simulate")?.addEventListener("click",simulatePersonalStudio);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
