@@ -1,0 +1,19 @@
+/* HUNT cinematic world-city hero — isolated additive layer */
+.hd-hero{position:relative;isolation:isolate;overflow:hidden;background:#120f1d!important}
+.hunt-city-reel{position:absolute;inset:0;z-index:-2;overflow:hidden;background:#100d17}
+.hunt-city-frame{position:absolute;inset:-3%;background-position:center;background-size:cover;opacity:0;transform:scale(1.045);transition:opacity 1.8s cubic-bezier(.22,.61,.36,1),transform 9s linear;will-change:opacity,transform}
+.hunt-city-frame.is-active{opacity:1;transform:scale(1.095)}
+.hunt-city-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(7,8,15,.48) 0%,rgba(8,9,18,.20) 46%,rgba(7,8,16,.42) 100%),linear-gradient(180deg,rgba(4,5,10,.13),rgba(4,5,10,.38))}
+.hunt-city-label{position:absolute;right:22px;bottom:20px;z-index:4;padding:7px 11px;border:1px solid rgba(255,255,255,.32);border-radius:999px;background:rgba(8,9,15,.58);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.hd-hero>.hd-hero-copy,.hd-hero>.hd-advisor{position:relative;z-index:2}
+.hd-hero>.hd-hero-copy{background:rgba(255,255,255,.76)!important;backdrop-filter:blur(15px) saturate(118%);-webkit-backdrop-filter:blur(15px) saturate(118%);border:1px solid rgba(255,255,255,.46);box-shadow:0 24px 70px rgba(7,8,16,.22)}
+[data-theme="dark"] .hd-hero>.hd-hero-copy{background:rgba(17,18,24,.76)!important;border-color:rgba(255,255,255,.12)}
+@media (max-width:760px){
+  .hunt-city-frame{inset:0;background-position:center}
+  .hd-hero>.hd-hero-copy{background:rgba(255,255,255,.84)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+  [data-theme="dark"] .hd-hero>.hd-hero-copy{background:rgba(17,18,24,.84)!important}
+  .hunt-city-label{right:12px;bottom:12px;font-size:9px}
+}
+@media (prefers-reduced-motion:reduce){
+  .hunt-city-frame{transition:none!important;transform:none!important}
+}
