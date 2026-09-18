@@ -103,8 +103,8 @@ begin
   insert into public.hunt_boom_ci_quality_gate_runs
   (gate_id,run_key,candidate_ref,source_commit,sample_count,metric_value,passed,status,evidence,completed_at)
   values
-  (gate_id,'owner-chat-contract-rolling-24h-gate','hunt-boom-chat-v41',
-   'd4a050fa99310ec549092e6e2f43147d32eb3c6b',
+  (gate_id,'owner-chat-contract-rolling-24h-gate','hunt-boom-chat-v42',
+   'dfca7cffc8dc08352757c39da94620221e4ca2c0',
    scored,avg_score,gate_pass,
    case when enough then 'completed' else 'pending' end,
    jsonb_build_object(
