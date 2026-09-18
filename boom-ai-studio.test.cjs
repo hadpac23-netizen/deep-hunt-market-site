@@ -460,6 +460,7 @@ assert(html.includes('id="professional-review-list"'),"Professional review queue
 assert(html.includes('id="professional-cost-report"'),"Professional cost report missing");
 assert(html.includes('id="professional-evaluator-report"'),"Professional evaluator governance panel missing");
 assert(html.includes('id="professional-safety-report"'),"Professional safety engineering panel missing");
+assert(html.includes('id="professional-radar-report"'),"Professional F35 radar panel missing");
 assert(html.includes('id="professional-report"'),"Professional contract report missing");
 assert(html.includes("boom-professional-workbench.js?v=1"),"Professional Workbench core script missing");
 assert(js.includes("const ProfessionalWorkbench=window.BoomProfessionalWorkbench"),"Professional Workbench binding missing");
@@ -471,6 +472,7 @@ assert(js.includes("EXPERIMENT DIFF: "), "Professional experiment evidence missi
 assert(js.includes("COST/LATENCY: "), "Professional cost/latency evidence missing");
 assert(js.includes('const evaluatorReport=$("#professional-evaluator-report")'),"Evaluator governance renderer missing");
 assert(js.includes('const safetyReport=$("#professional-safety-report")'),"Safety engineering renderer missing");
+assert(js.includes('const radarReport=$("#professional-radar-report")'),"F35 radar renderer missing");
 assert(js.includes("OWNER GATE REQUIRED: true"),"Professional Owner gate invariant missing");
 assert(js.includes("PRODUCTION CHANGE: false"),"Professional Production guard missing");
 assert(js.includes("SUPPLIER ORDERS: false"),"Professional supplier-order guard missing");
@@ -500,10 +502,18 @@ assert(js.includes('query("hunt_boom_team_runs"'),"Professional multi-agent judg
 assert(js.includes("EVALUATOR GOVERNANCE: "), "Professional evaluator-governance evidence missing");
 assert(js.includes("ONLINE EVAL / CI GATE: "), "Professional online-eval/CI evidence missing");
 assert(js.includes("PROMPT/TRACE LINEAGE: "), "Professional lineage evidence missing");
-assert(js.includes("evaluatorRegistryConnected:false"),"Evaluator registry must fail closed until a real registry is connected");
-assert(js.includes("humanAlignmentConnected:false"),"Evaluator alignment must fail closed until human calibration is connected");
-assert(js.includes("onlineEvalConnected:false"),"Online evals must remain unverified until connected");
-assert(js.includes("ciEvalGateConnected:false"),"CI eval gate must remain unverified until connected");
+assert(js.includes("F35 RADAR: "), "Professional F35 freshness evidence missing");
+assert(js.includes('query("hunt_boom_evaluator_registry"'),"Evaluator registry evidence query missing");
+assert(js.includes('query("hunt_boom_human_alignment_runs"'),"Human alignment evidence query missing");
+assert(js.includes('query("hunt_boom_online_eval_windows"'),"Online eval evidence query missing");
+assert(js.includes('query("hunt_boom_ci_quality_gates"'),"CI quality gate query missing");
+assert(js.includes('query("hunt_boom_ci_quality_gate_runs"'),"CI quality gate run query missing");
+assert(js.includes('query("hunt_boom_f35_sources"'),"F35 source query missing");
+assert(js.includes('query("hunt_boom_f35_findings"'),"F35 findings query missing");
+assert(!js.includes("evaluatorRegistryConnected:false"),"Evaluator registry must be derived from persisted evidence, not hard-coded false");
+assert(!js.includes("humanAlignmentConnected:false"),"Human alignment must be derived from persisted evidence, not hard-coded false");
+assert(!js.includes("onlineEvalConnected:false"),"Online eval state must be derived from persisted evidence, not hard-coded false");
+assert(!js.includes("ciEvalGateConnected:false"),"CI gate state must be derived from persisted evidence, not hard-coded false");
 assert(js.includes("datasetStoreConnected:state.professionalEvidence.evalCases.length>0&&state.professionalEvidence.evalSuites.length>0"),"Professional dataset truth gate missing");
 
 assert(js.includes("async function optionalQuery("),"Optional professional store query missing");
@@ -527,3 +537,14 @@ assert(professionalMigration.includes("session_id text"),"Trace session id missi
 assert(professionalMigration.includes("prompt_version_id bigint references public.hunt_boom_prompt_versions(id)"),"Trace prompt-version link missing");
 assert(professionalMigration.includes("alter table public.hunt_boom_prompt_versions enable row level security"),"Prompt registry RLS missing");
 assert(professionalMigration.includes("alter table public.hunt_boom_trace_spans enable row level security"),"Trace store RLS missing");
+
+const governanceMigration=fs.readFileSync("supabase/migrations/20260918120500_boom_professional_eval_governance_f35_radar.sql","utf8");
+assert(governanceMigration.includes("create table if not exists public.hunt_boom_evaluator_registry"),"Evaluator registry migration missing");
+assert(governanceMigration.includes("create table if not exists public.hunt_boom_human_alignment_runs"),"Human alignment migration missing");
+assert(governanceMigration.includes("create table if not exists public.hunt_boom_online_eval_windows"),"Online eval migration missing");
+assert(governanceMigration.includes("create table if not exists public.hunt_boom_ci_quality_gates"),"CI gate migration missing");
+assert(governanceMigration.includes("create table if not exists public.hunt_boom_ci_quality_gate_runs"),"CI gate run migration missing");
+assert(governanceMigration.includes("create table if not exists public.hunt_boom_f35_sources"),"F35 source migration missing");
+assert(governanceMigration.includes("create table if not exists public.hunt_boom_f35_findings"),"F35 findings migration missing");
+assert(governanceMigration.includes("enable row level security"),"Governance migration RLS missing");
+assert(governanceMigration.includes("owner_approval_required boolean not null default true"),"Governance Owner gate default missing");
