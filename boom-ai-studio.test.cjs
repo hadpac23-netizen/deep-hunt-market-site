@@ -183,3 +183,12 @@ assert(js.includes("sensitive_traits_used:false"),"Sensitive-trait guard missing
 assert(js.includes("BODY TRAITS USED: false"),"Body-trait guard missing");
 assert(js.includes("STOREFRONT_CHANGED: false"),"Storefront execution guard missing");
 assert(css.includes(".decision-workspace"),"A2 decision workspace styling missing");
+assert(html.includes('id="memory-add-event"'),"A3 Memory action simulator missing");
+assert(html.includes('id="memory-reset-simulation"'),"A3 Memory reset missing");
+assert(html.includes("hunt-experience-memory.js?v=memory1"),"HUNT Memory engine missing from Studio");
+assert(js.includes("simulatedMemoryEvents"),"Isolated memory state missing");
+assert(js.includes("function addSimulatedMemoryEvent"),"A3 event simulator missing");
+assert(js.includes("function renderMemorySimulation"),"A3 context renderer missing");
+assert(js.includes("REAL PROFILE WRITTEN: false"),"Real-profile isolation guard missing");
+assert(js.includes("HUNT HISTORY CHANGED: false"),"HUNT history isolation guard missing");
+assert(css.includes(".memory-workspace"),"A3 memory workspace styling missing");
