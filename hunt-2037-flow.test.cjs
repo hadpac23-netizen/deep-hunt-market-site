@@ -71,6 +71,9 @@ assert(html.includes("hunt-2037-visual.js?v=alpha1"),"visual engine script missi
 assert(visual.includes("hunt2037Wordmark"),"dynamic wordmark hook missing");
 assert(visual.includes("hunt-city-night-manifest.json"),"city manifest loader missing");
 assert(visual.includes("CITY MOOD · "),"city mood truth label missing");
+assert(visual.includes("HUNT NIGHT · "),"original HUNT asset truth label missing");
+assert(visual.includes("hunt2037-city-switching"),"city crossfade state missing");
+assert(css.includes(".hunt2037-city-switching:before"),"city crossfade CSS missing");
 assert(visual.includes('fashion:"tokyo"'),"Fashion world city mood mapping missing");
 assert(visual.includes('"tech-home":"shenzhen"'),"Future Living world city mood mapping missing");
 assert(visual.includes("worldLock"),"world mood scroll lock missing");
@@ -79,5 +82,14 @@ assert(!css.includes("\\\\n"),"literal escaped newlines must not remain in CSS")
 assert(cities.policy==="licensed_or_original_assets_only","city asset policy missing");
 assert(cities.mode==="night_only","night-only city policy missing");
 for(const city of ["Dubai","London","Tokyo","Singapore","New York","Copenhagen","Mumbai","Cape Town"])assert(cities.cities.some(x=>x.name===city),"missing city "+city);
+for(const id of ["tokyo","paris","shenzhen","dubai"]){
+  const city=cities.cities.find(x=>x.id===id);
+  assert.equal(city.status,"ORIGINAL_HUNT_ASSET","original city asset status missing for "+id);
+  assert.equal(city.asset_kind,"original_abstract","original city asset kind missing for "+id);
+  assert.ok(String(city.asset_url||"").startsWith("assets/hunt-city/"),"city asset path missing for "+id);
+  const svg=fs.readFileSync(city.asset_url,"utf8");
+  assert(svg.includes("<svg"),"city SVG missing for "+id);
+  assert(svg.includes("Original HUNT abstract"),"city SVG truth label missing for "+id);
+}
 
 console.log("HUNT 2037 Flow tests: PASS");
