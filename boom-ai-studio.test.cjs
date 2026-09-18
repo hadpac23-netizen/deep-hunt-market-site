@@ -465,3 +465,25 @@ assert(js.includes("SHADOW RUNS: "), "Professional shadow evidence missing");
 assert(js.includes("REPLAY RUNS: "), "Professional replay evidence missing");
 assert(js.includes("MODEL OBSERVATIONS: "), "Professional observation evidence missing");
 assert(js.includes("datasetStoreConnected:state.professionalEvidence.evalCases.length>0&&state.professionalEvidence.evalSuites.length>0"),"Professional dataset truth gate missing");
+
+assert(js.includes("async function optionalQuery("),"Optional professional store query missing");
+assert(js.includes("function isMissingOptionalStoreError("),"Optional store missing-table detector missing");
+assert(js.includes('"42P01"')&&js.includes('"PGRST205"'),"Optional store missing-table codes missing");
+assert(js.includes('optionalQuery("hunt_boom_prompt_versions"'),"Optional prompt registry query missing");
+assert(js.includes('optionalQuery("hunt_boom_trace_spans"'),"Optional trace store query missing");
+assert(js.includes("promptStoreConnected:promptStore.connected"),"Prompt store connection truth missing");
+assert(js.includes("traceStoreConnected:traceStore.connected"),"Trace store connection truth missing");
+assert(js.includes("traceSchemaConnected:state.professionalEvidence.traceStoreConnected&&state.professionalEvidence.traceSpans.length>0"),"Trace schema readiness gate missing");
+assert(js.includes("PROMPT STORE CONNECTED: "), "Prompt store evidence missing");
+assert(js.includes("TRACE STORE CONNECTED: "), "Trace store evidence missing");
+assert(js.includes("TRACE SPANS: "), "Trace span evidence missing");
+
+const professionalMigration=fs.readFileSync("supabase/migrations/20260918092536_boom_professional_prompt_trace_foundation.sql","utf8");
+assert(professionalMigration.includes("create table if not exists public.hunt_boom_prompt_versions"),"Professional prompt registry migration missing");
+assert(professionalMigration.includes("create table if not exists public.hunt_boom_trace_spans"),"Professional trace span migration missing");
+assert(professionalMigration.includes("owner_approval_required boolean not null default true"),"Prompt Owner gate default missing");
+assert(professionalMigration.includes("parent_span_id uuid references public.hunt_boom_trace_spans(span_id)"),"Trace parent hierarchy missing");
+assert(professionalMigration.includes("session_id text"),"Trace session id missing");
+assert(professionalMigration.includes("prompt_version_id bigint references public.hunt_boom_prompt_versions(id)"),"Trace prompt-version link missing");
+assert(professionalMigration.includes("alter table public.hunt_boom_prompt_versions enable row level security"),"Prompt registry RLS missing");
+assert(professionalMigration.includes("alter table public.hunt_boom_trace_spans enable row level security"),"Trace store RLS missing");
