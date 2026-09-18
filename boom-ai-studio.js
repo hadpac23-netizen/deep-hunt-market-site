@@ -250,6 +250,18 @@
     return report?.status||manager?.status||"offline";
   }
 
+  function freshStatusOf(id,maxMinutes=30){
+    const manager=state.managerMap.get(id)||toolNodeFallbackManagers[id];
+    const report=state.reportMap.get(id)||toolNodeFallbackReports[id];
+    const raw=String(report?.status||manager?.status||"offline").toLowerCase();
+    if(["blocked","critical","offline"].includes(raw))return raw;
+    const times=[report?.created_at,manager?.updated_at].filter(Boolean).map(x=>new Date(x).getTime()).filter(Number.isFinite);
+    if(!times.length)return raw==="watch"?"watch":"offline";
+    const ageMinutes=Math.max(0,(Date.now()-Math.max(...times))/60000);
+    if(ageMinutes>maxMinutes)return "watch";
+    return raw;
+  }
+
   function setNodeStatus(el,status){
     if(el)el.dataset.status=status;
   }
@@ -313,28 +325,44 @@
     svg.appendChild(p);
   }
 
+  function linkTone(status){
+    const s=String(status||"offline").toLowerCase();
+    if(["healthy","working","running"].includes(s))return "live";
+    if(["watch","queued","accepted","waiting_owner"].includes(s))return "watch";
+    if(["blocked","critical"].includes(s))return s;
+    return "offline";
+  }
+
   function drawLinks(){
     const svg=$("#links");
     const canvas=$("#canvas");
     if(!svg||!canvas)return;
     svg.innerHTML="";
     svg.setAttribute("viewBox","0 0 "+canvas.clientWidth+" "+canvas.clientHeight);
-    addLine(svg,$("#node-owner"),$("#node-meta"),"live");
-    addLine(svg,$("#node-meta"),$("#node-super"),"live");
-    addLine(svg,$("#node-super"),$("#node-model"),"watch");
-    addLine(svg,$("#node-super"),$("#node-memory"),"live");
-    addLine(svg,$("#node-super"),$("#node-eval"),state.evals.length?"live":"watch");
-    addLine(svg,$("#node-eval"),$("#node-output"),"watch");
+
+    const metaStatus=state.localPreview?"watch":freshStatusOf("boom-meta-f35");
+    const superStatus=state.localPreview?"watch":freshStatusOf("boom-super-agent");
+    const modelEvidence=(state.professionalEvidence?.modelObservations||[]).find(x=>x.success===true&&connectorFresh(x.created_at,24));
+    const modelStatus=state.localPreview?"watch":(modelEvidence?"healthy":"watch");
+    const memoryStatus=state.localPreview?"watch":((state.reports.length||state.events.length)?"healthy":"offline");
+    const evalStatus=state.localPreview?"watch":(state.evals.length?"healthy":"offline");
+    const outputStatus=state.localPreview?"watch":(state.commands.some(x=>["waiting_owner","running","accepted","queued"].includes(x.status))?"working":(state.evals.length?"healthy":"offline"));
+
+    addLine(svg,$("#node-owner"),$("#node-meta"),linkTone(metaStatus));
+    addLine(svg,$("#node-meta"),$("#node-super"),linkTone(superStatus));
+    addLine(svg,$("#node-super"),$("#node-model"),linkTone(modelStatus));
+    addLine(svg,$("#node-super"),$("#node-memory"),linkTone(memoryStatus));
+    addLine(svg,$("#node-super"),$("#node-eval"),linkTone(evalStatus));
+    addLine(svg,$("#node-eval"),$("#node-output"),linkTone(outputStatus));
+
     for(const group of studioNodeGroups){
       const first=group.nodes[0];
       if(!first)continue;
-      const firstStatus=statusOf(first[0]);
-      addLine(svg,$("#node-super"),$("#node-"+first[0]),["healthy","working"].includes(firstStatus)?"live":firstStatus);
+      addLine(svg,$("#node-super"),$("#node-"+first[0]),linkTone(state.localPreview?"watch":freshStatusOf(first[0])));
       if(["intelligence","release"].includes(group.id)){
         for(let i=1;i<group.nodes.length;i++){
           const prev=group.nodes[i-1],current=group.nodes[i];
-          const st=statusOf(current[0]);
-          addLine(svg,$("#node-"+prev[0]),$("#node-"+current[0]),["healthy","working"].includes(st)?"live":st);
+          addLine(svg,$("#node-"+prev[0]),$("#node-"+current[0]),linkTone(state.localPreview?"watch":freshStatusOf(current[0])));
         }
       }
     }
@@ -370,14 +398,19 @@
     state.reportMap=latest(state.reports,"manager_id");
     state.workerReportMap=latest(state.workerReports,"worker_id");
 
-    setNodeStatus($("#node-owner"),"healthy");
-    setNodeStatus($("#node-meta"),statusOf("boom-meta-f35"));
-    setNodeStatus($("#node-super"),statusOf("boom-super-agent"));
-    setNodeStatus($("#node-model"),"watch");
-    setNodeStatus($("#node-memory"),"healthy");
-    setNodeStatus($("#node-eval"),state.evals.length?"healthy":"watch");
-    setNodeStatus($("#node-output"),"watch");
-    toolNodes.forEach(t=>setNodeStatus($("#node-"+t[0]),statusOf(t[0])));
+    const modelLive=(state.professionalEvidence?.modelObservations||[]).some(x=>x.success===true&&connectorFresh(x.created_at,24));
+    const hasMemoryEvidence=Boolean(state.reports.length||state.events.length);
+    const hasEvalEvidence=Boolean(state.evals.length);
+    const hasOpenOutput=state.commands.some(x=>["queued","accepted","running","waiting_owner"].includes(x.status));
+
+    setNodeStatus($("#node-owner"),state.localPreview?"watch":"healthy");
+    setNodeStatus($("#node-meta"),state.localPreview?"watch":freshStatusOf("boom-meta-f35"));
+    setNodeStatus($("#node-super"),state.localPreview?"watch":freshStatusOf("boom-super-agent"));
+    setNodeStatus($("#node-model"),state.localPreview?"watch":(modelLive?"healthy":"watch"));
+    setNodeStatus($("#node-memory"),state.localPreview?"watch":(hasMemoryEvidence?"healthy":"offline"));
+    setNodeStatus($("#node-eval"),state.localPreview?"watch":(hasEvalEvidence?"healthy":"offline"));
+    setNodeStatus($("#node-output"),state.localPreview?"watch":(hasOpenOutput?"working":(hasEvalEvidence?"healthy":"offline")));
+    toolNodes.forEach(t=>setNodeStatus($("#node-"+t[0]),state.localPreview?"watch":freshStatusOf(t[0])));
 
     $("#meta-label").textContent=state.learning.filter(x=>x.domain==="ai-engineering").length+" AI MODULES";
     $("#command-label").textContent=state.commands.filter(x=>["queued","accepted","running","waiting_owner"].includes(x.status)).length+" OPEN COMMANDS";
@@ -938,6 +971,7 @@
     const controlMap=new Map((state.connectorEvidence.controls||[]).map(x=>[String(x.key||""),x]));
     const paymentControl=controlMap.get("hunt_payment_live");
     const supplierLiveControl=controlMap.get("hunt_supplier_order_live");
+    const supplierSandboxControl=controlMap.get("hunt_supplier_order_sandbox");
 
     const base=[
       {id:"supabase",name:"Supabase Core",kind:"IDENTITY + BACKEND",tone:state.localPreview?"watch":"healthy",detail:state.localPreview?"Local Preview does not query live Supabase.":"Studio data loaded successfully from the live Supabase project.",evidence:state.localPreview?"LOCAL_PREVIEW":"Live authenticated query + realtime channel",gate:"Owner gate for config changes"},
@@ -948,6 +982,7 @@
       {id:"hypersku",name:"HyperSKU Supplier",kind:"TIER 0 SUPPLIER API",tone:connectTone(hyperskuRaw),detail:"Adapter foundation exists; live Open API auth/read-only verification are not proven.",evidence:"supplier-hypersku · "+hyperskuRaw+" · PILOT",gate:"Read-only first · fulfillment requires explicit Owner approval"},
       {id:"repair",name:"BOOM Repair Engineering",kind:"SELF-HEALING",tone:connectTone(repairRaw),detail:"Safe reversible incidents may be repaired; material changes escalate.",evidence:"repair-engineering · "+repairRaw,gate:"Safe repair auto · material changes gated"},
       {id:"payments",name:"Live Payments",kind:"PAYMENTS",tone:paymentControl?.enabled===true&&paymentControl?.owner_approved===true?"watch":"blocked",detail:paymentControl?.enabled===true?"Runtime control enabled; launch evidence still required.":"Live charging remains intentionally OFF.",evidence:paymentControl?"hunt_payment_live · enabled="+String(paymentControl.enabled)+" · owner="+String(paymentControl.owner_approved):"runtime control unavailable",gate:"Explicit Owner approval required"},
+      {id:"supplier-sandbox",name:"Supplier Order Sandbox",kind:"FULFILLMENT · SANDBOX",tone:supplierSandboxControl?.enabled===true&&supplierSandboxControl?.owner_approved===true?"healthy":"watch",detail:supplierSandboxControl?.enabled===true&&supplierSandboxControl?.owner_approved===true?"Sandbox supplier-order path is enabled and Owner-approved for non-live testing.":"Sandbox supplier-order path is not fully enabled.",evidence:supplierSandboxControl?"hunt_supplier_order_sandbox · enabled="+String(supplierSandboxControl.enabled)+" · owner="+String(supplierSandboxControl.owner_approved):"runtime control unavailable",gate:"Sandbox only · no real supplier order"},
       {id:"supplier-orders",name:"Live Supplier Orders",kind:"FULFILLMENT",tone:supplierLiveControl?.enabled===true&&supplierLiveControl?.owner_approved===true?"watch":"blocked",detail:supplierLiveControl?.enabled===true?"Live supplier order gate enabled; E2E evidence still required.":"Real supplier order creation remains OFF.",evidence:supplierLiveControl?"hunt_supplier_order_live · enabled="+String(supplierLiveControl.enabled)+" · owner="+String(supplierLiveControl.owner_approved):"runtime control unavailable",gate:"Explicit Owner approval required"}
     ];
 

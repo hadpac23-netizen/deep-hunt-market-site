@@ -501,3 +501,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
   .owner-mission-flow{gap:5px}
   .owner-mission-flow span{padding:5px 7px}
 }
+
+/* LIVE CONNECTION TRUTH V2 */
+.link.watch{stroke:#d6a843;stroke-dasharray:4 10;animation:watchFlow 3.2s linear infinite;opacity:.9}
+.link.offline{stroke:#3c4655;opacity:.42}
+.link.live{stroke-width:2.4;filter:drop-shadow(0 0 3px rgba(69,216,125,.42))}
+@keyframes watchFlow{to{stroke-dashoffset:-28}}
+
+.connect-card.healthy{position:relative;box-shadow:inset 3px 0 0 rgba(69,216,125,.32)}
+.connect-card.watch{position:relative;box-shadow:inset 3px 0 0 rgba(214,168,67,.26)}
+.connect-card.healthy::before,.connect-card.watch::before{content:"";position:absolute;top:12px;right:12px;width:6px;height:6px;border-radius:50%}
+.connect-card.healthy::before{background:#45d87d;box-shadow:0 0 12px rgba(69,216,125,.7);animation:connectPulse 1.8s ease-in-out infinite}
+.connect-card.watch::before{background:#d6a843;box-shadow:0 0 10px rgba(214,168,67,.45);animation:connectPulse 3s ease-in-out infinite}
+@keyframes connectPulse{50%{transform:scale(1.45);opacity:.55}}

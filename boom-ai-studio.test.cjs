@@ -366,7 +366,7 @@ assert(html.includes('id="node-output"'),"Decision / Owner Output node missing")
 assert(html.includes("DECISION / OUTPUT"),"Decision / Output section label missing");
 assert(js.includes('if(type==="output")'),"Decision / Owner Output inspector missing");
 assert(js.includes("KNOWLEDGE != AUTHORITY"),"Decision authority boundary missing");
-assert(js.includes('addLine(svg,$("#node-eval"),$("#node-output"),"watch")'),"Decision output link missing");
+assert(js.includes('addLine(svg,$("#node-eval"),$("#node-output"),linkTone(outputStatus))'),"Truth-based Decision output link missing");
 assert(html.includes('id="prompt-coverage-audit"'),"Prompt coverage audit workspace missing");
 assert(html.includes('id="prompt-audit-summary"'),"Prompt audit summary missing");
 assert(html.includes('id="prompt-audit-grid"'),"Prompt audit grid missing");
@@ -661,5 +661,17 @@ assert(ownerDeviceHarness.includes("studioActive"),"Device QA must verify Owner 
 assert(js.includes('$$(".tab").forEach'),"View navigation must iterate all tabs");
 assert(js.includes('$$(".view").forEach'),"View navigation must iterate all views");
 assert(js.includes('$$(".studio-node-group").find'),"Studio group navigation must search the full node-group collection");
+
+
+assert(js.includes("function freshStatusOf(id,maxMinutes=30)"),"Fresh runtime status guard missing");
+assert(js.includes("function linkTone(status)"),"Live connection tone mapping missing");
+assert(js.includes('state.localPreview?"watch":freshStatusOf'),"Preview/live connection truth boundary missing");
+assert(css.includes("LIVE CONNECTION TRUTH V2"),"Live connection animation styling missing");
+assert(css.includes("@keyframes watchFlow"),"Active-watch connection animation missing");
+
+
+assert(js.includes('hunt_supplier_order_sandbox'),"Sandbox supplier runtime truth missing from Connect");
+assert(js.includes('name:"Supplier Order Sandbox"'),"Sandbox supplier connection card missing");
+assert(css.includes("@keyframes connectPulse"),"Live connector pulse styling missing");
 
 console.log("boom_ai_studio_tests=PASS");
