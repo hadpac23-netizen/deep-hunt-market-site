@@ -3,11 +3,16 @@
 
   const safeArray=v=>Array.isArray(v)?v:[];
   const clean=v=>String(v??"").trim();
+  const hasMeasuredValue=v=>v!==null&&v!==undefined&&!(typeof v==="string"&&v.trim()==="");
+  const measuredNumbers=values=>safeArray(values)
+    .filter(hasMeasuredValue)
+    .map(Number)
+    .filter(Number.isFinite);
   const badStatus=v=>["critical","blocked","failed","fail","killed","error"].includes(clean(v).toLowerCase());
   const watchStatus=v=>["watch","warning","open","evaluating","pending"].includes(clean(v).toLowerCase());
 
   function percentile(values,p){
-    const rows=safeArray(values).map(Number).filter(Number.isFinite).sort((a,b)=>a-b);
+    const rows=measuredNumbers(values).sort((a,b)=>a-b);
     if(!rows.length)return null;
     const idx=Math.min(rows.length-1,Math.max(0,Math.ceil((p/100)*rows.length)-1));
     return rows[idx];
@@ -192,17 +197,19 @@
         alerts.push({source:key,severity:"watch",message:"P95 latency "+latencyP95+"ms > route budget "+latencyLimit+"ms"});
       }
 
-      const costs=rows.map(x=>Number(x.estimated_cost_usd)).filter(Number.isFinite);
+      const costs=measuredNumbers(rows.map(x=>x.estimated_cost_usd));
       const costLimit=Number(route.max_cost_usd);
       const maxCost=costs.length?Math.max(...costs):null;
       if(Number.isFinite(maxCost)&&Number.isFinite(costLimit)&&maxCost>costLimit){
         alerts.push({source:key,severity:"watch",message:"Max observed cost $"+maxCost.toFixed(6)+" > route budget $"+costLimit.toFixed(6)});
       }
 
-      const quality=rows.map(x=>Number(x.quality_score)).filter(Number.isFinite);
+      const quality=measuredNumbers(rows.map(x=>x.quality_score));
       const qualityMin=Number(route.min_quality_score);
       const qualityAvg=quality.length?quality.reduce((a,b)=>a+b,0)/quality.length:null;
-      if(Number.isFinite(qualityAvg)&&Number.isFinite(qualityMin)&&qualityAvg<qualityMin){
+      if(!quality.length&&Number.isFinite(qualityMin)){
+        alerts.push({source:key,severity:"unmeasured",message:"Quality UNMEASURED · no valid quality scores in latest "+rows.length+" samples"});
+      }else if(Number.isFinite(qualityAvg)&&Number.isFinite(qualityMin)&&qualityAvg<qualityMin){
         alerts.push({source:key,severity:"watch",message:"Average quality "+qualityAvg.toFixed(3)+" < route minimum "+qualityMin.toFixed(3)});
       }
 
@@ -215,7 +222,8 @@
     return Object.freeze({
       alerts:Object.freeze(alerts.slice(0,80)),
       critical:alerts.filter(x=>x.severity==="critical").length,
-      watch:alerts.filter(x=>x.severity==="watch").length
+      watch:alerts.filter(x=>x.severity==="watch").length,
+      unmeasured:alerts.filter(x=>x.severity==="unmeasured").length
     });
   }
 
@@ -465,7 +473,7 @@
       {id:"f35-radar",label:"F35 Knowledge Freshness",state:radar.ready?"ready":"gap",evidence:radar.fresh+"/"+radar.sources+" source(s) fresh · stale="+radar.stale+" · never="+radar.never_checked+" · findings="+radar.verified_findings},
       {id:"review",label:"Human / Owner Review Queue",state:review.persisted?"ready":"gap",evidence:review.count+" review item(s) · annotation history persisted="+String(review.persisted)},
       {id:"cost",label:"Cost / Latency Budget",state:cost.instrumented?"ready":"gap",evidence:cost.instrumented?cost.sample_count+" measured samples":"Token/cost/latency instrumentation not connected"},
-      {id:"alerts",label:"Alerts / SLO Inbox",state:input.alertRulesConnected===true?(alerts.critical?"blocked":alerts.watch?"watch":"ready"):"gap",evidence:alerts.critical+" critical · "+alerts.watch+" watch · threshold/rule history="+String(input.alertRulesConnected===true)},
+      {id:"alerts",label:"Alerts / SLO Inbox",state:input.alertRulesConnected===true?(alerts.critical?"blocked":alerts.watch?"watch":alerts.unmeasured?"pending":"ready"):"gap",evidence:alerts.critical+" critical · "+alerts.watch+" watch · "+alerts.unmeasured+" UNMEASURED · threshold/rule history="+String(input.alertRulesConnected===true)},
       {id:"release",label:"Release Replay / Gate",state:release?"ready":"gap",evidence:release?(replayRuns.length?replayRuns.length+" persisted replay run(s)":"Owner gate evidence attached"):"No release/replay snapshot attached"}
     ]);
 
