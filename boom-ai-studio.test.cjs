@@ -548,3 +548,11 @@ assert(governanceMigration.includes("create table if not exists public.hunt_boom
 assert(governanceMigration.includes("create table if not exists public.hunt_boom_f35_findings"),"F35 findings migration missing");
 assert(governanceMigration.includes("enable row level security"),"Governance migration RLS missing");
 assert(governanceMigration.includes("owner_approval_required boolean not null default true"),"Governance Owner gate default missing");
+
+const baselineEvidenceMigration=fs.readFileSync("supabase/migrations/20260918123000_boom_professional_baseline_evidence.sql","utf8");
+assert(baselineEvidenceMigration.includes("'brain-v2-redteam-deterministic'"),"Measured evaluator baseline seed missing");
+assert(baselineEvidenceMigration.includes("'owner-chat-default-2026-09-17-18'"),"Measured online eval baseline seed missing");
+assert(baselineEvidenceMigration.includes("'brain-v2-redteam-pass'"),"Passing CI gate seed missing");
+assert(baselineEvidenceMigration.includes("'owner-chat-quality-min'"),"Quality CI gate seed missing");
+assert(baselineEvidenceMigration.includes("'supabase-observability-autopilot'"),"F35 official source seed missing");
+assert(baselineEvidenceMigration.includes("on conflict"),"Baseline evidence seed must remain idempotent");
