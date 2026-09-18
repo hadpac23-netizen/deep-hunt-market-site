@@ -631,4 +631,8 @@ assert(css.includes("@media(prefers-reduced-motion:reduce)"),"Reduced-motion acc
 assert(css.includes(".chat-message.owner")&&css.includes(".chat-message.boom"),"BOOM Chat message hierarchy missing");
 assert(css.includes(".professional-card[data-state=\"ready\"]"),"Professional status hierarchy missing");
 
+
+const deviceHarness=fs.readFileSync("boom-studio-device-browser-e2e.html","utf8");
+assert(deviceHarness.includes("for(let attempt=0;attempt<50;attempt++)"),"Device browser QA must wait for Safe Preview readiness instead of fixed timing");
+
 console.log("boom_ai_studio_tests=PASS");

@@ -21,11 +21,16 @@ body{margin:0;background:#080b10;color:#eef;font:12px system-ui;padding:16px}.qa
  }
  async function inspect(spec,ui){
    await new Promise(resolve=>{if(ui.frame.contentDocument?.readyState==="complete")resolve();else ui.frame.addEventListener("load",resolve,{once:true})});
-   await wait(800);
-   const d=ui.frame.contentDocument,w=ui.frame.contentWindow;
+   let d=ui.frame.contentDocument,w=ui.frame.contentWindow;
+   let groups=0,live="";
+   for(let attempt=0;attempt<50;attempt++){
+     d=ui.frame.contentDocument;w=ui.frame.contentWindow;
+     groups=d?.querySelectorAll?.(".studio-node-group")?.length||0;
+     live=d?.querySelector?.("#live-state")?.textContent?.trim()||"";
+     if(groups===6&&/PREVIEW/.test(live)&&/LIVE ACTIONS OFF/.test(live))break;
+     await wait(120);
+   }
    const app=d.querySelector(".app-shell"),login=d.querySelector(".login-screen"),workspace=d.querySelector(".workspace");
-   const groups=d.querySelectorAll(".studio-node-group").length;
-   const live=d.querySelector("#live-state")?.textContent?.trim()||"";
    const output=Boolean(d.querySelector("#node-output"));
    const audit=Boolean(d.querySelector("#prompt-coverage-audit"));
    const trace=Boolean(d.querySelector("#product-trace-workspace"));
