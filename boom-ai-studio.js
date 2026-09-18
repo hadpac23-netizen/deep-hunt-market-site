@@ -19,6 +19,7 @@
   const RCPreview=window.BoomAlphaRCPreview;
   const RCQA=window.BoomAlphaRCQA;
   const FinalGate=window.BoomAlphaFinalGate;
+  const ProfessionalWorkbench=window.BoomProfessionalWorkbench;
   if(!H||(!S?.createClient&&!SAFE_PREVIEW_BOOT)){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -89,7 +90,8 @@
     alphaRCPreview:null,
     alphaRCQA:null,
     alphaFinalGate:null,
-    localPreview:false
+    localPreview:false,
+    professionalSnapshot:null
   };
 
   const studioNodeGroups=[
@@ -467,6 +469,122 @@
         '<div>'+pill(tone)+'<br><small>'+esc(e?.metric_name||stateLabel)+'</small></div>'+
       '</article>';
     }).join(""):'<div class="list-row">אין eval cycles.</div>';
+  }
+
+  function professionalCostSamples(){
+    const samples=[];
+    const candidates=[...state.events,...state.workerReports,...state.reports];
+    for(const row of candidates){
+      const meta=row?.metrics||row?.metadata||row?.result||{};
+      const latency=Number(meta?.latency_ms??meta?.duration_ms??meta?.latency);
+      const cost=Number(meta?.cost??meta?.estimated_cost??meta?.total_cost);
+      const tokens=Number(meta?.tokens??meta?.total_tokens??meta?.token_count);
+      if([latency,cost,tokens].some(Number.isFinite)){
+        samples.push({
+          latency_ms:Number.isFinite(latency)?latency:null,
+          cost:Number.isFinite(cost)?cost:null,
+          tokens:Number.isFinite(tokens)?tokens:null
+        });
+      }
+    }
+    return samples;
+  }
+
+  function renderProfessionalWorkbench(){
+    const summary=$("#professional-summary"),grid=$("#professional-grid"),traceList=$("#professional-trace-list"),failureList=$("#professional-failure-list"),experimentList=$("#professional-experiment-list"),reviewList=$("#professional-review-list"),costReport=$("#professional-cost-report"),report=$("#professional-report");
+    if(!summary||!grid||!ProfessionalWorkbench?.build)return null;
+
+    const snapshot=ProfessionalWorkbench.build({
+      commands:state.commands,
+      events:state.events,
+      workerReports:state.workerReports,
+      reports:state.reports,
+      cycles:state.cycles,
+      evals:state.evals,
+      decisions:state.decisions,
+      costSamples:professionalCostSamples(),
+      promptVersions:[],
+      releaseGate:state.alphaFinalGate
+    });
+    state.professionalSnapshot=snapshot;
+
+    const ready=snapshot.capabilities.filter(x=>x.state==="ready").length;
+    const gaps=snapshot.capabilities.filter(x=>x.state==="gap").length;
+    const blocked=snapshot.capabilities.filter(x=>x.state==="blocked").length;
+    summary.innerHTML=
+      '<article><b>'+snapshot.traces.rows.length+'</b><span>TRACE ROWS</span></article>'+
+      '<article><b>'+snapshot.failures.dataset_candidates+'</b><span>DATASET CANDIDATES</span></article>'+
+      '<article><b>'+ready+'/'+snapshot.capabilities.length+'</b><span>PRO TOOLS READY</span></article>'+
+      '<article><b>'+gaps+'</b><span>INSTRUMENTATION GAPS</span></article>';
+
+    grid.innerHTML=snapshot.capabilities.map(item=>
+      '<article class="professional-card" data-state="'+esc(item.state)+'">'+
+      '<small>'+esc(item.state.toUpperCase())+'</small><h3>'+esc(item.label)+'</h3><p>'+esc(item.evidence)+'</p></article>'
+    ).join("");
+
+    $("#professional-trace-meta").textContent=snapshot.traces.failures+" fail · "+snapshot.traces.watch+" watch · "+snapshot.traces.actors+" actors";
+    traceList.innerHTML=snapshot.traces.rows.length?snapshot.traces.rows.slice(0,18).map(row=>
+      '<article class="professional-trace-row"><span class="professional-kind">'+esc(row.kind.toUpperCase())+'</span>'+
+      '<div><strong>'+esc(row.title)+'</strong><p>'+esc(row.actor)+'</p></div>'+
+      '<div>'+pill(row.status)+'<br><small>'+esc(ago(row.time))+'</small></div></article>'
+    ).join(""):'<article class="professional-mini-row"><div><strong>No trace evidence yet</strong><p>Authenticated runtime data will appear here.</p></div></article>';
+
+    $("#professional-dataset-meta").textContent=snapshot.failures.dataset_candidates+" candidate(s)";
+    failureList.innerHTML=snapshot.failures.items.length?snapshot.failures.items.slice(0,12).map(item=>
+      '<article class="professional-mini-row"><span class="professional-kind">'+esc(item.source.toUpperCase())+'</span>'+
+      '<div><strong>'+esc(item.title)+'</strong><p>'+esc(item.detail)+'</p></div><div>'+pill(item.status)+'</div></article>'
+    ).join(""):'<article class="professional-mini-row"><div><strong>Failure inbox empty</strong><p>No current candidate failures.</p></div></article>';
+
+    $("#professional-experiment-meta").textContent=snapshot.experiments.available?snapshot.experiments.comparisons.length+" comparison(s)":"NEEDS 2+ RUNS";
+    experimentList.innerHTML=snapshot.experiments.comparisons.length?snapshot.experiments.comparisons.slice(0,10).map(item=>
+      '<article class="professional-mini-row"><span class="professional-kind">DIFF</span><div><strong>'+esc(item.metric)+'</strong>'+
+      '<p>baseline='+esc(item.baseline??"—")+' · candidate='+esc(item.candidate??"—")+' · Δ='+esc(item.delta??"—")+'</p></div>'+
+      '<div>'+pill(item.candidate_pass===true?"healthy":item.candidate_pass===false?"critical":"watch")+'</div></article>'
+    ).join(""):'<article class="professional-mini-row"><div><strong>No comparable experiment pair</strong><p>BOOM needs two measured runs for the same metric before claiming improvement.</p></div></article>';
+
+    $("#professional-review-meta").textContent=snapshot.review.count+" item(s)";
+    reviewList.innerHTML=snapshot.review.rows.length?snapshot.review.rows.slice(0,12).map(item=>
+      '<article class="professional-mini-row"><span class="professional-kind">'+esc(item.kind.toUpperCase())+'</span>'+
+      '<div><strong>'+esc(item.title)+'</strong><p>'+esc(item.detail)+'</p></div><div>'+pill(item.status)+'</div></article>'
+    ).join(""):'<article class="professional-mini-row"><div><strong>Review queue empty</strong><p>No open failure/decision evidence.</p></div></article>';
+
+    $("#professional-cost-meta").textContent=snapshot.cost.budget_state;
+    costReport.textContent=[
+      "INSTRUMENTED: "+snapshot.cost.instrumented,
+      "SAMPLES: "+snapshot.cost.sample_count,
+      "TOTAL COST: "+(snapshot.cost.total_cost??"UNMEASURED"),
+      "TOTAL TOKENS: "+(snapshot.cost.total_tokens??"UNMEASURED"),
+      "P50 LATENCY MS: "+(snapshot.cost.p50_latency_ms??"UNMEASURED"),
+      "P95 LATENCY MS: "+(snapshot.cost.p95_latency_ms??"UNMEASURED"),
+      "",
+      snapshot.cost.instrumented
+        ?"Measured values are derived only from runtime rows that already expose cost/token/latency fields."
+        :"GAP: add token, model, prompt-version, cost and latency fields to every model/tool trace before using budgets or alerts."
+    ].join("\n");
+
+    report.textContent=[
+      "MODE: "+snapshot.mode,
+      "PROFESSIONAL READY: "+snapshot.professional_ready,
+      "READY TOOLS: "+ready+"/"+snapshot.capabilities.length,
+      "GAPS: "+(snapshot.gaps.join(", ")||"none"),
+      "BLOCKED: "+blocked,
+      "",
+      "PROMPT REGISTRY: "+snapshot.prompts.status,
+      "DATASET CANDIDATES: "+snapshot.failures.dataset_candidates+" · PERSISTED DATASET: false",
+      "EXPERIMENT DIFF: "+(snapshot.experiments.available?"AVAILABLE":"NEEDS_COMPARABLE_RUNS"),
+      "COST/LATENCY: "+snapshot.cost.budget_state,
+      "ALERTS: critical="+snapshot.alerts.critical+" watch="+snapshot.alerts.watch,
+      "RELEASE REPLAY: "+(snapshot.release?"ATTACHED":"NO_GATE_SNAPSHOT"),
+      "",
+      "MUTATION: false",
+      "PRODUCTION CHANGE: false",
+      "PUBLISH: false",
+      "SPEND: false",
+      "PAYMENTS: false",
+      "SUPPLIER ORDERS: false",
+      "OWNER GATE REQUIRED: true"
+    ].join("\n");
+    return snapshot;
   }
 
   function renderLearning(){
@@ -2097,6 +2215,7 @@
     renderExecutions();
     renderEvaluations();
     renderLearning();
+    renderProfessionalWorkbench();
     renderConnect();
     renderPromptCoverageAudit();
     if(state.managerMap.has(state.selected)||toolNodeFallbackManagers[state.selected]||studioNodeGroupById.has(state.selected))inspectManager(state.selected);
@@ -2906,6 +3025,7 @@
   $("#alpha-final-go")?.addEventListener("click",()=>recordAlphaFinalDecision(FinalGate?.DECISIONS?.GO));
   $("#alpha-final-no-go")?.addEventListener("click",()=>recordAlphaFinalDecision(FinalGate?.DECISIONS?.NO_GO));
   $("#product-trace-run")?.addEventListener("click",()=>runProductTrace());
+  $("#professional-refresh")?.addEventListener("click",()=>renderProfessionalWorkbench());
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
@@ -2972,6 +3092,7 @@
       $("#"+tab.dataset.tab).classList.add("active");
       if(tab.dataset.tab==="studio")requestAnimationFrame(drawLinks);
       if(tab.dataset.tab==="connect")renderConnect();
+      if(tab.dataset.tab==="professional-workbench")renderProfessionalWorkbench();
       if(tab.dataset.tab==="hunt-intelligence")renderHuntIntelligence();
       if(tab.dataset.tab==="hunt-intelligence")renderApprovalQueue();
       if(tab.dataset.tab==="hunt-intelligence")renderAlphaBlueprint();
