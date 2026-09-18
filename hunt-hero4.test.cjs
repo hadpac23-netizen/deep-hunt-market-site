@@ -1,0 +1,18 @@
+const fs=require('fs'),assert=require('assert');
+const html=fs.readFileSync('index.html','utf8');
+const js=fs.readFileSync('hunt-hero4.js','utf8');
+const css=fs.readFileSync('hunt-hero4.css','utf8');
+assert(html.includes('id="hunt-hero4"'),'Hero 4 root missing');
+assert(html.includes('urban-luxe-city.mp4'),'Urban Luxe video missing');
+assert(html.includes('urban-luxe-poster.jpg'),'Urban Luxe poster missing');
+assert(html.includes('id="hd-hero4-promo"'),'Dynamic promo surface missing');
+assert(html.includes('id="hd-hero4-search-input"'),'Hero search missing');
+assert(!html.includes('id="hd-home3-hero-mosaic"'),'Legacy hero mosaic must be removed');
+for(const state of ['idle','peek','open','collapse','hide','feature']) assert(js.includes('"'+state+'"')||js.includes("'"+state+"'"),'Missing promo state '+state);
+assert(js.includes('mouseenter'),'Hover pause missing');
+assert(js.includes('focusin'),'Focus pause missing');
+assert(js.includes('sessionStorage'),'Dismiss memory missing');
+assert(js.includes('IntersectionObserver'),'Offscreen video control missing');
+assert(css.includes('prefers-reduced-motion'),'Reduced motion missing');
+assert(css.includes('HUNT HERO 4.0 · URBAN LUXE'),'Urban Luxe design contract missing');
+console.log('hunt_hero4=PASS');

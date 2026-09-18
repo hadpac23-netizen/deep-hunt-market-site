@@ -16,11 +16,12 @@ const profile=fs.readFileSync("profile.html","utf8");
 const theme=fs.readFileSync("hunt-theme.js","utf8");
 const css=fs.readFileSync("hunt-visual-v2.css","utf8");
 
-assert(index.includes('class="hd-hero-category-links"'),"Home hero category shortcuts missing");
+assert(index.includes('class="hd-hero4-categories"'),"Hero 4 category shortcuts missing");
 assert(index.indexOf('category.html?c=women')<index.indexOf('category.html?c=men'),"Women must precede Men in Home priority");
 assert(index.indexOf('category.html?c=accessories')<index.indexOf('category.html?c=men'),"Accessories must precede Men in Home priority");
+assert(index.includes('id="hd-hero4-search-input"'),"Hero 4 conversational search missing");
+assert(index.includes('id="hd-hero4-promo"'),"Hero 4 dynamic promo surface missing");
 assert(theme.includes('"women","bags","jewelry","beauty","shoes","men"'),"Discovery priority order missing");
-assert(theme.includes("Find your next favorite."),"Commerce-first hero copy missing");
 
 assert(category.includes('id="hd-category-grid"'),"Category product grid missing");
 assert(product.includes('id="hd-product-add"'),"Product add-to-cart control missing");

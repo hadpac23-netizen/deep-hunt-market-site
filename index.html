@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="hunt-shop.css?v=dynamic1">
   <link rel="stylesheet" href="hunt-visual-v2.css?v=1">
   <link rel="stylesheet" href="hunt-home-3.css?v=1">
+  <link rel="stylesheet" href="hunt-hero4.css?v=1">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"HUNT DEAL","url":"https://deep-hunt-market.netlify.app/","description":"Evidence-first shopping and commerce intelligence."}</script>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="hunt-icon-192.png">
@@ -53,29 +54,65 @@
   </header>
 
   <main id="main-content" class="hd-home3-main">
-    <section class="hd-hero hd-home3-hero" aria-labelledby="hd-home3-title">
-      <div class="hd-hero-copy hd-home3-copy">
-        <div class="hd-kicker">HUNT DEAL · DISCOVER BETTER</div>
-        <h1 id="hd-home3-title">Find something<br><em>worth keeping.</em></h1>
-        <p>Fashion first. Then accessories, beauty, home, tech and everything else — built from real connected catalog products and reshaped around what you browse.</p>
-        <div class="hd-home3-search-cta">
-          <a class="hd-btn hd-btn-primary" href="category.html?c=women">Shop Women</a>
-          <a class="hd-btn" href="search.html">Ask HUNT</a>
-        </div>
-        <nav class="hd-hero-category-links" aria-label="Popular shopping categories">
+    <section class="hd-hero4" id="hunt-hero4" aria-labelledby="hd-hero4-title" data-promo-state="idle">
+      <div class="hd-hero4-media" aria-hidden="true">
+        <video id="hd-hero4-video" muted loop playsinline preload="metadata" poster="assets/hunt-hero4/urban-luxe-poster.jpg">
+          <source src="assets/hunt-hero4/urban-luxe-city.mp4" type="video/mp4">
+        </video>
+        <div class="hd-hero4-scrim"></div>
+      </div>
+
+      <div class="hd-hero4-navline" aria-hidden="true">
+        <span>HUNT</span><span>URBAN LUXE · LIVING COMMERCE</span>
+      </div>
+
+      <div class="hd-hero4-content">
+        <div class="hd-hero4-kicker">FASHION LIVES HERE</div>
+        <h1 id="hd-hero4-title">Style without<br><em>limits.</em></h1>
+        <p>Discover fashion, accessories and beauty through a storefront that changes as you browse.</p>
+
+        <form class="hd-hero4-search" action="search.html" method="get" role="search">
+          <label class="sr-only" for="hd-hero4-search-input">Search HUNT</label>
+          <input id="hd-hero4-search-input" name="q" type="search" autocomplete="off" placeholder="Search products, styles, brands or ideas…">
+          <button type="submit" aria-label="Search HUNT">→</button>
+        </form>
+
+        <nav class="hd-hero4-categories" aria-label="Featured shopping categories">
           <a href="category.html?c=women">Women</a>
           <a href="category.html?c=accessories">Accessories</a>
           <a href="category.html?c=beauty">Beauty</a>
-          <a href="category.html?c=shoes">Shoes</a>
           <a href="category.html?c=men">Men</a>
+          <a href="category.html?c=kids">Kids</a>
         </nav>
-        <div class="hd-home3-trust-row" aria-label="HUNT shopping principles">
-          <span>Real catalog</span><span>Country-aware</span><span>Price & shipping recheck</span>
+
+        <button class="hd-hero4-status" id="hd-hero4-status" type="button" aria-controls="hd-hero4-promo" aria-expanded="false">
+          <span class="hd-hero4-status-dot"></span>
+          <span id="hd-hero4-status-text">HUNT is curating your next edit</span>
+        </button>
+      </div>
+
+      <aside class="hd-hero4-promo" id="hd-hero4-promo" aria-live="polite" aria-label="HUNT dynamic promotion">
+        <div class="hd-hero4-promo-rail" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
         </div>
-      </div>
-      <div class="hd-home3-hero-mosaic" id="hd-home3-hero-mosaic" aria-live="polite">
-        <div class="hd-home3-loading">Loading the HUNT edit…</div>
-      </div>
+        <button class="hd-hero4-promo-close" id="hd-hero4-promo-close" type="button" aria-label="Close promotion">×</button>
+        <div class="hd-hero4-promo-media" id="hd-hero4-promo-media"></div>
+        <div class="hd-hero4-promo-copy">
+          <small id="hd-hero4-promo-eyebrow">HUNT SELECTS</small>
+          <h2 id="hd-hero4-promo-title">Your next edit is loading.</h2>
+          <p id="hd-hero4-promo-copy">A verified catalog suggestion will appear here.</p>
+          <a class="hd-hero4-promo-cta" id="hd-hero4-promo-cta" href="#shop">Explore HUNT →</a>
+        </div>
+        <div class="hd-hero4-promo-controls">
+          <button id="hd-hero4-prev" type="button" aria-label="Previous promotion">←</button>
+          <span id="hd-hero4-promo-position">1 / 1</span>
+          <button id="hd-hero4-next" type="button" aria-label="Next promotion">→</button>
+        </div>
+      </aside>
+
+      <button class="hd-hero4-peek" id="hd-hero4-peek" type="button" aria-controls="hd-hero4-promo" aria-expanded="false">
+        <span>HUNT SELECTS</span><strong id="hd-hero4-peek-text">Something new for you</strong>
+      </button>
     </section>
 
     <section class="hd-department-shell glass" id="departments" aria-label="Shop departments">
@@ -210,6 +247,7 @@
   <script src="boom-net.js?v=boomet1"></script>
   <script src="hunt-deal.js?v=boomet3"></script>
   <script src="hunt-home-3.js?v=1"></script>
+  <script src="hunt-hero4.js?v=1"></script>
   <script src="boom-promotions.js?v=promo2"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa2"></script>
