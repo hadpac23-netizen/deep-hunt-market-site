@@ -360,10 +360,12 @@ assert(html.includes('id="prompt-audit-summary"'),"Prompt audit summary missing"
 assert(html.includes('id="prompt-audit-grid"'),"Prompt audit grid missing");
 assert(js.includes("const promptCoverageItems=Object.freeze(["),"Prompt audit contract missing");
 assert(js.includes("Product trace: source → shelf → checkout → order → sale"),"Product trace prompt item missing");
-assert(js.includes("Direct reference + real-device screenshot comparison"),"Real-device prompt item missing");
+assert(js.includes("Viewport visual QA · 390 / 768 / 1280 / 1440"),"Viewport visual QA prompt item missing");
+assert(fs.existsSync("boom-studio-device-browser-e2e.html"),"BOOM Studio device browser E2E harness missing");
 assert(js.includes("Supplier names hidden from shopper storefront"),"Supplier hiding prompt item missing");
 assert(js.includes("Like / Save / Share / History browser E2E"),"Shopper actions browser E2E prompt item missing");
-assert(js.includes("Search / recommendation browser E2E"),"Search/recommendation browser E2E prompt item missing");
+assert(js.includes("Search → recommendation → Product browser E2E"),"Search/recommendation browser E2E prompt item missing");
+assert(fs.existsSync("hunt-search-product-browser-e2e.html"),"Search to Product browser E2E harness missing");
 assert(fs.existsSync("hunt-shopper-browser-e2e.html"),"Shopper browser E2E harness missing");
 assert(js.includes("function renderPromptCoverageAudit()"),"Prompt audit renderer missing");
 assert(css.includes(".prompt-audit-workspace"),"Prompt audit styling missing");
