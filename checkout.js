@@ -346,6 +346,11 @@
     window.HuntAnalytics?.checkoutMarket(country);
   });
   $("#hd-checkout-verify")?.addEventListener("click",verifyPriceAndShipping);
-  rememberDestination($("#hd-checkout-market")?.value || "");
+  {
+    const market=window.HuntCountry?.market?.() || (()=>{try{return localStorage.getItem(destinationKey)||""}catch{return ""}})();
+    const select=$("#hd-checkout-market");
+    if(select&&market&&[...select.options].some(option=>option.value===market))select.value=market;
+    if(select?.value)rememberDestination(select.value);
+  }
   render();
 })();

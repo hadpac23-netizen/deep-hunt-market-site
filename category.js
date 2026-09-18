@@ -159,12 +159,15 @@
     const items = rawResults.filter(p => {
       const retail = retailState(p);
       const priceMatch = hasPriceFilter ? retail.ready && retail.amount >= min && retail.amount <= max : true;
-      return matchesCategoryTruth(p) && matchesGenderScope(p) && matchesSub(p) && priceMatch;
+      const qualitySlug = sub || String(p?.category || "") || slug;
+      const qualityMatch = window.HuntCatalogQuality?.fit?.(qualitySlug,p) !== false;
+      return qualityMatch && matchesCategoryTruth(p) && matchesGenderScope(p) && matchesSub(p) && priceMatch;
     });
     if (sort === "price-low") items.sort((a,b)=>(retailState(a).amount??Infinity)-(retailState(b).amount??Infinity));
     else if (sort === "price-high") items.sort((a,b)=>(retailState(b).amount??-Infinity)-(retailState(a).amount??-Infinity));
     else if (sort === "for-you") items.sort((a,b)=>
       H.personalScore(b)-H.personalScore(a) ||
+      Number(window.HuntCountry?.score?.(b)||0)-Number(window.HuntCountry?.score?.(a)||0) ||
       listingReadiness(b)-listingReadiness(a) ||
       (resultOrder.get(productKey(a))||0)-(resultOrder.get(productKey(b))||0)
     );
@@ -397,6 +400,10 @@
     const product = rawResults.find(p=>productKey(p)===link.dataset.productView);
     if (product) H.recordSignal(product,"view");
   });
+
+  window.addEventListener("hunt:personalization-ready",()=>{if(rawResults.length)renderGrid({reset:true})});
+  window.addEventListener("hunt:country-changed",()=>{if(rawResults.length)renderGrid({reset:true})});
+  window.addEventListener("hunt:experience-language",()=>{if(rawResults.length)renderGrid()});
 
   load().catch(err=>{
     $("#hd-cat-provider-state").textContent = err.message || "Category unavailable";

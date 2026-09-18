@@ -641,12 +641,15 @@
     const counter = $("#hd-shelf-count");
     const existingGrid = document.querySelector("#hd-home-random-grid");
     if (!root && !existingGrid) return false;
-    const shelves = data?.shelves || {};
+    const rawShelves = data?.shelves || {};
+    const cleaned = window.HuntCatalogQuality?.cleanShelves?.(rawShelves) || {shelves:rawShelves,report:null};
+    const shelves = cleaned.shelves || rawShelves;
+    const normalizedData = {...data,shelves,_catalog_quality_report:cleaned.report||null};
     const hasProducts = Object.values(shelves).some(items => Array.isArray(items) && items.length);
     if (!hasProducts) return false;
 
-    window.HuntMarketShelves = data;
-    window.dispatchEvent(new CustomEvent("hunt:shelves", {detail:data}));
+    window.HuntMarketShelves = normalizedData;
+    window.dispatchEvent(new CustomEvent("hunt:shelves", {detail:normalizedData}));
 
     const renderedKeys = new Set();
     const limit = shelfItemLimit();
@@ -669,7 +672,7 @@
       return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
     }).join("");
 
-    homeFeedData=data;
+    homeFeedData=normalizedData;
     homeFeedMode=mode;
     homeFeedPool=buildRandomHomePool(shelves);
     homeFeedCursor=0;

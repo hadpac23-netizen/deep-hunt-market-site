@@ -28,7 +28,8 @@
     for (const slug of slugs) {
       for (const item of Array.isArray(shelves?.[slug]) ? shelves[slug] : []) out.push(item);
     }
-    return unique(out).slice(0,limit);
+    const rows=unique(out);
+    return (window.HuntCountry?.rank?.(rows)||rows).slice(0,limit);
   }
 
   function isWomen(item) {
@@ -115,11 +116,13 @@
   }
 
   function signalSlugs() {
+    const explicit=H.shoppingPreferences?.().categories||[];
     const ranked=Object.entries(H.signals?.()||{})
       .filter(([slug,score])=>H.categoryDefs?.[slug]&&Number(score)>0)
       .sort((a,b)=>Number(b[1])-Number(a[1]))
       .map(([slug])=>slug).slice(0,5);
-    return ranked.length ? ranked.flatMap(slug=>slugsFor(slug)) : [
+    const combined=[...new Set([...explicit,...ranked])].slice(0,6);
+    return combined.length ? combined.flatMap(slug=>slugsFor(slug)) : [
       ...slugsFor("women"),...slugsFor("accessories"),...slugsFor("beauty"),...slugsFor("home")
     ];
   }
@@ -127,8 +130,7 @@
   const priorityDepartments=["women","men","beauty","tech","home","accessories","sports","kids"];
 
   function destinationMarket() {
-    try { return String(localStorage.getItem("hunt_destination_market_v1")||"").toUpperCase(); }
-    catch { return ""; }
+    return window.HuntCountry?.market?.() || (()=>{try{return String(localStorage.getItem("hunt_destination_market_v1")||"").toUpperCase()}catch{return ""}})();
   }
 
   function broadPriority(slug) {
@@ -137,6 +139,11 @@
   }
 
   function topPreference() {
+    const explicit=H.shoppingPreferences?.().categories||[];
+    for(const slug of explicit){
+      const broad=broadPriority(slug);
+      if(broad)return broad;
+    }
     const ranked=Object.entries(H.signals?.()||{})
       .filter(([slug,score])=>H.categoryDefs?.[slug]&&Number(score)>0)
       .sort((a,b)=>Number(b[1])-Number(a[1]));
@@ -183,17 +190,9 @@
     if(host)host.innerHTML=rows.map(item=>card(item,{label:mode==="for-you"?"FOR YOU":""})).join("");
     const copy=$("#hd-home3-for-you-copy");
     if(copy){
-      const top=topPreference();
-      const country=destinationMarket();
-      if(mode==="for-you"){
-        const topTitle=H.categoryDefs?.[top]?.title||top;
-        const base=topTitle
-          ? `Built around your strongest ${topTitle} activity on this device.`
-          : "A balanced mix while HUNT learns what you browse.";
-        copy.textContent=country ? `${base} Destination market: ${country}.` : base;
-      }else{
-        copy.textContent=`Showing ${H.categoryDefs?.[mode]?.title||mode} because you chose it.`;
-      }
+      const t=window.HuntExperienceI18n?.t;
+      if(mode==="for-you") copy.textContent=t?.("forYouCopy")||"A balanced mix while HUNT learns what you browse.";
+      else copy.textContent=(H.categoryDefs?.[mode]?.title||mode);
     }
   }
 
@@ -255,5 +254,8 @@
 
   setupMegaMenu();
   window.addEventListener("hunt:shelves",event=>render(event.detail));
+  window.addEventListener("hunt:personalization-ready",()=>{if(latestShelves)render({shelves:latestShelves})});
+  window.addEventListener("hunt:country-changed",()=>{if(latestShelves)render({shelves:latestShelves})});
+  window.addEventListener("hunt:experience-language",()=>{if(latestShelves)render({shelves:latestShelves})});
   if(window.HuntMarketShelves)render(window.HuntMarketShelves);
 })();

@@ -33,7 +33,9 @@ assert(css.includes('HUNT 4.2.1 · CLEAN CITY QUALITY GATE'),'4.2.1 visual contr
 assert(css.includes('@keyframes hd-city-pan-421'),'Premium city pan missing');
 assert(css.includes('.hd-lifestyle-stream'),'Below-fold promo styling missing');
 
-for(const lang of ['en','he','ar','es','fr','ja','zh']) assert(i18n.includes(lang+':{'),'Missing experience language '+lang);
+assert(i18n.includes('const EN={'),'English base dictionary missing');
+for(const lang of ['he','ar','es','fr','ja','zh']) assert(i18n.includes(lang+':{'),'Missing experience language '+lang);
+for(const lang of ['en','he','ar','es','fr','ja','zh']) assert(i18n.includes('"'+lang+'"')||i18n.includes("'"+lang+"'"),'Language registry missing '+lang);
 assert(i18n.includes('RTL=new Set(["he","ar"])'),'RTL contract missing');
 assert(product.includes('data-hunt-i18n="productCue"'),'Localized product discovery cue missing');
 assert(product.includes('id="hd-product-pulse"'),'Product Pulse markup missing');

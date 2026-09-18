@@ -810,3 +810,24 @@ html[data-hunt-theme="dark"] .hd-commerce-v2 .hd-shop-action.active{
 @media(prefers-reduced-motion:reduce){
   .hd-hunt-wordmark>span,.hd-hunt-wordmark::after,.hd-product-pulse{animation:none!important;transition:none!important}
 }
+
+/* HUNT account preferences */
+.hd-hunt-tune{position:relative;overflow:hidden}
+.hd-hunt-tune::after{
+  content:"";position:absolute;right:-8%;top:-35%;width:260px;height:260px;border-radius:50%;
+  background:radial-gradient(circle,rgba(129,117,255,.12),transparent 68%);pointer-events:none
+}
+.hd-preference-chips{display:flex;flex-wrap:wrap;gap:9px;position:relative;z-index:1}
+.hd-preference-chips button{
+  border:1px solid var(--shop-line);background:var(--shop-soft);color:var(--shop-text);
+  border-radius:999px;padding:10px 15px;font:inherit;font-size:.66rem;font-weight:800;cursor:pointer;
+  transition:.18s ease;
+}
+.hd-preference-chips button:hover,.hd-preference-chips button:focus-visible{transform:translateY(-1px);outline:0;border-color:#8175ff}
+.hd-preference-chips button.active{
+  background:linear-gradient(110deg,rgba(124,201,255,.17),rgba(129,117,255,.18));
+  border-color:rgba(129,117,255,.62);box-shadow:0 8px 24px rgba(129,117,255,.09)
+}
+.hd-preference-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:15px}
+.hd-preference-foot small{color:var(--shop-muted);font-size:.58rem}
+@media(max-width:620px){.hd-preference-foot{align-items:flex-start;flex-direction:column}}

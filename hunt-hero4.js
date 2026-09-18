@@ -93,18 +93,14 @@
   const PROMO_HUES={women:334,beauty:318,accessories:280,tech:202,home:34,men:218,sports:145,kids:48};
 
   let sceneOrder=[],sceneIndex=0,activeSceneLayer=0,sceneTimer=null,sceneVisible=true,sceneToken=0;
+  let latestShelves={};
   let items=[],promoIndex=0,promoTimer=null,promoPaused=false,promoVisible=false,promoStarted=false;
   let promoScrollArmed=window.scrollY>120;
   let discoverIndex=0,discoverTimer=null;
   const esc=v=>H.esc(String(v??""));
 
   function destinationMarket(){
-    try{
-      const saved=String(localStorage.getItem(DESTINATION_KEY)||"").trim().toUpperCase();
-      if(saved)return saved;
-    }catch{}
-    const m=String(navigator.language||"").match(/[-_]([A-Za-z]{2})$/);
-    return m?m[1].toUpperCase():"";
+    return window.HuntCountry?.market?.() || (()=>{try{return String(localStorage.getItem(DESTINATION_KEY)||"").trim().toUpperCase()}catch{return ""}})();
   }
 
   function preferredSceneId(){
@@ -131,6 +127,7 @@
   function setSceneMeta(scene){
     root.dataset.scene=scene.id;
     root.dataset.sceneQuality="passed";
+    window.HuntAnalytics?.experience?.("scene_impression",{scene:scene.id,market:destinationMarket()});
     if(sceneLabel)sceneLabel.textContent=scene.label;
     if(sceneRegion)sceneRegion.textContent=scene.region;
     if(sceneButton){
@@ -208,7 +205,10 @@
       seen.add(k);return true;
     });
   }
-  function from(shelves,slugs,limit=20){return unique((slugs||[]).flatMap(s=>Array.isArray(shelves?.[s])?shelves[s]:[])).slice(0,limit)}
+  function from(shelves,slugs,limit=20){
+    const rows=unique((slugs||[]).flatMap(s=>Array.isArray(shelves?.[s])?shelves[s]:[]));
+    return (window.HuntCountry?.rank?.(rows)||rows).slice(0,limit);
+  }
   function safeImage(item){return typeof item?.image_url==="string"&&item.image_url.startsWith("https://")?item.image_url:""}
   function href(item){try{return H.productUrl(item)}catch{return "#shop"}}
   function title(item){return String(item?.title||"HUNT selection")}
@@ -293,12 +293,30 @@
     }).join("");
   }
 
+  function renderCreativeMedia(media,creative){
+    if(!media)return;
+    const format=creative?.format||"spotlight";
+    const stories=creative?.stories||[];
+    media.dataset.creativeFormat=format;
+    const approvedVideo=window.HuntCreative?.approvedVideo?.(stories[0])||"";
+    if(approvedVideo){
+      media.innerHTML='<video class="hd-creative-video" muted autoplay loop playsinline preload="metadata" src="'+esc(approvedVideo)+'"></video>';
+      return;
+    }
+    const images=stories.map((story,slot)=>{
+      const img=safeImage(story?.item);
+      return img?'<figure data-creative-slot="'+slot+'"><img src="'+esc(img)+'" alt="'+esc(title(story.item))+'" loading="lazy"></figure>':"";
+    }).filter(Boolean);
+    media.innerHTML=images.length?'<div class="hd-creative-media hd-creative-'+esc(format)+'">'+images.join("")+'</div>':"<span class=\"hd-promo-placeholder\">H</span>";
+  }
+
   function renderPromo(){
     if(!items.length)return;
     promoIndex=(promoIndex+items.length)%items.length;
-    const x=items[promoIndex],img=safeImage(x.item);
+    const x=items[promoIndex];
+    const creative=window.HuntCreative?.compose?.(items,promoIndex)||{format:"spotlight",stories:[x]};
     const media=q("#hd-hero4-promo-media");
-    if(media)media.innerHTML=img?'<img src="'+esc(img)+'" alt="'+esc(title(x.item))+'">':"<span class=\"hd-promo-placeholder\">H</span>";
+    renderCreativeMedia(media,creative);
     q("#hd-hero4-promo-eyebrow").textContent=promoEyebrow(x);
     q("#hd-hero4-promo-title").textContent=title(x.item);
     q("#hd-hero4-promo-copy").textContent=promoCopy(x);
@@ -316,6 +334,8 @@
     root.dataset.promoInterest=x.interest||"mixed";
     renderStack();
 
+    promoZone.dataset.creativeFormat=creative.format||"spotlight";
+    window.HuntAnalytics?.experience?.("lifestyle_story_impression",{interest:x.interest||"mixed",position:promoIndex+1,count:items.length,format:creative.format||"spotlight"});
     if(promo){
       promo.classList.remove("is-switching");
       void promo.offsetWidth;
@@ -388,8 +408,20 @@
     if(!b)return;
     promoIndex=Number(b.dataset.promoJump)||0;
     renderPromo();setPromoState("open");stopPromo();
+    window.HuntAnalytics?.experience?.("lifestyle_stack_click",{position:promoIndex+1,interest:promoZone.dataset.promoInterest||"mixed"});
   });
-  sceneButton?.addEventListener("click",()=>{stopSceneTimer();showScene(sceneIndex+1)});
+  q("#hd-hero4-promo-cta")?.addEventListener("click",()=>{
+    window.HuntAnalytics?.experience?.("lifestyle_product_click",{position:promoIndex+1,interest:promoZone.dataset.promoInterest||"mixed"});
+  });
+  document.querySelector(".hd-hero4-scroll-cue")?.addEventListener("click",()=>{
+    window.HuntAnalytics?.experience?.("hero_discover_click",{scene:root.dataset.scene||""});
+  });
+
+  sceneButton?.addEventListener("click",()=>{
+    const from=root.dataset.scene||"";
+    stopSceneTimer();showScene(sceneIndex+1);
+    window.HuntAnalytics?.experience?.("scene_manual_next",{from});
+  });
   document.addEventListener("keydown",e=>{
     if(e.key==="Escape"&&(promoZone.dataset.promoState==="open"||promoZone.dataset.promoState==="feature"))dismissPromo();
   });
@@ -444,7 +476,8 @@
   },{passive:true});
 
   function initPromo(data){
-    const nextItems=buildItems(data?.shelves||{});
+    latestShelves=data?.shelves||latestShelves||{};
+    const nextItems=buildItems(latestShelves);
     if(!nextItems.length&&items.length)return;
     if(items.length>=8&&nextItems.length<8)return;
     items=nextItems;
@@ -464,6 +497,12 @@
     startDiscover();
     const scene=sceneOrder[sceneIndex];
     if(scene)setSceneMeta(scene);
+  });
+  window.addEventListener("hunt:personalization-ready",()=>{if(Object.keys(latestShelves).length)initPromo({shelves:latestShelves})});
+  window.addEventListener("hunt:country-changed",()=>{
+    stopSceneTimer();
+    initScenes();
+    if(Object.keys(latestShelves).length)initPromo({shelves:latestShelves});
   });
 
   initScenes();

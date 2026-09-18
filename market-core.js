@@ -236,20 +236,59 @@
     const state = signals();
     state[slug] = Math.min(100, Math.max(0, Number(state[slug] || 0) + Number(weights[action] || 1)));
     writeJson(signalKey, state);
+    window.dispatchEvent(new CustomEvent("hunt:signal",{detail:{category:slug,action,value:state[slug]}}));
     return state[slug];
   }
-  const shoppingPreferences = () => ({categories:[],price_band:"any",priorities:[],discovery_modes:[]});
-  function saveShoppingPreferences() { return shoppingPreferences(); }
+  function mergeSignals(next={}) {
+    const state=signals();
+    for(const [raw,value] of Object.entries(next||{})){
+      const slug=categoryDefs[raw]?raw:inferCategory(raw);
+      const n=Math.max(0,Math.min(100,Number(value)||0));
+      state[slug]=Math.max(Number(state[slug]||0),n);
+    }
+    writeJson(signalKey,state);
+    window.dispatchEvent(new CustomEvent("hunt:signals-merged",{detail:{signals:{...state}}}));
+    return state;
+  }
+  function clearSignals(){
+    writeJson(signalKey,{});
+    window.dispatchEvent(new CustomEvent("hunt:signals-merged",{detail:{signals:{}}}));
+  }
+  function shoppingPreferences() {
+    const value=readJson(preferenceKey,{});
+    return {
+      categories:Array.isArray(value?.categories)?[...new Set(value.categories.filter(x=>categoryDefs[x]))].slice(0,12):[],
+      price_band:["any","under25","25to50","50to100","100plus"].includes(value?.price_band)?value.price_band:"any",
+      priorities:Array.isArray(value?.priorities)?[...new Set(value.priorities.map(String).filter(Boolean))].slice(0,10):[],
+      discovery_modes:Array.isArray(value?.discovery_modes)?[...new Set(value.discovery_modes.map(String).filter(Boolean))].slice(0,10):[]
+    };
+  }
+  function saveShoppingPreferences(next={}) {
+    const current=shoppingPreferences();
+    const value={
+      categories:Array.isArray(next.categories)?[...new Set(next.categories.filter(x=>categoryDefs[x]))].slice(0,12):current.categories,
+      price_band:["any","under25","25to50","50to100","100plus"].includes(next.price_band)?next.price_band:current.price_band,
+      priorities:Array.isArray(next.priorities)?[...new Set(next.priorities.map(String).filter(Boolean))].slice(0,10):current.priorities,
+      discovery_modes:Array.isArray(next.discovery_modes)?[...new Set(next.discovery_modes.map(String).filter(Boolean))].slice(0,10):current.discovery_modes
+    };
+    writeJson(preferenceKey,value);
+    window.dispatchEvent(new CustomEvent("hunt:preferences-changed",{detail:{preferences:{...value}}}));
+    return value;
+  }
   function personalScore(product) {
     const category = inferCategory(product);
-    return Number(signals()[category] || 0);
+    const pref=shoppingPreferences();
+    const explicit=pref.categories.includes(category)?30:0;
+    return Math.min(130,Number(signals()[category] || 0)+explicit);
   }
   function personalReason(product) {
     const category = inferCategory(product);
-    const score = personalScore(product);
+    const pref=shoppingPreferences();
+    if(pref.categories.includes(category)) return `Matches a ${categoryDefs[category]?.title || category} interest you chose for HUNT.`;
+    const score = Number(signals()[category] || 0);
     return score > 0
-      ? `Matches your recent ${categoryDefs[category]?.title || category} activity on this device.`
-      : "HUNT learns from products and categories you browse, save and add to cart.";
+      ? `Matches your recent ${categoryDefs[category]?.title || category} activity.`
+      : "HUNT learns from categories you choose and products you browse, save and add to cart.";
   }
 
   function isNewArrival(product, maxDays=14) {
@@ -347,7 +386,7 @@
 
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,departmentSubcategories,genderSubcategories,esc,money,safeQuery,
-    inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,isNewArrival,signals,shoppingPreferences,saveShoppingPreferences,
+    inferCategory,slugFromQuery,recordSignal,mergeSignals,clearSignals,personalScore,personalReason,isNewArrival,signals,shoppingPreferences,saveShoppingPreferences,
     cart,saveCart,addCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
   };
 })();

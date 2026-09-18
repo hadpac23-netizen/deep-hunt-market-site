@@ -261,8 +261,36 @@
     };
   }
 
+  function experience(eventType, metadata={}) {
+    if(!consentGranted)return false;
+    const type=clean("hunt_"+String(eventType||"experience").replace(/[^a-z0-9_]+/gi,"_").toLowerCase(),80);
+    const safeMeta={};
+    for(const [k,v] of Object.entries(metadata||{}).slice(0,30)){
+      const key=clean(k,50);
+      if(!key)continue;
+      if(Array.isArray(v))safeMeta[key]=v.slice(0,12).map(x=>clean(x,80));
+      else if(typeof v==="boolean"||typeof v==="number")safeMeta[key]=v;
+      else safeMeta[key]=clean(v,160);
+    }
+    safeMeta.page_path=safePath();
+    try{
+      fetch("https://zszlnahjqmwozwubetkm.supabase.co/rest/v1/analytics_events",{
+        method:"POST",
+        keepalive:true,
+        headers:{
+          apikey:window.HuntCore?.publishableKey||"sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X",
+          "Content-Type":"application/json",
+          Prefer:"return=minimal"
+        },
+        body:JSON.stringify({event_type:type,session_id:sessionId(),metadata:safeMeta})
+      }).catch(()=>{});
+      return true;
+    }catch{return false}
+  }
+
   const api = {
     configured,
+    experience,
     consentGranted: () => consentGranted,
     setConsent,
     pageView,

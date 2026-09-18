@@ -72,6 +72,7 @@
       const ratio=Math.abs(p-currentPrice)/Math.max(currentPrice,1);
       score+=Math.max(0,18-Math.round(ratio*18));
     }
+    score+=Number(window.HuntCountry?.score?.(item)||0);
     if(item?.availability_verified)score+=6;
     if(String(item?.price_basis||"").toUpperCase()==="MERCHANT_RETAIL")score+=4;
     return score;
@@ -103,7 +104,8 @@
 
     let all=shardResults.flat().filter(item=>{
       const k=key(item);
-      return item?.item_id&&k!==key(product)&&!seen.has(k)&&String(item?.provider||"").toLowerCase()==="cjdropshipping";
+      const qualitySlug=String(item?.category||"");
+      return item?.item_id&&k!==key(product)&&!seen.has(k)&&String(item?.provider||"").toLowerCase()==="cjdropshipping"&&window.HuntCatalogQuality?.fit?.(qualitySlug,item)!==false;
     });
 
     if(!all.length){
@@ -267,8 +269,28 @@
     button.replaceWith(frame);
   });
 
+  async function rerank(){
+    if(!current)return;
+    seen.clear();
+    seen.add(key(current));
+    await buildPool(current);
+    cursor=0;
+    const host=$("#hd-endless-grid");
+    if(host)host.innerHTML="";
+    const sentinel=$("#hd-endless-sentinel");
+    if(sentinel){
+      sentinel.classList.remove("done");
+      const strong=sentinel.querySelector("strong");
+      if(strong)strong.textContent="Loading more for you…";
+    }
+    appendNext();
+    setupObserver();
+    window.dispatchEvent(new CustomEvent("hunt:product-discovery-reranked",{detail:{count:pool.length,market:window.HuntCountry?.market?.()||""}}));
+  }
+
   async function init(product){
     current=product;
+    seen.clear();
     seen.add(key(product));
     await Promise.allSettled([loadVerifiedMedia(product),buildPool(product)]);
     appendNext();
@@ -276,4 +298,6 @@
   }
 
   window.addEventListener("hunt:product-loaded",event=>init(event.detail?.product));
+  window.addEventListener("hunt:personalization-ready",rerank);
+  window.addEventListener("hunt:country-changed",rerank);
 })();

@@ -186,7 +186,8 @@
     const seen=new Set(),rows=[];
     docs.flatMap(x=>x.products||[]).forEach(p=>{
       const id=String(p.item_id||"");
-      if(!id||seen.has(id)||String(p.provider||"").toLowerCase()!=="cjdropshipping"||!priceOK(p,i))return;
+      const qualitySlug=String(p.category||i.cats[0]||"");
+      if(!id||seen.has(id)||String(p.provider||"").toLowerCase()!=="cjdropshipping"||!priceOK(p,i)||window.HuntCatalogQuality?.fit?.(qualitySlug,p)===false)return;
       seen.add(id); rows.push({...p,_score:score(p,i)});
     });
     rows.sort((a,b)=>(b._score-a._score)||(Number(b.cj_listed_num||0)-Number(a.cj_listed_num||0)));
