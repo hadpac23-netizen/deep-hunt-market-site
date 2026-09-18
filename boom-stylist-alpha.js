@@ -36,7 +36,8 @@
     const world=params.get("world")||"";
     const requestedOccasion=params.get("occasion")||"";
     if(requestedOccasion&&hasOption(occasion,requestedOccasion))occasion.value=requestedOccasion;
-    const anchor=WORLD_ANCHORS[world]||"";
+    const requestedAnchor=params.get("anchor")||"";
+    const anchor=requestedAnchor||WORLD_ANCHORS[world]||"";
     if(anchor&&hasOption(category,anchor))category.value=anchor;
     return world;
   }
