@@ -109,6 +109,54 @@ const emptyJudge=W.buildSafetyOps({
 assert.equal(emptyJudge.team_judge.ready,false);
 assert.equal(emptyJudge.team_judge.incomplete,1);
 
+const mixedPending=W.buildSafetyOps({
+  redTeamCases:[{id:1,active:true}],
+  redTeamRuns:[
+    {case_id:1,result_status:"passed",completed_at:"2026-09-18T10:00:00Z"},
+    {case_id:1,result_status:"passed",completed_at:null}
+  ]
+});
+assert.equal(mixedPending.redteam.covered_cases,1);
+assert.equal(mixedPending.redteam.pending,1);
+assert.equal(mixedPending.redteam.ready,false);
+
+const mixedUnlinked=W.buildSafetyOps({
+  redTeamCases:[{id:1,active:true}],
+  redTeamRuns:[
+    {case_id:1,result_status:"passed",completed_at:"2026-09-18T10:00:00Z"},
+    {case_id:999,result_status:"passed",completed_at:"2026-09-18T10:01:00Z"}
+  ]
+});
+assert.equal(mixedUnlinked.redteam.covered_cases,1);
+assert.equal(mixedUnlinked.redteam.unlinked,1);
+assert.equal(mixedUnlinked.redteam.ready,false);
+
+const validCalibrationRow={
+  samples:100,
+  correct_samples:91,
+  mean_confidence:0.89,
+  observed_accuracy:0.91,
+  calibration_error:0.02
+};
+for(const field of ["samples","correct_samples","mean_confidence","observed_accuracy","calibration_error"]){
+  for(const missingValue of [null,""]){
+    const row={...validCalibrationRow,[field]:missingValue};
+    const resultMissing=W.buildSafetyOps({confidenceCalibration:[row]});
+    assert.equal(resultMissing.calibration.ready,false,"missing "+field+" must fail closed");
+    assert.equal(resultMissing.calibration.invalid_rows,1);
+  }
+}
+
+const mixedCalibration=W.buildSafetyOps({
+  confidenceCalibration:[
+    validCalibrationRow,
+    {...validCalibrationRow,calibration_error:null}
+  ]
+});
+assert.equal(mixedCalibration.calibration.valid_rows,1);
+assert.equal(mixedCalibration.calibration.invalid_rows,1);
+assert.equal(mixedCalibration.calibration.ready,false);
+
 const gaps=W.build({reports:[],evals:[],commands:[],events:[],workerReports:[],cycles:[],decisions:[]});
 assert(gaps.gaps.includes("prompts"));
 assert(gaps.gaps.includes("experiments"));
