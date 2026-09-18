@@ -396,3 +396,13 @@ assert(js.includes("LIVE QUERY: false"),"Product trace local preview guard missi
 assert(css.includes(".product-trace-workspace"),"Product trace styling missing");
 assert(js.includes('label:"Product trace: source → shelf → checkout → order → sale",status:"PRESENT"'),"Product trace prompt status not closed");
 assert(js.includes('label:"Supplier names hidden from shopper storefront",status:"PRESENT"'),"Supplier hiding prompt status not closed");
+
+assert(js.includes("async function loadConnectorEvidence()"),"Live connector evidence loader missing");
+assert(js.includes('query("api_integration_log"'),"Connector API log evidence query missing");
+assert(js.includes('query("source_registry"'),"Connector source registry query missing");
+assert(js.includes('query("hunt_partner_matrix"'),"Connector partner matrix query missing");
+assert(js.includes('query("hunt_runtime_controls"'),"Connector runtime-control query missing");
+assert(js.includes("function buildEvidenceConnectorRows()"),"Connector evidence row builder missing");
+assert(js.includes("Verification gaps: "), "Connector verification gap reporting missing");
+assert(js.includes('label:"Connector-by-connector live evidence matrix",status:"PRESENT"'),"Connector prompt audit not closed");
+assert(fs.existsSync("hunt-search-product-browser-e2e.html"),"Search→Product browser E2E harness missing");
