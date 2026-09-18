@@ -61,7 +61,7 @@
         "decision-intelligence",
         "performance"
       ],
-      "notes": "Feature-flagged HUNT 2037 Flow + dynamic world visual foundation implemented; production remains OFF."
+      "notes": "Feature-flagged HUNT 2037 Worlds are interactive and reversible. Four original HUNT abstract Night assets (Tokyo, Paris, Shenzhen, Dubai) are wired with world-locked mood transitions; production remains OFF."
     },
     {
       "id": "taste-dna",
