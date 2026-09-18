@@ -468,6 +468,7 @@ assert(html.includes('id="professional-review-list"'),"Professional review queue
 assert(html.includes('id="professional-cost-report"'),"Professional cost report missing");
 assert(html.includes('id="professional-evaluator-report"'),"Professional evaluator governance panel missing");
 assert(html.includes('id="professional-safety-report"'),"Professional safety engineering panel missing");
+assert(html.includes('id="professional-lineage-report"'),"Professional eval lineage panel missing");
 assert(html.includes('id="professional-observability-report"'),"Professional observability panel missing");
 assert(html.includes('id="professional-radar-report"'),"Professional F35 radar panel missing");
 assert(html.includes('id="professional-report"'),"Professional contract report missing");
@@ -481,6 +482,7 @@ assert(js.includes("EXPERIMENT DIFF: "), "Professional experiment evidence missi
 assert(js.includes("COST/LATENCY: "), "Professional cost/latency evidence missing");
 assert(js.includes('const evaluatorReport=$("#professional-evaluator-report")'),"Evaluator governance renderer missing");
 assert(js.includes('const safetyReport=$("#professional-safety-report")'),"Safety engineering renderer missing");
+assert(js.includes('const evalLineageReport=$("#professional-lineage-report")'),"Eval lineage renderer missing");
 assert(js.includes('const observabilityReport=$("#professional-observability-report")'),"Observability renderer missing");
 assert(js.includes('const radarReport=$("#professional-radar-report")'),"F35 radar renderer missing");
 assert(js.includes("OWNER GATE REQUIRED: true"),"Professional Owner gate invariant missing");
@@ -536,16 +538,23 @@ assert(js.includes('optionalQuery("hunt_boom_prompt_versions"'),"Optional prompt
 assert(js.includes('optionalQuery("hunt_boom_trace_spans"'),"Optional trace store query missing");
 assert(js.includes('optionalQuery("hunt_boom_human_labels"'),"Optional human ground truth store query missing");
 assert(js.includes('optionalQuery("hunt_boom_observability_snapshots"'),"Optional observability store query missing");
+assert(js.includes('optionalQuery("hunt_boom_eval_dataset_versions"'),"Optional eval dataset version store query missing");
+assert(js.includes('optionalQuery("hunt_boom_eval_lineage"'),"Optional eval lineage store query missing");
 assert(js.includes("promptStoreConnected:promptStore.connected"),"Prompt store connection truth missing");
 assert(js.includes("traceStoreConnected:traceStore.connected"),"Trace store connection truth missing");
 assert(js.includes("humanLabelStoreConnected:humanLabelStore.connected"),"Human label store connection truth missing");
 assert(js.includes("observabilityStoreConnected:observabilityStore.connected"),"Observability store connection truth missing");
+assert(js.includes("evalDatasetVersionStoreConnected:evalDatasetVersionStore.connected"),"Eval dataset version store connection truth missing");
+assert(js.includes("evalLineageStoreConnected:evalLineageStore.connected"),"Eval lineage store connection truth missing");
 assert(js.includes("traceSchemaConnected:state.professionalEvidence.traceStoreConnected&&state.professionalEvidence.traceSpans.length>0"),"Trace schema readiness gate missing");
 assert(js.includes("PROMPT STORE CONNECTED: "), "Prompt store evidence missing");
 assert(js.includes("TRACE STORE CONNECTED: "), "Trace store evidence missing");
 assert(js.includes("TRACE SPANS: "), "Trace span evidence missing");
 assert(js.includes("OBSERVABILITY STORE CONNECTED: "), "Observability connection evidence missing");
 assert(js.includes("OBSERVABILITY LANES: "), "Observability lane evidence missing");
+assert(js.includes("EVAL DATASET VERSION STORE CONNECTED: "), "Eval dataset version store evidence missing");
+assert(js.includes("EVAL LINEAGE STORE CONNECTED: "), "Eval lineage store evidence missing");
+assert(js.includes("EVAL REPRODUCIBILITY: "), "Eval reproducibility evidence missing");
 
 const professionalMigration=fs.readFileSync("supabase/migrations/20260918092536_boom_professional_prompt_trace_foundation.sql","utf8");
 assert(professionalMigration.includes("create table if not exists public.hunt_boom_prompt_versions"),"Professional prompt registry migration missing");
@@ -575,6 +584,15 @@ assert(baselineEvidenceMigration.includes("'brain-v2-redteam-pass'"),"Passing CI
 assert(baselineEvidenceMigration.includes("'owner-chat-quality-min'"),"Quality CI gate seed missing");
 assert(baselineEvidenceMigration.includes("'supabase-observability-autopilot'"),"F35 official source seed missing");
 assert(baselineEvidenceMigration.includes("on conflict"),"Baseline evidence seed must remain idempotent");
+const evalLineageMigration=fs.readFileSync("supabase/migrations/20260918165000_boom_eval_prompt_dataset_lineage.sql","utf8");
+assert(evalLineageMigration.includes("create table if not exists public.hunt_boom_eval_dataset_versions"),"Eval dataset version migration missing");
+assert(evalLineageMigration.includes("create table if not exists public.hunt_boom_eval_lineage"),"Eval lineage migration missing");
+assert(evalLineageMigration.includes("dataset_version_id bigint not null references public.hunt_boom_eval_dataset_versions(id)"),"Eval lineage dataset FK missing");
+assert(evalLineageMigration.includes("prompt_version_id bigint references public.hunt_boom_prompt_versions(id)"),"Eval lineage prompt FK missing");
+assert(evalLineageMigration.includes("eval_run_id bigint not null references public.hunt_boom_eval_runs_v2(id)"),"Eval lineage run FK missing");
+assert(evalLineageMigration.includes("source_commit text"),"Eval lineage source commit evidence missing");
+assert(!evalLineageMigration.includes("grant update on table public.hunt_boom_eval_lineage to authenticated"),"Eval lineage must remain append-only for authenticated users");
+
 const observabilityMigration=fs.readFileSync("supabase/migrations/20260918163000_boom_readonly_observability_snapshots.sql","utf8");
 assert(observabilityMigration.includes("create table if not exists public.hunt_boom_observability_snapshots"),"Observability snapshot store migration missing");
 assert(observabilityMigration.includes("monitor_type in ('health','security','performance','capacity')"),"Observability four-lane contract missing");
