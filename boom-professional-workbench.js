@@ -227,6 +227,45 @@
     });
   }
 
+  function buildAnnotationGroundTruth(input={}){
+    const labels=safeArray(input.humanLabels);
+    const connected=input.humanLabelStoreConnected===true;
+    const validLabels=labels.filter(x=>{
+      const human=clean(x.human_label).toLowerCase();
+      const automated=clean(x.automated_label).toLowerCase();
+      const humanScore=x.human_score===null||x.human_score===undefined||String(x.human_score).trim()===""?null:Number(x.human_score);
+      const automatedScore=x.automated_score===null||x.automated_score===undefined||String(x.automated_score).trim()===""?null:Number(x.automated_score);
+      const scoreOk=(humanScore===null||(Number.isFinite(humanScore)&&humanScore>=0&&humanScore<=1))&&
+        (automatedScore===null||(Number.isFinite(automatedScore)&&automatedScore>=0&&automatedScore<=1));
+      const refReady=x.observation_id!==null&&x.observation_id!==undefined||Boolean(clean(x.trace_ref));
+      return ["pass","fail","uncertain"].includes(human)&&
+        (!automated||["pass","fail","abstain","unmeasured"].includes(automated))&&
+        Boolean(x.reviewer_id)&&Boolean(x.reviewed_at)&&refReady&&scoreOk;
+    });
+    const disagreements=validLabels.filter(x=>{
+      const human=clean(x.human_label).toLowerCase();
+      const automated=clean(x.automated_label).toLowerCase();
+      return ["pass","fail"].includes(human)&&["pass","fail"].includes(automated)&&human!==automated;
+    });
+    const uncertain=validLabels.filter(x=>clean(x.human_label).toLowerCase()==="uncertain");
+    const corrections=validLabels.filter(x=>Boolean(clean(x.correction)));
+    const observations=new Set(validLabels.map(x=>String(x.observation_id??"")).filter(Boolean));
+    const reviewers=new Set(validLabels.map(x=>String(x.reviewer_id??"")).filter(Boolean));
+    return Object.freeze({
+      connected,
+      labels:labels.length,
+      valid_labels:validLabels.length,
+      invalid_labels:labels.length-validLabels.length,
+      labeled_observations:observations.size,
+      reviewers:reviewers.size,
+      disagreements:disagreements.length,
+      uncertain:uncertain.length,
+      corrections:corrections.length,
+      ready:connected,
+      evidence_state:!connected?"STORE_MISSING":validLabels.length?"LABELED":"EMPTY"
+    });
+  }
+
   function buildEvaluatorOps(input={}){
     const cases=safeArray(input.evalCases);
     const graderTypes=[...new Set(cases.map(x=>clean(x.grader_type).toLowerCase()).filter(Boolean))].sort();
@@ -446,6 +485,7 @@
     const prompts=buildPromptRegistry(input);
     const alerts=buildAlerts(input);
     const evaluators=buildEvaluatorOps(input);
+    const annotation=buildAnnotationGroundTruth(input);
     const safety=buildSafetyOps(input);
     const lineage=buildLineage(input);
     const radar=buildKnowledgeRadar(input);
@@ -464,6 +504,7 @@
       {id:"prompts",label:"Prompt Registry / Versions",state:prompts.instrumented?"ready":"gap",evidence:prompts.instrumented?prompts.rows.length+" versioned prompts":"No persisted prompt-version registry connected"},
       {id:"datasets",label:"Failure Inbox → Eval Dataset",state:failures.persisted_dataset?"ready":"gap",evidence:failures.dataset_candidates+" dataset candidate(s) · persisted dataset="+String(failures.persisted_dataset)},
       {id:"evaluators",label:"Evaluator Registry + Human Alignment",state:evaluators.governance_ready?"ready":"gap",evidence:evaluators.grader_types.length+" grader type(s) · registry="+String(evaluators.evaluator_registry_connected)+" · alignment="+evaluators.alignment_state+" · missing="+evaluators.missing_alignment},
+      {id:"ground-truth",label:"Annotation Queue / Ground Truth",state:annotation.connected?(annotation.valid_labels?"ready":"empty"):"gap",evidence:"store="+String(annotation.connected)+" · labels="+annotation.valid_labels+" · observations="+annotation.labeled_observations+" · reviewers="+annotation.reviewers+" · disagreements="+annotation.disagreements+" · uncertain="+annotation.uncertain},
       {id:"experiments",label:"Experiment Diff",state:experiments.available?"ready":"gap",evidence:experiments.available?experiments.comparisons.length+" comparable metric(s)":"Need 2+ comparable eval runs per metric"},
       {id:"online-ci",label:"Online Evals + CI Quality Gate",state:evaluators.continuous_gate_ready?"ready":evaluators.ci_gate_state==="blocked"?"blocked":evaluators.ci_gate_state==="pending"||evaluators.pending_online_windows>0?"pending":"gap",evidence:"online="+evaluators.completed_online_windows+"/"+evaluators.online_windows+" completed · pending online="+evaluators.pending_online_windows+" · CI="+evaluators.ci_gate_state+" · passed="+evaluators.passed_ci_gates+"/"+evaluators.ci_gates+" · failed="+evaluators.failed_ci_gates+" · pending="+evaluators.pending_ci_gates},
       {id:"redteam",label:"Red Team Regression",state:safety.redteam.ready?"ready":safety.redteam.failed?"blocked":"gap",evidence:safety.redteam.covered_cases+"/"+safety.redteam.cases+" active case(s) covered · completed="+safety.redteam.completed_linked+" · pending="+safety.redteam.pending+" · unlinked="+safety.redteam.unlinked+" · failed="+safety.redteam.failed},
@@ -480,7 +521,7 @@
     return Object.freeze({
       mode:"BOOM_PROFESSIONAL_WORKBENCH",
       capabilities,
-      traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,evaluators,safety,lineage,radar,release,
+      traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,evaluators,annotation,safety,lineage,radar,release,
       professional_ready:capabilities.every(x=>x.state==="ready"||x.state==="empty"),
       gaps:Object.freeze(capabilities.filter(x=>x.state==="gap").map(x=>x.id)),
       pending:Object.freeze(capabilities.filter(x=>x.state==="pending").map(x=>x.id)),
@@ -496,7 +537,7 @@
     });
   }
 
-  const api=Object.freeze({build,buildTraceExplorer,buildFailureInbox,buildExperimentDiff,buildReviewQueue,buildCostLatency,buildPromptRegistry,buildAlerts,buildEvaluatorOps,buildSafetyOps,buildLineage,buildKnowledgeRadar,percentile});
+  const api=Object.freeze({build,buildTraceExplorer,buildFailureInbox,buildExperimentDiff,buildReviewQueue,buildCostLatency,buildPromptRegistry,buildAlerts,buildEvaluatorOps,buildAnnotationGroundTruth,buildSafetyOps,buildLineage,buildKnowledgeRadar,percentile});
   if(typeof window!=="undefined")window.BoomProfessionalWorkbench=api;
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
 })();
