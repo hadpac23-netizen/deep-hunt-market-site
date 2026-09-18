@@ -65,4 +65,16 @@ const forgedBlockers=JSON.parse(JSON.stringify(blocked));
 forgedBlockers.blockers=[];
 assert(Evidence.verifyIntegrity(forgedBlockers).issues.includes("BLOCKERS_MISMATCH"));
 
+const forgedSequence=JSON.parse(JSON.stringify(pack));
+forgedSequence.stages=[...forgedSequence.stages].reverse();
+assert(Evidence.verifyIntegrity(forgedSequence).issues.includes("STAGE_SEQUENCE_INVALID"));
+
+const forgedCount=JSON.parse(JSON.stringify(pack));
+forgedCount.stage_count=7;
+assert(Evidence.verifyIntegrity(forgedCount).issues.includes("STAGE_COUNT_MISMATCH"));
+
+const forgedOwnerGate=JSON.parse(JSON.stringify(pack));
+forgedOwnerGate.owner_gate="BYPASS";
+assert(Evidence.verifyIntegrity(forgedOwnerGate).issues.includes("OWNER_GATE_INVALID"));
+
 console.log("boom_alpha_evidence_pack=PASS");
