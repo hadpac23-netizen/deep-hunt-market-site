@@ -95,6 +95,7 @@
     professionalEvidence:{
       modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
       evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[],
+      redTeamCases:[],redTeamRuns:[],confidenceCalibration:[],teamRuns:[],
       promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
     }
   };
@@ -523,6 +524,10 @@
       modelRoutes:state.professionalEvidence.modelRoutes,
       shadowRuns:state.professionalEvidence.shadowRuns,
       replayRuns:state.professionalEvidence.replayRuns,
+      redTeamCases:state.professionalEvidence.redTeamCases,
+      redTeamRuns:state.professionalEvidence.redTeamRuns,
+      confidenceCalibration:state.professionalEvidence.confidenceCalibration,
+      teamRuns:state.professionalEvidence.teamRuns,
       traceSpans:state.professionalEvidence.traceSpans,
       costSamples:professionalCostSamples(),
       promptVersions:state.professionalEvidence.promptVersions,
@@ -532,6 +537,10 @@
       reviewStoreConnected:Boolean(state.session),
       traceSchemaConnected:state.professionalEvidence.traceStoreConnected&&state.professionalEvidence.traceSpans.length>0,
       alertRulesConnected:state.professionalEvidence.modelRoutes.length>0,
+      evaluatorRegistryConnected:false,
+      humanAlignmentConnected:false,
+      onlineEvalConnected:false,
+      ciEvalGateConnected:false,
       releaseGate:state.alphaFinalGate
     });
     state.professionalSnapshot=snapshot;
@@ -613,6 +622,12 @@
       "REPLAY RUNS: "+state.professionalEvidence.replayRuns.length,
       "MODEL OBSERVATIONS: "+state.professionalEvidence.modelObservations.length,
       "MODEL ROUTE / SLO RULES: "+state.professionalEvidence.modelRoutes.length,
+      "RED TEAM: cases="+snapshot.safety.redteam.cases+" runs="+snapshot.safety.redteam.runs+" failed="+snapshot.safety.redteam.failed,
+      "CONFIDENCE CALIBRATION: rows="+snapshot.safety.calibration.rows+" max_error="+String(snapshot.safety.calibration.max_error??"unmeasured"),
+      "MULTI-AGENT JUDGE: "+snapshot.safety.team_judge.judged+"/"+snapshot.safety.team_judge.runs+" judged runs",
+      "EVALUATOR GOVERNANCE: registry="+snapshot.evaluators.evaluator_registry_connected+" human_alignment="+snapshot.evaluators.human_alignment_connected+" graders="+snapshot.evaluators.grader_types.join(","),
+      "ONLINE EVAL / CI GATE: online="+snapshot.evaluators.online_eval_connected+" ci="+snapshot.evaluators.ci_eval_gate_connected,
+      "PROMPT/TRACE LINEAGE: linked="+snapshot.lineage.linked_spans+"/"+snapshot.lineage.versioned_spans+" orphaned="+snapshot.lineage.orphaned_spans,
       "REVIEW HISTORY PERSISTED: "+snapshot.review.persisted,
       "EXPERIMENT DIFF: "+(snapshot.experiments.available?"AVAILABLE":"NEEDS_COMPARABLE_RUNS"),
       "COST/LATENCY: "+snapshot.cost.budget_state,
@@ -2179,6 +2194,7 @@
       state.professionalEvidence={
         modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
         evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[],
+        redTeamCases:[],redTeamRuns:[],confidenceCalibration:[],teamRuns:[],
         promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
       };
       return state.professionalEvidence;
@@ -2187,6 +2203,7 @@
     const [
       modelObservations,modelCosts,modelRoutes,benchmarkCases,
       evalCases,evalRuns,evalSuites,replayRuns,shadowRuns,
+      redTeamCases,redTeamRuns,confidenceCalibration,teamRuns,
       promptStore,traceStore
     ]=await Promise.all([
       query("hunt_boom_model_observations","id,route_key,task_class,provider,model,success,status_code,latency_ms,quality_score,estimated_cost_usd,created_at,input_tokens,output_tokens,total_tokens","created_at",220),
@@ -2198,6 +2215,10 @@
       query("hunt_boom_eval_suites","id,suite_key,title,domain,trials_per_case,pass_threshold,active,created_at,updated_at","updated_at",80),
       query("hunt_boom_replay_runs","id,replay_key,source_type,source_id,baseline_version,candidate_version,run_mode,comparison,verdict,evidence,created_at,completed_at","created_at",120),
       query("hunt_boom_shadow_runs","id,run_key,experiment_key,target_type,target_ref,baseline_version,candidate_version,traffic_percent,run_mode,status,baseline_metrics,candidate_metrics,comparison,evidence,owner_gate_required,created_at,completed_at","created_at",120),
+      query("hunt_boom_redteam_cases","id,case_key,category,title,severity,active,created_at,updated_at","updated_at",120),
+      query("hunt_boom_redteam_runs","id,run_key,case_id,target_version,result_status,latency_ms,created_at,completed_at","created_at",160),
+      query("hunt_boom_confidence_calibration","id,task_class,bucket_low,bucket_high,samples,correct_samples,mean_confidence,observed_accuracy,calibration_error,updated_at","updated_at",120),
+      query("hunt_boom_team_runs","id,run_key,task,judge_id,run_mode,status,judge_verdict,owner_gate_required,created_at,completed_at","created_at",120),
       optionalQuery("hunt_boom_prompt_versions","id,prompt_key,version,status,environment,template_hash,variables,model_preferences,change_note,source_commit,owner_approval_required,created_at,updated_at,activated_at","updated_at",160),
       optionalQuery("hunt_boom_trace_spans","id,trace_id,span_id,parent_span_id,session_id,span_type,name,route_key,provider,model,prompt_version_id,status,success,latency_ms,input_tokens,output_tokens,total_tokens,estimated_cost_usd,error_code,started_at,ended_at","started_at",400)
     ]);
@@ -2205,6 +2226,7 @@
     state.professionalEvidence={
       modelObservations,modelCosts,modelRoutes,benchmarkCases,
       evalCases,evalRuns,evalSuites,replayRuns,shadowRuns,
+      redTeamCases,redTeamRuns,confidenceCalibration,teamRuns,
       promptVersions:promptStore.rows,
       traceSpans:traceStore.rows,
       promptStoreConnected:promptStore.connected,
