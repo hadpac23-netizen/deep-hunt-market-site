@@ -172,8 +172,45 @@
         });
       }
     }
+
+    const observations=safeArray(input.modelObservations);
+    for(const route of safeArray(input.modelRoutes)){
+      const key=clean(route.route_key);
+      if(!key)continue;
+      const rows=observations
+        .filter(x=>clean(x.route_key)===key)
+        .sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0))
+        .slice(0,20);
+      if(!rows.length)continue;
+
+      const latencyP95=percentile(rows.map(x=>x.latency_ms),95);
+      const latencyLimit=Number(route.max_latency_ms);
+      if(Number.isFinite(latencyP95)&&Number.isFinite(latencyLimit)&&latencyP95>latencyLimit){
+        alerts.push({source:key,severity:"watch",message:"P95 latency "+latencyP95+"ms > route budget "+latencyLimit+"ms"});
+      }
+
+      const costs=rows.map(x=>Number(x.estimated_cost_usd)).filter(Number.isFinite);
+      const costLimit=Number(route.max_cost_usd);
+      const maxCost=costs.length?Math.max(...costs):null;
+      if(Number.isFinite(maxCost)&&Number.isFinite(costLimit)&&maxCost>costLimit){
+        alerts.push({source:key,severity:"watch",message:"Max observed cost $"+maxCost.toFixed(6)+" > route budget $"+costLimit.toFixed(6)});
+      }
+
+      const quality=rows.map(x=>Number(x.quality_score)).filter(Number.isFinite);
+      const qualityMin=Number(route.min_quality_score);
+      const qualityAvg=quality.length?quality.reduce((a,b)=>a+b,0)/quality.length:null;
+      if(Number.isFinite(qualityAvg)&&Number.isFinite(qualityMin)&&qualityAvg<qualityMin){
+        alerts.push({source:key,severity:"watch",message:"Average quality "+qualityAvg.toFixed(3)+" < route minimum "+qualityMin.toFixed(3)});
+      }
+
+      const failures=rows.filter(x=>x.success===false).length;
+      if(failures){
+        alerts.push({source:key,severity:"critical",message:failures+" failed model observation(s) in latest "+rows.length+" samples"});
+      }
+    }
+
     return Object.freeze({
-      alerts:Object.freeze(alerts.slice(0,60)),
+      alerts:Object.freeze(alerts.slice(0,80)),
       critical:alerts.filter(x=>x.severity==="critical").length,
       watch:alerts.filter(x=>x.severity==="watch").length
     });
