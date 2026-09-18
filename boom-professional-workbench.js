@@ -444,6 +444,69 @@
     });
   }
 
+  function buildObservabilityOps(input={}){
+    const rows=safeArray(input.observabilitySnapshots);
+    const connected=input.observabilityStoreConnected===true;
+    const now=Number.isFinite(Number(input.nowMs))?Number(input.nowMs):Date.now();
+    const required=["health","security","performance","capacity"];
+    const defaults={health:2,performance:2,security:36,capacity:36};
+    const custom=input.observabilityFreshnessHours&&typeof input.observabilityFreshnessHours==="object"
+      ?input.observabilityFreshnessHours:{};
+    const validStates=new Set(["clear","watch","critical","unable_to_assess"]);
+    const latest=new Map();
+    for(const row of rows.slice().sort((a,b)=>new Date(b.observed_at||0)-new Date(a.observed_at||0))){
+      const type=clean(row.monitor_type).toLowerCase();
+      if(required.includes(type)&&!latest.has(type))latest.set(type,row);
+    }
+    const lanes=required.map(type=>{
+      const row=latest.get(type)||null;
+      const maxAge=Number(custom[type]??defaults[type]);
+      if(!row)return Object.freeze({type,state:"missing",fresh:false,age_hours:null,max_age_hours:maxAge,findings:0,unavailable_checks:0,review_required:false});
+      const observed=new Date(row.observed_at||0).getTime();
+      const raw=clean(row.state).toLowerCase();
+      const findings=Number(row.findings_count);
+      const unavailable=Number(row.unavailable_checks);
+      const ageHours=Number.isFinite(observed)&&observed>0?Math.max(0,(now-observed)/36e5):null;
+      const fresh=ageHours!==null&&Number.isFinite(maxAge)&&ageHours<=maxAge;
+      const valid=validStates.has(raw)&&Number.isFinite(findings)&&findings>=0&&Number.isFinite(unavailable)&&unavailable>=0&&ageHours!==null;
+      const state=!valid?"unable_to_assess":!fresh?"stale":raw;
+      return Object.freeze({
+        type,
+        state,
+        source_state:raw||"unknown",
+        fresh,
+        age_hours:ageHours,
+        max_age_hours:maxAge,
+        findings:Number.isFinite(findings)&&findings>=0?findings:0,
+        unavailable_checks:Number.isFinite(unavailable)&&unavailable>=0?unavailable:0,
+        review_required:row.review_required===true,
+        evidence_fingerprint:clean(row.evidence_fingerprint),
+        source_ref:clean(row.source_ref)
+      });
+    });
+    const count=state=>lanes.filter(x=>x.state===state).length;
+    const missing=count("missing");
+    const stale=count("stale");
+    const unable=count("unable_to_assess");
+    const critical=count("critical");
+    const watch=count("watch");
+    const clear=count("clear");
+    return Object.freeze({
+      connected,
+      lanes:Object.freeze(lanes),
+      required:required.length,
+      clear,
+      watch,
+      critical,
+      stale,
+      missing,
+      unable_to_assess:unable,
+      findings:lanes.reduce((sum,x)=>sum+x.findings,0),
+      review_required:lanes.filter(x=>x.review_required).length,
+      ready:connected&&clear===required.length
+    });
+  }
+
   function buildKnowledgeRadar(input={}){
     const sources=safeArray(input.f35Sources).filter(x=>x.enabled!==false);
     const findings=safeArray(input.f35Findings);
@@ -488,6 +551,7 @@
     const annotation=buildAnnotationGroundTruth(input);
     const safety=buildSafetyOps(input);
     const lineage=buildLineage(input);
+    const observability=buildObservabilityOps(input);
     const radar=buildKnowledgeRadar(input);
     const replayRuns=safeArray(input.replayRuns);
     const release=input.releaseGate||(replayRuns.length?{replay_runs:replayRuns.length,latest:replayRuns[0]}:null);
@@ -511,6 +575,7 @@
       {id:"calibration",label:"Confidence Calibration",state:safety.calibration.ready?"ready":"gap",evidence:safety.calibration.valid_rows+"/"+safety.calibration.rows+" valid measured row(s) · invalid="+safety.calibration.invalid_rows+" · max error="+String(safety.calibration.max_error??"unmeasured")},
       {id:"team-judge",label:"Multi-Agent Judge Runs",state:safety.team_judge.ready?"ready":"gap",evidence:safety.team_judge.judged+"/"+safety.team_judge.runs+" completed run(s) have non-empty final verdicts · incomplete="+safety.team_judge.incomplete},
       {id:"lineage",label:"Prompt → Trace Lineage",state:lineage.ready?"ready":"gap",evidence:lineage.linked_spans+"/"+lineage.versioned_spans+" versioned spans linked · orphaned="+lineage.orphaned_spans+" · stores="+String(lineage.connected)},
+      {id:"observability",label:"Read-Only Observability Cell",state:!observability.connected?"gap":observability.critical?"blocked":(observability.stale||observability.missing||observability.unable_to_assess||observability.watch)?"pending":"ready",evidence:"lanes="+observability.clear+"/"+observability.required+" clear · watch="+observability.watch+" · critical="+observability.critical+" · stale="+observability.stale+" · missing="+observability.missing+" · unable="+observability.unable_to_assess},
       {id:"f35-radar",label:"F35 Knowledge Freshness",state:radar.ready?"ready":"gap",evidence:radar.fresh+"/"+radar.sources+" source(s) fresh · stale="+radar.stale+" · never="+radar.never_checked+" · findings="+radar.verified_findings},
       {id:"review",label:"Human / Owner Review Queue",state:review.persisted?"ready":"gap",evidence:review.count+" review item(s) · annotation history persisted="+String(review.persisted)},
       {id:"cost",label:"Cost / Latency Budget",state:cost.instrumented?"ready":"gap",evidence:cost.instrumented?cost.sample_count+" measured samples":"Token/cost/latency instrumentation not connected"},
@@ -521,7 +586,7 @@
     return Object.freeze({
       mode:"BOOM_PROFESSIONAL_WORKBENCH",
       capabilities,
-      traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,evaluators,annotation,safety,lineage,radar,release,
+      traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,evaluators,annotation,safety,lineage,observability,radar,release,
       professional_ready:capabilities.every(x=>x.state==="ready"||x.state==="empty"),
       gaps:Object.freeze(capabilities.filter(x=>x.state==="gap").map(x=>x.id)),
       pending:Object.freeze(capabilities.filter(x=>x.state==="pending").map(x=>x.id)),
@@ -537,7 +602,7 @@
     });
   }
 
-  const api=Object.freeze({build,buildTraceExplorer,buildFailureInbox,buildExperimentDiff,buildReviewQueue,buildCostLatency,buildPromptRegistry,buildAlerts,buildEvaluatorOps,buildAnnotationGroundTruth,buildSafetyOps,buildLineage,buildKnowledgeRadar,percentile});
+  const api=Object.freeze({build,buildTraceExplorer,buildFailureInbox,buildExperimentDiff,buildReviewQueue,buildCostLatency,buildPromptRegistry,buildAlerts,buildEvaluatorOps,buildAnnotationGroundTruth,buildSafetyOps,buildLineage,buildObservabilityOps,buildKnowledgeRadar,percentile});
   if(typeof window!=="undefined")window.BoomProfessionalWorkbench=api;
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
 })();
