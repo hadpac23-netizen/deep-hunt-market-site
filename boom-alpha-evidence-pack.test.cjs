@@ -14,7 +14,8 @@ assert.equal(pack.alpha_activation_authorized,false);
 assert.equal(pack.production_ready,false);
 assert.equal(pack.blockers.length,0);
 assert(/^A9-[0-9A-F]{8}$/.test(pack.evidence_fingerprint));
-assert.equal(Evidence.verifyBoundaries(pack).valid,true);\nassert.equal(Evidence.verifyIntegrity(pack).valid,true);
+assert.equal(Evidence.verifyBoundaries(pack).valid,true);
+assert.equal(Evidence.verifyIntegrity(pack).valid,true);
 
 const same=Evidence.build({integrationStages:passStages,harness,generatedAt:"2026-09-18T09:00:00.000Z"});
 assert.equal(same.evidence_fingerprint,pack.evidence_fingerprint,"fingerprint must not depend on generated_at");
@@ -26,7 +27,8 @@ assert.equal(blocked.owner_review_ready,false);
 assert.equal(blocked.release_gate,"BLOCKED_EVIDENCE_REQUIRED");
 assert(blocked.blockers.some(x=>x.id==="A5"));
 assert.notEqual(blocked.evidence_fingerprint,pack.evidence_fingerprint);
-assert.equal(Evidence.verifyBoundaries(blocked).valid,true);\nassert.equal(Evidence.verifyIntegrity(blocked).valid,true);
+assert.equal(Evidence.verifyBoundaries(blocked).valid,true);
+assert.equal(Evidence.verifyIntegrity(blocked).valid,true);
 
 const harnessBlocked=Evidence.build({integrationStages:passStages,harness:{harness_pass:false,passed:3,total:4},generatedAt:"2026-09-18T08:00:00.000Z"});
 assert.equal(harnessBlocked.owner_review_ready,false);
