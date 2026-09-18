@@ -349,3 +349,19 @@ assert(js.includes("const studioNodeGroupById=new Map()"),"Studio node catalog m
 assert(js.includes("No live manager report is loaded for this Studio node in the current runtime."),"Truthful offline Studio fallback missing");
 assert(css.includes(".studio-node-group"),"Studio group lane styling missing");
 assert(css.includes("min-height:2180px"),"Expanded Studio canvas height missing");
+
+assert(html.includes('id="node-output"'),"Decision / Owner Output node missing");
+assert(html.includes("DECISION / OUTPUT"),"Decision / Output section label missing");
+assert(js.includes('if(type==="output")'),"Decision / Owner Output inspector missing");
+assert(js.includes("KNOWLEDGE != AUTHORITY"),"Decision authority boundary missing");
+assert(js.includes('addLine(svg,$("#node-eval"),$("#node-output"),"watch")'),"Decision output link missing");
+assert(html.includes('id="prompt-coverage-audit"'),"Prompt coverage audit workspace missing");
+assert(html.includes('id="prompt-audit-summary"'),"Prompt audit summary missing");
+assert(html.includes('id="prompt-audit-grid"'),"Prompt audit grid missing");
+assert(js.includes("const promptCoverageItems=Object.freeze(["),"Prompt audit contract missing");
+assert(js.includes("Product trace: source → shelf → checkout → order → sale"),"Product trace prompt item missing");
+assert(js.includes("Direct reference + real-device screenshot comparison"),"Real-device prompt item missing");
+assert(js.includes("Supplier names hidden from shopper storefront"),"Supplier hiding prompt item missing");
+assert(js.includes("Search / recommendation / Like / Save / Share / History E2E"),"Shopper actions prompt item missing");
+assert(js.includes("function renderPromptCoverageAudit()"),"Prompt audit renderer missing");
+assert(css.includes(".prompt-audit-workspace"),"Prompt audit styling missing");
