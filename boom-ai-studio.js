@@ -1674,6 +1674,138 @@
     return {gate:next,verification};
   }
 
+  function productTraceStage(step,label,state,evidence){
+    return {step,label,state,evidence:String(evidence||"")};
+  }
+
+  function renderProductTrace(stages,reportLines=[]){
+    const host=$("#product-trace-timeline"),status=$("#product-trace-status"),report=$("#product-trace-report");
+    if(host)host.innerHTML=stages.map(row=>
+      '<article data-state="'+esc(row.state)+'"><small>'+esc(row.step)+'</small><strong>'+esc(row.label)+'</strong><span>'+esc(row.state.toUpperCase())+'</span><p>'+esc(row.evidence||"No evidence")+'</p></article>'
+    ).join("");
+    const verified=stages.filter(x=>["verified","present","linked"].includes(x.state)).length;
+    const blocked=stages.filter(x=>x.state==="blocked").length;
+    if(status)status.textContent=blocked
+      ?"TRACE_BLOCKED · "+blocked+" BLOCKER(S)"
+      :"TRACE_READ_ONLY · "+verified+"/"+stages.length+" LINK(S) EVIDENCED";
+    if(report)report.textContent=reportLines.join("\n");
+  }
+
+  async function runProductTrace(){
+    const provider=String($("#product-trace-provider")?.value||"").trim();
+    const itemId=String($("#product-trace-item")?.value||"").trim();
+    const orderRef=String($("#product-trace-order")?.value||"").trim();
+
+    if(state.localPreview){
+      const stages=[
+        productTraceStage("1","SOURCE","present","Local Preview structure only · live catalog query disabled"),
+        productTraceStage("2","SHELF / TRUTH","unknown","Enter authenticated Studio for live catalog evidence"),
+        productTraceStage("3","CHECKOUT","unknown","Live order pipeline query disabled in Local Preview"),
+        productTraceStage("4","ORDER","unknown","Live order query disabled in Local Preview"),
+        productTraceStage("5","FINANCE / SALE","unknown","Live finance query disabled in Local Preview")
+      ];
+      renderProductTrace(stages,[
+        "MODE: LOCAL_PREVIEW_PRODUCT_TRACE",
+        "READ ONLY: true",
+        "LIVE QUERY: false",
+        "MUTATION: false",
+        "NEXT SAFE ACTION: Sign in to Owner/Admin Studio to run live evidence trace."
+      ]);
+      return {stages,localPreview:true};
+    }
+
+    if(!provider||!itemId){
+      renderProductTrace([
+        productTraceStage("1","SOURCE","blocked","Provider and Item ID are required"),
+        productTraceStage("2","SHELF / TRUTH","unknown","Waiting for product identity"),
+        productTraceStage("3","CHECKOUT","unknown","Waiting for product identity"),
+        productTraceStage("4","ORDER","unknown","Waiting for product identity"),
+        productTraceStage("5","FINANCE / SALE","unknown","Waiting for product identity")
+      ],["TRACE_BLOCKED: provider + item_id required"]);
+      return null;
+    }
+
+    const catalogQuery=await client.from("hunt_catalog_products")
+      .select("provider,item_id,category,title,availability_verified,source_fresh_at,updated_at,stock_quantity,authenticity_status,market_eligibility_status")
+      .eq("provider",provider).eq("item_id",itemId).maybeSingle();
+    if(catalogQuery.error)throw catalogQuery.error;
+    const catalog=catalogQuery.data||null;
+
+    let order=null,pipeline=[],finance=null;
+    if(orderRef){
+      let q=client.from("hunt_orders")
+        .select("id,external_order_id,status,total_amount,currency,placed_at,updated_at,is_test,order_source,provider");
+      const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(orderRef);
+      q=uuid?q.eq("id",orderRef):q.eq("external_order_id",orderRef);
+      const orderResult=await q.maybeSingle();
+      if(orderResult.error)throw orderResult.error;
+      order=orderResult.data||null;
+
+      if(order?.id){
+        const [pipelineResult,financeResult]=await Promise.all([
+          client.from("hunt_order_pipeline_runs")
+            .select("id,payment_session_id,order_id,run_mode,stage,status,provider,supplier_order_id,tracking_number,last_error,created_at,updated_at")
+            .eq("order_id",order.id).order("updated_at",{ascending:false}).limit(8),
+          client.from("hunt_order_finance_ledger")
+            .select("payment_session_id,order_id,currency,customer_gross,contribution_locked,available_profit,settlement_status,supplier_payment_status,owner_payout_status,is_test,calculated_at,settled_at,updated_at")
+            .eq("order_id",order.id).maybeSingle()
+        ]);
+        if(pipelineResult.error)throw pipelineResult.error;
+        if(financeResult.error)throw financeResult.error;
+        pipeline=pipelineResult.data||[];
+        finance=financeResult.data||null;
+      }
+    }
+
+    const checkoutLinked=Boolean(finance?.payment_session_id||pipeline.some(x=>x.payment_session_id));
+    const sourceState=catalog?"verified":"unknown";
+    const shelfState=catalog?.category?"present":"unknown";
+    const checkoutState=checkoutLinked?"linked":(order?"unknown":"unknown");
+    const orderState=order?"linked":"unknown";
+    const financeState=finance
+      ?(["settled"].includes(String(finance.settlement_status||"").toLowerCase())?"verified":"present")
+      :"unknown";
+
+    const stages=[
+      productTraceStage("1","SOURCE",sourceState,catalog
+        ? provider+" · "+itemId+" · fresh="+String(catalog.source_fresh_at||catalog.updated_at||"unknown")
+        :"No matching catalog product"),
+      productTraceStage("2","SHELF / TRUTH",shelfState,catalog
+        ? "category="+String(catalog.category||"unknown")+" · availability_verified="+String(catalog.availability_verified===true)+" · market="+String(catalog.market_eligibility_status||"unknown")
+        :"No catalog shelf evidence"),
+      productTraceStage("3","CHECKOUT",checkoutState,checkoutLinked
+        ? "payment_session_id linked through Admin-only order pipeline / finance evidence"
+        :"No linked payment session evidence supplied"),
+      productTraceStage("4","ORDER",orderState,order
+        ? "order="+String(order.external_order_id||order.id)+" · status="+String(order.status||"unknown")+" · test="+String(order.is_test===true)
+        :"No matching order reference supplied/found"),
+      productTraceStage("5","FINANCE / SALE",financeState,finance
+        ? "settlement="+String(finance.settlement_status||"unknown")+" · owner_payout="+String(finance.owner_payout_status||"unknown")+" · available_profit="+String(finance.available_profit??"unknown")+" "+String(finance.currency||"")
+        :"No finance ledger row linked to this order")
+    ];
+
+    renderProductTrace(stages,[
+      "MODE: LIVE_ADMIN_PRODUCT_TRACE",
+      "READ ONLY: true",
+      "MUTATION: false",
+      "PROVIDER: "+provider,
+      "ITEM ID: "+itemId,
+      "CATALOG FOUND: "+String(Boolean(catalog)),
+      "CATEGORY: "+String(catalog?.category||"unknown"),
+      "AVAILABILITY VERIFIED: "+String(catalog?.availability_verified===true),
+      "ORDER FOUND: "+String(Boolean(order)),
+      "ORDER STATUS: "+String(order?.status||"unknown"),
+      "PIPELINE RUNS: "+String(pipeline.length),
+      "CHECKOUT LINKED: "+String(checkoutLinked),
+      "FINANCE LEDGER FOUND: "+String(Boolean(finance)),
+      "SETTLEMENT STATUS: "+String(finance?.settlement_status||"unknown"),
+      "OWNER PAYOUT STATUS: "+String(finance?.owner_payout_status||"unknown"),
+      "",
+      "NOTE: Missing links remain UNVERIFIED; no table writes or runtime controls were changed."
+    ]);
+    return {catalog,order,pipeline,finance,stages};
+  }
+
   function simulateHuntIntelligence(){
     const output=$("#intelligence-simulation");
     const rows=state.huntCapabilities||[];
