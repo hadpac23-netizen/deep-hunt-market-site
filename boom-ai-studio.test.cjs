@@ -375,6 +375,7 @@ assert(html.includes('id="prompt-audit-grid"'),"Prompt audit grid missing");
 assert(js.includes("const promptCoverageItems=Object.freeze(["),"Prompt audit contract missing");
 assert(js.includes("Product trace: source → shelf → checkout → order → sale"),"Product trace prompt item missing");
 assert(js.includes("Viewport visual QA · 390 / 768 / 1280 / 1440"),"Viewport visual QA prompt item missing");
+assert(js.includes('label:"Viewport visual QA · 390 / 768 / 1280 / 1440",status:"PRESENT"'),"Viewport visual QA should be closed only after fresh 4/4 browser pass");
 assert(fs.existsSync("boom-studio-device-browser-e2e.html"),"BOOM Studio device browser E2E harness missing");
 assert(js.includes("Supplier names hidden from shopper storefront"),"Supplier hiding prompt item missing");
 assert(js.includes("Like / Save / Share / History browser E2E"),"Shopper actions browser E2E prompt item missing");
