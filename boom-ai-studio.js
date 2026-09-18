@@ -3,6 +3,7 @@
 
   const H=window.HuntCore;
   const S=window.supabase;
+  const Truth=window.HuntCountryProductTruth;
   if(!H||!S?.createClient){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -571,6 +572,58 @@
     const input=$("#planning-objective");
     if(input)input.value="Prepare HUNT 2037 Alpha inside BOOM Studio using verified real products, explainable intelligence, memory, Worlds, Stylist, privacy-safe Mirror entry and preserved checkout fallback. No production activation.";
     buildPlanningDraft();
+  }
+
+  function truthValue(id){
+    return String($("#"+id)?.value||"").trim();
+  }
+
+  function evaluateTruthWorkspace(){
+    const output=$("#truth-result");
+    const status=$("#truth-result-status");
+    if(!Truth?.evaluate){
+      status.textContent="TRUTH_ENGINE_UNAVAILABLE · EXECUTION_OFF";
+      output.textContent="The Product Truth engine is unavailable. Nothing was executed.";
+      return;
+    }
+    const checked=truthValue("truth-checked-at");
+    const input={
+      provider:truthValue("truth-provider"),
+      destination_country:truthValue("truth-country"),
+      item_id:truthValue("truth-item-id"),
+      sku:truthValue("truth-sku"),
+      variant_id:truthValue("truth-variant-id"),
+      warehouse:truthValue("truth-warehouse"),
+      stock:truthValue("truth-stock"),
+      stock_checked_at:checked?new Date(checked).toISOString():null,
+      source_checked_at:checked?new Date(checked).toISOString():null,
+      supplier_cost:truthValue("truth-cost"),
+      shipping_cost:truthValue("truth-shipping"),
+      landed_cost:truthValue("truth-landed"),
+      retail_price:truthValue("truth-retail"),
+      shipping_method:truthValue("truth-shipping-method"),
+      eta_min_days:truthValue("truth-eta-min"),
+      eta_max_days:truthValue("truth-eta-max"),
+      returns_state:truthValue("truth-returns"),
+      country_supported:Boolean($("#truth-country-supported")?.checked),
+      restrictions:$("#truth-restricted")?.checked?["OWNER_REVIEW_REQUIRED"]:[]
+    };
+    const result=Truth.evaluate(input,{requireEconomics:true,minContribution:1.5,minMarginRate:.12});
+    status.textContent=result.truth_status+" · "+(result.eligible?"EVIDENCE PASSED":"BLOCKED / RECHECK")+" · EXECUTION_OFF";
+    output.textContent=[
+      "MODE: A1_STUDIO_SIMULATION",
+      "TRUTH STATUS: "+result.truth_status,
+      "ELIGIBLE FOR ALPHA PLANNING: "+result.eligible,
+      "ISSUES: "+(result.issues.join(", ")||"none"),
+      "CONTRIBUTION: "+(result.economics.contribution??"UNKNOWN"),
+      "MARGIN RATE: "+(result.economics.margin_rate===null?"UNKNOWN":(result.economics.margin_rate*100).toFixed(2)+"%"),
+      "PROVIDER: "+result.product.provider,
+      "ITEM / VARIANT: "+result.product.item_id+" / "+(result.product.variant_id||result.product.sku||"UNKNOWN"),
+      "DESTINATION: "+result.product.destination_country,
+      "EXECUTION_ALLOWED: false",
+      "PUBLISHED: false",
+      "SUPPLIER_CALLED: false"
+    ].join("\n");
   }
 
   function simulateHuntIntelligence(){
@@ -1426,6 +1479,7 @@
   $("#planning-revision")?.addEventListener("click",()=>setPlanningDecision("NEEDS_REVISION"));
   $("#planning-approve")?.addEventListener("click",()=>setPlanningDecision("APPROVED_FOR_IMPLEMENTATION_PLANNING"));
   $("#alpha-load-plan")?.addEventListener("click",loadAlphaPlan);
+  $("#truth-simulate")?.addEventListener("click",evaluateTruthWorkspace);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
