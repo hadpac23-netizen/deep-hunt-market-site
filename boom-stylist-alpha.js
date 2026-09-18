@@ -1,6 +1,7 @@
 (() => {
   "use strict";
   const Core=window.BoomStylistCore;
+  const Memory=window.HuntExperienceMemory;
   if(!Core)return;
   const $=q=>document.querySelector(q);
   const occasion=$("#stylist-occasion");
@@ -19,10 +20,11 @@
       occasion:occasion?.value||"everyday",
       budget:Number(budget?.value||0),
       country:String(country?.value||"").trim().toUpperCase(),
-      context:{}
+      context:Memory?.decisionContext?.()||{}
     });
     if(status){
-      status.textContent=mission.occasion_label+" mission · budget "+mission.budget.budget_total
+      const world=params.get("world")||"";
+      status.textContent=(world?title(world)+" world · ":"")+mission.occasion_label+" mission · budget "+mission.budget.budget_total
         +" · "+mission.target_categories.length+" target categories.";
     }
     if(targets){
@@ -37,6 +39,7 @@
   }
 
   build?.addEventListener("click",renderMission);
+  applyContext();
   renderMission();
 
   window.BoomStylistAlpha=Object.freeze({renderMission,getMission:()=>window.BoomStylistAlphaMission||null});
