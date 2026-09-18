@@ -4,6 +4,7 @@
   const H=window.HuntCore;
   const Core=window.Hunt2037FlowCore;
   const Memory=window.HuntExperienceMemory;
+  const Taste=window.BoomTasteDNA;
   if(!H||!Core)return;
 
   const FLAG_KEY="hunt_2037_flow_enabled";
@@ -176,7 +177,8 @@
     const root=$("#hunt-2037-flow");
     if(!root)return;
     const shelves=data?.shelves||{};
-    const context=Memory?.decisionContext?.()||{};
+    const memoryContext=Memory?.decisionContext?.()||{};
+    const context=Taste?.enrichContext?.(memoryContext,Memory?.events?.()||[])||memoryContext;
     const model=Core.buildUnits({shelves,context,sessionSeed:String(Date.now()).slice(0,8)});
     if(!model.total_products)return;
 
