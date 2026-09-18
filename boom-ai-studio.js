@@ -12,6 +12,7 @@
   const Mirror=window.BoomMirrorCore;
   const AlphaHarness=window.BoomAlphaTestHarness;
   const EvidencePack=window.BoomAlphaEvidencePack;
+  const RCPreview=window.BoomAlphaRCPreview;
   if(!H||!S?.createClient){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -77,7 +78,8 @@
     selectedCapability:null,
     planningDraft:null,
     simulatedMemoryEvents:[],
-    alphaEvidencePack:null
+    alphaEvidencePack:null,
+    alphaRCPreview:null
   };
 
   const toolNodes=[
@@ -1107,6 +1109,82 @@
     return {pack,boundaryCheck};
   }
 
+  function buildAlphaRCPreview(){
+    const status=$("#alpha-rc-preview-status"),summary=$("#alpha-rc-preview-summary"),devices=$("#alpha-rc-devices"),journey=$("#alpha-rc-journey"),report=$("#alpha-rc-preview-report");
+    if(!RCPreview?.build||!RCPreview?.verify||!AlphaHarness?.runAll){
+      if(status)status.textContent="RC_PREVIEW_UNAVAILABLE · PRODUCTION_OFF";
+      if(report)report.textContent="A10 core is unavailable. No preview or live action was created.";
+      return null;
+    }
+
+    if(!state.alphaEvidencePack){
+      buildOwnerAlphaEvidencePack();
+    }
+    const evidencePack=state.alphaEvidencePack;
+    const harness=AlphaHarness.runAll();
+    const preview=RCPreview.build({evidencePack,harness});
+    const verification=RCPreview.verify(preview);
+    const valid=verification.valid===true;
+    state.alphaRCPreview=valid?preview:null;
+
+    if(devices)devices.innerHTML=preview.devices.map(device=>
+      '<article class="rc-device" data-state="'+(preview.preview_ready?"pass":"blocked")+'">'+
+      '<small>'+esc(device.id.toUpperCase())+'</small>'+
+      '<strong>'+esc(device.label)+'</strong>'+
+      '<span>'+esc(String(device.width))+'×'+esc(String(device.height))+'</span></article>'
+    ).join("");
+
+    if(journey)journey.innerHTML=preview.journey.map(step=>
+      '<article class="rc-journey-step" data-state="'+(step.ready?"pass":"blocked")+'">'+
+      '<small>'+esc(step.id.toUpperCase())+'</small>'+
+      '<strong>'+esc(step.label)+'</strong>'+
+      '<span>'+esc(step.ready?"READY":"BLOCKED")+'</span>'+
+      '<p>'+esc(step.contract)+'</p>'+
+      '<footer>'+esc(step.missing.length?"Missing: "+step.missing.join(", "):"Snapshot-only · no live mutation")+'</footer></article>'
+    ).join("");
+
+    const readySteps=preview.journey.filter(x=>x.ready).length;
+    if(summary)summary.innerHTML=
+      '<article><b>'+readySteps+'/'+preview.journey.length+'</b><span>JOURNEY STEPS READY</span></article>'+
+      '<article><b>'+(preview.preview_ready?preview.devices.length:0)+'/'+preview.devices.length+'</b><span>VIEWPORT CONTRACTS</span></article>'+
+      '<article><b>OFF</b><span>CHECKOUT / PRODUCTION</span></article>';
+
+    if(status)status.textContent=!valid
+      ?"BLOCKED_PREVIEW_BOUNDARY_VIOLATION · PRODUCTION_OFF"
+      :(preview.preview_ready
+        ?"A10_PRIVATE_RC_READY · OWNER_ONLY · PRODUCTION_OFF"
+        :"BLOCKED_EVIDENCE_REQUIRED · "+preview.blockers.length+" BLOCKER(S) · PRODUCTION_OFF");
+
+    if(report)report.textContent=[
+      "MODE: "+preview.mode,
+      "PRIVATE PREVIEW READY: "+preview.preview_ready,
+      "VISIBILITY: "+preview.visibility,
+      "EVIDENCE FINGERPRINT: "+(preview.evidence_fingerprint||"none"),
+      "RC BOUNDARY CHECK: "+(valid?"PASS":"FAIL"),
+      "RC BOUNDARY ISSUES: "+(verification.issues.join(", ")||"none"),
+      "CURRENT STOREFRONT FALLBACK: "+preview.current_storefront_fallback,
+      "CHECKOUT MODE: "+preview.checkout_mode,
+      "PAYMENTS_ACTIVATED: false",
+      "ORDER_ROUTING_ACTIVATED: false",
+      "PROVIDER_CALLS: 0",
+      "SUPPLIER_CALLS: 0",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "ALPHA_ACTIVATION_AUTHORIZED: false",
+      "PRODUCTION READY: false",
+      "PRODUCTION_CHANGED: false",
+      "OWNER_GATE: "+preview.owner_gate,
+      "",
+      ...preview.devices.map(device=>"VIEWPORT "+device.id+" · "+device.width+"x"+device.height+" · CONTRACT_ONLY"),
+      "",
+      ...preview.journey.map(step=>step.id+" · "+(step.ready?"READY":"BLOCKED")+" · "+step.contract+" · missing="+(step.missing.join(",")||"none")),
+      "",
+      "BLOCKERS: "+(preview.blockers.join(" | ")||"none"),
+      "NEXT SAFE ACTION: "+preview.next_safe_action
+    ].join("\n");
+    return {preview,verification};
+  }
+
   function simulateHuntIntelligence(){
     const output=$("#intelligence-simulation");
     const rows=state.huntCapabilities||[];
@@ -1970,6 +2048,7 @@
   $("#alpha-integration-qa")?.addEventListener("click",runAlphaIntegrationQA);
   $("#alpha-harness-run")?.addEventListener("click",runAlphaHarnessUI);
   $("#alpha-evidence-build")?.addEventListener("click",buildOwnerAlphaEvidencePack);
+  $("#alpha-rc-preview-build")?.addEventListener("click",buildAlphaRCPreview);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
