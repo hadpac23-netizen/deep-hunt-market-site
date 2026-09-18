@@ -29,7 +29,7 @@
     const media=safeImage(row.image_url)
       ? '<img src="'+esc(row.image_url)+'" alt="'+esc(row.title||"Product")+'" loading="lazy">'
       : '<div class="hunt-history-placeholder">H</div>';
-    return '<article class="hunt-history-product"><a class="hunt-history-media" href="'+esc(href)+'">'+media+'</a><div><a href="'+esc(href)+'">'+esc(row.title||"Product")+'</a><small>'+esc(row.provider||"")+'</small></div></article>';
+    return '<article class="hunt-history-product"><a class="hunt-history-media" href="'+esc(href)+'">'+media+'</a><div><a href="'+esc(href)+'">'+esc(row.title||"Product")+'</a><small>HUNT SOURCE</small></div></article>';
   }
 
   function render(){
