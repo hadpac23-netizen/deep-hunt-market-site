@@ -452,6 +452,7 @@ assert(css.includes(".studio-department-nav"),"Studio navigator styling missing"
 assert(js.includes('const previewNetlifyDraft=/^[a-z0-9]+--deep-hunt-market\\.netlify\\.app$/i.test(location.hostname);'),"Netlify draft preview hostname gate missing");
 assert(js.includes('applyLocalPreviewSafety(previewNetlifyDraft?"draft":"local")'),"Draft preview safety mode missing");
 assert(js.includes('const SAFE_PREVIEW_BOOT=(previewLocalHost||previewNetlifyDraft)&&previewUrl.searchParams.get("preview")==="1";'),"Safe preview query gate missing");
+assert(js.includes('if(state.localPreview)setLive("● PREVIEW · LIVE ACTIONS OFF","watch");'),"renderAll must preserve safe preview live-state");
 
 assert(js.includes('(!S?.createClient&&!SAFE_PREVIEW_BOOT)'),"Safe preview Supabase decoupling missing");
 assert(js.includes('const client=S?.createClient?S.createClient('),"Optional preview Supabase client missing");
