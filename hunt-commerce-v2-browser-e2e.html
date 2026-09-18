@@ -1,0 +1,49 @@
+<!doctype html><meta charset="utf-8"><title>HUNT Commerce V2 QA</title>
+<style>body{font:13px system-ui;background:#111;color:#eee;margin:14px}.case{margin:12px 0;border:1px solid #444;padding:8px}.pass{color:#72e49e}.fail{color:#ff8296}iframe{display:block;border:0;background:#fff}.viewport{overflow:hidden;max-height:360px}pre{white-space:pre-wrap}</style>
+<h1>HUNT Commerce V2 QA</h1><div id="host"></div><pre id="result">RUNNING</pre>
+<script>
+const pages=[
+ {name:"category",url:"category.html?c=women"},
+ {name:"product",url:"product.html?provider=CJdropshipping&id=2512160129151638400"},
+ {name:"search",url:"search.html"}
+];
+const widths=[390,768,1280,1440], host=document.querySelector("#host"), wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function one(page,w){
+ const box=document.createElement("section");box.className="case";
+ const status=document.createElement("div");status.textContent="RUNNING "+page.name+" "+w;
+ const wrap=document.createElement("div");wrap.className="viewport";wrap.style.width=w+"px";
+ const f=document.createElement("iframe");f.width=w;f.height=w<=768?900:900;f.src=page.url;
+ wrap.appendChild(f);box.append(status,wrap);host.appendChild(box);
+ await new Promise(r=>{if(f.contentDocument?.readyState==="complete")r();else f.addEventListener("load",r,{once:true})});
+ await wait(6500);
+ const d=f.contentDocument, root=d.documentElement;
+ const overflow=Math.max(0,root.scrollWidth-root.clientWidth);
+ const css=[...d.querySelectorAll('link[rel=stylesheet]')].some(x=>String(x.href).includes("hunt-visual-v2.css"));
+ const commerce=d.body?.classList.contains("hd-commerce-v2");
+ let detail={};
+ if(page.name==="category"){
+   const grid=d.querySelector("#hd-category-grid"), count=d.querySelectorAll("#hd-category-grid .hd-market-product-card").length;
+   const cols=grid?getComputedStyle(grid).gridTemplateColumns.split(" ").filter(Boolean).length:0;
+   detail={count,cols,title:d.querySelector("#hd-cat-title")?.textContent?.trim()||""};
+ }
+ if(page.name==="product"){
+   detail={title:d.querySelector("#hd-product-title")?.textContent?.trim()||"",image:!!d.querySelector("#hd-product-main-image")?.getAttribute("src"),add:!!d.querySelector("#hd-product-add")};
+ }
+ if(page.name==="search"){
+   const grid=d.querySelector("#hd-ai-results-grid"), cols=grid?getComputedStyle(grid).gridTemplateColumns.split(" ").filter(Boolean).length:0;
+   detail={cols,input:!!d.querySelector("#hd-ai-search-input"),mission:!!d.querySelector("#hd-mission-panel")};
+ }
+ const structural=page.name==="category"?detail.cols>=2&&detail.count>0:page.name==="product"?detail.add&&detail.title!=="":detail.input&&detail.mission;
+ const pass=overflow<=4&&css&&commerce&&structural;
+ const out={page:page.name,width:w,pass,overflow,css,commerce,...detail};
+ status.className=pass?"pass":"fail";status.textContent=(pass?"PASS ":"FAIL ")+JSON.stringify(out);
+ return out;
+}
+(async()=>{
+ const results=[];
+ for(const p of pages) for(const w of widths) results.push(await one(p,w));
+ const pass=results.every(x=>x.pass);
+ document.body.dataset.qa=pass?"pass":"fail";
+ document.querySelector("#result").textContent=(pass?"PASS":"FAIL")+"\n"+JSON.stringify({pass,results},null,2);
+})();
+</script>

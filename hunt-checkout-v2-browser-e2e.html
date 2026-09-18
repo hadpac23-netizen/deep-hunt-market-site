@@ -1,0 +1,32 @@
+<!doctype html><meta charset="utf-8"><title>HUNT Checkout V2 QA</title>
+<style>body{font:13px system-ui;background:#111;color:#eee;margin:14px}.case{margin:12px 0;border:1px solid #444;padding:8px}.pass{color:#72e49e}.fail{color:#ff8296}.viewport{overflow:hidden;max-height:360px}iframe{display:block;border:0;background:#fff}pre{white-space:pre-wrap}</style>
+<h1>HUNT Checkout V2 QA</h1><div id="host"></div><pre id="result">RUNNING</pre>
+<script>
+const widths=[390,768,1280,1440],host=document.querySelector("#host"),wait=ms=>new Promise(r=>setTimeout(r,ms));
+const cart=[{provider:"CJdropshipping",item_id:"2512160129151638400",title:"New-design Asymmetric Halter-neck Spicy-girl Dress For Women",image_url:"https://cf.cjdropshipping.com/quick/product/303f90f1-518b-42de-9dc0-f07fed399368.jpg",price_amount:5.09,currency:"USD",category:"women-dresses",qty:1,retail_price_verified:false,price_basis:"SOURCE_REFERENCE"}];
+async function one(w){
+ const box=document.createElement("section");box.className="case";
+ const status=document.createElement("div");status.textContent="RUNNING "+w;
+ const wrap=document.createElement("div");wrap.className="viewport";wrap.style.width=w+"px";
+ const f=document.createElement("iframe");f.width=w;f.height=900;f.src="./checkout.html";
+ wrap.appendChild(f);box.append(status,wrap);host.appendChild(box);
+ await new Promise(r=>f.addEventListener("load",r,{once:true}));
+ f.contentWindow.localStorage.setItem("hunt_deal_cart_v1",JSON.stringify(cart));
+ f.contentWindow.location.reload();
+ await new Promise(r=>f.addEventListener("load",r,{once:true}));
+ await wait(3500);
+ const d=f.contentDocument,root=d.documentElement;
+ const overflow=Math.max(0,root.scrollWidth-root.clientWidth);
+ const css=[...d.querySelectorAll('link[rel=stylesheet]')].some(x=>String(x.href).includes("hunt-visual-v2.css"));
+ const commerce=d.body?.classList.contains("hd-commerce-v2");
+ const itemCount=d.querySelectorAll("#hd-checkout-items .hd-checkout-item").length;
+ const summary=!!d.querySelector(".hd-checkout-summary");
+ const verify=!!d.querySelector("#hd-checkout-verify");
+ const paymentDisabled=d.querySelector(".hd-pay-disabled")?.disabled===true;
+ const pass=overflow<=4&&css&&commerce&&itemCount>0&&summary&&verify&&paymentDisabled;
+ const out={width:w,pass,overflow,css,commerce,itemCount,summary,verify,paymentDisabled};
+ status.className=pass?"pass":"fail";status.textContent=(pass?"PASS ":"FAIL ")+JSON.stringify(out);
+ return out;
+}
+(async()=>{const results=[];for(const w of widths)results.push(await one(w));const pass=results.every(x=>x.pass);document.body.dataset.qa=pass?"pass":"fail";document.querySelector("#result").textContent=(pass?"PASS":"FAIL")+"\n"+JSON.stringify({pass,results},null,2)})();
+</script>
