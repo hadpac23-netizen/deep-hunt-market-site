@@ -25,7 +25,7 @@ body{margin:0;background:#080b10;color:#eef;font:12px system-ui;padding:16px}.qa
    const d=ui.frame.contentDocument,w=ui.frame.contentWindow;
    const app=d.querySelector(".app-shell"),login=d.querySelector(".login-screen"),workspace=d.querySelector(".workspace");
    const groups=d.querySelectorAll(".studio-node-group").length;
-   const live=d.querySelector("#live-status")?.textContent?.trim()||"";
+   const live=d.querySelector("#live-state")?.textContent?.trim()||"";
    const output=Boolean(d.querySelector("#node-output"));
    const audit=Boolean(d.querySelector("#prompt-coverage-audit"));
    const trace=Boolean(d.querySelector("#product-trace-workspace"));
