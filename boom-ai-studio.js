@@ -909,6 +909,96 @@
     ].join("\n");
   }
 
+  function alphaEvidenceText(id){
+    return String($("#"+id)?.textContent||"").trim();
+  }
+
+  function alphaIntegrationStages(){
+    const a1Status=alphaEvidenceText("truth-result-status"),a1=alphaEvidenceText("truth-result");
+    const a2Status=alphaEvidenceText("decision-result-status"),a2=alphaEvidenceText("decision-result");
+    const a3=alphaEvidenceText("memory-context-result");
+    const a4Status=alphaEvidenceText("flow-result-status"),a4=alphaEvidenceText("flow-result");
+    const a5Status=alphaEvidenceText("personal-result-status"),a5=alphaEvidenceText("mirror-result");
+    const a6Status=alphaEvidenceText("creative-result-status"),a6=alphaEvidenceText("creative-result");
+    return [
+      {
+        id:"A1",name:"Product Truth",
+        pass:a1Status.includes("LIVE_VERIFIED")&&a1Status.includes("EVIDENCE PASSED")&&a1.includes("EXECUTION_ALLOWED: false")&&a1.includes("SUPPLIER_CALLED: false"),
+        evidence:a1Status||"NOT_EVALUATED",
+        blocker:"Run A1 with fresh Product Truth evidence until LIVE_VERIFIED / EVIDENCE PASSED."
+      },
+      {
+        id:"A2",name:"Decision Brain + Taste DNA",
+        pass:a2Status.startsWith("ELIGIBLE")&&a2.includes("SENSITIVE TRAITS USED: false")&&a2.includes("BODY TRAITS USED: false")&&a2.includes("STOREFRONT_CHANGED: false"),
+        evidence:a2Status||"NOT_EVALUATED",
+        blocker:"Run A2 with a live-verified eligible candidate and preserve the sensitive/body-trait guards."
+      },
+      {
+        id:"A3",name:"Memory & Actions",
+        pass:Boolean(Memory?.decisionContext)&&state.simulatedMemoryEvents.length>0&&a3.includes("REAL PROFILE WRITTEN: false")&&a3.includes("HUNT HISTORY CHANGED: false")&&a3.includes("EXECUTION_ALLOWED: false"),
+        evidence:(state.simulatedMemoryEvents.length+" isolated event(s) · ")+(a3.split("\n")[0]||"NOT_EVALUATED"),
+        blocker:"Add at least one isolated A3 event and confirm no real profile/history writes."
+      },
+      {
+        id:"A4",name:"Dynamic Flow & Worlds",
+        pass:a4Status.startsWith("COMPOSED")&&a4.includes("PRODUCTS INVENTED: 0")&&a4.includes("VERIFIED PRODUCT REQUIRED PER SLOT: true")&&a4.includes("STOREFRONT_CHANGED: false")&&a4.includes("FEATURE_FLAG_CHANGED: false"),
+        evidence:a4Status||"NOT_COMPOSED",
+        blocker:"Compose A4 and preserve empty verified-product slots with storefront/feature flags unchanged."
+      },
+      {
+        id:"A5",name:"Stylist & Safe Mirror",
+        pass:a5Status.startsWith("SAFE_PREVIEW_PLAN_READY")&&a5.includes("BODY SCORING: false")&&a5.includes("ATTRACTIVENESS SCORING: false")&&a5.includes("SENSITIVE ATTRIBUTE INFERENCE: false")&&a5.includes("AI PROVIDER CALLED: false"),
+        evidence:a5Status||"NOT_EVALUATED",
+        blocker:"Complete A5 consent + exact-product truth/image checks until SAFE_PREVIEW_PLAN_READY."
+      },
+      {
+        id:"A6",name:"Creative Learning",
+        pass:a6Status.startsWith("PLAN_READY_FOR_OWNER_REVIEW")&&a6.includes("CONTENT GENERATED: 0")&&a6.includes("VIDEO GENERATED: 0")&&a6.includes("PROVIDER CALLS: 0")&&a6.includes("SPEND AUTHORIZED: false")&&a6.includes("PUBLISHING AUTHORIZED: false")&&a6.includes("OWNER GATE: DRAFT_REVIEW"),
+        evidence:a6Status||"NOT_PLANNED",
+        blocker:"Complete Product Truth + locked references + proof boundary in A6; keep generation/publishing/spend off."
+      }
+    ];
+  }
+
+  function runAlphaIntegrationQA(){
+    const stages=alphaIntegrationStages();
+    const passed=stages.filter(x=>x.pass);
+    const blocked=stages.filter(x=>!x.pass);
+    const ready=blocked.length===0;
+    const host=$("#alpha-integration-stage-grid"),summary=$("#alpha-integration-summary"),status=$("#alpha-integration-status"),report=$("#alpha-integration-report");
+    if(host)host.innerHTML=stages.map(stage=>
+      '<article class="integration-stage" data-state="'+(stage.pass?"pass":"blocked")+'"><small>'+esc(stage.id)+'</small><strong>'+esc(stage.name)+'</strong><span>'+(stage.pass?"PASS":"BLOCKED")+'</span><p>'+esc(stage.evidence)+'</p></article>'
+    ).join("");
+    if(summary)summary.innerHTML=
+      '<article><b>'+passed.length+'/6</b><span>STAGES PASSED</span></article>'+
+      '<article><b>'+(ready?"REVIEW":"LOCKED")+'</b><span>OWNER GATE</span></article>'+
+      '<article><b>OFF</b><span>PRODUCTION</span></article>';
+    if(status)status.textContent=ready
+      ?"READY_FOR_OWNER_ALPHA_REVIEW · OWNER_GATE_LOCKED · PRODUCTION_OFF"
+      :"BLOCKED · "+blocked.length+" STAGE(S) REQUIRE EVIDENCE · PRODUCTION_OFF";
+    if(report)report.textContent=[
+      "MODE: A7_INTEGRATION_QA",
+      "STAGES PASSED: "+passed.length+"/6",
+      "READY FOR OWNER ALPHA REVIEW: "+ready,
+      "PRODUCTION READY: false",
+      "PRODUCTION_CHANGED: false",
+      "EXECUTION_ALLOWED: false",
+      "SUPPLIER_CALLS: 0",
+      "AI_PROVIDER_CALLS: 0",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "OWNER_GATE: OWNER_REVIEW_REQUIRED",
+      "",
+      ...stages.map(stage=>stage.id+" "+(stage.pass?"PASS":"BLOCKED")+" · "+stage.name+" · "+stage.evidence),
+      "",
+      "BLOCKERS: "+(blocked.length?blocked.map(stage=>stage.id+": "+stage.blocker).join(" | "):"none inside A1–A6 simulation evidence"),
+      "NEXT SAFE ACTION: "+(ready
+        ?"Owner reviews the A7 evidence pack. Any implementation remains a separate explicit approval; Production stays OFF."
+        :"Resolve only the listed simulation/evidence blockers, then rerun A7. Do not activate providers, spend, publishing or Production.")
+    ].join("\n");
+    return {ready,passed:passed.length,blocked:blocked.map(x=>x.id),stages};
+  }
+
   function simulateHuntIntelligence(){
     const output=$("#intelligence-simulation");
     const rows=state.huntCapabilities||[];
@@ -1769,6 +1859,7 @@
   $("#flow-simulate")?.addEventListener("click",simulateDynamicFlow);
   $("#personal-simulate")?.addEventListener("click",simulatePersonalStudio);
   $("#creative-simulate")?.addEventListener("click",simulateCreativeLearning);
+  $("#alpha-integration-qa")?.addEventListener("click",runAlphaIntegrationQA);
   $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
