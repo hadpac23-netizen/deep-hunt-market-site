@@ -328,6 +328,23 @@
               <div class="truth-result-status" id="decision-result-status">NOT_EVALUATED · EXECUTION_OFF</div>
               <pre id="decision-result">Set evidence and taste context to preview BOOM's decision.</pre>
             </section>
+            <section class="memory-workspace">
+              <div class="truth-workspace-head"><div><small>A3 WORKSPACE</small><h3>Memory & Actions Simulation</h3><p>Isolated session events only. Nothing is written to a real user profile or HUNT history.</p></div><span>ISOLATED MEMORY</span></div>
+              <div class="memory-controls">
+                <label>Action<select id="memory-action"><option value="impression">Impression</option><option value="product_view">Product view</option><option value="dwell">Dwell</option><option value="like">Like</option><option value="save">Save</option><option value="share">Share</option><option value="skip">Skip</option><option value="not_interested">Not interested</option><option value="add_to_cart">Add to cart</option><option value="purchase">Purchase</option><option value="return">Return</option></select></label>
+                <label>Category<input id="memory-category" value="fashion" maxlength="60"></label>
+                <label>Provider<input id="memory-provider" value="CJdropshipping" maxlength="40"></label>
+                <label>Item ID<input id="memory-item-id" value="studio-product-1" maxlength="90"></label>
+              </div>
+              <div class="planning-actions">
+                <button class="top-btn" id="memory-add-event" type="button">Add simulated event</button>
+                <button class="top-btn" id="memory-reset-simulation" type="button">Reset simulation</button>
+              </div>
+              <div class="memory-simulation-grid">
+                <article><small>EVENT TIMELINE</small><div id="memory-event-list" class="memory-event-list"><p>No simulated events.</p></div></article>
+                <article><small>DECISION CONTEXT</small><pre id="memory-context-result">Interactions: 0 · Mode: COLD_START</pre></article>
+              </div>
+            </section>
             <section class="alpha-exit-gate">
               <strong>Alpha exit gate</strong>
               <p>Real eligible products · explainable recommendations · Like/Save/Share · History · Worlds · Stylist · safe Mirror entry · stable checkout fallback · mobile/desktop QA.</p>
@@ -395,6 +412,7 @@
   <script src="hunt-country-product-truth.js?v=alpha1"></script>
   <script src="boom-taste-dna.js?v=alpha1"></script>
   <script src="boom-decision-brain.js?v=brain1"></script>
+  <script src="hunt-experience-memory.js?v=memory1"></script>
   <script src="brand-video-router.js?v=1"></script>
   <script src="brand-creative-qa.js?v=1"></script>
   <script src="brand-video-dispatch.js?v=1"></script>
