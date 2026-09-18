@@ -251,6 +251,24 @@
             <div class="planning-status" id="planning-status">DRAFT_NOT_CREATED · EXECUTION_OFF</div>
             <pre id="planning-output">No plan exists yet.</pre>
           </section>
+          <section class="approval-center">
+            <div class="approval-center-head">
+              <div><small>OWNER CONTROL</small><h2>Approval Queue & Version History</h2><p>כל גרסה נשמרת. החלטה חדשה אינה מוחקת החלטה קודמת ואינה מפעילה ביצוע.</p></div>
+              <span class="brand-gate">AUDIT TRAIL</span>
+            </div>
+            <div class="approval-layout">
+              <div class="approval-queue" id="approval-queue"><p class="approval-empty">No planning decisions yet.</p></div>
+              <article class="approval-evidence">
+                <h3>Permanent execution boundary</h3>
+                <ul>
+                  <li>Planning approval ≠ production approval</li>
+                  <li>No spend or publishing authorization</li>
+                  <li>No supplier, payment or fulfillment activation</li>
+                  <li>Every revision creates a new immutable history entry</li>
+                </ul>
+              </article>
+            </div>
+          </section>
           <section class="intelligence-simulator">
             <div><small>SAFE ORCHESTRATION PREVIEW</small><h2>Owner-Gated Simulation</h2><p>בדיקה יבשה של סדר המוחות והחסמים לפני ביצוע.</p></div>
             <button class="top-btn" id="intelligence-simulate" type="button">Run simulation</button>
