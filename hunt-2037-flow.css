@@ -49,3 +49,14 @@ body.hunt2037-active .hd-brand[data-hunt2037-wordmark="true"]:hover{animation-du
 
 .hunt2037-why{display:block;opacity:.7;font-size:8px;line-height:1.35;min-height:1.2em}
 .hunt2037-city-badge[data-asset="mood"]{border-style:dashed;opacity:.82}
+
+.hunt2037-world-mode-bar{position:sticky;top:76px;z-index:12;display:flex;justify-content:space-between;align-items:center;gap:14px;margin:18px 0;padding:12px 14px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(9,12,18,.88);backdrop-filter:blur(18px);color:#fff}
+.hunt2037-world-mode-bar[hidden]{display:none}
+.hunt2037-world-mode-bar small{display:block;font-size:8px;letter-spacing:.16em;opacity:.55}.hunt2037-world-mode-bar strong{font-size:14px}
+.hunt2037-world-mode-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.hunt2037-world-mode-actions a,.hunt2037-world-mode-actions button{border:1px solid rgba(255,255,255,.16);background:transparent;color:#fff;border-radius:999px;padding:8px 10px;font-size:9px;font-weight:900;text-decoration:none;cursor:pointer}
+body.hunt2037-world-mode .hunt2037-world{opacity:.28;transform:scale(.985);transition:opacity .25s ease,transform .25s ease}
+body.hunt2037-world-mode .hunt2037-world.hunt2037-world-selected{opacity:1;transform:scale(1);box-shadow:0 24px 80px rgba(0,0,0,.18)}
+body.hunt2037-world-mode .hunt2037-lane,body.hunt2037-world-mode .hunt2037-discovery{opacity:.42}
+.hunt2037-world-enter[aria-pressed="true"]{background:currentColor;color:#0b0e12}
+@media(max-width:760px){.hunt2037-world-mode-bar{top:62px;align-items:flex-start;flex-direction:column}.hunt2037-world-mode-actions{width:100%}}
+@media(prefers-reduced-motion:reduce){body.hunt2037-world-mode .hunt2037-world{transition:none;transform:none}}
