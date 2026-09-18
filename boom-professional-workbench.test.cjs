@@ -23,7 +23,8 @@ const input={
     {cost:0.01,latency_ms:300,tokens:300}
   ],
   promptVersions:[{name:"decision-brain",version:3,label:"candidate"}],
-  modelObservations:[{id:90,provider:"openai",model:"gpt",success:true,created_at:"2026-09-18T09:06:00Z",route_key:"owner-chat"}],
+  modelObservations:[{id:90,provider:"openai",model:"gpt",success:true,latency_ms:420,estimated_cost_usd:0.01,quality_score:0.95,created_at:"2026-09-18T09:06:00Z",route_key:"owner-chat"}],
+  modelRoutes:[{route_key:"owner-chat",max_latency_ms:1000,max_cost_usd:0.02,min_quality_score:0.8}],
   shadowRuns:[{experiment_key:"routing",status:"passed",baseline_metrics:{quality:0.8},candidate_metrics:{quality:0.9},comparison:{quality_gain:0.1}}],
   replayRuns:[{id:4,replay_key:"command-4",verdict:"same"}],
   releaseGate:{mode:"A12_FINAL_OWNER_GO_NO_GO_GATE",final_gate_ready:true},
