@@ -60,6 +60,18 @@
     })[lane]||"DISCOVER";
   }
 
+  function reasonFor(item,lane,context={}){
+    const category=clean(item?.category||item?._shelf_slug);
+    const recentCategories=context.recent_categories||[];
+    const recentSuppliers=context.recent_suppliers||[];
+    if(category&&recentCategories.includes(category))return "Because you explored "+category.replace(/-/g," ");
+    if(lane==="new")return "New in HUNT";
+    if(lane==="adjacent")return recentCategories.length?"Related to your recent browsing":"A nearby category to explore";
+    if(lane==="wildcard")return "A controlled surprise outside your usual lane";
+    if(clean(item?.provider)&&recentSuppliers.includes(clean(item.provider).toLowerCase()))return "From a provider you explored";
+    return "Picked for discovery";
+  }
+
   function discoveryScore(item,lane,context={}){
     let score=0;
     const verifiedCandidate=item?.decision_candidate&&typeof item.decision_candidate==="object"
@@ -85,7 +97,7 @@
       const rows=worldProducts(world,shelves,16)
         .map((item,i)=>{
           const lane=laneFor(item,i,context);
-          return {item,lane,score:discoveryScore(item,lane,context)};
+          return {item,lane,score:discoveryScore(item,lane,context),reason:reasonFor(item,lane,context)};
         })
         .sort((a,b)=>b.score-a.score)
         .slice(0,12);
@@ -95,7 +107,7 @@
     const laneMap={personalized:[],adjacent:[],new:[],wildcard:[]};
     all.forEach((item,index)=>{
       const lane=laneFor(item,index,context);
-      laneMap[lane].push({item,lane,score:discoveryScore(item,lane,context)});
+      laneMap[lane].push({item,lane,score:discoveryScore(item,lane,context),reason:reasonFor(item,lane,context)});
     });
     Object.values(laneMap).forEach(rows=>rows.sort((a,b)=>b.score-a.score));
 
@@ -117,7 +129,7 @@
     });
   }
 
-  const api=Object.freeze({WORLDS,uniqueProducts,worldProducts,laneFor,laneLabel,discoveryScore,buildUnits});
+  const api=Object.freeze({WORLDS,uniqueProducts,worldProducts,laneFor,laneLabel,reasonFor,discoveryScore,buildUnits});
   if(typeof window!=="undefined")window.Hunt2037FlowCore=api;
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
 })();
