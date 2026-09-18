@@ -1,0 +1,29 @@
+{
+  "license": "Pexels License - free to use",
+  "assets": {
+    "tokyo.jpg": {
+      "city": "Tokyo",
+      "photographer": "miyou_ 77",
+      "source_page": "https://www.pexels.com/photo/tokyo-skyline-at-night-with-tokyo-tower-31558042/",
+      "source_image_id": "31558042"
+    },
+    "paris.jpg": {
+      "city": "Paris",
+      "photographer": "Tarkan Atak Kan",
+      "source_page": "https://www.pexels.com/photo/eiffel-tower-at-twilight-over-paris-cityscape-34687788/",
+      "source_image_id": "34687788"
+    },
+    "shenzhen.jpg": {
+      "city": "Shenzhen",
+      "photographer": "ainc T",
+      "source_page": "https://www.pexels.com/photo/shenzhen-skyline-at-night-with-lit-skyscrapers-34947064/",
+      "source_image_id": "34947064"
+    },
+    "dubai.jpg": {
+      "city": "Dubai",
+      "photographer": "Nihongraphy",
+      "source_page": "https://www.pexels.com/photo/dubai-skyline-at-night-13256066/",
+      "source_image_id": "13256066"
+    }
+  }
+}
