@@ -72,6 +72,8 @@ assert(result.traces.rows.some(x=>x.kind==="span"));
 assert.equal(result.alerts.watch,1);
 assert.equal(result.evaluators.governance_ready,true);
 assert.equal(result.evaluators.continuous_gate_ready,true);
+assert.equal(result.evaluators.ci_gate_state,"ready");
+assert.equal(result.evaluators.pending_ci_gates,0);
 assert.equal(result.evaluators.active_evaluators,1);
 assert.equal(result.evaluators.missing_alignment,0);
 assert.equal(result.evaluators.completed_online_windows,1);
@@ -109,6 +111,20 @@ const pendingOnline=W.buildEvaluatorOps({
 });
 assert.equal(pendingOnline.online_eval_connected,false);
 assert.equal(pendingOnline.continuous_gate_ready,false);
+assert.equal(pendingOnline.ci_gate_state,"ready");
+assert.equal(pendingOnline.pending_online_windows,1);
+
+const pendingGate=W.buildEvaluatorOps({
+  evalCases:[{grader_type:"deterministic"}],
+  evaluatorRegistry:[{id:1,status:"active",activated_at:"2026-09-18T08:00:00Z",calibration_required:false}],
+  onlineEvalWindows:[{status:"running",sample_count:0,scored_count:0,passed_count:0,failed_count:0}],
+  ciQualityGates:[{id:1,enabled:true,blocks_merge:true,min_samples:10}],
+  ciQualityGateRuns:[{gate_id:1,status:"pending",sample_count:0,metric_value:null,passed:null}]
+});
+assert.equal(pendingGate.ci_eval_gate_connected,false);
+assert.equal(pendingGate.ci_gate_state,"pending");
+assert.equal(pendingGate.pending_ci_gates,1);
+assert.equal(pendingGate.continuous_gate_ready,false);
 
 const failedGate=W.buildEvaluatorOps({
   evalCases:[{grader_type:"deterministic"}],
@@ -120,6 +136,8 @@ const failedGate=W.buildEvaluatorOps({
 assert.equal(failedGate.ci_eval_gate_connected,false);
 assert.equal(failedGate.uncovered_ci_gates,1);
 assert.equal(failedGate.continuous_gate_ready,false);
+assert.equal(failedGate.ci_gate_state,"blocked");
+assert.equal(failedGate.failed_ci_gates,1);
 
 const staleRadar=W.buildKnowledgeRadar({
   f35Sources:[{enabled:true,last_checked_at:"2026-09-10T00:00:00Z",freshness_hours:24}],
