@@ -67,6 +67,7 @@
       </div>
     </article>`;
   }  function renderMore(data) {
+    if (document.body?.classList.contains("hd-home3")) return;
     const shelves = data?.shelves || {};
     const all = uniqueProducts(shelves);
     if (!all.length) return;
@@ -108,6 +109,7 @@
       </div>
       <div class="hd-shop-more-grid">${picks.map(card).join("")}</div>`;
   }  function simplifyCopy() {
+    if (document.body?.classList.contains("hd-home3")) return;
     const h1 = document.querySelector(".hd-hero h1");
     if (h1) h1.innerHTML = 'Find your next favorite.<br><em>HUNT the better deal.</em>';
 

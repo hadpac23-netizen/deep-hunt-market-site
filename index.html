@@ -16,12 +16,13 @@
   <link rel="stylesheet" href="hunt-wow.css?v=launchqa5">
   <link rel="stylesheet" href="hunt-shop.css?v=dynamic1">
   <link rel="stylesheet" href="hunt-visual-v2.css?v=1">
+  <link rel="stylesheet" href="hunt-home-3.css?v=1">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"HUNT DEAL","url":"https://deep-hunt-market.netlify.app/","description":"Evidence-first shopping and commerce intelligence."}</script>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="hunt-icon-192.png">
   <meta name="theme-color" content="#111111">
 </head>
-<body class="hd-page hd-home-clean hd-market-v2 hd-commerce-v2">
+<body class="hd-page hd-home-clean hd-market-v2 hd-commerce-v2 hd-home3">
   <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
   <div class="hd-space"></div>
   <header class="hd-topbar">
@@ -51,71 +52,30 @@
     </div>
   </header>
 
-  <main id="main-content">
-    <section class="hd-hero">
-      <div class="hd-hero-copy">
-        <div class="hd-kicker" data-i18n="kicker">COMPARE SMARTER · SHOP BETTER · KEEP THE FACTS VISIBLE</div>
-        <h1><span data-i18n="hero1">Better decisions</span><br><em data-i18n="hero2">before you spend.</em></h1>
-        <p data-i18n="heroCopy">HUNT DEAL compares verified offers across approved marketplaces, explains why a deal is worth attention, and tracks what actually converts.</p>
-        <div class="hd-actions">
+  <main id="main-content" class="hd-home3-main">
+    <section class="hd-hero hd-home3-hero" aria-labelledby="hd-home3-title">
+      <div class="hd-hero-copy hd-home3-copy">
+        <div class="hd-kicker">HUNT DEAL · DISCOVER BETTER</div>
+        <h1 id="hd-home3-title">Find something<br><em>worth keeping.</em></h1>
+        <p>Fashion first. Then accessories, beauty, home, tech and everything else — built from real connected catalog products and reshaped around what you browse.</p>
+        <div class="hd-home3-search-cta">
           <a class="hd-btn hd-btn-primary" href="category.html?c=women">Shop Women</a>
-          <a class="hd-btn" href="#shop">Explore HUNT</a>
+          <a class="hd-btn" href="search.html">Ask HUNT</a>
         </div>
         <nav class="hd-hero-category-links" aria-label="Popular shopping categories">
           <a href="category.html?c=women">Women</a>
           <a href="category.html?c=accessories">Accessories</a>
           <a href="category.html?c=beauty">Beauty</a>
-          <a href="category.html?c=men">Men</a>
           <a href="category.html?c=shoes">Shoes</a>
+          <a href="category.html?c=men">Men</a>
         </nav>
-        <div class="hd-feature-row" id="how">
-          <div><b>◇</b><span data-i18n="f1">Price comparison</span></div>
-          <div><b>◎</b><span data-i18n="f2">Global provider map</span></div>
-          <div><b>✦</b><span data-i18n="f3">AI + Red Team</span></div>
-          <div><b>◉</b><span data-i18n="f4">Truthful commission tracking</span></div>
+        <div class="hd-home3-trust-row" aria-label="HUNT shopping principles">
+          <span>Real catalog</span><span>Country-aware</span><span>Price & shipping recheck</span>
         </div>
       </div>
-
-      <section class="hd-advisor glass">
-        <div class="hd-advisor-head">
-          <div class="hd-advisor-title"><span class="hd-brain">◉</span><div><h2 data-i18n="advisor">HUNT Advisor</h2><p data-i18n="advisorSub">REAL DEAL INTELLIGENCE · SMARTER SHOPPING</p></div></div>
-          <div class="hd-live"><i></i><span data-i18n="live">LIVE</span></div>
-        </div>
-        <h3 data-i18n="brief">Today's Deal Intelligence Brief</h3>
-        <div class="hd-brief-grid">
-          <article>
-            <span class="hd-card-icon green">★</span>
-            <small data-i18n="best">Best price right now</small>
-            <strong id="hd-best-title" data-i18n="noBest">No verified live offer yet.</strong>
-            <p id="hd-best-copy">—</p>
-            <span class="hd-status green" id="hd-best-status">WAITING</span>
-          </article>
-          <article>
-            <span class="hd-card-icon blue">△</span>
-            <small data-i18n="worth">Worth testing</small>
-            <strong id="hd-test-title" data-i18n="noWorth">Provider feeds are being connected.</strong>
-            <p id="hd-test-copy">—</p>
-            <span class="hd-status blue">TEST</span>
-          </article>
-          <article>
-            <span class="hd-card-icon red">!</span>
-            <small data-i18n="avoid">What to avoid</small>
-            <strong data-i18n="noAvoid">Fake urgency and unsupported discounts.</strong>
-            <p>Unsupported savings, stale prices, and unverified payout claims stay out.</p>
-            <span class="hd-status red">SKIP</span>
-          </article>
-          <article class="hd-confidence">
-            <small data-i18n="confidence">Confidence & value</small>
-            <div class="hd-ring"><span id="hd-confidence-number">0%</span></div>
-            <ul>
-              <li><i class="green-dot"></i> Evidence quality</li>
-              <li><i class="blue-dot"></i> Price freshness</li>
-              <li><i class="violet-dot"></i> Provider trust</li>
-              <li><i class="red-dot"></i> Red Team gaps</li>
-            </ul>
-          </article>
-        </div>
-      </section>
+      <div class="hd-home3-hero-mosaic" id="hd-home3-hero-mosaic" aria-live="polite">
+        <div class="hd-home3-loading">Loading the HUNT edit…</div>
+      </div>
     </section>
 
     <section class="hd-department-shell glass" id="departments" aria-label="Shop departments">
@@ -124,59 +84,106 @@
         <a href="category.html?c=women">Women</a>
         <a href="category.html?c=accessories">Accessories</a>
         <a href="category.html?c=beauty">Beauty</a>
+        <a href="category.html?c=shoes">Shoes</a>
         <a href="category.html?c=men">Men</a>
         <a href="category.html?c=kids">Kids</a>
         <a href="category.html?c=home">Home</a>
         <a href="category.html?c=tech">Tech</a>
         <a href="category.html?c=sports">Sports</a>
-        <a href="category.html?c=pets">Pets</a>
       </div>
       <div class="hd-mega-menu" id="hd-mega-menu" hidden></div>
     </section>
 
-    <section class="hd-wow-showcase" id="hd-wow-showcase">
-      <div class="hd-wow-head">
-        <div><small>HUNT MARKET</small><h2>Everything starts with a product.</h2><p>Fresh discovery across real connected catalog shelves.</p></div>
-        <div class="hd-mode-switch" aria-label="Discovery mode"><button class="active" data-mode="all" type="button">All</button><button data-mode="for-you" type="button">For You</button></div>
+    <section class="hd-home3-world hd-home3-women-world" id="women-edit">
+      <div class="hd-home3-section-head">
+        <div><small>WOMEN · HUNT EDIT</small><h2>Start with style.</h2><p>Dresses, tops, shoes and everyday fashion pulled directly from the live catalog.</p></div>
+        <a href="category.html?c=women">Shop Women →</a>
       </div>
-      <div class="hd-dept-grid" id="hd-dept-grid"></div>
-      <div class="hd-for-you-head"><div><small>BOOM FOR YOU</small><h3>Picked around what you browse</h3><p>Personalization uses shopping interactions, not fake popularity.</p></div><button id="hd-remix" class="hd-btn" type="button">Remix</button></div>
-      <div class="hd-wow-track" id="hd-for-you-products"></div>
+      <div class="hd-home3-editorial-grid" id="hd-home3-women"></div>
     </section>
 
-    <section class="hd-live-market" id="shop">
-      <div class="hd-section-head"><div><h2>Shop HUNT</h2><p>One mixed discovery feed across all live CJ shelves.</p></div><button id="hd-home-remix" class="hd-btn" type="button">Remix</button></div>
+    <section class="hd-home3-duo" aria-label="Accessories and beauty">
+      <article class="hd-home3-mini-world">
+        <div class="hd-home3-section-head compact">
+          <div><small>ACCESSORIES</small><h2>Finish the look.</h2></div>
+          <a href="category.html?c=accessories">Explore →</a>
+        </div>
+        <div class="hd-home3-mini-grid" id="hd-home3-accessories"></div>
+      </article>
+      <article class="hd-home3-mini-world">
+        <div class="hd-home3-section-head compact">
+          <div><small>BEAUTY</small><h2>Beauty, without the noise.</h2></div>
+          <a href="category.html?c=beauty">Explore →</a>
+        </div>
+        <div class="hd-home3-mini-grid" id="hd-home3-beauty"></div>
+      </article>
+    </section>
+
+    <section class="hd-home3-personal" id="for-you">
+      <div class="hd-home3-section-head">
+        <div><small>BOOM FOR YOU</small><h2>HUNT changes as you browse.</h2><p id="hd-home3-for-you-copy">A balanced mix while HUNT learns what you open, like and save.</p></div>
+        <div class="hd-home3-mode-switch" aria-label="Choose shopping view">
+          <button class="active" type="button" data-home3-mode="for-you">For You</button>
+          <button type="button" data-home3-mode="women">Women</button>
+          <button type="button" data-home3-mode="men">Men</button>
+          <button type="button" data-home3-mode="home">Home</button>
+          <button type="button" data-home3-mode="tech">Tech</button>
+        </div>
+      </div>
+      <div class="hd-home3-product-grid" id="hd-home3-for-you"></div>
+    </section>
+
+    <section class="hd-home3-look" id="look-builder">
+      <div class="hd-home3-look-copy">
+        <small>BOOM DEAL BUILDER</small>
+        <h2>One item can become a whole look.</h2>
+        <p>Start with a dress. BOOM can connect bags, jewelry and shoes around it. Any discount stays locked until stock, shipping and Profit Gate are verified.</p>
+        <a class="hd-btn hd-btn-primary" id="hd-home3-look-cta" href="category.html?c=women-dresses">Start with a dress →</a>
+      </div>
+      <div class="hd-home3-look-products" id="hd-home3-look-products"></div>
+    </section>
+
+    <section class="hd-home3-fresh" id="fresh-in-hunt">
+      <div class="hd-home3-section-head">
+        <div><small id="hd-home3-fresh-label">FRESH CATALOG</small><h2 id="hd-home3-fresh-title">Fresh in HUNT.</h2><p>Real catalog arrivals and rotating product discovery — no fake popularity labels.</p></div>
+        <a href="#shop">Keep exploring ↓</a>
+      </div>
+      <div class="hd-home3-product-grid" id="hd-home3-fresh"></div>
+    </section>
+
+    <section class="hd-live-market hd-home3-endless" id="shop">
+      <div class="hd-section-head"><div><small>ENDLESS DISCOVERY</small><h2>Keep hunting.</h2><p>A mixed feed across the connected catalog. More products load as you move.</p></div><button id="hd-home-remix" class="hd-btn" type="button">Remix</button></div>
       <div class="hd-market-product-grid" id="hd-home-random-grid"></div>
       <div class="hd-category-more" id="hd-home-random-more" hidden aria-live="polite"><span></span><strong>Loading more products</strong></div>
     </section>
 
     <section class="hd-deals-section" id="live-search" hidden>
       <div class="hd-section-head"><div><h2>Search Results</h2><p>Live provider search results stay separate from qualified Smart Picks.</p></div></div>
-      <p class="hd-inline-disclosure" id="hd-live-search-status" data-i18n="searchReady">Type a product above and press Enter to search ready providers.</p>
+      <p class="hd-inline-disclosure" id="hd-live-search-status">Type a product above and press Enter to search ready providers.</p>
       <div class="hd-deal-grid" id="hd-search-grid"></div>
     </section>
 
-    <section class="hd-deals-section" id="deals">
+    <section class="hd-deals-section hd-home3-smart-picks" id="deals">
       <div class="hd-section-head">
-        <div><h2 data-i18n="smartPicks">Smart Deal Picks</h2><p data-i18n="smartPicksSub">Only TEST/SELL candidates can appear here. Empty is better than fabricated.</p></div>
+        <div><small>VERIFIED OPPORTUNITIES</small><h2>Smart Deal Picks</h2><p>Only qualified TEST/SELL candidates appear here. Empty is better than fabricated.</p></div>
         <div class="hd-filter-row">
-          <button class="active" data-category="all" data-i18n="all">All Deals</button>
-          <button data-category="tech" data-i18n="tech">Tech</button>
-          <button data-category="home" data-i18n="home">Home</button>
-          <button data-category="fashion" data-i18n="fashion">Fashion</button>
+          <button class="active" data-category="all">All Deals</button>
+          <button data-category="fashion">Fashion</button>
           <button data-category="beauty">Beauty</button>
           <button data-category="accessories">Accessories</button>
-          <button data-category="travel" data-i18n="travel">Travel</button>
+          <button data-category="tech">Tech</button>
+          <button data-category="home">Home</button>
         </div>
       </div>
-      <p class="hd-inline-disclosure" data-i18n="affiliateDisclosure">Affiliate disclosure: qualifying outbound links may earn HUNT DEAL a commission at no extra cost to you.</p>
+      <p class="hd-inline-disclosure">Affiliate disclosure: qualifying outbound links may earn HUNT DEAL a commission at no extra cost to you.</p>
       <div class="hd-deal-grid" id="hd-deal-grid"></div>
       <div class="hd-empty glass" id="hd-empty">
         <span>✦</span>
-        <div><h3 data-i18n="noDeals">No qualified live deals yet.</h3><p data-i18n="noDealsSub">The engine is ready. Real products appear only after a provider feed and affiliate path are verified.</p></div>
+        <div><h3>No qualified live deals yet.</h3><p>The engine is ready. Real products appear only after a provider feed and affiliate path are verified.</p></div>
       </div>
     </section>
   </main>
+
   <nav class="hd-mobile-nav" aria-label="Mobile navigation">
     <a class="active" href="./"><span>&#8962;</span><small>Home</small></a>
     <a href="category.html?c=women"><span>&#9638;</span><small>Categories</small></a>
@@ -202,7 +209,7 @@
   <script src="analytics.js?v=huntmetrics1"></script>
   <script src="boom-net.js?v=boomet1"></script>
   <script src="hunt-deal.js?v=boomet3"></script>
-  <script src="hunt-wow.js?v=dynamic2"></script>
+  <script src="hunt-home-3.js?v=1"></script>
   <script src="boom-promotions.js?v=promo2"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa2"></script>
