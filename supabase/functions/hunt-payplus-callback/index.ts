@@ -1,4 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { verifyPayPlusCallbackHeaders } from "./payplus-auth.mjs";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const num=(v:unknown)=>Number.isFinite(Number(v))?Number(v):null;
@@ -19,17 +20,24 @@ async function sha256(value:string){
 async function requestPayload(req:Request){
   const url=new URL(req.url);
   const params:Object=Object.fromEntries(url.searchParams.entries());
-  if(req.method==="GET")return params;
+  if(req.method==="GET")return {payload:params,signatureBody:null};
   const type=(req.headers.get("content-type")||"").toLowerCase();
   if(type.includes("application/json")){
-    return {...params,...await req.json().catch(()=>({}))};
+    const body=await req.json().catch(()=>({}));
+    return {payload:{...params,...body},signatureBody:body};
   }
   if(type.includes("application/x-www-form-urlencoded")||type.includes("multipart/form-data")){
     const fd=await req.formData().catch(()=>null);
-    return fd?{...params,...Object.fromEntries(fd.entries())}:params;
+    const body=fd?Object.fromEntries(fd.entries()):{};
+    return {payload:{...params,...body},signatureBody:body};
   }
   const text=await req.text().catch(()=>"");
-  try{return {...params,...JSON.parse(text)}}catch{return {...params,raw:text.slice(0,4000)}}
+  try{
+    const body=JSON.parse(text);
+    return {payload:{...params,...body},signatureBody:body};
+  }catch{
+    return {payload:{...params,raw:text.slice(0,4000)},signatureBody:null};
+  }
 }
 function verifiedTransaction(body:any){
   const root=body?.data??body;
@@ -116,7 +124,17 @@ Deno.serve(async(req:Request)=>{
   if(!["GET","POST"].includes(req.method))return json({error:"method not allowed"},405);
   if(!BASE||!SERVICE)return json({error:"server config missing"},500);
   try{
-    const payload:any=await requestPayload(req);
+    const parsed:any=await requestPayload(req);
+    const payload:any=parsed.payload||{};
+    const signature=await verifyPayPlusCallbackHeaders({
+      userAgent:req.headers.get("user-agent"),
+      hash:req.headers.get("hash"),
+      body:parsed.signatureBody,
+      secretKey:clean(Deno.env.get("PAYPLUS_SECRET_KEY"))
+    });
+    if(signature.valid!==true){
+      return json({ok:false,error:signature.reason||"PAYPLUS_CALLBACK_SIGNATURE_INVALID"},401);
+    }
     const sessionHint=clean(payload?.more_info||payload?.moreInfo);
     const requestUid=clean(payload?.payment_request_uid||payload?.paymentRequestUid);
     if(!requestUid)return json({ok:false,error:"PAYMENT_REQUEST_UID_REQUIRED"},400);
