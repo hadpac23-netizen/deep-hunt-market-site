@@ -60,7 +60,7 @@
     return Object.freeze({
       items:Object.freeze(items.slice(0,80)),
       dataset_candidates:items.length,
-      persisted_dataset:false
+      persisted_dataset:input.datasetStoreConnected===true
     });
   }
 
@@ -100,7 +100,7 @@
       ...failures.map(x=>({kind:x.source,key:x.key,title:x.title,detail:x.detail,status:x.status})),
       ...decisions.map(x=>({kind:"decision",key:x.id||x.decision_key||"decision",title:x.title||x.decision_type||"Owner decision",detail:x.reason||x.notes||"Owner review required",status:x.status||"pending"}))
     ];
-    return Object.freeze({rows:Object.freeze(rows.slice(0,80)),count:rows.length});
+    return Object.freeze({rows:Object.freeze(rows.slice(0,80)),count:rows.length,persisted:input.reviewStoreConnected===true});
   }
 
   function buildCostLatency(input={}){
@@ -159,9 +159,9 @@
     const capabilities=Object.freeze([
       {id:"traces",label:"Trace Explorer",state:traces.rows.length?"ready":"empty",evidence:traces.rows.length+" trace rows · "+traces.failures+" failures"},
       {id:"prompts",label:"Prompt Registry / Versions",state:prompts.instrumented?"ready":"gap",evidence:prompts.instrumented?prompts.rows.length+" versioned prompts":"No persisted prompt-version registry connected"},
-      {id:"datasets",label:"Failure Inbox → Eval Dataset",state:failures.dataset_candidates?"ready":"empty",evidence:failures.dataset_candidates+" dataset candidate(s) · persistence not enabled"},
+      {id:"datasets",label:"Failure Inbox → Eval Dataset",state:failures.persisted_dataset?"ready":"gap",evidence:failures.dataset_candidates+" dataset candidate(s) · persisted dataset="+String(failures.persisted_dataset)},
       {id:"experiments",label:"Experiment Diff",state:experiments.available?"ready":"gap",evidence:experiments.available?experiments.comparisons.length+" comparable metric(s)":"Need 2+ comparable eval runs per metric"},
-      {id:"review",label:"Human / Owner Review Queue",state:review.count?"ready":"empty",evidence:review.count+" review item(s)"},
+      {id:"review",label:"Human / Owner Review Queue",state:review.persisted?"ready":"gap",evidence:review.count+" review item(s) · annotation history persisted="+String(review.persisted)},
       {id:"cost",label:"Cost / Latency Budget",state:cost.instrumented?"ready":"gap",evidence:cost.instrumented?cost.sample_count+" measured samples":"Token/cost/latency instrumentation not connected"},
       {id:"alerts",label:"Alerts / SLO Inbox",state:alerts.critical?"blocked":alerts.watch?"watch":"ready",evidence:alerts.critical+" critical · "+alerts.watch+" watch"},
       {id:"release",label:"Release Replay / Gate",state:release?"ready":"gap",evidence:release?"Owner gate evidence attached":"No release-gate snapshot attached"}
