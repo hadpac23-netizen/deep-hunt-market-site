@@ -14,6 +14,7 @@
   const EvidencePack=window.BoomAlphaEvidencePack;
   const RCPreview=window.BoomAlphaRCPreview;
   const RCQA=window.BoomAlphaRCQA;
+  const FinalGate=window.BoomAlphaFinalGate;
   if(!H||!S?.createClient){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -81,7 +82,8 @@
     simulatedMemoryEvents:[],
     alphaEvidencePack:null,
     alphaRCPreview:null,
-    alphaRCQA:null
+    alphaRCQA:null,
+    alphaFinalGate:null
   };
 
   const toolNodes=[
@@ -1275,6 +1277,90 @@
     return {result,domAudit};
   }
 
+  function renderAlphaFinalGate(gate,verification){
+    const status=$("#alpha-final-gate-status"),summary=$("#alpha-final-gate-summary"),evidence=$("#alpha-final-gate-evidence"),report=$("#alpha-final-gate-report");
+    const go=$("#alpha-final-go"),noGo=$("#alpha-final-no-go");
+    const valid=verification?.valid===true;
+    const decision=gate?.decision_status||"PENDING_OWNER";
+    if(evidence)evidence.innerHTML=[
+      ["A9",gate?.evidence?.a9_fingerprint||"missing"],
+      ["A10",String(gate?.evidence?.a10_journey_ready||0)+"/"+String(gate?.evidence?.a10_journey_total||0)+" journey · "+String(gate?.evidence?.a10_viewports||0)+" viewports"],
+      ["A11",String(gate?.evidence?.a11_checks_passed||0)+"/"+String(gate?.evidence?.a11_checks_total||0)+" checks · "+String(gate?.evidence?.a11_groups_passed||0)+"/"+String(gate?.evidence?.a11_groups_total||0)+" groups"]
+    ].map(row=>'<article><small>'+esc(row[0])+'</small><strong>'+esc(row[1])+'</strong></article>').join("");
+    if(summary)summary.innerHTML=
+      '<article><b>'+(gate?.final_gate_ready?"READY":"LOCKED")+'</b><span>FINAL GATE</span></article>'+
+      '<article><b>'+esc(decision==="PENDING_OWNER"?"PENDING":decision.startsWith("GO_")?"GO":"NO-GO")+'</b><span>OWNER DECISION</span></article>'+
+      '<article><b>OFF</b><span>MERGE / PRODUCTION</span></article>';
+    if(status)status.textContent=!valid
+      ?"BLOCKED_FINAL_BOUNDARY_VIOLATION · OWNER_DECISION_PENDING"
+      :(gate?.decision_recorded
+        ?"OWNER_DECISION_RECORDED · "+decision+" · PRODUCTION_OFF"
+        :(gate?.final_gate_ready
+          ?"A12_READY · OWNER_DECISION_PENDING · PRODUCTION_OFF"
+          :"A12_BLOCKED · "+String(gate?.blockers?.length||0)+" BLOCKER(S) · PRODUCTION_OFF"));
+    if(go)go.disabled=!(valid&&gate?.final_gate_ready===true&&decision==="PENDING_OWNER");
+    if(noGo)noGo.disabled=!(valid&&decision==="PENDING_OWNER");
+    if(report)report.textContent=[
+      "MODE: "+String(gate?.mode||"A12_FINAL_OWNER_GO_NO_GO_GATE"),
+      "FINAL GATE READY: "+String(gate?.final_gate_ready===true),
+      "OWNER DECISION REQUIRED: "+String(gate?.owner_decision_required===true),
+      "DECISION STATUS: "+decision,
+      "BOUNDARY CHECK: "+(valid?"PASS":"FAIL"),
+      "BOUNDARY ISSUES: "+((verification?.issues||[]).join(", ")||"none"),
+      "A9 FINGERPRINT: "+String(gate?.evidence?.a9_fingerprint||"missing"),
+      "A10 JOURNEY: "+String(gate?.evidence?.a10_journey_ready||0)+"/"+String(gate?.evidence?.a10_journey_total||0),
+      "A10 VIEWPORTS: "+String(gate?.evidence?.a10_viewports||0),
+      "A11 CHECKS: "+String(gate?.evidence?.a11_checks_passed||0)+"/"+String(gate?.evidence?.a11_checks_total||0),
+      "A11 GROUPS: "+String(gate?.evidence?.a11_groups_passed||0)+"/"+String(gate?.evidence?.a11_groups_total||0),
+      "MERGE AUTHORIZED: false",
+      "PRIVATE ALPHA ACTIVATION AUTHORIZED: false",
+      "PRODUCTION ACTIVATION AUTHORIZED: false",
+      "PAYMENTS_ACTIVATED: false",
+      "ORDER_ROUTING_ACTIVATED: false",
+      "SPEND_AUTHORIZED: false",
+      "PUBLISHING_AUTHORIZED: false",
+      "PROVIDER_EXECUTION_AUTHORIZED: false",
+      "SUPPLIER_EXECUTION_AUTHORIZED: false",
+      "",
+      "BLOCKERS: "+((gate?.blockers||[]).join(", ")||"none"),
+      "NEXT SAFE ACTION: "+String(gate?.next_safe_action||"Owner review required.")
+    ].join("\n");
+  }
+
+  function buildAlphaFinalGate(){
+    if(!FinalGate?.build||!FinalGate?.verifyBoundaries){
+      const status=$("#alpha-final-gate-status"),report=$("#alpha-final-gate-report");
+      if(status)status.textContent="FINAL_GATE_UNAVAILABLE · OWNER_DECISION_PENDING";
+      if(report)report.textContent="A12 core is unavailable. No decision or activation was performed.";
+      return null;
+    }
+    if(!state.alphaEvidencePack)buildOwnerAlphaEvidencePack();
+    if(!state.alphaRCPreview)buildAlphaRCPreview();
+    if(!state.alphaRCQA)runAlphaRCQA();
+    const gate=FinalGate.build({
+      qa:state.alphaRCQA,
+      preview:state.alphaRCPreview,
+      evidencePack:state.alphaEvidencePack
+    });
+    const verification=FinalGate.verifyBoundaries(gate);
+    state.alphaFinalGate=verification.valid?gate:null;
+    renderAlphaFinalGate(gate,verification);
+    return {gate,verification};
+  }
+
+  function recordAlphaFinalDecision(decision){
+    if(!FinalGate?.recordDecision||!FinalGate?.verifyBoundaries)return null;
+    if(!state.alphaFinalGate){
+      const built=buildAlphaFinalGate();
+      if(!built?.gate||!built?.verification?.valid)return null;
+    }
+    const next=FinalGate.recordDecision(state.alphaFinalGate,decision);
+    const verification=FinalGate.verifyBoundaries(next);
+    if(verification.valid)state.alphaFinalGate=next;
+    renderAlphaFinalGate(next,verification);
+    return {gate:next,verification};
+  }
+
   function simulateHuntIntelligence(){
     const output=$("#intelligence-simulation");
     const rows=state.huntCapabilities||[];
@@ -2140,7 +2226,7 @@
   $("#alpha-evidence-build")?.addEventListener("click",buildOwnerAlphaEvidencePack);
   $("#alpha-rc-preview-build")?.addEventListener("click",buildAlphaRCPreview);
   $("#alpha-rc-qa-run")?.addEventListener("click",runAlphaRCQA);
-  $("#connect-refresh")?.addEventListener("click",async()=>{
+  $("#alpha-final-gate-build")?.addEventListener("click",buildAlphaFinalGate);\n  $("#alpha-final-go")?.addEventListener("click",()=>recordAlphaFinalDecision(FinalGate?.DECISIONS?.GO));\n  $("#alpha-final-no-go")?.addEventListener("click",()=>recordAlphaFinalDecision(FinalGate?.DECISIONS?.NO_GO));\n  $("#connect-refresh")?.addEventListener("click",async()=>{
     const btn=$("#connect-refresh");
     if(btn){btn.disabled=true;btn.textContent="בודק…"}
     try{await loadAll();renderConnect()}catch(err){showError(err)}finally{if(btn){btn.disabled=false;btn.textContent="בדוק עכשיו"}}
