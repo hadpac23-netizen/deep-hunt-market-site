@@ -221,6 +221,10 @@ begin
     'hunt_boom_f35_findings'
   ]
   loop
+    execute format('drop policy if exists %I on public.%I', 'Admins read ' || t, t);
+    execute format('drop policy if exists %I on public.%I', 'Admins create ' || t, t);
+    execute format('drop policy if exists %I on public.%I', 'Admins update ' || t, t);
+    execute format('drop policy if exists %I on public.%I', 'Admins delete ' || t, t);
     execute format(
       'create policy %I on public.%I for select to authenticated using (exists (select 1 from public.profiles p where p.id = (select auth.uid()) and p.is_admin = true))',
       'Admins read ' || t, t
