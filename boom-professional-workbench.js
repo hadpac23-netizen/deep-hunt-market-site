@@ -157,13 +157,13 @@
     const release=input.releaseGate||null;
 
     const capabilities=Object.freeze([
-      {id:"traces",label:"Trace Explorer",state:traces.rows.length?"ready":"empty",evidence:traces.rows.length+" trace rows · "+traces.failures+" failures"},
+      {id:"traces",label:"Trace Explorer",state:input.traceSchemaConnected===true?"ready":"gap",evidence:traces.rows.length+" activity rows · nested trace/span/session schema="+String(input.traceSchemaConnected===true)},
       {id:"prompts",label:"Prompt Registry / Versions",state:prompts.instrumented?"ready":"gap",evidence:prompts.instrumented?prompts.rows.length+" versioned prompts":"No persisted prompt-version registry connected"},
       {id:"datasets",label:"Failure Inbox → Eval Dataset",state:failures.persisted_dataset?"ready":"gap",evidence:failures.dataset_candidates+" dataset candidate(s) · persisted dataset="+String(failures.persisted_dataset)},
       {id:"experiments",label:"Experiment Diff",state:experiments.available?"ready":"gap",evidence:experiments.available?experiments.comparisons.length+" comparable metric(s)":"Need 2+ comparable eval runs per metric"},
       {id:"review",label:"Human / Owner Review Queue",state:review.persisted?"ready":"gap",evidence:review.count+" review item(s) · annotation history persisted="+String(review.persisted)},
       {id:"cost",label:"Cost / Latency Budget",state:cost.instrumented?"ready":"gap",evidence:cost.instrumented?cost.sample_count+" measured samples":"Token/cost/latency instrumentation not connected"},
-      {id:"alerts",label:"Alerts / SLO Inbox",state:alerts.critical?"blocked":alerts.watch?"watch":"ready",evidence:alerts.critical+" critical · "+alerts.watch+" watch"},
+      {id:"alerts",label:"Alerts / SLO Inbox",state:input.alertRulesConnected===true?(alerts.critical?"blocked":alerts.watch?"watch":"ready"):"gap",evidence:alerts.critical+" critical · "+alerts.watch+" watch · threshold/rule history="+String(input.alertRulesConnected===true)},
       {id:"release",label:"Release Replay / Gate",state:release?"ready":"gap",evidence:release?"Owner gate evidence attached":"No release-gate snapshot attached"}
     ]);
 
