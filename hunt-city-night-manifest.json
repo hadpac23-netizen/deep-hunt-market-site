@@ -7,12 +7,13 @@
       "id": "dubai",
       "name": "Dubai",
       "region": "Middle East",
-      "asset_url": "assets/hunt-city/dubai-night.svg",
-      "status": "ORIGINAL_HUNT_ASSET",
+      "asset_url": "assets/hunt-city/real/dubai.jpg",
+      "status": "LICENSED_PHOTO_READY",
       "accent_a": "#d97706",
       "accent_b": "#7c3aed",
       "mood": "desert gold / violet",
-      "asset_kind": "original_abstract"
+      "asset_kind": "licensed_photo",
+      "credit": "Nihongraphy"
     },
     {
       "id": "london",
@@ -28,12 +29,13 @@
       "id": "tokyo",
       "name": "Tokyo",
       "region": "Asia",
-      "asset_url": "assets/hunt-city/tokyo-night.svg",
-      "status": "ORIGINAL_HUNT_ASSET",
+      "asset_url": "assets/hunt-city/real/tokyo.jpg",
+      "status": "LICENSED_PHOTO_READY",
       "accent_a": "#e11d48",
       "accent_b": "#7c3aed",
       "mood": "neon rose / violet",
-      "asset_kind": "original_abstract"
+      "asset_kind": "licensed_photo",
+      "credit": "miyou_ 77"
     },
     {
       "id": "seoul",
@@ -79,12 +81,13 @@
       "id": "shenzhen",
       "name": "Shenzhen",
       "region": "China",
-      "asset_url": "assets/hunt-city/shenzhen-night.svg",
-      "status": "ORIGINAL_HUNT_ASSET",
+      "asset_url": "assets/hunt-city/real/shenzhen.jpg",
+      "status": "LICENSED_PHOTO_READY",
       "accent_a": "#0891b2",
       "accent_b": "#2563eb",
       "mood": "cyan / blue",
-      "asset_kind": "original_abstract"
+      "asset_kind": "licensed_photo",
+      "credit": "ainc T"
     },
     {
       "id": "new-york",
@@ -120,12 +123,13 @@
       "id": "paris",
       "name": "Paris",
       "region": "Europe",
-      "asset_url": "assets/hunt-city/paris-night.svg",
-      "status": "ORIGINAL_HUNT_ASSET",
+      "asset_url": "assets/hunt-city/real/paris.jpg",
+      "status": "LICENSED_PHOTO_READY",
       "accent_a": "#7c3aed",
       "accent_b": "#f59e0b",
       "mood": "violet / warm gold",
-      "asset_kind": "original_abstract"
+      "asset_kind": "licensed_photo",
+      "credit": "Tarkan Atak Kan"
     },
     {
       "id": "milan",
@@ -187,5 +191,6 @@
       "accent_b": "#2563eb",
       "mood": "ocean teal / blue"
     }
-  ]
+  ],
+  "default_city": "tokyo"
 }
