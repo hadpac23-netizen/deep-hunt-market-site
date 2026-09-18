@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "truth_states": [
     "VERIFIED_REAL",
     "IMPLEMENTED_BUT_UNVERIFIED",
@@ -115,14 +115,15 @@
     {
       "id": "look-deconstruction",
       "manager": "boom-mirror",
-      "brain_status": "PLANNED",
+      "brain_status": "PILOT",
       "storefront_status": "OFF",
       "owner_gate": true,
       "dependencies": [
         "boom-mirror",
-        "visual-search"
+        "visual-search",
+        "product-truth"
       ],
-      "notes": "Multi-item inspiration decomposition specified."
+      "notes": "B13 multi-component inspiration plan exists source-only; it never claims exact matches and requires verified HUNT product matches before use."
     },
     {
       "id": "creative-brand-factory",
@@ -139,39 +140,40 @@
     {
       "id": "share-referral",
       "manager": "share-referral",
-      "brain_status": "PLANNED",
+      "brain_status": "PILOT",
       "storefront_status": "OFF",
       "owner_gate": true,
       "dependencies": [
         "analytics-truth",
         "fraud-controls"
       ],
-      "notes": "Sharing may be safe; reward economics and points require governance."
+      "notes": "Sharing already exists; B13 adds reward eligibility gates for verified conversion, self-referral and duplicate blocking. No automatic points/payout."
     },
     {
       "id": "experimentation-learning",
       "manager": "experimentation-learning",
-      "brain_status": "PLANNED",
+      "brain_status": "PILOT",
       "storefront_status": "OFF",
       "owner_gate": false,
       "dependencies": [
         "analytics-truth",
         "release-control"
       ],
-      "notes": "Feature-flag/holdout framework to be integrated."
+      "notes": "Professional Workbench, persisted eval datasets/runs, shadow comparisons, replay evidence, online eval and CI gate contracts are source-integrated; live optional stores remain separately gated."
     },
     {
       "id": "post-purchase-styling",
       "manager": "boom-stylist",
-      "brain_status": "PLANNED",
+      "brain_status": "PILOT",
       "storefront_status": "OFF",
       "owner_gate": false,
       "dependencies": [
         "orders",
         "returns-care",
-        "memory-continuity"
+        "memory-continuity",
+        "product-truth"
       ],
-      "notes": "Ownership-aware styling follows verified order data."
+      "notes": "B13 verified-purchase brain builds owned-item context and complement targets while keeping tracking/returns support and live Product Truth gates."
     },
     {
       "id": "knowledge-freshness",
@@ -196,6 +198,67 @@
         "integration-connections"
       ],
       "notes": "Tier 0 supplier department + local read-only Edge Function source implemented. Runtime deploy/auth/docs verification remain owner-gated; no provider endpoint is guessed."
+    },
+    {
+      "id": "hunt-watch",
+      "manager": "memory-continuity",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "product-truth",
+        "country-shipping",
+        "memory-continuity"
+      ],
+      "notes": "B13 source-level watch planner monitors price, stock, size, color, shipping and ETA; notifications remain OFF until a runtime scheduler/notification lane is approved."
+    },
+    {
+      "id": "style-watch",
+      "manager": "boom-stylist",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "hunt-watch",
+        "boom-stylist"
+      ],
+      "notes": "B13 look-level watch contract adds total-look-cost monitoring while requiring exact product references and meaningful-change-only notification policy."
+    },
+    {
+      "id": "look-locker",
+      "manager": "boom-stylist",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "boom-stylist",
+        "hunt-memory"
+      ],
+      "notes": "Look Locker core contract exists; persistent account storage and unavailable-SKU replacement workflow remain runtime work."
+    },
+    {
+      "id": "customer-personalization-controls",
+      "manager": "feedback-intelligence",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "taste-dna",
+        "hunt-memory"
+      ],
+      "notes": "B13 supports More like this, Less like this, Reset taste and Reduce personalization without sensitive/body traits."
+    },
+    {
+      "id": "shop-together-foundation",
+      "manager": "share-referral",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "share-referral",
+        "hunt-memory"
+      ],
+      "notes": "B13 defines a collaborative voting/session contract only. Shared-cart payment authority and realtime sessions remain disabled."
     }
   ]
 }

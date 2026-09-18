@@ -2,12 +2,13 @@ const fs=require("fs");
 const assert=require("assert");
 
 let src=fs.readFileSync("supabase/functions/hunt-boom-chat/index.ts","utf8");
+const rulesMatch=src.match(/const ROUTE_RULES:\[RegExp,string\]\[\]=\[[\s\S]*?\n\];/);
 const m=src.match(/function routeManager\(message:string\)\{[\s\S]*?\n\}/);
+if(!rulesMatch)throw new Error("ROUTE_RULES source missing");
 if(!m)throw new Error("routeManager source missing");
-let fnSrc=m[0]
-  .replace("function routeManager(message:string)","function routeManager(message)")
-  .replace("const rules:[RegExp,string][]=","const rules=");
-const routeManager=new Function(fnSrc+"; return routeManager;")();
+const rulesSrc=rulesMatch[0].replace("const ROUTE_RULES:[RegExp,string][]=","const ROUTE_RULES=");
+let fnSrc=m[0].replace("function routeManager(message:string)","function routeManager(message)");
+const routeManager=new Function(rulesSrc+"\n"+fnSrc+"; return routeManager;")();
 
 const cases=[
   ["CJ stock refresh","supplier-cj"],

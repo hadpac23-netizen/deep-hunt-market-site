@@ -20,6 +20,7 @@
   const RCQA=window.BoomAlphaRCQA;
   const FinalGate=window.BoomAlphaFinalGate;
   const ProfessionalWorkbench=window.BoomProfessionalWorkbench;
+  const B13=window.BoomB13MasterPrompt;
   if(!H||(!S?.createClient&&!SAFE_PREVIEW_BOOT)){
     document.body.innerHTML='<pre style="color:white;padding:20px">BOOM Studio failed: Supabase client unavailable.</pre>';
     return;
@@ -1025,8 +1026,45 @@
     {id:"supplier-hide",label:"Supplier names hidden from shopper storefront",status:"PRESENT",evidence:"Product, category, profile and HUNT History shopper surfaces use HUNT SOURCE / HUNT ORDER labels while provider identity remains internal for routing and truth."},
     {id:"connect-live",label:"Connector-by-connector truth matrix",status:"PRESENT",evidence:"BOOM Connect exposes each connector as LIVE / WATCH / PILOT / OFF / BLOCKED from runtime evidence: Supabase/GitHub/Netlify are reachable, CJ is WATCH on stock freshness, HyperSKU stays unverified pilot, and Payments remain intentionally OFF."},
     {id:"shopper-actions",label:"Like / Save / Share / History browser E2E",status:"PRESENT",evidence:"Local browser harness passed: Like/Save persist full product metadata, share emits to HUNT Memory, and History grouping receives the interaction events."},
-    {id:"search-recommendation-e2e",label:"Search → recommendation → Product browser E2E",status:"PRESENT",evidence:"Private browser E2E passed: phone case search produced 36 curated matches, opened the first real product, and loaded the Product page with HUNT VERIFIED SOURCE and no error state."}
+    {id:"search-recommendation-e2e",label:"Search → recommendation → Product browser E2E",status:"PRESENT",evidence:"Private browser E2E passed: phone case search produced 36 curated matches, opened the first real product, and loaded the Product page with HUNT VERIFIED SOURCE and no error state."},
+    {id:"hunt-watch",label:"HUNT Watch · price / stock / size / color / shipping",status:"PRESENT",evidence:"B13 Watch planner exists with exact-product references, meaningful-change detection and live notifications explicitly OFF."},
+    {id:"style-watch",label:"Style Watch · whole-look monitoring",status:"PRESENT",evidence:"B13 look watch covers product changes plus total-look cost; runtime scheduler remains separate."},
+    {id:"look-locker",label:"Look Locker contract",status:"PRESENT",evidence:"Stylist core can build stable multi-item look records; account persistence/replacement runtime remains separately gated."},
+    {id:"look-deconstruction",label:"Look Deconstruction foundation",status:"PRESENT",evidence:"B13 accepts multi-component inspiration analysis plans and requires verified HUNT matches; provider execution remains OFF."},
+    {id:"customer-controls",label:"Customer personalization controls",status:"PRESENT",evidence:"More like this, Less like this, Reset taste and Reduce personalization are represented without sensitive/body traits."},
+    {id:"post-purchase",label:"Post-Purchase Styling Brain",status:"PRESENT",evidence:"Verified purchases can become owned-item context with truthful complement targets, tracking/returns support and Product Truth recheck."},
+    {id:"referral-collaboration",label:"Referral guard + Shop Together foundation",status:"PRESENT",evidence:"Verified-conversion/self-referral/duplicate gates plus a voting/session foundation exist; points, shared payments and realtime activation remain OFF."},
+    {id:"professional-foundation",label:"Professional Ground Truth / Observability / Eval Lineage",status:"PRESENT",evidence:"Source-only optional stores, fail-closed loaders and Studio panels exist. Live Supabase activation remains intentionally deferred."}
   ]);
+
+  function renderB13Closure(){
+    const summary=$("#b13-summary"),grid=$("#b13-grid"),report=$("#b13-report");
+    if(!summary||!grid||!report)return;
+    const rows=B13?.coverage?.()||[];
+    const ready=rows.filter(x=>["PILOT","FOUNDATION"].includes(String(x.state))).length;
+    summary.innerHTML=
+      '<article><b>'+ready+'/'+rows.length+'</b><span>SOURCE CONTRACTS</span></article>'+
+      '<article><b>OFF</b><span>LIVE NOTIFICATIONS</span></article>'+
+      '<article><b>OFF</b><span>PRODUCTION / PAYMENTS</span></article>';
+    grid.innerHTML=rows.map(item=>
+      '<article class="prompt-audit-item" data-state="present"><small>'+esc(item.state)+'</small><strong>'+esc(item.id.replace(/-/g," "))+'</strong><p>'+esc(item.evidence)+'</p></article>'
+    ).join("")||'<article class="prompt-audit-item" data-state="missing"><small>MISSING</small><strong>B13 core unavailable</strong></article>';
+    report.textContent=[
+      "MODE: B13_MASTER_PROMPT_CLOSURE",
+      "SOURCE CONTRACTS: "+ready+"/"+rows.length,
+      "HUNT WATCH: source-only · notifications OFF",
+      "STYLE WATCH: source-only · scheduler OFF",
+      "LOOK DECONSTRUCTION: planning only · provider execution OFF",
+      "CUSTOMER CONTROLS: local contract only",
+      "POST-PURCHASE: verified purchase context required",
+      "REFERRAL: no automatic points or payout",
+      "SHOP TOGETHER: voting/session foundation only · shared payment OFF",
+      "PROFESSIONAL STORES: source-only until separately activated",
+      "MERGE: false",
+      "PRODUCTION CHANGE: false",
+      "NEXT: finish regression suite, then move from brain architecture to Studio visual/UX design."
+    ].join("\n");
+  }
 
   function renderPromptCoverageAudit(){
     const host=$("#prompt-audit-grid"),summary=$("#prompt-audit-summary"),report=$("#prompt-audit-report");
@@ -2318,6 +2356,7 @@
     renderLearning();
     renderProfessionalWorkbench();
     renderConnect();
+    renderB13Closure();
     renderPromptCoverageAudit();
     if(state.managerMap.has(state.selected)||toolNodeFallbackManagers[state.selected]||studioNodeGroupById.has(state.selected))inspectManager(state.selected);
     if(state.localPreview)setLive("● PREVIEW · LIVE ACTIONS OFF","watch");
@@ -3090,6 +3129,7 @@
       await renderHuntIntelligence();
       renderApprovalQueue();
       renderAlphaBlueprint();
+      renderB13Closure();
       renderPromptCoverageAudit();
       inspectSpecial("output");
       return;
@@ -3239,6 +3279,7 @@
       renderHuntIntelligence();
       renderApprovalQueue();
       renderAlphaBlueprint();
+      renderB13Closure();
       renderPromptCoverageAudit();
     }
     if(viewId==="brand-factory")renderBrandFinance();

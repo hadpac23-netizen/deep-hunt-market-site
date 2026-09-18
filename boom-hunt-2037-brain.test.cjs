@@ -27,6 +27,16 @@ for(const c of caps.capabilities){
 assert.equal(caps.rules.brain_awareness_is_not_activation,true);
 assert.equal(caps.rules.production_activation_requires_evidence,true);
 
+for(const id of [
+  "hunt-watch","style-watch","look-locker","look-deconstruction",
+  "customer-personalization-controls","post-purchase-styling","share-referral",
+  "shop-together-foundation","experimentation-learning"
+]){
+  const cap=caps.capabilities.find(x=>x.id===id);
+  assert.ok(cap,"missing B13 capability "+id);
+  assert.notEqual(cap.brain_status,"PLANNED","B13 capability must have a source-level brain contract: "+id);
+}
+
 assert.match(prompt,/HUNT 2037 Brain Bootstrap/);
 assert.match(prompt,/preserve existing approved BOOM Studio managers/);
 assert.match(brain,/Non-destructive rule/);

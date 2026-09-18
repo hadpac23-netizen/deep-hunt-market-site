@@ -46,7 +46,7 @@ assert.equal(Evidence.verifyIntegrity(forgedStage).valid,false);
 assert(Evidence.verifyIntegrity(forgedStage).issues.includes("EVIDENCE_FINGERPRINT_MISMATCH"));
 
 const forgedPass=JSON.parse(JSON.stringify(blocked));
-forgedPass.stages[0].pass=true;
+forgedPass.stages[4].pass=true;
 assert.equal(Evidence.verifyIntegrity(forgedPass).valid,false);
 
 const forgedReady=JSON.parse(JSON.stringify(blocked));

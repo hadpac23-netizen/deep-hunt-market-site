@@ -606,4 +606,14 @@ assert(groundTruthMigration.includes("enable row level security"),"Human ground 
 assert(groundTruthMigration.includes('create policy "Admins append hunt_boom_human_labels"'),"Human ground truth admin append policy missing");
 assert(!groundTruthMigration.includes("grant update on table public.hunt_boom_human_labels to authenticated"),"Human labels must remain append-only for authenticated users");
 
+
+assert(html.includes('id="b13-master-prompt-closure"'),"B13 Master Prompt Closure workspace missing");
+assert(html.includes('id="b13-summary"'),"B13 summary missing");
+assert(html.includes("boom-b13-master-prompt.js?v=1"),"B13 core script missing");
+assert(js.includes("const B13=window.BoomB13MasterPrompt"),"B13 core binding missing");
+assert(js.includes("function renderB13Closure()"),"B13 renderer missing");
+for(const id of ["hunt-watch","style-watch","look-locker","look-deconstruction","customer-controls","post-purchase","referral-collaboration","professional-foundation"]){
+  assert(js.includes('id:"'+id+'"'),"Expanded Master Prompt audit item missing: "+id);
+}
+
 console.log("boom_ai_studio_tests=PASS");
