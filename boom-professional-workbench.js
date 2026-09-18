@@ -253,20 +253,34 @@
     });
 
     const blockingGates=gates.filter(x=>x.blocks_merge===true);
-    const completedGateRuns=gateRuns.filter(x=>{
-      const gate=blockingGates.find(g=>String(g.id??"")===String(x.gate_id??""));
-      const samples=Number(x.sample_count);
-      return Boolean(gate)&&clean(x.status).toLowerCase()==="completed"&&Boolean(x.completed_at)&&
-        x.passed===true&&x.metric_value!==null&&x.metric_value!==undefined&&String(x.metric_value).trim()!==""&&
-        Number.isFinite(Number(x.metric_value))&&Number.isFinite(samples)&&samples>=Number(gate.min_samples||1);
-    });
-    const passedGateIds=new Set(completedGateRuns.map(x=>String(x.gate_id??"")));
+    const latestRunByGate=new Map();
+    for(const run of gateRuns){
+      const key=String(run.gate_id??"");
+      if(key&&!latestRunByGate.has(key))latestRunByGate.set(key,run);
+    }
+    const passedGateIds=new Set();
+    const failedGateIds=new Set();
+    const pendingGateIds=new Set();
+    for(const gate of blockingGates){
+      const key=String(gate.id??"");
+      const run=latestRunByGate.get(key);
+      const samples=Number(run?.sample_count);
+      const enough=Number.isFinite(samples)&&samples>=Number(gate.min_samples||1);
+      const status=clean(run?.status).toLowerCase();
+      const measured=run?.metric_value!==null&&run?.metric_value!==undefined&&String(run?.metric_value).trim()!==""&&Number.isFinite(Number(run.metric_value));
+      if(status==="completed"&&Boolean(run?.completed_at)&&enough&&measured&&run?.passed===true)passedGateIds.add(key);
+      else if(status==="completed"&&Boolean(run?.completed_at)&&enough&&measured&&run?.passed===false)failedGateIds.add(key);
+      else pendingGateIds.add(key);
+    }
     const uncoveredGates=blockingGates.filter(g=>!passedGateIds.has(String(g.id??"")));
+    const pendingOnline=online.filter(x=>["pending","running"].includes(clean(x.status).toLowerCase()));
 
     const evaluatorRegistryConnected=activeEvaluators.length>0;
     const humanAlignmentConnected=evaluatorRegistryConnected&&missingAlignment.length===0;
+    const alignmentState=calibrationRequired.length===0?"not_required":humanAlignmentConnected?"evidenced":"gap";
     const onlineEvalConnected=completedOnline.length>0;
     const ciEvalGateConnected=blockingGates.length>0&&uncoveredGates.length===0;
+    const ciGateState=failedGateIds.size>0?"blocked":pendingGateIds.size>0?"pending":ciEvalGateConnected?"ready":"gap";
 
     return Object.freeze({
       grader_types:Object.freeze(graderTypes),
@@ -278,13 +292,18 @@
       alignment_runs:alignments.length,
       valid_alignment_runs:validAlignments.length,
       missing_alignment:missingAlignment.length,
+      alignment_state:alignmentState,
       online_eval_connected:onlineEvalConnected,
       online_windows:online.length,
       completed_online_windows:completedOnline.length,
+      pending_online_windows:pendingOnline.length,
       ci_eval_gate_connected:ciEvalGateConnected,
+      ci_gate_state:ciGateState,
       ci_gates:blockingGates.length,
       ci_gate_runs:gateRuns.length,
       passed_ci_gates:passedGateIds.size,
+      failed_ci_gates:failedGateIds.size,
+      pending_ci_gates:pendingGateIds.size,
       uncovered_ci_gates:uncoveredGates.length,
       governance_ready:graderTypes.length>0&&evaluatorRegistryConnected&&humanAlignmentConnected,
       continuous_gate_ready:onlineEvalConnected&&ciEvalGateConnected
@@ -436,9 +455,9 @@
       {id:"traces",label:"Trace Explorer",state:input.traceSchemaConnected===true?"ready":"gap",evidence:traceHierarchy.spans+" nested spans · "+traceHierarchy.traces+" traces · "+traceHierarchy.sessions+" sessions · store="+String(traceHierarchy.store_connected)},
       {id:"prompts",label:"Prompt Registry / Versions",state:prompts.instrumented?"ready":"gap",evidence:prompts.instrumented?prompts.rows.length+" versioned prompts":"No persisted prompt-version registry connected"},
       {id:"datasets",label:"Failure Inbox → Eval Dataset",state:failures.persisted_dataset?"ready":"gap",evidence:failures.dataset_candidates+" dataset candidate(s) · persisted dataset="+String(failures.persisted_dataset)},
-      {id:"evaluators",label:"Evaluator Registry + Human Alignment",state:evaluators.governance_ready?"ready":"gap",evidence:evaluators.grader_types.length+" grader type(s) · registry="+String(evaluators.evaluator_registry_connected)+" · human alignment="+String(evaluators.human_alignment_connected)},
+      {id:"evaluators",label:"Evaluator Registry + Human Alignment",state:evaluators.governance_ready?"ready":"gap",evidence:evaluators.grader_types.length+" grader type(s) · registry="+String(evaluators.evaluator_registry_connected)+" · alignment="+evaluators.alignment_state+" · missing="+evaluators.missing_alignment},
       {id:"experiments",label:"Experiment Diff",state:experiments.available?"ready":"gap",evidence:experiments.available?experiments.comparisons.length+" comparable metric(s)":"Need 2+ comparable eval runs per metric"},
-      {id:"online-ci",label:"Online Evals + CI Quality Gate",state:evaluators.continuous_gate_ready?"ready":"gap",evidence:"online="+evaluators.completed_online_windows+"/"+evaluators.online_windows+" completed · CI gates="+evaluators.passed_ci_gates+"/"+evaluators.ci_gates+" passed · uncovered="+evaluators.uncovered_ci_gates},
+      {id:"online-ci",label:"Online Evals + CI Quality Gate",state:evaluators.continuous_gate_ready?"ready":evaluators.ci_gate_state==="blocked"?"blocked":evaluators.ci_gate_state==="pending"||evaluators.pending_online_windows>0?"pending":"gap",evidence:"online="+evaluators.completed_online_windows+"/"+evaluators.online_windows+" completed · pending online="+evaluators.pending_online_windows+" · CI="+evaluators.ci_gate_state+" · passed="+evaluators.passed_ci_gates+"/"+evaluators.ci_gates+" · failed="+evaluators.failed_ci_gates+" · pending="+evaluators.pending_ci_gates},
       {id:"redteam",label:"Red Team Regression",state:safety.redteam.ready?"ready":safety.redteam.failed?"blocked":"gap",evidence:safety.redteam.covered_cases+"/"+safety.redteam.cases+" active case(s) covered · completed="+safety.redteam.completed_linked+" · pending="+safety.redteam.pending+" · unlinked="+safety.redteam.unlinked+" · failed="+safety.redteam.failed},
       {id:"calibration",label:"Confidence Calibration",state:safety.calibration.ready?"ready":"gap",evidence:safety.calibration.valid_rows+"/"+safety.calibration.rows+" valid measured row(s) · invalid="+safety.calibration.invalid_rows+" · max error="+String(safety.calibration.max_error??"unmeasured")},
       {id:"team-judge",label:"Multi-Agent Judge Runs",state:safety.team_judge.ready?"ready":"gap",evidence:safety.team_judge.judged+"/"+safety.team_judge.runs+" completed run(s) have non-empty final verdicts · incomplete="+safety.team_judge.incomplete},
@@ -456,6 +475,7 @@
       traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,evaluators,safety,lineage,radar,release,
       professional_ready:capabilities.every(x=>x.state==="ready"||x.state==="empty"),
       gaps:Object.freeze(capabilities.filter(x=>x.state==="gap").map(x=>x.id)),
+      pending:Object.freeze(capabilities.filter(x=>x.state==="pending").map(x=>x.id)),
       invariants:Object.freeze({
         mutation:false,
         production_change:false,
