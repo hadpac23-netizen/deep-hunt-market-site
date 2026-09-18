@@ -14,6 +14,8 @@
   let cities=[];
   let index=0;
   let worldLock=false;
+  let appliedCityId="";
+  let cityTimer=null;
   const WORLD_CITY=Object.freeze({fashion:"tokyo",jewelry:"paris","tech-home":"shenzhen",travel:"dubai"});
 
   async function loadManifest(){
@@ -30,21 +32,48 @@
     return cities[Math.abs(i)%cities.length];
   }
 
-  function applyCity(city,i=index){
+  function commitCity(city,i=index){
     const fallback=FALLBACKS[Math.abs(i)%FALLBACKS.length];
     const a=city?.accent_a||fallback[0];
     const b=city?.accent_b||fallback[1];
+    const assetUrl=city?.asset_url?new URL(city.asset_url,location.href).href:"";
     document.documentElement.style.setProperty("--hunt-brand-a",a);
     document.documentElement.style.setProperty("--hunt-brand-b",b);
-    document.documentElement.style.setProperty("--hunt-city-image",city?.asset_url?`url("${city.asset_url}")`:"none");
+    document.documentElement.style.setProperty("--hunt-city-image",assetUrl?`url("${assetUrl}")`:"none");
     document.body.dataset.huntCity=city?.id||"hunt";
+    appliedCityId=city?.id||"hunt";
     const badge=document.querySelector("#hunt2037-city-badge");
     if(badge){
-      const hasAsset=Boolean(city?.asset_url);
-      badge.dataset.asset=hasAsset?"image":"mood";
-      badge.textContent=(hasAsset?"":"CITY MOOD · ")+(city?.name||"HUNT Night");
+      const kind=city?.asset_kind||"";
+      if(kind==="original_abstract"){
+        badge.dataset.asset="original";
+        badge.textContent="HUNT NIGHT · "+(city?.name||"HUNT")+" mood";
+      }else if(city?.asset_url){
+        badge.dataset.asset="image";
+        badge.textContent=city?.name||"HUNT Night";
+      }else{
+        badge.dataset.asset="mood";
+        badge.textContent="CITY MOOD · "+(city?.name||"HUNT Night");
+      }
       badge.title=city?.mood||"";
     }
+  }
+
+  function applyCity(city,i=index){
+    const hero=document.querySelector(".hd-hero");
+    const reduced=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches===true;
+    if(!hero||reduced||!appliedCityId||appliedCityId===(city?.id||"hunt")){
+      clearTimeout(cityTimer);
+      commitCity(city,i);
+      hero?.classList.remove("hunt2037-city-switching");
+      return;
+    }
+    clearTimeout(cityTimer);
+    hero.classList.add("hunt2037-city-switching");
+    cityTimer=setTimeout(()=>{
+      commitCity(city,i);
+      requestAnimationFrame(()=>hero.classList.remove("hunt2037-city-switching"));
+    },180);
   }
 
   function cityById(id){return cities.find(city=>city.id===id)||null;}
