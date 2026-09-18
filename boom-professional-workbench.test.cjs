@@ -25,7 +25,9 @@ const input={
   promptVersions:[{name:"decision-brain",version:3,label:"candidate"}],
   releaseGate:{mode:"A12_FINAL_OWNER_GO_NO_GO_GATE",final_gate_ready:true},
   datasetStoreConnected:true,
-  reviewStoreConnected:true
+  reviewStoreConnected:true,
+  traceSchemaConnected:true,
+  alertRulesConnected:true
 };
 
 const result=W.build(input);
@@ -50,8 +52,10 @@ assert(gaps.gaps.includes("prompts"));
 assert(gaps.gaps.includes("experiments"));
 assert(gaps.gaps.includes("cost"));
 assert(gaps.gaps.includes("release"));
+assert(gaps.gaps.includes("traces"));
 assert(gaps.gaps.includes("datasets"));
 assert(gaps.gaps.includes("review"));
+assert(gaps.gaps.includes("alerts"));
 assert.equal(gaps.invariants.mutation,false);
 
 console.log("boom_professional_workbench=PASS");
