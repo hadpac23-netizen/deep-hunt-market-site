@@ -19,7 +19,8 @@
       ...safeArray(input.events).map(x=>({kind:"event",id:x.id,title:x.title||x.event_type||"Event",status:x.severity||"healthy",time:x.created_at,actor:x.source_manager_id||"system"})),
       ...safeArray(input.workerReports).map(x=>({kind:"worker",id:x.id,title:x.finding||x.worker_id||"Worker report",status:x.status||"healthy",time:x.created_at,actor:x.worker_id||x.manager_id||"worker"})),
       ...safeArray(input.cycles).map(x=>({kind:"cycle",id:x.id,title:x.focus||x.cycle_key||"Cycle",status:x.status||"open",time:x.evaluated_at||x.started_at,actor:x.started_by||"BOOM"})),
-      ...safeArray(input.evals).map(x=>({kind:"eval",id:x.id,title:x.metric_name||x.eval_key||"Eval",status:x.passed===true?"pass":x.passed===false?"fail":"open",time:x.created_at,actor:x.subject_key||x.subject_type||"eval"}))
+      ...safeArray(input.evals).map(x=>({kind:"eval",id:x.id,title:x.metric_name||x.eval_key||"Eval",status:x.passed===true?"pass":x.passed===false?"fail":"open",time:x.created_at,actor:x.subject_key||x.subject_type||"eval"})),
+      ...safeArray(input.modelObservations).map(x=>({kind:"model",id:x.id,title:(x.provider||"model")+"/"+(x.model||"unknown"),status:x.success===true?"pass":x.success===false?"fail":"open",time:x.created_at,actor:x.route_key||x.task_class||"model"}))
     ].filter(x=>x.time).sort((a,b)=>new Date(b.time)-new Date(a.time));
     return Object.freeze({
       rows:Object.freeze(rows.slice(0,160)),
@@ -84,12 +85,44 @@
         candidate:Number.isFinite(c)?c:null,
         delta:Number.isFinite(c)&&Number.isFinite(b)?c-b:null,
         candidate_pass:candidate.passed,
-        baseline_pass:baseline.passed
+        baseline_pass:baseline.passed,
+        source:"eval"
       });
+    }
+    for(const run of safeArray(input.shadowRuns)){
+      const baseline=run?.baseline_metrics&&typeof run.baseline_metrics==="object"?run.baseline_metrics:{};
+      const candidate=run?.candidate_metrics&&typeof run.candidate_metrics==="object"?run.candidate_metrics:{};
+      const keys=[...new Set([...Object.keys(baseline),...Object.keys(candidate)])];
+      let added=0;
+      for(const key of keys){
+        const b=Number(baseline[key]),c=Number(candidate[key]);
+        if(!Number.isFinite(b)||!Number.isFinite(c))continue;
+        comparisons.push({
+          metric:(run.experiment_key||run.run_key||"shadow")+":"+key,
+          baseline:b,
+          candidate:c,
+          delta:c-b,
+          candidate_pass:run.status==="passed"?true:run.status==="failed"?false:null,
+          baseline_pass:null,
+          source:"shadow"
+        });
+        added++;
+      }
+      if(!added&&run.comparison&&Object.keys(run.comparison).length){
+        comparisons.push({
+          metric:(run.experiment_key||run.run_key||"shadow")+":comparison",
+          baseline:null,
+          candidate:null,
+          delta:null,
+          candidate_pass:run.status==="passed"?true:run.status==="failed"?false:null,
+          baseline_pass:null,
+          source:"shadow"
+        });
+      }
     }
     return Object.freeze({
       available:comparisons.length>0,
-      comparisons:Object.freeze(comparisons.slice(0,20))
+      comparisons:Object.freeze(comparisons.slice(0,40))
     });
   }
 
@@ -154,7 +187,8 @@
     const cost=buildCostLatency(input);
     const prompts=buildPromptRegistry(input);
     const alerts=buildAlerts(input);
-    const release=input.releaseGate||null;
+    const replayRuns=safeArray(input.replayRuns);
+    const release=input.releaseGate||(replayRuns.length?{replay_runs:replayRuns.length,latest:replayRuns[0]}:null);
 
     const capabilities=Object.freeze([
       {id:"traces",label:"Trace Explorer",state:input.traceSchemaConnected===true?"ready":"gap",evidence:traces.rows.length+" activity rows · nested trace/span/session schema="+String(input.traceSchemaConnected===true)},
@@ -164,7 +198,7 @@
       {id:"review",label:"Human / Owner Review Queue",state:review.persisted?"ready":"gap",evidence:review.count+" review item(s) · annotation history persisted="+String(review.persisted)},
       {id:"cost",label:"Cost / Latency Budget",state:cost.instrumented?"ready":"gap",evidence:cost.instrumented?cost.sample_count+" measured samples":"Token/cost/latency instrumentation not connected"},
       {id:"alerts",label:"Alerts / SLO Inbox",state:input.alertRulesConnected===true?(alerts.critical?"blocked":alerts.watch?"watch":"ready"):"gap",evidence:alerts.critical+" critical · "+alerts.watch+" watch · threshold/rule history="+String(input.alertRulesConnected===true)},
-      {id:"release",label:"Release Replay / Gate",state:release?"ready":"gap",evidence:release?"Owner gate evidence attached":"No release-gate snapshot attached"}
+      {id:"release",label:"Release Replay / Gate",state:release?"ready":"gap",evidence:release?(replayRuns.length?replayRuns.length+" persisted replay run(s)":"Owner gate evidence attached"):"No release/replay snapshot attached"}
     ]);
 
     return Object.freeze({
