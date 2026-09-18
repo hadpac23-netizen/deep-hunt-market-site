@@ -408,3 +408,11 @@ assert(js.includes("function buildEvidenceConnectorRows()"),"Connector evidence 
 assert(js.includes("Verification gaps: "), "Connector verification gap reporting missing");
 assert(js.includes('id:"connect-live",label:"Connector-by-connector truth matrix",status:"PRESENT"'),"Connector prompt audit not closed");
 assert(fs.existsSync("hunt-search-product-browser-e2e.html"),"Search→Product browser E2E harness missing");
+
+assert(html.includes('id="studio-department-nav"'),"Studio department navigator missing");
+for(const id of ["intelligence","release","commerce","missions","suppliers","store"]){
+  assert(html.includes('data-studio-group="'+id+'"'),"Studio navigator target missing: "+id);
+}
+assert(js.includes("function focusStudioGroup("),"Studio navigator focus function missing");
+assert(js.includes('const studioJump=ev.target.closest("[data-studio-group]")'),"Studio navigator click routing missing");
+assert(css.includes(".studio-department-nav"),"Studio navigator styling missing");
