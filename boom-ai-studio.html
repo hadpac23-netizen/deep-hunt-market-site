@@ -511,6 +511,16 @@
               </div>
               <pre id="alpha-final-gate-report">No A12 final gate report yet. No Owner decision has been recorded.</pre>
             </section>
+            <section class="product-trace-workspace" id="product-trace-workspace">
+              <div class="truth-workspace-head"><div><small>INTERNAL PRODUCT TRACE</small><h3>Source → Shelf → Checkout → Order → Finance</h3><p>Read-only Owner trace across existing HUNT order evidence. No customer email/address is displayed. Supplier identity is internal here and remains hidden from shopper UI.</p></div><span>ADMIN READ ONLY</span></div>
+              <div class="product-trace-actions">
+                <input id="product-trace-key" type="text" autocomplete="off" placeholder="Order UUID · External order ID · Payment session UUID">
+                <button class="top-btn" id="product-trace-run" type="button">Trace</button>
+                <div class="truth-result-status" id="product-trace-status">NOT_RUN · READ_ONLY</div>
+              </div>
+              <div class="product-trace-grid" id="product-trace-grid"><p>Enter an internal HUNT order/payment reference to build the evidence chain.</p></div>
+              <pre id="product-trace-report">No product trace has run.</pre>
+            </section>
             <section class="prompt-audit-workspace" id="prompt-coverage-audit">
               <div class="truth-workspace-head"><div><small>OWNER PROMPT COVERAGE</small><h3>BOOM Studio Prompt Audit</h3><p>Checks the Studio structure against the approved BOOM/HUNT direction. PRESENT means structurally represented; PARTIAL means the Studio has the control but still needs private-preview/runtime verification.</p></div><span>NO CLAIM WITHOUT EVIDENCE</span></div>
               <div class="prompt-audit-summary" id="prompt-audit-summary"></div>
