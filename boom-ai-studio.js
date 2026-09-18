@@ -94,7 +94,8 @@
     professionalSnapshot:null,
     professionalEvidence:{
       modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
-      evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[]
+      evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[],
+      promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
     }
   };
 
@@ -522,11 +523,14 @@
       modelRoutes:state.professionalEvidence.modelRoutes,
       shadowRuns:state.professionalEvidence.shadowRuns,
       replayRuns:state.professionalEvidence.replayRuns,
+      traceSpans:state.professionalEvidence.traceSpans,
       costSamples:professionalCostSamples(),
-      promptVersions:[],
+      promptVersions:state.professionalEvidence.promptVersions,
+      promptStoreConnected:state.professionalEvidence.promptStoreConnected,
+      traceStoreConnected:state.professionalEvidence.traceStoreConnected,
       datasetStoreConnected:state.professionalEvidence.evalCases.length>0&&state.professionalEvidence.evalSuites.length>0,
       reviewStoreConnected:Boolean(state.session),
-      traceSchemaConnected:false,
+      traceSchemaConnected:state.professionalEvidence.traceStoreConnected&&state.professionalEvidence.traceSpans.length>0,
       alertRulesConnected:state.professionalEvidence.modelRoutes.length>0,
       releaseGate:state.alphaFinalGate
     });
@@ -594,6 +598,12 @@
       "BLOCKED: "+blocked,
       "",
       "TRACE SCHEMA: "+(snapshot.capabilities.find(x=>x.id==="traces")?.state||"unknown"),
+      "TRACE STORE CONNECTED: "+state.professionalEvidence.traceStoreConnected,
+      "TRACE SPANS: "+snapshot.traceHierarchy.spans,
+      "TRACE IDS: "+snapshot.traceHierarchy.traces,
+      "TRACE SESSIONS: "+snapshot.traceHierarchy.sessions,
+      "PROMPT STORE CONNECTED: "+state.professionalEvidence.promptStoreConnected,
+      "PROMPT VERSIONS: "+state.professionalEvidence.promptVersions.length,
       "PROMPT REGISTRY: "+snapshot.prompts.status,
       "DATASET CANDIDATES: "+snapshot.failures.dataset_candidates+" · PERSISTED DATASET: "+snapshot.failures.persisted_dataset,
       "PERSISTED EVAL SUITES: "+state.professionalEvidence.evalSuites.length,
@@ -2263,6 +2273,24 @@
     return data||[];
   }
 
+  function isMissingOptionalStoreError(error){
+    const code=String(error?.code||"").toUpperCase();
+    const message=String(error?.message||error?.details||"").toLowerCase();
+    return ["42P01","PGRST205"].includes(code)
+      || message.includes("does not exist")
+      || message.includes("could not find the table")
+      || message.includes("schema cache");
+  }
+
+  async function optionalQuery(table,columns="*",orderColumn=null,limit=300){
+    try{
+      return {rows:await query(table,columns,orderColumn,limit),connected:true,error:null};
+    }catch(error){
+      if(isMissingOptionalStoreError(error))return {rows:[],connected:false,error:String(error?.code||"STORE_MISSING")};
+      throw error;
+    }
+  }
+
   async function loadConnectorEvidence(){
     if(state.localPreview){
       state.connectorEvidence={apiLogs:[],sources:[],partners:[],controls:[]};
@@ -2282,11 +2310,17 @@
     if(state.localPreview){
       state.professionalEvidence={
         modelObservations:[],modelCosts:[],modelRoutes:[],benchmarkCases:[],
-        evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[]
+        evalCases:[],evalRuns:[],evalSuites:[],replayRuns:[],shadowRuns:[],
+        promptVersions:[],traceSpans:[],promptStoreConnected:false,traceStoreConnected:false
       };
       return state.professionalEvidence;
     }
-    const [modelObservations,modelCosts,modelRoutes,benchmarkCases,evalCases,evalRuns,evalSuites,replayRuns,shadowRuns]=await Promise.all([
+
+    const [
+      modelObservations,modelCosts,modelRoutes,benchmarkCases,
+      evalCases,evalRuns,evalSuites,replayRuns,shadowRuns,
+      promptStore,traceStore
+    ]=await Promise.all([
       query("hunt_boom_model_observations","id,route_key,task_class,provider,model,success,status_code,latency_ms,quality_score,estimated_cost_usd,created_at,input_tokens,output_tokens,total_tokens","created_at",220),
       query("hunt_boom_model_cost_registry","id,provider,model,pricing_tier,input_usd_per_million,output_usd_per_million,verified_at,active","verified_at",80),
       query("hunt_boom_model_routes","id,route_key,task_class,primary_model,fallback_model,max_latency_ms,max_cost_usd,min_quality_score,enabled,owner_gate_required,updated_at","updated_at",80),
@@ -2295,9 +2329,19 @@
       query("hunt_boom_eval_runs_v2","id,suite_id,run_key,target_version,trials_planned,trials_completed,passed_trials,score,status,evidence,created_at,completed_at","created_at",160),
       query("hunt_boom_eval_suites","id,suite_key,title,domain,trials_per_case,pass_threshold,active,created_at,updated_at","updated_at",80),
       query("hunt_boom_replay_runs","id,replay_key,source_type,source_id,baseline_version,candidate_version,run_mode,comparison,verdict,evidence,created_at,completed_at","created_at",120),
-      query("hunt_boom_shadow_runs","id,run_key,experiment_key,target_type,target_ref,baseline_version,candidate_version,traffic_percent,run_mode,status,baseline_metrics,candidate_metrics,comparison,evidence,owner_gate_required,created_at,completed_at","created_at",120)
+      query("hunt_boom_shadow_runs","id,run_key,experiment_key,target_type,target_ref,baseline_version,candidate_version,traffic_percent,run_mode,status,baseline_metrics,candidate_metrics,comparison,evidence,owner_gate_required,created_at,completed_at","created_at",120),
+      optionalQuery("hunt_boom_prompt_versions","id,prompt_key,version,status,environment,template_hash,variables,model_preferences,change_note,source_commit,owner_approval_required,created_at,updated_at,activated_at","updated_at",160),
+      optionalQuery("hunt_boom_trace_spans","id,trace_id,span_id,parent_span_id,session_id,span_type,name,route_key,provider,model,prompt_version_id,status,success,latency_ms,input_tokens,output_tokens,total_tokens,estimated_cost_usd,error_code,started_at,ended_at","started_at",400)
     ]);
-    state.professionalEvidence={modelObservations,modelCosts,modelRoutes,benchmarkCases,evalCases,evalRuns,evalSuites,replayRuns,shadowRuns};
+
+    state.professionalEvidence={
+      modelObservations,modelCosts,modelRoutes,benchmarkCases,
+      evalCases,evalRuns,evalSuites,replayRuns,shadowRuns,
+      promptVersions:promptStore.rows,
+      traceSpans:traceStore.rows,
+      promptStoreConnected:promptStore.connected,
+      traceStoreConnected:traceStore.connected
+    };
     return state.professionalEvidence;
   }
 
