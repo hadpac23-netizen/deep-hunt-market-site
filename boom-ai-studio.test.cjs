@@ -126,3 +126,15 @@ assert(html.includes('id="deployment-readiness-refresh"'),"Provider readiness re
 assert(js.includes('refreshDeploymentReadiness'),"Provider readiness client missing");
 assert(js.includes('action:"readiness"'),"Server readiness action wiring missing");
 assert((js.match(/#vault-preview"\)\?\.addEventListener/g)||[]).length===1,"Vault preview listener must not be duplicated");
+
+assert(html.includes('data-tab="hunt-intelligence"'),"HUNT Intelligence tab missing");
+assert(html.includes('id="intelligence-grid"'),"HUNT Intelligence capability grid missing");
+assert(html.includes('id="intelligence-simulate"'),"HUNT Intelligence simulation control missing");
+assert(html.includes("OWNER GATE · EXECUTION OFF"),"HUNT Intelligence owner gate missing");
+assert(js.includes("function renderHuntIntelligence"),"HUNT Intelligence renderer missing");
+assert(js.includes("function simulateHuntIntelligence"),"HUNT Intelligence simulator missing");
+assert(js.includes("SIMULATION_ONLY"),"Simulation-only execution contract missing");
+assert(js.includes("EXECUTION_ALLOWED: false"),"Execution-off guard missing");
+assert(js.includes("SPEND_AUTHORIZED: false"),"Spend guard missing");
+assert(js.includes("PUBLISHING_AUTHORIZED: false"),"Publishing guard missing");
+assert(css.includes(".intelligence-grid"),"HUNT Intelligence layout missing");
