@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "executive": "boom-executive",
   "report_contract": {
     "required": [
@@ -461,6 +461,215 @@
         "PROPOSE",
         "BLOCK"
       ]
+    },
+    {
+      "id": "decision-intelligence",
+      "name": "Decision Intelligence Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "ranking",
+        "next_best_experience",
+        "discovery_lane",
+        "reason_codes",
+        "confidence",
+        "repetition_control"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "SAFE_DYNAMIC"
+      ]
+    },
+    {
+      "id": "hunt-worlds-flow",
+      "name": "HUNT Worlds & Dynamic Flow Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "worlds",
+        "dynamic_layout",
+        "transitions",
+        "discovery_units",
+        "controlled_surprise",
+        "continuity"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "SAFE_DYNAMIC",
+        "STAGE_FIX"
+      ]
+    },
+    {
+      "id": "boom-stylist",
+      "name": "BOOM Stylist Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "styling",
+        "complete_the_look",
+        "occasion_mode",
+        "look_locker",
+        "owned_item_styling",
+        "style_explanations"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "SAFE_DYNAMIC"
+      ]
+    },
+    {
+      "id": "boom-mirror",
+      "name": "BOOM Mirror Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "try_on",
+        "photo_intake",
+        "body_anchor_mapping",
+        "focus_engine",
+        "accessory_preview",
+        "garment_preview",
+        "mirror_privacy"
+      ],
+      "mode": "on_demand",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "STAGE_FIX"
+      ],
+      "owner_gate": [
+        "OWNER_APPROVAL"
+      ]
+    },
+    {
+      "id": "creative-brand-factory",
+      "name": "Creative & Brand Factory Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "hero_products",
+        "storyboards",
+        "creative_variants",
+        "video",
+        "image_motion",
+        "visual_qa",
+        "creative_performance"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "STAGE_FIX"
+      ],
+      "owner_gate": [
+        "OWNER_APPROVAL"
+      ]
+    },
+    {
+      "id": "experimentation-learning",
+      "name": "Experimentation & Learning Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "experiments",
+        "holdouts",
+        "feature_flags",
+        "ranking_tests",
+        "layout_tests",
+        "creative_tests",
+        "long_term_metrics"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "SAFE_DYNAMIC"
+      ]
+    },
+    {
+      "id": "knowledge-freshness",
+      "name": "Knowledge Freshness Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "freshness",
+        "live_verification",
+        "source_quality",
+        "volatile_facts",
+        "supplier_changes",
+        "model_changes",
+        "market_changes"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ]
+    },
+    {
+      "id": "memory-continuity",
+      "name": "Memory & Continuity Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "history",
+        "session_continuity",
+        "look_history",
+        "watch_state",
+        "taste_memory",
+        "user_corrections"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "SAFE_DYNAMIC"
+      ]
+    },
+    {
+      "id": "share-referral",
+      "name": "Share & Referral Manager",
+      "reports_to": "boom-executive",
+      "scope": [
+        "share_cards",
+        "referrals",
+        "points",
+        "shop_together",
+        "voting",
+        "reward_abuse"
+      ],
+      "mode": "continuous",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ],
+      "owner_gate": [
+        "OWNER_APPROVAL"
+      ]
+    },
+    {
+      "id": "supplier-hypersku",
+      "name": "HyperSKU Supplier Manager",
+      "reports_to": "supplier-shipping",
+      "scope": [
+        "hypersku",
+        "product_mapping",
+        "sku_variants",
+        "inventory",
+        "shipping_quotes",
+        "orders",
+        "tracking",
+        "provider_errors"
+      ],
+      "mode": "integration_pilot",
+      "can_auto": [
+        "OBSERVE",
+        "PROPOSE",
+        "BLOCK"
+      ],
+      "owner_gate": [
+        "OWNER_APPROVAL"
+      ]
     }
   ],
   "departments": [
@@ -541,5 +750,36 @@
     "return_quality_signals",
     "supplier_gaps",
     "recommended_actions"
-  ]
+  ],
+  "change_policy": {
+    "default": "additive_no_regression",
+    "preserve_existing": true,
+    "modify_existing_only_when_required": true,
+    "required_change_evidence": [
+      "reason",
+      "affected_components",
+      "tests",
+      "fallback"
+    ],
+    "owner_gate_for_material_behavior_change": true
+  },
+  "knowledge_policy": {
+    "durable": [
+      "architecture",
+      "approved_product_rules",
+      "owner_gates",
+      "project_decisions"
+    ],
+    "volatile": [
+      "prices",
+      "stock",
+      "shipping",
+      "supplier_terms",
+      "laws",
+      "model_capabilities",
+      "market_trends"
+    ],
+    "volatile_requires_live_verification": true,
+    "never_present_stale_as_current": true
+  }
 }

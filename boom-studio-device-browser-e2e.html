@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BOOM Studio Device Browser E2E</title>
+<style>
+body{margin:0;background:#080b10;color:#eef;font:12px system-ui;padding:16px}.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.qa-card{border:1px solid #334052;border-radius:12px;padding:10px;background:#0e141d;overflow:hidden}.qa-card h2{font-size:12px;margin:0 0 8px}.frame-wrap{height:520px;overflow:hidden;border:1px solid #273344;background:#000}.frame-scale{transform-origin:top left}.qa-card iframe{border:0;background:#05080c}.qa-status{margin-top:8px;white-space:pre-wrap;font-size:10px}.pass{color:#7fd9a2}.fail{color:#ff8898}pre{white-space:pre-wrap}</style>
+</head><body data-qa="running">
+<h1>BOOM Studio Visual / Device QA</h1>
+<div class="qa-grid" id="qa-grid"></div>
+<pre id="qa-result">RUNNING</pre>
+<script>
+(()=>{
+ const specs=[{w:390,h:844},{w:768,h:1024},{w:1280,h:900},{w:1440,h:900}];
+ const grid=document.querySelector("#qa-grid"),out=document.querySelector("#qa-result");
+ const results=[];
+ const wait=ms=>new Promise(r=>setTimeout(r,ms));
+ function add(spec){
+   const card=document.createElement("section");card.className="qa-card";
+   const scale=Math.min(1,760/spec.w);
+   card.innerHTML=`<h2>${spec.w} × ${spec.h}</h2><div class="frame-wrap"><div class="frame-scale" style="transform:scale(${scale});width:${spec.w}px"><iframe width="${spec.w}" height="${spec.h}" src="boom-ai-studio.html?preview=1"></iframe></div></div><div class="qa-status">LOADING</div>`;
+   grid.appendChild(card); return {card,frame:card.querySelector("iframe"),status:card.querySelector(".qa-status"),scale};
+ }
+ async function inspect(spec,ui){
+   await new Promise(resolve=>{if(ui.frame.contentDocument?.readyState==="complete")resolve();else ui.frame.addEventListener("load",resolve,{once:true})});
+   let d=ui.frame.contentDocument,w=ui.frame.contentWindow;
+   let groups=0,live="";
+   for(let attempt=0;attempt<50;attempt++){
+     d=ui.frame.contentDocument;w=ui.frame.contentWindow;
+     groups=d?.querySelectorAll?.(".studio-node-group")?.length||0;
+     live=d?.querySelector?.("#live-state")?.textContent?.trim()||"";
+     if(groups===6&&/PREVIEW/.test(live)&&/LIVE ACTIONS OFF/.test(live))break;
+     await wait(120);
+   }
+   const app=d.querySelector(".app-shell"),login=d.querySelector(".login-screen"),workspace=d.querySelector(".workspace");
+   const ownerHome=d.querySelector("#owner-home");
+   const ownerDefault=Boolean(ownerHome?.classList.contains("active"));
+   const ownerMission=Boolean(d.querySelector("#owner-mission-title"));
+   const ownerQuick=Boolean(d.querySelector(".owner-quick-grid"));
+   const ownerCountsSafe=(d.querySelector("#owner-active-count")?.textContent?.trim()==="—")
+     &&(d.querySelector("#owner-approval-count")?.textContent?.trim()==="—")
+     &&(d.querySelector("#owner-attention-count")?.textContent?.trim()==="—");
+
+   d.querySelector('[data-tab="studio"]')?.click();
+   await wait(80);
+
+   const groupsAfterPro=d.querySelectorAll(".studio-node-group").length;
+   const studioActive=Boolean(d.querySelector("#studio")?.classList.contains("active"));
+   const output=Boolean(d.querySelector("#node-output"));
+   const audit=Boolean(d.querySelector("#prompt-coverage-audit"));
+   const trace=Boolean(d.querySelector("#product-trace-workspace"));
+   const rootWidth=d.documentElement.clientWidth,scrollWidth=d.documentElement.scrollWidth;
+   const pageOverflow=Math.max(0,scrollWidth-rootWidth);
+   const mobileMedia=w.matchMedia("(max-width:900px)").matches;
+   const safePreview=/PREVIEW/.test(live)&&/LIVE ACTIONS OFF/.test(live);
+   const pass=Boolean(app&&!app.hidden&&login?.hidden&&ownerDefault&&ownerMission&&ownerQuick&&ownerCountsSafe&&studioActive&&groupsAfterPro===6&&output&&audit&&trace&&safePreview&&pageOverflow<=4&&mobileMedia===(spec.w<=900));
+   const r={width:spec.w,height:spec.h,pass,ownerDefault,ownerMission,ownerQuick,ownerCountsSafe,studioActive,groups:groupsAfterPro,output,audit,trace,safePreview,pageOverflow,mobileMedia,workspaceOverflow:workspace?Math.max(0,workspace.scrollWidth-workspace.clientWidth):null};
+   ui.status.className="qa-status "+(pass?"pass":"fail");ui.status.textContent=(pass?"PASS":"FAIL")+"\n"+JSON.stringify(r,null,2);return r;
+ }
+ (async()=>{
+   for(const spec of specs){
+     const ui=add(spec);
+     results.push(await inspect(spec,ui));
+   }
+   const pass=results.every(x=>x.pass);
+   document.body.dataset.qa=pass?"pass":"fail";
+   out.textContent=(pass?"PASS":"FAIL")+"\n"+JSON.stringify({pass,results},null,2);
+ })().catch(err=>{document.body.dataset.qa="fail";out.textContent="FAIL\n"+String(err?.stack||err)});
+})();
+</script></body></html>

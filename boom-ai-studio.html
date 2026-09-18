@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>BOOM AI Engineering Studio</title>
-  <link rel="stylesheet" href="boom-ai-studio.css?v=1">
+  <link rel="stylesheet" href="boom-ai-studio.css?v=7">
 </head>
 <body>
   <header class="topbar">
@@ -17,11 +17,15 @@
       </div>
     </div>
     <nav class="tabs" aria-label="BOOM views">
-      <button class="tab active" data-tab="studio" type="button">Studio</button>
+      <button class="tab active owner-tab" data-tab="owner-home" type="button">Owner</button>
+      <button class="tab" data-tab="studio" type="button">Pro Studio</button>
+      <button class="tab" data-tab="hunt-intelligence" type="button">Brain</button>
+      <button class="tab" data-tab="professional-workbench" type="button">Professional</button>
+      <button class="tab" data-tab="brand-factory" type="button">Brand Factory</button>
+      <button class="tab" data-tab="connect" type="button">Connect</button>
       <button class="tab" data-tab="executions" type="button">Executions</button>
       <button class="tab" data-tab="evaluations" type="button">Evaluations</button>
       <button class="tab" data-tab="learning" type="button">Learning</button>
-      <button class="tab" data-tab="connect" type="button">Connect</button>
     </nav>
     <div class="top-actions">
       <span class="live-pill" id="live-state">CONNECTING</span>
@@ -60,14 +64,157 @@
 
     <section class="app-shell" id="app-shell" hidden>
       <section class="workspace">
-        <section class="view active" id="studio">
+        <section class="view owner-home-view active" id="owner-home">
+          <div class="owner-home-shell">
+            <section class="owner-hero">
+              <div class="owner-hero-copy">
+                <small>BOOM · OWNER CONTROL ROOM</small>
+                <h1>השליטה שלך ב־BOOM</h1>
+                <p>מסך אחד להבין מה קורה, לדבר עם BOOM ולקבל החלטות — בלי לראות את כל המורכבות שמאחור.</p>
+                <button class="owner-command-surface" type="button" data-owner-action="chat" aria-label="פתח שיחה עם BOOM">
+                  <span class="owner-command-mark" aria-hidden="true">B</span>
+                  <span class="owner-command-copy"><b>מה תרצה ש־BOOM יעשה?</b><small>שאל, בדוק, חפש, בנה או בקש הסבר</small></span>
+                  <span class="owner-command-key">⌘ K</span>
+                </button>
+                <div class="owner-hero-badges">
+                  <span class="owner-baseline-ok">STUDIO COMPLETE</span>
+                  <span id="owner-production-badge">PRODUCTION OFF</span>
+                  <span id="owner-payments-badge">PAYMENTS OFF</span>
+                </div>
+              </div>
+              <div class="owner-hero-orbit" aria-hidden="true">
+                <div class="owner-orbit-ambient"></div>
+                <div class="owner-orbit-ring owner-orbit-ring-a"></div>
+                <div class="owner-orbit-ring owner-orbit-ring-b"></div>
+                <div class="owner-orbit-ring owner-orbit-ring-c"></div>
+                <div class="owner-orbit-core"><span>B</span><small>BOOM</small></div>
+                <span class="owner-orbit-node node-owner">OWNER</span>
+                <span class="owner-orbit-node node-f35">F35</span>
+                <span class="owner-orbit-node node-hunt">HUNT</span>
+                <span class="owner-orbit-node node-qa">QA</span>
+                <span class="owner-orbit-dot d1"></span><span class="owner-orbit-dot d2"></span><span class="owner-orbit-dot d3"></span>
+              </div>
+            </section>
+
+            <section class="owner-stat-grid" aria-label="Owner summary">
+              <article>
+                <small>משימות פעילות</small>
+                <strong id="owner-active-count">—</strong>
+                <span id="owner-active-note">טוען מצב BOOM…</span>
+              </article>
+              <article>
+                <small>דורש ממך</small>
+                <strong id="owner-approval-count">—</strong>
+                <span id="owner-approval-note">אישורי Owner</span>
+              </article>
+              <article>
+                <small>התראות</small>
+                <strong id="owner-attention-count">—</strong>
+                <span id="owner-attention-note">רק מה שדורש תשומת לב</span>
+              </article>
+              <article>
+                <small>מצב HUNT</small>
+                <strong id="owner-hunt-state">—</strong>
+                <span id="owner-hunt-note">מצב השקה ותשלומים</span>
+              </article>
+            </section>
+
+            <div class="owner-main-grid">
+              <section class="owner-mission-card">
+                <div class="owner-section-head">
+                  <div><small>מה BOOM עושה עכשיו</small><h2 id="owner-mission-title">אין משימה פעילה</h2></div>
+                  <span class="owner-state-pill" id="owner-mission-state">IDLE</span>
+                </div>
+                <p id="owner-mission-description">כאשר BOOM יריץ משימה, היא תופיע כאן בשפה פשוטה.</p>
+                <div class="owner-mission-flow" id="owner-mission-flow">
+                  <span data-mission-step="goal">מטרה</span><i>→</i><span data-mission-step="check">בדיקה</span><i>→</i><span data-mission-step="decision">החלטה</span><i>→</i><span data-mission-step="owner">Owner</span>
+                </div>
+                <div class="owner-mission-footer">
+                  <span id="owner-mission-meta">אין נתוני Live כרגע</span>
+                  <button type="button" data-owner-action="ask-status">תסביר לי מה קורה</button>
+                </div>
+              </section>
+
+              <section class="owner-approvals-card">
+                <div class="owner-section-head">
+                  <div><small>צריך החלטה שלך</small><h2>Owner Approvals</h2></div>
+                  <button type="button" data-owner-action="open-output">הצג הכל</button>
+                </div>
+                <div class="owner-approval-list" id="owner-approval-list">
+                  <div class="owner-empty">אין החלטות שממתינות כרגע.</div>
+                </div>
+              </section>
+            </div>
+
+            <section class="owner-agents-section">
+              <div class="owner-section-head">
+                <div><small>הצוות של BOOM</small><h2>מי עובד בשבילך</h2></div>
+                <button type="button" data-owner-action="open-pro">מצב מקצועי</button>
+              </div>
+              <div class="owner-agent-grid" id="owner-agent-grid"></div>
+            </section>
+
+            <div class="owner-lower-grid">
+              <section class="owner-activity-card">
+                <div class="owner-section-head">
+                  <div><small>מה קרה לאחרונה</small><h2>פעילות אחרונה</h2></div>
+                  <button type="button" data-owner-action="open-runs">כל הפעילות</button>
+                </div>
+                <div class="owner-activity-list" id="owner-activity-list">
+                  <div class="owner-empty">אין פעילות Live בתצוגה הזו.</div>
+                </div>
+              </section>
+
+              <section class="owner-alerts-card">
+                <div class="owner-section-head">
+                  <div><small>רק מה שחשוב</small><h2>התראות</h2></div>
+                </div>
+                <div class="owner-alert-list" id="owner-alert-list">
+                  <div class="owner-empty">אין התראות פעילות.</div>
+                </div>
+              </section>
+            </div>
+
+            <section class="owner-quick-section">
+              <div class="owner-section-head">
+                <div><small>פעולה מהירה</small><h2>מה תרצה לעשות עכשיו?</h2></div>
+              </div>
+              <div class="owner-quick-grid">
+                <button type="button" data-owner-action="chat"><b>◉</b><span>דבר עם BOOM</span><small>שאלה חופשית</small></button>
+                <button type="button" data-owner-action="hunt-check"><b>◎</b><span>בדוק HUNT</span><small>מה חסר להשקה</small></button>
+                <button type="button" data-owner-action="opportunity"><b>⌕</b><span>חפש הזדמנות</span><small>F35 מחקר עמוק</small></button>
+                <button type="button" data-owner-action="suppliers"><b>◇</b><span>בדוק ספקים</span><small>API · מלאי · משלוח</small></button>
+                <button type="button" data-owner-action="campaign"><b>✦</b><span>בנה קמפיין</span><small>רעיון → בדיקה → אישור</small></button>
+                <button type="button" data-owner-action="open-pro"><b>⌘</b><span>מצב מקצועי</span><small>Agents · Traces · Evals</small></button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="studio">
+          <nav class="studio-department-nav" id="studio-department-nav" aria-label="BOOM Studio control and departments">
+            <button type="button" data-studio-view="hunt-intelligence"><b>01</b><span>Brain</span><small>Decision & Orchestration</small></button>
+            <button type="button" data-studio-group="intelligence"><b>02</b><span>Intelligence</span><small>A1–A6 · Build</small></button>
+            <button type="button" data-studio-group="release"><b>03</b><span>Release / QA</span><small>A7–A12 · Prove</small></button>
+            <button type="button" data-studio-view="professional-workbench"><b>04</b><span>Professional</span><small>Evidence & Engineering</small></button>
+            <button type="button" data-studio-view="professional-workbench" data-studio-anchor="professional-radar-report"><b>05</b><span>F35 Radar</span><small>Fresh Knowledge</small></button>
+            <button type="button" data-studio-group="commerce"><b>06</b><span>Commerce</span><small>Operations</small></button>
+            <button type="button" data-studio-group="suppliers"><b>07</b><span>Suppliers</span><small>Connectors</small></button>
+            <button type="button" data-studio-group="store"><b>08</b><span>Store</span><small>Departments</small></button>
+          </nav>
+          <section class="studio-phase-strip" aria-label="BOOM Studio phase status">
+            <div class="studio-phase-primary"><small>ARCHITECTURE</small><strong>B13 · BRAIN SOURCE COMPLETE</strong><span>Master Prompt contracts closed · runtime activation remains separate</span></div>
+            <div><small>RUNTIME</small><strong>OWNER-GATED</strong><span>No autonomous live actions</span></div>
+            <div><small>PRODUCTION</small><strong>OFF</strong><span>No merge · no live payment</span></div>
+            <button type="button" data-studio-view="hunt-intelligence" data-studio-anchor="b13-master-prompt-closure">Open B13</button>
+          </section>
           <div class="canvas-wrap" id="canvas">
             <svg class="links" id="links" aria-hidden="true"></svg>
 
             <div class="section-label label-owner">OWNER INPUT</div>
             <div class="section-label label-meta">META INTELLIGENCE</div>
             <div class="section-label label-runtime">RUNTIME</div>
-            <div class="section-label label-tools">DEPARTMENTS / TOOLS</div>
+            <div class="section-label label-tools">BOOM DEPARTMENTS · ORDERED FLOW</div>
 
             <article class="node node-trigger" id="node-owner" data-special="owner">
               <span class="port out"></span>
@@ -105,6 +252,13 @@
               <div class="node-body"><p>Before/after · Regression · Keep/Kill</p><footer><span id="eval-label">EVALS</span><span class="status-dot"></span></footer></div>
             </article>
 
+            <div class="section-label label-output">DECISION / OUTPUT</div>
+            <article class="node node-output" id="node-output" data-special="output">
+              <span class="port in"></span>
+              <div class="node-head"><span class="node-icon">→</span><span class="node-title">Decision / Owner Output</span></div>
+              <div class="node-body"><p>Approve · Block · Repair · Owner Gate</p><footer><span>NO AUTO-PUBLISH</span><span class="status-dot"></span></footer></div>
+            </article>
+
             <div id="tool-nodes"></div>
 
             <button class="attention-focus-btn" id="attention-focus" type="button">
@@ -115,7 +269,7 @@
               <span><i class="legend-dot healthy-dot"></i>Healthy</span>
               <span><i class="legend-dot watch-dot"></i>Watch</span>
               <span><i class="legend-dot blocked-dot"></i>Blocked</span>
-              <span>קו נע = Live activity</span>
+              <span>ירוק נע = Live · צהוב נע = Active Watch · אפור = Unverified</span>
             </div>
           </div>
         </section>
@@ -142,6 +296,461 @@
         <section class="view scroll-view" id="learning">
           <div class="page-head"><h1>AI Engineering Learning Lab</h1><p>Orchestration, Tools, Memory, Evals, Observability, MCP, Workflows ו־Guardrails.</p></div>
           <div class="learning-grid" id="learning-list"></div>
+        </section>
+
+
+        <section class="view scroll-view" id="professional-workbench">
+          <div class="page-head professional-head">
+            <div><small>F35 · PROFESSIONAL AI ENGINEERING</small><h1>Professional Workbench</h1><p>Observe → Triage → Dataset → Experiment → Human Review → Budget → Release. Read-only unless a separate Owner action explicitly enables a workflow.</p></div>
+            <span class="professional-gate">NO AUTO-PUBLISH · NO SPEND</span>
+          </div>
+          <div class="professional-loop" aria-label="Professional engineering loop">
+            <span>OBSERVE</span><b>→</b><span>TRIAGE</span><b>→</b><span>DATASET</span><b>→</b><span>EXPERIMENT</span><b>→</b><span>REVIEW</span><b>→</b><span>GATE</span>
+          </div>
+          <div class="professional-summary" id="professional-summary"></div>
+          <div class="professional-grid" id="professional-grid"></div>
+          <section class="professional-panel">
+            <div class="professional-panel-head"><div><small>TRACE EXPLORER</small><h2>Latest agent / worker / eval traces</h2></div><span id="professional-trace-meta">—</span></div>
+            <div class="professional-trace-list" id="professional-trace-list"></div>
+          </section>
+          <section class="professional-split">
+            <article class="professional-panel">
+              <div class="professional-panel-head"><div><small>FAILURE INBOX → DATASET</small><h2>What should become a regression test?</h2></div><span id="professional-dataset-meta">—</span></div>
+              <div class="professional-mini-list" id="professional-failure-list"></div>
+            </article>
+            <article class="professional-panel">
+              <div class="professional-panel-head"><div><small>EXPERIMENT DIFF</small><h2>Baseline vs candidate</h2></div><span id="professional-experiment-meta">—</span></div>
+              <div class="professional-mini-list" id="professional-experiment-list"></div>
+            </article>
+          </section>
+          <section class="professional-split">
+            <article class="professional-panel">
+              <div class="professional-panel-head"><div><small>HUMAN / OWNER REVIEW</small><h2>Annotation & decision queue</h2></div><span id="professional-review-meta">—</span></div>
+              <div class="professional-mini-list" id="professional-review-list"></div>
+            </article>
+            <article class="professional-panel">
+              <div class="professional-panel-head"><div><small>COST / LATENCY</small><h2>Budget & performance truth</h2></div><span id="professional-cost-meta">—</span></div>
+              <pre id="professional-cost-report">Instrumentation not evaluated yet.</pre>
+            </article>
+          </section>
+          <section class="professional-split">
+            <article class="professional-panel">
+              <div class="professional-panel-head"><div><small>EVALUATOR GOVERNANCE</small><h2>Graders · human alignment · online eval · CI gate</h2></div><span>FAIL CLOSED</span></div>
+              <pre id="professional-evaluator-report">Evaluator governance not evaluated yet.</pre>
+            </article>
+            <article class="professional-panel">
+              <div class="professional-panel-head"><div><small>RED TEAM / CALIBRATION</small><h2>Safety regressions · confidence · team judge</h2></div><span>READ ONLY</span></div>
+              <pre id="professional-safety-report">Safety engineering evidence not evaluated yet.</pre>
+            </article>
+          </section>
+          <section class="professional-panel">
+            <div class="professional-panel-head"><div><small>REPRODUCIBILITY LINEAGE</small><h2>Dataset Version · Prompt Version · Eval Run · Source Commit</h2></div><span>FAIL CLOSED</span></div>
+            <pre id="professional-lineage-report">Eval reproducibility lineage not evaluated yet.</pre>
+          </section>
+          <section class="professional-panel">
+            <div class="professional-panel-head"><div><small>READ-ONLY OBSERVABILITY CELL</small><h2>Health · Security · Performance · Capacity</h2></div><span>NO AUTO-FIX</span></div>
+            <pre id="professional-observability-report">Observability evidence store not evaluated yet.</pre>
+          </section>
+          <section class="professional-panel">
+            <div class="professional-panel-head"><div><small>F35 KNOWLEDGE RADAR</small><h2>Fresh official sources · verified findings · stale-source watch</h2></div><span>OWNER REVIEW</span></div>
+            <pre id="professional-radar-report">F35 knowledge freshness not evaluated yet.</pre>
+          </section>
+          <section class="professional-panel professional-contract">
+            <div class="professional-panel-head"><div><small>PROFESSIONAL GAPS</small><h2>Evaluator Registry · Human Alignment · Ground Truth · Online Evals · Eval Reproducibility · Observability · Prompt/Trace Lineage · F35 Freshness</h2></div><button class="top-btn" id="professional-refresh" type="button">Refresh Workbench</button></div>
+            <pre id="professional-report">No professional snapshot yet.</pre>
+          </section>
+        </section>
+
+        <section class="view scroll-view" id="brand-factory">
+          <div class="page-head brand-factory-head">
+            <div><small>BOOM BRAND FACTORY · DRAFT ONLY</small><h1>Product → Brand → Creative Tournament</h1><p>Research · Positioning · Hooks · Concepts · Scripts · Red Team · Score · Owner Gate.</p></div>
+            <span class="brand-gate">OWNER APPROVAL REQUIRED</span>
+          </div>
+          <div class="brand-factory-layout">
+            <form class="brand-brief" id="brand-brief">
+              <h2>1. Product Truth</h2>
+              <p>מזינים רק נתונים מאומתים. BOOM לא רשאי להמציא מחיר, מלאי, משלוח, ביצועים או claims.</p>
+              <div class="brand-form-grid brand-source-grid">
+                <label>Provider<input id="brand-provider" maxlength="40" value="CJdropshipping"></label>
+                <label>Country<input id="brand-country" maxlength="2" value="IL"></label>
+                <label>HUNT item ID<input id="brand-item-id" maxlength="80" placeholder="Product ID"></label>
+                <label>Variant ID<input id="brand-variant-id" maxlength="80" placeholder="Variant ID"></label>
+              </div>
+              <button class="brand-verify" id="brand-verify" type="button">Verify from HUNT</button>
+              <label>Product name<input id="brand-product-name" required maxlength="120" placeholder="Real HUNT product"></label>
+              <div class="brand-form-grid">
+                <label>Category<input id="brand-category" maxlength="80" placeholder="e.g. phone accessories"></label>
+                <label>Target market<input id="brand-market" maxlength="80" placeholder="e.g. Israel / Germany"></label>
+                <label>Sale price<input id="brand-price" inputmode="decimal" placeholder="0.00"></label>
+                <label>Supplier cost<input id="brand-cost" inputmode="decimal" placeholder="0.00"></label>
+                <label>Shipping cost<input id="brand-shipping" inputmode="decimal" placeholder="0.00"></label>
+                <label>Currency<input id="brand-currency" maxlength="8" value="USD"></label>
+              </div>
+              <label>Verified product facts<textarea id="brand-facts" rows="4" maxlength="1200" placeholder="Materials, sizes, compatibility, verified supplier facts..."></textarea></label>
+              <label>Evidence / missing proof<textarea id="brand-proof" rows="3" maxlength="900" placeholder="What is verified, what still needs proof"></textarea></label>
+              <div class="brand-finance" id="brand-finance">Gross margin: —</div>
+              <div class="brand-actions"><button class="brand-run" id="brand-run" type="submit">Run Brand Factory</button><button class="brand-seed" id="brand-seed" type="button">Load F35 Seed</button><button class="brand-clear" id="brand-clear" type="button">Clear</button></div>
+              <div class="brand-status" id="brand-status">Ready · no campaign will be published.</div>
+            </form>
+            <section class="brand-workbench">
+              <div class="brand-pipeline" id="brand-pipeline">
+                <article class="brand-stage" data-brand-stage="audience"><b>01</b><strong>Audience</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="positioning"><b>02</b><strong>Positioning</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="hooks"><b>03</b><strong>10 Hooks</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="concepts"><b>04</b><strong>5 Concepts</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="scripts"><b>05</b><strong>3 Scripts</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="red_team"><b>06</b><strong>Red Team</strong><span>waiting</span></article>
+                <article class="brand-stage" data-brand-stage="score"><b>07</b><strong>Score</strong><span>waiting</span></article>
+                <article class="brand-stage owner" data-brand-stage="owner_gate"><b>08</b><strong>Owner Gate</strong><span>locked</span></article>
+              </div>
+              <section class="brand-result-card">
+                <div class="brand-result-head"><div><small>MISSION OUTPUT</small><h2 id="brand-result-title">No mission yet</h2></div><button id="brand-copy" type="button" disabled>COPY</button></div>
+                <div class="brand-scoreboard" id="brand-scoreboard"></div>
+                <pre id="brand-output">Run one verified product through the factory. Output remains a draft until Owner approval.</pre>
+              </section>
+              <section class="brand-video-router-card">
+                <div class="brand-result-head"><div><small>VIDEO ENGINE ROUTER</small><h2>Shot routing · plan only</h2></div><span class="brand-gate">NO GENERATION / NO SPEND</span></div>
+                <div class="brand-video-providers" id="brand-video-providers"></div>
+                <div class="brand-video-actions"><button id="brand-video-plan" type="button" disabled>Build Video Route Plan</button><button id="brand-video-qa" type="button" disabled>Run Creative QA 12→4</button></div>
+                <pre id="brand-video-output">Complete or load a Brand Mission with a video prompt pack.</pre><div class="brand-qa-summary" id="brand-qa-summary">Creative QA waiting for a route plan.</div><pre id="brand-video-qa-output">No shortlist yet.</pre>
+              </section>
+              <section class="brand-media-vault-card">
+                <div class="brand-result-head"><div><small>BOOM MEDIA VAULT</small><h2>Private storage → Post-Gen QA → Owner Gate</h2></div><span class="brand-gate">RUNTIME LIVE · OWNER-GATED</span></div>
+                <div class="brand-vault-flow"><span>GENERATED</span><b>→</b><span>SERVER INGEST + SHA-256</span><b>→</b><span>PRIVATE VAULT</span><b>→</b><span>VISUAL QA</span><b>→</b><span>POST-GEN QA</span><b>→</b><span>OWNER REVIEW</span></div>
+                <div class="brand-vault-controls"><input id="vault-mission-id" placeholder="Mission ID" value="BF-IL-0001" /><input id="vault-asset-id" placeholder="Asset ID e.g. S2-4" /><button id="vault-preview" type="button" disabled>Private Preview</button><button id="vault-visual-qa" type="button" disabled>Visual QA · 5 Frames</button></div>
+                <div class="brand-vault-checks" id="vault-qa-checks"><label><input type="checkbox" data-vault-qa="product_fidelity" disabled /> Product fidelity</label><label><input type="checkbox" data-vault-qa="no_unverified_claims" disabled /> No unverified claims</label><label><input type="checkbox" data-vault-qa="no_fake_reviews" disabled /> No fake reviews</label><label><input type="checkbox" data-vault-qa="no_unintended_branding" disabled /> No unintended branding</label><label><input type="checkbox" data-vault-qa="no_major_visual_defects" disabled /> No major visual defects</label></div>
+                <div class="brand-vault-controls"><button id="vault-qa-commit" type="button" disabled>Commit QA</button><input id="vault-owner-note" maxlength="500" placeholder="Owner note (optional)" /><button id="vault-owner-approve" type="button" disabled>Owner Approve</button><button id="vault-owner-reject" type="button" disabled>Reject</button></div>
+                <pre id="vault-output">Media Vault runtime is deployed. Controls require an authenticated Owner/Admin session and a stored asset.</pre>
+                <p>Provider output is fetched server-side only. Visual QA samples 5 short-lived private preview frames, compares them with verified product imagery, and must pass before Post-Gen QA can pass. No public media URL, and QA pass never publishes automatically.</p>
+              </section>
+              <section class="brand-media-vault-card" id="brand-deployment-readiness">
+                <div class="brand-result-head"><div><small>DEPLOYMENT READINESS</small><h2>Source → Runtime → Providers → Owner Activation</h2></div><span class="brand-gate" id="deployment-readiness-badge">RUNTIME READY</span></div>
+                <div class="brand-vault-flow"><span>SOURCE_READY</span><b>→</b><span>RUNTIME_READY</span><b>→</b><span>PROVIDERS_READY</span><b>→</b><span>OWNER_ACTIVATION</span><b>→</b><span>FIRST GENERATION</span></div>
+                <div class="brand-video-actions"><button id="deployment-readiness-refresh" type="button">Check Provider Readiness</button></div>
+                <pre id="deployment-readiness-output">Runtime infrastructure is deployed. Sign in as Owner/Admin to check secret presence and enable flags without exposing secret values.</pre>
+                <p>Readiness checks expose booleans only. They never return provider keys, never authorize spend, and never publish.</p>
+              </section>
+            </section>
+          </div>
+        </section>
+
+
+        <section class="view scroll-view" id="hunt-intelligence">
+          <div class="page-head intelligence-head">
+            <div><small>BOOM CONTROL PLANE · PLAN & SIMULATE FIRST</small><h1>HUNT Intelligence</h1><p>כל המוחות של HUNT נבנים, נבדקים ומאושרים כאן לפני חיבור לביצוע.</p></div>
+            <span class="brand-gate">OWNER GATE · EXECUTION OFF</span>
+          </div>
+          <section class="intelligence-policy">
+            <strong>Studio-first policy</strong>
+            <p>Simulation reads capability truth only. It cannot publish, spend, charge, call suppliers, enable production, or change the live storefront.</p>
+          </section>
+          <div class="intelligence-summary" id="intelligence-summary"></div>
+          <div class="intelligence-grid" id="intelligence-grid"></div>
+          <section class="brain-detail" id="brain-detail" aria-live="polite">
+            <div class="brain-detail-empty">Select a brain to inspect its contract, evidence, dependencies and execution gates.</div>
+          </section>
+          <section class="planning-board">
+            <div class="planning-board-head">
+              <div><small>BOOM PLANNING BOARD</small><h2>Plan before execution</h2><p>BOOM prepares an auditable plan here. Approval permits implementation planning only — never live execution.</p></div>
+              <span class="brand-gate">NO LIVE ACTIONS</span>
+            </div>
+            <label class="planning-objective">Owner objective
+              <textarea id="planning-objective" rows="3" maxlength="600" placeholder="Example: Prepare the HUNT 2037 Alpha plan inside BOOM Studio."></textarea>
+            </label>
+            <div class="planning-actions">
+              <button class="top-btn" id="planning-build" type="button">Build draft plan</button>
+              <button class="top-btn" id="planning-revision" type="button" disabled>Request revision</button>
+              <button class="top-btn" id="planning-approve" type="button" disabled>Approve planning</button>
+            </div>
+            <div class="planning-status" id="planning-status">DRAFT_NOT_CREATED · EXECUTION_OFF</div>
+            <pre id="planning-output">No plan exists yet.</pre>
+          </section>
+          <section class="approval-center">
+            <div class="approval-center-head">
+              <div><small>OWNER CONTROL</small><h2>Approval Queue & Version History</h2><p>כל גרסה נשמרת. החלטה חדשה אינה מוחקת החלטה קודמת ואינה מפעילה ביצוע.</p></div>
+              <span class="brand-gate">AUDIT TRAIL</span>
+            </div>
+            <div class="approval-layout">
+              <div class="approval-queue" id="approval-queue"><p class="approval-empty">No planning decisions yet.</p></div>
+              <article class="approval-evidence">
+                <h3>Permanent execution boundary</h3>
+                <ul>
+                  <li>Planning approval ≠ production approval</li>
+                  <li>No spend or publishing authorization</li>
+                  <li>No supplier, payment or fulfillment activation</li>
+                  <li>Every revision creates a new immutable history entry</li>
+                </ul>
+              </article>
+            </div>
+          </section>
+          <section class="alpha-blueprint">
+            <div class="alpha-blueprint-head">
+              <div><small>FIRST CONTROLLED PROGRAM</small><h2>HUNT 2037 Alpha Blueprint</h2><p>תוכנית מלאה בתוך BOOM Studio. כל שלב נשאר חסום עד שהראיות והאישור המתאימים קיימים.</p></div>
+              <button class="top-btn" id="alpha-load-plan" type="button">Load into Planning Board</button>
+            </div>
+            <div class="alpha-stage-grid" id="alpha-stage-grid"></div>
+            <section class="truth-workspace">
+              <div class="truth-workspace-head"><div><small>A1 WORKSPACE</small><h3>Product Truth & Country Simulation</h3><p>Manual verified evidence only. This form never contacts a supplier and never publishes a product.</p></div><span>SIMULATION ONLY</span></div>
+              <div class="truth-form-grid">
+                <label>Provider<input id="truth-provider" value="CJdropshipping" maxlength="40"></label>
+                <label>Destination country<input id="truth-country" value="IL" maxlength="2"></label>
+                <label>Item ID<input id="truth-item-id" maxlength="90"></label>
+                <label>SKU<input id="truth-sku" maxlength="90"></label>
+                <label>Variant ID<input id="truth-variant-id" maxlength="90"></label>
+                <label>Warehouse<input id="truth-warehouse" maxlength="80"></label>
+                <label>Stock<input id="truth-stock" type="number" min="0" step="1"></label>
+                <label>Evidence checked at<input id="truth-checked-at" type="datetime-local"></label>
+                <label>Supplier cost<input id="truth-cost" type="number" min="0" step=".01"></label>
+                <label>Shipping cost<input id="truth-shipping" type="number" min="0" step=".01"></label>
+                <label>Landed cost<input id="truth-landed" type="number" min="0" step=".01"></label>
+                <label>HUNT retail price<input id="truth-retail" type="number" min="0" step=".01"></label>
+                <label>Shipping method<input id="truth-shipping-method" maxlength="80"></label>
+                <label>ETA minimum days<input id="truth-eta-min" type="number" min="0" step="1"></label>
+                <label>ETA maximum days<input id="truth-eta-max" type="number" min="0" step="1"></label>
+                <label>Returns state<input id="truth-returns" maxlength="80"></label>
+              </div>
+              <label class="truth-check"><input id="truth-country-supported" type="checkbox" checked> Exact SKU is supported for this destination</label>
+              <label class="truth-check"><input id="truth-restricted" type="checkbox"> Restrictions exist for this product/destination</label>
+              <div class="truth-actions"><button class="top-btn" id="truth-simulate" type="button">Evaluate evidence</button></div>
+              <div class="truth-result-status" id="truth-result-status">NOT_EVALUATED · EXECUTION_OFF</div>
+              <pre id="truth-result">Enter verified evidence to simulate the Product Truth gate.</pre>
+            </section>
+            <section class="decision-workspace">
+              <div class="truth-workspace-head"><div><small>A2 WORKSPACE</small><h3>Decision Brain & Taste DNA Simulation</h3><p>Explainable scoring only. Sensitive traits are never accepted as ranking inputs.</p></div><span>SIMULATION ONLY</span></div>
+              <div class="decision-form-grid">
+                <label>Category<input id="decision-category" value="fashion" maxlength="60"></label>
+                <label>Provider<input id="decision-provider" value="CJdropshipping" maxlength="40"></label>
+                <label>Recorded interactions<input id="decision-interactions" type="number" min="0" step="1" value="0"></label>
+                <label>Category taste score<input id="decision-taste-score" type="number" step=".1" value="0"></label>
+                <label>Relevance 0–100<input id="decision-relevance" type="number" min="0" max="100" value="70"></label>
+                <label>Quality 0–100<input id="decision-quality" type="number" min="0" max="100" value="80"></label>
+                <label>Shipping 0–100<input id="decision-shipping" type="number" min="0" max="100" value="70"></label>
+                <label>Trust 0–100<input id="decision-trust" type="number" min="0" max="100" value="80"></label>
+                <label>Freshness 0–100<input id="decision-freshness" type="number" min="0" max="100" value="70"></label>
+                <label>Novelty 0–100<input id="decision-novelty" type="number" min="0" max="100" value="60"></label>
+                <label>Creative 0–100<input id="decision-creative" type="number" min="0" max="100" value="50"></label>
+                <label>Margin rate %<input id="decision-margin" type="number" min="0" max="100" value="25"></label>
+              </div>
+              <div class="decision-checks">
+                <label><input id="decision-truth-live" type="checkbox"> Product Truth is LIVE_VERIFIED</label>
+                <label><input id="decision-market" type="checkbox" checked> Market eligible</label>
+                <label><input id="decision-shipping-eligible" type="checkbox" checked> Shipping eligible</label>
+                <label><input id="decision-stock" type="checkbox" checked> Stock available</label>
+                <label><input id="decision-media" type="checkbox" checked> Media verified</label>
+              </div>
+              <div class="truth-actions"><button class="top-btn" id="decision-simulate" type="button">Simulate decision</button></div>
+              <div class="truth-result-status" id="decision-result-status">NOT_EVALUATED · EXECUTION_OFF</div>
+              <pre id="decision-result">Set evidence and taste context to preview BOOM's decision.</pre>
+            </section>
+            <section class="memory-workspace">
+              <div class="truth-workspace-head"><div><small>A3 WORKSPACE</small><h3>Memory & Actions Simulation</h3><p>Isolated session events only. Nothing is written to a real user profile or HUNT history.</p></div><span>ISOLATED MEMORY</span></div>
+              <div class="memory-controls">
+                <label>Action<select id="memory-action"><option value="impression">Impression</option><option value="product_view">Product view</option><option value="dwell">Dwell</option><option value="like">Like</option><option value="save">Save</option><option value="share">Share</option><option value="skip">Skip</option><option value="not_interested">Not interested</option><option value="add_to_cart">Add to cart</option><option value="purchase">Purchase</option><option value="return">Return</option></select></label>
+                <label>Category<input id="memory-category" value="fashion" maxlength="60"></label>
+                <label>Provider<input id="memory-provider" value="CJdropshipping" maxlength="40"></label>
+                <label>Item ID<input id="memory-item-id" value="studio-product-1" maxlength="90"></label>
+              </div>
+              <div class="planning-actions">
+                <button class="top-btn" id="memory-add-event" type="button">Add simulated event</button>
+                <button class="top-btn" id="memory-reset-simulation" type="button">Reset simulation</button>
+              </div>
+              <div class="memory-simulation-grid">
+                <article><small>EVENT TIMELINE</small><div id="memory-event-list" class="memory-event-list"><p>No simulated events.</p></div></article>
+                <article><small>DECISION CONTEXT</small><pre id="memory-context-result">Interactions: 0 · Mode: COLD_START</pre></article>
+              </div>
+            </section>
+            <section class="flow-workspace">
+              <div class="truth-workspace-head"><div><small>A4 WORKSPACE</small><h3>Dynamic Flow & Worlds Simulation</h3><p>Layout slots only. BOOM does not invent products; every slot still requires a verified eligible SKU.</p></div><span>STRUCTURE PREVIEW</span></div>
+              <div class="flow-controls">
+                <label>Interaction count<input id="flow-interactions" type="number" min="0" step="1" value="0"></label>
+                <label>Primary world<select id="flow-world"><option value="all">All worlds</option><option value="fashion">Fashion</option><option value="jewelry">Jewelry</option><option value="tech-home">Tech / Home</option><option value="travel">Travel</option></select></label>
+                <label>Session seed<input id="flow-seed" value="owner-preview" maxlength="40"></label>
+                <label>Number of slots<input id="flow-slots" type="number" min="4" max="18" value="10"></label>
+              </div>
+              <div class="decision-checks">
+                <label><input id="flow-surprise" type="checkbox" checked> Controlled surprise enabled</label>
+                <label><input id="flow-new" type="checkbox" checked> NEW lane enabled</label>
+                <label><input id="flow-reduced-motion" type="checkbox"> Reduced-motion preview</label>
+              </div>
+              <div class="truth-actions"><button class="top-btn" id="flow-simulate" type="button">Compose Alpha flow</button></div>
+              <div class="truth-result-status" id="flow-result-status">NOT_COMPOSED · STOREFRONT_OFF</div>
+              <div class="flow-preview" id="flow-preview"><p>Compose a structural preview. No products will be created.</p></div>
+              <pre id="flow-result">All preview slots require Product Truth before future population.</pre>
+            </section>
+            <section class="personal-workspace">
+              <div class="truth-workspace-head"><div><small>A5 WORKSPACE</small><h3>Stylist & Safe Mirror Simulation</h3><p>Mission and focus-plan preview only. No image upload, camera access, body analysis or AI rendering.</p></div><span>PRIVACY FIRST</span></div>
+              <div class="personal-form-grid">
+                <label>Occasion<select id="personal-occasion"><option value="everyday">Everyday</option><option value="work">Work</option><option value="dinner">Dinner</option><option value="travel">Travel</option><option value="event">Event</option><option value="gift">Gift</option><option value="home_office">Home Office</option></select></label>
+                <label>Anchor category<input id="personal-category" value="women-dresses" maxlength="60"></label>
+                <label>Total budget<input id="personal-budget" type="number" min="0" step=".01" value="150"></label>
+                <label>Anchor price<input id="personal-anchor-price" type="number" min="0" step=".01" value="50"></label>
+                <label>Country<input id="personal-country" value="IL" maxlength="2"></label>
+                <label>Mirror product type<select id="personal-product-type"><option value="earrings">Earrings</option><option value="necklace">Necklace</option><option value="ring">Ring</option><option value="sunglasses">Sunglasses</option><option value="hat">Hat</option><option value="top">Top</option><option value="jeans">Jeans</option><option value="dress">Dress</option><option value="jacket">Jacket</option></select></label>
+                <label>Provider<input id="personal-provider" value="CJdropshipping" maxlength="40"></label>
+                <label>Item ID<input id="personal-item-id" maxlength="90"></label>
+                <label>Variant ID<input id="personal-variant-id" maxlength="90"></label>
+                <label>Preview confidence %<input id="personal-confidence" type="number" min="0" max="100" value="80"></label>
+                <label>Retention<select id="personal-retention"><option value="none">No retention</option><option value="session">Session only</option></select></label>
+              </div>
+              <div class="decision-checks">
+                <label><input id="personal-truth-live" type="checkbox"> Exact product is LIVE_VERIFIED</label>
+                <label><input id="personal-image-verified" type="checkbox"> Product image is verified</label>
+                <label><input id="personal-consent" type="checkbox"> Consent contract accepted</label>
+                <label><input id="personal-preview-permission" type="checkbox"> Preview permission granted</label>
+                <label><input id="personal-reduced-motion" type="checkbox"> Reduced motion</label>
+              </div>
+              <div class="truth-actions"><button class="top-btn" id="personal-simulate" type="button">Simulate Stylist & Mirror</button></div>
+              <div class="truth-result-status" id="personal-result-status">NOT_EVALUATED · PROVIDER_OFF</div>
+              <div class="personal-preview-grid">
+                <article><small>STYLIST MISSION</small><pre id="stylist-result">No mission simulated.</pre></article>
+                <article><small>MIRROR SAFETY DECISION</small><pre id="mirror-result">No Mirror decision simulated.</pre></article>
+              </div>
+            </section>
+            <section class="creative-workspace">
+              <div class="truth-workspace-head"><div><small>A6 WORKSPACE</small><h3>Creative Learning Simulation</h3><p>Plans a truthful creative tournament. Empty slots are not generated content and cannot be published.</p></div><span>PRIVATE DRAFT</span></div>
+              <div class="creative-form-grid">
+                <label>Product category<input id="creative-category" value="phone-cases" maxlength="60"></label>
+                <label>Target channel<select id="creative-channel"><option value="reels">Reels</option><option value="tiktok">TikTok</option><option value="shorts">YouTube Shorts</option><option value="product-page">Product page</option><option value="pinterest">Pinterest</option></select></label>
+                <label>Hook slots<input id="creative-hooks" type="number" min="1" max="20" value="10"></label>
+                <label>Concept slots<input id="creative-concepts" type="number" min="1" max="10" value="5"></label>
+                <label>Script slots<input id="creative-scripts" type="number" min="1" max="6" value="3"></label>
+                <label>QA threshold<input id="creative-threshold" type="number" min="0" max="100" value="75"></label>
+                <label>Test mode<select id="creative-test-mode"><option value="smallest-useful">Smallest useful test</option><option value="storyboard-only">Storyboard only</option><option value="prompt-pack-only">Prompt pack only</option></select></label>
+              </div>
+              <div class="decision-checks">
+                <label><input id="creative-truth-live" type="checkbox"> Product Truth is LIVE_VERIFIED</label>
+                <label><input id="creative-reference-locked" type="checkbox"> Exact product references locked</label>
+                <label><input id="creative-proof-ready" type="checkbox"> Claims/evidence boundary reviewed</label>
+              </div>
+              <div class="truth-actions"><button class="top-btn" id="creative-simulate" type="button">Build tournament plan</button></div>
+              <div class="truth-result-status" id="creative-result-status">NOT_PLANNED · GENERATION_OFF</div>
+              <div class="creative-tournament" id="creative-tournament"><p>No creative slots planned.</p></div>
+              <pre id="creative-result">Product truth, references and proof boundaries are required before creative planning can pass.</pre>
+            </section>
+            <section class="integration-workspace">
+              <div class="truth-workspace-head"><div><small>A7 WORKSPACE</small><h3>Integration QA & Alpha Readiness</h3><p>Reads A1–A6 evidence from this Studio session, checks cross-stage safety invariants, and produces one Owner-gated readiness report. It does not run providers or change Production.</p></div><span>OWNER GATE · PRODUCTION OFF</span></div>
+              <div class="integration-actions">
+                <button class="top-btn" id="alpha-integration-qa" type="button">Run A1–A6 integration QA</button>
+                <div class="truth-result-status" id="alpha-integration-status">NOT_RUN · PRODUCTION_OFF</div>
+              </div>
+              <div class="integration-summary" id="alpha-integration-summary">
+                <article><b>0/6</b><span>STAGES PASSED</span></article>
+                <article><b>LOCKED</b><span>OWNER GATE</span></article>
+                <article><b>OFF</b><span>PRODUCTION</span></article>
+              </div>
+              <div class="integration-stage-grid" id="alpha-integration-stage-grid"><p>Run A7 after exercising the A1–A6 simulation workspaces.</p></div>
+              <pre id="alpha-integration-report">No integration QA report yet. A7 will only inspect local Studio evidence.</pre>
+            </section>
+            <section class="harness-workspace">
+              <div class="truth-workspace-head"><div><small>A8 WORKSPACE</small><h3>Alpha Test Harness</h3><p>Runs one positive Alpha path plus fail-closed Truth, Privacy and Creative-proof scenarios entirely in simulation. No provider, publishing, spend or Production action is allowed.</p></div><span>4 SCENARIOS · SIMULATION ONLY</span></div>
+              <div class="harness-actions">
+                <button class="top-btn" id="alpha-harness-run" type="button">Run Alpha Test Harness</button>
+                <div class="truth-result-status" id="alpha-harness-status">NOT_RUN · PRODUCTION_OFF</div>
+              </div>
+              <div class="harness-summary" id="alpha-harness-summary">
+                <article><b>0/4</b><span>SCENARIOS PASSED</span></article>
+                <article><b>LOCKED</b><span>OWNER GATE</span></article>
+                <article><b>OFF</b><span>PRODUCTION</span></article>
+              </div>
+              <div class="harness-scenario-grid" id="alpha-harness-scenarios"><p>Run A8 to validate the positive path and three deliberate failure paths.</p></div>
+              <pre id="alpha-harness-report">No A8 harness report yet.</pre>
+            </section>
+            <section class="evidence-workspace">
+              <div class="truth-workspace-head"><div><small>A9 WORKSPACE</small><h3>Owner Alpha Evidence Pack & Release Gate</h3><p>Combines A1–A8 into one review snapshot with blockers, evidence fingerprint and permanent execution boundaries. This gate can authorize review only; it cannot activate Alpha, payments, order routing or Production.</p></div><span>REVIEW GATE ONLY</span></div>
+              <div class="evidence-actions">
+                <button class="top-btn" id="alpha-evidence-build" type="button">Build Owner Evidence Pack</button>
+                <div class="truth-result-status" id="alpha-evidence-status">NOT_BUILT · PRODUCTION_OFF</div>
+              </div>
+              <div class="evidence-summary" id="alpha-evidence-summary">
+                <article><b>0/8</b><span>STAGES PASSED</span></article>
+                <article><b>LOCKED</b><span>RELEASE GATE</span></article>
+                <article><b>OFF</b><span>ALPHA / PRODUCTION</span></article>
+              </div>
+              <div class="evidence-fingerprint" id="alpha-evidence-fingerprint">FINGERPRINT: —</div>
+              <div class="evidence-stage-grid" id="alpha-evidence-stages"><p>Build A9 after A7 and A8 evidence is available.</p></div>
+              <pre id="alpha-evidence-report">No Owner evidence pack yet.</pre>
+            </section>
+            <section class="rc-preview-workspace">
+              <div class="truth-workspace-head"><div><small>A10 WORKSPACE</small><h3>Alpha Release Candidate Preview</h3><p>Builds a private Owner-only RC snapshot from the A9 evidence pack. It previews the end-to-end journey across mobile, tablet and desktop contracts without live checkout, payments, order routing or Production changes.</p></div><span>PRIVATE PREVIEW · NO LIVE ACTIONS</span></div>
+              <div class="rc-preview-actions">
+                <button class="top-btn" id="alpha-rc-preview-build" type="button">Build Private RC Preview</button>
+                <div class="truth-result-status" id="alpha-rc-preview-status">NOT_BUILT · PRODUCTION_OFF</div>
+              </div>
+              <div class="rc-preview-summary" id="alpha-rc-preview-summary">
+                <article><b>0/6</b><span>JOURNEY STEPS READY</span></article>
+                <article><b>0/4</b><span>VIEWPORT CONTRACTS</span></article>
+                <article><b>OFF</b><span>CHECKOUT / PRODUCTION</span></article>
+              </div>
+              <div class="rc-device-grid" id="alpha-rc-devices"><p>No device preview contract yet.</p></div>
+              <div class="rc-journey-grid" id="alpha-rc-journey"><p>No RC journey snapshot yet.</p></div>
+              <pre id="alpha-rc-preview-report">No A10 private preview report yet.</pre>
+            </section>
+            <section class="rc-qa-workspace">
+              <div class="truth-workspace-head"><div><small>A11 WORKSPACE</small><h3>Full RC QA & Regression</h3><p>Runs a fail-closed release-candidate matrix across prerequisites, journey functionality, responsive contracts, accessibility basics, safety boundaries, storefront fallback and regression evidence.</p></div><span>A12 BLOCKED UNTIL PASS</span></div>
+              <div class="rc-qa-actions">
+                <button class="top-btn" id="alpha-rc-qa-run" type="button">Run Full RC QA</button>
+                <div class="truth-result-status" id="alpha-rc-qa-status">NOT_RUN · A12_BLOCKED</div>
+              </div>
+              <div class="rc-qa-summary" id="alpha-rc-qa-summary">
+                <article><b>0/0</b><span>CHECKS PASSED</span></article>
+                <article><b>0/7</b><span>QA GROUPS PASSED</span></article>
+                <article><b>LOCKED</b><span>A12 ELIGIBILITY</span></article>
+              </div>
+              <div class="rc-qa-group-grid" id="alpha-rc-qa-groups"><p>No QA matrix yet.</p></div>
+              <div class="rc-qa-check-grid" id="alpha-rc-qa-checks"><p>Run A11 after A10 is ready.</p></div>
+              <pre id="alpha-rc-qa-report">No A11 RC QA report yet.</pre>
+            </section>
+            <section class="final-gate-workspace">
+              <div class="truth-workspace-head"><div><small>A12 WORKSPACE</small><h3>Final Owner Go / No-Go Gate</h3><p>Builds the final Alpha decision pack from A9–A11. Owner decision is recorded locally for planning only. GO does not merge, deploy, enable payments, route orders or activate Production.</p></div><span>OWNER DECISION REQUIRED</span></div>
+              <div class="final-gate-actions">
+                <button class="top-btn" id="alpha-final-gate-build" type="button">Build Final Owner Gate</button>
+                <div class="truth-result-status" id="alpha-final-gate-status">NOT_BUILT · OWNER_DECISION_PENDING</div>
+              </div>
+              <div class="final-gate-summary" id="alpha-final-gate-summary">
+                <article><b>LOCKED</b><span>FINAL GATE</span></article>
+                <article><b>PENDING</b><span>OWNER DECISION</span></article>
+                <article><b>OFF</b><span>MERGE / PRODUCTION</span></article>
+              </div>
+              <div class="final-gate-evidence" id="alpha-final-gate-evidence"><p>Build A12 after A11 passes.</p></div>
+              <div class="final-owner-actions">
+                <button class="top-btn" id="alpha-final-go" type="button" disabled>GO · Private Alpha Planning Only</button>
+                <button class="top-btn" id="alpha-final-no-go" type="button">NO-GO · Hold</button>
+              </div>
+              <pre id="alpha-final-gate-report">No A12 final gate report yet. No Owner decision has been recorded.</pre>
+            </section>
+            <section class="product-trace-workspace" id="product-trace-workspace">
+              <div class="truth-workspace-head"><div><small>INTERNAL PRODUCT TRACE</small><h3>Source → Shelf → Checkout → Order → Finance</h3><p>Read-only Owner trace across existing HUNT order evidence. No customer email/address is displayed. Supplier identity is internal here and remains hidden from shopper UI.</p></div><span>ADMIN READ ONLY</span></div>
+              <div class="product-trace-actions">
+                <input id="product-trace-key" type="text" autocomplete="off" placeholder="Order UUID · External order ID · Payment session UUID">
+                <button class="top-btn" id="product-trace-run" type="button">Trace</button>
+                <div class="truth-result-status" id="product-trace-status">NOT_RUN · READ_ONLY</div>
+              </div>
+              <div class="product-trace-grid" id="product-trace-grid"><p>Enter an internal HUNT order/payment reference to build the evidence chain.</p></div>
+              <pre id="product-trace-report">No product trace has run.</pre>
+            </section>
+            <section class="prompt-audit-workspace" id="b13-master-prompt-closure">
+              <div class="truth-workspace-head"><div><small>B13 WORKSPACE</small><h3>Master Prompt Closure</h3><p>Closes the remaining HUNT 2037 brain contracts before visual redesign: Watch, Style Watch, Look intelligence, customer controls, post-purchase and referral collaboration foundations. Source-level only; no scheduler, notifications, payments, publishing or Production activation.</p></div><span>BRAIN COMPLETE GATE · RUNTIME OFF</span></div>
+              <div class="prompt-audit-summary" id="b13-summary"></div>
+              <div class="prompt-audit-grid" id="b13-grid"></div>
+              <pre id="b13-report">B13 closure audit has not rendered yet.</pre>
+            </section>
+            <section class="prompt-audit-workspace" id="prompt-coverage-audit">
+              <div class="truth-workspace-head"><div><small>OWNER PROMPT COVERAGE</small><h3>BOOM Studio Prompt Audit</h3><p>Checks the Studio structure against the approved BOOM/HUNT direction. PRESENT means structurally represented; PARTIAL means the Studio has the control but still needs private-preview/runtime verification.</p></div><span>NO CLAIM WITHOUT EVIDENCE</span></div>
+              <div class="prompt-audit-summary" id="prompt-audit-summary"></div>
+              <div class="prompt-audit-grid" id="prompt-audit-grid"></div>
+              <pre id="prompt-audit-report">Prompt coverage audit has not rendered yet.</pre>
+            </section>
+            <section class="alpha-exit-gate">
+              <strong>Alpha exit gate</strong>
+              <p>Real eligible products · explainable recommendations · Like/Save/Share · History · Worlds · Stylist · safe Mirror entry · stable checkout fallback · mobile/desktop QA.</p>
+              <span>OWNER REVIEW REQUIRED · PRODUCTION OFF</span>
+            </section>
+          </section>
+          <section class="intelligence-simulator">
+            <div><small>SAFE ORCHESTRATION PREVIEW</small><h2>Owner-Gated Simulation</h2><p>בדיקה יבשה של סדר המוחות והחסמים לפני ביצוע.</p></div>
+            <button class="top-btn" id="intelligence-simulate" type="button">Run simulation</button>
+            <pre id="intelligence-simulation">No simulation has run. Execution remains OFF.</pre>
+          </section>
         </section>
 
         <section class="view scroll-view" id="connect">
@@ -194,6 +803,18 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js"></script>
   <script src="market-core.js"></script>
-  <script src="boom-ai-studio.js?v=1"></script>
+  <script src="hunt-supplier-core.js?v=alpha1"></script>
+  <script src="hunt-country-product-truth.js?v=alpha1"></script>
+  <script src="boom-taste-dna.js?v=alpha1"></script>
+  <script src="boom-decision-brain.js?v=brain1"></script>
+  <script src="hunt-2037-flow-core.js?v=alpha1"></script>
+  <script src="hunt-experience-memory.js?v=memory1"></script>
+  <script src="boom-stylist-core.js?v=alpha1"></script>
+  <script src="boom-mirror-core.js?v=alpha1"></script>
+  <script src="brand-video-router.js?v=1"></script>
+  <script src="brand-creative-qa.js?v=1"></script>
+  <script src="brand-video-dispatch.js?v=1"></script>
+  <script src="boom-alpha-test-harness.js?v=alpha1"></script>\n  <script src="boom-alpha-evidence-pack.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-preview.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-qa.js?v=alpha1"></script>\n  <script src="boom-alpha-final-gate.js?v=alpha1"></script>
+  <script src="boom-professional-workbench.js?v=1"></script>\n  <script src="boom-b13-master-prompt.js?v=1"></script>\n  <script src="boom-ai-studio.js?v=5"></script>
 </body>
 </html>

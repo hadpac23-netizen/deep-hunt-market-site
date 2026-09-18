@@ -166,13 +166,13 @@
       const next={...old};
       if(kind==="like")next.liked=!Boolean(old.liked);
       if(kind==="save")next.saved=!Boolean(old.saved);
-      if(!next.liked&&!next.saved)state.delete(k);else state.set(k,next);
+      if(!next.liked&&!next.saved)state.delete(k);else state.set(k,{...meta,...next});
       persistLocal(meta,next);
       refreshButtons();
       const active=kind==="like"?Boolean(next.liked):Boolean(next.saved);
       if(active&&meta.category)H.recordSignal?.(meta.category,kind);
       window.HuntAnalytics?.shoppingAction?.({provider:meta.provider,itemId:meta.item_id,action:kind,active,category:meta.category||""});
-      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved),local:true}}));
+      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,title:meta.title||"",image_url:meta.image_url||"",liked:Boolean(next.liked),saved:Boolean(next.saved),action:kind,active,category:meta.category||"",local:true}}));
       emitState();
       return;
     }
@@ -223,7 +223,7 @@
         active:preferenceActive,
         category:meta.category||""
       });
-      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved)}}));
+      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,title:meta.title||"",image_url:meta.image_url||"",liked:Boolean(next.liked),saved:Boolean(next.saved),action:kind,active:preferenceActive,category:meta.category||""}}));
       emitState();
     }catch{
       state.set(k,old);
@@ -266,7 +266,7 @@
   const observer=new MutationObserver(queueScan);
   observer.observe(document.documentElement,{childList:true,subtree:true});
 
-  window.HuntShoppingActions={snapshot:snapshotRows};
+  window.HuntShoppingActions={snapshot:snapshotRows,rescan:scan};
 
   async function init(){
     loadLocalState();

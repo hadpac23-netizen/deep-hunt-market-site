@@ -17,6 +17,7 @@
   function providerKey(value){
     const key=clean(value).toLowerCase().replace(/[^a-z0-9]+/g,"");
     if(key.includes("cj"))return "cjdropshipping";
+    if(key.includes("hypersku"))return "hypersku";
     if(key.includes("eprolo"))return "eprolo";
     return key||"unknown";
   }

@@ -1,5 +1,43 @@
+export function memoryEligible(item:any,nowMs=Date.now()){
+  const trust=Math.max(0,Math.min(1,Number(item?.trust_score ?? item?.confidence ?? 0.5)));
+  if(Boolean(item?.quarantined))return false;
+  if(trust<0.65)return false;
+  const expiresAt=item?.expires_at?Date.parse(String(item.expires_at)):NaN;
+  if(Number.isFinite(expiresAt)&&expiresAt<=nowMs)return false;
+  return true;
+}
+
+export function contextUtility(item:any){
+  const relevance=Math.max(0,Math.min(1,Number(item?.relevance_score ?? 0.5)));
+  const freshness=Math.max(0,Math.min(1,Number(item?.freshness_score ?? 0.5)));
+  const trust=Math.max(0,Math.min(1,Number(item?.trust_score ?? item?.confidence ?? 0.5)));
+  const tokenCost=Math.max(1,Number(item?.token_cost)||Math.ceil(String(item?.content||"").length/4)||1);
+  return ((relevance*0.45)+(freshness*0.25)+(trust*0.30))/Math.max(1,tokenCost/100);
+}
+
+export function selectGovernedContext(items:any[],maxTokens=2600,nowMs=Date.now()){
+  const ranked=(items||[])
+    .filter((x:any)=>memoryEligible(x,nowMs))
+    .map((x:any)=>({...x,_utility:contextUtility(x),_token_cost:Math.max(1,Number(x?.token_cost)||Math.ceil(String(x?.content||"").length/4)||1)}))
+    .sort((a:any,b:any)=>b._utility-a._utility);
+  const selected:any[]=[];
+  let used=0;
+  for(const item of ranked){
+    if(used+item._token_cost>maxTokens)continue;
+    used+=item._token_cost;
+    selected.push(item);
+  }
+  return {selected,used_tokens:used,budget_tokens:maxTokens,dropped:Math.max(0,ranked.length-selected.length)};
+}
+
+export function canProposeWithPolicy(policy:any){
+  if(!policy||policy.enabled===false)return false;
+  const level=String(policy.permission_level||"observe");
+  return level==="propose"||level==="execute";
+}
+
 export function isContinuationMessage(message:string){
-  return /^(?:ילה+|יאללה|תמשיך|המשך|נו+|בצע|כן|מאשר|אישור|מה עכשיו\??|מה הלאה\??|מה המצב\??|איפה זה עומד(?: עכשיו)?\??|איפה עצרנו\??|לא הבנתי|תסביר|טוב|אוקי|אוקיי|בסדר|(?:היי\s*)?ב[ו]+ם+|boom|hey\s+boom|yes|approved|confirm|confirmed|كمل|يلا|تابع|نعم|موافق|شو هسه\??|وين وصلنا\??|مش فاهم|اشرح|continue|go on|next|what now\??|where are we\??|explain)$/i.test(String(message||"").trim());
+  return /^(?:ילה+|יאללה|תמשיך|המשך|נו+|בצע|כן|מאשר|אישור|(?:אשר|אישור)\s+.+(?:production|פרודקשן)\.?|מה עכשיו\??|מה הלאה\??|מה המצב\??|איפה זה עומד(?: עכשיו)?\??|איפה עצרנו\??|לא הבנתי|תסביר|טוב|אוקי|אוקיי|בסדר|(?:היי\s*)?ב[ו]+ם+|boom|hey\s+boom|yes|approved|confirm|confirmed|approve\s+.+production\.?|كمل|يلا|تابع|نعم|موافق|وافق\s+.+production\.?|شو هسه\??|وين وصلنا\??|مش فاهم|اشرح|continue|go on|next|what now\??|where are we\??|explain)$/i.test(String(message||"").trim());
 }
 
 export function needsOwnerGate(message:string){
@@ -81,14 +119,19 @@ export function deriveTopicState(message:string,current:any,managerId:string,con
 
 export function enforceEvidenceLanguage(displayText:string){
   const evidenceHint=/(verified|evidence|runtime|database|\bdb\b|\bapi\b|repository|\brepo\b|http\s*[1-5]\d\d|error\s*code|בדק|אומת|ראיה|قاعدة البيانات|تم التحقق)/i;
+  const completionClaim=/(^|\b)(done|completed|finished|deployed|published|fixed|connected|בוצע|הושלם|עלה\s+ל(?:פרודקשן|ייצור)|תוקן|חובר|تم|اكتمل|نُشر)(\b|[.!,:])/i;
   return String(displayText||"")
     .split("\n")
     .map(line=>{
       if(evidenceHint.test(line))return line;
-      return line
+      let safe=line
         .replace(/\b(?:is|are)\s+missing\b/gi,"needs verification")
         .replace(/(^|[:\-]\s*)Missing(?=\s|:)/gi,"$1NEEDS_VERIFICATION")
         .replace(/\bMISSING\b/g,"NEEDS_VERIFICATION");
+      if(completionClaim.test(safe)){
+        return "NEEDS_VERIFICATION — completion claim withheld until runtime/DB/API/repository evidence is attached.";
+      }
+      return safe;
     })
     .join("\n");
 }
@@ -129,10 +172,10 @@ export function buildCopyReport(ctx:any,topic:any,commandRow:any){
     .filter((e:any)=>String(e.metric_name)!=="attention_manager_count");
   const decisions=(ctx.project_memory||[]).filter((m:any)=>Number(m.importance)>=5&&m.status==="active").slice(0,5);
   const topicText=(String(topic?.active_topic||"")+" "+String(topic?.active_goal||"")+" "+String(topic?.current_task||"")).toLowerCase();
-  const learningMode=/(learning|ai engineering|לימוד|למידה|הנדסת ai|هندسة ai|تعلم)/i.test(topicText);
+  const learningMode=/(learning|ai engineering|brain\s*v2|brain-v2|לימוד|למידה|הנדסת ai|هندسة ai|تعلم)/i.test(topicText);
   const learningItems=(ctx.learning||[]).filter((x:any)=>{
     const d=String(x?.domain||"");
-    return ["ai-engineering","agent-architecture","agent-reliability","long-running-agents"].includes(d);
+    return ["ai-engineering","agent-architecture","agent-reliability","long-running-agents","brain-v2"].includes(d);
   });
   const learnedItems=learningItems.filter((x:any)=>["learned","adopted"].includes(x.status));
   const testingItems=learningItems.filter((x:any)=>x.status==="testing");

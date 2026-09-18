@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-09-18T13:00:21.758Z",
+  "source": "Supabase Security Advisor + read-only SQL audit",
+  "project_ref": "zszlnahjqmwozwubetkm",
+  "mode": "READ_ONLY_EVIDENCE",
+  "production_changed": false,
+  "findings": [
+    {
+      "id": "pg_net_public",
+      "name": "Supabase · pg_net schema",
+      "kind": "DATABASE SECURITY",
+      "tone": "watch",
+      "detail": "pg_net 0.20.4 is installed in public and extrelocatable=false. A direct schema move is not a safe one-line repair.",
+      "evidence": "Advisor: extension_in_public · schema=public · observed 2026-09-18",
+      "gate": "Owner approval required before any extension or dependency change",
+      "remediation_url": "https://supabase.com/docs/guides/database/database-linter?lint=0014_extension_in_public"
+    },
+    {
+      "id": "security_definer_authenticated",
+      "name": "Supabase · SECURITY DEFINER RPC surface",
+      "kind": "DATABASE SECURITY",
+      "tone": "watch",
+      "detail": "Security Advisor reports 8 SECURITY DEFINER functions executable by authenticated users. Read-only review found auth/ownership/admin guards on the reviewed RPCs, but the privileged surface still requires function-by-function hardening.",
+      "evidence": "Advisor count=8 · anon EXECUTE=false on reviewed functions · authenticated EXECUTE=true",
+      "gate": "No blind revoke or invoker switch; regression-test each RPC before change",
+      "remediation_url": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable"
+    },
+    {
+      "id": "leaked_password_protection",
+      "name": "Supabase · Leaked Password Protection",
+      "kind": "AUTH SECURITY",
+      "tone": "watch",
+      "detail": "Leaked password protection is disabled. This is an Auth policy setting, not a storefront code fix.",
+      "evidence": "Advisor: auth_leaked_password_protection",
+      "gate": "Owner-gated Auth policy change after login-impact review",
+      "remediation_url": "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection"
+    }
+  ]
+}

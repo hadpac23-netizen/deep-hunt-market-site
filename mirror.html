@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BOOM Mirror — HUNT 2037 Alpha</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo6">
+  <link rel="stylesheet" href="boom-mirror-alpha.css?v=alpha1">
+</head>
+<body class="mirror-page">
+  <header class="mirror-topbar">
+    <a class="mirror-brand" href="./?hunt2037=1">HUNT</a>
+    <span>BOOM MIRROR · ALPHA</span>
+    <a href="./?hunt2037=1">Back to HUNT 2037</a>
+  </header>
+  <main class="mirror-shell">
+    <section class="mirror-intro">
+      <small>PRIVATE TRY-ON FOUNDATION</small>
+      <h1>Try the look.<br>Keep control.</h1>
+      <p>This Alpha tests consent, local photo intake and category-aware focus. It does not claim exact physical fit.</p>
+    </section>
+    <section class="mirror-grid">
+      <article class="mirror-panel">
+        <h2>1. Privacy first</h2>
+        <label class="mirror-check">
+          <input id="mirror-consent" type="checkbox">
+          <span>I allow this photo to be used for this private preview.</span>
+        </label>
+        <label>Retention
+          <select id="mirror-retention">
+            <option value="none">Do not store source photo</option>
+            <option value="session">Session only</option>
+          </select>
+        </label>
+        <p class="mirror-note">No body scoring, attractiveness scoring, or sensitive attribute inference.</p>
+      </article>
+
+      <article class="mirror-panel">
+        <h2>2. Choose product focus</h2>
+        <label>Product type
+          <select id="mirror-product-type">
+            <option value="necklace">Necklace</option>
+            <option value="earrings">Earrings</option>
+            <option value="ring">Ring</option>
+            <option value="sunglasses">Sunglasses</option>
+            <option value="hat">Hat</option>
+            <option value="top">Top</option>
+            <option value="jeans">Jeans</option>
+            <option value="dress">Dress</option>
+            <option value="jacket">Jacket</option>
+          </select>
+        </label>
+        <div id="mirror-focus-plan" class="mirror-focus-plan"></div>
+      </article>
+      <article class="mirror-panel mirror-photo-panel">
+        <h2>3. Photo intake</h2>
+        <input id="mirror-photo" type="file" accept="image/*" disabled>
+        <div class="mirror-photo-stage" id="mirror-photo-stage">
+          <span>Photo stays local in this Alpha.</span>
+        </div>
+        <div class="mirror-actions">
+          <button id="mirror-clear" type="button">Clear photo</button>
+          <button id="mirror-start" type="button" disabled>Start private preview</button>
+        </div>
+      </article>
+
+      <article class="mirror-panel">
+        <h2>4. Session status</h2>
+        <div id="mirror-status" class="mirror-status" aria-live="polite">
+          Waiting for consent.
+        </div>
+        <div class="mirror-truth">
+          <span>Source photo persistence</span><strong>OFF</strong>
+          <span>Exact-fit claim</span><strong>OFF</strong>
+          <span>Render provider</span><strong>NOT CONNECTED</strong>
+        </div>
+      </article>
+    </section>
+  </main>
+  <script src="hunt-experience-memory.js?v=memory1"></script>
+  <script src="boom-mirror-core.js?v=alpha1"></script>
+  <script src="boom-mirror-alpha.js?v=alpha1"></script>
+</body>
+</html>

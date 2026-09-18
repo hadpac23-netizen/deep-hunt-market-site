@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "policy": "licensed_or_original_assets_only",
+  "mode": "night_only",
+  "cities": [
+    {
+      "id": "dubai",
+      "name": "Dubai",
+      "region": "Middle East",
+      "asset_url": "assets/hunt-city/real/dubai.jpg",
+      "status": "LICENSED_PHOTO_READY",
+      "accent_a": "#d97706",
+      "accent_b": "#7c3aed",
+      "mood": "desert gold / violet",
+      "asset_kind": "licensed_photo",
+      "credit": "Nihongraphy"
+    },
+    {
+      "id": "london",
+      "name": "London",
+      "region": "Europe",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#334155",
+      "accent_b": "#0ea5e9",
+      "mood": "midnight slate / electric blue"
+    },
+    {
+      "id": "tokyo",
+      "name": "Tokyo",
+      "region": "Asia",
+      "asset_url": "assets/hunt-city/real/tokyo.jpg",
+      "status": "LICENSED_PHOTO_READY",
+      "accent_a": "#e11d48",
+      "accent_b": "#7c3aed",
+      "mood": "neon rose / violet",
+      "asset_kind": "licensed_photo",
+      "credit": "miyou_ 77"
+    },
+    {
+      "id": "seoul",
+      "name": "Seoul",
+      "region": "Asia",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#db2777",
+      "accent_b": "#2563eb",
+      "mood": "magenta / cobalt"
+    },
+    {
+      "id": "singapore",
+      "name": "Singapore",
+      "region": "Asia",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#0f766e",
+      "accent_b": "#22d3ee",
+      "mood": "teal / cyan"
+    },
+    {
+      "id": "hong-kong",
+      "name": "Hong Kong",
+      "region": "Asia",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#be123c",
+      "accent_b": "#f59e0b",
+      "mood": "ruby / amber"
+    },
+    {
+      "id": "shanghai",
+      "name": "Shanghai",
+      "region": "China",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#dc2626",
+      "accent_b": "#7c3aed",
+      "mood": "red / violet"
+    },
+    {
+      "id": "shenzhen",
+      "name": "Shenzhen",
+      "region": "China",
+      "asset_url": "assets/hunt-city/real/shenzhen.jpg",
+      "status": "LICENSED_PHOTO_READY",
+      "accent_a": "#0891b2",
+      "accent_b": "#2563eb",
+      "mood": "cyan / blue",
+      "asset_kind": "licensed_photo",
+      "credit": "ainc T"
+    },
+    {
+      "id": "new-york",
+      "name": "New York",
+      "region": "USA",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#f59e0b",
+      "accent_b": "#2563eb",
+      "mood": "amber / blue"
+    },
+    {
+      "id": "los-angeles",
+      "name": "Los Angeles",
+      "region": "USA",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#f97316",
+      "accent_b": "#db2777",
+      "mood": "sunset orange / magenta"
+    },
+    {
+      "id": "chicago",
+      "name": "Chicago",
+      "region": "USA",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#1d4ed8",
+      "accent_b": "#0f766e",
+      "mood": "blue / teal"
+    },
+    {
+      "id": "paris",
+      "name": "Paris",
+      "region": "Europe",
+      "asset_url": "assets/hunt-city/real/paris.jpg",
+      "status": "LICENSED_PHOTO_READY",
+      "accent_a": "#7c3aed",
+      "accent_b": "#f59e0b",
+      "mood": "violet / warm gold",
+      "asset_kind": "licensed_photo",
+      "credit": "Tarkan Atak Kan"
+    },
+    {
+      "id": "milan",
+      "name": "Milan",
+      "region": "Europe",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#4f46e5",
+      "accent_b": "#be123c",
+      "mood": "indigo / ruby"
+    },
+    {
+      "id": "berlin",
+      "name": "Berlin",
+      "region": "Europe",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#52525b",
+      "accent_b": "#dc2626",
+      "mood": "graphite / red"
+    },
+    {
+      "id": "copenhagen",
+      "name": "Copenhagen",
+      "region": "Europe",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#0369a1",
+      "accent_b": "#14b8a6",
+      "mood": "harbor blue / teal"
+    },
+    {
+      "id": "barcelona",
+      "name": "Barcelona",
+      "region": "Europe",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#ea580c",
+      "accent_b": "#7c3aed",
+      "mood": "orange / violet"
+    },
+    {
+      "id": "mumbai",
+      "name": "Mumbai",
+      "region": "India",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#f59e0b",
+      "accent_b": "#db2777",
+      "mood": "gold / magenta"
+    },
+    {
+      "id": "cape-town",
+      "name": "Cape Town",
+      "region": "Africa",
+      "asset_url": null,
+      "status": "NEEDS_LICENSED_ASSET",
+      "accent_a": "#0f766e",
+      "accent_b": "#2563eb",
+      "mood": "ocean teal / blue"
+    }
+  ],
+  "default_city": "tokyo"
+}

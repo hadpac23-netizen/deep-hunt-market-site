@@ -1,0 +1,264 @@
+{
+  "version": 2,
+  "truth_states": [
+    "VERIFIED_REAL",
+    "IMPLEMENTED_BUT_UNVERIFIED",
+    "PLANNED",
+    "PILOT",
+    "BLOCKED",
+    "CANDIDATE",
+    "UNKNOWN"
+  ],
+  "rules": {
+    "brain_awareness_is_not_activation": true,
+    "production_activation_requires_evidence": true,
+    "material_activation_owner_gated": true,
+    "preserve_existing_by_default": true
+  },
+  "capabilities": [
+    {
+      "id": "decision-intelligence",
+      "manager": "decision-intelligence",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "product-truth",
+        "country-shipping"
+      ],
+      "notes": "Core scoring module exists and passes unit tests; storefront integration is staged."
+    },
+    {
+      "id": "country-shipping",
+      "manager": "country-localization",
+      "brain_status": "IMPLEMENTED_BUT_UNVERIFIED",
+      "storefront_status": "PARTIAL",
+      "owner_gate": false,
+      "dependencies": [
+        "supplier-shipping",
+        "inventory-truth"
+      ],
+      "notes": "Existing country/shipping work must be live-verified before claims of full coverage."
+    },
+    {
+      "id": "product-truth",
+      "manager": "inventory-truth",
+      "brain_status": "IMPLEMENTED_BUT_UNVERIFIED",
+      "storefront_status": "PARTIAL",
+      "owner_gate": false,
+      "dependencies": [
+        "sale-readiness"
+      ],
+      "notes": "Truth gates exist in project architecture; exact current surface coverage must be verified."
+    },
+    {
+      "id": "dynamic-worlds",
+      "manager": "hunt-worlds-flow",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "decision-intelligence",
+        "performance"
+      ],
+      "notes": "Feature-flagged HUNT 2037 Worlds are interactive and reversible. Four original HUNT abstract Night assets (Tokyo, Paris, Shenzhen, Dubai) are wired with world-locked mood transitions; production remains OFF."
+    },
+    {
+      "id": "taste-dna",
+      "manager": "feedback-intelligence",
+      "brain_status": "PILOT",
+      "storefront_status": "PARTIAL",
+      "owner_gate": false,
+      "dependencies": [
+        "analytics-truth",
+        "memory-continuity"
+      ],
+      "notes": "Taste DNA Alpha converts real interaction events into confidence-gated category/provider affinity and negative signals for the feature-flagged HUNT Flow. Account sync and experiment calibration remain staged."
+    },
+    {
+      "id": "hunt-memory",
+      "manager": "memory-continuity",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "analytics-truth"
+      ],
+      "notes": "Experience Memory core implemented with Like/Save/Share context, Decision Brain recency inputs and feature-flagged Recently Explored lane; broader account history UI remains staged."
+    },
+    {
+      "id": "boom-stylist",
+      "manager": "boom-stylist",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "decision-intelligence",
+        "product-truth",
+        "taste-dna"
+      ],
+      "notes": "BOOM Stylist core + Alpha mission UI implemented for Occasion Mode, budget planning, Look Locker contract and truthful recommendation reasons; live product selection remains truth-gated and staged."
+    },
+    {
+      "id": "boom-mirror",
+      "manager": "boom-mirror",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": true,
+      "dependencies": [
+        "privacy-consent",
+        "product-truth",
+        "boom-stylist"
+      ],
+      "notes": "Mirror Core + local-only Alpha UI implemented with consent, no-retention default, Focus Engine and session memory. AI rendering/photo upload transport remains OFF."
+    },
+    {
+      "id": "look-deconstruction",
+      "manager": "boom-mirror",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": true,
+      "dependencies": [
+        "boom-mirror",
+        "visual-search",
+        "product-truth"
+      ],
+      "notes": "B13 multi-component inspiration plan exists source-only; it never claims exact matches and requires verified HUNT product matches before use."
+    },
+    {
+      "id": "creative-brand-factory",
+      "manager": "creative-brand-factory",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": true,
+      "dependencies": [
+        "visual-qa",
+        "media-vault"
+      ],
+      "notes": "Provider/QA foundation exists; no paid generation or publishing without approval."
+    },
+    {
+      "id": "share-referral",
+      "manager": "share-referral",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": true,
+      "dependencies": [
+        "analytics-truth",
+        "fraud-controls"
+      ],
+      "notes": "Sharing already exists; B13 adds reward eligibility gates for verified conversion, self-referral and duplicate blocking. No automatic points/payout."
+    },
+    {
+      "id": "experimentation-learning",
+      "manager": "experimentation-learning",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "analytics-truth",
+        "release-control"
+      ],
+      "notes": "Professional Workbench, persisted eval datasets/runs, shadow comparisons, replay evidence, online eval and CI gate contracts are source-integrated; live optional stores remain separately gated."
+    },
+    {
+      "id": "post-purchase-styling",
+      "manager": "boom-stylist",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "orders",
+        "returns-care",
+        "memory-continuity",
+        "product-truth"
+      ],
+      "notes": "B13 verified-purchase brain builds owned-item context and complement targets while keeping tracking/returns support and live Product Truth gates."
+    },
+    {
+      "id": "knowledge-freshness",
+      "manager": "knowledge-freshness",
+      "brain_status": "PILOT",
+      "storefront_status": "N/A",
+      "owner_gate": false,
+      "dependencies": [
+        "source-quality"
+      ],
+      "notes": "Volatile facts require live verification before consequential use."
+    },
+    {
+      "id": "hypersku-integration",
+      "manager": "supplier-hypersku",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": true,
+      "dependencies": [
+        "country-shipping",
+        "product-truth",
+        "integration-connections"
+      ],
+      "notes": "Tier 0 supplier department + local read-only Edge Function source implemented. Runtime deploy/auth/docs verification remain owner-gated; no provider endpoint is guessed."
+    },
+    {
+      "id": "hunt-watch",
+      "manager": "memory-continuity",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "product-truth",
+        "country-shipping",
+        "memory-continuity"
+      ],
+      "notes": "B13 source-level watch planner monitors price, stock, size, color, shipping and ETA; notifications remain OFF until a runtime scheduler/notification lane is approved."
+    },
+    {
+      "id": "style-watch",
+      "manager": "boom-stylist",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "hunt-watch",
+        "boom-stylist"
+      ],
+      "notes": "B13 look-level watch contract adds total-look-cost monitoring while requiring exact product references and meaningful-change-only notification policy."
+    },
+    {
+      "id": "look-locker",
+      "manager": "boom-stylist",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "boom-stylist",
+        "hunt-memory"
+      ],
+      "notes": "Look Locker core contract exists; persistent account storage and unavailable-SKU replacement workflow remain runtime work."
+    },
+    {
+      "id": "customer-personalization-controls",
+      "manager": "feedback-intelligence",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "taste-dna",
+        "hunt-memory"
+      ],
+      "notes": "B13 supports More like this, Less like this, Reset taste and Reduce personalization without sensitive/body traits."
+    },
+    {
+      "id": "shop-together-foundation",
+      "manager": "share-referral",
+      "brain_status": "PILOT",
+      "storefront_status": "OFF",
+      "owner_gate": false,
+      "dependencies": [
+        "share-referral",
+        "hunt-memory"
+      ],
+      "notes": "B13 defines a collaborative voting/session contract only. Shared-cart payment authority and realtime sessions remain disabled."
+    }
+  ]
+}

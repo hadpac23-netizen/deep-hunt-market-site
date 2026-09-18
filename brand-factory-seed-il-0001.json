@@ -1,0 +1,221 @@
+{
+  "mission": {
+    "id": "BF-IL-0001",
+    "product_name": "Korean Vintage Floral Phone Case",
+    "market": "IL",
+    "status": "DRAFT_REVIEW",
+    "objective": "Test truthful short-form creative angles for a verified HUNT product before any publishing or spend."
+  },
+  "market_evidence": [
+    {
+      "signal": "Similar vintage/floral phone cases are actively listed in 2026 on TikTok Shop, including a comparable floral case at $13.16 with free shipping.",
+      "strength": "directional_only"
+    },
+    {
+      "signal": "Current 2026 phone-case trend coverage continues to feature floral/botanical and vintage aesthetics.",
+      "strength": "directional_only"
+    }
+  ],
+  "audience": {
+    "primary": "Style-conscious phone-accessory shoppers who like vintage, floral, soft-art and cottagecore-inspired aesthetics.",
+    "secondary": [
+      "gift shoppers seeking a small visual accessory",
+      "buyers bored with generic clear or plain cases"
+    ],
+    "avoid": "Do not target based on insecurity, body image, or sensitive personal traits."
+  },
+  "positioning": {
+    "core": "A small visual refresh for the phone: soft vintage-floral styling at an accessible product price.",
+    "proof_boundary": "Use only verified product facts. Treat 'Korean' as a style label from the supplier title, not country-of-origin or manufacture."
+  },
+  "hooks": [
+    "Your phone changes outfits too.",
+    "From plain phone to vintage-floral in one snap.",
+    "When your phone looks more like a tiny art print than a gadget.",
+    "Soft florals. Retro mood. Everyday case.",
+    "POV: your phone finally matches the rest of your aesthetic.",
+    "Three seconds to give your phone a completely different look.",
+    "A little vintage wallpaper energy for your phone.",
+    "Tired of the same clear case? Try a floral reset.",
+    "Small accessory. Big visual change.",
+    "Make the phone on your desk part of the decor."
+  ],
+  "concepts": [
+    {
+      "name": "Phone Outfit Change",
+      "idea": "Fast before/after: plain phone, hand covers lens, reveal floral case styled with a matching desk scene.",
+      "channel": "Reels/TikTok/Shorts"
+    },
+    {
+      "name": "Vintage Desk Flatlay",
+      "idea": "Product-only macro shots with lace, paper, dried flowers and warm light; no unverified durability claims.",
+      "channel": "Reels/Pinterest/landing"
+    },
+    {
+      "name": "Pattern Close-Up",
+      "idea": "Slow macro reveal of print, edges and camera cutout with text overlays naming only verified material/style facts.",
+      "channel": "Reels/product page"
+    },
+    {
+      "name": "Clear Case Fatigue",
+      "idea": "Split-screen visual contrast between a generic plain case and the floral version; sell the aesthetic change, not fear or status.",
+      "channel": "TikTok/Reels"
+    },
+    {
+      "name": "Tiny Gift Reveal",
+      "idea": "Simple gift-box reveal focused on visual appeal; do not imply luxury or premium materials without proof.",
+      "channel": "Reels/organic"
+    }
+  ],
+  "scripts": [
+    {
+      "name": "Outfit Change",
+      "duration_seconds": 10,
+      "scenes": [
+        {
+          "t": "0-2",
+          "visual": "Plain phone on neutral desk",
+          "overlay": "Your phone changes outfits too."
+        },
+        {
+          "t": "2-5",
+          "visual": "Fast hand-cover transition to floral case",
+          "overlay": "Vintage floral reset"
+        },
+        {
+          "t": "5-8",
+          "visual": "Macro pan across floral artwork and TPU edge",
+          "overlay": "Soft-shell TPU · floral print"
+        },
+        {
+          "t": "8-10",
+          "visual": "Final desk flatlay",
+          "overlay": "See verified model options on HUNT"
+        }
+      ]
+    },
+    {
+      "name": "Tiny Art Print",
+      "duration_seconds": 12,
+      "scenes": [
+        {
+          "t": "0-3",
+          "visual": "Extreme close-up of flower pattern",
+          "overlay": "What if your case felt like a tiny art print?"
+        },
+        {
+          "t": "3-7",
+          "visual": "Rotate phone slowly in warm light",
+          "overlay": "Vintage · floral · soft-shell"
+        },
+        {
+          "t": "7-10",
+          "visual": "Phone beside notebook and dried flowers",
+          "overlay": "Small accessory. Big visual change."
+        },
+        {
+          "t": "10-12",
+          "visual": "Product on clean background",
+          "overlay": "Check compatibility before ordering"
+        }
+      ]
+    },
+    {
+      "name": "Plain to Floral",
+      "duration_seconds": 9,
+      "scenes": [
+        {
+          "t": "0-2",
+          "visual": "Generic plain case",
+          "overlay": "Bored of plain?"
+        },
+        {
+          "t": "2-5",
+          "visual": "Swipe transition to floral case",
+          "overlay": "Try a floral reset."
+        },
+        {
+          "t": "5-7",
+          "visual": "Three quick detail shots",
+          "overlay": "TPU · printed design · Apple-compatible variants"
+        },
+        {
+          "t": "7-9",
+          "visual": "End frame with HUNT product",
+          "overlay": "Shipping shown separately · verify your model"
+        }
+      ]
+    }
+  ],
+  "red_team": {
+    "blocked_claims": [
+      "Do not claim made in Korea or Korean manufacture; title appears to describe style only.",
+      "Do not claim drop-tested, military-grade, shockproof, anti-yellowing, MagSafe, wireless charging, scratch-proof or premium unless independently verified.",
+      "Do not claim exclusive/original artwork merely because the supplier description uses 'original'.",
+      "Do not guarantee the 9-23 day shipping estimate.",
+      "Do not advertise $5.99 as the all-in checkout total; verified shipping is separate for IL.",
+      "Do not compare performance or quality to named competitors without evidence."
+    ],
+    "needs_proof": [
+      "Exact Apple model mapping per variant",
+      "Current inventory at publish time",
+      "Any durability/performance claims beyond supplier text",
+      "Return/refund promise used in ads"
+    ]
+  },
+  "score": {
+    "opportunity": 68,
+    "brand_fit": 76,
+    "creative": 86,
+    "proof": 61,
+    "margin": 88,
+    "overall": 76
+  },
+  "owner_gate": {
+    "status": "DRAFT_REVIEW",
+    "next_safe_action": "Re-verify product and destination quote live in BOOM Brand Factory, review exact model compatibility, then Owner may approve creation of 2-3 product-only AI video drafts. No publishing or spend yet."
+  },
+  "video_prompt_pack": {
+    "format": "9:16 vertical short-form",
+    "rules": [
+      "Product-first visuals",
+      "No human likeness required",
+      "No fake reviews or endorsements",
+      "No unverified durability claims",
+      "No price overlay unless shipping is disclosed separately"
+    ],
+    "prompts": [
+      {
+        "name": "Phone Outfit Change",
+        "duration_seconds": 10,
+        "prompt": "Vertical 9:16 product commercial. Start with a plain smartphone on a clean neutral desk in soft daylight. A hand passes briefly across the lens as a transition. Reveal the same phone wearing a soft-shell vintage floral case with delicate botanical artwork. Smooth macro camera move over the printed flowers, TPU edge and camera cutout. Finish with a tasteful flatlay beside a notebook and dried flowers. Natural motion, realistic materials, clean ecommerce lighting, no logos, no extra text rendered into the scene. Leave negative space for later captions."
+      },
+      {
+        "name": "Tiny Art Print",
+        "duration_seconds": 12,
+        "prompt": "Vertical 9:16 aesthetic product film. Extreme macro of a vintage floral phone-case pattern, shallow depth of field, warm natural window light. Slowly rotate the phone to show the printed floral artwork, soft-shell edge and camera opening. Transition to a styled desk scene with paper, lace texture and dried flowers, keeping the phone as the clear hero. Calm premium-looking cinematography without claiming premium materials. No people, no logos, no embedded text."
+      },
+      {
+        "name": "Plain to Floral",
+        "duration_seconds": 9,
+        "prompt": "Vertical 9:16 before-and-after product ad. Begin with a generic plain phone case on a minimal desk. Use a fast swipe transition to reveal the same phone in a vintage floral soft-shell case. Show three quick detail shots: floral print, flexible-looking TPU edge, camera cutout. End on a clean product hero shot with neutral background and empty lower-third space for a later compatibility and shipping disclaimer. Realistic ecommerce style, no logos, no claims rendered into video."
+      }
+    ]
+  },
+  "product_truth_snapshot": {
+    "provider": "CJdropshipping",
+    "item_id": "2406230329031627300",
+    "variant_id": "2406230329031627500",
+    "country_code": "IL",
+    "retail_price_amount": 5.99,
+    "supplier_cost_amount": 0.7,
+    "shipping_amount": 4.2,
+    "currency": "USD",
+    "profit_gate_status": "PASS",
+    "inventory_observed": 13568,
+    "shipping_method": "CJPacket Liquid Line",
+    "shipping_eta_observed": "9-23",
+    "image_url": "https://cf.cjdropshipping.com/quick/product/d2e7be13-d9c1-4b1a-adbd-275e06062b6c.jpg",
+    "snapshot_policy": "STALE_UNTIL_LIVE_RECHECK"
+  }
+}

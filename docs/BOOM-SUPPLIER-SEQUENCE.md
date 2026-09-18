@@ -1,5 +1,12 @@
 # BOOM Supplier Sequence
 
+## Tier 0 — HUNT primary orchestration lane
+1. HyperSKU — official Open API/custom-store integration path; product/source/stock/shipping/order/tracking mapping first. Keep fulfillment OFF until live quote, country eligibility, economics and owner gates pass.
+2. CJdropshipping — existing major connected source; preserve current quote/stock/shipping checks.
+3. EPROLO — additional official supplier lane behind the same supplier abstraction.
+
+HyperSKU must never be assumed globally available. Country/warehouse/SKU shipping eligibility is verified live through Shipping Chess before ranking or checkout.
+
 ## Tier 1 — act after owner approval
 1. Prodigi — free API key + Sandbox; catalog-only integration first.
 2. Gelato — official Product API; catalog/pricing/country support.
