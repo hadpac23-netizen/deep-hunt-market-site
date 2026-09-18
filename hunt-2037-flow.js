@@ -26,6 +26,33 @@
     return H.productUrl?.(item)||`product.html?provider=${encodeURIComponent(item.provider||"")}&id=${encodeURIComponent(item.item_id||"")}`;
   }
 
+  function mirrorTypeFor(item){
+    const category=clean(item?.category||item?._shelf_slug).toLowerCase();
+    if(category.includes("necklace"))return "necklace";
+    if(category.includes("earring"))return "earrings";
+    if(category.includes("ring"))return "ring";
+    if(category.includes("sunglass"))return "sunglasses";
+    if(category.includes("hat"))return "hat";
+    if(category.includes("dress"))return "dress";
+    if(category.includes("jean"))return "jeans";
+    if(category.includes("jacket"))return "jacket";
+    if(category.includes("top"))return "top";
+    return "";
+  }
+
+  function stylistHref(item){
+    const category=clean(item?.category||item?._shelf_slug);
+    const q=new URLSearchParams({hunt2037:"1",anchor:category,occasion:"everyday"});
+    return "stylist.html?"+q.toString();
+  }
+
+  function mirrorHref(item){
+    const type=mirrorTypeFor(item);
+    if(!type)return "";
+    const q=new URLSearchParams({hunt2037:"1",type,provider:clean(item?.provider),id:clean(item?.item_id)});
+    return "mirror.html?"+q.toString();
+  }
+
   function productCard(row){
     const item=row.item||{};
     const href=productUrl(item);
@@ -36,6 +63,8 @@
     const amount=Number(item.retail_price_amount);
     const verified=item.retail_price_verified===true&&Number.isFinite(amount)&&amount>0;
     const price=verified?H.money(amount,item.retail_currency||item.currency||"USD"):"Verify on product";
+    const mirror=mirrorHref(item);
+    const style=stylistHref(item);
     return `<article class="hunt2037-product hd-wow-product" data-category="${H.esc(item.category||item._shelf_slug||"")}">
       <a class="hunt2037-product-media hd-wow-product-media" href="${H.esc(href)}">
         ${media}<span>${H.esc(Core.laneLabel(row.lane))}</span>
@@ -45,7 +74,11 @@
         <a href="${H.esc(href)}">${H.esc(item.title||"Product")}</a>
         <div class="hunt2037-price"><strong>${H.esc(price)}</strong><em>${verified?"HUNT retail":"live recheck"}</em></div>
         <small class="hunt2037-why">Why this: ${H.esc(row.reason||Core.reasonFor?.(item,row.lane,{})||"Discovery pick")}</small>
-        <button class="hunt2037-share" type="button" data-hunt2037-share data-share-url="${H.esc(href)}" data-provider="${H.esc(item.provider||"")}" data-item-id="${H.esc(item.item_id||"")}" data-category="${H.esc(item.category||item._shelf_slug||"")}">Share</button>
+        <div class="hunt2037-card-actions">
+          <a class="hunt2037-card-action" href="${H.esc(style)}">Style it</a>
+          ${mirror?`<a class="hunt2037-card-action" href="${H.esc(mirror)}">Try in Mirror</a>`:""}
+          <button class="hunt2037-share hunt2037-card-action" type="button" data-hunt2037-share data-share-url="${H.esc(href)}" data-provider="${H.esc(item.provider||"")}" data-item-id="${H.esc(item.item_id||"")}" data-category="${H.esc(item.category||item._shelf_slug||"")}">Share</button>
+        </div>
       </div>
     </article>`;
   }
