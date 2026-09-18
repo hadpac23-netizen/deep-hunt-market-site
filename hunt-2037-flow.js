@@ -9,6 +9,10 @@
   const FLAG_KEY="hunt_2037_flow_enabled";
   const $=q=>document.querySelector(q);
   const clean=v=>String(v??"").trim();
+  const impressionSeen=new Set();
+  const dwellSeen=new Set();
+  let engagementObserver=null;
+  const dwellTimers=new Map();
 
   function enabled(){
     const url=new URL(location.href);
@@ -65,7 +69,7 @@
     const price=verified?H.money(amount,item.retail_currency||item.currency||"USD"):"Verify on product";
     const mirror=mirrorHref(item);
     const style=stylistHref(item);
-    return `<article class="hunt2037-product hd-wow-product" data-category="${H.esc(item.category||item._shelf_slug||"")}">
+    return `<article class="hunt2037-product hd-wow-product" data-category="${H.esc(item.category||item._shelf_slug||"")}" data-provider="${H.esc(item.provider||"")}" data-item-id="${H.esc(item.item_id||"")}">
       <a class="hunt2037-product-media hd-wow-product-media" href="${H.esc(href)}">
         ${media}<span>${H.esc(Core.laneLabel(row.lane))}</span>
       </a>
@@ -81,6 +85,50 @@
         </div>
       </div>
     </article>`;
+  }
+
+  function engagementMeta(card){
+    return {
+      provider:card.dataset.provider||"",
+      item_id:card.dataset.itemId||"",
+      category:card.dataset.category||"",
+      title:card.querySelector(".hunt2037-product-body>a")?.textContent?.trim()||"",
+      image_url:card.querySelector("img")?.src||"",
+      url:card.querySelector("a[href*=\'product.html\']")?.href||"",
+      source:"hunt2037-engagement"
+    };
+  }
+
+  function connectEngagement(root){
+    engagementObserver?.disconnect?.();
+    for(const timer of dwellTimers.values())clearTimeout(timer);
+    dwellTimers.clear();
+    if(!root||typeof IntersectionObserver==="undefined")return;
+    engagementObserver=new IntersectionObserver(entries=>{
+      for(const entry of entries){
+        const card=entry.target;
+        const key=(card.dataset.provider||"")+":"+(card.dataset.itemId||"");
+        if(!key||key===":")continue;
+        if(entry.isIntersecting&&entry.intersectionRatio>=0.6){
+          if(!impressionSeen.has(key)){
+            impressionSeen.add(key);
+            Memory?.record?.({type:"impression",...engagementMeta(card)});
+          }
+          if(!dwellSeen.has(key)&&!dwellTimers.has(card)){
+            dwellTimers.set(card,setTimeout(()=>{
+              dwellTimers.delete(card);
+              if(!card.isConnected||dwellSeen.has(key))return;
+              dwellSeen.add(key);
+              Memory?.record?.({type:"dwell",...engagementMeta(card)});
+            },2500));
+          }
+        }else{
+          const timer=dwellTimers.get(card);
+          if(timer){clearTimeout(timer);dwellTimers.delete(card);}
+        }
+      }
+    },{threshold:[0,.6,1]});
+    root.querySelectorAll(".hunt2037-product").forEach(card=>engagementObserver.observe(card));
   }
 
   function worldSection(world,index){
@@ -140,6 +188,7 @@
         ${model.units.map(laneSection).join("")}
       </section>`;
     window.HuntShoppingActions?.rescan?.();
+    connectEngagement(root);
     const requestedWorld=new URL(location.href).searchParams.get("world")||"";
     if(requestedWorld&&!root.dataset.activeWorld)setWorldMode(requestedWorld);
   }
@@ -219,7 +268,7 @@
     }
   });
 
-  window.Hunt2037Flow=Object.freeze({enabled,setFlag,render,setWorldMode});
+  window.Hunt2037Flow=Object.freeze({enabled,setFlag,render,setWorldMode,connectEngagement});
 
   if(enabled()){
     window.addEventListener("hunt:shelves",event=>render(event.detail));
