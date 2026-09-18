@@ -75,6 +75,7 @@
     connectRows:[],
     connectCheckedAt:null,
     connectorEvidence:{apiLogs:[],sources:[],partners:[],controls:[]},
+    securityAuditSnapshot:null,
     brandVideoPlan:null,
     brandCreativeQA:null,
     brandMission:null,
@@ -816,6 +817,59 @@
     return rows;
   }
 
+  async function loadSecurityAuditSnapshot(){
+    try{
+      const response=await fetch("boom-security-audit-snapshot.json?v=1",{cache:"no-store"});
+      if(!response.ok)throw new Error("SECURITY_SNAPSHOT_HTTP_"+response.status);
+      const snapshot=await response.json();
+      state.securityAuditSnapshot=snapshot&&Array.isArray(snapshot.findings)?snapshot:null;
+    }catch(error){
+      state.securityAuditSnapshot={
+        observed_at:null,
+        source:"Security snapshot unavailable",
+        findings:[{
+          id:"snapshot_unavailable",
+          name:"Supabase Security Snapshot",
+          kind:"SECURITY EVIDENCE",
+          tone:"watch",
+          detail:"The read-only security snapshot could not be loaded. Do not infer a healthy state.",
+          evidence:String(error?.message||error||"SNAPSHOT_UNAVAILABLE"),
+          gate:"Refresh evidence before any security or Production decision"
+        }]
+      };
+    }
+    return state.securityAuditSnapshot;
+  }
+
+  function buildSecurityConnectRows(){
+    const snapshot=state.securityAuditSnapshot;
+    const findings=Array.isArray(snapshot?.findings)?snapshot.findings:[];
+    if(!findings.length){
+      return [{
+        id:"security-snapshot-missing",
+        name:"Supabase Security Snapshot",
+        kind:"SECURITY EVIDENCE",
+        tone:"watch",
+        detail:"No current security findings snapshot is loaded. Do not claim green.",
+        evidence:"SECURITY_SNAPSHOT_MISSING",
+        gate:"Refresh read-only security evidence before any material change"
+      }];
+    }
+    const observedAt=snapshot?.observed_at||null;
+    const observedMs=observedAt?new Date(observedAt).getTime():NaN;
+    const ageHours=Number.isFinite(observedMs)?Math.max(0,(Date.now()-observedMs)/3600000):null;
+    const stale=ageHours!==null&&ageHours>48;
+    return findings.map(item=>({
+      id:"security-"+String(item.id||"finding"),
+      name:String(item.name||"Security finding"),
+      kind:String(item.kind||"SECURITY"),
+      tone:String(item.tone||"watch"),
+      detail:String(item.detail||"Security finding requires review.")+(stale?" Snapshot is older than 48h; re-audit required.":""),
+      evidence:String(item.evidence||snapshot?.source||"READ_ONLY_EVIDENCE")+" · observed="+String(observedAt||"unknown"),
+      gate:String(item.gate||"Owner review required before change")
+    }));
+  }
+
   function buildConnectRows(){
     const user=state.session?.user||{};
     const identities=(user.identities||[]).map(x=>x.provider).filter(Boolean);
@@ -840,7 +894,7 @@
       {id:"supplier-orders",name:"Live Supplier Orders",kind:"FULFILLMENT",tone:supplierLiveControl?.enabled===true&&supplierLiveControl?.owner_approved===true?"watch":"blocked",detail:supplierLiveControl?.enabled===true?"Live supplier order gate enabled; E2E evidence still required.":"Real supplier order creation remains OFF.",evidence:supplierLiveControl?"hunt_supplier_order_live · enabled="+String(supplierLiveControl.enabled)+" · owner="+String(supplierLiveControl.owner_approved):"runtime control unavailable",gate:"Explicit Owner approval required"}
     ];
 
-    return [...base,...buildEvidenceConnectorRows()];
+    return [...base,...buildSecurityConnectRows(),...buildEvidenceConnectorRows()];
   }
 
   function intelligenceTone(capability={}){
@@ -2327,7 +2381,7 @@
       query("hunt_boom_learning_items","*","learned_at",150)
     ]);
     Object.assign(state,{managers,workers,workerReports,reports,events,decisions,commands,cycles,evals,learning});
-    await Promise.all([loadConnectorEvidence(),loadProfessionalEvidence()]);
+    await Promise.all([loadConnectorEvidence(),loadProfessionalEvidence(),loadSecurityAuditSnapshot()]);
     state.managerMap=latest(managers,"id");
     state.reportMap=latest(reports,"manager_id");
     state.workerReportMap=latest(workerReports,"worker_id");
@@ -2958,6 +3012,7 @@
       state.localPreview=true;
       showApp();
       applyLocalPreviewSafety(previewNetlifyDraft?"draft":"local");
+      await loadSecurityAuditSnapshot();
       renderAll();
       await renderHuntIntelligence();
       renderApprovalQueue();
