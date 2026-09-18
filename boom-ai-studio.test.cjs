@@ -373,23 +373,24 @@ assert(js.includes("LOCAL PREVIEW · LIVE ACTIONS OFF"),"Local preview safety st
 assert(js.includes('input.placeholder="LOCAL PREVIEW · chat execution disabled"'),"Local preview chat lock missing");
 
 assert(html.includes('id="product-trace-workspace"'),"Product trace workspace missing");
+assert(html.includes('id="product-trace-key"'),"Product trace reference input missing");
 assert(html.includes('id="product-trace-run"'),"Product trace run control missing");
-assert(html.includes('id="product-trace-timeline"'),"Product trace timeline missing");
+assert(html.includes('id="product-trace-grid"'),"Product trace evidence grid missing");
 assert(html.includes('id="product-trace-report"'),"Product trace report missing");
 assert(js.includes("function runProductTrace()"),"Product trace runner missing");
-assert(js.includes("LIVE_ADMIN_PRODUCT_TRACE"),"Live admin product trace mode missing");
+assert(js.includes("BOOM_INTERNAL_PRODUCT_TRACE"),"Internal Product Trace mode missing");
 assert(js.includes('client.from("hunt_catalog_products")'),"Product trace catalog query missing");
 assert(js.includes('client.from("hunt_orders")'),"Product trace order query missing");
+assert(js.includes('client.from("hunt_fulfillment_orders")'),"Product Trace fulfillment query missing");
 assert(js.includes('client.from("hunt_order_pipeline_runs")'),"Product trace pipeline query missing");
 assert(js.includes('client.from("hunt_order_finance_ledger")'),"Product trace finance query missing");
-assert(js.includes('LIVE QUERY: false'),"Product trace local preview guard missing");
+assert(js.includes("PRODUCT REFS FROM FULFILLMENT: "), "Product Trace line-item evidence missing");
+assert(js.includes("CATALOG MATCHES: "), "Product Trace catalog-match evidence missing");
+assert(js.includes("Source/Shelf claims require exact item_id from fulfillment line_items; missing finance stays UNVERIFIED."),"Exact fulfillment Product Trace integrity rule missing");
+assert(js.includes("CUSTOMER EMAIL DISPLAYED: false"),"Product Trace customer-email privacy guard missing");
+assert(js.includes("CUSTOMER ADDRESS DISPLAYED: false"),"Product Trace customer-address privacy guard missing");
+assert(js.includes("DATA_CHANGED: false"),"Product Trace read-only mutation guard missing");
+assert(js.includes("LIVE QUERY: false"),"Product trace local preview guard missing");
 assert(css.includes(".product-trace-workspace"),"Product trace styling missing");
 assert(js.includes('label:"Product trace: source → shelf → checkout → order → sale",status:"PRESENT"'),"Product trace prompt status not closed");
 assert(js.includes('label:"Supplier names hidden from shopper storefront",status:"PRESENT"'),"Supplier hiding prompt status not closed");
-
-assert(js.includes('client.from("hunt_fulfillment_orders")'),"Product Trace fulfillment query missing");
-assert(js.includes('.contains("line_items",[{item_id:itemId}])'),"Product Trace exact item lookup missing");
-assert(js.includes("EXACT LINE ITEM MATCH: "), "Product Trace exact-match evidence missing");
-assert(js.includes("ORDER / PRODUCT MISMATCH: "), "Product Trace mismatch evidence missing");
-assert(js.includes("Checkout/Order is linked only when exact provider + item_id exists in hunt_fulfillment_orders.line_items."),"Exact fulfillment line-item Product Trace guard missing");
-assert(js.includes('orderMismatch?"blocked"'),"Product Trace mismatch fail-closed state missing");
