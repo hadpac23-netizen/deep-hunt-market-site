@@ -345,6 +345,24 @@
                 <article><small>DECISION CONTEXT</small><pre id="memory-context-result">Interactions: 0 · Mode: COLD_START</pre></article>
               </div>
             </section>
+            <section class="flow-workspace">
+              <div class="truth-workspace-head"><div><small>A4 WORKSPACE</small><h3>Dynamic Flow & Worlds Simulation</h3><p>Layout slots only. BOOM does not invent products; every slot still requires a verified eligible SKU.</p></div><span>STRUCTURE PREVIEW</span></div>
+              <div class="flow-controls">
+                <label>Interaction count<input id="flow-interactions" type="number" min="0" step="1" value="0"></label>
+                <label>Primary world<select id="flow-world"><option value="all">All worlds</option><option value="fashion">Fashion</option><option value="jewelry">Jewelry</option><option value="tech-home">Tech / Home</option><option value="travel">Travel</option></select></label>
+                <label>Session seed<input id="flow-seed" value="owner-preview" maxlength="40"></label>
+                <label>Number of slots<input id="flow-slots" type="number" min="4" max="18" value="10"></label>
+              </div>
+              <div class="decision-checks">
+                <label><input id="flow-surprise" type="checkbox" checked> Controlled surprise enabled</label>
+                <label><input id="flow-new" type="checkbox" checked> NEW lane enabled</label>
+                <label><input id="flow-reduced-motion" type="checkbox"> Reduced-motion preview</label>
+              </div>
+              <div class="truth-actions"><button class="top-btn" id="flow-simulate" type="button">Compose Alpha flow</button></div>
+              <div class="truth-result-status" id="flow-result-status">NOT_COMPOSED · STOREFRONT_OFF</div>
+              <div class="flow-preview" id="flow-preview"><p>Compose a structural preview. No products will be created.</p></div>
+              <pre id="flow-result">All preview slots require Product Truth before future population.</pre>
+            </section>
             <section class="alpha-exit-gate">
               <strong>Alpha exit gate</strong>
               <p>Real eligible products · explainable recommendations · Like/Save/Share · History · Worlds · Stylist · safe Mirror entry · stable checkout fallback · mobile/desktop QA.</p>
@@ -412,6 +430,7 @@
   <script src="hunt-country-product-truth.js?v=alpha1"></script>
   <script src="boom-taste-dna.js?v=alpha1"></script>
   <script src="boom-decision-brain.js?v=brain1"></script>
+  <script src="hunt-2037-flow-core.js?v=alpha1"></script>
   <script src="hunt-experience-memory.js?v=memory1"></script>
   <script src="brand-video-router.js?v=1"></script>
   <script src="brand-creative-qa.js?v=1"></script>
