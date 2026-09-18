@@ -166,7 +166,7 @@
       const next={...old};
       if(kind==="like")next.liked=!Boolean(old.liked);
       if(kind==="save")next.saved=!Boolean(old.saved);
-      if(!next.liked&&!next.saved)state.delete(k);else state.set(k,next);
+      if(!next.liked&&!next.saved)state.delete(k);else state.set(k,{...meta,...next});
       persistLocal(meta,next);
       refreshButtons();
       const active=kind==="like"?Boolean(next.liked):Boolean(next.saved);
