@@ -64,3 +64,7 @@ body.hunt2037-world-mode .hunt2037-lane,body.hunt2037-world-mode .hunt2037-disco
 .hunt2037-card-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:2px}
 .hunt2037-card-action{border:1px solid rgba(80,90,105,.2);background:transparent;color:inherit;border-radius:999px;padding:5px 8px;font-size:8px;font-weight:850;text-decoration:none;cursor:pointer;line-height:1}
 .hunt2037-card-action:hover{border-color:currentColor}
+
+body.hunt2037-active .hd-hero.hunt2037-city-switching:before{opacity:0}
+.hunt2037-city-badge[data-asset="original"]{border-style:solid;background:rgba(9,12,18,.58)}
+body.hunt2037-world-mode .hd-hero:after{background:radial-gradient(circle at 70% 25%,color-mix(in srgb,var(--hunt-brand-a) 42%,transparent),transparent 42%),linear-gradient(135deg,color-mix(in srgb,var(--hunt-brand-b) 24%,transparent),transparent 62%)}
