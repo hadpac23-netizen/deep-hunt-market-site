@@ -17,6 +17,8 @@
   let appliedCityId="";
   let cityTimer=null;
   const WORLD_CITY=Object.freeze({fashion:"tokyo",jewelry:"paris","tech-home":"shenzhen",travel:"dubai"});
+  const ROTATION_IDS=Object.freeze(["tokyo","paris","shenzhen","dubai"]);
+  let rotationTimer=null;
 
   async function loadManifest(){
     try{
@@ -45,7 +47,10 @@
     const badge=document.querySelector("#hunt2037-city-badge");
     if(badge){
       const kind=city?.asset_kind||"";
-      if(kind==="original_abstract"){
+      if(kind==="licensed_photo"){
+        badge.dataset.asset="photo";
+        badge.textContent=(city?.name||"HUNT")+" · REAL NIGHT";
+      }else if(kind==="original_abstract"){
         badge.dataset.asset="original";
         badge.textContent="HUNT NIGHT · "+(city?.name||"HUNT")+" mood";
       }else if(city?.asset_url){
@@ -88,8 +93,25 @@
   }
 
   function nextCity(){
-    index=(index+1)%Math.max(1,cities.length);
-    applyCity(cityAt(index),index);
+    const currentId=cityAt(index)?.id||"";
+    const at=Math.max(0,ROTATION_IDS.indexOf(currentId));
+    const nextId=ROTATION_IDS[(at+1)%ROTATION_IDS.length];
+    const next=cityById(nextId);
+    if(next){index=Math.max(0,cities.indexOf(next));applyCity(next,index)}
+  }
+
+  function stopRotation(){
+    if(rotationTimer){clearInterval(rotationTimer);rotationTimer=null}
+  }
+
+  function startRotation(){
+    stopRotation();
+    const reduced=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches===true;
+    if(reduced||worldLock)return;
+    rotationTimer=setInterval(()=>{
+      if(document.hidden||worldLock)return;
+      nextCity();
+    },9000);
   }
 
   async function init(){
@@ -107,11 +129,11 @@
 
     await loadManifest();
     const requestedWorld=new URL(location.href).searchParams.get("world")||"";
-    if(requestedWorld){worldLock=true;applyWorldMood(requestedWorld)}else applyCity(cityAt(0),0);
+    if(requestedWorld){worldLock=true;applyWorldMood(requestedWorld)}else{const first=cityById("tokyo")||cityAt(0);index=Math.max(0,cities.indexOf(first));applyCity(first,index);startRotation();}
 
     window.addEventListener("hunt:world-mode",event=>{
       worldLock=event.detail?.active===true;
-      if(worldLock)applyWorldMood(event.detail?.world||"");
+      if(worldLock){stopRotation();applyWorldMood(event.detail?.world||"")}else startRotation();
     });
     window.addEventListener("hunt:experience-event",event=>{
       if(event.detail?.type==="world_enter"&&!worldLock)nextCity();
@@ -123,6 +145,6 @@
     },{passive:true});
   }
 
-  window.Hunt2037Visual=Object.freeze({loadManifest,applyCity,applyWorldMood,nextCity});
+  window.Hunt2037Visual=Object.freeze({loadManifest,applyCity,applyWorldMood,nextCity,startRotation,stopRotation});
   init();
 })();
