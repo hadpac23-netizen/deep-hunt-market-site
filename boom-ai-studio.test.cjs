@@ -468,6 +468,7 @@ assert(html.includes('id="professional-review-list"'),"Professional review queue
 assert(html.includes('id="professional-cost-report"'),"Professional cost report missing");
 assert(html.includes('id="professional-evaluator-report"'),"Professional evaluator governance panel missing");
 assert(html.includes('id="professional-safety-report"'),"Professional safety engineering panel missing");
+assert(html.includes('id="professional-observability-report"'),"Professional observability panel missing");
 assert(html.includes('id="professional-radar-report"'),"Professional F35 radar panel missing");
 assert(html.includes('id="professional-report"'),"Professional contract report missing");
 assert(html.includes("boom-professional-workbench.js?v=1"),"Professional Workbench core script missing");
@@ -480,6 +481,7 @@ assert(js.includes("EXPERIMENT DIFF: "), "Professional experiment evidence missi
 assert(js.includes("COST/LATENCY: "), "Professional cost/latency evidence missing");
 assert(js.includes('const evaluatorReport=$("#professional-evaluator-report")'),"Evaluator governance renderer missing");
 assert(js.includes('const safetyReport=$("#professional-safety-report")'),"Safety engineering renderer missing");
+assert(js.includes('const observabilityReport=$("#professional-observability-report")'),"Observability renderer missing");
 assert(js.includes('const radarReport=$("#professional-radar-report")'),"F35 radar renderer missing");
 assert(js.includes("OWNER GATE REQUIRED: true"),"Professional Owner gate invariant missing");
 assert(js.includes("PRODUCTION CHANGE: false"),"Professional Production guard missing");
@@ -532,12 +534,18 @@ assert(js.includes("function isMissingOptionalStoreError("),"Optional store miss
 assert(js.includes('"42P01"')&&js.includes('"PGRST205"'),"Optional store missing-table codes missing");
 assert(js.includes('optionalQuery("hunt_boom_prompt_versions"'),"Optional prompt registry query missing");
 assert(js.includes('optionalQuery("hunt_boom_trace_spans"'),"Optional trace store query missing");
+assert(js.includes('optionalQuery("hunt_boom_human_labels"'),"Optional human ground truth store query missing");
+assert(js.includes('optionalQuery("hunt_boom_observability_snapshots"'),"Optional observability store query missing");
 assert(js.includes("promptStoreConnected:promptStore.connected"),"Prompt store connection truth missing");
 assert(js.includes("traceStoreConnected:traceStore.connected"),"Trace store connection truth missing");
+assert(js.includes("humanLabelStoreConnected:humanLabelStore.connected"),"Human label store connection truth missing");
+assert(js.includes("observabilityStoreConnected:observabilityStore.connected"),"Observability store connection truth missing");
 assert(js.includes("traceSchemaConnected:state.professionalEvidence.traceStoreConnected&&state.professionalEvidence.traceSpans.length>0"),"Trace schema readiness gate missing");
 assert(js.includes("PROMPT STORE CONNECTED: "), "Prompt store evidence missing");
 assert(js.includes("TRACE STORE CONNECTED: "), "Trace store evidence missing");
 assert(js.includes("TRACE SPANS: "), "Trace span evidence missing");
+assert(js.includes("OBSERVABILITY STORE CONNECTED: "), "Observability connection evidence missing");
+assert(js.includes("OBSERVABILITY LANES: "), "Observability lane evidence missing");
 
 const professionalMigration=fs.readFileSync("supabase/migrations/20260918092536_boom_professional_prompt_trace_foundation.sql","utf8");
 assert(professionalMigration.includes("create table if not exists public.hunt_boom_prompt_versions"),"Professional prompt registry migration missing");
@@ -567,6 +575,13 @@ assert(baselineEvidenceMigration.includes("'brain-v2-redteam-pass'"),"Passing CI
 assert(baselineEvidenceMigration.includes("'owner-chat-quality-min'"),"Quality CI gate seed missing");
 assert(baselineEvidenceMigration.includes("'supabase-observability-autopilot'"),"F35 official source seed missing");
 assert(baselineEvidenceMigration.includes("on conflict"),"Baseline evidence seed must remain idempotent");
+const observabilityMigration=fs.readFileSync("supabase/migrations/20260918163000_boom_readonly_observability_snapshots.sql","utf8");
+assert(observabilityMigration.includes("create table if not exists public.hunt_boom_observability_snapshots"),"Observability snapshot store migration missing");
+assert(observabilityMigration.includes("monitor_type in ('health','security','performance','capacity')"),"Observability four-lane contract missing");
+assert(observabilityMigration.includes("alter table public.hunt_boom_observability_snapshots enable row level security"),"Observability snapshot RLS missing");
+assert(observabilityMigration.includes("grant select on table public.hunt_boom_observability_snapshots to authenticated"),"Observability authenticated access must remain read-only");
+assert(!observabilityMigration.includes("grant insert on table public.hunt_boom_observability_snapshots to authenticated"),"Observability authenticated writes must remain disabled");
+
 const groundTruthMigration=fs.readFileSync("supabase/migrations/20260918160000_boom_human_ground_truth_labels.sql","utf8");
 assert(groundTruthMigration.includes("create table if not exists public.hunt_boom_human_labels"),"Human ground truth label ledger migration missing");
 assert(groundTruthMigration.includes("enable row level security"),"Human ground truth RLS missing");
