@@ -444,6 +444,67 @@
     });
   }
 
+  function buildEvalLineageOps(input={}){
+    const datasets=safeArray(input.evalDatasetVersions);
+    const links=safeArray(input.evalLineage);
+    const runs=safeArray(input.evalRuns);
+    const suites=safeArray(input.evalSuites);
+    const prompts=safeArray(input.promptVersions);
+    const datasetStoreConnected=input.evalDatasetVersionStoreConnected===true;
+    const lineageStoreConnected=input.evalLineageStoreConnected===true;
+    const connected=datasetStoreConnected&&lineageStoreConnected;
+    const suiteIds=new Set(suites.map(x=>String(x.id??"")).filter(Boolean));
+    const runIds=new Set(runs.map(x=>String(x.id??"")).filter(Boolean));
+    const promptIds=new Set(prompts.map(x=>String(x.id??"")).filter(Boolean));
+    const validDatasets=datasets.filter(x=>{
+      const version=Number(x.version),caseCount=Number(x.case_count);
+      return suiteIds.has(String(x.suite_id??""))&&
+        Number.isFinite(version)&&version>0&&
+        Number.isFinite(caseCount)&&caseCount>=0&&
+        Boolean(clean(x.dataset_key))&&Boolean(clean(x.case_manifest_hash))&&
+        clean(x.status).toLowerCase()==="frozen"&&Boolean(x.frozen_at);
+    });
+    const datasetById=new Map(validDatasets.map(x=>[String(x.id??""),x]).filter(x=>x[0]));
+    const validLinks=links.filter(x=>{
+      const runId=String(x.eval_run_id??"");
+      const suiteId=String(x.suite_id??"");
+      const dataset=datasetById.get(String(x.dataset_version_id??""));
+      const promptId=x.prompt_version_id===null||x.prompt_version_id===undefined?"":String(x.prompt_version_id);
+      const promptOk=!promptId||promptIds.has(promptId);
+      const datasetSuiteOk=dataset&&String(dataset.suite_id??"")===suiteId;
+      const commit=clean(x.source_commit)||clean(dataset?.source_commit);
+      return runIds.has(runId)&&suiteIds.has(suiteId)&&datasetSuiteOk&&promptOk&&
+        Boolean(clean(x.candidate_ref))&&Boolean(commit);
+    });
+    const validRunIds=new Set(validLinks.map(x=>String(x.eval_run_id??"")).filter(Boolean));
+    const measuredRuns=runs.filter(x=>{
+      const status=clean(x.status).toLowerCase();
+      const score=x.score===null||x.score===undefined||String(x.score).trim()===""?null:Number(x.score);
+      return status==="completed"&&Boolean(x.completed_at)&&Number.isFinite(score);
+    });
+    const measuredIds=new Set(measuredRuns.map(x=>String(x.id??"")).filter(Boolean));
+    const linkedMeasured=[...measuredIds].filter(id=>validRunIds.has(id)).length;
+    const orphaned=links.length-validLinks.length;
+    const promptLinked=validLinks.filter(x=>x.prompt_version_id!==null&&x.prompt_version_id!==undefined).length;
+    const commitLinked=validLinks.filter(x=>Boolean(clean(x.source_commit)||clean(datasetById.get(String(x.dataset_version_id??""))?.source_commit))).length;
+    return Object.freeze({
+      connected,
+      dataset_store_connected:datasetStoreConnected,
+      lineage_store_connected:lineageStoreConnected,
+      dataset_versions:datasets.length,
+      frozen_dataset_versions:validDatasets.length,
+      links:links.length,
+      valid_links:validLinks.length,
+      orphaned_links:orphaned,
+      measured_runs:measuredRuns.length,
+      linked_measured_runs:linkedMeasured,
+      unlinked_measured_runs:Math.max(0,measuredRuns.length-linkedMeasured),
+      prompt_linked:promptLinked,
+      commit_linked:commitLinked,
+      ready:connected&&orphaned===0&&measuredRuns.length>0&&linkedMeasured===measuredRuns.length
+    });
+  }
+
   function buildObservabilityOps(input={}){
     const rows=safeArray(input.observabilitySnapshots);
     const connected=input.observabilityStoreConnected===true;
@@ -551,6 +612,7 @@
     const annotation=buildAnnotationGroundTruth(input);
     const safety=buildSafetyOps(input);
     const lineage=buildLineage(input);
+    const evalLineage=buildEvalLineageOps(input);
     const observability=buildObservabilityOps(input);
     const radar=buildKnowledgeRadar(input);
     const replayRuns=safeArray(input.replayRuns);
@@ -575,6 +637,7 @@
       {id:"calibration",label:"Confidence Calibration",state:safety.calibration.ready?"ready":"gap",evidence:safety.calibration.valid_rows+"/"+safety.calibration.rows+" valid measured row(s) · invalid="+safety.calibration.invalid_rows+" · max error="+String(safety.calibration.max_error??"unmeasured")},
       {id:"team-judge",label:"Multi-Agent Judge Runs",state:safety.team_judge.ready?"ready":"gap",evidence:safety.team_judge.judged+"/"+safety.team_judge.runs+" completed run(s) have non-empty final verdicts · incomplete="+safety.team_judge.incomplete},
       {id:"lineage",label:"Prompt → Trace Lineage",state:lineage.ready?"ready":"gap",evidence:lineage.linked_spans+"/"+lineage.versioned_spans+" versioned spans linked · orphaned="+lineage.orphaned_spans+" · stores="+String(lineage.connected)},
+      {id:"eval-lineage",label:"Prompt / Dataset / Eval Reproducibility",state:!evalLineage.connected?"gap":evalLineage.orphaned_links?"blocked":evalLineage.measured_runs===0?"empty":evalLineage.unlinked_measured_runs?"pending":"ready",evidence:"datasets="+evalLineage.frozen_dataset_versions+"/"+evalLineage.dataset_versions+" frozen · linked runs="+evalLineage.linked_measured_runs+"/"+evalLineage.measured_runs+" · orphaned="+evalLineage.orphaned_links+" · prompt links="+evalLineage.prompt_linked+" · commit links="+evalLineage.commit_linked},
       {id:"observability",label:"Read-Only Observability Cell",state:!observability.connected?"gap":observability.critical?"blocked":(observability.stale||observability.missing||observability.unable_to_assess||observability.watch)?"pending":"ready",evidence:"lanes="+observability.clear+"/"+observability.required+" clear · watch="+observability.watch+" · critical="+observability.critical+" · stale="+observability.stale+" · missing="+observability.missing+" · unable="+observability.unable_to_assess},
       {id:"f35-radar",label:"F35 Knowledge Freshness",state:radar.ready?"ready":"gap",evidence:radar.fresh+"/"+radar.sources+" source(s) fresh · stale="+radar.stale+" · never="+radar.never_checked+" · findings="+radar.verified_findings},
       {id:"review",label:"Human / Owner Review Queue",state:review.persisted?"ready":"gap",evidence:review.count+" review item(s) · annotation history persisted="+String(review.persisted)},
@@ -586,7 +649,7 @@
     return Object.freeze({
       mode:"BOOM_PROFESSIONAL_WORKBENCH",
       capabilities,
-      traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,evaluators,annotation,safety,lineage,observability,radar,release,
+      traces,traceHierarchy,failures,experiments,review,cost,prompts,alerts,evaluators,annotation,safety,lineage,evalLineage,observability,radar,release,
       professional_ready:capabilities.every(x=>x.state==="ready"||x.state==="empty"),
       gaps:Object.freeze(capabilities.filter(x=>x.state==="gap").map(x=>x.id)),
       pending:Object.freeze(capabilities.filter(x=>x.state==="pending").map(x=>x.id)),
@@ -602,7 +665,7 @@
     });
   }
 
-  const api=Object.freeze({build,buildTraceExplorer,buildFailureInbox,buildExperimentDiff,buildReviewQueue,buildCostLatency,buildPromptRegistry,buildAlerts,buildEvaluatorOps,buildAnnotationGroundTruth,buildSafetyOps,buildLineage,buildObservabilityOps,buildKnowledgeRadar,percentile});
+  const api=Object.freeze({build,buildTraceExplorer,buildFailureInbox,buildExperimentDiff,buildReviewQueue,buildCostLatency,buildPromptRegistry,buildAlerts,buildEvaluatorOps,buildAnnotationGroundTruth,buildSafetyOps,buildLineage,buildEvalLineageOps,buildObservabilityOps,buildKnowledgeRadar,percentile});
   if(typeof window!=="undefined")window.BoomProfessionalWorkbench=api;
   if(typeof module!=="undefined"&&module.exports)module.exports=api;
 })();
