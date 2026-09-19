@@ -20,6 +20,7 @@ for(const token of [
   "server_purchase_confirmation:serverPurchaseProof.server_purchase_confirmation===true",
   "campaign_touchpoint_persistence:serverPurchaseProof.live_campaign_context_persisted===true",
   "purchase_touchpoint_linkage:serverPurchaseProof.purchase_touchpoint_linkage===true",
+  "provider_click_validation:providerClickValidation.provider_click_validation===true",
   'domain:"paid_attribution"',
   "renderPaidAttribution(data)"
 ]) assert(studio.includes(token),"M20 Studio guard missing: "+token);
@@ -45,6 +46,7 @@ for(const token of [
   "server_purchase_confirmation",
   "campaign_touchpoint_persistence",
   "purchase_touchpoint_linkage",
+  "provider_click_validation",
   "paid_attribution_ready:attributionCore",
   "paid_destination_send:false",
   "paid_launch:false",

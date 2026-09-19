@@ -13,6 +13,7 @@
       server_purchase_confirmation:input.server_purchase_confirmation===true,
       campaign_touchpoint_persistence:input.campaign_touchpoint_persistence===true,
       purchase_touchpoint_linkage:input.purchase_touchpoint_linkage===true,
+      provider_click_validation:input.provider_click_validation===true,
       paid_destination_connection:input.paid_destination_connection===true,
       owner_paid_approval:input.owner_paid_approval===true
     });
@@ -25,6 +26,7 @@
     if(!checks.server_purchase_confirmation)blockers.push("server_purchase_confirmation_missing");
     if(!checks.campaign_touchpoint_persistence)blockers.push("campaign_touchpoint_persistence_missing");
     if(!checks.purchase_touchpoint_linkage)blockers.push("purchase_touchpoint_linkage_missing");
+    if(!checks.provider_click_validation)blockers.push("provider_click_validation_missing");
     if(!checks.paid_destination_connection)blockers.push("paid_destination_not_connected");
     if(!checks.owner_paid_approval)blockers.push("owner_paid_approval_required");
 
@@ -35,7 +37,8 @@
       && checks.durable_server_dedup
       && checks.server_purchase_confirmation
       && checks.campaign_touchpoint_persistence
-      && checks.purchase_touchpoint_linkage;
+      && checks.purchase_touchpoint_linkage
+      && checks.provider_click_validation;
 
     return Object.freeze({
       version:VERSION,

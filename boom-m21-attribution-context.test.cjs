@@ -20,7 +20,7 @@ for(const token of [
   "const AttributionContext=window.BoomAttributionContextReadiness",
   "live_server_session_snapshot:serverPurchaseProof.live_campaign_context_persisted===true",
   "server_purchase_linkage:serverPurchaseProof.purchase_touchpoint_linkage===true",
-  "provider_click_validation:false",
+  "provider_click_validation:providerClickValidation.provider_click_validation===true",
   'domain:"campaign_touchpoint_context"',
   "renderAttributionContext(data)"
 ]) assert(studio.includes(token),"M21 Studio guard missing: "+token);

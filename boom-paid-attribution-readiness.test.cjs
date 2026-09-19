@@ -10,6 +10,7 @@ const current=R.evaluate({
   server_purchase_confirmation:false,
   campaign_touchpoint_persistence:false,
   purchase_touchpoint_linkage:false,
+  provider_click_validation:false,
   paid_destination_connection:false,
   owner_paid_approval:false,
   local_preview_event_id_patch:true,
@@ -29,7 +30,8 @@ const persisted=R.evaluate({
   durable_server_dedup:false,
   server_purchase_confirmation:false,
   campaign_touchpoint_persistence:false,
-  purchase_touchpoint_linkage:false
+  purchase_touchpoint_linkage:false,
+  provider_click_validation:false
 });
 assert.strictEqual(persisted.state,"PARTIAL");
 assert.strictEqual(persisted.measurement_core_ready,true);
@@ -43,6 +45,7 @@ const full=R.evaluate({
   server_purchase_confirmation:true,
   campaign_touchpoint_persistence:true,
   purchase_touchpoint_linkage:true,
+  provider_click_validation:true,
   paid_destination_connection:false,
   owner_paid_approval:false
 });

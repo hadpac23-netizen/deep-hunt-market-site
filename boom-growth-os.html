@@ -457,6 +457,25 @@
 
       <section class="bg-panel glass bg-wide">
         <div class="bg-row-head">
+          <div><div class="bg-kicker">M28 · CAMPAIGN ATTRIBUTION LEDGER</div><h2>Backend-only campaign evidence + provider validation gate</h2></div>
+          <span class="bg-score" id="bg-attribution-ledger-state">LEDGER READY</span>
+        </div>
+        <p class="bg-note">One backend-only ledger row per payment session. Click IDs are SHA-256 digests only; official provider validation remains pending and no conversion claim is allowed.</p>
+        <div id="bg-attribution-ledger-stats" class="bg-passport-stats"></div>
+        <div class="bg-passport-layout">
+          <section>
+            <div class="bg-kicker">LEDGER / SECURITY PROOF</div>
+            <div id="bg-attribution-ledger-proof" class="bg-deals"></div>
+          </section>
+          <section>
+            <div class="bg-kicker">PROVIDER / CONVERSION GATE</div>
+            <div id="bg-attribution-ledger-provider" class="bg-deals"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="bg-panel glass bg-wide">
+        <div class="bg-row-head">
           <div><div class="bg-kicker">M27 · FREE FRONTEND FAILOVER</div><h2>GitHub Pages fallback + browser E2E proof</h2></div>
           <span class="bg-score" id="bg-frontend-failover-state">E2E VERIFIED</span>
         </div>
@@ -682,6 +701,8 @@
 <script src="boom-live-activation-proof.js?v=m25"></script>
 <script src="boom-live-attribution-context.js?v=m26"></script>
 <script src="boom-free-frontend-failover.js?v=m27"></script>
+<script src="boom-provider-click-validation.js?v=m28"></script>
+<script src="boom-campaign-attribution-ledger.js?v=m28"></script>
 <script src="boom-growth-agent.js?v=m08"></script>
 <script src="boom-marketing-brain.js?v=os3"></script>
 <script src="boom-creative-brain.js?v=os2"></script>
@@ -689,7 +710,7 @@
 <script src="boom-love-engine.js?v=os2"></script>
 <script src="boom-everywhere-publisher.js?v=os2"></script>
 <script src="boom-learning-loop.js?v=os2"></script>
-<script src="boom-growth-os.js?v=os30"></script>
+<script src="boom-growth-os.js?v=os31"></script>
 <script src="hunt-theme.js?v=shop4"></script>
 <script src="pwa.js?v=pwa8"></script>
   <script src="hunt-brand-motion.js?v=1"></script>

@@ -507,6 +507,15 @@
     const FrontendFailover=window.BoomFreeFrontendFailover;
     const frontendFailover=FrontendFailover?.evaluate?.()||{state:"HOLD",receipt:{},fallback_frontend_live:false,attribution_e2e_verified:false,primary_netlify_available:false,free_hosting_path_active:false,paid_host_upgrade:false,conversion_claim_allowed:false,payments_live:false,blockers:["frontend_failover_receipt_unavailable"],execute_actions:false};
 
+    const CampaignLedger=window.BoomCampaignAttributionLedger;
+    const campaignAttributionLedger=CampaignLedger?.evaluate?.()||{state:"HOLD",receipt:{},ledger_ready:false,total_rows:0,with_click_digest:0,pending_provider_validation:0,provider_verified:0,server_confirmed_purchases:0,conversion_claim_allowed:0,provider_click_validation:false,payments_live:false,blockers:["campaign_attribution_ledger_unavailable"],execute_actions:false};
+
+    const ProviderClick=window.BoomProviderClickValidation;
+    const providerClickValidation=ProviderClick?.evaluateLedger?.({
+      provider_verified:campaignAttributionLedger.provider_verified,
+      pending_provider_validation:campaignAttributionLedger.pending_provider_validation
+    })||{state:"HOLD",provider_click_validation:false,provider_verified:0,pending_provider_validation:0,official_api_evidence_required:true,raw_click_id_exposed:false,conversion_claim_allowed:false,paid_launch:false,paid_spend:false,execute_actions:false};
+
     const SchemaActivation=window.BoomSchemaActivationReadiness;
     const schemaActivation=SchemaActivation?.evaluate?.({
       live_schema_inspected:true,
@@ -551,6 +560,7 @@
       server_purchase_confirmation:serverPurchaseProof.server_purchase_confirmation===true,
       campaign_touchpoint_persistence:serverPurchaseProof.live_campaign_context_persisted===true,
       purchase_touchpoint_linkage:serverPurchaseProof.purchase_touchpoint_linkage===true,
+      provider_click_validation:providerClickValidation.provider_click_validation===true,
       paid_destination_connection:false,
       owner_paid_approval:false,
       local_preview_event_id_patch:true,
@@ -566,7 +576,7 @@
       server_session_snapshot:true,
       live_server_session_snapshot:serverPurchaseProof.live_campaign_context_persisted===true,
       server_purchase_linkage:serverPurchaseProof.purchase_touchpoint_linkage===true,
-      provider_click_validation:false
+      provider_click_validation:providerClickValidation.provider_click_validation===true
     })||{state:"HOLD",checks:{},blockers:["attribution_context_runtime_unavailable"],local_preview_ready:false,live_attribution_context_ready:false,conversion_claim_allowed:false,execute_actions:false};
 
     return {
@@ -604,6 +614,8 @@
       liveActivation,
       liveAttribution,
       frontendFailover,
+      campaignAttributionLedger,
+      providerClickValidation,
       schemaActivation,
       durableEventIdentity,
       paidAttribution,
@@ -1191,6 +1203,8 @@
       ["M25","Live Activation Verification","BoomLiveActivationProof","PANEL"],
       ["M26","Live Attribution Context","BoomLiveAttributionContext","PANEL"],
       ["M27","Free Frontend Failover","BoomFreeFrontendFailover","PANEL"],
+      ["M28","Campaign Attribution Ledger","BoomCampaignAttributionLedger","PANEL"],
+      ["M28","Provider Click Validation","BoomProviderClickValidation","CONNECTED"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1515,6 +1529,8 @@
       {domain:"marketplace_snapshot",source_kind:"DIRECT_DB",source_ref:"merchant_accounts + merchant_stores + merchant_products",available:data.marketplaceSnapshot?.adapter_ready===true,truth_verified:data.marketplaceSnapshot?.adapter_ready===true,observed_count:Number(data.marketplaceSnapshot?.counts?.stores_total||0)+Number(data.marketplaceSnapshot?.counts?.products_total||0),minimum_count:0,observed_at:new Date().toISOString(),max_age_ms:60*60*1000},
       {domain:"paid_attribution",source_kind:"DIRECT_DB",source_ref:"M20 canonical event + server conversion attribution",available:data.paidAttribution?.paid_attribution_ready===true,truth_verified:data.paidAttribution?.paid_attribution_ready===true,observed_count:data.paidAttribution?.paid_attribution_ready?1:0,minimum_count:1,observed_at:data.paidAttribution?.paid_attribution_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"campaign_touchpoint_context",source_kind:"STRUCTURAL",source_ref:"M21 consent-gated browser → checkout → payment-session preview",available:data.attributionContext?.local_preview_ready===true,truth_verified:false,freshness_required:false},
+      {domain:"campaign_attribution_ledger",source_kind:"DIRECT_DB",source_ref:"M28 hunt_attribution_ledger",available:data.campaignAttributionLedger?.ledger_ready===true,truth_verified:data.campaignAttributionLedger?.ledger_ready===true,observed_count:Number(data.campaignAttributionLedger?.total_rows||0),minimum_count:1,observed_at:data.campaignAttributionLedger?.ledger_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
+      {domain:"provider_click_validation",source_kind:"PROVIDER_API",source_ref:"M28 official provider evidence gate",available:Number(data.campaignAttributionLedger?.with_click_digest||0)>0,truth_verified:data.providerClickValidation?.provider_click_validation===true,observed_count:Number(data.providerClickValidation?.provider_verified||0),minimum_count:1,observed_at:data.providerClickValidation?.provider_click_validation?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"server_purchase_proof",source_kind:"DIRECT_DB",source_ref:"hunt_payment_sessions + hunt_payment_events + hunt_orders",available:data.serverPurchaseProof?.adapter_ready===true,truth_verified:data.serverPurchaseProof?.server_purchase_confirmation===true,observed_count:Number(data.serverPurchaseProof?.provider_confirmed_real_orders||0),minimum_count:1,observed_at:data.serverPurchaseProof?.adapter_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"durable_event_identity",source_kind:data.durableEventIdentity?.durable_ready?"DIRECT_DB":"STRUCTURAL",source_ref:"M23 analytics_events.event_id + UNIQUE + guarded Edge insert",available:data.durableEventIdentity?.local_preview_ready===true||data.durableEventIdentity?.durable_ready===true,truth_verified:data.durableEventIdentity?.durable_ready===true,observed_count:data.durableEventIdentity?.durable_ready?1:0,minimum_count:data.durableEventIdentity?.durable_ready?1:0,observed_at:data.durableEventIdentity?.durable_ready?new Date().toISOString():"",freshness_required:data.durableEventIdentity?.durable_ready===true,max_age_ms:60*60*1000},
       {domain:"schema_activation_readiness",source_kind:"STRUCTURAL",source_ref:"M24 live schema preflight + security advisor + rollback plan",available:data.schemaActivation?.activation_ready===true,truth_verified:false,freshness_required:false},
@@ -1535,6 +1551,42 @@
     const gaps=$("#bg-evidence-gaps");
     if(gaps)gaps.innerHTML=e.rows.filter(x=>x.state!=="VERIFIED").map(rowHtml).join("")||'<div class="bg-empty">No evidence gaps.</div>';
     return e;
+  }
+
+  function renderCampaignAttributionLedger(data={}){
+    const l=data.campaignAttributionLedger||{state:"HOLD",receipt:{},checks:{},ledger_ready:false,total_rows:0,with_click_digest:0,pending_provider_validation:0,provider_verified:0,server_confirmed_purchases:0,conversion_claim_allowed:0,payments_live:false};
+    const v=data.providerClickValidation||{state:"HOLD",provider_click_validation:false,provider_verified:0,pending_provider_validation:0,official_api_evidence_required:true,raw_click_id_exposed:false,conversion_claim_allowed:false};
+    const r=l.receipt||{};
+    const state=$("#bg-attribution-ledger-state");
+    if(state)state.textContent=l.ledger_ready?"LEDGER READY":"HOLD";
+    const stats=$("#bg-attribution-ledger-stats");
+    if(stats)stats.innerHTML=[
+      ["Sessions",l.total_rows||0],
+      ["Click digests",l.with_click_digest||0],
+      ["Provider pending",l.pending_provider_validation||0],
+      ["Provider verified",l.provider_verified||0]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const proof=$("#bg-attribution-ledger-proof");
+    if(proof)proof.innerHTML=[
+      ["RLS enabled",l.checks?.rls_enabled],
+      ["Anon blocked",l.checks?.anon_blocked],
+      ["Authenticated blocked",l.checks?.authenticated_blocked],
+      ["Service role only write path",l.checks?.service_role_granted],
+      ["Raw click IDs excluded",l.checks?.raw_click_ids_excluded],
+      ["1:1 payment-session link",l.checks?.payment_session_unique_link],
+      ["Proof digest = 64 hex",Number(r.proof_digest_length)===64&&r.proof_digest_equals_raw===false]
+    ].map(([name,ok])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(ok?"bg-passport-ready":"bg-passport-blocked")+'">'+(ok?"VERIFIED":"MISSING")+'</span></div></article>').join("");
+    const provider=$("#bg-attribution-ledger-provider");
+    if(provider)provider.innerHTML=[
+      ["Detected provider",String(r.proof_click_provider||"—")],
+      ["Click type",String(r.proof_click_id_type||"—")],
+      ["Provider validation",v.provider_click_validation?"VERIFIED":v.state||"PENDING"],
+      ["Official API evidence",v.official_api_evidence_required?"REQUIRED":"—"],
+      ["Server-confirmed purchases",String(l.server_confirmed_purchases||0)],
+      ["Conversion claims",String(l.conversion_claim_allowed||0)],
+      ["Payments",l.payments_live?"ON":"OFF"]
+    ].map(([name,value])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(value==="OFF"||value==="REQUIRED"||value==="PENDING_PROVIDER_VALIDATION"?"bg-passport-prepare":value==="VERIFIED"?"bg-passport-ready":"")+'">'+H.esc(value)+'</span></div></article>').join("");
+    return {ledger:l,provider:v};
   }
 
   function renderFrontendFailover(data={}){
@@ -1931,6 +1983,7 @@
     renderMarketplace(data);
     renderUniversity(data);
     renderEvidenceLedger(data);
+    renderCampaignAttributionLedger(data);
     renderFrontendFailover(data);
     renderLiveAttribution(data);
     renderLiveActivation(data);

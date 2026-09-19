@@ -20,11 +20,12 @@ M20 therefore no longer blocks on event identity or durable dedup.
 ## Remaining paid-attribution blockers
 Paid attribution is still HOLD until the remaining server chain is proven:
 - server-confirmed real purchase
-- persisted campaign/touchpoint context in the live payment session
 - deterministic purchase ↔ touchpoint linkage
-- provider click validation where required
+- official provider click validation through M28
 - paid destination connection
 - explicit paid-launch owner approval
+
+M26/M27 proved live campaign-context persistence. M28 now provides a backend-only attribution ledger and makes provider click validation an explicit M20 gate rather than an implicit note.
 
 M22 reads payment/order proof without creating it. Current project state has no provider-confirmed real purchase, so this gate remains closed.
 

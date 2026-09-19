@@ -64,3 +64,14 @@ PAID_LAUNCH: false
 PAID_SPEND: false
 EXECUTE_ACTIONS: false
 OWNER_GATE: REVIEW_REQUIRED
+
+## M28 integration
+Provider click validation is no longer hardcoded in the Studio integration.
+M21 now consumes M28 provider-click evidence.
+
+Current state:
+- campaign context reaches live payment sessions
+- M28 ledger persists a privacy-minimized digest
+- provider validation remains PENDING
+- official provider API evidence = 0
+- conversion_claim_allowed = false
