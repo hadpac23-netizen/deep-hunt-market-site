@@ -102,25 +102,25 @@
       "id": "action_trace",
       "title": "Action Trace Viewer",
       "owner": "learning_governance_brain",
-      "status": "NEXT",
+      "status": "DONE",
       "source": "F50",
-      "next": "Trace control \u2192 action \u2192 owner \u2192 API \u2192 result \u2192 metric."
+      "next": "Keep trace sanitized and memory-only; add server trace persistence only if a reviewed observability store is introduced."
     },
     {
       "id": "journey_graph",
       "title": "Critical Journey Graph",
       "owner": "experience_brain",
-      "status": "NEXT",
+      "status": "DONE",
       "source": "F50",
-      "next": "Model search \u2192 product \u2192 variant \u2192 save/cart \u2192 quote and guest \u2192 auth \u2192 merge."
+      "next": "Journey contract is visible in Brain Studio; add automated browser E2E for each critical journey."
     },
     {
       "id": "guest_merge_matrix",
       "title": "Guest-to-Account Merge Matrix",
       "owner": "identity_session_kernel",
-      "status": "NEXT",
+      "status": "DONE",
       "source": "F50",
-      "next": "Define cart/preferences/theme/language/survey conflict rules."
+      "next": "Merge policies are explicit; local-only cart/theme/language remain labeled until real account stores are introduced."
     },
     {
       "id": "feedback_center",
@@ -177,6 +177,14 @@
       "status": "DONE",
       "source": "F35",
       "next": "Keep dead-control detection in contract QA."
+    },
+    {
+      "id": "journey_e2e",
+      "title": "Automated critical journey E2E",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Run browser contracts for product \u2192 quote, guest \u2192 account merge and admin connector authorization."
     }
   ]
 }

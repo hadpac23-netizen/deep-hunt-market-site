@@ -5,6 +5,7 @@
   const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   let data=null;
   let gapFilter="all";
+  const traces=[];
 
   async function json(path){
     const res=await fetch(path,{cache:"no-store"});
@@ -59,6 +60,34 @@
     const rows=data.gaps.items.filter(x=>gapFilter==="all"||x.status===gapFilter);
     $("#bs-gaps").innerHTML=rows.length?rows.map(g=>`<article class="bs-gap"><div class="bs-gap-head"><strong>${esc(g.title)}</strong><span class="bs-status ${esc(g.status)}">${esc(g.status)}</span></div><small>${esc(g.source)} · ${esc(g.owner)}</small><p>${esc(g.next)}</p></article>`).join(""):'<div class="bs-empty">No gaps in this state.</div>';
   }
+  function renderJourneys(){
+    const host=$("#bs-journeys");
+    if(!host)return;
+    host.innerHTML=data.journeys.journeys.map(j=>`<article class="bs-journey"><h3>${esc(j.id)}</h3><p>${esc(j.goal)}</p><div class="bs-journey-steps">${j.steps.map(step=>`<span>${esc(step.kind)}: ${esc(step.ref)}${step.optional?" · optional":""}</span>`).join("")}</div></article>`).join("");
+  }
+  function renderMerge(){
+    const host=$("#bs-merge");
+    if(!host)return;
+    host.innerHTML=data.merge.states.map(row=>`<article class="bs-merge"><div class="bs-merge-head"><h3>${esc(row.state)}</h3><span class="bs-status ${row.status==="IMPLEMENTED"?"DONE":"NEXT"}">${esc(row.status)}</span></div><p>${esc(row.policy)}</p><code>${esc(row.owner)}</code></article>`).join("");
+  }
+
+  function renderTraces(){
+    const host=$("#bs-traces");
+    if(!host)return;
+    if(!traces.length){host.innerHTML='<div class="bs-empty">No actions observed yet.</div>';return;}
+    host.innerHTML=traces.map(t=>{
+      const state=String(t.detail?.state||"event");
+      const time=new Date(Number(t.ts)||Date.now()).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",second:"2-digit"});
+      return `<article class="bs-trace"><time>${esc(time)}</time><code>${esc(t.action_id)}</code><span class="bs-trace-state ${esc(state)}">${esc(state)}</span><small>${esc(t.correlation_id||"")}</small></article>`;
+    }).join("");
+  }
+  function recordTrace(payload){
+    if(!payload?.action_id)return;
+    traces.unshift(payload);
+    if(traces.length>50)traces.length=50;
+    renderTraces();
+  }
+
   function renderFiles(){
     const counts=new Map();
     for(const row of data.inventory.interactions)counts.set(row.file,(counts.get(row.file)||0)+1);
@@ -68,12 +97,12 @@
   }
   async function boot(){
     try{
-      const [brains,actions,inventory,surfaces,gaps]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,merge]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-guest-merge-matrix.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps};
+      data={brains,actions,inventory,surfaces,gaps,journeys,merge};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
@@ -96,5 +125,7 @@
     document.querySelectorAll("[data-gap-filter]").forEach(x=>x.classList.toggle("active",x===btn));
     renderGaps();
   });
+  window.addEventListener("boom:action",event=>recordTrace(event.detail));
+  window.addEventListener("boom:trace",event=>recordTrace(event.detail));
   boot();
 })();

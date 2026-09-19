@@ -45,6 +45,22 @@
     document.querySelectorAll('[name="survey-priority"]').forEach(box=>box.checked=(prefs.priorities||[]).includes(box.value));
     document.querySelectorAll('[name="survey-discovery"]').forEach(box=>box.checked=(prefs.discovery_modes||[]).includes(box.value));
   }
+  function mergePrefs(...sources){
+    const rows=sources.filter(Boolean);
+    const union=key=>Array.from(new Set(rows.flatMap(row=>Array.isArray(row?.[key])?row[key]:[])));
+    const server=sources[0]||null;
+    const local=sources[1]||null;
+    const device=sources[2]||null;
+    const serverBand=String(server?.price_band||"any");
+    const localBand=String(local?.price_band||device?.price_band||"any");
+    return {
+      categories:union("categories"),
+      price_band:serverBand!=="any"?serverBand:localBand,
+      priorities:union("priorities"),
+      discovery_modes:union("discovery_modes")
+    };
+  }
+
   async function getSession(){
     if(runtime?.sessionReady)return runtime.sessionReady();
     if(!client)return null;
@@ -60,7 +76,7 @@
   }
   async function persistServer(sess,prefs){
     if(!client||!sess?.user)return;
-    await client.from("hunt_shopping_preferences").upsert({
+    const {error}=await client.from("hunt_shopping_preferences").upsert({
       user_id:sess.user.id,
       categories:prefs.categories,
       price_band:prefs.price_band,
@@ -69,6 +85,7 @@
       completed_at:new Date().toISOString(),
       updated_at:new Date().toISOString()
     },{onConflict:"user_id"});
+    if(error)throw error;
   }
 
   $("#hd-shopping-survey-form")?.addEventListener("submit",async event=>{
@@ -111,10 +128,17 @@
     const sess=await getSession();
     const server=await loadServer(sess);
     const local=readLocal();
-    const prefs=server||local||H.shoppingPreferences?.();
-    if(server){
-      H.saveShoppingPreferences?.(server,false);
-      saveLocal(server);
+    const device=H.shoppingPreferences?.();
+    const prefs=mergePrefs(server,local,device);
+    if(sess?.user&&(server||local||device)){
+      try{
+        await persistServer(sess,prefs);
+        runtime?.emit?.("shopping.survey.submit",{merge:true,category_count:prefs.categories.length,price_band:prefs.price_band},{broadcast:false});
+      }catch(error){runtime?.announce?.(error?.message||"Could not sync shopping preferences.","error");}
+    }
+    if(server||local||device){
+      H.saveShoppingPreferences?.(prefs,false);
+      saveLocal(prefs);
     }
     if(prefs?.categories?.length){
       fillForm(prefs);

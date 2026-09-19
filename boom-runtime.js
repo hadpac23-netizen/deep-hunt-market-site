@@ -6,10 +6,12 @@
   const supabaseUrl = "https://zszlnahjqmwozwubetkm.supabase.co";
   const fallbackPublishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
   const channelName = "boom-hunt-runtime-v1";
+  const traceChannelName = "boom-hunt-trace-v1";
   const pending = new Map();
   const sessionListeners = new Set();
   let client = window.HuntAccountClient || null;
   let channel = null;
+  let traceChannel = null;
   let sessionState = null;
   let sessionResolved = false;
   let sessionPromise = null;
@@ -82,6 +84,9 @@
       ts:Date.now()
     };
     window.dispatchEvent(new CustomEvent("boom:action",{detail:payload}));
+    if(traceChannel){
+      try{traceChannel.postMessage(payload);}catch{}
+    }
     if(options.broadcast!==false && channel){
       try{channel.postMessage(payload);}catch{}
     }
@@ -178,6 +183,18 @@
     return task;
   }
 
+  function bootTraceChannel(){
+    if(!("BroadcastChannel" in window))return;
+    try{
+      traceChannel=new BroadcastChannel(traceChannelName);
+      traceChannel.addEventListener("message",event=>{
+        const payload=event?.data;
+        if(payload?.kind!=="action"||!payload?.action_id)return;
+        window.dispatchEvent(new CustomEvent("boom:trace",{detail:payload}));
+      });
+    }catch{traceChannel=null;}
+  }
+
   function bootChannel(){
     if(!("BroadcastChannel" in window))return;
     try{
@@ -195,6 +212,7 @@
   }
 
   bootChannel();
+  bootTraceChannel();
   bootSession();
 
   window.BoomRuntime={
@@ -209,6 +227,6 @@
     currentSession:()=>sessionState,
     refreshSession,
     isPending:(actionId,key="")=>pending.has(String(actionId)+"::"+String(key)),
-    destroy:()=>{authSubscription?.unsubscribe?.();channel?.close?.();sessionListeners.clear();}
+    destroy:()=>{authSubscription?.unsubscribe?.();channel?.close?.();traceChannel?.close?.();sessionListeners.clear();}
   };
 })();
