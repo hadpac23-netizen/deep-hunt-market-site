@@ -148,3 +148,12 @@ Every experiment must record:
 
 ## Graduation
 BOOM graduates a tactic only when it improves a real HUNT metric against a baseline without harming trust, diversity, performance, fulfillment clarity or user control.
+
+
+## M16 implementation contract
+Runtime: `boom-digital-marketing-university.js`.
+
+Learning is governed by evidence, not by source prestige or novelty alone.
+Require source verification, control, KPI, minimum sample, guardrails, red team and data-quality proof.
+GRADUATION_CANDIDATE and ROLLBACK_CANDIDATE are review states only.
+No tactic may auto-adopt, publish, spend or alter production from the University runtime.

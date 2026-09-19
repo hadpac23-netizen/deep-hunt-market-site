@@ -1089,6 +1089,7 @@
       ["M13","Sales & Advertising Brain","BoomSalesAdvertisingBrain","PANEL"],
       ["M14","Promotion Engine","HuntPromotionEngine","PANEL"],
       ["M15","Marketplace Brain","HuntMarketplaceBrain","PANEL"],
+      ["M16","Digital Marketing University","BoomDigitalMarketingUniversity","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1109,9 +1110,7 @@
       {name:"Marketplace seller/admin",source:"seller.js + merchant-admin.js + merchant-program.html",status:"SEPARATE_TOOL",note:"Application/review/program workflows exist; M15 now provides the aggregate readiness brain, while live snapshot adapter remains gated."},
       {name:"Storefront promotions",source:"boom-promotions.js",status:"SEPARATE_TOOL",note:"Editorial/sponsored renderer exists; M14 now supplies the separate economics/experiment decision core."}
     ];
-    const skillOnly=[
-      ["Digital Marketing University","skills/boom-digital-marketing-university.md"]
-    ].map(([name,source])=>({name,source,status:"SKILL_ONLY"}));
+    const skillOnly=[];
 
     const wired=runtimeRows.filter(row=>row.status==="WIRED").length;
     const loadedNoPanel=runtimeRows.filter(row=>row.status==="LOADED_NO_PANEL").length;
@@ -1353,6 +1352,42 @@
     return m;
   }
 
+  function universityReadiness(data={}){
+    const U=window.BoomDigitalMarketingUniversity;
+    if(!U?.systemReadiness)return {state:"HOLD",blockers:["university_runtime_unavailable"],levels:0,graduates:0,auto_adopt:false,execute_actions:false};
+    return U.systemReadiness({
+      measurement_foundation_ready:Boolean(window.BoomMeasurementHub),
+      product_truth_ready:Number(data.passportSummary?.total||0)>0,
+      experiment_registry_ready:Array.isArray(data.experiments),
+      holdout_framework_ready:false,
+      guardrail_measurement_ready:false,
+      learning_archive_ready:false,
+      source_verification_workflow_ready:false
+    });
+  }
+
+  function renderUniversity(data){
+    const U=window.BoomDigitalMarketingUniversity;
+    const u=universityReadiness(data);
+    const state=$("#bg-university-state");
+    if(state)state.textContent=u.state||"HOLD";
+    const stats=$("#bg-university-stats");
+    if(stats)stats.innerHTML=[
+      ["Curriculum levels",u.levels||0],
+      ["Experiments",Array.isArray(data.experiments)?data.experiments.length:0],
+      ["Graduates",u.graduates||0],
+      ["Auto-adopt",u.auto_adopt?"ON":"OFF"]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const readiness=$("#bg-university-readiness");
+    if(readiness)readiness.innerHTML=(u.blockers||[]).map(blocker=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(blocker.replaceAll("_"," "))+'</strong><span class="bg-score bg-passport-prepare">GAP</span></div></article>').join("")||'<div class="bg-empty">Learning governance is structurally ready for owner review.</div>';
+    const labels={
+      measurement_foundations:"Measurement Foundations",product_feed_quality:"Product & Feed Quality",merchandising:"Merchandising",creative_strategy:"Creative Strategy",organic_growth:"Organic Growth",advertising_systems:"Advertising Systems",attribution_decision_science:"Attribution & Decision Science",lifecycle_retention:"Lifecycle & Retention",country_marketing:"Country Marketing",experiment_loop:"Experiment Loop"
+    };
+    const levels=$("#bg-university-levels");
+    if(levels)levels.innerHTML=(U?.LEVELS||[]).map((level,index)=>'<article class="bg-row"><div class="bg-row-head"><strong>L'+(index+1)+' · '+H.esc(labels[level]||level.replaceAll("_"," "))+'</strong><span class="bg-score">CURRICULUM</span></div></article>').join("");
+    return u;
+  }
+
   function renderFreeGrowth(plan,data,marketing,seoScore){
     const G=window.BoomFreeGrowthEngine;
     const result=G?.build?.({
@@ -1512,6 +1547,7 @@
     renderSalesAdvertising(data);
     renderPromotionEngine(data);
     renderMarketplace();
+    renderUniversity(data);
     renderStudioCoverage();
     renderOperating(plan, data);
 
