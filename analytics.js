@@ -104,6 +104,23 @@
     } catch { return null; }
   }
 
+  function crowdSignalContext() {
+    if(!consentGranted)return {timezone:"",attribution_source:"",attribution_medium:""};
+    let timezone="";
+    try{ timezone=clean(Intl.DateTimeFormat().resolvedOptions().timeZone||"",80); }catch{}
+    const attr=readAttributionContext();
+    const touch=attr?.last_touch||attr?.first_touch||{};
+    let source=clean(touch?.utm_source||"",80).toLowerCase();
+    if(!source){
+      if(touch?.gclid)source="google";
+      else if(touch?.fbclid)source="facebook";
+      else if(touch?.ttclid)source="tiktok";
+      else if(touch?.msclkid)source="microsoft";
+    }
+    const medium=clean(touch?.utm_medium||"",80).toLowerCase();
+    return {timezone,attribution_source:source,attribution_medium:medium};
+  }
+
   function persistAttributionContext() {
     if(!consentGranted||!pendingAttribution)return readAttributionContext();
     try {
@@ -139,6 +156,7 @@
     }
     if (!eventType) return false;
     const firstItem = Array.isArray(params.items) ? (params.items[0] || {}) : {};
+    const crowd=crowdSignalContext();
     const payload = {
       event_type: eventType,
       event_id: clean(params.event_id || "",160),
@@ -154,7 +172,10 @@
       search_category: clean(params.search_category || "", 60),
       destination_market: clean(params.destination_market || "", 60),
       preference_action: clean(params.preference_action || "", 20),
-      mission_type: clean(params.mission_type || "", 20)
+      mission_type: clean(params.mission_type || "", 20),
+      timezone:crowd.timezone,
+      attribution_source:crowd.attribution_source,
+      attribution_medium:crowd.attribution_medium
     };
     try {
       fetch((window.HuntCore?.functionsBase || "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1") + "/hunt-commerce-signal", {
@@ -376,6 +397,10 @@
       else safeMeta[key]=clean(v,160);
     }
     safeMeta.page_path=safePath();
+    const crowd=crowdSignalContext();
+    safeMeta.timezone=crowd.timezone;
+    safeMeta.attribution_source=crowd.attribution_source;
+    safeMeta.attribution_medium=crowd.attribution_medium;
     try{
       fetch("https://zszlnahjqmwozwubetkm.supabase.co/rest/v1/analytics_events",{
         method:"POST",

@@ -95,7 +95,10 @@ Deno.serve(async req=>{
     search_category:clean(body?.search_category,60),
     destination_market:clean(body?.destination_market,60),
     preference_action:clean(body?.preference_action,20),
-    mission_type:clean(body?.mission_type,20)
+    mission_type:clean(body?.mission_type,20),
+    timezone:clean(body?.timezone,80),
+    attribution_source:clean(body?.attribution_source,80).toLowerCase(),
+    attribution_medium:clean(body?.attribution_medium,80).toLowerCase()
   };
 
   const resultCount=Number(body?.result_count);

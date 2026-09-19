@@ -42,7 +42,7 @@
   }
 
   async function loadData() {
-    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, catalogRes, identityRes, savedCountRes, realOrdersCountRes, testOrdersCountRes, trackingCountRes, deliveredCountRes, creatorDraftCountRes, publishedDraftCountRes, merchantConversionCountRes, partnerRightsCountRes, f50MemoryRes, f50RunsRes, f50CandidatesRes, seoAudit] = await Promise.all([
+    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, catalogRes, identityRes, savedCountRes, realOrdersCountRes, testOrdersCountRes, trackingCountRes, deliveredCountRes, creatorDraftCountRes, publishedDraftCountRes, merchantConversionCountRes, partnerRightsCountRes, f50MemoryRes, f50RunsRes, f50CandidatesRes, f60tLiveRes, seoAudit] = await Promise.all([
       ownerFunction("hunt-owner-mission-control"),
       ownerFunction("hunt-launch-readiness"),
       client.from("hunt_unit_economics")
@@ -96,6 +96,11 @@
       client.from("f50_candidates")
         .select("id,run_id,candidate_key,title,mechanism_fingerprint,stage,decision,kill_reasons,winner_claim_allowed,updated_at")
         .order("updated_at",{ascending:false}).limit(120),
+      ownerFunction("hunt-f60t-snapshot").catch(error=>({
+        ok:false,
+        error:String(error?.message||error||"hunt-f60t-snapshot failed"),
+        errors:[String(error?.message||error||"snapshot unavailable")]
+      })),
       fetch("boom-seo-audit.json?v=os3",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)
     ]);
 
@@ -634,11 +639,19 @@
     };
 
     const F60TCore=window.BoomF60TCore;
+    const F60TLive=window.BoomF60TLiveAdapter;
+    const f60tLive=F60TLive?.normalize
+      ? F60TLive.normalize(f60tLiveRes||{})
+      : {
+          adapter_ready:false,crowd_signals_ready:false,local_buying_clock_ready:false,
+          hot_zones:[],sources:[],source_live_count:0,agent_events_verified:0,agent_gateway_ready:false,
+          realized:{verified:false,amount:null},hourly_profit:{},errors:["f60t_live_adapter_unavailable"]
+        };
     const f60tBase=F60TCore?.missionBoard
       ? F60TCore.missionBoard({
           economics,
           targetNetPerHour:10000,
-          realized:{verified:false},
+          realized:f60tLive.realized,
           opportunities:[],
           consecutiveVerifiedTargetHours:0
         })
@@ -660,11 +673,19 @@
     const f60t={
       ...f60tBase,
       core_ready:Boolean(F60TCore?.missionBoard),
-      crowd_signals_ready:false,
-      live_hourly_profit_ledger_ready:false,
+      live_adapter_ready:f60tLive.adapter_ready===true,
+      crowd_signals_ready:f60tLive.crowd_signals_ready===true,
+      local_buying_clock_ready:f60tLive.local_buying_clock_ready===true,
+      hot_zones:f60tLive.hot_zones||[],
+      signal_sources:f60tLive.sources||[],
+      source_live_count:Number(f60tLive.source_live_count||0),
+      agent_signal_events:Number(f60tLive.agent_events_verified||0),
+      live_hourly_profit_ledger_ready:Boolean(f60tLive.hourly_profit?.hour_start),
+      hourly_profit:f60tLive.hourly_profit||{},
       agent_gateway_ready:String(agenticGateway?.state||"").toUpperCase()==="READY",
+      agent_signal_live:f60tLive.agent_gateway_ready===true,
       mission_replaces_daily_10k:true,
-      current_mode:"ANALYSIS_AND_PREPARATION",
+      current_mode:f60tLive.crowd_signals_ready?"LIVE_SIGNAL_ANALYSIS":"ANALYSIS_AND_PREPARATION",
       no_fake_success:true
     };
 
@@ -796,9 +817,13 @@
     const mission=f.mission||{};
     const state=$("#bg-f60t-state");
     if(state){
-      state.textContent=f.core_ready
-        ? (f.crowd_signals_ready&&target.realized_verified?"ACTIVE · VERIFIED":"CORE READY · SIGNALS PENDING")
-        : "HOLD";
+      state.textContent=!f.core_ready
+        ? "HOLD"
+        : f.crowd_signals_ready&&target.realized_verified
+          ? "ACTIVE · PROFIT VERIFIED"
+          : f.crowd_signals_ready
+            ? "CORE READY · CROWD LIVE"
+            : "CORE READY · SIGNALS PENDING";
     }
 
     const stats=$("#bg-f60t-stats");
@@ -809,21 +834,29 @@
         ["Target gap", target.realized_verified?money(target.target_gap):"—"],
         ["Avg verified contribution", money(target.average_verified_contribution)],
         ["Orders / hour required", target.minimum_orders_per_hour_at_average_contribution==null?"—":String(target.minimum_orders_per_hour_at_average_contribution)],
-        ["Platform / agent surfaces", String(f.platform_count||0)]
+        ["Platform / agent surfaces", String(f.platform_count||0)],
+        ["Live signal sources", String(f.source_live_count||0)],
+        ["Verified agent events", String(f.agent_signal_events||0)]
       ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
     }
 
     const board=$("#bg-f60t-mission");
     if(board){
       const top=(f.top_opportunities||[]).find(x=>x?.eligible===true);
+      const hot=(f.hot_zones||[])[0]||null;
+      const hotLabel=hot
+        ? [hot.country_code||"—",hot.platform||"—",hot.local_hour==null?"time pending":"h"+hot.local_hour,hot.category||"all",("n="+Number(hot.event_count||0))].join(" · ")
+        : "NONE VERIFIED YET";
       board.innerHTML=[
         ["Mission",String(mission.name||"F60T · ימ״מ")],
         ["Command","TARGET → LOCATION → SALE"],
         ["Follow the Sun",f.follow_the_sun?"ON":"HOLD"],
-        ["Global Crowd Radar",f.crowd_signals_ready?"LIVE VERIFIED":"SIGNALS PENDING"],
-        ["Agent Commerce",f.agent_gateway_ready?"GATEWAY READY":"PREP / HOLD"],
+        ["Global Crowd Radar",f.crowd_signals_ready?"FIRST-PARTY LIVE":"SIGNALS PENDING"],
+        ["Local Buying Clock",f.local_buying_clock_ready?"LEARNING LIVE":"TIMEZONE SAMPLE BUILDING"],
+        ["Top crowd signal",hotLabel],
+        ["Agent Commerce",f.agent_signal_live?"VERIFIED AGENT EVENTS":"GATEWAY PREP / NO LIVE TRAFFIC"],
         ["Price Lift","ANALYZE · OWNER GATED"],
-        ["Top verified opportunity",top?(String(top.country||"")+" · "+String(top.platform||"")+" · "+String(top.product_key||"")):"NONE VERIFIED YET"],
+        ["Top profit opportunity",top?(String(top.country||"")+" · "+String(top.platform||"")+" · "+String(top.product_key||"")):"NONE VERIFIED YET"],
         ["Stretch target",f.stretch_target?.eligible&&f.stretch_target?.candidate_target?money(f.stretch_target.candidate_target)+"/h":"LOCKED UNTIL 3 VERIFIED TARGET HOURS"]
       ].map(([name,value])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score">'+H.esc(value)+'</span></div></article>').join("");
     }
@@ -834,7 +867,10 @@
         ["F60T Core",f.core_ready===true],
         ["Profit Truth sample",target.truth_ready===true],
         ["Realized hourly profit proof",target.realized_verified===true],
+        ["F60T live adapter",f.live_adapter_ready===true],
         ["Global crowd signals",f.crowd_signals_ready===true],
+        ["Local buying clock",f.local_buying_clock_ready===true],
+        ["Hourly profit ledger",f.live_hourly_profit_ledger_ready===true],
         ["Owner Gate active",String(f.owner_gate||"")==="ACTIVE"],
         ["Live price write disabled",f.live_price_write===false],
         ["Paid spend disabled",f.paid_spend===false],
