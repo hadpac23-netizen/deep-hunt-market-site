@@ -242,6 +242,39 @@
       .map(([reason,count])=>({reason,count}))
       .sort((a,b)=>b.count-a.count||a.reason.localeCompare(b.reason))
       .slice(0,12);
+
+    const OfferChess=window.BoomOfferChess;
+    const offerRows=OfferChess?.evaluate ? passports.map((passport,index)=>{
+      const econ=econMap.get(passport.product_key)||{};
+      return {
+        product_key:passport.product_key,
+        title:passport.identity?.title||passport.product_key,
+        result:OfferChess.evaluate({
+          econ,
+          control:controlRows[index]||{},
+          context:{
+            objective:"conversion_test",
+            shipping_verified:econ.inputs_verified===true,
+            bundle_preview_verified:false,
+            min_meaningful_coupon_amount:0.50,
+            min_meaningful_coupon_rate:0.05
+          }
+        })
+      };
+    }) : [];
+    const offerSummary=OfferChess?.summarize?.(offerRows.map(x=>x.result))||{
+      total:0,hold:0,no_offer:0,coupon_candidate:0,shipping_candidate:0,bundle_candidate:0,
+      safe_coupon_range:null,application_enabled:false,external_publish:false,owner_gate:"REVIEW_REQUIRED"
+    };
+    const offerCandidates=offerRows.filter(row=>!["HOLD","NO_OFFER"].includes(row.result?.recommendation)).slice(0,12);
+    const offerBlockers=new Map();
+    for(const row of offerRows){
+      for(const blocker of row.result?.blockers||[])offerBlockers.set(blocker,(offerBlockers.get(blocker)||0)+1);
+    }
+    const offerTopBlockers=[...offerBlockers.entries()]
+      .map(([blocker,count])=>({blocker,count}))
+      .sort((a,b)=>b.count-a.count||a.blocker.localeCompare(b.blocker))
+      .slice(0,10);
     const blockerCounts = new Map();
     for (const passport of passports) {
       const productBlockers = new Set();
@@ -278,6 +311,10 @@
       controlSummary,
       creativeBatch,
       creativeTopBlockers,
+      offerRows,
+      offerSummary,
+      offerCandidates,
+      offerTopBlockers,
       seoAudit
     };
   }
@@ -585,6 +622,54 @@
       : '<div class="bg-empty">No creative blockers found.</div>';
   }
 
+
+  function renderOfferChess(data){
+    const s=data.offerSummary||{};
+    const state=$("#bg-offer-state");
+    if(state)state.textContent=s.application_enabled===true?"APPLICATION ON":"APPLICATION OFF";
+
+    const range=s.safe_coupon_range
+      ? "$"+Number(s.safe_coupon_range.min||0).toFixed(2)+"–$"+Number(s.safe_coupon_range.max||0).toFixed(2)
+      : "—";
+    const stats=[
+      ["SKUs evaluated",s.total||0],
+      ["NO OFFER",s.no_offer||0],
+      ["Coupon candidates",s.coupon_candidate||0],
+      ["Safe coupon range",range]
+    ];
+    const host=$("#bg-offer-stats");
+    if(host)host.innerHTML=stats.map(([label,value])=>
+      '<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>'
+    ).join("");
+
+    const candidates=$("#bg-offer-candidates");
+    const rows=Array.isArray(data.offerCandidates)?data.offerCandidates:[];
+    if(candidates)candidates.innerHTML=rows.length
+      ? rows.map(row=>{
+          const r=row.result||{};
+          const selected=r.selected||{};
+          const amount=Number(selected.max_discount_amount||selected.max_subsidy_amount||0);
+          const amountText=amount>0?money(amount,r.economics?.currency||"USD"):"";
+          return '<article class="bg-row"><div class="bg-row-head"><div><strong>'+H.esc(row.title||row.product_key)+
+            '</strong><small>'+H.esc(row.product_key||"")+'</small></div><span class="bg-score">'+H.esc(r.recommendation||"HOLD")+
+            '</span></div><small>'+H.esc(amountText?("Max safe value "+amountText):"Verified candidate; checkout revalidation required")+
+            ' · application '+H.esc(r.application_enabled===true?"ON":"OFF")+'</small></article>';
+        }).join("")
+      : '<div class="bg-empty">No meaningful verified offer candidate yet. BOOM prefers no offer to a misleading or trivial discount.</div>';
+
+    const blockers=$("#bg-offer-blockers");
+    const blocked=Array.isArray(data.offerTopBlockers)?data.offerTopBlockers:[];
+    const summaryRows=[
+      {blocker:"HOLD",count:s.hold||0},
+      {blocker:"Shipping candidates",count:s.shipping_candidate||0},
+      {blocker:"Bundle candidates",count:s.bundle_candidate||0}
+    ];
+    if(blockers)blockers.innerHTML=[...summaryRows,...blocked].map(row=>
+      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(row.blocker||"").replaceAll("_"," "))+
+      '</strong><span class="bg-score">'+H.esc(row.count||0)+'</span></div></article>'
+    ).join("");
+  }
+
   function renderOperating(plan, data) {
     const Marketing = window.BoomMarketingBrain;
     const Seo = window.BoomSeoBrain;
@@ -686,6 +771,7 @@
     renderMeasurementHub();
     renderControlTower(data);
     renderCreativeFactory(data);
+    renderOfferChess(data);
     renderOperating(plan, data);
 
     $("#bg-bottleneck-code").textContent = plan.bottleneck.code;
