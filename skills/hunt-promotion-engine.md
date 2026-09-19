@@ -58,3 +58,12 @@ Every promotion needs:
 - refund/return guardrail
 - stop rule
 - rollback
+
+
+## M14 implementation contract
+Runtime: `hunt-promotion-engine.js`.
+
+M05 Offer Chess selects a possible offer; M14 validates the full promotion campaign.
+Never assume missing affiliate, tax, availability or margin inputs are zero/ready.
+Every campaign requires a control, stop rule and rollback.
+Promotion activation, checkout application and external publishing remain false until a separate owner-approved execution path exists.

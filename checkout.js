@@ -221,6 +221,7 @@
         shipping: shippingInput.shipping,
         idempotency_key: `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
         checkout_offer_id: bundlePreview?.offer_id || null,
+        attribution: window.HuntAnalytics?.attributionContext?.() || null,
         items: cart.map(item => ({
           provider:item.provider,
           item_id:item.item_id,
@@ -346,6 +347,11 @@
     window.HuntAnalytics?.checkoutMarket(country);
   });
   $("#hd-checkout-verify")?.addEventListener("click",verifyPriceAndShipping);
-  rememberDestination($("#hd-checkout-market")?.value || "");
+  {
+    const market=window.HuntCountry?.market?.() || (()=>{try{return localStorage.getItem(destinationKey)||""}catch{return ""}})();
+    const select=$("#hd-checkout-market");
+    if(select&&market&&[...select.options].some(option=>option.value===market))select.value=market;
+    if(select?.value)rememberDestination(select.value);
+  }
   render();
 })();

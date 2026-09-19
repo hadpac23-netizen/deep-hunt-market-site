@@ -117,3 +117,12 @@ Rules:
 - product video must be verified to belong to the exact product
 - do not fake infinity; when the finite high-quality pool is exhausted, say so
 - measure scroll depth, next-product opens, likes, saves and product-to-product journeys
+
+
+## M13 implementation contract
+Runtime: `boom-sales-advertising-brain.js`.
+
+Promotion readiness must combine product-page quality, Product Truth, Profit Gate and measurement.
+Verified economics may define a max-safe-CAC ceiling but never authorize spend.
+Sensitive-trait targeting is rejected.
+Even a fully ready candidate stops at OWNER_REVIEW; paid launch and spend remain false until a separate owner-approved execution layer exists.

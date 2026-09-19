@@ -40,3 +40,12 @@ DISCOVER -> VERIFY -> CREATE -> DISTRIBUTE -> MEASURE -> LEARN -> REPEAT.
 
 ## Metrics
 Organic impressions, search clicks, indexed product URLs, product opens, save/like rate, scroll depth, return visits, referral traffic and verified purchase value when available.
+
+
+## M12 implementation contract
+Runtime: `boom-free-growth-engine.js`.
+
+Rank free channels by verified readiness, not by hype.
+A TEST_CANDIDATE is still review-only.
+Keep paid spend, external publishing and external messaging disabled.
+Missing Search Console, shipping truth, referral attribution or earned attribution must stay visible as blockers.

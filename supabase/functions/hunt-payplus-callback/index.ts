@@ -1,5 +1,6 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { verifyPayPlusCallbackHeaders } from "./payplus-auth.mjs";
+import { classifyPayPlusStatus } from "./payplus-status-map.mjs";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const num=(v:unknown)=>Number.isFinite(Number(v))?Number(v):null;
@@ -155,7 +156,25 @@ Deno.serve(async(req:Request)=>{
     }
 
     const verified=await verifyWithPayPlus(session,payload);
+    const mapping=classifyPayPlusStatus(verified.body);
     const providerEventId=verified.transactionUid||verified.requestUid;
+
+    const {error:observationError}=await supabase.from("hunt_payplus_status_observations").upsert({
+      payment_session_id:session.id,
+      provider_event_id:providerEventId,
+      environment:session.mode==="sandbox"?"sandbox":"live",
+      charge_method:mapping.fingerprint.charge_method,
+      charge_method_name:mapping.fingerprint.charge_method_name,
+      provider_status:mapping.fingerprint.status===null?null:String(mapping.fingerprint.status).slice(0,80),
+      provider_code:mapping.fingerprint.code===null?null:String(mapping.fingerprint.code).slice(0,80),
+      provider_description:mapping.fingerprint.description,
+      mapping_state:mapping.state,
+      signature_verified:true,
+      ipn_full_verified:true,
+      accepted_paid:false
+    },{onConflict:"payment_session_id,provider_event_id"});
+    if(observationError)throw new Error("PAYPLUS_STATUS_OBSERVATION_STORE_FAILED");
+
     const payloadDigest=await sha256(JSON.stringify({
       session_id:session.id,
       transaction_uid:verified.transactionUid||null,
@@ -180,6 +199,7 @@ Deno.serve(async(req:Request)=>{
       return json({
         ok:true,verified:true,accepted_paid:false,
         reason:"PAID_ACCEPTANCE_KILL_SWITCH_OFF",
+        mapping_state:mapping.state,
         payment_session_id:session.id
       });
     }
@@ -187,6 +207,7 @@ Deno.serve(async(req:Request)=>{
     return json({
       ok:true,verified:true,accepted_paid:false,
       reason:"PROVIDER_STATUS_MAPPING_REQUIRES_SANDBOX_PROOF",
+      mapping_state:mapping.state,
       payment_session_id:session.id
     });
   }catch(e){

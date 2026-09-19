@@ -1,0 +1,312 @@
+/* HUNT ALIVE 2.0 · FUTURE APP SIGNATURE
+   Clear drop → glass flare → star orbit → T spin → wink + smile. */
+.hd-hunt-wordmark:not(.hd-hunt-signature)>span{animation:none!important}
+.hd-hunt-wordmark:not(.hd-hunt-signature)::after{display:none!important}
+
+.hd-hunt-signature{
+  position:relative;
+  display:inline-flex!important;
+  align-items:baseline;
+  gap:.006em;
+  direction:ltr!important;
+  isolation:isolate;
+  overflow:visible!important;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  text-decoration:none;
+  perspective:760px;
+  transform-style:preserve-3d;
+}
+.hd-hunt-signature.hd-hunt-wordmark::after{display:none!important}
+
+.hd-hunt-signature .hd-hunt-letter{
+  --hunt-letter-index:0;
+  position:relative;
+  display:inline-grid!important;
+  place-items:center;
+  min-width:.58em;
+  text-align:center;
+  opacity:1;
+  transform:none;
+  transform-style:preserve-3d;
+  will-change:transform,opacity,filter;
+}
+.hd-hunt-signature .hd-hunt-glyph{
+  position:relative;
+  display:block;
+  min-width:.58em;
+  text-align:center;
+  background:
+    linear-gradient(118deg,
+      #72cfff 0%,
+      #dff7ff 24%,
+      #ffffff 39%,
+      #a9a4ff 62%,
+      #7cc9ff 82%,
+      #d5f3ff 100%);
+  background-size:180% 100%;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent!important;
+  filter:
+    drop-shadow(0 7px 18px rgba(104,145,255,.18))
+    drop-shadow(0 1px 0 rgba(255,255,255,.28));
+}
+.hd-hunt-signature.is-signature-active .hd-hunt-letter{
+  animation:hd-hunt-signature-drop .9s cubic-bezier(.13,.82,.17,1.16) both;
+  animation-delay:calc(var(--hunt-letter-index) * 112ms);
+}
+.hd-hunt-signature.is-signature-active .hd-hunt-glyph{
+  animation:hd-hunt-glyph-settle .95s ease both;
+  animation-delay:calc(var(--hunt-letter-index) * 112ms);
+}
+
+.hd-hunt-signature .hd-hunt-glass{
+  position:absolute;
+  inset:-.05em -.08em -.08em;
+  display:block;
+  pointer-events:none;
+  user-select:none;
+  white-space:nowrap;
+  font:inherit;
+  font-weight:inherit;
+  letter-spacing:inherit;
+  line-height:inherit;
+  text-align:center;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+  background:
+    linear-gradient(104deg,
+      transparent 0%,
+      transparent 27%,
+      rgba(196,235,255,.08) 35%,
+      rgba(255,255,255,.56) 43%,
+      rgba(255,255,255,1) 48%,
+      rgba(186,228,255,.98) 52%,
+      rgba(255,255,255,.46) 59%,
+      transparent 68%,
+      transparent 100%);
+  background-size:310% 100%;
+  background-position:165% 0;
+  -webkit-background-clip:text;
+  background-clip:text;
+  opacity:0;
+  filter:
+    drop-shadow(0 0 9px rgba(217,246,255,.72))
+    drop-shadow(0 0 19px rgba(124,174,255,.36));
+  z-index:4;
+}
+.hd-hunt-signature.is-signature-active .hd-hunt-glass{
+  animation:hd-hunt-signature-glass 1.06s cubic-bezier(.2,.74,.22,1) 1.28s both;
+}
+
+/* Star lands over the final T and rotates before settling. */
+.hd-hunt-signature .hd-hunt-star{
+  position:absolute;
+  z-index:8;
+  width:.48em;
+  height:.48em;
+  right:-.06em;
+  top:-.48em;
+  opacity:0;
+  transform:translate3d(.18em,-.12em,0) scale(.08) rotate(-120deg);
+  transform-origin:50% 78%;
+  pointer-events:none;
+}
+.hd-hunt-signature .hd-hunt-star::before{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,#fff 0%,#f6fdff 30%,#c6eaff 58%,#9e98ff 100%);
+  clip-path:polygon(50% 0%,59% 38%,100% 50%,59% 62%,50% 100%,41% 62%,0% 50%,41% 38%);
+  filter:
+    drop-shadow(0 0 4px rgba(255,255,255,1))
+    drop-shadow(0 0 11px rgba(163,207,255,.92))
+    drop-shadow(0 0 20px rgba(142,133,255,.5));
+}
+.hd-hunt-signature .hd-hunt-star::after,
+.hd-hunt-signature .hd-hunt-star i::before,
+.hd-hunt-signature .hd-hunt-star i::after{
+  content:"";
+  position:absolute;
+  width:25%;height:25%;
+  background:#fff;
+  clip-path:polygon(50% 0%,59% 38%,100% 50%,59% 62%,50% 100%,41% 62%,0% 50%,41% 38%);
+  opacity:0;
+}
+.hd-hunt-signature .hd-hunt-star::after{left:-52%;top:46%}
+.hd-hunt-signature .hd-hunt-star i::before{right:-48%;top:-14%}
+.hd-hunt-signature .hd-hunt-star i::after{right:-34%;bottom:-12%}
+.hd-hunt-signature.is-signature-active .hd-hunt-star{
+  animation:
+    hd-hunt-signature-star 1.36s cubic-bezier(.12,.78,.2,1.08) 2.16s both,
+    hd-hunt-star-idle 12s ease-in-out 5.2s infinite;
+}
+.hd-hunt-signature.is-signature-active .hd-hunt-star::after{
+  animation:hd-hunt-mini-star .56s ease 2.55s both;
+}
+.hd-hunt-signature.is-signature-active .hd-hunt-star i::before{
+  animation:hd-hunt-mini-star .7s ease 2.72s both;
+}
+.hd-hunt-signature.is-signature-active .hd-hunt-star i::after{
+  animation:hd-hunt-mini-star .62s ease 2.9s both;
+}
+
+/* The T is the future app character: spin, return, then smile. */
+.hd-hunt-signature .is-hunt-t{z-index:6;transform-origin:50% 54%}
+.hd-hunt-signature.is-signature-active .is-hunt-t{
+  animation:
+    hd-hunt-signature-drop .9s cubic-bezier(.13,.82,.17,1.16) both,
+    hd-hunt-t-spin 1.12s cubic-bezier(.16,.76,.18,1.05) 2.5s both;
+  animation-delay:336ms,2.5s;
+}
+.hd-hunt-face{
+  position:absolute;
+  inset:0;
+  z-index:9;
+  opacity:0;
+  pointer-events:none;
+  transform:translateZ(1px) scale(.82);
+}
+.hd-hunt-signature.is-signature-active .hd-hunt-face{
+  animation:hd-hunt-face-arrive .54s cubic-bezier(.18,.8,.2,1.18) 3.28s both;
+}
+.hd-hunt-eye{
+  position:absolute;
+  width:.15em;height:.075em;
+  right:.11em;
+  top:.33em;
+  border-top:.045em solid rgba(255,255,255,.98);
+  border-radius:50% 50% 0 0;
+  transform:rotate(-8deg);
+  filter:drop-shadow(0 0 3px rgba(126,202,255,.85));
+}
+.hd-hunt-smile{
+  position:absolute;
+  width:.22em;height:.12em;
+  left:50%;bottom:.08em;
+  border-bottom:.045em solid rgba(255,255,255,.98);
+  border-radius:0 0 50% 50%;
+  transform:translateX(-50%) rotate(-1deg);
+  filter:drop-shadow(0 0 3px rgba(126,202,255,.85));
+}
+.hd-hunt-signature.is-signature-complete .hd-hunt-eye{
+  animation:hd-hunt-wink 7s ease-in-out 1.5s infinite;
+}
+.hd-hunt-signature.is-signature-complete .hd-hunt-smile{
+  animation:hd-hunt-smile-breathe 7s ease-in-out 1.5s infinite;
+}
+
+/* Small post-arrival halo behind the T keeps the app-logo moment memorable. */
+.hd-hunt-signature .is-hunt-t::before{
+  content:"";
+  position:absolute;
+  inset:-.18em -.14em;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(149,210,255,.2),rgba(129,117,255,.08) 42%,transparent 70%);
+  opacity:0;
+  transform:scale(.58);
+  filter:blur(5px);
+  z-index:-1;
+}
+.hd-hunt-signature.is-signature-complete .is-hunt-t::before{
+  animation:hd-hunt-t-halo .78s ease both;
+}
+
+@keyframes hd-hunt-signature-drop{
+  0%{
+    opacity:0;
+    transform:translate3d(0,-2.45em,0) rotateX(-36deg) scale(.86);
+    filter:blur(7px) brightness(1.35);
+  }
+  54%{
+    opacity:1;
+    transform:translate3d(0,.13em,0) rotateX(4deg) scale(1.045);
+    filter:blur(0) brightness(1.12);
+  }
+  72%{transform:translate3d(0,-.035em,0) rotateX(-1deg) scale(.992)}
+  100%{
+    opacity:1;
+    transform:none;
+    filter:drop-shadow(0 6px 18px rgba(112,151,255,.15));
+  }
+}
+@keyframes hd-hunt-glyph-settle{
+  0%{background-position:0% 0}
+  100%{background-position:100% 0}
+}
+@keyframes hd-hunt-signature-glass{
+  0%{opacity:0;background-position:165% 0;filter:brightness(.9)}
+  12%{opacity:.98}
+  46%{opacity:1;filter:brightness(1.4)}
+  82%{opacity:.96}
+  100%{opacity:0;background-position:-60% 0;filter:brightness(1)}
+}
+@keyframes hd-hunt-signature-star{
+  0%{opacity:0;transform:translate3d(.18em,-.1em,0) scale(.08) rotate(-120deg)}
+  24%{opacity:1;transform:translate3d(.08em,-.04em,0) scale(1.32) rotate(150deg)}
+  55%{opacity:1;transform:translate3d(-.02em,.02em,0) scale(.86) rotate(390deg)}
+  78%{opacity:1;transform:translate3d(0,0,0) scale(1.08) rotate(515deg)}
+  100%{opacity:.96;transform:translate3d(0,0,0) scale(.78) rotate(540deg)}
+}
+@keyframes hd-hunt-t-spin{
+  0%{transform:rotateY(0deg) translateY(0);filter:brightness(1)}
+  32%{transform:rotateY(135deg) translateY(-.06em) scale(1.05);filter:brightness(1.24)}
+  66%{transform:rotateY(300deg) translateY(-.02em) scale(.97);filter:brightness(1.15)}
+  100%{transform:rotateY(360deg) translateY(0) scale(1);filter:brightness(1)}
+}
+@keyframes hd-hunt-face-arrive{
+  0%{opacity:0;transform:translateZ(1px) scale(.55) translateY(.08em)}
+  65%{opacity:1;transform:translateZ(1px) scale(1.08) translateY(0)}
+  100%{opacity:.98;transform:translateZ(1px) scale(1)}
+}
+@keyframes hd-hunt-mini-star{
+  0%,100%{opacity:0;transform:scale(.1) rotate(0)}
+  45%{opacity:1;transform:scale(1.18) rotate(72deg)}
+}
+@keyframes hd-hunt-star-idle{
+  0%,88%,100%{opacity:.78;transform:scale(.72) rotate(540deg)}
+  92%{opacity:1;transform:scale(1.12) rotate(585deg)}
+  95%{opacity:.88;transform:scale(.82) rotate(612deg)}
+}
+@keyframes hd-hunt-wink{
+  0%,89%,100%{transform:rotate(-8deg) scaleX(1)}
+  92%{transform:rotate(-8deg) scaleX(.45)}
+  94%{transform:rotate(-8deg) scaleX(1)}
+}
+@keyframes hd-hunt-smile-breathe{
+  0%,89%,100%{transform:translateX(-50%) scaleX(1)}
+  93%{transform:translateX(-50%) scaleX(1.12)}
+}
+@keyframes hd-hunt-t-halo{
+  from{opacity:0;transform:scale(.55)}
+  55%{opacity:1;transform:scale(1.12)}
+  to{opacity:.48;transform:scale(.92)}
+}
+
+@media(max-width:620px){
+  .hd-hunt-signature .hd-hunt-star{width:.43em;height:.43em;right:-.04em;top:-.43em}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hd-hunt-signature .hd-hunt-letter,
+  .hd-hunt-signature .hd-hunt-glyph,
+  .hd-hunt-signature .hd-hunt-glass,
+  .hd-hunt-signature .hd-hunt-star,
+  .hd-hunt-signature .hd-hunt-star::before,
+  .hd-hunt-signature .hd-hunt-star::after,
+  .hd-hunt-signature .hd-hunt-star i::before,
+  .hd-hunt-signature .hd-hunt-star i::after,
+  .hd-hunt-signature .hd-hunt-face,
+  .hd-hunt-signature .hd-hunt-eye,
+  .hd-hunt-signature .hd-hunt-smile,
+  .hd-hunt-signature .is-hunt-t::before{
+    animation:none!important;
+    transition:none!important;
+  }
+  .hd-hunt-signature .hd-hunt-letter{opacity:1!important;transform:none!important}
+  .hd-hunt-signature .hd-hunt-glass{display:none!important}
+  .hd-hunt-signature .hd-hunt-star{opacity:.82!important;transform:scale(.72)!important}
+  .hd-hunt-signature .hd-hunt-face{opacity:.96!important;transform:none!important}
+  .hd-hunt-signature .is-hunt-t::before{opacity:.3!important;transform:scale(.9)!important}
+}

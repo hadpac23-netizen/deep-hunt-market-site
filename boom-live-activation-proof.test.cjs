@@ -1,0 +1,15 @@
+const assert=require("node:assert");
+const P=require("./boom-live-activation-proof.js");
+const result=P.evaluate();
+assert.strictEqual(result.state,"VERIFIED");
+assert.strictEqual(result.activation_verified,true);
+assert.strictEqual(result.durable_ready,true);
+assert.strictEqual(result.live_event_id_persistence,true);
+assert.strictEqual(result.payments_live,false);
+assert.strictEqual(result.payplus_callback_accept_paid,false);
+assert.strictEqual(result.execute_actions,false);
+assert.strictEqual(result.receipt.edge_function_version,11);
+assert.strictEqual(result.receipt.migration_version,"20260919133622");
+assert.strictEqual(result.receipt.duplicate_proof_rows,1);
+assert.strictEqual(result.receipt.duplicate_canonical_rows_observed,0);
+console.log("boom_live_activation_proof=PASS");

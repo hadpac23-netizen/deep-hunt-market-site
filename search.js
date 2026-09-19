@@ -2,8 +2,27 @@
   const H=window.HuntCore;
   if(!H)return;
   const $=q=>document.querySelector(q);
+
+  async function ensureCompareRuntime(){
+    if(window.HuntCompare)return true;
+    return new Promise(resolve=>{
+      const existing=document.querySelector('script[data-hunt-compare-retry]');
+      if(existing){
+        existing.addEventListener("load",()=>resolve(Boolean(window.HuntCompare)),{once:true});
+        existing.addEventListener("error",()=>resolve(false),{once:true});
+        return;
+      }
+      const script=document.createElement("script");
+      script.src="hunt-compare.js?v=2&retry=1";
+      script.dataset.huntCompareRetry="true";
+      script.onload=()=>resolve(Boolean(window.HuntCompare));
+      script.onerror=()=>resolve(false);
+      document.head.appendChild(script);
+    });
+  }
+
   const params=new URLSearchParams(location.search);
-  const S={results:[],visible:0,observer:null,mission:null,missionOffset:0};
+  const S={results:[],visible:0,observer:null,mission:null,missionOffset:0,clarifyUsed:false};
 
   const map=[
     [/שמלה|שמלות|فستان|فساتين/gi," dress "],
@@ -46,13 +65,13 @@
   const styles=["elegant","vintage","street","casual","luxury","minimal","sport","formal","wedding","summer","winter","oversized","classic","retro"];
   const brandStyle={gucci:["luxury","statement","vintage"],prada:["minimal","luxury"],chanel:["classic","elegant","luxury"],zara:["modern","minimal","casual"],dior:["elegant","luxury","classic"],versace:["luxury","statement"],armani:["formal","classic","minimal"],balenciaga:["street","oversized","statement"],nike:["sport","street"],adidas:["sport","street"]};
   const missionRules=[
-    {name:"Weekend Escape",re:/weekend|trip|travel|vacation|סופ.?ש|נסיעה|טיול|رحلة|سفر/i,cats:["travel","bags","phoneaccessories","drinkware"]},
-    {name:"Home Office",re:/home office|workspace|desk setup|משרד ביתי|עמדת עבודה|مكتب منزلي|مكتب/i,cats:["office","lighting","computer-accessories","drinkware"]},
-    {name:"Wedding Ready",re:/wedding|חתונה|אירוע|زفاف|عرس/i,cats:["dresses","bags","jewelry","shoes","makeup"]},
-    {name:"Gym Reset",re:/gym|fitness|workout|חדר כושר|אימון|لياقة|رياضة/i,cats:["activewear","fitness","fitness-accessories","sports-bags","drinkware"]},
-    {name:"Pet Home",re:/\bpet\b|dog|cat|כלב|חתול|حيوان|كلب|قط/i,cats:["pet-accessories","pet-toys","pet-feeding","pet-beds"]},
-    {name:"Phone Upgrade",re:/phone upgrade|iphone setup|galaxy setup|שדרוג טלפון|אייפון|ترقية هاتف|ايفون/i,cats:["phone-cases","chargers-cables","power-banks","stands-holders","audio"]},
-    {name:"New Home",re:/new home|new apartment|בית חדש|דירה חדשה|منزل جديد|شقة جديدة/i,cats:["home-storage","lighting","bedding","kitchen","home-decor"]}
+    {type:"trip",name:"Weekend Escape",re:/weekend|trip|travel|vacation|סופ.?ש|נסיעה|טיול|رحلة|سفر/i,cats:["travel","bags","phoneaccessories","drinkware"]},
+    {type:"setup",name:"Home Office",re:/home office|workspace|desk setup|משרד ביתי|עמדת עבודה|مكتب منزلي|مكتب/i,cats:["office","lighting","computer-accessories","drinkware"]},
+    {type:"event",name:"Wedding Ready",re:/wedding|חתונה|אירוע|زفاف|عرس/i,cats:["dresses","bags","jewelry","shoes","makeup"]},
+    {type:"setup",name:"Gym Reset",re:/gym|fitness|workout|חדר כושר|אימון|لياقة|رياضة/i,cats:["activewear","fitness","fitness-accessories","sports-bags","drinkware"]},
+    {type:"setup",name:"Pet Home",re:/\bpet\b|dog|cat|כלב|חתול|حيوان|كلب|قط/i,cats:["pet-accessories","pet-toys","pet-feeding","pet-beds"]},
+    {type:"setup",name:"Phone Upgrade",re:/phone upgrade|iphone setup|galaxy setup|שדרוג טלפון|אייפון|ترقية هاتف|ايفون/i,cats:["phone-cases","chargers-cables","power-banks","stands-holders","audio"]},
+    {type:"setup",name:"New Home",re:/new home|new apartment|בית חדש|דירה חדשה|منزل جديد|شقة جديدة/i,cats:["home-storage","lighting","bedding","kitchen","home-decor"]}
   ];
   function missionIntent(raw){
     const rule=missionRules.find(x=>x.re.test(String(raw||"")));
@@ -60,7 +79,18 @@
     const gender=/\bmen\b|גבר|رجال|رجالي/i.test(String(raw||""))?"men":/\bwomen\b|אישה|נשים|نساء|نسائي/i.test(String(raw||""))?"women":null;
     let cats=[...rule.cats];
     if(rule.name==="Wedding Ready"&&gender==="men")cats=["men-suits","men-shoes","watches","men-accessories"];
-    return {name:rule.name,cats:[...new Set(cats)].filter(x=>H.categoryDefs?.[x])};
+    return {type:rule.type,name:rule.name,cats:[...new Set(cats)].filter(x=>H.categoryDefs?.[x])};
+  }
+  function missionType(raw,mission,max){
+    const q=String(raw||"");
+    if(/\bcompare\b|\bvs\.?\b|versus|difference|השוו?ה|לעומת|مقارن|مقارنة|مقابل/i.test(q))return "compare";
+    if(/replace|replacement|substitute|compatible replacement|תחליף|החלפה|במקום|بديل|استبدال/i.test(q))return "replace";
+    if(/refill|reorder|restock|buy again|repeat purchase|מילוי|לקנות שוב|הזמנה חוזרת|اعادة شراء|إعادة شراء|تعبئة/i.test(q))return "replenish";
+    if(/gift|present|מתנה|هدية/i.test(q))return "gift";
+    if(/complete look|full look|outfit|look for me|לוק שלם|סט שלם|אאוטפיט|اطلالة كاملة|إطلالة كاملة|طقم كامل/i.test(q))return "outfit";
+    if(mission?.type)return mission.type;
+    if(Number.isFinite(Number(max))&&Number(max)>0)return "budget";
+    return "";
   }
 
   function norm(q){
@@ -90,10 +120,12 @@
     const leaves=Object.keys(H.categoryDefs||{}).filter(x=>!deps.includes(x));
     const scored=leaves.map(x=>[x,catScore(x,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
     const mission=missionIntent(raw);
+    const mission_type=missionType(raw,mission,max);
+    try{sessionStorage.setItem("hunt_shopping_mission_v1",mission_type||"none")}catch{}
     const cats=mission?.cats?.length ? [...new Set([...mission.cats,...scored])].slice(0,6) : scored;
     const size=(q.match(/\b(?:size|מידה|مقاس)\s*[:=-]?\s*([a-z0-9.+-]{1,8})\b/i)||[])[1]||"";
     const device=(q.match(/\b(?:iphone|galaxy|pixel|redmi|xiaomi|oneplus|motorola|oppo|vivo)\s*[a-z0-9 +.-]*/i)||[])[0]||"";
-    return {q,max,currency,colors:c,styles:st,brandHints,size,device,mission,cats:cats.length?cats:[H.slugFromQuery?.(q)||"women"]};
+    return {q,max,currency,colors:c,styles:st,brandHints,size,device,mission,mission_type,cats:cats.length?cats:[H.slugFromQuery?.(q)||"women"]};
   }
   function score(p,i){
     const title=String(p.title||"").toLowerCase();
@@ -111,12 +143,42 @@
     const currency=String(p.retail_currency||p.currency||"USD").toUpperCase();
     return currency===String(i.currency||"USD").toUpperCase()&&Number.isFinite(v)&&v>0&&v<=i.max;
   }
+  function searchRetailReady(p){
+    const amount=Number(p?.retail_price_amount);
+    return p?.retail_price_verified===true
+      && String(p?.profit_gate_status||"").toUpperCase()==="PASS"
+      && Number.isFinite(amount)&&amount>0;
+  }
+  function searchFacts(p){
+    const facts=[];
+    const add=(label,value)=>{
+      if(value===null||value===undefined||value==="")return;
+      const text=String(value).trim();if(!text)return;
+      facts.push({label,value:text});
+    };
+    const category=String(p?.category||"");
+    const variants=Number(p?.variant_count||0);
+    if(/(phone|computer|electronics|gaming|camera|audio|office)/.test(category)){
+      add("Model",p?.model); add("Brand",p?.brand); if(variants>1)add("Options",variants);
+    }else if(/(women|men|kids|baby|accessories)/.test(category)){
+      add("Brand",p?.brand); if(variants>1)add("Options",variants);
+    }else if(/(beauty|skincare|makeup|hair|nails)/.test(category)){
+      add("Brand",p?.brand); add("Type",p?.type_name);
+    }else{
+      add("Brand",p?.brand); if(variants>1)add("Options",variants); add("Type",p?.type_name);
+    }
+    if(facts.length<2&&p?.availability_verified===true)add("Stock","loaded");
+    return facts.slice(0,2);
+  }
   function card(p){
     const img=typeof p.image_url==="string"&&p.image_url.startsWith("http")?`<img src="${H.esc(p.image_url)}" alt="${H.esc(p.title||"Product")}" loading="lazy">`:"";
     const v=Number(p.retail_price_amount);
-    const pt=Number.isFinite(v)&&v>0?`From ${H.money(v,p.retail_currency||"USD")}`:"Price on product";
+    const pt=searchRetailReady(p)?H.money(v,p.retail_currency||"USD"):"Price checked on product";
     const newBadge=H.isNewArrival?.(p)?`<b class="hd-new-pulse">NEW</b>`:"";
-    return `<article class="hd-market-product-card"><a class="hd-market-card-media" href="${H.esc(H.productUrl(p))}">${img}${newBadge}</a><div class="hd-market-card-body"><a class="hd-market-card-title" href="${H.esc(H.productUrl(p))}">${H.esc(p.title||"Product")}</a><div class="hd-market-card-price"><strong>${H.esc(pt)}</strong></div></div></article>`;
+    const facts=searchFacts(p);
+    const factHtml=facts.length?`<div class="hd-card-specific-facts">${facts.map(f=>`<span><b>${H.esc(f.label)}:</b> ${H.esc(f.value)}</span>`).join("")}</div>`:"";
+    const compare=window.HuntCompare?.button?.(p)||"";
+    return `<article class="hd-market-product-card"><a class="hd-market-card-media" href="${H.esc(H.productUrl(p))}">${img}${newBadge}</a><div class="hd-market-card-body"><a class="hd-market-card-title" href="${H.esc(H.productUrl(p))}">${H.esc(p.title||"Product")}</a><div class="hd-market-card-price"><strong>${H.esc(pt)}</strong></div>${factHtml}${compare}</div></article>`;
   }
   function missionProductCard(p){
     const img=typeof p.image_url==="string"&&p.image_url.startsWith("http")?`<img src="${H.esc(p.image_url)}" alt="${H.esc(p.title||"Product")}" loading="lazy">`:"";
@@ -174,6 +236,23 @@
     $("#hd-mission-total").textContent=set.length?H.money(total,set[0]?.retail_currency||"USD"):"—";
   }
 
+  function clarificationConfig(i){
+    const mode=window.BoomCommerceBrain?.plan?.()?.clarify_mode||window.BoomCommerceBrain?.decisionSupport?.()?.clarify_mode||"none";
+    if(S.clarifyUsed||mode!=="ask-one")return null;
+    if(i?.mission_type==="gift")return {question:"What kind of gift should I narrow toward?",options:[["Fashion","fashion"],["Beauty","beauty"],["Tech","tech"],["Home","home"]]};
+    if(i?.mission_type==="replace")return {question:"What must the replacement fit?",options:[["Add model / device","__focus_device"],["Add size","__focus_size"]]};
+    return {question:"Which area should I focus on?",options:[["Fashion","fashion"],["Beauty","beauty"],["Tech","tech"],["Home","home"]]};
+  }
+  function renderClarifier(i,raw){
+    const panel=$("#hd-clarify-panel");if(!panel)return;
+    const cfg=clarificationConfig(i);
+    if(!cfg){panel.hidden=true;return;}
+    panel.hidden=false;
+    $("#hd-clarify-question").textContent=cfg.question;
+    $("#hd-clarify-options").innerHTML=cfg.options.map(([label,value])=>`<button type="button" data-clarify="${H.esc(value)}">${H.esc(label)}</button>`).join("");
+    panel.dataset.query=String(raw||"");
+  }
+
   async function load(i){
     const m=await fetch("catalog-manifest.json",{cache:"no-store"}).then(r=>r.json());
     const pages=[];
@@ -186,7 +265,8 @@
     const seen=new Set(),rows=[];
     docs.flatMap(x=>x.products||[]).forEach(p=>{
       const id=String(p.item_id||"");
-      if(!id||seen.has(id)||String(p.provider||"").toLowerCase()!=="cjdropshipping"||!priceOK(p,i))return;
+      const qualitySlug=String(p.category||i.cats[0]||"");
+      if(!id||seen.has(id)||String(p.provider||"").toLowerCase()!=="cjdropshipping"||!priceOK(p,i)||window.HuntCatalogQuality?.fit?.(qualitySlug,p)===false)return;
       seen.add(id); rows.push({...p,_score:score(p,i)});
     });
     rows.sort((a,b)=>(b._score-a._score)||(Number(b.cj_listed_num||0)-Number(a.cj_listed_num||0)));
@@ -195,6 +275,7 @@
   function more(){
     const next=S.results.slice(S.visible,S.visible+36);
     if(!next.length){$("#hd-ai-sentinel strong").textContent=S.results.length?"No more matching products.":"No matching products found.";S.observer?.disconnect();return;}
+    window.HuntCompare?.register?.(next);
     $("#hd-ai-results-grid").insertAdjacentHTML("beforeend",next.map(card).join(""));
     S.visible+=next.length;
     $("#hd-ai-sentinel strong").textContent=S.visible<S.results.length?"Loading more…":"End of matching results.";
@@ -206,6 +287,7 @@
   }
   async function run(raw){
     const q=String(raw||"").trim(); if(!q)return;
+    await ensureCompareRuntime();
     const i=intent(q); S.visible=0; S.mission=i; S.missionOffset=0; $("#hd-ai-results-grid").innerHTML="";
     if(!i.mission){const panel=$("#hd-mission-panel");if(panel)panel.hidden=true;}
     $("#hd-ai-intent-title").textContent=`Searching: ${q}`;
@@ -220,11 +302,31 @@
     ].filter(Boolean).join(" · ");
     $("#hd-ai-sentinel strong").textContent="Finding products…";
     H.recordSignal?.(i.cats[0]||"women","search");
-    try{S.results=await load(i);$("#hd-ai-intent-title").textContent=S.results.length?"Curated matches":"No matching products";renderMission(i);more();observe();}
+    window.dispatchEvent(new CustomEvent("hunt:search-intent",{detail:{
+      categories:i.cats.slice(0,6),
+      mission:Boolean(i.mission),
+      mission_type:i.mission_type||"none",
+      has_budget:Boolean(i.max),
+      has_device:Boolean(i.device),
+      has_size:Boolean(i.size),
+      style_count:i.styles.length,
+      color_count:i.colors.length
+    }}));
+    renderClarifier(i,q);
+    try{S.results=await load(i);window.HuntAnalytics?.search?.({category:i.cats[0]||"",resultCount:S.results.length,missionType:i.mission_type||"none"});$("#hd-ai-intent-title").textContent=S.results.length?"Curated matches":"No matching products";renderMission(i);more();observe();}
     catch(e){$("#hd-ai-intent-title").textContent="Search unavailable";$("#hd-ai-intent-copy").textContent=e?.message||"Try again.";}
     history.replaceState(null,"","search.html?q="+encodeURIComponent(q));
   }
   $("#hd-ai-search-form")?.addEventListener("submit",e=>{e.preventDefault();run($("#hd-ai-search-input").value);});
+  $("#hd-clarify-options")?.addEventListener("click",e=>{
+    const button=e.target.closest?.("[data-clarify]");if(!button)return;
+    const value=String(button.dataset.clarify||"");S.clarifyUsed=true;$("#hd-clarify-panel").hidden=true;
+    const input=$("#hd-ai-search-input");
+    if(value.startsWith("__focus_")){input?.focus();input?.setSelectionRange?.(input.value.length,input.value.length);return;}
+    const base=String($("#hd-clarify-panel")?.dataset.query||input?.value||"").trim();
+    input.value=(base+" "+value).trim();run(input.value);
+  });
+  $("#hd-clarify-skip")?.addEventListener("click",()=>{S.clarifyUsed=true;$("#hd-clarify-panel").hidden=true;});
   $("#hd-mission-rebuild")?.addEventListener("click",()=>{if(!S.mission?.mission)return;S.missionOffset+=1;renderMission(S.mission);});
   document.querySelectorAll("[data-example]").forEach(b=>b.addEventListener("click",()=>{$("#hd-ai-search-input").value=b.dataset.example;run(b.dataset.example);}));
   H.updateCartBadges?.();

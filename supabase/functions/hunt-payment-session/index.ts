@@ -1,4 +1,5 @@
 import { createSupabaseContext } from "npm:@supabase/server";
+import { assessCommerce, publicCommerceSummary } from "./commerce-brain.ts";
 
 const ALLOWED_ORIGINS=new Set([
   "https://deep-hunt-market.netlify.app",
@@ -10,6 +11,30 @@ const ALLOWED_ORIGINS=new Set([
 ]);
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const num=(v:unknown)=>Number.isFinite(Number(v))?Number(v):null;
+const ATTR_KEYS=["utm_source","utm_medium","utm_campaign","utm_content","utm_term","gclid","fbclid","ttclid","msclkid","landing_path","captured_at"] as const;
+
+function normalizeAttribution(raw:any){
+  if(!raw||typeof raw!=="object"||raw.consent_granted!==true)return null;
+  const sanitize=(touch:any)=>{
+    if(!touch||typeof touch!=="object")return null;
+    const out:any={};
+    for(const key of ATTR_KEYS){
+      const value=clean(touch?.[key]).slice(0,key.endsWith("clid")?180:160);
+      if(value)out[key]=value;
+    }
+    return Object.keys(out).length?out:null;
+  };
+  const first=sanitize(raw.first_touch),last=sanitize(raw.last_touch);
+  if(!first&&!last)return null;
+  return {
+    version:"2026-09-19-m26-live",
+    source:"hunt_web_consent_context",
+    verified:false,
+    first_touch:first,
+    last_touch:last,
+    received_at:new Date().toISOString()
+  };
+}
 
 function normalizeShipping(body:any,country:string){
   const src=body?.shipping&&typeof body.shipping==="object"?body.shipping:{};
@@ -119,6 +144,10 @@ async function validateCart(base:string,key:string,body:any){
     const retailCurrency=clean(variant?.retail_currency||product?.retail_currency||"").toUpperCase();
     if(!retailVerified||!profitPass||!(retailAmount&&retailAmount>0))throw new Error("RETAIL_PRICE_NOT_READY");
     if(retailCurrency!=="USD")throw new Error("CURRENCY_REVIEW_REQUIRED");
+    const supplierAmount=num(variant?.price_amount??product?.price_amount);
+    const supplierCurrency=clean(variant?.currency||product?.currency||"").toUpperCase();
+    if(!(supplierAmount&&supplierAmount>0))throw new Error("SUPPLIER_COST_NOT_READY");
+    if(supplierCurrency!=="USD")throw new Error("SUPPLIER_CURRENCY_REVIEW_REQUIRED");
 
     const quote=await getCjQuote(base,key,variantId,country,qty);
     const shipping=Array.isArray(quote?.shipping_options)?quote.shipping_options[0]:null;
@@ -132,10 +161,13 @@ async function validateCart(base:string,key:string,body:any){
       provider,item_id:itemId,variant_id:variantId,qty,
       title:clean(product?.title).slice(0,180),
       unit_retail_amount:Number(retailAmount.toFixed(2)),
-      supplier_cost_per_unit:Number(Number(num(variant?.price_amount??product?.price_amount)||0).toFixed(2)),
+      supplier_cost_per_unit:Number(supplierAmount.toFixed(2)),
       currency:"USD",
       shipping_amount:Number(Number(shipping.price_usd).toFixed(2)),
       shipping_method:clean(shipping?.name).slice(0,120),
+      shipping_aging:clean(shipping?.aging).slice(0,40)||null,
+      taxes_amount:Number(Number(num(shipping?.taxes_usd)||0).toFixed(2)),
+      clearance_fee_amount:Number(Number(num(shipping?.clearance_fee_usd)||0).toFixed(2)),
       origin_country_code:clean(quote?.selected_origin?.country_code).toUpperCase()||null,
       quote_checked_at:new Date().toISOString()
     });
@@ -147,6 +179,18 @@ async function validateCart(base:string,key:string,body:any){
     total_amount:Number((productAmount+shippingAmount).toFixed(2)),
     line_items:lines
   };
+}
+async function activeProfitProfile(ctx:any){
+  const {data,error}=await ctx.supabaseAdmin
+    .from("hunt_profit_profiles")
+    .select("id,status,owner_approved,payment_rate,refund_reserve_rate,platform_variable_rate,platform_fixed_per_order,min_contribution_per_unit")
+    .eq("status","active")
+    .eq("owner_approved",true)
+    .order("updated_at",{ascending:false})
+    .limit(1)
+    .maybeSingle();
+  if(error)throw new Error("PROFIT_PROFILE_LOOKUP_FAILED");
+  return data||null;
 }
 async function maybeApplyCheckoutOffer(ctx:any,body:any,pricing:any,requestDigest:string){
   const offerId=clean(body?.checkout_offer_id).slice(0,80);
@@ -268,6 +312,7 @@ Deno.serve(async(req:Request)=>{
 
   try{
     const body=await req.json();
+    const attributionSnapshot=normalizeAttribution(body?.attribution);
     const configuredMode=clean(Deno.env.get("HUNT_PAYMENT_MODE")).toLowerCase()||"prelaunch";
     if(configuredMode==="live"){
       const {data:liveControl}=await ctx.supabaseAdmin
@@ -293,6 +338,9 @@ Deno.serve(async(req:Request)=>{
       checkout_offer_id:offerApplication.checkout_offer_id,
       total_amount:Number((pricing.total_amount-offerApplication.discount_amount).toFixed(2))
     };
+    const profitProfile=await activeProfitProfile(ctx);
+    const commerceDecision=assessCommerce(profitProfile,finalPricing);
+    const commerce=publicCommerceSummary(commerceDecision);
     const requestedIdem=clean(body?.idempotency_key).slice(0,120);
     const idempotencyKey=requestedIdem||crypto.randomUUID();
     const normalized=JSON.stringify({
@@ -300,6 +348,7 @@ Deno.serve(async(req:Request)=>{
       offer:finalPricing.checkout_offer_id||null,
       shipping:shipping.snapshot,
       customer_email:shipping.email,
+      attribution:attributionSnapshot,
       items:pricing.line_items.map((x:any)=>[
         x.provider,x.item_id,x.variant_id,x.qty,x.origin_country_code,x.shipping_method
       ])
@@ -308,18 +357,20 @@ Deno.serve(async(req:Request)=>{
 
     const {data:existing}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
-      .select("id,status,mode,country_code,currency,product_amount,shipping_amount,pre_discount_total_amount,discount_amount,total_amount,checkout_offer_id,provider_hosted_fields_uid,provider_redirect_url,expires_at,cart_digest")
+      .select("id,status,mode,country_code,currency,product_amount,shipping_amount,pre_discount_total_amount,discount_amount,total_amount,checkout_offer_id,provider_hosted_fields_uid,provider_redirect_url,expires_at,cart_digest,commerce_snapshot")
       .eq("idempotency_key",idempotencyKey)
       .maybeSingle();
     if(existing){
       if(clean(existing.cart_digest)!==cartDigest){
         return json(req,{ok:false,error:"IDEMPOTENCY_CONFLICT"},409);
       }
+      const {commerce_snapshot,...publicSession}=existing;
       return json(req,{
         ok:true,reused:true,
         payment_ready:existing.status!=="prelaunch",
         idempotency_key:idempotencyKey,
-        session:existing
+        commerce:publicCommerceSummary(commerce_snapshot),
+        session:publicSession
       });
     }
 
@@ -329,7 +380,11 @@ Deno.serve(async(req:Request)=>{
       clean(Deno.env.get("PAYPLUS_SECRET_KEY"))&&
       clean(Deno.env.get("PAYPLUS_PAYMENT_PAGE_UID"))
     );
-    const initialMode=configured&&["sandbox","live"].includes(requestedMode)?requestedMode:"prelaunch";
+    const initialMode=configured&&
+      ["sandbox","live"].includes(requestedMode)&&
+      commerceDecision.status==="PASS"
+      ?requestedMode
+      :"prelaunch";
     const {data:inserted,error:insertError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
       .insert({
@@ -348,12 +403,31 @@ Deno.serve(async(req:Request)=>{
         line_items:pricing.line_items,
         customer_email:shipping.email,
         shipping_snapshot:shipping.snapshot,
+        commerce_snapshot:{
+          ...commerce,
+          attribution:attributionSnapshot,
+          attribution_status:attributionSnapshot?"browser_context_unverified":"none",
+          attribution_version:"2026-09-19-m26-live"
+        },
         cart_digest:cartDigest,
         idempotency_key:idempotencyKey
       })
       .select("id,status,mode,country_code,currency,product_amount,shipping_amount,pre_discount_total_amount,discount_amount,total_amount,checkout_offer_id,expires_at")
       .single();
     if(insertError||!inserted)throw new Error("PAYMENT_SESSION_STORE_FAILED");
+
+    const {error:commerceStoreError}=await ctx.supabaseAdmin
+      .from("hunt_payment_commerce_decisions")
+      .insert({
+        payment_session_id:inserted.id,
+        profit_profile_id:commerceDecision.profile_id,
+        status:commerceDecision.status,
+        decision:commerceDecision
+      });
+    if(commerceStoreError){
+      await ctx.supabaseAdmin.from("hunt_payment_sessions").delete().eq("id",inserted.id);
+      throw new Error("COMMERCE_DECISION_STORE_FAILED");
+    }
 
     let activeSession=inserted;
     let offerClaimed=false;
@@ -425,8 +499,11 @@ Deno.serve(async(req:Request)=>{
         ok:true,
         payment_ready:false,
         shipping_ready:true,
-        reason:"AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED",
+        reason:commerceDecision.status==="PASS"
+          ?"AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED"
+          :"COMMERCE_GATE_BLOCKED",
         idempotency_key:idempotencyKey,
+        commerce,
         session:activeSession
       });
     }
@@ -473,6 +550,7 @@ Deno.serve(async(req:Request)=>{
       payment_ready:true,
       idempotency_key:idempotencyKey,
       integration:updated.provider_hosted_fields_uid?"hosted_fields":"hosted_page",
+      commerce,
       session:updated
     });
   }catch(error){

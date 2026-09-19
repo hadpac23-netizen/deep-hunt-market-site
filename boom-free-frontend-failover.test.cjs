@@ -1,0 +1,17 @@
+const assert=require("node:assert");
+const F=require("./boom-free-frontend-failover.js");
+const r=F.evaluate();
+assert.strictEqual(r.state,"FALLBACK_E2E_VERIFIED");
+assert.strictEqual(r.fallback_frontend_live,true);
+assert.strictEqual(r.attribution_e2e_verified,true);
+assert.strictEqual(r.primary_netlify_available,false);
+assert.strictEqual(r.free_hosting_path_active,true);
+assert.strictEqual(r.paid_host_upgrade,false);
+assert.strictEqual(r.conversion_claim_allowed,false);
+assert.strictEqual(r.payments_live,false);
+assert.strictEqual(r.paid_launch,false);
+assert.strictEqual(r.execute_actions,false);
+assert.strictEqual(r.receipt.fallback_commit,"2709295a634faf8562b6e0be8824744a6ec3688e");
+assert.strictEqual(r.receipt.db_payment_mode,"prelaunch");
+assert.strictEqual(r.receipt.db_attribution_verified,false);
+console.log("boom_free_frontend_failover=PASS");

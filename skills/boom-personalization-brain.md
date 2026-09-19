@@ -74,3 +74,19 @@ One click never becomes a permanent preference.
 
 ## Evaluation
 Measure recommendation impressions, clicks, opens, cart, purchase, revenue/margin when real, hide events, diversity and repeat exposure. Keep a non-personalized holdout so BOOM can prove value.
+
+
+## M11 implementation contract
+The runtime implementation is `boom-personalization-brain.js`.
+
+Before live ranking:
+- keep `ranking_enabled=false`
+- require a non-personalized holdout
+- require explicit market eligibility
+- require measurable recommendation impressions and outcomes
+- keep reset/reduced-personalization controls
+- never use sensitive traits
+- preserve supplier/category diversity
+- use verified economics only as a small tie-break after shopper value
+
+Studio simulations are read-only and must not change the live storefront ranking.

@@ -1,0 +1,122 @@
+{
+  "assessed_at": "2026-09-19T15:46:02.862Z",
+  "candidate": "HUNT_PROMISE_MESH",
+  "decision": "KILL",
+  "final_claim_allowed": false,
+  "blockers": [
+    "prior_art_surface_gaps",
+    "economics_inputs_unverified",
+    "unit_revenue_missing",
+    "variable_cost_missing",
+    "target_profit_missing",
+    "reachable_capacity_missing",
+    "market_evidence_insufficient",
+    "red_team_dimensions_missing",
+    "high_risk_unresolved"
+  ],
+  "prior_art": {
+    "version": "2026-09-19-f50-pa1",
+    "state": "HOLD",
+    "prior_art_ready": false,
+    "mechanism_novelty": false,
+    "verified_records": 6,
+    "covered_surfaces": [
+      "patents"
+    ],
+    "missing_surfaces": [
+      "products",
+      "startups",
+      "research",
+      "github",
+      "legacy_industries",
+      "alternate_names"
+    ],
+    "same_mechanism_refs": [],
+    "same_function_refs": [
+      "https://patents.google.com/patent/US7249044B2/en",
+      "https://patents.google.com/patent/US7366684B1/en",
+      "https://patents.google.com/patent/US10043148B1/en",
+      "https://patents.google.com/patent/US9824380B1/en"
+    ],
+    "patent_refs": [
+      "https://patents.google.com/patent/US7249044B2/en",
+      "https://patents.google.com/patent/US7366684B1/en",
+      "https://patents.google.com/patent/US10043148B1/en",
+      "https://patents.google.com/patent/US9824380B1/en",
+      "https://patents.google.com/patent/US8015044B2/en",
+      "https://patents.google.com/patent/US20260050881A1/en"
+    ],
+    "alternate_names": [
+      "customer promise contract",
+      "constraint-preserving fulfillment",
+      "dynamic source fixed promise"
+    ],
+    "blockers": [
+      "prior_art_surface_gaps"
+    ],
+    "execute_actions": false
+  },
+  "economics": {
+    "version": "2026-09-19-f50-me1",
+    "state": "HOLD",
+    "economics_ready": false,
+    "revenue_per_unit": null,
+    "variable_cost_per_unit": null,
+    "expected_loss_per_unit": 0,
+    "acquisition_cost_per_unit": 0,
+    "contribution_per_unit": null,
+    "target_net_profit": null,
+    "required_units": null,
+    "reachable_units_per_period": null,
+    "theoretical_profit_at_capacity": null,
+    "market_evidence_count": 0,
+    "period": "",
+    "route_is_theoretical": true,
+    "profit_guarantee": false,
+    "blockers": [
+      "economics_inputs_unverified",
+      "unit_revenue_missing",
+      "variable_cost_missing",
+      "target_profit_missing",
+      "reachable_capacity_missing",
+      "market_evidence_insufficient"
+    ],
+    "execute_actions": false
+  },
+  "red_team": {
+    "version": "2026-09-19-f50-rt1",
+    "state": "HOLD",
+    "red_team_ready": false,
+    "attacks": 4,
+    "covered_dimensions": [
+      "technical",
+      "legal_regulatory",
+      "fraud_abuse",
+      "operations"
+    ],
+    "missing_dimensions": [
+      "ux_adoption",
+      "economics",
+      "competition",
+      "scalability",
+      "data_moat"
+    ],
+    "fatal_unresolved": 0,
+    "high_unresolved": 3,
+    "blockers": [
+      "red_team_dimensions_missing",
+      "high_risk_unresolved"
+    ],
+    "execute_actions": false
+  },
+  "memory": {
+    "version": "2026-09-19-f50-mem1",
+    "fingerprint": "f50_0e5bbbb820831132",
+    "memory_hit": false,
+    "previous_decision": "NONE",
+    "hit_count": 0,
+    "memory_ready": true,
+    "blockers": [],
+    "execute_actions": false
+  }
+}

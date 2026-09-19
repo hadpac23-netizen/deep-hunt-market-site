@@ -3,27 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="HUNT DEAL checkout preview for connected catalog products.">
-  <title>Checkout Preview — HUNT DEAL</title>
+  <link rel="icon" href="hunt-icon-192.png" type="image/png">
+  <meta name="description" content="HUNT checkout preview for connected catalog products.">
+  <title>Checkout Preview — HUNT</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
   <link rel="stylesheet" href="hunt-shop.css?v=shippingchess1">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="hunt-icon-192.png">
   <meta name="theme-color" content="#111111">
   <link rel="stylesheet" href="hunt-visual-v2.css?v=1">
+  <link rel="stylesheet" href="hunt-brand-motion.css?v=1">
+  <link rel="stylesheet" href="boom-stylist.css?v=1">
 </head>
 <body class="hd-page hd-checkout-page hd-commerce-v2">
   <div class="hd-space"></div>
   <header class="hd-topbar">
-    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">PRE-LAUNCH CHECKOUT</div></div>
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT</a><div class="hd-branch">PRE-LAUNCH CHECKOUT</div></div>
     <nav class="hd-nav"><a href="./#catalog">Products</a><a href="./#hunt-market">Deal Hunt</a></nav>
     <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-btn" href="./">Continue shopping</a></div>
   </header>
 
   <main class="hd-checkout-shell">
     <section class="hd-checkout-banner glass">
-      <span class="hd-status blue">PRE-LAUNCH</span>
-      <div><h1>Checkout preview</h1><p>This flow uses real connected catalog products. Payment is not live yet. HUNT only shows customer pricing after retail verification and profit checks pass, and no order will be submitted until fulfillment and payment activation are approved.</p></div>
+      <span class="hd-status blue" data-hunt-i18n="preLaunch">PRE-LAUNCH</span>
+      <div><h1 data-hunt-i18n="checkoutPreview">Checkout preview</h1><p data-hunt-i18n="checkoutCopy">This flow uses real connected catalog products. Payment is not live yet. HUNT only shows customer pricing after retail verification and profit checks pass, and no order will be submitted until fulfillment and payment activation are approved.</p></div>
     </section>
 
     <div class="hd-checkout-layout">
@@ -116,12 +119,20 @@
     <a class="active" href="checkout.html"><span>&#9711;</span><small>Cart</small><b data-cart-count>0</b></a>
     <a href="auth.html"><span>&#9675;</span><small>Sign in</small></a>
   </nav>
+  <script src="hunt-experience-i18n.js?v=1"></script>
+  <script src="market-core.js?v=dynamic2"></script>
+  <script src="hunt-country-brain.js?v=1"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="account-presence.js?v=profile2"></script>
   <script src="analytics-config.js?v=analytics1"></script>
-  <script src="analytics.js?v=huntmetrics1"></script>
-  <script src="checkout.js?v=shippingchess3"></script>
+  <script src="analytics.js?v=huntmetrics3"></script>
+  <script src="hunt-personalization.js?v=1"></script>
+  <script src="boom-commerce-brain.js?v=2"></script>
+  <script src="boom-stylist.js?v=1"></script>
+  <script src="boom-f35-director.js?v=1"></script>
+<script src="checkout.js?v=shippingchess3"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa1"></script>
+  <script src="hunt-brand-motion.js?v=1"></script>
 </body>
 </html>

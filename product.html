@@ -3,22 +3,26 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" href="hunt-icon-192.png" type="image/png">
   <meta name="robots" content="noindex,follow">
-  <meta name="description" content="Inspect live product images, variants, availability and source pricing on HUNT DEAL.">
-  <title>Product — HUNT DEAL</title>
-  <link rel="stylesheet" href="hunt-deal.css?v=photo6">
+  <meta name="description" content="Inspect live product images, variants, availability and source pricing on HUNT.">
+  <title>Product — HUNT</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo9">
   <link rel="stylesheet" href="hunt-wow.css?v=launchqa5">
-  <link rel="stylesheet" href="hunt-shop.css?v=dynamic1">
+  <link rel="stylesheet" href="hunt-shop.css?v=dynamic2">
+  <link rel="stylesheet" href="hunt-decision-confidence.css?v=1">
   <link rel="stylesheet" href="hunt-visual-v2.css?v=1">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="hunt-icon-192.png">
   <meta name="theme-color" content="#111111">
+  <link rel="stylesheet" href="hunt-brand-motion.css?v=1">
+  <link rel="stylesheet" href="boom-stylist.css?v=1">
 </head>
 <body class="hd-page hd-market-v2 hd-commerce-v2">
   <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
   <div class="hd-space"></div>
   <header class="hd-topbar">
-    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">PRODUCT INTELLIGENCE</div></div>
+    <div class="hd-brand-wrap"><a class="hd-brand hd-hunt-wordmark" href="./" aria-label="HUNT"><span aria-hidden="true">H</span><span aria-hidden="true">U</span><span aria-hidden="true">N</span><span aria-hidden="true">T</span></a><div class="hd-branch">PRODUCT INTELLIGENCE</div></div>
     <nav class="hd-nav" aria-label="Primary"><a href="./#shop">Shop</a><a href="category.html?c=women">Women</a><a href="category.html?c=accessories">Accessories</a><a href="category.html?c=beauty">Beauty</a><a href="category.html?c=men">Men</a><a href="search.html">AI Find</a></nav>
     <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a></div>
   </header>
@@ -28,18 +32,47 @@
 
     <section class="hd-product-layout glass" id="hd-product-layout">
       <div class="hd-product-gallery">
-        <div class="hd-product-main-media"><img id="hd-product-main-image" alt="Product image"><button class="hd-zoom-open" id="hd-zoom-open" type="button" aria-label="Open image zoom">+</button></div>
-        <div class="hd-product-thumbs" id="hd-product-thumbs"></div>
+        <div class="hd-product-main-media">
+          <img id="hd-product-main-image" alt="Product image">
+          <span class="hd-gallery-count" id="hd-gallery-count" aria-live="polite">1 / 1</span>
+          <button class="hd-zoom-open" id="hd-zoom-open" type="button" aria-label="Open image zoom">+</button>
+        </div>
+        <div class="hd-product-gallery-meta" id="hd-product-gallery-meta" hidden>
+          <strong id="hd-product-gallery-total">1 photo</strong>
+          <span>Use thumbnails or arrow keys to inspect.</span>
+        </div>
+        <div class="hd-product-thumbs" id="hd-product-thumbs" role="group" aria-label="Product images"></div>
       </div>
 
       <div class="hd-product-buybox">
         <div class="hd-product-flags"><span class="hd-status green" id="hd-product-stock">CHECKING</span><span class="hd-source-badge" id="hd-product-provider">PROVIDER</span></div>
         <h1 id="hd-product-title">Loading product…</h1>
         <div class="hd-product-price"><strong id="hd-product-price">—</strong><span>HUNT price · stock and shipping are rechecked at checkout</span></div>
+
+        <section class="hd-decision-check" id="hd-decision-check" aria-labelledby="hd-decision-check-title">
+          <div class="hd-decision-check-head">
+            <div><small>HUNT PRODUCT TRUTH</small><strong id="hd-decision-check-title">Decision check</strong></div>
+            <div class="hd-decision-check-links"><a href="shipping.html">Shipping</a><a href="returns.html">Returns</a></div>
+          </div>
+          <div class="hd-decision-check-grid" id="hd-decision-check-grid" aria-live="polite"></div>
+        </section>
+
         <div class="hd-boom-product glass"><span>BOOM</span><div><strong>For You</strong><small id="hd-product-boom">Learning from this device.</small></div></div>
 
         <section class="hd-option-block" id="hd-color-block" hidden><div class="hd-option-head"><strong>Color</strong><span id="hd-selected-color">—</span></div><div class="hd-color-options" id="hd-color-options"></div></section>
-        <section class="hd-option-block" id="hd-size-block" hidden><div class="hd-option-head"><strong>Size</strong><span id="hd-selected-size">—</span></div><div class="hd-size-options" id="hd-size-options"></div></section>
+        <section class="hd-option-block" id="hd-size-block" hidden>
+          <div class="hd-option-head"><strong id="hd-size-option-label">Size</strong><span id="hd-selected-size">—</span></div>
+          <div class="hd-size-options" id="hd-size-options"></div>
+          <div class="hd-size-truth" id="hd-size-truth" hidden>
+            <strong id="hd-size-truth-title">Size & fit truth</strong>
+            <span id="hd-size-truth-copy">Provider size data only. No measurement chart has been verified.</span>
+          </div>
+        </section>
+        <section class="hd-variant-truth" id="hd-variant-truth" hidden aria-live="polite">
+          <div><span>Selected option</span><strong id="hd-variant-label">—</strong></div>
+          <div><span>Availability</span><strong id="hd-variant-availability">Recheck</strong></div>
+          <div><span>Compatibility</span><strong id="hd-variant-compatibility">Not verified</strong></div>
+        </section>
 
         <div class="hd-product-quantity"><strong>Quantity</strong><div class="hd-qty hd-product-qty"><button type="button" id="hd-qty-minus">−</button><span id="hd-qty-value">1</span><button type="button" id="hd-qty-plus">+</button></div></div>
         <button class="hd-btn hd-btn-primary hd-product-add" type="button" id="hd-product-add">Add to checkout preview →</button>
@@ -49,9 +82,34 @@
       </div>
     </section>
 
+    <a class="hd-product-discover-cue" id="hd-product-discover-cue" href="#hd-endless-discovery">
+      <small data-hunt-i18n="productCueTop">YOUR HUNT CONTINUES</small>
+      <strong data-hunt-i18n="productCue">Discover more for you</strong>
+      <span aria-hidden="true">↓</span>
+    </a>
+
     <section class="hd-product-info-grid">
       <article class="glass"><div class="hd-kicker hd-kicker-small">PRODUCT DETAILS</div><h2>What the source says</h2><p id="hd-product-description">Loading details…</p></article>
       <article class="glass"><div class="hd-kicker hd-kicker-small">SHOPPING NOTES</div><h2>Things to know</h2><ul id="hd-product-gaps"><li>Checking fulfillment and retail readiness.</li></ul></article>
+    </section>
+
+    <section class="hd-product-qa glass" id="hd-product-qa" hidden aria-labelledby="hd-product-qa-title">
+      <div class="hd-product-section-head">
+        <div><div class="hd-kicker hd-kicker-small">BOOM PRODUCT TRUTH</div><h2 id="hd-product-qa-title">Ask HUNT about this product</h2><p>Answers use verified product data already available to HUNT. Missing information stays unknown.</p></div>
+      </div>
+      <form class="hd-product-qa-form" id="hd-product-qa-form">
+        <input id="hd-product-qa-input" autocomplete="off" maxlength="180" placeholder="Ask about price readiness, size, compatibility, shipping or returns">
+        <button class="hd-btn" type="submit">Ask</button>
+      </form>
+      <div class="hd-product-qa-quick" id="hd-product-qa-quick">
+        <button type="button" data-qa-topic="verified">What is verified?</button>
+        <button type="button" data-qa-topic="options">What options are available?</button>
+        <button type="button" data-qa-topic="compatibility">Will it fit or work with my model?</button>
+        <button type="button" data-qa-topic="shipping">What about shipping?</button>
+        <button type="button" data-qa-topic="returns">What about returns?</button>
+        <button type="button" data-qa-topic="why">Why am I seeing this?</button>
+      </div>
+      <div class="hd-product-qa-answer" id="hd-product-qa-answer" aria-live="polite"><strong>Choose a question or ask in your own words.</strong></div>
     </section>
 
     <section class="hd-deal-builder glass" id="hd-deal-builder" hidden>
@@ -97,24 +155,27 @@
 
     <section class="hd-endless-discovery" id="hd-endless-discovery" aria-labelledby="hd-endless-title">
       <div class="hd-product-section-head">
-        <div><div class="hd-kicker hd-kicker-small">BOOM ENDLESS DISCOVERY</div><h2 id="hd-endless-title">Keep discovering</h2><p id="hd-endless-copy">BOOM opens more relevant products as you scroll.</p></div>
+        <div><div class="hd-kicker hd-kicker-small">BOOM ENDLESS DISCOVERY</div><h2 id="hd-endless-title" data-hunt-i18n="endlessTitle">Keep discovering</h2><p id="hd-endless-copy" data-hunt-i18n="endlessCopy">HUNT opens more relevant products as you scroll.</p></div>
       </div>
       <div class="hd-endless-grid" id="hd-endless-grid"></div>
       <div class="hd-endless-sentinel" id="hd-endless-sentinel" aria-live="polite"><span></span><strong>Loading more for you…</strong></div>
     </section>
 
     <section class="hd-product-loading glass" id="hd-product-loading"><span>◉</span><strong>Loading live product detail…</strong></section>
-    <section class="hd-category-empty glass" id="hd-product-error" hidden><span>◇</span><h2>Product detail is not available yet.</h2><p id="hd-product-error-copy">This provider has not exposed an approved detail feed to HUNT DEAL.</p><a class="hd-btn" href="./">Back to market</a></section>
+    <section class="hd-category-empty glass" id="hd-product-error" hidden><span>◇</span><h2>Product detail is not available yet.</h2><p id="hd-product-error-copy">This provider has not exposed an approved detail feed to HUNT.</p><a class="hd-btn" href="./">Back to market</a></section>
   <nav class="hd-legal-links" aria-label="Legal and customer policies"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="returns.html">Returns & Cancellation</a><a href="shipping.html">Shipping</a><a href="withdrawal.html">Withdrawal / Return request</a></nav>
   </main>
   <div class="hd-image-zoom" id="hd-image-zoom" hidden role="dialog" aria-modal="true" aria-label="Product image zoom">
-    <div class="hd-image-zoom-panel">
+    <div class="hd-image-zoom-panel" role="document">
       <button class="hd-zoom-close" id="hd-zoom-close" type="button" aria-label="Close zoom">&times;</button>
+      <button class="hd-zoom-nav hd-zoom-prev" id="hd-zoom-prev" type="button" aria-label="Previous product image">‹</button>
       <div class="hd-image-zoom-stage"><img id="hd-zoom-image" alt="Zoomed product image"></div>
+      <button class="hd-zoom-nav hd-zoom-next" id="hd-zoom-next" type="button" aria-label="Next product image">›</button>
       <div class="hd-zoom-controls">
-        <button id="hd-zoom-out" type="button">-</button>
+        <span class="hd-zoom-image-count" id="hd-zoom-image-count">1 / 1</span>
+        <button id="hd-zoom-out" type="button" aria-label="Zoom out">−</button>
         <span id="hd-zoom-level">100%</span>
-        <button id="hd-zoom-in" type="button">+</button>
+        <button id="hd-zoom-in" type="button" aria-label="Zoom in">+</button>
         <button id="hd-zoom-reset" type="button">Reset</button>
       </div>
     </div>
@@ -123,6 +184,16 @@
     <div><small>Source price</small><strong id="hd-mobile-price">--</strong></div>
     <button id="hd-mobile-add" class="hd-btn hd-btn-primary" type="button">Add to Cart</button>
   </div>
+
+  <aside class="hd-product-pulse" id="hd-product-pulse" aria-live="polite">
+    <button class="hd-product-pulse-close" type="button" data-product-pulse-close aria-label="Close suggestion">×</button>
+    <img data-product-pulse-media alt="" hidden>
+    <div>
+      <small data-hunt-i18n="productPulse">Maybe interesting for you</small>
+      <strong data-product-pulse-title data-hunt-i18n="productCue">Discover more for you</strong>
+      <a href="#hd-endless-discovery" data-product-pulse-link><span data-hunt-i18n="productPulseCta">Discover ↓</span></a>
+    </div>
+  </aside>
   <nav class="hd-mobile-nav" aria-label="Mobile navigation">
     <a href="./"><span>&#8962;</span><small>Home</small></a>
     <a href="category.html?c=women"><span>&#9638;</span><small>Categories</small></a>
@@ -132,17 +203,27 @@
     <a href="auth.html"><span>&#9675;</span><small>Sign in</small></a>
   </nav>
 
+  <script src="hunt-experience-i18n.js?v=1"></script>
   <script src="market-core.js?v=dynamic2"></script>
+  <script src="hunt-catalog-quality.js?v=1"></script>
+  <script src="hunt-country-brain.js?v=1"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="account-presence.js?v=profile2"></script>
   <script src="analytics-config.js?v=analytics1"></script>
-  <script src="analytics.js?v=huntmetrics1"></script>
-  <script src="product.js?v=launchqa6"></script>
+  <script src="analytics.js?v=huntmetrics3"></script>
+  <script src="hunt-personalization.js?v=1"></script>
+  <script src="boom-commerce-brain.js?v=2"></script>
+  <script src="boom-stylist.js?v=1"></script>
+  <script src="boom-f35-director.js?v=1"></script>
+  <script src="hunt-product-qa.js?v=3"></script>
+<script src="product.js?v=launchqa11"></script>
   <script src="product-flow.js?v=dealbuilder4"></script>
   <script src="boom-deal-builder.js?v=dealbuilder1"></script>
   <script src="reviews.js?v=reviews2"></script>
   <script src="shopping-actions.js?v=launchqa5"></script>
   <script src="hunt-theme.js?v=shop5"></script>
-  <script src="pwa.js?v=pwa2"></script>
+  <script src="hunt-product-pulse.js?v=1"></script>
+  <script src="pwa.js?v=pwa8"></script>
+  <script src="hunt-brand-motion.js?v=1"></script>
 </body>
 </html>
