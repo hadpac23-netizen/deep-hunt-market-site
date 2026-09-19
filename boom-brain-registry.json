@@ -24,7 +24,8 @@
         "state",
         "handoff"
       ],
-      "before": []
+      "before": [],
+      "lifecycle": "SHADOW"
     },
     {
       "id": "intelligence_brain",
@@ -40,7 +41,8 @@
       "before": [
         "innovation_brain",
         "commerce_truth_brain"
-      ]
+      ],
+      "lifecycle": "ACTIVE"
     },
     {
       "id": "innovation_brain",
@@ -55,7 +57,8 @@
       "before": [
         "commerce_truth_brain"
       ],
-      "review_route": "intelligence_brain"
+      "review_route": "intelligence_brain",
+      "lifecycle": "SHADOW"
     },
     {
       "id": "commerce_truth_brain",
@@ -73,7 +76,8 @@
         "experience_brain",
         "growth_brain",
         "operations_brain"
-      ]
+      ],
+      "lifecycle": "ACTIVE"
     },
     {
       "id": "experience_brain",
@@ -90,7 +94,8 @@
       ],
       "before": [
         "operations_brain"
-      ]
+      ],
+      "lifecycle": "ACTIVE"
     },
     {
       "id": "growth_brain",
@@ -107,7 +112,8 @@
       ],
       "before": [
         "operations_brain"
-      ]
+      ],
+      "lifecycle": "GATED"
     },
     {
       "id": "operations_brain",
@@ -125,7 +131,8 @@
       ],
       "before": [
         "learning_governance_brain"
-      ]
+      ],
+      "lifecycle": "GATED"
     },
     {
       "id": "learning_governance_brain",
@@ -143,7 +150,8 @@
       ],
       "before": [
         "boom_orchestrator"
-      ]
+      ],
+      "lifecycle": "ACTIVE"
     }
   ],
   "shared_control_planes": [
@@ -182,6 +190,14 @@
     "No UI action may have more than one state owner.",
     "No button is complete without pending, success, error, disabled and retry/rollback semantics where applicable.",
     "Guest state must define merge behavior on sign-in.",
-    "All material actions emit normalized telemetry with correlation_id."
-  ]
+    "All material actions emit normalized telemetry with correlation_id.",
+    "A brain changing lifecycle mode requires evidence and an explicit recorded decision; code presence alone never activates it."
+  ],
+  "lifecycle_modes": {
+    "OFF": "Defined but not running.",
+    "SHADOW": "Runs and records recommendations but cannot change user/system behavior.",
+    "ACTIVE": "May drive internal behavior within its contract.",
+    "GATED": "May prepare actions but requires Owner Gate for external/material execution.",
+    "DEPRECATED": "Kept only for migration/history; no new ownership."
+  }
 }
