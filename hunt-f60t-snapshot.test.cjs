@@ -3,8 +3,10 @@ const assert=require("node:assert/strict");
 const code=fs.readFileSync("supabase/functions/hunt-f60t-snapshot/index.ts","utf8");
 
 for(const token of [
-  "createSupabaseContext",
-  "ADMIN_REQUIRED",
+  'createSupabaseContext(req,{auth:["user","none"]})',
+  "ADMIN_OR_CRON_REQUIRED",
+  "x-f60t-cron-secret",
+  "f60t_cron_auth",
   "analytics_events",
   "f60t_crowd_signal_snapshots",
   "f60t_external_signal_runs",

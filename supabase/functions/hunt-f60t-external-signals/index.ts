@@ -1,4 +1,7 @@
 import { createSupabaseContext } from "npm:@supabase/server";
+import postgres from "npm:postgres@3.4.5";
+
+const sql=postgres(Deno.env.get("SUPABASE_DB_URL")||"",{max:1,prepare:false});
 
 const clean=(v:unknown,n=180)=>String(v??"").replace(/[\r\n\t]+/g," ").replace(/\s+/g," ").trim().slice(0,n);
 const moneyNumber=(v:unknown)=>Number.isFinite(Number(v))?Number(v):null;
@@ -14,7 +17,7 @@ function cors(req:Request){
   const preview=/^https:\/\/[a-z0-9-]+--deep-hunt-market\.netlify\.app$/i.test(origin);
   return {
     "access-control-allow-origin":(allowed.has(origin)||preview)?origin:"https://deep-hunt-market.netlify.app",
-    "access-control-allow-headers":"apikey, authorization, content-type",
+    "access-control-allow-headers":"apikey, authorization, content-type, x-f60t-cron-secret",
     "access-control-allow-methods":"POST, OPTIONS",
     "vary":"Origin"
   };
@@ -29,6 +32,156 @@ async function isAdmin(ctx:any){
   if(!uid)return false;
   const {data}=await ctx.supabaseAdmin.from("profiles").select("is_admin").eq("id",uid).maybeSingle();
   return data?.is_admin===true;
+}
+async function sha256Hex(value:string){
+  const digest=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(value));
+  return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+function safeEqual(a:string,b:string){
+  if(a.length!==b.length)return false;
+  let diff=0;
+  for(let i=0;i<a.length;i++)diff|=a.charCodeAt(i)^b.charCodeAt(i);
+  return diff===0;
+}
+async function cronAuthorized(ctx:any,req:Request){
+  const raw=clean(req.headers.get("x-f60t-cron-secret"),300);
+  if(!raw)return false;
+  const {data}=await ctx.supabaseAdmin.from("f60t_cron_auth")
+    .select("secret_hash").eq("key","hourly").maybeSingle();
+  if(!data?.secret_hash)return false;
+  return safeEqual(await sha256Hex(raw),String(data.secret_hash));
+}
+async function callerAllowed(ctx:any,req:Request){
+  if(ctx.authMode==="user")return await isAdmin(ctx);
+  if(ctx.authMode==="none")return await cronAuthorized(ctx,req);
+  return false;
+}
+async function vaultRead(name:string){
+  if(!name)return "";
+  const rows:any[]=await sql.unsafe(
+    "select decrypted_secret from vault.decrypted_secrets where name=$1 limit 1",
+    [name]
+  );
+  return clean(rows[0]?.decrypted_secret,10000);
+}
+async function vaultUpsert(name:string,value:string,description:string){
+  if(!name||!value)return;
+  const rows:any[]=await sql.unsafe(
+    "select id::text from vault.secrets where name=$1 limit 1",
+    [name]
+  );
+  if(rows.length){
+    await sql.unsafe(
+      "select vault.update_secret($1::uuid,$2,$3,$4)",
+      [rows[0].id,value,name,description]
+    );
+  }else{
+    await sql.unsafe(
+      "select vault.create_secret($1,$2,$3)",
+      [value,name,description]
+    );
+  }
+}
+async function oauthConnection(ctx:any,provider:string){
+  const {data}=await ctx.supabaseAdmin.from("f60t_oauth_connections")
+    .select("provider,status,scopes,external_account_id,vault_access_secret_name,vault_refresh_secret_name,expires_at,last_refresh_at")
+    .eq("provider",provider).maybeSingle();
+  return data||null;
+}
+async function pinterestAdAccount(ctx:any){
+  const direct=env("PINTEREST_AD_ACCOUNT_ID");
+  if(direct)return direct;
+  const row=await oauthConnection(ctx,"pinterest");
+  return clean(row?.external_account_id,120);
+}
+async function connectorConfig(ctx:any){
+  const [pinterest,youtube]=await Promise.all([
+    oauthConnection(ctx,"pinterest"),
+    oauthConnection(ctx,"youtube")
+  ]);
+  return {
+    pinterest_access_token:Boolean(env("PINTEREST_ACCESS_TOKEN"))||String(pinterest?.status||"")==="CONNECTED",
+    pinterest_ad_account_id:Boolean(env("PINTEREST_AD_ACCOUNT_ID"))||Boolean(pinterest?.external_account_id),
+    pinterest_account_selection_required:String(pinterest?.status||"")==="CONNECTED"&&!env("PINTEREST_AD_ACCOUNT_ID")&&!pinterest?.external_account_id,
+    youtube_oauth_access_token:Boolean(env("YOUTUBE_OAUTH_ACCESS_TOKEN"))||String(youtube?.status||"")==="CONNECTED"
+  };
+}
+async function markOauth(ctx:any,provider:string,patch:any){
+  await ctx.supabaseAdmin.from("f60t_oauth_connections").update({
+    ...patch,updated_at:new Date().toISOString()
+  }).eq("provider",provider);
+}
+async function refreshPinterest(ctx:any,row:any,refreshToken:string){
+  const clientId=env("PINTEREST_CLIENT_ID");
+  const clientSecret=env("PINTEREST_CLIENT_SECRET");
+  if(!clientId||!clientSecret||!refreshToken)throw new Error("PINTEREST_REFRESH_CONFIG_MISSING");
+  const res=await fetch("https://api.pinterest.com/v5/oauth/token",{
+    method:"POST",
+    headers:{
+      Authorization:"Basic "+btoa(clientId+":"+clientSecret),
+      "Content-Type":"application/x-www-form-urlencoded",
+      Accept:"application/json"
+    },
+    body:new URLSearchParams({
+      grant_type:"refresh_token",
+      refresh_token:refreshToken,
+      scope:Array.isArray(row?.scopes)?row.scopes.join(","):"ads:read,user_accounts:read"
+    })
+  });
+  const payload=await res.json().catch(()=>({}));
+  if(!res.ok||!payload?.access_token)throw new Error("PINTEREST_REFRESH_FAILED");
+  const access=clean(payload.access_token,10000);
+  const nextRefresh=clean(payload.refresh_token,10000)||refreshToken;
+  await vaultUpsert(row.vault_access_secret_name,access,"F60T Pinterest OAuth access token");
+  await vaultUpsert(row.vault_refresh_secret_name,nextRefresh,"F60T Pinterest OAuth refresh token");
+  const expiresAt=new Date(Date.now()+(Number(payload.expires_in)||2592000)*1000).toISOString();
+  await markOauth(ctx,"pinterest",{status:"CONNECTED",expires_at:expiresAt,last_refresh_at:new Date().toISOString(),last_error_code:""});
+  return access;
+}
+async function refreshYoutube(ctx:any,row:any,refreshToken:string){
+  const clientId=env("GOOGLE_OAUTH_CLIENT_ID");
+  const clientSecret=env("GOOGLE_OAUTH_CLIENT_SECRET");
+  if(!clientId||!clientSecret||!refreshToken)throw new Error("YOUTUBE_REFRESH_CONFIG_MISSING");
+  const res=await fetch("https://oauth2.googleapis.com/token",{
+    method:"POST",
+    headers:{"Content-Type":"application/x-www-form-urlencoded",Accept:"application/json"},
+    body:new URLSearchParams({
+      client_id:clientId,
+      client_secret:clientSecret,
+      refresh_token:refreshToken,
+      grant_type:"refresh_token"
+    })
+  });
+  const payload=await res.json().catch(()=>({}));
+  if(!res.ok||!payload?.access_token)throw new Error("YOUTUBE_REFRESH_FAILED");
+  const access=clean(payload.access_token,10000);
+  await vaultUpsert(row.vault_access_secret_name,access,"F60T YouTube OAuth access token");
+  const expiresAt=new Date(Date.now()+(Number(payload.expires_in)||3600)*1000).toISOString();
+  await markOauth(ctx,"youtube",{status:"CONNECTED",expires_at:expiresAt,last_refresh_at:new Date().toISOString(),last_error_code:""});
+  return access;
+}
+async function resolveAccessToken(ctx:any,provider:string,envName:string){
+  const direct=env(envName);
+  if(direct)return direct;
+  const row=await oauthConnection(ctx,provider);
+  if(!row||!row.vault_access_secret_name)return "";
+  let access=await vaultRead(row.vault_access_secret_name);
+  const expires=Date.parse(String(row.expires_at||""));
+  if(access&&Number.isFinite(expires)&&expires>Date.now()+5*60*1000)return access;
+  const refresh=await vaultRead(row.vault_refresh_secret_name||"");
+  if(!refresh){
+    await markOauth(ctx,provider,{status:"TOKEN_EXPIRED",last_error_code:"REFRESH_TOKEN_MISSING"});
+    return "";
+  }
+  try{
+    access=provider==="pinterest"
+      ?await refreshPinterest(ctx,row,refresh)
+      :await refreshYoutube(ctx,row,refresh);
+    return access;
+  }catch(error){
+    await markOauth(ctx,provider,{status:"TOKEN_EXPIRED",last_error_code:clean((error as Error)?.message||"TOKEN_REFRESH_FAILED",100)});
+    return "";
+  }
 }
 function bucketHour(){
   const d=new Date();
@@ -59,6 +212,20 @@ async function runFinish(ctx:any,id:string,patch:any){
     ...patch,completed_at:new Date().toISOString()
   }).eq("id",id);
 }
+async function runSkipped(ctx:any,sourceKey:string,action:string,reason:string,region=""){
+  await ctx.supabaseAdmin.from("f60t_external_signal_runs").insert({
+    source_key:sourceKey,
+    action,
+    status:"SKIPPED_CONFIG",
+    region:clean(region,20),
+    rows_written:0,
+    evidence_ref:"",
+    error_code:clean(reason,100),
+    metadata:{reason:clean(reason,160)},
+    started_at:new Date().toISOString(),
+    completed_at:new Date().toISOString()
+  });
+}
 async function setSource(ctx:any,sourceKey:string,status:string,note:string,evidenceRef:string=""){
   await ctx.supabaseAdmin.from("f60t_signal_sources").update({
     status,
@@ -77,11 +244,12 @@ function safeRegions(body:any){
   return [...new Set(list)].slice(0,12);
 }
 async function pinterestTrends(ctx:any,body:any){
-  const token=env("PINTEREST_ACCESS_TOKEN");
+  const token=await resolveAccessToken(ctx,"pinterest","PINTEREST_ACCESS_TOKEN");
   const sourceKey="pinterest_trends";
   const regions=safeRegions(body);
   if(!token){
-    await setSource(ctx,sourceKey,"AVAILABLE_NOT_CONNECTED","Official Trends API verified; PINTEREST_ACCESS_TOKEN is not configured.");
+    await runSkipped(ctx,sourceKey,"SYNC_TRENDS","PINTEREST_OAUTH_NOT_CONNECTED");
+    await setSource(ctx,sourceKey,"AVAILABLE_NOT_CONNECTED","Official Trends API verified; Pinterest OAuth is not connected.");
     return {source:sourceKey,status:"SKIPPED_CONFIG",regions,rows_written:0};
   }
 
@@ -148,11 +316,16 @@ async function pinterestTrends(ctx:any,body:any){
   return {source:sourceKey,status:written>0?"SUCCESS":"FAILED",rows_written:written,regions:results};
 }
 async function pinterestAudience(ctx:any,body:any){
-  const token=env("PINTEREST_ACCESS_TOKEN");
-  const adAccount=env("PINTEREST_AD_ACCOUNT_ID");
+  const token=await resolveAccessToken(ctx,"pinterest","PINTEREST_ACCESS_TOKEN");
+  const adAccount=await pinterestAdAccount(ctx);
   const sourceKey="pinterest_audience";
   if(!token||!adAccount){
-    await setSource(ctx,sourceKey,"AVAILABLE_NOT_CONNECTED","Pinterest Audience Insights requires PINTEREST_ACCESS_TOKEN and PINTEREST_AD_ACCOUNT_ID.");
+    const reason=!token?"PINTEREST_OAUTH_NOT_CONNECTED":"PINTEREST_AD_ACCOUNT_SELECTION_REQUIRED";
+    await runSkipped(ctx,sourceKey,"SYNC_AUDIENCE",reason);
+    await setSource(ctx,sourceKey,"AVAILABLE_NOT_CONNECTED",
+      !token
+        ?"Pinterest Audience Insights is ready but Pinterest OAuth is not connected."
+        :"Pinterest OAuth is connected but an advertiser account must be selected.");
     return {source:sourceKey,status:"SKIPPED_CONFIG",rows_written:0};
   }
   const audienceType=["YOUR_TOTAL_AUDIENCE","YOUR_ENGAGED_AUDIENCE","PINTEREST_TOTAL_AUDIENCE"].includes(String(body?.audience_insight_type||""))
@@ -216,10 +389,11 @@ function isoDate(daysAgo:number){
   return d.toISOString().slice(0,10);
 }
 async function youtubeAnalytics(ctx:any){
-  const token=env("YOUTUBE_OAUTH_ACCESS_TOKEN");
+  const token=await resolveAccessToken(ctx,"youtube","YOUTUBE_OAUTH_ACCESS_TOKEN");
   const sourceKey="youtube_analytics";
   if(!token){
-    await setSource(ctx,sourceKey,"AVAILABLE_NOT_CONNECTED","Official YouTube Analytics connector is ready; YOUTUBE_OAUTH_ACCESS_TOKEN is not configured.");
+    await runSkipped(ctx,sourceKey,"SYNC_COUNTRY_TRAFFIC","YOUTUBE_OAUTH_NOT_CONNECTED");
+    await setSource(ctx,sourceKey,"AVAILABLE_NOT_CONNECTED","Official YouTube Analytics connector is ready; YouTube OAuth is not connected.");
     return {source:sourceKey,status:"SKIPPED_CONFIG",rows_written:0};
   }
   const params=new URLSearchParams({
@@ -280,14 +454,14 @@ async function youtubeAnalytics(ctx:any){
 Deno.serve(async(req:Request)=>{
   if(req.method==="OPTIONS")return new Response("ok",{headers:cors(req)});
   if(req.method!=="POST")return json(req,{error:"method not allowed"},405);
-  const {data:ctx,error:authError}=await createSupabaseContext(req,{auth:["user","publishable"]});
+  const {data:ctx,error:authError}=await createSupabaseContext(req,{auth:["user","none"]});
   if(authError||!ctx)return json(req,{error:"unauthorized"},authError?.status||401);
-  if(!(await isAdmin(ctx)))return json(req,{error:"ADMIN_REQUIRED"},403);
+  if(!(await callerAllowed(ctx,req)))return json(req,{error:"ADMIN_OR_CRON_REQUIRED"},403);
 
   let body:any={};
   try{body=await req.json()}catch{}
   const action=clean(body?.action||"status",50).toLowerCase();
-  const config=boolConfig();
+  const config=await connectorConfig(ctx);
 
   if(action==="status"){
     const {data:sources}=await ctx.supabaseAdmin.from("f60t_signal_sources")

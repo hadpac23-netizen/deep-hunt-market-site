@@ -28,21 +28,31 @@
     return Number.isFinite(Number(value)) ? Number(value).toFixed(1) + "%" : "—";
   }
 
-  async function ownerFunction(slug) {
+  async function ownerFunction(slug, options = {}) {
+    const method = String(options.method || "GET").toUpperCase();
+    const hasBody = options.body !== undefined && options.body !== null;
     const res = await fetch(BASE + "/functions/v1/" + slug, {
+      method,
       headers: {
         apikey: H.publishableKey,
-        Authorization: "Bearer " + session.access_token
+        Authorization: "Bearer " + session.access_token,
+        ...(hasBody ? {"Content-Type":"application/json"} : {})
       },
+      body: hasBody ? JSON.stringify(options.body) : undefined,
       cache: "no-store"
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok || data?.ok !== true) throw new Error(data.error || slug + " failed");
+    if (!res.ok || data?.ok !== true) {
+      const error = new Error(data.error || data.status || slug + " failed");
+      error.payload = data;
+      error.status = res.status;
+      throw error;
+    }
     return data;
   }
 
   async function loadData() {
-    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, catalogRes, identityRes, savedCountRes, realOrdersCountRes, testOrdersCountRes, trackingCountRes, deliveredCountRes, creatorDraftCountRes, publishedDraftCountRes, merchantConversionCountRes, partnerRightsCountRes, f50MemoryRes, f50RunsRes, f50CandidatesRes, f60tLiveRes, seoAudit] = await Promise.all([
+    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, catalogRes, identityRes, savedCountRes, realOrdersCountRes, testOrdersCountRes, trackingCountRes, deliveredCountRes, creatorDraftCountRes, publishedDraftCountRes, merchantConversionCountRes, partnerRightsCountRes, f50MemoryRes, f50RunsRes, f50CandidatesRes, f60tLiveRes, f60tOauthRes, seoAudit] = await Promise.all([
       ownerFunction("hunt-owner-mission-control"),
       ownerFunction("hunt-launch-readiness"),
       client.from("hunt_unit_economics")
@@ -96,10 +106,15 @@
       client.from("f50_candidates")
         .select("id,run_id,candidate_key,title,mechanism_fingerprint,stage,decision,kill_reasons,winner_claim_allowed,updated_at")
         .order("updated_at",{ascending:false}).limit(120),
-      ownerFunction("hunt-f60t-snapshot").catch(error=>({
+      ownerFunction("hunt-f60t-snapshot",{method:"POST",body:{source:"BOOM_STUDIO"}}).catch(error=>({
         ok:false,
         error:String(error?.message||error||"hunt-f60t-snapshot failed"),
         errors:[String(error?.message||error||"snapshot unavailable")]
+      })),
+      ownerFunction("hunt-f60t-oauth",{method:"POST",body:{action:"status"}}).catch(error=>({
+        ok:false,
+        error:String(error?.message||error||"hunt-f60t-oauth failed"),
+        providers:[]
       })),
       fetch("boom-seo-audit.json?v=os3",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)
     ]);
@@ -690,7 +705,8 @@
       agent_signal_live:f60tLive.agent_gateway_ready===true,
       mission_replaces_daily_10k:true,
       current_mode:f60tLive.crowd_signals_ready?"LIVE_SIGNAL_ANALYSIS":"ANALYSIS_AND_PREPARATION",
-      no_fake_success:true
+      no_fake_success:true,
+      oauth_providers:Array.isArray(f60tOauthRes?.providers)?f60tOauthRes.providers:[]
     };
 
     const AttributionContext=window.BoomAttributionContextReadiness;
@@ -815,8 +831,75 @@
     ).join("");
   }
 
+  async function startF60TOAuth(provider) {
+    const label = provider === "pinterest" ? "Pinterest" : "YouTube";
+    const note = $("#bg-f60t-connect-status");
+    if (note) note.textContent = "Preparing " + label + " connection…";
+    try {
+      const result = await ownerFunction("hunt-f60t-oauth",{
+        method:"POST",
+        body:{action:"start",provider}
+      });
+      if (result?.auth_url) {
+        location.assign(result.auth_url);
+        return;
+      }
+      if (note) note.textContent = label + " connection could not start.";
+    } catch (error) {
+      const payload = error?.payload || {};
+      if (payload?.status === "CONFIG_REQUIRED" || error?.status === 409) {
+        if (note) note.textContent = label + " · CONFIG REQUIRED";
+        return;
+      }
+      if (note) note.textContent = label + " · " + String(error?.message || "connection failed");
+    }
+  }
+
+  function bindF60TOAuthButtons() {
+    const pinterest=$("#bg-f60t-connect-pinterest");
+    const youtube=$("#bg-f60t-connect-youtube");
+    if(pinterest)pinterest.onclick=()=>startF60TOAuth("pinterest");
+    if(youtube)youtube.onclick=()=>startF60TOAuth("youtube");
+  }
+
+  function renderF60TOAuth(data={}) {
+    const providers=Array.isArray(data?.f60t?.oauth_providers)?data.f60t.oauth_providers:[];
+    const byName=(name)=>providers.find(x=>String(x?.provider||"")===name)||{};
+    const note=$("#bg-f60t-connect-status");
+    for(const [name,id,label] of [
+      ["pinterest","#bg-f60t-connect-pinterest","Pinterest"],
+      ["youtube","#bg-f60t-connect-youtube","YouTube"]
+    ]){
+      const row=byName(name);
+      const button=$(id);
+      if(!button)continue;
+      const state=String(row?.connection?.status||"DISCONNECTED");
+      const ready=row?.config_ready===true;
+      button.disabled=state==="CONNECTED";
+      button.textContent=state==="CONNECTED"
+        ? label+" · CONNECTED"
+        : !ready
+          ? label+" · CONFIG REQUIRED"
+          : state==="TOKEN_EXPIRED"
+            ? "Reconnect "+label
+            : "Connect "+label;
+      button.dataset.state=state;
+    }
+    if(note){
+      const connected=providers.filter(x=>String(x?.connection?.status||"")==="CONNECTED").length;
+      const configured=providers.filter(x=>x?.config_ready===true).length;
+      note.textContent=connected
+        ? connected+" OAuth source"+(connected===1?"":"s")+" connected. Hourly sync uses Vault tokens."
+        : configured
+          ? "OAuth apps configured. Connect approved sources when ready."
+          : "OAuth app credentials are not configured yet. Hourly jobs safely skip these sources.";
+    }
+    bindF60TOAuthButtons();
+  }
+
   function renderF60T(data={}) {
     const f=data.f60t||{};
+    renderF60TOAuth(data);
     const target=f.target||{};
     const mission=f.mission||{};
     const state=$("#bg-f60t-state");

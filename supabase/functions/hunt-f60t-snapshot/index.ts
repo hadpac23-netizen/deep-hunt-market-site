@@ -26,7 +26,7 @@ function cors(req:Request){
   const preview=/^https:\/\/[a-z0-9-]+--deep-hunt-market\.netlify\.app$/i.test(origin);
   return {
     "access-control-allow-origin":(allowed.has(origin)||preview)?origin:"https://deep-hunt-market.netlify.app",
-    "access-control-allow-headers":"apikey, authorization, content-type",
+    "access-control-allow-headers":"apikey, authorization, content-type, x-f60t-cron-secret",
     "access-control-allow-methods":"POST, OPTIONS",
     "vary":"Origin"
   };
@@ -41,6 +41,29 @@ async function isAdmin(ctx:any){
   if(!uid)return false;
   const {data}=await ctx.supabaseAdmin.from("profiles").select("is_admin").eq("id",uid).maybeSingle();
   return data?.is_admin===true;
+}
+async function sha256Hex(value:string){
+  const digest=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(value));
+  return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+function safeEqual(a:string,b:string){
+  if(a.length!==b.length)return false;
+  let diff=0;
+  for(let i=0;i<a.length;i++)diff|=a.charCodeAt(i)^b.charCodeAt(i);
+  return diff===0;
+}
+async function cronAuthorized(ctx:any,req:Request){
+  const raw=clean(req.headers.get("x-f60t-cron-secret"),300);
+  if(!raw)return false;
+  const {data}=await ctx.supabaseAdmin.from("f60t_cron_auth")
+    .select("secret_hash").eq("key","hourly").maybeSingle();
+  if(!data?.secret_hash)return false;
+  return safeEqual(await sha256Hex(raw),String(data.secret_hash));
+}
+async function callerAllowed(ctx:any,req:Request){
+  if(ctx.authMode==="user")return await isAdmin(ctx);
+  if(ctx.authMode==="none")return await cronAuthorized(ctx,req);
+  return false;
 }
 function hourStartUtc(d=new Date()){
   const x=new Date(d);
@@ -106,9 +129,9 @@ Deno.serve(async(req:Request)=>{
   if(req.method==="OPTIONS")return new Response("ok",{headers:cors(req)});
   if(req.method!=="POST")return json(req,{error:"method not allowed"},405);
 
-  const {data:ctx,error:authError}=await createSupabaseContext(req,{auth:["user","publishable"]});
+  const {data:ctx,error:authError}=await createSupabaseContext(req,{auth:["user","none"]});
   if(authError||!ctx)return json(req,{error:"unauthorized"},authError?.status||401);
-  if(!(await isAdmin(ctx)))return json(req,{error:"ADMIN_REQUIRED"},403);
+  if(!(await callerAllowed(ctx,req)))return json(req,{error:"ADMIN_OR_CRON_REQUIRED"},403);
 
   const errors:string[]=[];
   const now=new Date();
@@ -155,11 +178,13 @@ Deno.serve(async(req:Request)=>{
   const events=Array.isArray(eventsRes.data)?eventsRes.data:[];
   const clusters=aggregate(events);
   const knownMarketEvents=events.filter((row:any)=>marketOf(row?.metadata)).length;
-  const timezoneEvents=events.filter((row:any)=>clean(row?.metadata?.timezone,80)).length;
-  const crowdSignalsReady=knownMarketEvents>=20;
+  const recognizedIntentEvents=events.filter((row:any)=>Object.prototype.hasOwnProperty.call(INTENT_SCORE,String(row?.event_type||"")));
+  const recognizedMarketIntentEvents=recognizedIntentEvents.filter((row:any)=>marketOf(row?.metadata)).length;
+  const timezoneEvents=recognizedIntentEvents.filter((row:any)=>clean(row?.metadata?.timezone,80)).length;
+  const crowdSignalsReady=recognizedMarketIntentEvents>=20;
   const localBuyingClockReady=timezoneEvents>=20;
   const hotZones=clusters
-    .filter(x=>x.event_count>=3&&x.country_code)
+    .filter(x=>x.event_count>=3&&x.country_code&&x.intent_score_max>0)
     .sort((a,b)=>b.intent_score_avg-a.intent_score_avg||b.event_count-a.event_count)
     .slice(0,12);
 
@@ -301,6 +326,8 @@ Deno.serve(async(req:Request)=>{
     local_buying_clock_ready:localBuyingClockReady,
     first_party_event_count:events.length,
     known_market_event_count:knownMarketEvents,
+    recognized_intent_event_count:recognizedIntentEvents.length,
+    recognized_market_intent_event_count:recognizedMarketIntentEvents,
     timezone_event_count:timezoneEvents,
     hot_zones:hotZones,
     sources:Array.isArray(sourcesRes.data)?sourcesRes.data:[],

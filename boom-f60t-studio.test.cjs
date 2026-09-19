@@ -11,17 +11,28 @@ for(const token of [
   'id="bg-f60t-stats"',
   'id="bg-f60t-mission"',
   'id="bg-f60t-gates"',
+  'id="bg-f60t-connect-pinterest"',
+  'id="bg-f60t-connect-youtube"',
+  'id="bg-f60t-connect-status"',
   'boom-f60t-core.js?v=f60t1',
-  'boom-f60t-live-adapter.js?v=f60tl2'
+  'boom-f60t-live-adapter.js?v=f60tl2',
+  'boom-growth-os.js?v=os40'
 ]) assert(html.includes(token),"F60T Studio HTML missing: "+token);
 
 assert(!html.includes("$10K+ NET/DAY MODEL"),"Legacy $10K/day panel still visible");
 assert(!html.includes('id="bg-milestones"'),"Legacy milestone container still visible");
 
 for(const token of [
+  "async function ownerFunction(slug, options = {})",
+  'ownerFunction("hunt-f60t-snapshot",{method:"POST",body:{source:"BOOM_STUDIO"}})',
+  'ownerFunction("hunt-f60t-oauth",{method:"POST",body:{action:"status"}})',
+  "async function startF60TOAuth(provider)",
+  'body:{action:"start",provider}',
+  "function renderF60TOAuth(data={})",
+  "CONFIG REQUIRED",
+  "oauth_providers:Array.isArray(f60tOauthRes?.providers)?f60tOauthRes.providers:[]",
   "const F60TCore=window.BoomF60TCore",
   "const F60TLive=window.BoomF60TLiveAdapter",
-  'ownerFunction("hunt-f60t-snapshot")',
   "mission_replaces_daily_10k:true",
   "function renderF60T(data={})",
   "renderF60T(data)",
