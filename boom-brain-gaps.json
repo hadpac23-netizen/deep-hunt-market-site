@@ -86,9 +86,9 @@
       "id": "circuit_breaker",
       "title": "Brain Circuit Breaker",
       "owner": "learning_governance_brain",
-      "status": "NEXT",
+      "status": "DONE",
       "source": "F50",
-      "next": "Demote stale/erroring brains to SHADOW automatically."
+      "next": "Recommend-only health policy implemented; calibrate thresholds from real telemetry before any automatic lifecycle behavior."
     },
     {
       "id": "contract_generated_qa",
@@ -134,17 +134,17 @@
       "id": "error_taxonomy",
       "title": "Stable Error Taxonomy",
       "owner": "learning_governance_brain",
-      "status": "NEXT",
+      "status": "DONE",
       "source": "F50",
-      "next": "Map codes \u2192 safe user copy \u2192 recovery action."
+      "next": "Runtime traces emit normalized safe error codes; expand domain mappings only from verified failures."
     },
     {
       "id": "storage_migrations",
       "title": "Storage Schema Versioning",
       "owner": "learning_governance_brain",
-      "status": "NEXT",
+      "status": "IN_PROGRESS",
       "source": "F50",
-      "next": "Version and migrate cart/preferences/local action keys."
+      "next": "Storage keys are now registered/versioned; hunt_language remains legacy and executable migrations are still needed before breaking schema changes."
     },
     {
       "id": "confidence_decay",
@@ -158,17 +158,17 @@
       "id": "mission_budgets",
       "title": "Mission Resource Budgets",
       "owner": "boom_orchestrator",
-      "status": "NEXT",
+      "status": "DONE",
       "source": "F50",
-      "next": "Track deploy credits, API calls, spend, attempts and risk limits."
+      "next": "Six material resource classes default to zero autonomous budget and Owner Gate."
     },
     {
       "id": "decision_explainability",
       "title": "Decision Reason Codes",
       "owner": "boom_orchestrator",
-      "status": "NEXT",
+      "status": "DONE",
       "source": "F50",
-      "next": "Show why each material decision was made."
+      "next": "Material decisions now have a canonical reason-code contract; wire reason codes into persisted decision records when that ledger is implemented."
     },
     {
       "id": "dead_home_cart_handler",

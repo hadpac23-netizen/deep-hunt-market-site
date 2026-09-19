@@ -55,6 +55,21 @@
     return allowed;
   }
 
+  const knownErrorCodes=new Set([
+    "AUTH_REQUIRED","PERMISSION_DENIED","ACTION_IN_FLIGHT","NETWORK_UNAVAILABLE","VALIDATION_FAILED",
+    "PRODUCT_RECHECK_FAILED","VARIANT_RECHECK_FAILED","OUT_OF_STOCK","SHIPPING_UNAVAILABLE","QUOTE_FAILED",
+    "EVIDENCE_STALE","OWNER_GATE_REQUIRED","ACTION_FAILED"
+  ]);
+  function errorCode(error){
+    const raw=String(error?.code||error?.message||"ACTION_FAILED").trim().toUpperCase().replace(/[^A-Z0-9_:-]+/g,"_").slice(0,80);
+    if(knownErrorCodes.has(raw))return raw;
+    if(/NETWORK|FETCH|TIMEOUT|OFFLINE/.test(raw))return "NETWORK_UNAVAILABLE";
+    if(/AUTH|SESSION|LOGIN|SIGN_IN/.test(raw))return "AUTH_REQUIRED";
+    if(/PERMISSION|FORBIDDEN|ADMIN_REQUIRED/.test(raw))return "PERMISSION_DENIED";
+    if(/VALID|REQUIRED|INVALID/.test(raw))return "VALIDATION_FAILED";
+    return "ACTION_FAILED";
+  }
+
   function announce(message,tone="") {
     let host=document.getElementById("boom-runtime-status");
     if(!host){
@@ -167,7 +182,7 @@
         return result;
       }catch(error){
         const extra=typeof errorDetail==="function"?errorDetail(error):(errorDetail||{});
-        emit(actionId,{key,state:"error",error_code:String(error?.message||"ERROR").slice(0,120),...safeDetail(extra)},{correlationId:correlation,broadcast:false});
+        emit(actionId,{key,state:"error",error_code:errorCode(error),...safeDetail(extra)},{correlationId:correlation,broadcast:false});
         if(announceError)announce(announceError,"error");
         onError?.(error);
         throw error;
@@ -222,6 +237,7 @@
     emit,
     runAction,
     announce,
+    errorCode,
     subscribeSession,
     sessionReady:()=>bootSession().then(()=>sessionState),
     currentSession:()=>sessionState,

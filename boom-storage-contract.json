@@ -1,0 +1,14 @@
+{
+  "version":"BOOM-STORAGE-CONTRACT-V1",
+  "stores":[
+    {"key":"hunt_deal_cart_v1","owner":"action_state_kernel","scope":"localStorage","schema_version":1,"sensitive":false,"migration":"required_before_breaking_change"},
+    {"key":"hunt_local_product_actions_v1","owner":"action_state_kernel","scope":"localStorage","schema_version":1,"sensitive":false,"migration":"required_before_breaking_change"},
+    {"key":"hunt_shopping_survey_v1","owner":"identity_session_kernel","scope":"localStorage","schema_version":1,"sensitive":false,"migration":"required_before_breaking_change"},
+    {"key":"hunt_shopping_preferences_v1","owner":"experience_brain","scope":"localStorage","schema_version":1,"sensitive":false,"migration":"required_before_breaking_change"},
+    {"key":"hunt_deal_boom_signals_v1","owner":"experience_brain","scope":"localStorage","schema_version":1,"sensitive":false,"migration":"decay_or_reset_allowed_with_documented_rule"},
+    {"key":"hunt_theme_v1","owner":"design_system_kernel","scope":"localStorage","schema_version":1,"sensitive":false,"migration":"fallback_to_light"},
+    {"key":"hunt_language","owner":"experience_brain","scope":"localStorage","schema_version":0,"sensitive":false,"migration":"LEGACY_KEY_VERSIONING_PENDING"},
+    {"key":"hunt_auth_redirecting","owner":"identity_session_kernel","scope":"sessionStorage","schema_version":1,"sensitive":false,"migration":"session_ephemeral"}
+  ],
+  "rules":["Never change stored shape silently.","Breaking changes require a migration or safe reset policy.","Secrets and provider tokens never belong in browser storage."]
+}

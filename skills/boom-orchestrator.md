@@ -8,8 +8,15 @@ Load these contracts before planning:
 - `boom-brain-registry.json`
 - `boom-action-contract.json`
 - `boom-surface-contract.json`
+- `boom-journey-contract.json`
+- `boom-guest-merge-matrix.json`
+- `boom-mission-budget-contract.json`
+- `boom-brain-health-policy.json`
+- `boom-error-taxonomy.json`
+- `boom-decision-reason-codes.json`
+- `boom-storage-contract.json`
 
-Use the registry for ownership, the action contract for interaction semantics, and the surface contract for runtime coverage. If code reality conflicts with a contract, block adoption and open a migration/verification task; never pretend the contract is already implemented.
+Use the registry for ownership, the action contract for interaction semantics, the surface/journey contracts for runtime flow, the merge/storage contracts for state continuity, the mission budget for resource permission, the health policy for circuit-breaker recommendations, and the error/reason-code contracts for explainability. If code reality conflicts with a contract, block adoption and open a migration/verification task; never pretend the contract is already implemented.
 
 ## Operating order
 1. Compile the Owner goal into a measurable mission.
@@ -21,9 +28,12 @@ Use the registry for ownership, the action contract for interaction semantics, a
 7. Return every material F50 idea to F35 Kill Test.
 8. Require Commerce Truth before any commercial activation.
 9. Require Action Contract compliance for every user interaction.
-10. Require Evals/Observability before adopting an experiment.
-11. Stop at Owner Gate for spend, publishing, price/discount changes, payments, supplier orders, production deployment or binding external commitments.
-12. After execution, measure real outcomes, write learning, update mission state and choose the next action.
+10. Allocate/check Mission Budget before any material execution. QA PASS never creates budget.
+11. Require Evals/Observability before adopting an experiment.
+12. Run Brain Health policy on evidence freshness, rights, dependencies, errors and conflicts; recommendations do not change lifecycle automatically.
+13. Record decision reason codes plus evidence references for every material decision.
+14. Stop at Owner Gate for spend, publishing, price/discount changes, payments, supplier orders, production deployment or binding external commitments.
+15. After execution, measure real outcomes, write learning, update mission state and choose the next action.
 
 ## Conflict rules
 - Truth beats novelty.
@@ -40,6 +50,9 @@ BRAINS_USED
 DEPENDENCIES
 EVIDENCE
 DECISION
+REASON_CODES
+MISSION_BUDGET
+BRAIN_HEALTH
 ACTION_CONTRACTS
 BLOCKERS
 OWNER_GATE
