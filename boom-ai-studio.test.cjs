@@ -647,7 +647,7 @@ assert(js.includes("function buildExperienceMasterPrompt("),"HUNT Experience mas
 assert(js.includes("SOURCE_AUDIT_READY"),"HUNT Experience source audit status missing");
 assert(css.includes(".experience-audit-workspace"),"HUNT Experience Audit styling missing");
 assert(css.includes(".experience-audit-card[data-status=\"BLOCKED\"]"),"HUNT Experience blocked-state styling missing");
-assert(experienceCore.includes('const BASELINE_COMMIT="78fc0ad"'),"HUNT source baseline pin missing");
+assert(experienceCore.includes('const BASELINE_COMMIT="3243e4b"'),"HUNT source baseline pin missing");
 for(const file of [
   "skills/hunt-experience-audit.md",
   "skills/hunt-product-page-audit.md",

@@ -9,7 +9,7 @@ vm.runInContext(src,context,{filename:"hunt-experience-audit-core.js"});
 
 const api=context.window.HuntExperienceAudit;
 assert(api,"HuntExperienceAudit global missing");
-assert.strictEqual(api.baselineCommit,"78fc0ad","HUNT source baseline mismatch");
+assert.strictEqual(api.baselineCommit,"3243e4b","HUNT source baseline mismatch");
 const departments=api.departments();
 assert.strictEqual(departments.length,18,"A→Z audit must map exactly 18 departments");
 assert.strictEqual(new Set(departments.map(x=>x.id)).size,18,"Department IDs must be unique");

@@ -1,7 +1,7 @@
 # HUNT A→Z Experience Source Audit — 2026-09-19
 
 ## Baseline
-- HUNT source commit: `78fc0ad`
+- HUNT source commit: `3243e4b`
 - BOOM Studio lane: A7 Release / Integration QA
 - Audit mode: source baseline + safe local preview
 - Production changed: false
@@ -13,7 +13,7 @@
 - PASS: 5
 - PARTIAL: 12
 - BLOCKED: 1
-- Known gaps: 39
+- Known gaps: 38
 
 This is not a launch score. PASS means the current source baseline contains enough evidence for that department's defined contract. PARTIAL and BLOCKED items require browser/backend evidence or implementation before they can be treated as complete.
 
@@ -74,17 +74,17 @@ This is not a launch score. PASS means the current source baseline contains enou
 - Rich comparison must remain factual and must not invent a winner.
 
 ## Next execution order
-1. X04 Variants / Size / Compatibility
-2. X08 Reviews
-3. X06 Structured Specs
-4. X09 Share
-5. X13 Recently Viewed / hide feedback
-6. X16 Accessibility + RTL
-7. X17 Real-user performance guard
-8. X18 Observability dashboard
-9. X15 payment/order/tracking only after external gates are ready
+1. X08 Reviews
+2. X06 Structured Specs
+3. X09 Share
+4. X13 Recently Viewed / hide feedback
+5. X16 Accessibility + RTL
+6. X17 Real-user performance guard
+7. X18 Observability dashboard
+8. X15 payment/order/tracking only after external gates are ready
 
-X03 Gallery / Zoom is closed on HUNT commit `78fc0ad` with browser and regression evidence.
+X03 Gallery / Zoom is closed on HUNT commit `78fc0ad`.
+X04 Variant stock truth is closed on HUNT commit `3243e4b`; X04 remains PARTIAL only because verified measurement charts and structured compatibility matrices are not currently supplied by the source.
 
 ## Definition of completion
 No department moves to PASS without behavior evidence.

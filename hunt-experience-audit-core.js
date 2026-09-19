@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const BASELINE_COMMIT="78fc0ad";
+  const BASELINE_COMMIT="3243e4b";
   const STATUSES=Object.freeze(["PASS","PARTIAL","MISSING","BLOCKED","NEEDS_EVIDENCE"]);
 
   const departments=Object.freeze([
@@ -33,9 +33,9 @@
       id:"X04",group:"PDP",name:"Variants, Size, Fit & Compatibility",
       scope:"Color, size, exact variant identity and compatibility",
       status:"PARTIAL",
-      evidence:["Color buttons","Size buttons","Selected variant recomputation","Compatibility Product Truth answer"],
-      gaps:["No size guide / fit guide","No per-variant stock state","No structured device compatibility matrix"],
-      tests:["Color changes available sizes","Unavailable combination fails closed","Exact model/size preserved into cart","Size guide when category requires it"]
+      evidence:["Color / option buttons","Exact variant recomputation","Official CJ queryByVid stock verification on Add intent","Quote cache keyed by exact VID + quantity","Verified unavailable blocks cart","Exact variant identity preserved into cart","Fashion Size & fit truth","Device Model / option truth","HUNT commit 3243e4b"],
+      gaps:["No verified measurement size/fit guide from source","No structured device compatibility matrix from source"],
+      tests:["Color changes available sizes/options","Verified unavailable fails closed","Exact model/size + VID preserved into cart","Quantity change requires new stock verification","Size guide only when verified source exists"]
     },
     {
       id:"X05",group:"PDP",name:"Price, Availability & Decision Confidence",
