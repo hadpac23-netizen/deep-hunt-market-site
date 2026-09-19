@@ -9,7 +9,7 @@
   <title>Product — HUNT</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
   <link rel="stylesheet" href="hunt-wow.css?v=launchqa5">
-  <link rel="stylesheet" href="hunt-shop.css?v=dynamic1">
+  <link rel="stylesheet" href="hunt-shop.css?v=dynamic2">
   <link rel="stylesheet" href="hunt-visual-v2.css?v=1">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="hunt-icon-192.png">
@@ -61,6 +61,25 @@
     <section class="hd-product-info-grid">
       <article class="glass"><div class="hd-kicker hd-kicker-small">PRODUCT DETAILS</div><h2>What the source says</h2><p id="hd-product-description">Loading details…</p></article>
       <article class="glass"><div class="hd-kicker hd-kicker-small">SHOPPING NOTES</div><h2>Things to know</h2><ul id="hd-product-gaps"><li>Checking fulfillment and retail readiness.</li></ul></article>
+    </section>
+
+    <section class="hd-product-qa glass" id="hd-product-qa" hidden aria-labelledby="hd-product-qa-title">
+      <div class="hd-product-section-head">
+        <div><div class="hd-kicker hd-kicker-small">BOOM PRODUCT TRUTH</div><h2 id="hd-product-qa-title">Ask HUNT about this product</h2><p>Answers use verified product data already available to HUNT. Missing information stays unknown.</p></div>
+      </div>
+      <form class="hd-product-qa-form" id="hd-product-qa-form">
+        <input id="hd-product-qa-input" autocomplete="off" maxlength="180" placeholder="Ask about price readiness, size, compatibility, shipping or returns">
+        <button class="hd-btn" type="submit">Ask</button>
+      </form>
+      <div class="hd-product-qa-quick" id="hd-product-qa-quick">
+        <button type="button" data-qa-topic="verified">What is verified?</button>
+        <button type="button" data-qa-topic="options">What options are available?</button>
+        <button type="button" data-qa-topic="compatibility">Will it fit or work with my model?</button>
+        <button type="button" data-qa-topic="shipping">What about shipping?</button>
+        <button type="button" data-qa-topic="returns">What about returns?</button>
+        <button type="button" data-qa-topic="why">Why am I seeing this?</button>
+      </div>
+      <div class="hd-product-qa-answer" id="hd-product-qa-answer" aria-live="polite"><strong>Choose a question or ask in your own words.</strong></div>
     </section>
 
     <section class="hd-deal-builder glass" id="hd-deal-builder" hidden>
@@ -158,12 +177,13 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="account-presence.js?v=profile2"></script>
   <script src="analytics-config.js?v=analytics1"></script>
-  <script src="analytics.js?v=huntmetrics1"></script>
+  <script src="analytics.js?v=huntmetrics2"></script>
   <script src="hunt-personalization.js?v=1"></script>
   <script src="boom-commerce-brain.js?v=2"></script>
   <script src="boom-stylist.js?v=1"></script>
   <script src="boom-f35-director.js?v=1"></script>
-<script src="product.js?v=launchqa6"></script>
+  <script src="hunt-product-qa.js?v=1"></script>
+<script src="product.js?v=launchqa7"></script>
   <script src="product-flow.js?v=dealbuilder4"></script>
   <script src="boom-deal-builder.js?v=dealbuilder1"></script>
   <script src="reviews.js?v=reviews2"></script>

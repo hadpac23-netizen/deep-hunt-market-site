@@ -16,6 +16,13 @@
 
   const safePath = () => location.pathname || "/";
   const sessionKey = "hunt_session_id_v1";
+  const missionKey = "hunt_shopping_mission_v1";
+  function currentMission() {
+    try {
+      const value=clean(sessionStorage.getItem(missionKey)||"none",20).toLowerCase();
+      return ["gift","outfit","replace","replenish","compare","trip","event","setup","budget"].includes(value)?value:"none";
+    } catch { return "none"; }
+  }
   function sessionId() {
     try {
       let value = sessionStorage.getItem(sessionKey);
@@ -111,13 +118,14 @@
       event,
       hunt_environment: clean(config.environment || "production", 24),
       page_path: safePath(),
+      mission_type: clean(params.mission_type || currentMission(),20),
       ...params
     };
     if (!consentGranted) {
       queue.push(payload);
       return false;
     }
-    const firstPartySent = firstPartySignal(event, params);
+    const firstPartySent = firstPartySignal(event, {...params, mission_type:payload.mission_type});
     if (!configured()) return firstPartySent;
     return sendPayload(payload) || firstPartySent;
   }
@@ -293,6 +301,7 @@
     configured,
     experience,
     consentGranted: () => consentGranted,
+    currentMission,
     setConsent,
     pageView,
     category(category, resultCount = null) {

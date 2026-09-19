@@ -52,3 +52,30 @@ Gift missions can narrow to a broad shopping world without inferring recipient i
 The browser can emit only the mission label with consented search analytics.
 No raw query is included in mission telemetry.
 The live Supabase signal function does not yet persist the new mission label; keep that backend change owner-gated until a reviewed Edge Function source is added to the repo.
+
+
+## Mission Outcome Learning
+The active shopping mission is stored only in sessionStorage as a coarse label and is automatically attached to consented analytics events across the funnel.
+This allows analysis such as:
+- gift -> product view -> save -> cart -> checkout;
+- compare -> product questions -> cart;
+- replace -> compatibility question -> checkout.
+
+The original search text is not stored as the mission state.
+
+## Product Q&A Brain
+Product pages now expose a Product Truth Q&A layer.
+Free-text questions are classified locally into a bounded topic set:
+- verified/readiness;
+- options/size/color;
+- compatibility/model;
+- shipping;
+- returns;
+- why-this;
+- product details.
+
+The free-text question is not sent to AI or to a server.
+Answers are deterministic and use only current product, variant, retail-readiness, supplier fields, policy links, and BOOM explanation codes.
+If product truth is missing, HUNT says that it is unknown rather than inferring it.
+
+Only the bounded question topic and current mission label may be recorded under analytics consent for aggregate product-information gap learning.

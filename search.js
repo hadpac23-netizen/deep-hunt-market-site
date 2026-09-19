@@ -102,6 +102,7 @@
     const scored=leaves.map(x=>[x,catScore(x,q)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);
     const mission=missionIntent(raw);
     const mission_type=missionType(raw,mission,max);
+    try{sessionStorage.setItem("hunt_shopping_mission_v1",mission_type||"none")}catch{}
     const cats=mission?.cats?.length ? [...new Set([...mission.cats,...scored])].slice(0,6) : scored;
     const size=(q.match(/\b(?:size|מידה|مقاس)\s*[:=-]?\s*([a-z0-9.+-]{1,8})\b/i)||[])[1]||"";
     const device=(q.match(/\b(?:iphone|galaxy|pixel|redmi|xiaomi|oneplus|motorola|oppo|vivo)\s*[a-z0-9 +.-]*/i)||[])[0]||"";

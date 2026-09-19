@@ -167,6 +167,7 @@
     }
     const quantityBlock = document.querySelector(".hd-product-quantity");
     if (quantityBlock) quantityBlock.hidden = externalVisit;
+    window.dispatchEvent(new CustomEvent("hunt:product-state",{detail:{product,variants,selectedVariant,retail,provider:product.provider||provider}}));
   }
 
   function syncMobilePrice() {
