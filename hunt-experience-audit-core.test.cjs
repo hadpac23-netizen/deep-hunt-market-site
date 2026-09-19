@@ -9,7 +9,7 @@ vm.runInContext(src,context,{filename:"hunt-experience-audit-core.js"});
 
 const api=context.window.HuntExperienceAudit;
 assert(api,"HuntExperienceAudit global missing");
-assert.strictEqual(api.baselineCommit,"545dd21","HUNT source baseline mismatch");
+assert.strictEqual(api.baselineCommit,"78fc0ad","HUNT source baseline mismatch");
 const departments=api.departments();
 assert.strictEqual(departments.length,18,"A→Z audit must map exactly 18 departments");
 assert.strictEqual(new Set(departments.map(x=>x.id)).size,18,"Department IDs must be unique");
@@ -28,7 +28,7 @@ assert.strictEqual(report.payment_changed,false,"Source audit must not change pa
 assert.strictEqual(report.supplier_order_changed,false,"Source audit must not change supplier ordering");
 assert.strictEqual(report.owner_gate,"REVIEW_REQUIRED","Owner gate invariant missing");
 assert(report.gap_count>0,"Audit should expose known gaps");
-assert(report.departments.some(x=>x.id==="X03"&&x.status==="PARTIAL"),"Gallery audit lane missing");
+assert(report.departments.some(x=>x.id==="X03"&&x.status==="PASS"&&x.gaps.length===0),"Gallery audit lane must remain PASS after X03 closure");
 assert(report.departments.some(x=>x.id==="X15"&&x.status==="BLOCKED"),"Real-money lifecycle gate missing");
 const prompt=api.masterPrompt();
 for(const token of ["Principal Ecommerce Experience QA Architect","PASS/PARTIAL/MISSING/BLOCKED","PRODUCTION","OWNER"]){

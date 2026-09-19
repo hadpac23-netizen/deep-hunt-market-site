@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const BASELINE_COMMIT="545dd21";
+  const BASELINE_COMMIT="78fc0ad";
   const STATUSES=Object.freeze(["PASS","PARTIAL","MISSING","BLOCKED","NEEDS_EVIDENCE"]);
 
   const departments=Object.freeze([
@@ -24,10 +24,10 @@
     {
       id:"X03",group:"PDP",name:"Gallery, Zoom & Visual Inspection",
       scope:"Main image, thumbnails, zoom, hidden media discovery",
-      status:"PARTIAL",
-      evidence:["Gallery thumbnails","Zoom 100–300%","Escape closes zoom"],
-      gaps:["No explicit image count / +N signpost","No previous/next navigation inside zoom","No complete focus trap / arrow-key gallery navigation"],
-      tests:["1 image","6 images","12+ images","Keyboard-only zoom","Mobile swipe/thumbnail reachability"]
+      status:"PASS",
+      evidence:["Image count + photo total signposting","Thumbnail Arrow/Home/End navigation","Zoom previous/next + Arrow keys","Modal focus trap + Escape focus return","390px no-overflow browser QA","hunt-product-gallery.test.cjs PASS","HUNT commit 78fc0ad"],
+      gaps:[],
+      tests:["1 image","6 images","12+ images","Keyboard-only zoom","Mobile thumbnail reachability"]
     },
     {
       id:"X04",group:"PDP",name:"Variants, Size, Fit & Compatibility",
