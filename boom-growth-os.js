@@ -1102,10 +1102,12 @@
       return {id,name,globalName,surface,loaded,status:loaded?(surface==="PANEL"||surface==="CALLOUT"||surface==="CONNECTED"?"WIRED":"LOADED_NO_PANEL"):"NOT_LOADED"};
     });
 
+    const existingTools=[
+      {name:"World Commerce Radar",source:"boom-world-radar.html + boom-world-radar.js",status:"SEPARATE_TOOL",note:"Admin radar exists; Growth OS already consumes world-idea data."},
+      {name:"Marketplace seller/admin",source:"seller.js + merchant-admin.js + merchant-program.html",status:"PARTIAL_WORKFLOW",note:"Application, review, products and program gates exist; aggregate marketplace brain still missing."},
+      {name:"Storefront promotions",source:"boom-promotions.js",status:"PARTIAL_WORKFLOW",note:"Editorial/sponsored rendering exists; unified promotion economics engine still missing."}
+    ];
     const skillOnly=[
-      ["World Commerce Radar","skills/boom-world-commerce-radar.md"],
-      ["HUNT Marketplace Brain","skills/hunt-marketplace-brain.md"],
-      ["HUNT Promotion Engine","skills/hunt-promotion-engine.md"],
       ["Digital Marketing University","skills/boom-digital-marketing-university.md"]
     ].map(([name,source])=>({name,source,status:"SKILL_ONLY"}));
 
@@ -1114,9 +1116,10 @@
     const notLoaded=runtimeRows.filter(row=>row.status==="NOT_LOADED").length;
     return Object.freeze({
       runtimeRows:Object.freeze(runtimeRows),
+      existingTools:Object.freeze(existingTools),
       skillOnly:Object.freeze(skillOnly),
-      totals:Object.freeze({runtime:runtimeRows.length,wired,loadedNoPanel,notLoaded,skillOnly:skillOnly.length}),
-      complete:notLoaded===0&&loadedNoPanel===0&&skillOnly.length===0,
+      totals:Object.freeze({runtime:runtimeRows.length,wired,loadedNoPanel,notLoaded,existingTools:existingTools.length,skillOnly:skillOnly.length}),
+      complete:notLoaded===0&&loadedNoPanel===0&&skillOnly.length===0&&existingTools.every(x=>x.status==="SEPARATE_TOOL"),
       execute_actions:false,
       owner_gate:"REVIEW_REQUIRED"
     });
@@ -1131,6 +1134,7 @@
       ["Wired",c.totals.wired],
       ["Loaded / no panel",c.totals.loadedNoPanel],
       ["Not loaded",c.totals.notLoaded],
+      ["Partial / separate",c.totals.existingTools],
       ["Skill only",c.totals.skillOnly]
     ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
 
@@ -1141,9 +1145,10 @@
     }).join("");
 
     const skills=$("#bg-studio-skill-gaps");
-    if(skills)skills.innerHTML=c.skillOnly.map(row=>
-      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(row.name)+'</strong><span class="bg-score bg-passport-prepare">SKILL ONLY</span></div><small>'+H.esc(row.source)+'</small></article>'
-    ).join("");
+    if(skills)skills.innerHTML=[
+      ...c.existingTools.map(row=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(row.name)+'</strong><span class="bg-score bg-passport-prepare">'+H.esc(row.status.replaceAll("_"," "))+'</span></div><small>'+H.esc(row.source+" · "+row.note)+'</small></article>'),
+      ...c.skillOnly.map(row=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(row.name)+'</strong><span class="bg-score bg-passport-blocked">SKILL ONLY</span></div><small>'+H.esc(row.source)+'</small></article>')
+    ].join("");
     return c;
   }
 

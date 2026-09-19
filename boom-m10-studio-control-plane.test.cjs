@@ -20,7 +20,10 @@ for(const token of [
   '"OPS","Marketing Brain"',
   '"LEGACY","Commerce Brain"',
   '"Personalization Brain"',
-  '"HUNT Marketplace Brain"',
+  "const existingTools=[",
+  '"Marketplace seller/admin"',
+  '"Storefront promotions"',
+  '"Digital Marketing University"',
   'execute_actions:false',
   'owner_gate:"REVIEW_REQUIRED"'
 ]) assert(js.includes(token),"M10 coverage contract missing: "+token);
