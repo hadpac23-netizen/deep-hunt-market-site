@@ -469,6 +469,61 @@
       "telemetry": "sort_change",
       "accessibility": "label+result update",
       "failure_policy": "restore_previous"
+    },
+    {
+      "action_id": "auth.provider.start",
+      "owner": "identity_session_kernel",
+      "auth_policy": "public",
+      "persistence": "supabase_session",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "auth_provider_start",
+      "accessibility": "status+redirect",
+      "failure_policy": "retry"
+    },
+    {
+      "action_id": "checkout.destination.change",
+      "owner": "operations_brain",
+      "auth_policy": "guest_allowed",
+      "persistence": "session",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "checkout_market",
+      "accessibility": "labeled select+status reset",
+      "failure_policy": "restore_previous"
+    },
+    {
+      "action_id": "personalization.mode.change",
+      "owner": "experience_brain",
+      "auth_policy": "guest_allowed_merge_on_signin",
+      "persistence": "local+profile_optional",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "shop_mode",
+      "accessibility": "pressed state",
+      "failure_policy": "restore_previous"
+    },
+    {
+      "action_id": "product.quantity.change",
+      "owner": "action_state_kernel",
+      "auth_policy": "public",
+      "persistence": "session",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "product_quantity",
+      "accessibility": "buttons+live count",
+      "failure_policy": "restore_previous"
+    },
+    {
+      "action_id": "partner.application.submit",
+      "owner": "growth_brain",
+      "auth_policy": "public_or_signed_in",
+      "persistence": "server",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "partner_apply",
+      "accessibility": "form validation+status",
+      "failure_policy": "preserve_draft"
     }
   ]
 }
