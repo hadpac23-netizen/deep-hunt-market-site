@@ -1,0 +1,185 @@
+{
+  "version": "BOOM-SURFACE-CONTRACT-V1",
+  "modules": {
+    "core": "market-core.js",
+    "identity": "boom-runtime/identity_session_kernel",
+    "actions": "boom-runtime/action_state_kernel",
+    "analytics": "analytics.js",
+    "theme": "hunt-theme.js",
+    "i18n": "i18n.js"
+  },
+  "surfaces": [
+    {
+      "id": "store.home",
+      "file": "index.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme",
+        "i18n"
+      ]
+    },
+    {
+      "id": "store.category",
+      "file": "category.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme",
+        "i18n"
+      ]
+    },
+    {
+      "id": "store.product",
+      "file": "product.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme",
+        "i18n"
+      ]
+    },
+    {
+      "id": "store.checkout",
+      "file": "checkout.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme",
+        "i18n"
+      ]
+    },
+    {
+      "id": "store.profile",
+      "file": "profile.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme",
+        "i18n"
+      ]
+    },
+    {
+      "id": "store.auth",
+      "file": "auth.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme",
+        "i18n"
+      ]
+    },
+    {
+      "id": "boom.command",
+      "file": "boom-command-center.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme"
+      ]
+    },
+    {
+      "id": "boom.marketing",
+      "file": "boom-marketing-lab.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme"
+      ]
+    },
+    {
+      "id": "boom.radar",
+      "file": "boom-world-radar.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme"
+      ]
+    },
+    {
+      "id": "boom.connections",
+      "file": "f60t-connections.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme"
+      ]
+    },
+    {
+      "id": "admin.merchant",
+      "file": "merchant-admin.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme"
+      ]
+    },
+    {
+      "id": "admin.reviews",
+      "file": "review-moderation.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme"
+      ]
+    },
+    {
+      "id": "seller.portal",
+      "file": "sell.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme"
+      ]
+    },
+    {
+      "id": "seller.api",
+      "file": "seller-api.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme"
+      ]
+    },
+    {
+      "id": "partners.public",
+      "file": "partners.html",
+      "required": [
+        "core",
+        "identity",
+        "actions",
+        "analytics",
+        "theme"
+      ]
+    }
+  ],
+  "note": "Target contract. Existing pages may not yet comply; migration must be additive and verified surface by surface."
+}
