@@ -1,13 +1,14 @@
 (() => {
   "use strict";
 
-  const VERSION="2026-09-19-f60t-live1";
+  const VERSION="2026-09-19-f60t-live2";
 
   function normalize(snapshot={}){
     const profit=snapshot?.hourly_profit||{};
     const crowd=Array.isArray(snapshot?.hot_zones)?snapshot.hot_zones:[];
     const sources=Array.isArray(snapshot?.sources)?snapshot.sources:[];
     const agents=snapshot?.agent_signals||{};
+    const external=snapshot?.external_signals||{};
     return Object.freeze({
       version:VERSION,
       adapter_ready:snapshot?.ok===true,
@@ -16,6 +17,10 @@
       hot_zones:Object.freeze(crowd),
       sources:Object.freeze(sources),
       source_live_count:sources.filter(x=>String(x?.status||"")==="LIVE").length,
+      external_signal_rows:Number(external.verified_rows||0),
+      external_source_counts:Object.freeze(external.source_counts&&typeof external.source_counts==="object"?external.source_counts:{}),
+      external_top:Object.freeze(Array.isArray(external.top)?external.top:[]),
+      external_recent_runs:Object.freeze(Array.isArray(external.recent_runs)?external.recent_runs:[]),
       agent_events_verified:Number(agents.verified_events||0),
       agent_gateway_ready:Number(agents.verified_events||0)>0,
       realized:Object.freeze({

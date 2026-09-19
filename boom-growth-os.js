@@ -679,6 +679,10 @@
       hot_zones:f60tLive.hot_zones||[],
       signal_sources:f60tLive.sources||[],
       source_live_count:Number(f60tLive.source_live_count||0),
+      external_signal_rows:Number(f60tLive.external_signal_rows||0),
+      external_source_counts:f60tLive.external_source_counts||{},
+      external_top:f60tLive.external_top||[],
+      external_recent_runs:f60tLive.external_recent_runs||[],
       agent_signal_events:Number(f60tLive.agent_events_verified||0),
       live_hourly_profit_ledger_ready:Boolean(f60tLive.hourly_profit?.hour_start),
       hourly_profit:f60tLive.hourly_profit||{},
@@ -836,6 +840,7 @@
         ["Orders / hour required", target.minimum_orders_per_hour_at_average_contribution==null?"—":String(target.minimum_orders_per_hour_at_average_contribution)],
         ["Platform / agent surfaces", String(f.platform_count||0)],
         ["Live signal sources", String(f.source_live_count||0)],
+        ["External official rows", String(f.external_signal_rows||0)],
         ["Verified agent events", String(f.agent_signal_events||0)]
       ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
     }
@@ -847,6 +852,15 @@
       const hotLabel=hot
         ? [hot.country_code||"—",hot.platform||"—",hot.local_hour==null?"time pending":"h"+hot.local_hour,hot.category||"all",("n="+Number(hot.event_count||0))].join(" · ")
         : "NONE VERIFIED YET";
+      const ext=(f.external_top||[])[0]||null;
+      const extLabel=ext
+        ? [ext.source_key||"—",ext.country_code||"global",ext.category||ext.signal_kind||"signal"].join(" · ")
+        : "NO VERIFIED EXTERNAL ROWS";
+      const sourceStatus=(f.signal_sources||[])
+        .filter(x=>["pinterest_trends","pinterest_audience","youtube_analytics","google_trends_alpha","tiktok_market_scope"].includes(String(x?.source_key||"")))
+        .slice(0,5)
+        .map(x=>String(x.platform||x.source_key||"")+"="+String(x.status||"PENDING"))
+        .join(" · ")||"PENDING";
       board.innerHTML=[
         ["Mission",String(mission.name||"F60T · ימ״מ")],
         ["Command","TARGET → LOCATION → SALE"],
@@ -854,6 +868,8 @@
         ["Global Crowd Radar",f.crowd_signals_ready?"FIRST-PARTY LIVE":"SIGNALS PENDING"],
         ["Local Buying Clock",f.local_buying_clock_ready?"LEARNING LIVE":"TIMEZONE SAMPLE BUILDING"],
         ["Top crowd signal",hotLabel],
+        ["External platform status",sourceStatus],
+        ["Top external signal",extLabel],
         ["Agent Commerce",f.agent_signal_live?"VERIFIED AGENT EVENTS":"GATEWAY PREP / NO LIVE TRAFFIC"],
         ["Price Lift","ANALYZE · OWNER GATED"],
         ["Top profit opportunity",top?(String(top.country||"")+" · "+String(top.platform||"")+" · "+String(top.product_key||"")):"NONE VERIFIED YET"],
@@ -869,6 +885,7 @@
         ["Realized hourly profit proof",target.realized_verified===true],
         ["F60T live adapter",f.live_adapter_ready===true],
         ["Global crowd signals",f.crowd_signals_ready===true],
+        ["External API signals",Number(f.external_signal_rows||0)>0],
         ["Local buying clock",f.local_buying_clock_ready===true],
         ["Hourly profit ledger",f.live_hourly_profit_ledger_ready===true],
         ["Owner Gate active",String(f.owner_gate||"")==="ACTIVE"],

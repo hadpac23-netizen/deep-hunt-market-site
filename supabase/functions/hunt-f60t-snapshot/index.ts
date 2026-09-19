@@ -116,7 +116,7 @@ Deno.serve(async(req:Request)=>{
   const hourEnd=new Date(hourStart.getTime()+60*60*1000);
   const since24=new Date(now.getTime()-24*60*60*1000).toISOString();
 
-  const [eventsRes,sourcesRes,agentsRes,bridgeRes]=await Promise.all([
+  const [eventsRes,sourcesRes,agentsRes,bridgeRes,externalRes,externalRunsRes]=await Promise.all([
     ctx.supabaseAdmin.from("analytics_events")
       .select("event_type,metadata,created_at")
       .gte("created_at",since24)
@@ -133,12 +133,24 @@ Deno.serve(async(req:Request)=>{
     ctx.supabaseAdmin.from("hunt_purchase_attribution_bridge")
       .select("payment_session_id,paid_at,provider_payment_confirmation,real_order_linked,server_purchase_confirmation,finance_ledger_id,finance_ledger_present,finance_is_test,settlement_status,contribution_locked,available_profit,profit_evidence_ready")
       .gte("paid_at",hourStart.toISOString())
-      .lt("paid_at",hourEnd.toISOString())
+      .lt("paid_at",hourEnd.toISOString()),
+    ctx.supabaseAdmin.from("f60t_crowd_signal_snapshots")
+      .select("source_key,platform,country_code,category,audience,signal_kind,event_count,verified,evidence_ref,metadata,bucket_start")
+      .neq("source_key","hunt_first_party")
+      .gte("bucket_start",since24)
+      .order("bucket_start",{ascending:false})
+      .limit(1000),
+    ctx.supabaseAdmin.from("f60t_external_signal_runs")
+      .select("source_key,action,status,region,rows_written,http_status,evidence_ref,error_code,started_at,completed_at")
+      .order("started_at",{ascending:false})
+      .limit(40)
   ]);
   if(eventsRes.error)errors.push("analytics_events:"+eventsRes.error.message);
   if(sourcesRes.error)errors.push("signal_sources:"+sourcesRes.error.message);
   if(agentsRes.error)errors.push("agent_signals:"+agentsRes.error.message);
   if(bridgeRes.error)errors.push("purchase_bridge:"+bridgeRes.error.message);
+  if(externalRes.error)errors.push("external_signals:"+externalRes.error.message);
+  if(externalRunsRes.error)errors.push("external_runs:"+externalRunsRes.error.message);
 
   const events=Array.isArray(eventsRes.data)?eventsRes.data:[];
   const clusters=aggregate(events);
@@ -254,6 +266,26 @@ Deno.serve(async(req:Request)=>{
     confirmed_real_orders:0,settled_real_orders:0,evidence_rows:0,verification_status:"UNVERIFIED"
   };
 
+  const externalRows=Array.isArray(externalRes.data)?externalRes.data:[];
+  const verifiedExternalRows=externalRows.filter((x:any)=>x?.verified===true);
+  const externalSourceCounts:Record<string,number>={};
+  for(const row of verifiedExternalRows){
+    const key=clean(row?.source_key,80)||"unknown";
+    externalSourceCounts[key]=(externalSourceCounts[key]||0)+1;
+  }
+  const topExternal=verifiedExternalRows.slice(0,12).map((row:any)=>({
+    source_key:clean(row?.source_key,80),
+    platform:clean(row?.platform,60),
+    country_code:clean(row?.country_code,12),
+    category:clean(row?.category,120),
+    audience:clean(row?.audience,80),
+    signal_kind:clean(row?.signal_kind,80),
+    event_count:Number(row?.event_count||0),
+    bucket_start:String(row?.bucket_start||""),
+    metadata:row?.metadata&&typeof row.metadata==="object"?row.metadata:{},
+    evidence_ref:clean(row?.evidence_ref,400)
+  }));
+
   const agentRows=Array.isArray(agentsRes.data)?agentsRes.data:[];
   const verifiedAgentRows=agentRows.filter((x:any)=>x?.verified===true);
   const agentCounts:Record<string,number>={};
@@ -272,6 +304,12 @@ Deno.serve(async(req:Request)=>{
     timezone_event_count:timezoneEvents,
     hot_zones:hotZones,
     sources:Array.isArray(sourcesRes.data)?sourcesRes.data:[],
+    external_signals:{
+      verified_rows:verifiedExternalRows.length,
+      source_counts:externalSourceCounts,
+      top:topExternal,
+      recent_runs:Array.isArray(externalRunsRes.data)?externalRunsRes.data:[]
+    },
     agent_signals:{
       verified_events:verifiedAgentRows.length,
       counts:agentCounts

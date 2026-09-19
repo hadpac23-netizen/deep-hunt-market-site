@@ -12,7 +12,7 @@ for(const token of [
   'id="bg-f60t-mission"',
   'id="bg-f60t-gates"',
   'boom-f60t-core.js?v=f60t1',
-  'boom-f60t-live-adapter.js?v=f60tl1'
+  'boom-f60t-live-adapter.js?v=f60tl2'
 ]) assert(html.includes(token),"F60T Studio HTML missing: "+token);
 
 assert(!html.includes("$10K+ NET/DAY MODEL"),"Legacy $10K/day panel still visible");
@@ -30,7 +30,11 @@ for(const token of [
   "crowd_signals_ready:f60tLive.crowd_signals_ready===true",
   "local_buying_clock_ready:f60tLive.local_buying_clock_ready===true",
   "live_hourly_profit_ledger_ready:Boolean(f60tLive.hourly_profit?.hour_start)",
+  "external_signal_rows:Number(f60tLive.external_signal_rows||0)",
   "agent_signal_events:Number(f60tLive.agent_events_verified||0)",
+  "External official rows",
+  "External platform status",
+  "Top external signal",
   "no_fake_success:true"
 ]) assert(js.includes(token),"F60T Studio JS missing: "+token);
 
