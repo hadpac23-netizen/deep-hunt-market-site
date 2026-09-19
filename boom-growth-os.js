@@ -42,7 +42,7 @@
   }
 
   async function loadData() {
-    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, catalogRes, identityRes, seoAudit] = await Promise.all([
+    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, catalogRes, identityRes, savedCountRes, realOrdersCountRes, testOrdersCountRes, trackingCountRes, deliveredCountRes, seoAudit] = await Promise.all([
       ownerFunction("hunt-owner-mission-control"),
       ownerFunction("hunt-launch-readiness"),
       client.from("hunt_unit_economics")
@@ -78,6 +78,11 @@
         .select("id,legal_entity_name,registration_number,registered_country,business_address,support_email,returns_address,privacy_contact_email,status,owner_approved,updated_at")
         .eq("id","primary")
         .maybeSingle(),
+      client.from("hunt_product_actions").select("id",{count:"exact",head:true}).eq("saved",true),
+      client.from("hunt_orders").select("id",{count:"exact",head:true}).eq("is_test",false),
+      client.from("hunt_orders").select("id",{count:"exact",head:true}).eq("is_test",true),
+      client.from("hunt_fulfillment_orders").select("id",{count:"exact",head:true}).not("tracking_number","is",null),
+      client.from("hunt_fulfillment_orders").select("id",{count:"exact",head:true}).not("delivered_at","is",null),
       fetch("boom-seo-audit.json?v=os3",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)
     ]);
 
@@ -89,6 +94,23 @@
     if (distributionRes.error) throw distributionRes.error;
     if (catalogRes.error) throw catalogRes.error;
     if (identityRes.error) throw identityRes.error;
+    if (savedCountRes.error) throw savedCountRes.error;
+    if (realOrdersCountRes.error) throw realOrdersCountRes.error;
+    if (testOrdersCountRes.error) throw testOrdersCountRes.error;
+    if (trackingCountRes.error) throw trackingCountRes.error;
+    if (deliveredCountRes.error) throw deliveredCountRes.error;
+
+    const lifecycleSnapshot={
+      saved_actions:Number(savedCountRes.count||0),
+      real_orders:Number(realOrdersCountRes.count||0),
+      test_orders:Number(testOrdersCountRes.count||0),
+      fulfillment_with_tracking:Number(trackingCountRes.count||0),
+      fulfillment_delivered:Number(deliveredCountRes.count||0),
+      marketing_consent_registry_ready:false,
+      send_history_ready:false,
+      frequency_cap_ledger_ready:false,
+      external_send_enabled:false
+    };
 
     const economics = econRes.data || [];
     const econMap = new Map();
@@ -275,29 +297,112 @@
       .map(([blocker,count])=>({blocker,count}))
       .sort((a,b)=>b.count-a.count||a.blocker.localeCompare(b.blocker))
       .slice(0,10);
+
     const Lifecycle=window.BoomLifecycleBrain;
-    const lifecycleRows=Lifecycle?.systemReadiness?.({
-      marketing_consent_infrastructure:false,
-      real_order_events_ready:false,
-      tracking_events_ready:false,
-      channels:{
-        email:{connected:false,send_enabled:false},
-        push:{connected:false,send_enabled:false},
-        sms:{connected:false,send_enabled:false},
-        whatsapp:{connected:false,send_enabled:false}
-      }
-    })||[];
-    const lifecycleSummary=Lifecycle?.summarize?.(lifecycleRows)||{
-      total:0,prepare:0,draft_ready:0,send_candidate:0,locked_or_hold:0,external_send:false,owner_gate:"REVIEW_REQUIRED"
+    const lifecycleInfra={
+      consent_registry_ready:lifecycleSnapshot.marketing_consent_registry_ready===true,
+      send_history_ready:lifecycleSnapshot.send_history_ready===true,
+      frequency_cap_ledger_ready:lifecycleSnapshot.frequency_cap_ledger_ready===true,
+      channel_connected:false,
+      channel_send_enabled:false
     };
-    const lifecycleBlockerCounts=new Map();
-    for(const row of lifecycleRows){
-      for(const blocker of row.blockers||[])lifecycleBlockerCounts.set(blocker,(lifecycleBlockerCounts.get(blocker)||0)+1);
-    }
-    const lifecycleTopBlockers=[...lifecycleBlockerCounts.entries()]
-      .map(([blocker,count])=>({blocker,count}))
-      .sort((a,b)=>b.count-a.count||a.blocker.localeCompare(b.blocker))
-      .slice(0,10);
+    const lifecycleProbeSignals=[
+      {
+        trigger:"saved_reminder",
+        channels:["email"],
+        context:{
+          user_identified:true,
+          product_truth_ready:true,
+          price_verified:true,
+          safe_category:true,
+          signal_at:new Date(Date.now()-48*60*60*1000).toISOString(),
+          ...lifecycleInfra
+        },
+        consent:{marketing:{email:false}}
+      },
+      {
+        trigger:"cart_reminder",
+        channels:["email"],
+        context:{
+          user_identified:true,
+          product_truth_ready:true,
+          price_verified:true,
+          safe_category:true,
+          signal_at:new Date(Date.now()-6*60*60*1000).toISOString(),
+          ...lifecycleInfra
+        },
+        consent:{marketing:{email:false}}
+      },
+      {
+        trigger:"price_verified",
+        channels:["email"],
+        context:{
+          user_identified:true,
+          product_truth_ready:true,
+          price_verified:true,
+          price_change_verified:true,
+          safe_category:true,
+          ...lifecycleInfra
+        },
+        consent:{marketing:{email:false}}
+      },
+      {
+        trigger:"back_in_stock",
+        channels:["push"],
+        context:{
+          user_identified:true,
+          product_truth_ready:true,
+          price_verified:true,
+          variant_stock_verified:false,
+          safe_category:true,
+          ...lifecycleInfra
+        },
+        consent:{marketing:{push:false}}
+      },
+      {
+        trigger:"order_update",
+        channels:["email"],
+        context:{
+          user_identified:true,
+          is_test_order:lifecycleSnapshot.real_orders===0&&lifecycleSnapshot.test_orders>0,
+          real_order_confirmed:lifecycleSnapshot.real_orders>0,
+          order_status:lifecycleSnapshot.real_orders>0?"real_order_available":"test_only",
+          ...lifecycleInfra
+        },
+        consent:{transactional:{email:false}}
+      },
+      {
+        trigger:"tracking_update",
+        channels:["email"],
+        context:{
+          user_identified:true,
+          is_test_order:lifecycleSnapshot.real_orders===0&&lifecycleSnapshot.test_orders>0,
+          real_order_confirmed:lifecycleSnapshot.real_orders>0,
+          tracking_changed:lifecycleSnapshot.fulfillment_with_tracking>0&&lifecycleSnapshot.real_orders>0,
+          tracking_status:lifecycleSnapshot.fulfillment_with_tracking>0?"tracking_available":"",
+          event_id:lifecycleSnapshot.fulfillment_with_tracking>0?"tracking-readiness-probe":"",
+          ...lifecycleInfra
+        },
+        consent:{transactional:{email:false}}
+      },
+      {
+        trigger:"complementary_followup",
+        channels:["email"],
+        context:{
+          user_identified:true,
+          is_test_order:lifecycleSnapshot.real_orders===0&&lifecycleSnapshot.test_orders>0,
+          real_order_confirmed:lifecycleSnapshot.real_orders>0,
+          delivered:lifecycleSnapshot.fulfillment_delivered>0&&lifecycleSnapshot.real_orders>0,
+          complement_truth_ready:false,
+          delivered_at:lifecycleSnapshot.fulfillment_delivered>0?new Date(Date.now()-8*24*60*60*1000).toISOString():"",
+          ...lifecycleInfra
+        },
+        consent:{marketing:{email:false}}
+      }
+    ];
+    const lifecyclePlan=Lifecycle?.plan
+      ? Lifecycle.plan(lifecycleProbeSignals,{now:Date.now()})
+      : {version:"—",total:0,eligible:0,hold:0,rows:[],top_blockers:[],sends_executed:0,execute_actions:false,owner_gate:"REVIEW_REQUIRED"};
     const blockerCounts = new Map();
     for (const passport of passports) {
       const productBlockers = new Set();
@@ -338,9 +443,8 @@
       offerSummary,
       offerCandidates,
       offerTopBlockers,
-      lifecycleRows,
-      lifecycleSummary,
-      lifecycleTopBlockers,
+      lifecycleSnapshot,
+      lifecyclePlan,
       seoAudit
     };
   }
@@ -698,34 +802,57 @@
 
 
   function renderLifecycleBrain(data){
-    const s=data.lifecycleSummary||{};
-    const rows=Array.isArray(data.lifecycleRows)?data.lifecycleRows:[];
+    const s=data.lifecycleSnapshot||{};
+    const plan=data.lifecyclePlan||{version:"—",total:0,eligible:0,hold:0,rows:[],top_blockers:[],sends_executed:0,execute_actions:false};
     const state=$("#bg-lifecycle-state");
-    if(state)state.textContent=s.external_send===true?"SEND ON":"SEND OFF";
-    const service=rows.filter(x=>x.class==="service");
-    const marketing=rows.filter(x=>x.class==="marketing");
+    if(state)state.textContent=s.external_send_enabled===true?"SEND ON":"SEND OFF";
+
     const stats=[
-      ["Trigger lanes",s.total||0],
-      ["Service lanes",service.length],
-      ["Marketing lanes",marketing.length],
-      ["Send candidates",s.send_candidate||0]
+      ["Saved actions",s.saved_actions||0],
+      ["Real orders",s.real_orders||0],
+      ["Test orders",s.test_orders||0],
+      ["Tracked / delivered",(s.fulfillment_with_tracking||0)+" / "+(s.fulfillment_delivered||0)]
     ];
     const host=$("#bg-lifecycle-stats");
     if(host)host.innerHTML=stats.map(([label,value])=>
       '<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>'
     ).join("");
-    const lanes=$("#bg-lifecycle-lanes");
-    if(lanes)lanes.innerHTML=rows.map(row=>
-      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(row.trigger||"").replaceAll("_"," "))+
-      '</strong><span class="bg-score">'+H.esc(row.state||"LOCKED")+'</span></div><small>'+
-      H.esc(row.class||"")+' · connected channels '+H.esc((row.connected_channels||[]).length)+'</small></article>'
-    ).join("")||'<div class="bg-empty">No lifecycle lanes loaded.</div>';
+
+    const labels={
+      saved_reminder:"Saved reminder",
+      cart_reminder:"Cart reminder",
+      price_verified:"Verified price update",
+      back_in_stock:"Back in stock",
+      order_update:"Order update",
+      tracking_update:"Tracking update",
+      complementary_followup:"Complementary follow-up"
+    };
+    const triggerHost=$("#bg-lifecycle-triggers");
+    if(triggerHost)triggerHost.innerHTML=(plan.rows||[]).map(row=>{
+      const tone=row.eligible?"bg-passport-ready":"bg-passport-blocked";
+      return '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(labels[row.trigger]||row.trigger)+
+        '</strong><span class="bg-score '+tone+'">'+H.esc(row.mode||"HOLD")+'</span></div><small>'+
+        H.esc(row.channel||"")+" · execute "+H.esc(row.execute===true?"ON":"OFF")+
+        ' · 30d cap '+H.esc(row.frequency?.max_30d??0)+'</small></article>';
+    }).join("") || '<div class="bg-empty">No lifecycle readiness probes available.</div>';
+
     const blockers=$("#bg-lifecycle-blockers");
-    const blocked=Array.isArray(data.lifecycleTopBlockers)?data.lifecycleTopBlockers:[];
-    if(blockers)blockers.innerHTML=blocked.length?blocked.map(row=>
-      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(row.blocker||"").replaceAll("_"," "))+
-      '</strong><span class="bg-score">'+H.esc(row.count||0)+'</span></div><small>Trigger lanes affected</small></article>'
-    ).join(""):'<div class="bg-empty">No lifecycle blockers found.</div>';
+    const rows=Array.isArray(plan.top_blockers)?plan.top_blockers:[];
+    const infra=[
+      ["Consent registry",s.marketing_consent_registry_ready===true?"READY":"MISSING"],
+      ["Send history",s.send_history_ready===true?"READY":"MISSING"],
+      ["Frequency ledger",s.frequency_cap_ledger_ready===true?"READY":"MISSING"],
+      ["Messages sent",plan.sends_executed||0]
+    ];
+    if(blockers)blockers.innerHTML=[
+      ...infra.map(([label,value])=>
+        '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(label)+'</strong><span class="bg-score">'+H.esc(value)+'</span></div></article>'
+      ),
+      ...rows.slice(0,10).map(row=>
+        '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(row.blocker||"").replaceAll("_"," "))+
+        '</strong><span class="bg-score">'+H.esc(row.count||0)+'</span></div><small>Readiness probes affected</small></article>'
+      )
+    ].join("");
   }
 
   function renderOperating(plan, data) {
