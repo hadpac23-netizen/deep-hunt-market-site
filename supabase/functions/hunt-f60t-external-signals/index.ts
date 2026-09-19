@@ -451,6 +451,96 @@ async function youtubeAnalytics(ctx:any){
   }
 }
 
+async function youtubeTrafficSources(ctx:any){
+  const token=await resolveAccessToken(ctx,"youtube","YOUTUBE_OAUTH_ACCESS_TOKEN");
+  const sourceKey="youtube_analytics";
+  if(!token){
+    await runSkipped(ctx,sourceKey,"SYNC_TRAFFIC_SOURCES","YOUTUBE_OAUTH_NOT_CONNECTED");
+    return {source:sourceKey,status:"SKIPPED_CONFIG",signal_kind:"YOUTUBE_TRAFFIC_SOURCE",rows_written:0};
+  }
+  const params=new URLSearchParams({
+    ids:"channel==MINE",
+    startDate:isoDate(8),
+    endDate:isoDate(1),
+    metrics:"views,estimatedMinutesWatched",
+    dimensions:"insightTrafficSourceType",
+    sort:"-views"
+  });
+  const url="https://youtubeanalytics.googleapis.com/v2/reports?"+params.toString();
+  const runId=await runStart(ctx,sourceKey,"SYNC_TRAFFIC_SOURCES","");
+  try{
+    const res=await fetch(url,{headers:{Authorization:"Bearer "+token,Accept:"application/json"}});
+    const payload=await res.json().catch(()=>({}));
+    if(!res.ok){
+      const code="YOUTUBE_HTTP_"+res.status;
+      await runFinish(ctx,runId,{status:"FAILED",http_status:res.status,error_code:code,evidence_ref:"https://developers.google.com/youtube/analytics/channel_reports",metadata:{report:"traffic_source"}});
+      return {source:sourceKey,status:"FAILED",http_status:res.status,error_code:code,signal_kind:"YOUTUBE_TRAFFIC_SOURCE",rows_written:0};
+    }
+    const headers=Array.isArray(payload?.columnHeaders)?payload.columnHeaders.map((x:any)=>String(x?.name||"")):[];
+    const typeIndex=headers.indexOf("insightTrafficSourceType");
+    const viewsIndex=headers.indexOf("views");
+    const minutesIndex=headers.indexOf("estimatedMinutesWatched");
+    const rawRows=Array.isArray(payload?.rows)?payload.rows:[];
+    const bucket=bucketHour();
+    const rows=rawRows.slice(0,50).map((row:any[])=>{
+      const traffic=clean(row?.[typeIndex],80).toUpperCase();
+      const views=Math.max(0,Math.floor(Number(row?.[viewsIndex])||0));
+      if(!traffic||views<=0)return null;
+      return {
+        bucket_start:bucket,
+        source_key:sourceKey,
+        platform:"youtube",
+        country_code:"",
+        region:"",
+        timezone:"",
+        local_hour:null,
+        category:traffic,
+        audience:"",
+        signal_kind:"YOUTUBE_TRAFFIC_SOURCE",
+        event_count:views,
+        intent_score_avg:null,
+        intent_score_max:null,
+        verified:true,
+        evidence_ref:"https://developers.google.com/youtube/analytics/channel_reports",
+        metadata:{
+          traffic_source_type:traffic,
+          views,
+          estimated_minutes_watched:moneyNumber(row?.[minutesIndex]),
+          source_semantics:"CHANNEL_TRAFFIC_ROUTE_NOT_PURCHASE_INTENT",
+          official_api:true,
+          period_start:isoDate(8),
+          period_end:isoDate(1)
+        },
+        updated_at:new Date().toISOString()
+      };
+    }).filter(Boolean);
+    if(rows.length){
+      const {error}=await ctx.supabaseAdmin.from("f60t_crowd_signal_snapshots").upsert(rows,{
+        onConflict:"bucket_start,source_key,platform,country_code,region,timezone,local_hour,category,audience,signal_kind"
+      });
+      if(error)throw new Error("SNAPSHOT_STORE_FAILED:"+error.message);
+    }
+    await runFinish(ctx,runId,{
+      status:"SUCCESS",
+      http_status:res.status,
+      rows_written:rows.length,
+      evidence_ref:"https://developers.google.com/youtube/analytics/channel_reports",
+      metadata:{report:"traffic_source",period_start:isoDate(8),period_end:isoDate(1)}
+    });
+    return {source:sourceKey,status:"SUCCESS",signal_kind:"YOUTUBE_TRAFFIC_SOURCE",rows_written:rows.length};
+  }catch(error){
+    const msg=clean((error as Error)?.message||error,180);
+    await runFinish(ctx,runId,{
+      status:"FAILED",
+      rows_written:0,
+      error_code:"YOUTUBE_TRAFFIC_SOURCE_FETCH_FAILED",
+      evidence_ref:"https://developers.google.com/youtube/analytics/channel_reports",
+      metadata:{message:msg,report:"traffic_source"}
+    });
+    return {source:sourceKey,status:"FAILED",error_code:"YOUTUBE_TRAFFIC_SOURCE_FETCH_FAILED",signal_kind:"YOUTUBE_TRAFFIC_SOURCE",rows_written:0};
+  }
+}
+
 Deno.serve(async(req:Request)=>{
   if(req.method==="OPTIONS")return new Response("ok",{headers:cors(req)});
   if(req.method!=="POST")return json(req,{error:"method not allowed"},405);
@@ -477,7 +567,10 @@ Deno.serve(async(req:Request)=>{
   const results:any[]=[];
   if(action==="sync_pinterest_trends"||action==="sync_available")results.push(await pinterestTrends(ctx,body));
   if(action==="sync_pinterest_audience"||action==="sync_available")results.push(await pinterestAudience(ctx,body));
-  if(action==="sync_youtube_analytics"||action==="sync_available")results.push(await youtubeAnalytics(ctx));
+  if(action==="sync_youtube_analytics"||action==="sync_available"){
+    results.push(await youtubeAnalytics(ctx));
+    results.push(await youtubeTrafficSources(ctx));
+  }
 
   return json(req,{
     ok:true,

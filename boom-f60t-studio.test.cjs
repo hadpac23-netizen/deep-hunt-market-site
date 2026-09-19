@@ -14,9 +14,12 @@ for(const token of [
   'id="bg-f60t-connect-pinterest"',
   'id="bg-f60t-connect-youtube"',
   'id="bg-f60t-connect-status"',
+  'id="bg-f60t-radar"',
+  'id="bg-f60t-radar-state"',
   'boom-f60t-core.js?v=f60t1',
   'boom-f60t-live-adapter.js?v=f60tl2',
-  'boom-growth-os.js?v=os40'
+  'boom-f60t-crowd-radar.js?v=f60tr1',
+  'boom-growth-os.js?v=os41'
 ]) assert(html.includes(token),"F60T Studio HTML missing: "+token);
 
 assert(!html.includes("$10K+ NET/DAY MODEL"),"Legacy $10K/day panel still visible");
@@ -33,6 +36,12 @@ for(const token of [
   "oauth_providers:Array.isArray(f60tOauthRes?.providers)?f60tOauthRes.providers:[]",
   "const F60TCore=window.BoomF60TCore",
   "const F60TLive=window.BoomF60TLiveAdapter",
+  "const F60TCrowdRadar=window.BoomF60TCrowdRadar",
+  "crowd_radar:crowdRadar",
+  "crowd_radar_ready:crowdRadar.ready===true",
+  "function renderF60TCrowdRadar(data={})",
+  "renderF60TCrowdRadar(data)",
+  "Crowd convergence radar",
   "mission_replaces_daily_10k:true",
   "function renderF60T(data={})",
   "renderF60T(data)",

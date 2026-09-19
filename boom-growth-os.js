@@ -655,6 +655,7 @@
 
     const F60TCore=window.BoomF60TCore;
     const F60TLive=window.BoomF60TLiveAdapter;
+    const F60TCrowdRadar=window.BoomF60TCrowdRadar;
     const f60tLive=F60TLive?.normalize
       ? F60TLive.normalize(f60tLiveRes||{})
       : {
@@ -685,6 +686,13 @@
           stretch_target:{eligible:false,candidate_target:null},
           paid_spend:false,external_publish:false,live_price_write:false,supplier_order:false,payment_activation:false,execute_actions:false,owner_gate:"ACTIVE"
         };
+    const crowdRadar=F60TCrowdRadar?.build
+      ? F60TCrowdRadar.build({
+          hotZones:f60tLive.hot_zones||[],
+          externalTop:f60tLive.external_top||[],
+          localBuyingClockReady:f60tLive.local_buying_clock_ready===true
+        })
+      : {ready:false,status:"OBSERVE",top:[],opportunities:[],score_semantics:"CONVERGENCE_SCORE_NOT_AUDIENCE_SIZE",execute_actions:false};
     const f60t={
       ...f60tBase,
       core_ready:Boolean(F60TCore?.missionBoard),
@@ -706,6 +714,8 @@
       mission_replaces_daily_10k:true,
       current_mode:f60tLive.crowd_signals_ready?"LIVE_SIGNAL_ANALYSIS":"ANALYSIS_AND_PREPARATION",
       no_fake_success:true,
+      crowd_radar:crowdRadar,
+      crowd_radar_ready:crowdRadar.ready===true,
       oauth_providers:Array.isArray(f60tOauthRes?.providers)?f60tOauthRes.providers:[]
     };
 
@@ -897,9 +907,34 @@
     bindF60TOAuthButtons();
   }
 
+  function renderF60TCrowdRadar(data={}) {
+    const radar=data?.f60t?.crowd_radar||{};
+    const container=$("#bg-f60t-radar");
+    const state=$("#bg-f60t-radar-state");
+    if(state)state.textContent=String(radar.status||"OBSERVE").replaceAll("_"," ");
+    if(!container)return;
+    const rows=Array.isArray(radar.top)?radar.top:[];
+    if(!rows.length){
+      container.innerHTML='<article class="bg-row"><strong>OBSERVE</strong><small>No converged entry window yet. Radar will not treat one weak signal as a crowd opportunity.</small></article>';
+      return;
+    }
+    container.innerHTML=rows.map(row=>{
+      const place=[row.country_code||"GLOBAL",row.topic||"general"].join(" · ");
+      const route=row.entry_route||{};
+      const evidence=(row.source_keys||[]).join(" + ")||"single source";
+      return '<article class="bg-row">'+
+        '<div class="bg-row-head"><div><strong>'+H.esc(place)+'</strong><small>'+H.esc(String(route.label||"Observe"))+'</small></div>'+
+        '<span class="bg-score">'+H.esc(String(row.confidence||"OBSERVE"))+' · '+H.esc(String(row.score||0))+'</span></div>'+
+        '<p class="bg-note">'+H.esc(String(route.action||"Collect more evidence."))+'</p>'+
+        '<small>Evidence: '+H.esc(evidence)+' · '+H.esc(String(row.evidence_semantics||""))+'</small>'+
+      '</article>';
+    }).join("");
+  }
+
   function renderF60T(data={}) {
     const f=data.f60t||{};
     renderF60TOAuth(data);
+    renderF60TCrowdRadar(data);
     const target=f.target||{};
     const mission=f.mission||{};
     const state=$("#bg-f60t-state");
@@ -948,7 +983,7 @@
         ["Mission",String(mission.name||"F60T · ימ״מ")],
         ["Command","TARGET → LOCATION → SALE"],
         ["Follow the Sun",f.follow_the_sun?"ON":"HOLD"],
-        ["Global Crowd Radar",f.crowd_signals_ready?"FIRST-PARTY LIVE":"SIGNALS PENDING"],
+        ["Global Crowd Radar",f.crowd_radar_ready?"ENTRY WINDOW FOUND":(f.crowd_signals_ready?"SIGNALS LIVE · NO CONVERGENCE":"SIGNALS PENDING")],
         ["Local Buying Clock",f.local_buying_clock_ready?"LEARNING LIVE":"TIMEZONE SAMPLE BUILDING"],
         ["Top crowd signal",hotLabel],
         ["External platform status",sourceStatus],
@@ -968,6 +1003,7 @@
         ["Realized hourly profit proof",target.realized_verified===true],
         ["F60T live adapter",f.live_adapter_ready===true],
         ["Global crowd signals",f.crowd_signals_ready===true],
+        ["Crowd convergence radar",f.crowd_radar_ready===true],
         ["External API signals",Number(f.external_signal_rows||0)>0],
         ["Local buying clock",f.local_buying_clock_ready===true],
         ["Hourly profit ledger",f.live_hourly_profit_ledger_ready===true],
