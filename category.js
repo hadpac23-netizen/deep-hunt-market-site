@@ -22,6 +22,25 @@
   const $ = q => document.querySelector(q);
   const productKey = p => `${p.provider || ""}:${p.item_id || ""}`;
 
+  async function ensureCompareRuntime(){
+    if(window.HuntCompare)return true;
+    return new Promise(resolve=>{
+      const existing=document.querySelector('script[data-hunt-compare-retry]');
+      if(existing){
+        existing.addEventListener("load",()=>resolve(Boolean(window.HuntCompare)),{once:true});
+        existing.addEventListener("error",()=>resolve(false),{once:true});
+        return;
+      }
+      const script=document.createElement("script");
+      script.src="hunt-compare.js?v=2&retry=1";
+      script.dataset.huntCompareRetry="true";
+      script.onload=()=>resolve(Boolean(window.HuntCompare));
+      script.onerror=()=>resolve(false);
+      document.head.appendChild(script);
+    });
+  }
+
+
   function retailState(product) {
     const amount = Number(product?.retail_price_amount);
     const currency = String(product?.retail_currency || product?.currency || "USD");
@@ -31,6 +50,52 @@
       && amount > 0;
     const estimated = !ready && Number.isFinite(amount) && amount > 0;
     return {ready, estimated, amount: (ready || estimated) ? amount : null, currency};
+  }
+
+  function categoryFacts(product) {
+    const facts=[];
+    const world=String(slug||"");
+    const category=String(product?.category||"");
+
+    const add=(label,value)=>{
+      if(value===null||value===undefined||value==="")return;
+      const text=String(value).trim();
+      if(!text)return;
+      if(facts.some(x=>x.label===label&&x.value===text))return;
+      facts.push({label,value:text});
+    };
+
+    const variants=Number(product?.variant_count||0);
+    const fashion=/^(women|men|kids|accessories)$/.test(world)||/^(women-|men-|kids-|baby-)/.test(category);
+    const specDriven=/^(tech|office)$/.test(world)||/(phone|computer|electronics|gaming|camera|audio)/.test(category);
+    const home=/^(home)$/.test(world)||/(home|lighting|kitchen|bedding|bath)/.test(category);
+    const beauty=/^(beauty)$/.test(world)||/(skincare|makeup|beauty|hair|nails|body-care)/.test(category);
+
+    if(specDriven){
+      add("Model",product?.model);
+      add("Brand",product?.brand);
+      if(variants>1)add("Options",variants);
+      add("Type",product?.type_name);
+    }else if(fashion){
+      add("Brand",product?.brand);
+      if(variants>1)add("Options",variants);
+      add("Type",product?.type_name);
+    }else if(beauty){
+      add("Brand",product?.brand);
+      add("Type",product?.type_name);
+      add("Origin",product?.origin_country);
+    }else if(home){
+      add("Type",product?.type_name);
+      if(variants>1)add("Options",variants);
+      add("Origin",product?.origin_country);
+    }else{
+      add("Brand",product?.brand);
+      if(variants>1)add("Options",variants);
+      add("Type",product?.type_name);
+    }
+
+    if(facts.length<2&&product?.availability_verified===true)add("Stock","loaded");
+    return facts.slice(0,2);
   }
 
   function productCard(product) {
@@ -49,13 +114,19 @@
         ? "HUNT RETAIL · QUOTE REQUIRED"
         : (retail.estimated ? "HUNT ESTIMATE · LIVE DETAIL REQUIRED" : (product.availability_verified === true ? "CATALOG" : "DISCOVERY"));
     const productUrl = H.productUrl(product);
+    const facts=categoryFacts(product);
+    const factsHtml=facts.length?`<div class="hd-card-specific-facts" aria-label="Product facts">${facts.map(f=>`<span><b>${H.esc(f.label)}:</b> ${H.esc(f.value)}</span>`).join("")}</div>`:"";
+    const reason=score>0?`<p>${H.esc(H.personalReason(product))}</p>`:"";
+    const compare=window.HuntCompare?.button?.(product)||"";
     return `<article class="hd-market-product-card" data-category="${H.esc(product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${retail.amount || 0}" data-score="${score}">
       <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}${newBadge}</a>
       <div class="hd-market-card-body">
         <small>${H.esc(product.provider || "Provider")} · ${H.esc(stateLabel)}</small>
         <a href="${H.esc(productUrl)}" class="hd-market-card-title" data-product-view="${H.esc(productKey(product))}">${H.esc(product.title || "Product")}</a>
         <div class="hd-market-card-price"><strong>${price}</strong><span>${retail.ready ? "HUNT RETAIL" : (retail.estimated ? "VERIFY ON PRODUCT" : "PRICE PENDING")}</span></div>
-        <p>${H.esc(score > 0 ? H.personalReason(product) : "Open the product to inspect images, variants and availability.")}</p>
+        ${factsHtml}
+        ${reason}
+        ${compare}
         <a class="hd-btn hd-market-view" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">View product →</a>
       </div>
     </article>`;
@@ -88,7 +159,7 @@
         const value = H.categoryDefs[key];
         if (!value) return "";
         const href = `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}`;
-        return `<a class="${sub===key?"active":""}" href="${href}">${H.esc(value.title)}</a>`;
+        return `<a class="${sub===key?"active":""}" href="${href}" data-sub-key="${H.esc(key)}">${H.esc(value.title)} <span class="hd-category-subcount" data-sub-count="${H.esc(key)}"></span></a>`;
       }).join("");
     }
 
@@ -105,6 +176,73 @@
         }).join("");
       return `<section class="hd-category-side-group"><strong>${H.esc(group.title)}</strong><div>${links}</div></section>`;
     }).join("");
+  }
+
+  function renderAppliedFilters() {
+    const shell=$("#hd-applied-filters"), host=$("#hd-applied-filter-chips");
+    if(!shell||!host)return;
+    const chips=[];
+    const minRaw=$("#hd-price-min")?.value?.trim()||"";
+    const maxRaw=$("#hd-price-max")?.value?.trim()||"";
+
+    if(sub&&H.categoryDefs?.[sub]){
+      chips.push({key:"sub",label:`Section: ${H.categoryDefs[sub].title}`});
+    }
+    if(minRaw){
+      chips.push({key:"min",label:`Min price: ${minRaw}`});
+    }
+    if(maxRaw){
+      chips.push({key:"max",label:`Max price: ${maxRaw}`});
+    }
+
+    shell.hidden=chips.length===0;
+    host.innerHTML=chips.map(chip=>`<button type="button" class="hd-filter-chip" data-clear-filter="${chip.key}">${H.esc(chip.label)} <span aria-hidden="true">×</span></button>`).join("");
+  }
+
+  function updateSubcategoryCounts() {
+    const counts=new Map();
+    const children=H.departmentSubcategories?.[slug]||[];
+    if(!children.length)return;
+    rawResults.forEach(product=>{
+      const category=String(product?.category||"");
+      if(!children.includes(category))return;
+      const qualityMatch=window.HuntCatalogQuality?.fit?.(category,product)!==false;
+      if(!qualityMatch)return;
+      counts.set(category,(counts.get(category)||0)+1);
+    });
+    document.querySelectorAll("[data-sub-count]").forEach(node=>{
+      const count=counts.get(node.dataset.subCount||"")||0;
+      node.textContent=count?`(${count})`:"";
+    });
+  }
+
+  function clearFilter(key) {
+    if(key==="sub"){
+      location.href=H.categoryUrl(slug);
+      return;
+    }
+    if(key==="min"&&$("#hd-price-min"))$("#hd-price-min").value="";
+    if(key==="max"&&$("#hd-price-max"))$("#hd-price-max").value="";
+    scheduleRenderGrid({reset:true});
+  }
+
+  let renderScheduled=false;
+  function scheduleRenderGrid({reset=false,button=null}={}) {
+    if(renderScheduled)return;
+    renderScheduled=true;
+    const grid=$("#hd-category-grid");
+    if(grid)grid.setAttribute("aria-busy","true");
+    if(button)button.dataset.busy="true";
+    requestAnimationFrame(()=>{
+      setTimeout(()=>{
+        try{renderGrid({reset});}
+        finally{
+          renderScheduled=false;
+          grid?.removeAttribute("aria-busy");
+          if(button)delete button.dataset.busy;
+        }
+      },0);
+    });
   }
 
   function matchesSub(product) {
@@ -183,8 +321,10 @@
     const items = filteredSorted();
     const visible = items.slice(0,visibleLimit);
     $("#hd-cat-count").textContent = `${items.length} products · showing ${visible.length}`;
+    window.HuntCompare?.register?.(visible);
     $("#hd-category-grid").innerHTML = visible.map(productCard).join("");
     $("#hd-category-empty").hidden = items.length > 0;
+    renderAppliedFilters();
     visible.forEach(p => { try { sessionStorage.setItem(`hunt_product_${productKey(p)}`, JSON.stringify(p)); } catch {} });
     const sentinel=$("#hd-category-more");
     if(sentinel){
@@ -235,6 +375,7 @@
   }
 
   async function load() {
+    await ensureCompareRuntime();
     const subDef = sub && H.categoryDefs[sub] ? H.categoryDefs[sub] : null;
     const pageTitle = subDef ? `${def.title} · ${subDef.title}` : def.title;
     document.title = `${pageTitle} — HUNT`;
@@ -320,6 +461,8 @@
         ? "Curated CJ catalog · live variants, stock and shipping rechecked on product open"
         : "No connected provider returned a product for this category yet.";
       resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
+      window.HuntCompare?.register?.(rawResults);
+      updateSubcategoryCounts();
       window.HuntAnalytics?.category(slug, rawResults.length);
       renderGrid();
     };
@@ -390,8 +533,18 @@
     }
   }
 
-  $("#hd-cat-apply")?.addEventListener("click",()=>renderGrid({reset:true}));
-  $("#hd-cat-sort")?.addEventListener("change",()=>renderGrid({reset:true}));
+  $("#hd-cat-apply")?.addEventListener("click",event=>scheduleRenderGrid({reset:true,button:event.currentTarget}));
+  $("#hd-cat-sort")?.addEventListener("change",()=>scheduleRenderGrid({reset:true}));
+  $("#hd-applied-filter-chips")?.addEventListener("click",event=>{
+    const chip=event.target.closest?.("[data-clear-filter]");
+    if(chip)clearFilter(chip.dataset.clearFilter||"");
+  });
+  $("#hd-filter-clear-all")?.addEventListener("click",()=>{
+    if(sub){location.href=H.categoryUrl(slug);return;}
+    if($("#hd-price-min"))$("#hd-price-min").value="";
+    if($("#hd-price-max"))$("#hd-price-max").value="";
+    scheduleRenderGrid({reset:true});
+  });
   document.querySelectorAll("[data-view-mode]").forEach(button => {
     button.addEventListener("click", () => applyViewMode(button.dataset.viewMode));
   });

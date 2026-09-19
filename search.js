@@ -2,6 +2,25 @@
   const H=window.HuntCore;
   if(!H)return;
   const $=q=>document.querySelector(q);
+
+  async function ensureCompareRuntime(){
+    if(window.HuntCompare)return true;
+    return new Promise(resolve=>{
+      const existing=document.querySelector('script[data-hunt-compare-retry]');
+      if(existing){
+        existing.addEventListener("load",()=>resolve(Boolean(window.HuntCompare)),{once:true});
+        existing.addEventListener("error",()=>resolve(false),{once:true});
+        return;
+      }
+      const script=document.createElement("script");
+      script.src="hunt-compare.js?v=2&retry=1";
+      script.dataset.huntCompareRetry="true";
+      script.onload=()=>resolve(Boolean(window.HuntCompare));
+      script.onerror=()=>resolve(false);
+      document.head.appendChild(script);
+    });
+  }
+
   const params=new URLSearchParams(location.search);
   const S={results:[],visible:0,observer:null,mission:null,missionOffset:0,clarifyUsed:false};
 
@@ -124,12 +143,42 @@
     const currency=String(p.retail_currency||p.currency||"USD").toUpperCase();
     return currency===String(i.currency||"USD").toUpperCase()&&Number.isFinite(v)&&v>0&&v<=i.max;
   }
+  function searchRetailReady(p){
+    const amount=Number(p?.retail_price_amount);
+    return p?.retail_price_verified===true
+      && String(p?.profit_gate_status||"").toUpperCase()==="PASS"
+      && Number.isFinite(amount)&&amount>0;
+  }
+  function searchFacts(p){
+    const facts=[];
+    const add=(label,value)=>{
+      if(value===null||value===undefined||value==="")return;
+      const text=String(value).trim();if(!text)return;
+      facts.push({label,value:text});
+    };
+    const category=String(p?.category||"");
+    const variants=Number(p?.variant_count||0);
+    if(/(phone|computer|electronics|gaming|camera|audio|office)/.test(category)){
+      add("Model",p?.model); add("Brand",p?.brand); if(variants>1)add("Options",variants);
+    }else if(/(women|men|kids|baby|accessories)/.test(category)){
+      add("Brand",p?.brand); if(variants>1)add("Options",variants);
+    }else if(/(beauty|skincare|makeup|hair|nails)/.test(category)){
+      add("Brand",p?.brand); add("Type",p?.type_name);
+    }else{
+      add("Brand",p?.brand); if(variants>1)add("Options",variants); add("Type",p?.type_name);
+    }
+    if(facts.length<2&&p?.availability_verified===true)add("Stock","loaded");
+    return facts.slice(0,2);
+  }
   function card(p){
     const img=typeof p.image_url==="string"&&p.image_url.startsWith("http")?`<img src="${H.esc(p.image_url)}" alt="${H.esc(p.title||"Product")}" loading="lazy">`:"";
     const v=Number(p.retail_price_amount);
-    const pt=Number.isFinite(v)&&v>0?`From ${H.money(v,p.retail_currency||"USD")}`:"Price on product";
+    const pt=searchRetailReady(p)?H.money(v,p.retail_currency||"USD"):"Price checked on product";
     const newBadge=H.isNewArrival?.(p)?`<b class="hd-new-pulse">NEW</b>`:"";
-    return `<article class="hd-market-product-card"><a class="hd-market-card-media" href="${H.esc(H.productUrl(p))}">${img}${newBadge}</a><div class="hd-market-card-body"><a class="hd-market-card-title" href="${H.esc(H.productUrl(p))}">${H.esc(p.title||"Product")}</a><div class="hd-market-card-price"><strong>${H.esc(pt)}</strong></div></div></article>`;
+    const facts=searchFacts(p);
+    const factHtml=facts.length?`<div class="hd-card-specific-facts">${facts.map(f=>`<span><b>${H.esc(f.label)}:</b> ${H.esc(f.value)}</span>`).join("")}</div>`:"";
+    const compare=window.HuntCompare?.button?.(p)||"";
+    return `<article class="hd-market-product-card"><a class="hd-market-card-media" href="${H.esc(H.productUrl(p))}">${img}${newBadge}</a><div class="hd-market-card-body"><a class="hd-market-card-title" href="${H.esc(H.productUrl(p))}">${H.esc(p.title||"Product")}</a><div class="hd-market-card-price"><strong>${H.esc(pt)}</strong></div>${factHtml}${compare}</div></article>`;
   }
   function missionProductCard(p){
     const img=typeof p.image_url==="string"&&p.image_url.startsWith("http")?`<img src="${H.esc(p.image_url)}" alt="${H.esc(p.title||"Product")}" loading="lazy">`:"";
@@ -226,6 +275,7 @@
   function more(){
     const next=S.results.slice(S.visible,S.visible+36);
     if(!next.length){$("#hd-ai-sentinel strong").textContent=S.results.length?"No more matching products.":"No matching products found.";S.observer?.disconnect();return;}
+    window.HuntCompare?.register?.(next);
     $("#hd-ai-results-grid").insertAdjacentHTML("beforeend",next.map(card).join(""));
     S.visible+=next.length;
     $("#hd-ai-sentinel strong").textContent=S.visible<S.results.length?"Loading more…":"End of matching results.";
@@ -237,6 +287,7 @@
   }
   async function run(raw){
     const q=String(raw||"").trim(); if(!q)return;
+    await ensureCompareRuntime();
     const i=intent(q); S.visible=0; S.mission=i; S.missionOffset=0; $("#hd-ai-results-grid").innerHTML="";
     if(!i.mission){const panel=$("#hd-mission-panel");if(panel)panel.hidden=true;}
     $("#hd-ai-intent-title").textContent=`Searching: ${q}`;

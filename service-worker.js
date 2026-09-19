@@ -1,4 +1,4 @@
-const CACHE="hunt-shell-pwa3";
+const CACHE="hunt-shell-pwa5";
 const CORE=[
   "./",
   "./index.html",
@@ -11,11 +11,13 @@ const CORE=[
   "./hunt-building.css",
   "./hunt-attention-architecture.css",
   "./hunt-decision-confidence.css",
+  "./hunt-product-finding.css",
   "./market-core.js",
   "./hunt-home-3.js",
   "./hunt-attention-architecture.js",
   "./hunt-attention-guard.js",
   "./hunt-browse-continuity.js",
+  "./hunt-compare.js",
   "./product.js",
   "./category.js",
   "./search.js",
