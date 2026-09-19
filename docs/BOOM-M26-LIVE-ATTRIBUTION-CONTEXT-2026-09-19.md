@@ -76,10 +76,14 @@ The repository already contains the M21 browser capture + checkout payload path.
 
 However the current Netlify primary URL returned HTTP 503 during this verification and the current Netlify deploy reported as the older authclean branch deploy.
 
-Therefore M26 records:
+Therefore M26 itself records the backend boundary only. M27 subsequently established a separate zero-cost GitHub Pages fallback and completed browser-to-database E2E verification without changing M26's original backend receipt.
+
+M26 receipt semantics remain:
 BACKEND_LIVE_VERIFIED = true
-FRONTEND_LIVE_VERIFIED = false
-LIVE_CONTEXT_END_TO_END = false
+FRONTEND_LIVE_VERIFIED = false (within the original M26 receipt)
+LIVE_CONTEXT_END_TO_END = false (within the original M26 receipt)
+
+M27 is the authoritative proof for the later public fallback E2E.
 
 A backend QA probe proves ingestion/persistence, not that production users are currently sending the context.
 
