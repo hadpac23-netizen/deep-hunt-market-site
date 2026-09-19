@@ -1091,6 +1091,7 @@
       ["M15","Marketplace Brain","HuntMarketplaceBrain","PANEL"],
       ["M16","Digital Marketing University","BoomDigitalMarketingUniversity","PANEL"],
       ["M17","Evidence Ledger","BoomEvidenceLedger","PANEL"],
+      ["M18","Evidence Decision Gate","BoomEvidenceDecisionGate","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1431,6 +1432,29 @@
     return e;
   }
 
+  function renderDecisionGate(rawDecision,gatedDecision,evidence){
+    const raw=rawDecision||{primary_move:{code:"UNAVAILABLE",state:"HOLD"},lanes:{},diagnostics:{}};
+    const gated=gatedDecision||raw;
+    const gatedLanes=Object.entries(gated.lanes||{}).filter(([,lane])=>lane.state==="EVIDENCE_HOLD");
+    const state=$("#bg-decision-gate-state");
+    if(state)state.textContent=gatedLanes.length||gated.primary_move?.state==="EVIDENCE_HOLD"?"BLOCKING":"PASS";
+    const stats=$("#bg-decision-gate-stats");
+    if(stats)stats.innerHTML=[
+      ["Raw move",raw.primary_move?.state||"HOLD"],
+      ["Gated move",gated.primary_move?.state||"HOLD"],
+      ["Gated lanes",gatedLanes.length],
+      ["Verified evidence",evidence?.verified||0]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const primary=$("#bg-decision-gate-primary");
+    if(primary)primary.innerHTML=[raw.primary_move,gated.primary_move].map((move,index)=>'<article class="bg-row"><div class="bg-row-head"><strong>'+(index===0?'RAW · ':'GATED · ')+H.esc(String(move?.code||"UNAVAILABLE").replaceAll("_"," "))+'</strong><span class="bg-score '+(move?.state==="EVIDENCE_HOLD"?"bg-passport-blocked":"")+'">'+H.esc(move?.state||"HOLD")+'</span></div><small>'+H.esc(move?.why||"")+'</small></article>').join("");
+    const lanes=$("#bg-decision-gate-lanes");
+    if(lanes)lanes.innerHTML=Object.entries(gated.lanes||{}).map(([name,lane])=>{
+      const missing=lane.evidence_missing||[];
+      return '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name.replaceAll("_"," "))+'</strong><span class="bg-score '+(lane.evidence_gate==="HOLD"?"bg-passport-blocked":lane.evidence_gate==="PASS"?"bg-passport-ready":"")+'">'+H.esc(lane.evidence_gate||"NOT REQUIRED")+'</span></div><small>'+H.esc(missing.length?missing.join(" · ").replaceAll("_"," "):"No evidence downgrade applied.")+'</small></article>';
+    }).join("");
+    return gated;
+  }
+
   function renderFreeGrowth(plan,data,marketing,seoScore){
     const G=window.BoomFreeGrowthEngine;
     const result=G?.build?.({
@@ -1473,7 +1497,7 @@
     const Learning = window.BoomLearningLoop;
 
     const marketing = Marketing?.build?.({plan,data,passportSummary:data.passportSummary}) || {channels:[],primary:null,eligibleDeals:0,agentic:{}};
-    const growthDecision=GrowthAgent?.decide?.({
+    const rawGrowthDecision=GrowthAgent?.decide?.({
       plan,
       data,
       marketing,
@@ -1485,7 +1509,11 @@
         post_acquisition_profit_ready:false
       }
     })||null;
+    const decisionEvidence=evidenceLedger(data);
+    const DecisionGate=window.BoomEvidenceDecisionGate;
+    const growthDecision=DecisionGate?.apply?.(rawGrowthDecision||{},decisionEvidence)||rawGrowthDecision;
     renderGrowthAgent(growthDecision);
+    renderDecisionGate(rawGrowthDecision,growthDecision,decisionEvidence);
     const creative = (data.creativeBatch?.outputs||[])
       .flatMap(row=>row?.drafts||[])
       .filter(draft=>draft?.claim_firewall?.pass===true);
