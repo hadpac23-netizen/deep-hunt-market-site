@@ -6,7 +6,8 @@ const ids=new Set(brains.primary_brains.map(x=>x.id));
 const planes=new Set(brains.shared_control_planes.map(x=>x.id));
 const allOwners=new Set([...ids,...planes]);
 const seenActions=new Set();
-const errors=[];\nconst lifecycleModes=new Set(Object.keys(brains.lifecycle_modes||{}));
+const errors=[];
+const lifecycleModes=new Set(Object.keys(brains.lifecycle_modes||{}));
 
 for(const a of actions.actions){
   if(seenActions.has(a.action_id))errors.push("duplicate action_id: "+a.action_id);
