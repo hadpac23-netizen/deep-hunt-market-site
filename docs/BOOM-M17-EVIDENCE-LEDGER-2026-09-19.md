@@ -28,7 +28,7 @@ The Studio maps evidence from:
 
 Static SEO audit and runtime-only personalization/source-verification layers remain structural until direct measured evidence exists.
 
-Marketplace snapshot and canonical paid attribution remain missing until their verified adapters are connected.
+Marketplace snapshot can now become VERIFIED through M19 when all required read-only marketplace counts succeed. Canonical paid attribution remains missing until its verified adapter is connected.
 
 ## Safety
 M17 is read-only.

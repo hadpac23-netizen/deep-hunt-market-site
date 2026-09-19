@@ -26,7 +26,7 @@ Before marketplace automation can progress, M15 requires a verified read-only ma
 
 ## Current Studio state
 The existing workflows are acknowledged as real.
-The aggregate snapshot adapter and several security/attribution/payout proofs remain explicit blockers rather than being guessed from UI code.
+M19 now supplies a read-only live count/status snapshot when its queries succeed. API-key security proof, revocation/rate-limit controls and payout readiness remain explicit blockers rather than being guessed from UI code.
 
 ## Invariants
 AUTO_APPROVE_MERCHANTS: false

@@ -16,9 +16,9 @@ for(const token of [
 for(const token of [
 "function marketplaceReadiness",
 "function renderMarketplace",
-"marketplace_snapshot_adapter_ready:false",
+"marketplace_snapshot_adapter_ready:snap.adapter_ready===true",
 "seller_api_secret_hashing_ready:false",
-"attribution_registry_ready:false",
+"attribution_registry_ready:snap.attribution_registry_ready===true",
 "payout_controls_ready:false"
 ]) assert(js.includes(token),"M15 Studio guard missing: "+token);
 

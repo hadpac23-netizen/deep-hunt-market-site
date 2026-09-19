@@ -108,6 +108,11 @@
     if (merchantConversionCountRes.error) throw merchantConversionCountRes.error;
     if (partnerRightsCountRes.error) throw partnerRightsCountRes.error;
 
+    const MarketplaceSnapshotAdapter=window.HuntMarketplaceSnapshotAdapter;
+    const marketplaceSnapshot=MarketplaceSnapshotAdapter?.load
+      ? await MarketplaceSnapshotAdapter.load(client)
+      : {adapter_ready:false,merchant_registry_ready:false,attribution_registry_ready:false,counts:{},errors:["marketplace_snapshot_adapter_unavailable"],read_only:true,writes:0,execute_actions:false};
+
     const creatorSnapshot={
       creator_registry_ready:false,
       creator_registry_count:0,
@@ -518,6 +523,7 @@
       lifecyclePlan,
       creatorSnapshot,
       creatorSystem,
+      marketplaceSnapshot,
       agenticGateway,
       seoAudit
     };
@@ -1092,6 +1098,7 @@
       ["M16","Digital Marketing University","BoomDigitalMarketingUniversity","PANEL"],
       ["M17","Evidence Ledger","BoomEvidenceLedger","PANEL"],
       ["M18","Evidence Decision Gate","BoomEvidenceDecisionGate","PANEL"],
+      ["M19","Marketplace Snapshot Adapter","HuntMarketplaceSnapshotAdapter","CONNECTED"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1313,28 +1320,30 @@
     return p;
   }
 
-  function marketplaceReadiness(){
+  function marketplaceReadiness(data={}){
     const M=window.HuntMarketplaceBrain;
     if(!M?.summarize)return {readiness:{state:"HOLD",blockers:["marketplace_brain_unavailable"]},stores:0,products:0,eligible_products:0,published:0,payouts:0,execute_actions:false};
-    return M.summarize({
+    const snap=data.marketplaceSnapshot||{adapter_ready:false,merchant_registry_ready:false,attribution_registry_ready:false,counts:{},errors:[]};
+    const base=M.summarize({
       stores:[],products:[],
       config:{
-        marketplace_snapshot_adapter_ready:false,
-        merchant_registry_ready:true,
+        marketplace_snapshot_adapter_ready:snap.adapter_ready===true,
+        merchant_registry_ready:snap.merchant_registry_ready===true,
         store_review_workflow_ready:true,
         product_review_workflow_ready:true,
         program_gate_ready:true,
         seller_api_secret_hashing_ready:false,
         seller_api_revocation_ready:false,
         seller_api_rate_limit_ready:false,
-        attribution_registry_ready:false,
+        attribution_registry_ready:snap.attribution_registry_ready===true,
         payout_controls_ready:false
       }
     });
+    return {...base,stores:Number(snap.counts?.stores_total||0),products:Number(snap.counts?.products_total||0),eligible_products:Number(snap.counts?.products_approved||0),snapshot:snap};
   }
 
-  function renderMarketplace(){
-    const m=marketplaceReadiness(),r=m.readiness||{state:"HOLD",blockers:[]};
+  function renderMarketplace(data){
+    const m=marketplaceReadiness(data),r=m.readiness||{state:"HOLD",blockers:[]};
     const state=$("#bg-marketplace-state");
     if(state)state.textContent=r.state||"HOLD";
     const stats=$("#bg-marketplace-stats");
@@ -1346,11 +1355,11 @@
       ["Seller application + stores","EXISTS"],
       ["Admin store/product review","EXISTS"],
       ["Merchant program gate","EXISTS"],
-      ["Aggregate snapshot adapter","MISSING"],
+      ["Aggregate snapshot adapter",m.snapshot?.adapter_ready?"READY":"GAP"],
       ["Seller API key security proof","UNVERIFIED"],
-      ["Attribution registry","MISSING"],
+      ["Attribution registry",m.snapshot?.attribution_registry_ready?"READY":"GAP"],
       ["Payout controls","MISSING"]
-    ].map(([name,status])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(status==="EXISTS"?"bg-passport-ready":"bg-passport-prepare")+'">'+H.esc(status)+'</span></div></article>').join("");
+    ].map(([name,status])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(["EXISTS","READY"].includes(status)?"bg-passport-ready":"bg-passport-prepare")+'">'+H.esc(status)+'</span></div></article>').join("");
     return m;
   }
 
@@ -1411,7 +1420,7 @@
       {domain:"creator_observations",source_kind:"DIRECT_DB",source_ref:"distribution_drafts + merchant_conversion_events + hunt_partner_matrix",available:true,truth_verified:true,observed_count:Number(data.creatorSnapshot?.creator_distribution_drafts||0)+Number(data.creatorSnapshot?.generic_merchant_conversion_rows||0)+Number(data.creatorSnapshot?.partner_media_rights_verified||0),minimum_count:0,observed_at:new Date().toISOString(),max_age_ms:60*60*1000},
       {domain:"seo_audit",source_kind:"STATIC_AUDIT",source_ref:"boom-seo-audit.json",available:Boolean(data.seoAudit),truth_verified:Boolean(data.seoAudit),freshness_required:false},
       {domain:"personalization_lift",source_kind:"STRUCTURAL",source_ref:"M11 runtime + analytics hooks",available:Boolean(window.BoomPersonalizationBrain),truth_verified:false,freshness_required:false},
-      {domain:"marketplace_snapshot",source_kind:"DIRECT_DB",source_ref:"verified marketplace snapshot adapter",available:false,truth_verified:false,freshness_required:false},
+      {domain:"marketplace_snapshot",source_kind:"DIRECT_DB",source_ref:"merchant_accounts + merchant_stores + merchant_products",available:data.marketplaceSnapshot?.adapter_ready===true,truth_verified:data.marketplaceSnapshot?.adapter_ready===true,observed_count:Number(data.marketplaceSnapshot?.counts?.stores_total||0)+Number(data.marketplaceSnapshot?.counts?.products_total||0),minimum_count:0,observed_at:new Date().toISOString(),max_age_ms:60*60*1000},
       {domain:"paid_attribution",source_kind:"DIRECT_DB",source_ref:"canonical paid attribution ledger",available:false,truth_verified:false,freshness_required:false},
       {domain:"source_verification_workflow",source_kind:"STRUCTURAL",source_ref:"M16 source verification workflow",available:Boolean(window.BoomDigitalMarketingUniversity),truth_verified:false,freshness_required:false}
     ];
@@ -1617,7 +1626,7 @@
     renderPersonalization(data);
     renderSalesAdvertising(data);
     renderPromotionEngine(data);
-    renderMarketplace();
+    renderMarketplace(data);
     renderUniversity(data);
     renderEvidenceLedger(data);
     renderStudioCoverage();
