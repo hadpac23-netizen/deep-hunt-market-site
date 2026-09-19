@@ -1,0 +1,98 @@
+{
+  "version": "f60t-source-registry-v1",
+  "last_verified_at": "2026-09-19",
+  "principles": [
+    "official_api_or_official_feed_first",
+    "aggregate_signals_only",
+    "no_identifiable_person_location_tracking",
+    "no_scraping",
+    "no_fake_realtime",
+    "research_only_sources_cannot_drive_commercial_activation"
+  ],
+  "sources": [
+    {
+      "id": "hunt_first_party",
+      "name": "HUNT first-party analytics and commerce",
+      "families": ["search", "social", "community", "creator_live", "agent_ai"],
+      "status": "preferred",
+      "freshness_target_minutes": 5,
+      "max_age_minutes": 30,
+      "commercial_activation": "allowed_when_measurement_verified",
+      "auth": "existing HUNT analytics/commerce connections",
+      "signals": ["sessions", "product_views", "searches", "saves", "add_to_cart", "checkout_starts", "confirmed_orders", "contribution_per_order", "refunds"],
+      "notes": "Primary truth source for HUNT economics and conversion."
+    },
+    {
+      "id": "google_trends_trending_now",
+      "name": "Google Trends Trending Now",
+      "families": ["search"],
+      "status": "preferred_external",
+      "freshness_target_minutes": 10,
+      "max_age_minutes": 30,
+      "commercial_activation": "intelligence_signal_only",
+      "auth": "official RSS/CSV export where available",
+      "signals": ["rising_query", "search_volume_band", "trend_start", "trend_status", "country_region"],
+      "notes": "Use as aggregate search-attention evidence. Do not equate news spikes with shopping intent."
+    },
+    {
+      "id": "cloudflare_radar_http",
+      "name": "Cloudflare Radar HTTP",
+      "families": ["search", "social", "community", "creator_live", "agent_ai"],
+      "status": "preferred_context",
+      "freshness_target_minutes": 15,
+      "max_age_minutes": 45,
+      "commercial_activation": "context_only",
+      "auth": "Cloudflare API token",
+      "signals": ["regional_http_activity", "device_mix", "traffic_change", "network_anomaly"],
+      "notes": "Internet-activity context, not a count of users on a specific platform."
+    },
+    {
+      "id": "youtube_data_most_popular",
+      "name": "YouTube Data API mostPopular",
+      "families": ["creator_live", "social"],
+      "status": "preferred_external",
+      "freshness_target_minutes": 30,
+      "max_age_minutes": 90,
+      "commercial_activation": "intelligence_signal_only",
+      "auth": "YouTube Data API key",
+      "signals": ["region_popularity", "category_popularity", "video_statistics", "live_metadata"],
+      "notes": "Use popularity as discovery evidence, then require commerce-intent confirmation before HUNT activation."
+    },
+    {
+      "id": "reddit_data_api",
+      "name": "Reddit Data API",
+      "families": ["community"],
+      "status": "research_only_pending_commercial_agreement",
+      "freshness_target_minutes": 30,
+      "max_age_minutes": 120,
+      "commercial_activation": "blocked_without_separate_agreement",
+      "auth": "Reddit-approved access",
+      "signals": ["community_topic_velocity", "discussion_density"],
+      "notes": "Do not use Reddit data to drive monetized HUNT decisions without the required commercial permission."
+    },
+    {
+      "id": "tiktok_research_api",
+      "name": "TikTok Research API",
+      "families": ["social", "creator_live"],
+      "status": "research_only_not_live_commercial",
+      "freshness_target_minutes": 1440,
+      "max_age_minutes": 4320,
+      "commercial_activation": "blocked_for_live_commercial_radar",
+      "auth": "eligible research access",
+      "signals": ["research_dataset"],
+      "notes": "Not treated as a real-time commercial sensor. Prefer an approved commercial/shop/ads source when connected."
+    },
+    {
+      "id": "approved_platform_commercial_feed",
+      "name": "Approved platform commercial signal feed",
+      "families": ["social", "community", "creator_live", "agent_ai"],
+      "status": "adapter_slot",
+      "freshness_target_minutes": 15,
+      "max_age_minutes": 60,
+      "commercial_activation": "disabled_until_source_verified",
+      "auth": "platform-specific official API/feed",
+      "signals": ["aggregate_topic_velocity", "shopping_intent", "creator_commerce", "referral_activity"],
+      "notes": "Enable only after official terms, rights and data freshness are verified."
+    }
+  ]
+}
