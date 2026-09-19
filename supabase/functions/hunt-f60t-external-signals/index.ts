@@ -243,6 +243,168 @@ function safeRegions(body:any){
     .filter(x=>/^[A-Z]{2}$/.test(x));
   return [...new Set(list)].slice(0,12);
 }
+function xmlDecode(value:string){
+  return String(value||"")
+    .replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,"$1")
+    .replace(/&amp;/g,"&")
+    .replace(/&lt;/g,"<")
+    .replace(/&gt;/g,">")
+    .replace(/&quot;/g,'"')
+    .replace(/&#39;|&apos;/g,"'")
+    .trim();
+}
+
+function xmlTag(block:string,tag:string){
+  const safe=String(tag||"").replace(/[^a-zA-Z0-9:_-]/g,"");
+  if(!safe)return "";
+  const re=new RegExp("<"+safe+"(?:\\s[^>]*)?>([\\s\\S]*?)<\\/"+safe+">","i");
+  return xmlDecode(re.exec(block)?.[1]||"");
+}
+
+function parseTrafficLabel(label:string){
+  const raw=clean(label,40).toUpperCase().replace(/,/g,"");
+  const match=raw.match(/([0-9]+(?:\.[0-9]+)?)\s*([KMB])?/);
+  if(!match)return null;
+  const base=Number(match[1]);
+  if(!Number.isFinite(base))return null;
+  const mult=match[2]==="B"?1e9:match[2]==="M"?1e6:match[2]==="K"?1e3:1;
+  return Math.round(base*mult);
+}
+
+function huntCategoryFromTrend(title:string){
+  const t=String(title||"").toLowerCase();
+  const rules:Array<[RegExp,string]>=[
+    [/perfume|fragrance|cologne/,"perfume"],
+    [/makeup|skincare|cosmetic|serum|beauty/,"beauty"],
+    [/dress|jeans|shirt|fashion|hoodie|jacket|suit/,"fashion"],
+    [/shoe|sneaker|boot|heel/,"shoes"],
+    [/handbag|purse|backpack|bag/,"bags"],
+    [/jewelry|jewellery|earring|necklace|bracelet|ring/,"jewelry"],
+    [/iphone|samsung|pixel|phone case|charger|airpods|tablet/,"tech"],
+    [/toy|lego|puzzle|plush/,"toys"],
+    [/kitchen|cookware|air fryer|coffee maker/,"kitchen"],
+    [/fitness|gym|running|yoga|sportswear/,"sports"],
+    [/dog|cat|pet/,"pets"],
+    [/home decor|lighting|lamp|bedding|storage/,"home"]
+  ];
+  for(const [re,category] of rules)if(re.test(t))return category;
+  return "";
+}
+
+function safeGoogleTrendRegions(body:any){
+  const fromBody=Array.isArray(body?.regions)?body.regions:[];
+  const fromEnv=env("F60T_GOOGLE_TRENDS_REGIONS").split(",").map(x=>x.trim()).filter(Boolean);
+  const list=(fromBody.length?fromBody:fromEnv.length?fromEnv:["IL","US","DE","GB","FR"])
+    .map(x=>clean(x,4).toUpperCase())
+    .filter(x=>/^[A-Z]{2}$/.test(x));
+  return [...new Set(list)].slice(0,12);
+}
+
+async function ensureGoogleTrendsRssSource(ctx:any){
+  await ctx.supabaseAdmin.from("f60t_signal_sources").upsert({
+    source_key:"google_trends_rss",
+    platform:"Google",
+    signal_family:"trend",
+    access_mode:"OFFICIAL_RSS",
+    status:"AVAILABLE",
+    official_reference:"https://support.google.com/trends/answer/3076011",
+    notes:"Official Google Trends Trending Now RSS. Attention proxy only; never treated as purchase intent.",
+    updated_at:new Date().toISOString()
+  },{onConflict:"source_key"});
+}
+
+async function googleTrendsRss(ctx:any,body:any){
+  const sourceKey="google_trends_rss";
+  const regions=safeGoogleTrendRegions(body);
+  await ensureGoogleTrendsRssSource(ctx);
+  let written=0;
+  const results:any[]=[];
+
+  for(const region of regions){
+    const runId=await runStart(ctx,sourceKey,"SYNC_TRENDING_NOW_RSS",region);
+    const url="https://trends.google.com/trending/rss?geo="+encodeURIComponent(region);
+    try{
+      const res=await fetch(url,{headers:{Accept:"application/rss+xml, application/xml, text/xml;q=0.9"}});
+      const xml=await res.text();
+      if(!res.ok){
+        const code="GOOGLE_TRENDS_RSS_HTTP_"+res.status;
+        await runFinish(ctx,runId,{status:"FAILED",http_status:res.status,error_code:code,evidence_ref:url,metadata:{region}});
+        results.push({region,status:"FAILED",http_status:res.status,error_code:code});
+        continue;
+      }
+      const blocks=[...xml.matchAll(/<item>([\s\S]*?)<\/item>/gi)].map(x=>x[1]).slice(0,25);
+      if(!blocks.length)throw new Error("GOOGLE_TRENDS_RSS_EMPTY");
+
+      const rows=blocks.map((block:string,index:number)=>{
+        const title=clean(xmlTag(block,"title"),120);
+        const trafficLabel=clean(xmlTag(block,"ht:approx_traffic"),40);
+        const publishedAt=clean(xmlTag(block,"pubDate"),120);
+        const huntCategory=huntCategoryFromTrend(title);
+        return {
+          bucket_start:bucketHour(),
+          source_key:sourceKey,
+          platform:"google_trends",
+          country_code:region,
+          region:"",
+          timezone:"",
+          local_hour:null,
+          category:title.toLowerCase(),
+          audience:"aggregate_search",
+          signal_kind:"GOOGLE_TRENDING_NOW",
+          event_count:1,
+          intent_score_avg:null,
+          intent_score_max:null,
+          verified:true,
+          evidence_ref:url,
+          metadata:{
+            rank:index+1,
+            query_title:title,
+            approx_traffic_label:trafficLabel,
+            approx_search_volume:parseTrafficLabel(trafficLabel),
+            published_at:publishedAt||null,
+            hunt_category:huntCategory||null,
+            commerce_relevance:huntCategory?"POSSIBLE_CATEGORY_MATCH":"UNCLASSIFIED",
+            source_semantics:"ATTENTION_PROXY_NOT_PURCHASE_INTENT",
+            official_rss:true
+          },
+          updated_at:new Date().toISOString()
+        };
+      }).filter((x:any)=>x.category);
+
+      if(rows.length){
+        const {error}=await ctx.supabaseAdmin.from("f60t_crowd_signal_snapshots").upsert(rows,{
+          onConflict:"bucket_start,source_key,platform,country_code,region,timezone,local_hour,category,audience,signal_kind"
+        });
+        if(error)throw new Error("SNAPSHOT_STORE_FAILED:"+error.message);
+      }
+      written+=rows.length;
+      await runFinish(ctx,runId,{status:"SUCCESS",http_status:res.status,rows_written:rows.length,evidence_ref:url,metadata:{region}});
+      results.push({region,status:"SUCCESS",rows_written:rows.length});
+    }catch(error){
+      const msg=clean((error as Error)?.message||error,180);
+      await runFinish(ctx,runId,{
+        status:"FAILED",
+        rows_written:0,
+        error_code:"GOOGLE_TRENDS_RSS_FETCH_FAILED",
+        evidence_ref:url,
+        metadata:{region,message:msg}
+      });
+      results.push({region,status:"FAILED",error_code:"GOOGLE_TRENDS_RSS_FETCH_FAILED"});
+    }
+  }
+
+  if(written>0){
+    await setSource(
+      ctx,
+      sourceKey,
+      "LIVE",
+      "Official Google Trends Trending Now RSS sync succeeded. Attention proxy only; not purchase intent.",
+      "https://support.google.com/trends/answer/3076011"
+    );
+  }
+  return {source:sourceKey,status:written>0?"SUCCESS":"FAILED",rows_written:written,regions:results};
+}
+
 async function pinterestTrends(ctx:any,body:any){
   const token=await resolveAccessToken(ctx,"pinterest","PINTEREST_ACCESS_TOKEN");
   const sourceKey="pinterest_trends";
@@ -556,15 +718,16 @@ Deno.serve(async(req:Request)=>{
   if(action==="status"){
     const {data:sources}=await ctx.supabaseAdmin.from("f60t_signal_sources")
       .select("source_key,platform,signal_family,status,access_mode,official_reference,notes,verified_at,updated_at")
-      .in("source_key",["pinterest_trends","pinterest_audience","youtube_analytics","google_trends_alpha","tiktok_market_scope","youtube_audience_time"])
+      .in("source_key",["google_trends_rss","pinterest_trends","pinterest_audience","youtube_analytics","google_trends_alpha","tiktok_market_scope","youtube_audience_time"])
       .order("source_key");
     return json(req,{ok:true,action,config,sources:sources||[],secrets_exposed:false});
   }
 
-  const allowed=new Set(["sync_pinterest_trends","sync_pinterest_audience","sync_youtube_analytics","sync_available"]);
+  const allowed=new Set(["sync_google_trends_rss","sync_pinterest_trends","sync_pinterest_audience","sync_youtube_analytics","sync_available"]);
   if(!allowed.has(action))return json(req,{error:"unsupported action"},400);
 
   const results:any[]=[];
+  if(action==="sync_google_trends_rss"||action==="sync_available")results.push(await googleTrendsRss(ctx,body));
   if(action==="sync_pinterest_trends"||action==="sync_available")results.push(await pinterestTrends(ctx,body));
   if(action==="sync_pinterest_audience"||action==="sync_available")results.push(await pinterestAudience(ctx,body));
   if(action==="sync_youtube_analytics"||action==="sync_available"){
