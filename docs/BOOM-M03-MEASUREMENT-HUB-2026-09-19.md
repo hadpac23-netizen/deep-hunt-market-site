@@ -55,7 +55,7 @@ HuntAnalytics.purchase remains fail-closed:
 Checkout preview does not become purchase analytics.
 
 ## Open gap
-To complete true browser/server dedup, hunt-commerce-signal needs an explicit event_id persistence contract and database support. That change is intentionally not hidden inside this frontend work.
+M20 adds a local, undeployed hunt-commerce-signal preview that persists event_id into analytics metadata. Live v8 remains unchanged, durable cross-worker dedup is still incomplete, and paid attribution remains blocked until server-confirmed purchase and campaign linkage exist.
 
 ## Invariants
 EXTERNAL_MEASUREMENT_SEND: false

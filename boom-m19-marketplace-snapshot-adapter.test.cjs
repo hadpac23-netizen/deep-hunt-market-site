@@ -4,10 +4,8 @@ const html=fs.readFileSync("boom-growth-os.html","utf8");
 const js=fs.readFileSync("boom-growth-os.js","utf8");
 const adapter=fs.readFileSync("hunt-marketplace-snapshot-adapter.js","utf8");
 
-for(const token of [
-'hunt-marketplace-snapshot-adapter.js?v=m19',
-'boom-growth-os.js?v=os22'
-]) assert(html.includes(token),"M19 script integration missing: "+token);
+assert(html.includes('hunt-marketplace-snapshot-adapter.js?v=m19'),"M19 snapshot adapter script missing");
+assert(/boom-growth-os\.js\?v=os\d+/.test(html),"Growth OS cache-busted script missing");
 
 for(const token of [
 "MarketplaceSnapshotAdapter",

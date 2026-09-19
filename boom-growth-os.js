@@ -493,6 +493,23 @@
       .sort((a,b) => b.count - a.count || a.blocker.localeCompare(b.blocker))
       .slice(0,12);
 
+    const PaidAttribution=window.BoomPaidAttributionReadiness;
+    const analyticsCfg=window.HUNT_ANALYTICS_CONFIG||{};
+    const paidAttribution=PaidAttribution?.evaluate?.({
+      browser_event_id_generation:true,
+      ga4_configured:/^G-[A-Z0-9]+$/i.test(String(analyticsCfg.ga4MeasurementId||"").trim()),
+      first_party_signal_live:true,
+      live_event_id_persistence:false,
+      durable_server_dedup:false,
+      server_purchase_confirmation:false,
+      campaign_touchpoint_persistence:false,
+      purchase_touchpoint_linkage:false,
+      paid_destination_connection:false,
+      owner_paid_approval:false,
+      local_preview_event_id_patch:true,
+      live_function_version:8
+    })||{state:"HOLD",checks:{},blockers:["paid_attribution_runtime_unavailable"],paid_attribution_ready:false,server_event_id_persisted:false,paid_launch:false,paid_spend:false,execute_actions:false};
+
     return {
       snapshot: mission.snapshot || {},
       missionRecommendation: mission.recommendation || {},
@@ -524,6 +541,7 @@
       creatorSnapshot,
       creatorSystem,
       marketplaceSnapshot,
+      paidAttribution,
       agenticGateway,
       seoAudit
     };
@@ -1099,6 +1117,7 @@
       ["M17","Evidence Ledger","BoomEvidenceLedger","PANEL"],
       ["M18","Evidence Decision Gate","BoomEvidenceDecisionGate","PANEL"],
       ["M19","Marketplace Snapshot Adapter","HuntMarketplaceSnapshotAdapter","CONNECTED"],
+      ["M20","Paid Attribution Readiness","BoomPaidAttributionReadiness","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1421,7 +1440,7 @@
       {domain:"seo_audit",source_kind:"STATIC_AUDIT",source_ref:"boom-seo-audit.json",available:Boolean(data.seoAudit),truth_verified:Boolean(data.seoAudit),freshness_required:false},
       {domain:"personalization_lift",source_kind:"STRUCTURAL",source_ref:"M11 runtime + analytics hooks",available:Boolean(window.BoomPersonalizationBrain),truth_verified:false,freshness_required:false},
       {domain:"marketplace_snapshot",source_kind:"DIRECT_DB",source_ref:"merchant_accounts + merchant_stores + merchant_products",available:data.marketplaceSnapshot?.adapter_ready===true,truth_verified:data.marketplaceSnapshot?.adapter_ready===true,observed_count:Number(data.marketplaceSnapshot?.counts?.stores_total||0)+Number(data.marketplaceSnapshot?.counts?.products_total||0),minimum_count:0,observed_at:new Date().toISOString(),max_age_ms:60*60*1000},
-      {domain:"paid_attribution",source_kind:"DIRECT_DB",source_ref:"canonical paid attribution ledger",available:false,truth_verified:false,freshness_required:false},
+      {domain:"paid_attribution",source_kind:"DIRECT_DB",source_ref:"M20 canonical event + server conversion attribution",available:data.paidAttribution?.paid_attribution_ready===true,truth_verified:data.paidAttribution?.paid_attribution_ready===true,observed_count:data.paidAttribution?.paid_attribution_ready?1:0,minimum_count:1,observed_at:data.paidAttribution?.paid_attribution_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"source_verification_workflow",source_kind:"STRUCTURAL",source_ref:"M16 source verification workflow",available:Boolean(window.BoomDigitalMarketingUniversity),truth_verified:false,freshness_required:false}
     ];
     return E.matrix(records);
@@ -1439,6 +1458,27 @@
     const gaps=$("#bg-evidence-gaps");
     if(gaps)gaps.innerHTML=e.rows.filter(x=>x.state!=="VERIFIED").map(rowHtml).join("")||'<div class="bg-empty">No evidence gaps.</div>';
     return e;
+  }
+
+  function renderPaidAttribution(data={}){
+    const p=data.paidAttribution||{state:"HOLD",checks:{},blockers:[],paid_attribution_ready:false,local_preview_event_id_patch:false,live_function_version:0};
+    const state=$("#bg-paid-attribution-state");
+    if(state)state.textContent=p.paid_attribution_ready?"OWNER REVIEW":p.state||"HOLD";
+    const stats=$("#bg-paid-attribution-stats");
+    if(stats)stats.innerHTML=[
+      ["Live function","v"+(p.live_function_version||"?")],
+      ["Local event_id patch",p.local_preview_event_id_patch?"READY":"NO"],
+      ["Live event_id",p.server_event_id_persisted?"PERSISTED":"MISSING"],
+      ["Paid attribution",p.paid_attribution_ready?"READY":"HOLD"]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const labels={
+      browser_event_id_generation:"Browser canonical event_id",ga4_configured:"GA4 configured",first_party_signal_live:"First-party signal live",live_event_id_persistence:"Live event_id persistence",durable_server_dedup:"Durable server dedup",server_purchase_confirmation:"Server purchase confirmation",campaign_touchpoint_persistence:"Campaign touchpoint persistence",purchase_touchpoint_linkage:"Purchase ↔ touchpoint linkage",paid_destination_connection:"Paid destination connection",owner_paid_approval:"Owner paid approval"
+    };
+    const checks=$("#bg-paid-attribution-checks");
+    if(checks)checks.innerHTML=Object.entries(labels).map(([key,label])=>{const ok=p.checks?.[key]===true;return '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(label)+'</strong><span class="bg-score '+(ok?"bg-passport-ready":"bg-passport-blocked")+'">'+(ok?"READY":"MISSING")+'</span></div></article>';}).join("");
+    const blockers=$("#bg-paid-attribution-blockers");
+    if(blockers)blockers.innerHTML=(p.blockers||[]).map(blocker=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(blocker).replaceAll("_"," "))+'</strong><span class="bg-score bg-passport-blocked">HOLD</span></div></article>').join("")||'<div class="bg-empty">No paid-attribution blockers.</div>';
+    return p;
   }
 
   function renderDecisionGate(rawDecision,gatedDecision,evidence){
@@ -1629,6 +1669,7 @@
     renderMarketplace(data);
     renderUniversity(data);
     renderEvidenceLedger(data);
+    renderPaidAttribution(data);
     renderStudioCoverage();
     renderOperating(plan, data);
 
