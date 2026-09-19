@@ -17,7 +17,8 @@
   const ACTIVATION_BLOCKED=new Set([
     "blocked_without_separate_agreement",
     "blocked_for_live_commercial_radar",
-    "disabled_until_source_verified"
+    "disabled_until_source_verified",
+    "blocked_noncommercial_license"
   ]);
 
   function clamp01(v){
