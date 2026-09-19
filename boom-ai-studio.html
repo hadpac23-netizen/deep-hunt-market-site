@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
   <title>BOOM AI Engineering Studio</title>
-  <link rel="stylesheet" href="boom-ai-studio.css?v=4">
+  <link rel="stylesheet" href="boom-ai-studio.css?v=5">
 </head>
 <body>
   <header class="topbar">
@@ -513,6 +513,43 @@
               <div class="integration-stage-grid" id="alpha-integration-stage-grid"><p>Run A7 after exercising the A1–A6 simulation workspaces.</p></div>
               <pre id="alpha-integration-report">No integration QA report yet. A7 will only inspect local Studio evidence.</pre>
             </section>
+
+            <section class="experience-audit-workspace" id="hunt-experience-audit">
+              <div class="truth-workspace-head">
+                <div><small>A7 · HUNT EXPERIENCE AUDIT</small><h3>HUNT A→Z Feature & Journey QA</h3><p>Source-grounded audit of every shopper-facing surface and handoff: entry, discovery, PDP, media, variants, trust, reviews, AI, cart, checkout, payment, tracking, returns, mobile, accessibility, performance and observability.</p></div>
+                <span>SOURCE BASELINE · OWNER-GATED</span>
+              </div>
+              <div class="experience-audit-actions">
+                <button class="top-btn" id="hunt-experience-audit-run" type="button">Run A→Z source audit</button>
+                <button class="top-btn secondary" id="hunt-experience-prompt-build" type="button">Build master QA prompt</button>
+                <div class="truth-result-status" id="hunt-experience-audit-status">NOT_RUN · PRODUCTION_OFF</div>
+              </div>
+              <div class="experience-audit-summary" id="hunt-experience-audit-summary">
+                <article><b>0/18</b><span>DEPARTMENTS REVIEWED</span></article>
+                <article><b>—</b><span>GAPS</span></article>
+                <article><b>OFF</b><span>PRODUCTION</span></article>
+              </div>
+              <div class="experience-audit-filters" id="hunt-experience-audit-filters" aria-label="Audit status filters">
+                <button type="button" class="active" data-experience-filter="ALL">All</button>
+                <button type="button" data-experience-filter="PASS">Pass</button>
+                <button type="button" data-experience-filter="PARTIAL">Partial</button>
+                <button type="button" data-experience-filter="MISSING">Missing</button>
+                <button type="button" data-experience-filter="BLOCKED">Blocked</button>
+              </div>
+              <div class="experience-audit-grid" id="hunt-experience-audit-grid"><p>Run the A→Z audit to map HUNT's current feature evidence and gaps.</p></div>
+              <div class="experience-audit-panels">
+                <section>
+                  <small>TOP GAPS</small>
+                  <div id="hunt-experience-gap-list"><p>No gap report yet.</p></div>
+                </section>
+                <section>
+                  <small>MASTER QA PROMPT</small>
+                  <pre id="hunt-experience-master-prompt">Build the prompt after the audit map is loaded.</pre>
+                </section>
+              </div>
+              <pre id="hunt-experience-audit-report">No HUNT experience audit report yet. This workspace reads a source-evidence baseline and never changes Production.</pre>
+            </section>
+
             <section class="harness-workspace">
               <div class="truth-workspace-head"><div><small>A8 WORKSPACE</small><h3>Alpha Test Harness</h3><p>Runs one positive Alpha path plus fail-closed Truth, Privacy and Creative-proof scenarios entirely in simulation. No provider, publishing, spend or Production action is allowed.</p></div><span>4 SCENARIOS · SIMULATION ONLY</span></div>
               <div class="harness-actions">
@@ -687,6 +724,7 @@
   <script src="brand-creative-qa.js?v=1"></script>
   <script src="brand-video-dispatch.js?v=1"></script>
   <script src="boom-alpha-test-harness.js?v=alpha1"></script>\n  <script src="boom-alpha-evidence-pack.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-preview.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-qa.js?v=alpha1"></script>\n  <script src="boom-alpha-final-gate.js?v=alpha1"></script>
-  <script src="boom-professional-workbench.js?v=1"></script>\n  <script src="boom-b13-master-prompt.js?v=1"></script>\n  <script src="boom-ai-studio.js?v=3"></script>
+  <script src="hunt-experience-audit-core.js?v=1"></script>
+  <script src="boom-professional-workbench.js?v=1"></script>\n  <script src="boom-b13-master-prompt.js?v=1"></script>\n  <script src="boom-ai-studio.js?v=4"></script>
 </body>
 </html>

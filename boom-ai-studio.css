@@ -374,3 +374,91 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
 }
+
+.experience-audit-workspace{
+  margin-top:14px;
+  padding:16px;
+  border:1px solid #2a3643;
+  border-radius:16px;
+  background:linear-gradient(180deg,#0e151d,#0b1118);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.018);
+}
+.experience-audit-actions{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0
+}
+.experience-audit-actions .truth-result-status{margin-left:auto}
+.experience-audit-summary{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0 12px
+}
+.experience-audit-summary article{
+  padding:12px;border:1px solid #293542;border-radius:12px;background:#101821
+}
+.experience-audit-summary b,.experience-audit-summary span{display:block}
+.experience-audit-summary b{font-size:17px}
+.experience-audit-summary span{margin-top:3px;color:#7f8d9c;font-size:8px;letter-spacing:.08em}
+.experience-audit-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.experience-audit-filters button{
+  min-height:30px;padding:5px 9px;border:1px solid #2c3946;border-radius:999px;background:#0c131a;color:#91a0af;
+  font:inherit;font-size:8.5px;font-weight:800;cursor:pointer
+}
+.experience-audit-filters button.active{background:#d7ff4a;color:#101510;border-color:#d7ff4a}
+.experience-audit-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px
+}
+.experience-audit-card{
+  min-height:188px;padding:12px;border:1px solid #293542;border-radius:13px;background:#101720;
+  display:flex;flex-direction:column;gap:7px
+}
+.experience-audit-card[data-status="PASS"]{border-color:#29553a}
+.experience-audit-card[data-status="PARTIAL"]{border-color:#685422}
+.experience-audit-card[data-status="MISSING"]{border-color:#6a3535}
+.experience-audit-card[data-status="BLOCKED"]{border-color:#6a2d45}
+.experience-audit-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.experience-audit-card-head small{color:#788797;font-size:8px;font-weight:900;letter-spacing:.08em}
+.experience-audit-card-head span{
+  padding:4px 6px;border:1px solid currentColor;border-radius:999px;font-size:7.5px;font-weight:900
+}
+.experience-audit-card[data-status="PASS"] .experience-audit-card-head span{color:#54d47c}
+.experience-audit-card[data-status="PARTIAL"] .experience-audit-card-head span{color:#e2b553}
+.experience-audit-card[data-status="MISSING"] .experience-audit-card-head span{color:#ef7373}
+.experience-audit-card[data-status="BLOCKED"] .experience-audit-card-head span{color:#f074a2}
+.experience-audit-card strong{font-size:11px;line-height:1.3}
+.experience-audit-card>p{margin:0;color:#8493a2;font-size:8.7px;line-height:1.55}
+.experience-audit-evidence,.experience-audit-gaps,.experience-audit-tests{
+  display:grid;gap:3px;margin-top:2px
+}
+.experience-audit-evidence b,.experience-audit-gaps b,.experience-audit-tests b{
+  font-size:7.5px;letter-spacing:.08em;color:#6f7e8e
+}
+.experience-audit-evidence span,.experience-audit-gaps span,.experience-audit-tests span{
+  font-size:8.2px;line-height:1.42;color:#a8b3bf
+}
+.experience-audit-gaps span{color:#d7b469}
+.experience-audit-panels{
+  display:grid;grid-template-columns:.9fr 1.1fr;gap:10px;margin-top:12px
+}
+.experience-audit-panels>section{
+  padding:12px;border:1px solid #293542;border-radius:12px;background:#0c131a
+}
+.experience-audit-panels>section>small{display:block;margin-bottom:8px;color:#7d8b99;font-size:8px;font-weight:900;letter-spacing:.1em}
+#hunt-experience-gap-list{display:grid;gap:6px;max-height:330px;overflow:auto}
+.experience-gap-row{
+  padding:8px;border:1px solid #283440;border-radius:9px;background:#101820
+}
+.experience-gap-row b,.experience-gap-row span{display:block}
+.experience-gap-row b{font-size:8.5px}
+.experience-gap-row span{margin-top:3px;color:#b2bdc8;font-size:8px;line-height:1.45}
+#hunt-experience-master-prompt,#hunt-experience-audit-report{
+  white-space:pre-wrap;word-break:break-word;font:9px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;
+  color:#cbd5df;background:#080d12;border:1px solid #25313d;border-radius:10px;padding:11px
+}
+#hunt-experience-master-prompt{max-height:330px;overflow:auto;margin:0}
+#hunt-experience-audit-report{margin-top:10px;max-height:420px;overflow:auto}
+@media(max-width:1100px){
+  .experience-audit-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .experience-audit-summary,.experience-audit-grid,.experience-audit-panels{grid-template-columns:1fr}
+  .experience-audit-actions .truth-result-status{margin-left:0;width:100%}
+  .experience-audit-card{min-height:0}
+}

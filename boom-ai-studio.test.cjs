@@ -624,7 +624,7 @@ assert(css.includes("DESIGN PASS 1 · INFORMATION HIERARCHY"),"Design Pass 1 CSS
 assert(css.includes("#b13-master-prompt-closure"),"B13 visual hierarchy styling missing");
 
 
-assert(html.includes("boom-ai-studio.css?v=4"),"Design Pass 2 stylesheet version missing");
+assert(html.includes("boom-ai-studio.css?v=5"),"Design Pass 2 stylesheet version missing");
 assert(css.includes("DESIGN PASS 2 · POLISH, FOCUS, ACCESSIBILITY"),"Design Pass 2 styling missing");
 assert(css.includes("button:focus-visible"),"Keyboard focus treatment missing");
 assert(css.includes("@media(prefers-reduced-motion:reduce)"),"Reduced-motion accessibility guard missing");
@@ -636,3 +636,22 @@ const deviceHarness=fs.readFileSync("boom-studio-device-browser-e2e.html","utf8"
 assert(deviceHarness.includes("for(let attempt=0;attempt<50;attempt++)"),"Device browser QA must wait for Safe Preview readiness instead of fixed timing");
 
 console.log("boom_ai_studio_tests=PASS");
+
+const experienceCore=fs.readFileSync("hunt-experience-audit-core.js","utf8");
+assert(html.includes('id="hunt-experience-audit"'),"HUNT A→Z Experience Audit workspace missing");
+assert(html.includes('id="hunt-experience-audit-run"'),"HUNT A→Z audit action missing");
+assert(html.includes('id="hunt-experience-master-prompt"'),"HUNT A→Z master prompt surface missing");
+assert(html.includes("hunt-experience-audit-core.js?v=1"),"HUNT Experience Audit core script missing");
+assert(js.includes("function renderExperienceAudit("),"HUNT Experience Audit renderer missing");
+assert(js.includes("function buildExperienceMasterPrompt("),"HUNT Experience master prompt builder missing");
+assert(js.includes("SOURCE_AUDIT_READY"),"HUNT Experience source audit status missing");
+assert(css.includes(".experience-audit-workspace"),"HUNT Experience Audit styling missing");
+assert(css.includes(".experience-audit-card[data-status=\"BLOCKED\"]"),"HUNT Experience blocked-state styling missing");
+assert(experienceCore.includes('const BASELINE_COMMIT="545dd21"'),"HUNT source baseline pin missing");
+for(const file of [
+  "skills/hunt-experience-audit.md",
+  "skills/hunt-product-page-audit.md",
+  "skills/hunt-e2e-journey-audit.md",
+  "skills/hunt-evidence-gap-triage.md",
+  "docs/HUNT-AZ-EXPERIENCE-QA-MASTER-PROMPT.md"
+]) assert(fs.existsSync(file),"HUNT Experience QA artifact missing: "+file);

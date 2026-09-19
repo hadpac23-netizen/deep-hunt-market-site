@@ -1869,6 +1869,114 @@
     return {ready,passed:passed.length,blocked:blocked.map(x=>x.id),stages};
   }
 
+
+  function experienceGapPriority(status){
+    if(status==="BLOCKED")return "P0";
+    if(status==="MISSING")return "P1";
+    if(status==="PARTIAL")return "P2";
+    return "P3";
+  }
+
+  function renderExperienceAudit(filter="ALL"){
+    const Engine=window.HuntExperienceAudit;
+    const status=$("#hunt-experience-audit-status"),summary=$("#hunt-experience-audit-summary"),host=$("#hunt-experience-audit-grid"),gapsHost=$("#hunt-experience-gap-list"),reportHost=$("#hunt-experience-audit-report");
+    if(!Engine?.audit){
+      if(status)status.textContent="AUDIT_CORE_UNAVAILABLE · PRODUCTION_OFF";
+      if(reportHost)reportHost.textContent="HUNT Experience Audit core is unavailable. Nothing was executed.";
+      return null;
+    }
+    const report=Engine.audit();
+    state.huntExperienceAudit=report;
+    state.huntExperienceFilter=filter;
+    const rows=filter==="ALL"?report.departments:report.departments.filter(row=>row.status===filter);
+    if(host)host.innerHTML=rows.length?rows.map(row=>{
+      const evidence=(row.evidence||[]).slice(0,3).map(x=>'<span>• '+esc(x)+'</span>').join("");
+      const gaps=(row.gaps||[]).slice(0,4).map(x=>'<span>• '+esc(x)+'</span>').join("");
+      const tests=(row.tests||[]).slice(0,3).map(x=>'<span>• '+esc(x)+'</span>').join("");
+      return '<article class="experience-audit-card" data-status="'+esc(row.status)+'">'+
+        '<div class="experience-audit-card-head"><small>'+esc(row.id+' · '+row.group)+'</small><span>'+esc(row.status)+'</span></div>'+
+        '<strong>'+esc(row.name)+'</strong>'+
+        '<p>'+esc(row.scope)+'</p>'+
+        '<div class="experience-audit-evidence"><b>EVIDENCE</b>'+evidence+'</div>'+
+        '<div class="experience-audit-gaps"><b>GAPS</b>'+(gaps||'<span>• none in source baseline</span>')+'</div>'+
+        '<div class="experience-audit-tests"><b>TEST NEXT</b>'+tests+'</div>'+
+      '</article>';
+    }).join(""):'<p>No departments match this filter.</p>';
+
+    const reviewed=report.total;
+    const blocked=Number(report.counts?.BLOCKED||0);
+    const missing=Number(report.counts?.MISSING||0);
+    const partial=Number(report.counts?.PARTIAL||0);
+    if(summary)summary.innerHTML=
+      '<article><b>'+reviewed+'/18</b><span>DEPARTMENTS MAPPED</span></article>'+
+      '<article><b>'+report.gap_count+'</b><span>GAPS · '+blocked+' BLOCKED · '+missing+' MISSING · '+partial+' PARTIAL</span></article>'+
+      '<article><b>OFF</b><span>PRODUCTION</span></article>';
+
+    const gapRows=[...report.gaps].sort((a,b)=>{
+      const w={BLOCKED:0,MISSING:1,PARTIAL:2,PASS:3};
+      return (w[a.status]??4)-(w[b.status]??4)||a.department.localeCompare(b.department);
+    });
+    if(gapsHost)gapsHost.innerHTML=gapRows.length?gapRows.slice(0,30).map(row=>
+      '<article class="experience-gap-row"><b>'+esc(experienceGapPriority(row.status)+' · '+row.department+' · '+row.name)+'</b><span>'+esc(row.gap)+'</span></article>'
+    ).join(""):'<p>No gaps in the current source baseline.</p>';
+
+    if(status)status.textContent="SOURCE_AUDIT_READY · "+reviewed+"/18 MAPPED · "+report.gap_count+" GAPS · PRODUCTION_OFF";
+    if(reportHost)reportHost.textContent=[
+      "MODE: "+report.mode,
+      "HUNT BASELINE COMMIT: "+report.baseline_commit,
+      "DEPARTMENTS MAPPED: "+report.total,
+      "PASS: "+(report.counts?.PASS||0),
+      "PARTIAL: "+partial,
+      "MISSING: "+missing,
+      "BLOCKED: "+blocked,
+      "GAPS: "+report.gap_count,
+      "PRODUCTION_CHANGED: "+report.production_changed,
+      "PROVIDER_CALLS: "+report.provider_calls,
+      "PAYMENT_CHANGED: "+report.payment_changed,
+      "SUPPLIER_ORDER_CHANGED: "+report.supplier_order_changed,
+      "OWNER_GATE: "+report.owner_gate,
+      "",
+      ...report.departments.map(row=>row.id+" "+row.status+" · "+row.name+" · gaps="+(row.gaps?.length||0)),
+      "",
+      "NEXT SAFE ACTION: run browser evidence per department, repair only verified gaps, attach evidence, then rerun A7. Production remains OFF."
+    ].join("\n");
+    return report;
+  }
+
+  function buildExperienceMasterPrompt(){
+    const Engine=window.HuntExperienceAudit;
+    const host=$("#hunt-experience-master-prompt");
+    if(!Engine?.masterPrompt){
+      if(host)host.textContent="Audit prompt core unavailable.";
+      return "";
+    }
+    const report=state.huntExperienceAudit||Engine.audit();
+    const departmentLines=report.departments.map(row=>
+      row.id+" | "+row.status+" | "+row.name+" | TESTS: "+(row.tests||[]).join("; ")+" | GAPS: "+((row.gaps||[]).join("; ")||"none in source baseline")
+    );
+    const prompt=[
+      Engine.masterPrompt(),
+      "",
+      "HUNT A→Z DEPARTMENTS:",
+      ...departmentLines,
+      "",
+      "EXECUTION LOOP:",
+      "1. Inspect source contract.",
+      "2. Run browser path at 1440, 768 and 390.",
+      "3. Test keyboard/focus and reduced-motion when relevant.",
+      "4. Test happy, empty, error, stale-data and recovery paths.",
+      "5. Capture evidence before changing code.",
+      "6. Repair smallest root cause without weakening Product Truth.",
+      "7. Rerun feature test + regression suite.",
+      "8. Mark PASS only when observed behavior matches expected behavior.",
+      "",
+      "REPORT FORMAT:",
+      "department | feature | route | expected | observed | status | evidence | gap | severity P0-P3 | repair | regression | owner gate"
+    ].join("\n");
+    if(host)host.textContent=prompt;
+    return prompt;
+  }
+
   function runAlphaHarnessUI(){
     const status=$("#alpha-harness-status"),summary=$("#alpha-harness-summary"),host=$("#alpha-harness-scenarios"),report=$("#alpha-harness-report");
     if(!AlphaHarness?.runAll){
@@ -3253,6 +3361,15 @@
   $("#personal-simulate")?.addEventListener("click",simulatePersonalStudio);
   $("#creative-simulate")?.addEventListener("click",simulateCreativeLearning);
   $("#alpha-integration-qa")?.addEventListener("click",runAlphaIntegrationQA);
+  $("#hunt-experience-audit-run")?.addEventListener("click",()=>renderExperienceAudit(state.huntExperienceFilter||"ALL"));
+  $("#hunt-experience-prompt-build")?.addEventListener("click",buildExperienceMasterPrompt);
+  $("#hunt-experience-audit-filters")?.addEventListener("click",event=>{
+    const button=event.target.closest?.("[data-experience-filter]");
+    if(!button)return;
+    const filter=button.dataset.experienceFilter||"ALL";
+    $$("#hunt-experience-audit-filters [data-experience-filter]").forEach(x=>x.classList.toggle("active",x===button));
+    renderExperienceAudit(filter);
+  });
   $("#alpha-harness-run")?.addEventListener("click",runAlphaHarnessUI);
   $("#alpha-evidence-build")?.addEventListener("click",buildOwnerAlphaEvidencePack);
   $("#alpha-rc-preview-build")?.addEventListener("click",buildAlphaRCPreview);
