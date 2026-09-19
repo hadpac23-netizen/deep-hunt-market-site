@@ -335,7 +335,7 @@ Deno.serve(async(req:Request)=>{
     radars:[
       {
         code:"SEARCH_RADAR",
-        state:(recognizedIntentEvents.length>0||externalKinds.has("YOUTUBE_TRAFFIC_SOURCE")||externalKinds.has("PINTEREST_TREND_GROWING"))?"SIGNALS":"OBSERVE"
+        state:(recognizedIntentEvents.length>0||externalKinds.has("GOOGLE_TRENDING_NOW")||externalKinds.has("YOUTUBE_TRAFFIC_SOURCE")||externalKinds.has("PINTEREST_TREND_GROWING"))?"SIGNALS":"OBSERVE"
       },
       {
         code:"SOCIAL_DISCOVERY_RADAR",
