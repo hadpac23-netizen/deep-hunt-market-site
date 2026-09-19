@@ -522,6 +522,9 @@
     const PayPlusStatus=window.BoomPayPlusStatusReadiness;
     const payPlusStatus=PayPlusStatus?.evaluate?.()||{state:"HOLD",receipt:{},callback_hardened:false,sandbox_success_proven:false,sandbox_reject_proven:false,provider_status_mapping_ready:false,accepted_paid:false,payments_live:false,blockers:["payplus_status_readiness_unavailable"],execute_actions:false};
 
+    const PayPlusSandbox=window.BoomPayPlusSandboxEvidence;
+    const payPlusSandbox=PayPlusSandbox?.evaluate?.()||{state:"HOLD",receipt:{},harness_safe:false,config_ready:false,sandbox_success_proven:false,sandbox_reject_proven:false,provider_status_mapping_ready:false,payment_link_created:false,accepted_paid:false,payments_live:false,execute_actions:false};
+
     const SchemaActivation=window.BoomSchemaActivationReadiness;
     const schemaActivation=SchemaActivation?.evaluate?.({
       live_schema_inspected:true,
@@ -624,6 +627,7 @@
       providerClickValidation,
       purchaseAttributionBridge,
       payPlusStatus,
+      payPlusSandbox,
       schemaActivation,
       durableEventIdentity,
       paidAttribution,
@@ -1215,6 +1219,7 @@
       ["M28","Provider Click Validation","BoomProviderClickValidation","CONNECTED"],
       ["M29","Purchase Attribution Bridge","BoomPurchaseAttributionBridge","PANEL"],
       ["M30","PayPlus Status Mapping","BoomPayPlusStatusReadiness","PANEL"],
+      ["M31","PayPlus Sandbox Evidence","BoomPayPlusSandboxEvidence","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1544,6 +1549,7 @@
       {domain:"purchase_attribution_bridge",source_kind:"DIRECT_DB",source_ref:"M29 security-invoker purchase attribution bridge",available:data.purchaseAttributionBridge?.bridge_ready===true,truth_verified:data.purchaseAttributionBridge?.bridge_ready===true,observed_count:Number(data.purchaseAttributionBridge?.total_sessions||0),minimum_count:1,observed_at:data.purchaseAttributionBridge?.bridge_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"profit_evidence",source_kind:"DIRECT_DB",source_ref:"M29 hunt_order_finance_ledger real non-preview evidence",available:Number(data.purchaseAttributionBridge?.finance_ledger_rows||0)>0,truth_verified:data.purchaseAttributionBridge?.profit_evidence_available===true,observed_count:Number(data.purchaseAttributionBridge?.profit_evidence_ready||0),minimum_count:1,observed_at:data.purchaseAttributionBridge?.profit_evidence_available?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"payplus_status_mapping",source_kind:"PROVIDER_API",source_ref:"M30 PayPlus HMAC + IPN FULL + sandbox mapping",available:data.payPlusStatus?.callback_hardened===true,truth_verified:data.payPlusStatus?.provider_status_mapping_ready===true,observed_count:data.payPlusStatus?.provider_status_mapping_ready?2:0,minimum_count:2,observed_at:data.payPlusStatus?.provider_status_mapping_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
+      {domain:"payplus_sandbox_evidence",source_kind:"PROVIDER_API",source_ref:"M31 isolated PayPlus staging harness",available:data.payPlusSandbox?.harness_safe===true,truth_verified:data.payPlusSandbox?.provider_status_mapping_ready===true,observed_count:(data.payPlusSandbox?.sandbox_success_proven?1:0)+(data.payPlusSandbox?.sandbox_reject_proven?1:0),minimum_count:2,observed_at:data.payPlusSandbox?.provider_status_mapping_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"server_purchase_proof",source_kind:"DIRECT_DB",source_ref:"hunt_payment_sessions + hunt_payment_events + hunt_orders",available:data.serverPurchaseProof?.adapter_ready===true,truth_verified:data.serverPurchaseProof?.server_purchase_confirmation===true,observed_count:Number(data.serverPurchaseProof?.provider_confirmed_real_orders||0),minimum_count:1,observed_at:data.serverPurchaseProof?.adapter_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"durable_event_identity",source_kind:data.durableEventIdentity?.durable_ready?"DIRECT_DB":"STRUCTURAL",source_ref:"M23 analytics_events.event_id + UNIQUE + guarded Edge insert",available:data.durableEventIdentity?.local_preview_ready===true||data.durableEventIdentity?.durable_ready===true,truth_verified:data.durableEventIdentity?.durable_ready===true,observed_count:data.durableEventIdentity?.durable_ready?1:0,minimum_count:data.durableEventIdentity?.durable_ready?1:0,observed_at:data.durableEventIdentity?.durable_ready?new Date().toISOString():"",freshness_required:data.durableEventIdentity?.durable_ready===true,max_age_ms:60*60*1000},
       {domain:"schema_activation_readiness",source_kind:"STRUCTURAL",source_ref:"M24 live schema preflight + security advisor + rollback plan",available:data.schemaActivation?.activation_ready===true,truth_verified:false,freshness_required:false},
@@ -1564,6 +1570,40 @@
     const gaps=$("#bg-evidence-gaps");
     if(gaps)gaps.innerHTML=e.rows.filter(x=>x.state!=="VERIFIED").map(rowHtml).join("")||'<div class="bg-empty">No evidence gaps.</div>';
     return e;
+  }
+
+  function renderPayPlusSandbox(data={}){
+    const m=data.payPlusSandbox||{state:"HOLD",receipt:{},harness_safe:false,config_ready:false,sandbox_success_proven:false,sandbox_reject_proven:false,provider_status_mapping_ready:false,payment_link_created:false,accepted_paid:false,payments_live:false};
+    const r=m.receipt||{};
+    const state=$("#bg-payplus-sandbox-state");
+    if(state)state.textContent=m.provider_status_mapping_ready?"SANDBOX PROVEN":m.harness_safe?"CONFIG BLOCKED":"HOLD";
+    const stats=$("#bg-payplus-sandbox-stats");
+    if(stats)stats.innerHTML=[
+      ["Harness","v"+String(r.harness_version||"?")],
+      ["Config",m.config_ready?"READY":"MISSING"],
+      ["Sandbox sessions",String(r.sandbox_sessions_created||0)],
+      ["Accepted paid",String(r.accepted_paid_observations||0)]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const proof=$("#bg-payplus-sandbox-proof");
+    if(proof)proof.innerHTML=[
+      ["Staging-only endpoint",r.staging_only===true],
+      ["One-time token required",r.one_time_token_required===true],
+      ["Runtime control disabled after preflight",r.runtime_control_enabled===false&&r.runtime_control_owner_approved===false],
+      ["Token invalidated",r.token_invalidated===true],
+      ["Payment link created",r.payment_link_created===true],
+      ["Payments live",r.hunt_payment_live===true],
+      ["Paid callback acceptance",r.hunt_payplus_callback_accept_paid===true]
+    ].map(([name,ok])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+((name==="Payment link created"||name==="Payments live"||name==="Paid callback acceptance")?(ok?"bg-passport-blocked":"bg-passport-ready"):(ok?"bg-passport-ready":"bg-passport-blocked"))+'">'+((name==="Payment link created"||name==="Payments live"||name==="Paid callback acceptance")?(ok?"YES":"NO"):(ok?"VERIFIED":"MISSING"))+'</span></div></article>').join("");
+    const blockers=$("#bg-payplus-sandbox-blockers");
+    if(blockers)blockers.innerHTML=[
+      ["PAYPLUS_API_KEY",r.payplus_api_key_configured?"CONFIGURED":"MISSING"],
+      ["PAYPLUS_SECRET_KEY",r.payplus_secret_key_configured?"CONFIGURED":"MISSING"],
+      ["PAYPLUS_PAYMENT_PAGE_UID",r.payplus_payment_page_uid_configured?"CONFIGURED":"MISSING"],
+      ["Sandbox success proof",m.sandbox_success_proven?"VERIFIED":"PENDING"],
+      ["Sandbox reject proof",m.sandbox_reject_proven?"VERIFIED":"PENDING"],
+      ["Provider status mapping",m.provider_status_mapping_ready?"READY":"BLOCKED"]
+    ].map(([name,value])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(["MISSING","PENDING","BLOCKED"].includes(value)?"bg-passport-prepare":"bg-passport-ready")+'">'+H.esc(value)+'</span></div></article>').join("");
+    return m;
   }
 
   function renderPayPlusStatus(data={}){
@@ -2064,6 +2104,7 @@
     renderMarketplace(data);
     renderUniversity(data);
     renderEvidenceLedger(data);
+    renderPayPlusSandbox(data);
     renderPayPlusStatus(data);
     renderPurchaseAttributionBridge(data);
     renderCampaignAttributionLedger(data);

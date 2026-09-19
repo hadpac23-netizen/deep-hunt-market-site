@@ -105,3 +105,6 @@ PAYMENTS_LIVE: false
 PAID_CALLBACK_ACCEPTANCE: false
 ACCEPTED_PAID_OBSERVATIONS: 0
 EXECUTE_ACTIONS: false
+
+## M31 preflight result
+M31 deployed an isolated staging-only evidence harness, then attempted configuration preflight. The Edge runtime is missing PAYPLUS_API_KEY, PAYPLUS_SECRET_KEY and PAYPLUS_PAYMENT_PAGE_UID. No staging link or sandbox transaction was created. The M31 runtime control was disabled and its token invalidated. M30 remains CALLBACK_HARDENED / SANDBOX_PROOF_PENDING.
