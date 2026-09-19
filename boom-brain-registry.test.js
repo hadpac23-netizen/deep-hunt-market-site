@@ -6,7 +6,7 @@ const ids=new Set(brains.primary_brains.map(x=>x.id));
 const planes=new Set(brains.shared_control_planes.map(x=>x.id));
 const allOwners=new Set([...ids,...planes]);
 const seenActions=new Set();
-const errors=[];
+const errors=[];\nconst lifecycleModes=new Set(Object.keys(brains.lifecycle_modes||{}));
 
 for(const a of actions.actions){
   if(seenActions.has(a.action_id))errors.push("duplicate action_id: "+a.action_id);
@@ -28,6 +28,10 @@ function cycleFrom(start){
   return visit(start);
 }
 for(const id of ids)if(cycleFrom(id)){errors.push("brain dependency cycle involving "+id);break;}
+for(const brain of brains.primary_brains){
+  if(!lifecycleModes.has(brain.lifecycle))errors.push("invalid lifecycle for "+brain.id+": "+brain.lifecycle);
+  if(brain.review_route&&!ids.has(brain.review_route))errors.push("unknown review_route for "+brain.id+": "+brain.review_route);
+}
 
 if(errors.length){console.error(errors.join("\n"));process.exit(1);}
 console.log("BOOM Brain OS registry: PASS",brains.primary_brains.length+" brains,",actions.actions.length+" canonical actions");
