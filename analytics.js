@@ -17,6 +17,46 @@
   const safePath = () => location.pathname || "/";
   const sessionKey = "hunt_session_id_v1";
   const missionKey = "hunt_shopping_mission_v1";
+  const MEASUREMENT_VERSION = "2026-09-19-v1";
+
+  function measurementEventId(event, params = {}) {
+    const eventName=clean(event,50).toLowerCase().replace(/[^a-z0-9_]+/g,"_")||"event";
+    const transactionId=clean(params?.transaction_id,100);
+    if(eventName==="purchase"&&transactionId)return "hunt_purchase_"+transactionId;
+    try{
+      if(globalThis.crypto?.randomUUID)return "hunt_"+eventName+"_"+globalThis.crypto.randomUUID();
+    }catch{}
+    return "hunt_"+eventName+"_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,12);
+  }
+
+  function emitMeasurementEnvelope(event, params = {}) {
+    if(!consentGranted)return false;
+    const eventId=clean(params?.event_id,160);
+    if(!eventId)return false;
+    const firstItem=Array.isArray(params.items)?(params.items[0]||{}):{};
+    const detail={
+      version:MEASUREMENT_VERSION,
+      event_id:eventId,
+      event_name:clean(event,80),
+      event_time_ms:Date.now(),
+      source:"hunt_web",
+      session_id:sessionId(),
+      page_path:safePath(),
+      mission_type:clean(params.mission_type||currentMission(),20),
+      item_id:clean(firstItem.item_id||params.item_id||"",100),
+      item_variant:clean(firstItem.item_variant||"",100),
+      quantity:Math.max(1,Math.min(20,Number(firstItem.quantity||1)||1)),
+      destination_market:clean(params.destination_market||"",60),
+      transaction_id:clean(params.transaction_id||"",120),
+      value:Number.isFinite(Number(params.value))?Number(params.value):null,
+      currency:clean(params.currency||"",12),
+      order_state:clean(params.hunt_order_state||"",50),
+      consent_granted:true,
+      user_data_included:false
+    };
+    window.dispatchEvent(new CustomEvent("hunt:measurement-envelope",{detail:Object.freeze(detail)}));
+    return true;
+  }
   function currentMission() {
     try {
       const value=clean(sessionStorage.getItem(missionKey)||"none",20).toLowerCase();
@@ -57,6 +97,7 @@
     const firstItem = Array.isArray(params.items) ? (params.items[0] || {}) : {};
     const payload = {
       event_type: eventType,
+      event_id: clean(params.event_id || "",160),
       session_id: sessionId(),
       page_path: safePath(),
       page_title: clean(document.title, 160),
@@ -114,20 +155,26 @@
   }
 
   function dataLayerPush(event, params = {}) {
+    const eventId = clean(params.event_id || measurementEventId(event, params), 160);
+    const canonicalParams = {
+      ...params,
+      event_id: eventId
+    };
     const payload = {
       event,
       hunt_environment: clean(config.environment || "production", 24),
       page_path: safePath(),
-      mission_type: clean(params.mission_type || currentMission(),20),
-      ...params
+      mission_type: clean(canonicalParams.mission_type || currentMission(),20),
+      ...canonicalParams
     };
     if (!consentGranted) {
       queue.push(payload);
       return false;
     }
-    const firstPartySent = firstPartySignal(event, {...params, mission_type:payload.mission_type});
-    if (!configured()) return firstPartySent;
-    return sendPayload(payload) || firstPartySent;
+    const envelopeSent = emitMeasurementEnvelope(event, {...canonicalParams, mission_type:payload.mission_type});
+    const firstPartySent = firstPartySignal(event, {...canonicalParams, mission_type:payload.mission_type});
+    if (!configured()) return envelopeSent || firstPartySent;
+    return sendPayload(payload) || envelopeSent || firstPartySent;
   }
 
   function loadGtm() {
@@ -159,6 +206,7 @@
     while (queue.length) {
       const payload = queue.shift();
       const {event, hunt_environment, page_path, ...params} = payload;
+      emitMeasurementEnvelope(event, params);
       firstPartySignal(event, params);
       if (configured()) sendPayload(payload);
     }

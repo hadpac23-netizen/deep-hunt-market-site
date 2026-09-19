@@ -65,7 +65,7 @@ for(const page of pages){
   assert(s.includes("boom-commerce-brain.js?v=2"),page+" missing BOOM brain");
   assert(s.includes("boom-stylist.js?v=1"),page+" missing BOOM stylist");
   assert(s.includes("boom-f35-director.js?v=1"),page+" missing F35 director");
-  assert(s.includes("analytics.js?v=huntmetrics2"),page+" missing mission-aware analytics");
+  assert(s.includes("analytics.js?v=huntmetrics3"),page+" missing mission-aware analytics");
 }
 
 assert(fs.existsSync("docs/BOOM-HUNT-COMMERCE-BRAIN-F35-MASTER-PROMPT.md"),"BOOM master prompt missing");

@@ -358,6 +358,82 @@
       : '<div class="bg-empty">No feed blockers found in the current preview.</div>';
   }
 
+
+  function measurementReadiness() {
+    const Hub=window.BoomMeasurementHub;
+    const cfg=window.HUNT_ANALYTICS_CONFIG||{};
+    let consent=false;
+    try{ consent=localStorage.getItem("hunt_analytics_consent_v1")==="granted"; }catch{}
+    const ga4Configured=/^G-[A-Z0-9]+$/i.test(String(cfg.ga4MeasurementId||"").trim());
+    const readiness=Hub?.destinationReadiness?.({
+      consent_granted:consent,
+      ga4_configured:ga4Configured,
+      first_party_configured:true,
+      server_event_id_persisted:false,
+      google_ads_data_manager_connected:false,
+      meta_capi_connected:false,
+      tiktok_events_api_connected:false,
+      pinterest_conversions_api_connected:false
+    })||{};
+    return {
+      version:Hub?.VERSION||"—",
+      consent,
+      readiness,
+      summary:Hub?.summarize?.(readiness)||{total:0,active:0,partial:0,locked:0,external_send_enabled:false}
+    };
+  }
+
+  function renderMeasurementHub() {
+    const data=measurementReadiness();
+    const state=$("#bg-measurement-state");
+    if(state)state.textContent=data.summary.external_send_enabled?"EXTERNAL SEND ON":"EXTERNAL SEND OFF";
+
+    const stats=[
+      ["Destinations",data.summary.total||0],
+      ["Active",data.summary.active||0],
+      ["Partial / prepare",data.summary.partial||0],
+      ["Locked",data.summary.locked||0]
+    ];
+    const statsHost=$("#bg-measurement-stats");
+    if(statsHost)statsHost.innerHTML=stats.map(([label,value])=>
+      '<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>'
+    ).join("");
+
+    const labels={
+      ga4:"GA4",
+      first_party:"HUNT first-party",
+      google_ads_data_manager:"Google Ads / Data Manager",
+      meta_capi:"Meta Conversions API",
+      tiktok_events_api:"TikTok Events API",
+      pinterest_conversions_api:"Pinterest Conversions API"
+    };
+    const host=$("#bg-measurement-destinations");
+    if(host)host.innerHTML=Object.entries(labels).map(([key,label])=>{
+      const row=data.readiness?.[key]||{};
+      const tone=row.state==="ACTIVE"?"bg-passport-ready":row.state==="PARTIAL"||row.state==="PREPARE"?"bg-passport-prepare":"bg-passport-blocked";
+      return '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(label)+
+        '</strong><span class="bg-score '+tone+'">'+H.esc(row.state||"LOCKED")+'</span></div><small>'+
+        'Connected '+H.esc(row.connected===true?"yes":"no")+
+        ' · event_id '+H.esc(row.event_id_ready===true?"ready":"not persisted")+
+        ' · send '+H.esc(row.send_enabled===true?"on":"off")+
+        '</small></article>';
+    }).join("");
+
+    const gapCounts=new Map();
+    for(const row of Object.values(data.readiness||{})){
+      for(const blocker of row?.blockers||[])gapCounts.set(blocker,(gapCounts.get(blocker)||0)+1);
+    }
+    const gaps=[...gapCounts.entries()].map(([blocker,count])=>({blocker,count}))
+      .sort((a,b)=>b.count-a.count||a.blocker.localeCompare(b.blocker));
+    const gapHost=$("#bg-measurement-gaps");
+    if(gapHost)gapHost.innerHTML=[
+      '<article class="bg-row"><div class="bg-row-head"><strong>Measurement version</strong><span class="bg-score">'+H.esc(data.version)+'</span></div><small>Canonical event envelope</small></article>',
+      '<article class="bg-row"><div class="bg-row-head"><strong>Analytics consent</strong><span class="bg-score">'+H.esc(data.consent?"GRANTED":"NOT GRANTED")+'</span></div><small>Runtime gate; no bypass</small></article>',
+      ...gaps.map(row=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(row.blocker).replaceAll("_"," "))+
+        '</strong><span class="bg-score">'+H.esc(row.count)+'</span></div><small>Destinations affected</small></article>')
+    ].join("");
+  }
+
   function renderOperating(plan, data) {
     const Marketing = window.BoomMarketingBrain;
     const Creative = window.BoomCreativeBrain;
@@ -456,6 +532,7 @@
     renderLaunch(plan.launch);
     renderPassports(data);
     renderGoogleFeed(data);
+    renderMeasurementHub();
     renderOperating(plan, data);
 
     $("#bg-bottleneck-code").textContent = plan.bottleneck.code;
