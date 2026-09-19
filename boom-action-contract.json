@@ -1,0 +1,177 @@
+{
+  "version": "BOOM-ACTION-CONTRACT-V1",
+  "state_machine": [
+    "idle",
+    "pending",
+    "success",
+    "error",
+    "blocked"
+  ],
+  "required_fields": [
+    "action_id",
+    "owner",
+    "auth_policy",
+    "persistence",
+    "optimistic",
+    "double_submit_guard",
+    "telemetry",
+    "accessibility",
+    "failure_policy"
+  ],
+  "actions": [
+    {
+      "action_id": "product.like.toggle",
+      "owner": "action_state_kernel",
+      "auth_policy": "guest_allowed_merge_on_signin",
+      "persistence": "local+account",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "shopping_action",
+      "accessibility": "toggle aria-pressed",
+      "failure_policy": "rollback"
+    },
+    {
+      "action_id": "product.save.toggle",
+      "owner": "action_state_kernel",
+      "auth_policy": "guest_allowed_merge_on_signin",
+      "persistence": "local+account",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "shopping_action",
+      "accessibility": "toggle aria-pressed",
+      "failure_policy": "rollback"
+    },
+    {
+      "action_id": "cart.add",
+      "owner": "action_state_kernel",
+      "auth_policy": "guest_allowed_merge_on_signin",
+      "persistence": "local_then_account",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "cart_add",
+      "accessibility": "announce result",
+      "failure_policy": "rollback"
+    },
+    {
+      "action_id": "cart.remove",
+      "owner": "action_state_kernel",
+      "auth_policy": "guest_allowed",
+      "persistence": "local_then_account",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "cart_remove",
+      "accessibility": "announce result",
+      "failure_policy": "rollback"
+    },
+    {
+      "action_id": "cart.quantity.change",
+      "owner": "action_state_kernel",
+      "auth_policy": "guest_allowed",
+      "persistence": "local_then_account",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "cart_quantity",
+      "accessibility": "button+live count",
+      "failure_policy": "rollback"
+    },
+    {
+      "action_id": "auth.signin",
+      "owner": "identity_session_kernel",
+      "auth_policy": "public",
+      "persistence": "supabase_session",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "auth_state",
+      "accessibility": "focus+status",
+      "failure_policy": "retry"
+    },
+    {
+      "action_id": "auth.signout",
+      "owner": "identity_session_kernel",
+      "auth_policy": "signed_in",
+      "persistence": "supabase_session",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "auth_state",
+      "accessibility": "focus+status",
+      "failure_policy": "retry"
+    },
+    {
+      "action_id": "search.submit",
+      "owner": "action_state_kernel",
+      "auth_policy": "public",
+      "persistence": "session_optional",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "search",
+      "accessibility": "label+focus",
+      "failure_policy": "preserve_query"
+    },
+    {
+      "action_id": "filter.apply",
+      "owner": "action_state_kernel",
+      "auth_policy": "public",
+      "persistence": "session",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "filter",
+      "accessibility": "announce result count",
+      "failure_policy": "restore_previous"
+    },
+    {
+      "action_id": "checkout.quote.verify",
+      "owner": "operations_brain",
+      "auth_policy": "guest_allowed",
+      "persistence": "server_session",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "checkout_quote",
+      "accessibility": "pending+status",
+      "failure_policy": "safe_error_no_charge"
+    },
+    {
+      "action_id": "review.submit",
+      "owner": "operations_brain",
+      "auth_policy": "policy_defined",
+      "persistence": "server",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "review_submit",
+      "accessibility": "validation+status",
+      "failure_policy": "preserve_draft"
+    },
+    {
+      "action_id": "navigation.route",
+      "owner": "navigation_flow_kernel",
+      "auth_policy": "public",
+      "persistence": "history",
+      "optimistic": true,
+      "double_submit_guard": false,
+      "telemetry": "navigation",
+      "accessibility": "focus_destination",
+      "failure_policy": "safe_fallback"
+    },
+    {
+      "action_id": "language.change",
+      "owner": "action_state_kernel",
+      "auth_policy": "public",
+      "persistence": "local+profile_optional",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "preference",
+      "accessibility": "announce language",
+      "failure_policy": "restore_previous"
+    },
+    {
+      "action_id": "theme.change",
+      "owner": "action_state_kernel",
+      "auth_policy": "public",
+      "persistence": "local+profile_optional",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "preference",
+      "accessibility": "pressed_or_switch",
+      "failure_policy": "restore_previous"
+    }
+  ]
+}
