@@ -42,3 +42,7 @@ Prefer official product/news/developer sources from Google Shopping/Search, Amaz
 
 ## Loop
 SCAN -> VERIFY -> SCORE -> RED TEAM -> PROTOTYPE -> A/B TEST -> ADOPT/ROLLBACK -> DOCUMENT.
+
+
+## F60T live operating layer
+For near-real-time audience-attention and commercial-intent decisions, use `skills/f60t-live-world-radar.md`, `f60t-source-registry.json`, and `f60t-live-index.js`. F60T is an additive operating layer over this radar; it does not replace the scan/verify/red-team discipline above.
