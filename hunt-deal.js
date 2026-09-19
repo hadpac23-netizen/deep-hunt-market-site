@@ -587,6 +587,33 @@
     return out;
   }
 
+  function homeBroad(item) {
+    const raw=window.HuntCore?.inferCategory?.(item)||String(item?.category||"");
+    const deps=window.HuntCore?.departmentSubcategories||{};
+    if(deps[raw])return raw;
+    for(const [parent,children] of Object.entries(deps))if((children||[]).includes(raw))return parent;
+    return raw;
+  }
+
+  function balanceHomeFeed(items) {
+    const order=["women","men","kids","beauty","tech","home","accessories","sports","pets","toys","travel","office","gifts"];
+    const groups=new Map(order.map(key=>[key,[]]));
+    const other=[];
+    for(const item of items||[]){
+      const group=groups.get(homeBroad(item));
+      if(group)group.push(item); else other.push(item);
+    }
+    const out=[];let moved=true;
+    while(moved){
+      moved=false;
+      for(const key of order){
+        const group=groups.get(key);
+        if(group?.length){out.push(group.shift());moved=true;}
+      }
+    }
+    return [...out,...other];
+  }
+
   function buildRandomHomePool(shelves) {
     const seen=new Set(), rows=[];
     for(const items of Object.values(shelves||{})){
@@ -605,21 +632,26 @@
       rows.push(item);
     }
     const ranked = window.BoomNet?.rankFeed ? window.BoomNet.rankFeed(rows) : shuffleHome(rows);
-    return ranked;
+    return balanceHomeFeed(ranked);
+  }
+
+  function homeFeedBatchSize(){
+    return window.matchMedia?.("(max-width:760px)")?.matches?8:12;
   }
 
   function appendHomeFeedBatch() {
     const grid=document.querySelector("#hd-home-random-grid");
     const sentinel=document.querySelector("#hd-home-random-more");
     if(!grid || !sentinel) return;
-    const batch=homeFeedPool.slice(homeFeedCursor,homeFeedCursor+48);
+    const batchSize=homeFeedBatchSize();
+    const batch=homeFeedPool.slice(homeFeedCursor,homeFeedCursor+batchSize);
     if(batch.length){
       grid.insertAdjacentHTML("beforeend",batch.map(shelfCard).join(""));
       homeFeedCursor+=batch.length;
     }
     const remaining=Math.max(0,homeFeedPool.length-homeFeedCursor);
     const strong=sentinel.querySelector("strong");
-    if(strong)strong.textContent=remaining? `Loading more · ${remaining.toLocaleString()} left` : "You reached the end of this mix.";
+    if(strong)strong.textContent=remaining? `Show ${batchSize} more · ${remaining.toLocaleString()} left` : "You reached the end of this mix.";
     if(!remaining){
       sentinel.classList.add("done");
       homeFeedObserver?.disconnect();
@@ -628,12 +660,18 @@
 
   function setupHomeFeedObserver() {
     const sentinel=document.querySelector("#hd-home-random-more");
-    if(!sentinel || !("IntersectionObserver" in window)) return;
+    if(!sentinel)return;
     homeFeedObserver?.disconnect();
-    homeFeedObserver=new IntersectionObserver(entries=>{
-      if(entries.some(entry=>entry.isIntersecting)) appendHomeFeedBatch();
-    },{rootMargin:"900px 0px"});
-    homeFeedObserver.observe(sentinel);
+    homeFeedObserver=null;
+    sentinel.hidden=false;
+    sentinel.setAttribute("role","button");
+    sentinel.setAttribute("aria-label","Show more mixed catalog products");
+    sentinel.tabIndex=0;
+    const load=()=>{if(!sentinel.classList.contains("done"))appendHomeFeedBatch();};
+    sentinel.onclick=load;
+    sentinel.onkeydown=event=>{
+      if(event.key==="Enter"||event.key===" "){event.preventDefault();load();}
+    };
   }
 
   function renderMarketShelvesData(data, mode = "live") {

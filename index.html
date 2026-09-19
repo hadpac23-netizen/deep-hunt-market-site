@@ -17,7 +17,8 @@
   <link rel="stylesheet" href="hunt-wow.css?v=launchqa5">
   <link rel="stylesheet" href="hunt-shop.css?v=dynamic1">
   <link rel="stylesheet" href="hunt-visual-v2.css?v=1">
-  <link rel="stylesheet" href="hunt-home-3.css?v=1">
+  <link rel="stylesheet" href="hunt-home-3.css?v=2">
+  <link rel="stylesheet" href="hunt-building.css?v=3">
   <link rel="stylesheet" href="hunt-hero4.css?v=1">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"HUNT","url":"https://deep-hunt-market.netlify.app/","description":"Evidence-first shopping and commerce intelligence."}</script>
   <link rel="manifest" href="manifest.webmanifest">
@@ -36,14 +37,11 @@
       <a class="hd-brand hd-hunt-wordmark" href="./" aria-label="HUNT"><span aria-hidden="true">H</span><span aria-hidden="true">U</span><span aria-hidden="true">N</span><span aria-hidden="true">T</span></a>
       <div class="hd-branch" data-i18n="branch">A BOOM branch · full BOOM coming later.</div>
     </div>
-    <nav class="hd-nav" aria-label="Primary">
-      <a href="./#shop">Shop</a><a href="search.html">AI Find</a>
-      <a href="category.html?c=women">Women</a>
-      <a href="category.html?c=accessories">Accessories</a>
-      <a href="category.html?c=beauty">Beauty</a>
-      <a href="category.html?c=men">Men</a>
-      <a href="category.html?c=kids">Kids</a>
-      <a href="category.html?c=home">Home</a>
+    <nav class="hd-nav hd-entrance-nav" aria-label="Primary">
+      <a href="#hunt-market-hall">Shop</a>
+      <a href="#departments" data-open-categories>Categories</a>
+      <a href="search.html">AI Find</a>
+      <a href="#for-you">For You</a>
     </nav>
     <div class="hd-tools">
       <label class="hd-search">
@@ -87,10 +85,11 @@
 
         <nav class="hd-hero4-categories" aria-label="Featured shopping categories">
           <a href="category.html?c=women" data-hunt-i18n="women">Women</a>
-          <a href="category.html?c=accessories" data-hunt-i18n="accessories">Accessories</a>
-          <a href="category.html?c=beauty" data-hunt-i18n="beauty">Beauty</a>
           <a href="category.html?c=men" data-hunt-i18n="men">Men</a>
           <a href="category.html?c=kids" data-hunt-i18n="kids">Kids</a>
+          <a href="category.html?c=beauty" data-hunt-i18n="beauty">Beauty</a>
+          <a href="category.html?c=tech">Tech</a>
+          <a href="category.html?c=home">Home</a>
         </nav>
 
       <a class="hd-hero4-scroll-cue" href="#departments" aria-label="Discover more in HUNT">
@@ -102,14 +101,14 @@
       <div class="hd-department-bar">
         <button class="hd-all-categories" id="hd-all-categories" type="button" aria-expanded="false" aria-controls="hd-mega-menu">All categories <span aria-hidden="true">⌄</span></button>
         <a href="category.html?c=women">Women</a>
-        <a href="category.html?c=accessories">Accessories</a>
-        <a href="category.html?c=beauty">Beauty</a>
-        <a href="category.html?c=shoes">Shoes</a>
         <a href="category.html?c=men">Men</a>
         <a href="category.html?c=kids">Kids</a>
-        <a href="category.html?c=home">Home</a>
+        <a href="category.html?c=beauty">Beauty</a>
         <a href="category.html?c=tech">Tech</a>
+        <a href="category.html?c=home">Home</a>
+        <a href="category.html?c=accessories">Accessories</a>
         <a href="category.html?c=sports">Sports</a>
+        <a href="category.html?c=pets">Pets</a>
       </div>
       <div class="hd-mega-menu" id="hd-mega-menu" hidden></div>
     </section>
@@ -302,11 +301,10 @@
 
   <nav class="hd-mobile-nav" aria-label="Mobile navigation">
     <a class="active" href="./"><span>&#8962;</span><small>Home</small></a>
-    <a href="category.html?c=women"><span>&#9638;</span><small>Categories</small></a>
-    <a href="category.html?c=women#for-you"><span>&#10022;</span><small>For You</small></a>
+    <a href="#departments" data-open-categories><span>&#9638;</span><small>Categories</small></a>
+    <a href="#for-you"><span>&#10022;</span><small>For You</small></a>
     <a href="profile.html#saved"><span>🔖</span><small>Saved</small></a>
     <a href="checkout.html"><span>&#9711;</span><small>Cart</small><b data-cart-count>0</b></a>
-    <a href="auth.html"><span>&#9675;</span><small>Sign in</small></a>
   </nav>
 
   <nav class="hd-legal-links" aria-label="Legal and customer policies"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="returns.html">Returns & Cancellation</a><a href="shipping.html">Shipping</a><a href="withdrawal.html">Withdrawal / Return request</a></nav>
@@ -321,12 +319,13 @@
   <script src="market-core.js?v=dynamic2"></script>
   <script src="hunt-catalog-quality.js?v=1"></script>
   <script src="hunt-country-brain.js?v=1"></script>
-  <script src="hunt-home-3.js?v=1"></script>
+  <script src="hunt-home-3.js?v=4"></script>
+  <script src="hunt-building-guard.js?v=3"></script>
   <script src="hunt-discovery-engine.js?v=1"></script>
   <script src="hunt-night-edit.js?v=1"></script>
   <script src="hunt-creative-engine.js?v=1"></script>
   <script src="hunt-hero4.js?v=1"></script>
-  <script src="hunt-deal.js?v=boomet3"></script>
+  <script src="hunt-deal.js?v=boomet6"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="account-presence.js?v=profile3"></script>
   <script src="analytics-config.js?v=analytics1"></script>
