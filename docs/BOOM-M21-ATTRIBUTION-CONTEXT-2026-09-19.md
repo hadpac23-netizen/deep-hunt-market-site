@@ -50,11 +50,11 @@ M21 closes the local campaign-context design gap.
 M22 now supplies live read-only proof for campaign context persistence, server purchase confirmation and purchase ↔ touchpoint linkage. With current prelaunch/test-only state these remain unproven; paid attribution therefore remains false.
 
 ## Production boundary
-No Edge Function deployment.
-No database migration.
-No live checkout/payment behavior changed.
-No conversion API send.
-No paid campaign or spend.
+M26 has now deployed the server-side payment-session attribution ingestion path and verified it with a synthetic prelaunch session.
+
+The production browser delivery path remains separately unverified because the current Netlify primary URL returned HTTP 503 during M26 validation.
+
+No live charge, paid callback acceptance, conversion API send, paid campaign or spend was enabled.
 
 ## Invariants
 LOCAL_PREVIEW_READY: true

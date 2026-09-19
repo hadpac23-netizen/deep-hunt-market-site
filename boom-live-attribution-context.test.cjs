@@ -1,0 +1,15 @@
+const assert=require("node:assert");
+const A=require("./boom-live-attribution-context.js");
+const r=A.evaluate();
+assert.strictEqual(r.state,"BACKEND_VERIFIED");
+assert.strictEqual(r.backend_live_verified,true);
+assert.strictEqual(r.frontend_live_verified,false);
+assert.strictEqual(r.live_context_end_to_end,false);
+assert.strictEqual(r.conversion_claim_allowed,false);
+assert.strictEqual(r.payments_live,false);
+assert.strictEqual(r.paid_launch,false);
+assert.strictEqual(r.execute_actions,false);
+assert.strictEqual(r.receipt.edge_function_version,13);
+assert.strictEqual(r.receipt.attribution_status,"browser_context_unverified");
+assert.strictEqual(r.receipt.payment_event_type,"prelaunch_session_created");
+console.log("boom_live_attribution_context=PASS");

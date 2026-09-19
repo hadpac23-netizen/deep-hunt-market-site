@@ -501,6 +501,9 @@
     const LiveActivationProof=window.BoomLiveActivationProof;
     const liveActivation=LiveActivationProof?.evaluate?.()||{state:"HOLD",receipt:{},activation_verified:false,durable_ready:false,live_event_id_persistence:false,payments_live:false,payplus_callback_accept_paid:false,blockers:["live_activation_receipt_unavailable"],execute_actions:false};
 
+    const LiveAttribution=window.BoomLiveAttributionContext;
+    const liveAttribution=LiveAttribution?.evaluate?.()||{state:"HOLD",receipt:{},backend_live_verified:false,frontend_live_verified:false,live_context_end_to_end:false,conversion_claim_allowed:false,payments_live:false,blockers:["live_attribution_receipt_unavailable"],execute_actions:false};
+
     const SchemaActivation=window.BoomSchemaActivationReadiness;
     const schemaActivation=SchemaActivation?.evaluate?.({
       live_schema_inspected:true,
@@ -596,6 +599,7 @@
       marketplaceSnapshot,
       serverPurchaseProof,
       liveActivation,
+      liveAttribution,
       schemaActivation,
       durableEventIdentity,
       paidAttribution,
@@ -1181,6 +1185,7 @@
       ["M23","Durable Event Identity","BoomDurableEventIdentity","PANEL"],
       ["M24","Schema Activation Readiness","BoomSchemaActivationReadiness","PANEL"],
       ["M25","Live Activation Verification","BoomLiveActivationProof","PANEL"],
+      ["M26","Live Attribution Context","BoomLiveAttributionContext","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1527,6 +1532,39 @@
     return e;
   }
 
+  function renderLiveAttribution(data={}){
+    const a=data.liveAttribution||{state:"HOLD",receipt:{},backend_live_verified:false,frontend_live_verified:false,live_context_end_to_end:false,conversion_claim_allowed:false,payments_live:false,blockers:[]};
+    const r=a.receipt||{};
+    const state=$("#bg-live-attribution-state");
+    if(state)state.textContent=a.live_context_end_to_end?"E2E VERIFIED":a.backend_live_verified?"BACKEND VERIFIED":"HOLD";
+    const stats=$("#bg-live-attribution-stats");
+    if(stats)stats.innerHTML=[
+      ["Payment session","v"+(r.edge_function_version||"?")],
+      ["Backend",a.backend_live_verified?"VERIFIED":"HOLD"],
+      ["Frontend",a.frontend_live_verified?"VERIFIED":"NOT VERIFIED"],
+      ["Payments",a.payments_live?"ON":"OFF"]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const proof=$("#bg-live-attribution-proof");
+    if(proof)proof.innerHTML=[
+      ["Commerce Profit Gate preserved",r.commerce_gate_preserved],
+      ["Payment live gate preserved",r.payment_live_gate_preserved],
+      ["Consent required",r.consent_required],
+      ["Attribution PII excluded",r.attribution_pii_excluded],
+      ["Prelaunch payment_ready=false",r.prelaunch_probe_payment_ready===false],
+      ["Snapshot stored unverified",r.attribution_status==="browser_context_unverified"&&r.attribution_verified===false],
+      ["Only prelaunch event created",r.payment_event_type==="prelaunch_session_created"]
+    ].map(([name,ok])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(ok?"bg-passport-ready":"bg-passport-blocked")+'">'+(ok?"VERIFIED":"MISSING")+'</span></div></article>').join("");
+    const boundary=$("#bg-live-attribution-boundary");
+    if(boundary)boundary.innerHTML=[
+      ["Production frontend attribution",a.frontend_live_verified?"VERIFIED":"NOT VERIFIED"],
+      ["End-to-end live context",a.live_context_end_to_end?"VERIFIED":"HOLD"],
+      ["Conversion claim",a.conversion_claim_allowed?"ALLOWED":"BLOCKED"],
+      ["hunt_payment_live",r.payment_live_enabled===false?"OFF":"ON"],
+      ["PayPlus callback accept paid",r.payplus_callback_accept_paid===false?"OFF":"ON"]
+    ].map(([name,value])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(["VERIFIED","OFF"].includes(value)?"bg-passport-ready":value==="ON"||value==="ALLOWED"?"bg-passport-blocked":"bg-passport-prepare")+'">'+H.esc(value)+'</span></div></article>').join("");
+    return a;
+  }
+
   function renderLiveActivation(data={}){
     const a=data.liveActivation||{state:"HOLD",receipt:{},activation_verified:false,durable_ready:false,live_event_id_persistence:false,payments_live:false,payplus_callback_accept_paid:false,blockers:[]};
     const r=a.receipt||{};
@@ -1854,6 +1892,7 @@
     renderMarketplace(data);
     renderUniversity(data);
     renderEvidenceLedger(data);
+    renderLiveAttribution(data);
     renderLiveActivation(data);
     renderSchemaActivation(data);
     renderDurableEventIdentity(data);
