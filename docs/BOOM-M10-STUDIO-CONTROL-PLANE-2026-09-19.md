@@ -5,14 +5,14 @@ Expose implementation completeness inside BOOM Growth Studio so no brain or oper
 
 ## What M10 adds
 A read-only coverage panel for:
-- M01–M09 core modules
+- M01–M11 core modules as they are added
 - operating runtimes such as Marketing, SEO, Love, Publisher and Learning
 - loaded legacy runtimes without a dedicated panel
 - code that exists but is not loaded
 - skill-only capabilities that still require implementation
 
 ## Initial gaps intentionally exposed
-Personalization, Free Growth, Sales/Advertising, World Commerce Radar, Marketplace Brain, Promotion Engine and Digital Marketing University are currently represented as skill-only in this control plane.
+Free Growth, Sales/Advertising, World Commerce Radar, Marketplace Brain, Promotion Engine and Digital Marketing University are currently represented as skill-only in this control plane. Personalization moved from skill-only to M11 runtime + Studio panel.
 Commerce Brain, F35 Director, BOOM NET and Stylist are visible as code/runtime gaps rather than silently treated as integrated.
 
 ## Safety

@@ -1024,6 +1024,53 @@
     ].join("");
   }
 
+  function personalizationReadiness(data={}){
+    const P=window.BoomPersonalizationBrain;
+    if(!P?.readiness||!P?.rank)return {state:"HOLD",blockers:["personalization_brain_unavailable"],sample:{items:[]},execute:false,owner_gate:"REVIEW_REQUIRED"};
+    const readiness=P.readiness({
+      preference_controls_ready:true,
+      reset_controls_ready:true,
+      recommendation_impression_tracking_ready:true,
+      outcome_tracking_ready:true,
+      holdout_ready:false,
+      market_eligibility_ready:false,
+      product_truth_ready:Number(data.passportSummary?.total||0)>0,
+      privacy_contract_ready:true
+    });
+    const catalog=(data.catalog||[]).slice(0,120).map(item=>({
+      ...item,
+      market_eligible:item.market_eligible!==false,
+      retail_price_verified:item.retail_price_verified===true||String(item.profit_gate_status||"").toUpperCase()==="PASS",
+      source_fresh:Boolean(item.source_fresh_at),
+      media_quality_ready:Boolean(item.image_url)
+    }));
+    const sample=P.rank(catalog,{reduced_personalization:true},{limit:8,max_per_category:2,max_per_supplier:2,exploration_share:0,require_verified_truth:false});
+    return {...readiness,sample};
+  }
+
+  function renderPersonalization(data){
+    const p=personalizationReadiness(data);
+    const state=$("#bg-personalization-state");
+    if(state)state.textContent=p.state||"HOLD";
+    const stats=$("#bg-personalization-stats");
+    if(stats)stats.innerHTML=[
+      ["Sensitive traits","BLOCKED"],
+      ["Ranking","OFF"],
+      ["Holdout","MISSING"],
+      ["Sample ranked",p.sample?.items?.length||0]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const readiness=$("#bg-personalization-readiness");
+    const blockers=p.blockers||[];
+    if(readiness)readiness.innerHTML=(blockers.length?blockers:["measurement_ready"]).map(blocker=>
+      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(blocker).replaceAll("_"," "))+'</strong><span class="bg-score '+(blocker==="measurement_ready"?"bg-passport-ready":"bg-passport-prepare")+'">'+(blocker==="measurement_ready"?"READY":"GAP")+'</span></div></article>'
+    ).join("");
+    const sample=$("#bg-personalization-sample");
+    if(sample)sample.innerHTML=(p.sample?.items||[]).slice(0,6).map(row=>
+      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(row.item?.title||row.item?.item_id||"Product")+'</strong><span class="bg-score">'+H.esc(Number(row.score||0).toFixed(1))+'</span></div><small>'+H.esc((row.reasons||[]).join(" · ").replaceAll("_"," ")||"balanced cold start")+'</small></article>'
+    ).join("")||'<div class="bg-empty">No safe sample candidates yet.</div>';
+    return p;
+  }
+
   function studioCoverage(){
     const runtimeRows=[
       ["M01","Commerce Passport","BoomCommercePassport","PANEL"],
@@ -1037,6 +1084,7 @@
       ["M07","Creator OS","BoomCreatorOS","PANEL"],
       ["M08","Growth Agent","BoomGrowthAgent","PANEL"],
       ["M09","Agentic Commerce Gateway","BoomAgenticCommerceGateway","PANEL"],
+      ["M11","Personalization Brain","BoomPersonalizationBrain","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1053,7 +1101,6 @@
     });
 
     const skillOnly=[
-      ["Personalization Brain","skills/boom-personalization-brain.md"],
       ["Free Growth Engine","skills/boom-free-growth-engine.md"],
       ["Sales & Advertising Brain","skills/boom-sales-advertising-brain.md"],
       ["World Commerce Radar","skills/boom-world-commerce-radar.md"],
@@ -1264,6 +1311,7 @@
     renderLifecycleBrain(data);
     renderCreatorOS(data);
     renderAgenticGateway(data);
+    renderPersonalization(data);
     renderStudioCoverage();
     renderOperating(plan, data);
 
