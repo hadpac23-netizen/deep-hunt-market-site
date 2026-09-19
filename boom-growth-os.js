@@ -46,7 +46,7 @@
       ownerFunction("hunt-owner-mission-control"),
       ownerFunction("hunt-launch-readiness"),
       client.from("hunt_unit_economics")
-        .select("provider,item_id,variant_id,destination_country,quantity,currency,sale_price_per_unit,inputs_verified,profit_gate_status,contribution_before_coupon,contribution_margin,max_safe_cac,max_safe_coupon_amount,calculated_at")
+        .select("provider,item_id,variant_id,destination_country,quantity,currency,sale_price_per_unit,supplier_cost_per_unit,customer_shipping_amount,supplier_shipping_cost,payment_reserve,refund_reserve,platform_cost,inputs_verified,profit_gate_status,contribution_before_coupon,contribution_margin,min_required_contribution,max_safe_cac,max_safe_coupon_amount,max_safe_coupon_rate,calculation,calculated_at")
         .order("calculated_at", {ascending:false})
         .limit(120),
       client.from("hunt_deal_candidates")
@@ -182,6 +182,39 @@
           contentLanguage:String(launch.summary?.content_language||"en")
         })
       : {total:passports.length,export_ready:0,publish_ready:0,blocked:passports.length,top_blockers:[],network_calls:0,external_publish:false,owner_gate:"REVIEW_REQUIRED"};
+
+    const Control=window.BoomProfitFeedControlTower;
+    const controlRows=Control?.evaluate ? passports.map(passport=>{
+      const econ=econMap.get(passport.product_key)||{};
+      const feedInput=GoogleFeed?.buildProductInput
+        ? GoogleFeed.buildProductInput(passport,{
+            feedLabel:configuredFeedLabel,
+            contentLanguage:String(launch.summary?.content_language||"en")
+          })
+        : null;
+      return Control.evaluate({
+        passport,
+        econ,
+        feedInput,
+        measurement:{
+          attribution_ready:false,
+          server_event_id_persisted:false,
+          owner_paid_approval:false
+        },
+        performance:{}
+      });
+    }) : [];
+    const controlSummary=Control?.summarize?.(controlRows)||{
+      total:0,
+      external:{promote_candidate:0,prepare:0,hold:0,stop:0},
+      paid:{test_candidate:0,hold:0},
+      scale:{scale_candidate:0,hold:0},
+      verified_economics:0,
+      safe_cac_range:null,
+      top_reasons:[],
+      execute_actions:false,
+      owner_gate:"REVIEW_REQUIRED"
+    };
     const blockerCounts = new Map();
     for (const passport of passports) {
       const productBlockers = new Set();
@@ -214,6 +247,8 @@
       passportBlockers,
       configuredFeedLabel,
       googleFeedPreview,
+      controlRows,
+      controlSummary,
       seoAudit
     };
   }
@@ -434,6 +469,52 @@
     ].join("");
   }
 
+
+  function renderControlTower(data){
+    const s=data.controlSummary||{};
+    const state=$("#bg-control-state");
+    if(state)state.textContent=s.execute_actions===true?"EXECUTION ON":"EXECUTION OFF";
+
+    const range=s.safe_cac_range
+      ? "$"+Number(s.safe_cac_range.min||0).toFixed(2)+"–$"+Number(s.safe_cac_range.max||0).toFixed(2)
+      : "—";
+    const stats=[
+      ["SKUs evaluated",s.total||0],
+      ["Verified economics",s.verified_economics||0],
+      ["External HOLD",(s.external?.hold||0)+(s.external?.stop||0)],
+      ["Safe CAC range",range]
+    ];
+    const host=$("#bg-control-stats");
+    if(host)host.innerHTML=stats.map(([label,value])=>
+      '<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>'
+    ).join("");
+
+    const stateHost=$("#bg-control-states");
+    if(stateHost){
+      const rows=[
+        ["External promote candidate",s.external?.promote_candidate||0],
+        ["External prepare",s.external?.prepare||0],
+        ["External hold / stop",(s.external?.hold||0)+(s.external?.stop||0)],
+        ["Paid test candidate",s.paid?.test_candidate||0],
+        ["Paid hold",s.paid?.hold||0],
+        ["Scale candidate",s.scale?.scale_candidate||0],
+        ["Scale hold",s.scale?.hold||0]
+      ];
+      stateHost.innerHTML=rows.map(([label,value])=>
+        '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(label)+'</strong><span class="bg-score">'+H.esc(value)+'</span></div></article>'
+      ).join("");
+    }
+
+    const reasons=$("#bg-control-reasons");
+    const rows=Array.isArray(s.top_reasons)?s.top_reasons:[];
+    if(reasons)reasons.innerHTML=rows.length
+      ? rows.slice(0,12).map(row=>
+        '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(row.reason||"").replaceAll("_"," "))+
+        '</strong><span class="bg-score">'+H.esc(row.count||0)+'</span></div><small>SKUs affected</small></article>'
+      ).join("")
+      : '<div class="bg-empty">No stop/hold reasons found.</div>';
+  }
+
   function renderOperating(plan, data) {
     const Marketing = window.BoomMarketingBrain;
     const Creative = window.BoomCreativeBrain;
@@ -533,6 +614,7 @@
     renderPassports(data);
     renderGoogleFeed(data);
     renderMeasurementHub();
+    renderControlTower(data);
     renderOperating(plan, data);
 
     $("#bg-bottleneck-code").textContent = plan.bottleneck.code;
