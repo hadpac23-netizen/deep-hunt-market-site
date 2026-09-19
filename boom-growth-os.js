@@ -498,6 +498,20 @@
       .sort((a,b) => b.count - a.count || a.blocker.localeCompare(b.blocker))
       .slice(0,12);
 
+    const DurableIdentity=window.BoomDurableEventIdentity;
+    const durableEventIdentity=DurableIdentity?.evaluate?.({
+      browser_event_id_generation:true,
+      schema_event_id_column:false,
+      unique_event_id_constraint:false,
+      public_canonical_insert_blocked:false,
+      local_sql_blueprint_ready:true,
+      local_function_patch_ready:true,
+      live_function_atomic_dedup:false,
+      live_function_version:8,
+      historical_rows:4630,
+      historical_rows_with_event_id:0
+    })||{state:"HOLD",checks:{},blockers:["durable_event_identity_runtime_unavailable"],schema_ready:false,local_preview_ready:false,durable_ready:false,historical_rows:0,historical_rows_with_event_id:0,historical_backfill_allowed:false,execute_actions:false};
+
     const PaidAttribution=window.BoomPaidAttributionReadiness;
     const analyticsCfg=window.HUNT_ANALYTICS_CONFIG||{};
     const paidAttribution=PaidAttribution?.evaluate?.({
@@ -505,7 +519,7 @@
       ga4_configured:/^G-[A-Z0-9]+$/i.test(String(analyticsCfg.ga4MeasurementId||"").trim()),
       first_party_signal_live:true,
       live_event_id_persistence:false,
-      durable_server_dedup:false,
+      durable_server_dedup:durableEventIdentity.durable_ready===true,
       server_purchase_confirmation:serverPurchaseProof.server_purchase_confirmation===true,
       campaign_touchpoint_persistence:serverPurchaseProof.live_campaign_context_persisted===true,
       purchase_touchpoint_linkage:serverPurchaseProof.purchase_touchpoint_linkage===true,
@@ -559,6 +573,7 @@
       creatorSystem,
       marketplaceSnapshot,
       serverPurchaseProof,
+      durableEventIdentity,
       paidAttribution,
       attributionContext,
       agenticGateway,
@@ -1139,6 +1154,7 @@
       ["M20","Paid Attribution Readiness","BoomPaidAttributionReadiness","PANEL"],
       ["M21","Attribution Context","BoomAttributionContextReadiness","PANEL"],
       ["M22","Server Purchase Proof","HuntServerPurchaseProofAdapter","PANEL"],
+      ["M23","Durable Event Identity","BoomDurableEventIdentity","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1464,6 +1480,7 @@
       {domain:"paid_attribution",source_kind:"DIRECT_DB",source_ref:"M20 canonical event + server conversion attribution",available:data.paidAttribution?.paid_attribution_ready===true,truth_verified:data.paidAttribution?.paid_attribution_ready===true,observed_count:data.paidAttribution?.paid_attribution_ready?1:0,minimum_count:1,observed_at:data.paidAttribution?.paid_attribution_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"campaign_touchpoint_context",source_kind:"STRUCTURAL",source_ref:"M21 consent-gated browser → checkout → payment-session preview",available:data.attributionContext?.local_preview_ready===true,truth_verified:false,freshness_required:false},
       {domain:"server_purchase_proof",source_kind:"DIRECT_DB",source_ref:"hunt_payment_sessions + hunt_payment_events + hunt_orders",available:data.serverPurchaseProof?.adapter_ready===true,truth_verified:data.serverPurchaseProof?.server_purchase_confirmation===true,observed_count:Number(data.serverPurchaseProof?.provider_confirmed_real_orders||0),minimum_count:1,observed_at:data.serverPurchaseProof?.adapter_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
+      {domain:"durable_event_identity",source_kind:data.durableEventIdentity?.durable_ready?"DIRECT_DB":"STRUCTURAL",source_ref:"M23 analytics_events.event_id + UNIQUE + guarded Edge insert",available:data.durableEventIdentity?.local_preview_ready===true||data.durableEventIdentity?.durable_ready===true,truth_verified:data.durableEventIdentity?.durable_ready===true,observed_count:data.durableEventIdentity?.durable_ready?1:0,minimum_count:data.durableEventIdentity?.durable_ready?1:0,observed_at:data.durableEventIdentity?.durable_ready?new Date().toISOString():"",freshness_required:data.durableEventIdentity?.durable_ready===true,max_age_ms:60*60*1000},
       {domain:"source_verification_workflow",source_kind:"STRUCTURAL",source_ref:"M16 source verification workflow",available:Boolean(window.BoomDigitalMarketingUniversity),truth_verified:false,freshness_required:false}
     ];
     return E.matrix(records);
@@ -1481,6 +1498,25 @@
     const gaps=$("#bg-evidence-gaps");
     if(gaps)gaps.innerHTML=e.rows.filter(x=>x.state!=="VERIFIED").map(rowHtml).join("")||'<div class="bg-empty">No evidence gaps.</div>';
     return e;
+  }
+
+  function renderDurableEventIdentity(data={}){
+    const d=data.durableEventIdentity||{state:"HOLD",checks:{},blockers:[],schema_ready:false,local_preview_ready:false,durable_ready:false,historical_rows:0,historical_rows_with_event_id:0,historical_backfill_allowed:false,live_function_version:0};
+    const state=$("#bg-durable-identity-state");
+    if(state)state.textContent=d.durable_ready?"OWNER REVIEW":d.state||"HOLD";
+    const stats=$("#bg-durable-identity-stats");
+    if(stats)stats.innerHTML=[
+      ["Historical rows",d.historical_rows||0],
+      ["Stored event_id",d.historical_rows_with_event_id||0],
+      ["Live function","v"+(d.live_function_version||"?")],
+      ["Durable dedup",d.durable_ready?"READY":"OFF"]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const labels={browser_event_id_generation:"Browser canonical event_id",schema_event_id_column:"analytics_events.event_id column",unique_event_id_constraint:"Database UNIQUE(event_id)",public_canonical_insert_blocked:"Public canonical insert guard",local_sql_blueprint_ready:"Local SQL proposal",local_function_patch_ready:"Feature-gated Edge patch",live_function_atomic_dedup:"Live atomic dedup"};
+    const checks=$("#bg-durable-identity-checks");
+    if(checks)checks.innerHTML=Object.entries(labels).map(([key,label])=>{const ok=d.checks?.[key]===true;return '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(label)+'</strong><span class="bg-score '+(ok?"bg-passport-ready":"bg-passport-blocked")+'">'+(ok?"READY":"MISSING")+'</span></div></article>';}).join("");
+    const blockers=$("#bg-durable-identity-blockers");
+    if(blockers)blockers.innerHTML=(d.blockers||[]).map(blocker=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(blocker).replaceAll("_"," "))+'</strong><span class="bg-score bg-passport-blocked">HOLD</span></div></article>').join("")+'<article class="bg-row"><div class="bg-row-head"><strong>Historical backfill</strong><span class="bg-score bg-passport-blocked">FORBIDDEN</span></div><small>Original canonical event IDs were never persisted; old rows stay NULL.</small></article>';
+    return d;
   }
 
   function renderServerPurchaseProof(data={}){
@@ -1735,6 +1771,7 @@
     renderMarketplace(data);
     renderUniversity(data);
     renderEvidenceLedger(data);
+    renderDurableEventIdentity(data);
     renderServerPurchaseProof(data);
     renderAttributionContext(data);
     renderPaidAttribution(data);

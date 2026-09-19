@@ -55,7 +55,7 @@ HuntAnalytics.purchase remains fail-closed:
 Checkout preview does not become purchase analytics.
 
 ## Open gap
-M20 adds a local, undeployed hunt-commerce-signal preview that persists event_id into analytics metadata. Live v8 remains unchanged, durable cross-worker dedup is still incomplete, and paid attribution remains blocked until server-confirmed purchase and campaign linkage exist.
+M20 adds a local, undeployed hunt-commerce-signal preview that persists event_id into analytics metadata. M23 now adds the reviewed database-uniqueness design and feature-gated atomic insert path, but the live schema/function remain unchanged; durable cross-worker dedup and paid attribution therefore remain blocked.
 
 ## Invariants
 EXTERNAL_MEASUREMENT_SEND: false

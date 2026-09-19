@@ -105,6 +105,30 @@ Deno.serve(async req=>{
   const secret=adminKey();
   if(!url||!secret)return json({error:"server config missing"},500,headers);
 
+  const durableIdentityEnabled=clean(Deno.env.get("HUNT_DURABLE_EVENT_IDENTITY_ENABLED"),12).toLowerCase()==="true";
+  if(durableIdentityEnabled&&!eventId)return json({error:"event_id required for durable identity"},400,headers);
+
+  if(durableIdentityEnabled){
+    const durableRes=await fetch(url+"/rest/v1/analytics_events?on_conflict=event_id",{
+      method:"POST",
+      headers:{
+        "apikey":secret,
+        "Content-Type":"application/json",
+        "Prefer":"resolution=ignore-duplicates,return=representation"
+      },
+      body:JSON.stringify({event_id:eventId,event_type:eventType,session_id:sessionId,metadata})
+    });
+    if(!durableRes.ok)return json({error:"durable signal store failed"},502,headers);
+    const stored=await durableRes.json().catch(()=>[]);
+    return json({
+      ok:true,
+      event_id_persisted:true,
+      durable_cross_worker_dedup:true,
+      deduped:Array.isArray(stored)&&stored.length===0,
+      paid_attribution:false
+    },200,headers);
+  }
+
   const res=await fetch(url+"/rest/v1/analytics_events",{
     method:"POST",
     headers:{
@@ -120,6 +144,7 @@ Deno.serve(async req=>{
     ok:true,
     event_id_persisted:Boolean(eventId),
     durable_cross_worker_dedup:false,
+    deduped:false,
     paid_attribution:false
   },200,headers);
 });

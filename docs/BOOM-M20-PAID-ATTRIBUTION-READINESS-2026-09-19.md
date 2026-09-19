@@ -28,7 +28,7 @@ The preview:
 The preview is NOT deployed.
 
 ## Why paid attribution remains HOLD
-Persisting event_id is only one layer. M21 now adds a local consent-gated campaign-context path into the payment-session source, but that patch is also undeployed and remains unverified browser context.
+Persisting event_id is only one layer. M21 adds a local consent-gated campaign-context path. M23 now supplies the durable dedup readiness gate; M20 consumes M23.durable_ready rather than a hardcoded value. None of these local patches are live proof until deployment and verification.
 
 Decision-grade paid attribution still requires:
 - live event_id persistence

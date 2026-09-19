@@ -16,7 +16,7 @@ for(const token of [
 for(const token of [
   "const PaidAttribution=window.BoomPaidAttributionReadiness",
   "live_event_id_persistence:false",
-  "durable_server_dedup:false",
+  "durable_server_dedup:durableEventIdentity.durable_ready===true",
   "server_purchase_confirmation:serverPurchaseProof.server_purchase_confirmation===true",
   "campaign_touchpoint_persistence:serverPurchaseProof.live_campaign_context_persisted===true",
   "purchase_touchpoint_linkage:serverPurchaseProof.purchase_touchpoint_linkage===true",
