@@ -42,7 +42,7 @@
   }
 
   async function loadData() {
-    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, catalogRes, identityRes, savedCountRes, realOrdersCountRes, testOrdersCountRes, trackingCountRes, deliveredCountRes, seoAudit] = await Promise.all([
+    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, catalogRes, identityRes, savedCountRes, realOrdersCountRes, testOrdersCountRes, trackingCountRes, deliveredCountRes, creatorDraftCountRes, publishedDraftCountRes, merchantConversionCountRes, partnerRightsCountRes, seoAudit] = await Promise.all([
       ownerFunction("hunt-owner-mission-control"),
       ownerFunction("hunt-launch-readiness"),
       client.from("hunt_unit_economics")
@@ -83,6 +83,10 @@
       client.from("hunt_orders").select("id",{count:"exact",head:true}).eq("is_test",true),
       client.from("hunt_fulfillment_orders").select("id",{count:"exact",head:true}).not("tracking_number","is",null),
       client.from("hunt_fulfillment_orders").select("id",{count:"exact",head:true}).not("delivered_at","is",null),
+      client.from("hunt_distribution_drafts").select("id",{count:"exact",head:true}).ilike("channel","%creator%"),
+      client.from("hunt_distribution_drafts").select("id",{count:"exact",head:true}).not("published_at","is",null),
+      client.from("merchant_conversion_events").select("id",{count:"exact",head:true}),
+      client.from("hunt_partner_matrix").select("id",{count:"exact",head:true}).not("media_rights_verified_at","is",null),
       fetch("boom-seo-audit.json?v=os3",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)
     ]);
 
@@ -99,6 +103,28 @@
     if (testOrdersCountRes.error) throw testOrdersCountRes.error;
     if (trackingCountRes.error) throw trackingCountRes.error;
     if (deliveredCountRes.error) throw deliveredCountRes.error;
+    if (creatorDraftCountRes.error) throw creatorDraftCountRes.error;
+    if (publishedDraftCountRes.error) throw publishedDraftCountRes.error;
+    if (merchantConversionCountRes.error) throw merchantConversionCountRes.error;
+    if (partnerRightsCountRes.error) throw partnerRightsCountRes.error;
+
+    const creatorSnapshot={
+      creator_registry_ready:false,
+      creator_registry_count:0,
+      rights_ledger_ready:false,
+      rights_verified_count:0,
+      attribution_registry_ready:false,
+      economics_ledger_ready:false,
+      event_id_persistence_ready:false,
+      confirmed_conversion_source_ready:false,
+      confirmed_creator_conversions:0,
+      creator_distribution_drafts:Number(creatorDraftCountRes.count||0),
+      published_distribution_drafts:Number(publishedDraftCountRes.count||0),
+      generic_merchant_conversion_rows:Number(merchantConversionCountRes.count||0),
+      partner_media_rights_verified:Number(partnerRightsCountRes.count||0),
+      publish_enabled:false,
+      payout_enabled:false
+    };
 
     const lifecycleSnapshot={
       saved_actions:Number(savedCountRes.count||0),
@@ -403,6 +429,22 @@
     const lifecyclePlan=Lifecycle?.plan
       ? Lifecycle.plan(lifecycleProbeSignals,{now:Date.now()})
       : {version:"—",total:0,eligible:0,hold:0,rows:[],top_blockers:[],sends_executed:0,execute_actions:false,owner_gate:"REVIEW_REQUIRED"};
+
+    const CreatorOS=window.BoomCreatorOS;
+    const creatorSystem=CreatorOS?.systemReadiness
+      ? CreatorOS.systemReadiness({
+          creator_registry_ready:creatorSnapshot.creator_registry_ready,
+          rights_ledger_ready:creatorSnapshot.rights_ledger_ready,
+          attribution_registry_ready:creatorSnapshot.attribution_registry_ready,
+          economics_ledger_ready:creatorSnapshot.economics_ledger_ready,
+          claim_firewall_ready:Boolean(window.BoomClaimFirewall),
+          event_id_persistence_ready:creatorSnapshot.event_id_persistence_ready,
+          confirmed_conversion_source_ready:creatorSnapshot.confirmed_conversion_source_ready,
+          creator_registry_count:creatorSnapshot.creator_registry_count,
+          rights_verified_count:creatorSnapshot.rights_verified_count,
+          confirmed_creator_conversions:creatorSnapshot.confirmed_creator_conversions
+        })
+      : {state:"HOLD",blockers:["creator_os_unavailable"],creator_registry_count:0,rights_verified_count:0,confirmed_creator_conversions:0,publish_actions:0,payouts:0,execute_actions:false,owner_gate:"REVIEW_REQUIRED"};
     const blockerCounts = new Map();
     for (const passport of passports) {
       const productBlockers = new Set();
@@ -445,6 +487,8 @@
       offerTopBlockers,
       lifecycleSnapshot,
       lifecyclePlan,
+      creatorSnapshot,
+      creatorSystem,
       seoAudit
     };
   }
@@ -855,6 +899,53 @@
     ].join("");
   }
 
+
+  function renderCreatorOS(data){
+    const s=data.creatorSnapshot||{};
+    const system=data.creatorSystem||{state:"HOLD",blockers:[],creator_registry_count:0,rights_verified_count:0,confirmed_creator_conversions:0,publish_actions:0,payouts:0,execute_actions:false};
+    const state=$("#bg-creator-state");
+    if(state)state.textContent=system.state||"HOLD";
+
+    const stats=[
+      ["Creator registry",system.creator_registry_count||0],
+      ["Rights verified",system.rights_verified_count||0],
+      ["Creator conversions",system.confirmed_creator_conversions||0],
+      ["Creator drafts",s.creator_distribution_drafts||0]
+    ];
+    const host=$("#bg-creator-stats");
+    if(host)host.innerHTML=stats.map(([label,value])=>
+      '<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>'
+    ).join("");
+
+    const readiness=$("#bg-creator-readiness");
+    if(readiness){
+      const rows=[
+        ["Registry",s.creator_registry_ready===true?"READY":"MISSING"],
+        ["Rights ledger",s.rights_ledger_ready===true?"READY":"MISSING"],
+        ["Attribution registry",s.attribution_registry_ready===true?"READY":"MISSING"],
+        ["Creator economics",s.economics_ledger_ready===true?"READY":"MISSING"],
+        ["Publish",s.publish_enabled===true?"ON":"OFF"],
+        ["Payout",s.payout_enabled===true?"ON":"OFF"]
+      ];
+      readiness.innerHTML=rows.map(([label,value])=>
+        '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(label)+'</strong><span class="bg-score">'+H.esc(value)+'</span></div></article>'
+      ).join("");
+    }
+
+    const blockers=$("#bg-creator-blockers");
+    const rows=[
+      ...(system.blockers||[]).map(blocker=>({label:String(blocker).replaceAll("_"," "),value:"HOLD"})),
+      {label:"Generic merchant conversions",value:s.generic_merchant_conversion_rows||0,note:"Not counted as creator attribution"},
+      {label:"Published distribution drafts",value:s.published_distribution_drafts||0,note:"Not creator proof"},
+      {label:"Partner media rights verified",value:s.partner_media_rights_verified||0,note:"Partner rights are not creator rights"}
+    ];
+    if(blockers)blockers.innerHTML=rows.map(row=>
+      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(row.label)+
+      '</strong><span class="bg-score">'+H.esc(row.value)+'</span></div>'+
+      (row.note?'<small>'+H.esc(row.note)+'</small>':"")+'</article>'
+    ).join("");
+  }
+
   function renderOperating(plan, data) {
     const Marketing = window.BoomMarketingBrain;
     const Seo = window.BoomSeoBrain;
@@ -958,6 +1049,7 @@
     renderCreativeFactory(data);
     renderOfferChess(data);
     renderLifecycleBrain(data);
+    renderCreatorOS(data);
     renderOperating(plan, data);
 
     $("#bg-bottleneck-code").textContent = plan.bottleneck.code;
