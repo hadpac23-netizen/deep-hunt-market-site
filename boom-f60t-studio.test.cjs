@@ -19,8 +19,8 @@ for(const token of [
   'boom-f60t-core.js?v=f60t1',
   'boom-f60t-live-adapter.js?v=f60tl2',
   'boom-f60t-crowd-radar.js?v=f60tr1',
-  'boom-f60t-world-watch.js?v=f60tw1',
-  'boom-growth-os.js?v=os42'
+  'boom-f60t-world-watch.js?v=f60tw2',
+  'boom-growth-os.js?v=os43'
 ]) assert(html.includes(token),"F60T Studio HTML missing: "+token);
 
 assert(!html.includes("$10K+ NET/DAY MODEL"),"Legacy $10K/day panel still visible");
@@ -44,6 +44,8 @@ for(const token of [
   "world_watch_radars:Array.isArray(F60TWorldWatch?.RADARS)?F60TWorldWatch.RADARS:[]",
   "world_watch_skills:Array.isArray(F60TWorldWatch?.SKILLS)?F60TWorldWatch.SKILLS:[]",
   "World Watch radars",
+  "Cloudflare Radar",
+  "World Watch cadence",
   "F60T skills",
   "World Watch 24/7",
   "World Watch contract",

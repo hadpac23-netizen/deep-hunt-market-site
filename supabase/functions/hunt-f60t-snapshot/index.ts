@@ -70,6 +70,12 @@ function hourStartUtc(d=new Date()){
   x.setUTCMinutes(0,0,0);
   return x;
 }
+function tenMinuteBucketStartUtc(d=new Date()){
+  const x=new Date(d);
+  const minute=Math.floor(x.getUTCMinutes()/10)*10;
+  x.setUTCMinutes(minute,0,0);
+  return x;
+}
 function localHour(iso:string,timezone:string){
   if(!timezone)return null;
   try{
@@ -137,6 +143,8 @@ Deno.serve(async(req:Request)=>{
   const now=new Date();
   const hourStart=hourStartUtc(now);
   const hourEnd=new Date(hourStart.getTime()+60*60*1000);
+  const crowdBucketStart=tenMinuteBucketStartUtc(now);
+  const crowdBucketEnd=new Date(crowdBucketStart.getTime()+10*60*1000);
   const since24=new Date(now.getTime()-24*60*60*1000).toISOString();
 
   const [eventsRes,sourcesRes,agentsRes,bridgeRes,externalRes,externalRunsRes]=await Promise.all([
@@ -188,14 +196,14 @@ Deno.serve(async(req:Request)=>{
     .sort((a,b)=>b.intent_score_avg-a.intent_score_avg||b.event_count-a.event_count)
     .slice(0,12);
 
-  const currentHourEvents=events.filter((row:any)=>{
+  const currentWindowEvents=events.filter((row:any)=>{
     const t=Date.parse(String(row.created_at||""));
-    return Number.isFinite(t)&&t>=hourStart.getTime()&&t<hourEnd.getTime();
+    return Number.isFinite(t)&&t>=crowdBucketStart.getTime()&&t<crowdBucketEnd.getTime();
   });
-  const currentClusters=aggregate(currentHourEvents).filter(x=>x.timezone&&x.local_hour!==null&&x.event_count>0);
+  const currentClusters=aggregate(currentWindowEvents).filter(x=>x.timezone&&x.local_hour!==null&&x.event_count>0);
   if(currentClusters.length){
     const snapshotRows=currentClusters.map(x=>({
-      bucket_start:hourStart.toISOString(),
+      bucket_start:crowdBucketStart.toISOString(),
       source_key:"hunt_first_party",
       platform:x.platform,
       country_code:x.country_code,
@@ -322,7 +330,7 @@ Deno.serve(async(req:Request)=>{
   const externalKinds=new Set(verifiedExternalRows.map((x:any)=>clean(x?.signal_kind,80)));
   const worldWatch={
     always_on:true,
-    cadence:"HOURLY",
+    cadence:"TEN_MINUTES_FIRST_PARTY",
     skill_count:40,
     radars:[
       {
@@ -352,6 +360,9 @@ Deno.serve(async(req:Request)=>{
       "CHECK_OWNER_GATE","EXECUTE_PREPARE_HOLD","VERIFY","LEARN","MOVE"
     ],
     external_actions_gated:true,
+    first_party_window_minutes:10,
+    external_connector_cadence:"HOURLY",
+    cloudflare_radar_state:"LICENSE_REVIEW",
     paid_spend:false,
     external_publish:false,
     live_price_write:false,

@@ -76,6 +76,9 @@
   const api=Object.freeze({
     VERSION,RADARS,PLATFORM_ROLES,SKILLS,CYCLE,
     always_on:true,
+    first_party_cadence_minutes:10,
+    external_connector_cadence:"HOURLY",
+    cloudflare_radar_state:"LICENSE_REVIEW",
     target_net_per_hour:10000,
     target_is_guarantee:false,
     profit_truth_required:true,

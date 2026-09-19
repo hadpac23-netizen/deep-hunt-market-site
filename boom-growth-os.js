@@ -722,6 +722,8 @@
       world_watch_radars:Array.isArray(F60TWorldWatch?.RADARS)?F60TWorldWatch.RADARS:[],
       world_watch_skills:Array.isArray(F60TWorldWatch?.SKILLS)?F60TWorldWatch.SKILLS:[],
       world_watch_cycle:Array.isArray(F60TWorldWatch?.CYCLE)?F60TWorldWatch.CYCLE:[],
+      world_watch_cadence_minutes:Number(F60TWorldWatch?.first_party_cadence_minutes||10),
+      cloudflare_radar_state:String(F60TWorldWatch?.cloudflare_radar_state||"LICENSE_REVIEW"),
       oauth_providers:Array.isArray(f60tOauthRes?.providers)?f60tOauthRes.providers:[]
     };
 
@@ -964,6 +966,7 @@
         ["Orders / hour required", target.minimum_orders_per_hour_at_average_contribution==null?"—":String(target.minimum_orders_per_hour_at_average_contribution)],
         ["Platform / agent surfaces", String(f.platform_count||0)],
         ["World Watch radars", String((f.world_watch_radars||[]).length)+"/5"],
+        ["World Watch cadence", String(f.world_watch_cadence_minutes||10)+" min"],
         ["F60T skills", String(22+(f.world_watch_skills||[]).length)+"/40"],
         ["Live signal sources", String(f.source_live_count||0)],
         ["External official rows", String(f.external_signal_rows||0)],
@@ -991,6 +994,7 @@
         ["Mission",String(mission.name||"F60T · ימ״מ")],
         ["Command","TARGET → LOCATION → SALE"],
         ["World Watch 24/7",f.world_watch_ready?"ON · 5 RADARS":"HOLD"],
+        ["Cloudflare Radar",f.cloudflare_radar_state==="LICENSE_REVIEW"?"RESEARCH ONLY · LICENSE REVIEW":f.cloudflare_radar_state],
         ["Follow the Sun",f.follow_the_sun?"ON":"HOLD"],
         ["Global Crowd Radar",f.crowd_radar_ready?"ENTRY WINDOW FOUND":(f.crowd_signals_ready?"SIGNALS LIVE · NO CONVERGENCE":"SIGNALS PENDING")],
         ["Local Buying Clock",f.local_buying_clock_ready?"LEARNING LIVE":"TIMEZONE SAMPLE BUILDING"],
