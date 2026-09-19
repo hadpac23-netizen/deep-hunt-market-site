@@ -4,6 +4,7 @@
   const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
   const $=q=>document.querySelector(q);
   let rows=[];
+  let liveSnapshot=null;
 
   function label(v){return String(v||"").replaceAll("_"," ")}
   function setStatus(text,tone=""){
@@ -12,6 +13,80 @@
     el.hidden=false;
     el.dataset.tone=tone;
     el.innerHTML="<strong>"+H.esc(text)+"</strong>";
+  }
+  function fmtNumber(v){
+    const n=Number(v);
+    return Number.isFinite(n)?new Intl.NumberFormat().format(n):"—";
+  }
+  function fmtMoney(v,currency="USD"){
+    const n=Number(v);
+    if(!Number.isFinite(n))return "—";
+    try{return new Intl.NumberFormat(undefined,{style:"currency",currency}).format(n)}
+    catch{return n.toFixed(2)+" "+currency}
+  }
+  function renderF60T(){
+    const root=$("#hd-f60t-live");
+    if(!root)return;
+    const s=liveSnapshot;
+    if(!s){
+      $("#hd-f60t-generated").textContent="Unavailable";
+      $("#hd-f60t-generated").className="hd-merchant-status blocked";
+      $("#hd-f60t-metrics").innerHTML='<div><strong>—</strong><span>No verified snapshot</span></div>';
+      return;
+    }
+    const profit=s.hourly_profit||{};
+    const ext=s.external_signals||{};
+    $("#hd-f60t-generated").textContent=s.generated_at?"LIVE SNAPSHOT":"OBSERVE";
+    $("#hd-f60t-generated").className="hd-merchant-status "+(s.generated_at?"adopted":"scouted");
+    $("#hd-f60t-metrics").innerHTML=[
+      ["First-party / 24h",fmtNumber(s.first_party_event_count)],
+      ["Intent events",fmtNumber(s.recognized_intent_event_count)],
+      ["Verified external",fmtNumber(ext.verified_rows)],
+      ["Verified net / hour",fmtMoney(profit.verified_net_profit,profit.currency||"USD")]
+    ].map(([label,value])=>'<div><strong>'+H.esc(value)+'</strong><span>'+H.esc(label)+'</span></div>').join("");
+
+    const radars=Array.isArray(s.world_watch?.radars)?s.world_watch.radars:[];
+    $("#hd-f60t-radars").innerHTML='<p class="hd-radar-evidence"><strong>Radars:</strong> '+
+      (radars.length?radars.map(r=>H.esc(label(r.code))+" · "+H.esc(r.state)).join(" · "):"No radar state")+
+      '</p>';
+
+    const zones=Array.isArray(s.hot_zones)?s.hot_zones:[];
+    $("#hd-f60t-hot-zones").innerHTML=zones.length
+      ? '<div class="hd-command-tags">'+zones.slice(0,8).map(z=>{
+          const place=[z.country_code,z.platform,z.category].filter(Boolean).join(" · ");
+          return '<span>'+H.esc(place||"aggregate signal")+' · intent '+H.esc(z.intent_score_avg)+'</span>';
+        }).join("")+'</div>'
+      : '<p class="hd-radar-safety"><strong>Hot zones:</strong> none verified yet.</p>';
+
+    const sources=Array.isArray(s.sources)?s.sources:[];
+    $("#hd-f60t-sources").innerHTML=sources.length
+      ? '<p class="hd-radar-evidence"><strong>Sources:</strong> '+sources.map(x=>H.esc(x.source_key)+"="+H.esc(x.status)).join(" · ")+'</p>'
+      : '<p class="hd-radar-evidence"><strong>Sources:</strong> no source registry returned.</p>';
+
+    if(Array.isArray(s.errors)&&s.errors.length){
+      $("#hd-f60t-sources").innerHTML+='<p class="hd-radar-safety"><strong>Snapshot warnings:</strong> '+H.esc(s.errors.join(" · "))+'</p>';
+    }
+  }
+  async function loadF60T(session){
+    try{
+      const res=await fetch(H.functionsBase+"/hunt-f60t-snapshot",{
+        method:"POST",
+        cache:"no-store",
+        headers:{
+          apikey:H.publishableKey,
+          Authorization:"Bearer "+session.access_token,
+          "Content-Type":"application/json"
+        },
+        body:"{}"
+      });
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok||data?.ok!==true)throw new Error(data?.error||"F60T snapshot unavailable");
+      liveSnapshot=data;
+    }catch(error){
+      liveSnapshot=null;
+      console.warn("F60T snapshot:",error);
+    }
+    renderF60T();
   }
   function filtered(){
     const status=$("#hd-radar-status-filter")?.value||"all";
@@ -64,6 +139,7 @@
       .order("priority",{ascending:false}).order("user_value",{ascending:false});
     if(error){setStatus(error.message||"Could not load World Radar.","error");return;}
     rows=data||[];
+    await loadF60T(session);
     $("#hd-radar-dashboard").hidden=false;
     $("#hd-radar-status").hidden=true;
     render();
