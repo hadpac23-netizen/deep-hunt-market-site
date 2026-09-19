@@ -19,7 +19,7 @@ const css=fs.readFileSync("hunt-visual-v2.css","utf8");
 assert(index.includes('class="hd-hero4-categories"'),"Hero 4 category shortcuts missing");
 assert(index.includes('data-open-categories'),"Unified Categories gateway missing");
 assert(index.includes('hunt-building.css?v=3'),"Building architecture stylesheet missing");
-assert(index.includes('hunt-home-3.js?v=5'),"Building architecture runtime missing");
+assert(index.includes('hunt-home-3.js?v=6'),"Building architecture runtime missing");
 assert(index.includes('id="hd-hero4-search-input"'),"Hero 4 conversational search missing");
 assert(index.includes('id="hd-hero4-promo"'),"Hero 4 dynamic promo surface missing");
 assert(theme.includes('classList.contains("hd-home3")'),"Legacy Home renderer must stand down on the building homepage");

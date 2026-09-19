@@ -223,7 +223,7 @@
     if(mode==="women")rows=rows.filter(isWomen);
     rows=rows.slice(0,6);
     const host=$("#hd-home3-for-you");
-    if(host)host.innerHTML=rows.map(item=>card(item,{label:mode==="for-you"?"FOR YOU":""})).join("");
+    if(host)host.innerHTML=rows.map((item,index)=>card(item,{label:mode==="for-you"&&index===0?"FOR YOU":""})).join("");
     const copy=$("#hd-home3-for-you-copy");
     if(copy){
       const t=window.HuntExperienceI18n?.t;

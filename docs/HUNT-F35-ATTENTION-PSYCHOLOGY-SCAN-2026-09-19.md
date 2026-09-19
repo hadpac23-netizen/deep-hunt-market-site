@@ -64,3 +64,17 @@ The user can:
 - `hunt-attention-architecture.css`: hierarchy, focus, menu chunks, breathing rhythm.
 - `hunt-home-3.js`: grouped mega-menu.
 - Existing `HuntVisualOrderGuard` remains the structural safety layer.
+
+
+## Attention Guard
+A second runtime guard now protects the psychology layer itself.
+
+It audits:
+- pointer target size for visible navigation controls;
+- exactly one current floor/scope;
+- title -> price card hierarchy;
+- mega-menu chunking into three clusters with no cluster above five departments;
+- salience budget so product grids do not accumulate too many competing labels.
+
+The guard reports through `body[data-hunt-attention-guard]` and dispatches `hunt:attention-audit`.
+This is separate from the structural Visual Order Guard: one protects building structure, the other protects perceptual clarity.

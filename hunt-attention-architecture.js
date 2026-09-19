@@ -28,6 +28,7 @@
   let observer=null;
   let currentId="";
   let scrollInstalled=false;
+  let clickInstalled=false;
   let scrollFrame=0;
   const seen=new Set();
 
@@ -133,10 +134,14 @@
   }
 
   function installClickIntent(){
-    document.querySelector("#hd-building-floor-nav")?.addEventListener("click",event=>{
+    if(clickInstalled)return;
+    const nav=document.querySelector("#hd-building-floor-nav");
+    if(!nav)return;
+    nav.addEventListener("click",event=>{
       const link=event.target.closest?.("a[href^='#']");
       if(link)updateCurrent(floorId(link),"click");
     });
+    clickInstalled=true;
   }
 
   function install(){
@@ -153,7 +158,8 @@
     zones:Object.freeze({...FLOOR_ZONES})
   });
 
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});
-  else install();
+  install();
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(installObserver,0),{once:true});
+  window.addEventListener("pageshow",()=>setTimeout(installObserver,50));
   window.addEventListener("hunt:shelves",()=>setTimeout(installObserver,250));
 })();
