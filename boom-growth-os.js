@@ -215,6 +215,33 @@
       execute_actions:false,
       owner_gate:"REVIEW_REQUIRED"
     };
+
+    const CreativeFactory=window.BoomCreativeFactory;
+    const ClaimFirewall=window.BoomClaimFirewall;
+    const creativeInputs=passports.map((passport,index)=>({
+      passport,
+      control:controlRows[index]||{},
+      firewall:ClaimFirewall
+    }));
+    const creativeBatch=CreativeFactory?.buildBatch
+      ? CreativeFactory.buildBatch(creativeInputs)
+      : {total:creativeInputs.length,candidates:0,safe_drafts:0,blocked_drafts:0,outputs:[],external_publish:false,owner_gate:"REVIEW_REQUIRED"};
+    const creativeBlockers=new Map();
+    for(const row of creativeBatch.outputs||[]){
+      for(const reason of row?.candidate?.reasons||[]){
+        creativeBlockers.set(reason,(creativeBlockers.get(reason)||0)+1);
+      }
+      for(const draft of row?.drafts||[]){
+        for(const violation of draft?.claim_firewall?.violations||[]){
+          const code="claim:"+String(violation);
+          creativeBlockers.set(code,(creativeBlockers.get(code)||0)+1);
+        }
+      }
+    }
+    const creativeTopBlockers=[...creativeBlockers.entries()]
+      .map(([reason,count])=>({reason,count}))
+      .sort((a,b)=>b.count-a.count||a.reason.localeCompare(b.reason))
+      .slice(0,12);
     const blockerCounts = new Map();
     for (const passport of passports) {
       const productBlockers = new Set();
@@ -249,6 +276,8 @@
       googleFeedPreview,
       controlRows,
       controlSummary,
+      creativeBatch,
+      creativeTopBlockers,
       seoAudit
     };
   }
@@ -515,17 +544,58 @@
       : '<div class="bg-empty">No stop/hold reasons found.</div>';
   }
 
+
+  function renderCreativeFactory(data){
+    const batch=data.creativeBatch||{total:0,candidates:0,safe_drafts:0,blocked_drafts:0,outputs:[],external_publish:false};
+    const state=$("#bg-creative-state");
+    if(state)state.textContent=batch.external_publish===true?"PUBLISH ON":"DRAFT ONLY";
+
+    const videoBriefs=(batch.outputs||[]).filter(x=>x?.video_brief).length;
+    const stats=[
+      ["SKUs checked",batch.total||0],
+      ["Creative candidates",batch.candidates||0],
+      ["Safe drafts",batch.safe_drafts||0],
+      ["Blocked drafts",batch.blocked_drafts||0]
+    ];
+    const host=$("#bg-creative-stats");
+    if(host)host.innerHTML=stats.map(([label,value])=>
+      '<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>'
+    ).join("");
+
+    const output=$("#bg-creative-output");
+    if(output){
+      const rows=[
+        ["Channel templates","Google asset · Meta Reels · TikTok · Pinterest · Onsite"],
+        ["Video briefs",videoBriefs],
+        ["External publish",batch.external_publish===true?"ON":"OFF"],
+        ["Owner gate",batch.owner_gate||"REVIEW_REQUIRED"]
+      ];
+      output.innerHTML=rows.map(([label,value])=>
+        '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(label)+'</strong><span class="bg-score">'+H.esc(value)+'</span></div></article>'
+      ).join("");
+    }
+
+    const blockers=$("#bg-creative-blockers");
+    const rows=Array.isArray(data.creativeTopBlockers)?data.creativeTopBlockers:[];
+    if(blockers)blockers.innerHTML=rows.length
+      ? rows.map(row=>
+        '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(row.reason||"").replaceAll("_"," "))+
+        '</strong><span class="bg-score">'+H.esc(row.count||0)+'</span></div><small>SKUs / drafts affected</small></article>'
+      ).join("")
+      : '<div class="bg-empty">No creative blockers found.</div>';
+  }
+
   function renderOperating(plan, data) {
     const Marketing = window.BoomMarketingBrain;
-    const Creative = window.BoomCreativeBrain;
     const Seo = window.BoomSeoBrain;
     const Love = window.BoomLoveEngine;
     const Publisher = window.BoomEverywherePublisher;
     const Learning = window.BoomLearningLoop;
 
     const marketing = Marketing?.build?.({plan,data,passportSummary:data.passportSummary}) || {channels:[],primary:null,eligibleDeals:0};
-    const topDeal = plan.rankedDeals.find(x => x?.boom?.eligibleForPromotion) || null;
-    const creative = topDeal ? (Creative?.draftsForDeal?.(topDeal) || []) : [];
+    const creative = (data.creativeBatch?.outputs||[])
+      .flatMap(row=>row?.drafts||[])
+      .filter(draft=>draft?.claim_firewall?.pass===true);
     const publisherDrafts = Publisher?.buildDrafts?.(creative) || [];
     const backendDrafts = Array.isArray(data.distributionDrafts) ? data.distributionDrafts : [];
     const dailyBrief = data.dailyBrief || null;
@@ -615,6 +685,7 @@
     renderGoogleFeed(data);
     renderMeasurementHub();
     renderControlTower(data);
+    renderCreativeFactory(data);
     renderOperating(plan, data);
 
     $("#bg-bottleneck-code").textContent = plan.bottleneck.code;
