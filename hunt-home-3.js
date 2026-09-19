@@ -105,15 +105,21 @@
   function setupMegaMenu() {
     const btn=$("#hd-all-categories"), menu=$("#hd-mega-menu");
     if(!btn||!menu)return;
-    const build=()=>departmentOrder.map(slug=>{
+    const menuGroups=[
+      {key:"style",title:"STYLE",departments:["women","men","kids","beauty","accessories"]},
+      {key:"living",title:"LIVING",departments:["home","sports","travel","pets"]},
+      {key:"tech-play",title:"TECH & PLAY",departments:["tech","toys","office","gifts"]}
+    ];
+    const departmentSection=slug=>{
       const def=H.categoryDefs?.[slug];
       if(!def)return "";
-      const subs=(H.departmentSubcategories?.[slug]||[]).slice(0,7);
+      const subs=(H.departmentSubcategories?.[slug]||[]).slice(0,6);
       return `<section><h3><a href="${esc(H.categoryUrl(slug))}">${esc(def.title)}</a></h3><div>${subs.map(sub=>{
         const subDef=H.categoryDefs?.[sub];
         return subDef?`<a href="category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(sub)}">${esc(subDef.title)}</a>`:"";
       }).join("")}</div></section>`;
-    }).join("");
+    };
+    const build=()=>menuGroups.map(group=>`<div class="hd-mega-cluster" data-menu-zone="${group.key}"><div class="hd-mega-cluster-label">${group.title}</div><div class="hd-mega-cluster-grid">${group.departments.map(departmentSection).join("")}</div></div>`).join("");
     const open=()=>{menu.innerHTML=build();menu.hidden=false;btn.setAttribute("aria-expanded","true")};
     const close=()=>{menu.hidden=true;btn.setAttribute("aria-expanded","false")};
     const toggle=()=>menu.hidden?open():close();
