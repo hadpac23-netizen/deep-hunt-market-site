@@ -319,6 +319,45 @@ Deno.serve(async(req:Request)=>{
     agentCounts[key]=(agentCounts[key]||0)+1;
   }
 
+  const externalKinds=new Set(verifiedExternalRows.map((x:any)=>clean(x?.signal_kind,80)));
+  const worldWatch={
+    always_on:true,
+    cadence:"HOURLY",
+    skill_count:40,
+    radars:[
+      {
+        code:"SEARCH_RADAR",
+        state:(recognizedIntentEvents.length>0||externalKinds.has("YOUTUBE_TRAFFIC_SOURCE")||externalKinds.has("PINTEREST_TREND_GROWING"))?"SIGNALS":"OBSERVE"
+      },
+      {
+        code:"SOCIAL_DISCOVERY_RADAR",
+        state:(externalSourceCounts["pinterest_trends"]||externalSourceCounts["pinterest_audience"])?"SIGNALS":"OBSERVE"
+      },
+      {
+        code:"COMMUNITY_RADAR",
+        state:"OBSERVE"
+      },
+      {
+        code:"CREATOR_LIVE_RADAR",
+        state:(externalSourceCounts["youtube_analytics"]||0)>0?"SIGNALS":"OBSERVE"
+      },
+      {
+        code:"AGENT_RADAR",
+        state:verifiedAgentRows.length>0?"SIGNALS":"OBSERVE"
+      }
+    ],
+    cycle:[
+      "SCAN_WORLD","MAP_CROWD","MAP_INTENT","MAP_LOCAL_TIME","SEGMENT_AUDIENCE",
+      "MAP_PLATFORM","CHOOSE_FIRST_THING","CHOOSE_ENTRY_ROUTE","CHECK_PROFIT",
+      "CHECK_OWNER_GATE","EXECUTE_PREPARE_HOLD","VERIFY","LEARN","MOVE"
+    ],
+    external_actions_gated:true,
+    paid_spend:false,
+    external_publish:false,
+    live_price_write:false,
+    verified_profit_required:true
+  };
+
   return json(req,{
     ok:true,
     generated_at:now.toISOString(),
@@ -331,6 +370,7 @@ Deno.serve(async(req:Request)=>{
     timezone_event_count:timezoneEvents,
     hot_zones:hotZones,
     sources:Array.isArray(sourcesRes.data)?sourcesRes.data:[],
+    world_watch:worldWatch,
     external_signals:{
       verified_rows:verifiedExternalRows.length,
       source_counts:externalSourceCounts,

@@ -17,6 +17,7 @@
       hot_zones:Object.freeze(crowd),
       sources:Object.freeze(sources),
       source_live_count:sources.filter(x=>String(x?.status||"")==="LIVE").length,
+      world_watch:snapshot?.world_watch&&typeof snapshot.world_watch==="object"?Object.freeze(snapshot.world_watch):Object.freeze({always_on:false,radars:[]}),
       external_signal_rows:Number(external.verified_rows||0),
       external_source_counts:Object.freeze(external.source_counts&&typeof external.source_counts==="object"?external.source_counts:{}),
       external_top:Object.freeze(Array.isArray(external.top)?external.top:[]),

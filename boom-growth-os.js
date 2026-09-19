@@ -656,6 +656,7 @@
     const F60TCore=window.BoomF60TCore;
     const F60TLive=window.BoomF60TLiveAdapter;
     const F60TCrowdRadar=window.BoomF60TCrowdRadar;
+    const F60TWorldWatch=window.BoomF60TWorldWatch;
     const f60tLive=F60TLive?.normalize
       ? F60TLive.normalize(f60tLiveRes||{})
       : {
@@ -716,6 +717,11 @@
       no_fake_success:true,
       crowd_radar:crowdRadar,
       crowd_radar_ready:crowdRadar.ready===true,
+      world_watch_ready:Boolean(F60TWorldWatch?.always_on),
+      world_watch_backend_ready:f60tLive.world_watch?.always_on===true,
+      world_watch_radars:Array.isArray(F60TWorldWatch?.RADARS)?F60TWorldWatch.RADARS:[],
+      world_watch_skills:Array.isArray(F60TWorldWatch?.SKILLS)?F60TWorldWatch.SKILLS:[],
+      world_watch_cycle:Array.isArray(F60TWorldWatch?.CYCLE)?F60TWorldWatch.CYCLE:[],
       oauth_providers:Array.isArray(f60tOauthRes?.providers)?f60tOauthRes.providers:[]
     };
 
@@ -957,6 +963,8 @@
         ["Avg verified contribution", money(target.average_verified_contribution)],
         ["Orders / hour required", target.minimum_orders_per_hour_at_average_contribution==null?"—":String(target.minimum_orders_per_hour_at_average_contribution)],
         ["Platform / agent surfaces", String(f.platform_count||0)],
+        ["World Watch radars", String((f.world_watch_radars||[]).length)+"/5"],
+        ["F60T skills", String(22+(f.world_watch_skills||[]).length)+"/40"],
         ["Live signal sources", String(f.source_live_count||0)],
         ["External official rows", String(f.external_signal_rows||0)],
         ["Verified agent events", String(f.agent_signal_events||0)]
@@ -982,6 +990,7 @@
       board.innerHTML=[
         ["Mission",String(mission.name||"F60T · ימ״מ")],
         ["Command","TARGET → LOCATION → SALE"],
+        ["World Watch 24/7",f.world_watch_ready?"ON · 5 RADARS":"HOLD"],
         ["Follow the Sun",f.follow_the_sun?"ON":"HOLD"],
         ["Global Crowd Radar",f.crowd_radar_ready?"ENTRY WINDOW FOUND":(f.crowd_signals_ready?"SIGNALS LIVE · NO CONVERGENCE":"SIGNALS PENDING")],
         ["Local Buying Clock",f.local_buying_clock_ready?"LEARNING LIVE":"TIMEZONE SAMPLE BUILDING"],
@@ -999,6 +1008,8 @@
     if(gates){
       const rows=[
         ["F60T Core",f.core_ready===true],
+        ["World Watch contract",f.world_watch_ready===true],
+        ["World Watch hourly backend",f.world_watch_backend_ready===true],
         ["Profit Truth sample",target.truth_ready===true],
         ["Realized hourly profit proof",target.realized_verified===true],
         ["F60T live adapter",f.live_adapter_ready===true],
@@ -1587,6 +1598,7 @@
       ["F50","Orchestrator","BoomF50Engine","PANEL"],
       ["F50","Current Research Receipt","BoomF50CurrentResearch","CONNECTED"],
       ["F60T","YAMAM Global Profit Command","BoomF60TCore","PANEL"],
+      ["F60T-WATCH","24/7 World Watch Commander","BoomF60TWorldWatch","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
