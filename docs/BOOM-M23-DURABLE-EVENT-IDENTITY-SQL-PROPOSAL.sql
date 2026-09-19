@@ -12,6 +12,8 @@
 -- Do not fabricate canonical IDs for events whose original browser identity was never persisted.
 
 begin;
+set local lock_timeout = '5s';
+set local statement_timeout = '30s';
 
 alter table public.analytics_events
   add column event_id text null;

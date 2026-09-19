@@ -498,6 +498,25 @@
       .sort((a,b) => b.count - a.count || a.blocker.localeCompare(b.blocker))
       .slice(0,12);
 
+    const SchemaActivation=window.BoomSchemaActivationReadiness;
+    const schemaActivation=SchemaActivation?.evaluate?.({
+      live_schema_inspected:true,
+      rls_enabled:true,
+      current_public_insert_policy_identified:true,
+      public_insert_privileges_identified:true,
+      event_id_absent_confirmed:true,
+      unique_event_id_absent_confirmed:true,
+      historical_event_id_absence_confirmed:true,
+      sql_proposal_ready:true,
+      public_canonical_guard_in_proposal:true,
+      backend_secret_bypass_verified:true,
+      feature_flag_default_off:true,
+      edge_compatibility_patch_ready:true,
+      operational_rollback_ready:true,
+      schema_rollback_ready:true,
+      table_specific_security_advisor_clear:true
+    })||{state:"HOLD",checks:{},blockers:["schema_activation_runtime_unavailable"],activation_ready:false,live_schema_changed:false,migration_applied:false,function_deployed:false,feature_flag_enabled:false,preferred_rollback:"OPERATIONAL",execute_actions:false};
+
     const DurableIdentity=window.BoomDurableEventIdentity;
     const durableEventIdentity=DurableIdentity?.evaluate?.({
       browser_event_id_generation:true,
@@ -573,6 +592,7 @@
       creatorSystem,
       marketplaceSnapshot,
       serverPurchaseProof,
+      schemaActivation,
       durableEventIdentity,
       paidAttribution,
       attributionContext,
@@ -1155,6 +1175,7 @@
       ["M21","Attribution Context","BoomAttributionContextReadiness","PANEL"],
       ["M22","Server Purchase Proof","HuntServerPurchaseProofAdapter","PANEL"],
       ["M23","Durable Event Identity","BoomDurableEventIdentity","PANEL"],
+      ["M24","Schema Activation Readiness","BoomSchemaActivationReadiness","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1481,6 +1502,7 @@
       {domain:"campaign_touchpoint_context",source_kind:"STRUCTURAL",source_ref:"M21 consent-gated browser → checkout → payment-session preview",available:data.attributionContext?.local_preview_ready===true,truth_verified:false,freshness_required:false},
       {domain:"server_purchase_proof",source_kind:"DIRECT_DB",source_ref:"hunt_payment_sessions + hunt_payment_events + hunt_orders",available:data.serverPurchaseProof?.adapter_ready===true,truth_verified:data.serverPurchaseProof?.server_purchase_confirmation===true,observed_count:Number(data.serverPurchaseProof?.provider_confirmed_real_orders||0),minimum_count:1,observed_at:data.serverPurchaseProof?.adapter_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"durable_event_identity",source_kind:data.durableEventIdentity?.durable_ready?"DIRECT_DB":"STRUCTURAL",source_ref:"M23 analytics_events.event_id + UNIQUE + guarded Edge insert",available:data.durableEventIdentity?.local_preview_ready===true||data.durableEventIdentity?.durable_ready===true,truth_verified:data.durableEventIdentity?.durable_ready===true,observed_count:data.durableEventIdentity?.durable_ready?1:0,minimum_count:data.durableEventIdentity?.durable_ready?1:0,observed_at:data.durableEventIdentity?.durable_ready?new Date().toISOString():"",freshness_required:data.durableEventIdentity?.durable_ready===true,max_age_ms:60*60*1000},
+      {domain:"schema_activation_readiness",source_kind:"STRUCTURAL",source_ref:"M24 live schema preflight + security advisor + rollback plan",available:data.schemaActivation?.activation_ready===true,truth_verified:false,freshness_required:false},
       {domain:"source_verification_workflow",source_kind:"STRUCTURAL",source_ref:"M16 source verification workflow",available:Boolean(window.BoomDigitalMarketingUniversity),truth_verified:false,freshness_required:false}
     ];
     return E.matrix(records);
@@ -1498,6 +1520,30 @@
     const gaps=$("#bg-evidence-gaps");
     if(gaps)gaps.innerHTML=e.rows.filter(x=>x.state!=="VERIFIED").map(rowHtml).join("")||'<div class="bg-empty">No evidence gaps.</div>';
     return e;
+  }
+
+  function renderSchemaActivation(data={}){
+    const a=data.schemaActivation||{state:"HOLD",checks:{},blockers:[],activation_ready:false,live_schema_changed:false,migration_applied:false,function_deployed:false,feature_flag_enabled:false,preferred_rollback:"OPERATIONAL"};
+    const state=$("#bg-schema-activation-state");
+    if(state)state.textContent=a.activation_ready?"OWNER REVIEW":a.state||"HOLD";
+    const stats=$("#bg-schema-activation-stats");
+    if(stats)stats.innerHTML=[
+      ["Activation plan",a.activation_ready?"READY":"HOLD"],
+      ["Migration applied",a.migration_applied?"YES":"NO"],
+      ["Function deployed",a.function_deployed?"YES":"NO"],
+      ["Durable flag",a.feature_flag_enabled?"ON":"OFF"]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const labels={live_schema_inspected:"Live schema inspected",rls_enabled:"RLS enabled",current_public_insert_policy_identified:"Current broad INSERT policy identified",public_insert_privileges_identified:"Anon/auth INSERT privileges identified",event_id_absent_confirmed:"event_id absence confirmed",unique_event_id_absent_confirmed:"UNIQUE(event_id) absence confirmed",historical_event_id_absence_confirmed:"Historical canonical IDs absent",sql_proposal_ready:"SQL proposal ready",public_canonical_guard_in_proposal:"Public canonical-ID guard in proposal",backend_secret_bypass_verified:"Trusted backend secret path verified",feature_flag_default_off:"Durable flag defaults OFF",edge_compatibility_patch_ready:"Edge compatibility patch ready",operational_rollback_ready:"Operational rollback ready",schema_rollback_ready:"Schema rollback ready",table_specific_security_advisor_clear:"No table-specific security-advisor finding"};
+    const checks=$("#bg-schema-activation-checks");
+    if(checks)checks.innerHTML=Object.entries(labels).map(([key,label])=>{const ok=a.checks?.[key]===true;return '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(label)+'</strong><span class="bg-score '+(ok?"bg-passport-ready":"bg-passport-blocked")+'">'+(ok?"READY":"MISSING")+'</span></div></article>';}).join("");
+    const rollback=$("#bg-schema-activation-rollback");
+    if(rollback)rollback.innerHTML=[
+      ["Preferred rollback","OPERATIONAL: flag OFF → restore previous function → keep hardened schema"],
+      ["Full schema rollback","LAST RESORT: disable writer first; review/export canonical IDs before dropping column"],
+      ["Live schema changed",a.live_schema_changed?"YES":"NO"],
+      ["Owner gate","REVIEW REQUIRED"]
+    ].map(([name,value])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score">'+H.esc(value)+'</span></div></article>').join("");
+    return a;
   }
 
   function renderDurableEventIdentity(data={}){
@@ -1771,6 +1817,7 @@
     renderMarketplace(data);
     renderUniversity(data);
     renderEvidenceLedger(data);
+    renderSchemaActivation(data);
     renderDurableEventIdentity(data);
     renderServerPurchaseProof(data);
     renderAttributionContext(data);

@@ -5,7 +5,7 @@ Expose implementation completeness inside BOOM Growth Studio so no brain or oper
 
 ## What M10 adds
 A read-only coverage panel for:
-- M01–M23 core modules as they are added
+- M01–M24 core modules as they are added
 - operating runtimes such as Marketing, SEO, Love, Publisher and Learning
 - loaded legacy runtimes without a dedicated panel
 - code that exists but is not loaded
