@@ -2,13 +2,18 @@
   "use strict";
   if (window.BoomRuntime?.version) return;
 
-  const version = "BOOM-RUNTIME-V1";
+  const version = "BOOM-RUNTIME-V2";
   const supabaseUrl = "https://zszlnahjqmwozwubetkm.supabase.co";
   const fallbackPublishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
   const channelName = "boom-hunt-runtime-v1";
   const pending = new Map();
+  const sessionListeners = new Set();
   let client = window.HuntAccountClient || null;
   let channel = null;
+  let sessionState = null;
+  let sessionResolved = false;
+  let sessionPromise = null;
+  let authSubscription = null;
 
   function publishableKey() {
     return window.HuntCore?.publishableKey || fallbackPublishableKey;
@@ -22,14 +27,19 @@
     }
     if (!window.supabase?.createClient) return null;
     client = window.supabase.createClient(supabaseUrl, publishableKey(), {
-      auth: {persistSession:true, autoRefreshToken:true, detectSessionInUrl:false}
+      auth: {
+        persistSession:true,
+        autoRefreshToken:true,
+        // Keep OAuth/magic-link callbacks working on auth.html.
+        detectSessionInUrl:true
+      }
     });
     window.HuntAccountClient = client;
     return client;
   }
 
   function correlationId(prefix="boom") {
-    const id = crypto?.randomUUID?.() || Math.random().toString(36).slice(2);
+    const id = globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2);
     return prefix + "-" + id;
   }
 
@@ -37,7 +47,7 @@
     if (!detail || typeof detail !== "object") return {};
     const allowed = {};
     for (const [k,v] of Object.entries(detail)) {
-      if (/token|secret|password|email|phone|address/i.test(k)) continue;
+      if (/token|secret|password|email|phone|address|credential/i.test(k)) continue;
       if (["string","number","boolean"].includes(typeof v) || v === null) allowed[k]=v;
     }
     return allowed;
@@ -64,7 +74,13 @@
   }
 
   function emit(actionId,detail={},options={}) {
-    const payload={action_id:String(actionId||""),correlation_id:options.correlationId||correlationId("action"),detail:safeDetail(detail),ts:Date.now()};
+    const payload={
+      kind:"action",
+      action_id:String(actionId||""),
+      correlation_id:options.correlationId||correlationId("action"),
+      detail:safeDetail(detail),
+      ts:Date.now()
+    };
     window.dispatchEvent(new CustomEvent("boom:action",{detail:payload}));
     if(options.broadcast!==false && channel){
       try{channel.postMessage(payload);}catch{}
@@ -72,7 +88,59 @@
     return payload;
   }
 
-  async function runAction(actionId,{key="",element=null,execute,onSuccess,onError,announcePending="",announceSuccess="",announceError=""}={}) {
+  function notifySession(session,{event="SESSION",broadcast=false,source="local"}={}) {
+    sessionState=session||null;
+    sessionResolved=true;
+    const summary={authenticated:Boolean(sessionState?.user),event:String(event||"SESSION"),source};
+    for(const listener of sessionListeners){
+      try{listener(sessionState,summary);}catch{}
+    }
+    window.dispatchEvent(new CustomEvent("boom:session",{detail:summary}));
+    if(broadcast && channel){
+      try{channel.postMessage({kind:"session-invalidate",action_id:"auth.session.changed",ts:Date.now()});}catch{}
+    }
+  }
+
+  async function refreshSession({broadcast=false,event="REFRESH",source="runtime"}={}) {
+    const authClient=getSupabaseClient();
+    if(!authClient)return null;
+    const {data,error}=await authClient.auth.getSession();
+    if(error)throw error;
+    notifySession(data?.session||null,{event,broadcast,source});
+    return sessionState;
+  }
+
+  function bootSession() {
+    if(sessionPromise)return sessionPromise;
+    const authClient=getSupabaseClient();
+    if(!authClient){
+      sessionResolved=false;
+      return Promise.resolve(null);
+    }
+    sessionPromise=refreshSession({broadcast:false,event:"INITIAL_SESSION",source:"runtime"}).catch(()=>{
+      notifySession(null,{event:"INITIAL_SESSION_ERROR",broadcast:false,source:"runtime"});
+      return null;
+    });
+    const {data}=authClient.auth.onAuthStateChange((event,session)=>{
+      notifySession(session,{event,broadcast:true,source:"supabase"});
+    });
+    authSubscription=data?.subscription||null;
+    return sessionPromise;
+  }
+
+  function subscribeSession(listener,{immediate=true}={}) {
+    if(typeof listener!=="function")return ()=>{};
+    sessionListeners.add(listener);
+    bootSession();
+    if(immediate&&sessionResolved){
+      queueMicrotask(()=>{
+        if(sessionListeners.has(listener))listener(sessionState,{authenticated:Boolean(sessionState?.user),event:"CURRENT_SESSION",source:"runtime"});
+      });
+    }
+    return ()=>sessionListeners.delete(listener);
+  }
+
+  async function runAction(actionId,{key="",element=null,execute,onSuccess,onError,announcePending="",announceSuccess="",announceError="",successDetail=null,errorDetail=null,broadcastSuccess=true}={}) {
     if(typeof execute!=="function")throw new Error("runAction requires execute()");
     const lock=String(actionId||"action")+"::"+String(key||"");
     if(pending.has(lock))return pending.get(lock);
@@ -82,16 +150,19 @@
       element.disabled=true;
       element.setAttribute("aria-busy","true");
     }
+    emit(actionId,{key,state:"pending"},{correlationId:correlation,broadcast:false});
     if(announcePending)announce(announcePending);
     const task=(async()=>{
       try{
         const result=await execute({correlationId:correlation});
-        emit(actionId,{key,state:"success"},{correlationId:correlation});
+        const extra=typeof successDetail==="function"?successDetail(result):(successDetail||{});
+        emit(actionId,{key,state:"success",...safeDetail(extra)},{correlationId:correlation,broadcast:broadcastSuccess});
         if(announceSuccess)announce(announceSuccess,"ok");
         onSuccess?.(result);
         return result;
       }catch(error){
-        emit(actionId,{key,state:"error",error_code:String(error?.message||"ERROR").slice(0,120)},{correlationId:correlation});
+        const extra=typeof errorDetail==="function"?errorDetail(error):(errorDetail||{});
+        emit(actionId,{key,state:"error",error_code:String(error?.message||"ERROR").slice(0,120),...safeDetail(extra)},{correlationId:correlation,broadcast:false});
         if(announceError)announce(announceError,"error");
         onError?.(error);
         throw error;
@@ -113,6 +184,10 @@
       channel=new BroadcastChannel(channelName);
       channel.addEventListener("message",event=>{
         const payload=event?.data;
+        if(payload?.kind==="session-invalidate"){
+          refreshSession({broadcast:false,event:"REMOTE_INVALIDATION",source:"broadcast"}).catch(()=>{});
+          return;
+        }
         if(!payload?.action_id)return;
         window.dispatchEvent(new CustomEvent("boom:remote-action",{detail:payload}));
       });
@@ -120,6 +195,7 @@
   }
 
   bootChannel();
+  bootSession();
 
   window.BoomRuntime={
     version,
@@ -128,6 +204,11 @@
     emit,
     runAction,
     announce,
-    isPending:(actionId,key="")=>pending.has(String(actionId)+"::"+String(key))
+    subscribeSession,
+    sessionReady:()=>bootSession().then(()=>sessionState),
+    currentSession:()=>sessionState,
+    refreshSession,
+    isPending:(actionId,key="")=>pending.has(String(actionId)+"::"+String(key)),
+    destroy:()=>{authSubscription?.unsubscribe?.();channel?.close?.();sessionListeners.clear();}
   };
 })();

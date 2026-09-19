@@ -5,7 +5,7 @@ const known=new Set(actions.actions.map(x=>x.action_id));
 const errors=[];
 const seen=new Set();
 for(const row of inventory.interactions){
-  const key=row.file+"::"+row.selector;
+  const key=row.file+"::"+row.selector+"::"+row.action_id;
   if(seen.has(key))errors.push("duplicate interaction mapping: "+key);
   seen.add(key);
   if(!known.has(row.action_id))errors.push("unknown action_id "+row.action_id+" for "+key);

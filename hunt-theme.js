@@ -17,6 +17,10 @@
     });
   }
 
+  window.addEventListener("storage",event=>{
+    if(event.key===THEME_KEY)applyTheme(event.newValue==="dark"?"dark":"light");
+  });
+
   function installToggle() {
     document.querySelectorAll(".hd-tools").forEach(host => {
       if (host.querySelector("[data-hunt-theme-toggle]")) return;
@@ -24,7 +28,11 @@
       btn.type = "button";
       btn.className = "hd-theme-toggle";
       btn.dataset.huntThemeToggle = "1";
-      btn.addEventListener("click", () => applyTheme(currentTheme() === "dark" ? "light" : "dark"));
+      btn.addEventListener("click", () => {
+        const next=currentTheme() === "dark" ? "light" : "dark";
+        applyTheme(next);
+        window.BoomRuntime?.emit?.("theme.change",{value:next},{broadcast:false});
+      });
       const lang = host.querySelector(".hd-lang");
       if (lang) lang.after(btn);
       else host.prepend(btn);

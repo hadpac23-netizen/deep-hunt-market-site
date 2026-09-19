@@ -1,7 +1,7 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase;
+  const H=window.HuntCore, sb=window.supabase, runtime=window.BoomRuntime;
   if(!H||!sb?.createClient)return;
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const client=runtime?.getSupabaseClient?.() || sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
   const $=q=>document.querySelector(q);
   let rows=[];
 
@@ -142,17 +142,17 @@
 
     const cardEl=event.target.closest("[data-partner-id]");
     const button=save||contacted;
-    button.disabled=true;
+    const actionId=contacted?"partner.mark_contacted":"partner.record.save";
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
     try{
-      await saveCard(cardEl,Boolean(contacted));
+      await run(actionId,{key:String(cardEl?.dataset.partnerId||""),element:button,broadcastSuccess:false,execute:async()=>saveCard(cardEl,Boolean(contacted))});
     }catch(error){
       setStatus(error.message||"Could not update partner.","error");
-      button.disabled=false;
     }
   });
 
-  $("#hd-partner-status-filter")?.addEventListener("change",render);
-  $("#hd-partner-priority-filter")?.addEventListener("change",render);
+  $("#hd-partner-status-filter")?.addEventListener("change",event=>{runtime?.emit?.("filter.apply",{surface:"partner_outreach",filter:"status",value:String(event.currentTarget.value||"")},{broadcast:false});render();});
+  $("#hd-partner-priority-filter")?.addEventListener("change",event=>{runtime?.emit?.("filter.apply",{surface:"partner_outreach",filter:"priority",value:String(event.currentTarget.value||"")},{broadcast:false});render();});
 
   load();
 })();

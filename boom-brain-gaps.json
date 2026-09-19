@@ -1,0 +1,182 @@
+{
+  "version": "BOOM-BRAIN-GAPS-V1",
+  "updated_for": "BOOM Brain OS v1",
+  "items": [
+    {
+      "id": "brain_registry",
+      "title": "Canonical Brain Registry",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Keep ownership conflicts at zero."
+    },
+    {
+      "id": "action_contract",
+      "title": "Canonical Action Contract",
+      "owner": "action_state_kernel",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Expand only when a real interaction requires a new action."
+    },
+    {
+      "id": "interaction_inventory",
+      "title": "Interaction Inventory",
+      "owner": "action_state_kernel",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Fail QA when new controls have no owner."
+    },
+    {
+      "id": "shared_identity",
+      "title": "Shared Identity / Session Runtime",
+      "owner": "identity_session_kernel",
+      "status": "IN_PROGRESS",
+      "source": "F35",
+      "next": "Finish migration of remaining admin/seller surfaces."
+    },
+    {
+      "id": "likes_saves",
+      "title": "Like / Save Action Kernel",
+      "owner": "action_state_kernel",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Journey test guest \u2192 sign-in \u2192 merge \u2192 profile."
+    },
+    {
+      "id": "cart_kernel",
+      "title": "Single Cart Owner",
+      "owner": "action_state_kernel",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Add account merge policy when server cart exists."
+    },
+    {
+      "id": "search_filters",
+      "title": "Search / Filter Canonical Actions",
+      "owner": "experience_brain",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Add journey tests and result-state QA."
+    },
+    {
+      "id": "product_actions",
+      "title": "Product Interaction Actions",
+      "owner": "experience_brain",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Keyboard/focus and mobile parity QA."
+    },
+    {
+      "id": "checkout_quote",
+      "title": "Checkout Quote Guard / Idempotency",
+      "owner": "operations_brain",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Connect to full order/payment lifecycle only after launch readiness."
+    },
+    {
+      "id": "shadow_mode",
+      "title": "Brain Shadow Mode",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Require evidence before lifecycle promotion."
+    },
+    {
+      "id": "circuit_breaker",
+      "title": "Brain Circuit Breaker",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Demote stale/erroring brains to SHADOW automatically."
+    },
+    {
+      "id": "contract_generated_qa",
+      "title": "Contract-generated QA",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "F50",
+      "next": "Add source-handler coverage and journey contracts."
+    },
+    {
+      "id": "action_trace",
+      "title": "Action Trace Viewer",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Trace control \u2192 action \u2192 owner \u2192 API \u2192 result \u2192 metric."
+    },
+    {
+      "id": "journey_graph",
+      "title": "Critical Journey Graph",
+      "owner": "experience_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Model search \u2192 product \u2192 variant \u2192 save/cart \u2192 quote and guest \u2192 auth \u2192 merge."
+    },
+    {
+      "id": "guest_merge_matrix",
+      "title": "Guest-to-Account Merge Matrix",
+      "owner": "identity_session_kernel",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Define cart/preferences/theme/language/survey conflict rules."
+    },
+    {
+      "id": "feedback_center",
+      "title": "Global Feedback Center",
+      "owner": "action_state_kernel",
+      "status": "IN_PROGRESS",
+      "source": "F50",
+      "next": "Upgrade runtime live-status into consistent visible non-intrusive feedback."
+    },
+    {
+      "id": "error_taxonomy",
+      "title": "Stable Error Taxonomy",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Map codes \u2192 safe user copy \u2192 recovery action."
+    },
+    {
+      "id": "storage_migrations",
+      "title": "Storage Schema Versioning",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Version and migrate cart/preferences/local action keys."
+    },
+    {
+      "id": "confidence_decay",
+      "title": "Evidence Confidence Decay",
+      "owner": "intelligence_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Auto-recheck stale supplier/shipping/market decisions."
+    },
+    {
+      "id": "mission_budgets",
+      "title": "Mission Resource Budgets",
+      "owner": "boom_orchestrator",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Track deploy credits, API calls, spend, attempts and risk limits."
+    },
+    {
+      "id": "decision_explainability",
+      "title": "Decision Reason Codes",
+      "owner": "boom_orchestrator",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Show why each material decision was made."
+    },
+    {
+      "id": "dead_home_cart_handler",
+      "title": "Remove orphan Home cart handler",
+      "owner": "action_state_kernel",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Keep dead-control detection in contract QA."
+    }
+  ]
+}

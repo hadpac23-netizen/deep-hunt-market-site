@@ -239,7 +239,14 @@
       };
     });
   };
-  const saveCart = value => writeJson(cartKey, Array.isArray(value) ? value : []);
+  function saveCart(value,{actionId="",detail={},broadcast=true}={}) {
+    writeJson(cartKey, Array.isArray(value) ? value : []);
+    updateCartBadges();
+    const count=cartCount();
+    window.dispatchEvent(new CustomEvent("hunt:cart-changed",{detail:{count,action_id:actionId||""}}));
+    if(actionId)window.BoomRuntime?.emit?.(actionId,{...detail,count},{broadcast});
+    return cart();
+  }
   function addCart(product, variant=null, qty=1) {
     const items = cart();
     const variantId = String(variant?.variant_id || "base");
@@ -270,13 +277,40 @@
       const nextQty = Math.min(5, Number(existing.qty || 1) + row.qty);
       Object.assign(existing, row, {qty:nextQty});
     } else items.push(row);
-    saveCart(items);
+    saveCart(items,{
+      actionId:"cart.add",
+      detail:{provider:row.provider,item_id:row.item_id,variant_id:row.variant_id||"",qty:row.qty}
+    });
     recordSignal(product, "cart");
     window.HuntAnalytics?.addToCart(row, product);
     return items;
   }
+  function removeCart(itemKey) {
+    const before=cart();
+    const removed=before.find(x=>x.key===itemKey)||null;
+    const next=before.filter(x=>x.key!==itemKey);
+    if(next.length===before.length)return before;
+    return saveCart(next,{actionId:"cart.remove",detail:{key:String(itemKey||""),provider:removed?.provider||"",item_id:removed?.item_id||""}});
+  }
+  function setCartQuantity(itemKey,qty) {
+    const items=cart();
+    const row=items.find(x=>x.key===itemKey);
+    if(!row)return items;
+    row.qty=Math.max(1,Math.min(5,Number(qty)||1));
+    return saveCart(items,{actionId:"cart.quantity.change",detail:{key:String(itemKey||""),qty:row.qty,provider:row.provider||"",item_id:row.item_id||""}});
+  }
+  function clearCart() {
+    const count=cartCount();
+    if(!count)return [];
+    return saveCart([],{actionId:"cart.remove",detail:{clear:true,previous_count:count}});
+  }
   function cartCount() { return cart().reduce((sum,x)=>sum+Math.max(1,Number(x.qty)||1),0); }
   function updateCartBadges() { document.querySelectorAll("[data-cart-count]").forEach(el=>el.textContent=String(cartCount())); }
+  window.addEventListener("storage",event=>{
+    if(event.key!==cartKey)return;
+    updateCartBadges();
+    window.dispatchEvent(new CustomEvent("hunt:cart-changed",{detail:{count:cartCount(),remote:true}}));
+  });
 
   async function storefront(params={}) {
     const url = new URL(functionsBase + "/hunt-storefront");
@@ -310,6 +344,6 @@
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
     inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
-    cart,saveCart,addCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
+    cart,saveCart,addCart,removeCart,setCartQuantity,clearCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
   };
 })();

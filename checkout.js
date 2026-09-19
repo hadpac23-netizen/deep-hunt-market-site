@@ -1,33 +1,12 @@
 (() => {
-  const key = "hunt_deal_cart_v1";
-  const functionsBase = "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1";
-  const publishableKey = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  if(!H)return;
+  const functionsBase = H.functionsBase;
+  const publishableKey = H.publishableKey;
   const $ = q => document.querySelector(q);
-  const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-  const money = (value, currency="USD") => {
-    if (value === null || value === undefined || Number.isNaN(Number(value))) return "—";
-    try { return new Intl.NumberFormat("en", {style:"currency",currency}).format(Number(value)); }
-    catch { return String(value); }
-  };
-  const read = () => {
-    try {
-      const raw=JSON.parse(localStorage.getItem(key)||"[]");
-      return (Array.isArray(raw)?raw:[]).map(item=>{
-        const verified=item?.retail_price_verified===true && item?.price_basis==="HUNT_RETAIL_PROFIT_GATE";
-        const amount=verified && Number.isFinite(Number(item?.price_amount)) && Number(item.price_amount)>0
-          ? Number(item.price_amount)
-          : null;
-        return {
-          ...item,
-          price_amount:amount,
-          price_basis:amount!==null?"HUNT_RETAIL_PROFIT_GATE":"PRICE_PENDING",
-          retail_price_verified:amount!==null,
-          qty:Math.max(1,Math.min(5,Number(item?.qty)||1))
-        };
-      });
-    } catch { return []; }
-  };
-  const write = cart => localStorage.setItem(key, JSON.stringify(cart));
+  const esc = H.esc;
+  const money = H.money;
+  const read = () => H.cart();
   let checkoutTracked = false;
   let quoteVerified = false;
 
@@ -66,47 +45,43 @@
       return;
     }
     const invalid = cart.find(item =>
-      !item?.provider ||
-      !item?.item_id ||
-      !item?.variant_id ||
-      item?.retail_price_verified !== true ||
-      item?.price_basis !== "HUNT_RETAIL_PROFIT_GATE"
+      !item?.provider || !item?.item_id || !item?.variant_id ||
+      item?.retail_price_verified !== true || item?.price_basis !== "HUNT_RETAIL_PROFIT_GATE"
     );
     if (invalid) {
       resetQuote("One or more items need a fresh product/variant check before shipping can be quoted.");
       return;
     }
 
-    if (button) {
-      button.disabled = true;
-      button.textContent = "Verifying…";
-    }
     if (status) status.textContent = "Rechecking HUNT retail price, supplier stock and shipping…";
+    if (button) button.textContent = "Verifying…";
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
 
     try {
-      const payload = {
-        country_code: country,
-        idempotency_key: `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
-        items: cart.map(item => ({
-          provider:item.provider,
-          item_id:item.item_id,
-          variant_id:item.variant_id,
-          qty:Math.max(1,Math.min(5,Number(item.qty)||1))
-        }))
-      };
-      const res = await fetch(functionsBase + "/hunt-payment-session", {
-        method:"POST",
-        headers:{
-          apikey:publishableKey,
-          "content-type":"application/json"
-        },
-        body:JSON.stringify(payload),
-        cache:"no-store"
+      const data=await run("checkout.quote.verify",{
+        key:country+":"+cart.map(x=>x.key+"x"+x.qty).join("|"),
+        element:button,
+        broadcastSuccess:false,
+        successDetail:result=>({country,items:cart.length,payment_ready:Boolean(result?.payment_ready)}),
+        execute:async({correlationId}={})=>{
+          const payload = {
+            country_code: country,
+            idempotency_key: correlationId || `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
+            items: cart.map(item => ({
+              provider:item.provider, item_id:item.item_id, variant_id:item.variant_id,
+              qty:Math.max(1,Math.min(5,Number(item.qty)||1))
+            }))
+          };
+          const res = await fetch(functionsBase + "/hunt-payment-session", {
+            method:"POST",
+            headers:{apikey:publishableKey,"content-type":"application/json"},
+            body:JSON.stringify(payload), cache:"no-store"
+          });
+          const data = await res.json().catch(()=>({}));
+          if (!res.ok || data?.ok !== true || !data?.session) throw new Error(String(data?.error || "QUOTE_FAILED"));
+          return data;
+        }
       });
-      const data = await res.json().catch(()=>({}));
-      if (!res.ok || data?.ok !== true || !data?.session) {
-        throw new Error(String(data?.error || "QUOTE_FAILED"));
-      }
 
       const session = data.session;
       const currency = String(session.currency || "USD");
@@ -114,26 +89,19 @@
       $("#hd-checkout-shipping").textContent = money(session.shipping_amount,currency);
       $("#hd-checkout-total").textContent = money(session.total_amount,currency);
       quoteVerified = true;
-
       if (status) {
         status.textContent = data.payment_ready === true
           ? "Price and shipping verified. Payment account status is controlled separately."
           : "Price, stock and shipping verified. Payment is still disabled during pre-launch.";
       }
       window.HuntAnalytics?.checkoutQuoteVerified?.({
-        country,
-        currency,
-        productAmount:Number(session.product_amount||0),
-        shippingAmount:Number(session.shipping_amount||0),
-        totalAmount:Number(session.total_amount||0)
+        country,currency,productAmount:Number(session.product_amount||0),
+        shippingAmount:Number(session.shipping_amount||0),totalAmount:Number(session.total_amount||0)
       });
     } catch (err) {
       resetQuote(friendlyQuoteError(String(err?.message || "QUOTE_FAILED")));
     } finally {
-      if (button) {
-        button.disabled = false;
-        button.textContent = quoteVerified ? "Recheck price & shipping" : "Verify price & shipping";
-      }
+      if (button) button.textContent = quoteVerified ? "Recheck price & shipping" : "Verify price & shipping";
     }
   }
 
@@ -143,7 +111,6 @@
     const empty = $("#hd-checkout-empty");
     if (!host || !empty) return;
     empty.hidden = cart.length > 0;
-    write(cart);
     host.innerHTML = cart.map(item => {
       const ready = item?.retail_price_verified === true && item?.price_basis === "HUNT_RETAIL_PROFIT_GATE" && Number(item?.price_amount) > 0;
       const priceCopy = ready
@@ -166,8 +133,7 @@
       : currencies.size === 1
         ? money(subtotal,[...currencies][0])
         : (currencies.size ? "MULTI-CURRENCY" : "—");
-    const count = cart.reduce((sum,item)=>sum + Math.max(1,Number(item.qty)||1),0);
-    document.querySelectorAll("[data-cart-count]").forEach(el=>el.textContent=String(count));
+    H.updateCartBadges();
     if (!checkoutTracked && cart.length) {
       checkoutTracked = true;
       window.HuntAnalytics?.beginCheckout(cart, $("#hd-checkout-market")?.value || "");
@@ -178,25 +144,26 @@
     const row = event.target.closest?.(".hd-checkout-item");
     if (!row) return;
     const cart = read();
-    const index = cart.findIndex(x => x.key === row.dataset.key);
-    if (index < 0) return;
-    if (event.target.matches(".hd-remove")) cart.splice(index,1);
-    else if (event.target.matches("[data-delta]")) {
-      cart[index].qty = Math.max(1,Math.min(5,(Number(cart[index].qty)||1)+Number(event.target.dataset.delta||0)));
-    } else return;
-    write(cart);
-    resetQuote("Cart changed. Recheck price and shipping.");
-    render();
+    const current = cart.find(x => x.key === row.dataset.key);
+    if (!current) return;
+    if (event.target.matches(".hd-remove")) {
+      H.removeCart(row.dataset.key);
+    } else if (event.target.matches("[data-delta]")) {
+      const nextQty=Math.max(1,Math.min(5,(Number(current.qty)||1)+Number(event.target.dataset.delta||0)));
+      H.setCartQuantity(row.dataset.key,nextQty);
+    }
   });
-  $("#hd-clear-cart")?.addEventListener("click",()=>{
-    write([]);
-    resetQuote("Your cart is empty.");
-    render();
-  });
+  $("#hd-clear-cart")?.addEventListener("click",()=>H.clearCart());
   $("#hd-checkout-market")?.addEventListener("change", event => {
     resetQuote("Destination changed. Recheck price and shipping.");
     window.HuntAnalytics?.checkoutMarket(event.currentTarget.value || "");
+    runtime?.emit?.("checkout.destination.change",{country:String(event.currentTarget.value||"").toUpperCase()},{broadcast:false});
   });
   $("#hd-checkout-verify")?.addEventListener("click",verifyPriceAndShipping);
+  window.addEventListener("hunt:cart-changed",()=>{
+    resetQuote(read().length?"Cart changed. Recheck price and shipping.":"Your cart is empty.");
+    render();
+  });
+
   render();
 })();

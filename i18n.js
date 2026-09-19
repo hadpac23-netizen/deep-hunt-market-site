@@ -244,8 +244,13 @@
       const selected = localStorage.getItem("hunt_language") || langFromBrowser();
       const run = lang => apply(page, lang);
       document.querySelectorAll("[data-lang-select]").forEach(el => {
-        el.addEventListener("change", () => run(el.value));
+        el.addEventListener("change", () => {
+          const value=el.value;
+          run(value);
+          window.BoomRuntime?.emit?.("language.change",{value},{broadcast:false});
+        });
       });
+      window.addEventListener("storage",event=>{if(event.key==="hunt_language"&&event.newValue)run(event.newValue);});
       return run(selected);
     },
     apply

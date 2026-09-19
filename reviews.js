@@ -1,10 +1,11 @@
 (() => {
   const H = window.HuntCore;
   const sb = window.supabase;
+  const runtime = window.BoomRuntime;
   if (!H || !sb?.createClient) return;
 
   const SUPABASE_URL = "https://zszlnahjqmwozwubetkm.supabase.co";
-  const client = sb.createClient(SUPABASE_URL, H.publishableKey);
+  const client = runtime?.getSupabaseClient?.() || sb.createClient(SUPABASE_URL, H.publishableKey);
   const params = new URLSearchParams(location.search);
   const provider = (params.get("provider") || "").trim();
   const itemId = (params.get("id") || params.get("product_id") || "").trim();
@@ -140,56 +141,39 @@
       location.href = `auth.html?next=${encodeURIComponent(location.pathname + location.search + "#reviews")}`;
       return;
     }
-    if (!selectedRating) {
-      setStatus("Choose a rating from 1 to 5 stars.", "error");
-      return;
-    }
-
+    if (!selectedRating) { setStatus("Choose a rating from 1 to 5 stars.", "error"); return; }
     const comment = ($("#hd-review-comment")?.value || "").trim();
-    if (comment.length > 2000) {
-      setStatus("Review text is too long.", "error");
-      return;
-    }
+    if (comment.length > 2000) { setStatus("Review text is too long.", "error"); return; }
 
     const button = $("#hd-review-submit");
-    if (button) button.disabled = true;
     setStatus(selectedFiles.length ? "Uploading photos…" : "Saving review…");
-
-    let newPaths = [];
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
     try {
-      newPaths = await uploadImages(session.user.id);
-      const status = newPaths.length ? "pending" : "published";
-      const payload = {
-        user_id:session.user.id,
-        provider,
-        item_id:itemId,
-        rating:selectedRating,
-        comment,
-        image_paths:newPaths,
-        status
-      };
-
-      const oldPaths = Array.isArray(ownExisting?.image_paths) ? ownExisting.image_paths : [];
-      const {error} = await client.from("product_reviews").upsert(payload, {
-        onConflict:"user_id,provider,item_id"
+      const result=await run("review.submit",{
+        key:provider+":"+itemId,element:button,broadcastSuccess:false,
+        successDetail:r=>({provider,item_id:itemId,status:r?.status||"saved",rating:selectedRating}),
+        execute:async()=>{
+          let newPaths=[];
+          try {
+            newPaths=await uploadImages(session.user.id);
+            const status=newPaths.length?"pending":"published";
+            const payload={user_id:session.user.id,provider,item_id:itemId,rating:selectedRating,comment,image_paths:newPaths,status};
+            const oldPaths=Array.isArray(ownExisting?.image_paths)?ownExisting.image_paths:[];
+            const {error}=await client.from("product_reviews").upsert(payload,{onConflict:"user_id,provider,item_id"});
+            if(error)throw error;
+            if(oldPaths.length)await client.storage.from("hunt-review-images").remove(oldPaths);
+            return {status};
+          } catch(error) {
+            if(newPaths.length)await client.storage.from("hunt-review-images").remove(newPaths);
+            throw error;
+          }
+        }
       });
-      if (error) throw error;
-
-      if (oldPaths.length) {
-        await client.storage.from("hunt-review-images").remove(oldPaths);
-      }
-
-      selectedFiles = [];
-      renderFilePreview();
-      setStatus(status === "pending"
-        ? "Review saved. Photos will appear to everyone after moderation."
-        : "Review published.", "success");
+      selectedFiles=[]; renderFilePreview();
+      setStatus(result.status==="pending"?"Review saved. Photos will appear to everyone after moderation.":"Review published.","success");
       await loadReviews();
-    } catch (error) {
-      if (newPaths.length) await client.storage.from("hunt-review-images").remove(newPaths);
-      setStatus(error?.message || "Could not save review.", "error");
-    } finally {
-      if (button) button.disabled = false;
+    } catch(error) {
+      setStatus(error?.message||"Could not save review.","error");
     }
   }  function bind() {
     document.addEventListener("click", event => {
@@ -197,12 +181,14 @@
       if (star) {
         selectedRating = Number(star.dataset.reviewRating) || 0;
         renderStarsInput();
+        runtime?.emit?.("review.rating.select",{provider,item_id:itemId,rating:selectedRating},{broadcast:false});
         return;
       }
       const remove = event.target.closest?.("[data-remove-review-photo]");
       if (remove) {
         selectedFiles.splice(Number(remove.dataset.removeReviewPhoto), 1);
         renderFilePreview();
+        runtime?.emit?.("review.photo.manage",{provider,item_id:itemId,count:selectedFiles.length,operation:"remove"},{broadcast:false});
       }
     });
 
@@ -213,6 +199,7 @@
       ).slice(0,4);
       selectedFiles = accepted;
       renderFilePreview();
+      runtime?.emit?.("review.photo.manage",{provider,item_id:itemId,count:selectedFiles.length,operation:"select"},{broadcast:false});
       if (files.length !== accepted.length) {
         setStatus("Use up to 4 JPG, PNG or WebP images, maximum 5 MB each.", "error");
       } else {
@@ -226,8 +213,7 @@
   async function init() {
     renderStarsInput();
     bind();
-    const {data} = await client.auth.getSession();
-    session = data.session || null;
+    session = runtime?.sessionReady ? await runtime.sessionReady() : (await client.auth.getSession()).data.session || null;
     const signin = $("#hd-review-signin-note");
     if (signin) signin.hidden = Boolean(session?.user);
     await loadReviews();

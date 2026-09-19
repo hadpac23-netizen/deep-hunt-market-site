@@ -97,18 +97,18 @@
     return;
   }
 
-  const client = window.supabase.createClient(supabaseUrl, publishableKey, {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: false
-    }
+  const runtime = window.BoomRuntime;
+  const client = runtime?.getSupabaseClient?.() || window.supabase.createClient(supabaseUrl, publishableKey, {
+    auth: {persistSession:true, autoRefreshToken:true, detectSessionInUrl:true}
   });
   window.HuntAccountClient = client;
 
-  client.auth.getSession()
-    .then(({ data }) => signedIn(data?.session?.user || null))
-    .catch(() => signedOut());
-
-  client.auth.onAuthStateChange((_event, session) => signedIn(session?.user || null));
+  if (runtime?.subscribeSession) {
+    runtime.subscribeSession(session => signedIn(session?.user || null));
+  } else {
+    client.auth.getSession()
+      .then(({ data }) => signedIn(data?.session?.user || null))
+      .catch(() => signedOut());
+    client.auth.onAuthStateChange((_event, session) => signedIn(session?.user || null));
+  }
 })();

@@ -1,9 +1,9 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase;
+  const H=window.HuntCore, sb=window.supabase, runtime=window.BoomRuntime;
   if(!H||!sb?.createClient)return;
   const SUPABASE_URL="https://zszlnahjqmwozwubetkm.supabase.co";
   const API=SUPABASE_URL+"/functions/v1/hunt-seller-api";
-  const client=sb.createClient(SUPABASE_URL,H.publishableKey);
+  const client=runtime?.getSupabaseClient?.() || sb.createClient(SUPABASE_URL,H.publishableKey);
   const $=q=>document.querySelector(q);
   let session=null;
 
@@ -108,9 +108,10 @@
   document.addEventListener("click",async event=>{
     const button=event.target.closest?.("[data-admin-action]");
     if(!button)return;
-    button.disabled=true;
-    try{await moderate(button.dataset.adminAction,button.dataset.id);}
-    catch(error){setStatus(error.message||"Moderation failed.","error");button.disabled=false;}
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+    try{
+      await run("admin.entity.action",{key:String(button.dataset.adminAction||"")+":"+String(button.dataset.id||""),element:button,broadcastSuccess:false,successDetail:{operation:String(button.dataset.adminAction||"")},execute:async()=>moderate(button.dataset.adminAction,button.dataset.id)});
+    }catch(error){setStatus(error.message||"Moderation failed.","error");}
   });
 
   $("#hd-admin-tracking-form")?.addEventListener("submit",async event=>{
@@ -120,19 +121,15 @@
     delete body.store_id;
     const status=$("#hd-admin-tracking-status");
     status.textContent="Saving…";
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
     try{
-      await api("/admin/stores/"+encodeURIComponent(storeId)+"/tracking",{method:"PATCH",body:JSON.stringify(body)});
-      status.textContent="Tracking configuration saved.";
-      status.dataset.tone="success";
-    }catch(error){
-      status.textContent=error.message||"Could not save tracking.";
-      status.dataset.tone="error";
-    }
+      await run("admin.tracking.update",{key:String(storeId||""),element:event.currentTarget.querySelector("button[type='submit']"),broadcastSuccess:false,execute:async()=>api("/admin/stores/"+encodeURIComponent(storeId)+"/tracking",{method:"PATCH",body:JSON.stringify(body)})});
+      status.textContent="Tracking configuration saved."; status.dataset.tone="success";
+    }catch(error){status.textContent=error.message||"Could not save tracking.";status.dataset.tone="error";}
   });
 
   async function init(){
-    const {data}=await client.auth.getSession();
-    session=data.session||null;
+    session=runtime?.sessionReady ? await runtime.sessionReady() : (await client.auth.getSession()).data.session||null;
     if(!session){
       location.replace("auth.html?next="+encodeURIComponent("/deep-hunt-market-site/merchant-admin.html"));
       return;

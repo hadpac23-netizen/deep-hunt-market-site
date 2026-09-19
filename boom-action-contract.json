@@ -524,6 +524,28 @@
       "telemetry": "partner_apply",
       "accessibility": "form validation+status",
       "failure_policy": "preserve_draft"
+    },
+    {
+      "action_id": "product.external.visit",
+      "owner": "operations_brain",
+      "auth_policy": "public",
+      "persistence": "analytics_only",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "external_visit",
+      "accessibility": "clear destination semantics",
+      "failure_policy": "stay_on_product"
+    },
+    {
+      "action_id": "seller.store.select",
+      "owner": "operations_brain",
+      "auth_policy": "approved_seller",
+      "persistence": "session",
+      "optimistic": true,
+      "double_submit_guard": true,
+      "telemetry": "seller_store_select",
+      "accessibility": "labeled select+loading status",
+      "failure_policy": "restore_previous"
     }
   ]
 }

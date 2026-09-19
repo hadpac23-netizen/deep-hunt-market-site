@@ -1,7 +1,7 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase;
+  const H=window.HuntCore, sb=window.supabase, runtime=window.BoomRuntime;
   if(!H)return;
-  const client=sb?.createClient?sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey):null;
+  const client=runtime?.getSupabaseClient?.() || (sb?.createClient?sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey):null);
   const localKey="hunt_shopping_survey_v1";
   const $=q=>document.querySelector(q);
 
@@ -46,6 +46,7 @@
     document.querySelectorAll('[name="survey-discovery"]').forEach(box=>box.checked=(prefs.discovery_modes||[]).includes(box.value));
   }
   async function getSession(){
+    if(runtime?.sessionReady)return runtime.sessionReady();
     if(!client)return null;
     const {data}=await client.auth.getSession();
     return data.session||null;
@@ -72,6 +73,8 @@
 
   $("#hd-shopping-survey-form")?.addEventListener("submit",async event=>{
     event.preventDefault();
+    const formEl=event.currentTarget;
+    const button=formEl.querySelector("button[type='submit']");
     const prefs={
       categories:expandedCategories(selected("survey-category")),
       price_band:document.querySelector('[name="survey-price"]:checked')?.value||"any",
@@ -80,18 +83,25 @@
     };
     const safe=H.saveShoppingPreferences?.(prefs)||prefs;
     saveLocal(safe);
-    const sess=await getSession();
-    await persistServer(sess,safe);
-    window.dispatchEvent(new CustomEvent("hunt:shopping-survey",{detail:safe}));
-    window.HuntAnalytics?.surveyComplete?.({categories:safe.categories,priceBand:safe.price_band});
-    renderSummary(safe);
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+    try {
+      await run("shopping.survey.submit",{
+        key:"preferences",element:button,successDetail:{category_count:safe.categories.length,price_band:safe.price_band},
+        execute:async()=>{const sess=await getSession();await persistServer(sess,safe);return true;}
+      });
+      window.dispatchEvent(new CustomEvent("hunt:shopping-survey",{detail:safe}));
+      window.HuntAnalytics?.surveyComplete?.({categories:safe.categories,priceBand:safe.price_band});
+      renderSummary(safe);
+    }catch(error){runtime?.announce?.(error?.message||"Could not save shopping preferences.","error");}
   });
 
   $("#hd-shopping-survey-skip")?.addEventListener("click",()=>{
+    runtime?.emit?.("shopping.survey.skip",{surface:"home"},{broadcast:false});
     $("#hd-shopping-survey")?.setAttribute("hidden","");
   });
 
   $("#hd-shopping-survey-edit")?.addEventListener("click",()=>{
+    runtime?.emit?.("shopping.survey.edit",{surface:"home"},{broadcast:false});
     const form=$("#hd-shopping-survey-form"), done=$("#hd-shopping-survey-done");
     if(form)form.hidden=false;
     if(done)done.hidden=true;

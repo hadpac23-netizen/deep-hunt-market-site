@@ -6,7 +6,7 @@
   let checkoutPolicy = {mode:"ONSITE_FIRST", public_checkout_enabled:false};
   let catalogItems = [];
   let searchItems = [];
-  const cartKey = "hunt_deal_cart_v1";
+  const runtime = window.BoomRuntime;
 
   const $ = q => document.querySelector(q);
   const isStaticPublicHost = location.hostname.endsWith(".github.io") || location.hostname === "127.0.0.1" || location.hostname === "localhost";
@@ -35,48 +35,19 @@
     return {ready, amount: ready ? amount : null, currency};
   }
 
-  function readCart() {
-    try {
-      const raw = JSON.parse(localStorage.getItem(cartKey) || "[]");
-      return Array.isArray(raw) ? raw : [];
-    } catch { return []; }
-  }
-
   function updateCartCount() {
-    const count = readCart().reduce((sum, item) => sum + Math.max(1, Number(item.qty) || 1), 0);
-    const badge = $("#hd-cart-count");
-    if (badge) badge.textContent = String(count);
-    document.querySelectorAll("[data-cart-count]").forEach(el => el.textContent = String(count));
+    window.HuntCore?.updateCartBadges?.();
   }
 
   function addToCart(item) {
     if (!item || !item.item_id || !item.provider) return;
     const retail = retailState(item);
-    if (!retail.ready) {
-      const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : "";
+    if (!retail.ready || !window.HuntCore?.addCart) {
+      const detailUrl = window.HuntCore?.productUrl?.(item) || "";
       if (detailUrl) location.href = detailUrl;
       return;
     }
-    const cart = readCart();
-    const key = String(item.provider) + ":" + String(item.item_id);
-    const existing = cart.find(row => row.key === key);
-    const row = {
-      key,
-      provider: String(item.provider),
-      item_id: String(item.item_id),
-      title: String(item.title || "Product"),
-      image_url: typeof item.image_url === "string" ? item.image_url : null,
-      price_amount: retail.amount,
-      currency: retail.currency,
-      price_basis: "HUNT_RETAIL_PROFIT_GATE",
-      retail_price_verified: true,
-      profit_gate_status: "PASS",
-      qty: 1
-    };
-    if (existing) Object.assign(existing, row, {qty:Math.min(5,(Number(existing.qty)||1)+1)});
-    else cart.push(row);
-    localStorage.setItem(cartKey, JSON.stringify(cart));
-    updateCartCount();
+    window.HuntCore.addCart(item,null,1);
     location.href = "checkout.html";
   }
 
@@ -661,19 +632,15 @@
     if (!clean) return;
     const section = $("#live-search");
     const status = $("#hd-live-search-status");
+    const input = $("#hd-search-input");
     if (section) section.hidden = false;
     if (status) status.textContent = dict.searching || "Searching ready providers…";
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
     try {
-      const res = await fetch(publicApiUrl("hunt-deals-hunt"), {
-        method: "POST",
-        headers: publicApiHeaders({"Content-Type":"application/json"}),
-        body: JSON.stringify({query: clean, limit: 12})
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Live search unavailable");
-      window.HuntAnalytics?.search({
-        category: window.HuntCore?.slugFromQuery(clean) || "unknown",
-        resultCount: Array.isArray(data.results) ? data.results.length : 0
+      const data=await run("search.submit",{
+        key:clean.toLowerCase(), element:input, broadcastSuccess:false,
+        successDetail:result=>({query:clean,result_count:Array.isArray(result?.results)?result.results.length:0}),
+        execute:async()=>window.HuntCore.search(clean,12)
       });
       renderLiveSearch(data);
     } catch (err) {
@@ -683,20 +650,15 @@
     }
   }
 
-  document.addEventListener("click", event => {
-    const button = event.target.closest?.(".hd-cart-add");
-    if (!button) return;
-    const item = [...catalogItems, ...searchItems].find(row => String(row.provider) === String(button.dataset.cartProvider) && String(row.item_id) === String(button.dataset.cartId));
-    if (item) addToCart(item);
-  });
-
   document.querySelectorAll("[data-hunt-query]").forEach(btn => {
     btn.addEventListener("click", () => {
       const query = String(btn.dataset.huntQuery || "").trim();
       if (!query) return;
       const slug = window.HuntCore ? window.HuntCore.slugFromQuery(query) : "women";
       window.HuntCore?.recordSignal(slug, "category");
-      location.href = window.HuntCore ? window.HuntCore.categoryUrl(slug) : `category.html?c=${encodeURIComponent(slug)}`;
+      const destination=window.HuntCore ? window.HuntCore.categoryUrl(slug) : `category.html?c=${encodeURIComponent(slug)}`;
+      runtime?.emit?.("navigation.route",{destination,surface:"home",reason:"query_chip"},{broadcast:false});
+      location.href = destination;
     });
   });
 
@@ -705,6 +667,7 @@
       document.querySelectorAll(".hd-filter-row button").forEach(b=>b.classList.remove("active"));
       btn.classList.add("active");
       activeCategory = btn.dataset.category || "all";
+      runtime?.emit?.("filter.apply",{filter:"home_category",value:activeCategory},{broadcast:false});
       applyFilters();
     });
   });

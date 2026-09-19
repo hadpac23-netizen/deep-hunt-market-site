@@ -1,5 +1,6 @@
 (() => {
   const H = window.HuntCore;
+  const runtime = window.BoomRuntime;
   const params = new URLSearchParams(location.search);
   const requested = params.get("c") || "women";
   const slug = H.categoryDefs[requested] ? requested : "women";
@@ -324,10 +325,19 @@
     }
   }
 
-  $("#hd-cat-apply")?.addEventListener("click",()=>renderGrid({reset:true}));
-  $("#hd-cat-sort")?.addEventListener("change",()=>renderGrid({reset:true}));
+  $("#hd-cat-apply")?.addEventListener("click",()=>{
+    runtime?.emit?.("filter.apply",{category:slug,sub,price_min:$("#hd-price-min")?.value||"",price_max:$("#hd-price-max")?.value||""},{broadcast:false});
+    renderGrid({reset:true});
+  });
+  $("#hd-cat-sort")?.addEventListener("change",event=>{
+    runtime?.emit?.("catalog.sort.change",{category:slug,value:String(event.currentTarget.value||"")},{broadcast:false});
+    renderGrid({reset:true});
+  });
   document.querySelectorAll("[data-view-mode]").forEach(button => {
-    button.addEventListener("click", () => applyViewMode(button.dataset.viewMode));
+    button.addEventListener("click", () => {
+      applyViewMode(button.dataset.viewMode);
+      runtime?.emit?.("catalog.view_mode.change",{value:viewMode},{broadcast:false});
+    });
   });
   document.addEventListener("click", event => {
     const link = event.target.closest?.("[data-product-view]");

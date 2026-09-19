@@ -1,9 +1,9 @@
 (() => {
   "use strict";
-  const H=window.HuntCore, sb=window.supabase;
+  const H=window.HuntCore, sb=window.supabase, runtime=window.BoomRuntime;
   if(!H||!sb?.createClient)return;
 
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const client=runtime?.getSupabaseClient?.() || sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
   const $=q=>document.querySelector(q);
   const status=$("#f60t-connection-status");
   const panel=$("#f60t-connection-panel");
@@ -96,15 +96,20 @@
     const button=event.target.closest?.("[data-connect-provider]");
     if(!button||button.disabled)return;
     const provider=button.dataset.connectProvider;
-    button.disabled=true;
     setAction("Preparing secure "+provider+" authorization…");
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
     try{
-      const data=await callOauth({action:"start",provider});
-      if(data?.status!=="AUTHORIZATION_REQUIRED"||!data?.auth_url)throw new Error("Authorization URL was not returned.");
+      const data=await run("connector.oauth.start",{
+        key:provider,element:button,broadcastSuccess:false,successDetail:{provider},
+        execute:async()=>{
+          const data=await callOauth({action:"start",provider});
+          if(data?.status!=="AUTHORIZATION_REQUIRED"||!data?.auth_url)throw new Error("Authorization URL was not returned.");
+          return data;
+        }
+      });
       location.assign(data.auth_url);
     }catch(error){
       setAction(error?.message||"Could not start authorization.","error");
-      button.disabled=false;
     }
   });
 
