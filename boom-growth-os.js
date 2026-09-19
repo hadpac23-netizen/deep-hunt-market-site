@@ -1085,6 +1085,7 @@
       ["M08","Growth Agent","BoomGrowthAgent","PANEL"],
       ["M09","Agentic Commerce Gateway","BoomAgenticCommerceGateway","PANEL"],
       ["M11","Personalization Brain","BoomPersonalizationBrain","PANEL"],
+      ["M12","Free Growth Engine","BoomFreeGrowthEngine","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1101,7 +1102,6 @@
     });
 
     const skillOnly=[
-      ["Free Growth Engine","skills/boom-free-growth-engine.md"],
       ["Sales & Advertising Brain","skills/boom-sales-advertising-brain.md"],
       ["World Commerce Radar","skills/boom-world-commerce-radar.md"],
       ["HUNT Marketplace Brain","skills/hunt-marketplace-brain.md"],
@@ -1191,6 +1191,39 @@
     }).join("");
   }
 
+  function renderFreeGrowth(plan,data,marketing,seoScore){
+    const G=window.BoomFreeGrowthEngine;
+    const result=G?.build?.({
+      plan,data,marketing,seo_score:seoScore,
+      crawlable_urls_ready:true,
+      structured_data_ready:seoScore>=50,
+      search_console_ready:false,
+      sharing:{share_ready:false,attribution_ready:false,reward_economics_ready:false},
+      localization:{language_ready:true,currency_ready:true,shipping_truth_ready:false},
+      measurement:{earned_attribution_ready:false}
+    })||{primary:null,opportunities:[],organic_test_candidates:0,paid_spend:false,execute_actions:false};
+    const state=$("#bg-free-growth-state");
+    if(state)state.textContent=result.primary?.state||"HOLD";
+    const stats=$("#bg-free-growth-stats");
+    if(stats)stats.innerHTML=[
+      ["Test candidates",result.organic_test_candidates||0],
+      ["Paid spend",result.paid_spend?"ON":"OFF"],
+      ["External publish",result.external_publish?"ON":"OFF"],
+      ["Owner gate",result.owner_gate||"REVIEW"]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const primary=$("#bg-free-growth-primary");
+    const p=result.primary;
+    if(primary)primary.innerHTML=p
+      ? '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(p.channel||"").replaceAll("_"," "))+'</strong><span class="bg-score">'+H.esc(p.state||"HOLD")+'</span></div><small>'+H.esc(p.reason||"")+'</small><small>Next: '+H.esc(p.next||"")+'</small></article>'
+      : '<div class="bg-empty">No free-growth move available.</div>';
+    const channels=$("#bg-free-growth-channels");
+    if(channels)channels.innerHTML=(result.opportunities||[]).map(row=>{
+      const tone=row.state==="TEST_CANDIDATE"?"bg-passport-ready":row.state==="PREPARE"?"bg-passport-prepare":"bg-passport-blocked";
+      return '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(row.channel||"").replaceAll("_"," "))+'</strong><span class="bg-score '+tone+'">'+H.esc(row.state||"HOLD")+'</span></div><small>'+H.esc((row.blockers||[]).join(" · ").replaceAll("_"," ")||row.reason||"")+'</small></article>';
+    }).join("");
+    return result;
+  }
+
   function renderOperating(plan, data) {
     const Marketing = window.BoomMarketingBrain;
     const GrowthAgent = window.BoomGrowthAgent;
@@ -1229,6 +1262,7 @@
       ? Math.round(pageSeo.reduce((sum,row)=>sum+Number(row.result.score||0),0)/pageSeo.length)
       : 0;
     const seoActions = [...new Set(pageSeo.flatMap(row=>row.result.actions||[]))];
+    const freeGrowth=renderFreeGrowth(plan,data,marketing,seoScore);
 
     const exp = plan.recommendedExperiment;
     const learning = exp
@@ -1238,6 +1272,7 @@
     const brainRows = [
       ["Marketing", marketing.primary ? "LIVE" : "READY"],
       ["Growth Agent", growthDecision?.primary_move?.state || "HOLD"],
+      ["Free Growth", freeGrowth.primary?.state || "HOLD"],
       ["Commerce Passport", (data.passportSummary?.total || 0) + " SKUs"],
       ["Creative", creative.length ? creative.length + " DRAFTS" : "WAIT EVIDENCE"],
       ["SEO", seoScore + "/100"],
