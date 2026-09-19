@@ -275,6 +275,29 @@
       .map(([blocker,count])=>({blocker,count}))
       .sort((a,b)=>b.count-a.count||a.blocker.localeCompare(b.blocker))
       .slice(0,10);
+    const Lifecycle=window.BoomLifecycleBrain;
+    const lifecycleRows=Lifecycle?.systemReadiness?.({
+      marketing_consent_infrastructure:false,
+      real_order_events_ready:false,
+      tracking_events_ready:false,
+      channels:{
+        email:{connected:false,send_enabled:false},
+        push:{connected:false,send_enabled:false},
+        sms:{connected:false,send_enabled:false},
+        whatsapp:{connected:false,send_enabled:false}
+      }
+    })||[];
+    const lifecycleSummary=Lifecycle?.summarize?.(lifecycleRows)||{
+      total:0,prepare:0,draft_ready:0,send_candidate:0,locked_or_hold:0,external_send:false,owner_gate:"REVIEW_REQUIRED"
+    };
+    const lifecycleBlockerCounts=new Map();
+    for(const row of lifecycleRows){
+      for(const blocker of row.blockers||[])lifecycleBlockerCounts.set(blocker,(lifecycleBlockerCounts.get(blocker)||0)+1);
+    }
+    const lifecycleTopBlockers=[...lifecycleBlockerCounts.entries()]
+      .map(([blocker,count])=>({blocker,count}))
+      .sort((a,b)=>b.count-a.count||a.blocker.localeCompare(b.blocker))
+      .slice(0,10);
     const blockerCounts = new Map();
     for (const passport of passports) {
       const productBlockers = new Set();
@@ -315,6 +338,9 @@
       offerSummary,
       offerCandidates,
       offerTopBlockers,
+      lifecycleRows,
+      lifecycleSummary,
+      lifecycleTopBlockers,
       seoAudit
     };
   }
@@ -670,6 +696,38 @@
     ).join("");
   }
 
+
+  function renderLifecycleBrain(data){
+    const s=data.lifecycleSummary||{};
+    const rows=Array.isArray(data.lifecycleRows)?data.lifecycleRows:[];
+    const state=$("#bg-lifecycle-state");
+    if(state)state.textContent=s.external_send===true?"SEND ON":"SEND OFF";
+    const service=rows.filter(x=>x.class==="service");
+    const marketing=rows.filter(x=>x.class==="marketing");
+    const stats=[
+      ["Trigger lanes",s.total||0],
+      ["Service lanes",service.length],
+      ["Marketing lanes",marketing.length],
+      ["Send candidates",s.send_candidate||0]
+    ];
+    const host=$("#bg-lifecycle-stats");
+    if(host)host.innerHTML=stats.map(([label,value])=>
+      '<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>'
+    ).join("");
+    const lanes=$("#bg-lifecycle-lanes");
+    if(lanes)lanes.innerHTML=rows.map(row=>
+      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(row.trigger||"").replaceAll("_"," "))+
+      '</strong><span class="bg-score">'+H.esc(row.state||"LOCKED")+'</span></div><small>'+
+      H.esc(row.class||"")+' · connected channels '+H.esc((row.connected_channels||[]).length)+'</small></article>'
+    ).join("")||'<div class="bg-empty">No lifecycle lanes loaded.</div>';
+    const blockers=$("#bg-lifecycle-blockers");
+    const blocked=Array.isArray(data.lifecycleTopBlockers)?data.lifecycleTopBlockers:[];
+    if(blockers)blockers.innerHTML=blocked.length?blocked.map(row=>
+      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(row.blocker||"").replaceAll("_"," "))+
+      '</strong><span class="bg-score">'+H.esc(row.count||0)+'</span></div><small>Trigger lanes affected</small></article>'
+    ).join(""):'<div class="bg-empty">No lifecycle blockers found.</div>';
+  }
+
   function renderOperating(plan, data) {
     const Marketing = window.BoomMarketingBrain;
     const Seo = window.BoomSeoBrain;
@@ -772,6 +830,7 @@
     renderControlTower(data);
     renderCreativeFactory(data);
     renderOfferChess(data);
+    renderLifecycleBrain(data);
     renderOperating(plan, data);
 
     $("#bg-bottleneck-code").textContent = plan.bottleneck.code;

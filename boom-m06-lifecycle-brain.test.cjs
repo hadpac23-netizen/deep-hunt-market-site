@@ -1,0 +1,7 @@
+const fs=require("node:fs"),assert=require("node:assert");
+const html=fs.readFileSync("boom-growth-os.html","utf8"),js=fs.readFileSync("boom-growth-os.js","utf8"),life=fs.readFileSync("boom-lifecycle-brain.js","utf8");
+for(const token of ['id="bg-lifecycle-state"','id="bg-lifecycle-stats"','id="bg-lifecycle-lanes"','id="bg-lifecycle-blockers"','boom-lifecycle-brain.js?v=m06'])assert(html.includes(token),"M06 UI/load missing: "+token);
+for(const token of ["lifecycleRows","lifecycleSummary","lifecycleTopBlockers","renderLifecycleBrain","marketing_consent_infrastructure:false","real_order_events_ready:false","tracking_events_ready:false"])assert(js.includes(token),"M06 Growth runtime missing: "+token);
+for(const token of ["ORDER_UPDATE","TRACKING_UPDATE","SAVED_ITEM_REMINDER","CART_REMINDER","BACK_IN_STOCK","PRICE_VERIFIED","COMPLEMENTARY_ITEM","marketing_daily_cap_reached","marketing_weekly_cap_reached","service_event_already_sent","external_send:false",'owner_gate:"REVIEW_REQUIRED"'])assert(life.includes(token),"M06 lifecycle guard missing: "+token);
+assert(!/fetch\s*\(|XMLHttpRequest|\.insert\s*\(|\.update\s*\(|\.delete\s*\(/.test(life),"Lifecycle Brain must not send or mutate external systems");
+console.log("boom_m06_lifecycle_contract=PASS");

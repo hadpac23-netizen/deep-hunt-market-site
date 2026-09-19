@@ -1,0 +1,17 @@
+const assert=require("node:assert");
+const L=require("./boom-lifecycle-brain.js");
+const channels={email:{connected:true,send_enabled:true},push:{connected:false,send_enabled:false},sms:{connected:false,send_enabled:false},whatsapp:{connected:false,send_enabled:false}};
+let x=L.evaluate({trigger:"SAVED_ITEM_REMINDER",channel:"email",evidence:{saved_item:true,product_still_valid:true,product_title:"Phone Case"},consent:{marketing:false},history:{},channels});
+assert.strictEqual(x.state,"HOLD"); assert(x.blockers.includes("marketing_consent_required"));
+x=L.evaluate({trigger:"SAVED_ITEM_REMINDER",channel:"email",evidence:{saved_item:true,product_still_valid:true,product_title:"Phone Case"},consent:{marketing:true},history:{marketing_sent_last_24h:0,marketing_sent_last_7d:0},channels});
+assert.strictEqual(x.state,"SEND_CANDIDATE"); assert.strictEqual(x.send_enabled,false); assert(!/hurry|last chance|selling out/i.test(x.message.body));
+x=L.evaluate({trigger:"CART_REMINDER",channel:"email",evidence:{cart_active:true,no_later_checkout_or_purchase:true},consent:{marketing:true},history:{marketing_sent_last_24h:1,marketing_sent_last_7d:1},channels});
+assert.strictEqual(x.state,"HOLD"); assert(x.blockers.includes("marketing_daily_cap_reached"));
+x=L.evaluate({trigger:"TRACKING_UPDATE",channel:"email",evidence:{real_order:true,tracking_changed:true,order_reference:"Order 123",tracking_status:"In transit"},consent:{service_updates:true},history:{event_id:"track-1",sent_event_ids:[]},channels});
+assert.strictEqual(x.class,"service"); assert.strictEqual(x.state,"SEND_CANDIDATE"); assert(x.message.body.includes("In transit"));
+x=L.evaluate({trigger:"TRACKING_UPDATE",channel:"email",evidence:{real_order:true,tracking_changed:true},consent:{service_updates:true},history:{event_id:"track-1",sent_event_ids:["track-1"]},channels});
+assert.strictEqual(x.state,"HOLD"); assert(x.blockers.includes("service_event_already_sent"));
+const readiness=L.systemReadiness({marketing_consent_infrastructure:false,real_order_events_ready:false,tracking_events_ready:false,channels:{email:{connected:false,send_enabled:false}}});
+assert.strictEqual(readiness.length,7); assert(readiness.every(x=>x.state==="LOCKED"));
+const summary=L.summarize(readiness); assert.strictEqual(summary.locked_or_hold,7); assert.strictEqual(summary.external_send,false);
+console.log("boom_lifecycle_brain=PASS",JSON.stringify(summary));
