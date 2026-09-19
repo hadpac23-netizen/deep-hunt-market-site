@@ -26,7 +26,7 @@ assert.equal(research.status,"OBSERVE_ONLY");
 assert.equal(research.activation_allowed,false);
 assert(research.observe_only_reasons.includes("commercial_rights_not_approved"));
 
-const stale=F60T.evaluate({...base("google_trends_trending_now","2026-09-19T17:00:00Z"),id:"stale"},byId.google_trends_trending_now,{nowMs});
+const stale=F60T.evaluate({...base("google_trends_rss","2026-09-19T17:00:00Z"),id:"stale"},byId.google_trends_rss,{nowMs});
 assert.equal(stale.status,"KILLED");
 assert(stale.reasons.includes("stale_signal"));
 
