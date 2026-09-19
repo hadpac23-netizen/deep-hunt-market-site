@@ -16,6 +16,8 @@
       "required": [
         "core",
         "runtime",
+        "account_presence",
+        "shopping_actions",
         "analytics",
         "theme",
         "i18n"
@@ -28,9 +30,10 @@
       "required": [
         "core",
         "runtime",
+        "account_presence",
+        "shopping_actions",
         "analytics",
-        "theme",
-        "i18n"
+        "theme"
       ],
       "enforce_phase_1": true
     },
@@ -40,9 +43,10 @@
       "required": [
         "core",
         "runtime",
+        "account_presence",
+        "shopping_actions",
         "analytics",
-        "theme",
-        "i18n"
+        "theme"
       ],
       "enforce_phase_1": true
     },
@@ -50,11 +54,10 @@
       "id": "store.checkout",
       "file": "checkout.html",
       "required": [
-        "core",
         "runtime",
+        "account_presence",
         "analytics",
-        "theme",
-        "i18n"
+        "theme"
       ],
       "enforce_phase_1": true
     },
@@ -64,9 +67,8 @@
       "required": [
         "core",
         "runtime",
-        "analytics",
-        "theme",
-        "i18n"
+        "shopping_actions",
+        "theme"
       ],
       "enforce_phase_1": true
     },
@@ -77,8 +79,7 @@
         "core",
         "runtime",
         "analytics",
-        "theme",
-        "i18n"
+        "theme"
       ],
       "enforce_phase_1": true
     },
@@ -182,5 +183,5 @@
       "enforce_phase_1": false
     }
   ],
-  "note": "Target contract. Phase-1 enforcement applies to the six core storefront/auth surfaces. Other surfaces remain migration targets."
+  "note": "Capability-based target contract. Phase-1 enforcement covers the six core storefront/auth surfaces; optional modules are not forced onto pages that do not need them."
 }
