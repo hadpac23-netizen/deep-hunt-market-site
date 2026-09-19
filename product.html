@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex,follow">
   <meta name="description" content="Inspect live product images, variants, availability and source pricing on HUNT.">
   <title>Product — HUNT</title>
-  <link rel="stylesheet" href="hunt-deal.css?v=photo7">
+  <link rel="stylesheet" href="hunt-deal.css?v=photo9">
   <link rel="stylesheet" href="hunt-wow.css?v=launchqa5">
   <link rel="stylesheet" href="hunt-shop.css?v=dynamic2">
   <link rel="stylesheet" href="hunt-decision-confidence.css?v=1">
@@ -60,7 +60,19 @@
         <div class="hd-boom-product glass"><span>BOOM</span><div><strong>For You</strong><small id="hd-product-boom">Learning from this device.</small></div></div>
 
         <section class="hd-option-block" id="hd-color-block" hidden><div class="hd-option-head"><strong>Color</strong><span id="hd-selected-color">—</span></div><div class="hd-color-options" id="hd-color-options"></div></section>
-        <section class="hd-option-block" id="hd-size-block" hidden><div class="hd-option-head"><strong>Size</strong><span id="hd-selected-size">—</span></div><div class="hd-size-options" id="hd-size-options"></div></section>
+        <section class="hd-option-block" id="hd-size-block" hidden>
+          <div class="hd-option-head"><strong id="hd-size-option-label">Size</strong><span id="hd-selected-size">—</span></div>
+          <div class="hd-size-options" id="hd-size-options"></div>
+          <div class="hd-size-truth" id="hd-size-truth" hidden>
+            <strong id="hd-size-truth-title">Size & fit truth</strong>
+            <span id="hd-size-truth-copy">Provider size data only. No measurement chart has been verified.</span>
+          </div>
+        </section>
+        <section class="hd-variant-truth" id="hd-variant-truth" hidden aria-live="polite">
+          <div><span>Selected option</span><strong id="hd-variant-label">—</strong></div>
+          <div><span>Availability</span><strong id="hd-variant-availability">Recheck</strong></div>
+          <div><span>Compatibility</span><strong id="hd-variant-compatibility">Not verified</strong></div>
+        </section>
 
         <div class="hd-product-quantity"><strong>Quantity</strong><div class="hd-qty hd-product-qty"><button type="button" id="hd-qty-minus">−</button><span id="hd-qty-value">1</span><button type="button" id="hd-qty-plus">+</button></div></div>
         <button class="hd-btn hd-btn-primary hd-product-add" type="button" id="hd-product-add">Add to checkout preview →</button>
@@ -203,15 +215,15 @@
   <script src="boom-commerce-brain.js?v=2"></script>
   <script src="boom-stylist.js?v=1"></script>
   <script src="boom-f35-director.js?v=1"></script>
-  <script src="hunt-product-qa.js?v=1"></script>
-<script src="product.js?v=launchqa9"></script>
+  <script src="hunt-product-qa.js?v=3"></script>
+<script src="product.js?v=launchqa11"></script>
   <script src="product-flow.js?v=dealbuilder4"></script>
   <script src="boom-deal-builder.js?v=dealbuilder1"></script>
   <script src="reviews.js?v=reviews2"></script>
   <script src="shopping-actions.js?v=launchqa5"></script>
   <script src="hunt-theme.js?v=shop5"></script>
   <script src="hunt-product-pulse.js?v=1"></script>
-  <script src="pwa.js?v=pwa6"></script>
+  <script src="pwa.js?v=pwa8"></script>
   <script src="hunt-brand-motion.js?v=1"></script>
 </body>
 </html>

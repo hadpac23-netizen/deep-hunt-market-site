@@ -30,8 +30,8 @@ for(const token of ["MAX=3","aria-pressed","Compare up to 3","No winner","Unknow
 for(const token of [".hd-applied-filters",".hd-card-specific-facts",".hd-compare-tray",".hd-compare-dialog",".hd-compare-table"]){
   assert(css.includes(token),"Product Finding CSS missing: "+token);
 }
-assert(sw.includes("hunt-shell-pwa6"),"PWA4 cache missing");
+assert(sw.includes("hunt-shell-pwa8"),"PWA4 cache missing");
 assert(sw.includes("hunt-product-finding.css")&&sw.includes("hunt-compare.js"),"PWA core missing Product Finding assets");
-assert(pwa.includes("service-worker.js?v=pwa6"),"PWA4 registration missing");
+assert(pwa.includes("service-worker.js?v=pwa8"),"PWA4 registration missing");
 
 console.log("hunt_product_finding=PASS");
