@@ -576,6 +576,35 @@
       live_function_version:8
     })||{state:"HOLD",checks:{},blockers:["paid_attribution_runtime_unavailable"],paid_attribution_ready:false,server_event_id_persisted:false,paid_launch:false,paid_spend:false,execute_actions:false};
 
+    const F50Evidence=window.BoomF50EvidenceEngine;
+    const F50Core=window.BoomF50ResearchCore;
+    const F50Funnel=window.BoomF50Funnel;
+    const F50Engine=window.BoomF50Engine;
+    const F50Current=window.BoomF50CurrentResearch?.RECEIPT||{};
+    const f50={
+      state:F50Evidence&&F50Core&&F50Funnel?"CORE_READY":"HOLD",
+      evidence_engine_ready:Boolean(F50Evidence?.inspectCandidate),
+      research_core_ready:Boolean(F50Core?.killOrKeep),
+      funnel_ready:Boolean(F50Funnel?.run),
+      engine_ready:Boolean(F50Engine?.run)&&F50Engine?.TOKEN==="F50-DEEP-HUNT-CONTINUE",
+      methods:Number(F50Core?.METHODS?.length||0),
+      source_kinds:Number(F50Evidence?.SOURCE_KINDS?.size||0),
+      novelty_surfaces:Number(F50Evidence?.NOVELTY_SURFACES?.length||0),
+      funnel_contract:"50 → 10 → 3 → 1 or 0",
+      one_idea_rule:true,
+      saved_candidate_id:String(F50Current.saved_candidate_id||""),
+      saved_candidate_title:String(F50Current.saved_candidate_title||""),
+      saved_candidate_status:String(F50Current.saved_candidate_status||"NONE"),
+      formal_evidence_imported:F50Current.formal_evidence_imported===true,
+      winner_claim_allowed:F50Current.winner_claim_allowed===true,
+      current_final_result:String(F50Current.current_final_result||"UNRESOLVED"),
+      payments_live:false,
+      paid_spend:false,
+      external_publish:false,
+      execute_actions:false,
+      owner_gate:"REVIEW_REQUIRED"
+    };
+
     const AttributionContext=window.BoomAttributionContextReadiness;
     const attributionContext=AttributionContext?.evaluate?.({
       consent_gated_capture:true,
@@ -632,9 +661,48 @@
       durableEventIdentity,
       paidAttribution,
       attributionContext,
+      f50,
       agenticGateway,
       seoAudit
     };
+  }
+
+  function renderF50(data={}){
+    const f=data.f50||{state:"HOLD",methods:0,source_kinds:0,novelty_surfaces:0,funnel_contract:"50 → 10 → 3 → 1 or 0",one_idea_rule:true,saved_candidate_status:"NONE",winner_claim_allowed:false,current_final_result:"UNRESOLVED"};
+    const state=$("#bg-f50-state");
+    if(state)state.textContent=f.state==="CORE_READY"?"CORE READY":"HOLD";
+    const stats=$("#bg-f50-stats");
+    if(stats)stats.innerHTML=[
+      ["Methods",String(f.methods||0)],
+      ["Evidence kinds",String(f.source_kinds||0)],
+      ["Prior-art surfaces",String(f.novelty_surfaces||0)],
+      ["Final output",f.one_idea_rule?"1 OR 0":"HOLD"]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const gates=$("#bg-f50-gates");
+    if(gates)gates.innerHTML=[
+      ["Research Core",f.research_core_ready===true],
+      ["Evidence Engine",f.evidence_engine_ready===true],
+      ["50→10→3 Funnel",f.funnel_ready===true],
+      ["F50 Orchestrator",f.engine_ready===true],
+      ["One-Idea Rule",f.one_idea_rule===true],
+      ["Execution disabled",f.execute_actions===false],
+      ["Paid spend disabled",f.paid_spend===false]
+    ].map(([name,ok])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(ok?"bg-passport-ready":"bg-passport-blocked")+'">'+(ok?"PASS":"HOLD")+'</span></div></article>').join("");
+    const current=$("#bg-f50-current");
+    if(current){
+      const candidate=f.saved_candidate_title||"No saved candidate";
+      const evidence=f.formal_evidence_imported?"IMPORTED":"PENDING";
+      const winner=f.winner_claim_allowed?"ALLOWED":"BLOCKED";
+      current.innerHTML=[
+        ["Mission","HUNT gap hunt"],
+        ["Saved candidate",candidate],
+        ["Candidate status",String(f.saved_candidate_status||"NONE").replaceAll("_"," ")],
+        ["Formal evidence",evidence],
+        ["Winner claim",winner],
+        ["Final result",String(f.current_final_result||"UNRESOLVED")]
+      ].map(([name,value])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score">'+H.esc(value)+'</span></div></article>').join("");
+    }
+    return f;
   }
 
   function renderFunnel(f) {
@@ -1220,6 +1288,11 @@
       ["M29","Purchase Attribution Bridge","BoomPurchaseAttributionBridge","PANEL"],
       ["M30","PayPlus Status Mapping","BoomPayPlusStatusReadiness","PANEL"],
       ["M31","PayPlus Sandbox Evidence","BoomPayPlusSandboxEvidence","PANEL"],
+      ["F50","Evidence Engine","BoomF50EvidenceEngine","PANEL"],
+      ["F50","Research Core","BoomF50ResearchCore","PANEL"],
+      ["F50","Candidate Funnel","BoomF50Funnel","PANEL"],
+      ["F50","Orchestrator","BoomF50Engine","PANEL"],
+      ["F50","Current Research Receipt","BoomF50CurrentResearch","CONNECTED"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -2085,6 +2158,7 @@
     $("#bg-deals").textContent = String(plan.rankedDeals.filter((x) => !["rejected","expired"].includes(String(x.status || "").toLowerCase())).length);
     $("#bg-avg-profit").textContent = money(plan.avgVerifiedContribution);
 
+    renderF50(data);
     renderFunnel(plan.funnel);
     renderMilestones(plan.milestones);
     renderDeals(plan.rankedDeals);

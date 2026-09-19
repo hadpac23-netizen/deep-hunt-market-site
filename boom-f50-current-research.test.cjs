@@ -1,0 +1,13 @@
+const assert=require("node:assert");
+const R=require("./boom-f50-current-research.js").RECEIPT;
+assert.strictEqual(R.protocol_token,"F50-DEEP-HUNT-CONTINUE");
+assert.strictEqual(R.saved_candidate_id,"HUNT_PROMISE_MESH");
+assert.strictEqual(R.saved_candidate_status,"PROVISIONAL_KEEP_PENDING_FORMAL_EVIDENCE");
+assert.strictEqual(R.formal_evidence_imported,false);
+assert.strictEqual(R.winner_claim_allowed,false);
+assert.strictEqual(R.current_final_result,"UNRESOLVED");
+assert.strictEqual(R.payments_live,false);
+assert.strictEqual(R.paid_spend,false);
+assert.strictEqual(R.external_publish,false);
+assert.strictEqual(R.execute_actions,false);
+console.log("boom_f50_current_research=PASS");
