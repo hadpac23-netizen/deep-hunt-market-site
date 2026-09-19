@@ -42,11 +42,11 @@
   }
 
   async function loadData() {
-    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, seoAudit] = await Promise.all([
+    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, catalogRes, identityRes, seoAudit] = await Promise.all([
       ownerFunction("hunt-owner-mission-control"),
       ownerFunction("hunt-launch-readiness"),
       client.from("hunt_unit_economics")
-        .select("provider,item_id,currency,inputs_verified,profit_gate_status,contribution_before_coupon,contribution_margin,max_safe_cac,calculated_at")
+        .select("provider,item_id,variant_id,destination_country,quantity,currency,sale_price_per_unit,inputs_verified,profit_gate_status,contribution_before_coupon,contribution_margin,max_safe_cac,max_safe_coupon_amount,calculated_at")
         .order("calculated_at", {ascending:false})
         .limit(120),
       client.from("hunt_deal_candidates")
@@ -70,7 +70,15 @@
         .select("id,day,channel,provider,item_id,status,owner_approved,utm_source,utm_medium,utm_campaign,utm_content,created_at")
         .order("created_at",{ascending:false})
         .limit(80),
-      fetch("boom-seo-audit.json?v=os2",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)
+      client.from("hunt_catalog_products")
+        .select("provider,item_id,category,title,image_url,price_amount,currency,price_basis,availability_verified,source_fresh_at,updated_at,brand,ean,supplier_sku,product_line,volume_ml,concentration,gender,stock_quantity,source_region,authenticity_status,market_eligibility_status,market_restrictions,last_stock_check_at")
+        .order("source_fresh_at",{ascending:false,nullsFirst:false})
+        .limit(300),
+      client.from("hunt_business_identity")
+        .select("id,legal_entity_name,registration_number,registered_country,business_address,support_email,returns_address,privacy_contact_email,status,owner_approved,updated_at")
+        .eq("id","primary")
+        .maybeSingle(),
+      fetch("boom-seo-audit.json?v=os3",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)
     ]);
 
     if (econRes.error) throw econRes.error;
@@ -79,6 +87,8 @@
     if (radarRes.error) throw radarRes.error;
     if (briefRes.error) throw briefRes.error;
     if (distributionRes.error) throw distributionRes.error;
+    if (catalogRes.error) throw catalogRes.error;
+    if (identityRes.error) throw identityRes.error;
 
     const economics = econRes.data || [];
     const econMap = new Map();
@@ -97,6 +107,83 @@
       };
     });
 
+    const catalog = catalogRes.data || [];
+    const identity = identityRes.data || {};
+    const Passport = window.BoomCommercePassport;
+    const identityReady = identity.owner_approved === true
+      && Boolean(identity.legal_entity_name)
+      && Boolean(identity.registration_number)
+      && Boolean(identity.business_address)
+      && Boolean(identity.support_email)
+      && Boolean(identity.privacy_contact_email)
+      && Boolean(identity.returns_address);
+
+    const isSourceFresh = (value) => {
+      const ts = Date.parse(String(value || ""));
+      return Number.isFinite(ts) && Date.now() - ts <= 7 * 24 * 60 * 60 * 1000;
+    };
+    const canonicalBase = /^(localhost|127\.0\.0\.1)$/i.test(location.hostname) ? "" : location.origin;
+    const passports = Passport?.build ? catalog.map((row) => {
+      const key = String(row.provider || "") + ":" + String(row.item_id || "");
+      const econ = econMap.get(key) || {};
+      let canonicalUrl = "";
+      try {
+        if (canonicalBase) canonicalUrl = new URL(H.productUrl(row), canonicalBase + "/").href;
+      } catch {}
+      const product = {
+        ...row,
+        description: "",
+        sku: row.supplier_sku || "",
+        gtin: row.ean || "",
+        retail_price_verified: econ.inputs_verified === true && String(econ.profit_gate_status || "").toUpperCase() === "PASS",
+        retail_price_amount: econ.sale_price_per_unit,
+        retail_currency: econ.currency || row.currency || "USD",
+        profit_gate_status: econ.profit_gate_status || "",
+        stock_check_required: true
+      };
+      return Passport.build(product, {
+        canonical_url: canonicalUrl,
+        merchant_identity_ready: identityReady,
+        shipping_policy_ready: false,
+        returns_policy_ready: false,
+        source_fresh: isSourceFresh(row.source_fresh_at),
+        feed_availability_verified: false,
+        variant_availability_feed_ready: false,
+        checkout_ready: false,
+        payment_ready: false,
+        order_ready: false,
+        tracking_ready: false,
+        attribution_ready: false,
+        owner_paid_approval: false,
+        connected_channels: {
+          google_free_listings: false,
+          google_ai: false,
+          meta_catalog: false,
+          tiktok_catalog: false,
+          pinterest_catalog: false,
+          agentic_ucp: false,
+          organic_social: false,
+          paid_media: false
+        },
+        unit_economics: econ
+      });
+    }) : [];
+
+    const passportSummary = Passport?.summarize?.(passports) || {total:0,channels:{}};
+    const blockerCounts = new Map();
+    for (const passport of passports) {
+      const productBlockers = new Set();
+      for (const channel of ["google_free_listings","google_ai","agentic_ucp","organic_social","paid_media"]) {
+        for (const blocker of passport?.channels?.[channel]?.blockers || []) productBlockers.add(blocker);
+        for (const blocker of passport?.channels?.[channel]?.transaction_blockers || []) productBlockers.add(blocker);
+      }
+      for (const blocker of productBlockers) blockerCounts.set(blocker, (blockerCounts.get(blocker) || 0) + 1);
+    }
+    const passportBlockers = [...blockerCounts.entries()]
+      .map(([blocker,count]) => ({blocker,count}))
+      .sort((a,b) => b.count - a.count || a.blocker.localeCompare(b.blocker))
+      .slice(0,12);
+
     return {
       snapshot: mission.snapshot || {},
       missionRecommendation: mission.recommendation || {},
@@ -107,6 +194,12 @@
       worldIdeas: radarRes.data || [],
       dailyBrief: briefRes.data || null,
       distributionDrafts: distributionRes.data || [],
+      catalog,
+      businessIdentity: identity,
+      businessIdentityReady: identityReady,
+      passports,
+      passportSummary,
+      passportBlockers,
       seoAudit
     };
   }
@@ -161,6 +254,55 @@
     ).join("");
   }
 
+
+  function renderPassports(data) {
+    const summary = data.passportSummary || {total:0,channels:{}};
+    const version = window.BoomCommercePassport?.VERSION || "—";
+    const versionEl = $("#bg-passport-version");
+    if (versionEl) versionEl.textContent = version;
+
+    const stats = [
+      ["Catalog passports", summary.total || 0],
+      ["Verified retail", summary.price_verified || 0],
+      ["Feed-safe availability", summary.availability_exportable || 0],
+      ["Merchant identity ready", summary.merchant_identity_ready || 0]
+    ];
+    const statHost = $("#bg-passport-stats");
+    if (statHost) statHost.innerHTML = stats.map(([label,value]) =>
+      '<article class="bg-passport-stat"><strong>' + H.esc(value) + '</strong><small>' + H.esc(label) + '</small></article>'
+    ).join("");
+
+    const labels = {
+      google_free_listings:"Google Free Listings",
+      google_ai:"Google AI commerce",
+      agentic_ucp:"Agentic / UCP",
+      organic_social:"Organic social",
+      pinterest_catalog:"Pinterest catalog",
+      paid_media:"Paid media"
+    };
+    const channelHost = $("#bg-passport-channels");
+    if (channelHost) channelHost.innerHTML = Object.entries(labels).map(([key,label]) => {
+      const row = summary.channels?.[key] || {};
+      const dataReady = Number(row.data_ready || 0);
+      const ready = Number(row.ready || 0);
+      const txReady = Number(row.transaction_ready || 0);
+      const state = ready > 0 ? "READY" : dataReady > 0 ? "PREPARE" : "BLOCKED";
+      const tone = ready > 0 ? "bg-passport-ready" : dataReady > 0 ? "bg-passport-prepare" : "bg-passport-blocked";
+      const tx = key === "agentic_ucp" ? " · Transaction " + txReady : "";
+      return '<article class="bg-row"><div class="bg-row-head"><strong>' + H.esc(label) +
+        '</strong><span class="bg-score ' + tone + '">' + H.esc(state) + '</span></div><small>Data ready ' +
+        H.esc(dataReady) + ' · Connected ready ' + H.esc(ready) + H.esc(tx) + '</small></article>';
+    }).join("");
+
+    const blockerHost = $("#bg-passport-blockers");
+    const blockers = Array.isArray(data.passportBlockers) ? data.passportBlockers : [];
+    if (blockerHost) blockerHost.innerHTML = blockers.length
+      ? blockers.map(row => '<article class="bg-row"><div class="bg-row-head"><strong>' +
+          H.esc(String(row.blocker || "").replaceAll("_"," ")) +
+          '</strong><span class="bg-score">' + H.esc(row.count || 0) + '</span></div><small>SKUs affected</small></article>').join("")
+      : '<div class="bg-empty">No passport blockers found.</div>';
+  }
+
   function renderOperating(plan, data) {
     const Marketing = window.BoomMarketingBrain;
     const Creative = window.BoomCreativeBrain;
@@ -169,7 +311,7 @@
     const Publisher = window.BoomEverywherePublisher;
     const Learning = window.BoomLearningLoop;
 
-    const marketing = Marketing?.build?.({plan,data}) || {channels:[],primary:null,eligibleDeals:0};
+    const marketing = Marketing?.build?.({plan,data,passportSummary:data.passportSummary}) || {channels:[],primary:null,eligibleDeals:0};
     const topDeal = plan.rankedDeals.find(x => x?.boom?.eligibleForPromotion) || null;
     const creative = topDeal ? (Creative?.draftsForDeal?.(topDeal) || []) : [];
     const publisherDrafts = Publisher?.buildDrafts?.(creative) || [];
@@ -193,6 +335,7 @@
 
     const brainRows = [
       ["Marketing", marketing.primary ? "LIVE" : "READY"],
+      ["Commerce Passport", (data.passportSummary?.total || 0) + " SKUs"],
       ["Creative", creative.length ? creative.length + " DRAFTS" : "WAIT EVIDENCE"],
       ["SEO", seoScore + "/100"],
       ["Love", love.confidence.toUpperCase()],
@@ -256,6 +399,7 @@
     renderMilestones(plan.milestones);
     renderDeals(plan.rankedDeals);
     renderLaunch(plan.launch);
+    renderPassports(data);
     renderOperating(plan, data);
 
     $("#bg-bottleneck-code").textContent = plan.bottleneck.code;
