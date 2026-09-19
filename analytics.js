@@ -17,6 +17,8 @@
   const safePath = () => location.pathname || "/";
   const sessionKey = "hunt_session_id_v1";
   const missionKey = "hunt_shopping_mission_v1";
+  const attributionKey = "hunt_attribution_context_v1";
+  const ATTRIBUTION_KEYS = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","gclid","fbclid","ttclid","msclkid"];
   const MEASUREMENT_VERSION = "2026-09-19-v1";
 
   function measurementEventId(event, params = {}) {
@@ -74,6 +76,48 @@
     } catch {
       return "hunt_ephemeral_" + Date.now().toString(36);
     }
+  }
+
+  function urlAttributionCandidate() {
+    try {
+      const params=new URLSearchParams(location.search);
+      const touch={};
+      for(const key of ATTRIBUTION_KEYS){
+        const value=clean(params.get(key)||"",key.endsWith("clid")?180:120);
+        if(value)touch[key]=value;
+      }
+      if(!Object.keys(touch).length)return null;
+      touch.landing_path=safePath();
+      touch.captured_at=new Date().toISOString();
+      return Object.freeze(touch);
+    } catch { return null; }
+  }
+
+  const pendingAttribution=urlAttributionCandidate();
+
+  function readAttributionContext() {
+    if(!consentGranted)return null;
+    try {
+      const parsed=JSON.parse(sessionStorage.getItem(attributionKey)||"null");
+      if(!parsed||typeof parsed!=="object")return null;
+      return parsed;
+    } catch { return null; }
+  }
+
+  function persistAttributionContext() {
+    if(!consentGranted||!pendingAttribution)return readAttributionContext();
+    try {
+      const previous=JSON.parse(sessionStorage.getItem(attributionKey)||"null");
+      const next={
+        version:"2026-09-19-m21-preview",
+        consent_granted:true,
+        first_touch:previous?.first_touch||pendingAttribution,
+        last_touch:pendingAttribution,
+        updated_at:new Date().toISOString()
+      };
+      sessionStorage.setItem(attributionKey,JSON.stringify(next));
+      return next;
+    } catch { return null; }
   }
 
   function firstPartySignal(event, params = {}) {
@@ -224,6 +268,7 @@
   function init() {
     if (initialized || !consentGranted) return false;
     initialized = true;
+    persistAttributionContext();
     if (configured()) {
       loadGtm();
       loadDirectGa4();
@@ -245,6 +290,7 @@
     dismissConsentBanner();
     if (!consentGranted) {
       queue.length = 0;
+      try { sessionStorage.removeItem(attributionKey); } catch {}
       window.dispatchEvent(new CustomEvent("hunt:analytics-consent", {detail:{granted:false}}));
       return false;
     }
@@ -348,6 +394,7 @@
   const api = {
     configured,
     experience,
+    attributionContext: readAttributionContext,
     consentGranted: () => consentGranted,
     currentMission,
     setConsent,

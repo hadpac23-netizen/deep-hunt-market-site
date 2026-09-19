@@ -510,6 +510,18 @@
       live_function_version:8
     })||{state:"HOLD",checks:{},blockers:["paid_attribution_runtime_unavailable"],paid_attribution_ready:false,server_event_id_persisted:false,paid_launch:false,paid_spend:false,execute_actions:false};
 
+    const AttributionContext=window.BoomAttributionContextReadiness;
+    const attributionContext=AttributionContext?.evaluate?.({
+      consent_gated_capture:true,
+      browser_first_touch:true,
+      browser_last_touch:true,
+      checkout_payload_context:true,
+      server_session_snapshot:true,
+      live_server_session_snapshot:false,
+      server_purchase_linkage:false,
+      provider_click_validation:false
+    })||{state:"HOLD",checks:{},blockers:["attribution_context_runtime_unavailable"],local_preview_ready:false,live_attribution_context_ready:false,conversion_claim_allowed:false,execute_actions:false};
+
     return {
       snapshot: mission.snapshot || {},
       missionRecommendation: mission.recommendation || {},
@@ -542,6 +554,7 @@
       creatorSystem,
       marketplaceSnapshot,
       paidAttribution,
+      attributionContext,
       agenticGateway,
       seoAudit
     };
@@ -1118,6 +1131,7 @@
       ["M18","Evidence Decision Gate","BoomEvidenceDecisionGate","PANEL"],
       ["M19","Marketplace Snapshot Adapter","HuntMarketplaceSnapshotAdapter","CONNECTED"],
       ["M20","Paid Attribution Readiness","BoomPaidAttributionReadiness","PANEL"],
+      ["M21","Attribution Context","BoomAttributionContextReadiness","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1441,6 +1455,7 @@
       {domain:"personalization_lift",source_kind:"STRUCTURAL",source_ref:"M11 runtime + analytics hooks",available:Boolean(window.BoomPersonalizationBrain),truth_verified:false,freshness_required:false},
       {domain:"marketplace_snapshot",source_kind:"DIRECT_DB",source_ref:"merchant_accounts + merchant_stores + merchant_products",available:data.marketplaceSnapshot?.adapter_ready===true,truth_verified:data.marketplaceSnapshot?.adapter_ready===true,observed_count:Number(data.marketplaceSnapshot?.counts?.stores_total||0)+Number(data.marketplaceSnapshot?.counts?.products_total||0),minimum_count:0,observed_at:new Date().toISOString(),max_age_ms:60*60*1000},
       {domain:"paid_attribution",source_kind:"DIRECT_DB",source_ref:"M20 canonical event + server conversion attribution",available:data.paidAttribution?.paid_attribution_ready===true,truth_verified:data.paidAttribution?.paid_attribution_ready===true,observed_count:data.paidAttribution?.paid_attribution_ready?1:0,minimum_count:1,observed_at:data.paidAttribution?.paid_attribution_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
+      {domain:"campaign_touchpoint_context",source_kind:"STRUCTURAL",source_ref:"M21 consent-gated browser → checkout → payment-session preview",available:data.attributionContext?.local_preview_ready===true,truth_verified:false,freshness_required:false},
       {domain:"source_verification_workflow",source_kind:"STRUCTURAL",source_ref:"M16 source verification workflow",available:Boolean(window.BoomDigitalMarketingUniversity),truth_verified:false,freshness_required:false}
     ];
     return E.matrix(records);
@@ -1458,6 +1473,25 @@
     const gaps=$("#bg-evidence-gaps");
     if(gaps)gaps.innerHTML=e.rows.filter(x=>x.state!=="VERIFIED").map(rowHtml).join("")||'<div class="bg-empty">No evidence gaps.</div>';
     return e;
+  }
+
+  function renderAttributionContext(data={}){
+    const a=data.attributionContext||{state:"HOLD",checks:{},blockers:[],local_preview_ready:false,live_attribution_context_ready:false,conversion_claim_allowed:false};
+    const state=$("#bg-attribution-context-state");
+    if(state)state.textContent=a.live_attribution_context_ready?"OWNER REVIEW":a.state||"HOLD";
+    const stats=$("#bg-attribution-context-stats");
+    if(stats)stats.innerHTML=[
+      ["Local chain",a.local_preview_ready?"READY":"HOLD"],
+      ["Live server snapshot",a.checks?.live_server_session_snapshot?"READY":"OFF"],
+      ["Purchase linkage",a.checks?.server_purchase_linkage?"READY":"MISSING"],
+      ["Conversion claim",a.conversion_claim_allowed?"ALLOWED":"BLOCKED"]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const labels={consent_gated_capture:"Consent-gated URL capture",browser_first_touch:"Browser first touch",browser_last_touch:"Browser last touch",checkout_payload_context:"Checkout attribution payload",server_session_snapshot:"Local payment-session snapshot",live_server_session_snapshot:"Live payment-session snapshot",server_purchase_linkage:"Server purchase linkage",provider_click_validation:"Provider click validation"};
+    const checks=$("#bg-attribution-context-checks");
+    if(checks)checks.innerHTML=Object.entries(labels).map(([key,label])=>{const ok=a.checks?.[key]===true;return '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(label)+'</strong><span class="bg-score '+(ok?"bg-passport-ready":"bg-passport-prepare")+'">'+(ok?"READY":"GAP")+'</span></div></article>';}).join("");
+    const blockers=$("#bg-attribution-context-blockers");
+    if(blockers)blockers.innerHTML=(a.blockers||[]).filter(x=>!String(x).startsWith("browser_")&&!String(x).startsWith("consent_gated")&&!String(x).startsWith("checkout_payload")&&!String(x).startsWith("server_session_snapshot_")).map(blocker=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(blocker).replaceAll("_"," "))+'</strong><span class="bg-score bg-passport-blocked">HOLD</span></div></article>').join("")||'<div class="bg-empty">No remaining attribution-context blockers.</div>';
+    return a;
   }
 
   function renderPaidAttribution(data={}){
@@ -1669,6 +1703,7 @@
     renderMarketplace(data);
     renderUniversity(data);
     renderEvidenceLedger(data);
+    renderAttributionContext(data);
     renderPaidAttribution(data);
     renderStudioCoverage();
     renderOperating(plan, data);

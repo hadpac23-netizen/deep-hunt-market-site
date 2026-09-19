@@ -10,6 +10,30 @@ const ALLOWED_ORIGINS=new Set([
 ]);
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const num=(v:unknown)=>Number.isFinite(Number(v))?Number(v):null;
+const ATTR_KEYS=["utm_source","utm_medium","utm_campaign","utm_content","utm_term","gclid","fbclid","ttclid","msclkid","landing_path","captured_at"] as const;
+
+function normalizeAttribution(raw:any){
+  if(!raw||typeof raw!=="object"||raw.consent_granted!==true)return null;
+  const sanitize=(touch:any)=>{
+    if(!touch||typeof touch!=="object")return null;
+    const out:any={};
+    for(const key of ATTR_KEYS){
+      const value=clean(touch?.[key]).slice(0,key.endsWith("clid")?180:160);
+      if(value)out[key]=value;
+    }
+    return Object.keys(out).length?out:null;
+  };
+  const first=sanitize(raw.first_touch),last=sanitize(raw.last_touch);
+  if(!first&&!last)return null;
+  return {
+    version:"2026-09-19-m21-preview",
+    source:"hunt_web_consent_context",
+    verified:false,
+    first_touch:first,
+    last_touch:last,
+    received_at:new Date().toISOString()
+  };
+}
 
 function normalizeShipping(body:any,country:string){
   const src=body?.shipping&&typeof body.shipping==="object"?body.shipping:{};
@@ -268,6 +292,7 @@ Deno.serve(async(req:Request)=>{
 
   try{
     const body=await req.json();
+    const attributionSnapshot=normalizeAttribution(body?.attribution);
     const configuredMode=clean(Deno.env.get("HUNT_PAYMENT_MODE")).toLowerCase()||"prelaunch";
     if(configuredMode==="live"){
       const {data:liveControl}=await ctx.supabaseAdmin
@@ -300,6 +325,7 @@ Deno.serve(async(req:Request)=>{
       offer:finalPricing.checkout_offer_id||null,
       shipping:shipping.snapshot,
       customer_email:shipping.email,
+      attribution:attributionSnapshot,
       items:pricing.line_items.map((x:any)=>[
         x.provider,x.item_id,x.variant_id,x.qty,x.origin_country_code,x.shipping_method
       ])
@@ -348,6 +374,11 @@ Deno.serve(async(req:Request)=>{
         line_items:pricing.line_items,
         customer_email:shipping.email,
         shipping_snapshot:shipping.snapshot,
+        commerce_snapshot:{
+          attribution:attributionSnapshot,
+          attribution_status:attributionSnapshot?"browser_context_unverified":"none",
+          attribution_version:"2026-09-19-m21-preview"
+        },
         cart_digest:cartDigest,
         idempotency_key:idempotencyKey
       })

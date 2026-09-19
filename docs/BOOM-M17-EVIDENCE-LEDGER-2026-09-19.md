@@ -26,7 +26,7 @@ The Studio maps evidence from:
 - product actions/orders/fulfillment observations
 - creator/distribution/conversion/rights observations
 
-Static SEO audit and runtime-only personalization/source-verification layers remain structural until direct measured evidence exists.
+Static SEO audit, runtime-only personalization/source-verification, and M21 local campaign touchpoint context remain structural until direct live measured evidence exists.
 
 Marketplace snapshot can now become VERIFIED through M19 when all required read-only marketplace counts succeed. M20 now exposes paid-attribution readiness explicitly. The domain remains MISSING until live event-id persistence, durable dedup, server-confirmed purchase truth and campaign-to-purchase linkage are proven.
 

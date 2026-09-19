@@ -221,6 +221,7 @@
         shipping: shippingInput.shipping,
         idempotency_key: `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
         checkout_offer_id: bundlePreview?.offer_id || null,
+        attribution: window.HuntAnalytics?.attributionContext?.() || null,
         items: cart.map(item => ({
           provider:item.provider,
           item_id:item.item_id,
