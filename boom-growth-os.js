@@ -1090,6 +1090,7 @@
       ["M14","Promotion Engine","HuntPromotionEngine","PANEL"],
       ["M15","Marketplace Brain","HuntMarketplaceBrain","PANEL"],
       ["M16","Digital Marketing University","BoomDigitalMarketingUniversity","PANEL"],
+      ["M17","Evidence Ledger","BoomEvidenceLedger","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1388,6 +1389,48 @@
     return u;
   }
 
+  function evidenceLedger(data={}){
+    const E=window.BoomEvidenceLedger;
+    if(!E?.matrix)return {rows:[],verified:0,stale:0,partial:0,structural:0,missing:0,usable_domains:[],execute_actions:false};
+    const latest=(rows,key)=>{
+      let max=0;
+      for(const row of rows||[]){const ts=Date.parse(String(row?.[key]||""));if(Number.isFinite(ts)&&ts>max)max=ts;}
+      return max?new Date(max).toISOString():"";
+    };
+    const econVerified=(data.economics||[]).filter(x=>x.inputs_verified===true&&String(x.profit_gate_status||"").toUpperCase()==="PASS");
+    const catalogFresh=(data.catalog||[]).filter(x=>{const ts=Date.parse(String(x.source_fresh_at||""));return Number.isFinite(ts)&&Date.now()-ts<=7*24*60*60*1000;});
+    const records=[
+      {domain:"product_source_freshness",source_kind:"DIRECT_DB",source_ref:"hunt_catalog_products",available:(data.catalog||[]).length>0,truth_verified:catalogFresh.length>0,observed_count:catalogFresh.length,minimum_count:1,observed_at:latest(data.catalog,"source_fresh_at"),max_age_ms:7*24*60*60*1000},
+      {domain:"verified_unit_economics",source_kind:"DIRECT_DB",source_ref:"hunt_unit_economics",available:(data.economics||[]).length>0,truth_verified:econVerified.length>0,observed_count:econVerified.length,minimum_count:1,observed_at:latest(data.economics,"calculated_at"),max_age_ms:7*24*60*60*1000},
+      {domain:"deal_candidates",source_kind:"DIRECT_DB",source_ref:"hunt_deal_candidates",available:Array.isArray(data.deals),truth_verified:true,observed_count:(data.deals||[]).length,minimum_count:0,observed_at:latest(data.deals,"updated_at"),freshness_required:false},
+      {domain:"experiment_registry",source_kind:"DIRECT_DB",source_ref:"hunt_marketing_experiments",available:Array.isArray(data.experiments),truth_verified:true,observed_count:(data.experiments||[]).length,minimum_count:0,observed_at:latest(data.experiments,"updated_at"),freshness_required:false},
+      {domain:"world_radar",source_kind:"DIRECT_DB",source_ref:"hunt_boom_world_ideas",available:Array.isArray(data.worldIdeas),truth_verified:true,observed_count:(data.worldIdeas||[]).length,minimum_count:0,observed_at:latest(data.worldIdeas,"last_verified_at")||latest(data.worldIdeas,"updated_at"),freshness_required:false},
+      {domain:"business_identity",source_kind:"DIRECT_DB",source_ref:"hunt_business_identity",available:Boolean(data.businessIdentity&&Object.keys(data.businessIdentity).length),truth_verified:data.businessIdentityReady===true,observed_count:data.businessIdentityReady?1:0,minimum_count:1,observed_at:data.businessIdentity?.updated_at||"",max_age_ms:365*24*60*60*1000},
+      {domain:"lifecycle_observations",source_kind:"DIRECT_DB",source_ref:"hunt_product_actions + orders + fulfillment",available:true,truth_verified:true,observed_count:Number(data.lifecycleSnapshot?.saved_actions||0)+Number(data.lifecycleSnapshot?.real_orders||0)+Number(data.lifecycleSnapshot?.test_orders||0)+Number(data.lifecycleSnapshot?.fulfillment_with_tracking||0),minimum_count:0,observed_at:new Date().toISOString(),max_age_ms:60*60*1000},
+      {domain:"creator_observations",source_kind:"DIRECT_DB",source_ref:"distribution_drafts + merchant_conversion_events + hunt_partner_matrix",available:true,truth_verified:true,observed_count:Number(data.creatorSnapshot?.creator_distribution_drafts||0)+Number(data.creatorSnapshot?.generic_merchant_conversion_rows||0)+Number(data.creatorSnapshot?.partner_media_rights_verified||0),minimum_count:0,observed_at:new Date().toISOString(),max_age_ms:60*60*1000},
+      {domain:"seo_audit",source_kind:"STATIC_AUDIT",source_ref:"boom-seo-audit.json",available:Boolean(data.seoAudit),truth_verified:Boolean(data.seoAudit),freshness_required:false},
+      {domain:"personalization_lift",source_kind:"STRUCTURAL",source_ref:"M11 runtime + analytics hooks",available:Boolean(window.BoomPersonalizationBrain),truth_verified:false,freshness_required:false},
+      {domain:"marketplace_snapshot",source_kind:"DIRECT_DB",source_ref:"verified marketplace snapshot adapter",available:false,truth_verified:false,freshness_required:false},
+      {domain:"paid_attribution",source_kind:"DIRECT_DB",source_ref:"canonical paid attribution ledger",available:false,truth_verified:false,freshness_required:false},
+      {domain:"source_verification_workflow",source_kind:"STRUCTURAL",source_ref:"M16 source verification workflow",available:Boolean(window.BoomDigitalMarketingUniversity),truth_verified:false,freshness_required:false}
+    ];
+    return E.matrix(records);
+  }
+
+  function renderEvidenceLedger(data){
+    const e=evidenceLedger(data);
+    const state=$("#bg-evidence-state");
+    if(state)state.textContent=e.missing||e.structural||e.partial||e.stale?"GAPS FOUND":"VERIFIED";
+    const stats=$("#bg-evidence-stats");
+    if(stats)stats.innerHTML=[["Verified",e.verified||0],["Stale",e.stale||0],["Structural",e.structural||0],["Missing",e.missing||0]].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const rowHtml=row=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(row.domain.replaceAll("_"," "))+'</strong><span class="bg-score '+(row.state==="VERIFIED"?"bg-passport-ready":row.state==="MISSING"?"bg-passport-blocked":"bg-passport-prepare")+'">'+H.esc(row.state)+'</span></div><small>'+H.esc(row.source_kind+" · "+row.source_ref+(row.observed_count!=null?" · count "+row.observed_count:""))+'</small></article>';
+    const verified=$("#bg-evidence-verified");
+    if(verified)verified.innerHTML=e.rows.filter(x=>x.state==="VERIFIED").map(rowHtml).join("")||'<div class="bg-empty">No decision-grade evidence yet.</div>';
+    const gaps=$("#bg-evidence-gaps");
+    if(gaps)gaps.innerHTML=e.rows.filter(x=>x.state!=="VERIFIED").map(rowHtml).join("")||'<div class="bg-empty">No evidence gaps.</div>';
+    return e;
+  }
+
   function renderFreeGrowth(plan,data,marketing,seoScore){
     const G=window.BoomFreeGrowthEngine;
     const result=G?.build?.({
@@ -1548,6 +1591,7 @@
     renderPromotionEngine(data);
     renderMarketplace();
     renderUniversity(data);
+    renderEvidenceLedger(data);
     renderStudioCoverage();
     renderOperating(plan, data);
 
