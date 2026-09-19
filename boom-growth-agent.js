@@ -73,12 +73,16 @@
       lanes.creator=lane("HOLD","Creator registry/rights/economics/attribution are not all ready.","Do not publish, boost or pay creators until M07 blockers close.");
     }
 
-    if(n(agentic.discovery_connected_ready)>0){
-      lanes.agentic=lane("TEST_CANDIDATE","Agent-readable discovery is connected for at least one product.","Test discovery only; keep transaction capabilities separately gated.");
+    const gateway=data.agenticGateway||{};
+    const gatewayState=String(gateway.state||"HOLD");
+    if(gatewayState==="OWNER_REVIEW"||gatewayState==="CHECKOUT_PREPARE"||gatewayState==="CART_PREPARE"){
+      lanes.agentic=lane("TEST_CANDIDATE","M09 gateway has a validated agentic capability path.","Test discovery/cart handoff only within the capabilities M09 marks ready; keep checkout/payment separately gated.");
+    }else if(gatewayState==="DISCOVERY_PREPARE"){
+      lanes.agentic=lane("PREPARE","M09 validates discovery data but the public gateway/profile path is not live.","Complete official profile/connection review without enabling checkout.");
     }else if(n(agentic.discovery_data_ready)>0){
-      lanes.agentic=lane("PREPARE","Agent-readable data exists but connected discovery is not ready.","Complete discovery channel connection without enabling transaction.");
+      lanes.agentic=lane("HOLD","Product data may be agent-readable, but M09 gateway capability gates are not ready.","Close M09 profile, policy, auth and capability blockers before any agentic test.");
     }else{
-      lanes.agentic=lane("HOLD","Agent-readable product truth is incomplete.","Enrich Product Truth and conversational attributes first.");
+      lanes.agentic=lane("HOLD","Agent-readable product truth and M09 gateway readiness are incomplete.","Enrich Product Truth and close M09 capability blockers first.");
     }
 
     if(safeDrafts<=0)reasons.push("safe_creative_drafts_missing");

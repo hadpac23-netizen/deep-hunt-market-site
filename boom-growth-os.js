@@ -445,6 +445,35 @@
           confirmed_creator_conversions:creatorSnapshot.confirmed_creator_conversions
         })
       : {state:"HOLD",blockers:["creator_os_unavailable"],creator_registry_count:0,rights_verified_count:0,confirmed_creator_conversions:0,publish_actions:0,payouts:0,execute_actions:false,owner_gate:"REVIEW_REQUIRED"};
+
+    const AgenticGateway=window.BoomAgenticCommerceGateway;
+    const agenticGateway=AgenticGateway?.readiness
+      ? AgenticGateway.readiness({
+          protocol_version:"2026-04-08",
+          service_endpoint:"",
+          schema_url:"",
+          merchant_identity_ready:identityReady,
+          product_feed_ready:Number(googleFeedPreview.export_ready||0)>0,
+          shipping_policy_ready:false,
+          returns_policy_ready:false,
+          source_freshness_ready:false,
+          cart_endpoint_ready:false,
+          cart_line_item_validation_ready:false,
+          exact_variant_recheck_ready:true,
+          continue_url_ready:false,
+          ucp_auth_ready:false,
+          merchant_center_ready:false,
+          ucp_program_approved:false,
+          native_checkout_endpoints_ready:false,
+          payment_handler_ready:false,
+          m2m_bearer_auth_ready:false,
+          order_creation_ready:false,
+          order_status_webhook_ready:false,
+          real_money_owner_approved:false,
+          public_well_known_profile_ready:false,
+          google_ucp_profile_review_ready:false
+        })
+      : {state:"HOLD",blockers:["agentic_gateway_unavailable"],manifest:{capabilities:[],discovery:{ready:false},cart:{ready:false},checkout:{ready:false},well_known_publish:false,native_checkout_enabled:false,payment_enabled:false},external_profile_published:false,requests_served:0,checkout_sessions_created:0,payments_created:0,orders_created:0,execute_actions:false,owner_gate:"REVIEW_REQUIRED"};
     const blockerCounts = new Map();
     for (const passport of passports) {
       const productBlockers = new Set();
@@ -489,6 +518,7 @@
       lifecyclePlan,
       creatorSnapshot,
       creatorSystem,
+      agenticGateway,
       seoAudit
     };
   }
@@ -947,6 +977,53 @@
   }
 
 
+
+  function renderAgenticGateway(data){
+    const g=data.agenticGateway||{state:"HOLD",blockers:[],manifest:{capabilities:[],discovery:{ready:false},cart:{ready:false},checkout:{ready:false}}};
+    const m=g.manifest||{};
+    const state=$("#bg-agentic-gateway-state");
+    if(state)state.textContent=g.state||"HOLD";
+
+    const stats=[
+      ["Discovery",m.discovery?.ready===true?"READY":"HOLD"],
+      ["Cart",m.cart?.ready===true?"READY":"HOLD"],
+      ["Checkout",m.checkout?.ready===true?"READY":"HOLD"],
+      ["Capabilities",(m.capabilities||[]).length]
+    ];
+    const host=$("#bg-agentic-gateway-stats");
+    if(host)host.innerHTML=stats.map(([label,value])=>
+      '<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>'
+    ).join("");
+
+    const caps=$("#bg-agentic-gateway-capabilities");
+    if(caps){
+      const rows=[
+        ["Protocol",m.protocol_version||"NOT CONFIGURED"],
+        ["Manifest ready",m.manifest_ready===true?"YES":"NO"],
+        ["Profile publish ready",m.profile_publish_ready===true?"YES":"NO"],
+        ["Public profile",m.well_known_publish===true?"ON":"OFF"],
+        ["Cart endpoint",m.cart_endpoint_enabled===true?"ON":"OFF"],
+        ["Native checkout",m.native_checkout_enabled===true?"ON":"OFF"],
+        ["Payment",m.payment_enabled===true?"ON":"OFF"],
+        ["Order sync",m.order_sync_enabled===true?"ON":"OFF"]
+      ];
+      caps.innerHTML=rows.map(([label,value])=>
+        '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(label)+'</strong><span class="bg-score">'+H.esc(value)+'</span></div></article>'
+      ).join("");
+    }
+
+    const blockers=$("#bg-agentic-gateway-blockers");
+    const rows=Array.isArray(g.blockers)?g.blockers:[];
+    if(blockers)blockers.innerHTML=[
+      ...rows.slice(0,14).map(blocker=>
+        '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(blocker).replaceAll("_"," "))+
+        '</strong><span class="bg-score">HOLD</span></div></article>'
+      ),
+      '<article class="bg-row"><div class="bg-row-head"><strong>Requests served</strong><span class="bg-score">'+H.esc(g.requests_served||0)+'</span></div></article>',
+      '<article class="bg-row"><div class="bg-row-head"><strong>Checkout sessions</strong><span class="bg-score">'+H.esc(g.checkout_sessions_created||0)+'</span></div></article>'
+    ].join("");
+  }
+
   function renderGrowthAgent(decision){
     const d=decision||{primary_move:{code:"UNAVAILABLE",state:"HOLD",why:"Growth Agent unavailable.",next:"Restore the agent core."},lanes:{},diagnostics:{}};
     const state=$("#bg-growth-agent-state");
@@ -1110,6 +1187,7 @@
     renderOfferChess(data);
     renderLifecycleBrain(data);
     renderCreatorOS(data);
+    renderAgenticGateway(data);
     renderOperating(plan, data);
 
     $("#bg-bottleneck-code").textContent = plan.bottleneck.code;

@@ -47,7 +47,8 @@ const paidReady=G.decide({
     creativeBatch:{safe_drafts:12},
     offerSummary:{coupon_candidate:2,shipping_candidate:1,bundle_candidate:0},
     lifecyclePlan:{send_candidates:0},
-    creatorSystem:{state:"PREPARE"}
+    creatorSystem:{state:"PREPARE"},
+    agenticGateway:{state:"CART_PREPARE"}
   },
   measurement:{
     paid_attribution_ready:true,
@@ -73,7 +74,8 @@ const scaleReady=G.decide({
     creativeBatch:{safe_drafts:12},
     offerSummary:{coupon_candidate:2,shipping_candidate:1,bundle_candidate:0},
     lifecyclePlan:{send_candidates:1},
-    creatorSystem:{state:"PREPARE"}
+    creatorSystem:{state:"PREPARE"},
+    agenticGateway:{state:"CART_PREPARE"}
   },
   measurement:{
     paid_attribution_ready:true,server_event_id_persisted:true,owner_paid_approval:true,
