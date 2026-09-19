@@ -18,10 +18,10 @@ for(const token of [
 
 for(const token of [
   "const DurableIdentity=window.BoomDurableEventIdentity",
-  "schema_event_id_column:false",
-  "unique_event_id_constraint:false",
-  "public_canonical_insert_blocked:false",
-  "historical_rows:4630",
+  "schema_event_id_column:liveActivation.receipt?.schema_event_id_column===true",
+  "unique_event_id_constraint:liveActivation.receipt?.unique_event_id_constraint===true",
+  "public_canonical_insert_blocked:liveActivation.receipt?.public_top_level_event_id_blocked===true&&liveActivation.receipt?.public_metadata_event_id_blocked===true",
+  "historical_rows:5586",
   "historical_rows_with_event_id:0",
   "durable_server_dedup:durableEventIdentity.durable_ready===true",
   'domain:"durable_event_identity"',
@@ -38,7 +38,7 @@ for(const token of [
 ]) assert(identity.includes(token),"M23 readiness contract missing: "+token);
 
 for(const token of [
-  'HUNT_DURABLE_EVENT_IDENTITY_ENABLED',
+  'hunt_runtime_controls?key=eq.hunt_durable_event_identity',
   '?on_conflict=event_id',
   'resolution=ignore-duplicates,return=representation',
   'event_id:eventId',
@@ -47,8 +47,8 @@ for(const token of [
 ]) assert(edge.includes(token),"M23 Edge preview missing: "+token);
 
 for(const token of [
-  "SQL PROPOSAL ONLY",
-  "NOT A MIGRATION FILE. NOT APPLIED.",
+  "SOURCE PROPOSAL",
+  "APPLIED AS MIGRATION 20260919133622",
   "add column event_id text null",
   "analytics_events_event_id_key unique (event_id)",
   'to anon, authenticated',

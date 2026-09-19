@@ -457,6 +457,25 @@
 
       <section class="bg-panel glass bg-wide">
         <div class="bg-row-head">
+          <div><div class="bg-kicker">M25 · LIVE ACTIVATION VERIFICATION</div><h2>Durable identity activation receipt</h2></div>
+          <span class="bg-score" id="bg-live-activation-state">VERIFIED</span>
+        </div>
+        <p class="bg-note">Point-in-time live receipt: migration applied, Edge Function v11 active, runtime gate enabled, public canonical injection blocked, database duplicate proof passed. Payments remain OFF.</p>
+        <div id="bg-live-activation-stats" class="bg-passport-stats"></div>
+        <div class="bg-passport-layout">
+          <section>
+            <div class="bg-kicker">LIVE PROOF</div>
+            <div id="bg-live-activation-proof" class="bg-deals"></div>
+          </section>
+          <section>
+            <div class="bg-kicker">PAYMENT BOUNDARY</div>
+            <div id="bg-live-activation-payment" class="bg-deals"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="bg-panel glass bg-wide">
+        <div class="bg-row-head">
           <div><div class="bg-kicker">M24 · SCHEMA ACTIVATION READINESS</div><h2>Preflight, security & rollback gate</h2></div>
           <span class="bg-score" id="bg-schema-activation-state">OWNER REVIEW</span>
         </div>
@@ -536,7 +555,7 @@
           <div><div class="bg-kicker">M20 · PAID ATTRIBUTION READINESS</div><h2>Canonical event identity → server conversion proof</h2></div>
           <span class="bg-score" id="bg-paid-attribution-state">HOLD</span>
         </div>
-        <p class="bg-note">Live hunt-commerce-signal v8 is inspected but not changed. A local preview persists event_id in metadata; paid attribution remains blocked until durable dedup and server-side purchase/campaign linkage are proven.</p>
+        <p class="bg-note">Live hunt-commerce-signal v11 now persists canonical event_id with database dedup when the owner-approved runtime control is enabled. Paid attribution still remains blocked until purchase/campaign proof is complete.</p>
         <div id="bg-paid-attribution-stats" class="bg-passport-stats"></div>
         <div class="bg-passport-layout">
           <section>
@@ -622,6 +641,7 @@
 <script src="hunt-server-purchase-proof-adapter.js?v=m22"></script>
 <script src="boom-durable-event-identity.js?v=m23"></script>
 <script src="boom-schema-activation-readiness.js?v=m24"></script>
+<script src="boom-live-activation-proof.js?v=m25"></script>
 <script src="boom-growth-agent.js?v=m08"></script>
 <script src="boom-marketing-brain.js?v=os3"></script>
 <script src="boom-creative-brain.js?v=os2"></script>
@@ -629,7 +649,7 @@
 <script src="boom-love-engine.js?v=os2"></script>
 <script src="boom-everywhere-publisher.js?v=os2"></script>
 <script src="boom-learning-loop.js?v=os2"></script>
-<script src="boom-growth-os.js?v=os27"></script>
+<script src="boom-growth-os.js?v=os28"></script>
 <script src="hunt-theme.js?v=shop4"></script>
 <script src="pwa.js?v=pwa8"></script>
   <script src="hunt-brand-motion.js?v=1"></script>

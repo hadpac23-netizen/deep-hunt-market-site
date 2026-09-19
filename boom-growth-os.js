@@ -498,6 +498,9 @@
       .sort((a,b) => b.count - a.count || a.blocker.localeCompare(b.blocker))
       .slice(0,12);
 
+    const LiveActivationProof=window.BoomLiveActivationProof;
+    const liveActivation=LiveActivationProof?.evaluate?.()||{state:"HOLD",receipt:{},activation_verified:false,durable_ready:false,live_event_id_persistence:false,payments_live:false,payplus_callback_accept_paid:false,blockers:["live_activation_receipt_unavailable"],execute_actions:false};
+
     const SchemaActivation=window.BoomSchemaActivationReadiness;
     const schemaActivation=SchemaActivation?.evaluate?.({
       live_schema_inspected:true,
@@ -520,14 +523,14 @@
     const DurableIdentity=window.BoomDurableEventIdentity;
     const durableEventIdentity=DurableIdentity?.evaluate?.({
       browser_event_id_generation:true,
-      schema_event_id_column:false,
-      unique_event_id_constraint:false,
-      public_canonical_insert_blocked:false,
+      schema_event_id_column:liveActivation.receipt?.schema_event_id_column===true,
+      unique_event_id_constraint:liveActivation.receipt?.unique_event_id_constraint===true,
+      public_canonical_insert_blocked:liveActivation.receipt?.public_top_level_event_id_blocked===true&&liveActivation.receipt?.public_metadata_event_id_blocked===true,
       local_sql_blueprint_ready:true,
       local_function_patch_ready:true,
-      live_function_atomic_dedup:false,
-      live_function_version:8,
-      historical_rows:4630,
+      live_function_atomic_dedup:liveActivation.durable_ready===true,
+      live_function_version:Number(liveActivation.receipt?.edge_function_version||0),
+      historical_rows:5586,
       historical_rows_with_event_id:0
     })||{state:"HOLD",checks:{},blockers:["durable_event_identity_runtime_unavailable"],schema_ready:false,local_preview_ready:false,durable_ready:false,historical_rows:0,historical_rows_with_event_id:0,historical_backfill_allowed:false,execute_actions:false};
 
@@ -537,7 +540,7 @@
       browser_event_id_generation:true,
       ga4_configured:/^G-[A-Z0-9]+$/i.test(String(analyticsCfg.ga4MeasurementId||"").trim()),
       first_party_signal_live:true,
-      live_event_id_persistence:false,
+      live_event_id_persistence:liveActivation.live_event_id_persistence===true,
       durable_server_dedup:durableEventIdentity.durable_ready===true,
       server_purchase_confirmation:serverPurchaseProof.server_purchase_confirmation===true,
       campaign_touchpoint_persistence:serverPurchaseProof.live_campaign_context_persisted===true,
@@ -592,6 +595,7 @@
       creatorSystem,
       marketplaceSnapshot,
       serverPurchaseProof,
+      liveActivation,
       schemaActivation,
       durableEventIdentity,
       paidAttribution,
@@ -1176,6 +1180,7 @@
       ["M22","Server Purchase Proof","HuntServerPurchaseProofAdapter","PANEL"],
       ["M23","Durable Event Identity","BoomDurableEventIdentity","PANEL"],
       ["M24","Schema Activation Readiness","BoomSchemaActivationReadiness","PANEL"],
+      ["M25","Live Activation Verification","BoomLiveActivationProof","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1522,6 +1527,38 @@
     return e;
   }
 
+  function renderLiveActivation(data={}){
+    const a=data.liveActivation||{state:"HOLD",receipt:{},activation_verified:false,durable_ready:false,live_event_id_persistence:false,payments_live:false,payplus_callback_accept_paid:false,blockers:[]};
+    const r=a.receipt||{};
+    const state=$("#bg-live-activation-state");
+    if(state)state.textContent=a.activation_verified?"VERIFIED":"HOLD";
+    const stats=$("#bg-live-activation-stats");
+    if(stats)stats.innerHTML=[
+      ["Migration",r.migration_version||"—"],
+      ["Edge Function","v"+(r.edge_function_version||"?")],
+      ["Duplicate proof",r.duplicate_proof_rows===1?"PASS":"FAIL"],
+      ["Duplicate rows",r.duplicate_canonical_rows_observed??"—"]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const proof=$("#bg-live-activation-proof");
+    if(proof)proof.innerHTML=[
+      ["event_id column",r.schema_event_id_column],
+      ["UNIQUE(event_id)",r.unique_event_id_constraint],
+      ["Public top-level event_id blocked",r.public_top_level_event_id_blocked],
+      ["Public metadata event_id blocked",r.public_metadata_event_id_blocked],
+      ["Legacy noncanonical compatibility",r.legacy_noncanonical_compatible],
+      ["Runtime control enabled",r.runtime_control_enabled&&r.runtime_control_owner_approved],
+      ["Database durable dedup",r.durable_database_dedup_verified],
+      ["Live event_id persistence",r.live_event_id_persistence_verified]
+    ].map(([name,ok])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(ok?"bg-passport-ready":"bg-passport-blocked")+'">'+(ok?"VERIFIED":"MISSING")+'</span></div></article>').join("");
+    const payment=$("#bg-live-activation-payment");
+    if(payment)payment.innerHTML=[
+      ["hunt_payment_live",r.payment_live_enabled===false?"OFF":"ON"],
+      ["PayPlus callback accept paid",r.payplus_callback_accept_paid===false?"OFF":"ON"],
+      ["Live payment changed",r.live_payment_unchanged===true?"NO":"YES"]
+    ].map(([name,value])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(["OFF","NO"].includes(value)?"bg-passport-ready":"bg-passport-blocked")+'">'+H.esc(value)+'</span></div></article>').join("");
+    return a;
+  }
+
   function renderSchemaActivation(data={}){
     const a=data.schemaActivation||{state:"HOLD",checks:{},blockers:[],activation_ready:false,live_schema_changed:false,migration_applied:false,function_deployed:false,feature_flag_enabled:false,preferred_rollback:"OPERATIONAL"};
     const state=$("#bg-schema-activation-state");
@@ -1817,6 +1854,7 @@
     renderMarketplace(data);
     renderUniversity(data);
     renderEvidenceLedger(data);
+    renderLiveActivation(data);
     renderSchemaActivation(data);
     renderDurableEventIdentity(data);
     renderServerPurchaseProof(data);

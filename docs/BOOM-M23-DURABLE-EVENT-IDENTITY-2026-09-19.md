@@ -3,72 +3,72 @@
 ## Objective
 Make canonical measurement identity durable and atomic at the database layer before M20 can treat browser/server dedup as ready.
 
-## Live database inspection
-Observed in the connected boom-social-world Supabase project:
-- analytics_events rows: 4,630
-- analytics_events.event_id column: absent
-- unique event_id constraint/index: absent
-- stored metadata event_id values: 0
-- live hunt-commerce-signal: version 8
+## Live activation
+M23 is now live and verified in the connected boom-social-world Supabase project.
 
-Therefore durable cross-worker event dedup is not currently live.
+Applied migration:
+- 20260919133622_add_durable_event_identity
+
+Live analytics_events now has:
+- nullable event_id
+- length guard
+- UNIQUE(event_id)
+- RLS enabled
+- public INSERT policy restricted to noncanonical rows
+
+The public path was tested and rejects both top-level event_id and metadata.event_id injection.
 
 ## Historical truth
-Existing rows do not contain their original canonical browser event IDs.
-M23 explicitly forbids fabricating/backfilling synthetic event IDs for those historical rows.
-After an approved schema change, old rows remain event_id = NULL.
+Rows created before activation did not preserve canonical browser event IDs. They were not backfilled. Old rows therefore remain event_id = NULL.
 
-Postgres UNIQUE permits multiple NULL values, so history can remain truthful while new canonical events receive uniqueness.
+## Live Edge Function
+hunt-commerce-signal version 11 is active.
 
-## SQL proposal
-A review-only SQL proposal exists at:
-docs/BOOM-M23-DURABLE-EVENT-IDENTITY-SQL-PROPOSAL.sql
+The function reads hunt_runtime_controls key hunt_durable_event_identity. Durable mode requires both enabled=true and owner_approved=true.
 
-It is deliberately not placed in supabase/migrations because Supabase CLI is not installed locally and no production schema change is approved.
+Canonical requests:
+- persist top-level event_id
+- use PostgREST on_conflict=event_id
+- request resolution=ignore-duplicates
+- report durable_cross_worker_dedup=true
 
-The proposal:
-- adds nullable analytics_events.event_id
-- adds length validation
-- adds UNIQUE(event_id)
-- replaces broad public canonical-event insertion with an explicit anon/authenticated policy that permits only noncanonical rows
-- blocks public insertion of top-level or metadata event_id
+Backward compatibility:
+- requests without event_id remain noncanonical
+- they continue to be stored without database dedup
+- this prevents stale/older clients from breaking
 
-This preserves current direct browser experience-event logging while reserving canonical identity for the trusted backend path.
+## Live duplicate proof
+A canonical event ID was sent through two requests separated beyond the in-memory debounce window.
 
-## Edge Function preview
-The local hunt-commerce-signal source now has two modes.
+Observed result:
+- first request: deduped=false
+- second request: deduped=true
+- database rows for the proof event_id: exactly 1
+- duplicate canonical rows observed: 0
 
-Default flag OFF:
-- preserves the current preview behavior
-- stores event_id only in metadata
-- durable_cross_worker_dedup = false
+This proves database-backed dedup rather than only in-memory debounce.
 
-HUNT_DURABLE_EVENT_IDENTITY_ENABLED=true:
-- requires event_id
-- sends top-level event_id
-- uses PostgREST on_conflict=event_id
-- requests resolution=ignore-duplicates
-- returns durable_cross_worker_dedup = true only on this database-backed path
+## Runtime control
+The durable runtime control is now recorded by migration:
+- 20260919134205_enable_durable_event_identity_runtime
 
-The feature flag must not be enabled before the schema/policy verification passes.
+Current control:
+- hunt_durable_event_identity: enabled=true / owner_approved=true
 
-## M20 integration
-M20 durable_server_dedup now consumes M23 durable_ready.
-Therefore Paid Attribution stays blocked until the database, policy and live Edge Function are all proven.
+## Payment boundary
+No payment activation was performed. Current controls remain:
+- hunt_payment_live=false
+- hunt_payplus_callback_accept_paid=false
 
-## Safety / deployment boundary
-No SQL was executed.
-No migration was applied.
-No Edge Function was deployed.
-No environment flag was changed.
-No historical row was modified.
-No payment, campaign or production behavior changed.
+M23 does not enable payment, supplier orders, advertising spend or external sends.
 
-## Invariants
+## Current state
 HISTORICAL_BACKFILL_ALLOWED: false
-DATABASE_CHANGED: false
-FUNCTION_DEPLOYED: false
-DURABLE_READY: false
+DATABASE_CHANGED: true
+FUNCTION_DEPLOYED: true
+DURABLE_READY: true
+LIVE_EVENT_ID_PERSISTENCE: true
 PAID_ATTRIBUTION_READY: false
+PAYMENTS_LIVE: false
 EXECUTE_ACTIONS: false
 OWNER_GATE: REVIEW_REQUIRED

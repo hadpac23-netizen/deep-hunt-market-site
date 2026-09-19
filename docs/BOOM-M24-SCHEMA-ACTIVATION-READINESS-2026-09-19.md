@@ -75,13 +75,31 @@ docs/BOOM-M24-SCHEMA-ACTIVATION-ROLLBACK.sql
 ## Advisor scope
 The project has broader advisor findings unrelated to analytics_events. M24 does not claim the entire Supabase project is security-clean; it records only that the current advisor pass did not surface a table-specific analytics_events finding.
 
+## Activation outcome
+The owner approved activation after this preflight. The M23 schema migration and compatible Edge Function were then activated and verified.
+
+Applied:
+- 20260919133622_add_durable_event_identity
+- 20260919134205_enable_durable_event_identity_runtime
+- hunt-commerce-signal v11
+
+Post-activation verification passed:
+- RLS remained enabled
+- public canonical event_id injection was blocked
+- legacy noncanonical signals remained compatible
+- duplicate canonical event_id produced exactly one database row
+- Security Advisor surfaced no analytics_events-specific finding
+
+See M25 for the immutable point-in-time activation receipt.
+
 ## Current state
 ACTIVATION_READY: true
-STATE: OWNER_REVIEW
-LIVE_SCHEMA_CHANGED: false
-MIGRATION_APPLIED: false
-FUNCTION_DEPLOYED: false
-FEATURE_FLAG_ENABLED: false
+STATE: ACTIVATED_VERIFIED
+LIVE_SCHEMA_CHANGED: true
+MIGRATION_APPLIED: true
+FUNCTION_DEPLOYED: true
+DURABLE_RUNTIME_CONTROL_ENABLED: true
 HISTORICAL_BACKFILL_ALLOWED: false
+PAYMENTS_LIVE: false
 EXECUTE_ACTIONS: false
 OWNER_GATE: REVIEW_REQUIRED

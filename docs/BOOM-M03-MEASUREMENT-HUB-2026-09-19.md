@@ -22,7 +22,7 @@ GA4:
 
 HUNT first-party:
 - existing hunt-commerce-signal Edge Function is present
-- PARTIAL for cross-channel dedup because live v8 does not persist event_id
+- VERIFIED for canonical first-party event identity/dedup through M23/M25; paid conversion attribution remains separately gated by M20/M22
 - existing 1.2 second session/event/item duplicate window is not treated as server event identity
 
 Google Ads / Data Manager:

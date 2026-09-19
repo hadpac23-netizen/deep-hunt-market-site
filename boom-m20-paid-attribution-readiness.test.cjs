@@ -15,7 +15,7 @@ for(const token of [
 ]) assert(html.includes(token),"M20 Studio surface missing: "+token);
 for(const token of [
   "const PaidAttribution=window.BoomPaidAttributionReadiness",
-  "live_event_id_persistence:false",
+  "live_event_id_persistence:liveActivation.live_event_id_persistence===true",
   "durable_server_dedup:durableEventIdentity.durable_ready===true",
   "server_purchase_confirmation:serverPurchaseProof.server_purchase_confirmation===true",
   "campaign_touchpoint_persistence:serverPurchaseProof.live_campaign_context_persisted===true",
@@ -25,7 +25,7 @@ for(const token of [
 ]) assert(studio.includes(token),"M20 Studio guard missing: "+token);
 
 for(const token of [
-  "LOCAL SOURCE-OF-TRUTH PREVIEW ONLY",
+  "LIVE SOURCE-OF-TRUTH",
   "event_id:eventId",
   "event_id_persisted:Boolean(eventId)",
   "durable_cross_worker_dedup:false",

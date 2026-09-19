@@ -1,10 +1,11 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 /**
- * LOCAL SOURCE-OF-TRUTH PREVIEW ONLY.
- * Live Supabase hunt-commerce-signal remains v8 until explicit owner-approved deploy.
- * M20 adds canonical event_id persistence inside analytics_events.metadata.
- * It does NOT claim durable cross-worker dedup or paid purchase attribution.
+ * LIVE SOURCE-OF-TRUTH — hunt-commerce-signal v11 activation path.
+ * Runtime control: hunt_durable_event_identity must be enabled + owner_approved before atomic event-id writes.
+ * Canonical requests persist top-level event_id and use database uniqueness for dedup.
+ * Legacy requests without event_id remain noncanonical for backward compatibility.
+ * This function does NOT treat browser purchase signals as paid purchase attribution.
  */
 const ALLOWED_ORIGINS = new Set([
   "https://deep-hunt-market.netlify.app",
@@ -105,10 +106,16 @@ Deno.serve(async req=>{
   const secret=adminKey();
   if(!url||!secret)return json({error:"server config missing"},500,headers);
 
-  const durableIdentityEnabled=clean(Deno.env.get("HUNT_DURABLE_EVENT_IDENTITY_ENABLED"),12).toLowerCase()==="true";
-  if(durableIdentityEnabled&&!eventId)return json({error:"event_id required for durable identity"},400,headers);
+  const controlRes=await fetch(url+"/rest/v1/hunt_runtime_controls?key=eq.hunt_durable_event_identity&select=enabled,owner_approved&limit=1",{
+    headers:{"apikey":secret,"Authorization":"Bearer "+secret}
+  });
+  const controlRows=controlRes.ok?await controlRes.json().catch(()=>[]):[];
+  const control=Array.isArray(controlRows)?controlRows[0]:null;
+  const durableIdentityEnabled=control?.enabled===true&&control?.owner_approved===true;
 
-  if(durableIdentityEnabled){
+  // Backward compatibility: clients without a canonical event_id remain noncanonical.
+  // Only requests carrying event_id enter the durable database-dedup path.
+  if(durableIdentityEnabled&&eventId){
     const durableRes=await fetch(url+"/rest/v1/analytics_events?on_conflict=event_id",{
       method:"POST",
       headers:{

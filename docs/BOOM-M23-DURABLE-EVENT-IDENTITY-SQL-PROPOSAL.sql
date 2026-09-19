@@ -1,6 +1,6 @@
--- BOOM M23 DURABLE EVENT IDENTITY — SQL PROPOSAL ONLY
--- NOT A MIGRATION FILE. NOT APPLIED.
--- Generate an official migration with Supabase CLI before any approved schema change.
+-- BOOM M23 DURABLE EVENT IDENTITY — SOURCE PROPOSAL
+-- APPLIED AS MIGRATION 20260919133622_add_durable_event_identity on 2026-09-19.
+-- Canonical repo migration: supabase/migrations/20260919133622_add_durable_event_identity.sql.
 --
 -- Observed 2026-09-19:
 -- analytics_events rows: 4630

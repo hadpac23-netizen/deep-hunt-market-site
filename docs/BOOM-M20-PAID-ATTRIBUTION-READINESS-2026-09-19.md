@@ -1,62 +1,46 @@
 # BOOM M20 — Paid Attribution Readiness — 2026-09-19
 
 ## Objective
-Close the gap between browser event identity and decision-grade paid attribution without enabling campaigns or changing production.
+Require a complete server-side evidence chain before BOOM treats paid marketing as attributable revenue.
 
-## Live inspection
-The connected Supabase project currently runs `hunt-commerce-signal` version 8.
+## Durable identity — now verified
+M23/M24/M25 completed the canonical event identity layer.
 
-The browser already generates one canonical `event_id` per commerce event and forwards the same identity to GA4/GTM and the first-party signal payload.
+Live state:
+- hunt-commerce-signal v11
+- analytics_events.event_id exists
+- UNIQUE(event_id) exists
+- public canonical identity injection is blocked
+- database duplicate proof passed
+- live canonical event_id persistence is verified
+- durable cross-worker dedup is verified
 
-Live v8 accepts that payload but does not persist `event_id` into `analytics_events`.
-Its 1.2 second in-memory duplicate window is not durable cross-worker deduplication.
+M20 therefore no longer blocks on event identity or durable dedup.
 
-Live v8 also does not accept browser `hunt_purchase` as a first-party conversion event.
-
-## Local preview patch
-The repo now contains a local source-of-truth preview at:
-`supabase/functions/hunt-commerce-signal/index.ts`
-
-The preview:
-- preserves the current allowed-origin/event contract
-- reads the canonical browser event_id
-- stores event_id in analytics_events.metadata
-- keeps purchase unsupported
-- does not claim durable database uniqueness
-- supports the current backend secret environment model without placing secrets in browser code
-
-The preview is NOT deployed.
-
-## Why paid attribution remains HOLD
-Persisting event_id is only one layer. M21 adds a local consent-gated campaign-context path. M23 now supplies the durable dedup readiness gate; M20 consumes M23.durable_ready rather than a hardcoded value. None of these local patches are live proof until deployment and verification.
-
-Decision-grade paid attribution still requires:
-- live event_id persistence
-- durable server-side event deduplication
-- confirmed purchase created from payment/order truth
-- campaign/touchpoint persistence
+## Remaining paid-attribution blockers
+Paid attribution is still HOLD until the remaining server chain is proven:
+- server-confirmed real purchase
+- persisted campaign/touchpoint context in the live payment session
 - deterministic purchase ↔ touchpoint linkage
-
-M22 now checks the purchase/payment/order chain read-only and feeds those three server-side proof flags into M20 instead of hardcoded assumptions.
+- provider click validation where required
 - paid destination connection
-- explicit owner approval
+- explicit paid-launch owner approval
 
-A browser purchase event alone is not treated as confirmed paid conversion evidence.
+M22 reads payment/order proof without creating it. Current project state has no provider-confirmed real purchase, so this gate remains closed.
 
-## Studio integration
-M20 exposes every prerequisite independently.
-M17 marks paid_attribution VERIFIED only when the M20 attribution core is proven.
-M18 therefore continues to downgrade paid TEST_CANDIDATE decisions while this proof is missing.
+## Browser purchase boundary
+A browser purchase event alone is never treated as a confirmed paid conversion.
 
-## Production boundary
-No migration was created because the Supabase CLI is not installed locally.
-No database schema was changed.
-No Edge Function was deployed.
-No production payment, ad or external-send behavior changed.
+## Payment boundary
+No payment activation occurred during M23/M24/M25.
+- hunt_payment_live=false
+- hunt_payplus_callback_accept_paid=false
+- paid launch=false
+- paid spend=0
 
-## Invariants
-LIVE_FUNCTION_CHANGED: false
-DATABASE_CHANGED: false
+## Current state
+LIVE_EVENT_ID_PERSISTENCE: true
+DURABLE_SERVER_DEDUP: true
 PAID_ATTRIBUTION_READY: false
 PAID_DESTINATION_SEND: false
 PAID_LAUNCH: false
