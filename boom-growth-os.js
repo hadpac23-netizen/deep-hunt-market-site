@@ -1024,6 +1024,82 @@
     ].join("");
   }
 
+  function studioCoverage(){
+    const runtimeRows=[
+      ["M01","Commerce Passport","BoomCommercePassport","PANEL"],
+      ["M02","Google + AI Feed","BoomGoogleAiFeed","PANEL"],
+      ["M03","Measurement Hub","BoomMeasurementHub","PANEL"],
+      ["M03.5","Profit & Feed Control","BoomProfitFeedControlTower","PANEL"],
+      ["M04","Creative Factory","BoomCreativeFactory","PANEL"],
+      ["M04","Claim Firewall","BoomClaimFirewall","CONNECTED"],
+      ["M05","Offer Chess","BoomOfferChess","PANEL"],
+      ["M06","Lifecycle Brain","BoomLifecycleBrain","PANEL"],
+      ["M07","Creator OS","BoomCreatorOS","PANEL"],
+      ["M08","Growth Agent","BoomGrowthAgent","PANEL"],
+      ["M09","Agentic Commerce Gateway","BoomAgenticCommerceGateway","PANEL"],
+      ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
+      ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
+      ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
+      ["OPS","Everywhere Publisher","BoomEverywherePublisher","CALLOUT"],
+      ["OPS","Learning Loop","BoomLearningLoop","CALLOUT"],
+      ["LEGACY","Creative Brain","BoomCreativeBrain","LOADED_NO_PANEL"],
+      ["LEGACY","Commerce Brain","BoomCommerceBrain","FILE_NOT_LOADED"],
+      ["LEGACY","F35 Director","BoomF35Director","FILE_NOT_LOADED"],
+      ["LEGACY","BOOM NET","BoomNet","FILE_NOT_LOADED"],
+      ["LEGACY","Stylist","BoomStylist","FILE_NOT_LOADED"]
+    ].map(([id,name,globalName,surface])=>{
+      const loaded=Boolean(window[globalName]);
+      return {id,name,globalName,surface,loaded,status:loaded?(surface==="PANEL"||surface==="CALLOUT"||surface==="CONNECTED"?"WIRED":"LOADED_NO_PANEL"):"NOT_LOADED"};
+    });
+
+    const skillOnly=[
+      ["Personalization Brain","skills/boom-personalization-brain.md"],
+      ["Free Growth Engine","skills/boom-free-growth-engine.md"],
+      ["Sales & Advertising Brain","skills/boom-sales-advertising-brain.md"],
+      ["World Commerce Radar","skills/boom-world-commerce-radar.md"],
+      ["HUNT Marketplace Brain","skills/hunt-marketplace-brain.md"],
+      ["HUNT Promotion Engine","skills/hunt-promotion-engine.md"],
+      ["Digital Marketing University","skills/boom-digital-marketing-university.md"]
+    ].map(([name,source])=>({name,source,status:"SKILL_ONLY"}));
+
+    const wired=runtimeRows.filter(row=>row.status==="WIRED").length;
+    const loadedNoPanel=runtimeRows.filter(row=>row.status==="LOADED_NO_PANEL").length;
+    const notLoaded=runtimeRows.filter(row=>row.status==="NOT_LOADED").length;
+    return Object.freeze({
+      runtimeRows:Object.freeze(runtimeRows),
+      skillOnly:Object.freeze(skillOnly),
+      totals:Object.freeze({runtime:runtimeRows.length,wired,loadedNoPanel,notLoaded,skillOnly:skillOnly.length}),
+      complete:notLoaded===0&&loadedNoPanel===0&&skillOnly.length===0,
+      execute_actions:false,
+      owner_gate:"REVIEW_REQUIRED"
+    });
+  }
+
+  function renderStudioCoverage(){
+    const c=studioCoverage();
+    const state=$("#bg-studio-coverage-state");
+    if(state)state.textContent=c.complete?"COMPLETE":"GAPS FOUND";
+    const stats=$("#bg-studio-coverage-stats");
+    if(stats)stats.innerHTML=[
+      ["Wired",c.totals.wired],
+      ["Loaded / no panel",c.totals.loadedNoPanel],
+      ["Not loaded",c.totals.notLoaded],
+      ["Skill only",c.totals.skillOnly]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+
+    const runtime=$("#bg-studio-runtime-coverage");
+    if(runtime)runtime.innerHTML=c.runtimeRows.map(row=>{
+      const tone=row.status==="WIRED"?"bg-passport-ready":row.status==="LOADED_NO_PANEL"?"bg-passport-prepare":"bg-passport-blocked";
+      return '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(row.id+" · "+row.name)+'</strong><span class="bg-score '+tone+'">'+H.esc(row.status.replaceAll("_"," "))+'</span></div><small>'+H.esc(row.globalName+" · "+row.surface.replaceAll("_"," "))+'</small></article>';
+    }).join("");
+
+    const skills=$("#bg-studio-skill-gaps");
+    if(skills)skills.innerHTML=c.skillOnly.map(row=>
+      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(row.name)+'</strong><span class="bg-score bg-passport-prepare">SKILL ONLY</span></div><small>'+H.esc(row.source)+'</small></article>'
+    ).join("");
+    return c;
+  }
+
   function renderGrowthAgent(decision){
     const d=decision||{primary_move:{code:"UNAVAILABLE",state:"HOLD",why:"Growth Agent unavailable.",next:"Restore the agent core."},lanes:{},diagnostics:{}};
     const state=$("#bg-growth-agent-state");
@@ -1188,6 +1264,7 @@
     renderLifecycleBrain(data);
     renderCreatorOS(data);
     renderAgenticGateway(data);
+    renderStudioCoverage();
     renderOperating(plan, data);
 
     $("#bg-bottleneck-code").textContent = plan.bottleneck.code;
