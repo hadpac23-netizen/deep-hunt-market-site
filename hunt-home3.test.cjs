@@ -14,7 +14,7 @@ const theme=fs.readFileSync('hunt-theme.js','utf8');
 assert(html.includes('hd-home3'),'Home 3 body contract missing');
 assert(html.includes('hunt-home-3.css?v=2'),'Home 3 stylesheet missing');
 assert(html.includes('hunt-building.css?v=3'),'Building stylesheet missing');
-assert(html.includes('hunt-home-3.js?v=6'),'Home 3 runtime missing');
+assert(html.includes('hunt-home-3.js?v=7'),'Home 3 runtime missing');
 assert(html.includes('hunt-building-guard.js?v=3'),'Visual Order Guard runtime missing');
 assert(html.includes('hunt-attention-architecture.css?v=1'),'Attention Architecture stylesheet missing');
 assert(html.includes('hunt-attention-architecture.js?v=2'),'Attention Architecture runtime missing');

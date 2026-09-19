@@ -73,12 +73,25 @@
     return /\b(women(?:'s)?|woman|female|ladies|girl)\b/.test(title) && !/\b(men(?:'s)?|male|gentlemen)\b/.test(title);
   }
 
+  function retailReady(item) {
+    const amount=Number(item?.retail_price_amount);
+    return item?.retail_price_verified === true
+      && String(item?.profit_gate_status||"").toUpperCase()==="PASS"
+      && Number.isFinite(amount) && amount>0;
+  }
+
   function retail(item) {
     const amount = Number(item?.retail_price_amount);
-    const ready = item?.retail_price_verified === true
-      && String(item?.profit_gate_status || "").toUpperCase() === "PASS"
-      && Number.isFinite(amount) && amount > 0;
-    return ready ? H.money(amount,item.retail_currency || item.currency || "USD") : "Price checked on product";
+    return retailReady(item) ? H.money(amount,item.retail_currency || item.currency || "USD") : "Price checked on product";
+  }
+
+  function cardMicroFacts(item) {
+    const facts=[];
+    if(retailReady(item))facts.push("Price verified");
+    const count=Number(item?.variant_count||0);
+    if(Number.isFinite(count)&&count>=2)facts.push(`${Math.min(count,99)} options`);
+    else if(item?.availability_verified===true)facts.push("Stock data loaded");
+    return facts.slice(0,2);
   }
 
   function card(item,{className="",label=""}={}) {
@@ -88,11 +101,14 @@
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : `<div class="hd-home3-placeholder">H</div>`;
     const badge = label ? `<span class="hd-home3-card-label">${esc(label)}</span>` : "";
+    const micro=cardMicroFacts(item);
+    const microHtml=micro.length?`<div class="hd-card-microfacts" aria-label="Product decision facts">${micro.map(f=>`<span>${esc(f)}</span>`).join("")}</div>`:"";
     return `<article class="hd-market-product-card hd-home3-card ${esc(className)}" data-category="${esc(item.category || "")}">
       <a class="hd-market-card-media hd-home3-media" href="${esc(href)}">${image}${badge}</a>
       <div class="hd-market-card-body hd-home3-card-body">
         <a class="hd-market-card-title hd-home3-title" href="${esc(href)}">${esc(item.title || "Product")}</a>
         <div class="hd-market-card-price"><strong>${esc(retail(item))}</strong></div>
+        ${microHtml}
       </div>
     </article>`;
   }

@@ -106,6 +106,19 @@
     return {ready, amount:ready ? amount : null, currency, gate};
   }
 
+  function renderDecisionCheck(retail, quoteVerified) {
+    const host=$("#hd-decision-check-grid");
+    if(!host)return;
+    const availabilityVerified=quoteVerified||product?.availability_verified===true;
+    const cells=[
+      {label:"Price",value:retail.ready?"Verified":"Needs check",state:retail.ready?"known":"recheck"},
+      {label:"Options",value:variants.length?(String(variants.length)+" live"):"Not loaded",state:variants.length?"known":"unknown"},
+      {label:"Availability",value:quoteVerified?"Quote verified":availabilityVerified?"Signal verified":"Recheck",state:availabilityVerified?"known":"recheck"},
+      {label:"Shipping",value:"Destination recheck",state:"recheck"}
+    ];
+    host.innerHTML=cells.map(cell=>'<div class="hd-decision-check-cell" data-state="'+H.esc(cell.state)+'"><span>'+H.esc(cell.label)+'</span><strong>'+H.esc(cell.value)+'</strong></div>').join("");
+  }
+
   function renderBuybox() {
     chooseVariant();
     $("#hd-product-title").textContent = product.title || "Product";
@@ -122,6 +135,7 @@
         : "DISCOVERY";
     $("#hd-product-stock").className = `hd-status ${quoteVerified?"green":"blue"}`;
     $("#hd-product-price").textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
+    renderDecisionCheck(retail, quoteVerified);
     syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);
     $("#hd-product-description").textContent = product.description || "The provider has not supplied a full description to HUNT yet.";

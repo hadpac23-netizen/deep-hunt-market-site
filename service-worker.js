@@ -1,12 +1,24 @@
-const CACHE="hunt-shell-pwa2";
+const CACHE="hunt-shell-pwa3";
 const CORE=[
   "./",
   "./index.html",
   "./category.html",
+  "./search.html",
   "./product.html",
   "./hunt-shop.css",
   "./hunt-deal.css",
+  "./hunt-home-3.css",
+  "./hunt-building.css",
+  "./hunt-attention-architecture.css",
+  "./hunt-decision-confidence.css",
   "./market-core.js",
+  "./hunt-home-3.js",
+  "./hunt-attention-architecture.js",
+  "./hunt-attention-guard.js",
+  "./hunt-browse-continuity.js",
+  "./product.js",
+  "./category.js",
+  "./search.js",
   "./hunt-icon.svg",
   "./manifest.webmanifest"
 ];
