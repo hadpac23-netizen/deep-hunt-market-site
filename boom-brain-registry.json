@@ -53,8 +53,9 @@
         "cheap_test_design"
       ],
       "before": [
-        "intelligence_brain"
-      ]
+        "commerce_truth_brain"
+      ],
+      "review_route": "intelligence_brain"
     },
     {
       "id": "commerce_truth_brain",
@@ -174,6 +175,7 @@
   ],
   "rules": [
     "F50 never self-approves; material F50 ideas return to F35 Kill Test.",
+    "F50 output returns to F35 as a review_route, never as a dependency cycle.",
     "F60T attention alone is not purchase intent.",
     "No commercial activation before Commerce Truth passes.",
     "No external spend/publish/price/payment/supplier/production action without Owner Gate.",
