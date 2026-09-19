@@ -1,5 +1,5 @@
 {
-  "version": "f60t-source-registry-v1",
+  "version": "f60t-source-registry-v2",
   "last_verified_at": "2026-09-19",
   "principles": [
     "official_api_or_official_feed_first",
@@ -13,86 +13,221 @@
     {
       "id": "hunt_first_party",
       "name": "HUNT first-party analytics and commerce",
-      "families": ["search", "social", "community", "creator_live", "agent_ai"],
-      "status": "preferred",
-      "freshness_target_minutes": 5,
+      "families": [
+        "search",
+        "social",
+        "community",
+        "creator_live",
+        "agent_ai"
+      ],
+      "status": "live",
+      "freshness_target_minutes": 10,
       "max_age_minutes": 30,
       "commercial_activation": "allowed_when_measurement_verified",
-      "auth": "existing HUNT analytics/commerce connections",
-      "signals": ["sessions", "product_views", "searches", "saves", "add_to_cart", "checkout_starts", "confirmed_orders", "contribution_per_order", "refunds"],
-      "notes": "Primary truth source for HUNT economics and conversion."
+      "auth": "HUNT first-party",
+      "signals": [
+        "page_view",
+        "search",
+        "view_item",
+        "like",
+        "save",
+        "add_to_cart",
+        "begin_checkout",
+        "confirmed_orders",
+        "verified_net_profit"
+      ],
+      "notes": "Consented first-party events are live. Profit remains separate and must come from verified payment/order/finance evidence."
     },
     {
       "id": "google_trends_trending_now",
-      "name": "Google Trends Trending Now",
-      "families": ["search"],
-      "status": "preferred_external",
+      "name": "Google Trends Trending Now RSS",
+      "families": [
+        "search"
+      ],
+      "status": "official_feed_available",
       "freshness_target_minutes": 10,
       "max_age_minutes": 30,
       "commercial_activation": "intelligence_signal_only",
-      "auth": "official RSS/CSV export where available",
-      "signals": ["rising_query", "search_volume_band", "trend_start", "trend_status", "country_region"],
-      "notes": "Use as aggregate search-attention evidence. Do not equate news spikes with shopping intent."
+      "auth": "none for official exported RSS feed",
+      "official_reference": "https://support.google.com/trends/answer/3076011",
+      "signals": [
+        "rising_query",
+        "search_volume_band",
+        "trend_start",
+        "trend_status",
+        "country_region"
+      ],
+      "notes": "Official Trending Now data refreshes on average every 10 minutes and offers RSS export. Treat as attention evidence, not purchase intent."
+    },
+    {
+      "id": "google_trends_alpha",
+      "name": "Google Trends API Alpha",
+      "families": [
+        "search"
+      ],
+      "status": "access_required",
+      "freshness_target_minutes": 10,
+      "max_age_minutes": 30,
+      "commercial_activation": "disabled_until_source_verified",
+      "auth": "approved early-access credentials required",
+      "official_reference": "https://developers.google.com/search/apis/trends",
+      "signals": [
+        "trend_api"
+      ],
+      "notes": "Do not claim API connectivity until approved access exists."
     },
     {
       "id": "cloudflare_radar_http",
       "name": "Cloudflare Radar HTTP",
-      "families": ["search", "social", "community", "creator_live", "agent_ai"],
-      "status": "preferred_context",
+      "families": [
+        "search",
+        "social",
+        "community",
+        "creator_live",
+        "agent_ai"
+      ],
+      "status": "research_only_noncommercial",
       "freshness_target_minutes": 15,
       "max_age_minutes": 45,
-      "commercial_activation": "context_only",
-      "auth": "Cloudflare API token",
-      "signals": ["regional_http_activity", "device_mix", "traffic_change", "network_anomaly"],
-      "notes": "Internet-activity context, not a count of users on a specific platform."
+      "commercial_activation": "blocked_noncommercial_license",
+      "auth": "Cloudflare Radar API token",
+      "official_reference": "https://developers.cloudflare.com/radar/",
+      "license": "CC BY-NC 4.0",
+      "signals": [
+        "regional_http_activity",
+        "device_mix",
+        "traffic_change",
+        "network_anomaly"
+      ],
+      "notes": "Useful as research context only. Radar API/download data is CC BY-NC 4.0, so it must not drive HUNT commercial profit routing without separate permission."
+    },
+    {
+      "id": "pinterest_trends",
+      "name": "Pinterest Trends API",
+      "families": [
+        "social",
+        "search"
+      ],
+      "status": "available_not_connected",
+      "freshness_target_minutes": 60,
+      "max_age_minutes": 180,
+      "commercial_activation": "disabled_until_source_verified",
+      "auth": "Pinterest OAuth",
+      "signals": [
+        "trend_growth",
+        "keyword_interest",
+        "region"
+      ],
+      "notes": "Connector exists in hunt-f60t-external-signals; OAuth is not connected."
+    },
+    {
+      "id": "pinterest_audience",
+      "name": "Pinterest Audience Insights",
+      "families": [
+        "social"
+      ],
+      "status": "available_not_connected",
+      "freshness_target_minutes": 60,
+      "max_age_minutes": 180,
+      "commercial_activation": "disabled_until_source_verified",
+      "auth": "Pinterest OAuth",
+      "signals": [
+        "audience_categories",
+        "interests",
+        "country"
+      ],
+      "notes": "Connector exists; OAuth is not connected."
+    },
+    {
+      "id": "youtube_analytics",
+      "name": "YouTube Analytics",
+      "families": [
+        "creator_live",
+        "social"
+      ],
+      "status": "available_not_connected",
+      "freshness_target_minutes": 60,
+      "max_age_minutes": 180,
+      "commercial_activation": "disabled_until_source_verified",
+      "auth": "Google/YouTube OAuth",
+      "signals": [
+        "country_traffic",
+        "traffic_sources",
+        "channel_performance"
+      ],
+      "notes": "Connector exists; OAuth is not connected."
     },
     {
       "id": "youtube_data_most_popular",
       "name": "YouTube Data API mostPopular",
-      "families": ["creator_live", "social"],
-      "status": "preferred_external",
+      "families": [
+        "creator_live",
+        "social"
+      ],
+      "status": "adapter_candidate",
       "freshness_target_minutes": 30,
       "max_age_minutes": 90,
       "commercial_activation": "intelligence_signal_only",
       "auth": "YouTube Data API key",
-      "signals": ["region_popularity", "category_popularity", "video_statistics", "live_metadata"],
-      "notes": "Use popularity as discovery evidence, then require commerce-intent confirmation before HUNT activation."
+      "signals": [
+        "region_popularity",
+        "category_popularity",
+        "video_statistics",
+        "live_metadata"
+      ],
+      "notes": "Discovery evidence only; require commerce-intent confirmation before HUNT activation."
+    },
+    {
+      "id": "tiktok_market_scope",
+      "name": "TikTok market-scope signal",
+      "families": [
+        "social",
+        "creator_live"
+      ],
+      "status": "pending_api_verification",
+      "freshness_target_minutes": 60,
+      "max_age_minutes": 180,
+      "commercial_activation": "disabled_until_source_verified",
+      "auth": "official programmable commercial surface required",
+      "signals": [
+        "aggregate_market_intent"
+      ],
+      "notes": "Do not treat Display API or Research API as a global live commercial heatmap."
+    },
+    {
+      "id": "agent_commerce",
+      "name": "AI agent commerce events",
+      "families": [
+        "agent_ai"
+      ],
+      "status": "pending_protocol_traffic",
+      "freshness_target_minutes": 10,
+      "max_age_minutes": 60,
+      "commercial_activation": "allowed_when_measurement_verified",
+      "auth": "verified protocol/event source",
+      "signals": [
+        "agent_referral",
+        "agent_product_view",
+        "agent_checkout_intent"
+      ],
+      "notes": "Ledger exists; no live agent traffic is claimed until verified events arrive."
     },
     {
       "id": "reddit_data_api",
       "name": "Reddit Data API",
-      "families": ["community"],
+      "families": [
+        "community"
+      ],
       "status": "research_only_pending_commercial_agreement",
       "freshness_target_minutes": 30,
       "max_age_minutes": 120,
       "commercial_activation": "blocked_without_separate_agreement",
       "auth": "Reddit-approved access",
-      "signals": ["community_topic_velocity", "discussion_density"],
-      "notes": "Do not use Reddit data to drive monetized HUNT decisions without the required commercial permission."
-    },
-    {
-      "id": "tiktok_research_api",
-      "name": "TikTok Research API",
-      "families": ["social", "creator_live"],
-      "status": "research_only_not_live_commercial",
-      "freshness_target_minutes": 1440,
-      "max_age_minutes": 4320,
-      "commercial_activation": "blocked_for_live_commercial_radar",
-      "auth": "eligible research access",
-      "signals": ["research_dataset"],
-      "notes": "Not treated as a real-time commercial sensor. Prefer an approved commercial/shop/ads source when connected."
-    },
-    {
-      "id": "approved_platform_commercial_feed",
-      "name": "Approved platform commercial signal feed",
-      "families": ["social", "community", "creator_live", "agent_ai"],
-      "status": "adapter_slot",
-      "freshness_target_minutes": 15,
-      "max_age_minutes": 60,
-      "commercial_activation": "disabled_until_source_verified",
-      "auth": "platform-specific official API/feed",
-      "signals": ["aggregate_topic_velocity", "shopping_intent", "creator_commerce", "referral_activity"],
-      "notes": "Enable only after official terms, rights and data freshness are verified."
+      "signals": [
+        "community_topic_velocity",
+        "discussion_density"
+      ],
+      "notes": "Research-only until appropriate commercial permission exists."
     }
   ]
 }
