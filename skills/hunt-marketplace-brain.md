@@ -119,3 +119,12 @@ BOOM cannot:
 - auto-approve risky products
 - create fake reviews or popularity
 - activate paid campaigns or merchant payouts without owner approval
+
+
+## M15 implementation contract
+Runtime: `hunt-marketplace-brain.js`.
+
+Reuse Seller/Admin/Program workflows rather than duplicating them.
+Do not infer API-key hashing, revocation, rate limiting, attribution or payout readiness from the existence of UI.
+A live aggregate snapshot must come from a verified read-only adapter.
+Merchant/product auto-approval, publishing, ad activation and payouts remain false.

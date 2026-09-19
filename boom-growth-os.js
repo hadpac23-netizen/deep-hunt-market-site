@@ -1088,6 +1088,7 @@
       ["M12","Free Growth Engine","BoomFreeGrowthEngine","PANEL"],
       ["M13","Sales & Advertising Brain","BoomSalesAdvertisingBrain","PANEL"],
       ["M14","Promotion Engine","HuntPromotionEngine","PANEL"],
+      ["M15","Marketplace Brain","HuntMarketplaceBrain","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1105,7 +1106,7 @@
 
     const existingTools=[
       {name:"World Commerce Radar",source:"boom-world-radar.html + boom-world-radar.js",status:"SEPARATE_TOOL",note:"Admin radar exists; Growth OS already consumes world-idea data."},
-      {name:"Marketplace seller/admin",source:"seller.js + merchant-admin.js + merchant-program.html",status:"PARTIAL_WORKFLOW",note:"Application, review, products and program gates exist; aggregate marketplace brain still missing."},
+      {name:"Marketplace seller/admin",source:"seller.js + merchant-admin.js + merchant-program.html",status:"SEPARATE_TOOL",note:"Application/review/program workflows exist; M15 now provides the aggregate readiness brain, while live snapshot adapter remains gated."},
       {name:"Storefront promotions",source:"boom-promotions.js",status:"SEPARATE_TOOL",note:"Editorial/sponsored renderer exists; M14 now supplies the separate economics/experiment decision core."}
     ];
     const skillOnly=[
@@ -1311,6 +1312,47 @@
     return p;
   }
 
+  function marketplaceReadiness(){
+    const M=window.HuntMarketplaceBrain;
+    if(!M?.summarize)return {readiness:{state:"HOLD",blockers:["marketplace_brain_unavailable"]},stores:0,products:0,eligible_products:0,published:0,payouts:0,execute_actions:false};
+    return M.summarize({
+      stores:[],products:[],
+      config:{
+        marketplace_snapshot_adapter_ready:false,
+        merchant_registry_ready:true,
+        store_review_workflow_ready:true,
+        product_review_workflow_ready:true,
+        program_gate_ready:true,
+        seller_api_secret_hashing_ready:false,
+        seller_api_revocation_ready:false,
+        seller_api_rate_limit_ready:false,
+        attribution_registry_ready:false,
+        payout_controls_ready:false
+      }
+    });
+  }
+
+  function renderMarketplace(){
+    const m=marketplaceReadiness(),r=m.readiness||{state:"HOLD",blockers:[]};
+    const state=$("#bg-marketplace-state");
+    if(state)state.textContent=r.state||"HOLD";
+    const stats=$("#bg-marketplace-stats");
+    if(stats)stats.innerHTML=[["Stores",m.stores||0],["Products",m.products||0],["Eligible",m.eligible_products||0],["Payouts",m.payouts||0]].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const readiness=$("#bg-marketplace-readiness");
+    if(readiness)readiness.innerHTML=(r.blockers||[]).map(blocker=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(blocker.replaceAll("_"," "))+'</strong><span class="bg-score bg-passport-blocked">GAP</span></div></article>').join("")||'<div class="bg-empty">Marketplace readiness gates are complete.</div>';
+    const workflows=$("#bg-marketplace-workflows");
+    if(workflows)workflows.innerHTML=[
+      ["Seller application + stores","EXISTS"],
+      ["Admin store/product review","EXISTS"],
+      ["Merchant program gate","EXISTS"],
+      ["Aggregate snapshot adapter","MISSING"],
+      ["Seller API key security proof","UNVERIFIED"],
+      ["Attribution registry","MISSING"],
+      ["Payout controls","MISSING"]
+    ].map(([name,status])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(status==="EXISTS"?"bg-passport-ready":"bg-passport-prepare")+'">'+H.esc(status)+'</span></div></article>').join("");
+    return m;
+  }
+
   function renderFreeGrowth(plan,data,marketing,seoScore){
     const G=window.BoomFreeGrowthEngine;
     const result=G?.build?.({
@@ -1469,6 +1511,7 @@
     renderPersonalization(data);
     renderSalesAdvertising(data);
     renderPromotionEngine(data);
+    renderMarketplace();
     renderStudioCoverage();
     renderOperating(plan, data);
 
