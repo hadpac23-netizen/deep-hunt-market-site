@@ -1087,6 +1087,7 @@
       ["M11","Personalization Brain","BoomPersonalizationBrain","PANEL"],
       ["M12","Free Growth Engine","BoomFreeGrowthEngine","PANEL"],
       ["M13","Sales & Advertising Brain","BoomSalesAdvertisingBrain","PANEL"],
+      ["M14","Promotion Engine","HuntPromotionEngine","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1105,7 +1106,7 @@
     const existingTools=[
       {name:"World Commerce Radar",source:"boom-world-radar.html + boom-world-radar.js",status:"SEPARATE_TOOL",note:"Admin radar exists; Growth OS already consumes world-idea data."},
       {name:"Marketplace seller/admin",source:"seller.js + merchant-admin.js + merchant-program.html",status:"PARTIAL_WORKFLOW",note:"Application, review, products and program gates exist; aggregate marketplace brain still missing."},
-      {name:"Storefront promotions",source:"boom-promotions.js",status:"PARTIAL_WORKFLOW",note:"Editorial/sponsored rendering exists; unified promotion economics engine still missing."}
+      {name:"Storefront promotions",source:"boom-promotions.js",status:"SEPARATE_TOOL",note:"Editorial/sponsored renderer exists; M14 now supplies the separate economics/experiment decision core."}
     ];
     const skillOnly=[
       ["Digital Marketing University","skills/boom-digital-marketing-university.md"]
@@ -1252,6 +1253,62 @@
       '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name.replaceAll("_"," "))+'</strong><span class="bg-score">'+H.esc(count)+'</span></div></article>'
     ).join("")||'<div class="bg-empty">No blockers.</div>';
     return result;
+  }
+
+  function promotionEngineReadiness(data={}){
+    const P=window.HuntPromotionEngine;
+    if(!P?.evaluate||!P?.summarize)return {rows:[],summary:{total:0,owner_review:0,prepare:0,hold:0,activated:0,execute_actions:false}};
+    const econMap=new Map((data.economics||[]).map(row=>[String(row.provider||"")+":"+String(row.item_id||""),row]));
+    const typeMap={COUPON_CANDIDATE:"threshold_reward",SHIPPING_CANDIDATE:"free_shipping_threshold",BUNDLE_CANDIDATE:"fixed_bundle"};
+    const now=Date.now(), day=24*60*60*1000;
+    const rows=(data.offerCandidates||[]).map(row=>{
+      const econ=econMap.get(row.product_key)||{};
+      const type=typeMap[row.result?.recommendation]||"category_event";
+      const selected=row.result?.selected||{};
+      const discount=Number(selected.max_discount_amount||selected.amount||0);
+      const result=P.evaluate({
+        promotion:{type,starts_at:new Date(now+day).toISOString(),ends_at:new Date(now+8*day).toISOString(),countdown_resets:false,fake_original_price:false,preselected_paid_extra:false},
+        economics_input:{
+          revenue:Number(econ.sale_price_per_unit||0)+Number(econ.customer_shipping_amount||0),
+          landed_cost:Number(econ.supplier_cost_per_unit||0)+Number(econ.supplier_shipping_cost||0)+Number(econ.platform_cost||0),
+          shipping_subsidy:0,
+          payment_fees:econ.payment_reserve,
+          returns_allowance:econ.refund_reserve,
+          affiliate_cost:null,
+          discount_cost:discount,
+          tax_cost:null,
+          margin_floor:econ.min_required_contribution
+        },
+        experiment_input:{
+          hypothesis:"Verified promotion improves conversion or basket value without breaching contribution floor.",
+          audience:"Eligible HUNT shoppers for this product/offer context.",
+          control:"Same eligible traffic without the promotion.",
+          primary_metric:"verified contribution per eligible session",
+          margin_guardrail:"Contribution must remain above verified floor.",
+          refund_guardrail:"Refund/return rate must not materially worsen.",
+          stop_rule:"Stop on margin-floor breach, truth failure or guardrail deterioration.",
+          rollback:"Disable campaign candidate and restore baseline experience."
+        },
+        context:{availability_verified:false,final_price_clear:true}
+      });
+      return {product_key:row.product_key,title:row.title,type,result};
+    });
+    return {rows,summary:P.summarize(rows.map(x=>x.result))};
+  }
+
+  function renderPromotionEngine(data){
+    const p=promotionEngineReadiness(data),s=p.summary||{};
+    const state=$("#bg-promotion-engine-state");
+    if(state)state.textContent=s.owner_review>0?"OWNER REVIEW":s.prepare>0?"PREPARE":"HOLD";
+    const stats=$("#bg-promotion-engine-stats");
+    if(stats)stats.innerHTML=[["Total",s.total||0],["Owner review",s.owner_review||0],["Prepare",s.prepare||0],["Activated",s.activated||0]].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const candidates=$("#bg-promotion-engine-candidates");
+    if(candidates)candidates.innerHTML=p.rows.map(row=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(row.title||row.product_key)+'</strong><span class="bg-score">'+H.esc(row.result.state)+'</span></div><small>'+H.esc(row.type.replaceAll("_"," "))+' · contribution '+H.esc(row.result.economics?.contribution==null?"—":money(row.result.economics.contribution))+'</small></article>').join("")||'<div class="bg-empty">No M05 promotion candidates.</div>';
+    const counts=new Map();
+    for(const row of p.rows)for(const blocker of row.result.blockers||[])counts.set(blocker,(counts.get(blocker)||0)+1);
+    const blockers=$("#bg-promotion-engine-blockers");
+    if(blockers)blockers.innerHTML=[...counts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,10).map(([name,count])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name.replaceAll("_"," "))+'</strong><span class="bg-score">'+H.esc(count)+'</span></div></article>').join("")||'<div class="bg-empty">No promotion blockers.</div>';
+    return p;
   }
 
   function renderFreeGrowth(plan,data,marketing,seoScore){
@@ -1411,6 +1468,7 @@
     renderAgenticGateway(data);
     renderPersonalization(data);
     renderSalesAdvertising(data);
+    renderPromotionEngine(data);
     renderStudioCoverage();
     renderOperating(plan, data);
 
