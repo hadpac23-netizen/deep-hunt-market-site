@@ -36,10 +36,10 @@ for(const token of ["sessionStorage","back_forward","hunt:browse-position-restor
 }
 assert(!continuity.includes('scrollRestoration="manual"'),"Browse Continuity must not disable native scroll restoration globally");
 
-assert(sw.includes('hunt-shell-pwa5'),"PWA cache version not bumped");
+assert(sw.includes('hunt-shell-pwa6'),"PWA cache version not bumped");
 for(const token of ["hunt-decision-confidence.css","hunt-browse-continuity.js","hunt-attention-guard.js","hunt-home-3.js","product.js"]){
   assert(sw.includes(token),"PWA core missing: "+token);
 }
-assert(pwa.includes("service-worker.js?v=pwa5"),"PWA registration version mismatch");
+assert(pwa.includes("service-worker.js?v=pwa6"),"PWA registration version mismatch");
 
 console.log("hunt_decision_confidence=PASS");

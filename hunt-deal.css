@@ -380,3 +380,81 @@ body.hd-page:not(.hd-ops-page) .hd-hunt-market,body.hd-page:not(.hd-ops-page) .h
     transform:scale(1.17) !important;
   }
 }
+
+/* X03 · PRODUCT GALLERY / ZOOM QA */
+.hd-gallery-count{
+  position:absolute;
+  left:12px;
+  bottom:12px;
+  z-index:2;
+  min-height:28px;
+  display:inline-flex;
+  align-items:center;
+  padding:5px 9px;
+  border:1px solid rgba(20,42,66,.14);
+  border-radius:999px;
+  background:rgba(255,255,255,.9);
+  color:#18314f;
+  font-size:.54rem;
+  font-weight:900;
+  letter-spacing:.04em;
+  box-shadow:0 6px 18px rgba(17,30,46,.10);
+  backdrop-filter:blur(10px);
+}
+.hd-gallery-count[hidden]{display:none}
+.hd-product-gallery-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  min-height:30px;
+  padding-top:8px;
+  color:#7189a7;
+}
+.hd-product-gallery-meta[hidden]{display:none}
+.hd-product-gallery-meta strong{font-size:.56rem;color:#314b68}
+.hd-product-gallery-meta span{font-size:.5rem}
+.hd-product-thumbs button:focus-visible,
+.hd-zoom-open:focus-visible,
+.hd-zoom-nav:focus-visible,
+.hd-zoom-close:focus-visible,
+.hd-zoom-controls button:focus-visible{
+  outline:2px solid #3f7fe8;
+  outline-offset:2px;
+}
+.hd-zoom-nav{
+  position:absolute;
+  top:50%;
+  z-index:3;
+  width:46px;
+  height:46px;
+  transform:translateY(-50%);
+  border:1px solid rgba(78,126,182,.18);
+  border-radius:50%;
+  background:rgba(255,255,255,.93);
+  color:#18314f;
+  font-size:2rem;
+  line-height:1;
+  cursor:pointer;
+  box-shadow:0 10px 30px rgba(17,30,46,.17);
+}
+.hd-zoom-nav[hidden]{display:none}
+.hd-zoom-prev{left:14px}
+.hd-zoom-next{right:14px}
+.hd-zoom-image-count{
+  min-width:60px;
+  text-align:center;
+  color:#cbd8e7;
+  font-size:.58rem;
+  font-weight:900;
+}
+@media(max-width:760px){
+  .hd-product-gallery-meta{align-items:flex-start;flex-direction:column;gap:2px}
+  .hd-product-gallery-meta span{font-size:.47rem}
+  .hd-zoom-nav{width:42px;height:42px;font-size:1.75rem}
+  .hd-zoom-prev{left:8px}
+  .hd-zoom-next{right:8px}
+}
+@media(prefers-reduced-motion:reduce){
+  .hd-image-zoom-stage img{transition:none}
+}

@@ -1,4 +1,4 @@
-const CACHE="hunt-shell-pwa5";
+const CACHE="hunt-shell-pwa6";
 const CORE=[
   "./",
   "./index.html",

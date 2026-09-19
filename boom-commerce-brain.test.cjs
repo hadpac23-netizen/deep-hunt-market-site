@@ -54,7 +54,7 @@ assert(analytics.includes("mission_type")&&analytics.includes("hunt_shopping_mis
 for(const token of ["hunt:product-state","topicFrom","answerVerified","answerCompatibility","answerShipping","answerReturns","explainProduct"])
   assert(productQa.includes(token)||read("product.js").includes(token),"Product Q&A contract missing "+token);
 assert(!productQa.includes("fetch("),"Product Q&A must not send free-text questions to a server");
-assert(read("product.html").indexOf("hunt-product-qa.js?v=1")<read("product.html").indexOf("product.js?v=launchqa8"),"Product Q&A listener must load before product state publisher");
+assert(read("product.html").indexOf("hunt-product-qa.js?v=1")<read("product.html").indexOf("product.js?v=launchqa9"),"Product Q&A listener must load before product state publisher");
 const searchEvent=search.slice(search.indexOf('new CustomEvent("hunt:search-intent"'),search.indexOf('try{S.results=await load(i);'));
 assert(!searchEvent.includes("query:q")&&!searchEvent.includes("raw:q")&&!searchEvent.includes("text:q"),"Raw search text leaked into brain event");
 
