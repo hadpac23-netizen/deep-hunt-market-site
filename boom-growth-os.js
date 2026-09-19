@@ -170,6 +170,18 @@
     }) : [];
 
     const passportSummary = Passport?.summarize?.(passports) || {total:0,channels:{}};
+    const GoogleFeed = window.BoomGoogleAiFeed;
+    const configuredFeedLabel = String(
+      launch.summary?.google_feed_label ||
+      launch.summary?.merchant_feed_label ||
+      ""
+    ).trim();
+    const googleFeedPreview = GoogleFeed?.buildBatch
+      ? GoogleFeed.buildBatch(passports,{
+          feedLabel:configuredFeedLabel,
+          contentLanguage:String(launch.summary?.content_language||"en")
+        })
+      : {total:passports.length,export_ready:0,publish_ready:0,blocked:passports.length,top_blockers:[],network_calls:0,external_publish:false,owner_gate:"REVIEW_REQUIRED"};
     const blockerCounts = new Map();
     for (const passport of passports) {
       const productBlockers = new Set();
@@ -200,6 +212,8 @@
       passports,
       passportSummary,
       passportBlockers,
+      configuredFeedLabel,
+      googleFeedPreview,
       seoAudit
     };
   }
@@ -303,6 +317,47 @@
       : '<div class="bg-empty">No passport blockers found.</div>';
   }
 
+
+  function renderGoogleFeed(data) {
+    const feed=data.googleFeedPreview||{total:0,export_ready:0,publish_ready:0,blocked:0,top_blockers:[],network_calls:0,external_publish:false};
+    const state=$("#bg-google-feed-state");
+    if(state)state.textContent=feed.publish_ready>0?"READY FOR OWNER REVIEW":feed.export_ready>0?"EXPORT DRAFT READY":"BLOCKED";
+
+    const stats=[
+      ["Passports checked",feed.total||0],
+      ["Export ready",feed.export_ready||0],
+      ["Publish ready",feed.publish_ready||0],
+      ["Blocked",feed.blocked||0]
+    ];
+    const statsHost=$("#bg-google-feed-stats");
+    if(statsHost)statsHost.innerHTML=stats.map(([label,value])=>
+      '<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>'
+    ).join("");
+
+    const contract=$("#bg-google-feed-contract");
+    if(contract){
+      const label=data.configuredFeedLabel||"NOT CONFIGURED";
+      const rows=[
+        ["Feed label",label,data.configuredFeedLabel?"explicit target market/config":"must be configured; HUNT does not assume a country"],
+        ["Network calls",feed.network_calls||0,"validator only"],
+        ["External publish",feed.external_publish===true?"ON":"OFF","owner-gated"],
+        ["Owner gate",feed.owner_gate||"REVIEW_REQUIRED","required before any live insert"]
+      ];
+      contract.innerHTML=rows.map(([name,value,note])=>
+        '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score">'+H.esc(value)+'</span></div><small>'+H.esc(note)+'</small></article>'
+      ).join("");
+    }
+
+    const blockers=$("#bg-google-feed-blockers");
+    const rows=Array.isArray(feed.top_blockers)?feed.top_blockers:[];
+    if(blockers)blockers.innerHTML=rows.length
+      ? rows.slice(0,10).map(row=>
+          '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(String(row.blocker||"").replaceAll("_"," "))+
+          '</strong><span class="bg-score">'+H.esc(row.count||0)+'</span></div><small>ProductInput drafts affected</small></article>'
+        ).join("")
+      : '<div class="bg-empty">No feed blockers found in the current preview.</div>';
+  }
+
   function renderOperating(plan, data) {
     const Marketing = window.BoomMarketingBrain;
     const Creative = window.BoomCreativeBrain;
@@ -400,6 +455,7 @@
     renderDeals(plan.rankedDeals);
     renderLaunch(plan.launch);
     renderPassports(data);
+    renderGoogleFeed(data);
     renderOperating(plan, data);
 
     $("#bg-bottleneck-code").textContent = plan.bottleneck.code;

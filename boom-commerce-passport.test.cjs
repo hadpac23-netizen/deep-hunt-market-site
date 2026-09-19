@@ -61,7 +61,7 @@ assert.strictEqual(googleReady.google_merchant_draft.publish_ready,true);
 assert.strictEqual(googleReady.conversational.questions_and_answers.length,1,"Only verified Q&A can leave HUNT");
 assert.strictEqual(googleReady.google_merchant_draft.conversational.questions_and_answers.length,1);
 assert.strictEqual(googleReady.google_merchant_draft.productAttributes.price.amountMicros,"19990000");
-assert.strictEqual(googleReady.google_merchant_draft.productAttributes.availability,"in_stock");
+assert.strictEqual(googleReady.google_merchant_draft.productAttributes.availability,"IN_STOCK");
 assert.deepStrictEqual(googleReady.conversational.variant_options.color,["Black","Blue"]);
 
 const ucp=P.build(baseProduct,{

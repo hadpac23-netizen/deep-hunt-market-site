@@ -238,12 +238,13 @@
       title:clean(p.title,150),
       description:clean(p.description||p.source_description,5000),
       link:t.canonical.url,
+      canonicalLink:t.canonical.url,
       imageLink:t.media.main_image,
       additionalImageLinks:[...t.media.additional_images],
       videoLinks:[...t.media.videos],
-      condition:clean(p.condition||"new",20).toLowerCase(),
+      condition:clean(p.condition||"new",20).toUpperCase(),
       brand:clean(p.brand,70),
-      gtin:clean(p.gtin,50),
+      gtins:clean(p.gtin,50)?[clean(p.gtin,50)]:[],
       mpn:clean(p.mpn||p.sku,70),
       color:clean(p.color,100),
       size:clean(p.size,100),
@@ -253,7 +254,7 @@
       ageGroup:clean(p.age_group,30)
     };
     if(t.price.verified)attributes.price={amountMicros:String(Math.round(t.price.amount*1e6)),currencyCode:t.price.currency};
-    if(t.availability.exportable)attributes.availability=clean(ctx.google_availability||p.google_availability||"in_stock",30);
+    if(t.availability.exportable)attributes.availability=clean(ctx.google_availability||p.google_availability||"IN_STOCK",30).toUpperCase();
     const conversational={
       questions_and_answers:qas,
       related_products:related,
@@ -263,7 +264,7 @@
     return Object.freeze({
       offerId:clean(p.item_id||p.sku,120),
       contentLanguage:clean(ctx.content_language||"en",12),
-      feedLabel:clean(ctx.feed_label||ctx.market||"US",12),
+      feedLabel:clean(ctx.feed_label||ctx.market||"",12),
       productAttributes:Object.freeze(Object.fromEntries(Object.entries(attributes).filter(([,v])=>{
         if(Array.isArray(v))return v.length>0;
         if(v&&typeof v==="object")return true;
