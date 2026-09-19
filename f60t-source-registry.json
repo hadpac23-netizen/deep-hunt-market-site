@@ -39,7 +39,7 @@
       "notes": "Consented first-party events are live. Profit remains separate and must come from verified payment/order/finance evidence."
     },
     {
-      "id": "google_trends_trending_now",
+      "id": "google_trends_rss",
       "name": "Google Trends Trending Now RSS",
       "families": [
         "search"
