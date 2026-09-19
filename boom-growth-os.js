@@ -633,6 +633,41 @@
       owner_gate:"REVIEW_REQUIRED"
     };
 
+    const F60TCore=window.BoomF60TCore;
+    const f60tBase=F60TCore?.missionBoard
+      ? F60TCore.missionBoard({
+          economics,
+          targetNetPerHour:10000,
+          realized:{verified:false},
+          opportunities:[],
+          consecutiveVerifiedTargetHours:0
+        })
+      : {
+          version:"—",
+          mission:{code:"F60T_YAMAM",name:"F60T · ימ״מ",target_net_per_hour:10000,currency:"USD"},
+          target:{target_net_per_hour:10000,realized_net_last_hour:null,realized_verified:false,target_gap:null,average_verified_contribution:null,minimum_orders_per_hour_at_average_contribution:null,truth_ready:false,state:"CORE_UNAVAILABLE",can_claim_target_met:false},
+          profit_truth:{verified_rows:0,truth_ready:false},
+          top_opportunities:[],
+          platform_count:0,
+          follow_the_sun:true,
+          agent_commerce:true,
+          price_lift:true,
+          incrementality_required:true,
+          uncertainty_required:true,
+          stretch_target:{eligible:false,candidate_target:null},
+          paid_spend:false,external_publish:false,live_price_write:false,supplier_order:false,payment_activation:false,execute_actions:false,owner_gate:"ACTIVE"
+        };
+    const f60t={
+      ...f60tBase,
+      core_ready:Boolean(F60TCore?.missionBoard),
+      crowd_signals_ready:false,
+      live_hourly_profit_ledger_ready:false,
+      agent_gateway_ready:String(agenticGateway?.state||"").toUpperCase()==="READY",
+      mission_replaces_daily_10k:true,
+      current_mode:"ANALYSIS_AND_PREPARATION",
+      no_fake_success:true
+    };
+
     const AttributionContext=window.BoomAttributionContextReadiness;
     const attributionContext=AttributionContext?.evaluate?.({
       consent_gated_capture:true,
@@ -690,6 +725,7 @@
       paidAttribution,
       attributionContext,
       f50,
+      f60t,
       agenticGateway,
       seoAudit
     };
@@ -754,16 +790,60 @@
     ).join("");
   }
 
-  function renderMilestones(rows) {
-    $("#bg-milestones").innerHTML = rows.map((row) =>
-      '<div class="bg-row"><div class="bg-row-head"><strong>' + money(row.target) + ' net/day</strong><span class="bg-score">' +
-      (row.minimumOrdersAtContribution == null ? "—" : H.esc(row.minimumOrdersAtContribution)) +
-      '</span></div><small>' +
-      (row.minimumOrdersAtContribution == null
-        ? "Need verified positive contribution data first."
-        : "minimum orders/day at verified contribution of " + money(row.contributionPerOrder) + " before acquisition cost and remaining overhead") +
-      '</small></div>'
-    ).join("");
+  function renderF60T(data={}) {
+    const f=data.f60t||{};
+    const target=f.target||{};
+    const mission=f.mission||{};
+    const state=$("#bg-f60t-state");
+    if(state){
+      state.textContent=f.core_ready
+        ? (f.crowd_signals_ready&&target.realized_verified?"ACTIVE · VERIFIED":"CORE READY · SIGNALS PENDING")
+        : "HOLD";
+    }
+
+    const stats=$("#bg-f60t-stats");
+    if(stats){
+      stats.innerHTML=[
+        ["Target", money(target.target_net_per_hour||10000)+"/h"],
+        ["Realized last hour", target.realized_verified?money(target.realized_net_last_hour):"UNVERIFIED"],
+        ["Target gap", target.realized_verified?money(target.target_gap):"—"],
+        ["Avg verified contribution", money(target.average_verified_contribution)],
+        ["Orders / hour required", target.minimum_orders_per_hour_at_average_contribution==null?"—":String(target.minimum_orders_per_hour_at_average_contribution)],
+        ["Platform / agent surfaces", String(f.platform_count||0)]
+      ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    }
+
+    const board=$("#bg-f60t-mission");
+    if(board){
+      const top=(f.top_opportunities||[]).find(x=>x?.eligible===true);
+      board.innerHTML=[
+        ["Mission",String(mission.name||"F60T · ימ״מ")],
+        ["Command","TARGET → LOCATION → SALE"],
+        ["Follow the Sun",f.follow_the_sun?"ON":"HOLD"],
+        ["Global Crowd Radar",f.crowd_signals_ready?"LIVE VERIFIED":"SIGNALS PENDING"],
+        ["Agent Commerce",f.agent_gateway_ready?"GATEWAY READY":"PREP / HOLD"],
+        ["Price Lift","ANALYZE · OWNER GATED"],
+        ["Top verified opportunity",top?(String(top.country||"")+" · "+String(top.platform||"")+" · "+String(top.product_key||"")):"NONE VERIFIED YET"],
+        ["Stretch target",f.stretch_target?.eligible&&f.stretch_target?.candidate_target?money(f.stretch_target.candidate_target)+"/h":"LOCKED UNTIL 3 VERIFIED TARGET HOURS"]
+      ].map(([name,value])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score">'+H.esc(value)+'</span></div></article>').join("");
+    }
+
+    const gates=$("#bg-f60t-gates");
+    if(gates){
+      const rows=[
+        ["F60T Core",f.core_ready===true],
+        ["Profit Truth sample",target.truth_ready===true],
+        ["Realized hourly profit proof",target.realized_verified===true],
+        ["Global crowd signals",f.crowd_signals_ready===true],
+        ["Owner Gate active",String(f.owner_gate||"")==="ACTIVE"],
+        ["Live price write disabled",f.live_price_write===false],
+        ["Paid spend disabled",f.paid_spend===false],
+        ["External publish disabled",f.external_publish===false],
+        ["Payment activation disabled",f.payment_activation===false],
+        ["No fake success rule",f.no_fake_success===true]
+      ];
+      gates.innerHTML=rows.map(([name,ok])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(ok?"bg-passport-ready":"bg-passport-blocked")+'">'+(ok?"PASS":"HOLD")+'</span></div></article>').join("");
+    }
   }
 
   function renderDeals(rows) {
@@ -1334,6 +1414,7 @@
       ["F50","Candidate Funnel","BoomF50Funnel","PANEL"],
       ["F50","Orchestrator","BoomF50Engine","PANEL"],
       ["F50","Current Research Receipt","BoomF50CurrentResearch","CONNECTED"],
+      ["F60T","YAMAM Global Profit Command","BoomF60TCore","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -2200,8 +2281,8 @@
     $("#bg-avg-profit").textContent = money(plan.avgVerifiedContribution);
 
     renderF50(data);
+    renderF60T(data);
     renderFunnel(plan.funnel);
-    renderMilestones(plan.milestones);
     renderDeals(plan.rankedDeals);
     renderLaunch(plan.launch);
     renderPassports(data);
