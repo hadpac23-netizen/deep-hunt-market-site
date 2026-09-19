@@ -2,7 +2,7 @@
   const H=window.HuntCore, sb=window.supabase;
   if(!H||!sb?.createClient)return;
 
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const client=window.BoomRuntime?.getSupabaseClient?.() || sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
   const state=new Map();
   const localKey="hunt_local_product_actions_v1";
   let session=null;
@@ -164,7 +164,7 @@
       const active=kind==="like"?Boolean(next.liked):Boolean(next.saved);
       if(active&&meta.category)H.recordSignal?.(meta.category,kind);
       window.HuntAnalytics?.shoppingAction?.({provider:meta.provider,itemId:meta.item_id,action:kind,active,category:meta.category||""});
-      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved),local:true}}));
+      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved),local:true}}));\n      window.BoomRuntime?.emit?.("product."+kind+".toggle",{provider:meta.provider,item_id:meta.item_id,active},{broadcast:true});
       return;
     }
     const k=key(meta.provider,meta.item_id);
@@ -214,7 +214,7 @@
         active:preferenceActive,
         category:meta.category||""
       });
-      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved)}}));
+      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved)}}));\n      window.BoomRuntime?.emit?.("product."+kind+".toggle",{provider:meta.provider,item_id:meta.item_id,active:preferenceActive},{broadcast:true});
     }catch{
       state.set(k,old);
       refreshButtons();
