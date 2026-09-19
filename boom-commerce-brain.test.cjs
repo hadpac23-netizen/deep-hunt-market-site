@@ -12,7 +12,7 @@ const category=read("category.js");
 const search=read("search.js");
 const legal=JSON.parse(read("legal-config.json"));
 
-for(const token of ["fallbackPlan","requestAI","scoreProduct","explainProduct","decisionState","decisionSupport","decision_goal","choice_mode","recommendation_strategy","clarify_mode","diversity_mode","explanation_mode","hunt:shopping-action","boom:plan","hunt:search-intent","boom:phase"])
+for(const token of ["fallbackPlan","requestAI","scoreProduct","explainProduct","decisionState","decisionSupport","shoppingMission","missionQualifiers","decision_goal","choice_mode","recommendation_strategy","clarify_mode","diversity_mode","explanation_mode","shopping_mission","hunt:shopping-action","boom:plan","hunt:search-intent","boom:phase"])
   assert(brain.includes(token),"Brain contract missing "+token);
 assert(brain.includes('fetch("/api/boom-ai-director"'),"AI endpoint not connected");
 assert(brain.includes("AI_TTL"),"AI cache TTL missing");
@@ -26,7 +26,7 @@ assert(fn.includes('windowLimit: 6')&&fn.includes('windowSize: 60'),"AI endpoint
 assert(fn.includes("OPENAI_BASE_URL")&&fn.includes("OPENAI_API_KEY"),"Netlify AI Gateway env contract missing");
 for(const phrase of ["Never use pressure","Never infer sensitive traits","Never recommend payment","DECISION SUPPORT + PRESENTATION ONLY","Reduce cognitive load","Reduce uncertainty","Preserve autonomy"])
   assert(fn.includes(phrase),"AI ethical constraint missing: "+phrase);
-for(const token of ["decision_goal","choice_mode","recommendation_strategy","clarify_mode","diversity_mode","explanation_mode","interaction_summary"])
+for(const token of ["decision_goal","choice_mode","recommendation_strategy","clarify_mode","diversity_mode","explanation_mode","shopping_mission","mission_qualifiers","interaction_summary"])
   assert(fn.includes(token),"AI behavioral decision contract missing "+token);
 for(const pii of ["email","phone","account_id","payment_details"])
   assert(!brain.includes('context.'+pii),"PII field leaked into AI client context: "+pii);
@@ -46,6 +46,9 @@ assert(night.includes('window.addEventListener("boom:plan"'),"Night Edit is not 
 assert(productFlow.includes("BoomCommerceBrain?.scoreProduct"),"Product discovery brain score missing");
 assert(category.includes("BoomCommerceBrain?.scoreProduct"),"Category brain score missing");
 assert(search.includes('new CustomEvent("hunt:search-intent"'),"Search summary event missing");
+for(const token of ["mission_type","has_device","has_size","hd-clarify-panel","BOOM CLARIFY ONCE"])
+  assert(search.includes(token)||read("search.html").includes(token),"Mission/clarification contract missing "+token);
+assert(read("analytics.js").includes("mission_type"),"Mission telemetry label missing");
 const searchEvent=search.slice(search.indexOf('new CustomEvent("hunt:search-intent"'),search.indexOf('try{S.results=await load(i);'));
 assert(!searchEvent.includes("query:q")&&!searchEvent.includes("raw:q")&&!searchEvent.includes("text:q"),"Raw search text leaked into brain event");
 
@@ -53,7 +56,7 @@ const pages=["index.html","product.html","category.html","search.html","checkout
 for(const page of pages){
   const s=read(page);
   assert(s.includes("boom-stylist.css?v=1"),page+" missing BOOM stylist CSS");
-  assert(s.includes("boom-commerce-brain.js?v=1"),page+" missing BOOM brain");
+  assert(s.includes("boom-commerce-brain.js?v=2"),page+" missing BOOM brain");
   assert(s.includes("boom-stylist.js?v=1"),page+" missing BOOM stylist");
   assert(s.includes("boom-f35-director.js?v=1"),page+" missing F35 director");
 }

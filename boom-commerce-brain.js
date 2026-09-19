@@ -26,6 +26,8 @@
   let currentPhase="arrival";
   let searchHint=[];
   let productHint="";
+  let shoppingMission="";
+  let missionQualifiers={device:false,size:false,budget:false,style:false,color:false};
   let behavior={productClicks:0,likes:0,saves:0,searches:0};
   let aiTimer=null;
   let aiInFlight=false;
@@ -133,6 +135,10 @@
   function decisionState(){
     const page=pageName();
     if(page==="checkout")return {goal:"confidence",choice_mode:"minimal"};
+    if(shoppingMission==="outfit"||shoppingMission==="trip"||shoppingMission==="event"||shoppingMission==="setup")return {goal:"complete",choice_mode:"guided"};
+    if(shoppingMission==="replace"||shoppingMission==="compare")return {goal:"compare",choice_mode:"comparison"};
+    if(shoppingMission==="replenish")return {goal:"confidence",choice_mode:"minimal"};
+    if(shoppingMission==="gift"||shoppingMission==="budget")return {goal:"simplify",choice_mode:"guided"};
     if(page==="product"){
       if(currentPhase==="intent"||behavior.saves+behavior.likes>=2)return {goal:"complete",choice_mode:"evidence"};
       return {goal:"compare",choice_mode:"comparison"};
@@ -149,7 +155,8 @@
     const gap=scores.length>1?scores[0]-scores[1]:(scores[0]||0);
     const ambiguous=topInterests().length===0||(topInterests().length>1&&gap<8);
     const page=pageName(),goal=decisionState().goal;
-    const clarify=(ambiguous&&(page==="home"||page==="search")&&behavior.searches<=2)?"ask-one":"none";
+    const missionNeedsDetail=shoppingMission==="gift"||(shoppingMission==="replace"&&!missionQualifiers.device&&!missionQualifiers.size);
+    const clarify=((missionNeedsDetail||ambiguous)&&(page==="home"||page==="search")&&behavior.searches<=2)?"ask-one":"none";
     const diversity=goal==="explore"?"serendipity":goal==="simplify"||goal==="confidence"?"accuracy":"balanced";
     const explanation=goal==="compare"?"compare-facts":goal==="confidence"?"why-verified":goal==="complete"?"why-this":"none";
     return {clarify_mode:clarify,diversity_mode:diversity,explanation_mode:explanation,interest_gap:Math.round(gap)};
@@ -171,6 +178,8 @@
       clarify_mode:support.clarify_mode,
       diversity_mode:support.diversity_mode,
       explanation_mode:support.explanation_mode,
+      shopping_mission:shoppingMission||"none",
+      mission_qualifiers:{...missionQualifiers},
       interaction_summary:{...behavior},
       reduced_motion:matchMedia("(prefers-reduced-motion: reduce)").matches,
     });
@@ -283,7 +292,7 @@
   function signature(ctx=context()){
     return JSON.stringify([
       ctx.page,ctx.locale,ctx.market,ctx.session_phase,ctx.decision_goal,ctx.choice_mode,
-      ctx.clarify_mode,ctx.diversity_mode,ctx.explanation_mode,ctx.top_interests.slice(0,4),
+      ctx.clarify_mode,ctx.diversity_mode,ctx.explanation_mode,ctx.shopping_mission,ctx.top_interests.slice(0,4),
       Object.entries(ctx.catalog_summary).map(([k,v])=>[k,Math.min(9,Math.floor(Number(v||0)/20))]),
     ]);
   }
@@ -374,6 +383,9 @@
   window.addEventListener("hunt:signal",()=>refresh({reason:"signal"}));
   window.addEventListener("hunt:search-intent",e=>{
     searchHint=Array.isArray(e.detail?.categories)?e.detail.categories.slice(0,6):[];
+    const mission=String(e.detail?.mission_type||"").toLowerCase();
+    shoppingMission=["gift","outfit","replace","replenish","compare","trip","event","setup","budget"].includes(mission)?mission:"";
+    missionQualifiers={device:e.detail?.has_device===true,size:e.detail?.has_size===true,budget:e.detail?.has_budget===true,style:Number(e.detail?.style_count||0)>0,color:Number(e.detail?.color_count||0)>0};
     behavior.searches=Math.min(50,behavior.searches+1);
     refresh({reason:"search-intent"});scheduleAI("search-intent",500);
   });
@@ -406,6 +418,7 @@
     broadWorld,
     decisionState,
     decisionSupport,
+    shoppingMission:()=>shoppingMission||"none",
     behavior:()=>Object.freeze({...behavior}),
   });
 

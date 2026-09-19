@@ -61,7 +61,8 @@
       result_count: Number(params.result_count || 0),
       search_category: clean(params.search_category || "", 60),
       destination_market: clean(params.destination_market || "", 60),
-      preference_action: clean(params.preference_action || "", 20)
+      preference_action: clean(params.preference_action || "", 20),
+      mission_type: clean(params.mission_type || "", 20)
     };
     try {
       fetch((window.HuntCore?.functionsBase || "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1") + "/hunt-commerce-signal", {
@@ -301,9 +302,10 @@
         result_count: Number.isFinite(Number(resultCount)) ? Number(resultCount) : undefined
       });
     },
-    search({category = "", resultCount = 0} = {}) {
+    search({category = "", resultCount = 0, missionType = "none"} = {}) {
       return dataLayerPush("search", {
         search_category: clean(category, 60),
+        mission_type: clean(missionType, 20),
         result_count: Math.max(0, Number(resultCount) || 0)
       });
     },

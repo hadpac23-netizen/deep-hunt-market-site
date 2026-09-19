@@ -14,6 +14,7 @@ const RECOMMENDATION_STRATEGIES = new Set(["relevant-mix","narrow-set","side-by-
 const CLARIFY_MODES = new Set(["none","ask-one"]);
 const DIVERSITY_MODES = new Set(["accuracy","balanced","serendipity"]);
 const EXPLANATION_MODES = new Set(["none","why-this","compare-facts","why-verified"]);
+const SHOPPING_MISSIONS = new Set(["none","gift","outfit","replace","replenish","compare","trip","event","setup","budget"]);
 const PHASES = new Set(["arrival","discover","deepen","intent"]);
 const LANGS = new Set(["en","he","ar","es","fr","ja","zh"]);
 
@@ -60,6 +61,8 @@ function sanitizeContext(raw: any) {
   const clarifyRaw = cleanText(raw?.clarify_mode, 20).toLowerCase();
   const diversityRaw = cleanText(raw?.diversity_mode, 20).toLowerCase();
   const explanationRaw = cleanText(raw?.explanation_mode, 24).toLowerCase();
+  const missionRaw = cleanText(raw?.shopping_mission, 20).toLowerCase();
+  const qualifiers = raw?.mission_qualifiers && typeof raw.mission_qualifiers === "object" ? raw.mission_qualifiers : {};
   const interactions = raw?.interaction_summary && typeof raw.interaction_summary === "object" ? raw.interaction_summary : {};
   const page = cleanText(raw?.page, 28).toLowerCase().replace(/[^a-z0-9-]/g, "") || "home";
 
@@ -76,6 +79,14 @@ function sanitizeContext(raw: any) {
     clarify_mode: CLARIFY_MODES.has(clarifyRaw) ? clarifyRaw : "none",
     diversity_mode: DIVERSITY_MODES.has(diversityRaw) ? diversityRaw : "balanced",
     explanation_mode: EXPLANATION_MODES.has(explanationRaw) ? explanationRaw : "none",
+    shopping_mission: SHOPPING_MISSIONS.has(missionRaw) ? missionRaw : "none",
+    mission_qualifiers: {
+      device: qualifiers?.device === true,
+      size: qualifiers?.size === true,
+      budget: qualifiers?.budget === true,
+      style: qualifiers?.style === true,
+      color: qualifiers?.color === true,
+    },
     interaction_summary: {
       productClicks: num(interactions?.productClicks, 0, 50),
       likes: num(interactions?.likes, 0, 50),
@@ -143,6 +154,8 @@ BEHAVIORAL COMMERCE PRINCIPLES:
 - Clarify before guessing when intent is materially ambiguous; ask at most one concise, optional question before recommending.
 - Balance relevance with diversity: use serendipity during exploration, balanced variety during comparison, and accuracy near decision.
 - Explain outcomes briefly when it helps trust: why an item appears, why it is verified, or which factual attributes differ.
+- Respect shopping missions. Gift/budget missions favor guided narrowing; outfit/trip/event/setup favor completion; replace/compare favor factual comparison; replenish favors reliable verified reordering.
+- For replacement missions, ask for model/size only when the sanitized mission_qualifiers show that compatibility detail is missing.
 - Use progressive disclosure: reveal more detail as intent deepens instead of overwhelming early exploration.
 - Preserve autonomy: make every recommendation easy to ignore, reverse, or leave.
 - Use relevant complements only when they genuinely fit the current product/category context.
