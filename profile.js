@@ -1,7 +1,7 @@
 (() => {
   const H=window.HuntCore, sb=window.supabase;
   if(!H||!sb?.createClient)return;
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const client=window.BoomRuntime?.getSupabaseClient?.() || sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
   const $=q=>document.querySelector(q);
   let session=null;
 
