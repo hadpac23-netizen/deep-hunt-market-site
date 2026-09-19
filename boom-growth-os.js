@@ -519,6 +519,9 @@
     const PurchaseBridge=window.BoomPurchaseAttributionBridge;
     const purchaseAttributionBridge=PurchaseBridge?.evaluate?.()||{state:"HOLD",bridge_ready:false,total_sessions:0,provider_payment_confirmed:0,paid_timestamp_present:0,real_orders_linked:0,server_confirmed_purchases:0,campaign_context_present:0,purchase_touchpoint_linked:0,provider_click_validated:0,finance_ledger_rows:0,profit_evidence_ready:0,conversion_claim_allowed:0,provider_status_mapping_ready:false,payments_live:false,blockers:["purchase_attribution_bridge_unavailable"],execute_actions:false};
 
+    const PayPlusStatus=window.BoomPayPlusStatusReadiness;
+    const payPlusStatus=PayPlusStatus?.evaluate?.()||{state:"HOLD",receipt:{},callback_hardened:false,sandbox_success_proven:false,sandbox_reject_proven:false,provider_status_mapping_ready:false,accepted_paid:false,payments_live:false,blockers:["payplus_status_readiness_unavailable"],execute_actions:false};
+
     const SchemaActivation=window.BoomSchemaActivationReadiness;
     const schemaActivation=SchemaActivation?.evaluate?.({
       live_schema_inspected:true,
@@ -620,6 +623,7 @@
       campaignAttributionLedger,
       providerClickValidation,
       purchaseAttributionBridge,
+      payPlusStatus,
       schemaActivation,
       durableEventIdentity,
       paidAttribution,
@@ -1210,6 +1214,7 @@
       ["M28","Campaign Attribution Ledger","BoomCampaignAttributionLedger","PANEL"],
       ["M28","Provider Click Validation","BoomProviderClickValidation","CONNECTED"],
       ["M29","Purchase Attribution Bridge","BoomPurchaseAttributionBridge","PANEL"],
+      ["M30","PayPlus Status Mapping","BoomPayPlusStatusReadiness","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1538,6 +1543,7 @@
       {domain:"provider_click_validation",source_kind:"PROVIDER_API",source_ref:"M28 official provider evidence gate",available:Number(data.campaignAttributionLedger?.with_click_digest||0)>0,truth_verified:data.providerClickValidation?.provider_click_validation===true,observed_count:Number(data.providerClickValidation?.provider_verified||0),minimum_count:1,observed_at:data.providerClickValidation?.provider_click_validation?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"purchase_attribution_bridge",source_kind:"DIRECT_DB",source_ref:"M29 security-invoker purchase attribution bridge",available:data.purchaseAttributionBridge?.bridge_ready===true,truth_verified:data.purchaseAttributionBridge?.bridge_ready===true,observed_count:Number(data.purchaseAttributionBridge?.total_sessions||0),minimum_count:1,observed_at:data.purchaseAttributionBridge?.bridge_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"profit_evidence",source_kind:"DIRECT_DB",source_ref:"M29 hunt_order_finance_ledger real non-preview evidence",available:Number(data.purchaseAttributionBridge?.finance_ledger_rows||0)>0,truth_verified:data.purchaseAttributionBridge?.profit_evidence_available===true,observed_count:Number(data.purchaseAttributionBridge?.profit_evidence_ready||0),minimum_count:1,observed_at:data.purchaseAttributionBridge?.profit_evidence_available?new Date().toISOString():"",max_age_ms:60*60*1000},
+      {domain:"payplus_status_mapping",source_kind:"PROVIDER_API",source_ref:"M30 PayPlus HMAC + IPN FULL + sandbox mapping",available:data.payPlusStatus?.callback_hardened===true,truth_verified:data.payPlusStatus?.provider_status_mapping_ready===true,observed_count:data.payPlusStatus?.provider_status_mapping_ready?2:0,minimum_count:2,observed_at:data.payPlusStatus?.provider_status_mapping_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"server_purchase_proof",source_kind:"DIRECT_DB",source_ref:"hunt_payment_sessions + hunt_payment_events + hunt_orders",available:data.serverPurchaseProof?.adapter_ready===true,truth_verified:data.serverPurchaseProof?.server_purchase_confirmation===true,observed_count:Number(data.serverPurchaseProof?.provider_confirmed_real_orders||0),minimum_count:1,observed_at:data.serverPurchaseProof?.adapter_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"durable_event_identity",source_kind:data.durableEventIdentity?.durable_ready?"DIRECT_DB":"STRUCTURAL",source_ref:"M23 analytics_events.event_id + UNIQUE + guarded Edge insert",available:data.durableEventIdentity?.local_preview_ready===true||data.durableEventIdentity?.durable_ready===true,truth_verified:data.durableEventIdentity?.durable_ready===true,observed_count:data.durableEventIdentity?.durable_ready?1:0,minimum_count:data.durableEventIdentity?.durable_ready?1:0,observed_at:data.durableEventIdentity?.durable_ready?new Date().toISOString():"",freshness_required:data.durableEventIdentity?.durable_ready===true,max_age_ms:60*60*1000},
       {domain:"schema_activation_readiness",source_kind:"STRUCTURAL",source_ref:"M24 live schema preflight + security advisor + rollback plan",available:data.schemaActivation?.activation_ready===true,truth_verified:false,freshness_required:false},
@@ -1558,6 +1564,41 @@
     const gaps=$("#bg-evidence-gaps");
     if(gaps)gaps.innerHTML=e.rows.filter(x=>x.state!=="VERIFIED").map(rowHtml).join("")||'<div class="bg-empty">No evidence gaps.</div>';
     return e;
+  }
+
+  function renderPayPlusStatus(data={}){
+    const p=data.payPlusStatus||{state:"HOLD",receipt:{},checks:{},callback_hardened:false,sandbox_success_proven:false,sandbox_reject_proven:false,provider_status_mapping_ready:false,accepted_paid:false,payments_live:false};
+    const r=p.receipt||{};
+    const state=$("#bg-payplus-status-state");
+    if(state)state.textContent=p.provider_status_mapping_ready?"MAPPING READY":p.callback_hardened?"CALLBACK HARDENED":"HOLD";
+    const stats=$("#bg-payplus-status-stats");
+    if(stats)stats.innerHTML=[
+      ["Callback","v"+String(r.callback_version||"?")],
+      ["HMAC",p.callback_hardened?"PASS":"HOLD"],
+      ["Sandbox success",p.sandbox_success_proven?"PASS":"PENDING"],
+      ["Sandbox reject",p.sandbox_reject_proven?"PASS":"PENDING"]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const proof=$("#bg-payplus-status-proof");
+    if(proof)proof.innerHTML=[
+      ["HMAC + user-agent gate",r.hmac_user_agent_gate],
+      ["Independent IPN FULL verification",r.independent_ipn_full_verification],
+      ["Observation RLS",r.observation_rls_enabled],
+      ["Public observation access blocked",r.observation_public_blocked],
+      ["Fake callback rejected",Number(r.fake_callback_http_status)===401],
+      ["J2 is not paid",r.j2_not_paid],
+      ["J5 is not paid",r.j5_not_paid],
+      ["Unknown status fails closed",r.unknown_status_holds]
+    ].map(([name,ok])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(ok?"bg-passport-ready":"bg-passport-blocked")+'">'+(ok?"VERIFIED":"MISSING")+'</span></div></article>').join("");
+    const sandbox=$("#bg-payplus-status-sandbox");
+    if(sandbox)sandbox.innerHTML=[
+      ["J4 success sandbox proof",p.sandbox_success_proven?"VERIFIED":"PENDING"],
+      ["Rejected sandbox proof",p.sandbox_reject_proven?"VERIFIED":"PENDING"],
+      ["Provider status mapping",p.provider_status_mapping_ready?"READY":"BLOCKED"],
+      ["Accepted paid",p.accepted_paid?"YES":"NO"],
+      ["hunt_payment_live",r.payment_live_enabled===false?"OFF":"ON"],
+      ["Paid callback acceptance",r.payplus_callback_accept_paid===false?"OFF":"ON"]
+    ].map(([name,value])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(["NO","OFF","BLOCKED","PENDING"].includes(value)?"bg-passport-prepare":value==="VERIFIED"||value==="READY"?"bg-passport-ready":"bg-passport-blocked")+'">'+H.esc(value)+'</span></div></article>').join("");
+    return p;
   }
 
   function renderPurchaseAttributionBridge(data={}){
@@ -2023,6 +2064,7 @@
     renderMarketplace(data);
     renderUniversity(data);
     renderEvidenceLedger(data);
+    renderPayPlusStatus(data);
     renderPurchaseAttributionBridge(data);
     renderCampaignAttributionLedger(data);
     renderFrontendFailover(data);

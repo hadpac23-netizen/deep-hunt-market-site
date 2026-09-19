@@ -457,6 +457,25 @@
 
       <section class="bg-panel glass bg-wide">
         <div class="bg-row-head">
+          <div><div class="bg-kicker">M30 · PAYPLUS STATUS MAPPING</div><h2>HMAC + IPN FULL + fail-closed status contract</h2></div>
+          <span class="bg-score" id="bg-payplus-status-state">CALLBACK HARDENED</span>
+        </div>
+        <p class="bg-note">Live callback v9 now verifies PayPlus headers and re-checks the transaction with IPN FULL. J2/J5 are never treated as paid; J4 charge/refund remain blocked until separate sandbox success + reject evidence exists.</p>
+        <div id="bg-payplus-status-stats" class="bg-passport-stats"></div>
+        <div class="bg-passport-layout">
+          <section>
+            <div class="bg-kicker">SECURITY / MAPPING</div>
+            <div id="bg-payplus-status-proof" class="bg-deals"></div>
+          </section>
+          <section>
+            <div class="bg-kicker">SANDBOX / PAID GATE</div>
+            <div id="bg-payplus-status-sandbox" class="bg-deals"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="bg-panel glass bg-wide">
+        <div class="bg-row-head">
           <div><div class="bg-kicker">M29 · PURCHASE ATTRIBUTION BRIDGE</div><h2>Payment → real order → attribution → profit truth view</h2></div>
           <span class="bg-score" id="bg-purchase-bridge-state">BRIDGE READY</span>
         </div>
@@ -723,6 +742,7 @@
 <script src="boom-provider-click-validation.js?v=m28"></script>
 <script src="boom-campaign-attribution-ledger.js?v=m28"></script>
 <script src="boom-purchase-attribution-bridge.js?v=m29"></script>
+<script src="boom-payplus-status-readiness.js?v=m30"></script>
 <script src="boom-growth-agent.js?v=m08"></script>
 <script src="boom-marketing-brain.js?v=os3"></script>
 <script src="boom-creative-brain.js?v=os2"></script>
@@ -730,7 +750,7 @@
 <script src="boom-love-engine.js?v=os2"></script>
 <script src="boom-everywhere-publisher.js?v=os2"></script>
 <script src="boom-learning-loop.js?v=os2"></script>
-<script src="boom-growth-os.js?v=os32"></script>
+<script src="boom-growth-os.js?v=os33"></script>
 <script src="hunt-theme.js?v=shop4"></script>
 <script src="pwa.js?v=pwa8"></script>
   <script src="hunt-brand-motion.js?v=1"></script>

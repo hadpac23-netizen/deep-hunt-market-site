@@ -98,3 +98,6 @@ PAYMENTS_LIVE: false
 PAID_ATTRIBUTION_READY: false
 PAID_SPEND: 0
 EXECUTE_ACTIONS: false
+
+## M30 status-mapping handoff
+M30 has hardened the live PayPlus callback with HMAC/user-agent validation, independent IPN FULL re-verification, and a fail-closed charge-method mapper. Provider status mapping remains not ready until sandbox success and sandbox reject evidence are both captured.
