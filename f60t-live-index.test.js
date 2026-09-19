@@ -34,4 +34,9 @@ const fake=F60T.evaluate({...base("hunt_first_party","2026-09-19T19:29:00Z"),id:
 assert.equal(fake.status,"KILLED");
 assert(fake.reasons.includes("deceptive_merchandising"));
 
-console.log("F60T Live Index: 4/4 PASS");
+const cf=F60T.evaluate({...base("cloudflare_radar_http","2026-09-19T19:20:00Z"),id:"cloudflare"},byId.cloudflare_radar_http,{nowMs});
+assert.equal(cf.status,"OBSERVE_ONLY");
+assert.equal(cf.activation_allowed,false);
+assert(cf.observe_only_reasons.includes("commercial_rights_not_approved"));
+
+console.log("F60T Live Index: 5/5 PASS");
