@@ -36,6 +36,8 @@ Decision-grade paid attribution still requires:
 - confirmed purchase created from payment/order truth
 - campaign/touchpoint persistence
 - deterministic purchase ↔ touchpoint linkage
+
+M22 now checks the purchase/payment/order chain read-only and feeds those three server-side proof flags into M20 instead of hardcoded assumptions.
 - paid destination connection
 - explicit owner approval
 

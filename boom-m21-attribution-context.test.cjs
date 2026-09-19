@@ -18,8 +18,8 @@ for(const token of [
 
 for(const token of [
   "const AttributionContext=window.BoomAttributionContextReadiness",
-  "live_server_session_snapshot:false",
-  "server_purchase_linkage:false",
+  "live_server_session_snapshot:serverPurchaseProof.live_campaign_context_persisted===true",
+  "server_purchase_linkage:serverPurchaseProof.purchase_touchpoint_linkage===true",
   "provider_click_validation:false",
   'domain:"campaign_touchpoint_context"',
   "renderAttributionContext(data)"

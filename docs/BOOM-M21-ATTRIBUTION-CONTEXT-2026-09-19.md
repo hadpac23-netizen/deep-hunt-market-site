@@ -47,11 +47,7 @@ Therefore M21 is LOCAL_PREVIEW, not live attribution.
 
 ## Relationship to M20
 M21 closes the local campaign-context design gap.
-M20 still keeps:
-- campaign_touchpoint_persistence live = false
-- server purchase confirmation = false
-- purchase ↔ touchpoint linkage = false
-- paid attribution = false
+M22 now supplies live read-only proof for campaign context persistence, server purchase confirmation and purchase ↔ touchpoint linkage. With current prelaunch/test-only state these remain unproven; paid attribution therefore remains false.
 
 ## Production boundary
 No Edge Function deployment.

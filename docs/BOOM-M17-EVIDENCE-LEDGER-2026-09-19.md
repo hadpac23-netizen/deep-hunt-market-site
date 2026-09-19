@@ -28,7 +28,7 @@ The Studio maps evidence from:
 
 Static SEO audit, runtime-only personalization/source-verification, and M21 local campaign touchpoint context remain structural until direct live measured evidence exists.
 
-Marketplace snapshot can now become VERIFIED through M19 when all required read-only marketplace counts succeed. M20 now exposes paid-attribution readiness explicitly. The domain remains MISSING until live event-id persistence, durable dedup, server-confirmed purchase truth and campaign-to-purchase linkage are proven.
+Marketplace snapshot can now become VERIFIED through M19 when all required read-only marketplace counts succeed. M20 now exposes paid-attribution readiness explicitly. M22 supplies read-only server purchase proof from payment sessions/events/orders, but paid_attribution remains MISSING until the full M20 chain including event-id persistence, durable dedup and campaign linkage is proven.
 
 ## Safety
 M17 is read-only.

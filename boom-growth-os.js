@@ -113,6 +113,11 @@
       ? await MarketplaceSnapshotAdapter.load(client)
       : {adapter_ready:false,merchant_registry_ready:false,attribution_registry_ready:false,counts:{},errors:["marketplace_snapshot_adapter_unavailable"],read_only:true,writes:0,execute_actions:false};
 
+    const PurchaseProofAdapter=window.HuntServerPurchaseProofAdapter;
+    const serverPurchaseProof=PurchaseProofAdapter?.load
+      ? await PurchaseProofAdapter.load(client)
+      : {adapter_ready:false,server_purchase_confirmation:false,live_campaign_context_persisted:false,purchase_touchpoint_linkage:false,provider_payment_confirmation:false,paid_sessions:0,linked_real_orders:0,provider_confirmed_real_orders:0,purchases_with_campaign_context:0,errors:["server_purchase_proof_adapter_unavailable"],read_only:true,writes:0,execute_actions:false};
+
     const creatorSnapshot={
       creator_registry_ready:false,
       creator_registry_count:0,
@@ -501,9 +506,9 @@
       first_party_signal_live:true,
       live_event_id_persistence:false,
       durable_server_dedup:false,
-      server_purchase_confirmation:false,
-      campaign_touchpoint_persistence:false,
-      purchase_touchpoint_linkage:false,
+      server_purchase_confirmation:serverPurchaseProof.server_purchase_confirmation===true,
+      campaign_touchpoint_persistence:serverPurchaseProof.live_campaign_context_persisted===true,
+      purchase_touchpoint_linkage:serverPurchaseProof.purchase_touchpoint_linkage===true,
       paid_destination_connection:false,
       owner_paid_approval:false,
       local_preview_event_id_patch:true,
@@ -517,8 +522,8 @@
       browser_last_touch:true,
       checkout_payload_context:true,
       server_session_snapshot:true,
-      live_server_session_snapshot:false,
-      server_purchase_linkage:false,
+      live_server_session_snapshot:serverPurchaseProof.live_campaign_context_persisted===true,
+      server_purchase_linkage:serverPurchaseProof.purchase_touchpoint_linkage===true,
       provider_click_validation:false
     })||{state:"HOLD",checks:{},blockers:["attribution_context_runtime_unavailable"],local_preview_ready:false,live_attribution_context_ready:false,conversion_claim_allowed:false,execute_actions:false};
 
@@ -553,6 +558,7 @@
       creatorSnapshot,
       creatorSystem,
       marketplaceSnapshot,
+      serverPurchaseProof,
       paidAttribution,
       attributionContext,
       agenticGateway,
@@ -1132,6 +1138,7 @@
       ["M19","Marketplace Snapshot Adapter","HuntMarketplaceSnapshotAdapter","CONNECTED"],
       ["M20","Paid Attribution Readiness","BoomPaidAttributionReadiness","PANEL"],
       ["M21","Attribution Context","BoomAttributionContextReadiness","PANEL"],
+      ["M22","Server Purchase Proof","HuntServerPurchaseProofAdapter","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1456,6 +1463,7 @@
       {domain:"marketplace_snapshot",source_kind:"DIRECT_DB",source_ref:"merchant_accounts + merchant_stores + merchant_products",available:data.marketplaceSnapshot?.adapter_ready===true,truth_verified:data.marketplaceSnapshot?.adapter_ready===true,observed_count:Number(data.marketplaceSnapshot?.counts?.stores_total||0)+Number(data.marketplaceSnapshot?.counts?.products_total||0),minimum_count:0,observed_at:new Date().toISOString(),max_age_ms:60*60*1000},
       {domain:"paid_attribution",source_kind:"DIRECT_DB",source_ref:"M20 canonical event + server conversion attribution",available:data.paidAttribution?.paid_attribution_ready===true,truth_verified:data.paidAttribution?.paid_attribution_ready===true,observed_count:data.paidAttribution?.paid_attribution_ready?1:0,minimum_count:1,observed_at:data.paidAttribution?.paid_attribution_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"campaign_touchpoint_context",source_kind:"STRUCTURAL",source_ref:"M21 consent-gated browser → checkout → payment-session preview",available:data.attributionContext?.local_preview_ready===true,truth_verified:false,freshness_required:false},
+      {domain:"server_purchase_proof",source_kind:"DIRECT_DB",source_ref:"hunt_payment_sessions + hunt_payment_events + hunt_orders",available:data.serverPurchaseProof?.adapter_ready===true,truth_verified:data.serverPurchaseProof?.server_purchase_confirmation===true,observed_count:Number(data.serverPurchaseProof?.provider_confirmed_real_orders||0),minimum_count:1,observed_at:data.serverPurchaseProof?.adapter_ready?new Date().toISOString():"",max_age_ms:60*60*1000},
       {domain:"source_verification_workflow",source_kind:"STRUCTURAL",source_ref:"M16 source verification workflow",available:Boolean(window.BoomDigitalMarketingUniversity),truth_verified:false,freshness_required:false}
     ];
     return E.matrix(records);
@@ -1473,6 +1481,30 @@
     const gaps=$("#bg-evidence-gaps");
     if(gaps)gaps.innerHTML=e.rows.filter(x=>x.state!=="VERIFIED").map(rowHtml).join("")||'<div class="bg-empty">No evidence gaps.</div>';
     return e;
+  }
+
+  function renderServerPurchaseProof(data={}){
+    const p=data.serverPurchaseProof||{adapter_ready:false,server_purchase_confirmation:false,live_campaign_context_persisted:false,purchase_touchpoint_linkage:false,provider_payment_confirmation:false,paid_sessions:0,linked_real_orders:0,provider_confirmed_real_orders:0,purchases_with_campaign_context:0,errors:[]};
+    const state=$("#bg-server-purchase-state");
+    if(state)state.textContent=p.server_purchase_confirmation?"VERIFIED":"HOLD";
+    const stats=$("#bg-server-purchase-stats");
+    if(stats)stats.innerHTML=[
+      ["Paid sessions",p.paid_sessions||0],
+      ["Real linked orders",p.linked_real_orders||0],
+      ["Provider-confirmed",p.provider_confirmed_real_orders||0],
+      ["Attributed purchases",p.purchases_with_campaign_context||0]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const proof=$("#bg-server-purchase-proof");
+    if(proof)proof.innerHTML=[
+      ["Read-only adapter",p.adapter_ready],
+      ["Provider payment confirmation",p.provider_payment_confirmation],
+      ["Server purchase confirmation",p.server_purchase_confirmation],
+      ["Live campaign context persisted",p.live_campaign_context_persisted],
+      ["Purchase ↔ touchpoint linkage",p.purchase_touchpoint_linkage]
+    ].map(([name,ok])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score '+(ok?"bg-passport-ready":"bg-passport-blocked")+'">'+(ok?"VERIFIED":"MISSING")+'</span></div></article>').join("");
+    const linkage=$("#bg-server-purchase-linkage");
+    if(linkage)linkage.innerHTML=(p.errors||[]).map(error=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(error)+'</strong><span class="bg-score bg-passport-blocked">ERROR</span></div></article>').join("")||'<article class="bg-row"><div class="bg-row-head"><strong>Writes / execution</strong><span class="bg-score bg-passport-ready">0 / OFF</span></div><small>Adapter only reads minimal payment/order proof fields.</small></article>';
+    return p;
   }
 
   function renderAttributionContext(data={}){
@@ -1703,6 +1735,7 @@
     renderMarketplace(data);
     renderUniversity(data);
     renderEvidenceLedger(data);
+    renderServerPurchaseProof(data);
     renderAttributionContext(data);
     renderPaidAttribution(data);
     renderStudioCoverage();
