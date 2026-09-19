@@ -1,48 +1,36 @@
 # F50 HUNT Candidate — Promise Mesh — 2026-09-19
 
-## Status
-PROVISIONAL_KEEP_PENDING_FORMAL_EVIDENCE
+## Current status
+KILLED_THIS_ROUND_REOPENABLE_WITH_NEW_EVIDENCE
 
-This is a saved F50 research candidate, not a formally proven F50 winner.
+The earlier exploratory KEEP has been superseded by the formal F50-04–07 assessment.
 
-## Candidate
-HUNT Promise Mesh
+Formal round result:
+ZERO.
 
-## Mechanism hypothesis
-Change the unit of commerce from a supplier listing to a customer promise.
+Mechanism fingerprint:
+f50_0e5bbbb820831132
 
-The customer-facing promise fixes:
-- exact product identity
-- maximum total price
-- destination
-- delivery deadline
-- authenticity/evidence requirement
-- returns rule
-- substitution boundary
+## Why it did not survive
+- patent attack found substantial same-function prior art;
+- non-patent prior-art surfaces remain incomplete;
+- Promise Mesh-specific economics are not verified;
+- market evidence is insufficient for scale math;
+- Red Team still has unresolved high risks and missing dimensions.
 
-The supplier may remain dynamic only when another verified source can satisfy the complete promise without weakening it.
+## What remains potentially investigable
+The narrower mechanism under investigation was:
+FIXED COMPLETE CUSTOMER PROMISE + DYNAMIC FULFILLMENT SOURCE + FULL CONSTRAINT PRESERVATION.
 
-## Why it survived the exploratory scan
-Ordinary multi-supplier routing and canonical product matching already exist and therefore were rejected as standalone inventions.
+F50 does not currently claim this is novel.
 
-The remaining hypothesis is a stronger mechanism:
-ONE VERIFIED PRODUCT IDENTITY → MULTIPLE ELIGIBLE FULFILLMENT SOURCES → ONE FIXED CUSTOMER PROMISE.
+## Reopen rule
+Do not recycle this candidate as new.
+A new round requires a substantive reopen reason and at least two material new evidence references.
 
-## Required formal F50 work before winner status
-- import verified evidence into the F50 Evidence Engine;
-- broad prior-art search across every required novelty surface;
-- patent attack on the promise-as-commerce-object mechanism;
-- regulatory analysis for supplier substitution and consumer disclosure;
-- exact-product identity feasibility;
-- returns/refund liability analysis;
-- fraud and counterfeit Red Team;
-- economics and margin-routing model;
-- Big-Tech Copy Test;
-- scale mathematics.
+See:
+- F50-HUNT-PROMISE-MESH-FORMAL-ASSESSMENT-2026-09-19.md
+- F50-HUNT-PROMISE-MESH-FORMAL-ASSESSMENT-2026-09-19.json
 
-## Current truth
-formal_evidence_imported: false
 winner_claim_allowed: false
-final_result: unresolved
-
-No production changes are authorized from this candidate record.
+current_final_result: ZERO

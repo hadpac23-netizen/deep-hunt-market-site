@@ -58,3 +58,44 @@ Do not convert a provisional candidate into a winner without evidence.
 F50 is recommendation-only.
 No spend, publication, payment, supplier order or external commitment.
 Owner review is always required.
+
+## F50-04 — Prior-Art + Patent Attack
+Use BoomF50PriorArt.
+Cover products, startups, patents, research, GitHub, legacy industries and alternate names.
+Verified same-mechanism prior art is a KILL.
+Same-function prior art requires an explicit mechanism difference.
+Unsupported global novelty language is blocked.
+
+## F50-05 — Market / Economics
+Use BoomF50MarketEconomics.
+Require:
+- verified economic inputs;
+- at least two economics evidence refs;
+- at least two market evidence refs;
+- positive unit contribution;
+- evidence-backed reachable capacity;
+- explicit target/required-unit math.
+Never convert theoretical scale math into a profit promise.
+
+## F50-06 — Red Team
+Use BoomF50RedTeam.
+Required dimensions:
+technical, legal/regulatory, fraud/abuse, UX/adoption, economics, competition, scalability, operations, data moat.
+Unresolved FATAL risk kills.
+Unresolved HIGH risk blocks KEEP.
+Resolved HIGH/FATAL risk requires substantive mitigation plus evidence.
+
+## F50-07 — Research Memory
+Use BoomF50Memory + BoomF50MemoryAdapter.
+Load recent owner-only Supabase memory before final selection.
+Block exact and near-duplicate previously killed mechanisms.
+Reopen only with a substantive reason + at least 2 material new evidence refs.
+Do not present an existing winner as a new invention.
+
+Persistent tables:
+- f50_research_runs
+- f50_candidates
+- f50_evidence_records
+- f50_research_memory
+
+All are authenticated-admin RLS only; anon access is revoked.

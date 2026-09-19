@@ -79,3 +79,38 @@ It does not:
 - make external commitments.
 
 Owner review remains required.
+
+## Implemented engine stack
+- F50-01 Research Core
+- F50-02 Candidate Funnel
+- F50-03 Evidence Engine
+- F50-04 Prior-Art + Patent Attack
+- F50-05 Market / Economics
+- F50-06 Red Team
+- F50-07 Research Memory
+- F50 Orchestrator
+
+A KEEP now requires PASS from F50-03 through F50-07 in addition to full method coverage.
+
+## Research Memory rule
+Every sufficiently researched KILL/KEEP/WINNER receives a mechanism fingerprint built from normalized mechanism primitives.
+
+Memory checks:
+- exact fingerprint match;
+- near-duplicate mechanism primitive overlap.
+
+A previously killed mechanism is blocked by default.
+Reopening requires:
+- a substantive reopen reason; and
+- at least two material new evidence references.
+
+Known winners are not treated as new inventions; they require revalidation.
+
+## Economics evidence rule
+inputs_verified=true is not sufficient by itself.
+F50-05 also requires concrete economics evidence references and market evidence.
+Scale math is theoretical only and never a profit guarantee.
+
+## Red-Team evidence rule
+All required Red-Team dimensions must be attacked.
+HIGH/FATAL risks cannot pass merely because a mitigation sentence exists; resolved high risks require substantive mitigation and an evidence reference.

@@ -10,24 +10,36 @@ for(const token of [
   'id="bg-f50-gates"',
   'id="bg-f50-current"',
   'boom-f50-evidence-engine.js?v=f50e1',
-  'boom-f50-research-core.js?v=f50r1',
-  'boom-f50-funnel.js?v=f50f1',
-  'boom-f50-current-research.js?v=f50c1'
+  'boom-f50-prior-art.js?v=f50pa1',
+  'boom-f50-market-economics.js?v=f50me1',
+  'boom-f50-red-team.js?v=f50rt1',
+  'boom-f50-memory.js?v=f50mem1',
+  'boom-f50-memory-adapter.js?v=f50ma1',
+  'boom-f50-research-core.js?v=f50r2',
+  'boom-f50-funnel.js?v=f50f2',
+  'boom-f50-engine.js?v=f50x2',
+  'boom-f50-current-research.js?v=f50c2'
 ]) assert(html.includes(token),"F50 Studio HTML missing: "+token);
 
 for(const token of [
   "const F50Evidence=window.BoomF50EvidenceEngine",
+  "const F50PriorArt=window.BoomF50PriorArt",
+  "const F50Economics=window.BoomF50MarketEconomics",
+  "const F50RedTeam=window.BoomF50RedTeam",
+  "const F50Memory=window.BoomF50Memory",
+  "const F50MemoryAdapter=window.BoomF50MemoryAdapter",
   "const F50Core=window.BoomF50ResearchCore",
   "const F50Funnel=window.BoomF50Funnel",
   "const F50Engine=window.BoomF50Engine",
-  "const F50Current=window.BoomF50CurrentResearch?.RECEIPT||{}",
-  'state:F50Evidence&&F50Core&&F50Funnel?"CORE_READY":"HOLD"',
-  '["F50","Evidence Engine","BoomF50EvidenceEngine","PANEL"]',
-  '["F50","Research Core","BoomF50ResearchCore","PANEL"]',
-  '["F50","Candidate Funnel","BoomF50Funnel","PANEL"]',
-  '["F50","Orchestrator","BoomF50Engine","PANEL"]',
+  '["F50-04","Prior-Art + Patent Attack","BoomF50PriorArt","PANEL"]',
+  '["F50-05","Market / Economics","BoomF50MarketEconomics","PANEL"]',
+  '["F50-06","Red Team","BoomF50RedTeam","PANEL"]',
+  '["F50-07","Research Memory","BoomF50Memory","PANEL"]',
   "function renderF50(data={})",
-  "renderF50(data)"
+  "renderF50(data)",
+  'client.from("f50_research_memory")',
+  'client.from("f50_research_runs")',
+  'client.from("f50_candidates")'
 ]) assert(js.includes(token),"F50 Studio JS missing: "+token);
 
 assert(js.includes("winner_claim_allowed:F50Current.winner_claim_allowed===true"));

@@ -1,7 +1,7 @@
 (() => {
   "use strict";
 
-  const VERSION="2026-09-19-f50-f1";
+  const VERSION="2026-09-19-f50-f2";
   const clean=(v,max=400)=>String(v??"").replace(/\s+/g," ").trim().slice(0,max);
 
   function generationSignal(c={}){
@@ -27,19 +27,19 @@
     return n;
   }
 
-  function run(candidates=[],core,evidenceEngine){
+  function run(candidates=[],core,evidenceEngine,engines={},memoryRows=[]){
     const input=(Array.isArray(candidates)?candidates:[]).slice(0,50);
     const generated=input
       .map(candidate=>({candidate,generation_signal:generationSignal(candidate)}))
       .filter(x=>x.generation_signal>=4)
       .sort((a,b)=>b.generation_signal-a.generation_signal||clean(a.candidate.id).localeCompare(clean(b.candidate.id)));
     const top10=generated.slice(0,10).map(x=>{
-      const inspection=core?.inspect?core.inspect(x.candidate,evidenceEngine):{ready:false,blockers:["research_core_unavailable"],evidence:{}};
+      const inspection=core?.inspect?core.inspect(x.candidate,evidenceEngine,engines,memoryRows):{ready:false,blockers:["research_core_unavailable"],evidence:{}};
       return {...x,inspection,attack_signal:attackSignal(x.candidate,inspection)};
     }).sort((a,b)=>b.attack_signal-a.attack_signal||clean(a.candidate.id).localeCompare(clean(b.candidate.id)));
 
     const top3=top10.slice(0,3);
-    const keeps=top3.filter(x=>core?.killOrKeep?.(x.candidate,evidenceEngine)?.decision==="KEEP");
+    const keeps=top3.filter(x=>core?.killOrKeep?.(x.candidate,evidenceEngine,engines,memoryRows)?.decision==="KEEP");
     let state="ZERO";
     let winner=null;
     let reason="no_candidate_survived_all_f50_gates";

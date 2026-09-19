@@ -1,40 +1,30 @@
 const assert=require("node:assert");
 const E=require("./boom-f50-evidence-engine.js");
 const C=require("./boom-f50-research-core.js");
+const PA=require("./boom-f50-prior-art.js");
+const ME=require("./boom-f50-market-economics.js");
+const RT=require("./boom-f50-red-team.js");
+const MEM=require("./boom-f50-memory.js");
+const {strongCandidate}=require("./boom-f50-test-fixtures.cjs");
+const engines={priorArt:PA,economics:ME,redTeam:RT,memory:MEM};
 
-const weak=C.killOrKeep({id:"weak",title:"AI marketplace"},E);
+const weak=C.killOrKeep({id:"weak",title:"AI marketplace"},E,engines,[]);
 assert.strictEqual(weak.decision,"KILL");
-for(const reason of ["hidden_problem_missing","mechanism_missing","payer_missing","economic_primitive_missing","scale_math_missing","prior_art_conclusion_missing","red_team_incomplete"]){
+for(const reason of ["hidden_problem_missing","mechanism_missing","payer_missing","economic_primitive_missing","scale_math_missing","novelty_claim_missing","red_team_dimensions_missing","mechanism_primitives_insufficient"]){
   assert(weak.blockers.includes(reason),"missing blocker "+reason);
 }
 
-const strong={
-  id:"strong-1",title:"Strong mechanism",
-  hidden_problem:"A hidden resource is systematically lost because no commercial mechanism captures it.",
-  mechanism:"Create a specific non-trivial mechanism that converts the hidden resource into a measurable transaction primitive.",
-  payer:"Businesses losing measurable value from the hidden resource.",
-  economic_primitive:"NEW_ASSET",
-  scale_math:"At 1M verified events/day and $0.10 contribution/event, annualized contribution can be modeled; assumptions remain explicit.",
-  prior_art_conclusion:"Products, startups, patents, research, GitHub, legacy industries and alternate names were searched; adjacent systems exist but the mechanism differs.",
-  novelty_claim:"Novelty is claimed only at the mechanism-combination level and remains conditional on the cited prior-art search.",
-  moat:"Outcome graph compounds from verified cross-party observations that are not available at launch to a copycat.",
-  red_team:["regulation","fraud","adoption","technical feasibility","competition"],
-  big_tech_copy_risk:"LOW",
-  ordinary_category:false,
-  mechanism_novelty:true,
-  legal_feasibility:true,
-  technical_feasibility:true,
-  economic_path_plausible:true,
-  methods:[...C.METHODS],
-  novelty_surfaces:[...E.NOVELTY_SURFACES],
-  evidence:[
-    {id:"p",kind:"PATENT",ref:"patent:test",claim:"prior art checked",verified:true},
-    {id:"r",kind:"ACADEMIC_RESEARCH",ref:"research:test",claim:"technical basis",verified:true},
-    {id:"m",kind:"MARKET_DATA",ref:"market:test",claim:"payer/economics basis",verified:true}
-  ]
-};
-const kept=C.killOrKeep(strong,E);
+const kept=C.killOrKeep(strongCandidate("core-strong"),E,engines,[]);
 assert.strictEqual(kept.decision,"KEEP");
 assert.strictEqual(kept.ready,true);
 assert.strictEqual(kept.final_claim_allowed,true);
+assert.strictEqual(kept.prior_art.state,"PASS");
+assert.strictEqual(kept.economics.state,"PASS");
+assert.strictEqual(kept.red_team.state,"PASS");
+assert.strictEqual(kept.memory.memory_ready,true);
+
+const priorKill=strongCandidate("core-prior");
+priorKill.prior_art_evidence=[...priorKill.prior_art_evidence,{surface:"patents",relation:"same_mechanism",source_ref:"patent:exact",verified:true}];
+assert.strictEqual(C.killOrKeep(priorKill,E,engines,[]).decision,"KILL");
+
 console.log("boom_f50_research_core=PASS");

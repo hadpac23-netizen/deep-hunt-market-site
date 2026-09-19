@@ -42,7 +42,7 @@
   }
 
   async function loadData() {
-    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, catalogRes, identityRes, savedCountRes, realOrdersCountRes, testOrdersCountRes, trackingCountRes, deliveredCountRes, creatorDraftCountRes, publishedDraftCountRes, merchantConversionCountRes, partnerRightsCountRes, seoAudit] = await Promise.all([
+    const [mission, launch, econRes, dealRes, experimentRes, radarRes, briefRes, distributionRes, catalogRes, identityRes, savedCountRes, realOrdersCountRes, testOrdersCountRes, trackingCountRes, deliveredCountRes, creatorDraftCountRes, publishedDraftCountRes, merchantConversionCountRes, partnerRightsCountRes, f50MemoryRes, f50RunsRes, f50CandidatesRes, seoAudit] = await Promise.all([
       ownerFunction("hunt-owner-mission-control"),
       ownerFunction("hunt-launch-readiness"),
       client.from("hunt_unit_economics")
@@ -87,6 +87,15 @@
       client.from("hunt_distribution_drafts").select("id",{count:"exact",head:true}).not("published_at","is",null),
       client.from("merchant_conversion_events").select("id",{count:"exact",head:true}),
       client.from("hunt_partner_matrix").select("id",{count:"exact",head:true}).not("media_rights_verified_at","is",null),
+      client.from("f50_research_memory")
+        .select("mechanism_fingerprint,canonical_title,last_decision,kill_reasons,prior_art_refs,winner_claim_allowed,hit_count,last_seen_at")
+        .order("last_seen_at",{ascending:false}).limit(80),
+      client.from("f50_research_runs")
+        .select("id,mission,status,result,started_at,completed_at,updated_at")
+        .order("updated_at",{ascending:false}).limit(30),
+      client.from("f50_candidates")
+        .select("id,run_id,candidate_key,title,mechanism_fingerprint,stage,decision,kill_reasons,winner_claim_allowed,updated_at")
+        .order("updated_at",{ascending:false}).limit(120),
       fetch("boom-seo-audit.json?v=os3",{cache:"no-store"}).then(r=>r.ok?r.json():null).catch(()=>null)
     ]);
 
@@ -107,6 +116,9 @@
     if (publishedDraftCountRes.error) throw publishedDraftCountRes.error;
     if (merchantConversionCountRes.error) throw merchantConversionCountRes.error;
     if (partnerRightsCountRes.error) throw partnerRightsCountRes.error;
+    if (f50MemoryRes.error) throw f50MemoryRes.error;
+    if (f50RunsRes.error) throw f50RunsRes.error;
+    if (f50CandidatesRes.error) throw f50CandidatesRes.error;
 
     const MarketplaceSnapshotAdapter=window.HuntMarketplaceSnapshotAdapter;
     const marketplaceSnapshot=MarketplaceSnapshotAdapter?.load
@@ -577,31 +589,47 @@
     })||{state:"HOLD",checks:{},blockers:["paid_attribution_runtime_unavailable"],paid_attribution_ready:false,server_event_id_persisted:false,paid_launch:false,paid_spend:false,execute_actions:false};
 
     const F50Evidence=window.BoomF50EvidenceEngine;
+    const F50PriorArt=window.BoomF50PriorArt;
+    const F50Economics=window.BoomF50MarketEconomics;
+    const F50RedTeam=window.BoomF50RedTeam;
+    const F50Memory=window.BoomF50Memory;
+    const F50MemoryAdapter=window.BoomF50MemoryAdapter;
     const F50Core=window.BoomF50ResearchCore;
     const F50Funnel=window.BoomF50Funnel;
     const F50Engine=window.BoomF50Engine;
     const F50Current=window.BoomF50CurrentResearch?.RECEIPT||{};
+    const f50MemoryRows=f50MemoryRes.data||[];
+    const f50Runs=f50RunsRes.data||[];
+    const f50Candidates=f50CandidatesRes.data||[];
     const f50={
-      state:F50Evidence&&F50Core&&F50Funnel?"CORE_READY":"HOLD",
+      state:F50Evidence&&F50PriorArt&&F50Economics&&F50RedTeam&&F50Memory&&F50Core&&F50Funnel&&F50Engine?"CORE_READY":"HOLD",
       evidence_engine_ready:Boolean(F50Evidence?.inspectCandidate),
+      prior_art_ready:Boolean(F50PriorArt?.analyze),
+      economics_ready:Boolean(F50Economics?.evaluate),
+      red_team_ready:Boolean(F50RedTeam?.attack),
+      memory_ready:Boolean(F50Memory?.inspect)&&Boolean(F50MemoryAdapter?.load),
       research_core_ready:Boolean(F50Core?.killOrKeep),
       funnel_ready:Boolean(F50Funnel?.run),
-      engine_ready:Boolean(F50Engine?.run)&&F50Engine?.TOKEN==="F50-DEEP-HUNT-CONTINUE",
+      engine_ready:Boolean(F50Engine?.run)&&Boolean(F50Engine?.runWithMemory)&&F50Engine?.TOKEN==="F50-DEEP-HUNT-CONTINUE",
       methods:Number(F50Core?.METHODS?.length||0),
       source_kinds:Number(F50Evidence?.SOURCE_KINDS?.size||0),
-      novelty_surfaces:Number(F50Evidence?.NOVELTY_SURFACES?.length||0),
+      novelty_surfaces:Number(F50PriorArt?.SURFACES?.length||0),
       funnel_contract:"50 → 10 → 3 → 1 or 0",
       one_idea_rule:true,
+      memory_entries:f50MemoryRows.length,
+      killed_memory:f50MemoryRows.filter(x=>x.last_decision==="KILL").length,
+      kept_memory:f50MemoryRows.filter(x=>x.last_decision==="KEEP").length,
+      winner_memory:f50MemoryRows.filter(x=>x.last_decision==="WINNER").length,
+      research_runs:f50Runs.length,
+      candidate_records:f50Candidates.length,
+      last_memory:f50MemoryRows[0]||null,
       saved_candidate_id:String(F50Current.saved_candidate_id||""),
       saved_candidate_title:String(F50Current.saved_candidate_title||""),
       saved_candidate_status:String(F50Current.saved_candidate_status||"NONE"),
       formal_evidence_imported:F50Current.formal_evidence_imported===true,
       winner_claim_allowed:F50Current.winner_claim_allowed===true,
       current_final_result:String(F50Current.current_final_result||"UNRESOLVED"),
-      payments_live:false,
-      paid_spend:false,
-      external_publish:false,
-      execute_actions:false,
+      payments_live:false,paid_spend:false,external_publish:false,execute_actions:false,
       owner_gate:"REVIEW_REQUIRED"
     };
 
@@ -676,12 +704,18 @@
       ["Methods",String(f.methods||0)],
       ["Evidence kinds",String(f.source_kinds||0)],
       ["Prior-art surfaces",String(f.novelty_surfaces||0)],
+      ["Killed memory",String(f.killed_memory||0)],
+      ["Research runs",String(f.research_runs||0)],
       ["Final output",f.one_idea_rule?"1 OR 0":"HOLD"]
     ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
     const gates=$("#bg-f50-gates");
     if(gates)gates.innerHTML=[
       ["Research Core",f.research_core_ready===true],
       ["Evidence Engine",f.evidence_engine_ready===true],
+      ["F50-04 Prior-Art / Patents",f.prior_art_ready===true],
+      ["F50-05 Market / Economics",f.economics_ready===true],
+      ["F50-06 Red Team",f.red_team_ready===true],
+      ["F50-07 Research Memory",f.memory_ready===true],
       ["50→10→3 Funnel",f.funnel_ready===true],
       ["F50 Orchestrator",f.engine_ready===true],
       ["One-Idea Rule",f.one_idea_rule===true],
@@ -698,6 +732,8 @@
         ["Saved candidate",candidate],
         ["Candidate status",String(f.saved_candidate_status||"NONE").replaceAll("_"," ")],
         ["Formal evidence",evidence],
+        ["Memory entries",String(f.memory_entries||0)],
+        ["Candidate records",String(f.candidate_records||0)],
         ["Winner claim",winner],
         ["Final result",String(f.current_final_result||"UNRESOLVED")]
       ].map(([name,value])=>'<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name)+'</strong><span class="bg-score">'+H.esc(value)+'</span></div></article>').join("");
@@ -1288,7 +1324,12 @@
       ["M29","Purchase Attribution Bridge","BoomPurchaseAttributionBridge","PANEL"],
       ["M30","PayPlus Status Mapping","BoomPayPlusStatusReadiness","PANEL"],
       ["M31","PayPlus Sandbox Evidence","BoomPayPlusSandboxEvidence","PANEL"],
-      ["F50","Evidence Engine","BoomF50EvidenceEngine","PANEL"],
+      ["F50-03","Evidence Engine","BoomF50EvidenceEngine","PANEL"],
+      ["F50-04","Prior-Art + Patent Attack","BoomF50PriorArt","PANEL"],
+      ["F50-05","Market / Economics","BoomF50MarketEconomics","PANEL"],
+      ["F50-06","Red Team","BoomF50RedTeam","PANEL"],
+      ["F50-07","Research Memory","BoomF50Memory","PANEL"],
+      ["F50-07","Memory Adapter","BoomF50MemoryAdapter","CONNECTED"],
       ["F50","Research Core","BoomF50ResearchCore","PANEL"],
       ["F50","Candidate Funnel","BoomF50Funnel","PANEL"],
       ["F50","Orchestrator","BoomF50Engine","PANEL"],
