@@ -46,3 +46,6 @@ BROWSER_EVENT_IS_PURCHASE: false
 TEST_ORDER_IS_PURCHASE: false
 EXECUTE_ACTIONS: false
 OWNER_GATE: REVIEW_REQUIRED
+
+## M29 bridge
+M29 now joins M22 server purchase proof with M28 attribution evidence and the finance ledger through a backend-only security-invoker view. It does not replace M22's proof rules and does not write paid/order state.
