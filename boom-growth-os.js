@@ -1086,6 +1086,7 @@
       ["M09","Agentic Commerce Gateway","BoomAgenticCommerceGateway","PANEL"],
       ["M11","Personalization Brain","BoomPersonalizationBrain","PANEL"],
       ["M12","Free Growth Engine","BoomFreeGrowthEngine","PANEL"],
+      ["M13","Sales & Advertising Brain","BoomSalesAdvertisingBrain","PANEL"],
       ["OPS","Marketing Brain","BoomMarketingBrain","CALLOUT"],
       ["OPS","SEO Brain","BoomSeoBrain","CALLOUT"],
       ["OPS","Love Engine","BoomLoveEngine","CALLOUT"],
@@ -1102,7 +1103,6 @@
     });
 
     const skillOnly=[
-      ["Sales & Advertising Brain","skills/boom-sales-advertising-brain.md"],
       ["World Commerce Radar","skills/boom-world-commerce-radar.md"],
       ["HUNT Marketplace Brain","skills/hunt-marketplace-brain.md"],
       ["HUNT Promotion Engine","skills/hunt-promotion-engine.md"],
@@ -1189,6 +1189,64 @@
         '</strong><span class="bg-score '+tone+'">'+H.esc(row.state||"HOLD")+'</span></div><small>'+
         H.esc(row.reason||"")+'</small></article>';
     }).join("");
+  }
+
+  function salesAdvertisingReadiness(data={}){
+    const B=window.BoomSalesAdvertisingBrain;
+    if(!B?.build)return {rows:[],owner_review_candidates:0,prepare_candidates:0,paid_launches:0,spend:0,execute_actions:false};
+    const economicsMap=new Map();
+    for(const row of data.economics||[]){
+      economicsMap.set(String(row.provider||"")+":"+String(row.item_id||""),row);
+    }
+    const products=(data.catalog||[]).slice(0,160).map(item=>{
+      const key=String(item.provider||"")+":"+String(item.item_id||"");
+      const econ=economicsMap.get(key)||{};
+      return {
+        ...item,
+        description:item.description||"",
+        retail_price_verified:econ.inputs_verified===true&&String(econ.profit_gate_status||"").toUpperCase()==="PASS",
+        profit_gate_status:econ.profit_gate_status||item.profit_gate_status||"",
+        availability_verified:false
+      };
+    });
+    return B.build({
+      products,
+      economics_map:economicsMap,
+      context:{
+        shipping_clarity_ready:false,
+        returns_clarity_ready:false,
+        mobile_readability_ready:true,
+        attribution_ready:false,
+        holdout_ready:false,
+        landing_page_measurement_ready:false,
+        owner_paid_approval:false,
+        objective:"verified_contribution_value"
+      }
+    });
+  }
+
+  function renderSalesAdvertising(data){
+    const result=salesAdvertisingReadiness(data);
+    const state=$("#bg-sales-ad-state");
+    if(state)state.textContent=result.owner_review_candidates>0?"OWNER REVIEW":result.prepare_candidates>0?"PREPARE":"HOLD";
+    const stats=$("#bg-sales-ad-stats");
+    if(stats)stats.innerHTML=[
+      ["Owner review",result.owner_review_candidates||0],
+      ["Prepare",result.prepare_candidates||0],
+      ["Paid launches",result.paid_launches||0],
+      ["Spend",money(result.spend||0)]
+    ].map(([label,value])=>'<article class="bg-passport-stat"><strong>'+H.esc(value)+'</strong><small>'+H.esc(label)+'</small></article>').join("");
+    const candidates=$("#bg-sales-ad-candidates");
+    if(candidates)candidates.innerHTML=(result.rows||[]).slice(0,8).map(row=>
+      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(row.product?.title||row.key||"Product")+'</strong><span class="bg-score">'+H.esc(row.plan?.state||"HOLD")+'</span></div><small>Page '+H.esc(row.plan?.readiness?.score||0)+'/100 · Max safe CAC '+H.esc(money(row.plan?.max_safe_cac||0))+'</small></article>'
+    ).join("")||'<div class="bg-empty">No campaign candidates.</div>';
+    const blockerCounts=new Map();
+    for(const row of result.rows||[])for(const blocker of row.plan?.blockers||[])blockerCounts.set(blocker,(blockerCounts.get(blocker)||0)+1);
+    const blockers=$("#bg-sales-ad-blockers");
+    if(blockers)blockers.innerHTML=[...blockerCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,10).map(([name,count])=>
+      '<article class="bg-row"><div class="bg-row-head"><strong>'+H.esc(name.replaceAll("_"," "))+'</strong><span class="bg-score">'+H.esc(count)+'</span></div></article>'
+    ).join("")||'<div class="bg-empty">No blockers.</div>';
+    return result;
   }
 
   function renderFreeGrowth(plan,data,marketing,seoScore){
@@ -1347,6 +1405,7 @@
     renderCreatorOS(data);
     renderAgenticGateway(data);
     renderPersonalization(data);
+    renderSalesAdvertising(data);
     renderStudioCoverage();
     renderOperating(plan, data);
 

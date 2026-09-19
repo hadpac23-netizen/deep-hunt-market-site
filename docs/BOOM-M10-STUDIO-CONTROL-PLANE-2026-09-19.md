@@ -12,7 +12,7 @@ A read-only coverage panel for:
 - skill-only capabilities that still require implementation
 
 ## Initial gaps intentionally exposed
-Sales/Advertising, World Commerce Radar, Marketplace Brain, Promotion Engine and Digital Marketing University are currently represented as skill-only in this control plane. Personalization moved to M11 runtime + Studio panel, and Free Growth moved to M12 runtime + Studio panel.
+World Commerce Radar, Marketplace Brain, Promotion Engine and Digital Marketing University are currently represented as skill-only in this control plane. Personalization moved to M11 runtime + Studio panel, Free Growth to M12, and Sales/Advertising to M13.
 Commerce Brain, F35 Director, BOOM NET and Stylist are visible as code/runtime gaps rather than silently treated as integrated.
 
 ## Safety
