@@ -112,6 +112,20 @@
     if(!host)return;
     host.innerHTML=data.journeys.journeys.map(j=>`<article class="bs-journey"><h3>${esc(j.id)}</h3><p>${esc(j.goal)}</p><div class="bs-journey-steps">${j.steps.map(step=>`<span>${esc(step.kind)}: ${esc(step.ref)}${step.optional?" · optional":""}</span>`).join("")}</div></article>`).join("");
   }
+  function renderLegalReadiness(){
+    const host=$("#bs-legal-readiness");
+    if(!host)return;
+    const legal=data.legal||{};
+    host.innerHTML=(legal.required_documents||[]).map(doc=>`<article class="bs-journey">
+      <h3>${esc(doc.title)}</h3>
+      <p><strong>${esc(legal.owner||"learning_governance_brain")}</strong> · <span class="bs-status NEXT">OWNER GATE</span></p>
+      <div class="bs-journey-steps">
+        <span>doc_key: ${esc(doc.doc_key)}</span>
+        <span>source: ${esc(legal.current_source||"hunt_legal_document_versions")}</span>
+        <span>public only after published + owner_approved</span>
+      </div>
+    </article>`).join("");
+  }
   function renderMerge(){
     const host=$("#bs-merge");
     if(!host)return;
@@ -165,12 +179,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,merge,budgets,health,errors,reasons,storage]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,merge,budgets,health,errors,reasons,storage};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderGovernance();renderCommerceHandoff();renderOperationsState();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");

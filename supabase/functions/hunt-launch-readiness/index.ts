@@ -49,7 +49,7 @@ Deno.serve(async req=>{
   if(!BASE||!SERVICE)return json(req,{error:"server config missing"},500);
   if(!(await adminUser(req)))return json(req,{error:"Admin access required"},403);
   try{
-    const [evidence,paymentSessions,orders,orderEvents,paymentEvents,payplusObservations,analytics,econ,merchantPrograms,runtimeControls,businessIdentityRows]=await Promise.all([
+    const [evidence,paymentSessions,orders,orderEvents,paymentEvents,payplusObservations,analytics,econ,merchantPrograms,runtimeControls,businessIdentityRows,legalDocs]=await Promise.all([
       rest("hunt_launch_readiness_evidence?select=*&order=gate_group.asc,gate_key.asc"),
       rest("hunt_payment_sessions?select=id,status,mode,country_code,total_amount,commerce_snapshot,created_at&order=created_at.desc&limit=100"),
       rest("hunt_orders?select=id,status,total_amount,currency,placed_at,updated_at&order=updated_at.desc&limit=100"),
@@ -60,7 +60,8 @@ Deno.serve(async req=>{
       rest("hunt_unit_economics?select=id,inputs_verified,profit_gate_status,contribution_before_coupon,contribution_margin,max_safe_cac,calculated_at&order=calculated_at.desc&limit=1000"),
       rest("merchant_program_versions?select=version,status,owner_approved,updated_at&order=created_at.desc&limit=10"),
       rest("hunt_runtime_controls?select=key,enabled,owner_approved,note,updated_at&order=key.asc"),
-      rest("hunt_business_identity?id=eq.primary&select=legal_entity_name,registration_number,registered_country,business_address,support_email,support_phone,returns_address,privacy_contact_email,status,owner_approved,updated_at&limit=1")
+      rest("hunt_business_identity?id=eq.primary&select=legal_entity_name,registration_number,registered_country,business_address,support_email,support_phone,returns_address,privacy_contact_email,status,owner_approved,updated_at&limit=1"),
+      rest("hunt_legal_document_versions?select=doc_key,version,status,owner_approved,effective_at,published_at,updated_at&status=eq.published&owner_approved=eq.true&order=doc_key.asc")
     ]);
 
     const sessions=paymentSessions||[];
@@ -88,9 +89,19 @@ Deno.serve(async req=>{
     payplus["all_account_env_configured"]=Boolean(payplus.api_key_configured&&payplus.secret_key_configured&&payplus.payment_page_uid_configured);
 
     const businessIdentity=businessIdentityRows?.[0]||null;
-    const identityRequired=["legal_entity_name","registration_number","business_address","support_email","privacy_contact_email","returns_address"];
+    const identityRequired=["legal_entity_name","registration_number","registered_country","business_address","support_email","privacy_contact_email","returns_address"];
     const identityMissing=identityRequired.filter(k=>!String(businessIdentity?.[k]||"").trim());
     const identityPublished=Boolean(businessIdentity&&businessIdentity.status==="published"&&businessIdentity.owner_approved===true&&identityMissing.length===0);
+
+    const legalRequired=["terms","privacy","returns","shipping"];
+    const nowMs=Date.now();
+    const activeLegalDocs=(legalDocs||[]).filter(x=>{
+      const effective=Date.parse(String(x?.effective_at||""));
+      return x?.status==="published"&&x?.owner_approved===true&&Number.isFinite(effective)&&effective<=nowMs&&Boolean(x?.published_at);
+    });
+    const legalByKey=new Map(activeLegalDocs.map(x=>[String(x.doc_key),x]));
+    const legalMissing=legalRequired.filter(key=>!legalByKey.has(key));
+    const legalReady=identityPublished&&legalMissing.length===0;
 
     const dynamic=[
       gate(
@@ -106,6 +117,21 @@ Deno.serve(async req=>{
         identityPublished
           ?"Keep legal identity synchronized with the operating entity."
           :"Complete Business Identity Setup and explicitly publish the owner-approved identity before public launch.",
+        "legal"
+      ),
+      gate(
+        "legal_documents_runtime","Published legal documents",
+        legalReady?"PASS":"FAIL",
+        true,true,
+        {
+          identity_published:identityPublished,
+          required_documents:legalRequired,
+          active_documents:activeLegalDocs.map(x=>({doc_key:x.doc_key,version:x.version,effective_at:x.effective_at,published_at:x.published_at})),
+          missing_documents:legalMissing
+        },
+        legalReady
+          ?"Keep legal versions and Business Identity synchronized under Owner Gate."
+          :"Publish owner-approved Terms, Privacy, Returns and Shipping documents after Business Identity is complete; do not use placeholder legal text.",
         "legal"
       ),
       gate(

@@ -46,7 +46,9 @@ if(!studioJs.includes('json("boom-commerce-handoff-contract.json")'))errors.push
 if(!studioHtml.includes('id="bs-commerce-handoff"'))errors.push("Brain Studio missing commerce handoff surface");
 if(!studioJs.includes('json("boom-payment-order-state-contract.json")'))errors.push("Brain Studio missing Payment → Order state contract");
 if(!studioJs.includes('json("boom-payplus-proof-contract.json")'))errors.push("Brain Studio missing PayPlus proof contract");
+if(!studioJs.includes('json("boom-legal-readiness-contract.json")'))errors.push("Brain Studio missing Legal Readiness contract");
 if(!studioHtml.includes('id="bs-operations-state"'))errors.push("Brain Studio missing operations state-machine surface");
+if(!studioHtml.includes('id="bs-legal-readiness"'))errors.push("Brain Studio missing legal readiness surface");
 
 for(const file of ["product.html","category.html","checkout.html","index.html"]){
   const html=fs.readFileSync(file,"utf8");

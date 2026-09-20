@@ -85,6 +85,16 @@
       "enforce_phase_1": true
     },
     {
+      "id": "store.legal",
+      "file": "legal.html",
+      "required": [
+        "core",
+        "runtime",
+        "theme"
+      ],
+      "enforce_phase_1": true
+    },
+    {
       "id": "boom.command",
       "file": "boom-command-center.html",
       "required": [
