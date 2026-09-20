@@ -89,6 +89,11 @@
           </div>
           <p id="hd-shipping-status" class="hd-checkout-truth" aria-live="polite">Add delivery details before an order can be handed to a supplier.</p>
         </form>
+        <div class="hd-saved-delivery-actions">
+          <button id="hd-save-delivery" class="hd-btn" type="button" hidden>Save delivery details</button>
+          <button id="hd-forget-delivery" class="hd-link-button" type="button" hidden>Forget saved details</button>
+        </div>
+        <p id="hd-saved-delivery-status" class="hd-checkout-truth" aria-live="polite"></p>
 
         <button id="hd-checkout-verify" class="hd-btn hd-btn-primary" type="button">Verify price & shipping</button>
         <div class="hd-bundle-preview" id="hd-bundle-preview" hidden>
@@ -131,6 +136,7 @@
   <script src="analytics.js?v=huntmetrics3"></script>
   <script src="hunt-personalization.js?v=1"></script>
   <script src="boom-stylist.js?v=1"></script>
+  <script src="hunt-saved-addresses.js?v=1"></script>
 <script src="checkout.js?v=shippingchess5"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa9"></script>
