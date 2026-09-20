@@ -221,3 +221,73 @@ Passing source tests or migrations does **not** authorize:
 - merchant activation.
 
 Those remain separate Owner Gates.
+
+## PayPlus implementation preflight
+
+Live Edge Functions observed:
+- `hunt-payplus-callback` v9 — ACTIVE
+- `hunt-payplus-sandbox-evidence` v2 — ACTIVE
+
+Callback v9 currently:
+- requires PayPlus User-Agent;
+- validates callback HMAC hash;
+- requires a signed object body;
+- resolves the payment session by PayPlus request UID;
+- blocks prelaunch-session callbacks;
+- calls PayPlus sandbox/live `ipn-full` depending on session mode;
+- verifies payment request UID;
+- verifies transaction UID where available;
+- verifies `more_info == payment_session_id`;
+- verifies amount and currency;
+- persists a status fingerprint into `hunt_payplus_status_observations`;
+- keeps `accepted_paid=false`;
+- keeps paid-state execution blocked pending exact sandbox proof and Owner approval.
+
+Sandbox Evidence v2:
+- creates a sandbox-only ₪1 evidence session;
+- generates a PayPlus dev/sandbox payment link;
+- points callback to `hunt-payplus-callback`;
+- supports separate evidence scenarios: `success` and `reject`;
+- does not enable live payment or supplier fulfillment.
+
+Live runtime gate:
+- `hunt_payplus_sandbox_evidence` = disabled
+- owner_approved = false
+- no token hash configured
+
+Source proofs:
+- PayPlus callback safety: PASS
+- PayPlus proof gate: PASS
+
+Therefore PayPlus is **CODE_READY / LIVE_EVIDENCE_NOT_AUTHORIZED**.
+
+Required explicit action later:
+1. authorize the PayPlus sandbox-evidence gate;
+2. configure the one-time access-token hash;
+3. generate a sandbox success link;
+4. complete the PayPlus sandbox success flow;
+5. verify signed callback + ipn-full fingerprint;
+6. generate and complete a sandbox reject flow;
+7. compare exact success/reject fingerprints;
+8. separately approve any mapping before callback paid acceptance can ever be enabled.
+
+## CJ sandbox implementation preflight
+
+Live `hunt-order-orchestrator` observed at v15.
+
+The two older sandbox HOLD records were caused by transient CJ error:
+`CJ_API_1603000_500: server busy / try again later`.
+
+Current v15 adds:
+- transient 5xx / CJ 1603000 retry classification;
+- up to five create attempts;
+- exponential delay;
+- stable sandbox order number;
+- reconciliation after network/ambiguous failures;
+- duplicate-order reconciliation;
+- sandbox-only supplier status simulation and tracking;
+- live supplier-order kill switch.
+
+Therefore CJ order pipeline is **CODE_IMPROVED / NEW SANDBOX EVIDENCE STILL REQUIRED**.
+
+A new sandbox order test is intentionally not executed without explicit Owner approval.
