@@ -135,7 +135,18 @@
           };
           if (client?.functions?.invoke) {
             const {data,error}=await client.functions.invoke("hunt-payment-session",{body:payload});
-            if(error||data?.ok!==true||!data?.session)throw new Error(String(data?.error||error?.message||"QUOTE_FAILED"));
+            if(error){
+              let code=String(data?.error||"");
+              try{
+                const response=error?.context;
+                if(!code&&response?.clone){
+                  const body=await response.clone().json().catch(()=>({}));
+                  code=String(body?.error||"");
+                }
+              }catch{}
+              throw new Error(code||String(error?.message||"QUOTE_FAILED"));
+            }
+            if(data?.ok!==true||!data?.session)throw new Error(String(data?.error||"QUOTE_FAILED"));
             return data;
           }
           const res = await fetch(functionsBase + "/hunt-payment-session", {
