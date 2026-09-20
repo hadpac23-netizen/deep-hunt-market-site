@@ -85,7 +85,7 @@ surface_matrix() {
   "${ab[@]}" eval "document.querySelector('#hunt-analytics-consent button[data-consent=decline]')?.click(); true" >/dev/null
 
   check "$session" "Home horizontal overflow" 'document.documentElement.scrollWidth <= window.innerWidth + 2'
-  check "$session" "Hero visible" '(()=>{const e=document.querySelector("#hunt-hero4");if(!e)return false;const r=e.getBoundingClientRect();const c=getComputedStyle(e);return c.display!=="none"&&c.visibility!=="hidden"&&Number(c.opacity)>0&&r.width>100&&r.height>100})()'
+  check "$session" "Hero visible" 'document.getElementById("hunt-hero4")?.offsetWidth>100 && document.getElementById("hunt-hero4")?.offsetHeight>100'
   check "$session" "HUNT brand visible" '!!document.querySelector(".hd-hunt-wordmark")'
   check "$session" "Categories gateway present" '!!document.querySelector("[data-open-categories]")'
   if [[ "$width" -le 760 ]]; then

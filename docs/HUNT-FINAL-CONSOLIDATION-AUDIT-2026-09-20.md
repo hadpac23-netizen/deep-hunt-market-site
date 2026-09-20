@@ -279,3 +279,36 @@ Regression evidence:
 - live payment remained disabled
 
 No production deployment was performed.
+
+## Final Preview / Responsive Matrix checkpoint
+
+Status: **PASS**
+
+A reusable browser QA gate was added at:
+`scripts/hunt-final-preview-matrix.sh`
+
+Verified viewports:
+- 1440 × 1000
+- 1280 × 800
+- 768 × 1024
+- 390 × 844
+
+Verified surfaces:
+- Home / Hero
+- Category
+- Search / AI Find
+- Product / Decision Check
+- Product variant → stock verification → Cart → Checkout on desktop and mobile
+
+Evidence:
+- no horizontal overflow on checked surfaces;
+- no duplicate IDs on Category/Product;
+- Home navigation appropriate to viewport;
+- Product action remains reachable on desktop/mobile;
+- selected variant survives Product → Checkout;
+- no browser page errors;
+- payment remains disabled in PRELAUNCH.
+
+The matrix uses deterministic local supplier/payment mocks. It does not charge money, send a supplier order, or prove production infrastructure.
+
+No production deployment was performed.
