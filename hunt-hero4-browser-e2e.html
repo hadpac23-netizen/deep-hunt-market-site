@@ -1,0 +1,73 @@
+<!doctype html><meta charset="utf-8"><title>HUNT Hero 4.2 QA</title>
+<style>body{font:13px system-ui;background:#111;color:#eee;margin:14px}.case{border:1px solid #444;padding:8px;margin:10px 0}.pass{color:#76e8a2}.fail{color:#ff7e92}.viewport{overflow:hidden;max-height:350px}iframe{display:block;border:0;background:#fff}pre{white-space:pre-wrap}</style>
+<h1>HUNT HERO 4.2 QA</h1><div id="host"></div><pre id="result">RUNNING</pre>
+<script>
+const widths=[390,768,1280,1440],host=document.querySelector('#host'),wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function waitUntil(fn,timeout=18000,step=250){
+ const start=performance.now();
+ while(performance.now()-start<timeout){try{if(fn())return true}catch{} await wait(step)}
+ return false;
+}
+async function one(w){
+ localStorage.setItem('hunt_destination_market_v1','AE');
+ localStorage.setItem('hunt_deal_boom_signals_v1',JSON.stringify({tech:100,beauty:1,women:1}));
+ localStorage.setItem('hunt_language','he');
+ sessionStorage.removeItem('hunt_hero4_promo_dismissed_v2');
+
+ const box=document.createElement('section');box.className='case';const status=document.createElement('div');
+ const wrap=document.createElement('div');wrap.className='viewport';wrap.style.width=w+'px';
+ const f=document.createElement('iframe');f.width=w;f.height=1000;f.src='./index.html?qa42='+w+'&t='+Date.now();wrap.appendChild(f);box.append(status,wrap);host.appendChild(box);
+ await new Promise(r=>f.addEventListener('load',r,{once:true}));
+
+ const d=f.contentDocument,cw=f.contentWindow;
+ const readyScene=await waitUntil(()=>d.querySelector('#hunt-hero4')?.dataset.scene==='mountains',10000);
+ const root=d.querySelector('#hunt-hero4');
+ const mountain=readyScene&&root?.dataset.scene==='mountains';
+ const sceneOrder=(root?.dataset.sceneOrder||'').split(',').filter(Boolean);
+ const readyPromo=await waitUntil(()=>root?.dataset.promoReady==='true'&&Number(root?.dataset.promoCount||0)>=8&&root?.dataset.promoQueueFirst==='tech',30000);
+
+ const overflow=Math.max(0,d.documentElement.scrollWidth-d.documentElement.clientWidth);
+ const noDeal=!d.body.innerText.includes('HUNT DEAL');
+ const brand=(d.querySelector('.hd-brand')?.innerText||'').replace(/\s+/g,'').trim()==='HUNT';
+ const letters=d.querySelectorAll('.hd-hunt-wordmark>span').length===4;
+ const rtl=d.documentElement.dir==='rtl'&&d.documentElement.lang==='he';
+ const heTitle=(d.querySelector('#hd-hero4-title')?.innerText||'').includes('מצא');
+ const discover=!!d.querySelector('.hd-hero4-scroll-cue');
+
+ const sceneBefore=root?.dataset.scene||'';
+ d.querySelector('#hd-hero4-scene-next')?.click();
+ await waitUntil(()=>root?.dataset.scene&&root.dataset.scene!==sceneBefore,6000);
+ const nextScene=root?.dataset.scene||'';
+ const regionPriority=sceneBefore==='mountains'&&nextScene==='dubai';
+ const sceneChanged=!!nextScene&&nextScene!==sceneBefore;
+ const activeVideos=[...d.querySelectorAll('.hd-hero4-scene.is-active')].filter(v=>!v.paused).length<=1;
+
+ const promo=d.querySelector('#hd-hero4-promo'),statusBtn=d.querySelector('#hd-hero4-status');
+ statusBtn?.click();await wait(300);
+ const opened=root?.dataset.promoState==='open';
+ const total=Number(root?.dataset.promoCount||0);
+ const manyPromos=readyPromo&&total>=8;
+ const queueFirst=root?.dataset.promoQueueFirst||'';
+ const techFirst=queueFirst==='tech';
+ const stackCount=d.querySelectorAll('#hd-hero4-promo-stack [data-promo-jump]').length>=3;
+ const promoRect=promo?.getBoundingClientRect();
+ const compact=!!promoRect&&promoRect.width<=(w<=760?245:285);
+ const firstTitle=d.querySelector('#hd-hero4-promo-title')?.textContent||'';
+ d.querySelector('#hd-hero4-next')?.click();await wait(220);
+ const changed=(d.querySelector('#hd-hero4-promo-title')?.textContent||'')!==firstTitle;
+ d.querySelector('#hd-hero4-promo-close')?.click();await wait(480);
+ const dismissed=cw.sessionStorage.getItem('hunt_hero4_promo_dismissed_v2')==='1';
+
+ const select=d.querySelector('[data-lang-select]');
+ if(select){select.value='ja';select.dispatchEvent(new Event('change',{bubbles:true}));await wait(180)}
+ const ja=d.documentElement.lang==='ja'&&(d.querySelector('#hd-hero4-title')?.innerText||'').includes('見つけよう');
+
+ const nav=d.querySelector('.hd-mobile-nav'),navRect=nav?.getBoundingClientRect();
+ const mobileSafe=w>760||!promoRect||!navRect||promoRect.bottom<=navRect.top+2||root?.dataset.promoState==='idle';
+
+ const pass=overflow<=4&&mountain&&noDeal&&brand&&letters&&rtl&&heTitle&&discover&&regionPriority&&sceneChanged&&activeVideos&&opened&&manyPromos&&techFirst&&stackCount&&compact&&changed&&dismissed&&ja&&mobileSafe;
+ const out={width:w,pass,overflow,readyScene,readyPromo,mountain,sceneOrder,noDeal,brand,letters,rtl,heTitle,sceneBefore,nextScene,regionPriority,sceneChanged,activeVideos,opened,total,manyPromos,queueFirst,techFirst,stackCount,compact,changed,dismissed,ja,mobileSafe};
+ status.className=pass?'pass':'fail';status.textContent=(pass?'PASS ':'FAIL ')+JSON.stringify(out);return out;
+}
+(async()=>{const results=[];for(const w of widths)results.push(await one(w));const pass=results.every(x=>x.pass);document.body.dataset.qa=pass?'pass':'fail';document.querySelector('#result').textContent=(pass?'PASS':'FAIL')+'\n'+JSON.stringify({pass,results},null,2)})();
+</script>

@@ -49,13 +49,15 @@ check() {
 
 check "product truth renders" 'document.querySelector("#hd-product-title")?.textContent === "HUNT E2E Verified CJ Product"'
 check "verified retail price renders" 'document.querySelector("#hd-product-price")?.textContent === "$7.99"'
-check "supplier quote state renders" 'document.querySelector("#hd-product-stock")?.textContent === "QUOTE VERIFIED"'
-check "cart action enabled" '!document.querySelector("#hd-product-add")?.disabled'
+check "exact variant stock starts in recheck state" 'document.querySelector("#hd-product-stock")?.textContent === "STOCK RECHECK"'
+check "stock verification action enabled" '!document.querySelector("#hd-product-add")?.disabled && document.querySelector("#hd-product-add")?.textContent.includes("Verify stock")'
 
 ab click '#hd-size-options [data-size="M"]'
 check "variant selection updates" 'document.querySelector("#hd-selected-size")?.textContent === "M"'
+check "selected variant still requires exact stock proof" 'document.querySelector("#hd-product-stock")?.textContent === "STOCK RECHECK"'
 ab click '#hd-product-add'
-ab wait 500
+ab wait 700
+check "exact VID and quantity were verified" '(()=>{try{const q=JSON.parse(sessionStorage.getItem("__boomLastStockQuote")||"null");return q?.vid==="E2E-BLK-M"&&q?.quantity===1}catch{return false}})()'
 check "navigates to checkout" 'location.pathname.endsWith("/checkout.html")'
 check "cart renders one line" 'document.querySelectorAll(".hd-checkout-item").length === 1'
 check "chosen variant survives navigation" 'document.querySelector(".hd-checkout-item")?.textContent.includes("Black / M")'
@@ -84,6 +86,8 @@ check "payment control stays disabled" 'document.querySelector(".hd-pay-disabled
 console_output="$(ab console || true)"
 if [[ "$console_output" == *"Multiple GoTrueClient instances"* ]]; then
   echo "FAIL: duplicate Supabase auth clients detected"
+  printf '%s
+' "$console_output"
   exit 1
 fi
 echo "PASS: one shared Supabase auth client"

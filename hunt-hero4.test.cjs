@@ -1,0 +1,46 @@
+const fs=require('fs'),assert=require('assert');
+const html=fs.readFileSync('index.html','utf8');
+const product=fs.readFileSync('product.html','utf8');
+const js=fs.readFileSync('hunt-hero4.js','utf8');
+const home=fs.readFileSync('hunt-home-3.js','utf8');
+const css=fs.readFileSync('hunt-hero4.css','utf8');
+const visual=fs.readFileSync('hunt-visual-v2.css','utf8');
+const i18n=fs.readFileSync('hunt-experience-i18n.js','utf8');
+const pulse=fs.readFileSync('hunt-product-pulse.js','utf8');
+const prompt=fs.readFileSync('docs/HUNT-4.2.1-CLEAN-CITY-QUALITY-PROMPT.md','utf8');
+
+assert(html.includes('id="hunt-hero4"'),'Hero root missing');
+assert(html.includes('id="hd-city-scene-a"')&&html.includes('id="hd-city-scene-b"'),'Dual city image buffers missing');
+assert(html.includes('id="hunt-lifestyle-stream"'),'Below-fold lifestyle stream missing');
+assert(html.indexOf('id="hunt-lifestyle-stream"')>html.indexOf('id="departments"'),'Lifestyle stream must sit below hero/departments');
+const hero=html.slice(html.indexOf('<section class="hd-hero4"'),html.indexOf('<section class="hd-department-shell'));
+assert(!hero.includes('hd-hero4-promo'),'Promo must not live inside hero');
+assert(!hero.includes('BOOM · LIVING WORLD'),'Competing hero transcription must be removed');
+assert(html.includes('hd-hunt-wordmark'),'Animated HUNT wordmark missing');
+assert(!html.includes('HUNT <span>DEAL</span>'),'DEAL wordmark must remain removed');
+
+for(const scene of ['dubai','hong-kong','new-york','paris','madrid','london','singapore','seoul','shanghai','tokyo']) assert(js.includes('id:"'+scene+'"'),'Missing city scene '+scene);
+for(const banned of ['mountains','852369','7062425','NIGHT MOUNTAINS']) assert(!js.includes(banned),'Banned background remains: '+banned);
+assert((js.match(/w=5120&q=92/g)||[]).length===10,'All approved city images should request high-res 5K derivatives');
+assert(js.includes('width<3000')&&js.includes('height<1800'),'Runtime visual quality gate missing');
+assert(js.includes('loadSceneImage')&&js.includes('preloadNextScene'),'Image preload quality gate missing');
+assert(js.includes('setTimeout(()=>showScene(sceneIndex+1),8600)'),'Auto city rotation missing');
+assert(js.includes('preferredSceneId'),'Country city priority missing');
+assert(js.includes('promoObserver'),'Below-fold scroll promo observer missing');
+assert(js.includes('promoVisible'),'Promo visibility gate missing');
+assert(js.includes('buildItems')&&js.includes('slice(0,12)'),'Personalized lifestyle queue missing');
+assert(css.includes('HUNT 4.2.1 · CLEAN CITY QUALITY GATE'),'4.2.1 visual contract missing');
+assert(css.includes('@keyframes hd-city-drift-right')&&css.includes('@keyframes hd-city-rise-left'),'Premium multi-direction city motion missing');
+assert(css.includes('.hd-lifestyle-stream'),'Below-fold promo styling missing');
+
+assert(i18n.includes('const EN={'),'English base dictionary missing');
+for(const lang of ['he','ar','es','fr','ja','zh']) assert(i18n.includes(lang+':{'),'Missing experience language '+lang);
+for(const lang of ['en','he','ar','es','fr','ja','zh']) assert(i18n.includes('"'+lang+'"')||i18n.includes("'"+lang+"'"),'Language registry missing '+lang);
+assert(i18n.includes('RTL=new Set(["he","ar"])'),'RTL contract missing');
+assert(product.includes('data-hunt-i18n="productCue"'),'Localized product discovery cue missing');
+assert(product.includes('id="hd-product-pulse"'),'Product Pulse markup missing');
+assert(pulse.includes('MutationObserver'),'Product Pulse related sync missing');
+assert(home.includes('applyPersonalLayout'),'Personal Home ordering missing');
+assert(visual.includes('hd-hunt-letter-drop'),'HUNT cascade missing');
+assert(prompt.includes('HUNT 4.2.1'),'4.2.1 prompt missing');
+console.log('hunt_hero421=PASS');

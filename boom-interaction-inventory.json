@@ -127,7 +127,7 @@
     },
     {
       "file": "product.js",
-      "selector": "[data-gallery-src]",
+      "selector": "[data-gallery-index]",
       "action_id": "product.gallery.select",
       "status": "mapped"
     },

@@ -1,12 +1,12 @@
 (() => {
   const H = window.HuntCore;
-  const runtime = window.BoomRuntime;
+  const PROD_ORIGIN = "https://deep-hunt-market.netlify.app";
   const params = new URLSearchParams(location.search);
   const requested = params.get("c") || "women";
   const slug = H.categoryDefs[requested] ? requested : "women";
   const sub = params.get("sub") || "";
   const def = H.categoryDefs[slug];
-  const mainCategories = ["women","men","kids","beauty","home","kitchen","tech","sports","gifts"];
+  const mainCategories = ["women","men","kids","beauty","accessories","tech","home","sports","pets","toys","travel","office","gifts"];
   let rawResults = [];
   let resultOrder = new Map();
   const viewKey = "hunt_market_view_v1";
@@ -14,9 +14,32 @@
   let visibleLimit = 48;
   const pageSize = 48;
   let gridObserver = null;
+  let catalogPages = [];
+  let nextCatalogPageIndex = 0;
+  let catalogPageLoading = false;
+  let catalogTotalCount = 0;
 
   const $ = q => document.querySelector(q);
   const productKey = p => `${p.provider || ""}:${p.item_id || ""}`;
+
+  async function ensureCompareRuntime(){
+    if(window.HuntCompare)return true;
+    return new Promise(resolve=>{
+      const existing=document.querySelector('script[data-hunt-compare-retry]');
+      if(existing){
+        existing.addEventListener("load",()=>resolve(Boolean(window.HuntCompare)),{once:true});
+        existing.addEventListener("error",()=>resolve(false),{once:true});
+        return;
+      }
+      const script=document.createElement("script");
+      script.src="hunt-compare.js?v=2&retry=1";
+      script.dataset.huntCompareRetry="true";
+      script.onload=()=>resolve(Boolean(window.HuntCompare));
+      script.onerror=()=>resolve(false);
+      document.head.appendChild(script);
+    });
+  }
+
 
   function retailState(product) {
     const amount = Number(product?.retail_price_amount);
@@ -25,7 +48,54 @@
       && String(product?.profit_gate_status || "").toUpperCase() === "PASS"
       && Number.isFinite(amount)
       && amount > 0;
-    return {ready, amount: ready ? amount : null, currency};
+    const estimated = !ready && Number.isFinite(amount) && amount > 0;
+    return {ready, estimated, amount: (ready || estimated) ? amount : null, currency};
+  }
+
+  function categoryFacts(product) {
+    const facts=[];
+    const world=String(slug||"");
+    const category=String(product?.category||"");
+
+    const add=(label,value)=>{
+      if(value===null||value===undefined||value==="")return;
+      const text=String(value).trim();
+      if(!text)return;
+      if(facts.some(x=>x.label===label&&x.value===text))return;
+      facts.push({label,value:text});
+    };
+
+    const variants=Number(product?.variant_count||0);
+    const fashion=/^(women|men|kids|accessories)$/.test(world)||/^(women-|men-|kids-|baby-)/.test(category);
+    const specDriven=/^(tech|office)$/.test(world)||/(phone|computer|electronics|gaming|camera|audio)/.test(category);
+    const home=/^(home)$/.test(world)||/(home|lighting|kitchen|bedding|bath)/.test(category);
+    const beauty=/^(beauty)$/.test(world)||/(skincare|makeup|beauty|hair|nails|body-care)/.test(category);
+
+    if(specDriven){
+      add("Model",product?.model);
+      add("Brand",product?.brand);
+      if(variants>1)add("Options",variants);
+      add("Type",product?.type_name);
+    }else if(fashion){
+      add("Brand",product?.brand);
+      if(variants>1)add("Options",variants);
+      add("Type",product?.type_name);
+    }else if(beauty){
+      add("Brand",product?.brand);
+      add("Type",product?.type_name);
+      add("Origin",product?.origin_country);
+    }else if(home){
+      add("Type",product?.type_name);
+      if(variants>1)add("Options",variants);
+      add("Origin",product?.origin_country);
+    }else{
+      add("Brand",product?.brand);
+      if(variants>1)add("Options",variants);
+      add("Type",product?.type_name);
+    }
+
+    if(facts.length<2&&product?.availability_verified===true)add("Stock","loaded");
+    return facts.slice(0,2);
   }
 
   function productCard(product) {
@@ -34,25 +104,29 @@
       ? `<img src="${H.esc(product.image_url)}" alt="${H.esc(product.title || "Product")}" loading="lazy">`
       : `<div class="hd-market-card-placeholder">◇</div>`;
     const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">${H.esc(product.provider || "CATALOG")}</span>`;
+    const newBadge = H.isNewArrival?.(product) ? `<b class="hd-new-pulse">NEW</b>` : "";
     const retail = retailState(product);
-    const price = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
-    const quotePassed = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
-    const quoteEvidence = H.evidenceState?.("product_truth",product) || {state:"UNKNOWN"};
-    const stateLabel = quotePassed && quoteEvidence.state === "FRESH"
+    const price = retail.ready ? H.money(retail.amount, retail.currency) : (retail.estimated ? `From ${H.money(retail.amount, retail.currency)}` : "Price pending");
+    const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
+    const stateLabel = quoteVerified
       ? "QUOTE VERIFIED"
-      : quotePassed
-        ? "QUOTE RECHECK"
-        : retail.ready
-          ? "HUNT RETAIL · QUOTE REQUIRED"
-          : (product.availability_verified === true ? "CATALOG" : "DISCOVERY");
+      : retail.ready
+        ? "HUNT RETAIL · QUOTE REQUIRED"
+        : (retail.estimated ? "HUNT ESTIMATE · LIVE DETAIL REQUIRED" : (product.availability_verified === true ? "CATALOG" : "DISCOVERY"));
     const productUrl = H.productUrl(product);
+    const facts=categoryFacts(product);
+    const factsHtml=facts.length?`<div class="hd-card-specific-facts" aria-label="Product facts">${facts.map(f=>`<span><b>${H.esc(f.label)}:</b> ${H.esc(f.value)}</span>`).join("")}</div>`:"";
+    const reason=score>0?`<p>${H.esc(H.personalReason(product))}</p>`:"";
+    const compare=window.HuntCompare?.button?.(product)||"";
     return `<article class="hd-market-product-card" data-category="${H.esc(product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${retail.amount || 0}" data-score="${score}">
-      <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}</a>
+      <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}${newBadge}</a>
       <div class="hd-market-card-body">
         <small>${H.esc(product.provider || "Provider")} · ${H.esc(stateLabel)}</small>
         <a href="${H.esc(productUrl)}" class="hd-market-card-title" data-product-view="${H.esc(productKey(product))}">${H.esc(product.title || "Product")}</a>
-        <div class="hd-market-card-price"><strong>${price}</strong><span>${retail.ready ? "HUNT RETAIL" : "PRICE PENDING"}</span></div>
-        <p>${H.esc(score > 0 ? H.personalReason(product) : "Open the product to inspect images, variants and availability.")}</p>
+        <div class="hd-market-card-price"><strong>${price}</strong><span>${retail.ready ? "HUNT RETAIL" : (retail.estimated ? "VERIFY ON PRODUCT" : "PRICE PENDING")}</span></div>
+        ${factsHtml}
+        ${reason}
+        ${compare}
         <a class="hd-btn hd-market-view" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">View product →</a>
       </div>
     </article>`;
@@ -77,68 +151,122 @@
       .join("");
     $("#hd-category-strip").innerHTML = chips;
 
+    const subKeys = H.departmentSubcategories?.[slug] || [];
+    const subbar = $("#hd-gender-subcategories");
+    if (subbar) {
+      subbar.hidden = !subKeys.length;
+      subbar.innerHTML = subKeys.map(key => {
+        const value = H.categoryDefs[key];
+        if (!value) return "";
+        const href = `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}`;
+        return `<a class="${sub===key?"active":""}" href="${href}" data-sub-key="${H.esc(key)}">${H.esc(value.title)} <span class="hd-category-subcount" data-sub-count="${H.esc(key)}"></span></a>`;
+      }).join("");
+    }
+
     const groups = Array.isArray(H.categoryGroups) ? H.categoryGroups : [];
     $("#hd-category-side-links").innerHTML = groups.map(group => {
       const links = group.items
         .filter(key => H.categoryDefs[key])
         .map(key => {
           const value = H.categoryDefs[key];
-          const genderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats"].includes(key);
-          const href = genderSub ? `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}` : H.categoryUrl(key);
-          const active = genderSub ? sub===key : key===slug;
+          const departmentSub = (H.departmentSubcategories?.[slug] || []).includes(key);
+          const href = departmentSub ? `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}` : H.categoryUrl(key);
+          const active = departmentSub ? sub===key : key===slug;
           return `<a class="${active?"active":""}" href="${href}">${value.icon} ${H.esc(value.title)}</a>`;
         }).join("");
       return `<section class="hd-category-side-group"><strong>${H.esc(group.title)}</strong><div>${links}</div></section>`;
     }).join("");
   }
 
-  function matchesSub(product) {
-    if (!sub || !["women","men"].includes(slug)) return true;
-    const title = String(product?.title || "").toLowerCase();
-    const patterns = {
-      tops:/shirt|tee|t-shirt|top|tank|polo|blouse/,
-      bottoms:/pants|trouser|shorts|jeans|joggers|leggings/,
-      hoodies:/hoodie|sweatshirt/,
-      jackets:/jacket|coat|windbreaker|outerwear|blazer/,
-      knitwear:/sweater|cardigan|knit/,
-      activewear:/sport|athletic|fitness|yoga|running|rash guard/,
-      swimwear:/swim|swimsuit|bikini|board shorts/,
-      shoes:/shoe|sneaker|heel|loafer|boot|sandal|slide/,
-      bags:/bag|handbag|purse|crossbody|tote|backpack/,
-      jewelry:/jewelry|jewellery|necklace|bracelet|earring|pendant|ring/,
-      accessories:/accessor|wallet|belt|scarf|sunglass/,
-      hats:/hat|cap|beanie/,
-      beauty:/beauty|skincare|makeup|cosmetic|serum|cream/,
-      perfume:/perfume|fragrance|eau de|parfum/
-    };
-    return patterns[sub] ? patterns[sub].test(title) : true;
+  function renderAppliedFilters() {
+    const shell=$("#hd-applied-filters"), host=$("#hd-applied-filter-chips");
+    if(!shell||!host)return;
+    const chips=[];
+    const minRaw=$("#hd-price-min")?.value?.trim()||"";
+    const maxRaw=$("#hd-price-max")?.value?.trim()||"";
+
+    if(sub&&H.categoryDefs?.[sub]){
+      chips.push({key:"sub",label:`Section: ${H.categoryDefs[sub].title}`});
+    }
+    if(minRaw){
+      chips.push({key:"min",label:`Min price: ${minRaw}`});
+    }
+    if(maxRaw){
+      chips.push({key:"max",label:`Max price: ${maxRaw}`});
+    }
+
+    shell.hidden=chips.length===0;
+    host.innerHTML=chips.map(chip=>`<button type="button" class="hd-filter-chip" data-clear-filter="${chip.key}">${H.esc(chip.label)} <span aria-hidden="true">×</span></button>`).join("");
   }
 
-  function matchesGenderScope(product) {
-    if (!sub || !["women","men"].includes(slug)) return true;
-    const title=String(product?.title||"").toLowerCase();
-    const gender=String(product?.gender||"").toLowerCase();
-    if (slug==="women") {
-      if (gender==="women") return true;
-      if (/\bunisex\b/.test(title)) return false;
-      const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
-      const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
-      return hasWomen && !hasMen;
+  function updateSubcategoryCounts() {
+    const counts=new Map();
+    const children=H.departmentSubcategories?.[slug]||[];
+    if(!children.length)return;
+    rawResults.forEach(product=>{
+      const category=String(product?.category||"");
+      if(!children.includes(category))return;
+      const qualityMatch=window.HuntCatalogQuality?.fit?.(category,product)!==false;
+      if(!qualityMatch)return;
+      counts.set(category,(counts.get(category)||0)+1);
+    });
+    document.querySelectorAll("[data-sub-count]").forEach(node=>{
+      const count=counts.get(node.dataset.subCount||"")||0;
+      node.textContent=count?`(${count})`:"";
+    });
+  }
+
+  function clearFilter(key) {
+    if(key==="sub"){
+      location.href=H.categoryUrl(slug);
+      return;
     }
-    if (gender==="men") return true;
-    if (/\bunisex\b/.test(title)) return false;
-    const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
-    const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
-    return hasMen && !hasWomen;
+    if(key==="min"&&$("#hd-price-min"))$("#hd-price-min").value="";
+    if(key==="max"&&$("#hd-price-max"))$("#hd-price-max").value="";
+    scheduleRenderGrid({reset:true});
+  }
+
+  let renderScheduled=false;
+  function scheduleRenderGrid({reset=false,button=null}={}) {
+    if(renderScheduled)return;
+    renderScheduled=true;
+    const grid=$("#hd-category-grid");
+    if(grid)grid.setAttribute("aria-busy","true");
+    if(button)button.dataset.busy="true";
+    requestAnimationFrame(()=>{
+      setTimeout(()=>{
+        try{renderGrid({reset});}
+        finally{
+          renderScheduled=false;
+          grid?.removeAttribute("aria-busy");
+          if(button)delete button.dataset.busy;
+        }
+      },0);
+    });
+  }
+
+  function matchesSub(product) {
+    if (!sub) return true;
+    const validSubs = H.departmentSubcategories?.[slug] || [];
+    if (!validSubs.includes(sub)) return true;
+    return String(product?.category || "") === sub;
   }
 
   function matchesCategoryTruth(product) {
-    const title = String(product?.title || "").toLowerCase();
-    if (!title) return false;
-    if (slug === "women" && /\b(baby|newborn|toddler|kid|kids|child|children|boys?|youth)\b/.test(title)) return false;
-    if (slug === "men" && /\b(women|woman|female|ladies|girls?)\b/.test(title)) return false;
-    if (slug === "beauty" && /\b(pet|dog|cat|toy|slime|foam beads|puzzle|hallway|hall tree|entryway|wardrobe|shoe cabinet|shoe storage|coat rack|furniture|mudroom)\b/.test(title)) return false;
-    if (slug === "jewelry" && /\b(parrot|bird toy|pet toy|toy set|handbag belt|bag belt|strap buckle|key findings)\b/.test(title)) return false;
+    const category = String(product?.category || "");
+    const department = String(product?.department || "");
+    const children = H.departmentSubcategories?.[slug] || [];
+    if (children.length) {
+      if (department) return department === slug;
+      return category === slug || children.includes(category);
+    }
+    if (category === slug) return true;
+    try { return H.inferCategory(product) === slug; } catch { return false; }
+  }
+
+  function matchesGenderScope(product) {
+    const department = String(product?.department || "");
+    if (department && H.departmentSubcategories?.[slug]) return department === slug;
     return true;
   }
 
@@ -169,12 +297,16 @@
     const items = rawResults.filter(p => {
       const retail = retailState(p);
       const priceMatch = hasPriceFilter ? retail.ready && retail.amount >= min && retail.amount <= max : true;
-      return matchesCategoryTruth(p) && matchesGenderScope(p) && matchesSub(p) && priceMatch;
+      const qualitySlug = sub || String(p?.category || "") || slug;
+      const qualityMatch = window.HuntCatalogQuality?.fit?.(qualitySlug,p) !== false;
+      return qualityMatch && matchesCategoryTruth(p) && matchesGenderScope(p) && matchesSub(p) && priceMatch;
     });
     if (sort === "price-low") items.sort((a,b)=>(retailState(a).amount??Infinity)-(retailState(b).amount??Infinity));
     else if (sort === "price-high") items.sort((a,b)=>(retailState(b).amount??-Infinity)-(retailState(a).amount??-Infinity));
     else if (sort === "for-you") items.sort((a,b)=>
       H.personalScore(b)-H.personalScore(a) ||
+      Number(window.BoomCommerceBrain?.scoreProduct?.(b)||0)-Number(window.BoomCommerceBrain?.scoreProduct?.(a)||0) ||
+      Number(window.HuntCountry?.score?.(b)||0)-Number(window.HuntCountry?.score?.(a)||0) ||
       listingReadiness(b)-listingReadiness(a) ||
       (resultOrder.get(productKey(a))||0)-(resultOrder.get(productKey(b))||0)
     );
@@ -189,23 +321,47 @@
     const items = filteredSorted();
     const visible = items.slice(0,visibleLimit);
     $("#hd-cat-count").textContent = `${items.length} products · showing ${visible.length}`;
+    window.HuntCompare?.register?.(visible);
     $("#hd-category-grid").innerHTML = visible.map(productCard).join("");
     $("#hd-category-empty").hidden = items.length > 0;
+    renderAppliedFilters();
     visible.forEach(p => { try { sessionStorage.setItem(`hunt_product_${productKey(p)}`, JSON.stringify(p)); } catch {} });
     const sentinel=$("#hd-category-more");
     if(sentinel){
-      const hasMore=visible.length<items.length;
+      const hasLoadedMore=visible.length<items.length;
+      const hasRemoteMore=nextCatalogPageIndex<catalogPages.length;
+      const hasMore=hasLoadedMore||hasRemoteMore;
       sentinel.hidden=!hasMore;
       const strong=sentinel.querySelector("strong");
-      if(strong)strong.textContent=hasMore?`Load more · ${items.length-visible.length} remaining`:"All products loaded";
+      const remaining=Math.max(0,catalogTotalCount-visible.length);
+      if(strong)strong.textContent=hasMore?`Load more · ${remaining.toLocaleString()} remaining`:"All products loaded";
     }
   }
 
-  function loadMore() {
+  async function loadMore() {
     const total=filteredSorted().length;
-    if(visibleLimit>=total)return;
-    visibleLimit=Math.min(total,visibleLimit+pageSize);
-    renderGrid();
+    if(visibleLimit<total){
+      visibleLimit=Math.min(total,visibleLimit+pageSize);
+      renderGrid();
+      return;
+    }
+    if(catalogPageLoading || nextCatalogPageIndex>=catalogPages.length) return;
+    catalogPageLoading=true;
+    try{
+      const pagePath=catalogPages[nextCatalogPageIndex];
+      const res=await fetch(pagePath+"?v=30k1",{cache:"force-cache"});
+      if(!res.ok) throw new Error("Catalog page unavailable");
+      const page=await res.json();
+      const rows=Array.isArray(page?.products)?page.products:[];
+      nextCatalogPageIndex+=1;
+      applyRows(rows,"CJ paged",{merge:true});
+      visibleLimit=Math.min(filteredSorted().length,visibleLimit+pageSize);
+      renderGrid();
+    }catch(err){
+      console.warn("HUNT catalog page load failed",err);
+    }finally{
+      catalogPageLoading=false;
+    }
   }
 
   function setupGridObserver() {
@@ -219,12 +375,40 @@
   }
 
   async function load() {
+    await ensureCompareRuntime();
     const subDef = sub && H.categoryDefs[sub] ? H.categoryDefs[sub] : null;
-    const pageTitle = subDef && ["women","men"].includes(slug) ? `${def.title} · ${subDef.title}` : def.title;
-    document.title = `${pageTitle} — HUNT DEAL`;
+    const pageTitle = subDef ? `${def.title} · ${subDef.title}` : def.title;
+    document.title = `${pageTitle} — HUNT`;
+
+    const canonicalUrl = new URL("/category.html", PROD_ORIGIN);
+    canonicalUrl.searchParams.set("c", slug);
+    if (subDef) canonicalUrl.searchParams.set("sub", sub);
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = canonicalUrl.toString();
+
+    let jsonLd = document.querySelector("#hd-category-jsonld");
+    if (!jsonLd) {
+      jsonLd = document.createElement("script");
+      jsonLd.type = "application/ld+json";
+      jsonLd.id = "hd-category-jsonld";
+      document.head.appendChild(jsonLd);
+    }
+    jsonLd.textContent = JSON.stringify({
+      "@context":"https://schema.org",
+      "@type":"CollectionPage",
+      name:pageTitle,
+      url:canonicalUrl.toString(),
+      description:subDef ? `${subDef.title} inside ${def.title} on HUNT.` : String(def.description || pageTitle)
+    });
+
     $("#hd-cat-title").textContent = pageTitle;
     $("#hd-cat-breadcrumb").textContent = pageTitle;
-    $("#hd-cat-copy").textContent = subDef && ["women","men"].includes(slug) ? `${subDef.title} filtered inside ${def.title}.` : def.description;
+    $("#hd-cat-copy").textContent = subDef ? `${subDef.title} inside ${def.title}. CJ-only products, organized without category mixing.` : def.description;
     renderCategories();
     applyViewMode(viewMode);
     H.recordSignal(slug,"category");
@@ -233,7 +417,7 @@
     H.updateCartBadges();
     setupGridObserver();
 
-    const sourceSlug = sub && ["women","men"].includes(slug) && H.categoryDefs[sub] ? sub : slug;
+    const sourceSlug = sub && (H.departmentSubcategories?.[slug] || []).includes(sub) && H.categoryDefs[sub] ? sub : slug;
 
     const mergeProductRecord = (base, fresh) => {
       if (!base) return fresh || {};
@@ -257,9 +441,10 @@
 
     const applyRows = (rows, label, {merge=false}={}) => {
       const incoming = (Array.isArray(rows) ? rows : []).filter(product => {
-        if (slug !== "men") return true;
-        const text = String(product?.title || "").toLowerCase();
-        return !/\b(women(?:'s|s)?|woman|female|unisex)\b/.test(text);
+        if (String(product?.provider || "").toLowerCase() !== "cjdropshipping") return false;
+        if (product?.department && String(product.department) !== slug) return false;
+        if (sub && String(product?.category || "") !== sub) return false;
+        return true;
       });
       if (merge && rawResults.length) {
         const merged = new Map(rawResults.map(product => [productKey(product), product]));
@@ -273,9 +458,11 @@
       }
       const providers = [...new Set(rawResults.map(p=>p.provider).filter(Boolean))];
       $("#hd-cat-provider-state").textContent = rawResults.length
-        ? `${rawResults.length} catalog products ready · ${providers.join(" + ")}${label==="live"?" · live refresh merged":""}`
+        ? "Curated CJ catalog · live variants, stock and shipping rechecked on product open"
         : "No connected provider returned a product for this category yet.";
       resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
+      window.HuntCompare?.register?.(rawResults);
+      updateSubcategoryCounts();
       window.HuntAnalytics?.category(slug, rawResults.length);
       renderGrid();
     };
@@ -283,17 +470,35 @@
     let rendered = false;
     let shardLoaded = false;
     try {
-      const shardRes = await fetch(`catalog-shards/${encodeURIComponent(sourceSlug)}.json?v=boom5k3`, {cache:"force-cache"});
-      if (shardRes.ok) {
-        const shard = await shardRes.json();
-        const shardRows = Array.isArray(shard?.products) ? shard.products : [];
-        if (shardRows.length) {
-          applyRows(shardRows, "expanded");
-          rendered = true;
-          shardLoaded = true;
+      const manifestRes = await fetch("catalog-manifest.json?v=30k1",{cache:"force-cache"});
+      if(manifestRes.ok){
+        const manifest=await manifestRes.json();
+        const info=manifest?.categories?.[sourceSlug];
+        catalogPages=Array.isArray(info?.pages)?info.pages:[];
+        catalogTotalCount=Number(info?.count||0);
+        nextCatalogPageIndex=0;
+        if(catalogPages.length){
+          const firstPath=catalogPages[0];
+          const firstRes=await fetch(firstPath+"?v=30k1",{cache:"force-cache"});
+          if(firstRes.ok){
+            const first=await firstRes.json();
+            const rows=Array.isArray(first?.products)?first.products:[];
+            nextCatalogPageIndex=1;
+            applyRows(rows,"CJ paged");
+            rendered=true;
+            shardLoaded=true;
+          }
+        } else if(info && Number(info.count)===0){
+          applyRows([],"CJ paged");
+          rendered=true;
+          shardLoaded=true;
         }
       }
-    } catch {}
+    } catch(err) {
+      console.warn("HUNT manifest load failed",err);
+    }
+
+    if (shardLoaded) return;
 
     if (!shardLoaded) {
       try {
@@ -328,19 +533,20 @@
     }
   }
 
-  $("#hd-cat-apply")?.addEventListener("click",()=>{
-    runtime?.emit?.("filter.apply",{category:slug,sub,price_min:$("#hd-price-min")?.value||"",price_max:$("#hd-price-max")?.value||""},{broadcast:false});
-    renderGrid({reset:true});
+  $("#hd-cat-apply")?.addEventListener("click",event=>scheduleRenderGrid({reset:true,button:event.currentTarget}));
+  $("#hd-cat-sort")?.addEventListener("change",()=>scheduleRenderGrid({reset:true}));
+  $("#hd-applied-filter-chips")?.addEventListener("click",event=>{
+    const chip=event.target.closest?.("[data-clear-filter]");
+    if(chip)clearFilter(chip.dataset.clearFilter||"");
   });
-  $("#hd-cat-sort")?.addEventListener("change",event=>{
-    runtime?.emit?.("catalog.sort.change",{category:slug,value:String(event.currentTarget.value||"")},{broadcast:false});
-    renderGrid({reset:true});
+  $("#hd-filter-clear-all")?.addEventListener("click",()=>{
+    if(sub){location.href=H.categoryUrl(slug);return;}
+    if($("#hd-price-min"))$("#hd-price-min").value="";
+    if($("#hd-price-max"))$("#hd-price-max").value="";
+    scheduleRenderGrid({reset:true});
   });
   document.querySelectorAll("[data-view-mode]").forEach(button => {
-    button.addEventListener("click", () => {
-      applyViewMode(button.dataset.viewMode);
-      runtime?.emit?.("catalog.view_mode.change",{value:viewMode},{broadcast:false});
-    });
+    button.addEventListener("click", () => applyViewMode(button.dataset.viewMode));
   });
   document.addEventListener("click", event => {
     const link = event.target.closest?.("[data-product-view]");
@@ -348,6 +554,10 @@
     const product = rawResults.find(p=>productKey(p)===link.dataset.productView);
     if (product) H.recordSignal(product,"view");
   });
+
+  window.addEventListener("hunt:personalization-ready",()=>{if(rawResults.length)renderGrid({reset:true})});
+  window.addEventListener("hunt:country-changed",()=>{if(rawResults.length)renderGrid({reset:true})});
+  window.addEventListener("hunt:experience-language",()=>{if(rawResults.length)renderGrid()});
 
   load().catch(err=>{
     $("#hd-cat-provider-state").textContent = err.message || "Category unavailable";

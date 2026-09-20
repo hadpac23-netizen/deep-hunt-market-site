@@ -141,3 +141,43 @@ PR #8 diverged from its old Brand Factory base. Do not merge wholesale. Preserve
 `FINAL_CANDIDATE_V1 = INTEGRATION_IN_PROGRESS`
 
 Next action: reconcile the storefront lane from PR #16 against the PR #19 Brain OS baseline, starting with the critical customer journey files and preventing regressions.
+
+
+## Integration checkpoint — Storefront + Brain OS
+
+Status: **PASS / COMMITTED CANDIDATE**
+
+Reconciled from PR #16 into the PR #19 Brain OS baseline:
+
+- HUNT Home 3 / Hero 4 / Visual System 2.0
+- discovery, personalization, country and creative presentation helpers
+- Product Finding / Compare / Browse Continuity
+- Product Gallery and Product Pulse
+- exact-variant Product Truth with CJ stock recheck by VID + quantity
+- Decision Confidence
+- Profile visual surface
+- Checkout visual surface while retaining PR #19 checkout/payment runtime
+
+Important reconciliation fixes:
+
+- Preserved BoomRuntime as the single shared Supabase/Auth client owner.
+- Removed the old personalization-created Supabase client and routed personalization through the shared runtime/session lifecycle.
+- Preserved HuntCore as the single cart owner; no direct cart storage was reintroduced.
+- Restored the shipping-form contract required by the Brain OS checkout runtime.
+- Updated Gallery interaction mapping to the new data-gallery-index selector.
+- Updated critical browser E2E to require exact selected-variant stock proof before cart.
+
+Verification evidence:
+
+- 20/20 focused regression tests PASS across Home, Hero, catalog quality, product finding, gallery, variant truth, decision confidence, Visual V2, runtime/surface contracts, interaction coverage, journeys, commerce handoff, launch readiness and payment/order safety.
+- Browser critical E2E PASS:
+  product truth → retail price → exact VID/quantity stock recheck → cart → checkout → complete shipping → Commerce Truth quote → verified total → metadata-only trace → no PII persistence → payment disabled.
+- One shared Supabase auth client verified in browser.
+- No browser page errors.
+- PayPlus remains HOLD and live payment remains disabled.
+
+No production deployment was performed.
+No supplier order was placed.
+No live payment was enabled.
+
+Next: selective Supplier/Voice extraction from PR #4, then Studio/Stylist/Brand extraction from PR #7, each behind the same regression gates.

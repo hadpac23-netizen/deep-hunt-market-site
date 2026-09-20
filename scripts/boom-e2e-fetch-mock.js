@@ -28,6 +28,20 @@
   window.fetch = (input, init) => {
     const url = String(input?.url || input || "");
     if (url.includes("/functions/v1/hunt-storefront")) return Promise.resolve(json({product}));
+    if (url.includes("/functions/v1/hunt-cj-quote")) {
+      const parsed=new URL(url);
+      const vid=parsed.searchParams.get("vid")||"";
+      const quantity=Number(parsed.searchParams.get("quantity")||0);
+      window.__boomLastStockQuote={vid,quantity};
+      try{sessionStorage.setItem("__boomLastStockQuote",JSON.stringify({vid,quantity}));}catch{}
+      const known=["E2E-BLK-S","E2E-BLK-M"].includes(vid);
+      return Promise.resolve(json({
+        stock_verified:true,
+        stock_available:known&&quantity>0,
+        vid,
+        quantity
+      }));
+    }
     if (url.includes("/functions/v1/hunt-payment-session")) {
       let request={};
       try{request=JSON.parse(String(init?.body||"{}"));}catch{}

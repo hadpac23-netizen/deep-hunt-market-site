@@ -176,27 +176,36 @@
     const testCandidate = topTest ? candidateOf(topTest) : null;
 
     if (candidate) {
-      $("#hd-best-title").textContent = candidate.title || dict.noBest;
+      const title=$("#hd-best-title"), copy=$("#hd-best-copy"), status=$("#hd-best-status");
+      if(title)title.textContent = candidate.title || dict.noBest;
       const retail = retailState(candidate);
-      $("#hd-best-copy").textContent = [candidate.provider, retail.ready ? money(retail.amount,retail.currency) : "Price pending"].filter(Boolean).join(" · ");
-      $("#hd-best-status").textContent = String(top.verdict || "TEST").toUpperCase();
+      if(copy)copy.textContent = [candidate.provider, retail.ready ? money(retail.amount,retail.currency) : "Price pending"].filter(Boolean).join(" · ");
+      if(status)status.textContent = String(top.verdict || "TEST").toUpperCase();
     }
     if (testCandidate) {
-      $("#hd-test-title").textContent = testCandidate.title || dict.noWorth;
-      $("#hd-test-copy").textContent = (topTest.evaluation?.gaps || []).slice(0,1).join("") || "Evidence gate passed; conversion evidence still needed.";
+      const title=$("#hd-test-title"), copy=$("#hd-test-copy");
+      if(title)title.textContent = testCandidate.title || dict.noWorth;
+      if(copy)copy.textContent = (topTest.evaluation?.gaps || []).slice(0,1).join("") || "Evidence gate passed; conversion evidence still needed.";
     }
     const confidence = top ? Math.max(0,Math.min(100,Number(top.readiness_score||0))) : 0;
-    $("#hd-confidence-number").textContent = confidence + "%";
+    const confidenceNode=$("#hd-confidence-number");
+    if(confidenceNode)confidenceNode.textContent = confidence + "%";
     document.querySelector(".hd-ring")?.style.setProperty("background",
       `conic-gradient(#4bf5a1 0 ${confidence*.3}%,#5fa8ff ${confidence*.3}% ${confidence*.65}%,#8071ff ${confidence*.65}% ${confidence}%,#10263f ${confidence}% 100%)`);
   }
 
   function renderMetrics(data) {
     const commerce = data.commerce || {};
-    $("#hd-provider-count").textContent = (data.providers || []).length;
-    $("#hd-qualified-count").textContent = commerce.public_test_sell_count || 0;
-    $("#hd-click-count").textContent = commerce.outbound_clicks || 0;
-    $("#hd-commission").textContent = money(commerce.net_confirmed_commission_usd || 0);
+    const values = {
+      "#hd-provider-count": (data.providers || []).length,
+      "#hd-qualified-count": commerce.public_test_sell_count || 0,
+      "#hd-click-count": commerce.outbound_clicks || 0,
+      "#hd-commission": money(commerce.net_confirmed_commission_usd || 0)
+    };
+    for (const [selector,value] of Object.entries(values)) {
+      const node = $(selector);
+      if (node) node.textContent = value;
+    }
   }
 
   const shelfMeta = {
@@ -485,16 +494,117 @@
     return rows;
   }
 
+
+  let homeFeedPool = [];
+  let homeFeedCursor = 0;
+  let homeFeedObserver = null;
+
+  function shuffleHome(items) {
+    const out=[...items];
+    for(let i=out.length-1;i>0;i--){
+      const buf=new Uint32Array(1);
+      crypto.getRandomValues(buf);
+      const j=buf[0]%(i+1);
+      [out[i],out[j]]=[out[j],out[i]];
+    }
+    return out;
+  }
+
+  function homeBroad(item) {
+    const raw=window.HuntCore?.inferCategory?.(item)||String(item?.category||"");
+    const deps=window.HuntCore?.departmentSubcategories||{};
+    if(deps[raw])return raw;
+    for(const [parent,children] of Object.entries(deps))if((children||[]).includes(raw))return parent;
+    return raw;
+  }
+
+  function balanceHomeFeed(items) {
+    const order=["women","men","kids","beauty","tech","home","accessories","sports","pets","toys","travel","office","gifts"];
+    const groups=new Map(order.map(key=>[key,[]]));
+    const other=[];
+    for(const item of items||[]){
+      const group=groups.get(homeBroad(item));
+      if(group)group.push(item); else other.push(item);
+    }
+    const out=[];let moved=true;
+    while(moved){
+      moved=false;
+      for(const key of order){
+        const group=groups.get(key);
+        if(group?.length){out.push(group.shift());moved=true;}
+      }
+    }
+    return [...out,...other];
+  }
+
+  function buildRandomHomePool(shelves) {
+    const seen=new Set(), rows=[];
+    for(const items of Object.values(shelves||{})){
+      for(const item of Array.isArray(items)?items:[]){
+        const key=`${item?.provider||""}:${item?.item_id||""}`;
+        if(!item?.item_id || seen.has(key)) continue;
+        if(String(item?.provider||"").toLowerCase()!=="cjdropshipping") continue;
+        seen.add(key);
+        rows.push(item);
+      }
+    }
+    const ranked=shuffleHome(rows);
+    return balanceHomeFeed(ranked);
+  }
+
+  function homeFeedBatchSize(){
+    return window.matchMedia?.("(max-width:760px)")?.matches?8:12;
+  }
+
+  function appendHomeFeedBatch() {
+    const grid=document.querySelector("#hd-home-random-grid");
+    const sentinel=document.querySelector("#hd-home-random-more");
+    if(!grid || !sentinel) return;
+    const batchSize=homeFeedBatchSize();
+    const batch=homeFeedPool.slice(homeFeedCursor,homeFeedCursor+batchSize);
+    if(batch.length){
+      grid.insertAdjacentHTML("beforeend",batch.map(shelfCard).join(""));
+      homeFeedCursor+=batch.length;
+    }
+    const remaining=Math.max(0,homeFeedPool.length-homeFeedCursor);
+    const strong=sentinel.querySelector("strong");
+    if(strong)strong.textContent=remaining? `Show ${batchSize} more · ${remaining.toLocaleString()} left` : "You reached the end of this mix.";
+    if(!remaining){
+      sentinel.classList.add("done");
+      homeFeedObserver?.disconnect();
+    }
+  }
+
+  function setupHomeFeedObserver() {
+    const sentinel=document.querySelector("#hd-home-random-more");
+    if(!sentinel)return;
+    homeFeedObserver?.disconnect();
+    homeFeedObserver=null;
+    sentinel.hidden=false;
+    sentinel.setAttribute("role","button");
+    sentinel.setAttribute("aria-label","Show more mixed catalog products");
+    sentinel.tabIndex=0;
+    const load=()=>{if(!sentinel.classList.contains("done"))appendHomeFeedBatch();};
+    sentinel.onclick=load;
+    sentinel.onkeydown=event=>{
+      if(event.key==="Enter"||event.key===" "){event.preventDefault();load();}
+    };
+  }
+
   function renderMarketShelvesData(data, mode = "live") {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
-    if (!root || !counter) return false;
-    const shelves = data?.shelves || {};
+    const existingGrid = document.querySelector("#hd-home-random-grid");
+    if (!root && !existingGrid) return false;
+    const rawShelves = data?.shelves || {};
+    const cleaned = window.HuntCatalogQuality?.cleanShelves?.(rawShelves) || {shelves:rawShelves,report:null};
+    const shelves = cleaned.shelves || rawShelves;
+    const normalizedData = {...data,shelves,_catalog_quality_report:cleaned.report||null};
     const hasProducts = Object.values(shelves).some(items => Array.isArray(items) && items.length);
     if (!hasProducts) return false;
 
-    window.HuntMarketShelves = data;
-    window.dispatchEvent(new CustomEvent("hunt:shelves", {detail:data}));
+    window.HuntMarketShelves = normalizedData;
+    window.dispatchEvent(new CustomEvent("hunt:shelves", {detail:normalizedData}));
 
     const renderedKeys = new Set();
     const limit = shelfItemLimit();
@@ -515,14 +625,34 @@
       return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
     }).join("");
 
-    root.innerHTML = html || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
-    const fullCatalogCount = Number(data?.catalog_total_product_count || 0);
-    const count = fullCatalogCount || Number(data?.visible_product_count || 0);
-    const label = fullCatalogCount ? "CATALOG" : (mode === "live" ? "LIVE" : mode === "hybrid" ? "READY" : "CATALOG");
-    counter.textContent = `${count.toLocaleString()} ${label}`;
-    counter.title = fullCatalogCount
-      ? "BOOM quality catalog across category pages; home shelves remain curated for speed."
-      : (mode === "hybrid" ? "Verified catalog with live supplier refresh merged in" : (mode === "live" ? "Live supplier refresh" : "Verified catalog snapshot while live suppliers refresh"));
+    homeFeedPool=buildRandomHomePool(shelves);
+    homeFeedCursor=0;
+    homeFeedObserver?.disconnect();
+    if (root) {
+      root.innerHTML = html || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
+    } else if (existingGrid) {
+      existingGrid.innerHTML = "";
+      document.querySelector("#hd-home-random-more")?.classList.remove("done");
+    }
+    appendHomeFeedBatch();
+    setupHomeFeedObserver();
+    document.querySelector("#hd-home-remix")?.addEventListener("click",()=>{
+      homeFeedPool=shuffleHome(homeFeedPool);
+      homeFeedCursor=0;
+      const grid=document.querySelector("#hd-home-random-grid");
+      if(grid)grid.innerHTML="";
+      const sentinel=document.querySelector("#hd-home-random-more");
+      sentinel?.classList.remove("done");
+      appendHomeFeedBatch();
+      setupHomeFeedObserver();
+    });
+    if (counter) {
+      const fullCatalogCount = Number(normalizedData?.catalog_total_product_count || 0);
+      const count = fullCatalogCount || Number(normalizedData?.visible_product_count || 0);
+      const label = fullCatalogCount ? "CATALOG" : (mode === "live" ? "LIVE" : mode === "hybrid" ? "READY" : "CATALOG");
+      counter.textContent = `${count.toLocaleString()} ${label}`;
+      counter.title = "HUNT curates the active catalog dynamically by relevance, freshness and country readiness.";
+    }
     return true;
   }
 
@@ -539,13 +669,14 @@
   async function loadMarketShelves() {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
-    if (!root || !counter) return;
+    const homeGrid = document.querySelector("#hd-home-random-grid");
+    if (!root && !homeGrid) return;
 
     let renderedFallback = false;
     let snapshotData = null;
 
     try {
-      const snapshotRes = await fetch("catalog-home.json?v=platform1", {cache:"force-cache"});
+      const snapshotRes = await fetch("cj-launch-home.json?v=30k1", {cache:"force-cache"});
       if (snapshotRes.ok) {
         snapshotData = await snapshotRes.json();
         renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");
@@ -570,14 +701,14 @@
       }
     } catch (err) {
       if (renderedFallback) {
-        counter.title = "Live refresh is temporarily unavailable; showing verified catalog products.";
+        if (counter) counter.title = "Live refresh is temporarily unavailable; showing verified catalog products.";
         return;
       }
       const msg = err?.name === "AbortError"
         ? "Live catalog is taking longer than expected. Try again shortly."
         : (err.message || "Market shelves unavailable");
-      root.innerHTML = `<div class="hd-shelf-loading glass">${esc(msg)}</div>`;
-      counter.textContent = "WAITING";
+      if (root) root.innerHTML = `<div class="hd-shelf-loading glass">${esc(msg)}</div>`;
+      if (counter) counter.textContent = "WAITING";
     }
   }
 
@@ -609,8 +740,9 @@
     renderProviderNetwork(data.providers || []);
     renderCatalog(data.merchant_products || []);
     if (!(data.deals || []).length && (data.merchant_products || []).length) {
-      $("#hd-test-title").textContent = dict.liveCatalogConnected || "Live merchant catalog connected";
-      $("#hd-test-copy").textContent = (data.merchant_products || []).length + " catalog products available for validation.";
+      const title=$("#hd-test-title"), copy=$("#hd-test-copy");
+      if(title)title.textContent = dict.liveCatalogConnected || "Live merchant catalog connected";
+      if(copy)copy.textContent = (data.merchant_products || []).length + " catalog products available for validation.";
     }
     renderAdvisor(data);
     renderDeals(data.deals || []);
