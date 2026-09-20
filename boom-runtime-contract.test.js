@@ -45,6 +45,7 @@ if(!studioJs.includes("runtime?.adminReady?.()"))errors.push("Brain Studio missi
 if(!studioJs.includes('json("boom-commerce-handoff-contract.json")'))errors.push("Brain Studio missing Commerce → Operations handoff contract");
 if(!studioHtml.includes('id="bs-commerce-handoff"'))errors.push("Brain Studio missing commerce handoff surface");
 if(!studioJs.includes('json("boom-payment-order-state-contract.json")'))errors.push("Brain Studio missing Payment → Order state contract");
+if(!studioJs.includes('json("boom-payplus-proof-contract.json")'))errors.push("Brain Studio missing PayPlus proof contract");
 if(!studioHtml.includes('id="bs-operations-state"'))errors.push("Brain Studio missing operations state-machine surface");
 
 for(const file of ["product.html","category.html","checkout.html","index.html"]){

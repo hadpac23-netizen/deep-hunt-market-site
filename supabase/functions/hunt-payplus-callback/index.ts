@@ -1,6 +1,8 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { verifyPayPlusCallbackHeaders } from "./payplus-auth.mjs";
 import { classifyPayPlusStatus } from "./payplus-status-map.mjs";
+import { resolveApprovedStatus, PAYPLUS_STATUS_PROOF } from "../_shared/payplus-status-proof.mjs";
+import { assertTransition } from "../_shared/hunt-payment-order-state.mjs";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const num=(v:unknown)=>Number.isFinite(Number(v))?Number(v):null;
@@ -185,7 +187,33 @@ Deno.serve(async(req:Request)=>{
     }));
 
     const enabled=await runtimeControl("hunt_payplus_callback_accept_paid");
-    const eventType=enabled?"callback_verified_pending_status_mapping":"callback_verified_hold";
+    const approvedStatus=resolveApprovedStatus(mapping.fingerprint);
+    const proofReady=PAYPLUS_STATUS_PROOF.owner_approved===true&&PAYPLUS_STATUS_PROOF.state==="READY";
+
+    if(session.mode==="sandbox"){
+      const {error:eventError}=await supabase.from("hunt_payment_events").upsert({
+        payment_session_id:session.id,
+        provider:"payplus",
+        event_type:"sandbox_callback_verified_observation",
+        provider_event_id:providerEventId||null,
+        payload_digest:payloadDigest
+      },{onConflict:"provider,provider_event_id",ignoreDuplicates:true});
+      if(eventError)throw new Error("PAYMENT_EVENT_STORE_FAILED");
+      return json({
+        ok:true,verified:true,accepted_paid:false,
+        reason:"SANDBOX_EVIDENCE_RECORDED",
+        mapping_state:mapping.state,
+        proof_state:PAYPLUS_STATUS_PROOF.state,
+        payment_session_id:session.id
+      });
+    }
+
+    const eventType=!enabled
+      ?"callback_verified_hold"
+      :!proofReady||!approvedStatus
+        ?"callback_verified_pending_status_mapping"
+        :approvedStatus==="paid"?"payment_paid_verified":"payment_failed_verified";
+
     const {error:eventError}=await supabase.from("hunt_payment_events").upsert({
       payment_session_id:session.id,
       provider:"payplus",
@@ -200,14 +228,42 @@ Deno.serve(async(req:Request)=>{
         ok:true,verified:true,accepted_paid:false,
         reason:"PAID_ACCEPTANCE_KILL_SWITCH_OFF",
         mapping_state:mapping.state,
+        proof_state:PAYPLUS_STATUS_PROOF.state,
+        payment_session_id:session.id
+      });
+    }
+    if(!proofReady||!approvedStatus){
+      return json({
+        ok:true,verified:true,accepted_paid:false,
+        reason:"PROVIDER_STATUS_MAPPING_REQUIRES_SANDBOX_PROOF",
+        mapping_state:mapping.state,
+        proof_state:PAYPLUS_STATUS_PROOF.state,
         payment_session_id:session.id
       });
     }
 
+    assertTransition("payment",clean(session.status),approvedStatus);
+    const {data:updated,error:updateError}=await supabase.from("hunt_payment_sessions").update({
+      status:approvedStatus,
+      provider_transaction_uid:verified.transactionUid||null,
+      updated_at:new Date().toISOString()
+    }).eq("id",session.id).eq("status",session.status).select("id,status").maybeSingle();
+    if(updateError)throw new Error("PAYMENT_SESSION_STATUS_UPDATE_FAILED");
+    if(!updated)throw new Error("PAYMENT_SESSION_STATUS_RACE");
+
+    if(approvedStatus==="paid"){
+      const {error:acceptError}=await supabase.from("hunt_payplus_status_observations").update({
+        accepted_paid:true
+      }).eq("payment_session_id",session.id).eq("provider_event_id",providerEventId);
+      if(acceptError)throw new Error("PAYPLUS_PAID_OBSERVATION_UPDATE_FAILED");
+    }
+
     return json({
-      ok:true,verified:true,accepted_paid:false,
-      reason:"PROVIDER_STATUS_MAPPING_REQUIRES_SANDBOX_PROOF",
+      ok:true,verified:true,
+      accepted_paid:approvedStatus==="paid",
+      status:approvedStatus,
       mapping_state:mapping.state,
+      proof_state:PAYPLUS_STATUS_PROOF.state,
       payment_session_id:session.id
     });
   }catch(e){

@@ -1,3 +1,5 @@
+import { PAYPLUS_STATUS_PROOF, proofReadiness } from "../_shared/payplus-status-proof.mjs";
+
 const BASE=Deno.env.get("SUPABASE_URL")||"";
 const SERVICE=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";
 
@@ -47,12 +49,13 @@ Deno.serve(async req=>{
   if(!BASE||!SERVICE)return json(req,{error:"server config missing"},500);
   if(!(await adminUser(req)))return json(req,{error:"Admin access required"},403);
   try{
-    const [evidence,paymentSessions,orders,orderEvents,paymentEvents,analytics,econ,merchantPrograms,runtimeControls,businessIdentityRows]=await Promise.all([
+    const [evidence,paymentSessions,orders,orderEvents,paymentEvents,payplusObservations,analytics,econ,merchantPrograms,runtimeControls,businessIdentityRows]=await Promise.all([
       rest("hunt_launch_readiness_evidence?select=*&order=gate_group.asc,gate_key.asc"),
-      rest("hunt_payment_sessions?select=id,status,mode,country_code,total_amount,created_at&order=created_at.desc&limit=100"),
+      rest("hunt_payment_sessions?select=id,status,mode,country_code,total_amount,commerce_snapshot,created_at&order=created_at.desc&limit=100"),
       rest("hunt_orders?select=id,status,total_amount,currency,placed_at,updated_at&order=updated_at.desc&limit=100"),
-      rest("hunt_order_events?select=id,event_type,created_at&order=created_at.desc&limit=200"),
+      rest("hunt_order_events?select=id,status,label,created_at&order=created_at.desc&limit=200"),
       rest("hunt_payment_events?select=id,event_type,created_at&order=created_at.desc&limit=200"),
+      rest("hunt_payplus_status_observations?select=payment_session_id,environment,charge_method,provider_status,provider_code,mapping_state,signature_verified,ipn_full_verified,accepted_paid,created_at&order=created_at.desc&limit=200"),
       rest("analytics_events?event_type=like.hunt_%25&select=id,event_type,created_at&order=created_at.desc&limit=5000"),
       rest("hunt_unit_economics?select=id,inputs_verified,profit_gate_status,contribution_before_coupon,contribution_margin,max_safe_cac,calculated_at&order=calculated_at.desc&limit=1000"),
       rest("merchant_program_versions?select=version,status,owner_approved,updated_at&order=created_at.desc&limit=10"),
@@ -64,6 +67,17 @@ Deno.serve(async req=>{
     const prelaunch=sessions.filter(x=>x.mode==="prelaunch"||x.status==="prelaunch").length;
     const nonPrelaunch=sessions.filter(x=>!["prelaunch"].includes(String(x.mode||""))&&!["prelaunch"].includes(String(x.status||""))).length;
     const verified=(econ||[]).filter(x=>x.inputs_verified===true&&x.profit_gate_status==="PASS");
+    const sessionById=new Map(sessions.map(x=>[String(x.id),x]));
+    const verifiedPayplusObservations=(payplusObservations||[]).filter(x=>x.environment==="sandbox"&&x.signature_verified===true&&x.ipn_full_verified===true);
+    const scenarioFor=(obs:any)=>String(sessionById.get(String(obs.payment_session_id))?.commerce_snapshot?.scenario||"").toLowerCase();
+    const successObservation=verifiedPayplusObservations.find(x=>scenarioFor(x)==="success")||null;
+    const rejectObservation=verifiedPayplusObservations.find(x=>scenarioFor(x)==="reject")||null;
+    const payplusProof=proofReadiness({
+      success_observation:successObservation,
+      reject_observation:rejectObservation
+    });
+    const runtimeControlMap=new Map((runtimeControls||[]).map(x=>[String(x.key),x]));
+    const callbackControl=runtimeControlMap.get("hunt_payplus_callback_accept_paid")||null;
 
     const payplus={
       api_key_configured:Boolean(Deno.env.get("PAYPLUS_API_KEY")),
@@ -116,6 +130,29 @@ Deno.serve(async req=>{
         false,true,
         payplus,
         payplus.all_account_env_configured?"Callback/order flow still must be implemented and proven before live mode.":"Complete authorized PayPlus account configuration in secure project environment; never place secrets in frontend.",
+        "payments"
+      ),
+      gate(
+        "payplus_status_proof","PayPlus exact status proof",
+        payplusProof.state==="READY"?"PASS":payplusProof.state==="REVIEW"?"PARTIAL":"HOLD",
+        false,true,
+        {
+          contract_version:PAYPLUS_STATUS_PROOF.version,
+          contract_state:PAYPLUS_STATUS_PROOF.state,
+          owner_approved:PAYPLUS_STATUS_PROOF.owner_approved===true,
+          sandbox_observations:verifiedPayplusObservations.length,
+          success_observation_captured:Boolean(successObservation),
+          reject_observation_captured:Boolean(rejectObservation),
+          callback_accept_paid_enabled:callbackControl?.enabled===true,
+          callback_accept_paid_owner_approved:callbackControl?.owner_approved===true,
+          approved_success_configured:Boolean(PAYPLUS_STATUS_PROOF.approved_success),
+          approved_reject_configured:Boolean(PAYPLUS_STATUS_PROOF.approved_reject)
+        },
+        payplusProof.state==="READY"
+          ?"Keep exact fingerprints and runtime control under Owner Gate; re-prove after provider integration changes."
+          :payplusProof.state==="REVIEW"
+            ?"Review the captured sandbox success/reject fingerprints, write only the exact approved pair into the proof contract, then require explicit Owner approval before callback status writes."
+            :"Configure authorized PayPlus sandbox credentials, capture one signed success and one signed reject callback with ipn-full verification; do not infer status values.",
         "payments"
       ),
       gate(

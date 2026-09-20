@@ -85,7 +85,7 @@
     const host=$("#bs-operations-state");
     if(!host)return;
     const domains=["payment","order","fulfillment","pipeline"];
-    host.innerHTML=domains.map(id=>{
+    const stateCards=domains.map(id=>{
       const section=data.states[id]||{};
       const transitions=Object.values(section.transitions||{}).reduce((sum,rows)=>sum+(rows?.length||0),0);
       return `<article class="bs-journey">
@@ -93,7 +93,19 @@
         <p><strong>${esc(data.states.owner)}</strong> · ${esc((section.states||section.stages||[]).length)} states · ${esc(transitions)} allowed transitions</p>
         <div class="bs-journey-steps">${Object.entries(section.transitions||{}).map(([from,to])=>`<span>${esc(from)} → ${esc((to||[]).join(", ")||"terminal")}</span>`).join("")}</div>
       </article>`;
-    }).join("");
+    });
+    const proof=data.payplusProof||{};
+    stateCards.push(`<article class="bs-journey">
+      <h3>payplus_status_proof</h3>
+      <p><strong>${esc(proof.owner||"operations_brain")}</strong> · <span class="bs-status ${proof.state==="READY"?"DONE":"NEXT"}">${esc(proof.state||"HOLD")}</span></p>
+      <div class="bs-journey-steps">
+        <span>success fingerprint: ${proof.approved_success?"approved":"not approved"}</span>
+        <span>reject fingerprint: ${proof.approved_reject?"approved":"not approved"}</span>
+        <span>owner approval: ${proof.owner_approved===true?"yes":"no"}</span>
+        <span>policy: exact fingerprint only</span>
+      </div>
+    </article>`);
+    host.innerHTML=stateCards.join("");
   }
   function renderJourneys(){
     const host=$("#bs-journeys");
@@ -153,10 +165,10 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,merge,budgets,health,errors,reasons,storage]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,merge,budgets,health,errors,reasons,storage]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,merge,budgets,health,errors,reasons,storage};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,merge,budgets,health,errors,reasons,storage};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
       renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderGovernance();renderCommerceHandoff();renderOperationsState();renderJourneys();renderMerge();renderFiles();
     }catch(error){
