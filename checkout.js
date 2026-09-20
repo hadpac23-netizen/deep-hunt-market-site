@@ -167,9 +167,12 @@
         const deliveryCopy=data.shipping_attached===true
           ? " Delivery details are attached to this checkout session."
           : " Add complete delivery details before supplier handoff.";
+        const priceAdjustment=session?.commerce_snapshot?.destination_price_adjusted===true
+          ? " HUNT retail was adjusted for this destination after verified shipping so the Profit Gate remains PASS."
+          : "";
         status.textContent = data.payment_ready === true
-          ? "Price, stock, shipping and checkout economics verified."+deliveryCopy+" Payment account status is controlled separately."
-          : "Price, stock, shipping and checkout economics verified."+deliveryCopy+" Payment is still disabled during pre-launch.";
+          ? "Price, stock, shipping and checkout economics verified."+priceAdjustment+deliveryCopy+" Payment account status is controlled separately."
+          : "Price, stock, shipping and checkout economics verified."+priceAdjustment+deliveryCopy+" Payment is still disabled during pre-launch.";
       }
       window.HuntAnalytics?.checkoutQuoteVerified?.({
         country,currency,productAmount:Number(session.product_amount||0),

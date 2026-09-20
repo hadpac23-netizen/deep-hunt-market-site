@@ -340,8 +340,8 @@
     renderOptions(); renderGallery(); renderProductStructuredData();
     const externalVisit = typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
     const cjCheckoutReady = String(product.provider || provider || "").toLowerCase().includes("cj");
-    const readyForCart = Boolean(selectedVariant) && retail.ready && cjCheckoutReady && selectedAvailability.cartReady;
-    const canVerifyStock = Boolean(selectedVariant) && retail.ready && cjCheckoutReady && selectedAvailability.state==="recheck";
+    const readyForCart = Boolean(selectedVariant) && cjCheckoutReady && selectedAvailability.cartReady;
+    const canVerifyStock = Boolean(selectedVariant) && cjCheckoutReady && selectedAvailability.state==="recheck";
     const storeName = product?.store?.name || "partner store";
     const add = $("#hd-product-add");
     if (add) {
@@ -352,7 +352,7 @@
         : externalVisit
           ? `Visit ${storeName} →`
           : readyForCart
-            ? "Add to checkout preview →"
+            ? (retail.ready ? "Add to checkout preview →" : "Add for price check →")
             : canVerifyStock
               ? "Verify stock & add →"
               : !variants.length
@@ -361,7 +361,7 @@
                   ? "Selected option unavailable"
                   : !cjCheckoutReady
                     ? "Checkout setup pending"
-                    : "Price verification pending";
+                    : "Check option";
     }
     const mobileAdd = $("#hd-mobile-add");
     if (mobileAdd) {
@@ -372,7 +372,7 @@
         : externalVisit
           ? "Visit store"
           : readyForCart
-            ? "Add to Cart"
+            ? (retail.ready ? "Add to Cart" : "Add for price check")
             : canVerifyStock
               ? "Verify & add"
               : !variants.length
@@ -381,7 +381,7 @@
                   ? "Option unavailable"
                   : !cjCheckoutReady
                     ? "Setup pending"
-                    : "Price pending";
+                    : "Check option";
     }
     const quantityBlock = document.querySelector(".hd-product-quantity");
     if (quantityBlock) quantityBlock.hidden = externalVisit;
@@ -524,7 +524,7 @@
     if (!selectedVariant) return;
     const retail = currentRetailState();
     const cjCheckoutReady = String(product.provider || provider || "").toLowerCase().includes("cj");
-    if (!retail.ready || !cjCheckoutReady) return;
+    if (!cjCheckoutReady) return;
     let selectedAvailability=variantAvailability(selectedVariant);
     if(!selectedAvailability.cartReady){
       selectedAvailability=await verifySelectedVariantStock();

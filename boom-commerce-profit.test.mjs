@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {evaluateCommerceProfit} from "./supabase/functions/_shared/hunt-commerce-profit.mjs";
+import {evaluateCommerceProfit,minimumSafeSalePricePerUnit} from "./supabase/functions/_shared/hunt-commerce-profit.mjs";
 
 const profile={
   payment_rate:.04,
@@ -39,4 +39,20 @@ r=evaluateCommerceProfit(profile,{
   supplier_shipping_cost:5
 });
 assert.notEqual(r.profit_gate_status,"PASS");
-console.log("BOOM commerce profit kernel: PASS — live landed-cost margin gate is deterministic");
+
+const safe=minimumSafeSalePricePerUnit(profile,{
+  quantity:1,
+  supplier_cost_per_unit:4,
+  customer_shipping_amount:5,
+  supplier_shipping_cost:5
+});
+assert.equal(safe,9.99);
+r=evaluateCommerceProfit(profile,{
+  quantity:1,
+  sale_price_per_unit:safe,
+  supplier_cost_per_unit:4,
+  customer_shipping_amount:5,
+  supplier_shipping_cost:5
+});
+assert.equal(r.profit_gate_status,"PASS");
+console.log("BOOM commerce profit kernel: PASS — landed-cost gate and destination-safe retail are deterministic");

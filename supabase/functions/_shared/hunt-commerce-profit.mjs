@@ -1,4 +1,36 @@
 const num=(v,d=0)=>Number.isFinite(Number(v))?Number(v):d;
+
+export function minimumSafeSalePricePerUnit(profile={},input={}){
+  const qty=Math.max(1,Math.min(100,Math.floor(num(input.quantity,1))));
+  const cost=Math.max(0,num(input.supplier_cost_per_unit,0));
+  const customerShip=Math.max(0,num(input.customer_shipping_amount,0));
+  const supplierShip=Math.max(0,num(input.supplier_shipping_cost,0));
+  const paymentRate=Math.max(0,num(profile.payment_rate,.04));
+  const refundRate=Math.max(0,num(profile.refund_reserve_rate,.05));
+  const variableRate=Math.max(0,num(profile.platform_variable_rate,0));
+  const fixed=Math.max(0,num(profile.platform_fixed_per_order,0));
+  const minUnit=Math.max(0,num(profile.min_contribution_per_unit,4));
+  const minMargin=Math.max(0,num(profile.min_margin_rate,.20));
+  const variableTotal=paymentRate+refundRate+variableRate;
+  const contributionDenominator=1-variableTotal;
+  if(contributionDenominator<=0)return null;
+
+  const supplierProduct=cost*qty;
+  const shippingDrag=supplierShip-customerShip*contributionDenominator;
+  const minContributionTotal=minUnit*qty;
+  const contributionFloor=(minContributionTotal+supplierProduct+shippingDrag+fixed)/(qty*contributionDenominator);
+
+  const marginDenominator=1-variableTotal-minMargin;
+  const marginFloor=marginDenominator>0
+    ? (supplierProduct+shippingDrag+fixed)/(qty*marginDenominator)
+    : Number.POSITIVE_INFINITY;
+
+  const raw=Math.max(0,contributionFloor,marginFloor);
+  if(!Number.isFinite(raw))return null;
+  const rounded=Math.max(.99,Math.ceil(raw+.01)-.01);
+  return Number(rounded.toFixed(2));
+}
+
 export function evaluateCommerceProfit(profile={},input={}){
   const qty=Math.max(1,Math.min(100,Math.floor(num(input.quantity,1))));
   const sale=Math.max(0,num(input.sale_price_per_unit,0));

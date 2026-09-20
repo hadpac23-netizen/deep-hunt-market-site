@@ -40,7 +40,7 @@
       "owner": "action_state_kernel",
       "status": "DONE",
       "source": "F35",
-      "next": "Journey test guest \u2192 sign-in \u2192 merge \u2192 profile."
+      "next": "Journey test guest → sign-in → merge → profile."
     },
     {
       "id": "cart_kernel",
@@ -184,7 +184,15 @@
       "owner": "learning_governance_brain",
       "status": "DONE",
       "source": "F50",
-      "next": "Browser E2E passes product \u2192 verified quote, guest \u2192 account merge, storage migration and admin authorization; payment remains disabled."
+      "next": "Browser E2E passes product → verified quote, guest → account merge, storage migration and admin authorization; payment remains disabled."
+    },
+    {
+      "id": "checkout_product_integrity",
+      "title": "Product → Checkout Integrity QA",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "OWNER+F35",
+      "next": "Source fix passes: CJ variants can enter cart in PRICE_PENDING state, cart controls have native fallback, and destination-safe retail re-runs Commerce Truth. Keep IN_PROGRESS until hunt-payment-session is explicitly deployed and CJ dry-run/sandbox evidence passes."
     }
   ]
 }

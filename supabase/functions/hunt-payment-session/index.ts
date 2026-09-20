@@ -1,5 +1,5 @@
 import { createSupabaseContext } from "npm:@supabase/server";
-import { evaluateCommerceProfit } from "../_shared/hunt-commerce-profit.mjs";
+import { evaluateCommerceProfit, minimumSafeSalePricePerUnit } from "../_shared/hunt-commerce-profit.mjs";
 
 const ALLOWED_ORIGINS=new Set([
   "https://deep-hunt-market.netlify.app",
@@ -126,23 +126,41 @@ async function validateCart(base:string,key:string,body:any,profitProfile:any){
     if(quote?.shipping_verified!==true||!shipping||!(num(shipping?.price_usd)>=0))throw new Error("SHIPPING_UNAVAILABLE");
 
     const supplierShipping=Number(shipping.price_usd);
-    const economics=evaluateCommerceProfit(profitProfile,{
+    const profitInput={
       quantity:qty,
-      sale_price_per_unit:retailAmount,
       supplier_cost_per_unit:supplierCost,
       customer_shipping_amount:supplierShipping,
       supplier_shipping_cost:supplierShipping
+    };
+    const catalogRetailAmount=Number(retailAmount.toFixed(2));
+    let effectiveRetailAmount=catalogRetailAmount;
+    let economics=evaluateCommerceProfit(profitProfile,{
+      ...profitInput,
+      sale_price_per_unit:effectiveRetailAmount
     });
+    let destinationPriceAdjusted=false;
+    if(economics.profit_gate_status!=="PASS"){
+      const safeRetail=minimumSafeSalePricePerUnit(profitProfile,profitInput);
+      if(!(safeRetail&&safeRetail>0))throw new Error("PROFIT_RECHECK_FAILED");
+      effectiveRetailAmount=Math.max(catalogRetailAmount,safeRetail);
+      economics=evaluateCommerceProfit(profitProfile,{
+        ...profitInput,
+        sale_price_per_unit:effectiveRetailAmount
+      });
+      destinationPriceAdjusted=effectiveRetailAmount>catalogRetailAmount;
+    }
     if(economics.profit_gate_status!=="PASS")throw new Error("PROFIT_RECHECK_FAILED");
 
-    const lineProduct=retailAmount*qty;
+    const lineProduct=effectiveRetailAmount*qty;
     productAmount+=lineProduct;
     shippingAmount+=supplierShipping;
     contributionAmount+=economics.contribution_before_coupon;
     lines.push({
       provider,item_id:itemId,variant_id:variantId,qty,
       title:clean(product?.title).slice(0,180),
-      unit_retail_amount:Number(retailAmount.toFixed(2)),
+      unit_retail_amount:Number(effectiveRetailAmount.toFixed(2)),
+      catalog_retail_amount:catalogRetailAmount,
+      destination_price_adjusted:destinationPriceAdjusted,
       supplier_cost_per_unit:Number(supplierCost.toFixed(2)),
       currency:"USD",
       shipping_amount:Number(supplierShipping.toFixed(2)),
@@ -177,7 +195,9 @@ async function validateCart(base:string,key:string,body:any,profitProfile:any){
       profit_profile_name:clean(profitProfile.name).slice(0,120),
       line_count:lines.length,
       total_contribution_before_coupon:Number(contributionAmount.toFixed(2)),
-      all_lines_profit_pass:lines.every(x=>x.checkout_profit_gate_status==="PASS")
+      all_lines_profit_pass:lines.every(x=>x.checkout_profit_gate_status==="PASS"),
+      destination_price_adjusted:lines.some(x=>x.destination_price_adjusted===true),
+      adjusted_line_count:lines.filter(x=>x.destination_price_adjusted===true).length
     }
   };
 }
@@ -296,7 +316,9 @@ Deno.serve(async(req:Request)=>{
         commerce_snapshot_version:pricing.commerce_snapshot.version,
         commerce_checked_at:pricing.commerce_snapshot.checked_at,
         shipping_method:line.shipping_method,
-        origin_country_code:line.origin_country_code
+        origin_country_code:line.origin_country_code,
+        catalog_retail_amount:line.catalog_retail_amount,
+        destination_price_adjusted:line.destination_price_adjusted===true
       }
     }));
     const {error:economicsError}=await ctx.supabaseAdmin.from("hunt_unit_economics").insert(economicsRows);
