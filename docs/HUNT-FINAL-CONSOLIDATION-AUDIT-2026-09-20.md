@@ -226,3 +226,19 @@ Verification:
 - Brain Runtime single-client contract: PASS
 
 The older Stylist Alpha UI is HOLD because it depends on HUNT 2037 flow + Experience Memory. The old AI Studio is also HOLD because it creates its own Supabase client and must be reconciled to BoomRuntime before reuse.
+
+## Integration checkpoint — Observability / Hero legacy lanes
+
+Status: **SUPERSEDED / NO MERGE REQUIRED**
+
+PR #6 observability:
+- Final Candidate already contains the current analytics configuration and a stricter Brain OS privacy contract.
+- Current analytics is fail-closed before consent, revocable, no retroactive replay, PostHog replay/autocapture disabled.
+- The old `posthog-diagnostic.html` is not required for shopper runtime and is not being reintroduced.
+
+PR #8 cinematic hero:
+- superseded by HUNT Hero 4.2.1 / Clean City Quality Gate already present in Final Candidate;
+- current Hero uses dual city buffers, high-resolution city scenes, preload/quality gates and country-priority routing;
+- old cinematic hero branch will not be merged wholesale.
+
+No legacy observability or hero runtime was restored.
