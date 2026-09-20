@@ -8,7 +8,7 @@
   "principle": "Every safe CJ variant may be selected unless verified unavailable. Cart may carry PRICE_PENDING, but payment/supplier handoff requires fresh Commerce Truth PASS.",
   "truth_status": {
     "source_qa": "PASS",
-    "live_payment_session": "DEPLOYED_V15",
+    "live_payment_session": "DEPLOYED_V16",
     "cj_sandbox_evidence": "HOLD",
     "live_payment": "OFF",
     "live_supplier": "OFF"
