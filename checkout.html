@@ -129,6 +129,64 @@
     <a class="active" href="checkout.html"><span>&#9711;</span><small>Cart</small><b data-cart-count>0</b></a>
     <a href="auth.html"><span>&#9675;</span><small>Sign in</small></a>
   </nav>
+  <script>
+  (() => {
+    const CART_KEY="hunt_deal_cart_v1";
+    const readCart=()=>{
+      try{
+        const value=JSON.parse(localStorage.getItem(CART_KEY)||"[]");
+        return Array.isArray(value)?value:[];
+      }catch{return []}
+    };
+    const writeCart=rows=>{
+      localStorage.setItem(CART_KEY,JSON.stringify(Array.isArray(rows)?rows:[]));
+      location.reload();
+    };
+    const params=new URLSearchParams(location.search);
+    if(params.get("reset_cart")==="1"){
+      localStorage.setItem(CART_KEY,"[]");
+      params.delete("reset_cart");
+      history.replaceState(null,"",location.pathname+(params.toString()?"?"+params.toString():""));
+    }
+    document.addEventListener("pointerdown",event=>{
+      const clear=event.target.closest?.("#hd-clear-cart");
+      if(clear){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        writeCart([]);
+        return;
+      }
+      const remove=event.target.closest?.(".hd-remove");
+      if(remove){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const key=String(remove.dataset.key||remove.closest(".hd-checkout-item")?.dataset.key||"");
+        if(key)writeCart(readCart().filter(item=>String(item?.key||"")!==key));
+        return;
+      }
+      const qty=event.target.closest?.("[data-delta]");
+      if(qty){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const key=String(qty.dataset.key||qty.closest(".hd-checkout-item")?.dataset.key||"");
+        const delta=Number(qty.dataset.delta||0);
+        const rows=readCart();
+        const row=rows.find(item=>String(item?.key||"")===key);
+        if(row&&delta){
+          row.qty=Math.max(1,Math.min(5,(Number(row.qty)||1)+delta));
+          writeCart(rows);
+        }
+      }
+    },true);
+    document.addEventListener("click",event=>{
+      const clear=event.target.closest?.("#hd-clear-cart");
+      if(!clear)return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      writeCart([]);
+    },true);
+  })();
+  </script>
   <script src="hunt-experience-i18n.js?v=1"></script>
   <script src="market-core.js?v=dynamic2"></script>
   <script src="hunt-country-brain.js?v=1"></script>
