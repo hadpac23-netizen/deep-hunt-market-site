@@ -1,7 +1,7 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase;
+  const H=window.HuntCore, runtime=window.BoomRuntime;
   if(!H)return;
-  const client=sb?.createClient?sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey):null;
+  const client=runtime?.getSupabaseClient?.() || null;
   const $=q=>document.querySelector(q);
   let current=null;
   let pool=[];

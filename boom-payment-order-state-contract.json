@@ -1,0 +1,77 @@
+{
+  "version":"BOOM-PAYMENT-ORDER-STATE-V1",
+  "owner":"operations_brain",
+  "decision_dependencies":["COMMERCE_TRUTH_PASS","SHIPPING_ADDRESS_VERIFIED"],
+  "payment":{
+    "states":["created","prelaunch","pending","authorized","paid","failed","cancelled","expired","refunded"],
+    "transitions":{
+      "created":["pending","prelaunch","cancelled","expired"],
+      "pending":["authorized","paid","failed","cancelled","expired"],
+      "authorized":["paid","failed","cancelled","expired"],
+      "paid":["refunded"],
+      "prelaunch":[],
+      "failed":[],
+      "cancelled":[],
+      "expired":[],
+      "refunded":[]
+    },
+    "supplier_fulfillment_requires":["paid"]
+  },
+  "order":{
+    "states":["placed","confirmed","processing","shipped","out_for_delivery","delivered","cancelled","returned","refunded","exception"],
+    "transitions":{
+      "placed":["confirmed","processing","cancelled"],
+      "confirmed":["processing","cancelled"],
+      "processing":["shipped","cancelled","exception"],
+      "shipped":["out_for_delivery","delivered","returned","exception"],
+      "out_for_delivery":["delivered","returned","exception"],
+      "delivered":["returned","refunded"],
+      "returned":["refunded"],
+      "exception":["processing","cancelled","returned","refunded"],
+      "cancelled":[],
+      "refunded":[]
+    }
+  },
+  "fulfillment":{
+    "states":["not_started","queued","processing","submitted","shipped","delivered","failed","hold"],
+    "transitions":{
+      "not_started":["queued","processing","hold"],
+      "queued":["processing","hold","failed"],
+      "processing":["submitted","shipped","hold","failed"],
+      "submitted":["shipped","hold","failed"],
+      "shipped":["delivered","hold","failed"],
+      "hold":["queued","processing","failed"],
+      "delivered":[],
+      "failed":[]
+    }
+  },
+  "pipeline":{
+    "stages":["validated","supplier_created","supplier_paid_simulated","tracking_set","tracking_verified","completed","failed","hold"],
+    "transitions":{
+      "validated":["supplier_created","hold","failed"],
+      "supplier_created":["supplier_paid_simulated","tracking_set","hold","failed"],
+      "supplier_paid_simulated":["tracking_set","hold","failed"],
+      "tracking_set":["tracking_verified","hold","failed"],
+      "tracking_verified":["completed","hold","failed"],
+      "hold":["validated","failed"],
+      "completed":[],
+      "failed":[]
+    }
+  },
+  "live_invariants":[
+    "No supplier fulfillment unless payment session status is paid.",
+    "No live fulfillment from prelaunch or sandbox payment sessions.",
+    "No supplier handoff without COMMERCE_TRUTH_PASS and complete server-side shipping snapshot.",
+    "No backward state transition.",
+    "Every provider callback event is idempotent by provider event identity.",
+    "Every supplier order is idempotent by stable HUNT order identity.",
+    "Tracking may update fulfillment/order state but may never alter payment truth.",
+    "Learning may observe state transitions but may not execute them."
+  ],
+  "sandbox_invariants":[
+    "Sandbox supplier orders require owner-approved sandbox control.",
+    "Sandbox order rows must remain is_test=true.",
+    "Sandbox supplier calls must set the provider sandbox flag.",
+    "Sandbox evidence may simulate supplier lifecycle but never mark a real payment paid."
+  ]
+}

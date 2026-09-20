@@ -1,0 +1,449 @@
+{
+  "version": "BOOM-INTERACTION-INVENTORY-V1",
+  "principle": "Every explicit interactive handler maps to one canonical action. Multiple selectors may map to the same action.",
+  "interactions": [
+    {
+      "file": "analytics.js",
+      "selector": "[data-consent]",
+      "action_id": "consent.analytics.change",
+      "status": "mapped"
+    },
+    {
+      "file": "auth.js",
+      "selector": "#hd-email-auth",
+      "action_id": "auth.signin",
+      "status": "mapped"
+    },
+    {
+      "file": "auth.js",
+      "selector": "[data-oauth]",
+      "action_id": "auth.provider.start",
+      "status": "mapped"
+    },
+    {
+      "file": "auth.js",
+      "selector": "#hd-sign-out",
+      "action_id": "auth.signout",
+      "status": "mapped"
+    },
+    {
+      "file": "account-presence.js",
+      "selector": ".hd-account-link",
+      "action_id": "navigation.route",
+      "status": "mapped"
+    },
+    {
+      "file": "shopping-actions.js",
+      "selector": "[data-shop-action][data-provider][data-item-id]",
+      "action_id": "product.like.toggle",
+      "status": "mapped",
+      "condition": "shop_action=like"
+    },
+    {
+      "file": "shopping-actions.js",
+      "selector": "[data-shop-action][data-provider][data-item-id]",
+      "action_id": "product.save.toggle",
+      "status": "mapped",
+      "condition": "shop_action=save"
+    },
+    {
+      "file": "checkout.js",
+      "selector": ".hd-remove",
+      "action_id": "cart.remove",
+      "status": "mapped"
+    },
+    {
+      "file": "checkout.js",
+      "selector": "[data-delta]",
+      "action_id": "cart.quantity.change",
+      "status": "mapped"
+    },
+    {
+      "file": "checkout.js",
+      "selector": "#hd-clear-cart",
+      "action_id": "cart.remove",
+      "status": "mapped"
+    },
+    {
+      "file": "checkout.js",
+      "selector": "#hd-checkout-market",
+      "action_id": "checkout.destination.change",
+      "status": "mapped"
+    },
+    {
+      "file": "checkout.js",
+      "selector": "#hd-checkout-shipping-form",
+      "action_id": "checkout.shipping.update",
+      "status": "mapped",
+      "event": "change"
+    },
+    {
+      "file": "checkout.js",
+      "selector": "#hd-checkout-verify",
+      "action_id": "checkout.quote.verify",
+      "status": "mapped"
+    },
+    {
+      "file": "hunt-deal.js",
+      "selector": "#hd-search-input",
+      "action_id": "search.submit",
+      "status": "mapped"
+    },
+    {
+      "file": "category.js",
+      "selector": "#hd-cat-apply",
+      "action_id": "filter.apply",
+      "status": "mapped"
+    },
+    {
+      "file": "category.js",
+      "selector": "#hd-cat-sort",
+      "action_id": "catalog.sort.change",
+      "status": "mapped"
+    },
+    {
+      "file": "category.js",
+      "selector": "[data-view-mode]",
+      "action_id": "catalog.view_mode.change",
+      "status": "mapped"
+    },
+    {
+      "file": "hunt-wow.js",
+      "selector": "[data-shop-mode]",
+      "action_id": "personalization.mode.change",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "[data-size]",
+      "action_id": "product.variant.size.select",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "[data-color]",
+      "action_id": "product.variant.color.select",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "[data-gallery-src]",
+      "action_id": "product.gallery.select",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-qty-minus",
+      "action_id": "product.quantity.change",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-qty-plus",
+      "action_id": "product.quantity.change",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-product-add",
+      "action_id": "cart.add",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-mobile-add",
+      "action_id": "cart.add",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-zoom-open",
+      "action_id": "product.zoom.change",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-zoom-close",
+      "action_id": "product.zoom.change",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-zoom-in",
+      "action_id": "product.zoom.change",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-zoom-out",
+      "action_id": "product.zoom.change",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-zoom-reset",
+      "action_id": "product.zoom.change",
+      "status": "mapped"
+    },
+    {
+      "file": "product-flow.js",
+      "selector": ".hd-product-video-thumb",
+      "action_id": "product.media.play",
+      "status": "mapped"
+    },
+    {
+      "file": "shopping-survey.js",
+      "selector": "#hd-shopping-survey-form",
+      "action_id": "shopping.survey.submit",
+      "status": "mapped"
+    },
+    {
+      "file": "shopping-survey.js",
+      "selector": "#hd-shopping-survey-edit",
+      "action_id": "shopping.survey.edit",
+      "status": "mapped"
+    },
+    {
+      "file": "shopping-survey.js",
+      "selector": "#hd-shopping-survey-skip",
+      "action_id": "shopping.survey.skip",
+      "status": "mapped"
+    },
+    {
+      "file": "reviews.js",
+      "selector": "[data-review-rating]",
+      "action_id": "review.rating.select",
+      "status": "mapped"
+    },
+    {
+      "file": "reviews.js",
+      "selector": "#hd-review-images",
+      "action_id": "review.photo.manage",
+      "status": "mapped"
+    },
+    {
+      "file": "reviews.js",
+      "selector": "[data-remove-review-photo]",
+      "action_id": "review.photo.manage",
+      "status": "mapped"
+    },
+    {
+      "file": "reviews.js",
+      "selector": "#hd-review-submit",
+      "action_id": "review.submit",
+      "status": "mapped"
+    },
+    {
+      "file": "review-moderation.js",
+      "selector": "[data-review-action]",
+      "action_id": "review.moderate",
+      "status": "mapped"
+    },
+    {
+      "file": "profile.js",
+      "selector": "#hd-profile-signout",
+      "action_id": "auth.signout",
+      "status": "mapped"
+    },
+    {
+      "file": "seller.js",
+      "selector": "#hd-seller-apply-form",
+      "action_id": "seller.application.submit",
+      "status": "mapped"
+    },
+    {
+      "file": "seller.js",
+      "selector": "#hd-seller-product-form",
+      "action_id": "seller.product.submit",
+      "status": "mapped"
+    },
+    {
+      "file": "seller.js",
+      "selector": "#hd-seller-key-form",
+      "action_id": "seller.api_key.issue",
+      "status": "mapped"
+    },
+    {
+      "file": "seller.js",
+      "selector": "#hd-copy-api-key",
+      "action_id": "seller.api_key.copy",
+      "status": "mapped"
+    },
+    {
+      "file": "seller-ads.js",
+      "selector": "#hd-seller-ad-form",
+      "action_id": "seller.ad.submit",
+      "status": "mapped"
+    },
+    {
+      "file": "merchant-admin.js",
+      "selector": "[data-admin-action]",
+      "action_id": "admin.entity.action",
+      "status": "mapped"
+    },
+    {
+      "file": "merchant-admin.js",
+      "selector": "#hd-admin-tracking-form",
+      "action_id": "admin.tracking.update",
+      "status": "mapped"
+    },
+    {
+      "file": "boom-command-center.js",
+      "selector": "[data-command-save]",
+      "action_id": "boom.command.save",
+      "status": "mapped"
+    },
+    {
+      "file": "boom-marketing-lab.js",
+      "selector": "[data-exp-save]",
+      "action_id": "boom.experiment.save",
+      "status": "mapped"
+    },
+    {
+      "file": "boom-world-radar.js",
+      "selector": "[data-radar-save]",
+      "action_id": "boom.radar.save",
+      "status": "mapped"
+    },
+    {
+      "file": "partner-outreach.js",
+      "selector": "[data-partner-save]",
+      "action_id": "partner.record.save",
+      "status": "mapped"
+    },
+    {
+      "file": "partner-outreach.js",
+      "selector": "[data-partner-contacted]",
+      "action_id": "partner.mark_contacted",
+      "status": "mapped"
+    },
+    {
+      "file": "partner.js",
+      "selector": "#partner-form",
+      "action_id": "partner.application.submit",
+      "status": "mapped"
+    },
+    {
+      "file": "f60t-connections.js",
+      "selector": "[data-connect-provider]",
+      "action_id": "connector.oauth.start",
+      "status": "mapped"
+    },
+    {
+      "file": "hunt-theme.js",
+      "selector": "[data-hunt-theme-toggle]",
+      "action_id": "theme.change",
+      "status": "mapped"
+    },
+    {
+      "file": "i18n.js",
+      "selector": "[data-lang-select]",
+      "action_id": "language.change",
+      "status": "mapped"
+    },
+    {
+      "file": "hunt-deal.js",
+      "selector": "[data-hunt-query]",
+      "action_id": "navigation.route",
+      "status": "mapped"
+    },
+    {
+      "file": "hunt-deal.js",
+      "selector": ".hd-filter-row button",
+      "action_id": "filter.apply",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-product-main-image",
+      "action_id": "product.zoom.change",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-product-add",
+      "action_id": "product.external.visit",
+      "status": "mapped",
+      "condition": "external_product"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-mobile-add",
+      "action_id": "product.external.visit",
+      "status": "mapped",
+      "condition": "external_product"
+    },
+    {
+      "file": "category.js",
+      "selector": "[data-product-view]",
+      "action_id": "navigation.route",
+      "status": "mapped"
+    },
+    {
+      "file": "seller.js",
+      "selector": "#hd-product-store",
+      "action_id": "seller.store.select",
+      "status": "mapped"
+    },
+    {
+      "file": "boom-command-center.js",
+      "selector": "#hd-command-status-filter",
+      "action_id": "filter.apply",
+      "status": "mapped"
+    },
+    {
+      "file": "boom-command-center.js",
+      "selector": "#hd-command-workstream-filter",
+      "action_id": "filter.apply",
+      "status": "mapped"
+    },
+    {
+      "file": "boom-world-radar.js",
+      "selector": "#hd-radar-status-filter",
+      "action_id": "filter.apply",
+      "status": "mapped"
+    },
+    {
+      "file": "boom-world-radar.js",
+      "selector": "#hd-radar-domain-filter",
+      "action_id": "filter.apply",
+      "status": "mapped"
+    },
+    {
+      "file": "partner-outreach.js",
+      "selector": "#hd-partner-status-filter",
+      "action_id": "filter.apply",
+      "status": "mapped"
+    },
+    {
+      "file": "partner-outreach.js",
+      "selector": "#hd-partner-priority-filter",
+      "action_id": "filter.apply",
+      "status": "mapped"
+    },
+    {
+      "file": "product.js",
+      "selector": "#hd-image-zoom",
+      "action_id": "product.zoom.change",
+      "status": "mapped"
+    },
+    {
+      "file": "boom-brain-studio.js",
+      "selector": "#bs-action-search",
+      "action_id": "filter.apply",
+      "status": "mapped"
+    },
+    {
+      "file": "boom-brain-studio.js",
+      "selector": "#bs-action-owner",
+      "action_id": "filter.apply",
+      "status": "mapped"
+    },
+    {
+      "file": "boom-brain-studio.js",
+      "selector": "[data-gap-filter]",
+      "action_id": "filter.apply",
+      "status": "mapped"
+    }
+  ]
+}

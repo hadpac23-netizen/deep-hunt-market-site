@@ -1,0 +1,15 @@
+{
+  "version":"BOOM-EVIDENCE-CONFIDENCE-V1",
+  "mode":"ADVISORY_ONLY",
+  "principle":"Age lowers confidence and can require recheck; it never auto-activates, disables, prices or orders.",
+  "classes":{
+    "stock":{"fresh_hours":1,"recheck_hours":6,"stale_hours":24},
+    "shipping_quote":{"fresh_hours":6,"recheck_hours":24,"stale_hours":72},
+    "supplier_terms":{"fresh_hours":168,"recheck_hours":720,"stale_hours":2160},
+    "commercial_rights":{"fresh_hours":720,"recheck_hours":2160,"stale_hours":4320},
+    "market_signal":{"fresh_hours":6,"recheck_hours":24,"stale_hours":72},
+    "product_truth":{"fresh_hours":168,"recheck_hours":720,"stale_hours":2160}
+  },
+  "floor_confidence":{"FRESH":0.80,"RECHECK":0.50,"STALE":0.00},
+  "material_states":["RECHECK","STALE"]
+}

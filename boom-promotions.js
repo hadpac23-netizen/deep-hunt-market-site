@@ -1,10 +1,8 @@
 (() => {
   const H=window.HuntCore;
+  const runtime=window.BoomRuntime;
   if(!H)return;
-  const sb=window.supabase;
-  const client=sb?.createClient
-    ? sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey)
-    : null;
+  const client=runtime?.getSupabaseClient?.() || null;
 
   let lastData=null;
 

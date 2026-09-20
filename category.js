@@ -1,5 +1,6 @@
 (() => {
   const H = window.HuntCore;
+  const runtime = window.BoomRuntime;
   const params = new URLSearchParams(location.search);
   const requested = params.get("c") || "women";
   const slug = H.categoryDefs[requested] ? requested : "women";
@@ -35,12 +36,15 @@
     const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">${H.esc(product.provider || "CATALOG")}</span>`;
     const retail = retailState(product);
     const price = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
-    const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
-    const stateLabel = quoteVerified
+    const quotePassed = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
+    const quoteEvidence = H.evidenceState?.("product_truth",product) || {state:"UNKNOWN"};
+    const stateLabel = quotePassed && quoteEvidence.state === "FRESH"
       ? "QUOTE VERIFIED"
-      : retail.ready
-        ? "HUNT RETAIL · QUOTE REQUIRED"
-        : (product.availability_verified === true ? "CATALOG" : "DISCOVERY");
+      : quotePassed
+        ? "QUOTE RECHECK"
+        : retail.ready
+          ? "HUNT RETAIL · QUOTE REQUIRED"
+          : (product.availability_verified === true ? "CATALOG" : "DISCOVERY");
     const productUrl = H.productUrl(product);
     return `<article class="hd-market-product-card" data-category="${H.esc(product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${retail.amount || 0}" data-score="${score}">
       <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}</a>
@@ -324,10 +328,19 @@
     }
   }
 
-  $("#hd-cat-apply")?.addEventListener("click",()=>renderGrid({reset:true}));
-  $("#hd-cat-sort")?.addEventListener("change",()=>renderGrid({reset:true}));
+  $("#hd-cat-apply")?.addEventListener("click",()=>{
+    runtime?.emit?.("filter.apply",{category:slug,sub,price_min:$("#hd-price-min")?.value||"",price_max:$("#hd-price-max")?.value||""},{broadcast:false});
+    renderGrid({reset:true});
+  });
+  $("#hd-cat-sort")?.addEventListener("change",event=>{
+    runtime?.emit?.("catalog.sort.change",{category:slug,value:String(event.currentTarget.value||"")},{broadcast:false});
+    renderGrid({reset:true});
+  });
   document.querySelectorAll("[data-view-mode]").forEach(button => {
-    button.addEventListener("click", () => applyViewMode(button.dataset.viewMode));
+    button.addEventListener("click", () => {
+      applyViewMode(button.dataset.viewMode);
+      runtime?.emit?.("catalog.view_mode.change",{value:viewMode},{broadcast:false});
+    });
   });
   document.addEventListener("click", event => {
     const link = event.target.closest?.("[data-product-view]");

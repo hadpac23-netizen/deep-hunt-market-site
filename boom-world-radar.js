@@ -1,7 +1,8 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase;
-  if(!H||!sb?.createClient)return;
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const $=q=>document.querySelector(q);
   let rows=[];
   let liveSnapshot=null;
@@ -151,14 +152,21 @@
     if(!cardEl)return;
     const id=cardEl.dataset.radarId;
     const field=name=>cardEl.querySelector(`[data-radar-field="${name}"]`)?.value;
-    button.disabled=true;
     const payload={status:field("status"),priority:Number(field("priority"))||3,next_action:String(field("next_action")||"").trim()||null,updated_at:new Date().toISOString()};
-    const {data,error}=await client.from("hunt_boom_world_ideas").update(payload).eq("id",id)
-      .select("id,title,domain,source_name,source_url,evidence_note,status,priority,user_value,complexity,safety_notes,next_action,last_verified_at,updated_at").single();
-    if(error){setStatus(error.message||"Could not update idea.","error");button.disabled=false;return;}
-    const i=rows.findIndex(x=>x.id===id); if(i>=0)rows[i]=data; render();
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+    try{
+      const data=await run("boom.radar.save",{
+        key:id,element:button,broadcastSuccess:false,successDetail:{radar_id:id,status:payload.status},
+        execute:async()=>{
+          const {data,error}=await client.from("hunt_boom_world_ideas").update(payload).eq("id",id)
+            .select("id,title,domain,source_name,source_url,evidence_note,status,priority,user_value,complexity,safety_notes,next_action,last_verified_at,updated_at").single();
+          if(error)throw error; return data;
+        }
+      });
+      const i=rows.findIndex(x=>x.id===id); if(i>=0)rows[i]=data; render();
+    }catch(error){setStatus(error.message||"Could not update idea.","error");}
   });
-  $("#hd-radar-status-filter")?.addEventListener("change",render);
-  $("#hd-radar-domain-filter")?.addEventListener("change",render);
+  $("#hd-radar-status-filter")?.addEventListener("change",event=>{runtime?.emit?.("filter.apply",{surface:"world_radar",filter:"status",value:String(event.currentTarget.value||"")},{broadcast:false});render();});
+  $("#hd-radar-domain-filter")?.addEventListener("change",event=>{runtime?.emit?.("filter.apply",{surface:"world_radar",filter:"domain",value:String(event.currentTarget.value||"")},{broadcast:false});render();});
   load();
 })();

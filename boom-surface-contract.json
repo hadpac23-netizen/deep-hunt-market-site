@@ -1,0 +1,204 @@
+{
+  "version": "BOOM-SURFACE-CONTRACT-V1",
+  "modules": {
+    "core": "market-core.js",
+    "runtime": "boom-runtime.js",
+    "account_presence": "account-presence.js",
+    "shopping_actions": "shopping-actions.js",
+    "analytics": "analytics.js",
+    "theme": "hunt-theme.js",
+    "i18n": "i18n.js"
+  },
+  "surfaces": [
+    {
+      "id": "store.home",
+      "file": "index.html",
+      "required": [
+        "core",
+        "runtime",
+        "account_presence",
+        "shopping_actions",
+        "analytics",
+        "theme",
+        "i18n"
+      ],
+      "enforce_phase_1": true
+    },
+    {
+      "id": "store.category",
+      "file": "category.html",
+      "required": [
+        "core",
+        "runtime",
+        "account_presence",
+        "shopping_actions",
+        "analytics",
+        "theme"
+      ],
+      "enforce_phase_1": true
+    },
+    {
+      "id": "store.product",
+      "file": "product.html",
+      "required": [
+        "core",
+        "runtime",
+        "account_presence",
+        "shopping_actions",
+        "analytics",
+        "theme"
+      ],
+      "enforce_phase_1": true
+    },
+    {
+      "id": "store.checkout",
+      "file": "checkout.html",
+      "required": [
+        "core",
+        "runtime",
+        "account_presence",
+        "analytics",
+        "theme"
+      ],
+      "enforce_phase_1": true
+    },
+    {
+      "id": "store.profile",
+      "file": "profile.html",
+      "required": [
+        "core",
+        "runtime",
+        "shopping_actions",
+        "theme"
+      ],
+      "enforce_phase_1": true
+    },
+    {
+      "id": "store.auth",
+      "file": "auth.html",
+      "required": [
+        "core",
+        "runtime",
+        "analytics",
+        "theme"
+      ],
+      "enforce_phase_1": true
+    },
+    {
+      "id": "store.legal",
+      "file": "legal.html",
+      "required": [
+        "core",
+        "runtime",
+        "theme"
+      ],
+      "enforce_phase_1": true
+    },
+    {
+      "id": "boom.command",
+      "file": "boom-command-center.html",
+      "required": [
+        "core",
+        "runtime",
+        "theme"
+      ],
+      "enforce_phase_1": false
+    },
+    {
+      "id": "boom.marketing",
+      "file": "boom-marketing-lab.html",
+      "required": [
+        "core",
+        "runtime",
+        "theme"
+      ],
+      "enforce_phase_1": false
+    },
+    {
+      "id": "boom.radar",
+      "file": "boom-world-radar.html",
+      "required": [
+        "core",
+        "runtime",
+        "theme"
+      ],
+      "enforce_phase_1": false
+    },
+    {
+      "id": "boom.connections",
+      "file": "f60t-connections.html",
+      "required": [
+        "core",
+        "runtime",
+        "theme"
+      ],
+      "enforce_phase_1": false
+    },
+    {
+      "id": "admin.merchant",
+      "file": "merchant-admin.html",
+      "required": [
+        "core",
+        "runtime",
+        "analytics",
+        "theme"
+      ],
+      "enforce_phase_1": false
+    },
+    {
+      "id": "admin.reviews",
+      "file": "review-moderation.html",
+      "required": [
+        "core",
+        "runtime",
+        "analytics",
+        "theme"
+      ],
+      "enforce_phase_1": false
+    },
+    {
+      "id": "seller.portal",
+      "file": "sell.html",
+      "required": [
+        "core",
+        "runtime",
+        "analytics",
+        "theme"
+      ],
+      "enforce_phase_1": false
+    },
+    {
+      "id": "seller.api",
+      "file": "seller-api.html",
+      "required": [
+        "core",
+        "runtime",
+        "analytics",
+        "theme"
+      ],
+      "enforce_phase_1": false
+    },
+    {
+      "id": "partners.public",
+      "file": "partners.html",
+      "required": [
+        "core",
+        "runtime",
+        "analytics",
+        "theme"
+      ],
+      "enforce_phase_1": false
+    },
+    {
+      "id": "boom.brain_studio",
+      "file": "boom-brain-studio.html",
+      "required": [
+        "core",
+        "runtime",
+        "theme"
+      ],
+      "enforce_phase_1": true
+    }
+  ],
+  "note": "Capability-based target contract. Phase-1 enforcement covers the six core storefront/auth surfaces; optional modules are not forced onto pages that do not need them."
+}

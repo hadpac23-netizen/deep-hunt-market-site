@@ -1,0 +1,47 @@
+{
+  "version":"BOOM-JOURNEY-CONTRACT-V1",
+  "journeys":[
+    {
+      "id":"product_to_verified_quote",
+      "owner":"operations_brain",
+      "goal":"A shopper reaches a server-verified price/stock/shipping quote without bypassing variant truth.",
+      "steps":[
+        {"kind":"surface","ref":"store.product"},
+        {"kind":"precondition","ref":"verified_variant_selected"},
+        {"kind":"action","ref":"cart.add"},
+        {"kind":"surface","ref":"store.checkout"},
+        {"kind":"action","ref":"checkout.destination.change","optional":true},
+        {"kind":"action","ref":"checkout.shipping.update","optional":true},
+        {"kind":"action","ref":"checkout.quote.verify"}
+      ],
+      "hard_gates":["retail_price_verified","variant_id","stock_recheck","shipping_recheck","no_payment_on_quote_failure","shipping_snapshot_before_supplier_order"]
+    },
+    {
+      "id":"guest_preference_to_account",
+      "owner":"identity_session_kernel",
+      "goal":"Guest shopping state survives sign-in according to explicit merge rules.",
+      "steps":[
+        {"kind":"action","ref":"product.like.toggle","optional":true},
+        {"kind":"action","ref":"product.save.toggle","optional":true},
+        {"kind":"action","ref":"shopping.survey.submit","optional":true},
+        {"kind":"action","ref":"auth.signin"},
+        {"kind":"event","ref":"auth.session.changed"},
+        {"kind":"merge","ref":"guest_merge_matrix"},
+        {"kind":"surface","ref":"store.profile","optional":true}
+      ]
+    },
+    {
+      "id":"admin_connector_authorization",
+      "owner":"operations_brain",
+      "goal":"An admin starts an official connector authorization without browser token storage.",
+      "steps":[
+        {"kind":"surface","ref":"boom.connections"},
+        {"kind":"precondition","ref":"admin_session"},
+        {"kind":"action","ref":"connector.oauth.start"},
+        {"kind":"precondition","ref":"server_side_exchange"},
+        {"kind":"precondition","ref":"vault_token_storage"},
+        {"kind":"precondition","ref":"successful_official_sync_before_live"}
+      ]
+    }
+  ]
+}

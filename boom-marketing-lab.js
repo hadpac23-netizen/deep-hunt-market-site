@@ -1,7 +1,8 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase;
-  if(!H||!sb?.createClient)return;
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const $=q=>document.querySelector(q);
   let rows=[];
 
@@ -85,7 +86,6 @@
       setStatus("Paid experiments cannot enter Testing until owner approval is Approved.","error");
       return;
     }
-    button.disabled=true;
     const payload={
       status,
       owner_approval_status:approval,
@@ -93,12 +93,19 @@
       winner:field("winner")?.value||null,
       updated_at:new Date().toISOString()
     };
-    const {data,error}=await client.from("hunt_marketing_experiments").update(payload).eq("id",current.id)
-      .select("id,title,channel,objective,paid,owner_approval_status,status,hypothesis,audience_intent,control_description,treatment_description,primary_kpi,guardrails,min_sample_size,result_summary,winner,starts_at,ends_at,updated_at").single();
-    if(error){setStatus(error.message||"Could not save experiment.","error");button.disabled=false;return;}
-    const i=rows.findIndex(x=>x.id===data.id); if(i>=0)rows[i]=data;
-    $("#hd-marketing-lab-status").hidden=true;
-    render();
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+    try{
+      const data=await run("boom.experiment.save",{
+        key:current.id,element:button,broadcastSuccess:false,successDetail:{experiment_id:current.id,status},
+        execute:async()=>{
+          const {data,error}=await client.from("hunt_marketing_experiments").update(payload).eq("id",current.id)
+            .select("id,title,channel,objective,paid,owner_approval_status,status,hypothesis,audience_intent,control_description,treatment_description,primary_kpi,guardrails,min_sample_size,result_summary,winner,starts_at,ends_at,updated_at").single();
+          if(error)throw error; return data;
+        }
+      });
+      const i=rows.findIndex(x=>x.id===data.id); if(i>=0)rows[i]=data;
+      $("#hd-marketing-lab-status").hidden=true; render();
+    }catch(error){setStatus(error.message||"Could not save experiment.","error");}
   });
   load();
 })();

@@ -1,0 +1,23 @@
+{
+  "version":"BOOM-DECISION-REASONS-V1",
+  "codes":[
+    {"code":"F35_VERIFIED","meaning":"Material claim passed current verification."},
+    {"code":"F35_WATCH","meaning":"Useful evidence exists but uncertainty or recheck remains."},
+    {"code":"F35_KILL","meaning":"Hard evidence/guardrail failure stops the idea or action."},
+    {"code":"F50_GAP_FOUND","meaning":"F50 identified a missing layer or non-obvious opportunity."},
+    {"code":"SOURCE_RIGHTS_BLOCK","meaning":"Source cannot drive commercial activation under current rights."},
+    {"code":"EVIDENCE_STALE","meaning":"Evidence is too old for the decision."},
+    {"code":"COMMERCE_TRUTH_PASS","meaning":"Product/supplier/country/economics truth gates passed."},
+    {"code":"COMMERCE_TRUTH_BLOCK","meaning":"A commerce truth gate failed."},
+    {"code":"FULFILLMENT_FAIL","meaning":"Stock/shipping/fulfillment cannot be verified."},
+    {"code":"MARGIN_FAIL","meaning":"Verified contribution is below the required floor."},
+    {"code":"USER_RELEVANCE","meaning":"Decision is supported by current shopper intent/context."},
+    {"code":"DIVERSITY_GUARD","meaning":"Ranking changed to prevent repetition/concentration."},
+    {"code":"OWNER_GATE_REQUIRED","meaning":"External/material action requires Owner approval."},
+    {"code":"BUDGET_BLOCK","meaning":"Mission resource budget does not permit execution."},
+    {"code":"EXPERIMENT_EVIDENCE","meaning":"Decision follows an experiment/holdout result."},
+    {"code":"CIRCUIT_BREAKER","meaning":"Brain health policy recommends demotion or stop."},
+    {"code":"ROLLBACK_TRIGGERED","meaning":"System returned to a prior safe state after failure."}
+  ],
+  "rule":"Every material Orchestrator decision records one or more reason codes plus evidence refs; reason codes never replace evidence."
+}

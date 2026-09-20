@@ -1,11 +1,13 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase;
-  if(!H||!sb?.createClient)return;
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
 
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const state=new Map();
   const localKey="hunt_local_product_actions_v1";
   let session=null;
+  let sessionUserId="";
   let scanQueued=false;
 
   const cardSelectors=[
@@ -151,73 +153,80 @@
 
   async function toggle(btn){
     const meta=metaForButton(btn);
-    if(!session?.user){
-      const k=key(meta.provider,meta.item_id);
-      const old=state.get(k)||{liked:false,saved:false};
-      const kind=btn.dataset.shopAction;
-      const next={...old};
-      if(kind==="like")next.liked=!Boolean(old.liked);
-      if(kind==="save")next.saved=!Boolean(old.saved);
-      if(!next.liked&&!next.saved)state.delete(k);else state.set(k,next);
-      persistLocal(meta,next);
-      refreshButtons();
-      const active=kind==="like"?Boolean(next.liked):Boolean(next.saved);
-      if(active&&meta.category)H.recordSignal?.(meta.category,kind);
-      window.HuntAnalytics?.shoppingAction?.({provider:meta.provider,itemId:meta.item_id,action:kind,active,category:meta.category||""});
-      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved),local:true}}));
-      return;
-    }
-    const k=key(meta.provider,meta.item_id);
-    const old=state.get(k)||{liked:false,saved:false};
     const kind=btn.dataset.shopAction;
-    const next={...old};
-    if(kind==="like")next.liked=!Boolean(old.liked);
-    if(kind==="save")next.saved=!Boolean(old.saved);
-
-    state.set(k,next);
-    refreshButtons();
+    if(!["like","save"].includes(kind))return;
+    const actionId="product."+kind+".toggle";
+    const lockKey=key(meta.provider,meta.item_id);
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
 
     try{
-      if(!next.liked&&!next.saved){
-        const {error}=await client.from("hunt_product_actions")
-          .delete().eq("provider",meta.provider).eq("item_id",meta.item_id);
-        if(error)throw error;
-        state.delete(k);
-      }else{
-        const now=new Date().toISOString();
-        const payload={
-          user_id:session.user.id,
-          provider:meta.provider,
-          item_id:meta.item_id,
-          title:meta.title||old.title||"",
-          image_url:meta.image_url||old.image_url||null,
-          category:meta.category||old.category||null,
-          liked:Boolean(next.liked),
-          saved:Boolean(next.saved),
-          liked_at:next.liked?(old.liked_at||now):null,
-          saved_at:next.saved?(old.saved_at||now):null
-        };
-        const {data,error}=await client.from("hunt_product_actions")
-          .upsert(payload,{onConflict:"user_id,provider,item_id"})
-          .select("provider,item_id,liked,saved,title,image_url,category,liked_at,saved_at")
-          .single();
-        if(error)throw error;
-        state.set(k,data);
-      }
-      refreshButtons();
-      const preferenceActive=kind==="like"?Boolean(next.liked):Boolean(next.saved);
-      if(preferenceActive&&meta.category) H.recordSignal?.(meta.category,kind);
-      window.HuntAnalytics?.shoppingAction?.({
-        provider:meta.provider,
-        itemId:meta.item_id,
-        action:kind,
-        active:preferenceActive,
-        category:meta.category||""
+      await run(actionId,{
+        key:lockKey,
+        element:btn,
+        successDetail:result=>({provider:meta.provider,item_id:meta.item_id,active:Boolean(result?.active),local:Boolean(result?.local)}),
+        execute:async()=>{
+          const k=key(meta.provider,meta.item_id);
+          const old=state.get(k)||{liked:false,saved:false};
+          const next={...old};
+          if(kind==="like")next.liked=!Boolean(old.liked);
+          if(kind==="save")next.saved=!Boolean(old.saved);
+
+          state.set(k,next);
+          refreshButtons();
+
+          if(!session?.user){
+            if(!next.liked&&!next.saved)state.delete(k);
+            persistLocal(meta,next);
+            refreshButtons();
+            const active=kind==="like"?Boolean(next.liked):Boolean(next.saved);
+            if(active&&meta.category)H.recordSignal?.(meta.category,kind);
+            window.HuntAnalytics?.shoppingAction?.({provider:meta.provider,itemId:meta.item_id,action:kind,active,category:meta.category||""});
+            window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved),local:true}}));
+            return {active,local:true};
+          }
+
+          try{
+            if(!next.liked&&!next.saved){
+              const {error}=await client.from("hunt_product_actions")
+                .delete().eq("provider",meta.provider).eq("item_id",meta.item_id);
+              if(error)throw error;
+              state.delete(k);
+            }else{
+              const now=new Date().toISOString();
+              const payload={
+                user_id:session.user.id,
+                provider:meta.provider,
+                item_id:meta.item_id,
+                title:meta.title||old.title||"",
+                image_url:meta.image_url||old.image_url||null,
+                category:meta.category||old.category||null,
+                liked:Boolean(next.liked),
+                saved:Boolean(next.saved),
+                liked_at:next.liked?(old.liked_at||now):null,
+                saved_at:next.saved?(old.saved_at||now):null
+              };
+              const {data,error}=await client.from("hunt_product_actions")
+                .upsert(payload,{onConflict:"user_id,provider,item_id"})
+                .select("provider,item_id,liked,saved,title,image_url,category,liked_at,saved_at")
+                .single();
+              if(error)throw error;
+              state.set(k,data);
+            }
+            refreshButtons();
+            const active=kind==="like"?Boolean(next.liked):Boolean(next.saved);
+            if(active&&meta.category)H.recordSignal?.(meta.category,kind);
+            window.HuntAnalytics?.shoppingAction?.({provider:meta.provider,itemId:meta.item_id,action:kind,active,category:meta.category||""});
+            window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved)}}));
+            return {active,local:false};
+          }catch(error){
+            if(!old.liked&&!old.saved)state.delete(k);else state.set(k,old);
+            refreshButtons();
+            throw error;
+          }
+        }
       });
-      window.dispatchEvent(new CustomEvent("hunt:shopping-action",{detail:{provider:meta.provider,item_id:meta.item_id,liked:Boolean(next.liked),saved:Boolean(next.saved)}}));
     }catch{
-      state.set(k,old);
-      refreshButtons();
+      runtime?.announce?.("Could not update this item. Try again.","error");
     }
   }
 
@@ -255,13 +264,40 @@
   const observer=new MutationObserver(queueScan);
   observer.observe(document.documentElement,{childList:true,subtree:true});
 
+  window.addEventListener("boom:remote-action",event=>{
+    const action=String(event?.detail?.action_id||"");
+    if(action!=="product.like.toggle"&&action!=="product.save.toggle")return;
+    state.clear();
+    loadLocalState();
+    if(session?.user)loadState(); else refreshButtons();
+  });
+
+  async function handleSession(nextSession){
+    const nextUserId=String(nextSession?.user?.id||"");
+    const changed=nextUserId!==sessionUserId;
+    session=nextSession||null;
+    sessionUserId=nextUserId;
+    if(session?.user){
+      if(changed)await mergeLocalToAccount();
+      await loadState();
+    }else{
+      state.clear();
+      loadLocalState();
+      refreshButtons();
+    }
+    scan();
+  }
+
   async function init(){
     loadLocalState();
-    const {data}=await client.auth.getSession();
-    session=data.session||null;
-    if(session?.user)await mergeLocalToAccount();
-    await loadState();
     scan();
+    if(runtime?.subscribeSession){
+      runtime.subscribeSession(handleSession);
+    }else{
+      const {data}=await client.auth.getSession();
+      await handleSession(data.session||null);
+      client.auth.onAuthStateChange((_event,nextSession)=>handleSession(nextSession));
+    }
   }
   init();
 })();

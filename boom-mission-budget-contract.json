@@ -1,0 +1,13 @@
+{
+  "version":"BOOM-MISSION-BUDGET-V1",
+  "principle":"Every material mission has resource ceilings before execution. Passing QA does not grant budget.",
+  "resources":[
+    {"id":"production_deploy","autonomous_budget":0,"owner_gate":true,"preconditions":["hosting_available","credit_or_plan_capacity_verified","clean_release_candidate"],"current_note":"Netlify production remains paused; production budget is zero until capacity returns."},
+    {"id":"paid_media_spend","autonomous_budget":0,"owner_gate":true,"preconditions":["measurement_ready","verified_margin","campaign_draft","spend_limit_approved"]},
+    {"id":"supplier_order","autonomous_budget":0,"owner_gate":true,"preconditions":["verified_order","payment_state_verified","supplier_route_verified"]},
+    {"id":"price_or_discount_change","autonomous_budget":0,"owner_gate":true,"preconditions":["verified_costs","margin_floor_pass","real_offer_terms"]},
+    {"id":"external_publish_or_outreach","autonomous_budget":0,"owner_gate":true,"preconditions":["approved_message_or_asset","authorized_account","claims_verified"]},
+    {"id":"payment_activation","autonomous_budget":0,"owner_gate":true,"preconditions":["psp_ready","callback_verified","order_ledger_ready","refund_return_controls_ready"]}
+  ],
+  "rules":["Unused budget never implies permission.","A failed attempt does not silently increase budget.","Budget state is recorded with the mission and rechecked before execution."]
+}

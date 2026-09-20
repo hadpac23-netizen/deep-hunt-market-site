@@ -1,6 +1,10 @@
 import { createSupabaseContext } from "npm:@supabase/server";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
+function shippingMissing(value:any){
+  const s=value&&typeof value==="object"?value:{};
+  return ["shippingCustomerName","shippingAddress","shippingCity","shippingProvince","shippingZip","shippingPhone","shippingCountryCode"].filter(key=>!clean(s?.[key]));
+}
 const json=(req:Request,body:unknown,status=200)=>new Response(JSON.stringify(body),{
   status,
   headers:{
@@ -28,7 +32,7 @@ Deno.serve(async(req:Request)=>{
 
     const {data:session,error:sessionError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
-      .select("id,user_id,provider,mode,status,country_code,currency,product_amount,shipping_amount,total_amount,line_items,idempotency_key,provider_request_uid,expires_at,created_at")
+      .select("id,user_id,provider,mode,status,country_code,currency,product_amount,shipping_amount,total_amount,line_items,idempotency_key,provider_request_uid,expires_at,created_at,commerce_snapshot,shipping_snapshot")
       .eq("id",sessionId)
       .eq("idempotency_key",idempotencyKey)
       .maybeSingle();
@@ -41,6 +45,10 @@ Deno.serve(async(req:Request)=>{
     }
 
     const lines=Array.isArray(session.line_items)?session.line_items:[];
+    const commerce=session.commerce_snapshot&&typeof session.commerce_snapshot==="object"
+      ? session.commerce_snapshot:{};
+    const shipping=session.shipping_snapshot&&typeof session.shipping_snapshot==="object"
+      ? session.shipping_snapshot:{};
     const groups:Record<string,{provider:string,origin_country_code:string,shipping_method:string,line_items:any[]}>= {};
 
     for(const line of lines){
@@ -63,18 +71,30 @@ Deno.serve(async(req:Request)=>{
         unit_retail_amount:Number(line?.unit_retail_amount||0),
         currency:clean(line?.currency)||session.currency,
         shipping_amount:Number(line?.shipping_amount||0),
-        quote_checked_at:clean(line?.quote_checked_at)||null
+        supplier_cost_per_unit:Number(line?.supplier_cost_per_unit||0),
+        checkout_profit_gate_status:clean(line?.checkout_profit_gate_status)||null,
+        contribution_before_coupon:Number(line?.contribution_before_coupon||0),
+        quote_checked_at:clean(line?.quote_checked_at)||null,
+        profit_checked_at:clean(line?.profit_checked_at)||null
       });
     }
 
     const blockers:string[]=[];
+    if(clean(commerce?.status)!=="PASS") blockers.push("COMMERCE_TRUTH_NOT_PASSED");
+    if(clean(commerce?.decision_owner)!=="commerce_truth_brain") blockers.push("COMMERCE_DECISION_OWNER_INVALID");
+    if(commerce?.all_lines_profit_pass!==true) blockers.push("PROFIT_GATE_NOT_PASSED");
+    const commerceChecked=Date.parse(clean(commerce?.checked_at));
+    if(!Number.isFinite(commerceChecked)) blockers.push("COMMERCE_EVIDENCE_TIMESTAMP_MISSING");
+    else if(Date.now()-commerceChecked>60*60*1000) blockers.push("COMMERCE_EVIDENCE_STALE");
+    if(lines.some((x:any)=>clean(x?.checkout_profit_gate_status)!=="PASS")) blockers.push("LINE_PROFIT_GATE_NOT_PASSED");
     if(session.mode==="prelaunch") blockers.push("PAYMENT_ACCOUNT_NOT_ACTIVE");
     if(!["paid","succeeded","completed"].includes(clean(session.status).toLowerCase())) blockers.push("PAYMENT_NOT_CONFIRMED");
     if(!lines.length) blockers.push("EMPTY_LINE_ITEMS");
     if(lines.some((x:any)=>!clean(x?.provider).toLowerCase().includes("cj"))) blockers.push("NON_CJ_FULFILLMENT_NOT_READY");
     if(lines.some((x:any)=>!clean(x?.origin_country_code))) blockers.push("ORIGIN_NOT_PERSISTED");
     if(lines.some((x:any)=>!clean(x?.shipping_method))) blockers.push("LOGISTICS_NOT_PERSISTED");
-    blockers.push("SHIPPING_ADDRESS_NOT_COLLECTED");
+    if(shippingMissing(shipping).length) blockers.push("SHIPPING_ADDRESS_INCOMPLETE");
+    if(clean(shipping?.shippingCountryCode).toUpperCase()!==clean(session.country_code).toUpperCase()) blockers.push("SHIPPING_COUNTRY_MISMATCH");
     blockers.push("SUPPLIER_ORDER_CREATION_DISABLED");
 
     const fulfillmentPreview=Object.values(groups).map(group=>({
@@ -117,7 +137,11 @@ Deno.serve(async(req:Request)=>{
         currency:session.currency,
         product_amount:session.product_amount,
         shipping_amount:session.shipping_amount,
-        total_amount:session.total_amount
+        total_amount:session.total_amount,
+        commerce_truth_status:clean(commerce?.status)||"UNKNOWN",
+        commerce_decision_owner:clean(commerce?.decision_owner)||null,
+        commerce_checked_at:clean(commerce?.checked_at)||null,
+        shipping_attached:shippingMissing(shipping).length===0
       },
       fulfillment_preview:fulfillmentPreview,
       ready_for_live_payment:session.mode==="live" && !blockers.includes("PAYMENT_ACCOUNT_NOT_ACTIVE"),
