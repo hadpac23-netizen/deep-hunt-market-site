@@ -182,9 +182,9 @@
       "id": "journey_e2e",
       "title": "Automated critical journey E2E",
       "owner": "learning_governance_brain",
-      "status": "NEXT",
+      "status": "DONE",
       "source": "F50",
-      "next": "Run browser contracts for product \u2192 quote, guest \u2192 account merge and admin connector authorization."
+      "next": "Browser E2E passes product \u2192 verified quote, guest \u2192 account merge, storage migration and admin authorization; payment remains disabled."
     }
   ]
 }
