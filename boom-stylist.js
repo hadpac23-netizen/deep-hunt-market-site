@@ -152,7 +152,9 @@
   window.BoomStylist=Object.freeze({
     plan:()=>plan,
     apply,
-    copyFor:(intent)=>words(intent||plan?.intent||"discover")[0]
+    copyFor:(intent)=>words(intent||plan?.intent||"discover")[0],
+    createMission:(options={})=>window.BoomStylistCore?.createMission?.(options)||null,
+    tasteProfile:(events=[])=>window.BoomTasteDNA?.buildProfile?.(events)||null
   });
 
   function boot(){

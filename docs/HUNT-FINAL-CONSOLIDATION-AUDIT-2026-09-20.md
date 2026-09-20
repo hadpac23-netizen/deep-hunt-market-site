@@ -203,3 +203,26 @@ Voice / legacy Brain-v2 extraction is **HOLD** because PR #4 depends on a chain 
 No legacy migration was applied.
 No Voice Edge Function was deployed.
 No Supplier Gravity runtime was activated on customer pages.
+
+## Integration checkpoint — Stylist / Brand lane
+
+Status: **CORE PASS / ALPHA UI HOLD**
+
+Reconciled from PR #7:
+- `boom-stylist-core.js` as a no-backend mission/complement foundation;
+- `boom-taste-dna.js` as a non-sensitive interaction preference model;
+- existing `BoomStylist` now exposes bounded `createMission()` and `tasteProfile()` adapters.
+
+Safety / ownership:
+- no Supabase client added;
+- no database writes added;
+- no body-trait or sensitive-trait inference;
+- exact-fit claims remain disabled;
+- country/product truth remains required before material stylist recommendations.
+
+Verification:
+- BOOM Stylist Core tests: PASS
+- BOOM Taste DNA tests: PASS
+- Brain Runtime single-client contract: PASS
+
+The older Stylist Alpha UI is HOLD because it depends on HUNT 2037 flow + Experience Memory. The old AI Studio is also HOLD because it creates its own Supabase client and must be reconciled to BoomRuntime before reuse.
