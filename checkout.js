@@ -197,10 +197,39 @@
       <article class="hd-checkout-item" data-key="${esc(item.key)}">
         ${item.image_url ? `<img src="${esc(item.image_url)}" alt="${esc(item.title)}">` : `<div class="hd-checkout-thumb">◇</div>`}
         <div class="hd-checkout-item-copy"><small>${esc(item.provider)} · ${ready ? "HUNT RETAIL" : "PRICE PENDING"}</small><h3>${esc(item.title)}</h3><p>${item.variant_label ? `Selected: ${esc(item.variant_label)} · ` : ""}${priceCopy}</p></div>
-        <div class="hd-qty"><button type="button" data-delta="-1">−</button><span>${Math.max(1,Number(item.qty)||1)}</span><button type="button" data-delta="1">+</button></div>
-        <button class="hd-remove" type="button" aria-label="Remove item">×</button>
+        <div class="hd-qty"><button type="button" data-delta="-1" data-key="${esc(item.key)}">−</button><span>${Math.max(1,Number(item.qty)||1)}</span><button type="button" data-delta="1" data-key="${esc(item.key)}">+</button></div>
+        <button class="hd-remove" type="button" data-key="${esc(item.key)}" aria-label="Remove ${esc(item.title)} from cart" title="Remove item">×</button>
       </article>`;
     }).join("");
+
+    host.querySelectorAll(".hd-remove").forEach(button=>{
+      button.addEventListener("click",event=>{
+        event.preventDefault();
+        event.stopPropagation();
+        const key=String(event.currentTarget?.dataset?.key||"");
+        if(!key)return;
+        const before=read();
+        const next=H.removeCart?.(key);
+        if(!Array.isArray(next)||next.length===before.length){
+          H.saveCart?.(before.filter(item=>item.key!==key),{
+            actionId:"cart.remove",
+            detail:{key,fallback:true}
+          });
+        }
+      });
+    });
+    host.querySelectorAll("[data-delta]").forEach(button=>{
+      button.addEventListener("click",event=>{
+        event.preventDefault();
+        event.stopPropagation();
+        const key=String(event.currentTarget?.dataset?.key||"");
+        const delta=Number(event.currentTarget?.dataset?.delta||0);
+        const current=read().find(item=>item.key===key);
+        if(!current||!delta)return;
+        H.setCartQuantity?.(key,Math.max(1,Math.min(5,(Number(current.qty)||1)+delta)));
+      });
+    });
+
     const readyItems = cart.filter(x=>x?.retail_price_verified===true && x?.price_basis==="HUNT_RETAIL_PROFIT_GATE" && Number(x?.price_amount)>0);
     const pendingPrice = readyItems.length !== cart.length;
     const currencies = new Set(readyItems.map(x=>x.currency||"USD"));
@@ -217,20 +246,8 @@
     }
   }
 
-  document.addEventListener("click", event => {
-    const row = event.target.closest?.(".hd-checkout-item");
-    if (!row) return;
-    const cart = read();
-    const current = cart.find(x => x.key === row.dataset.key);
-    if (!current) return;
-    if (event.target.matches(".hd-remove")) {
-      H.removeCart(row.dataset.key);
-    } else if (event.target.matches("[data-delta]")) {
-      const nextQty=Math.max(1,Math.min(5,(Number(current.qty)||1)+Number(event.target.dataset.delta||0)));
-      H.setCartQuantity(row.dataset.key,nextQty);
-    }
-  });
-  $("#hd-clear-cart")?.addEventListener("click",()=>H.clearCart());
+
+  $("#hd-clear-cart")?.addEventListener("click",event=>{event.preventDefault();const next=H.clearCart?.();if(!Array.isArray(next)||next.length)H.saveCart?.([],{actionId:"cart.remove",detail:{clear:true,fallback:true}});});
   $("#hd-checkout-market")?.addEventListener("change", event => {
     resetQuote("Destination changed. Recheck price and shipping.");
     updateShippingStatus({emit:true});
