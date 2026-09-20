@@ -192,7 +192,7 @@
       "owner": "learning_governance_brain",
       "status": "IN_PROGRESS",
       "source": "OWNER+F35",
-      "next": "Source fix passes: CJ variants can enter cart in PRICE_PENDING state, cart controls have native fallback, and destination-safe retail re-runs Commerce Truth. Keep IN_PROGRESS until hunt-payment-session is explicitly deployed and CJ dry-run/sandbox evidence passes."
+      "next": "hunt-payment-session v15 is deployed with destination-safe retail and source QA passes. Keep IN_PROGRESS until a fresh authenticated Verify passes, then dry-run and CJ sandbox evidence pass."
     }
   ]
 }
