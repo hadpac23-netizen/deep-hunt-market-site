@@ -1,0 +1,51 @@
+{
+  "version": "BOOM-GUEST-MERGE-V1",
+  "states": [
+    {
+      "state": "likes_saves",
+      "guest_store": "hunt_local_product_actions_v1",
+      "account_store": "hunt_product_actions",
+      "policy": "boolean_union_then_server_upsert",
+      "status": "IMPLEMENTED",
+      "owner": "identity_session_kernel"
+    },
+    {
+      "state": "cart",
+      "guest_store": "hunt_deal_cart_v1",
+      "account_store": null,
+      "policy": "retain_local_cart_on_signin_no_silent_loss",
+      "status": "LOCAL_ONLY",
+      "owner": "action_state_kernel",
+      "next": "Add server cart only when an account cart schema and conflict policy exist."
+    },
+    {
+      "state": "shopping_preferences",
+      "guest_store": "hunt_shopping_survey_v1 + hunt_shopping_preferences_v1",
+      "account_store": "hunt_shopping_preferences",
+      "policy": "union_categories_priorities_discovery_server_price_preferred_then_upsert",
+      "status": "IMPLEMENTED",
+      "owner": "identity_session_kernel"
+    },
+    {
+      "state": "theme",
+      "guest_store": "hunt_theme_v1",
+      "account_store": null,
+      "policy": "retain_device_preference",
+      "status": "LOCAL_ONLY",
+      "owner": "design_system_kernel"
+    },
+    {
+      "state": "language",
+      "guest_store": "hunt_language",
+      "account_store": null,
+      "policy": "retain_device_preference",
+      "status": "LOCAL_ONLY",
+      "owner": "experience_brain"
+    }
+  ],
+  "rules": [
+    "Never erase guest state merely because sign-in succeeded.",
+    "Never silently overwrite stronger account truth without a declared conflict policy.",
+    "Cross-device sync requires a real server store; local-only state must be labeled local-only."
+  ]
+}

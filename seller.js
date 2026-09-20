@@ -1,11 +1,12 @@
 (() => {
   const H=window.HuntCore;
-  const sb=window.supabase;
-  if(!H||!sb?.createClient)return;
+  const runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
 
   const SUPABASE_URL="https://zszlnahjqmwozwubetkm.supabase.co";
   const API_BASE=SUPABASE_URL+"/functions/v1/hunt-seller-api";
-  const client=sb.createClient(SUPABASE_URL,H.publishableKey);
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const $=q=>document.querySelector(q);
   let session=null;
   let dashboard={accounts:[],stores:[]};
@@ -110,60 +111,66 @@
 
     $("#hd-seller-apply-form")?.addEventListener("submit",async event=>{
       event.preventDefault();
-      const form=new FormData(event.currentTarget);
+      const formEl=event.currentTarget;
+      const form=new FormData(formEl);
+      const button=formEl.querySelector("button[type='submit']");
       setStatus("#hd-seller-apply-status","Submitting…");
+      const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
       try{
-        await api("/dashboard/apply",{method:"POST",body:JSON.stringify(Object.fromEntries(form.entries()))});
+        await run("seller.application.submit",{key:"application",element:button,broadcastSuccess:false,execute:async()=>api("/dashboard/apply",{method:"POST",body:JSON.stringify(Object.fromEntries(form.entries()))})});
         setStatus("#hd-seller-apply-status","Application received. HUNT review is required before activation.","success");
         await loadDashboard();
-      }catch(error){
-        setStatus("#hd-seller-apply-status",error.message||"Could not submit application.","error");
-      }
+      }catch(error){setStatus("#hd-seller-apply-status",error.message||"Could not submit application.","error");}
     });
     $("#hd-seller-product-form")?.addEventListener("submit",async event=>{
       event.preventDefault();
-      const form=new FormData(event.currentTarget);
+      const formEl=event.currentTarget;
+      const form=new FormData(formEl);
       const body=Object.fromEntries(form.entries());
       body.image_urls=String(body.image_urls||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
       body.video_urls=String(body.video_urls||"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean).slice(0,3);
       if(body.price_amount==="")body.price_amount=null;
       if(body.inventory_quantity==="")body.inventory_quantity=null;
       setStatus("#hd-seller-product-status","Submitting product…");
+      const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
       try{
-        await api("/dashboard/products",{method:"POST",body:JSON.stringify(body)});
+        await run("seller.product.submit",{key:String(body.store_id||"")+":"+String(body.external_id||body.title||"product"),element:formEl.querySelector("button[type='submit']"),broadcastSuccess:false,execute:async()=>api("/dashboard/products",{method:"POST",body:JSON.stringify(body)})});
         setStatus("#hd-seller-product-status","Product received and queued for HUNT review.","success");
         await loadProducts(body.store_id);
-      }catch(error){
-        setStatus("#hd-seller-product-status",error.message||"Could not submit product.","error");
-      }
+      }catch(error){setStatus("#hd-seller-product-status",error.message||"Could not submit product.","error");}
     });
 
-    $("#hd-product-store")?.addEventListener("change",event=>loadProducts(event.target.value));
+    $("#hd-product-store")?.addEventListener("change",event=>{
+      runtime?.emit?.("seller.store.select",{store_id:String(event.target.value||"")},{broadcast:false});
+      loadProducts(event.target.value);
+    });
 
     $("#hd-seller-key-form")?.addEventListener("submit",async event=>{
       event.preventDefault();
-      const body=Object.fromEntries(new FormData(event.currentTarget).entries());
+      const formEl=event.currentTarget;
+      const body=Object.fromEntries(new FormData(formEl).entries());
       setStatus("#hd-seller-key-status","Creating key…");
+      const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
       try{
-        const data=await api("/dashboard/keys",{method:"POST",body:JSON.stringify(body)});
+        const data=await run("seller.api_key.issue",{key:String(body.store_id||""),element:formEl.querySelector("button[type='submit']"),broadcastSuccess:false,execute:async()=>api("/dashboard/keys",{method:"POST",body:JSON.stringify(body)})});
         $("#hd-seller-api-key").textContent=data.api_key;
         $("#hd-seller-key-result").hidden=false;
         setStatus("#hd-seller-key-status","API key created. It is shown only once.","success");
-      }catch(error){
-        setStatus("#hd-seller-key-status",error.message||"Could not create key.","error");
-      }
+      }catch(error){setStatus("#hd-seller-key-status",error.message||"Could not create key.","error");}
     });
 
-    $("#hd-copy-api-key")?.addEventListener("click",async()=>{
+    $("#hd-copy-api-key")?.addEventListener("click",async event=>{
       const value=$("#hd-seller-api-key")?.textContent||"";
-      if(value)await navigator.clipboard.writeText(value);
-      setStatus("#hd-seller-key-status","Copied to clipboard.","success");
+      const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+      try{
+        await run("seller.api_key.copy",{key:"current",element:event.currentTarget,broadcastSuccess:false,execute:async()=>{if(!value)throw new Error("No API key to copy.");await navigator.clipboard.writeText(value);return true;}});
+        setStatus("#hd-seller-key-status","Copied to clipboard.","success");
+      }catch(error){setStatus("#hd-seller-key-status",error.message||"Could not copy key.","error");}
     });
   }
 
   async function init(){
-    const {data}=await client.auth.getSession();
-    session=data.session||null;
+    session=runtime?.sessionReady ? await runtime.sessionReady() : (await client.auth.getSession()).data.session||null;
     $("#hd-seller-signed-out").hidden=Boolean(session);
     if(!session)return;
     bind();

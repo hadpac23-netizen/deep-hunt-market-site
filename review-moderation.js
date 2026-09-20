@@ -1,8 +1,9 @@
 (() => {
   const H=window.HuntCore;
-  const sb=window.supabase;
-  if(!H||!sb?.createClient)return;
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const $=q=>document.querySelector(q);
 
   function setStatus(text,tone=""){
@@ -64,14 +65,18 @@
     const id=cardEl?.dataset.reviewId;
     const action=button.dataset.reviewAction;
     if(!id||!["approve","reject"].includes(action))return;
-    button.disabled=true;
     const nextStatus=action==="approve"?"published":"rejected";
-    const {error}=await client.from("product_reviews").update({status:nextStatus}).eq("id",id);
-    if(error){button.disabled=false;setStatus(error.message||"Moderation failed.","error");return;}
-    cardEl.remove();
-    const remaining=document.querySelectorAll("[data-review-id]").length;
-    $("#hd-mod-count").textContent=`${remaining} pending`;
-    if(!remaining)$("#hd-mod-list").innerHTML='<div class="hd-review-empty">No reviews are waiting for moderation.</div>';
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+    try{
+      await run("review.moderate",{
+        key:id+":"+action,element:button,broadcastSuccess:false,successDetail:{review_id:id,status:nextStatus},
+        execute:async()=>{const {error}=await client.from("product_reviews").update({status:nextStatus}).eq("id",id);if(error)throw error;return true;}
+      });
+      cardEl.remove();
+      const remaining=document.querySelectorAll("[data-review-id]").length;
+      $("#hd-mod-count").textContent=`${remaining} pending`;
+      if(!remaining)$("#hd-mod-list").innerHTML='<div class="hd-review-empty">No reviews are waiting for moderation.</div>';
+    }catch(error){setStatus(error.message||"Moderation failed.","error");}
   });
 
   load();

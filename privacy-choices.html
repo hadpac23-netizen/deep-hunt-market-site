@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Manage optional analytics consent for HUNT DEAL.">
+  <title>Privacy choices — HUNT DEAL</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo6">
+  <link rel="stylesheet" href="hunt-shop.css?v=platform1">
+  <meta name="theme-color" content="#111111">
+</head>
+<body class="hd-page" data-hunt-consent-surface="manager">
+  <div class="hd-space"></div>
+  <header class="hd-topbar">
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">PRIVACY CHOICES</div></div>
+    <nav class="hd-nav" aria-label="Privacy navigation">
+      <a href="legal.html?doc=privacy">Privacy policy</a>
+      <a href="legal.html?doc=terms">Terms</a>
+    </nav>
+    <div class="hd-tools"><a class="hd-btn" href="./">Back to HUNT</a></div>
+  </header>
+
+  <main class="hd-checkout-shell">
+    <section class="hd-checkout-banner glass">
+      <span id="hd-consent-state" class="hd-status blue">CHECKING</span>
+      <div>
+        <h1>Optional analytics</h1>
+        <p>You can allow or decline analytics at any time. Declining stops future GA4 and PostHog capture on this browser. Session replay is off.</p>
+      </div>
+    </section>
+
+    <section class="hd-checkout-items glass">
+      <div class="hd-section-head">
+        <div><div class="hd-kicker hd-kicker-small">YOUR CHOICE</div><h2>Analytics preference</h2></div>
+      </div>
+      <p id="hd-consent-copy" class="hd-checkout-truth" aria-live="polite">Reading this browser's current preference…</p>
+      <div class="hunt-consent-manager-actions" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+        <button id="hd-consent-decline" class="hd-btn" type="button">Decline analytics</button>
+        <button id="hd-consent-allow" class="hd-btn hd-btn-primary" type="button">Allow analytics</button>
+      </div>
+      <p class="hd-checkout-truth" style="margin-top:18px">
+        Analytics events are limited to usage and shopping-funnel signals such as page, category, product, cart, and checkout-stage events. HUNT does not intentionally send card details, payment credentials, or shipping-form contents through this analytics layer.
+      </p>
+    </section>
+
+    <section class="hd-checkout-readiness glass">
+      <div><b>1</b><span><strong>Before consent</strong><small>No analytics SDK or event transmission</small></span></div>
+      <div><b>2</b><span><strong>After allow</strong><small>GA4 + PostHog EU manual analytics events</small></span></div>
+      <div><b>3</b><span><strong>After decline</strong><small>Future capture disabled immediately</small></span></div>
+      <div><b>4</b><span><strong>Session replay</strong><small>OFF</small></span></div>
+    </section>
+  </main>
+
+  <script src="analytics-config.js?v=analytics5"></script>
+  <script src="analytics.js?v=huntmetrics5"></script>
+  <script>
+    (() => {
+      const state = document.getElementById("hd-consent-state");
+      const copy = document.getElementById("hd-consent-copy");
+      const analytics = window.HuntAnalytics;
+
+      function render() {
+        const value = analytics?.getConsentStatus?.() || "unknown";
+        state.textContent = value === "granted" ? "ALLOWED" : value === "denied" ? "DECLINED" : "NOT CHOSEN";
+        state.classList.toggle("green", value === "granted");
+        copy.textContent =
+          value === "granted"
+            ? "Analytics are currently allowed on this browser. You can decline below at any time."
+            : value === "denied"
+              ? "Analytics are currently declined on this browser. No new analytics events are sent unless you allow them."
+              : "No analytics choice has been stored for the current consent version.";
+      }
+
+      document.getElementById("hd-consent-decline").addEventListener("click", () => {
+        analytics?.setConsent?.(false);
+        render();
+      });
+      document.getElementById("hd-consent-allow").addEventListener("click", () => {
+        analytics?.setConsent?.(true);
+        render();
+      });
+
+      render();
+      window.addEventListener("hunt:analytics-consent", render);
+    })();
+  </script>
+  <script src="hunt-theme.js?v=shop4"></script>
+</body>
+</html>

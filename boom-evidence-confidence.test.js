@@ -1,0 +1,13 @@
+const assert=require("assert");
+const E=require("./boom-evidence-confidence.js");
+const now=Date.parse("2026-09-20T09:00:00Z");
+const at=h=>new Date(now-h*36e5).toISOString();
+let r=E.evaluate({type:"stock",observed_at:at(.5),base_confidence:.95},now);
+assert.equal(r.state,"FRESH"); assert.equal(r.recheck_required,false);
+r=E.evaluate({type:"stock",observed_at:at(8),base_confidence:.95},now);
+assert.equal(r.state,"RECHECK"); assert.equal(r.confidence,.5);
+r=E.evaluate({type:"shipping_quote",observed_at:at(80),base_confidence:.9},now);
+assert.equal(r.state,"STALE"); assert.equal(r.confidence,0);
+r=E.evaluate({type:"supplier_terms",observed_at:"",base_confidence:1},now);
+assert.equal(r.state,"UNKNOWN"); assert.equal(r.automatic_change,false);
+console.log("BOOM evidence confidence decay: PASS");

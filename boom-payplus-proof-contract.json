@@ -1,0 +1,25 @@
+{
+  "version":"PAYPLUS-STATUS-PROOF-V1",
+  "owner":"operations_brain",
+  "provider":"payplus",
+  "state":"HOLD",
+  "owner_approved":false,
+  "approved_success":null,
+  "approved_reject":null,
+  "required_evidence":[
+    "signed sandbox success callback",
+    "ipn-full verified success fingerprint",
+    "signed sandbox reject callback",
+    "ipn-full verified reject fingerprint",
+    "exact success/reject fingerprint review",
+    "explicit owner approval",
+    "owner-approved hunt_payplus_callback_accept_paid runtime control"
+  ],
+  "write_policy":{
+    "sandbox":"observe_only",
+    "live_paid":"exact_success_fingerprint_only",
+    "live_failed":"exact_reject_fingerprint_only",
+    "unknown":"hold"
+  },
+  "principle":"No status guess. No heuristic paid mapping. Exact provider fingerprint evidence only."
+}

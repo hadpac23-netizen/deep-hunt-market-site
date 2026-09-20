@@ -3,21 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Browse live HUNT DEAL category products with BOOM personalization.">
-  <title>Category — HUNT DEAL</title>
-  <link rel="stylesheet" href="hunt-deal.css?v=photo6">
-  <link rel="stylesheet" href="hunt-wow.css?v=market2">
-  <link rel="stylesheet" href="hunt-shop.css?v=platform1">
+  <link rel="icon" href="hunt-icon-192.png" type="image/png">
+  <meta name="description" content="Browse live HUNT category products with BOOM personalization.">
+  <title>Category — HUNT</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo9">
+  <link rel="stylesheet" href="hunt-wow.css?v=launchqa5">
+  <link rel="stylesheet" href="hunt-shop.css?v=dynamic1">
+  <link rel="stylesheet" href="hunt-visual-v2.css?v=1">
+  <link rel="stylesheet" href="hunt-product-finding.css?v=1">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="hunt-icon-192.png">
   <meta name="theme-color" content="#111111">
+  <link rel="stylesheet" href="hunt-brand-motion.css?v=1">
+  <link rel="stylesheet" href="boom-stylist.css?v=1">
 </head>
-<body class="hd-page hd-market-v2">
+<body class="hd-page hd-market-v2 hd-commerce-v2">
   <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
   <div class="hd-space"></div>
   <header class="hd-topbar">
-    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">BOOM PERSONALIZED MARKET</div></div>
-    <nav class="hd-nav" aria-label="Primary"><a href="./#shop">Shop</a><a href="./#for-you">For You</a><a href="category.html?c=women">Women</a><a href="category.html?c=men">Men</a></nav>
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT</a><div class="hd-branch">BOOM PERSONALIZED MARKET</div></div>
+    <nav class="hd-nav" aria-label="Primary">
+      <a href="./#shop">Shop</a><a href="search.html">AI Find</a>
+      <a href="category.html?c=women">Women</a>
+      <a href="category.html?c=accessories">Accessories</a>
+      <a href="category.html?c=beauty">Beauty</a>
+      <a href="category.html?c=men">Men</a>
+      <a href="category.html?c=kids">Kids</a>
+      <a href="category.html?c=home">Home</a>
+    </nav>
     <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a></div>
   </header>
 
@@ -29,6 +42,7 @@
         <div class="hd-boom-chip"><span>BOOM</span><div><strong>For You ranking</strong><small id="hd-boom-reason">Learning from this device.</small></div></div>
       </div>
       <div class="hd-category-strip" id="hd-category-strip"></div>
+      <nav class="hd-gender-subcategories" id="hd-gender-subcategories" aria-label="Category sections" hidden></nav>
     </section>
 
     <section class="hd-category-toolbar glass">
@@ -46,6 +60,12 @@
       </div>
     </section>
 
+    <section class="hd-applied-filters" id="hd-applied-filters" hidden aria-label="Applied filters">
+      <strong>APPLIED</strong>
+      <div class="hd-applied-filter-chips" id="hd-applied-filter-chips"></div>
+      <button class="hd-filter-clear" id="hd-filter-clear-all" type="button">Clear all</button>
+    </section>
+
     <section class="hd-category-content">
       <aside class="hd-category-side glass">
         <div class="hd-kicker hd-kicker-small">SHOP BY CATEGORY</div>
@@ -55,9 +75,10 @@
       <div>
         <div class="hd-market-product-grid" id="hd-category-grid"></div>
         <div class="hd-category-more" id="hd-category-more" hidden aria-live="polite"><span></span><strong>Load more products</strong></div>
-        <div class="hd-category-empty glass" id="hd-category-empty" hidden><span>◇</span><h2>No live product feed in this category yet.</h2><p>HUNT DEAL will populate it when an approved supplier feed is connected. We do not fill empty categories with unrelated products.</p><a href="partners.html" class="hd-btn">Supplier network →</a></div>
+        <div class="hd-category-empty glass" id="hd-category-empty" hidden><span>◇</span><h2>No live product feed in this category yet.</h2><p>HUNT will populate it when an approved supplier feed is connected. We do not fill empty categories with unrelated products.</p><a href="partners.html" class="hd-btn">Supplier network →</a></div>
       </div>
     </section>
+  <nav class="hd-legal-links" aria-label="Legal and customer policies"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="returns.html">Returns & Cancellation</a><a href="shipping.html">Shipping</a><a href="withdrawal.html">Withdrawal / Return request</a></nav>
   </main>
   <nav class="hd-mobile-nav" aria-label="Mobile navigation">
     <a href="./"><span>&#8962;</span><small>Home</small></a>
@@ -68,14 +89,24 @@
     <a href="auth.html"><span>&#9675;</span><small>Sign in</small></a>
   </nav>
 
-  <script src="market-core.js?v=boomcmd1"></script>
+  <script src="hunt-experience-i18n.js?v=1"></script>
+  <script src="market-core.js?v=dynamic2"></script>
+  <script src="hunt-browse-continuity.js?v=2"></script>
+  <script src="hunt-catalog-quality.js?v=1"></script>
+  <script src="hunt-country-brain.js?v=1"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
+  <script src="boom-runtime.js?v=brainos2"></script>
+  <script src="boom-evidence-confidence.js?v=brainos1"></script>
   <script src="account-presence.js?v=profile2"></script>
-  <script src="shopping-actions.js?v=brain2"></script>
   <script src="analytics-config.js?v=analytics1"></script>
-  <script src="analytics.js?v=ladder1"></script>
-  <script src="category.js?v=stable1"></script>
+  <script src="analytics.js?v=huntmetrics3"></script>
+  <script src="hunt-personalization.js?v=1"></script>
+  <script src="boom-stylist.js?v=1"></script>
+  <script src="shopping-actions.js?v=launchqa5"></script>
+  <script src="hunt-compare.js?v=2"></script>
+<script src="category.js?v=dynamic2"></script>
   <script src="hunt-theme.js?v=shop4"></script>
-  <script src="pwa.js?v=pwa1"></script>
+  <script src="pwa.js?v=pwa9"></script>
+  <script src="hunt-brand-motion.js?v=1"></script>
 </body>
 </html>

@@ -3,31 +3,63 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="HUNT DEAL checkout preview for connected catalog products.">
-  <title>Checkout Preview — HUNT DEAL</title>
-  <link rel="stylesheet" href="hunt-deal.css?v=photo6">
-  <link rel="stylesheet" href="hunt-shop.css?v=platform1">
+  <link rel="icon" href="hunt-icon-192.png" type="image/png">
+  <meta name="description" content="HUNT checkout preview for connected catalog products.">
+  <title>Checkout Preview — HUNT</title>
+  <link rel="stylesheet" href="hunt-deal.css?v=photo8">
+  <link rel="stylesheet" href="hunt-shop.css?v=shippingchess1">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="hunt-icon-192.png">
   <meta name="theme-color" content="#111111">
+  <link rel="stylesheet" href="hunt-visual-v2.css?v=1">
+  <link rel="stylesheet" href="hunt-brand-motion.css?v=1">
+  <link rel="stylesheet" href="boom-stylist.css?v=1">
+  <script>
+  (() => {
+    const key="hunt_deal_cart_v1";
+    const params=new URLSearchParams(location.search);
+    const action=params.get("cart_action");
+    if(!action)return;
+    let rows=[];
+    try{
+      const parsed=JSON.parse(localStorage.getItem(key)||"[]");
+      rows=Array.isArray(parsed)?parsed:[];
+    }catch{}
+    const itemKey=params.get("key")||"";
+    if(action==="clear") rows=[];
+    if(action==="remove"&&itemKey) rows=rows.filter(item=>String(item?.key||"")!==itemKey);
+    if((action==="inc"||action==="dec")&&itemKey){
+      const row=rows.find(item=>String(item?.key||"")===itemKey);
+      if(row){
+        const delta=action==="inc"?1:-1;
+        row.qty=Math.max(1,Math.min(5,(Number(row.qty)||1)+delta));
+      }
+    }
+    localStorage.setItem(key,JSON.stringify(rows));
+    params.delete("cart_action");
+    params.delete("key");
+    const next=location.pathname+(params.toString()?"?"+params.toString():"");
+    location.replace(next);
+  })();
+  </script>
 </head>
-<body class="hd-page hd-checkout-page">
+<body class="hd-page hd-checkout-page hd-commerce-v2">
   <div class="hd-space"></div>
   <header class="hd-topbar">
-    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT <span>DEAL</span></a><div class="hd-branch">PRE-LAUNCH CHECKOUT</div></div>
+    <div class="hd-brand-wrap"><a class="hd-brand" href="./">HUNT</a><div class="hd-branch">PRE-LAUNCH CHECKOUT</div></div>
     <nav class="hd-nav"><a href="./#catalog">Products</a><a href="./#hunt-market">Deal Hunt</a></nav>
     <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-btn" href="./">Continue shopping</a></div>
   </header>
 
   <main class="hd-checkout-shell">
     <section class="hd-checkout-banner glass">
-      <span class="hd-status blue">PRE-LAUNCH</span>
-      <div><h1>Checkout preview</h1><p>This flow uses real connected catalog products. Payment is not live yet. HUNT only shows customer pricing after retail verification and profit checks pass, and no order will be submitted until fulfillment and payment activation are approved.</p></div>
+      <span class="hd-status blue" data-hunt-i18n="preLaunch">PRE-LAUNCH</span>
+      <div><h1 data-hunt-i18n="checkoutPreview">Checkout preview</h1><p data-hunt-i18n="checkoutCopy">This flow uses real connected catalog products. Payment is not live yet. HUNT only shows customer pricing after retail verification and profit checks pass, and no order will be submitted until fulfillment and payment activation are approved.</p></div>
     </section>
 
     <div class="hd-checkout-layout">
       <section class="hd-checkout-items glass">
-        <div class="hd-section-head"><div><div class="hd-kicker hd-kicker-small">YOUR CART</div><h2>Order items</h2></div><button id="hd-clear-cart" class="hd-link-button" type="button">Clear cart</button></div>
+        <div class="hd-section-head"><div><div class="hd-kicker hd-kicker-small">YOUR CART</div><h2>Order items</h2></div><a id="hd-clear-cart" class="hd-link-button" href="checkout.html?cart_action=clear">Clear cart</a></div>
         <div id="hd-checkout-items"></div>
         <div id="hd-checkout-empty" class="hd-empty-checkout" hidden><strong>Your cart is empty.</strong><a class="hd-btn hd-btn-primary" href="./#catalog">Browse live products</a></div>
       </section>
@@ -37,6 +69,7 @@
         <div class="hd-summary-row"><span>Verified HUNT retail subtotal</span><strong id="hd-checkout-subtotal">—</strong></div>
         <div class="hd-summary-row"><span>Price verification</span><strong>PER ITEM</strong></div>
         <div class="hd-summary-row"><span>Shipping</span><strong id="hd-checkout-shipping">PENDING</strong></div>
+        <div class="hd-summary-row"><span>BOOM bundle offer</span><strong id="hd-checkout-discount">—</strong></div>
         <div class="hd-summary-row"><span>Taxes / duties</span><strong>PENDING</strong></div>
         <div class="hd-summary-total"><span>Verified pre-tax total</span><strong id="hd-checkout-total">PRE-LAUNCH</strong></div>
         <label class="hd-checkout-label">Destination country
@@ -51,8 +84,60 @@
             <option value="AE">United Arab Emirates</option>
           </select>
         </label>
+
+        <form id="hd-checkout-shipping-form" class="hd-shipping-form" autocomplete="on" aria-labelledby="hd-shipping-title">
+          <strong id="hd-shipping-title">Shipping details</strong>
+          <label class="hd-checkout-label">Full name
+            <input id="hd-ship-name" autocomplete="section-shipping shipping name" maxlength="50" placeholder="Recipient name">
+          </label>
+          <label class="hd-checkout-label">Email
+            <input id="hd-ship-email" type="email" autocomplete="section-shipping email" maxlength="254" placeholder="Email for order updates">
+          </label>
+          <label class="hd-checkout-label">Address
+            <input id="hd-ship-address" autocomplete="section-shipping shipping street-address" maxlength="500" placeholder="Street and number">
+          </label>
+          <label class="hd-checkout-label">Address line 2
+            <input id="hd-ship-address2" autocomplete="section-shipping shipping address-line2" maxlength="500" placeholder="Apartment / unit (optional)">
+          </label>
+          <div class="hd-shipping-grid">
+            <label class="hd-checkout-label">City
+              <input id="hd-ship-city" autocomplete="section-shipping shipping address-level2" maxlength="50">
+            </label>
+            <label class="hd-checkout-label">Province / region
+              <input id="hd-ship-province" autocomplete="section-shipping shipping address-level1" maxlength="50">
+            </label>
+          </div>
+          <div class="hd-shipping-grid">
+            <label class="hd-checkout-label">Postal code
+              <input id="hd-ship-zip" autocomplete="section-shipping shipping postal-code" maxlength="20">
+            </label>
+            <label class="hd-checkout-label">Phone
+              <input id="hd-ship-phone" autocomplete="section-shipping shipping tel" maxlength="20">
+            </label>
+          </div>
+          <p id="hd-shipping-status" class="hd-checkout-truth" aria-live="polite">Add delivery details before an order can be handed to a supplier.</p>
+        </form>
+        <div class="hd-saved-delivery-actions">
+          <button id="hd-save-delivery" class="hd-btn" type="button" hidden>Save delivery details</button>
+          <button id="hd-forget-delivery" class="hd-link-button" type="button" hidden>Forget saved details</button>
+        </div>
+        <p id="hd-saved-delivery-status" class="hd-checkout-truth" aria-live="polite"></p>
+
         <button id="hd-checkout-verify" class="hd-btn hd-btn-primary" type="button">Verify price & shipping</button>
+        <div class="hd-bundle-preview" id="hd-bundle-preview" hidden>
+          <strong>BOOM bundle check</strong>
+          <small id="hd-bundle-preview-copy">Bundle offer will be checked after price and shipping verification.</small>
+        </div>
+        <div class="hd-shipping-chess" id="hd-shipping-chess" hidden>
+          <div class="hd-shipping-chess-head"><strong>BOOM Shipping Chess</strong><small>Verified alternatives that may reduce shipping or delivered cost.</small></div>
+          <div class="hd-shipping-chess-list" id="hd-shipping-chess-list"></div>
+          <small class="hd-shipping-chess-note">Nothing is replaced automatically. Open an alternative and choose it yourself.</small>
+        </div>
         <button class="hd-btn hd-btn-primary hd-pay-disabled" type="button" disabled>Payment activation pending</button>
+        <div id="hd-local-sandbox-qa" hidden>
+          <button id="hd-local-sandbox-run" class="hd-btn" type="button" disabled>QA: Run CJ sandbox test</button>
+          <p id="hd-local-sandbox-status" class="hd-checkout-truth" aria-live="polite">Verify checkout first. Sandbox only — no real charge.</p>
+        </div>
         <p id="hd-checkout-status" class="hd-checkout-truth" aria-live="polite">No card data is collected on this page. Verify price and shipping first; payment remains disabled until an authorized merchant account and fulfillment flow are active.</p>
       </aside>
     </div>
@@ -63,6 +148,7 @@
       <div><b>3</b><span><strong>Fulfillment</strong><small>PENDING — supplier/store credentials required</small></span></div>
       <div><b>4</b><span><strong>Payment</strong><small>PENDING — authorized merchant account required</small></span></div>
     </section>
+  <nav class="hd-legal-links" aria-label="Legal and customer policies"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="returns.html">Returns & Cancellation</a><a href="shipping.html">Shipping</a><a href="withdrawal.html">Withdrawal / Return request</a></nav>
   </main>
   <nav class="hd-mobile-nav" aria-label="Mobile navigation">
     <a href="./"><span>&#8962;</span><small>Home</small></a>
@@ -71,12 +157,80 @@
     <a class="active" href="checkout.html"><span>&#9711;</span><small>Cart</small><b data-cart-count>0</b></a>
     <a href="auth.html"><span>&#9675;</span><small>Sign in</small></a>
   </nav>
+  <script>
+  (() => {
+    const CART_KEY="hunt_deal_cart_v1";
+    const readCart=()=>{
+      try{
+        const value=JSON.parse(localStorage.getItem(CART_KEY)||"[]");
+        return Array.isArray(value)?value:[];
+      }catch{return []}
+    };
+    const writeCart=rows=>{
+      localStorage.setItem(CART_KEY,JSON.stringify(Array.isArray(rows)?rows:[]));
+      location.reload();
+    };
+    const params=new URLSearchParams(location.search);
+    if(params.get("reset_cart")==="1"){
+      localStorage.setItem(CART_KEY,"[]");
+      params.delete("reset_cart");
+      history.replaceState(null,"",location.pathname+(params.toString()?"?"+params.toString():""));
+    }
+    document.addEventListener("pointerdown",event=>{
+      const clear=event.target.closest?.("#hd-clear-cart");
+      if(clear){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        writeCart([]);
+        return;
+      }
+      const remove=event.target.closest?.(".hd-remove");
+      if(remove){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const key=String(remove.dataset.key||remove.closest(".hd-checkout-item")?.dataset.key||"");
+        if(key)writeCart(readCart().filter(item=>String(item?.key||"")!==key));
+        return;
+      }
+      const qty=event.target.closest?.("[data-delta]");
+      if(qty){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const key=String(qty.dataset.key||qty.closest(".hd-checkout-item")?.dataset.key||"");
+        const delta=Number(qty.dataset.delta||0);
+        const rows=readCart();
+        const row=rows.find(item=>String(item?.key||"")===key);
+        if(row&&delta){
+          row.qty=Math.max(1,Math.min(5,(Number(row.qty)||1)+delta));
+          writeCart(rows);
+        }
+      }
+    },true);
+    document.addEventListener("click",event=>{
+      const clear=event.target.closest?.("#hd-clear-cart");
+      if(!clear)return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      writeCart([]);
+    },true);
+  })();
+  </script>
+  <script src="hunt-experience-i18n.js?v=1"></script>
+  <script src="market-core.js?v=dynamic2"></script>
+  <script src="hunt-country-brain.js?v=1"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
+  <script src="boom-runtime.js?v=brainos2"></script>
+  <script src="boom-evidence-confidence.js?v=brainos1"></script>
   <script src="account-presence.js?v=profile2"></script>
   <script src="analytics-config.js?v=analytics1"></script>
-  <script src="analytics.js?v=ladder1"></script>
-  <script src="checkout.js?v=photo6"></script>
+  <script src="analytics.js?v=huntmetrics3"></script>
+  <script src="hunt-personalization.js?v=1"></script>
+  <script src="boom-stylist.js?v=1"></script>
+  <script src="hunt-saved-addresses.js?v=2"></script>
+<script src="checkout.js?v=shippingchess13"></script>
+  <script src="hunt-local-sandbox-qa.js?v=2"></script>
   <script src="hunt-theme.js?v=shop4"></script>
-  <script src="pwa.js?v=pwa1"></script>
+  <script src="pwa.js?v=pwa10"></script>
+  <script src="hunt-brand-motion.js?v=1"></script>
 </body>
 </html>

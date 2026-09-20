@@ -1,0 +1,9 @@
+{
+  "version":"BOOM-BRAIN-HEALTH-V1",
+  "mode":"RECOMMEND_ONLY",
+  "principle":"Health policy may recommend demotion; it never changes lifecycle by itself.",
+  "initial_thresholds":{"error_sample_min":20,"error_rate_shadow":0.25,"conflict_sample_min":10,"conflict_rate_shadow":0.20},
+  "hard_off_conditions":["safety_policy_failure","compromised_credentials","known_data_corruption"],
+  "shadow_conditions":["commercial_rights_invalid","critical_evidence_stale","error_rate_exceeded","conflict_rate_exceeded","required_dependency_unavailable"],
+  "recovery_requirements":["root_cause_recorded","fresh_evidence","regression_qa_pass","owner_or_orchestrator_review"]
+}

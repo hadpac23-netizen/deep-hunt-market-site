@@ -1,10 +1,11 @@
 (() => {
   const H=window.HuntCore;
+  const runtime=window.BoomRuntime;
   const $=q=>document.querySelector(q);
   H.updateCartBadges();
   const supabaseUrl="https://zszlnahjqmwozwubetkm.supabase.co";
   const googleClientId="958182987084-dck16kardln9j1j3ovirvc9pi8523bcu.apps.googleusercontent.com";
-  const supabase=window.supabase?.createClient(supabaseUrl,H.publishableKey);
+  const supabase=runtime?.getSupabaseClient?.() || null;
   const status=$("#hd-auth-status");
   const providerButtons=[...document.querySelectorAll("button[data-oauth]")];
   const googleContainer=$("#hd-google-signin");
@@ -92,17 +93,26 @@
             return;
           }
           setStatus("Finishing Google sign-in…");
-          const {data,error}=await supabase.auth.signInWithIdToken({
-            provider:"google",
-            token:response.credential,
-            nonce
-          });
-          if(error){
-            setStatus(error.message,"error");
-            return;
+          try {
+            const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+            const data=await run("auth.signin",{
+              key:"google-id-token",
+              announcePending:"Signing in securely…",
+              announceSuccess:"Signed in.",
+              announceError:"Google sign-in failed.",
+              execute:async()=>{
+                const {data,error}=await supabase.auth.signInWithIdToken({
+                  provider:"google", token:response.credential, nonce
+                });
+                if(error)throw error;
+                return data;
+              }
+            });
+            renderSession(data?.session||null);
+            setStatus("Signed in with Google.","ok");
+          } catch(error) {
+            setStatus(error?.message||"Google sign-in failed.","error");
           }
-          renderSession(data.session);
-          setStatus("Signed in with Google.","ok");
         },
         nonce:hashedNonce,
         use_fedcm_for_prompt:true,
@@ -151,9 +161,22 @@
     if(!supabase){setStatus("Auth library unavailable.","error");return;}
     const email=$("#hd-auth-email").value.trim();
     if(!email)return;
+    const button=event.currentTarget.querySelector("button[type='submit']");
     setStatus("Sending secure magic link…");
-    const {error}=await supabase.auth.signInWithOtp({email,options:{emailRedirectTo:redirectUrl(),shouldCreateUser:true}});
-    setStatus(error?error.message:"Magic link sent. Check your email to continue.",error?"error":"ok");
+    try {
+      const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+      await run("auth.signin",{
+        key:"email-otp", element:button, broadcastSuccess:false,
+        execute:async()=>{
+          const {error}=await supabase.auth.signInWithOtp({email,options:{emailRedirectTo:redirectUrl(),shouldCreateUser:true}});
+          if(error)throw error;
+          return true;
+        }
+      });
+      setStatus("Magic link sent. Check your email to continue.","ok");
+    } catch(error) {
+      setStatus(error?.message||"Could not send the magic link.","error");
+    }
   });
 
   providerButtons.forEach(button=>button.addEventListener("click",async()=>{
@@ -161,18 +184,41 @@
     if(!supabase){setStatus("Auth library unavailable.","error");return;}
     const provider=button.dataset.oauth;
     setStatus("Opening "+button.querySelector("span").textContent+"…");
-    const {error}=await supabase.auth.signInWithOAuth({provider,options:{redirectTo:redirectUrl()}});
-    if(error)setStatus(error.message,"error");
+    try {
+      const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+      await run("auth.provider.start",{
+        key:provider, element:button, broadcastSuccess:false,
+        successDetail:{provider},
+        execute:async()=>{
+          const {data,error}=await supabase.auth.signInWithOAuth({provider,options:{redirectTo:redirectUrl()}});
+          if(error)throw error;
+          return data;
+        }
+      });
+    } catch(error) {
+      setStatus(error?.message||"Provider sign-in is unavailable.","error");
+    }
   }));
 
-  $("#hd-sign-out")?.addEventListener("click",async()=>{
+  $("#hd-sign-out")?.addEventListener("click",async event=>{
     if(!supabase)return;
     if(googleReady)window.google?.accounts?.id?.disableAutoSelect?.();
-    const {error}=await supabase.auth.signOut();
-    if(error)setStatus(error.message,"error"); else {renderSession(null);setStatus("Signed out.","ok");}
+    try {
+      const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+      await run("auth.signout",{
+        key:"account", element:event.currentTarget, broadcastSuccess:false,
+        execute:async()=>{ const {error}=await supabase.auth.signOut(); if(error)throw error; return true; }
+      });
+      renderSession(null);
+      setStatus("Signed out.","ok");
+    } catch(error) {
+      setStatus(error?.message||"Could not sign out.","error");
+    }
   });
 
-  if(supabase){
+  if(runtime?.subscribeSession){
+    runtime.subscribeSession(session=>renderSession(session));
+  } else if(supabase){
     supabase.auth.getSession().then(({data})=>renderSession(data.session));
     supabase.auth.onAuthStateChange((_event,session)=>renderSession(session));
   }

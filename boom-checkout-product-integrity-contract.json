@@ -1,0 +1,72 @@
+{
+  "version": "BOOM-CHECKOUT-PRODUCT-INTEGRITY-V1",
+  "id": "checkout_product_integrity_qa",
+  "mode": "ACTIVE_READ_ONLY_QA",
+  "owner": "learning_governance_brain",
+  "decision_owner": "commerce_truth_brain",
+  "execution_owner": "operations_brain",
+  "principle": "Every safe CJ variant may be selected unless verified unavailable. Cart may carry PRICE_PENDING, but payment/supplier handoff requires fresh Commerce Truth PASS.",
+  "truth_status": {
+    "source_qa": "PASS",
+    "live_payment_session": "DEPLOYED_V16",
+    "cj_sandbox_evidence": "HOLD",
+    "live_payment": "OFF",
+    "live_supplier": "OFF"
+  },
+  "stages": [
+    {
+      "id": "product_detail",
+      "expects": "Live provider product + variant feed loads; stale fallback is visibly non-buyable.",
+      "fail": "PRODUCT_DETAIL_UNAVAILABLE"
+    },
+    {
+      "id": "variant_selectability",
+      "expects": "CJ variants remain selectable while stock is unknown; only verified unavailable variants are blocked.",
+      "fail": "VARIANT_SELECTION_REGRESSION"
+    },
+    {
+      "id": "cart_controls",
+      "expects": "Quantity +/−, remove and clear have a native navigation fallback independent of runtime handlers.",
+      "fail": "CART_CONTROL_REGRESSION"
+    },
+    {
+      "id": "stock_recheck",
+      "expects": "Selected CJ variant gets a fresh stock check before cart readiness.",
+      "fail": "STOCK_RECHECK_FAILED"
+    },
+    {
+      "id": "destination_pricing",
+      "expects": "Actual shipping is included in Commerce Truth; retail adjusts upward only when needed to preserve approved contribution/margin.",
+      "fail": "PROFIT_RECHECK_FAILED"
+    },
+    {
+      "id": "shipping_recheck",
+      "expects": "A verified route, method, origin and destination shipping amount exist.",
+      "fail": "SHIPPING_RECHECK_FAILED"
+    },
+    {
+      "id": "checkout_quote",
+      "expects": "Fresh authenticated payment session has Commerce Truth PASS and current evidence.",
+      "fail": "CHECKOUT_QUOTE_FAILED"
+    },
+    {
+      "id": "sandbox_readiness",
+      "expects": "Dry-run passes before any CJ sandbox execution; live payment/supplier remain gated.",
+      "fail": "SANDBOX_NOT_READY"
+    }
+  ],
+  "invariants": [
+    "Never fabricate price, stock, shipping, product or variant availability.",
+    "PRICE_PENDING may enter cart; it may not enter payment or supplier execution.",
+    "Destination price adjustment is disclosed before payment and re-evaluated through the same Profit Gate.",
+    "Known unavailable variants remain blocked.",
+    "Live payment and live supplier execution stay Owner-Gated."
+  ],
+  "regression_tests": [
+    "hunt-product-checkout-integrity.test.js",
+    "boom-commerce-profit.test.mjs",
+    "boom-commerce-handoff.test.js",
+    "boom-payment-order-state.test.js",
+    "hunt-global-checkout-search.test.js"
+  ]
+}

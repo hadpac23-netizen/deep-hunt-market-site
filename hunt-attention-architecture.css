@@ -1,0 +1,159 @@
+/* HUNT F35 · ATTENTION ARCHITECTURE
+   Psychology goal: reduce cognitive load, improve orientation and trust.
+   No pressure, fake scarcity, social proof fabrication or dark patterns. */
+
+.hd-building-floor-nav a{
+  min-height:36px;
+  position:relative;
+  transition:background .16s ease,color .16s ease,transform .16s ease;
+}
+
+.hd-building-floor-nav a:first-of-type:not([aria-current="location"]){
+  background:transparent!important;
+  color:var(--shop-muted)!important;
+}
+
+.hd-building-floor-nav a[aria-current="location"]{
+  background:var(--shop-text)!important;
+  color:var(--shop-surface)!important;
+  font-weight:900;
+}
+
+.hd-building-floor-nav a[aria-current="location"] span{
+  color:inherit!important;
+}
+
+.hd-building-floor-nav a[data-zone-start="true"]:not(:first-of-type){
+  margin-left:13px;
+}
+
+.hd-building-floor-nav a[data-zone-start="true"]:not(:first-of-type)::before{
+  content:"";
+  position:absolute;
+  left:-7px;
+  top:8px;
+  bottom:8px;
+  width:1px;
+  background:var(--shop-line);
+}
+
+.hd-building-floor-nav a:focus-visible,
+.hd-all-categories:focus-visible,
+.hd-department-bar a:focus-visible,
+.hd-building-mini-head a:focus-visible,
+.hd-mega-menu a:focus-visible{
+  outline:2px solid var(--shop-accent)!important;
+  outline-offset:2px!important;
+}
+
+.hd-building-mode :is(.hd-all-categories,.hd-department-bar a,.hd-building-mini-head a){
+  min-height:36px;
+  display:inline-flex;
+  align-items:center;
+}
+
+.hd-building-mode .hd-home3-card .hd-market-card-price strong{
+  color:var(--shop-text)!important;
+  font-size:.74rem!important;
+  font-weight:820!important;
+  letter-spacing:-.01em;
+}
+
+.hd-building-mode .hd-home3-title{
+  font-weight:620!important;
+}
+
+.hd-building-mode [data-attention-zone-start="true"].hd-building-floor,
+.hd-building-mode [data-attention-zone-start="true"].hd-building-special-floor{
+  margin-top:18px;
+  padding-top:74px;
+}
+
+.hd-building-mode [data-attention-zone-start="true"].hd-building-special-floor{
+  margin-top:28px;
+}
+
+.hd-mega-menu{
+  padding:14px!important;
+}
+
+.hd-mega-cluster{
+  padding:12px 0 16px;
+  border-bottom:1px solid var(--shop-line);
+}
+
+.hd-mega-cluster:last-child{
+  border-bottom:0;
+  padding-bottom:2px;
+}
+
+.hd-mega-cluster-label{
+  margin:0 0 10px;
+  color:var(--shop-accent);
+  font-size:.5rem;
+  font-weight:950;
+  letter-spacing:.16em;
+}
+
+.hd-mega-cluster-grid{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:15px 18px;
+}
+
+.hd-mega-cluster-grid section{
+  min-width:0;
+}
+
+.hd-mega-cluster-grid section h3{
+  margin:0 0 7px;
+}
+
+.hd-mega-cluster-grid section h3 a{
+  display:inline-flex;
+  align-items:center;
+  min-height:30px;
+  font-size:.7rem;
+  font-weight:900;
+  text-decoration:none;
+}
+
+.hd-mega-cluster-grid section>div{
+  display:grid;
+  gap:2px;
+}
+
+.hd-mega-cluster-grid section>div a{
+  display:flex;
+  align-items:center;
+  min-height:28px;
+  padding:4px 0;
+  font-size:.58rem;
+  line-height:1.25;
+  text-decoration:none;
+}
+
+.hd-mega-cluster-grid section>div a:hover{
+  color:var(--shop-text)!important;
+}
+
+@media(max-width:1000px){
+  .hd-mega-cluster-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+
+@media(max-width:760px){
+  .hd-building-floor-nav a{min-height:34px}
+  .hd-building-floor-nav a[data-zone-start="true"]:not(:first-of-type){margin-left:9px}
+  .hd-building-floor-nav a[data-zone-start="true"]:not(:first-of-type)::before{left:-5px}
+  .hd-building-mode [data-attention-zone-start="true"].hd-building-floor,
+  .hd-building-mode [data-attention-zone-start="true"].hd-building-special-floor{padding-top:54px}
+  .hd-mega-menu{padding:10px!important}
+  .hd-mega-cluster-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}
+  .hd-mega-cluster-grid section h3 a{min-height:34px}
+  .hd-mega-cluster-grid section>div a{min-height:32px}
+  .hd-building-mode .hd-home3-card .hd-market-card-price strong{font-size:.72rem!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .hd-building-floor-nav a{transition:none}
+}

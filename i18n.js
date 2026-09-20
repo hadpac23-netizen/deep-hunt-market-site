@@ -1,4 +1,6 @@
 (() => {
+  const LANGUAGE_KEY = "hunt_language_v1";
+  const LEGACY_LANGUAGE_KEY = "hunt_language";
   const RTL = new Set(["ar", "he"]);
   const common = {
     en: {
@@ -234,17 +236,29 @@
       if (dict[key] !== undefined) el.setAttribute("placeholder", dict[key]);
     });
     document.querySelectorAll("[data-lang-select]").forEach(el => { el.value = safe; });
-    localStorage.setItem("hunt_language", safe);
+    try {
+      localStorage.setItem(LANGUAGE_KEY, safe);
+      if (localStorage.getItem(LANGUAGE_KEY) === safe) localStorage.removeItem(LEGACY_LANGUAGE_KEY);
+    } catch {}
     window.dispatchEvent(new CustomEvent("hunt:language", {detail:{lang:safe, dict}}));
     return dict;
   }
 
   window.HuntI18n = {
     start(page) {
-      const selected = localStorage.getItem("hunt_language") || langFromBrowser();
+      let selected="";
+      try { selected=localStorage.getItem(LANGUAGE_KEY) || localStorage.getItem(LEGACY_LANGUAGE_KEY) || ""; } catch {}
+      selected=selected || langFromBrowser();
       const run = lang => apply(page, lang);
       document.querySelectorAll("[data-lang-select]").forEach(el => {
-        el.addEventListener("change", () => run(el.value));
+        el.addEventListener("change", () => {
+          const value=el.value;
+          run(value);
+          window.BoomRuntime?.emit?.("language.change",{value},{broadcast:false});
+        });
+      });
+      window.addEventListener("storage",event=>{
+        if((event.key===LANGUAGE_KEY||event.key===LEGACY_LANGUAGE_KEY)&&event.newValue)run(event.newValue);
       });
       return run(selected);
     },

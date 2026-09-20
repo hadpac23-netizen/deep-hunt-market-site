@@ -1,0 +1,206 @@
+{
+  "version": "BOOM-BRAIN-GAPS-V1",
+  "updated_for": "BOOM Brain OS v1",
+  "items": [
+    {
+      "id": "brain_registry",
+      "title": "Canonical Brain Registry",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Keep ownership conflicts at zero."
+    },
+    {
+      "id": "action_contract",
+      "title": "Canonical Action Contract",
+      "owner": "action_state_kernel",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Expand only when a real interaction requires a new action."
+    },
+    {
+      "id": "interaction_inventory",
+      "title": "Interaction Inventory",
+      "owner": "action_state_kernel",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Fail QA when new controls have no owner."
+    },
+    {
+      "id": "shared_identity",
+      "title": "Shared Identity / Session Runtime",
+      "owner": "identity_session_kernel",
+      "status": "DONE",
+      "source": "F35",
+      "next": "boom-runtime.js is the only Supabase client owner across phase-1/admin/seller surfaces; contract QA fails on duplicate createClient usage."
+    },
+    {
+      "id": "likes_saves",
+      "title": "Like / Save Action Kernel",
+      "owner": "action_state_kernel",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Journey test guest → sign-in → merge → profile."
+    },
+    {
+      "id": "cart_kernel",
+      "title": "Single Cart Owner",
+      "owner": "action_state_kernel",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Add account merge policy when server cart exists."
+    },
+    {
+      "id": "search_filters",
+      "title": "Search / Filter Canonical Actions",
+      "owner": "experience_brain",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Add journey tests and result-state QA."
+    },
+    {
+      "id": "product_actions",
+      "title": "Product Interaction Actions",
+      "owner": "experience_brain",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Keyboard/focus and mobile parity QA."
+    },
+    {
+      "id": "checkout_quote",
+      "title": "Checkout Quote Guard / Idempotency",
+      "owner": "operations_brain",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Live landed-cost/profit recheck now gates payment sessions and supplier handoff; next is shipping-address capture plus callback/order lifecycle proof before live launch."
+    },
+    {
+      "id": "shadow_mode",
+      "title": "Brain Shadow Mode",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Require evidence before lifecycle promotion."
+    },
+    {
+      "id": "circuit_breaker",
+      "title": "Brain Circuit Breaker",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Recommend-only health policy implemented; calibrate thresholds from real telemetry before any automatic lifecycle behavior."
+    },
+    {
+      "id": "contract_generated_qa",
+      "title": "Contract-generated QA",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "F50",
+      "next": "72 interaction mappings resolve to source and phase-1 journey/surface contracts pass; keep coverage mandatory as controls expand."
+    },
+    {
+      "id": "action_trace",
+      "title": "Action Trace Viewer",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Keep trace sanitized and memory-only; add server trace persistence only if a reviewed observability store is introduced."
+    },
+    {
+      "id": "journey_graph",
+      "title": "Critical Journey Graph",
+      "owner": "experience_brain",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Journey contract is visible in Brain Studio; add automated browser E2E for each critical journey."
+    },
+    {
+      "id": "guest_merge_matrix",
+      "title": "Guest-to-Account Merge Matrix",
+      "owner": "identity_session_kernel",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Merge policies are explicit; local-only cart/theme/language remain labeled until real account stores are introduced."
+    },
+    {
+      "id": "feedback_center",
+      "title": "Global Feedback Center",
+      "owner": "action_state_kernel",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Visible non-intrusive runtime feedback is wired and verified in the critical checkout E2E; extend copy only from real action states."
+    },
+    {
+      "id": "error_taxonomy",
+      "title": "Stable Error Taxonomy",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Runtime traces emit normalized safe error codes; expand domain mappings only from verified failures."
+    },
+    {
+      "id": "storage_migrations",
+      "title": "Storage Schema Versioning",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Executable idempotent migration framework is active; hunt_language migrates to hunt_language_v1 only after a verified write. Require a registered migration for every future breaking storage change."
+    },
+    {
+      "id": "confidence_decay",
+      "title": "Evidence Confidence Decay",
+      "owner": "intelligence_brain",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Product, checkout and partner evidence all use persisted timestamps; null evidence remains UNKNOWN and never becomes verified automatically."
+    },
+    {
+      "id": "mission_budgets",
+      "title": "Mission Resource Budgets",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Six material resource classes default to zero autonomous budget and Owner Gate."
+    },
+    {
+      "id": "decision_explainability",
+      "title": "Decision Reason Codes",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Material decisions now have a canonical reason-code contract; wire reason codes into persisted decision records when that ledger is implemented."
+    },
+    {
+      "id": "dead_home_cart_handler",
+      "title": "Remove orphan Home cart handler",
+      "owner": "action_state_kernel",
+      "status": "DONE",
+      "source": "F35",
+      "next": "Keep dead-control detection in contract QA."
+    },
+    {
+      "id": "journey_e2e",
+      "title": "Automated critical journey E2E",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Browser E2E passes product → verified quote, guest → account merge, storage migration and admin authorization; payment remains disabled."
+    },
+    {
+      "id": "checkout_product_integrity",
+      "title": "Product → Checkout Integrity QA",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "OWNER+F35",
+      "next": "hunt-payment-session v16 is deployed with destination-safe retail plus server-verified account binding. Keep IN_PROGRESS until a fresh authenticated Verify stores user_id, then dry-run and CJ sandbox evidence pass."
+    },
+    {
+      "id": "incident_repair_team",
+      "title": "Permanent Incident & Repair Team",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "OWNER+F35",
+      "next": "Permanent prompt, repair contract, product-media regression and GitHub CI are installed. Optional next layer: connect privacy-safe runtime monitoring and real-device browser evidence."
+    }
+  ]
+}

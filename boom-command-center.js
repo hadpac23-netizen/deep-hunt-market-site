@@ -1,7 +1,8 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase;
-  if(!H||!sb?.createClient)return;
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const $=q=>document.querySelector(q);
   let rows=[];
 
@@ -77,19 +78,27 @@
     if(!button)return;
     const cardEl=button.closest("[data-command-id]"); if(!cardEl)return;
     const field=name=>cardEl.querySelector(`[data-command-field="${name}"]`)?.value;
-    button.disabled=true;
     const payload={
       status:field("status"), priority:Number(field("priority"))||3,
       next_action:String(field("next_action")||"").trim(),
       blocker:String(field("blocker")||"").trim()||null,
       updated_at:new Date().toISOString()
     };
-    const {data,error}=await client.from("hunt_boom_command_queue").update(payload).eq("id",cardEl.dataset.commandId)
-      .select("id,title,workstream,status,priority,impact,effort,cost_mode,blocker,next_action,success_metric,owner_approval_required,evidence_note,updated_at").single();
-    if(error){setStatus(error.message||"Could not update task.","error");button.disabled=false;return;}
-    const i=rows.findIndex(x=>x.id===data.id); if(i>=0)rows[i]=data; render();
+    const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+    try{
+      const data=await run("boom.command.save",{
+        key:cardEl.dataset.commandId,element:button,broadcastSuccess:false,
+        successDetail:{command_id:cardEl.dataset.commandId,status:payload.status},
+        execute:async()=>{
+          const {data,error}=await client.from("hunt_boom_command_queue").update(payload).eq("id",cardEl.dataset.commandId)
+            .select("id,title,workstream,status,priority,impact,effort,cost_mode,blocker,next_action,success_metric,owner_approval_required,evidence_note,updated_at").single();
+          if(error)throw error; return data;
+        }
+      });
+      const i=rows.findIndex(x=>x.id===data.id); if(i>=0)rows[i]=data; render();
+    }catch(error){setStatus(error.message||"Could not update task.","error");}
   });
-  $("#hd-command-status-filter")?.addEventListener("change",render);
-  $("#hd-command-workstream-filter")?.addEventListener("change",render);
+  $("#hd-command-status-filter")?.addEventListener("change",event=>{runtime?.emit?.("filter.apply",{surface:"command_center",filter:"status",value:String(event.currentTarget.value||"")},{broadcast:false});render();});
+  $("#hd-command-workstream-filter")?.addEventListener("change",event=>{runtime?.emit?.("filter.apply",{surface:"command_center",filter:"workstream",value:String(event.currentTarget.value||"")},{broadcast:false});render();});
   load();
 })();

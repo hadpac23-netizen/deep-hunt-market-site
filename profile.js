@@ -1,9 +1,11 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase;
-  if(!H||!sb?.createClient)return;
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const $=q=>document.querySelector(q);
   let session=null;
+  let loadedUserId="";
 
   function safeHttps(value){
     try{return new URL(value).protocol==="https:";}catch{return false;}
@@ -126,22 +128,43 @@
     }
     $("#hd-profile-orders").innerHTML=rows.map(order=>orderCard(order,byOrder.get(order.id)||[])).join("");
   }
-  async function init(){
-    const {data}=await client.auth.getSession();
-    session=data.session||null;
+  async function handleSession(nextSession){
+    session=nextSession||null;
     if(!session){
+      loadedUserId="";
       location.replace("auth.html?next="+encodeURIComponent("/deep-hunt-market-site/profile.html"));
       return;
     }
+    const userId=String(session.user?.id||"");
+    if(!userId||userId===loadedUserId)return;
+    loadedUserId=userId;
     H.updateCartBadges?.();
     await Promise.all([loadProfile(),loadActions(),loadOrders()]);
   }
 
-  $("#hd-profile-signout")?.addEventListener("click",async()=>{
-    await client.auth.signOut();
-    location.replace("./");
+  $("#hd-profile-signout")?.addEventListener("click",async event=>{
+    try {
+      const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
+      await run("auth.signout",{
+        key:"profile", element:event.currentTarget, broadcastSuccess:false,
+        execute:async()=>{ const {error}=await client.auth.signOut(); if(error)throw error; return true; }
+      });
+      location.replace("./");
+    } catch(error) {
+      runtime?.announce?.(error?.message||"Could not sign out.","error");
+    }
   });
 
-  window.addEventListener("hunt:shopping-action",()=>loadActions());
-  init();
+  window.addEventListener("hunt:shopping-action",()=>{ if(session?.user)loadActions(); });
+  window.addEventListener("boom:remote-action",event=>{
+    const action=String(event?.detail?.action_id||"");
+    if((action==="product.like.toggle"||action==="product.save.toggle")&&session?.user)loadActions();
+  });
+
+  if(runtime?.subscribeSession){
+    runtime.subscribeSession(handleSession);
+  } else {
+    client.auth.getSession().then(({data})=>handleSession(data.session||null));
+    client.auth.onAuthStateChange((_event,nextSession)=>handleSession(nextSession));
+  }
 })();

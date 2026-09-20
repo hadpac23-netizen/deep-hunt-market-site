@@ -1,0 +1,29 @@
+{
+  "version": "BOOM-LEGAL-READINESS-V1",
+  "owner": "learning_governance_brain",
+  "publication_owner": "owner_gate",
+  "required_documents": [
+    {"doc_key":"terms","title":"Terms of Service"},
+    {"doc_key":"privacy","title":"Privacy Policy"},
+    {"doc_key":"returns","title":"Returns & Refund Policy"},
+    {"doc_key":"shipping","title":"Shipping Policy"}
+  ],
+  "required_business_identity_fields": [
+    "legal_entity_name",
+    "registration_number",
+    "registered_country",
+    "business_address",
+    "support_email",
+    "privacy_contact_email",
+    "returns_address"
+  ],
+  "publish_invariants": [
+    "No legal document is public unless status=published and owner_approved=true.",
+    "Published documents require non-empty owner/counsel supplied content and effective/published timestamps.",
+    "Public launch is blocked until all required documents are active and Business Identity is published.",
+    "Legal text is never auto-generated into production without explicit review and Owner approval.",
+    "Legal delivery surfaces render database text as plain text and do not execute embedded markup."
+  ],
+  "delivery_surface": "legal.html?doc=<terms|privacy|returns|shipping>",
+  "current_source": "hunt_legal_document_versions"
+}

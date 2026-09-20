@@ -1,0 +1,207 @@
+{
+  "version": "BOOM-BRAIN-OS-V1",
+  "principle": "Few primary brains; many skills/modules; one accountable owner per decision/action.",
+  "priority_order": [
+    "truth",
+    "safety",
+    "user_value",
+    "verified_economics",
+    "reliability",
+    "speed"
+  ],
+  "primary_brains": [
+    {
+      "id": "boom_orchestrator",
+      "order": 0,
+      "role": "Central command",
+      "owns": [
+        "mission_compile",
+        "task_route",
+        "dependency_plan",
+        "priority",
+        "conflict_resolution",
+        "owner_gate",
+        "state",
+        "handoff"
+      ],
+      "before": [],
+      "lifecycle": "SHADOW"
+    },
+    {
+      "id": "intelligence_brain",
+      "order": 1,
+      "role": "Observe and verify reality",
+      "owns": [
+        "f60t_live_radar",
+        "f35_research",
+        "source_verification",
+        "red_team",
+        "kill_test"
+      ],
+      "before": [
+        "innovation_brain",
+        "commerce_truth_brain"
+      ],
+      "lifecycle": "ACTIVE"
+    },
+    {
+      "id": "innovation_brain",
+      "order": 2,
+      "role": "Create non-obvious options",
+      "owns": [
+        "f50_invention",
+        "gap_discovery",
+        "combination_design",
+        "cheap_test_design"
+      ],
+      "before": [
+        "commerce_truth_brain"
+      ],
+      "review_route": "intelligence_brain",
+      "lifecycle": "SHADOW"
+    },
+    {
+      "id": "commerce_truth_brain",
+      "order": 3,
+      "role": "Decide whether commerce is real and feasible",
+      "owns": [
+        "product_truth",
+        "supplier_truth",
+        "country_readiness",
+        "landed_cost",
+        "profit_truth",
+        "merchant_truth"
+      ],
+      "before": [
+        "experience_brain",
+        "growth_brain",
+        "operations_brain"
+      ],
+      "lifecycle": "ACTIVE"
+    },
+    {
+      "id": "experience_brain",
+      "order": 4,
+      "role": "Choose what each shopper sees and how interactions behave",
+      "owns": [
+        "discovery",
+        "search",
+        "recommendation",
+        "personalization",
+        "taste",
+        "styling",
+        "ui_priority",
+        "product_selection_integrity"
+      ],
+      "before": [
+        "operations_brain"
+      ],
+      "lifecycle": "ACTIVE"
+    },
+    {
+      "id": "growth_brain",
+      "order": 5,
+      "role": "Acquire and retain demand",
+      "owns": [
+        "seo",
+        "organic",
+        "creative",
+        "promotion",
+        "creator",
+        "referral",
+        "paid_draft"
+      ],
+      "before": [
+        "operations_brain"
+      ],
+      "lifecycle": "GATED"
+    },
+    {
+      "id": "operations_brain",
+      "order": 6,
+      "role": "Turn approved intent into reliable execution",
+      "owns": [
+        "checkout",
+        "payment",
+        "order",
+        "fulfillment",
+        "tracking",
+        "returns",
+        "merchant_ops",
+        "connect_health"
+      ],
+      "before": [
+        "learning_governance_brain"
+      ],
+      "lifecycle": "GATED"
+    },
+    {
+      "id": "learning_governance_brain",
+      "order": 7,
+      "role": "Measure, evaluate, protect, learn and rollback",
+      "owns": [
+        "analytics",
+        "experiments",
+        "evals",
+        "observability",
+        "agent_firewall",
+        "decision_memory",
+        "checkout_product_integrity_qa",
+        "incident_repair_team",
+        "regression_guard",
+        "rollback",
+        "learning"
+      ],
+      "before": [
+        "boom_orchestrator"
+      ],
+      "lifecycle": "ACTIVE"
+    }
+  ],
+  "shared_control_planes": [
+    {
+      "id": "action_state_kernel",
+      "owner": "experience_brain",
+      "purpose": "One contract for every interactive action across every page and device."
+    },
+    {
+      "id": "identity_session_kernel",
+      "owner": "operations_brain",
+      "purpose": "One session/account/permission truth across pages, tabs and guest-to-account merge."
+    },
+    {
+      "id": "navigation_flow_kernel",
+      "owner": "experience_brain",
+      "purpose": "One routing/deep-link/return-to/focus/history contract."
+    },
+    {
+      "id": "design_system_kernel",
+      "owner": "experience_brain",
+      "purpose": "One visual and accessibility state vocabulary."
+    },
+    {
+      "id": "observability_kernel",
+      "owner": "learning_governance_brain",
+      "purpose": "One event/error/trace/experiment vocabulary."
+    }
+  ],
+  "rules": [
+    "F50 never self-approves; material F50 ideas return to F35 Kill Test.",
+    "F50 output returns to F35 as a review_route, never as a dependency cycle.",
+    "F60T attention alone is not purchase intent.",
+    "No commercial activation before Commerce Truth passes.",
+    "No external spend/publish/price/payment/supplier/production action without Owner Gate.",
+    "No UI action may have more than one state owner.",
+    "No button is complete without pending, success, error, disabled and retry/rollback semantics where applicable.",
+    "Guest state must define merge behavior on sign-in.",
+    "All material actions emit normalized telemetry with correlation_id.",
+    "A brain changing lifecycle mode requires evidence and an explicit recorded decision; code presence alone never activates it."
+  ],
+  "lifecycle_modes": {
+    "OFF": "Defined but not running.",
+    "SHADOW": "Runs and records recommendations but cannot change user/system behavior.",
+    "ACTIVE": "May drive internal behavior within its contract.",
+    "GATED": "May prepare actions but requires Owner Gate for external/material execution.",
+    "DEPRECATED": "Kept only for migration/history; no new ownership."
+  }
+}
