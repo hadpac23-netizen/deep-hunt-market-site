@@ -23,6 +23,29 @@ for(const file of ["hunt-deal.js","checkout.js"]){
 const productFlow=fs.readFileSync("product-flow.js","utf8");
 if(!productFlow.includes("runtime?.getSupabaseClient?.()"))errors.push("product-flow.js bypasses shared Supabase runtime client");
 
+const runtimeSrc=fs.readFileSync("boom-runtime.js","utf8");
+if(!runtimeSrc.includes("boom-feedback-center"))errors.push("boom-runtime.js missing global feedback center");
+if(!runtimeSrc.includes("actionFeedback(payload)"))errors.push("boom-runtime.js missing canonical action feedback routing");
+if(!runtimeSrc.includes("pointer-events:none"))errors.push("feedback center may block shopper controls");
+if(!runtimeSrc.includes("async function adminReady()"))errors.push("boom-runtime.js missing shared admin gate");
+if(!runtimeSrc.includes("traceContext={}"))errors.push("boom-runtime.js missing trace context lineage");
+if(!runtimeSrc.includes("loadActionContract()"))errors.push("boom-runtime.js missing action metadata loading");
+
+const studioHtml=fs.readFileSync("boom-brain-studio.html","utf8");
+const studioJs=fs.readFileSync("boom-brain-studio.js","utf8");
+if(!studioHtml.includes('data-admin-ready="false"'))errors.push("Brain Studio may flash private content before admin verification");
+if(!studioJs.includes("runtime?.adminReady?.()"))errors.push("Brain Studio missing admin verification before contract load");
+
+for(const file of ["product.html","category.html","checkout.html","index.html"]){
+  const html=fs.readFileSync(file,"utf8");
+  if(!html.includes("boom-evidence-confidence.js"))errors.push(file+": evidence confidence engine not loaded");
+}
+
+const connections=fs.readFileSync("f60t-connections.js","utf8");
+if(!connections.includes("runtime.adminReady()"))errors.push("F60T Connections bypasses shared admin gate");
+if(/createClient\(/.test(connections))errors.push("F60T Connections may create a duplicate Supabase client");
+if(!connections.includes('endpoint:"hunt-f60t-oauth"'))errors.push("F60T connector trace missing official Edge endpoint lineage");
+
 const core=fs.readFileSync("market-core.js","utf8");
 for(const fn of ["addCart","removeCart","setCartQuantity","clearCart","updateCartBadges"]){
   if(!core.includes(fn))errors.push("market-core.js missing cart owner function "+fn);

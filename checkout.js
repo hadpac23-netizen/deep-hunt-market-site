@@ -62,7 +62,20 @@
         key:country+":"+cart.map(x=>x.key+"x"+x.qty).join("|"),
         element:button,
         broadcastSuccess:false,
-        successDetail:result=>({country,items:cart.length,payment_ready:Boolean(result?.payment_ready)}),
+        traceContext:{
+          surface:"checkout",
+          owner:"operations_brain",
+          endpoint:"hunt-payment-session",
+          analytics:"checkoutQuoteVerified",
+          learning:"evidence_refresh"
+        },
+        successDetail:result=>({
+          country,
+          items:cart.length,
+          payment_ready:Boolean(result?.payment_ready),
+          stock_evidence:"FRESH",
+          shipping_evidence:"FRESH"
+        }),
         execute:async({correlationId}={})=>{
           const payload = {
             country_code: country,

@@ -109,17 +109,22 @@
     $("#hd-product-provider").textContent = product.provider || provider;
     const providerName = String(product.provider || provider || "").toLowerCase();
     const podCatalog = providerName.includes("printful") || providerName.includes("gooten");
-    const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
+    const quotePassed = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
+    const quoteEvidence = H.evidenceState?.("product_truth",product) || {state:"UNKNOWN",recheck_required:true};
+    const quoteFresh = quotePassed && quoteEvidence.state === "FRESH";
+    const quoteNeedsRecheck = quotePassed && quoteEvidence.state !== "FRESH";
     const retail = currentRetailState();
     const quoteAtCheckout = providerName.includes("cj") && variants.length > 0 && retail.ready;
-    $("#hd-product-stock").textContent = quoteVerified
+    $("#hd-product-stock").textContent = quoteFresh
       ? "QUOTE VERIFIED"
-      : podCatalog
-        ? "POD CATALOG"
-        : quoteAtCheckout
-          ? "QUOTE AT CHECKOUT"
-          : "DISCOVERY";
-    $("#hd-product-stock").className = `hd-status ${quoteVerified?"green":"blue"}`;
+      : quoteNeedsRecheck
+        ? "QUOTE RECHECK"
+        : podCatalog
+          ? "POD CATALOG"
+          : quoteAtCheckout
+            ? "QUOTE AT CHECKOUT"
+            : "DISCOVERY";
+    $("#hd-product-stock").className = `hd-status ${quoteFresh?"green":"blue"}`;
     $("#hd-product-price").textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
     syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);

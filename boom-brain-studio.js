@@ -89,7 +89,8 @@
     host.innerHTML=traces.map(t=>{
       const state=String(t.detail?.state||"event");
       const time=new Date(Number(t.ts)||Date.now()).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",second:"2-digit"});
-      return `<article class="bs-trace"><time>${esc(time)}</time><code>${esc(t.action_id)}</code><span class="bs-trace-state ${esc(state)}">${esc(state)}</span><small>${esc(t.correlation_id||"")}</small></article>`;
+      const lineage=[t.owner,t.endpoint||t.telemetry,t.analytics,t.learning,t.correlation_id].filter(Boolean).join(" · ");
+      return `<article class="bs-trace"><time>${esc(time)}</time><code>${esc(t.action_id)}</code><span class="bs-trace-state ${esc(state)}">${esc(state)}</span><small>${esc(lineage)}</small></article>`;
     }).join("");
   }
   function recordTrace(payload){
@@ -106,8 +107,23 @@
     $("#bs-control-count").textContent=`${data.inventory.interactions.length} mapped controls across ${rows.length} files`;
     $("#bs-files").innerHTML=rows.map(([file,count])=>`<article class="bs-file"><strong>${esc(file)}</strong><span>${count} mapped interaction${count===1?"":"s"}</span></article>`).join("");
   }
+  async function guardAdmin(){
+    const gate=$("#bs-access-copy");
+    const result=await runtime?.adminReady?.();
+    if(result?.ok){
+      document.body.dataset.adminReady="true";
+      return true;
+    }
+    const reason=String(result?.reason||"AUTH_REQUIRED");
+    if(gate)gate.textContent=reason==="AUTH_REQUIRED"
+      ? "Sign in with the approved BOOM owner/admin account to open this private surface."
+      : "This account is not authorized for BOOM Brain Studio.";
+    return false;
+  }
+
   async function boot(){
     try{
+      if(!await guardAdmin())return;
       const [brains,actions,inventory,surfaces,gaps,journeys,merge,budgets,health,errors,reasons,storage]=await Promise.all([
         json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json")
       ]);

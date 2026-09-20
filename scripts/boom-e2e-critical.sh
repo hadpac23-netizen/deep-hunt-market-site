@@ -10,7 +10,7 @@ SERVER_PID=""
 ab() { npx -y agent-browser --session "$SESSION" "$@"; }
 cleanup() {
   ab close >/dev/null 2>&1 || true
-  if [[ -n "$SERVER_PID" ]]; then kill "$SERVER_PID" >/dev/null 2>&1 || true; fi
+  if [[ -n "$SERVER_PID" ]]; then kill "$SERVER_PID" >/dev/null 2>&1 || true; wait "$SERVER_PID" 2>/dev/null || true; fi
   rm -f "$SERVER_LOG"
 }
 trap cleanup EXIT
@@ -65,6 +65,8 @@ ab click '#hd-checkout-verify'
 ab wait 350
 check "shipping quote renders" 'document.querySelector("#hd-checkout-shipping")?.textContent === "$4.50"'
 check "verified total renders" 'document.querySelector("#hd-checkout-total")?.textContent === "$12.49"'
+check "global feedback confirms quote" 'document.querySelector("#boom-feedback-center .boom-feedback-card")?.textContent === "Price and shipping verified."'
+check "quote trace carries full lineage" 'window.__boomActionTrace?.some(x=>x.action_id==="checkout.quote.verify"&&x.detail?.state==="success"&&x.owner==="operations_brain"&&x.endpoint==="hunt-payment-session"&&x.analytics==="checkoutQuoteVerified"&&x.learning==="evidence_refresh")'
 check "prelaunch status blocks payment" 'document.querySelector("#hd-checkout-status")?.textContent.includes("Payment is still disabled")'
 check "payment control stays disabled" 'document.querySelector(".hd-pay-disabled")?.disabled === true'
 

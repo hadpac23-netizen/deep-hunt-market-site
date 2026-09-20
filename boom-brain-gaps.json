@@ -126,9 +126,9 @@
       "id": "feedback_center",
       "title": "Global Feedback Center",
       "owner": "action_state_kernel",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "source": "F50",
-      "next": "Upgrade runtime live-status into consistent visible non-intrusive feedback."
+      "next": "Visible non-intrusive runtime feedback is wired and verified in the critical checkout E2E; extend copy only from real action states."
     },
     {
       "id": "error_taxonomy",
@@ -150,9 +150,9 @@
       "id": "confidence_decay",
       "title": "Evidence Confidence Decay",
       "owner": "intelligence_brain",
-      "status": "NEXT",
+      "status": "IN_PROGRESS",
       "source": "F50",
-      "next": "Auto-recheck stale supplier/shipping/market decisions."
+      "next": "FRESH/RECHECK/STALE is browser-safe and wired into product quote truth plus checkout evidence refresh; supplier terms and commercial-rights records still need persisted timestamps."
     },
     {
       "id": "mission_budgets",

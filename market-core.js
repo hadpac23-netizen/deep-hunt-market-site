@@ -338,12 +338,19 @@
     return data;
   }
 
+  function evidenceState(type,value,baseConfidence=1) {
+    const engine=window.BoomEvidenceConfidence;
+    if(!engine?.evaluate)return {type,state:"UNKNOWN",confidence:0,recheck_required:true,automatic_change:false};
+    const observed=value?.quote_verified_at || value?.quote_checked_at || value?.verified_at || value?.observed_at || value?.updated_at || value?.fetched_at || "";
+    return engine.evaluate({type,observed_at:observed,base_confidence:baseConfidence});
+  }
+
   const productUrl = product => `product.html?provider=${encodeURIComponent(product?.provider || "Printful")}&id=${encodeURIComponent(product?.item_id || "")}`;
   const categoryUrl = slug => `category.html?c=${encodeURIComponent(categoryDefs[slug] ? slug : "women")}`;
 
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
     inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
-    cart,saveCart,addCart,removeCart,setCartQuantity,clearCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
+    cart,saveCart,addCart,removeCart,setCartQuantity,clearCart,cartCount,updateCartBadges,storefront,search,evidenceState,productUrl,categoryUrl
   };
 })();

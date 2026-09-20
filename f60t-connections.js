@@ -1,9 +1,8 @@
 (() => {
   "use strict";
-  const H=window.HuntCore, sb=window.supabase, runtime=window.BoomRuntime;
-  if(!H||!sb?.createClient)return;
-
-  const client=runtime?.getSupabaseClient?.() || sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  const client=runtime?.getSupabaseClient?.();
+  if(!H||!runtime||!client)return;
   const $=q=>document.querySelector(q);
   const status=$("#f60t-connection-status");
   const panel=$("#f60t-connection-panel");
@@ -69,17 +68,16 @@
   }
 
   async function load(){
-    const auth=await client.auth.getSession();
-    session=auth?.data?.session||null;
-    if(!session){
-      location.replace("auth.html?next="+encodeURIComponent("/f60t-connections.html"));
-      return;
-    }
-    const {data:profile}=await client.from("profiles").select("is_admin").eq("id",session.user.id).maybeSingle();
-    if(!profile?.is_admin){
+    const gate=await runtime.adminReady();
+    if(!gate?.ok){
+      if(gate?.reason==="AUTH_REQUIRED"){
+        location.replace("auth.html?next="+encodeURIComponent("/f60t-connections.html"));
+        return;
+      }
       setStatus("Admin access required.","error");
       return;
     }
+    session=gate.session;
 
     try{
       const data=await callOauth({action:"status"});
@@ -101,6 +99,13 @@
     try{
       const data=await run("connector.oauth.start",{
         key:provider,element:button,broadcastSuccess:false,successDetail:{provider},
+        traceContext:{
+          surface:"boom.connections",
+          owner:"identity_session_kernel",
+          endpoint:"hunt-f60t-oauth",
+          analytics:"connector_oauth_start",
+          learning:"official_sync_gate"
+        },
         execute:async()=>{
           const data=await callOauth({action:"start",provider});
           if(data?.status!=="AUTHORIZATION_REQUIRED"||!data?.auth_url)throw new Error("Authorization URL was not returned.");

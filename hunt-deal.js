@@ -275,25 +275,33 @@
       : '<div class="hd-shelf-placeholder">◇</div>';
     const providerName = String(item.provider || "").toLowerCase();
     const podSetupRequired = providerName.includes("printful") || providerName.includes("gooten");
-    const quoteVerified = String(item?.quote_verification_status || "").toUpperCase() === "PASS";
-    const detailRecheckRequired = item?.checkout_status === "PRODUCT_DETAIL_RECHECK_REQUIRED"
+    const quotePassed = String(item?.quote_verification_status || "").toUpperCase() === "PASS";
+    const quoteEvidence = window.HuntCore?.evidenceState?.("product_truth",item) || {state:"UNKNOWN"};
+    const quoteVerified = quotePassed && quoteEvidence.state === "FRESH";
+    const quoteNeedsRecheck = quotePassed && quoteEvidence.state !== "FRESH";
+    const detailRecheckRequired = quoteNeedsRecheck
+      || item?.checkout_status === "PRODUCT_DETAIL_RECHECK_REQUIRED"
       || Boolean(item?.detail_recheck_status);
     const truthBadge = quoteVerified
       ? "QUOTE VERIFIED"
-      : item.quality_gate === "BOOM_PREMIUM"
-        ? "BOOM PICK"
-        : podSetupRequired
-          ? "POD CATALOG"
-          : detailRecheckRequired
-            ? "RECHECK REQUIRED"
-            : "SOURCE CATALOG";
+      : quoteNeedsRecheck
+        ? "QUOTE RECHECK"
+        : item.quality_gate === "BOOM_PREMIUM"
+          ? "BOOM PICK"
+          : podSetupRequired
+            ? "POD CATALOG"
+            : detailRecheckRequired
+              ? "RECHECK REQUIRED"
+              : "SOURCE CATALOG";
     const detailLine = quoteVerified
       ? "A recent stock and shipping quote passed; destination is rechecked before checkout."
-      : podSetupRequired
-        ? "Product source verified; HUNT setup is required before checkout."
-        : detailRecheckRequired
-          ? "Product detail must be verified again before checkout."
-          : "Open for current price, variants and availability.";
+      : quoteNeedsRecheck
+        ? "A previous quote exists, but its evidence should be refreshed before checkout."
+        : podSetupRequired
+          ? "Product source verified; HUNT setup is required before checkout."
+          : detailRecheckRequired
+            ? "Product detail must be verified again before checkout."
+            : "Open for current price, variants and availability.";
     return `<article class="hd-shelf-card" role="listitem" data-category="${esc(item.category || "")}">
       <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(truthBadge)}</span></a>
       <div class="hd-shelf-card-body">

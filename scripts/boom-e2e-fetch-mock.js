@@ -1,4 +1,6 @@
 (() => {
+  window.__boomActionTrace=[];
+  window.addEventListener("boom:action",event=>window.__boomActionTrace.push(event.detail));
   const nativeFetch = window.fetch.bind(window);
   const product = {
     provider: "CJdropshipping",
@@ -13,6 +15,7 @@
     retail_price_amount: 7.99,
     retail_currency: "USD",
     quote_verification_status: "PASS",
+    quote_verified_at: new Date().toISOString(),
     variants: [
       {variant_id:"E2E-BLK-S", color:"Black", size:"S"},
       {variant_id:"E2E-BLK-M", color:"Black", size:"M"}
