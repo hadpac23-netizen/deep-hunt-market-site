@@ -1,0 +1,95 @@
+{
+  "version": "HUNT-LAUNCH-READINESS-V1",
+  "generated_from": "hunt-launch-readiness Edge source + Brain OS launch contracts",
+  "owner": "owner_gate",
+  "execution_owner": "operations_brain",
+  "decision_owner": "commerce_truth_brain",
+  "modes": [
+    "prelaunch",
+    "sandbox",
+    "live"
+  ],
+  "current_policy": {
+    "payment": "PRELAUNCH_ONLY",
+    "supplier_order": "OWNER_GATE_REQUIRED",
+    "production_deploy": "OWNER_APPROVAL_REQUIRED",
+    "merchant_marketplace": "HOLD"
+  },
+  "source_of_truth": {
+    "runtime": "supabase/functions/hunt-launch-readiness/index.ts",
+    "manual_evidence_table": "hunt_launch_readiness_evidence",
+    "business_identity_table": "hunt_business_identity",
+    "legal_documents_table": "hunt_legal_document_versions",
+    "payment_sessions_table": "hunt_payment_sessions",
+    "payplus_observations_table": "hunt_payplus_status_observations",
+    "runtime_controls_table": "hunt_runtime_controls",
+    "orders_table": "hunt_orders",
+    "order_events_table": "hunt_order_events",
+    "payment_events_table": "hunt_payment_events",
+    "unit_economics_table": "hunt_unit_economics",
+    "analytics_table": "analytics_events"
+  },
+  "dynamic_gates": [
+    {
+      "gate_key": "business_identity_runtime",
+      "blocks_soft_launch": true,
+      "blocks_real_money": true
+    },
+    {
+      "gate_key": "legal_documents_runtime",
+      "blocks_soft_launch": true,
+      "blocks_real_money": true
+    },
+    {
+      "gate_key": "checkout_prelaunch_proof",
+      "blocks_soft_launch": false,
+      "blocks_real_money": true
+    },
+    {
+      "gate_key": "unit_economics_proof",
+      "blocks_soft_launch": false,
+      "blocks_real_money": true
+    },
+    {
+      "gate_key": "payplus_runtime",
+      "blocks_soft_launch": false,
+      "blocks_real_money": true
+    },
+    {
+      "gate_key": "payplus_status_proof",
+      "blocks_soft_launch": false,
+      "blocks_real_money": true
+    },
+    {
+      "gate_key": "runtime_order_state",
+      "blocks_soft_launch": false,
+      "blocks_real_money": true
+    },
+    {
+      "gate_key": "analytics_runtime",
+      "blocks_soft_launch": true,
+      "blocks_real_money": true
+    },
+    {
+      "gate_key": "merchant_program_runtime",
+      "blocks_soft_launch": false,
+      "blocks_real_money": false
+    }
+  ],
+  "hard_invariants": [
+    "No public launch while any soft-launch blocker is non-PASS.",
+    "No real-money launch while any real-money blocker is non-PASS.",
+    "No live payment until exact signed PayPlus sandbox success and reject fingerprints are reviewed and owner-approved.",
+    "No supplier order from prelaunch or sandbox payment truth.",
+    "No supplier order without paid payment state, verified supplier route, complete server-side shipping snapshot and Owner Gate.",
+    "No legal document is public unless owner-approved, published, effective and non-empty.",
+    "No production deploy without explicit Owner approval.",
+    "No launch claim may treat source code readiness as live deployment readiness."
+  ],
+  "required_source_migrations_after_live_20260919193323": [
+    "20260920071959_partner_evidence_freshness.sql",
+    "20260920084547_harden_hunt_payment_order_grants.sql",
+    "20260920094955_move_security_definers_to_boom_internal.sql",
+    "20260920095538_add_hunt_legal_registry.sql"
+  ]
+}
