@@ -67,6 +67,7 @@
       INVALID_CUSTOMER_EMAIL:"Enter a valid email address for delivery updates.",
       SUPPLIER_COST_NOT_READY:"A product needs a fresh supplier-price check before checkout.",
       PROFIT_RECHECK_FAILED:"A product needs a fresh HUNT price check before checkout.",
+      AUTH_SESSION_REQUIRED:"Sign in again before checkout verification so the order can stay attached to your account.",
       PROFIT_PROFILE_NOT_ACTIVE:"Checkout pricing is temporarily unavailable.",
       ECONOMICS_EVIDENCE_STORE_FAILED:"Checkout verification could not be recorded safely. No payment was attempted.",
       OUT_OF_STOCK:"One or more selected items are currently out of stock.",
@@ -133,9 +134,14 @@
               qty:Math.max(1,Math.min(5,Number(item.qty)||1))
             }))
           };
-          const activeSession=await runtime?.sessionReady?.().catch(()=>null);
+          let activeSession=await runtime?.sessionReady?.().catch(()=>null);
+          if(client?.auth?.refreshSession){
+            const refreshed=await client.auth.refreshSession().catch(()=>({data:null,error:null}));
+            if(refreshed?.data?.session)activeSession=refreshed.data.session;
+          }
           const headers={apikey:publishableKey,"content-type":"application/json"};
-          if(activeSession?.access_token)headers.Authorization="Bearer "+activeSession.access_token;
+          if(!activeSession?.access_token)throw new Error("AUTH_SESSION_REQUIRED");
+          headers.Authorization="Bearer "+activeSession.access_token;
           const res = await fetch(functionsBase + "/hunt-payment-session", {
             method:"POST",
             headers,
