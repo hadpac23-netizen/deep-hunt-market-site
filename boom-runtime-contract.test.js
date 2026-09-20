@@ -20,6 +20,9 @@ for(const file of ["hunt-deal.js","checkout.js"]){
     errors.push(file+": direct cart storage ownership returned");
   }
 }
+const productFlow=fs.readFileSync("product-flow.js","utf8");
+if(!productFlow.includes("runtime?.getSupabaseClient?.()"))errors.push("product-flow.js bypasses shared Supabase runtime client");
+
 const core=fs.readFileSync("market-core.js","utf8");
 for(const fn of ["addCart","removeCart","setCartQuantity","clearCart","updateCartBadges"]){
   if(!core.includes(fn))errors.push("market-core.js missing cart owner function "+fn);
