@@ -1,0 +1,137 @@
+{
+  "version": "BOOM-INCIDENT-REPAIR-TEAM-V1",
+  "id": "incident_repair_team",
+  "mode": "ACTIVE_INTERNAL_GATED_EXTERNAL",
+  "owner": "learning_governance_brain",
+  "router": "boom_orchestrator",
+  "principle": "Detect early, reproduce exactly, patch minimally, prove the fix, preserve approved behavior, and never hide uncertainty.",
+  "scope": [
+    "product_selection",
+    "product_gallery",
+    "variant_color",
+    "variant_size",
+    "cart",
+    "checkout",
+    "shipping",
+    "auth_session",
+    "search",
+    "navigation",
+    "catalog",
+    "supabase_edge_functions",
+    "responsive_ui"
+  ],
+  "domain_owners": {
+    "product_selection": "experience_brain",
+    "product_gallery": "experience_brain",
+    "checkout": "operations_brain",
+    "shipping": "operations_brain",
+    "auth_session": "operations_brain",
+    "commerce_truth": "commerce_truth_brain",
+    "runtime_quality": "learning_governance_brain"
+  },
+  "roles": [
+    {
+      "id": "incident_commander",
+      "owner": "learning_governance_brain",
+      "job": "triage severity, assign domain owner, preserve evidence"
+    },
+    {
+      "id": "reproducer",
+      "owner": "learning_governance_brain",
+      "job": "reproduce on exact route, viewport, state and product/variant"
+    },
+    {
+      "id": "surface_specialist",
+      "owner": "experience_brain",
+      "job": "repair product selection, gallery, responsive and interaction regressions"
+    },
+    {
+      "id": "commerce_specialist",
+      "owner": "commerce_truth_brain",
+      "job": "protect product, price, stock, shipping and Profit Gate truth"
+    },
+    {
+      "id": "operations_specialist",
+      "owner": "operations_brain",
+      "job": "repair checkout, auth, session, order, fulfillment and shipping execution"
+    },
+    {
+      "id": "regression_guard",
+      "owner": "learning_governance_brain",
+      "job": "run contract, E2E, visual, state and safety regressions before handoff"
+    },
+    {
+      "id": "independent_reviewer",
+      "owner": "learning_governance_brain",
+      "job": "review blast radius and failure paths independently of the patch author"
+    }
+  ],
+  "workflow": [
+    "detect",
+    "classify",
+    "reproduce",
+    "isolate_root_cause",
+    "minimal_patch",
+    "unit_contract_tests",
+    "browser_e2e",
+    "visual_regression",
+    "independent_review",
+    "owner_gate_if_material",
+    "deploy_if_approved",
+    "post_deploy_verify",
+    "rollback_if_regressed",
+    "write_learning"
+  ],
+  "autonomy": {
+    "read_logs_and_source": true,
+    "create_branch_patch": true,
+    "run_local_tests": true,
+    "run_ci_checks": true,
+    "prepare_pull_request": true,
+    "merge": false,
+    "production_deploy": false,
+    "activate_payment": false,
+    "activate_supplier_live": false,
+    "change_profit_policy": false
+  },
+  "severity": {
+    "P0": "payment/security/data-loss or site-wide outage",
+    "P1": "checkout/shipping/auth/product-selection core journey broken",
+    "P2": "important feature degraded with workaround",
+    "P3": "minor visual/copy/non-blocking defect"
+  },
+  "skills": [
+    "root_cause_analysis",
+    "javascript_dom_event_debugging",
+    "state_machine_debugging",
+    "playwright_e2e",
+    "visual_regression",
+    "responsive_matrix",
+    "api_contract_testing",
+    "supabase_edge_function_validation",
+    "auth_session_validation",
+    "commerce_truth_validation",
+    "git_bisect_and_diff_review",
+    "rollback_design",
+    "accessibility_interaction_testing",
+    "privacy_safe_observability"
+  ],
+  "required_evidence": [
+    "reproduction_before",
+    "root_cause",
+    "files_changed",
+    "tests_run",
+    "before_after_behavior",
+    "blast_radius",
+    "live_gates_status_if_relevant",
+    "rollback_path"
+  ],
+  "tooling_policy": {
+    "playwright": "primary local/browser E2E and traces",
+    "github_actions": "continuous source regression gate",
+    "browserstack": "optional real-browser/device matrix when connected",
+    "sentry": "optional runtime error/session-replay evidence with PII masking when connected",
+    "coderabbit": "independent PR review layer when available"
+  },
+  "prompt_path": "docs/BOOM-INCIDENT-REPAIR-TEAM-PROMPT.md"
+}

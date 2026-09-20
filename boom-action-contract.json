@@ -560,6 +560,39 @@
       "telemetry": "seller_store_select",
       "accessibility": "labeled select+loading status",
       "failure_policy": "restore_previous"
+    },
+    {
+      "action_id": "incident.report",
+      "owner": "learning_governance_brain",
+      "auth_policy": "admin_or_system",
+      "persistence": "evidence_record",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "incident_report",
+      "accessibility": "status",
+      "failure_policy": "preserve_evidence"
+    },
+    {
+      "action_id": "repair.patch.prepare",
+      "owner": "learning_governance_brain",
+      "auth_policy": "admin_or_system",
+      "persistence": "branch_only",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "repair_patch",
+      "accessibility": "status",
+      "failure_policy": "rollback_branch_change"
+    },
+    {
+      "action_id": "repair.verify",
+      "owner": "learning_governance_brain",
+      "auth_policy": "admin_or_system",
+      "persistence": "test_evidence",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "repair_verify",
+      "accessibility": "status",
+      "failure_policy": "block_handoff"
     }
   ]
 }

@@ -86,6 +86,8 @@ assert.equal(integrity.owner,"learning_governance_brain","checkout integrity QA 
 assert.equal(integrity.decision_owner,"commerce_truth_brain","checkout integrity decision owner drift");
 assert.equal(integrity.truth_status.source_qa,"PASS","checkout integrity source QA must pass");
 assert.equal(integrity.truth_status.live_payment_session,"DEPLOYED_V16","live payment session truth must match deployed v16");
+require("./hunt-product-media-selection.test.js");
 require("./hunt-product-checkout-integrity.test.js");
+require("./boom-repair-team.test.js");
 
 console.log("hunt_system_completion=PASS");

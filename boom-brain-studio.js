@@ -130,6 +130,30 @@
     </article>`).join("");
     host.innerHTML=summary+stages;
   }
+  function renderRepairTeam(){
+    const host=$("#bs-repair-team");
+    if(!host)return;
+    const team=data.repairTeam||{};
+    const autonomy=team.autonomy||{};
+    const summary=`<article class="bs-journey">
+      <h3>${esc(team.id||"incident_repair_team")}</h3>
+      <p><strong>${esc(team.owner||"learning_governance_brain")}</strong> · router: ${esc(team.router||"boom_orchestrator")} · ${esc(team.mode||"")}</p>
+      <div class="bs-journey-steps">
+        <span>scope: ${esc((team.scope||[]).join(" · "))}</span>
+        <span>branch patch: ${autonomy.create_branch_patch===true?"allowed":"blocked"}</span>
+        <span>tests/CI: ${autonomy.run_local_tests===true&&autonomy.run_ci_checks===true?"allowed":"blocked"}</span>
+        <span>merge: ${autonomy.merge===true?"allowed":"OWNER GATE"}</span>
+        <span>production deploy: ${autonomy.production_deploy===true?"allowed":"OWNER GATE"}</span>
+      </div>
+    </article>`;
+    const roles=(team.roles||[]).map(role=>`<article class="bs-journey">
+      <h3>${esc(role.id)}</h3>
+      <p><strong>${esc(role.owner)}</strong></p>
+      <div class="bs-journey-steps"><span>${esc(role.job)}</span></div>
+    </article>`).join("");
+    host.innerHTML=summary+roles;
+  }
+
   function renderJourneys(){
     const host=$("#bs-journeys");
     if(!host)return;
@@ -202,12 +226,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,checkoutIntegrity]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-checkout-product-integrity-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,checkoutIntegrity,repairTeam]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-checkout-product-integrity-contract.json"),json("boom-incident-repair-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,checkoutIntegrity};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,checkoutIntegrity,repairTeam};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderGovernance();renderCommerceHandoff();renderOperationsState();renderCheckoutIntegrity();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderGovernance();renderCommerceHandoff();renderOperationsState();renderCheckoutIntegrity();renderRepairTeam();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");

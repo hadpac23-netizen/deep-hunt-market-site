@@ -90,7 +90,8 @@
         "personalization",
         "taste",
         "styling",
-        "ui_priority"
+        "ui_priority",
+        "product_selection_integrity"
       ],
       "before": [
         "operations_brain"
@@ -146,6 +147,8 @@
         "agent_firewall",
         "decision_memory",
         "checkout_product_integrity_qa",
+        "incident_repair_team",
+        "regression_guard",
         "rollback",
         "learning"
       ],

@@ -193,6 +193,14 @@
       "status": "IN_PROGRESS",
       "source": "OWNER+F35",
       "next": "hunt-payment-session v16 is deployed with destination-safe retail plus server-verified account binding. Keep IN_PROGRESS until a fresh authenticated Verify stores user_id, then dry-run and CJ sandbox evidence pass."
+    },
+    {
+      "id": "incident_repair_team",
+      "title": "Permanent Incident & Repair Team",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "OWNER+F35",
+      "next": "Permanent prompt, repair contract, product-media regression and GitHub CI are installed. Optional next layer: connect privacy-safe runtime monitoring and real-device browser evidence."
     }
   ]
 }

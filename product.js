@@ -16,6 +16,7 @@
   let zoomScale = 1;
   let galleryImages = [];
   let galleryIndex = 0;
+  let renderedVariantId = "";
   let zoomReturnFocus = null;
   const variantQuoteCache = new Map();
   const variantQuoteErrors = new Map();
@@ -133,18 +134,44 @@
 
   function renderGallery() {
     const previousSrc=galleryImages[galleryIndex]||"";
-    galleryImages=[...new Set([selectedVariant?.image_url, ...(product.gallery || []), product.image_url].filter(x=>typeof x==="string"&&x.startsWith("https://")))].slice(0,24);
-    const preservedIndex=previousSrc?galleryImages.indexOf(previousSrc):-1;
-    galleryIndex=preservedIndex>=0?preservedIndex:0;
+    const variantId=String(selectedVariant?.variant_id||"");
+    const variantSrc=typeof selectedVariant?.image_url==="string"&&selectedVariant.image_url.startsWith("https://")
+      ?selectedVariant.image_url
+      :"";
+    const variantChanged=variantId!==renderedVariantId;
+    galleryImages=[...new Set([variantSrc, ...(product.gallery || []), product.image_url].filter(x=>typeof x==="string"&&x.startsWith("https://")))].slice(0,24);
+
+    if(variantChanged&&variantSrc){
+      const variantIndex=galleryImages.indexOf(variantSrc);
+      galleryIndex=variantIndex>=0?variantIndex:0;
+    }else{
+      const preservedIndex=previousSrc?galleryImages.indexOf(previousSrc):-1;
+      galleryIndex=preservedIndex>=0?preservedIndex:0;
+    }
+    renderedVariantId=variantId;
+
     const img=$("#hd-product-main-image");
+    const thumbs=$("#hd-product-thumbs");
     if(!galleryImages.length){
       img?.removeAttribute("src");
-      $("#hd-product-thumbs").innerHTML="";
+      if(thumbs)thumbs.innerHTML="";
       $("#hd-product-gallery-meta").hidden=true;
       $("#hd-gallery-count").hidden=true;
       return;
     }
-    $("#hd-product-thumbs").innerHTML=galleryImages.map((src,i)=>`<button type="button" class="${i===0?"active":""}" data-gallery-src="${H.esc(src)}" data-gallery-index="${i}" aria-label="View product image ${i+1} of ${galleryImages.length}" aria-current="${i===0?"true":"false"}"><img src="${H.esc(src)}" alt="" loading="lazy"></button>`).join("");
+    if(thumbs){
+      thumbs.innerHTML=galleryImages.map((src,i)=>`<button type="button" class="${i===galleryIndex?"active":""}" data-gallery-src="${H.esc(src)}" data-gallery-index="${i}" aria-label="View product image ${i+1} of ${galleryImages.length}" aria-current="${i===galleryIndex?"true":"false"}"><img src="${H.esc(src)}" alt="" loading="lazy"></button>`).join("");
+      thumbs.querySelectorAll("[data-gallery-index]").forEach(button=>{
+        button.addEventListener("click",event=>{
+          event.preventDefault();
+          event.stopPropagation();
+          const index=Number(event.currentTarget?.dataset?.galleryIndex);
+          if(!Number.isInteger(index)||index<0||index>=galleryImages.length)return;
+          galleryIndex=index;
+          updateGalleryState({focusThumb:true});
+        });
+      });
+    }
     const meta=$("#hd-product-gallery-meta");
     if(meta)meta.hidden=galleryImages.length<=1;
     const total=$("#hd-product-gallery-total");
