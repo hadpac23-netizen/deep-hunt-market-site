@@ -118,16 +118,16 @@
           payment_ready:Boolean(result?.payment_ready),
           stock_evidence:"FRESH",
           shipping_evidence:"FRESH",
-          shipping_attached:Boolean(result?.shipping_ready),
-          commerce_truth:String(result?.commerce?.status||"UNKNOWN"),
-          commerce_checked_at:String(result?.commerce?.evaluated_at||"")
+          shipping_attached:Boolean(result?.shipping_attached),
+          commerce_truth:String(result?.session?.commerce_snapshot?.status||"UNKNOWN"),
+          commerce_checked_at:String(result?.session?.commerce_snapshot?.checked_at||"")
         }),
         execute:async({correlationId}={})=>{
           const payload = {
             country_code: country,
             idempotency_key: correlationId || `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
             customer_email:shipping.email||null,
-            shipping:shipping.hasAny?shipping.snapshot:{},
+            shipping_snapshot:shipping.hasAny?shipping.snapshot:{},
             items: cart.map(item => ({
               provider:item.provider, item_id:item.item_id, variant_id:item.variant_id,
               qty:Math.max(1,Math.min(5,Number(item.qty)||1))
@@ -156,7 +156,7 @@
       $("#hd-checkout-total").textContent = money(session.total_amount,currency);
       quoteVerified = true;
       if (status) {
-        const deliveryCopy=data.shipping_ready===true
+        const deliveryCopy=data.shipping_attached===true
           ? " Delivery details are attached to this checkout session."
           : " Add complete delivery details before supplier handoff.";
         status.textContent = data.payment_ready === true
