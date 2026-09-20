@@ -94,9 +94,9 @@
       "id": "contract_generated_qa",
       "title": "Contract-generated QA",
       "owner": "learning_governance_brain",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "source": "F50",
-      "next": "Add source-handler coverage and journey contracts."
+      "next": "72 interaction mappings resolve to source and phase-1 journey/surface contracts pass; keep coverage mandatory as controls expand."
     },
     {
       "id": "action_trace",
