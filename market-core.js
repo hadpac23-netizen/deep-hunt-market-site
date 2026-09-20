@@ -196,7 +196,23 @@
     const state = signals();
     state[slug] = Math.min(100, Math.max(0, Number(state[slug] || 0) + Number(weights[action] || 1)));
     writeJson(signalKey, state);
+    window.dispatchEvent(new CustomEvent("hunt:signal",{detail:{category:slug,action,value:state[slug]}}));
     return state[slug];
+  }
+  function mergeSignals(next={}) {
+    const state=signals();
+    for(const [raw,value] of Object.entries(next||{})){
+      const slug=categoryDefs[raw]?raw:inferCategory(raw);
+      const n=Math.max(0,Math.min(100,Number(value)||0));
+      state[slug]=Math.max(Number(state[slug]||0),n);
+    }
+    writeJson(signalKey,state);
+    window.dispatchEvent(new CustomEvent("hunt:signals-merged",{detail:{signals:{...state}}}));
+    return state;
+  }
+  function clearSignals() {
+    writeJson(signalKey,{});
+    window.dispatchEvent(new CustomEvent("hunt:signals-merged",{detail:{signals:{}}}));
   }
   const shoppingPreferences = () => readJson(preferenceKey, {categories:[],price_band:"any",priorities:[],discovery_modes:[]});
   function saveShoppingPreferences(value, applySignals=true) {
@@ -208,6 +224,7 @@
     };
     writeJson(preferenceKey,safe);
     if(applySignals) safe.categories.forEach(slug=>recordSignal(slug,"survey"));
+    window.dispatchEvent(new CustomEvent("hunt:preferences-changed",{detail:{preferences:{...safe}}}));
     return safe;
   }
   function personalScore(product) {
@@ -350,7 +367,7 @@
 
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
-    inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
+    inferCategory,slugFromQuery,recordSignal,mergeSignals,clearSignals,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
     cart,saveCart,addCart,removeCart,setCartQuantity,clearCart,cartCount,updateCartBadges,storefront,search,evidenceState,productUrl,categoryUrl
   };
 })();

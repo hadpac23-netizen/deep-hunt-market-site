@@ -330,8 +330,23 @@
     };
   }
 
+  function experience(eventType, metadata = {}) {
+    if (!consentGranted()) return false;
+    const event = clean("hunt_" + String(eventType || "experience").replace(/[^a-z0-9_]+/gi, "_").toLowerCase(), 80);
+    const safeMeta = {};
+    for (const [rawKey, rawValue] of Object.entries(metadata || {}).slice(0, 30)) {
+      const key = clean(rawKey, 50);
+      if (!key) continue;
+      if (Array.isArray(rawValue)) safeMeta[key] = rawValue.slice(0, 12).map(value => clean(value, 80));
+      else if (typeof rawValue === "boolean" || typeof rawValue === "number") safeMeta[key] = rawValue;
+      else safeMeta[key] = clean(rawValue, 160);
+    }
+    return dataLayerPush(event, safeMeta);
+  }
+
   const api = {
     configured,
+    experience,
     consentGranted,
     getConsentStatus: () => consentState,
     getConsentRecord: consentRecord,
