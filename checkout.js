@@ -72,7 +72,7 @@
       OUT_OF_STOCK:"One or more selected items are currently out of stock.",
       SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination."
     };
-    return messages[code] || "We could not verify this cart right now. No payment was attempted.";
+    return messages[code] || ("Checkout verification stopped: "+String(code||"QUOTE_FAILED")+". No payment was attempted.");
   }
 
   async function verifyPriceAndShipping() {
@@ -133,29 +133,20 @@
               qty:Math.max(1,Math.min(5,Number(item.qty)||1))
             }))
           };
-          if (client?.functions?.invoke) {
-            const {data,error}=await client.functions.invoke("hunt-payment-session",{body:payload});
-            if(error){
-              let code=String(data?.error||"");
-              try{
-                const response=error?.context;
-                if(!code&&response?.clone){
-                  const body=await response.clone().json().catch(()=>({}));
-                  code=String(body?.error||"");
-                }
-              }catch{}
-              throw new Error(code||String(error?.message||"QUOTE_FAILED"));
-            }
-            if(data?.ok!==true||!data?.session)throw new Error(String(data?.error||"QUOTE_FAILED"));
-            return data;
-          }
+          const activeSession=await runtime?.sessionReady?.().catch(()=>null);
+          const headers={apikey:publishableKey,"content-type":"application/json"};
+          if(activeSession?.access_token)headers.Authorization="Bearer "+activeSession.access_token;
           const res = await fetch(functionsBase + "/hunt-payment-session", {
             method:"POST",
-            headers:{apikey:publishableKey,"content-type":"application/json"},
-            body:JSON.stringify(payload), cache:"no-store"
+            headers,
+            body:JSON.stringify(payload),
+            cache:"no-store"
           });
           const data = await res.json().catch(()=>({}));
-          if (!res.ok || data?.ok !== true || !data?.session) throw new Error(String(data?.error || "QUOTE_FAILED"));
+          if (!res.ok || data?.ok !== true || !data?.session) {
+            const code=String(data?.error||("HTTP_"+res.status)||"QUOTE_FAILED");
+            throw new Error(code);
+          }
           return data;
         }
       });
