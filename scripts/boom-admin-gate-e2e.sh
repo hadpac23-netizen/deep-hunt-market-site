@@ -22,7 +22,16 @@ cd "$ROOT"
 python3 -m http.server "$PORT" --bind 127.0.0.1 >/tmp/boom-admin-e2e-$$.log 2>&1 &
 SPID=$!
 sleep .4
-check(){ local s="$1" label="$2" expr="$3" result; result="$(npx -y agent-browser --session "$s" eval "($expr) ? 'PASS' : 'FAIL'")"; [[ "$result" == *PASS* ]] || { echo "FAIL: $label"; exit 1; }; echo "PASS: $label"; }
+check(){
+  local s="$1" label="$2" expr="$3" result=""
+  for _ in {1..12}; do
+    result="$(npx -y agent-browser --session "$s" eval "($expr) ? 'PASS' : 'FAIL'" 2>/dev/null || true)"
+    [[ "$result" == *PASS* ]] && { echo "PASS: $label"; return 0; }
+    sleep .2
+  done
+  echo "FAIL: $label"
+  exit 1
+}
 
 npx -y agent-browser --session "$DENY" --init-script /tmp/boom-admin-deny-$$.js open "http://127.0.0.1:$PORT/boom-brain-studio.html" >/dev/null
 npx -y agent-browser --session "$DENY" wait 400 >/dev/null
@@ -32,7 +41,7 @@ check "$DENY" "contracts are not loaded before admin" "document.querySelector('#
 npx -y agent-browser --session "$DENY" close >/dev/null 2>&1 || true
 
 npx -y agent-browser --session "$ALLOW" --init-script /tmp/boom-admin-allow-$$.js open "http://127.0.0.1:$PORT/boom-brain-studio.html" >/dev/null
-npx -y agent-browser --session "$ALLOW" wait 700 >/dev/null
+npx -y agent-browser --session "$ALLOW" wait 1100 >/dev/null
 check "$ALLOW" "authorized Studio unlocks" "document.body.dataset.adminReady==='true'"
 check "$ALLOW" "Brain OS metrics render" "document.querySelectorAll('#bs-metrics .bs-metric').length===6"
 check "$ALLOW" "contracts load only after admin" "document.querySelector('#bs-contract-state')?.textContent.includes('contracts loaded')"

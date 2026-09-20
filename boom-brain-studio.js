@@ -81,6 +81,20 @@
       <div class="bs-journey-steps">${(stage.requires||[]).map(x=>`<span>requires: ${esc(x)}</span>`).join("")}${stage.emits?`<span>emits: ${esc(stage.emits)}</span>`:""}</div>
     </article>`).join("");
   }
+  function renderOperationsState(){
+    const host=$("#bs-operations-state");
+    if(!host)return;
+    const domains=["payment","order","fulfillment","pipeline"];
+    host.innerHTML=domains.map(id=>{
+      const section=data.states[id]||{};
+      const transitions=Object.values(section.transitions||{}).reduce((sum,rows)=>sum+(rows?.length||0),0);
+      return `<article class="bs-journey">
+        <h3>${esc(id)}</h3>
+        <p><strong>${esc(data.states.owner)}</strong> · ${esc((section.states||section.stages||[]).length)} states · ${esc(transitions)} allowed transitions</p>
+        <div class="bs-journey-steps">${Object.entries(section.transitions||{}).map(([from,to])=>`<span>${esc(from)} → ${esc((to||[]).join(", ")||"terminal")}</span>`).join("")}</div>
+      </article>`;
+    }).join("");
+  }
   function renderJourneys(){
     const host=$("#bs-journeys");
     if(!host)return;
@@ -139,12 +153,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,merge,budgets,health,errors,reasons,storage]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,merge,budgets,health,errors,reasons,storage]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,merge,budgets,health,errors,reasons,storage};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,merge,budgets,health,errors,reasons,storage};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderGovernance();renderCommerceHandoff();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderGovernance();renderCommerceHandoff();renderOperationsState();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");

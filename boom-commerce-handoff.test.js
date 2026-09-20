@@ -47,6 +47,9 @@ for(const [label,src] of [["order preview",previewSrc],["order orchestrator",ord
     "LINE_PROFIT_GATE_NOT_PASSED"
   ]) assert(src.includes(needle),label+" missing "+needle);
 }
-assert(orderSrc.includes("LIVE_PAYMENT_SESSION_REQUIRED"));
-assert(orderSrc.includes("PAYMENT_NOT_CONFIRMED"));
+const stateSrc=fs.readFileSync("supabase/functions/_shared/hunt-payment-order-state.mjs","utf8");
+assert(orderSrc.includes("liveFulfillmentBlockers"));
+assert(orderSrc.includes("sandboxFulfillmentBlockers"));
+assert(stateSrc.includes("LIVE_PAYMENT_SESSION_REQUIRED"));
+assert(stateSrc.includes("PAYMENT_NOT_CONFIRMED"));
 console.log("BOOM commerce handoff: PASS — Commerce Truth gates payment and supplier execution");

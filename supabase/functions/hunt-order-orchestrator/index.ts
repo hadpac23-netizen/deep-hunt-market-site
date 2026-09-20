@@ -1,4 +1,5 @@
 import { createSupabaseContext } from "npm:@supabase/server";
+import { assertTransition, liveFulfillmentBlockers, sandboxFulfillmentBlockers } from "../_shared/hunt-payment-order-state.mjs";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const countryNames:Record<string,string>={
@@ -277,24 +278,31 @@ Deno.serve(async(req:Request)=>{
     if(!session.user_id)return json(req,{ok:false,error:"SIGNED_IN_TEST_SESSION_REQUIRED"},409);
 
     if(runMode==="live"){
-      if(clean(session.mode)!=="live")return json(req,{ok:false,error:"LIVE_PAYMENT_SESSION_REQUIRED"},409);
-      if(!["paid","succeeded","completed"].includes(clean(session.status).toLowerCase())){
-        return json(req,{ok:false,error:"PAYMENT_NOT_CONFIRMED"},409);
-      }
       const expiry=Date.parse(clean(session.expires_at));
       if(Number.isFinite(expiry)&&expiry<=Date.now())return json(req,{ok:false,error:"PAYMENT_SESSION_EXPIRED"},409);
       const live=await control(ctx,"hunt_supplier_order_live");
-      if(!(live.enabled&&live.owner_approved)){
-        return json(req,{ok:false,error:"LIVE_SUPPLIER_ORDER_DISABLED"},409);
-      }
+      const liveBlockers=liveFulfillmentBlockers({
+        payment_mode:clean(session.mode),
+        payment_status:clean(session.status).toLowerCase(),
+        commerce_truth:clean(commerce?.status),
+        shipping_complete:shippingMissing(shipping).length===0,
+        owner_gate:live.enabled&&live.owner_approved
+      });
+      if(liveBlockers.length)return json(req,{ok:false,error:"LIVE_FULFILLMENT_BLOCKED",blockers:liveBlockers},409);
       return json(req,{ok:false,error:"LIVE_PATH_NOT_IMPLEMENTED_BEFORE_LAUNCH"},409);
     }
 
     const sandbox=await control(ctx,"hunt_supplier_order_sandbox");
-    if(!(sandbox.enabled&&sandbox.owner_approved)){
-      return json(req,{ok:false,error:"SANDBOX_SUPPLIER_ORDER_DISABLED"},409);
+    const sandboxBlockers=sandboxFulfillmentBlockers({
+      sandbox_control:sandbox.enabled&&sandbox.owner_approved,
+      is_test:true,
+      provider_sandbox:true
+    });
+    if(sandboxBlockers.length){
+      return json(req,{ok:false,error:"SANDBOX_FULFILLMENT_BLOCKED",blockers:sandboxBlockers},409);
     }
 
+    let sessionFulfillmentStatus=clean(session.fulfillment_status)||"not_started";
     let order:any=null;
     if(session.order_id){
       const {data}=await ctx.supabaseAdmin.from("hunt_orders")
@@ -327,10 +335,16 @@ Deno.serve(async(req:Request)=>{
         });
         requireWrite(eventError,"ORDER_EVENT_START_STORE_FAILED");
       }
+    }
+
+    let orderStatus=clean(order?.status)||"processing";
+    if(sessionFulfillmentStatus!=="processing"&&sessionFulfillmentStatus!=="shipped"){
+      assertTransition("fulfillment",sessionFulfillmentStatus,"processing");
       const {error:sessionStartError}=await ctx.supabaseAdmin.from("hunt_payment_sessions").update({
         order_id:order.id,fulfillment_status:"processing",updated_at:new Date().toISOString()
       }).eq("id",session.id);
       requireWrite(sessionStartError,"PAYMENT_SESSION_FULFILLMENT_START_FAILED");
+      sessionFulfillmentStatus="processing";
     }
 
     const supplierResults:any[]=[];
@@ -471,6 +485,8 @@ Deno.serve(async(req:Request)=>{
         }catch(createError){
           const failure=clean((createError as Error)?.message)||"CJ_SANDBOX_CREATE_FAILED";
           const now=new Date().toISOString();
+          assertTransition("order",orderStatus,"exception");
+          assertTransition("fulfillment",sessionFulfillmentStatus,"failed");
           const {error:fulfillmentFailError}=await ctx.supabaseAdmin
             .from("hunt_fulfillment_orders")
             .update({
@@ -493,6 +509,8 @@ Deno.serve(async(req:Request)=>{
             .update({fulfillment_status:"failed",updated_at:now})
             .eq("id",session.id);
           requireWrite(sessionFailError,"PAYMENT_SESSION_FAILURE_STORE_FAILED");
+          orderStatus="exception";
+          sessionFulfillmentStatus="failed";
 
           await addPipelineRun(ctx,{
             payment_session_id:session.id,
@@ -564,6 +582,8 @@ Deno.serve(async(req:Request)=>{
     }
 
     const primary=supplierResults[0]||{};
+    assertTransition("order",orderStatus,"shipped");
+    assertTransition("fulfillment",sessionFulfillmentStatus,"shipped");
     const {error:orderShipError}=await ctx.supabaseAdmin.from("hunt_orders").update({
       status:"shipped",
       carrier:"CJ SANDBOX",
@@ -582,6 +602,8 @@ Deno.serve(async(req:Request)=>{
       fulfillment_status:"shipped",updated_at:new Date().toISOString()
     }).eq("id",session.id);
     requireWrite(sessionShipError,"PAYMENT_SESSION_SHIPPED_STORE_FAILED");
+    orderStatus="shipped";
+    sessionFulfillmentStatus="shipped";
 
     const evidence=await addPipelineRun(ctx,{
       payment_session_id:session.id,
