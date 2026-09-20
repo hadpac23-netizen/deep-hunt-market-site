@@ -5,7 +5,7 @@
   const slug = H.categoryDefs[requested] ? requested : "women";
   const sub = params.get("sub") || "";
   const def = H.categoryDefs[slug];
-  const mainCategories = ["women","men","kids","beauty","home","kitchen","tech","sports","gifts"];
+  const mainCategories = ["women","men","kids","beauty","accessories","tech","home","sports","pets","toys","travel","office","gifts"];
   let rawResults = [];
   let resultOrder = new Map();
   const viewKey = "hunt_market_view_v1";
@@ -13,6 +13,10 @@
   let visibleLimit = 48;
   const pageSize = 48;
   let gridObserver = null;
+  let catalogPages = [];
+  let nextCatalogPageIndex = 0;
+  let catalogPageLoading = false;
+  let catalogTotalCount = 0;
 
   const $ = q => document.querySelector(q);
   const productKey = p => `${p.provider || ""}:${p.item_id || ""}`;
@@ -24,7 +28,8 @@
       && String(product?.profit_gate_status || "").toUpperCase() === "PASS"
       && Number.isFinite(amount)
       && amount > 0;
-    return {ready, amount: ready ? amount : null, currency};
+    const estimated = !ready && Number.isFinite(amount) && amount > 0;
+    return {ready, estimated, amount: (ready || estimated) ? amount : null, currency};
   }
 
   function productCard(product) {
@@ -34,20 +39,20 @@
       : `<div class="hd-market-card-placeholder">◇</div>`;
     const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">${H.esc(product.provider || "CATALOG")}</span>`;
     const retail = retailState(product);
-    const price = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
+    const price = retail.ready ? H.money(retail.amount, retail.currency) : (retail.estimated ? `From ${H.money(retail.amount, retail.currency)}` : "Price pending");
     const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
     const stateLabel = quoteVerified
       ? "QUOTE VERIFIED"
       : retail.ready
         ? "HUNT RETAIL · QUOTE REQUIRED"
-        : (product.availability_verified === true ? "CATALOG" : "DISCOVERY");
+        : (retail.estimated ? "HUNT ESTIMATE · LIVE DETAIL REQUIRED" : (product.availability_verified === true ? "CATALOG" : "DISCOVERY"));
     const productUrl = H.productUrl(product);
     return `<article class="hd-market-product-card" data-category="${H.esc(product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${retail.amount || 0}" data-score="${score}">
       <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}</a>
       <div class="hd-market-card-body">
         <small>${H.esc(product.provider || "Provider")} · ${H.esc(stateLabel)}</small>
         <a href="${H.esc(productUrl)}" class="hd-market-card-title" data-product-view="${H.esc(productKey(product))}">${H.esc(product.title || "Product")}</a>
-        <div class="hd-market-card-price"><strong>${price}</strong><span>${retail.ready ? "HUNT RETAIL" : "PRICE PENDING"}</span></div>
+        <div class="hd-market-card-price"><strong>${price}</strong><span>${retail.ready ? "HUNT RETAIL" : (retail.estimated ? "VERIFY ON PRODUCT" : "PRICE PENDING")}</span></div>
         <p>${H.esc(score > 0 ? H.personalReason(product) : "Open the product to inspect images, variants and availability.")}</p>
         <a class="hd-btn hd-market-view" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">View product →</a>
       </div>
@@ -73,15 +78,27 @@
       .join("");
     $("#hd-category-strip").innerHTML = chips;
 
+    const subKeys = H.departmentSubcategories?.[slug] || [];
+    const subbar = $("#hd-gender-subcategories");
+    if (subbar) {
+      subbar.hidden = !subKeys.length;
+      subbar.innerHTML = subKeys.map(key => {
+        const value = H.categoryDefs[key];
+        if (!value) return "";
+        const href = `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}`;
+        return `<a class="${sub===key?"active":""}" href="${href}">${H.esc(value.title)}</a>`;
+      }).join("");
+    }
+
     const groups = Array.isArray(H.categoryGroups) ? H.categoryGroups : [];
     $("#hd-category-side-links").innerHTML = groups.map(group => {
       const links = group.items
         .filter(key => H.categoryDefs[key])
         .map(key => {
           const value = H.categoryDefs[key];
-          const genderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats"].includes(key);
-          const href = genderSub ? `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}` : H.categoryUrl(key);
-          const active = genderSub ? sub===key : key===slug;
+          const departmentSub = (H.departmentSubcategories?.[slug] || []).includes(key);
+          const href = departmentSub ? `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}` : H.categoryUrl(key);
+          const active = departmentSub ? sub===key : key===slug;
           return `<a class="${active?"active":""}" href="${href}">${value.icon} ${H.esc(value.title)}</a>`;
         }).join("");
       return `<section class="hd-category-side-group"><strong>${H.esc(group.title)}</strong><div>${links}</div></section>`;
@@ -89,52 +106,27 @@
   }
 
   function matchesSub(product) {
-    if (!sub || !["women","men"].includes(slug)) return true;
-    const title = String(product?.title || "").toLowerCase();
-    const patterns = {
-      tops:/shirt|tee|t-shirt|top|tank|polo|blouse/,
-      bottoms:/pants|trouser|shorts|jeans|joggers|leggings/,
-      hoodies:/hoodie|sweatshirt/,
-      jackets:/jacket|coat|windbreaker|outerwear|blazer/,
-      knitwear:/sweater|cardigan|knit/,
-      activewear:/sport|athletic|fitness|yoga|running|rash guard/,
-      swimwear:/swim|swimsuit|bikini|board shorts/,
-      shoes:/shoe|sneaker|heel|loafer|boot|sandal|slide/,
-      bags:/bag|handbag|purse|crossbody|tote|backpack/,
-      jewelry:/jewelry|jewellery|necklace|bracelet|earring|pendant|ring/,
-      accessories:/accessor|wallet|belt|scarf|sunglass/,
-      hats:/hat|cap|beanie/,
-      beauty:/beauty|skincare|makeup|cosmetic|serum|cream/,
-      perfume:/perfume|fragrance|eau de|parfum/
-    };
-    return patterns[sub] ? patterns[sub].test(title) : true;
-  }
-
-  function matchesGenderScope(product) {
-    if (!sub || !["women","men"].includes(slug)) return true;
-    const title=String(product?.title||"").toLowerCase();
-    const gender=String(product?.gender||"").toLowerCase();
-    if (slug==="women") {
-      if (gender==="women") return true;
-      if (/\bunisex\b/.test(title)) return false;
-      const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
-      const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
-      return hasWomen && !hasMen;
-    }
-    if (gender==="men") return true;
-    if (/\bunisex\b/.test(title)) return false;
-    const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
-    const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
-    return hasMen && !hasWomen;
+    if (!sub) return true;
+    const validSubs = H.departmentSubcategories?.[slug] || [];
+    if (!validSubs.includes(sub)) return true;
+    return String(product?.category || "") === sub;
   }
 
   function matchesCategoryTruth(product) {
-    const title = String(product?.title || "").toLowerCase();
-    if (!title) return false;
-    if (slug === "women" && /\b(baby|newborn|toddler|kid|kids|child|children|boys?|youth)\b/.test(title)) return false;
-    if (slug === "men" && /\b(women|woman|female|ladies|girls?)\b/.test(title)) return false;
-    if (slug === "beauty" && /\b(pet|dog|cat|toy|slime|foam beads|puzzle|hallway|hall tree|entryway|wardrobe|shoe cabinet|shoe storage|coat rack|furniture|mudroom)\b/.test(title)) return false;
-    if (slug === "jewelry" && /\b(parrot|bird toy|pet toy|toy set|handbag belt|bag belt|strap buckle|key findings)\b/.test(title)) return false;
+    const category = String(product?.category || "");
+    const department = String(product?.department || "");
+    const children = H.departmentSubcategories?.[slug] || [];
+    if (children.length) {
+      if (department) return department === slug;
+      return category === slug || children.includes(category);
+    }
+    if (category === slug) return true;
+    try { return H.inferCategory(product) === slug; } catch { return false; }
+  }
+
+  function matchesGenderScope(product) {
+    const department = String(product?.department || "");
+    if (department && H.departmentSubcategories?.[slug]) return department === slug;
     return true;
   }
 
@@ -190,18 +182,40 @@
     visible.forEach(p => { try { sessionStorage.setItem(`hunt_product_${productKey(p)}`, JSON.stringify(p)); } catch {} });
     const sentinel=$("#hd-category-more");
     if(sentinel){
-      const hasMore=visible.length<items.length;
+      const hasLoadedMore=visible.length<items.length;
+      const hasRemoteMore=nextCatalogPageIndex<catalogPages.length;
+      const hasMore=hasLoadedMore||hasRemoteMore;
       sentinel.hidden=!hasMore;
       const strong=sentinel.querySelector("strong");
-      if(strong)strong.textContent=hasMore?`Load more · ${items.length-visible.length} remaining`:"All products loaded";
+      const remaining=Math.max(0,catalogTotalCount-visible.length);
+      if(strong)strong.textContent=hasMore?`Load more · ${remaining.toLocaleString()} remaining`:"All products loaded";
     }
   }
 
-  function loadMore() {
+  async function loadMore() {
     const total=filteredSorted().length;
-    if(visibleLimit>=total)return;
-    visibleLimit=Math.min(total,visibleLimit+pageSize);
-    renderGrid();
+    if(visibleLimit<total){
+      visibleLimit=Math.min(total,visibleLimit+pageSize);
+      renderGrid();
+      return;
+    }
+    if(catalogPageLoading || nextCatalogPageIndex>=catalogPages.length) return;
+    catalogPageLoading=true;
+    try{
+      const pagePath=catalogPages[nextCatalogPageIndex];
+      const res=await fetch(pagePath+"?v=30k1",{cache:"force-cache"});
+      if(!res.ok) throw new Error("Catalog page unavailable");
+      const page=await res.json();
+      const rows=Array.isArray(page?.products)?page.products:[];
+      nextCatalogPageIndex+=1;
+      applyRows(rows,"CJ paged",{merge:true});
+      visibleLimit=Math.min(filteredSorted().length,visibleLimit+pageSize);
+      renderGrid();
+    }catch(err){
+      console.warn("HUNT catalog page load failed",err);
+    }finally{
+      catalogPageLoading=false;
+    }
   }
 
   function setupGridObserver() {
@@ -216,11 +230,11 @@
 
   async function load() {
     const subDef = sub && H.categoryDefs[sub] ? H.categoryDefs[sub] : null;
-    const pageTitle = subDef && ["women","men"].includes(slug) ? `${def.title} · ${subDef.title}` : def.title;
+    const pageTitle = subDef ? `${def.title} · ${subDef.title}` : def.title;
     document.title = `${pageTitle} — HUNT DEAL`;
     $("#hd-cat-title").textContent = pageTitle;
     $("#hd-cat-breadcrumb").textContent = pageTitle;
-    $("#hd-cat-copy").textContent = subDef && ["women","men"].includes(slug) ? `${subDef.title} filtered inside ${def.title}.` : def.description;
+    $("#hd-cat-copy").textContent = subDef ? `${subDef.title} inside ${def.title}. CJ-only products, organized without category mixing.` : def.description;
     renderCategories();
     applyViewMode(viewMode);
     H.recordSignal(slug,"category");
@@ -229,7 +243,7 @@
     H.updateCartBadges();
     setupGridObserver();
 
-    const sourceSlug = sub && ["women","men"].includes(slug) && H.categoryDefs[sub] ? sub : slug;
+    const sourceSlug = sub && (H.departmentSubcategories?.[slug] || []).includes(sub) && H.categoryDefs[sub] ? sub : slug;
 
     const mergeProductRecord = (base, fresh) => {
       if (!base) return fresh || {};
@@ -253,9 +267,10 @@
 
     const applyRows = (rows, label, {merge=false}={}) => {
       const incoming = (Array.isArray(rows) ? rows : []).filter(product => {
-        if (slug !== "men") return true;
-        const text = String(product?.title || "").toLowerCase();
-        return !/\b(women(?:'s|s)?|woman|female|unisex)\b/.test(text);
+        if (String(product?.provider || "").toLowerCase() !== "cjdropshipping") return false;
+        if (product?.department && String(product.department) !== slug) return false;
+        if (sub && String(product?.category || "") !== sub) return false;
+        return true;
       });
       if (merge && rawResults.length) {
         const merged = new Map(rawResults.map(product => [productKey(product), product]));
@@ -269,7 +284,7 @@
       }
       const providers = [...new Set(rawResults.map(p=>p.provider).filter(Boolean))];
       $("#hd-cat-provider-state").textContent = rawResults.length
-        ? `${rawResults.length} catalog products ready · ${providers.join(" + ")}${label==="live"?" · live refresh merged":""}`
+        ? `${rawResults.length} CJ products indexed · live variants, stock and shipping rechecked on product open`
         : "No connected provider returned a product for this category yet.";
       resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
       window.HuntAnalytics?.category(slug, rawResults.length);
@@ -279,17 +294,35 @@
     let rendered = false;
     let shardLoaded = false;
     try {
-      const shardRes = await fetch(`catalog-shards/${encodeURIComponent(sourceSlug)}.json?v=boom5k3`, {cache:"force-cache"});
-      if (shardRes.ok) {
-        const shard = await shardRes.json();
-        const shardRows = Array.isArray(shard?.products) ? shard.products : [];
-        if (shardRows.length) {
-          applyRows(shardRows, "expanded");
-          rendered = true;
-          shardLoaded = true;
+      const manifestRes = await fetch("catalog-manifest.json?v=30k1",{cache:"force-cache"});
+      if(manifestRes.ok){
+        const manifest=await manifestRes.json();
+        const info=manifest?.categories?.[sourceSlug];
+        catalogPages=Array.isArray(info?.pages)?info.pages:[];
+        catalogTotalCount=Number(info?.count||0);
+        nextCatalogPageIndex=0;
+        if(catalogPages.length){
+          const firstPath=catalogPages[0];
+          const firstRes=await fetch(firstPath+"?v=30k1",{cache:"force-cache"});
+          if(firstRes.ok){
+            const first=await firstRes.json();
+            const rows=Array.isArray(first?.products)?first.products:[];
+            nextCatalogPageIndex=1;
+            applyRows(rows,"CJ paged");
+            rendered=true;
+            shardLoaded=true;
+          }
+        } else if(info && Number(info.count)===0){
+          applyRows([],"CJ paged");
+          rendered=true;
+          shardLoaded=true;
         }
       }
-    } catch {}
+    } catch(err) {
+      console.warn("HUNT manifest load failed",err);
+    }
+
+    if (shardLoaded) return;
 
     if (!shardLoaded) {
       try {

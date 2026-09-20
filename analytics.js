@@ -15,6 +15,70 @@
       .slice(0, max);
 
   const safePath = () => location.pathname || "/";
+  const sessionKey = "hunt_session_id_v1";
+  function sessionId() {
+    try {
+      let value = sessionStorage.getItem(sessionKey);
+      if (!value) {
+        value = "hunt_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 12);
+        sessionStorage.setItem(sessionKey, value);
+      }
+      return clean(value, 80);
+    } catch {
+      return "hunt_ephemeral_" + Date.now().toString(36);
+    }
+  }
+
+  function firstPartySignal(event, params = {}) {
+    if (!consentGranted) return false;
+    const map = {
+      page_view:"hunt_page_view",
+      view_item_list:"hunt_view_list",
+      search:"hunt_search",
+      view_item:"hunt_view_item",
+      select_item:"hunt_select_item",
+      add_to_cart:"hunt_add_to_cart",
+      begin_checkout:"hunt_begin_checkout",
+      checkout_market_selected:"hunt_checkout_market"
+    };
+    let eventType = map[event] || "";
+    if (event === "shopping_preference") {
+      eventType = params.preference_action === "like" ? "hunt_like" :
+        params.preference_action === "save" ? "hunt_save" : "";
+    }
+    if (!eventType) return false;
+    const firstItem = Array.isArray(params.items) ? (params.items[0] || {}) : {};
+    const payload = {
+      event_type: eventType,
+      session_id: sessionId(),
+      page_path: safePath(),
+      page_title: clean(document.title, 160),
+      category: clean(params.item_list_id || params.item_category || firstItem.item_category || params.search_category || "", 60),
+      provider: clean(firstItem.item_brand || params.item_brand || "", 80),
+      item_id: clean(firstItem.item_id || params.item_id || "", 100),
+      placement: clean(params.item_list_id || params.creative_name || "", 80),
+      quantity: Number(firstItem.quantity || 1),
+      result_count: Number(params.result_count || 0),
+      search_category: clean(params.search_category || "", 60),
+      destination_market: clean(params.destination_market || "", 60),
+      preference_action: clean(params.preference_action || "", 20)
+    };
+    try {
+      fetch((window.HuntCore?.functionsBase || "https://zszlnahjqmwozwubetkm.supabase.co/functions/v1") + "/hunt-commerce-signal", {
+        method:"POST",
+        keepalive:true,
+        headers:{
+          apikey: window.HuntCore?.publishableKey || "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X",
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(payload)
+      }).catch(()=>{});
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   const hasValidGtm = () => /^GTM-[A-Z0-9]+$/i.test(clean(config.gtmContainerId, 32));
   const hasValidGa4 = () => /^G-[A-Z0-9]+$/i.test(clean(config.ga4MeasurementId, 32));
   const configured = () => hasValidGtm() || hasValidGa4();
@@ -48,11 +112,13 @@
       page_path: safePath(),
       ...params
     };
-    if (!consentGranted || !configured()) {
+    if (!consentGranted) {
       queue.push(payload);
       return false;
     }
-    return sendPayload(payload);
+    const firstPartySent = firstPartySignal(event, params);
+    if (!configured()) return firstPartySent;
+    return sendPayload(payload) || firstPartySent;
   }
 
   function loadGtm() {
@@ -80,8 +146,13 @@
   }
 
   function flush() {
-    if (!consentGranted || !configured()) return;
-    while (queue.length) sendPayload(queue.shift());
+    if (!consentGranted) return;
+    while (queue.length) {
+      const payload = queue.shift();
+      const {event, hunt_environment, page_path, ...params} = payload;
+      firstPartySignal(event, params);
+      if (configured()) sendPayload(payload);
+    }
   }
 
   function pageView() {
@@ -94,10 +165,12 @@
   }
 
   function init() {
-    if (initialized || !consentGranted || !configured()) return false;
+    if (initialized || !consentGranted) return false;
     initialized = true;
-    loadGtm();
-    loadDirectGa4();
+    if (configured()) {
+      loadGtm();
+      loadDirectGa4();
+    }
     pageView();
     flush();
     return true;
@@ -125,7 +198,7 @@
   }
 
   function renderConsentBanner() {
-    if (!config.consentRequired || !configured()) return;
+    if (!config.consentRequired) return;
     try {
       const value = localStorage.getItem(consentKey);
       if (value === "granted" || value === "denied") return;
@@ -250,12 +323,6 @@
         item_list_id: clean(placement,80),
         item_list_name: clean(placement,80),
         items:[item(product,null,1)]
-      });
-    },
-    surveyComplete({categories=[],priceBand="any"}={}) {
-      return dataLayerPush("shopping_survey_complete", {
-        selected_category_count: Array.isArray(categories)?categories.length:0,
-        price_band: clean(priceBand,40)
       });
     },
     shoppingAction({provider="",itemId="",action="",active=false,category=""}={}) {

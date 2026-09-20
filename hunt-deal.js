@@ -172,7 +172,7 @@
     const grid = $("#hd-catalog-grid");
     const count = $("#hd-catalog-count");
     if (!grid || !count) return;
-    const items = Array.isArray(products) ? products : [];
+    const items = (Array.isArray(products) ? products : []).filter(item => String(item?.provider || "").toLowerCase() === "cjdropshipping");
     catalogItems = items;
     count.textContent = items.length ? items.length + " LIVE" : "WAITING";
     grid.innerHTML = items.map(item => {
@@ -182,7 +182,7 @@
       const retail = retailState(item);
       const priceLabel = retail.ready ? money(retail.amount, retail.currency) : "Price pending";
       const gaps = (item.gaps || []).slice(0,2).map(x => `<li>${esc(x)}</li>`).join("");
-      const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : `product.html?provider=${encodeURIComponent(item.provider || "Printful")}&id=${encodeURIComponent(item.item_id || "")}`;
+      const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : `product.html?provider=${encodeURIComponent(item.provider || "CJdropshipping")}&id=${encodeURIComponent(item.item_id || "")}`;
       return `
         <article class="hd-catalog-card glass">
           <div class="hd-catalog-media">${image}<span class="hd-catalog-badge">${esc(item.verdict || "CATALOG")}</span></div>
@@ -232,8 +232,16 @@
     women: ["Women's Fashion", "women"],
     men: ["Men's Fashion", "men"],
     dresses: ["Dresses & Skirts", "dresses"],
+    eveningdresses: ["Evening & Occasion Dresses", "eveningdresses"],
+    womensuits: ["Women's Suits & Blazers", "womensuits"],
     tops: ["Tops & T-Shirts", "tops"],
+    jeans: ["Jeans & Denim", "jeans"],
     bottoms: ["Bottoms", "bottoms"],
+    underwear: ["Women's Underwear & Bras", "underwear"],
+    thongs: ["Women's Thongs", "thongs"],
+    boxers: ["Men's Boxer Briefs", "boxers"],
+    longboxers: ["Men's Long Boxer Briefs", "longboxers"],
+    mensbriefs: ["Men's Briefs & Low-Rise", "mensbriefs"],
     hoodies: ["Hoodies & Sweatshirts", "hoodies"],
     knitwear: ["Knitwear", "knitwear"],
     jackets: ["Jackets & Outerwear", "jackets"],
@@ -241,6 +249,8 @@
     bags: ["Bags & Totes", "bags"],
     shoes: ["Shoes", "shoes"],
     accessories: ["Accessories", "accessories"],
+    sunglasses: ["Sunglasses", "sunglasses"],
+    belts: ["Belts & Small Accessories", "belts"],
     travel: ["Travel Picks", "travel"],
     home: ["Home Finds", "home"],
     storage: ["Storage & Organization", "storage"],
@@ -249,6 +259,11 @@
     tech: ["Phone & Tech", "tech"],
     phonecases: ["Premium Phone Cases", "phonecases"],
     phoneaccessories: ["Phone Accessories", "phoneaccessories"],
+    chargers: ["Chargers & Cables", "chargers"],
+    powerbanks: ["Power Banks", "powerbanks"],
+    phonestands: ["Phone & Tablet Stands", "phonestands"],
+    earbuds: ["Earbuds & Audio", "earbuds"],
+    usefultech: ["Useful Electronics", "usefultech"],
     hairaccessories: ["Hair Accessories", "hairaccessories"],
     plussize: ["Plus Size", "plussize"],
     suits: ["Suits & Tailoring", "suits"],
@@ -260,6 +275,8 @@
     sports: ["Sports & Fitness", "sports"],
     outdoors: ["Outdoor & Garden", "outdoors"],
     beauty: ["Beauty & Skincare", "beauty"],
+    makeup: ["Makeup", "makeup"],
+    skincare: ["Skincare", "skincare"],
     perfume: ["Perfume & Fragrance", "perfume"],
     jewelry: ["Jewelry", "jewelry"],
     kitchen: ["Kitchen", "kitchen"],
@@ -284,26 +301,16 @@
     ornaments: ["Ornaments", "ornaments"],
   };
 
-  const shelfDepartments = [
-    ["Women · Clothing", ["women","dresses","tops","bottoms","sets","plussize","hoodies","jackets","knitwear","activewear","swimwear","sleepwear","womenunderwear"]],
-    ["Women · Shoes & Accessories", ["bags","hairaccessories","jewelry","accessories","shoes","hats"]],
-    ["Men", ["men","suits","menunderwear","socks"]],
-    ["Premium Phone & Tech", ["phonecases","phoneaccessories","tech","gaming","office"]],
-    ["Home & Living", ["home","lighting","kitchen","storage","bedding","bath"]],
-    ["Sports & Everyday", ["sports","travel","kids","toys","pets"]],
-    ["Beauty", ["beauty"]],
-    ["Creative & Gifts", ["crafts","party","gifts","stationery"]],
-  ];
+  const shelfDepartments = [["Women",["women-dresses","women-evening","women-suits","women-tops","women-jeans","women-bottoms","women-skirts","women-knitwear","women-outerwear","women-underwear","women-sleepwear","women-swim","women-shoes","women-socks","women-wallets","women-hoodies","women-clothing"]],["Men",["men-tops","men-suits","men-jeans","men-bottoms","men-outerwear","men-knitwear","men-boxers","men-underwear","men-sleepwear","men-shoes","men-bags","men-wallets","men-socks","men-hoodies","men-accessories","men-clothing"]],["Kids & Baby",["kids-clothing","kids-shoes","kids-accessories","baby","baby-clothing","baby-shoes"]],["Beauty",["skincare","body-care","makeup","nails","hair","beauty-tools"]],["Accessories & Jewelry",["jewelry-necklaces","jewelry-rings","jewelry-earrings","jewelry-bracelets","jewelry","watches","bags","hats","belts","scarves","keychains","gloves","hair-accessories","bag-accessories","socks"]],["Phone & Tech",["phone-cases","chargers-cables","power-banks","stands-holders","audio","wearables","wearable-accessories","smart-home","cameras","computer-accessories","electronics","gaming"]],["Home & Living",["home-storage","kitchen","lighting","bedding","bath","home-decor","drinkware","tools-diy","cleaning","small-appliances"]],["Sports & Outdoors",["fitness","outdoors","active-bottoms","sports-gear","sports-bags","cycling","fitness-accessories"]],["Pets",["pet-accessories","pet-toys","pet-grooming","pet-clothing","pet-feeding","pet-walk","pet-beds","aquarium"]],["Toys",["toys"]],["Travel",["luggage"]],["Office & Crafts",["crafts","stationery","stickers"]],["Gifts & Party",["party"]]];
 
   function shelfCard(item) {
     const detailUrl = window.HuntCore
       ? window.HuntCore.productUrl(item)
-      : `product.html?provider=${encodeURIComponent(item.provider || "Printful")}&id=${encodeURIComponent(item.item_id || "")}`;
+      : `product.html?provider=${encodeURIComponent(item.provider || "CJdropshipping")}&id=${encodeURIComponent(item.item_id || "")}`;
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
     const providerName = String(item.provider || "").toLowerCase();
-    const podSetupRequired = providerName.includes("printful") || providerName.includes("gooten");
     const quoteVerified = String(item?.quote_verification_status || "").toUpperCase() === "PASS";
     const detailRecheckRequired = item?.checkout_status === "PRODUCT_DETAIL_RECHECK_REQUIRED"
       || Boolean(item?.detail_recheck_status);
@@ -311,23 +318,24 @@
       ? "QUOTE VERIFIED"
       : item.quality_gate === "BOOM_PREMIUM"
         ? "BOOM PICK"
-        : podSetupRequired
-          ? "POD CATALOG"
-          : detailRecheckRequired
-            ? "RECHECK REQUIRED"
-            : "SOURCE CATALOG";
+        : detailRecheckRequired
+          ? "RECHECK REQUIRED"
+          : "SOURCE CATALOG";
     const detailLine = quoteVerified
       ? "A recent stock and shipping quote passed; destination is rechecked before checkout."
-      : podSetupRequired
-        ? "Product source verified; HUNT setup is required before checkout."
-        : detailRecheckRequired
-          ? "Product detail must be verified again before checkout."
-          : "Open for current price, variants and availability.";
+      : detailRecheckRequired
+        ? "Product detail must be verified again before checkout."
+        : "Open for current price, variants and availability.";
+    const retailAmount = Number(item?.retail_price_amount);
+    const retailReady = item?.retail_price_verified === true && String(item?.profit_gate_status || "").toUpperCase() === "PASS" && Number.isFinite(retailAmount) && retailAmount > 0;
+    const retailEstimated = !retailReady && Number.isFinite(retailAmount) && retailAmount > 0;
+    const retailText = retailReady ? money(retailAmount, item?.retail_currency || "USD") : (retailEstimated ? `From ${money(retailAmount, item?.retail_currency || "USD")}` : "Price on product");
     return `<article class="hd-shelf-card" role="listitem" data-category="${esc(item.category || "")}">
       <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(truthBadge)}</span></a>
       <div class="hd-shelf-card-body">
         <small>${esc(item.provider || "Provider")}</small>
         <a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a>
+        <strong class="hd-shelf-price">${esc(retailText)}</strong>
         <p>${esc(detailLine)}</p>
         <a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a>
       </div>
@@ -378,6 +386,7 @@
       const rows = [];
       const append = (items, fresh) => {
         for (const item of Array.isArray(items) ? items : []) {
+          if (String(item?.provider || "").toLowerCase() !== "cjdropshipping") continue;
           const key = `${item?.provider || ""}:${item?.item_id || ""}`;
           if (!item?.item_id) continue;
           if (seen.has(key)) {
@@ -506,10 +515,122 @@
     return rows;
   }
 
+  function mixedHomeDiscovery(shelves, limit=24) {
+    const departmentMap = window.HuntCore?.departmentSubcategories || {};
+    const buckets = [];
+    const used = new Set();
+    const departments = ["women","men","kids","beauty","accessories","tech","home","sports","pets","toys","travel","office","gifts"];
+    for (const department of departments) {
+      const slugs = [department,...(departmentMap[department] || [])];
+      const rows = [];
+      for (const slug of slugs) {
+        for (const item of Array.isArray(shelves?.[slug]) ? shelves[slug] : []) {
+          const key = `${item?.provider || ""}:${item?.item_id || ""}`;
+          if (!item?.item_id || used.has(key) || String(item?.provider || "").toLowerCase() !== "cjdropshipping") continue;
+          rows.push(item);
+        }
+      }
+      if (rows.length) buckets.push(rows);
+    }
+    const rand = array => {
+      const out=[...array];
+      for(let i=out.length-1;i>0;i--){
+        const buf=new Uint32Array(1);
+        crypto.getRandomValues(buf);
+        const j=buf[0]%(i+1);
+        [out[i],out[j]]=[out[j],out[i]];
+      }
+      return out;
+    };
+    const shuffled=buckets.map(rand);
+    const result=[];
+    let cursor=0;
+    while(result.length<limit && shuffled.some(x=>x.length)){
+      for(const bucket of rand(shuffled)){
+        if(result.length>=limit)break;
+        const item=bucket.shift();
+        if(!item)continue;
+        const key=`${item?.provider || ""}:${item?.item_id || ""}`;
+        if(used.has(key))continue;
+        used.add(key);
+        result.push(item);
+      }
+      if(++cursor>limit*2)break;
+    }
+    return result;
+  }
+
+  let homeFeedPool = [];
+  let homeFeedCursor = 0;
+  let homeFeedObserver = null;
+  let homeFeedData = null;
+  let homeFeedMode = "snapshot";
+
+  function shuffleHome(items) {
+    const out=[...items];
+    for(let i=out.length-1;i>0;i--){
+      const buf=new Uint32Array(1);
+      crypto.getRandomValues(buf);
+      const j=buf[0]%(i+1);
+      [out[i],out[j]]=[out[j],out[i]];
+    }
+    return out;
+  }
+
+  function buildRandomHomePool(shelves) {
+    const seen=new Set(), rows=[];
+    for(const items of Object.values(shelves||{})){
+      for(const item of Array.isArray(items)?items:[]){
+        const key=`${item?.provider||""}:${item?.item_id||""}`;
+        if(!item?.item_id || seen.has(key)) continue;
+        if(String(item?.provider||"").toLowerCase()!=="cjdropshipping") continue;
+        seen.add(key);
+        rows.push(item);
+      }
+    }
+    for(const item of window.BoomNet?.merchantProducts?.()||[]){
+      const key=`${item?.provider||""}:${item?.item_id||""}`;
+      if(!item?.item_id || seen.has(key) || item?.promotion_eligible!==true) continue;
+      seen.add(key);
+      rows.push(item);
+    }
+    const ranked = window.BoomNet?.rankFeed ? window.BoomNet.rankFeed(rows) : shuffleHome(rows);
+    return ranked;
+  }
+
+  function appendHomeFeedBatch() {
+    const grid=document.querySelector("#hd-home-random-grid");
+    const sentinel=document.querySelector("#hd-home-random-more");
+    if(!grid || !sentinel) return;
+    const batch=homeFeedPool.slice(homeFeedCursor,homeFeedCursor+48);
+    if(batch.length){
+      grid.insertAdjacentHTML("beforeend",batch.map(shelfCard).join(""));
+      homeFeedCursor+=batch.length;
+    }
+    const remaining=Math.max(0,homeFeedPool.length-homeFeedCursor);
+    const strong=sentinel.querySelector("strong");
+    if(strong)strong.textContent=remaining? `Loading more · ${remaining.toLocaleString()} left` : "You reached the end of this mix.";
+    if(!remaining){
+      sentinel.classList.add("done");
+      homeFeedObserver?.disconnect();
+    }
+  }
+
+  function setupHomeFeedObserver() {
+    const sentinel=document.querySelector("#hd-home-random-more");
+    if(!sentinel || !("IntersectionObserver" in window)) return;
+    homeFeedObserver?.disconnect();
+    homeFeedObserver=new IntersectionObserver(entries=>{
+      if(entries.some(entry=>entry.isIntersecting)) appendHomeFeedBatch();
+    },{rootMargin:"900px 0px"});
+    homeFeedObserver.observe(sentinel);
+  }
+
   function renderMarketShelvesData(data, mode = "live") {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
-    if (!root || !counter) return false;
+    const existingGrid = document.querySelector("#hd-home-random-grid");
+    if (!root && !existingGrid) return false;
     const shelves = data?.shelves || {};
     const hasProducts = Object.values(shelves).some(items => Array.isArray(items) && items.length);
     if (!hasProducts) return false;
@@ -521,14 +642,16 @@
     const limit = shelfItemLimit();
     const html = orderedShelfDepartments().map(([department, slugs]) => {
       const sections = slugs.map(slug => {
-        const meta = shelfMeta[slug];
-        let items = Array.isArray(shelves[slug]) ? shelves[slug].filter(item => isShelfFit(slug, item)) : [];
-        if (department.startsWith("Women") && slug !== "women") items = items.filter(isWomenShelfItem);
+        const meta = shelfMeta[slug] || (window.HuntCore?.categoryDefs?.[slug] ? [window.HuntCore.categoryDefs[slug].title, slug] : [slug.replace(/-/g," "), slug]);
+        let items = Array.isArray(shelves[slug]) ? shelves[slug].filter(item => String(item?.provider || "").toLowerCase() === "cjdropshipping" && isShelfFit(slug, item)) : [];
         if (!meta || items.length < 4) return "";
         const selected = selectShelfItems(items, limit, renderedKeys);
         const cards = selected.map(shelfCard).join("");
-        const categoryHref = department.startsWith("Women") && slug !== "women"
-          ? `category.html?c=women&sub=${encodeURIComponent(slug)}`
+        const parent = window.HuntCore
+          ? Object.entries(window.HuntCore.departmentSubcategories || {}).find(([,items]) => Array.isArray(items) && items.includes(slug))?.[0]
+          : null;
+        const categoryHref = parent
+          ? `category.html?c=${encodeURIComponent(parent)}&sub=${encodeURIComponent(slug)}`
           : (window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`);
         return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
       }).filter(Boolean).join("");
@@ -536,14 +659,51 @@
       return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
     }).join("");
 
-    root.innerHTML = html || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
-    const fullCatalogCount = Number(data?.catalog_total_product_count || 0);
-    const count = fullCatalogCount || Number(data?.visible_product_count || 0);
-    const label = fullCatalogCount ? "CATALOG" : (mode === "live" ? "LIVE" : mode === "hybrid" ? "READY" : "CATALOG");
-    counter.textContent = `${count.toLocaleString()} ${label}`;
-    counter.title = fullCatalogCount
-      ? "BOOM quality catalog across category pages; home shelves remain curated for speed."
-      : (mode === "hybrid" ? "Verified catalog with live supplier refresh merged in" : (mode === "live" ? "Live supplier refresh" : "Verified catalog snapshot while live suppliers refresh"));
+    homeFeedData=data;
+    homeFeedMode=mode;
+    homeFeedPool=buildRandomHomePool(shelves);
+    homeFeedCursor=0;
+    homeFeedObserver?.disconnect();
+    if (root) {
+      root.innerHTML = `
+        <section class="hd-home-random-feed">
+          <div class="hd-market-shelf-head">
+            <div>
+              <small>DISCOVER EVERYTHING</small>
+              <h2>Something different every time.</h2>
+              <p>Women, men, kids, beauty, tech, home, accessories and more — fully mixed for discovery.</p>
+            </div>
+            <button type="button" class="hd-home-remix" id="hd-home-remix">Remix</button>
+          </div>
+          <div class="hd-home-random-grid" id="hd-home-random-grid" role="list"></div>
+          <div class="hd-home-random-more" id="hd-home-random-more" aria-live="polite"><span></span><strong>Loading more…</strong></div>
+        </section>`;
+    } else {
+      existingGrid.innerHTML = "";
+      document.querySelector("#hd-home-random-more")?.classList.remove("done");
+    }
+    appendHomeFeedBatch();
+    setupHomeFeedObserver();
+    document.querySelector("#hd-home-remix")?.addEventListener("click",()=>{
+      homeFeedPool=window.BoomNet?.remix ? window.BoomNet.remix(homeFeedPool) : shuffleHome(homeFeedPool);
+      homeFeedCursor=0;
+      const grid=document.querySelector("#hd-home-random-grid");
+      if(grid)grid.innerHTML="";
+      const sentinel=document.querySelector("#hd-home-random-more");
+      sentinel?.classList.remove("done");
+      appendHomeFeedBatch();
+      setupHomeFeedObserver();
+    });
+    const cjKeys = new Set();
+    Object.values(shelves).forEach(rows => (Array.isArray(rows) ? rows : []).forEach(item => {
+      if (String(item?.provider || "").toLowerCase() === "cjdropshipping" && item?.item_id) cjKeys.add(String(item.item_id));
+    }));
+    const count = Number(data?.visible_product_count || 0) || cjKeys.size;
+    const label = mode === "live" ? "CJ LIVE" : "CJ READY";
+    if (counter) {
+      counter.textContent = `${count.toLocaleString()} ${label}`;
+      counter.title = "Current HUNT launch phase: CJdropshipping products only.";
+    }
     return true;
   }
 
@@ -560,18 +720,21 @@
   async function loadMarketShelves() {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
-    if (!root || !counter) return;
+    const homeGrid = document.querySelector("#hd-home-random-grid");
+    if (!root && !homeGrid) return;
 
     let renderedFallback = false;
     let snapshotData = null;
 
     try {
-      const snapshotRes = await fetch("catalog-home.json?v=platform1", {cache:"force-cache"});
+      const snapshotRes = await fetch("cj-launch-home.json?v=30k1", {cache:"force-cache"});
       if (snapshotRes.ok) {
         snapshotData = await snapshotRes.json();
         renderedFallback = renderMarketShelvesData(snapshotData, "snapshot");
       }
     } catch {}
+
+    if (snapshotData?.launch_authoritative === true && renderedFallback) return;
 
     try {
       const res = await fetchWithTimeout(publicApiUrl("hunt-storefront") + "?shelves=1", {
@@ -591,21 +754,22 @@
       }
     } catch (err) {
       if (renderedFallback) {
-        counter.title = "Live refresh is temporarily unavailable; showing verified catalog products.";
+        if (counter) counter.title = "Live refresh is temporarily unavailable; showing verified catalog products.";
         return;
       }
       const msg = err?.name === "AbortError"
         ? "Live catalog is taking longer than expected. Try again shortly."
         : (err.message || "Market shelves unavailable");
-      root.innerHTML = `<div class="hd-shelf-loading glass">${esc(msg)}</div>`;
-      counter.textContent = "WAITING";
+      const target = root || homeGrid;
+      if (target) target.innerHTML = `<div class="hd-shelf-loading glass">${esc(msg)}</div>`;
+      if (counter) counter.textContent = "WAITING";
     }
   }
 
   function renderProviderNetwork(providers) {
     const host = $("#hd-provider-badges");
     if (!host) return;
-    const items = Array.isArray(providers) ? providers : [];
+    const items = (Array.isArray(providers) ? providers : []).filter(item => String(item?.provider || "").toLowerCase() === "cjdropshipping");
     host.innerHTML = items.map(item => {
       const state = String(item.state || "UNKNOWN").toUpperCase();
       const tone = /READY|LIVE|CONFIGURED|CATALOG_LIVE/.test(state)
@@ -642,7 +806,7 @@
     const grid = $("#hd-search-grid");
     const status = $("#hd-live-search-status");
     if (!section || !grid || !status) return;
-    const results = data.results || [];
+    const results = (data.results || []).filter(item => String(item?.provider || "").toLowerCase() === "cjdropshipping");
     searchItems = results;
     const states = (data.providers || []).map(p => {
       const count = p.result_count ? " (" + p.result_count + ")" : "";
@@ -712,7 +876,8 @@
   $("#hd-search-input")?.addEventListener("keydown", event => {
     if (event.key !== "Enter") return;
     event.preventDefault();
-    runLiveSearch(event.currentTarget.value);
+    const query=String(event.currentTarget.value||"").trim();
+    if(query) location.href="search.html?q="+encodeURIComponent(query);
   });
 
   window.addEventListener("hunt:language", e => {

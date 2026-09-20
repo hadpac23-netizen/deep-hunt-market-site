@@ -18,12 +18,35 @@
     <section id="hd-merchant-admin-status" class="hd-seller-gate glass"><strong>Checking admin access…</strong></section>
 
     <section id="hd-merchant-admin" hidden>
+      <section id="hd-admin-program-panel" class="hd-seller-panel glass">
+        <div class="hd-seller-section-head"><div><small>OWNER CONTROL</small><h2>Merchant Program activation</h2><p>Prepared terms stay non-binding until you explicitly activate the program. Activation opens merchant acceptance; it does not approve any store, payment account, payout or ad campaign.</p></div><strong id="hd-admin-program-status-badge">CHECKING</strong></div>
+        <div id="hd-admin-program-summary"></div>
+        <div class="hd-admin-actions"><button class="hd-btn hd-btn-primary" id="hd-admin-program-activate" type="button" hidden>Activate current program</button><button class="hd-btn" id="hd-admin-program-pause" type="button" hidden>Pause program</button></div>
+        <p class="hd-seller-status" id="hd-admin-program-status" aria-live="polite"></p>
+      </section>
       <div class="hd-admin-columns">
         <section class="hd-seller-panel glass"><div class="hd-seller-section-head compact"><div><small>STORES</small><h2>Pending stores</h2></div><strong id="hd-admin-store-count">0</strong></div><div id="hd-admin-stores" class="hd-admin-list"></div></section>
         <section class="hd-seller-panel glass"><div class="hd-seller-section-head compact"><div><small>PRODUCTS</small><h2>Pending products</h2></div><strong id="hd-admin-product-count">0</strong></div><div id="hd-admin-products" class="hd-admin-list"></div></section>
         <section class="hd-seller-panel glass"><div class="hd-seller-section-head compact"><div><small>SPONSORED</small><h2>Placement requests</h2></div><strong id="hd-admin-ad-count">0</strong></div><div id="hd-admin-ads" class="hd-admin-list"></div></section>
         <section class="hd-seller-panel glass"><div class="hd-seller-section-head compact"><div><small>PRODUCT MEDIA</small><h2>Pending product videos</h2></div><strong id="hd-admin-media-count">0</strong></div><div id="hd-admin-media" class="hd-admin-list"></div></section>
       </div>
+
+      <section class="hd-seller-panel glass">
+        <div class="hd-seller-section-head"><div><small>COMMERCIAL GATES</small><h2>Merchant verification & terms</h2><p>Store approval stays blocked until the current Merchant Program is owner-activated, KYC is verified and the merchant accepts the current terms.</p></div></div>
+        <form id="hd-admin-verification-form" class="hd-seller-form">
+          <label>Pending / approved store<select id="hd-admin-commercial-store" name="store_id" required></select></label>
+          <label>KYC status<select name="kyc_status"><option>pending</option><option>verified</option><option>rejected</option><option>expired</option></select></label>
+          <label>Payout status<select name="payout_status"><option>not_configured</option><option>pending</option><option>ready</option><option>blocked</option></select></label>
+          <label>Commission %<input name="commission_percent" type="number" min="0" max="50" step="0.1" value="12"></label>
+          <label>Payout hold days<input name="payout_hold_days" type="number" min="0" max="90" value="14"></label>
+          <label>Return window days<input name="return_window_days" type="number" min="0" max="365" value="14"></label>
+          <label>Shipping SLA days<input name="shipping_sla_days" type="number" min="1" max="60" value="7"></label>
+          <label>Fulfillment<select name="fulfillment_mode"><option value="merchant_fulfilled">Merchant fulfilled</option><option value="supplier_fulfilled">Supplier fulfilled</option><option value="affiliate_outbound">Affiliate outbound</option></select></label>
+          <label><input type="checkbox" name="seller_of_record" checked> Merchant is Seller of Record</label>
+          <button class="hd-btn hd-btn-primary" type="submit">Save verification & commercial settings →</button>
+        </form>
+        <p class="hd-seller-status" id="hd-admin-verification-status" aria-live="polite"></p>
+      </section>
 
       <section class="hd-seller-panel glass">
         <div class="hd-seller-section-head"><div><small>AFFILIATE ATTRIBUTION</small><h2>Configure approved store tracking</h2><p>HUNT admin controls tracking templates so sellers cannot turn HUNT into an arbitrary redirect service.</p></div></div>

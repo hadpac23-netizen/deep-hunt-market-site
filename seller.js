@@ -75,11 +75,33 @@
     if(approved[0])loadProducts(approved[0].id);
   }
 
+  function renderProgramGate(){
+    const program=dashboard.program||null;
+    const account=(dashboard.accounts||[])[0]||null;
+    const agreements=dashboard.agreements||[];
+    const badge=$("#hd-program-badge"), title=$("#hd-program-title"), copy=$("#hd-program-copy"), form=$("#hd-program-accept-form");
+    if(!badge||!title||!copy||!form)return;
+    const accepted=Boolean(program&&account&&agreements.some(a=>a.merchant_account_id===account.id&&a.status==="accepted"&&a.merchant_program_versions?.version===program.version));
+    if(!program){
+      badge.textContent="NOT OPEN"; title.textContent="Merchant Program is not available yet"; copy.textContent="HUNT has not published a merchant program version."; form.hidden=true; return;
+    }
+    if(program.status!=="active"||program.owner_approved!==true){
+      badge.textContent="OWNER REVIEW"; title.textContent="Pilot terms are prepared but not activated"; copy.textContent="HUNT owner approval is still required before merchants can accept this program or activate selling."; form.hidden=true; return;
+    }
+    if(accepted){
+      badge.textContent="ACCEPTED"; title.textContent="Merchant Program "+program.version+" accepted"; copy.textContent="KYC and store approval must still pass before products or API keys can activate."; form.hidden=true; return;
+    }
+    badge.textContent="ACTION REQUIRED"; title.textContent="Review and accept Merchant Program "+program.version;
+    const pct=(Number(program.default_commission_bps||0)/100).toFixed(1).replace(".0","");
+    copy.textContent="Current pilot terms: $0 listing fee, default "+pct+"% commission, merchant remains Seller of Record by default, and activation remains gated by KYC, store review and payout readiness.";
+    form.hidden=false;
+  }
+
   function renderDashboard(){
     const hasAccount=(dashboard.accounts||[]).length>0;
     $("#hd-seller-application").hidden=hasAccount;
     $("#hd-seller-dashboard").hidden=!hasAccount;
-    if(hasAccount)renderStores();
+    if(hasAccount){renderProgramGate();renderStores();}
   }
 
   async function loadDashboard(){
@@ -139,6 +161,21 @@
     });
 
     $("#hd-product-store")?.addEventListener("change",event=>loadProducts(event.target.value));
+
+    $("#hd-program-accept-form")?.addEventListener("submit",async event=>{
+      event.preventDefault();
+      const account=(dashboard.accounts||[])[0];
+      if(!account)return;
+      const form=new FormData(event.currentTarget);
+      const body={merchant_account_id:account.id};
+      for(const key of ["seller_of_record_ack","authenticity_ack","returns_ack","safety_ack","inventory_accuracy_ack"])body[key]=form.get(key)==="on";
+      setStatus("#hd-program-status","Saving acceptance…");
+      try{
+        await api("/dashboard/agreements",{method:"POST",body:JSON.stringify(body)});
+        setStatus("#hd-program-status","Merchant Program accepted. KYC and store review are still required.","success");
+        await loadDashboard();
+      }catch(error){setStatus("#hd-program-status",error.message||"Could not accept program.","error");}
+    });
 
     $("#hd-seller-key-form")?.addEventListener("submit",async event=>{
       event.preventDefault();
