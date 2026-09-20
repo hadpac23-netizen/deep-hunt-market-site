@@ -142,9 +142,9 @@
       "id": "storage_migrations",
       "title": "Storage Schema Versioning",
       "owner": "learning_governance_brain",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "source": "F50",
-      "next": "Storage keys are now registered/versioned; hunt_language remains legacy and executable migrations are still needed before breaking schema changes."
+      "next": "Executable idempotent migration framework is active; hunt_language migrates to hunt_language_v1 only after a verified write. Require a registered migration for every future breaking storage change."
     },
     {
       "id": "confidence_decay",

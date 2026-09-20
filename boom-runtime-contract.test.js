@@ -46,6 +46,15 @@ if(!connections.includes("runtime.adminReady()"))errors.push("F60T Connections b
 if(/createClient\(/.test(connections))errors.push("F60T Connections may create a duplicate Supabase client");
 if(!connections.includes('endpoint:"hunt-f60t-oauth"'))errors.push("F60T connector trace missing official Edge endpoint lineage");
 
+const homeHtml=fs.readFileSync("index.html","utf8");
+const migrationAt=homeHtml.indexOf("boom-storage-migrations.js");
+const i18nAt=homeHtml.indexOf("i18n.js");
+if(migrationAt<0||i18nAt<0||migrationAt>i18nAt)errors.push("storage migrations must load before i18n");
+
+const i18nSrc=fs.readFileSync("i18n.js","utf8");
+if(!i18nSrc.includes('LANGUAGE_KEY = "hunt_language_v1"'))errors.push("i18n still lacks versioned language key");
+if(!i18nSrc.includes("LEGACY_LANGUAGE_KEY"))errors.push("i18n lacks safe legacy fallback during migration");
+
 const core=fs.readFileSync("market-core.js","utf8");
 for(const fn of ["addCart","removeCart","setCartQuantity","clearCart","updateCartBadges"]){
   if(!core.includes(fn))errors.push("market-core.js missing cart owner function "+fn);
