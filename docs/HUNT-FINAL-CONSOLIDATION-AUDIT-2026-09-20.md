@@ -181,3 +181,25 @@ No supplier order was placed.
 No live payment was enabled.
 
 Next: selective Supplier/Voice extraction from PR #4, then Studio/Stylist/Brand extraction from PR #7, each behind the same regression gates.
+
+## Integration checkpoint — Supplier / Voice lane
+
+Status: **PARTIAL PASS / VOICE-BRAIN-V2 HOLD**
+
+Supplier Gravity from PR #4 was reconciled into a new Brain-OS-safe SHADOW module:
+- reads cart only through `HuntCore.cart()`;
+- never owns or writes raw cart storage;
+- never changes price, payment or supplier state;
+- never sends supplier orders;
+- returns advisory-only decisions;
+- remains inactive on shopper surfaces while CJ-only launch policy is in force.
+
+Verification:
+- `supplier_gravity_brainos=PASS`
+- Brain Runtime remains PASS with a single cart owner.
+
+Voice / legacy Brain-v2 extraction is **HOLD** because PR #4 depends on a chain of 2026-09-16 database migrations not present in Final Candidate v1. Those migrations must be reconciled against the current Brain OS schema before any voice/chat/learning runtime is copied.
+
+No legacy migration was applied.
+No Voice Edge Function was deployed.
+No Supplier Gravity runtime was activated on customer pages.
