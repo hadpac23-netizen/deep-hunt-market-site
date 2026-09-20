@@ -90,6 +90,45 @@ Required PASS:
 
 Owner approval required: **YES**
 
+## Gate B2 — Global payment-method matrix
+
+Purpose: make HUNT checkout capable of presenting the best supported payment methods for each buyer country/currency through one HUNT-owned checkout.
+
+Required customer-facing methods:
+- credit/debit cards;
+- Apple Pay where the active processor/device/browser supports it;
+- Google Pay where the active processor/device/browser supports it;
+- PayPal;
+- additional local payment methods per country when a verified processor route exists.
+
+Routing rules:
+- HUNT owns the checkout UX and chooses the processor route server-side;
+- payment methods are capability-driven by country, currency, device/browser and processor approval;
+- never show a wallet/method that is not actually available for that transaction;
+- never hard-code one PSP as the only future route;
+- card, Apple Pay, Google Pay and PayPal remain separate logical routes even when more than one is supplied by the same PSP;
+- local methods may be added without changing the core Checkout/Order contracts;
+- a failed or unavailable preferred route may fall back only to another already-approved route;
+- every route must preserve the same payment-session, callback-verification, idempotency and Order lifecycle contracts.
+
+Current planned routes already represented in HUNT:
+- PayPlus Card;
+- PayPlus Apple Pay;
+- PayPlus Google Pay;
+- PayPal;
+- Apple Pay via PayPal where supported;
+- Google Pay via PayPal where supported.
+
+Launch requirement:
+- at least one approved card route must exist;
+- every displayed wallet/method must be individually verified in sandbox/live readiness;
+- country/currency eligibility must be explicit;
+- no payment method becomes active solely because another method at the same PSP passed.
+
+This gate defines architecture/readiness only. It does not activate any payment method.
+
+Owner approval required for live activation of each route: **YES**
+
 ## Gate C — CJ sandbox order E2E
 
 Purpose: prove supplier order ID + sandbox tracking on the current orchestrator v15.
@@ -216,6 +255,7 @@ Do not consider live payment until all are true:
 - Business Identity PASS
 - legal documents PASS
 - payment callback proof PASS
+- global payment-method matrix has at least one approved route and only verified methods are displayed
 - order/tracking proof PASS
 - security hardening PASS
 - production analytics evidence PASS
