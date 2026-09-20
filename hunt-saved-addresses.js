@@ -54,6 +54,12 @@
     const connected=Boolean(user);
     saveBtn.hidden=!connected;
     forgetBtn.hidden=!connected;
+    if(connected){
+      const meta=user?.user_metadata||{};
+      writeIfEmpty(fieldMap.recipient_name,meta.full_name||meta.name||meta.display_name||"");
+      writeIfEmpty(fieldMap.email,user.email||"");
+      form.dispatchEvent(new Event("change",{bubbles:true}));
+    }
     if(!connected){
       setStatus("Sign in to save delivery details securely to your HUNT account.");
       return;
