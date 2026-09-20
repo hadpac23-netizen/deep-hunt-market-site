@@ -21,7 +21,8 @@
       metric(active,"Active brains"),
       metric(data.actions.actions.length,"Canonical actions"),
       metric(data.inventory.interactions.length,"Mapped controls"),
-      metric(phase1,"Phase-1 surfaces")
+      metric(phase1,"Phase-1 surfaces"),
+      metric(data.commerce.stages.length,"Commerce handoff stages")
     ].join("");
   }
   function renderFlow(){
@@ -71,6 +72,15 @@
     $("#bs-governance").innerHTML=cards.map(c=>`<article class="bs-governance"><strong>${esc(c.value)}</strong><span>${esc(c.label)}</span><code>${esc(c.detail)}</code></article>`).join("");
   }
 
+  function renderCommerceHandoff(){
+    const host=$("#bs-commerce-handoff");
+    if(!host)return;
+    host.innerHTML=data.commerce.stages.map(stage=>`<article class="bs-journey">
+      <h3>${esc(stage.id)}</h3>
+      <p><strong>${esc(stage.owner)}</strong></p>
+      <div class="bs-journey-steps">${(stage.requires||[]).map(x=>`<span>requires: ${esc(x)}</span>`).join("")}${stage.emits?`<span>emits: ${esc(stage.emits)}</span>`:""}</div>
+    </article>`).join("");
+  }
   function renderJourneys(){
     const host=$("#bs-journeys");
     if(!host)return;
@@ -89,7 +99,12 @@
     host.innerHTML=traces.map(t=>{
       const state=String(t.detail?.state||"event");
       const time=new Date(Number(t.ts)||Date.now()).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit",second:"2-digit"});
-      const lineage=[t.owner,t.endpoint||t.telemetry,t.analytics,t.learning,t.correlation_id].filter(Boolean).join(" · ");
+      const lineage=[
+        t.owner,
+        t.decision_owner?("decision:"+t.decision_owner):"",
+        t.detail?.commerce_truth?("commerce:"+t.detail.commerce_truth):"",
+        t.endpoint||t.telemetry,t.analytics,t.learning,t.correlation_id
+      ].filter(Boolean).join(" · ");
       return `<article class="bs-trace"><time>${esc(time)}</time><code>${esc(t.action_id)}</code><span class="bs-trace-state ${esc(state)}">${esc(state)}</span><small>${esc(lineage)}</small></article>`;
     }).join("");
   }
@@ -124,12 +139,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,merge,budgets,health,errors,reasons,storage]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,merge,budgets,health,errors,reasons,storage]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,merge,budgets,health,errors,reasons,storage};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,merge,budgets,health,errors,reasons,storage};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderGovernance();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderGovernance();renderCommerceHandoff();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");

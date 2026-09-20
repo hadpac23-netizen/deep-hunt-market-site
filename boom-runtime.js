@@ -82,7 +82,8 @@
 
   const knownErrorCodes=new Set([
     "AUTH_REQUIRED","PERMISSION_DENIED","ACTION_IN_FLIGHT","NETWORK_UNAVAILABLE","VALIDATION_FAILED",
-    "PRODUCT_RECHECK_FAILED","VARIANT_RECHECK_FAILED","OUT_OF_STOCK","SHIPPING_UNAVAILABLE","QUOTE_FAILED",
+    "PRODUCT_RECHECK_FAILED","VARIANT_RECHECK_FAILED","OUT_OF_STOCK","SHIPPING_UNAVAILABLE",
+    "SUPPLIER_COST_NOT_READY","PROFIT_RECHECK_FAILED","PROFIT_PROFILE_NOT_ACTIVE","ECONOMICS_EVIDENCE_STORE_FAILED","QUOTE_FAILED",
     "EVIDENCE_STALE","OWNER_GATE_REQUIRED","ACTION_FAILED"
   ]);
   function errorCode(error){
@@ -150,7 +151,7 @@
     let copy="", tone="info", persist=false;
 
     if(action==="checkout.quote.verify"){
-      if(state==="pending"){copy="Verifying price, stock and shipping…";tone="pending";persist=true;}
+      if(state==="pending"){copy="Verifying price, stock, shipping and checkout economics…";tone="pending";persist=true;}
       else if(state==="success"){copy="Price and shipping verified.";tone="ok";}
       else if(state==="error"){copy="Checkout verification failed. No payment was attempted.";tone="error";}
     }else if(action==="cart.add"&&state==="direct"){copy="Added to cart.";tone="ok";}
@@ -180,6 +181,7 @@
       action_id:id,
       correlation_id:options.correlationId||correlationId("action"),
       owner:String(trace.owner||ownerForAction(id)||""),
+      decision_owner:String(trace.decision_owner||meta.decision_owner||""),
       telemetry:String(trace.telemetry||meta.telemetry||""),
       surface:String(trace.surface||""),
       endpoint:String(trace.endpoint||""),

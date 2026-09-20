@@ -72,7 +72,7 @@
       "owner": "operations_brain",
       "status": "DONE",
       "source": "F35",
-      "next": "Connect to full order/payment lifecycle only after launch readiness."
+      "next": "Live landed-cost/profit recheck now gates payment sessions and supplier handoff; next is shipping-address capture plus callback/order lifecycle proof before live launch."
     },
     {
       "id": "shadow_mode",

@@ -39,6 +39,8 @@ const studioHtml=fs.readFileSync("boom-brain-studio.html","utf8");
 const studioJs=fs.readFileSync("boom-brain-studio.js","utf8");
 if(!studioHtml.includes('data-admin-ready="false"'))errors.push("Brain Studio may flash private content before admin verification");
 if(!studioJs.includes("runtime?.adminReady?.()"))errors.push("Brain Studio missing admin verification before contract load");
+if(!studioJs.includes('json("boom-commerce-handoff-contract.json")'))errors.push("Brain Studio missing Commerce → Operations handoff contract");
+if(!studioHtml.includes('id="bs-commerce-handoff"'))errors.push("Brain Studio missing commerce handoff surface");
 
 for(const file of ["product.html","category.html","checkout.html","index.html"]){
   const html=fs.readFileSync(file,"utf8");

@@ -30,7 +30,15 @@
     if (url.includes("/functions/v1/hunt-storefront")) return Promise.resolve(json({product}));
     if (url.includes("/functions/v1/hunt-payment-session")) {
       return Promise.resolve(json({ok:true,payment_ready:false,session:{
-        currency:"USD",product_amount:7.99,shipping_amount:4.50,total_amount:12.49
+        currency:"USD",product_amount:7.99,shipping_amount:4.50,total_amount:12.49,
+        commerce_snapshot:{
+          version:"HUNT-COMMERCE-TRUTH-V1",
+          status:"PASS",
+          decision_owner:"commerce_truth_brain",
+          execution_owner:"operations_brain",
+          checked_at:new Date().toISOString(),
+          total_contribution_before_coupon:4.04
+        }
       }}));
     }
     return nativeFetch(input, init);

@@ -28,6 +28,10 @@
       RETAIL_PRICE_NOT_READY:"HUNT retail pricing is not verified for one or more items.",
       CURRENCY_REVIEW_REQUIRED:"This item needs a currency review before checkout.",
       SHIPPING_RECHECK_FAILED:"Shipping could not be rechecked right now.",
+      SUPPLIER_COST_NOT_READY:"A product needs a fresh supplier-price check before checkout.",
+      PROFIT_RECHECK_FAILED:"A product needs a fresh HUNT price check before checkout.",
+      PROFIT_PROFILE_NOT_ACTIVE:"Checkout pricing is temporarily unavailable.",
+      ECONOMICS_EVIDENCE_STORE_FAILED:"Checkout verification could not be recorded safely. No payment was attempted.",
       OUT_OF_STOCK:"One or more selected items are currently out of stock.",
       SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination."
     };
@@ -65,6 +69,7 @@
         traceContext:{
           surface:"checkout",
           owner:"operations_brain",
+          decision_owner:"commerce_truth_brain",
           endpoint:"hunt-payment-session",
           analytics:"checkoutQuoteVerified",
           learning:"evidence_refresh"
@@ -74,7 +79,9 @@
           items:cart.length,
           payment_ready:Boolean(result?.payment_ready),
           stock_evidence:"FRESH",
-          shipping_evidence:"FRESH"
+          shipping_evidence:"FRESH",
+          commerce_truth:String(result?.session?.commerce_snapshot?.status||"UNKNOWN"),
+          commerce_checked_at:String(result?.session?.commerce_snapshot?.checked_at||"")
         }),
         execute:async({correlationId}={})=>{
           const payload = {
@@ -104,8 +111,8 @@
       quoteVerified = true;
       if (status) {
         status.textContent = data.payment_ready === true
-          ? "Price and shipping verified. Payment account status is controlled separately."
-          : "Price, stock and shipping verified. Payment is still disabled during pre-launch.";
+          ? "Price, stock, shipping and checkout economics verified. Payment account status is controlled separately."
+          : "Price, stock, shipping and checkout economics verified. Payment is still disabled during pre-launch.";
       }
       window.HuntAnalytics?.checkoutQuoteVerified?.({
         country,currency,productAmount:Number(session.product_amount||0),

@@ -1,0 +1,62 @@
+{
+  "version":"BOOM-COMMERCE-HANDOFF-V1",
+  "principle":"Commerce Truth decides whether a transaction is economically and operationally real; Operations may execute only from a fresh PASS snapshot.",
+  "handoff":{
+    "trigger_action":"checkout.quote.verify",
+    "trigger_owner":"operations_brain",
+    "decision_owner":"commerce_truth_brain",
+    "execution_owner":"operations_brain",
+    "persisted_evidence":"hunt_payment_sessions.commerce_snapshot",
+    "required_status":"PASS"
+  },
+  "stages":[
+    {
+      "id":"product_supplier_truth",
+      "owner":"commerce_truth_brain",
+      "requires":["product_truth","variant_truth","supplier_truth","retail_price_verified"],
+      "emits":"PRODUCT_SUPPLIER_TRUTH_READY"
+    },
+    {
+      "id":"live_stock_shipping",
+      "owner":"commerce_truth_brain",
+      "requires":["PRODUCT_SUPPLIER_TRUTH_READY","stock_recheck","shipping_recheck","origin_route"],
+      "emits":"LANDED_COST_READY"
+    },
+    {
+      "id":"profit_recheck",
+      "owner":"commerce_truth_brain",
+      "requires":["LANDED_COST_READY","owner_approved_profit_profile","supplier_cost","payment_reserve","refund_reserve","margin_floor"],
+      "emits":"COMMERCE_TRUTH_PASS",
+      "fail_closed":true
+    },
+    {
+      "id":"payment_session",
+      "owner":"operations_brain",
+      "requires":["COMMERCE_TRUTH_PASS"],
+      "persists":["commerce_snapshot","line_items","idempotency_key"],
+      "emits":"PAYMENT_SESSION_READY"
+    },
+    {
+      "id":"supplier_order",
+      "owner":"operations_brain",
+      "requires":["PAYMENT_CONFIRMED","SUPPLIER_ROUTE_VERIFIED","OWNER_GATE"],
+      "emits":"FULFILLMENT_STARTED",
+      "autonomous_budget":0
+    },
+    {
+      "id":"learning",
+      "owner":"learning_governance_brain",
+      "requires":["COMMERCE_TRUTH_PASS"],
+      "reads":["unit_economics","payment_session","order_events","fulfillment_events"],
+      "may_execute_commercial_action":false
+    }
+  ],
+  "invariants":[
+    "No payment session without fresh commerce_snapshot.status=PASS.",
+    "No checkout PASS from stale product-only margin when live shipping changes landed cost.",
+    "No supplier order in prelaunch mode.",
+    "No supplier order without confirmed payment and Owner Gate.",
+    "No brain other than Commerce Truth may declare profit truth.",
+    "Learning may recommend changes but never changes price, payment or supplier state itself."
+  ]
+}

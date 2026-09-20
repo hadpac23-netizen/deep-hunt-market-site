@@ -66,7 +66,7 @@ ab wait 350
 check "shipping quote renders" 'document.querySelector("#hd-checkout-shipping")?.textContent === "$4.50"'
 check "verified total renders" 'document.querySelector("#hd-checkout-total")?.textContent === "$12.49"'
 check "global feedback confirms quote" 'document.querySelector("#boom-feedback-center .boom-feedback-card")?.textContent === "Price and shipping verified."'
-check "quote trace carries full lineage" 'window.__boomActionTrace?.some(x=>x.action_id==="checkout.quote.verify"&&x.detail?.state==="success"&&x.owner==="operations_brain"&&x.endpoint==="hunt-payment-session"&&x.analytics==="checkoutQuoteVerified"&&x.learning==="evidence_refresh")'
+check "quote trace carries commerce decision lineage" 'window.__boomActionTrace?.some(x=>x.action_id==="checkout.quote.verify"&&x.detail?.state==="success"&&x.owner==="operations_brain"&&x.decision_owner==="commerce_truth_brain"&&x.detail?.commerce_truth==="PASS"&&x.endpoint==="hunt-payment-session"&&x.analytics==="checkoutQuoteVerified"&&x.learning==="evidence_refresh")'
 check "prelaunch status blocks payment" 'document.querySelector("#hd-checkout-status")?.textContent.includes("Payment is still disabled")'
 check "payment control stays disabled" 'document.querySelector(".hd-pay-disabled")?.disabled === true'
 
@@ -85,4 +85,4 @@ if [[ -n "$(printf '%s' "$errors_output" | tr -d '[:space:]')" ]]; then
 fi
 echo "PASS: no browser page errors"
 
-echo "BOOM critical E2E: PASS — product → variant → cart → checkout → verified quote; payment remained disabled."
+echo "BOOM critical E2E: PASS — product → Commerce Truth → Operations quote; payment remained disabled."

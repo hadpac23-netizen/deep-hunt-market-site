@@ -34,7 +34,7 @@ npx -y agent-browser --session "$DENY" close >/dev/null 2>&1 || true
 npx -y agent-browser --session "$ALLOW" --init-script /tmp/boom-admin-allow-$$.js open "http://127.0.0.1:$PORT/boom-brain-studio.html" >/dev/null
 npx -y agent-browser --session "$ALLOW" wait 700 >/dev/null
 check "$ALLOW" "authorized Studio unlocks" "document.body.dataset.adminReady==='true'"
-check "$ALLOW" "Brain OS metrics render" "document.querySelectorAll('#bs-metrics .bs-metric').length===5"
+check "$ALLOW" "Brain OS metrics render" "document.querySelectorAll('#bs-metrics .bs-metric').length===6"
 check "$ALLOW" "contracts load only after admin" "document.querySelector('#bs-contract-state')?.textContent.includes('contracts loaded')"
 errors="$(npx -y agent-browser --session "$ALLOW" errors || true)"
 [[ -z "$(printf '%s' "$errors" | tr -d '[:space:]')" ]] || { echo "FAIL: browser errors"; printf '%s\n' "$errors"; exit 1; }
