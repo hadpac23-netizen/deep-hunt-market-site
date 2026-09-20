@@ -155,6 +155,12 @@
       $("#hd-checkout-shipping").textContent = money(session.shipping_amount,currency);
       $("#hd-checkout-total").textContent = money(session.total_amount,currency);
       quoteVerified = true;
+      window.dispatchEvent(new CustomEvent("hunt:checkout-verified",{detail:{
+        payment_session_id:String(session.id||""),
+        idempotency_key:String(data.idempotency_key||""),
+        commerce_status:String(session?.commerce_snapshot?.status||""),
+        commerce_checked_at:String(session?.commerce_snapshot?.checked_at||"")
+      }}));
       if (status) {
         const deliveryCopy=data.shipping_attached===true
           ? " Delivery details are attached to this checkout session."

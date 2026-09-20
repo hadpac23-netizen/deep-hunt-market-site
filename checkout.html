@@ -106,6 +106,10 @@
           <small class="hd-shipping-chess-note">Nothing is replaced automatically. Open an alternative and choose it yourself.</small>
         </div>
         <button class="hd-btn hd-btn-primary hd-pay-disabled" type="button" disabled>Payment activation pending</button>
+        <div id="hd-local-sandbox-qa" hidden>
+          <button id="hd-local-sandbox-run" class="hd-btn" type="button" disabled>QA: Run CJ sandbox test</button>
+          <p id="hd-local-sandbox-status" class="hd-checkout-truth" aria-live="polite">Verify checkout first. Sandbox only — no real charge.</p>
+        </div>
         <p id="hd-checkout-status" class="hd-checkout-truth" aria-live="polite">No card data is collected on this page. Verify price and shipping first; payment remains disabled until an authorized merchant account and fulfillment flow are active.</p>
       </aside>
     </div>
@@ -138,6 +142,7 @@
   <script src="boom-stylist.js?v=1"></script>
   <script src="hunt-saved-addresses.js?v=2"></script>
 <script src="checkout.js?v=shippingchess6"></script>
+  <script src="hunt-local-sandbox-qa.js?v=1"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa10"></script>
   <script src="hunt-brand-motion.js?v=1"></script>
