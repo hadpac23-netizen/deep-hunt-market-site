@@ -6,7 +6,7 @@
   <link rel="icon" href="hunt-icon-192.png" type="image/png">
   <meta name="description" content="HUNT checkout preview for connected catalog products.">
   <title>Checkout Preview — HUNT</title>
-  <link rel="stylesheet" href="hunt-deal.css?v=photo7">
+  <link rel="stylesheet" href="hunt-deal.css?v=photo8">
   <link rel="stylesheet" href="hunt-shop.css?v=shippingchess1">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="hunt-icon-192.png">
@@ -14,6 +14,34 @@
   <link rel="stylesheet" href="hunt-visual-v2.css?v=1">
   <link rel="stylesheet" href="hunt-brand-motion.css?v=1">
   <link rel="stylesheet" href="boom-stylist.css?v=1">
+  <script>
+  (() => {
+    const key="hunt_deal_cart_v1";
+    const params=new URLSearchParams(location.search);
+    const action=params.get("cart_action");
+    if(!action)return;
+    let rows=[];
+    try{
+      const parsed=JSON.parse(localStorage.getItem(key)||"[]");
+      rows=Array.isArray(parsed)?parsed:[];
+    }catch{}
+    const itemKey=params.get("key")||"";
+    if(action==="clear") rows=[];
+    if(action==="remove"&&itemKey) rows=rows.filter(item=>String(item?.key||"")!==itemKey);
+    if((action==="inc"||action==="dec")&&itemKey){
+      const row=rows.find(item=>String(item?.key||"")===itemKey);
+      if(row){
+        const delta=action==="inc"?1:-1;
+        row.qty=Math.max(1,Math.min(5,(Number(row.qty)||1)+delta));
+      }
+    }
+    localStorage.setItem(key,JSON.stringify(rows));
+    params.delete("cart_action");
+    params.delete("key");
+    const next=location.pathname+(params.toString()?"?"+params.toString():"");
+    location.replace(next);
+  })();
+  </script>
 </head>
 <body class="hd-page hd-checkout-page hd-commerce-v2">
   <div class="hd-space"></div>
@@ -31,7 +59,7 @@
 
     <div class="hd-checkout-layout">
       <section class="hd-checkout-items glass">
-        <div class="hd-section-head"><div><div class="hd-kicker hd-kicker-small">YOUR CART</div><h2>Order items</h2></div><button id="hd-clear-cart" class="hd-link-button" type="button">Clear cart</button></div>
+        <div class="hd-section-head"><div><div class="hd-kicker hd-kicker-small">YOUR CART</div><h2>Order items</h2></div><a id="hd-clear-cart" class="hd-link-button" href="checkout.html?cart_action=clear">Clear cart</a></div>
         <div id="hd-checkout-items"></div>
         <div id="hd-checkout-empty" class="hd-empty-checkout" hidden><strong>Your cart is empty.</strong><a class="hd-btn hd-btn-primary" href="./#catalog">Browse live products</a></div>
       </section>
@@ -199,7 +227,7 @@
   <script src="hunt-personalization.js?v=1"></script>
   <script src="boom-stylist.js?v=1"></script>
   <script src="hunt-saved-addresses.js?v=2"></script>
-<script src="checkout.js?v=shippingchess9"></script>
+<script src="checkout.js?v=shippingchess10"></script>
   <script src="hunt-local-sandbox-qa.js?v=1"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa10"></script>

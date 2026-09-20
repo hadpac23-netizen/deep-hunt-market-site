@@ -13,6 +13,9 @@ must(migration.includes("enable row level security"),"saved addresses must enabl
 must(migration.includes("revoke all on public.hunt_saved_addresses from anon"),"anon must not access saved addresses");
 must((migration.match(/auth\.uid\(\) = user_id/g)||[]).length>=4,"all address policies must be user-owned");
 must(checkout.includes("hd-save-delivery")&&checkout.includes("hunt-saved-addresses.js"),"checkout save-details UI missing");
+must(checkout.includes("cart_action=clear"),"native clear-cart route missing");
+must(fs.readFileSync("checkout.js","utf8").includes("cart_action=remove"),"native remove route missing");
+must(fs.readFileSync("checkout.js","utf8").includes("cart_action=inc")&&fs.readFileSync("checkout.js","utf8").includes("cart_action=dec"),"native quantity routes missing");
 must(saved.includes('from("hunt_saved_addresses")'),"saved-address client missing");
 must(!saved.includes("localStorage"),"delivery PII must not use localStorage");
 must(searchHtml.includes("hunt-search-assist.js")&&searchHtml.includes("hunt-search-assist.css"),"search assist not connected");
