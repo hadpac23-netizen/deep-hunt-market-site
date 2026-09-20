@@ -112,7 +112,15 @@
     const host=$("#bs-checkout-integrity");
     if(!host)return;
     const contract=data.checkoutIntegrity||{};
-    host.innerHTML=(contract.stages||[]).map(stage=>`<article class="bs-journey">
+    const truth=contract.truth_status||{};
+    const summary=`<article class="bs-journey">
+      <h3>${esc(contract.id||"checkout_product_integrity_qa")}</h3>
+      <p><strong>${esc(contract.owner||"learning_governance_brain")}</strong> · ${esc(contract.mode||"READ_ONLY_QA")}</p>
+      <div class="bs-journey-steps">
+        ${Object.entries(truth).map(([key,value])=>`<span>${esc(key)}: ${esc(value)}</span>`).join("")}
+      </div>
+    </article>`;
+    const stages=(contract.stages||[]).map(stage=>`<article class="bs-journey">
       <h3>${esc(stage.id)}</h3>
       <p><strong>${esc(contract.owner||"learning_governance_brain")}</strong> · decision: ${esc(contract.decision_owner||"commerce_truth_brain")}</p>
       <div class="bs-journey-steps">
@@ -120,6 +128,7 @@
         <span>fail: ${esc(stage.fail)}</span>
       </div>
     </article>`).join("");
+    host.innerHTML=summary+stages;
   }
   function renderJourneys(){
     const host=$("#bs-journeys");

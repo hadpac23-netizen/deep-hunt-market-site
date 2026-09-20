@@ -81,4 +81,11 @@ const payplusProof=JSON.parse(read("boom-payplus-proof-contract.json"));
 assert.equal(payplusProof.state,"HOLD","PayPlus must remain HOLD before exact sandbox proof");
 assert.equal(payplusProof.owner_approved,false,"PayPlus proof must remain owner-unapproved before activation");
 
+const integrity=JSON.parse(read("boom-checkout-product-integrity-contract.json"));
+assert.equal(integrity.owner,"learning_governance_brain","checkout integrity QA owner drift");
+assert.equal(integrity.decision_owner,"commerce_truth_brain","checkout integrity decision owner drift");
+assert.equal(integrity.truth_status.source_qa,"PASS","checkout integrity source QA must pass");
+assert.equal(integrity.truth_status.live_payment_session,"PENDING_DEPLOY","live payment session truth must remain pending until explicitly deployed");
+require("./hunt-product-checkout-integrity.test.js");
+
 console.log("hunt_system_completion=PASS");
