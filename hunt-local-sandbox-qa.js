@@ -31,7 +31,8 @@
       d.payment_session_id &&
       d.idempotency_key &&
       d.commerce_status==="PASS" &&
-      d.commerce_checked_at
+      d.commerce_checked_at &&
+      d.user_attached===true
     );
     verified=ready?{
       payment_session_id:String(d.payment_session_id),
@@ -39,8 +40,10 @@
     }:null;
     button.disabled=!ready;
     setStatus(ready
-      ?"Checkout verified. Ready for dry-run, then CJ sandbox."
-      :"Checkout verification is missing Commerce Truth evidence.",
+      ?"Checkout verified and attached to the signed-in account. Ready for dry-run, then CJ sandbox."
+      :d.commerce_status==="PASS"&&d.user_attached!==true
+        ?"Commerce Truth passed, but the checkout session is not attached to the signed-in account."
+        :"Checkout verification is missing Commerce Truth evidence.",
       ready?"ok":"error");
   });
 

@@ -15,8 +15,16 @@ assert(product.includes('"Verify stock & add →"'));
 assert(payment.includes("minimumSafeSalePricePerUnit"));
 assert(payment.includes("destination_price_adjusted"));
 assert(payment.includes("catalog_retail_amount"));
+assert(payment.includes("authenticatedUserId"));
+assert(payment.includes("ctx.supabaseAdmin.auth.getUser(token)"));
+assert(payment.includes("user_attached:Boolean(verifiedUserId)"));
 assert(payment.includes('if(economics.profit_gate_status!=="PASS")throw new Error("PROFIT_RECHECK_FAILED")'));
 assert(profit.includes("export function minimumSafeSalePricePerUnit"));
+
+const qa=fs.readFileSync("hunt-local-sandbox-qa.js","utf8");
+assert(checkout.includes("client.auth.getUser(activeSession.access_token)"));
+assert(checkout.includes('AUTH_SESSION_REQUIRED'));
+assert(qa.includes("d.user_attached===true"));
 assert(checkout.includes("client.auth.refreshSession()"),"checkout must refresh the authenticated session before verification");
 assert(checkout.includes('if(!activeSession?.access_token)throw new Error("AUTH_SESSION_REQUIRED")'),"authenticated checkout must fail closed instead of silently creating an anonymous session");
 

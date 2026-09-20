@@ -36,6 +36,18 @@ function publishableKey(){
     return clean(Deno.env.get("SUPABASE_ANON_KEY"));
   }
 }
+async function authenticatedUserId(ctx:any,req:Request){
+  const claimId=clean(ctx?.userClaims?.sub);
+  if(claimId)return claimId;
+  const auth=clean(req.headers.get("authorization"));
+  const match=auth.match(/^Bearer\s+(.+)$/i);
+  if(!match?.[1])return null;
+  const token=clean(match[1]);
+  if(!token||token===publishableKey())return null;
+  const {data,error}=await ctx.supabaseAdmin.auth.getUser(token);
+  if(error||!data?.user?.id)return null;
+  return clean(data.user.id);
+}
 async function activeProfitProfile(ctx:any){
   const {data,error}=await ctx.supabaseAdmin
     .from("hunt_profit_profiles")
@@ -254,6 +266,7 @@ Deno.serve(async(req:Request)=>{
   if(authError||!ctx)return json(req,{error:"unauthorized"},authError?.status||401);
 
   try{
+    const verifiedUserId=await authenticatedUserId(ctx,req);
     const body=await req.json();
     const base=clean(Deno.env.get("SUPABASE_URL"));
     const key=publishableKey();
@@ -265,6 +278,7 @@ Deno.serve(async(req:Request)=>{
     const idempotencyKey=requestedIdem||crypto.randomUUID();
     const normalized=JSON.stringify({
       country:pricing.country_code,
+      user_id:verifiedUserId||null,
       items:pricing.line_items.map((x:any)=>[
         x.provider,x.item_id,x.variant_id,x.qty,x.origin_country_code,x.shipping_method
       ]),
@@ -275,19 +289,21 @@ Deno.serve(async(req:Request)=>{
 
     const {data:existing}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
-      .select("id,status,mode,country_code,currency,product_amount,shipping_amount,total_amount,provider_hosted_fields_uid,provider_redirect_url,expires_at,cart_digest,commerce_snapshot")
+      .select("id,user_id,status,mode,country_code,currency,product_amount,shipping_amount,total_amount,provider_hosted_fields_uid,provider_redirect_url,expires_at,cart_digest,commerce_snapshot")
       .eq("idempotency_key",idempotencyKey)
       .maybeSingle();
     if(existing){
       if(clean(existing.cart_digest)!==cartDigest){
         return json(req,{ok:false,error:"IDEMPOTENCY_CONFLICT"},409);
       }
+      const {user_id:existingUserId,...safeExisting}=existing as any;
       return json(req,{
         ok:true,reused:true,
         payment_ready:existing.status!=="prelaunch",
         shipping_attached:shipping.complete,
+        user_attached:Boolean(existingUserId),
         idempotency_key:idempotencyKey,
-        session:existing
+        session:safeExisting
       });
     }
 
@@ -334,7 +350,7 @@ Deno.serve(async(req:Request)=>{
     const {data:inserted,error:insertError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
       .insert({
-        user_id:ctx.userClaims?.sub||null,
+        user_id:verifiedUserId||null,
         provider:"payplus",
         mode:initialMode,
         status:initialMode==="prelaunch"?"prelaunch":"created",
@@ -359,6 +375,7 @@ Deno.serve(async(req:Request)=>{
         ok:true,
         payment_ready:false,
         shipping_attached:shipping.complete,
+        user_attached:Boolean(verifiedUserId),
         reason:"AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED",
         idempotency_key:idempotencyKey,
         session:inserted
@@ -392,6 +409,7 @@ Deno.serve(async(req:Request)=>{
       ok:true,
       payment_ready:true,
       shipping_attached:shipping.complete,
+      user_attached:Boolean(verifiedUserId),
       idempotency_key:idempotencyKey,
       integration:updated.provider_hosted_fields_uid?"hosted_fields":"hosted_page",
       session:updated

@@ -139,8 +139,12 @@
             const refreshed=await client.auth.refreshSession().catch(()=>({data:null,error:null}));
             if(refreshed?.data?.session)activeSession=refreshed.data.session;
           }
-          const headers={apikey:publishableKey,"content-type":"application/json"};
           if(!activeSession?.access_token)throw new Error("AUTH_SESSION_REQUIRED");
+          if(client?.auth?.getUser){
+            const verified=await client.auth.getUser(activeSession.access_token).catch(()=>({data:null,error:true}));
+            if(verified?.error||!verified?.data?.user?.id)throw new Error("AUTH_SESSION_REQUIRED");
+          }
+          const headers={apikey:publishableKey,"content-type":"application/json"};
           headers.Authorization="Bearer "+activeSession.access_token;
           const res = await fetch(functionsBase + "/hunt-payment-session", {
             method:"POST",
@@ -167,7 +171,8 @@
         payment_session_id:String(session.id||""),
         idempotency_key:String(data.idempotency_key||""),
         commerce_status:String(session?.commerce_snapshot?.status||""),
-        commerce_checked_at:String(session?.commerce_snapshot?.checked_at||"")
+        commerce_checked_at:String(session?.commerce_snapshot?.checked_at||""),
+        user_attached:data?.user_attached===true
       }}));
       if (status) {
         const deliveryCopy=data.shipping_attached===true
