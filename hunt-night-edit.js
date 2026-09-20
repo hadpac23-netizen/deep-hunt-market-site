@@ -49,12 +49,26 @@
       '<a class="hd-market-card-title" href="'+esc(href)+'"><strong>'+esc(item.title||"Product")+'</strong></a>'+
       '<span class="hd-night-card-price">'+esc(price(item))+'</span></div></article>';
   }
-  function renderWorld(world,{manual=false}={}){
-    const rows=rowsFor(world);
-    if(rows.length<2){
-      const nextWorld=WORLDS[(WORLDS.indexOf(world)+1)%WORLDS.length];
-      if(nextWorld!==world)return renderWorld(nextWorld,{manual});
+  function resolveWorld(requestedWorld){
+    const startIndex=Math.max(0,WORLDS.indexOf(requestedWorld));
+    for(let offset=0;offset<WORLDS.length;offset++){
+      const world=WORLDS[(startIndex+offset)%WORLDS.length];
+      const rows=rowsFor(world);
+      if(rows.length>=2)return {world,rows};
     }
+    return {world:WORLDS[startIndex]||WORLDS[0],rows:[]};
+  }
+  function renderWorld(requestedWorld,{manual=false}={}){
+    const resolved=resolveWorld(requestedWorld);
+    const world=resolved.world;
+    const rows=resolved.rows;
+    if(rows.length<2){
+      root.hidden=true;
+      stop();
+      return false;
+    }
+    root.hidden=false;
+    worldIndex=Math.max(0,WORLDS.indexOf(world));
     root.dataset.world=world;
     root.dataset.switching="true";
     setTimeout(()=>root.dataset.switching="false",720);
@@ -72,6 +86,7 @@
     truth.textContent=c.truth;
     next.textContent=c.next;
     window.HuntAnalytics?.experience?.("night_edit_impression",{world,count:rows.length,manual});
+    return true;
   }
   function stop(){if(timer){clearTimeout(timer);timer=null}}
   function schedule(){

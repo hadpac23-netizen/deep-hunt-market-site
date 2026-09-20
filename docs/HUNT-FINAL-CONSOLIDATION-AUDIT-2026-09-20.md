@@ -242,3 +242,40 @@ PR #8 cinematic hero:
 - old cinematic hero branch will not be merged wholesale.
 
 No legacy observability or hero runtime was restored.
+
+## Final Preview checkpoint — responsive/browser matrix
+
+Status: **PASS**
+
+A permanent preview matrix was added and executed against Final Candidate v1 at:
+- 1440 × 1000
+- 1280 × 800
+- 768 × 1024
+- 390 × 844
+
+Surfaces checked at every viewport:
+- Home / Hero / navigation
+- Category / filters / duplicate IDs
+- Search / AI Find / Mission Shopping
+- Product / Decision Check / add-or-verify action
+- horizontal overflow
+- browser runtime errors
+
+Full Product → exact variant → stock verify → Cart → Checkout path was additionally executed at 1440 and 390.
+
+Bugs discovered and fixed during preview:
+1. **Night Edit recursion** — when no Night Edit world had enough products, recursive world fallback could produce `Maximum call stack size exceeded`. Replaced with a bounded six-world resolver and safe hidden empty state.
+2. **Deal Builder horizontal overflow** — supplier images could retain 1900px/1440px natural width and expand Product page at 1280. Added bounded responsive grid/card/media rules and image `max-width:100%` / `object-fit:cover`.
+
+Regression evidence:
+- `hunt_night_edit_recursion_guard=PASS`
+- `hunt_deal_builder_responsive=PASS`
+- `hunt_visual_v2=PASS`
+- `hunt_system_completion=PASS`
+- Brain Runtime contract PASS
+- Analytics/privacy consent runtime PASS
+- Final Preview Matrix PASS across all four viewports
+- no browser page errors in final matrix
+- live payment remained disabled
+
+No production deployment was performed.
