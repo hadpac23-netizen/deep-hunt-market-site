@@ -5,7 +5,7 @@
   H.updateCartBadges();
   const supabaseUrl="https://zszlnahjqmwozwubetkm.supabase.co";
   const googleClientId="958182987084-dck16kardln9j1j3ovirvc9pi8523bcu.apps.googleusercontent.com";
-  const supabase=window.BoomRuntime?.getSupabaseClient?.() || window.supabase?.createClient(supabaseUrl,H.publishableKey);
+  const supabase=runtime?.getSupabaseClient?.() || null;
   const status=$("#hd-auth-status");
   const providerButtons=[...document.querySelectorAll("button[data-oauth]")];
   const googleContainer=$("#hd-google-signin");

@@ -1,7 +1,8 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase, runtime=window.BoomRuntime;
-  if(!H||!sb?.createClient)return;
-  const client=runtime?.getSupabaseClient?.() || sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const $=q=>document.querySelector(q);
   let rows=[];
 
@@ -104,6 +105,13 @@
     }
 
     rows=data||[];
+    try{
+      const evidenceRows=await window.BoomPartnerEvidence?.load?.(client) || [];
+      window.BoomPartnerEvidenceSnapshot=evidenceRows;
+      window.dispatchEvent(new CustomEvent("boom:partner-evidence",{detail:{rows:evidenceRows}}));
+    }catch(error){
+      window.BoomPartnerEvidenceSnapshot=[];
+    }
     $("#hd-partner-dashboard").hidden=false;
     $("#hd-partner-status").hidden=true;
     render();

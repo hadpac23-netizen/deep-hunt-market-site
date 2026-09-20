@@ -1,9 +1,10 @@
 (() => {
   "use strict";
-  const H=window.HuntCore, sb=window.supabase;
-  if(!H||!sb?.createClient)return;
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
 
-  const client=sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const title=document.getElementById("f60t-callback-title");
   const status=document.getElementById("f60t-callback-status");
   const back=document.getElementById("f60t-callback-return");

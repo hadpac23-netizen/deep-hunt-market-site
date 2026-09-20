@@ -1,9 +1,10 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase, runtime=window.BoomRuntime;
-  if(!H||!sb?.createClient)return;
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
   const SUPABASE_URL="https://zszlnahjqmwozwubetkm.supabase.co";
   const API=SUPABASE_URL+"/functions/v1/hunt-seller-api";
-  const client=runtime?.getSupabaseClient?.() || sb.createClient(SUPABASE_URL,H.publishableKey);
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const $=q=>document.querySelector(q);
   let session=null;
 

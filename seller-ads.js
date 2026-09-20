@@ -1,7 +1,8 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase, runtime=window.BoomRuntime;
-  if(!H||!sb?.createClient)return;
-  const client=runtime?.getSupabaseClient?.() || sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const form=document.querySelector("#hd-seller-ad-form");
   const status=document.querySelector("#hd-seller-ad-status");
   if(!form)return;

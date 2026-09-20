@@ -1,7 +1,8 @@
 (() => {
-  const H=window.HuntCore, sb=window.supabase, runtime=window.BoomRuntime;
-  if(!H||!sb?.createClient)return;
-  const client=window.BoomRuntime?.getSupabaseClient?.() || sb.createClient("https://zszlnahjqmwozwubetkm.supabase.co",H.publishableKey);
+  const H=window.HuntCore, runtime=window.BoomRuntime;
+  if(!H||!runtime?.getSupabaseClient)return;
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const $=q=>document.querySelector(q);
   let session=null;
   let loadedUserId="";

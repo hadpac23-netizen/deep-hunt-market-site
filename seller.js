@@ -1,12 +1,12 @@
 (() => {
   const H=window.HuntCore;
-  const sb=window.supabase;
   const runtime=window.BoomRuntime;
-  if(!H||!sb?.createClient)return;
+  if(!H||!runtime?.getSupabaseClient)return;
 
   const SUPABASE_URL="https://zszlnahjqmwozwubetkm.supabase.co";
   const API_BASE=SUPABASE_URL+"/functions/v1/hunt-seller-api";
-  const client=runtime?.getSupabaseClient?.() || sb.createClient(SUPABASE_URL,H.publishableKey);
+  const client=runtime.getSupabaseClient();
+  if(!client)return;
   const $=q=>document.querySelector(q);
   let session=null;
   let dashboard={accounts:[],stores:[]};

@@ -92,15 +92,12 @@
     });
   }
 
-  if (!window.supabase?.createClient) {
+  const runtime = window.BoomRuntime;
+  const client = runtime?.getSupabaseClient?.() || null;
+  if (!client) {
     signedOut();
     return;
   }
-
-  const runtime = window.BoomRuntime;
-  const client = runtime?.getSupabaseClient?.() || window.supabase.createClient(supabaseUrl, publishableKey, {
-    auth: {persistSession:true, autoRefreshToken:true, detectSessionInUrl:true}
-  });
   window.HuntAccountClient = client;
 
   if (runtime?.subscribeSession) {

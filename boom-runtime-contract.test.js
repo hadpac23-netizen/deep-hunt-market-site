@@ -24,6 +24,10 @@ const productFlow=fs.readFileSync("product-flow.js","utf8");
 if(!productFlow.includes("runtime?.getSupabaseClient?.()"))errors.push("product-flow.js bypasses shared Supabase runtime client");
 
 const runtimeSrc=fs.readFileSync("boom-runtime.js","utf8");
+for(const file of fs.readdirSync(".").filter(name=>name.endsWith(".js")&&name!=="boom-runtime.js")){
+  const src=fs.readFileSync(file,"utf8");
+  if(/\bcreateClient\s*\(/.test(src))errors.push(file+": duplicate Supabase client creation outside boom-runtime.js");
+}
 if(!runtimeSrc.includes("boom-feedback-center"))errors.push("boom-runtime.js missing global feedback center");
 if(!runtimeSrc.includes("actionFeedback(payload)"))errors.push("boom-runtime.js missing canonical action feedback routing");
 if(!runtimeSrc.includes("pointer-events:none"))errors.push("feedback center may block shopper controls");
@@ -45,6 +49,18 @@ const connections=fs.readFileSync("f60t-connections.js","utf8");
 if(!connections.includes("runtime.adminReady()"))errors.push("F60T Connections bypasses shared admin gate");
 if(/createClient\(/.test(connections))errors.push("F60T Connections may create a duplicate Supabase client");
 if(!connections.includes('endpoint:"hunt-f60t-oauth"'))errors.push("F60T connector trace missing official Edge endpoint lineage");
+
+const partnerHtml=fs.readFileSync("partner-outreach.html","utf8");
+const partnerRuntimeAt=partnerHtml.indexOf("boom-runtime.js");
+const partnerConfidenceAt=partnerHtml.indexOf("boom-evidence-confidence.js");
+const partnerEvidenceAt=partnerHtml.indexOf("boom-partner-evidence.js");
+const partnerAppAt=partnerHtml.indexOf("partner-outreach.js");
+if([partnerRuntimeAt,partnerConfidenceAt,partnerEvidenceAt,partnerAppAt].some(x=>x<0) ||
+   !(partnerRuntimeAt<partnerConfidenceAt&&partnerConfidenceAt<partnerEvidenceAt&&partnerEvidenceAt<partnerAppAt)){
+  errors.push("partner outreach evidence runtime load order is invalid");
+}
+const partnerSrc=fs.readFileSync("partner-outreach.js","utf8");
+if(!partnerSrc.includes("BoomPartnerEvidence?.load?.(client)"))errors.push("partner outreach does not consume persisted partner evidence");
 
 const homeHtml=fs.readFileSync("index.html","utf8");
 const migrationAt=homeHtml.indexOf("boom-storage-migrations.js");

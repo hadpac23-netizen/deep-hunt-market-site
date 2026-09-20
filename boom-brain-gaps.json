@@ -30,9 +30,9 @@
       "id": "shared_identity",
       "title": "Shared Identity / Session Runtime",
       "owner": "identity_session_kernel",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "source": "F35",
-      "next": "Finish migration of remaining admin/seller surfaces."
+      "next": "boom-runtime.js is the only Supabase client owner across phase-1/admin/seller surfaces; contract QA fails on duplicate createClient usage."
     },
     {
       "id": "likes_saves",
@@ -150,9 +150,9 @@
       "id": "confidence_decay",
       "title": "Evidence Confidence Decay",
       "owner": "intelligence_brain",
-      "status": "IN_PROGRESS",
+      "status": "DONE",
       "source": "F50",
-      "next": "FRESH/RECHECK/STALE is browser-safe and wired into product quote truth plus checkout evidence refresh; supplier terms and commercial-rights records still need persisted timestamps."
+      "next": "Product, checkout and partner evidence all use persisted timestamps; null evidence remains UNKNOWN and never becomes verified automatically."
     },
     {
       "id": "mission_budgets",

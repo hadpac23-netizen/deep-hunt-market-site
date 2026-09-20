@@ -1,11 +1,10 @@
 (() => {
   const H = window.HuntCore;
-  const sb = window.supabase;
   const runtime = window.BoomRuntime;
-  if (!H || !sb?.createClient) return;
+  if (!H || !runtime?.getSupabaseClient) return;
 
-  const SUPABASE_URL = "https://zszlnahjqmwozwubetkm.supabase.co";
-  const client = runtime?.getSupabaseClient?.() || sb.createClient(SUPABASE_URL, H.publishableKey);
+  const client = runtime.getSupabaseClient();
+  if (!client) return;
   const params = new URLSearchParams(location.search);
   const provider = (params.get("provider") || "").trim();
   const itemId = (params.get("id") || params.get("product_id") || "").trim();
