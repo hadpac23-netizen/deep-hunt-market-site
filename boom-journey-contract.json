@@ -11,9 +11,10 @@
         {"kind":"action","ref":"cart.add"},
         {"kind":"surface","ref":"store.checkout"},
         {"kind":"action","ref":"checkout.destination.change","optional":true},
+        {"kind":"action","ref":"checkout.shipping.update","optional":true},
         {"kind":"action","ref":"checkout.quote.verify"}
       ],
-      "hard_gates":["retail_price_verified","variant_id","stock_recheck","shipping_recheck","no_payment_on_quote_failure"]
+      "hard_gates":["retail_price_verified","variant_id","stock_recheck","shipping_recheck","no_payment_on_quote_failure","shipping_snapshot_before_supplier_order"]
     },
     {
       "id":"guest_preference_to_account",

@@ -30,6 +30,24 @@
         <div class="hd-section-head"><div><div class="hd-kicker hd-kicker-small">YOUR CART</div><h2>Order items</h2></div><button id="hd-clear-cart" class="hd-link-button" type="button">Clear cart</button></div>
         <div id="hd-checkout-items"></div>
         <div id="hd-checkout-empty" class="hd-empty-checkout" hidden><strong>Your cart is empty.</strong><a class="hd-btn hd-btn-primary" href="./#catalog">Browse live products</a></div>
+
+        <form id="hd-checkout-shipping-form" class="hd-checkout-shipping" autocomplete="on">
+          <div class="hd-section-head">
+            <div><div class="hd-kicker hd-kicker-small">DELIVERY DETAILS</div><h2>Shipping address</h2></div>
+            <small>Kept in memory until checkout verification. Never stored in browser storage.</small>
+          </div>
+          <div class="hd-shipping-grid">
+            <label>Full name<input id="hd-ship-name" name="name" autocomplete="name" maxlength="80" required></label>
+            <label>Email<input id="hd-ship-email" name="email" type="email" autocomplete="email" maxlength="254" required></label>
+            <label class="wide">Address line 1<input id="hd-ship-address" name="address" autocomplete="address-line1" maxlength="160" required></label>
+            <label class="wide">Address line 2 <span>optional</span><input id="hd-ship-address2" name="address2" autocomplete="address-line2" maxlength="160"></label>
+            <label>City<input id="hd-ship-city" name="city" autocomplete="address-level2" maxlength="80" required></label>
+            <label>State / province / region<input id="hd-ship-province" name="province" autocomplete="address-level1" maxlength="80" required></label>
+            <label>Postal / ZIP code<input id="hd-ship-zip" name="zip" autocomplete="postal-code" maxlength="20" required></label>
+            <label>Phone<input id="hd-ship-phone" name="phone" type="tel" autocomplete="tel" maxlength="30" required></label>
+          </div>
+          <p id="hd-shipping-status" class="hd-checkout-truth" aria-live="polite">Add delivery details before an order can be handed to a supplier.</p>
+        </form>
       </section>
 
       <aside class="hd-checkout-summary glass">

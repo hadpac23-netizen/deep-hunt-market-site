@@ -20,6 +20,9 @@ for(const file of ["hunt-deal.js","checkout.js"]){
     errors.push(file+": direct cart storage ownership returned");
   }
 }
+const checkoutSrc=fs.readFileSync("checkout.js","utf8");
+if(/localStorage|sessionStorage/.test(checkoutSrc))errors.push("checkout.js may persist shipping/customer PII in browser storage");
+if(!checkoutSrc.includes('runtime?.emit?.("checkout.shipping.update"'))errors.push("checkout.js missing canonical shipping-state action");
 const productFlow=fs.readFileSync("product-flow.js","utf8");
 if(!productFlow.includes("runtime?.getSupabaseClient?.()"))errors.push("product-flow.js bypasses shared Supabase runtime client");
 

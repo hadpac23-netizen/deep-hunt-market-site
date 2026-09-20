@@ -495,6 +495,18 @@
       "failure_policy": "restore_previous"
     },
     {
+      "action_id": "checkout.shipping.update",
+      "owner": "operations_brain",
+      "auth_policy": "guest_allowed",
+      "persistence": "memory_then_server_session",
+      "optimistic": true,
+      "double_submit_guard": false,
+      "telemetry": "checkout_shipping_state",
+      "accessibility": "form+status",
+      "failure_policy": "preserve_input",
+      "trace_policy": "metadata_only_no_pii"
+    },
+    {
       "action_id": "personalization.mode.change",
       "owner": "experience_brain",
       "auth_policy": "guest_allowed_merge_on_signin",

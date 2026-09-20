@@ -72,6 +72,13 @@
     },
     {
       "file": "checkout.js",
+      "selector": "#hd-checkout-shipping-form",
+      "action_id": "checkout.shipping.update",
+      "status": "mapped",
+      "event": "change"
+    },
+    {
+      "file": "checkout.js",
       "selector": "#hd-checkout-verify",
       "action_id": "checkout.quote.verify",
       "status": "mapped"

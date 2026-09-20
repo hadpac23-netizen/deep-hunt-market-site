@@ -10,6 +10,41 @@
   let checkoutTracked = false;
   let quoteVerified = false;
 
+  function shippingState() {
+    const country=String($("#hd-checkout-market")?.value||"").toUpperCase();
+    const field=id=>String($(id)?.value||"").trim();
+    const values={
+      shippingCustomerName:field("#hd-ship-name").slice(0,80),
+      shippingAddress:field("#hd-ship-address").slice(0,160),
+      shippingAddress2:field("#hd-ship-address2").slice(0,160),
+      shippingCity:field("#hd-ship-city").slice(0,80),
+      shippingProvince:field("#hd-ship-province").slice(0,80),
+      shippingZip:field("#hd-ship-zip").slice(0,20),
+      shippingPhone:field("#hd-ship-phone").slice(0,30),
+      shippingCountryCode:country
+    };
+    const email=field("#hd-ship-email").slice(0,254);
+    const required=[["name",values.shippingCustomerName],["email",email],["address",values.shippingAddress],["city",values.shippingCity],["province",values.shippingProvince],["postal",values.shippingZip],["phone",values.shippingPhone],["country",values.shippingCountryCode]];
+    const missing=required.filter(([,value])=>!value).map(([name])=>name);
+    if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)&&!missing.includes("email"))missing.push("email");
+    const hasAny=Boolean(email||Object.entries(values).some(([key,value])=>key!=="shippingCountryCode"&&value));
+    return {country,email,snapshot:values,missing,complete:missing.length===0,hasAny};
+  }
+
+  function updateShippingStatus({emit=false}={}) {
+    const state=shippingState();
+    const status=$("#hd-shipping-status");
+    if(status){
+      status.textContent=state.complete
+        ? "Delivery details are complete and will be attached only when checkout is verified."
+        : state.hasAny
+          ? state.missing.length+" required delivery field"+(state.missing.length===1?"":"s")+" still need attention."
+          : "Add delivery details before an order can be handed to a supplier.";
+    }
+    if(emit)runtime?.emit?.("checkout.shipping.update",{complete:state.complete,missing_count:state.missing.length,country:state.country},{broadcast:false});
+    return state;
+  }
+
   function resetQuote(message="Verify price and shipping before payment.") {
     quoteVerified = false;
     if ($("#hd-checkout-shipping")) $("#hd-checkout-shipping").textContent = "PENDING";
@@ -28,6 +63,7 @@
       RETAIL_PRICE_NOT_READY:"HUNT retail pricing is not verified for one or more items.",
       CURRENCY_REVIEW_REQUIRED:"This item needs a currency review before checkout.",
       SHIPPING_RECHECK_FAILED:"Shipping could not be rechecked right now.",
+      INVALID_CUSTOMER_EMAIL:"Enter a valid email address for delivery updates.",
       SUPPLIER_COST_NOT_READY:"A product needs a fresh supplier-price check before checkout.",
       PROFIT_RECHECK_FAILED:"A product needs a fresh HUNT price check before checkout.",
       PROFIT_PROFILE_NOT_ACTIVE:"Checkout pricing is temporarily unavailable.",
@@ -43,6 +79,7 @@
     const status = $("#hd-checkout-status");
     const cart = read();
     const country = String($("#hd-checkout-market")?.value || "").toUpperCase();
+    const shipping=updateShippingStatus();
 
     if (!cart.length) {
       resetQuote("Your cart is empty.");
@@ -80,6 +117,7 @@
           payment_ready:Boolean(result?.payment_ready),
           stock_evidence:"FRESH",
           shipping_evidence:"FRESH",
+          shipping_attached:Boolean(result?.shipping_attached),
           commerce_truth:String(result?.session?.commerce_snapshot?.status||"UNKNOWN"),
           commerce_checked_at:String(result?.session?.commerce_snapshot?.checked_at||"")
         }),
@@ -87,6 +125,8 @@
           const payload = {
             country_code: country,
             idempotency_key: correlationId || `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
+            customer_email:shipping.email||null,
+            shipping_snapshot:shipping.hasAny?shipping.snapshot:{},
             items: cart.map(item => ({
               provider:item.provider, item_id:item.item_id, variant_id:item.variant_id,
               qty:Math.max(1,Math.min(5,Number(item.qty)||1))
@@ -110,9 +150,12 @@
       $("#hd-checkout-total").textContent = money(session.total_amount,currency);
       quoteVerified = true;
       if (status) {
+        const deliveryCopy=data.shipping_attached===true
+          ? " Delivery details are attached to this checkout session."
+          : " Add complete delivery details before supplier handoff.";
         status.textContent = data.payment_ready === true
-          ? "Price, stock, shipping and checkout economics verified. Payment account status is controlled separately."
-          : "Price, stock, shipping and checkout economics verified. Payment is still disabled during pre-launch.";
+          ? "Price, stock, shipping and checkout economics verified."+deliveryCopy+" Payment account status is controlled separately."
+          : "Price, stock, shipping and checkout economics verified."+deliveryCopy+" Payment is still disabled during pre-launch.";
       }
       window.HuntAnalytics?.checkoutQuoteVerified?.({
         country,currency,productAmount:Number(session.product_amount||0),
@@ -176,9 +219,16 @@
   $("#hd-clear-cart")?.addEventListener("click",()=>H.clearCart());
   $("#hd-checkout-market")?.addEventListener("change", event => {
     resetQuote("Destination changed. Recheck price and shipping.");
+    updateShippingStatus({emit:true});
     window.HuntAnalytics?.checkoutMarket(event.currentTarget.value || "");
     runtime?.emit?.("checkout.destination.change",{country:String(event.currentTarget.value||"").toUpperCase()},{broadcast:false});
   });
+  $("#hd-checkout-shipping-form")?.addEventListener("submit",event=>event.preventDefault());
+  $("#hd-checkout-shipping-form")?.addEventListener("input",()=>{
+    if(quoteVerified)resetQuote("Shipping details changed. Recheck before checkout.");
+    updateShippingStatus();
+  });
+  $("#hd-checkout-shipping-form")?.addEventListener("change",()=>updateShippingStatus({emit:true}));
   $("#hd-checkout-verify")?.addEventListener("click",verifyPriceAndShipping);
   window.addEventListener("hunt:cart-changed",()=>{
     resetQuote(read().length?"Cart changed. Recheck price and shipping.":"Your cart is empty.");
@@ -186,4 +236,5 @@
   });
 
   render();
+  updateShippingStatus();
 })();

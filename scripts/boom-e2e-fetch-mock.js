@@ -29,7 +29,12 @@
     const url = String(input?.url || input || "");
     if (url.includes("/functions/v1/hunt-storefront")) return Promise.resolve(json({product}));
     if (url.includes("/functions/v1/hunt-payment-session")) {
-      return Promise.resolve(json({ok:true,payment_ready:false,session:{
+      let request={};
+      try{request=JSON.parse(String(init?.body||"{}"));}catch{}
+      const ship=request?.shipping_snapshot||{};
+      const shippingAttached=Boolean(request?.customer_email&&ship.shippingCustomerName&&ship.shippingAddress&&ship.shippingCity&&ship.shippingProvince&&ship.shippingZip&&ship.shippingPhone&&ship.shippingCountryCode);
+      window.__boomLastPaymentRequest=request;
+      return Promise.resolve(json({ok:true,payment_ready:false,shipping_attached:shippingAttached,session:{
         currency:"USD",product_amount:7.99,shipping_amount:4.50,total_amount:12.49,
         commerce_snapshot:{
           version:"HUNT-COMMERCE-TRUTH-V1",

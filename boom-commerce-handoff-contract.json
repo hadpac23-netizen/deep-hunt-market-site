@@ -39,7 +39,7 @@
     {
       "id":"supplier_order",
       "owner":"operations_brain",
-      "requires":["PAYMENT_CONFIRMED","SUPPLIER_ROUTE_VERIFIED","OWNER_GATE"],
+      "requires":["PAYMENT_CONFIRMED","SUPPLIER_ROUTE_VERIFIED","SHIPPING_ADDRESS_VERIFIED","OWNER_GATE"],
       "emits":"FULFILLMENT_STARTED",
       "autonomous_budget":0
     },
@@ -57,6 +57,7 @@
     "No supplier order in prelaunch mode.",
     "No supplier order without confirmed payment and Owner Gate.",
     "No brain other than Commerce Truth may declare profit truth.",
-    "Learning may recommend changes but never changes price, payment or supplier state itself."
+    "Learning may recommend changes but never changes price, payment or supplier state itself.",
+    "No supplier order without a complete server-side shipping snapshot."
   ]
 }

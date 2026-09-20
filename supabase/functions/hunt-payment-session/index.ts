@@ -48,6 +48,25 @@ async function activeProfitProfile(ctx:any){
   if(error||!data)throw new Error("PROFIT_PROFILE_NOT_ACTIVE");
   return data;
 }
+function sanitizeShipping(body:any,country:string){
+  const raw=body?.shipping_snapshot&&typeof body.shipping_snapshot==="object"?body.shipping_snapshot:{};
+  const cap=(value:unknown,max:number)=>clean(value).slice(0,max);
+  const email=cap(body?.customer_email,254);
+  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error("INVALID_CUSTOMER_EMAIL");
+  const snapshot={
+    shippingCustomerName:cap(raw.shippingCustomerName,80),
+    shippingAddress:cap(raw.shippingAddress,160),
+    shippingAddress2:cap(raw.shippingAddress2,160),
+    shippingCity:cap(raw.shippingCity,80),
+    shippingProvince:cap(raw.shippingProvince,80),
+    shippingZip:cap(raw.shippingZip,20),
+    shippingPhone:cap(raw.shippingPhone,30),
+    shippingCountryCode:country
+  };
+  const hasAny=Boolean(email||snapshot.shippingCustomerName||snapshot.shippingAddress||snapshot.shippingAddress2||snapshot.shippingCity||snapshot.shippingProvince||snapshot.shippingZip||snapshot.shippingPhone);
+  const complete=Boolean(email&&snapshot.shippingCustomerName&&snapshot.shippingAddress&&snapshot.shippingCity&&snapshot.shippingProvince&&snapshot.shippingZip&&snapshot.shippingPhone&&country);
+  return {customer_email:email||null,shipping_snapshot:hasAny?snapshot:{},has_any:hasAny,complete};
+}
 async function getProduct(base:string,key:string,provider:string,itemId:string,country:string){
   const url=new URL(base+"/functions/v1/hunt-storefront");
   url.searchParams.set("provider",provider);
@@ -221,13 +240,16 @@ Deno.serve(async(req:Request)=>{
     if(!base||!key)throw new Error("SERVER_CONFIG_MISSING");
     const profitProfile=await activeProfitProfile(ctx);
     const pricing=await validateCart(base,key,body,profitProfile);
+    const shipping=sanitizeShipping(body,pricing.country_code);
     const requestedIdem=clean(body?.idempotency_key).slice(0,120);
     const idempotencyKey=requestedIdem||crypto.randomUUID();
     const normalized=JSON.stringify({
       country:pricing.country_code,
       items:pricing.line_items.map((x:any)=>[
         x.provider,x.item_id,x.variant_id,x.qty,x.origin_country_code,x.shipping_method
-      ])
+      ]),
+      customer_email:shipping.customer_email,
+      shipping_snapshot:shipping.shipping_snapshot
     });
     const cartDigest=await sha256(normalized);
 
@@ -243,6 +265,7 @@ Deno.serve(async(req:Request)=>{
       return json(req,{
         ok:true,reused:true,
         payment_ready:existing.status!=="prelaunch",
+        shipping_attached:shipping.complete,
         idempotency_key:idempotencyKey,
         session:existing
       });
@@ -300,6 +323,8 @@ Deno.serve(async(req:Request)=>{
         total_amount:pricing.total_amount,
         line_items:pricing.line_items,
         commerce_snapshot:pricing.commerce_snapshot,
+        customer_email:shipping.customer_email,
+        shipping_snapshot:shipping.shipping_snapshot,
         cart_digest:cartDigest,
         idempotency_key:idempotencyKey
       })
@@ -311,6 +336,7 @@ Deno.serve(async(req:Request)=>{
       return json(req,{
         ok:true,
         payment_ready:false,
+        shipping_attached:shipping.complete,
         reason:"AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED",
         idempotency_key:idempotencyKey,
         session:inserted
@@ -343,6 +369,7 @@ Deno.serve(async(req:Request)=>{
     return json(req,{
       ok:true,
       payment_ready:true,
+      shipping_attached:shipping.complete,
       idempotency_key:idempotencyKey,
       integration:updated.provider_hosted_fields_uid?"hosted_fields":"hosted_page",
       session:updated
