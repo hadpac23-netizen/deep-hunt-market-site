@@ -132,6 +132,43 @@
     }
   }
 
+
+  async function renderShelfCoverage(){
+    const summaryHost=$("#bs-shelf-coverage-summary");
+    const grid=$("#bs-shelf-coverage-matrix");
+    if(!grid)return;
+    try{
+      const contract=await json("boom-shelf-department-contract.json");
+      const audit=window.HuntShelfCoverageAudit;
+      if(!audit?.fromServer)throw new Error("Shelf coverage server adapter unavailable");
+      const report=await audit.fromServer(contract);
+      const summary=report.summary||{};
+      if(summaryHost){
+        summaryHost.innerHTML=[
+          metric((summary.canonical_resolved??13)+"/17","Canonical departments"),
+          metric(summary.ready??0,"Ready ≥ 1,000"),
+          metric(summary.stale??0,"Stale evidence"),
+          metric(summary.unknown??0,"Unknown"),
+          metric(summary.known_verified_total??0,"Fresh verified total")
+        ].join("");
+      }
+      grid.innerHTML=(report.departments||[]).map(row=>{
+        const verified=row.verified_count===null||row.verified_count===undefined?"UNKNOWN":String(row.verified_count);
+        const stale=row.stale_verified_count===null||row.stale_verified_count===undefined?"":` · stale count: ${esc(row.stale_verified_count)}`;
+        const freshness=row.evidence_fresh?"fresh":"stale / unresolved";
+        return `<article class="bs-shelf-card" data-state="${esc(row.state||"UNKNOWN")}">
+          <div class="bs-shelf-head"><strong>${esc(row.title||row.slug||"Unresolved")}</strong><span class="bs-status ${row.state==="READY"?"DONE":"NEXT"}">${esc(row.state||"UNKNOWN")}</span></div>
+          <div class="bs-shelf-count">${esc(verified)}<small> / 1,000</small></div>
+          <p>gap: ${esc(row.gap_to_target??1000)} · ${esc(freshness)}${stale}</p>
+          <small>${esc((row.providers||[]).join(" · ")||"No verified provider evidence")}</small>
+        </article>`;
+      }).join("");
+    }catch(error){
+      if(summaryHost)summaryHost.innerHTML="";
+      grid.innerHTML=`<div class="bs-empty bs-error">Shelf evidence unavailable: ${esc(error?.message||"unknown error")}. Readiness remains blocked.</div>`;
+    }
+  }
+
   function renderGovernance(){
     const cards=[
       {value:data.budgets.resources.length,label:"Material budget classes",detail:"autonomous budget = 0"},
@@ -255,7 +292,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderDurableAutomation();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
