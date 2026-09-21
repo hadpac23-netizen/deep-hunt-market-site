@@ -67,7 +67,7 @@
     event("automation.run."+to.toLowerCase(),run,{reason:String(reason||"")});
     return run;
   }
-  async function createRun(workflowId,{missionId="",input={}}={}){
+  async function createRun(workflowId,{missionId="",input={},parentRunId="",parentCorrelationId=""}={}){
     await ready();
     const workflow=workflowById(workflowId);
     if(!workflow)throw Object.assign(new Error("WORKFLOW_NOT_FOUND"),{code:"WORKFLOW_NOT_FOUND"});
@@ -76,6 +76,8 @@
       workflow_id:workflow.id,
       run_id:makeId("run"),
       correlation_id:makeId("corr"),
+      parent_run_id:String(parentRunId||""),
+      parent_correlation_id:String(parentCorrelationId||""),
       mode:"SHADOW",
       state:"READY",
       owner:workflow.owner,
@@ -143,6 +145,7 @@
     if(run.state!=="RUNNING")throw Object.assign(new Error("RUN_NOT_RUNNING"),{code:"RUN_NOT_RUNNING"});
     step(run,"FAILED",String(code||"ACTION_FAILED"));
     await persistRunEvent(run,"automation.run.failed",{reason:String(code||"ACTION_FAILED")});
+    await routeFailureToIncident(run,String(code||"ACTION_FAILED"));
     return clone(run);
   }
   async function retry(runId){
@@ -159,6 +162,38 @@
     step(run,"RETRY_WAIT","bounded_retry");
     await persistRunEvent(run,"automation.run.retry_wait",{reason:"bounded_retry"});
     return clone(run);
+  }
+
+
+  async function routeFailureToIncident(failedRun,failureCode="ACTION_FAILED"){
+    if(!failedRun||String(failedRun.workflow_id||"")==="incident_repair")return null;
+    for(const existing of runs.values()){
+      if(existing.workflow_id==="incident_repair"&&existing.parent_run_id===failedRun.run_id)return clone(existing);
+    }
+    const incident=await createRun("incident_repair",{
+      missionId:failedRun.mission_id,
+      parentRunId:failedRun.run_id,
+      parentCorrelationId:failedRun.correlation_id,
+      input:{
+        failed_workflow_id:failedRun.workflow_id,
+        failed_run_id:failedRun.run_id,
+        failure_code:String(failureCode||"ACTION_FAILED")
+      }
+    });
+    const stored=runs.get(incident.run_id);
+    const ledger=window.BoomAutomationLedger;
+    try{
+      await ledger?.appendIncidentEvent?.(stored,"incident.detected",{
+        severity:"warning",
+        title:"Automation failure routed to Incident & Repair",
+        failed_workflow_id:failedRun.workflow_id,
+        failure_code:String(failureCode||"ACTION_FAILED")
+      });
+    }catch(error){
+      event("automation.ledger.error",stored,{reason:String(error?.code||error?.message||"INCIDENT_EVENT_WRITE_FAILED")});
+    }
+    event("automation.incident.created",stored,{parent_run_id:failedRun.run_id,failure_code:String(failureCode||"ACTION_FAILED")});
+    return clone(stored);
   }
 
   async function dispatchAdapter(runId,payload={}){
@@ -190,6 +225,7 @@
       const code=String(error?.code||error?.message||"N8N_DISPATCH_FAILED");
       step(run,"FAILED",code);
       await persistRunEvent(run,"automation.n8n.dispatch_failed",{reason:code});
+      await routeFailureToIncident(run,code);
       throw error;
     }
   }
@@ -205,5 +241,5 @@
   function getRun(runId){const run=runs.get(String(runId));return run?clone(run):null;}
   function listRuns(){return [...runs.values()].map(clone);}
 
-  window.BoomAutomationRuntime={version,ready,createRun,simulate,dispatchAdapter,ownerDecision,fail,retry,authorizeTool,getRun,listRuns};
+  window.BoomAutomationRuntime={version,ready,createRun,simulate,dispatchAdapter,routeFailureToIncident,ownerDecision,fail,retry,authorizeTool,getRun,listRuns};
 })();
