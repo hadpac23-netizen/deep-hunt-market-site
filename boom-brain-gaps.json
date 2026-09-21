@@ -206,9 +206,9 @@
       "id": "tool_gateway",
       "title": "Tool Gateway allowlist",
       "owner": "operations_brain",
-      "status": "NEXT",
+      "status": "DONE",
       "source": "F50",
-      "next": "Define approved tool operations and secret references before any workflow engine connection."
+      "next": "Fail-closed allowlist contract is implemented; material tools remain blocked in SHADOW."
     },
     {
       "id": "n8n_adapter",
@@ -216,7 +216,7 @@
       "owner": "boom_orchestrator",
       "status": "NEXT",
       "source": "F50",
-      "next": "Connect in SHADOW only after Run Ledger + Tool Gateway; start with a safe read-only workflow."
+      "next": "Connect only after Durable Run Ledger is reviewed; first workflow must be safe/read-only and remain SHADOW."
     },
     {
       "id": "shelf_coverage_17x1000",
@@ -249,6 +249,14 @@
       "status": "NEXT",
       "source": "F50",
       "next": "Require identity, privacy and consent proof before any customer-facing action."
+    },
+    {
+      "id": "shadow_run_engine",
+      "title": "Shadow Run Engine",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F50",
+      "next": "In-memory mission/workflow/run/correlation state machine is active on the branch; persist only after reviewed Run Ledger schema."
     }
   ]
 }
