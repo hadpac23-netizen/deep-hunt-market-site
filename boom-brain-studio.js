@@ -22,7 +22,7 @@
       metric(data.actions.actions.length,"Canonical actions"),
       metric(data.inventory.interactions.length,"Mapped controls"),
       metric(phase1,"Phase-1 surfaces"),
-      metric(data.commerce.stages.length,"Commerce handoff stages")
+      metric(data.commerce.stages.length,"Commerce handoff stages"),\n      metric(data.automation?.workflows?.length||0,"Automation workflows"),\n      metric(data.automation?.mode||"UNKNOWN","Automation mode")
     ].join("");
   }
   function renderFlow(){
@@ -61,6 +61,36 @@
     const rows=data.gaps.items.filter(x=>gapFilter==="all"||x.status===gapFilter);
     $("#bs-gaps").innerHTML=rows.length?rows.map(g=>`<article class="bs-gap"><div class="bs-gap-head"><strong>${esc(g.title)}</strong><span class="bs-status ${esc(g.status)}">${esc(g.status)}</span></div><small>${esc(g.source)} · ${esc(g.owner)}</small><p>${esc(g.next)}</p></article>`).join(""):'<div class="bs-empty">No gaps in this state.</div>';
   }
+
+  function renderAutomation(){
+    const a=data.automation||{};
+    const state=$("#bs-automation-state");
+    if(state) state.textContent=String(a.mode||"UNKNOWN");
+    const adapters=$("#bs-automation-adapters");
+    if(adapters){
+      adapters.innerHTML=(a.adapters||[]).map(x=>`<article class="bs-automation-adapter">
+        <div><strong>${esc(x.id)}</strong><span class="bs-status ${x.status==="CONNECTED"?"DONE":"NEXT"}">${esc(x.status)}</span></div>
+        <p>${esc(x.role)}</p><code>authority: ${esc(x.authority||"NONE")}</code>
+      </article>`).join("");
+    }
+    const host=$("#bs-automation-workflows");
+    if(host){
+      host.innerHTML=(a.workflows||[]).map(w=>`<article class="bs-automation-workflow">
+        <div class="bs-automation-head"><strong>${esc(w.name)}</strong><span class="bs-lifecycle ${esc(w.mode||"SHADOW")}">${esc(w.mode||"SHADOW")}</span></div>
+        <small>${esc(w.id)} · owner: ${esc(w.owner)}</small>
+        <div class="bs-journey-steps">${(w.stages||[]).map(x=>`<span>${esc(x)}</span>`).join("")}</div>
+        <p>gate: ${esc(w.gate||"none")} · material: ${esc(w.material_action||"none")} · failure: ${esc(w.failure_route||"hold")}</p>
+      </article>`).join("");
+    }
+    const shelf=$("#bs-shelf-target");
+    if(shelf){
+      const t=a.targets||{};
+      shelf.innerHTML=`<strong>${esc(t.departments||0)} departments × ${esc(t.target_products_per_department||0)} target products</strong>
+        <span>${esc(t.truth_rule||"Verified evidence only.")}</span>
+        <code>readiness = verified_count + fresh_stock + fresh_price + supported_shipping + media_present</code>`;
+    }
+  }
+
   function renderGovernance(){
     const cards=[
       {value:data.budgets.resources.length,label:"Material budget classes",detail:"autonomous budget = 0"},
@@ -179,12 +209,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
