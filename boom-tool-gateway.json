@@ -1,0 +1,103 @@
+{
+  "version": "BOOM-TOOL-GATEWAY-V1",
+  "mode": "SHADOW",
+  "rule": "All adapter/tool requests are allowlisted here. Unknown tools fail closed.",
+  "tools": [
+    {
+      "id": "catalog.verified_counts.read",
+      "owner": "commerce_truth_brain",
+      "class": "READ_ONLY",
+      "shadow_allowed": true,
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "catalog.product_truth.read",
+      "owner": "commerce_truth_brain",
+      "class": "READ_ONLY",
+      "shadow_allowed": true,
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "incident.internal.open",
+      "owner": "learning_governance_brain",
+      "class": "INTERNAL_DRAFT",
+      "shadow_allowed": true,
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "creative.draft.create",
+      "owner": "growth_brain",
+      "class": "INTERNAL_DRAFT",
+      "shadow_allowed": true,
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "analytics.evidence.read",
+      "owner": "learning_governance_brain",
+      "class": "READ_ONLY",
+      "shadow_allowed": true,
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "customer.outreach.send",
+      "owner": "operations_brain",
+      "class": "EXTERNAL_WRITE",
+      "shadow_allowed": false,
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "publish.external",
+      "owner": "growth_brain",
+      "class": "EXTERNAL_WRITE",
+      "shadow_allowed": false,
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "price.change",
+      "owner": "commerce_truth_brain",
+      "class": "COMMERCE_WRITE",
+      "shadow_allowed": false,
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "payment.activate",
+      "owner": "operations_brain",
+      "class": "PAYMENT",
+      "shadow_allowed": false,
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "supplier.order",
+      "owner": "operations_brain",
+      "class": "FULFILLMENT",
+      "shadow_allowed": false,
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "production.deploy",
+      "owner": "operations_brain",
+      "class": "PRODUCTION",
+      "shadow_allowed": false,
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "credential.change",
+      "owner": "operations_brain",
+      "class": "SECURITY",
+      "shadow_allowed": false,
+      "material": true,
+      "owner_gate": true
+    }
+  ]
+}
