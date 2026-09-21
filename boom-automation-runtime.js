@@ -11,10 +11,11 @@
 
   const transitions={
     DRAFT:["READY","CANCELLED"],
-    READY:["RUNNING","CANCELLED"],
-    RUNNING:["WAITING_OWNER","RETRY_WAIT","SUCCEEDED","FAILED","QUARANTINED","CANCELLED"],
+    READY:["RUNNING","BLOCKED","CANCELLED"],
+    RUNNING:["WAITING_OWNER","BLOCKED","RETRY_WAIT","SUCCEEDED","FAILED","QUARANTINED","CANCELLED"],
+    BLOCKED:["READY","CANCELLED"],
     WAITING_OWNER:["RUNNING","SUCCEEDED","CANCELLED","QUARANTINED"],
-    RETRY_WAIT:["RUNNING","QUARANTINED","CANCELLED"],
+    RETRY_WAIT:["RUNNING","BLOCKED","QUARANTINED","CANCELLED"],
     FAILED:["RETRY_WAIT","QUARANTINED","CANCELLED"],
     SUCCEEDED:[],QUARANTINED:[],CANCELLED:[]
   };
@@ -96,11 +97,52 @@
     await persistRunEvent(run,"automation.run.created",{reason:"created"});
     return clone(run);
   }
+
+  function preflight(run){
+    const workflow=String(run?.workflow_id||"");
+    const input=run?.input&&typeof run.input==="object"?run.input:{};
+    const blockers=[];
+    if(workflow==="creative_publish"){
+      if(input.product_truth_live!==true)blockers.push("PRODUCT_TRUTH_LIVE_REQUIRED");
+      if(input.exact_references_locked!==true)blockers.push("EXACT_REFERENCES_LOCKED_REQUIRED");
+      if(input.proof_claims_boundary_reviewed!==true)blockers.push("PROOF_CLAIMS_BOUNDARY_REQUIRED");
+    }
+    return {ok:blockers.length===0,blockers};
+  }
+  async function updateRunInput(runId,patch={}){
+    await ready();
+    const run=runs.get(String(runId));
+    if(!run)throw Object.assign(new Error("RUN_NOT_FOUND"),{code:"RUN_NOT_FOUND"});
+    const clean={};
+    for(const [k,v] of Object.entries(patch||{})){
+      if(/token|secret|password|credential|email|phone|address/i.test(k))continue;
+      if(v===null||["string","number","boolean"].includes(typeof v))clean[k]=v;
+    }
+    run.input={...(run.input||{}),...clean};
+    run.updated_at=Date.now();
+    if(run.state==="BLOCKED"){
+      const check=preflight(run);
+      run.blockers=check.blockers;
+      if(check.ok)step(run,"READY","evidence_updated");
+    }
+    await persistRunEvent(run,"automation.run.evidence_updated",{blocker_count:(run.blockers||[]).length});
+    return clone(run);
+  }
+
   async function simulate(runId){
     await ready();
     const run=runs.get(String(runId));
     if(!run)throw Object.assign(new Error("RUN_NOT_FOUND"),{code:"RUN_NOT_FOUND"});
-    if(run.state==="READY"||run.state==="RETRY_WAIT")step(run,"RUNNING","shadow_simulation");
+    if(run.state==="READY"||run.state==="RETRY_WAIT"){
+      const check=preflight(run);
+      run.blockers=check.blockers;
+      if(!check.ok){
+        step(run,"BLOCKED","evidence_preflight");
+        await persistRunEvent(run,"automation.run.blocked",{blocker_count:check.blockers.length,blockers:check.blockers.join(",")});
+        return clone(run);
+      }
+      step(run,"RUNNING","shadow_simulation");
+    }
     if(run.state!=="RUNNING")throw Object.assign(new Error("RUN_NOT_EXECUTABLE"),{code:"RUN_NOT_EXECUTABLE"});
     for(const stage of run.stages){
       stage.status="SIMULATED";
@@ -241,5 +283,5 @@
   function getRun(runId){const run=runs.get(String(runId));return run?clone(run):null;}
   function listRuns(){return [...runs.values()].map(clone);}
 
-  window.BoomAutomationRuntime={version,ready,createRun,simulate,dispatchAdapter,routeFailureToIncident,ownerDecision,fail,retry,authorizeTool,getRun,listRuns};
+  window.BoomAutomationRuntime={version,ready,createRun,preflight,updateRunInput,simulate,dispatchAdapter,routeFailureToIncident,ownerDecision,fail,retry,authorizeTool,getRun,listRuns};
 })();
