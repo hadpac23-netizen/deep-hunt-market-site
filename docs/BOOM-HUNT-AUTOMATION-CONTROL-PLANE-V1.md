@@ -32,3 +32,10 @@ This branch now includes architecture, BOOM Studio visibility, a fail-closed Too
 6. Creative workflow through A6 Visual QA + Owner Gate.
 7. Customer lifecycle workflows after privacy/consent proof.
 8. Analytics learning loop with evidence thresholds.
+
+## n8n SHADOW gateway
+The browser never receives the n8n webhook secret. BOOM Studio invokes the authenticated Supabase Edge Function `boom-automation-gateway`; the Edge Function verifies the signed-in admin and performs the server-side POST to n8n.
+
+V1 allowlist contains only `shelf_coverage_17x1000`. Material workflows remain blocked. The gateway uses a 15s timeout, `X-BOOM-Run-ID` idempotency identity, sanitized payloads and server-only `N8N_SHADOW_WEBHOOK_URL` / `N8N_SHADOW_WEBHOOK_TOKEN` secrets.
+
+The function is code-only on this branch. It is not deployed and no n8n endpoint is configured.
