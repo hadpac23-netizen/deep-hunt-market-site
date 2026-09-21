@@ -42,6 +42,19 @@
     })();
     return readyPromise;
   }
+
+  async function persistRunEvent(run,eventName,detail={},ensureApproval=false){
+    const ledger=window.BoomAutomationLedger;
+    if(!ledger)return;
+    try{
+      await ledger.upsertRun(run);
+      await ledger.appendEvent(run,eventName,detail);
+      if(ensureApproval===true)await ledger.ensureApproval(run);
+    }catch(error){
+      event("automation.ledger.error",run,{reason:String(error?.code||error?.message||"LEDGER_WRITE_FAILED")});
+    }
+  }
+
   function workflowById(id){
     return contract?.workflows?.find(x=>x.id===id)||null;
   }
@@ -78,6 +91,7 @@
     };
     runs.set(run.run_id,run);
     event("automation.run.created",run);
+    await persistRunEvent(run,"automation.run.created",{reason:"created"});
     return clone(run);
   }
   async function simulate(runId){
@@ -94,8 +108,10 @@
     if(workflow?.final_owner_gate===true){
       step(run,"WAITING_OWNER","material_action_requires_owner");
       event("automation.run.waiting_owner",run,{material_action:workflow.material_action});
+      await persistRunEvent(run,"automation.run.waiting_owner",{material_action:workflow.material_action},true);
     }else{
       step(run,"SUCCEEDED","shadow_complete_no_external_action");
+      await persistRunEvent(run,"automation.run.succeeded",{reason:"shadow_complete_no_external_action"});
     }
     return clone(run);
   }
@@ -106,11 +122,17 @@
     if(run.state!=="WAITING_OWNER")throw Object.assign(new Error("OWNER_GATE_NOT_WAITING"),{code:"OWNER_GATE_NOT_WAITING"});
     run.owner_decision={approved:approved===true,reason:String(reason||""),ts:Date.now()};
     event(approved?"automation.owner.approved":"automation.owner.rejected",run,{reason:String(reason||"")});
+    const ledger=window.BoomAutomationLedger;
+    try{await ledger?.recordOwnerDecision?.(run,approved===true,String(reason||""));}catch(error){
+      event("automation.ledger.error",run,{reason:String(error?.code||error?.message||"APPROVAL_WRITE_FAILED")});
+    }
     if(approved===true){
       // SHADOW never executes the material action. Approval closes the simulation only.
       step(run,"SUCCEEDED","owner_approved_shadow_action_suppressed");
+      await persistRunEvent(run,"automation.owner.approved",{reason:String(reason||"")});
     }else{
       step(run,"CANCELLED","owner_rejected");
+      await persistRunEvent(run,"automation.owner.rejected",{reason:String(reason||"")});
     }
     return clone(run);
   }
@@ -120,6 +142,7 @@
     if(!run)throw Object.assign(new Error("RUN_NOT_FOUND"),{code:"RUN_NOT_FOUND"});
     if(run.state!=="RUNNING")throw Object.assign(new Error("RUN_NOT_RUNNING"),{code:"RUN_NOT_RUNNING"});
     step(run,"FAILED",String(code||"ACTION_FAILED"));
+    await persistRunEvent(run,"automation.run.failed",{reason:String(code||"ACTION_FAILED")});
     return clone(run);
   }
   async function retry(runId){
@@ -130,9 +153,11 @@
     run.retries+=1;
     if(run.retries>maxRetries){
       step(run,"QUARANTINED","retry_budget_exhausted");
+      await persistRunEvent(run,"automation.run.quarantined",{reason:"retry_budget_exhausted"});
       return clone(run);
     }
     step(run,"RETRY_WAIT","bounded_retry");
+    await persistRunEvent(run,"automation.run.retry_wait",{reason:"bounded_retry"});
     return clone(run);
   }
   async function authorizeTool(toolId,{ownerApproved=false}={}){
