@@ -238,9 +238,9 @@
       "id": "creative_publish_automation",
       "title": "Creative → Visual QA → Owner Gate workflow",
       "owner": "growth_brain",
-      "status": "NEXT",
+      "status": "IN_PROGRESS",
       "source": "F50",
-      "next": "Keep external publishing OFF; wire draft-only creative lineage first."
+      "next": "A6/A7 contracts and tested QA/router modules recovered. Add runtime evidence preflight; provider generation and external publish remain OFF."
     },
     {
       "id": "customer_lifecycle_automation",
@@ -257,6 +257,22 @@
       "status": "DONE",
       "source": "F50",
       "next": "In-memory mission/workflow/run/correlation state machine is active on the branch; persist only after reviewed Run Ledger schema."
+    },
+    {
+      "id": "a6_creative_learning_rewire",
+      "title": "A6 Creative Learning capability rewire",
+      "owner": "growth_brain",
+      "status": "DONE",
+      "source": "LEGACY_PR_7",
+      "next": "Preserve tournament + Red Team + Visual QA logic under canonical creative_publish workflow."
+    },
+    {
+      "id": "a7_integration_gate_rewire",
+      "title": "A7 Integration QA evidence gate rewire",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "LEGACY_PR_7",
+      "next": "Keep 6/6 evidence requirement; Alpha/Production remain separate Owner decisions."
     }
   ]
 }
