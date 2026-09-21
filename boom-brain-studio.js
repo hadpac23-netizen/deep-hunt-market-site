@@ -22,7 +22,9 @@
       metric(data.actions.actions.length,"Canonical actions"),
       metric(data.inventory.interactions.length,"Mapped controls"),
       metric(phase1,"Phase-1 surfaces"),
-      metric(data.commerce.stages.length,"Commerce handoff stages"),\n      metric(data.automation?.workflows?.length||0,"Automation workflows"),\n      metric(data.automation?.mode||"UNKNOWN","Automation mode")
+      metric(data.commerce.stages.length,"Commerce handoff stages"),
+      metric(data.automation?.workflows?.length||0,"Automation workflows"),
+      metric(data.automation?.mode||"UNKNOWN","Automation mode")
     ].join("");
   }
   function renderFlow(){
