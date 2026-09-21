@@ -1,0 +1,12 @@
+const fs=require("fs");
+const assert=require("assert");
+const c=JSON.parse(fs.readFileSync("boom-incident-repair-contract.json","utf8"));
+assert.equal(c.brain,"learning_governance_brain");
+assert.equal(c.agent_id,"incident_repair_agent");
+assert.equal(c.storage.dedicated_new_table,false);
+assert(c.flow.includes("root_cause"));
+assert(c.flow.includes("independent_review"));
+assert(c.flow.includes("owner_gate"));
+assert(c.rules.some(x=>/No Production deploy/i.test(x)));
+assert.equal(c.auto_route.behavior.includes("Do not auto-patch"),true);
+console.log("BOOM incident repair: PASS — rewire, evidence, independent review, Owner Gate, no auto-deploy");
