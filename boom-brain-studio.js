@@ -64,6 +64,45 @@
     $("#bs-gaps").innerHTML=rows.length?rows.map(g=>`<article class="bs-gap"><div class="bs-gap-head"><strong>${esc(g.title)}</strong><span class="bs-status ${esc(g.status)}">${esc(g.status)}</span></div><small>${esc(g.source)} · ${esc(g.owner)}</small><p>${esc(g.next)}</p></article>`).join(""):'<div class="bs-empty">No gaps in this state.</div>';
   }
 
+
+  async function renderDurableAutomation(){
+    const runsHost=$("#bs-ledger-runs");
+    const approvalsHost=$("#bs-approval-queue");
+    const ledger=window.BoomAutomationLedger;
+    if(!ledger){
+      if(runsHost)runsHost.innerHTML='<div class="bs-empty">Ledger adapter unavailable.</div>';
+      if(approvalsHost)approvalsHost.innerHTML='<div class="bs-empty">Approval adapter unavailable.</div>';
+      return;
+    }
+    try{
+      const [runs,approvals]=await Promise.all([ledger.listRecent(20),ledger.listPendingApprovals(20)]);
+      if(runsHost){
+        runsHost.innerHTML=runs.length?runs.map(row=>{
+          const lineage=Array.isArray(row.members)?row.members[0]||{}:{};
+          const suppressed=Array.isArray(row.evidence)&&row.evidence.some(x=>x?.material_action_suppressed===true);
+          return `<article class="bs-run">
+            <div class="bs-run-head"><strong>${esc(row.task)}</strong><span class="bs-status ${String(row.status).toLowerCase()==="succeeded"?"DONE":"NEXT"}">${esc(row.status)}</span></div>
+            <code>${esc(row.run_key)}</code>
+            <small>mission: ${esc(lineage.mission_id||"—")} · correlation: ${esc(lineage.correlation_id||"—")}</small>
+            <p>${row.owner_gate_required?"Owner Gate required":"No material Owner Gate"} · ${suppressed?"material action suppressed":"internal/read-only"}</p>
+          </article>`;
+        }).join(""):'<div class="bs-empty">No durable automation runs yet.</div>';
+      }
+      if(approvalsHost){
+        approvalsHost.innerHTML=approvals.length?approvals.map(row=>`<article class="bs-run">
+          <div class="bs-run-head"><strong>${esc(row.title)}</strong><span class="bs-status NEXT">${esc(row.status)}</span></div>
+          <code>${esc(row.decision_key)}</code>
+          <small>${esc(row.decision_type)} · priority ${esc(row.priority)}</small>
+          <p>${esc(row.rationale||"Material workflow waiting for Owner Gate.")}</p>
+        </article>`).join(""):'<div class="bs-empty">No pending automation approvals.</div>';
+      }
+    }catch(error){
+      const copy=esc(error?.message||"Durable automation ledger unavailable");
+      if(runsHost)runsHost.innerHTML=`<div class="bs-empty bs-error">${copy}</div>`;
+      if(approvalsHost)approvalsHost.innerHTML=`<div class="bs-empty bs-error">${copy}</div>`;
+    }
+  }
+
   function renderAutomation(){
     const a=data.automation||{};
     const state=$("#bs-automation-state");
@@ -216,7 +255,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderDurableAutomation();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
