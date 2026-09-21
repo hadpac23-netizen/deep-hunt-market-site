@@ -1,0 +1,113 @@
+{
+  "version": "BOOM-CREATIVE-LEARNING-A6-V1",
+  "source_recovery": {
+    "source_branch": "feature/boom-brand-factory-v1",
+    "source_pr": 7,
+    "migration": "EXTRACT_CAPABILITY_REWIRE_TO_BRAIN_OS",
+    "note": "Preserve A6 capability without importing the legacy Studio ownership model."
+  },
+  "brain": "growth_brain",
+  "agent_id": "creative_brand_factory_agent",
+  "workflow_id": "creative_publish",
+  "mode": "SHADOW",
+  "status": "DRAFT_REVIEW",
+  "configurable": {
+    "hooks": {
+      "default": 10,
+      "min": 1,
+      "max": 20
+    },
+    "concepts": {
+      "default": 5,
+      "min": 1,
+      "max": 10
+    },
+    "scripts": {
+      "default": 3,
+      "min": 1,
+      "max": 6
+    },
+    "visual_qa_threshold": {
+      "min": 0,
+      "max": 100
+    },
+    "channel": true,
+    "category": true,
+    "test_mode": true
+  },
+  "preconditions": [
+    {
+      "id": "product_truth_live",
+      "required": true,
+      "owner": "commerce_truth_brain"
+    },
+    {
+      "id": "exact_references_locked",
+      "required": true,
+      "owner": "growth_brain"
+    },
+    {
+      "id": "proof_claims_boundary_reviewed",
+      "required": true,
+      "owner": "learning_governance_brain"
+    }
+  ],
+  "stages": [
+    {
+      "id": "hook_tournament",
+      "name": "Hook Tournament",
+      "default_count": 10
+    },
+    {
+      "id": "concept_tournament",
+      "name": "Concept Tournament",
+      "default_count": 5
+    },
+    {
+      "id": "script_tournament",
+      "name": "Script Tournament",
+      "default_count": 3
+    },
+    {
+      "id": "red_team",
+      "name": "Red Team",
+      "default_count": 1
+    },
+    {
+      "id": "visual_qa",
+      "name": "Visual QA",
+      "default_count": 3
+    },
+    {
+      "id": "owner_gate",
+      "name": "Owner Gate",
+      "default_count": 1
+    }
+  ],
+  "visual_qa": {
+    "module": "brand-creative-qa.js",
+    "weights": {
+      "product_fidelity": 0.28,
+      "hook_strength": 0.22,
+      "clarity": 0.18,
+      "conversion_usefulness": 0.2,
+      "claim_safety": 0.12
+    },
+    "block_if": [
+      "claim_safety < 70",
+      "any unverified/risky claim",
+      "missing verified reference image for full fidelity"
+    ],
+    "policy": "SCORE_THEN_SHORTLIST_NO_GENERATION_NO_SPEND"
+  },
+  "output_boundary": {
+    "content_generated": 0,
+    "video_generated": 0,
+    "provider_calls": 0,
+    "spend_authorized": false,
+    "publishing_authorized": false,
+    "external_publish": false,
+    "owner_gate": "DRAFT_REVIEW"
+  },
+  "next_integration": "A7_INTEGRATION_QA"
+}
