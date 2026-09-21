@@ -98,6 +98,14 @@
       "shadow_allowed": false,
       "material": true,
       "owner_gate": true
+    },
+    {
+      "id": "creative.provider.generate",
+      "owner": "growth_brain",
+      "class": "EXTERNAL_GENERATION",
+      "shadow_allowed": false,
+      "material": true,
+      "owner_gate": true
     }
   ]
 }
