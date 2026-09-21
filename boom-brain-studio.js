@@ -65,6 +65,39 @@
   }
 
 
+
+  async function renderCreativeLearning(){
+    const host=$("#bs-creative-learning");
+    if(!host)return;
+    try{
+      const [a6,a7]=await Promise.all([
+        json("boom-creative-learning-contract.json"),
+        json("boom-a7-integration-contract.json")
+      ]);
+      const gates=(a6.preconditions||[]).map(g=>`<span>${esc(g.id)} · required</span>`).join("");
+      const stages=(a6.stages||[]).map(stage=>`<span>${esc(stage.name)} · ${esc(stage.default_count)}</span>`).join("");
+      const a7stages=(a7.stages||[]).map(stage=>`<span>${esc(stage.id)} ${esc(stage.name)}</span>`).join("");
+      host.innerHTML=`
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>A6 · Creative Learning Simulator</strong><span class="bs-status NEXT">${esc(a6.status)}</span></div>
+          <p>Owner: ${esc(a6.brain)} / ${esc(a6.agent_id)}</p>
+          <small>PRECONDITIONS</small><div class="bs-journey-steps">${gates}</div>
+          <small>TOURNAMENT</small><div class="bs-journey-steps">${stages}</div>
+          <p>QA: Product Fidelity 28% · Hook 22% · Clarity 18% · Conversion 20% · Claim Safety 12%</p>
+          <code>content 0 · video 0 · provider calls 0 · spend false · publish false</code>
+        </article>
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>A7 · Integration QA</strong><span class="bs-status NEXT">OWNER REVIEW GATE</span></div>
+          <p>Required: ${esc(a7.readiness.required_pass)} before ${esc(a7.readiness.pass_status)}</p>
+          <small>EVIDENCE CHAIN</small><div class="bs-journey-steps">${a7stages}</div>
+          <p>Production ready: false · Execution allowed: false · AI provider calls: 0 · Publishing: false</p>
+          <code>${esc(a7.boundaries.owner_gate)}</code>
+        </article>`;
+    }catch(error){
+      host.innerHTML=`<div class="bs-empty bs-error">Creative contracts unavailable: ${esc(error?.message||"unknown")}</div>`;
+    }
+  }
+
   async function renderDurableAutomation(){
     const runsHost=$("#bs-ledger-runs");
     const approvalsHost=$("#bs-approval-queue");
@@ -308,7 +341,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
