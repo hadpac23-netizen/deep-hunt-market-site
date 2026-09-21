@@ -21,7 +21,7 @@ n8n may execute approved workflow steps, wait, retry bounded transient failures,
 Every run carries mission_id, workflow_id, run_id and correlation_id. Every side effect needs idempotency, timeout, retry policy and an evidence trail.
 
 ## Current implementation state
-This branch is architecture + Studio visibility in SHADOW mode. It does not connect n8n, change Supabase, enable external publishing, activate payments, order from suppliers, or deploy Production.
+This branch now includes architecture, BOOM Studio visibility, a fail-closed Tool Gateway, and an in-memory Shadow Run Engine. It does not connect n8n, change Supabase, enable external publishing, activate payments, order from suppliers, or deploy Production.
 
 ## Next implementation sequence
 1. Durable Run Ledger + Approval Queue.
