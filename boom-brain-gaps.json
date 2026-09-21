@@ -198,9 +198,9 @@
       "id": "durable_run_ledger",
       "title": "Durable Run Ledger + Approval Queue",
       "owner": "learning_governance_brain",
-      "status": "NEXT",
+      "status": "IN_PROGRESS",
       "source": "F50",
-      "next": "Persist mission/workflow/run/correlation lineage after schema review; no live DB change on this branch."
+      "next": "Existing BOOM tables mapped and adapter wired; verify one real admin SHADOW write on a preview before marking DONE."
     },
     {
       "id": "tool_gateway",
@@ -214,9 +214,9 @@
       "id": "n8n_adapter",
       "title": "n8n execution adapter",
       "owner": "boom_orchestrator",
-      "status": "NEXT",
+      "status": "IN_PROGRESS",
       "source": "F50",
-      "next": "Connect only after Durable Run Ledger is reviewed; first workflow must be safe/read-only and remain SHADOW."
+      "next": "Edge Gateway + client adapter coded. Configure server-only n8n SHADOW URL/token, deploy preview, then prove one allowlisted shelf-coverage run and one controlled failure."
     },
     {
       "id": "shelf_coverage_17x1000",
