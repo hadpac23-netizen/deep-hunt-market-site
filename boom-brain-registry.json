@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-OS-V1",
+  "version": "BOOM-BRAIN-OS-V1.1-AUTOMATION",
   "principle": "Few primary brains; many skills/modules; one accountable owner per decision/action.",
   "priority_order": [
     "truth",
@@ -22,7 +22,11 @@
         "conflict_resolution",
         "owner_gate",
         "state",
-        "handoff"
+        "handoff",
+        "workflow_compile",
+        "automation_route",
+        "run_policy",
+        "approval_route"
       ],
       "before": [],
       "lifecycle": "SHADOW"
@@ -179,6 +183,21 @@
       "id": "observability_kernel",
       "owner": "learning_governance_brain",
       "purpose": "One event/error/trace/experiment vocabulary."
+    },
+    {
+      "id": "automation_orchestration_plane",
+      "owner": "boom_orchestrator",
+      "purpose": "Canonical workflow graph, run state, handoffs, retries and Owner Gate routing. n8n or any other engine executes beneath this plane."
+    },
+    {
+      "id": "tool_gateway_plane",
+      "owner": "operations_brain",
+      "purpose": "Allowlisted boundary for external/internal tools; secrets stay outside workflow definitions and material actions remain gated."
+    },
+    {
+      "id": "run_evidence_plane",
+      "owner": "learning_governance_brain",
+      "purpose": "Durable run/evidence lineage for mission_id, workflow_id, run_id, correlation_id, outcomes and rollback learning."
     }
   ],
   "rules": [
@@ -191,7 +210,11 @@
     "No button is complete without pending, success, error, disabled and retry/rollback semantics where applicable.",
     "Guest state must define merge behavior on sign-in.",
     "All material actions emit normalized telemetry with correlation_id.",
-    "A brain changing lifecycle mode requires evidence and an explicit recorded decision; code presence alone never activates it."
+    "A brain changing lifecycle mode requires evidence and an explicit recorded decision; code presence alone never activates it.",
+    "Automation engines such as n8n are execution adapters only; they never become decision owners or bypass BOOM Orchestrator.",
+    "Every automated run must carry mission_id, workflow_id, run_id and correlation_id.",
+    "Every side effect requires idempotency, timeout, bounded retry and a failure route.",
+    "Targets such as 17 departments × 1,000 products are planning goals; only verified catalog evidence may mark shelf readiness."
   ],
   "lifecycle_modes": {
     "OFF": "Defined but not running.",
