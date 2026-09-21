@@ -68,14 +68,16 @@
   async function renderDurableAutomation(){
     const runsHost=$("#bs-ledger-runs");
     const approvalsHost=$("#bs-approval-queue");
+    const incidentsHost=$("#bs-incidents");
     const ledger=window.BoomAutomationLedger;
     if(!ledger){
       if(runsHost)runsHost.innerHTML='<div class="bs-empty">Ledger adapter unavailable.</div>';
       if(approvalsHost)approvalsHost.innerHTML='<div class="bs-empty">Approval adapter unavailable.</div>';
+      if(incidentsHost)incidentsHost.innerHTML='<div class="bs-empty">Incident adapter unavailable.</div>';
       return;
     }
     try{
-      const [runs,approvals]=await Promise.all([ledger.listRecent(20),ledger.listPendingApprovals(20)]);
+      const [runs,approvals,incidents]=await Promise.all([ledger.listRecent(20),ledger.listPendingApprovals(20),ledger.listIncidents?.(20)||Promise.resolve([])]);
       if(runsHost){
         runsHost.innerHTML=runs.length?runs.map(row=>{
           const lineage=Array.isArray(row.members)?row.members[0]||{}:{};
@@ -96,10 +98,24 @@
           <p>${esc(row.rationale||"Material workflow waiting for Owner Gate.")}</p>
         </article>`).join(""):'<div class="bs-empty">No pending automation approvals.</div>';
       }
+      if(incidentsHost){
+        incidentsHost.innerHTML=incidents.length?incidents.map(row=>{
+          const lineage=Array.isArray(row.members)?row.members[0]||{}:{};
+          const parent=lineage.parent_run_id||"—";
+          const status=String(row.status||"ready");
+          return `<article class="bs-run bs-incident">
+            <div class="bs-run-head"><strong>Incident · ${esc(lineage.owner||"learning_governance_brain")}</strong><span class="bs-status ${status.toLowerCase()==="succeeded"?"DONE":"NEXT"}">${esc(status)}</span></div>
+            <code>${esc(row.run_key)}</code>
+            <small>parent: ${esc(parent)} · correlation: ${esc(lineage.parent_correlation_id||lineage.correlation_id||"—")}</small>
+            <p>Repair stays internal until reproduction, root cause, tests, independent review and Owner Gate.</p>
+          </article>`;
+        }).join(""):'<div class="bs-empty">No incident runs yet.</div>';
+      }
     }catch(error){
       const copy=esc(error?.message||"Durable automation ledger unavailable");
       if(runsHost)runsHost.innerHTML=`<div class="bs-empty bs-error">${copy}</div>`;
       if(approvalsHost)approvalsHost.innerHTML=`<div class="bs-empty bs-error">${copy}</div>`;
+      if(incidentsHost)incidentsHost.innerHTML=`<div class="bs-empty bs-error">${copy}</div>`;
     }
   }
 
