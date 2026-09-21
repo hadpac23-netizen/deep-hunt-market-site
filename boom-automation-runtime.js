@@ -160,6 +160,40 @@
     await persistRunEvent(run,"automation.run.retry_wait",{reason:"bounded_retry"});
     return clone(run);
   }
+
+  async function dispatchAdapter(runId,payload={}){
+    await ready();
+    const run=runs.get(String(runId));
+    if(!run)throw Object.assign(new Error("RUN_NOT_FOUND"),{code:"RUN_NOT_FOUND"});
+    if(run.workflow_id!=="shelf_coverage_17x1000"){
+      throw Object.assign(new Error("WORKFLOW_NOT_ALLOWLISTED"),{code:"WORKFLOW_NOT_ALLOWLISTED"});
+    }
+    if(!["READY","RUNNING","RETRY_WAIT"].includes(run.state)){
+      throw Object.assign(new Error("RUN_NOT_DISPATCHABLE"),{code:"RUN_NOT_DISPATCHABLE"});
+    }
+    if(run.state==="READY"||run.state==="RETRY_WAIT")step(run,"RUNNING","n8n_shadow_dispatch");
+    const adapter=window.BoomN8nAdapter;
+    if(!adapter?.dispatchShadow){
+      await persistRunEvent(run,"automation.n8n.unavailable",{reason:"N8N_ADAPTER_UNAVAILABLE"});
+      throw Object.assign(new Error("N8N_ADAPTER_UNAVAILABLE"),{code:"N8N_ADAPTER_UNAVAILABLE"});
+    }
+    try{
+      const result=await adapter.dispatchShadow(clone(run),payload);
+      run.adapter_result={
+        adapter:"n8n",
+        state:String(result?.state||"DISPATCHED_SHADOW"),
+        received_at:Date.now()
+      };
+      await persistRunEvent(run,"automation.n8n.dispatched",{state:run.adapter_result.state});
+      return {run:clone(run),adapter_result:clone(result||{})};
+    }catch(error){
+      const code=String(error?.code||error?.message||"N8N_DISPATCH_FAILED");
+      step(run,"FAILED",code);
+      await persistRunEvent(run,"automation.n8n.dispatch_failed",{reason:code});
+      throw error;
+    }
+  }
+
   async function authorizeTool(toolId,{ownerApproved=false}={}){
     await ready();
     const tool=gateway.tools.find(x=>x.id===String(toolId));
@@ -171,5 +205,5 @@
   function getRun(runId){const run=runs.get(String(runId));return run?clone(run):null;}
   function listRuns(){return [...runs.values()].map(clone);}
 
-  window.BoomAutomationRuntime={version,ready,createRun,simulate,ownerDecision,fail,retry,authorizeTool,getRun,listRuns};
+  window.BoomAutomationRuntime={version,ready,createRun,simulate,dispatchAdapter,ownerDecision,fail,retry,authorizeTool,getRun,listRuns};
 })();
