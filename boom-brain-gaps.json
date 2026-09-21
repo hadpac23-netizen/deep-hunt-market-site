@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V1",
+  "version": "BOOM-BRAIN-GAPS-V1.1-AUTOMATION",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -40,7 +40,7 @@
       "owner": "action_state_kernel",
       "status": "DONE",
       "source": "F35",
-      "next": "Journey test guest \u2192 sign-in \u2192 merge \u2192 profile."
+      "next": "Journey test guest → sign-in → merge → profile."
     },
     {
       "id": "cart_kernel",
@@ -184,7 +184,71 @@
       "owner": "learning_governance_brain",
       "status": "DONE",
       "source": "F50",
-      "next": "Browser E2E passes product \u2192 verified quote, guest \u2192 account merge, storage migration and admin authorization; payment remains disabled."
+      "next": "Browser E2E passes product → verified quote, guest → account merge, storage migration and admin authorization; payment remains disabled."
+    },
+    {
+      "id": "automation_control_plane",
+      "title": "Automation Control Plane contract",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Keep adapter authority at NONE; all execution routes through BOOM Orchestrator."
+    },
+    {
+      "id": "durable_run_ledger",
+      "title": "Durable Run Ledger + Approval Queue",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Persist mission/workflow/run/correlation lineage after schema review; no live DB change on this branch."
+    },
+    {
+      "id": "tool_gateway",
+      "title": "Tool Gateway allowlist",
+      "owner": "operations_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Define approved tool operations and secret references before any workflow engine connection."
+    },
+    {
+      "id": "n8n_adapter",
+      "title": "n8n execution adapter",
+      "owner": "boom_orchestrator",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Connect in SHADOW only after Run Ledger + Tool Gateway; start with a safe read-only workflow."
+    },
+    {
+      "id": "shelf_coverage_17x1000",
+      "title": "17 × 1,000 verified shelf coverage workflow",
+      "owner": "commerce_truth_brain",
+      "status": "NEXT",
+      "source": "F35",
+      "next": "Count only verified sellable catalog evidence; report empty/thin shelves and route intake without fabricating inventory."
+    },
+    {
+      "id": "incident_repair_automation",
+      "title": "Incident & Repair workflow automation",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Route failed runs through reproduce → root cause → minimal patch → tests → independent review → Owner Gate."
+    },
+    {
+      "id": "creative_publish_automation",
+      "title": "Creative → Visual QA → Owner Gate workflow",
+      "owner": "growth_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Keep external publishing OFF; wire draft-only creative lineage first."
+    },
+    {
+      "id": "customer_lifecycle_automation",
+      "title": "Cart / Order / Tracking / Support workflow",
+      "owner": "operations_brain",
+      "status": "NEXT",
+      "source": "F50",
+      "next": "Require identity, privacy and consent proof before any customer-facing action."
     }
   ]
 }
