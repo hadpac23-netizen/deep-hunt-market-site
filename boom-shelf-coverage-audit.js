@@ -72,16 +72,16 @@
       }
     };
   }
-  async function fromSupabase(contract){
+  async function fromServer(contract){
     const rt=window.BoomRuntime;
     const admin=await rt?.adminReady?.();
     if(!admin?.ok)throw Object.assign(new Error(admin?.reason||"AUTH_REQUIRED"),{code:admin?.reason||"AUTH_REQUIRED"});
     const db=rt?.getSupabaseClient?.();
-    if(!db)throw Object.assign(new Error("COVERAGE_DB_UNAVAILABLE"),{code:"COVERAGE_DB_UNAVAILABLE"});
-    const {data,error}=await db.from("hunt_shelf_coverage")
-      .select("shelf_slug,static_unique_products,live_verified_products,curated_eligible_products,providers,coverage_status,last_live_audit_at,updated_at");
+    if(!db?.functions?.invoke)throw Object.assign(new Error("COVERAGE_GATEWAY_UNAVAILABLE"),{code:"COVERAGE_GATEWAY_UNAVAILABLE"});
+    const {data,error}=await db.functions.invoke("boom-shelf-coverage",{body:{mode:"SHADOW_READ_ONLY"}});
     if(error)throw error;
-    return summarize(contract,data||[]);
+    if(data?.ok!==true)throw Object.assign(new Error(data?.error||"SHELF_COVERAGE_FAILED"),{code:data?.error||"SHELF_COVERAGE_FAILED"});
+    return data;
   }
-  window.HuntShelfCoverageAudit={version,stateFor,fresh,normalizeRow,summarize,fromSupabase};
+  window.HuntShelfCoverageAudit={version,stateFor,fresh,normalizeRow,summarize,fromServer};
 })();
