@@ -41,7 +41,9 @@
       mission_id:String(run.mission_id||""),
       workflow_id:String(run.workflow_id||""),
       run_id:String(run.run_id||""),
-      correlation_id:String(run.correlation_id||"")
+      correlation_id:String(run.correlation_id||""),
+      parent_run_id:String(run.parent_run_id||""),
+      parent_correlation_id:String(run.parent_correlation_id||"")
     }];
   }
   function runRow(run){
@@ -100,14 +102,22 @@
     if(error)throw error;
     return true;
   }
+  function approvalIdentity(run){
+    const incident=String(run?.workflow_id||"")==="incident_repair";
+    return {
+      decision_key:(incident?"incident_owner_gate:":"automation_owner_gate:")+String(run?.run_id||""),
+      decision_type:incident?"INCIDENT_OWNER_GATE":"AUTOMATION_OWNER_GATE",
+      title:(incident?"Incident Owner Gate · ":"Owner Gate · ")+String(run?.workflow_id||"automation")
+    };
+  }
   async function ensureApproval(run){
     if(!run.final_owner_gate)return null;
     const db=await client();
-    const decisionKey="automation_owner_gate:"+String(run.run_id||"");
+    const identity=approvalIdentity(run);
     const row={
-      decision_key:decisionKey,
-      title:"Owner Gate · "+String(run.workflow_id||"automation"),
-      decision_type:"AUTOMATION_OWNER_GATE",
+      decision_key:identity.decision_key,
+      title:identity.title,
+      decision_type:identity.decision_type,
       status:"proposed",
       priority:1,
       source_reports:sanitize([{
@@ -134,7 +144,7 @@
   }
   async function recordOwnerDecision(run,approved,reason=""){
     const db=await client();
-    const key="automation_owner_gate:"+String(run.run_id||"");
+    const key=approvalIdentity(run).decision_key;
     const status=approved===true?"approved":"rejected";
     const {data,error}=await db.from("hunt_boom_decisions").update({
       status,
@@ -150,6 +160,42 @@
     if(error)throw error;
     return data;
   }
+
+  async function appendIncidentEvent(run,eventName,detail={}){
+    const db=await client();
+    const row={
+      source_manager_id:"incident_repair_agent",
+      event_type:String(eventName||"incident.detected"),
+      severity:String(detail?.severity||"warning"),
+      entity_type:"incident",
+      entity_key:String(run?.run_id||""),
+      title:String(detail?.title||eventName||"Incident").slice(0,300),
+      body:String(detail?.reason||detail?.failure_code||"").slice(0,1000)||null,
+      payload:sanitize({
+        mission_id:run?.mission_id,
+        incident_run_id:run?.run_id,
+        correlation_id:run?.correlation_id,
+        parent_run_id:run?.parent_run_id,
+        parent_correlation_id:run?.parent_correlation_id,
+        failed_workflow_id:detail?.failed_workflow_id,
+        failure_code:detail?.failure_code
+      })
+    };
+    const {error}=await db.from("hunt_boom_events").insert(row);
+    if(error)throw error;
+    return true;
+  }
+  async function listIncidents(limit=25){
+    const db=await client();
+    const capped=Math.max(1,Math.min(Number(limit)||25,100));
+    const {data,error}=await db.from("hunt_boom_team_runs")
+      .select("id,run_key,task,run_mode,status,members,candidate_outputs,judge_verdict,evidence,owner_gate_required,created_at,completed_at")
+      .eq("task","incident_repair")
+      .order("created_at",{ascending:false}).limit(capped);
+    if(error)throw error;
+    return data||[];
+  }
+
   async function listRecent(limit=25){
     const db=await client();
     const capped=Math.max(1,Math.min(Number(limit)||25,100));
@@ -164,12 +210,12 @@
     const capped=Math.max(1,Math.min(Number(limit)||25,100));
     const {data,error}=await db.from("hunt_boom_decisions")
       .select("id,decision_key,title,decision_type,status,priority,source_reports,rationale,proposed_action,created_at,updated_at")
-      .eq("decision_type","AUTOMATION_OWNER_GATE")
       .eq("status","proposed")
+      .eq("owner_approval_required",true)
       .order("created_at",{ascending:false}).limit(capped);
     if(error)throw error;
     return data||[];
   }
 
-  window.BoomAutomationLedger={version,sanitize,upsertRun,appendEvent,ensureApproval,recordOwnerDecision,listRecent,listPendingApprovals};
+  window.BoomAutomationLedger={version,sanitize,upsertRun,appendEvent,appendIncidentEvent,ensureApproval,recordOwnerDecision,listRecent,listIncidents,listPendingApprovals};
 })();
