@@ -69,6 +69,27 @@
 
 
 
+
+  async function renderReadiness(){
+    const host=$("#bs-readiness"),state=$("#bs-readiness-state"),blockers=$("#bs-readiness-blockers");
+    if(!host)return;
+    try{
+      const r=await json("boom-control-plane-readiness.json");
+      if(state)state.textContent=String(r.overall||"UNKNOWN");
+      host.innerHTML=(r.areas||[]).map(row=>`<article class="bs-readiness-card" data-status="${esc(row.status||"UNKNOWN")}">
+        <small>${esc(row.id)}</small>
+        <strong>${esc(row.status)}</strong>
+        <p>${esc(row.evidence||"")}</p>
+      </article>`).join("");
+      if(blockers){
+        blockers.innerHTML=(r.blockers||[]).map((x,i)=>`<article><b>${i+1}</b><span>${esc(x)}</span></article>`).join("");
+      }
+    }catch(error){
+      if(state)state.textContent="READINESS UNKNOWN";
+      host.innerHTML=`<div class="bs-empty bs-error">Readiness file unavailable: ${esc(error?.message||"unknown")}</div>`;
+    }
+  }
+
   async function renderControlMaps(){
     const summary=$("#bs-control-map-summary"),host=$("#bs-control-maps");
     if(!host)return;
@@ -484,7 +505,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
