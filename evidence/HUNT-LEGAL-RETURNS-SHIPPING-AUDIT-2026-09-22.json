@@ -1,0 +1,71 @@
+{
+  "version": "HUNT-LEGAL-RETURNS-SHIPPING-AUDIT-2026-09-22-V1",
+  "observed_at": "2026-09-22T11:32:00Z",
+  "production_mutation": false,
+  "current_truth": {
+    "legal_registry_in_branch": true,
+    "legal_registry_migration": "20260920095538_add_hunt_legal_registry.sql",
+    "legal_registry_in_production": false,
+    "business_identity_configured": true,
+    "business_identity_published": false,
+    "returns_address_ready": false,
+    "privacy_contact_ready": false,
+    "support_email_ready": false,
+    "launch_evidence_legal_policies_status": "PARTIAL",
+    "checkout_shipping_chess_status": "PASS"
+  },
+  "source_baselines": [
+    {
+      "market": "EU",
+      "source": "EUR-Lex / European Commission",
+      "facts": [
+        "Distance-sale goods generally carry a 14-day withdrawal right, subject to exceptions.",
+        "Since 19 June 2026, applicable online distance contracts require an easy-to-find online withdrawal function and durable-medium acknowledgement.",
+        "Pre-contract information must disclose withdrawal procedure and relevant seller/price/shipping information."
+      ]
+    },
+    {
+      "market": "UK",
+      "source": "GOV.UK",
+      "facts": [
+        "Online customers generally have 14 days after receipt to tell the seller they want to cancel, then another 14 days to return.",
+        "Refund is generally due within 14 days after goods are returned.",
+        "Goods should be delivered within 30 days unless another period was agreed."
+      ]
+    },
+    {
+      "market": "US",
+      "source": "US FTC",
+      "facts": [
+        "Seller needs a reasonable basis for any stated shipping time.",
+        "If no shipping time is stated, the seller generally needs a reasonable basis to ship within 30 days.",
+        "If shipment cannot be made on time, customer consent to delay or prompt cancellation/refund rules apply."
+      ]
+    },
+    {
+      "market": "IL",
+      "source": "Israel Consumer Protection and Fair Trade Authority / Knesset",
+      "facts": [
+        "Distance-sale cancellation rights generally include a 14-day period for goods, with category/exemption details requiring legal review.",
+        "Remote-sale disclosure must include business identity, core product/service terms, price/payment terms and cancellation method.",
+        "Online businesses must provide a clear, prominent online cancellation route where the transaction can be concluded online."
+      ]
+    },
+    {
+      "market": "AU",
+      "source": "ACCC",
+      "facts": [
+        "Australian Consumer Law consumer guarantees cannot be excluded by store policy.",
+        "Major product problems may entitle the consumer to choose refund or replacement.",
+        "There is no general statutory change-of-mind remedy under consumer guarantees; any voluntary change-of-mind policy must be honored."
+      ]
+    }
+  ],
+  "conclusion": {
+    "public_legal_pages_ready": false,
+    "real_money_legal_ready": false,
+    "worldwide_market_ready": false,
+    "default_unmapped_market_state": "HOLD",
+    "overall_state": "BLOCKED_LEGAL_PUBLICATION_AND_MARKET_APPROVAL"
+  }
+}
