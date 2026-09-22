@@ -1,0 +1,283 @@
+{
+  "version": "HUNT-SHELF-GAP-STATUS-POST-CJ-V1",
+  "date": "2026-09-23",
+  "production_effect": false,
+  "summary": {
+    "original_zero_categories": 38,
+    "filled_by_verified_cj": 36,
+    "remaining_zero_categories": 2,
+    "cj_verified_products": 36,
+    "total_browsable_products": 5179,
+    "category_rails": 131
+  },
+  "remaining_zero_categories": [
+    {
+      "department": "home",
+      "category": "laundry",
+      "title": "Laundry",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 0
+    },
+    {
+      "department": "home",
+      "category": "entryway",
+      "title": "Entryway",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 0
+    }
+  ],
+  "filled_categories": [
+    {
+      "department": "women",
+      "category": "women-knitwear",
+      "title": "Knitwear & Sweaters",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "women",
+      "category": "women-sleepwear",
+      "title": "Sleepwear",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "women",
+      "category": "women-socks",
+      "title": "Socks",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "women",
+      "category": "women-hoodies",
+      "title": "Hoodies & Sweatshirts",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "men",
+      "category": "men-suits",
+      "title": "Suits & Blazers",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "men",
+      "category": "men-knitwear",
+      "title": "Knitwear & Sweaters",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "men",
+      "category": "men-boxers",
+      "title": "Boxers",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "men",
+      "category": "men-underwear",
+      "title": "Underwear & Briefs",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "men",
+      "category": "men-socks",
+      "title": "Socks",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "men",
+      "category": "men-hoodies",
+      "title": "Hoodies & Sweatshirts",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "men",
+      "category": "men-clothing",
+      "title": "More Men",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "kids",
+      "category": "baby-clothing",
+      "title": "Baby Clothing",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "beauty",
+      "category": "nails",
+      "title": "Nails",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "accessories",
+      "category": "jewelry-necklaces",
+      "title": "Necklaces",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "accessories",
+      "category": "jewelry-earrings",
+      "title": "Earrings",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "accessories",
+      "category": "jewelry",
+      "title": "Jewelry Sets & More",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "accessories",
+      "category": "bags",
+      "title": "Bags & Backpacks",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "accessories",
+      "category": "hats",
+      "title": "Hats & Caps",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "accessories",
+      "category": "hair-accessories",
+      "title": "Hair Accessories",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "accessories",
+      "category": "bag-accessories",
+      "title": "Bag Accessories",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "accessories",
+      "category": "socks",
+      "title": "Socks",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "tech",
+      "category": "phone-cases",
+      "title": "Phone Cases",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "tech",
+      "category": "gaming",
+      "title": "Gaming",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "home",
+      "category": "home-storage",
+      "title": "Storage & Organization",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "home",
+      "category": "lighting",
+      "title": "Lighting",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "home",
+      "category": "bedding",
+      "title": "Bedding & Pillows",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "home",
+      "category": "bath",
+      "title": "Bath",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "home",
+      "category": "cleaning",
+      "title": "Cleaning",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "home",
+      "category": "mirrors",
+      "title": "Mirrors",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "sports",
+      "category": "outdoors",
+      "title": "Outdoor & Camping",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "sports",
+      "category": "sports-gear",
+      "title": "Sports Gear",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "pets",
+      "category": "pet-clothing",
+      "title": "Pet Clothing",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "pets",
+      "category": "aquarium",
+      "title": "Aquarium",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "pets",
+      "category": "pet-houses",
+      "title": "Pet Houses & Condos",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "office",
+      "category": "crafts",
+      "title": "Arts & Crafts",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
+    {
+      "department": "office",
+      "category": "stickers",
+      "title": "Stickers",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    }
+  ]
+}

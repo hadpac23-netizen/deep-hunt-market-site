@@ -7,7 +7,8 @@
     "staging": "/Users/adichehade/.hunt-final-candidate-v1/catalog-staging",
     "taxonomy": "/Users/adichehade/.hunt-final-candidate-v1/hunt-department-map-v1.js",
     "departments": "boom-shelf-department-contract.json",
-    "product_truth": "evidence/HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-2026-09-23.json"
+    "product_truth": "evidence/HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-2026-09-23.json",
+    "cj_gap_fill_truth": "evidence/HUNT-CJ-GAP-FILL-VERIFIED-2026-09-23.json"
   },
   "rules": [
     "One canonical department per product in this preview.",
@@ -22,45 +23,58 @@
   "summary": {
     "canonical_departments": 17,
     "departments_with_products": 17,
-    "globally_unique_routed_products": 5143,
+    "globally_unique_routed_products": 5179,
     "source_rows": 17000,
     "blocked_rows": 100,
     "no_image_rows": 0,
     "unclassified_occurrences": 7788,
-    "category_rails": 95,
-    "thin_rails": 16,
-    "initial_shown_product_cards": 1640,
-    "total_browsable_product_cards": 5143,
+    "category_rails": 131,
+    "thin_rails": 52,
+    "initial_shown_product_cards": 1676,
+    "total_browsable_product_cards": 5179,
     "global_truth_products_available": 15,
+    "cj_verified_4_market_products": 36,
+    "verified_truth_products_available": 51,
     "production_live_products": 0
   },
   "departments": [
     {
       "slug": "women",
       "title": "Women",
-      "clean_candidate_count": 711,
-      "category_rails": 12,
-      "initial_shown_products": 192,
+      "clean_candidate_count": 715,
+      "category_rails": 16,
+      "initial_shown_products": 196,
       "hero": {
-        "provider": "EPROLO",
-        "item_id": "22272701",
+        "provider": "CJdropshipping",
+        "item_id": "2506190632221611300",
         "department": "women",
         "department_title": "Women",
-        "category": "women-dresses",
-        "category_title": "Dresses",
-        "title": "2022 Autumer Winter Knit Casual Long Sleeve Button Elegant Chic POLO Collar Slim Sweater Dress for Women Vintage Korean Fashion",
-        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202307/6B961C212228E215997EB542E00D592F.jpg",
+        "category": "women-knitwear",
+        "category_title": "Knitwear & Sweaters",
+        "title": "Chic Long Sleeved Knitted Cardigan Fashion Slim Solid Color Short Sweater For Women Clothing",
+        "image_url": "https://oss-cf.cjdropshipping.com/product/2025/08/25/08/b400c82d-853e-4452-b0cf-28226c7638f0.jpg",
         "availability_verified": true,
-        "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
-        "inventory_snapshot": 8960,
-        "supplier_cost_min": 8.09,
+        "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+        "inventory_snapshot": null,
+        "supplier_cost_min": 7.63,
         "currency": "USD",
-        "variant_count": 9,
-        "image_count": 15,
-        "truth_state": "GLOBAL_PRODUCT_TRUTH",
-        "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+        "variant_count": null,
+        "image_count": null,
+        "truth_state": "CJ_VERIFIED_4_MARKETS",
+        "markets_verified": [
+          "IL",
+          "DE",
+          "US",
+          "SG"
+        ],
+        "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+        "retail_shadow_usd": 13.99,
+        "customer_total_il_shadow_usd": 21.25,
+        "product_contribution_shadow_usd": 5.1,
+        "final_profit_verified": false,
+        "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
         "production_exposure": false,
-        "_cat": "women-dresses"
+        "_cat": "women-knitwear"
       },
       "categories": [
         {
@@ -5727,6 +5741,46 @@
           ]
         },
         {
+          "slug": "women-knitwear",
+          "title": "Knitwear & Sweaters",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2506190632221611300",
+              "department": "women",
+              "department_title": "Women",
+              "category": "women-knitwear",
+              "category_title": "Knitwear & Sweaters",
+              "title": "Chic Long Sleeved Knitted Cardigan Fashion Slim Solid Color Short Sweater For Women Clothing",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2025/08/25/08/b400c82d-853e-4452-b0cf-28226c7638f0.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 7.63,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 13.99,
+              "customer_total_il_shadow_usd": 21.25,
+              "product_contribution_shadow_usd": 5.1,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
           "slug": "women-outerwear",
           "title": "Jackets & Coats",
           "clean_candidate_count": 9,
@@ -6300,6 +6354,46 @@
               "image_count": 9,
               "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
               "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "women-sleepwear",
+          "title": "Sleepwear",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2604230929501628900",
+              "department": "women",
+              "department_title": "Women",
+              "category": "women-sleepwear",
+              "category_title": "Sleepwear",
+              "title": "Women's Pajama Home Wear Set",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/a2fdbf2f-80a6-473a-a3b9-e1a26e85fd1c.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 1.65,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 6.99,
+              "customer_total_il_shadow_usd": 12.75,
+              "product_contribution_shadow_usd": 4.71,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
               "production_exposure": false
             }
           ]
@@ -14043,6 +14137,86 @@
           ]
         },
         {
+          "slug": "women-socks",
+          "title": "Socks",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2603300611191605200",
+              "department": "women",
+              "department_title": "Women",
+              "category": "women-socks",
+              "category_title": "Socks",
+              "title": "Solid-color Athletic Compression Socks Womens Long Compression Stockings",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/3aebeb0a-d6ab-4909-8621-4b11f284b3cf.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.62,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 5.99,
+              "customer_total_il_shadow_usd": 11.19,
+              "product_contribution_shadow_usd": 4.83,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "women-hoodies",
+          "title": "Hoodies & Sweatshirts",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "1603284781016961024",
+              "department": "women",
+              "department_title": "Women",
+              "category": "women-hoodies",
+              "category_title": "Hoodies & Sweatshirts",
+              "title": "Heart Print Streetwear Hoodies Women Sweatshirt Spring Autumn Long Sleeve Hoodie Clothes",
+              "image_url": "https://cf.cjdropshipping.com/0648dd7c-626e-4299-aee1-23c080a8a6dd.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 2.71,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 7.99,
+              "customer_total_il_shadow_usd": 15.36,
+              "product_contribution_shadow_usd": 4.56,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
           "slug": "women-clothing",
           "title": "More Women",
           "clean_candidate_count": 17,
@@ -14396,29 +14570,40 @@
     {
       "slug": "men",
       "title": "Men",
-      "clean_candidate_count": 234,
-      "category_rails": 7,
-      "initial_shown_products": 86,
+      "clean_candidate_count": 241,
+      "category_rails": 14,
+      "initial_shown_products": 93,
       "hero": {
-        "provider": "EPROLO",
-        "item_id": "24539904",
+        "provider": "CJdropshipping",
+        "item_id": "2504241209171610800",
         "department": "men",
         "department_title": "Men",
-        "category": "men-tops",
-        "category_title": "Shirts & T-Shirts",
-        "title": "New Autumn Pullover Men's Sweater O-neck Patchwork Long Sleeve Warm Slim Sweaters Men Casual Fashion Sweater Men Clothing",
-        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202312/6C65C2DAAA52B07B44795BCB6ACDAA9C.jpg",
+        "category": "men-socks",
+        "category_title": "Socks",
+        "title": "Fall Winter Men Summer Thin Socks",
+        "image_url": "https://oss-cf.cjdropshipping.com/product/2025/04/24/12/1d230697-edae-41f1-85b1-90ec99fd0854_trans.jpeg",
         "availability_verified": true,
-        "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
-        "inventory_snapshot": 24975,
-        "supplier_cost_min": 8.53,
+        "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+        "inventory_snapshot": null,
+        "supplier_cost_min": 0.43,
         "currency": "USD",
-        "variant_count": 25,
-        "image_count": 10,
-        "truth_state": "GLOBAL_PRODUCT_TRUTH",
-        "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+        "variant_count": null,
+        "image_count": null,
+        "truth_state": "CJ_VERIFIED_4_MARKETS",
+        "markets_verified": [
+          "IL",
+          "DE",
+          "US",
+          "SG"
+        ],
+        "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+        "retail_shadow_usd": 4.99,
+        "customer_total_il_shadow_usd": 9.73,
+        "product_contribution_shadow_usd": 4.11,
+        "final_profit_verified": false,
+        "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
         "production_exposure": false,
-        "_cat": "men-tops"
+        "_cat": "men-socks"
       },
       "categories": [
         {
@@ -14546,6 +14731,46 @@
               "image_count": 5,
               "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
               "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "men-suits",
+          "title": "Suits & Blazers",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2604220946291608500",
+              "department": "men",
+              "department_title": "Men",
+              "category": "men-suits",
+              "category_title": "Suits & Blazers",
+              "title": "Men's Casual Light Business Suit Jacket",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/685e8951-0fde-426f-915b-d008175826da.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 10.78,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 19.99,
+              "customer_total_il_shadow_usd": 30.18,
+              "product_contribution_shadow_usd": 7.41,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
               "production_exposure": false
             }
           ]
@@ -14733,6 +14958,126 @@
               "image_count": 7,
               "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
               "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "men-knitwear",
+          "title": "Knitwear & Sweaters",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2510080819521649800",
+              "department": "men",
+              "department_title": "Men",
+              "category": "men-knitwear",
+              "category_title": "Knitwear & Sweaters",
+              "title": "Knitted Solid Color Men's Fashion Jacquard High Collar Warm Sweater",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/f5313c80-99e9-43dc-979b-c486f6d6ffec.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 5.14,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 10.99,
+              "customer_total_il_shadow_usd": 19.52,
+              "product_contribution_shadow_usd": 4.86,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "men-boxers",
+          "title": "Boxers",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2601070759311617500",
+              "department": "men",
+              "department_title": "Men",
+              "category": "men-boxers",
+              "category_title": "Boxers",
+              "title": "Wholesale Mens Boxer Briefs For Middle-aged And Older Men",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2026/01/07/07/4d41c204-c523-4b18-abe4-d969d39bfe87_trans.jpeg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.68,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 5.99,
+              "customer_total_il_shadow_usd": 10.56,
+              "product_contribution_shadow_usd": 4.77,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "men-underwear",
+          "title": "Underwear & Briefs",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2603241130081630900",
+              "department": "men",
+              "department_title": "Men",
+              "category": "men-underwear",
+              "category_title": "Underwear & Briefs",
+              "title": "Ice Silk Mens Underwear Light Luxury Satin Boxers",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/07aef102-d7a3-411a-9677-0a43913ab4e6.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.7,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 5.99,
+              "customer_total_il_shadow_usd": 11.04,
+              "product_contribution_shadow_usd": 4.75,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
               "production_exposure": false
             }
           ]
@@ -18256,6 +18601,86 @@
           ]
         },
         {
+          "slug": "men-socks",
+          "title": "Socks",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2504241209171610800",
+              "department": "men",
+              "department_title": "Men",
+              "category": "men-socks",
+              "category_title": "Socks",
+              "title": "Fall Winter Men Summer Thin Socks",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2025/04/24/12/1d230697-edae-41f1-85b1-90ec99fd0854_trans.jpeg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.43,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 4.99,
+              "customer_total_il_shadow_usd": 9.73,
+              "product_contribution_shadow_usd": 4.11,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "men-hoodies",
+          "title": "Hoodies & Sweatshirts",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2602111147261624400",
+              "department": "men",
+              "department_title": "Men",
+              "category": "men-hoodies",
+              "category_title": "Hoodies & Sweatshirts",
+              "title": "New Fallwinter Mens Fleece-lined Hoodie",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/72724b21-03e9-415a-95c7-2b7f3116dd0d.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 3.35,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 8.99,
+              "customer_total_il_shadow_usd": 20.28,
+              "product_contribution_shadow_usd": 4.83,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
           "slug": "men-accessories",
           "title": "Men Accessories",
           "clean_candidate_count": 45,
@@ -19163,35 +19588,86 @@
               "production_exposure": false
             }
           ]
+        },
+        {
+          "slug": "men-clothing",
+          "title": "More Men",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2406111152331626000",
+              "department": "men",
+              "department_title": "Men",
+              "category": "men-clothing",
+              "category_title": "More Men",
+              "title": "Lace-up Drawstring Shorts Summer Corduroy Sports Short Pants Mens Clothing",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2024/06/17/09/63cd98d5-9457-4088-8942-1bb51b2dc854.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 3.49,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 8.99,
+              "customer_total_il_shadow_usd": 15.98,
+              "product_contribution_shadow_usd": 4.69,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
         }
       ]
     },
     {
       "slug": "kids",
       "title": "Kids & Baby",
-      "clean_candidate_count": 389,
-      "category_rails": 4,
-      "initial_shown_products": 96,
+      "clean_candidate_count": 390,
+      "category_rails": 5,
+      "initial_shown_products": 97,
       "hero": {
-        "provider": "EPROLO",
-        "item_id": "19075080",
+        "provider": "CJdropshipping",
+        "item_id": "2603180256301639700",
         "department": "kids",
         "department_title": "Kids & Baby",
-        "category": "kids-shoes",
-        "category_title": "Kids Shoes",
-        "title": "0-3-6-9-12 Months Summer Boy Baby Sandals Indoor Rubber Sole Baby Shoes",
-        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202204/52D0A0E145C2ABCC6B22FB06CD8C889F.jpg",
+        "category": "baby-clothing",
+        "category_title": "Baby Clothing",
+        "title": "Baby And Toddler Solid Color Ruffle-Shoulder Sleeveless Romper And Printed Skirt Two-Piece Set",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/ce7de070-a969-4c84-ae9c-37649f117432.jpg",
         "availability_verified": true,
-        "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
-        "inventory_snapshot": 27000,
-        "supplier_cost_min": 3.39,
+        "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+        "inventory_snapshot": null,
+        "supplier_cost_min": 5.03,
         "currency": "USD",
-        "variant_count": 9,
-        "image_count": 7,
-        "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
-        "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+        "variant_count": null,
+        "image_count": null,
+        "truth_state": "CJ_VERIFIED_4_MARKETS",
+        "markets_verified": [
+          "IL",
+          "DE",
+          "US",
+          "SG"
+        ],
+        "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+        "retail_shadow_usd": 9.99,
+        "customer_total_il_shadow_usd": 15.88,
+        "product_contribution_shadow_usd": 4.06,
+        "final_profit_verified": false,
+        "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
         "production_exposure": false,
-        "_cat": "kids-shoes"
+        "_cat": "baby-clothing"
       },
       "categories": [
         {
@@ -27009,35 +27485,86 @@
               "production_exposure": false
             }
           ]
+        },
+        {
+          "slug": "baby-clothing",
+          "title": "Baby Clothing",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2603180256301639700",
+              "department": "kids",
+              "department_title": "Kids & Baby",
+              "category": "baby-clothing",
+              "category_title": "Baby Clothing",
+              "title": "Baby And Toddler Solid Color Ruffle-Shoulder Sleeveless Romper And Printed Skirt Two-Piece Set",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/ce7de070-a969-4c84-ae9c-37649f117432.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 5.03,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 9.99,
+              "customer_total_il_shadow_usd": 15.88,
+              "product_contribution_shadow_usd": 4.06,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
         }
       ]
     },
     {
       "slug": "beauty",
       "title": "Beauty",
-      "clean_candidate_count": 991,
-      "category_rails": 6,
-      "initial_shown_products": 135,
+      "clean_candidate_count": 992,
+      "category_rails": 7,
+      "initial_shown_products": 136,
       "hero": {
-        "provider": "EPROLO",
-        "item_id": "21728110",
+        "provider": "CJdropshipping",
+        "item_id": "2511160330411606600",
         "department": "beauty",
         "department_title": "Beauty",
-        "category": "beauty-tools",
-        "category_title": "Beauty Tools",
-        "title": "033 Electric Shaver Portable Mini Electric Shaver Car Electric Shaver Live Streaming Popular Model",
-        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202305/B8A15BF66123DC4C8D07BCE6C90E0B2F.jpg",
+        "category": "nails",
+        "category_title": "Nails",
+        "title": "Quick-dry Metallic Mirror Nail Polish, No Baking Required",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/9ea7d138-1144-41ec-b2de-64f91004dae6.jpg",
         "availability_verified": true,
-        "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
-        "inventory_snapshot": 929,
-        "supplier_cost_min": 2.28,
+        "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+        "inventory_snapshot": null,
+        "supplier_cost_min": 0.62,
         "currency": "USD",
-        "variant_count": 2,
-        "image_count": 8,
-        "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
-        "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+        "variant_count": null,
+        "image_count": null,
+        "truth_state": "CJ_VERIFIED_4_MARKETS",
+        "markets_verified": [
+          "IL",
+          "DE",
+          "US",
+          "SG"
+        ],
+        "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+        "retail_shadow_usd": 5.99,
+        "customer_total_il_shadow_usd": 10.54,
+        "product_contribution_shadow_usd": 4.83,
+        "final_profit_verified": false,
+        "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
         "production_exposure": false,
-        "_cat": "beauty-tools"
+        "_cat": "nails"
       },
       "categories": [
         {
@@ -34443,6 +34970,46 @@
               "image_count": 5,
               "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
               "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "nails",
+          "title": "Nails",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2511160330411606600",
+              "department": "beauty",
+              "department_title": "Beauty",
+              "category": "nails",
+              "category_title": "Nails",
+              "title": "Quick-dry Metallic Mirror Nail Polish, No Baking Required",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/9ea7d138-1144-41ec-b2de-64f91004dae6.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.62,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 5.99,
+              "customer_total_il_shadow_usd": 10.54,
+              "product_contribution_shadow_usd": 4.83,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
               "production_exposure": false
             }
           ]
@@ -46919,31 +47486,82 @@
     {
       "slug": "accessories",
       "title": "Accessories & Jewelry",
-      "clean_candidate_count": 90,
-      "category_rails": 7,
-      "initial_shown_products": 80,
+      "clean_candidate_count": 98,
+      "category_rails": 15,
+      "initial_shown_products": 88,
       "hero": {
-        "provider": "EPROLO",
-        "item_id": "31417803",
+        "provider": "CJdropshipping",
+        "item_id": "2412240441571610500",
         "department": "accessories",
         "department_title": "Accessories & Jewelry",
-        "category": "jewelry-rings",
-        "category_title": "Rings",
-        "title": "Fashionable Silver Flower Ring Watch with Large Numbers, Stylish and Unique Decorative Watch for Students, Wholesale",
-        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/CA5C15BE729C26199B340AE39DF5E6A3.jpg",
+        "category": "jewelry",
+        "category_title": "Jewelry Sets & More",
+        "title": "4PCS Set Luxury Women Butterfly Necklace Bracelet Earrings Drop Oil Diamond Jewelry For Girl Gift Jewelry Fashion Jewelry Set",
+        "image_url": "https://oss-cf.cjdropshipping.com/product/2025/01/06/06/b418cbea-556f-4993-9caa-4267b23ccb29.jpg",
         "availability_verified": true,
-        "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
-        "inventory_snapshot": 4414,
-        "supplier_cost_min": 1.64,
+        "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+        "inventory_snapshot": null,
+        "supplier_cost_min": 0.7,
         "currency": "USD",
-        "variant_count": 8,
-        "image_count": 13,
-        "truth_state": "GLOBAL_PRODUCT_TRUTH",
-        "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+        "variant_count": null,
+        "image_count": null,
+        "truth_state": "CJ_VERIFIED_4_MARKETS",
+        "markets_verified": [
+          "IL",
+          "DE",
+          "US",
+          "SG"
+        ],
+        "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+        "retail_shadow_usd": 5.99,
+        "customer_total_il_shadow_usd": 9.84,
+        "product_contribution_shadow_usd": 4.75,
+        "final_profit_verified": false,
+        "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
         "production_exposure": false,
-        "_cat": "jewelry-rings"
+        "_cat": "jewelry"
       },
       "categories": [
+        {
+          "slug": "jewelry-necklaces",
+          "title": "Necklaces",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2508070539001621300",
+              "department": "accessories",
+              "department_title": "Accessories & Jewelry",
+              "category": "jewelry-necklaces",
+              "category_title": "Necklaces",
+              "title": "Alloy Flying Bird Series Accessories Diy Bracelet Necklace Cuckoo Pendant",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/a054bd7a-e538-4fbc-9392-ac973c232609.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.03,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 4.99,
+              "customer_total_il_shadow_usd": 8.78,
+              "product_contribution_shadow_usd": 4.51,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
         {
           "slug": "jewelry-rings",
           "title": "Rings",
@@ -47254,6 +47872,46 @@
           ]
         },
         {
+          "slug": "jewelry-earrings",
+          "title": "Earrings",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2509280658331616200",
+              "department": "accessories",
+              "department_title": "Accessories & Jewelry",
+              "category": "jewelry-earrings",
+              "category_title": "Earrings",
+              "title": "Retro Simple Handmade Ornament Bird Earrings Eardrops",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/628c34d7-33bb-45b6-abad-03ea6eaf5a9c.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.35,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 4.99,
+              "customer_total_il_shadow_usd": 8.78,
+              "product_contribution_shadow_usd": 4.19,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
           "slug": "jewelry-bracelets",
           "title": "Bracelets",
           "clean_candidate_count": 8,
@@ -47418,6 +48076,46 @@
               "image_count": 9,
               "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
               "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "jewelry",
+          "title": "Jewelry Sets & More",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2412240441571610500",
+              "department": "accessories",
+              "department_title": "Accessories & Jewelry",
+              "category": "jewelry",
+              "category_title": "Jewelry Sets & More",
+              "title": "4PCS Set Luxury Women Butterfly Necklace Bracelet Earrings Drop Oil Diamond Jewelry For Girl Gift Jewelry Fashion Jewelry Set",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2025/01/06/06/b418cbea-556f-4993-9caa-4267b23ccb29.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.7,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 5.99,
+              "customer_total_il_shadow_usd": 9.84,
+              "product_contribution_shadow_usd": 4.75,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
               "production_exposure": false
             }
           ]
@@ -47787,6 +48485,86 @@
               "image_count": 8,
               "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
               "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "bags",
+          "title": "Bags & Backpacks",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2512110851481606800",
+              "department": "accessories",
+              "department_title": "Accessories & Jewelry",
+              "category": "bags",
+              "category_title": "Bags & Backpacks",
+              "title": "Women's Large-Capacity Travel Organizer Set Of Three Travel Duffel And Two Smaller Bags",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/e965fac8-d6d6-49e6-acdc-106dc98d10ea.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 6.14,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 11.99,
+              "customer_total_il_shadow_usd": 27.44,
+              "product_contribution_shadow_usd": 4.77,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "hats",
+          "title": "Hats & Caps",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2511220543131611700",
+              "department": "accessories",
+              "department_title": "Accessories & Jewelry",
+              "category": "hats",
+              "category_title": "Hats & Caps",
+              "title": "New Plush Mongolian Hat For Autumn And Winter Cold-proof And Warm",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/ed295f65-f125-4bf3-a255-0c801e54561d.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.76,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 5.99,
+              "customer_total_il_shadow_usd": 11.46,
+              "product_contribution_shadow_usd": 4.69,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
               "production_exposure": false
             }
           ]
@@ -48806,37 +49584,208 @@
               "production_exposure": false
             }
           ]
+        },
+        {
+          "slug": "hair-accessories",
+          "title": "Hair Accessories",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2603100738411626500",
+              "department": "accessories",
+              "department_title": "Accessories & Jewelry",
+              "category": "hair-accessories",
+              "category_title": "Hair Accessories",
+              "title": "Makeup Hair Accessory Front Hair Clip For Women",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2026/03/10/07/31bf0c3b-9c30-41d4-82ea-fecf0707a875.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.04,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 4.99,
+              "customer_total_il_shadow_usd": 8.76,
+              "product_contribution_shadow_usd": 4.5,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "bag-accessories",
+          "title": "Bag Accessories",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2511170135201623100",
+              "department": "accessories",
+              "department_title": "Accessories & Jewelry",
+              "category": "bag-accessories",
+              "category_title": "Bag Accessories",
+              "title": "Shoulder Strap Colorful Adjustable Long Women's Bag Replacement Accessories",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2025/11/17/01/c96bab77-1ef2-42aa-ba58-d24e276af647_trans.jpeg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 1.71,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 6.99,
+              "customer_total_il_shadow_usd": 12.8,
+              "product_contribution_shadow_usd": 4.65,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "socks",
+          "title": "Socks",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2507020635441606500",
+              "department": "accessories",
+              "department_title": "Accessories & Jewelry",
+              "category": "socks",
+              "category_title": "Socks",
+              "title": "Multi-purpose Buffer Socks High-performance Mid-calf",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/45f29b1b-943d-429e-b594-bd7f35dbe565.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.35,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 4.99,
+              "customer_total_il_shadow_usd": 9.69,
+              "product_contribution_shadow_usd": 4.19,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
         }
       ]
     },
     {
       "slug": "tech",
       "title": "Phone & Tech",
-      "clean_candidate_count": 540,
-      "category_rails": 10,
-      "initial_shown_products": 193,
+      "clean_candidate_count": 542,
+      "category_rails": 12,
+      "initial_shown_products": 195,
       "hero": {
-        "provider": "EPROLO",
-        "item_id": "26921252",
+        "provider": "CJdropshipping",
+        "item_id": "2511260258281614300",
         "department": "tech",
         "department_title": "Phone & Tech",
-        "category": "chargers-cables",
-        "category_title": "Chargers & Cables",
-        "title": "Data cable protection cover charging wire magnetic cable organizer silicone desktop data cable storage and winding device",
-        "image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202408/B1CDA5E06A2E0259BD1FAE4B58076181.JPEG",
+        "category": "gaming",
+        "category_title": "Gaming",
+        "title": "Gaming Headset Esports Sound Positioning Wired With Microphone Universal",
+        "image_url": "https://oss-cf.cjdropshipping.com/product/2025/11/26/02/94bf6770-ad3c-4f97-b010-3f05613259bf_trans.jpeg",
         "availability_verified": true,
-        "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
-        "inventory_snapshot": 2269,
-        "supplier_cost_min": 2.39,
+        "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+        "inventory_snapshot": null,
+        "supplier_cost_min": 0.71,
         "currency": "USD",
-        "variant_count": 4,
-        "image_count": 8,
-        "truth_state": "GLOBAL_PRODUCT_TRUTH",
-        "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+        "variant_count": null,
+        "image_count": null,
+        "truth_state": "CJ_VERIFIED_4_MARKETS",
+        "markets_verified": [
+          "IL",
+          "DE",
+          "US",
+          "SG"
+        ],
+        "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+        "retail_shadow_usd": 5.99,
+        "customer_total_il_shadow_usd": 10.15,
+        "product_contribution_shadow_usd": 4.74,
+        "final_profit_verified": false,
+        "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
         "production_exposure": false,
-        "_cat": "chargers-cables"
+        "_cat": "gaming"
       },
       "categories": [
+        {
+          "slug": "phone-cases",
+          "title": "Phone Cases",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2602241254351619900",
+              "department": "tech",
+              "department_title": "Phone & Tech",
+              "category": "phone-cases",
+              "category_title": "Phone Cases",
+              "title": "Suitable For 17 Pro Max Phone Case  Jelly Magnetic Two in one Frosted Simple Drop proof",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2026/02/24/12/01391462-7cd3-459c-b38f-8f1f2cfce273_trans.jpeg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.64,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 5.99,
+              "customer_total_il_shadow_usd": 12.06,
+              "product_contribution_shadow_usd": 4.81,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
         {
           "slug": "chargers-cables",
           "title": "Chargers & Cables",
@@ -59726,37 +60675,248 @@
               "production_exposure": false
             }
           ]
+        },
+        {
+          "slug": "gaming",
+          "title": "Gaming",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2511260258281614300",
+              "department": "tech",
+              "department_title": "Phone & Tech",
+              "category": "gaming",
+              "category_title": "Gaming",
+              "title": "Gaming Headset Esports Sound Positioning Wired With Microphone Universal",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2025/11/26/02/94bf6770-ad3c-4f97-b010-3f05613259bf_trans.jpeg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.71,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 5.99,
+              "customer_total_il_shadow_usd": 10.15,
+              "product_contribution_shadow_usd": 4.74,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
         }
       ]
     },
     {
       "slug": "home",
       "title": "Home & Living",
-      "clean_candidate_count": 113,
-      "category_rails": 7,
-      "initial_shown_products": 95,
+      "clean_candidate_count": 119,
+      "category_rails": 13,
+      "initial_shown_products": 101,
       "hero": {
-        "provider": "EPROLO",
-        "item_id": "29403706",
+        "provider": "CJdropshipping",
+        "item_id": "2504040442271628900",
         "department": "home",
         "department_title": "Home & Living",
-        "category": "home-textiles",
-        "category_title": "Home Textiles",
-        "title": "**5V USB grey heating pad (19.6x11.8\") with 59\" cable for cramps & back pain, works as mini heated blanket.**",
-        "image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202505/B0AD8A0ACF27E6BC7292B0F5ECC29AA9.JPEG",
+        "category": "cleaning",
+        "category_title": "Cleaning",
+        "title": "Disposable Toilet Brush Set Household Bathroom Without Dead Angle",
+        "image_url": "https://oss-cf.cjdropshipping.com/product/2025/04/04/04/80298ec5-2075-4371-b2de-fd02c410c0ee_trans.jpeg",
         "availability_verified": true,
-        "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
-        "inventory_snapshot": 2024,
-        "supplier_cost_min": 6.69,
+        "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+        "inventory_snapshot": null,
+        "supplier_cost_min": 2.6,
         "currency": "USD",
-        "variant_count": 4,
-        "image_count": 11,
-        "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
-        "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+        "variant_count": null,
+        "image_count": null,
+        "truth_state": "CJ_VERIFIED_4_MARKETS",
+        "markets_verified": [
+          "IL",
+          "DE",
+          "US",
+          "SG"
+        ],
+        "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+        "retail_shadow_usd": 7.99,
+        "customer_total_il_shadow_usd": 18.46,
+        "product_contribution_shadow_usd": 4.67,
+        "final_profit_verified": false,
+        "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
         "production_exposure": false,
-        "_cat": "home-textiles"
+        "_cat": "cleaning"
       },
       "categories": [
+        {
+          "slug": "home-storage",
+          "title": "Storage & Organization",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2507240649591613100",
+              "department": "home",
+              "department_title": "Home & Living",
+              "category": "home-storage",
+              "category_title": "Storage & Organization",
+              "title": "Toilet Toilet Paper Holder Floor-standing Bathroom Toilet Brush Storage Rack",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/1ab90f31-10cb-42e5-a411-3fc5d7507ee5.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 17.41,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 31.99,
+              "customer_total_il_shadow_usd": 70.03,
+              "product_contribution_shadow_usd": 11.7,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "lighting",
+          "title": "Lighting",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2509220718531624800",
+              "department": "home",
+              "department_title": "Home & Living",
+              "category": "lighting",
+              "category_title": "Lighting",
+              "title": "USB Powered Spiral Desk Lamp Simple And Adjustable LED Desk Lamp",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/e3c9fadf-ea0a-4c31-bd54-57740ac6b1d7.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 2.74,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 7.99,
+              "customer_total_il_shadow_usd": 17.63,
+              "product_contribution_shadow_usd": 4.53,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "bedding",
+          "title": "Bedding & Pillows",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2410100547241617300",
+              "department": "home",
+              "department_title": "Home & Living",
+              "category": "bedding",
+              "category_title": "Bedding & Pillows",
+              "title": "Soft Wind Bubble Velvet Blanket Warm Solid Rabbit Fur Blankets Double-sided Thickening Cover Throw Warm Fur Blanket",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2024/10/17/02/c8589f5d-7f0f-440f-b53d-54f42d92b989.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 2.25,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 6.99,
+              "customer_total_il_shadow_usd": 17.46,
+              "product_contribution_shadow_usd": 4.11,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "bath",
+          "title": "Bath",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2510270906241637900",
+              "department": "home",
+              "department_title": "Home & Living",
+              "category": "bath",
+              "category_title": "Bath",
+              "title": "Solid Color Bathroom Bedroom Door Bathroom Non-slip Floor Mat",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2025/10/27/12/0ba4b5e2-43ee-4d82-aaee-6e0c5f35dab7_trans.jpeg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 2.14,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 6.99,
+              "customer_total_il_shadow_usd": 14.83,
+              "product_contribution_shadow_usd": 4.22,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
         {
           "slug": "home-decor",
           "title": "Home Decor",
@@ -60656,6 +61816,46 @@
           ]
         },
         {
+          "slug": "cleaning",
+          "title": "Cleaning",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2504040442271628900",
+              "department": "home",
+              "department_title": "Home & Living",
+              "category": "cleaning",
+              "category_title": "Cleaning",
+              "title": "Disposable Toilet Brush Set Household Bathroom Without Dead Angle",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2025/04/04/04/80298ec5-2075-4371-b2de-fd02c410c0ee_trans.jpeg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 2.6,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 7.99,
+              "customer_total_il_shadow_usd": 18.46,
+              "product_contribution_shadow_usd": 4.67,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
           "slug": "furniture",
           "title": "Furniture",
           "clean_candidate_count": 24,
@@ -61198,6 +62398,46 @@
               "image_count": 9,
               "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
               "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "mirrors",
+          "title": "Mirrors",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2506050538271621200",
+              "department": "home",
+              "department_title": "Home & Living",
+              "category": "mirrors",
+              "category_title": "Mirrors",
+              "title": "European-style Solid Wood Handmade Finish Hanging Mirror Homestay Hotel Entrance Decoration Hanging",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/21b4d3fe-aeb6-45f3-9868-7fd3f4d238a1.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 3.19,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 7.99,
+              "customer_total_il_shadow_usd": 20.33,
+              "product_contribution_shadow_usd": 4.08,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
               "production_exposure": false
             }
           ]
@@ -80154,29 +81394,40 @@
     {
       "slug": "sports",
       "title": "Sports & Outdoors",
-      "clean_candidate_count": 327,
-      "category_rails": 5,
-      "initial_shown_products": 81,
+      "clean_candidate_count": 329,
+      "category_rails": 7,
+      "initial_shown_products": 83,
       "hero": {
-        "provider": "EPROLO",
-        "item_id": "28086336",
+        "provider": "CJdropshipping",
+        "item_id": "2409100356371612400",
         "department": "sports",
         "department_title": "Sports & Outdoors",
-        "category": "fitness",
-        "category_title": "Fitness",
-        "title": "\"Outdoor Sports Waist Pack, Large Capacity Waterproof Mobile Phone Pouch, Unisex Running Fitness Elastic Waist Bag\"",
-        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202412/CF780EAA2409B74679B04645CA90776A.jpg",
+        "category": "outdoors",
+        "category_title": "Outdoor & Camping",
+        "title": "Outdoor Ultralight Portable Folding Tripod",
+        "image_url": "https://oss-cf.cjdropshipping.com/product/2026/02/06/14/02456634-e7b2-4b8d-adca-bea584ed85fa.jpg",
         "availability_verified": true,
-        "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
-        "inventory_snapshot": 282864,
-        "supplier_cost_min": 2.68,
+        "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+        "inventory_snapshot": null,
+        "supplier_cost_min": 1.19,
         "currency": "USD",
-        "variant_count": 7,
-        "image_count": 11,
-        "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
-        "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+        "variant_count": null,
+        "image_count": null,
+        "truth_state": "CJ_VERIFIED_4_MARKETS",
+        "markets_verified": [
+          "IL",
+          "DE",
+          "US",
+          "SG"
+        ],
+        "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+        "retail_shadow_usd": 5.99,
+        "customer_total_il_shadow_usd": 14.63,
+        "product_contribution_shadow_usd": 4.26,
+        "final_profit_verified": false,
+        "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
         "production_exposure": false,
-        "_cat": "fitness"
+        "_cat": "outdoors"
       },
       "categories": [
         {
@@ -84229,6 +85480,46 @@
           ]
         },
         {
+          "slug": "outdoors",
+          "title": "Outdoor & Camping",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2409100356371612400",
+              "department": "sports",
+              "department_title": "Sports & Outdoors",
+              "category": "outdoors",
+              "category_title": "Outdoor & Camping",
+              "title": "Outdoor Ultralight Portable Folding Tripod",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2026/02/06/14/02456634-e7b2-4b8d-adca-bea584ed85fa.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 1.19,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 5.99,
+              "customer_total_il_shadow_usd": 14.63,
+              "product_contribution_shadow_usd": 4.26,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
           "slug": "active-bottoms",
           "title": "Active Bottoms",
           "clean_candidate_count": 5,
@@ -84333,6 +85624,46 @@
               "image_count": 7,
               "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
               "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "sports-gear",
+          "title": "Sports Gear",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "0C862543-E20F-4900-8AA6-24505AA12662",
+              "department": "sports",
+              "department_title": "Sports & Outdoors",
+              "category": "sports-gear",
+              "category_title": "Sports Gear",
+              "title": "Skipping Rope With Counter Adjustable Length Counter Wear-resistant Foam Cotton Handle JumpRope Exercise Portable Sports Training Equipment",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2025/06/16/05/126af1ff-2a81-4034-bebd-e87bf30bfb55.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.99,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 5.99,
+              "customer_total_il_shadow_usd": 11.75,
+              "product_contribution_shadow_usd": 4.46,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
               "production_exposure": false
             }
           ]
@@ -86769,29 +88100,40 @@
     {
       "slug": "pets",
       "title": "Pets",
-      "clean_candidate_count": 159,
-      "category_rails": 6,
-      "initial_shown_products": 99,
+      "clean_candidate_count": 162,
+      "category_rails": 9,
+      "initial_shown_products": 102,
       "hero": {
-        "provider": "EPROLO",
-        "item_id": "31417992",
+        "provider": "CJdropshipping",
+        "item_id": "2511270603041624600",
         "department": "pets",
         "department_title": "Pets",
-        "category": "pet-walk",
-        "category_title": "Collars, Leashes & Harnesses",
-        "title": "2.5*135CM New Pet Supplies Factory Elastic Dog Leash with Reflective Car Safety Belt for Dogs",
-        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/05CD4AB00B9AA7DB9CBC72DD2ECD142E.jpg",
+        "category": "aquarium",
+        "category_title": "Aquarium",
+        "title": "Aquarium PVC Decoration Hiding House Ornament",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/860d5b82-2d80-46c6-8b3c-6a2489347dd2.jpg",
         "availability_verified": true,
-        "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
-        "inventory_snapshot": 350,
-        "supplier_cost_min": 4.59,
+        "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+        "inventory_snapshot": null,
+        "supplier_cost_min": 0.53,
         "currency": "USD",
-        "variant_count": 6,
-        "image_count": 9,
-        "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
-        "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+        "variant_count": null,
+        "image_count": null,
+        "truth_state": "CJ_VERIFIED_4_MARKETS",
+        "markets_verified": [
+          "IL",
+          "DE",
+          "US",
+          "SG"
+        ],
+        "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+        "retail_shadow_usd": 4.99,
+        "customer_total_il_shadow_usd": 9.39,
+        "product_contribution_shadow_usd": 4.01,
+        "final_profit_verified": false,
+        "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
         "production_exposure": false,
-        "_cat": "pet-walk"
+        "_cat": "aquarium"
       },
       "categories": [
         {
@@ -89002,6 +90344,46 @@
           ]
         },
         {
+          "slug": "pet-clothing",
+          "title": "Pet Clothing",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2407110755091600100",
+              "department": "pets",
+              "department_title": "Pets",
+              "category": "pet-clothing",
+              "category_title": "Pet Clothing",
+              "title": "Pet Clothes Teddy Bichon Pomeranian Jarre Aero Bull Cat Dog Summer Thin Large Dog Pet Hawaiian Shirt",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/b5b7e276-8239-422c-a679-2e52fb00b8f1.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.64,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 5.99,
+              "customer_total_il_shadow_usd": 14.65,
+              "product_contribution_shadow_usd": 4.81,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
           "slug": "pet-feeding",
           "title": "Pet Feeding",
           "clean_candidate_count": 16,
@@ -90024,6 +91406,86 @@
               "image_count": null,
               "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
               "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "aquarium",
+          "title": "Aquarium",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2511270603041624600",
+              "department": "pets",
+              "department_title": "Pets",
+              "category": "aquarium",
+              "category_title": "Aquarium",
+              "title": "Aquarium PVC Decoration Hiding House Ornament",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/860d5b82-2d80-46c6-8b3c-6a2489347dd2.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 0.53,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 4.99,
+              "customer_total_il_shadow_usd": 9.39,
+              "product_contribution_shadow_usd": 4.01,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "pet-houses",
+          "title": "Pet Houses & Condos",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2412160628521613900",
+              "department": "pets",
+              "department_title": "Pets",
+              "category": "pet-houses",
+              "category_title": "Pet Houses & Condos",
+              "title": "Portable Handle Pet Bed Small And Medium Sized Kennel Warm Cattery",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2024/12/19/03/7e9873e2-bf71-41f0-9a0e-24b0269400ed.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 3.34,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 8.99,
+              "customer_total_il_shadow_usd": 18.41,
+              "product_contribution_shadow_usd": 4.84,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
               "production_exposure": false
             }
           ]
@@ -95338,31 +96800,82 @@
     {
       "slug": "office",
       "title": "Office & Crafts",
-      "clean_candidate_count": 34,
-      "category_rails": 3,
-      "initial_shown_products": 34,
+      "clean_candidate_count": 36,
+      "category_rails": 5,
+      "initial_shown_products": 36,
       "hero": {
-        "provider": "EPROLO",
-        "item_id": "18305363",
+        "provider": "CJdropshipping",
+        "item_id": "2604280731471620000",
         "department": "office",
         "department_title": "Office & Crafts",
-        "category": "office-furniture",
-        "category_title": "Office Furniture",
-        "title": "1 Pair Metal Fashion Bookends Bookends for Shelves Metal Bookend Supports for Shelves and Desk",
-        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202111/5999BA622E694DCD34032066A85B5ADA.jpg",
+        "category": "crafts",
+        "category_title": "Arts & Crafts",
+        "title": "New Embroidery DIY Landscape Handmade Fabric Craft Material Kit",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/f21da0f1-e023-49e0-9212-4e1b74e4255f.jpg",
         "availability_verified": true,
-        "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
-        "inventory_snapshot": 550,
-        "supplier_cost_min": 1.88,
+        "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+        "inventory_snapshot": null,
+        "supplier_cost_min": 1.91,
         "currency": "USD",
-        "variant_count": 1,
-        "image_count": 5,
-        "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
-        "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+        "variant_count": null,
+        "image_count": null,
+        "truth_state": "CJ_VERIFIED_4_MARKETS",
+        "markets_verified": [
+          "IL",
+          "DE",
+          "US",
+          "SG"
+        ],
+        "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+        "retail_shadow_usd": 6.99,
+        "customer_total_il_shadow_usd": 12.25,
+        "product_contribution_shadow_usd": 4.45,
+        "final_profit_verified": false,
+        "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
         "production_exposure": false,
-        "_cat": "office-furniture"
+        "_cat": "crafts"
       },
       "categories": [
+        {
+          "slug": "crafts",
+          "title": "Arts & Crafts",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2604280731471620000",
+              "department": "office",
+              "department_title": "Office & Crafts",
+              "category": "crafts",
+              "category_title": "Arts & Crafts",
+              "title": "New Embroidery DIY Landscape Handmade Fabric Craft Material Kit",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/f21da0f1-e023-49e0-9212-4e1b74e4255f.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 1.91,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 6.99,
+              "customer_total_il_shadow_usd": 12.25,
+              "product_contribution_shadow_usd": 4.45,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
         {
           "slug": "stationery",
           "title": "Stationery",
@@ -95528,6 +97041,46 @@
               "image_count": 5,
               "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
               "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "stickers",
+          "title": "Stickers",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2508200728421609200",
+              "department": "office",
+              "department_title": "Office & Crafts",
+              "category": "stickers",
+              "category_title": "Stickers",
+              "title": "Spaceman Astronaut Wall Decorations Stickers",
+              "image_url": "https://cf.cjdropshipping.com/quick/product/89771cbe-49a8-4793-b868-e12db0133e70.jpg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 2.78,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 7.99,
+              "customer_total_il_shadow_usd": 13.33,
+              "product_contribution_shadow_usd": 4.49,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
               "production_exposure": false
             }
           ]

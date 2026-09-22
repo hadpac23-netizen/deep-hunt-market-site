@@ -1,0 +1,3518 @@
+{
+  "version": "HUNT-CJ-GAP-FILL-VERIFIED-V2",
+  "date": "2026-09-23",
+  "mode": "READ_ONLY_SHADOW",
+  "provider": "CJdropshipping",
+  "markets": [
+    "IL",
+    "DE",
+    "US",
+    "SG"
+  ],
+  "summary": {
+    "products_checked": 36,
+    "categories_filled": 36,
+    "products_verified_4_of_4": 36,
+    "market_pass_counts": {
+      "IL": 36,
+      "DE": 36,
+      "US": 36,
+      "SG": 36
+    },
+    "product_contribution_shadow_min_usd": 4.01,
+    "product_contribution_shadow_max_usd": 11.7,
+    "final_profit_verified_products": 0,
+    "checkout_live": 0,
+    "fulfillment_live": 0,
+    "production_effect": false
+  },
+  "results": [
+    {
+      "department": "women",
+      "category": "women-knitwear",
+      "id": "2506190632221611300",
+      "title": "Chic Long Sleeved Knitted Cardigan Fashion Slim Solid Color Short Sweater For Women Clothing",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2025/08/25/08/b400c82d-853e-4452-b0cf-28226c7638f0.jpg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2506190632221611600",
+          "variant_name": "CJMY240574501AZ",
+          "supplier_cost_usd": 7.63,
+          "retail_shadow_usd": 13.99,
+          "product_contribution_shadow_usd": 5.1,
+          "product_margin_shadow": 0.3646,
+          "supplier_shipping_usd": 6.61,
+          "customer_shipping_grossup_shadow_usd": 7.26,
+          "customer_total_shadow_usd": 21.25,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7055,
+            "total_inventory": 7055
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2506190632221611600",
+          "variant_name": "CJMY240574501AZ",
+          "supplier_cost_usd": 7.63,
+          "retail_shadow_usd": 13.99,
+          "product_contribution_shadow_usd": 5.1,
+          "product_margin_shadow": 0.3646,
+          "supplier_shipping_usd": 6.96,
+          "customer_shipping_grossup_shadow_usd": 7.65,
+          "customer_total_shadow_usd": 21.64,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7055,
+            "total_inventory": 7055
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2506190632221611600",
+          "variant_name": "CJMY240574501AZ",
+          "supplier_cost_usd": 7.63,
+          "retail_shadow_usd": 13.99,
+          "product_contribution_shadow_usd": 5.1,
+          "product_margin_shadow": 0.3646,
+          "supplier_shipping_usd": 6.7,
+          "customer_shipping_grossup_shadow_usd": 7.36,
+          "customer_total_shadow_usd": 21.35,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7055,
+            "total_inventory": 7055
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2506190632221611600",
+          "variant_name": "CJMY240574501AZ",
+          "supplier_cost_usd": 7.63,
+          "retail_shadow_usd": 13.99,
+          "product_contribution_shadow_usd": 5.1,
+          "product_margin_shadow": 0.3646,
+          "supplier_shipping_usd": 3.47,
+          "customer_shipping_grossup_shadow_usd": 3.81,
+          "customer_total_shadow_usd": 17.8,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7055,
+            "total_inventory": 7055
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "women",
+      "category": "women-sleepwear",
+      "id": "2604230929501628900",
+      "title": "Women's Pajama Home Wear Set",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/a2fdbf2f-80a6-473a-a3b9-e1a26e85fd1c.jpg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604230929501629400",
+          "variant_name": "CJYD285205601AZ",
+          "supplier_cost_usd": 1.65,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.71,
+          "product_margin_shadow": 0.6739,
+          "supplier_shipping_usd": 5.24,
+          "customer_shipping_grossup_shadow_usd": 5.76,
+          "customer_total_shadow_usd": 12.75,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6756,
+            "total_inventory": 6756
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604230929501629400",
+          "variant_name": "CJYD285205601AZ",
+          "supplier_cost_usd": 1.65,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.71,
+          "product_margin_shadow": 0.6739,
+          "supplier_shipping_usd": 5.86,
+          "customer_shipping_grossup_shadow_usd": 6.44,
+          "customer_total_shadow_usd": 13.43,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6756,
+            "total_inventory": 6756
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604230929501629400",
+          "variant_name": "CJYD285205601AZ",
+          "supplier_cost_usd": 1.65,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.71,
+          "product_margin_shadow": 0.6739,
+          "supplier_shipping_usd": 5.75,
+          "customer_shipping_grossup_shadow_usd": 6.32,
+          "customer_total_shadow_usd": 13.31,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6756,
+            "total_inventory": 6756
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604230929501629400",
+          "variant_name": "CJYD285205601AZ",
+          "supplier_cost_usd": 1.65,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.71,
+          "product_margin_shadow": 0.6739,
+          "supplier_shipping_usd": 2.88,
+          "customer_shipping_grossup_shadow_usd": 3.16,
+          "customer_total_shadow_usd": 10.15,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6756,
+            "total_inventory": 6756
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "women",
+      "category": "women-hoodies",
+      "id": "1603284781016961024",
+      "title": "Heart Print Streetwear Hoodies Women Sweatshirt Spring Autumn Long Sleeve Hoodie Clothes",
+      "image_url": "https://cf.cjdropshipping.com/0648dd7c-626e-4299-aee1-23c080a8a6dd.jpg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "1603284781054709760",
+          "variant_name": "CJWY1638778-Pink-S",
+          "supplier_cost_usd": 2.71,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.56,
+          "product_margin_shadow": 0.5708,
+          "supplier_shipping_usd": 6.71,
+          "customer_shipping_grossup_shadow_usd": 7.37,
+          "customer_total_shadow_usd": 15.36,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 11626,
+            "total_inventory": 11626
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "1603284781054709760",
+          "variant_name": "CJWY1638778-Pink-S",
+          "supplier_cost_usd": 2.71,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.56,
+          "product_margin_shadow": 0.5708,
+          "supplier_shipping_usd": 7.04,
+          "customer_shipping_grossup_shadow_usd": 7.74,
+          "customer_total_shadow_usd": 15.73,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 11626,
+            "total_inventory": 11626
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "1603284781054709760",
+          "variant_name": "CJWY1638778-Pink-S",
+          "supplier_cost_usd": 2.71,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.56,
+          "product_margin_shadow": 0.5708,
+          "supplier_shipping_usd": 6.8,
+          "customer_shipping_grossup_shadow_usd": 7.47,
+          "customer_total_shadow_usd": 15.46,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 11626,
+            "total_inventory": 11626
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "1603284781054709760",
+          "variant_name": "CJWY1638778-Pink-S",
+          "supplier_cost_usd": 2.71,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.56,
+          "product_margin_shadow": 0.5708,
+          "supplier_shipping_usd": 3.51,
+          "customer_shipping_grossup_shadow_usd": 3.86,
+          "customer_total_shadow_usd": 11.85,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 11626,
+            "total_inventory": 11626
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "men",
+      "category": "men-suits",
+      "id": "2604220946291608500",
+      "title": "Men's Casual Light Business Suit Jacket",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/685e8951-0fde-426f-915b-d008175826da.jpg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604220946291609000",
+          "variant_name": "CJYD285057001AZ",
+          "supplier_cost_usd": 10.78,
+          "retail_shadow_usd": 19.99,
+          "product_contribution_shadow_usd": 7.41,
+          "product_margin_shadow": 0.3707,
+          "supplier_shipping_usd": 9.27,
+          "customer_shipping_grossup_shadow_usd": 10.19,
+          "customer_total_shadow_usd": 30.18,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5059,
+            "total_inventory": 5059
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604220946291609000",
+          "variant_name": "CJYD285057001AZ",
+          "supplier_cost_usd": 10.78,
+          "retail_shadow_usd": 19.99,
+          "product_contribution_shadow_usd": 7.41,
+          "product_margin_shadow": 0.3707,
+          "supplier_shipping_usd": 8.82,
+          "customer_shipping_grossup_shadow_usd": 9.69,
+          "customer_total_shadow_usd": 29.68,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5059,
+            "total_inventory": 5059
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604220946291609000",
+          "variant_name": "CJYD285057001AZ",
+          "supplier_cost_usd": 10.78,
+          "retail_shadow_usd": 19.99,
+          "product_contribution_shadow_usd": 7.41,
+          "product_margin_shadow": 0.3707,
+          "supplier_shipping_usd": 9.43,
+          "customer_shipping_grossup_shadow_usd": 10.36,
+          "customer_total_shadow_usd": 30.35,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5059,
+            "total_inventory": 5059
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604220946291609000",
+          "variant_name": "CJYD285057001AZ",
+          "supplier_cost_usd": 10.78,
+          "retail_shadow_usd": 19.99,
+          "product_contribution_shadow_usd": 7.41,
+          "product_margin_shadow": 0.3707,
+          "supplier_shipping_usd": 4.6,
+          "customer_shipping_grossup_shadow_usd": 5.05,
+          "customer_total_shadow_usd": 25.04,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5059,
+            "total_inventory": 5059
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "men",
+      "category": "men-knitwear",
+      "id": "2510080819521649800",
+      "title": "Knitted Solid Color Men's Fashion Jacquard High Collar Warm Sweater",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/f5313c80-99e9-43dc-979b-c486f6d6ffec.jpg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2510080819531640100",
+          "variant_name": "CJYD255225101AZ",
+          "supplier_cost_usd": 5.14,
+          "retail_shadow_usd": 10.99,
+          "product_contribution_shadow_usd": 4.86,
+          "product_margin_shadow": 0.4423,
+          "supplier_shipping_usd": 7.76,
+          "customer_shipping_grossup_shadow_usd": 8.53,
+          "customer_total_shadow_usd": 19.52,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5597,
+            "total_inventory": 5597
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2510080819531640100",
+          "variant_name": "CJYD255225101AZ",
+          "supplier_cost_usd": 5.14,
+          "retail_shadow_usd": 10.99,
+          "product_contribution_shadow_usd": 4.86,
+          "product_margin_shadow": 0.4423,
+          "supplier_shipping_usd": 7.68,
+          "customer_shipping_grossup_shadow_usd": 8.44,
+          "customer_total_shadow_usd": 19.43,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5597,
+            "total_inventory": 5597
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2510080819531640100",
+          "variant_name": "CJYD255225101AZ",
+          "supplier_cost_usd": 5.14,
+          "retail_shadow_usd": 10.99,
+          "product_contribution_shadow_usd": 4.86,
+          "product_margin_shadow": 0.4423,
+          "supplier_shipping_usd": 7.87,
+          "customer_shipping_grossup_shadow_usd": 8.65,
+          "customer_total_shadow_usd": 19.64,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5597,
+            "total_inventory": 5597
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2510080819531640100",
+          "variant_name": "CJYD255225101AZ",
+          "supplier_cost_usd": 5.14,
+          "retail_shadow_usd": 10.99,
+          "product_contribution_shadow_usd": 4.86,
+          "product_margin_shadow": 0.4423,
+          "supplier_shipping_usd": 3.96,
+          "customer_shipping_grossup_shadow_usd": 4.35,
+          "customer_total_shadow_usd": 15.34,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5597,
+            "total_inventory": 5597
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "men",
+      "category": "men-boxers",
+      "id": "2601070759311617500",
+      "title": "Wholesale Mens Boxer Briefs For Middle-aged And Older Men",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/01/07/07/4d41c204-c523-4b18-abe4-d969d39bfe87_trans.jpeg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2601070759311617700",
+          "variant_name": "CJYD271681501AZ",
+          "supplier_cost_usd": 0.68,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.77,
+          "product_margin_shadow": 0.7965,
+          "supplier_shipping_usd": 4.16,
+          "customer_shipping_grossup_shadow_usd": 4.57,
+          "customer_total_shadow_usd": 10.56,
+          "shipping_method": "CJPacket Liquid Line",
+          "shipping_aging": "9-23",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6902,
+            "total_inventory": 6902
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2601070759311617700",
+          "variant_name": "CJYD271681501AZ",
+          "supplier_cost_usd": 0.68,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.77,
+          "product_margin_shadow": 0.7965,
+          "supplier_shipping_usd": 5.01,
+          "customer_shipping_grossup_shadow_usd": 5.51,
+          "customer_total_shadow_usd": 11.5,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6902,
+            "total_inventory": 6902
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2601070759311617700",
+          "variant_name": "CJYD271681501AZ",
+          "supplier_cost_usd": 0.68,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.77,
+          "product_margin_shadow": 0.7965,
+          "supplier_shipping_usd": 4.94,
+          "customer_shipping_grossup_shadow_usd": 5.43,
+          "customer_total_shadow_usd": 11.42,
+          "shipping_method": "CJPacket Pure Electricity",
+          "shipping_aging": "7-14",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6902,
+            "total_inventory": 6902
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2601070759311617700",
+          "variant_name": "CJYD271681501AZ",
+          "supplier_cost_usd": 0.68,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.77,
+          "product_margin_shadow": 0.7965,
+          "supplier_shipping_usd": 2.48,
+          "customer_shipping_grossup_shadow_usd": 2.73,
+          "customer_total_shadow_usd": 8.72,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6902,
+            "total_inventory": 6902
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "men",
+      "category": "men-underwear",
+      "id": "2603241130081630900",
+      "title": "Ice Silk Mens Underwear Light Luxury Satin Boxers",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/07aef102-d7a3-411a-9677-0a43913ab4e6.jpg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603241130081632000",
+          "variant_name": "CJYD280262701AZ",
+          "supplier_cost_usd": 0.7,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.75,
+          "product_margin_shadow": 0.7931,
+          "supplier_shipping_usd": 4.6,
+          "customer_shipping_grossup_shadow_usd": 5.05,
+          "customer_total_shadow_usd": 11.04,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9398,
+            "total_inventory": 9398
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603241130081632000",
+          "variant_name": "CJYD280262701AZ",
+          "supplier_cost_usd": 0.7,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.75,
+          "product_margin_shadow": 0.7931,
+          "supplier_shipping_usd": 5.34,
+          "customer_shipping_grossup_shadow_usd": 5.87,
+          "customer_total_shadow_usd": 11.86,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9398,
+            "total_inventory": 9398
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603241130081632000",
+          "variant_name": "CJYD280262701AZ",
+          "supplier_cost_usd": 0.7,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.75,
+          "product_margin_shadow": 0.7931,
+          "supplier_shipping_usd": 5.27,
+          "customer_shipping_grossup_shadow_usd": 5.79,
+          "customer_total_shadow_usd": 11.78,
+          "shipping_method": "CJPacket Pure Electricity",
+          "shipping_aging": "7-14",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9398,
+            "total_inventory": 9398
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603241130081632000",
+          "variant_name": "CJYD280262701AZ",
+          "supplier_cost_usd": 0.7,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.75,
+          "product_margin_shadow": 0.7931,
+          "supplier_shipping_usd": 2.6,
+          "customer_shipping_grossup_shadow_usd": 2.86,
+          "customer_total_shadow_usd": 8.85,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9398,
+            "total_inventory": 9398
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "men",
+      "category": "men-hoodies",
+      "id": "2602111147261624400",
+      "title": "New Fallwinter Mens Fleece-lined Hoodie",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/72724b21-03e9-415a-95c7-2b7f3116dd0d.jpg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2602111147261624800",
+          "variant_name": "CJWY276096401AZ",
+          "supplier_cost_usd": 3.35,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.5374,
+          "supplier_shipping_usd": 10.27,
+          "customer_shipping_grossup_shadow_usd": 11.29,
+          "customer_total_shadow_usd": 20.28,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8314,
+            "total_inventory": 8314
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2602111147261624800",
+          "variant_name": "CJWY276096401AZ",
+          "supplier_cost_usd": 3.35,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.5374,
+          "supplier_shipping_usd": 9.59,
+          "customer_shipping_grossup_shadow_usd": 10.54,
+          "customer_total_shadow_usd": 19.53,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8314,
+            "total_inventory": 8314
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2602111147261624800",
+          "variant_name": "CJWY276096401AZ",
+          "supplier_cost_usd": 3.35,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.5374,
+          "supplier_shipping_usd": 10.47,
+          "customer_shipping_grossup_shadow_usd": 11.51,
+          "customer_total_shadow_usd": 20.5,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8314,
+            "total_inventory": 8314
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2602111147261624800",
+          "variant_name": "CJWY276096401AZ",
+          "supplier_cost_usd": 3.35,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.5374,
+          "supplier_shipping_usd": 5.03,
+          "customer_shipping_grossup_shadow_usd": 5.53,
+          "customer_total_shadow_usd": 14.52,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8314,
+            "total_inventory": 8314
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "kids",
+      "category": "baby-clothing",
+      "id": "2603180256301639700",
+      "title": "Baby And Toddler Solid Color Ruffle-Shoulder Sleeveless Romper And Printed Skirt Two-Piece Set",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/ce7de070-a969-4c84-ae9c-37649f117432.jpg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603180256311630200",
+          "variant_name": "CJYE279148101AZ",
+          "supplier_cost_usd": 5.03,
+          "retail_shadow_usd": 9.99,
+          "product_contribution_shadow_usd": 4.06,
+          "product_margin_shadow": 0.4065,
+          "supplier_shipping_usd": 5.36,
+          "customer_shipping_grossup_shadow_usd": 5.89,
+          "customer_total_shadow_usd": 15.88,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6708,
+            "total_inventory": 6708
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603180256311630200",
+          "variant_name": "CJYE279148101AZ",
+          "supplier_cost_usd": 5.03,
+          "retail_shadow_usd": 9.99,
+          "product_contribution_shadow_usd": 4.06,
+          "product_margin_shadow": 0.4065,
+          "supplier_shipping_usd": 5.97,
+          "customer_shipping_grossup_shadow_usd": 6.56,
+          "customer_total_shadow_usd": 16.55,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6708,
+            "total_inventory": 6708
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603180256311630200",
+          "variant_name": "CJYE279148101AZ",
+          "supplier_cost_usd": 5.03,
+          "retail_shadow_usd": 9.99,
+          "product_contribution_shadow_usd": 4.06,
+          "product_margin_shadow": 0.4065,
+          "supplier_shipping_usd": 5.9,
+          "customer_shipping_grossup_shadow_usd": 6.48,
+          "customer_total_shadow_usd": 16.47,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6708,
+            "total_inventory": 6708
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603180256311630200",
+          "variant_name": "CJYE279148101AZ",
+          "supplier_cost_usd": 5.03,
+          "retail_shadow_usd": 9.99,
+          "product_contribution_shadow_usd": 4.06,
+          "product_margin_shadow": 0.4065,
+          "supplier_shipping_usd": 2.93,
+          "customer_shipping_grossup_shadow_usd": 3.22,
+          "customer_total_shadow_usd": 13.21,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6708,
+            "total_inventory": 6708
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "tech",
+      "category": "phone-cases",
+      "id": "2602241254351619900",
+      "title": "Suitable For 17 Pro Max Phone Case  Jelly Magnetic Two in one Frosted Simple Drop proof",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/02/24/12/01391462-7cd3-459c-b38f-8f1f2cfce273_trans.jpeg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2602241254361610300",
+          "variant_name": "CJJT276654101AZ",
+          "supplier_cost_usd": 0.64,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.81,
+          "product_margin_shadow": 0.8032,
+          "supplier_shipping_usd": 5.52,
+          "customer_shipping_grossup_shadow_usd": 6.07,
+          "customer_total_shadow_usd": 12.06,
+          "shipping_method": "CJPacket Sensitive",
+          "shipping_aging": "22-27",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9989,
+            "total_inventory": 9989
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2602241254361610600",
+          "variant_name": "CJJT276654102BY",
+          "supplier_cost_usd": 0.64,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.81,
+          "product_margin_shadow": 0.8032,
+          "supplier_shipping_usd": 5.56,
+          "customer_shipping_grossup_shadow_usd": 6.11,
+          "customer_total_shadow_usd": 12.1,
+          "shipping_method": "CJPacket Eub Special Line",
+          "shipping_aging": "8-12",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5402,
+            "total_inventory": 5402
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2602241254361610300",
+          "variant_name": "CJJT276654101AZ",
+          "supplier_cost_usd": 0.64,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.81,
+          "product_margin_shadow": 0.8032,
+          "supplier_shipping_usd": 4.92,
+          "customer_shipping_grossup_shadow_usd": 5.41,
+          "customer_total_shadow_usd": 11.4,
+          "shipping_method": "CJPacket Super Pure Electricity",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9989,
+            "total_inventory": 9989
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2602241254361610300",
+          "variant_name": "CJJT276654101AZ",
+          "supplier_cost_usd": 0.64,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.81,
+          "product_margin_shadow": 0.8032,
+          "supplier_shipping_usd": 2.55,
+          "customer_shipping_grossup_shadow_usd": 2.8,
+          "customer_total_shadow_usd": 8.79,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9989,
+            "total_inventory": 9989
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "home",
+      "category": "lighting",
+      "id": "2509220718531624800",
+      "title": "USB Powered Spiral Desk Lamp Simple And Adjustable LED Desk Lamp",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/e3c9fadf-ea0a-4c31-bd54-57740ac6b1d7.jpg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2509220718531624900",
+          "variant_name": "CJJT253796301AZ",
+          "supplier_cost_usd": 2.74,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.53,
+          "product_margin_shadow": 0.5671,
+          "supplier_shipping_usd": 8.77,
+          "customer_shipping_grossup_shadow_usd": 9.64,
+          "customer_total_shadow_usd": 17.63,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5212,
+            "total_inventory": 5212
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2509220718531624900",
+          "variant_name": "CJJT253796301AZ",
+          "supplier_cost_usd": 2.74,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.53,
+          "product_margin_shadow": 0.5671,
+          "supplier_shipping_usd": 8.45,
+          "customer_shipping_grossup_shadow_usd": 9.29,
+          "customer_total_shadow_usd": 17.28,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5212,
+            "total_inventory": 5212
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2509220718531624900",
+          "variant_name": "CJJT253796301AZ",
+          "supplier_cost_usd": 2.74,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.53,
+          "product_margin_shadow": 0.5671,
+          "supplier_shipping_usd": 8.92,
+          "customer_shipping_grossup_shadow_usd": 9.8,
+          "customer_total_shadow_usd": 17.79,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5212,
+            "total_inventory": 5212
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2509220718531624900",
+          "variant_name": "CJJT253796301AZ",
+          "supplier_cost_usd": 2.74,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.53,
+          "product_margin_shadow": 0.5671,
+          "supplier_shipping_usd": 4.39,
+          "customer_shipping_grossup_shadow_usd": 4.82,
+          "customer_total_shadow_usd": 12.81,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5212,
+            "total_inventory": 5212
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "pets",
+      "category": "pet-houses",
+      "id": "2412160628521613900",
+      "title": "Portable Handle Pet Bed Small And Medium Sized Kennel Warm Cattery",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2024/12/19/03/7e9873e2-bf71-41f0-9a0e-24b0269400ed.jpg",
+      "variant_count": 2,
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2412160628521614500",
+          "variant_name": "CJYD224478601AZ",
+          "supplier_cost_usd": 3.34,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.84,
+          "product_margin_shadow": 0.5385,
+          "supplier_shipping_usd": 8.57,
+          "customer_shipping_grossup_shadow_usd": 9.42,
+          "customer_total_shadow_usd": 18.41,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8685,
+            "total_inventory": 8685
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2412160628521614500",
+          "variant_name": "CJYD224478601AZ",
+          "supplier_cost_usd": 3.34,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.84,
+          "product_margin_shadow": 0.5385,
+          "supplier_shipping_usd": 8.31,
+          "customer_shipping_grossup_shadow_usd": 9.13,
+          "customer_total_shadow_usd": 18.12,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8685,
+            "total_inventory": 8685
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2412160628521614500",
+          "variant_name": "CJYD224478601AZ",
+          "supplier_cost_usd": 3.34,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.84,
+          "product_margin_shadow": 0.5385,
+          "supplier_shipping_usd": 8.72,
+          "customer_shipping_grossup_shadow_usd": 9.58,
+          "customer_total_shadow_usd": 18.57,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8685,
+            "total_inventory": 8685
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2412160628521614500",
+          "variant_name": "CJYD224478601AZ",
+          "supplier_cost_usd": 3.34,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.84,
+          "product_margin_shadow": 0.5385,
+          "supplier_shipping_usd": 4.31,
+          "customer_shipping_grossup_shadow_usd": 4.74,
+          "customer_total_shadow_usd": 13.73,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8685,
+            "total_inventory": 8685
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "beauty",
+      "category": "nails",
+      "id": "2511160330411606600",
+      "title": "Quick-dry Metallic Mirror Nail Polish, No Baking Required",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/9ea7d138-1144-41ec-b2de-64f91004dae6.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511160330411606800",
+          "supplier_cost_usd": 0.62,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.8065,
+          "supplier_shipping_usd": 4.14,
+          "customer_shipping_grossup_shadow_usd": 4.55,
+          "customer_total_shadow_usd": 10.54,
+          "shipping_method": "CJPacket Liquid Line",
+          "shipping_aging": "9-23",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6951,
+            "total_inventory": 6951
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511160330411606800",
+          "supplier_cost_usd": 0.62,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.8065,
+          "supplier_shipping_usd": 5.28,
+          "customer_shipping_grossup_shadow_usd": 5.8,
+          "customer_total_shadow_usd": 11.79,
+          "shipping_method": "CJPacket Eub Special Line",
+          "shipping_aging": "8-12",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6951,
+            "total_inventory": 6951
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511160330411606800",
+          "supplier_cost_usd": 0.62,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.8065,
+          "supplier_shipping_usd": 5.07,
+          "customer_shipping_grossup_shadow_usd": 5.57,
+          "customer_total_shadow_usd": 11.56,
+          "shipping_method": "CJPacket Sensitive Pro",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6951,
+            "total_inventory": 6951
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511160330411606800",
+          "supplier_cost_usd": 0.62,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.8065,
+          "supplier_shipping_usd": 2.47,
+          "customer_shipping_grossup_shadow_usd": 2.71,
+          "customer_total_shadow_usd": 8.7,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6951,
+            "total_inventory": 6951
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "accessories",
+      "category": "jewelry-necklaces",
+      "id": "2508070539001621300",
+      "title": "Alloy Flying Bird Series Accessories Diy Bracelet Necklace Cuckoo Pendant",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/a054bd7a-e538-4fbc-9392-ac973c232609.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2508070539001621700",
+          "supplier_cost_usd": 0.03,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.51,
+          "product_margin_shadow": 0.904,
+          "supplier_shipping_usd": 3.45,
+          "customer_shipping_grossup_shadow_usd": 3.79,
+          "customer_total_shadow_usd": 8.78,
+          "shipping_method": "CJPacket Liquid Line",
+          "shipping_aging": "9-23",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5572,
+            "total_inventory": 5572
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2508070539001621700",
+          "supplier_cost_usd": 0.03,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.51,
+          "product_margin_shadow": 0.904,
+          "supplier_shipping_usd": 4.49,
+          "customer_shipping_grossup_shadow_usd": 4.93,
+          "customer_total_shadow_usd": 9.92,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5572,
+            "total_inventory": 5572
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2508070539001621700",
+          "supplier_cost_usd": 0.03,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.51,
+          "product_margin_shadow": 0.904,
+          "supplier_shipping_usd": 2.06,
+          "customer_shipping_grossup_shadow_usd": 2.26,
+          "customer_total_shadow_usd": 7.25,
+          "shipping_method": "Jewel Shipping",
+          "shipping_aging": "15-20",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5572,
+            "total_inventory": 5572
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2508070539001621700",
+          "supplier_cost_usd": 0.03,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.51,
+          "product_margin_shadow": 0.904,
+          "supplier_shipping_usd": 2.29,
+          "customer_shipping_grossup_shadow_usd": 2.52,
+          "customer_total_shadow_usd": 7.51,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5572,
+            "total_inventory": 5572
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "accessories",
+      "category": "jewelry-earrings",
+      "id": "2509280658331616200",
+      "title": "Retro Simple Handmade Ornament Bird Earrings Eardrops",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/628c34d7-33bb-45b6-abad-03ea6eaf5a9c.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2509280658331616400",
+          "supplier_cost_usd": 0.35,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.19,
+          "product_margin_shadow": 0.8399,
+          "supplier_shipping_usd": 3.45,
+          "customer_shipping_grossup_shadow_usd": 3.79,
+          "customer_total_shadow_usd": 8.78,
+          "shipping_method": "CJPacket Liquid Line",
+          "shipping_aging": "9-23",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6343,
+            "total_inventory": 6343
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2509280658331616400",
+          "supplier_cost_usd": 0.35,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.19,
+          "product_margin_shadow": 0.8399,
+          "supplier_shipping_usd": 4.49,
+          "customer_shipping_grossup_shadow_usd": 4.93,
+          "customer_total_shadow_usd": 9.92,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6343,
+            "total_inventory": 6343
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2509280658331616400",
+          "supplier_cost_usd": 0.35,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.19,
+          "product_margin_shadow": 0.8399,
+          "supplier_shipping_usd": 2.06,
+          "customer_shipping_grossup_shadow_usd": 2.26,
+          "customer_total_shadow_usd": 7.25,
+          "shipping_method": "Jewel Shipping",
+          "shipping_aging": "15-20",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6343,
+            "total_inventory": 6343
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2509280658331616400",
+          "supplier_cost_usd": 0.35,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.19,
+          "product_margin_shadow": 0.8399,
+          "supplier_shipping_usd": 2.29,
+          "customer_shipping_grossup_shadow_usd": 2.52,
+          "customer_total_shadow_usd": 7.51,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6343,
+            "total_inventory": 6343
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "accessories",
+      "category": "jewelry",
+      "id": "2412240441571610500",
+      "title": "4PCS Set Luxury Women Butterfly Necklace Bracelet Earrings Drop Oil Diamond Jewelry For Girl Gift Jewelry Fashion Jewelry Set",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2025/01/06/06/b418cbea-556f-4993-9caa-4267b23ccb29.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2412240441571610800",
+          "supplier_cost_usd": 0.7,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.75,
+          "product_margin_shadow": 0.7931,
+          "supplier_shipping_usd": 3.5,
+          "customer_shipping_grossup_shadow_usd": 3.85,
+          "customer_total_shadow_usd": 9.84,
+          "shipping_method": "CJPacket Liquid Line",
+          "shipping_aging": "9-23",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7039,
+            "total_inventory": 7039
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2412240441571610800",
+          "supplier_cost_usd": 0.7,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.75,
+          "product_margin_shadow": 0.7931,
+          "supplier_shipping_usd": 4.52,
+          "customer_shipping_grossup_shadow_usd": 4.97,
+          "customer_total_shadow_usd": 10.96,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7039,
+            "total_inventory": 7039
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2412240441571610800",
+          "supplier_cost_usd": 0.7,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.75,
+          "product_margin_shadow": 0.7931,
+          "supplier_shipping_usd": 2.06,
+          "customer_shipping_grossup_shadow_usd": 2.26,
+          "customer_total_shadow_usd": 8.25,
+          "shipping_method": "Jewel Shipping",
+          "shipping_aging": "15-20",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7039,
+            "total_inventory": 7039
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2412240441571610800",
+          "supplier_cost_usd": 0.7,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.75,
+          "product_margin_shadow": 0.7931,
+          "supplier_shipping_usd": 2.3,
+          "customer_shipping_grossup_shadow_usd": 2.53,
+          "customer_total_shadow_usd": 8.52,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7039,
+            "total_inventory": 7039
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "accessories",
+      "category": "bags",
+      "id": "2512110851481606800",
+      "title": "Women's Large-Capacity Travel Organizer Set Of Three Travel Duffel And Two Smaller Bags",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/e965fac8-d6d6-49e6-acdc-106dc98d10ea.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2512110851481607000",
+          "supplier_cost_usd": 6.14,
+          "retail_shadow_usd": 11.99,
+          "product_contribution_shadow_usd": 4.77,
+          "product_margin_shadow": 0.3979,
+          "supplier_shipping_usd": 14.06,
+          "customer_shipping_grossup_shadow_usd": 15.45,
+          "customer_total_shadow_usd": 27.44,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7732,
+            "total_inventory": 7732
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2512110851481607000",
+          "supplier_cost_usd": 6.14,
+          "retail_shadow_usd": 11.99,
+          "product_contribution_shadow_usd": 4.77,
+          "product_margin_shadow": 0.3979,
+          "supplier_shipping_usd": 12.44,
+          "customer_shipping_grossup_shadow_usd": 13.67,
+          "customer_total_shadow_usd": 25.66,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7732,
+            "total_inventory": 7732
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2512110851481607000",
+          "supplier_cost_usd": 6.14,
+          "retail_shadow_usd": 11.99,
+          "product_contribution_shadow_usd": 4.77,
+          "product_margin_shadow": 0.3979,
+          "supplier_shipping_usd": 13.44,
+          "customer_shipping_grossup_shadow_usd": 14.77,
+          "customer_total_shadow_usd": 26.76,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7732,
+            "total_inventory": 7732
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2512110851481607000",
+          "supplier_cost_usd": 6.14,
+          "retail_shadow_usd": 11.99,
+          "product_contribution_shadow_usd": 4.77,
+          "product_margin_shadow": 0.3979,
+          "supplier_shipping_usd": 6.65,
+          "customer_shipping_grossup_shadow_usd": 7.31,
+          "customer_total_shadow_usd": 19.3,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7732,
+            "total_inventory": 7732
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "accessories",
+      "category": "hats",
+      "id": "2511220543131611700",
+      "title": "New Plush Mongolian Hat For Autumn And Winter Cold-proof And Warm",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/ed295f65-f125-4bf3-a255-0c801e54561d.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511220543131611900",
+          "supplier_cost_usd": 0.76,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.69,
+          "product_margin_shadow": 0.7831,
+          "supplier_shipping_usd": 4.98,
+          "customer_shipping_grossup_shadow_usd": 5.47,
+          "customer_total_shadow_usd": 11.46,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9717,
+            "total_inventory": 9717
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511220543131611900",
+          "supplier_cost_usd": 0.76,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.69,
+          "product_margin_shadow": 0.7831,
+          "supplier_shipping_usd": 5.66,
+          "customer_shipping_grossup_shadow_usd": 6.22,
+          "customer_total_shadow_usd": 12.21,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9717,
+            "total_inventory": 9717
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511220543131611900",
+          "supplier_cost_usd": 0.76,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.69,
+          "product_margin_shadow": 0.7831,
+          "supplier_shipping_usd": 5.78,
+          "customer_shipping_grossup_shadow_usd": 6.35,
+          "customer_total_shadow_usd": 12.34,
+          "shipping_method": "CJPacket Pure Electricity",
+          "shipping_aging": "7-14",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9717,
+            "total_inventory": 9717
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511220543131611900",
+          "supplier_cost_usd": 0.76,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.69,
+          "product_margin_shadow": 0.7831,
+          "supplier_shipping_usd": 2.77,
+          "customer_shipping_grossup_shadow_usd": 3.04,
+          "customer_total_shadow_usd": 9.03,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9717,
+            "total_inventory": 9717
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "accessories",
+      "category": "hair-accessories",
+      "id": "2603100738411626500",
+      "title": "Makeup Hair Accessory Front Hair Clip For Women",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/03/10/07/31bf0c3b-9c30-41d4-82ea-fecf0707a875.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603100738411627000",
+          "supplier_cost_usd": 0.04,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.5,
+          "product_margin_shadow": 0.902,
+          "supplier_shipping_usd": 3.43,
+          "customer_shipping_grossup_shadow_usd": 3.77,
+          "customer_total_shadow_usd": 8.76,
+          "shipping_method": "CJPacket Liquid Line",
+          "shipping_aging": "9-23",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8775,
+            "total_inventory": 8775
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603100738411627000",
+          "supplier_cost_usd": 0.04,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.5,
+          "product_margin_shadow": 0.902,
+          "supplier_shipping_usd": 4.48,
+          "customer_shipping_grossup_shadow_usd": 4.92,
+          "customer_total_shadow_usd": 9.91,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8775,
+            "total_inventory": 8775
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603100738411627000",
+          "supplier_cost_usd": 0.04,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.5,
+          "product_margin_shadow": 0.902,
+          "supplier_shipping_usd": 2.06,
+          "customer_shipping_grossup_shadow_usd": 2.26,
+          "customer_total_shadow_usd": 7.25,
+          "shipping_method": "Jewel Shipping",
+          "shipping_aging": "15-20",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8775,
+            "total_inventory": 8775
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603100738411627000",
+          "supplier_cost_usd": 0.04,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.5,
+          "product_margin_shadow": 0.902,
+          "supplier_shipping_usd": 2.28,
+          "customer_shipping_grossup_shadow_usd": 2.51,
+          "customer_total_shadow_usd": 7.5,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 8775,
+            "total_inventory": 8775
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "tech",
+      "category": "gaming",
+      "id": "2511260258281614300",
+      "title": "Gaming Headset Esports Sound Positioning Wired With Microphone Universal",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2025/11/26/02/94bf6770-ad3c-4f97-b010-3f05613259bf_trans.jpeg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511260258281614500",
+          "supplier_cost_usd": 0.71,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.74,
+          "product_margin_shadow": 0.7915,
+          "supplier_shipping_usd": 3.79,
+          "customer_shipping_grossup_shadow_usd": 4.16,
+          "customer_total_shadow_usd": 10.15,
+          "shipping_method": "CJPacket Liquid Line",
+          "shipping_aging": "9-23",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5929,
+            "total_inventory": 5929
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511260258281614500",
+          "supplier_cost_usd": 0.71,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.74,
+          "product_margin_shadow": 0.7915,
+          "supplier_shipping_usd": 4.73,
+          "customer_shipping_grossup_shadow_usd": 5.2,
+          "customer_total_shadow_usd": 11.19,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5929,
+            "total_inventory": 5929
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511260258281614500",
+          "supplier_cost_usd": 0.71,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.74,
+          "product_margin_shadow": 0.7915,
+          "supplier_shipping_usd": 4.75,
+          "customer_shipping_grossup_shadow_usd": 5.22,
+          "customer_total_shadow_usd": 11.21,
+          "shipping_method": "CJPacket Super Pure Electricity",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5929,
+            "total_inventory": 5929
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511260258281614500",
+          "supplier_cost_usd": 0.71,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.74,
+          "product_margin_shadow": 0.7915,
+          "supplier_shipping_usd": 2.38,
+          "customer_shipping_grossup_shadow_usd": 2.62,
+          "customer_total_shadow_usd": 8.61,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5929,
+            "total_inventory": 5929
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "home",
+      "category": "bedding",
+      "id": "2410100547241617300",
+      "title": "Soft Wind Bubble Velvet Blanket Warm Solid Rabbit Fur Blankets Double-sided Thickening Cover Throw Warm Fur Blanket",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2024/10/17/02/c8589f5d-7f0f-440f-b53d-54f42d92b989.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2410100547241617500",
+          "supplier_cost_usd": 2.25,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.11,
+          "product_margin_shadow": 0.5881,
+          "supplier_shipping_usd": 9.53,
+          "customer_shipping_grossup_shadow_usd": 10.47,
+          "customer_total_shadow_usd": 17.46,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10224,
+            "total_inventory": 10224
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2410100547241617500",
+          "supplier_cost_usd": 2.25,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.11,
+          "product_margin_shadow": 0.5881,
+          "supplier_shipping_usd": 9.02,
+          "customer_shipping_grossup_shadow_usd": 9.91,
+          "customer_total_shadow_usd": 16.9,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10224,
+            "total_inventory": 10224
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2410100547241617700",
+          "supplier_cost_usd": 3.66,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.52,
+          "product_margin_shadow": 0.5029,
+          "supplier_shipping_usd": 12.42,
+          "customer_shipping_grossup_shadow_usd": 13.65,
+          "customer_total_shadow_usd": 22.64,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10961,
+            "total_inventory": 10961
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2410100547241617500",
+          "supplier_cost_usd": 2.25,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.11,
+          "product_margin_shadow": 0.5881,
+          "supplier_shipping_usd": 4.71,
+          "customer_shipping_grossup_shadow_usd": 5.18,
+          "customer_total_shadow_usd": 12.17,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10224,
+            "total_inventory": 10224
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "home",
+      "category": "cleaning",
+      "id": "2504040442271628900",
+      "title": "Disposable Toilet Brush Set Household Bathroom Without Dead Angle",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2025/04/04/04/80298ec5-2075-4371-b2de-fd02c410c0ee_trans.jpeg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2504040442271629100",
+          "supplier_cost_usd": 2.6,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.67,
+          "product_margin_shadow": 0.5846,
+          "supplier_shipping_usd": 9.53,
+          "customer_shipping_grossup_shadow_usd": 10.47,
+          "customer_total_shadow_usd": 18.46,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7882,
+            "total_inventory": 7882
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2504040442271629100",
+          "supplier_cost_usd": 2.6,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.67,
+          "product_margin_shadow": 0.5846,
+          "supplier_shipping_usd": 11.27,
+          "customer_shipping_grossup_shadow_usd": 12.38,
+          "customer_total_shadow_usd": 20.37,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7882,
+            "total_inventory": 7882
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2504040442271629100",
+          "supplier_cost_usd": 2.6,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.67,
+          "product_margin_shadow": 0.5846,
+          "supplier_shipping_usd": 13.01,
+          "customer_shipping_grossup_shadow_usd": 14.3,
+          "customer_total_shadow_usd": 22.29,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7882,
+            "total_inventory": 7882
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2504040442271629100",
+          "supplier_cost_usd": 2.6,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.67,
+          "product_margin_shadow": 0.5846,
+          "supplier_shipping_usd": 4.71,
+          "customer_shipping_grossup_shadow_usd": 5.18,
+          "customer_total_shadow_usd": 13.17,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7882,
+            "total_inventory": 7882
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "sports",
+      "category": "sports-gear",
+      "id": "0C862543-E20F-4900-8AA6-24505AA12662",
+      "title": "Skipping Rope With Counter Adjustable Length Counter Wear-resistant Foam Cotton Handle JumpRope Exercise Portable Sports Training Equipment",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2025/06/16/05/126af1ff-2a81-4034-bebd-e87bf30bfb55.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2E69A44E-1D42-49F9-9D45-7423DDD3CA82",
+          "supplier_cost_usd": 0.99,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.46,
+          "product_margin_shadow": 0.7447,
+          "supplier_shipping_usd": 5.24,
+          "customer_shipping_grossup_shadow_usd": 5.76,
+          "customer_total_shadow_usd": 11.75,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10935,
+            "total_inventory": 10935
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2E69A44E-1D42-49F9-9D45-7423DDD3CA82",
+          "supplier_cost_usd": 0.99,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.46,
+          "product_margin_shadow": 0.7447,
+          "supplier_shipping_usd": 5.86,
+          "customer_shipping_grossup_shadow_usd": 6.44,
+          "customer_total_shadow_usd": 12.43,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10935,
+            "total_inventory": 10935
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2E69A44E-1D42-49F9-9D45-7423DDD3CA82",
+          "supplier_cost_usd": 0.99,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.46,
+          "product_margin_shadow": 0.7447,
+          "supplier_shipping_usd": 5.75,
+          "customer_shipping_grossup_shadow_usd": 6.32,
+          "customer_total_shadow_usd": 12.31,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10935,
+            "total_inventory": 10935
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2E69A44E-1D42-49F9-9D45-7423DDD3CA82",
+          "supplier_cost_usd": 0.99,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.46,
+          "product_margin_shadow": 0.7447,
+          "supplier_shipping_usd": 2.88,
+          "customer_shipping_grossup_shadow_usd": 3.16,
+          "customer_total_shadow_usd": 9.15,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10935,
+            "total_inventory": 10935
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "pets",
+      "category": "pet-clothing",
+      "id": "2407110755091600100",
+      "title": "Pet Clothes Teddy Bichon Pomeranian Jarre Aero Bull Cat Dog Summer Thin Large Dog Pet Hawaiian Shirt",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/b5b7e276-8239-422c-a679-2e52fb00b8f1.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2407110755091601000",
+          "supplier_cost_usd": 0.64,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.81,
+          "product_margin_shadow": 0.8032,
+          "supplier_shipping_usd": 7.88,
+          "customer_shipping_grossup_shadow_usd": 8.66,
+          "customer_total_shadow_usd": 14.65,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 11302,
+            "total_inventory": 11302
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2407110755091601000",
+          "supplier_cost_usd": 0.64,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.81,
+          "product_margin_shadow": 0.8032,
+          "supplier_shipping_usd": 7.78,
+          "customer_shipping_grossup_shadow_usd": 8.55,
+          "customer_total_shadow_usd": 14.54,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 11302,
+            "total_inventory": 11302
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2407110755091601000",
+          "supplier_cost_usd": 0.64,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.81,
+          "product_margin_shadow": 0.8032,
+          "supplier_shipping_usd": 8.01,
+          "customer_shipping_grossup_shadow_usd": 8.8,
+          "customer_total_shadow_usd": 14.79,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 11302,
+            "total_inventory": 11302
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2407110755091601000",
+          "supplier_cost_usd": 0.64,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.81,
+          "product_margin_shadow": 0.8032,
+          "supplier_shipping_usd": 4.01,
+          "customer_shipping_grossup_shadow_usd": 4.41,
+          "customer_total_shadow_usd": 10.4,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 11302,
+            "total_inventory": 11302
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "women",
+      "category": "women-socks",
+      "id": "2603300611191605200",
+      "title": "Solid-color Athletic Compression Socks Womens Long Compression Stockings",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/3aebeb0a-d6ab-4909-8621-4b11f284b3cf.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603300611191605600",
+          "supplier_cost_usd": 0.62,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.8065,
+          "supplier_shipping_usd": 4.73,
+          "customer_shipping_grossup_shadow_usd": 5.2,
+          "customer_total_shadow_usd": 11.19,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6788,
+            "total_inventory": 6788
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603300611191605600",
+          "supplier_cost_usd": 0.62,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.8065,
+          "supplier_shipping_usd": 5.46,
+          "customer_shipping_grossup_shadow_usd": 6,
+          "customer_total_shadow_usd": 11.99,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6788,
+            "total_inventory": 6788
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603300611191605600",
+          "supplier_cost_usd": 0.62,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.8065,
+          "supplier_shipping_usd": 5.44,
+          "customer_shipping_grossup_shadow_usd": 5.98,
+          "customer_total_shadow_usd": 11.97,
+          "shipping_method": "CJPacket Pure Electricity",
+          "shipping_aging": "7-14",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6788,
+            "total_inventory": 6788
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2603300611191605600",
+          "supplier_cost_usd": 0.62,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.83,
+          "product_margin_shadow": 0.8065,
+          "supplier_shipping_usd": 2.66,
+          "customer_shipping_grossup_shadow_usd": 2.92,
+          "customer_total_shadow_usd": 8.91,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6788,
+            "total_inventory": 6788
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "men",
+      "category": "men-socks",
+      "id": "2504241209171610800",
+      "title": "Fall Winter Men Summer Thin Socks",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2025/04/24/12/1d230697-edae-41f1-85b1-90ec99fd0854_trans.jpeg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2504241209171611100",
+          "supplier_cost_usd": 0.43,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.11,
+          "product_margin_shadow": 0.8238,
+          "supplier_shipping_usd": 4.31,
+          "customer_shipping_grossup_shadow_usd": 4.74,
+          "customer_total_shadow_usd": 9.73,
+          "shipping_method": "CJPacket Liquid Line",
+          "shipping_aging": "9-23",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7458,
+            "total_inventory": 7458
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2504241209171611100",
+          "supplier_cost_usd": 0.43,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.11,
+          "product_margin_shadow": 0.8238,
+          "supplier_shipping_usd": 5.11,
+          "customer_shipping_grossup_shadow_usd": 5.62,
+          "customer_total_shadow_usd": 10.61,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7458,
+            "total_inventory": 7458
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2504241209171611100",
+          "supplier_cost_usd": 0.43,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.11,
+          "product_margin_shadow": 0.8238,
+          "supplier_shipping_usd": 4.83,
+          "customer_shipping_grossup_shadow_usd": 5.31,
+          "customer_total_shadow_usd": 10.3,
+          "shipping_method": "CJPacket Super Pure Electricity",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7458,
+            "total_inventory": 7458
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2504241209171611100",
+          "supplier_cost_usd": 0.43,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.11,
+          "product_margin_shadow": 0.8238,
+          "supplier_shipping_usd": 2.52,
+          "customer_shipping_grossup_shadow_usd": 2.77,
+          "customer_total_shadow_usd": 7.76,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7458,
+            "total_inventory": 7458
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "men",
+      "category": "men-clothing",
+      "id": "2406111152331626000",
+      "title": "Lace-up Drawstring Shorts Summer Corduroy Sports Short Pants Mens Clothing",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2024/06/17/09/63cd98d5-9457-4088-8942-1bb51b2dc854.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2406111152331626200",
+          "supplier_cost_usd": 3.49,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.69,
+          "product_margin_shadow": 0.5218,
+          "supplier_shipping_usd": 6.36,
+          "customer_shipping_grossup_shadow_usd": 6.99,
+          "customer_total_shadow_usd": 15.98,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 12060,
+            "total_inventory": 12060
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2406111152331626200",
+          "supplier_cost_usd": 3.49,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.69,
+          "product_margin_shadow": 0.5218,
+          "supplier_shipping_usd": 6.77,
+          "customer_shipping_grossup_shadow_usd": 7.44,
+          "customer_total_shadow_usd": 16.43,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 12060,
+            "total_inventory": 12060
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2406111152331626200",
+          "supplier_cost_usd": 3.49,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.69,
+          "product_margin_shadow": 0.5218,
+          "supplier_shipping_usd": 6.44,
+          "customer_shipping_grossup_shadow_usd": 7.08,
+          "customer_total_shadow_usd": 16.07,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 12060,
+            "total_inventory": 12060
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2406111152331626200",
+          "supplier_cost_usd": 3.49,
+          "retail_shadow_usd": 8.99,
+          "product_contribution_shadow_usd": 4.69,
+          "product_margin_shadow": 0.5218,
+          "supplier_shipping_usd": 3.36,
+          "customer_shipping_grossup_shadow_usd": 3.69,
+          "customer_total_shadow_usd": 12.68,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 12060,
+            "total_inventory": 12060
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "accessories",
+      "category": "bag-accessories",
+      "id": "2511170135201623100",
+      "title": "Shoulder Strap Colorful Adjustable Long Women's Bag Replacement Accessories",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2025/11/17/01/c96bab77-1ef2-42aa-ba58-d24e276af647_trans.jpeg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511170135201623400",
+          "supplier_cost_usd": 1.71,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.65,
+          "product_margin_shadow": 0.6654,
+          "supplier_shipping_usd": 5.29,
+          "customer_shipping_grossup_shadow_usd": 5.81,
+          "customer_total_shadow_usd": 12.8,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7653,
+            "total_inventory": 7653
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511170135201623400",
+          "supplier_cost_usd": 1.71,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.65,
+          "product_margin_shadow": 0.6654,
+          "supplier_shipping_usd": 5.91,
+          "customer_shipping_grossup_shadow_usd": 6.49,
+          "customer_total_shadow_usd": 13.48,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7653,
+            "total_inventory": 7653
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511170135201623400",
+          "supplier_cost_usd": 1.71,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.65,
+          "product_margin_shadow": 0.6654,
+          "supplier_shipping_usd": 5.84,
+          "customer_shipping_grossup_shadow_usd": 6.42,
+          "customer_total_shadow_usd": 13.41,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7653,
+            "total_inventory": 7653
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511170135201623400",
+          "supplier_cost_usd": 1.71,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.65,
+          "product_margin_shadow": 0.6654,
+          "supplier_shipping_usd": 2.91,
+          "customer_shipping_grossup_shadow_usd": 3.2,
+          "customer_total_shadow_usd": 10.19,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7653,
+            "total_inventory": 7653
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "accessories",
+      "category": "socks",
+      "id": "2507020635441606500",
+      "title": "Multi-purpose Buffer Socks High-performance Mid-calf",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/45f29b1b-943d-429e-b594-bd7f35dbe565.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2507020635441606800",
+          "supplier_cost_usd": 0.35,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.19,
+          "product_margin_shadow": 0.8399,
+          "supplier_shipping_usd": 4.28,
+          "customer_shipping_grossup_shadow_usd": 4.7,
+          "customer_total_shadow_usd": 9.69,
+          "shipping_method": "CJPacket Liquid Line",
+          "shipping_aging": "9-23",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5597,
+            "total_inventory": 5597
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2507020635441606800",
+          "supplier_cost_usd": 0.35,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.19,
+          "product_margin_shadow": 0.8399,
+          "supplier_shipping_usd": 5.1,
+          "customer_shipping_grossup_shadow_usd": 5.6,
+          "customer_total_shadow_usd": 10.59,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5597,
+            "total_inventory": 5597
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2507020635441606800",
+          "supplier_cost_usd": 0.35,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.19,
+          "product_margin_shadow": 0.8399,
+          "supplier_shipping_usd": 5.01,
+          "customer_shipping_grossup_shadow_usd": 5.51,
+          "customer_total_shadow_usd": 10.5,
+          "shipping_method": "CJPacket Pure Electricity",
+          "shipping_aging": "7-14",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5597,
+            "total_inventory": 5597
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2507020635441606800",
+          "supplier_cost_usd": 0.35,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.19,
+          "product_margin_shadow": 0.8399,
+          "supplier_shipping_usd": 2.51,
+          "customer_shipping_grossup_shadow_usd": 2.76,
+          "customer_total_shadow_usd": 7.75,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5597,
+            "total_inventory": 5597
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "home",
+      "category": "home-storage",
+      "id": "2507240649591613100",
+      "title": "Toilet Toilet Paper Holder Floor-standing Bathroom Toilet Brush Storage Rack",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/1ab90f31-10cb-42e5-a411-3fc5d7507ee5.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2507240649591613400",
+          "supplier_cost_usd": 17.41,
+          "retail_shadow_usd": 31.99,
+          "product_contribution_shadow_usd": 11.7,
+          "product_margin_shadow": 0.3658,
+          "supplier_shipping_usd": 34.62,
+          "customer_shipping_grossup_shadow_usd": 38.04,
+          "customer_total_shadow_usd": 70.03,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9215,
+            "total_inventory": 9215
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2507240649591613400",
+          "supplier_cost_usd": 17.41,
+          "retail_shadow_usd": 31.99,
+          "product_contribution_shadow_usd": 11.7,
+          "product_margin_shadow": 0.3658,
+          "supplier_shipping_usd": 28.19,
+          "customer_shipping_grossup_shadow_usd": 30.98,
+          "customer_total_shadow_usd": 62.97,
+          "shipping_method": "YunExpress Ordinary",
+          "shipping_aging": "6-8",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9215,
+            "total_inventory": 9215
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2507240649591613400",
+          "supplier_cost_usd": 17.41,
+          "retail_shadow_usd": 31.99,
+          "product_contribution_shadow_usd": 11.7,
+          "product_margin_shadow": 0.3658,
+          "supplier_shipping_usd": 33.55,
+          "customer_shipping_grossup_shadow_usd": 36.87,
+          "customer_total_shadow_usd": 68.86,
+          "shipping_method": "YunExpress Ordinary",
+          "shipping_aging": "4-7",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9215,
+            "total_inventory": 9215
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2507240649591613400",
+          "supplier_cost_usd": 17.41,
+          "retail_shadow_usd": 31.99,
+          "product_contribution_shadow_usd": 11.7,
+          "product_margin_shadow": 0.3658,
+          "supplier_shipping_usd": 14.78,
+          "customer_shipping_grossup_shadow_usd": 16.24,
+          "customer_total_shadow_usd": 48.23,
+          "shipping_method": "CJPacket Asia Ordinary",
+          "shipping_aging": "4-6",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9215,
+            "total_inventory": 9215
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "home",
+      "category": "bath",
+      "id": "2510270906241637900",
+      "title": "Solid Color Bathroom Bedroom Door Bathroom Non-slip Floor Mat",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2025/10/27/12/0ba4b5e2-43ee-4d82-aaee-6e0c5f35dab7_trans.jpeg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2510270906241638100",
+          "supplier_cost_usd": 2.14,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.22,
+          "product_margin_shadow": 0.6038,
+          "supplier_shipping_usd": 7.13,
+          "customer_shipping_grossup_shadow_usd": 7.84,
+          "customer_total_shadow_usd": 14.83,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7173,
+            "total_inventory": 7173
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2510270906241638100",
+          "supplier_cost_usd": 2.14,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.22,
+          "product_margin_shadow": 0.6038,
+          "supplier_shipping_usd": 7.38,
+          "customer_shipping_grossup_shadow_usd": 8.11,
+          "customer_total_shadow_usd": 15.1,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7173,
+            "total_inventory": 7173
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2510270906241638100",
+          "supplier_cost_usd": 2.14,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.22,
+          "product_margin_shadow": 0.6038,
+          "supplier_shipping_usd": 7.24,
+          "customer_shipping_grossup_shadow_usd": 7.96,
+          "customer_total_shadow_usd": 14.95,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7173,
+            "total_inventory": 7173
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2510270906241638100",
+          "supplier_cost_usd": 2.14,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.22,
+          "product_margin_shadow": 0.6038,
+          "supplier_shipping_usd": 3.7,
+          "customer_shipping_grossup_shadow_usd": 4.07,
+          "customer_total_shadow_usd": 11.06,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 7173,
+            "total_inventory": 7173
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "home",
+      "category": "mirrors",
+      "id": "2506050538271621200",
+      "title": "European-style Solid Wood Handmade Finish Hanging Mirror Homestay Hotel Entrance Decoration Hanging",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/21b4d3fe-aeb6-45f3-9868-7fd3f4d238a1.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2506050538271621600",
+          "supplier_cost_usd": 3.19,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.08,
+          "product_margin_shadow": 0.5108,
+          "supplier_shipping_usd": 11.23,
+          "customer_shipping_grossup_shadow_usd": 12.34,
+          "customer_total_shadow_usd": 20.33,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5129,
+            "total_inventory": 5129
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2506050538271621600",
+          "supplier_cost_usd": 3.19,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.08,
+          "product_margin_shadow": 0.5108,
+          "supplier_shipping_usd": 10.3,
+          "customer_shipping_grossup_shadow_usd": 11.32,
+          "customer_total_shadow_usd": 19.31,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5129,
+            "total_inventory": 5129
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2506050538271621600",
+          "supplier_cost_usd": 3.19,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.08,
+          "product_margin_shadow": 0.5108,
+          "supplier_shipping_usd": 11.45,
+          "customer_shipping_grossup_shadow_usd": 12.58,
+          "customer_total_shadow_usd": 20.57,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5129,
+            "total_inventory": 5129
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2506050538271621600",
+          "supplier_cost_usd": 3.19,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.08,
+          "product_margin_shadow": 0.5108,
+          "supplier_shipping_usd": 5.43,
+          "customer_shipping_grossup_shadow_usd": 5.97,
+          "customer_total_shadow_usd": 13.96,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5129,
+            "total_inventory": 5129
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "sports",
+      "category": "outdoors",
+      "id": "2409100356371612400",
+      "title": "Outdoor Ultralight Portable Folding Tripod",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2026/02/06/14/02456634-e7b2-4b8d-adca-bea584ed85fa.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2409100356371612800",
+          "supplier_cost_usd": 1.19,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.26,
+          "product_margin_shadow": 0.7113,
+          "supplier_shipping_usd": 7.86,
+          "customer_shipping_grossup_shadow_usd": 8.64,
+          "customer_total_shadow_usd": 14.63,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10057,
+            "total_inventory": 10057
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2409100356371612800",
+          "supplier_cost_usd": 1.19,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.26,
+          "product_margin_shadow": 0.7113,
+          "supplier_shipping_usd": 7.77,
+          "customer_shipping_grossup_shadow_usd": 8.54,
+          "customer_total_shadow_usd": 14.53,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10057,
+            "total_inventory": 10057
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2409100356371612800",
+          "supplier_cost_usd": 1.19,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.26,
+          "product_margin_shadow": 0.7113,
+          "supplier_shipping_usd": 7.97,
+          "customer_shipping_grossup_shadow_usd": 8.76,
+          "customer_total_shadow_usd": 14.75,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10057,
+            "total_inventory": 10057
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2409100356371612800",
+          "supplier_cost_usd": 1.19,
+          "retail_shadow_usd": 5.99,
+          "product_contribution_shadow_usd": 4.26,
+          "product_margin_shadow": 0.7113,
+          "supplier_shipping_usd": 4.01,
+          "customer_shipping_grossup_shadow_usd": 4.41,
+          "customer_total_shadow_usd": 10.4,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10057,
+            "total_inventory": 10057
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "pets",
+      "category": "aquarium",
+      "id": "2511270603041624600",
+      "title": "Aquarium PVC Decoration Hiding House Ornament",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/860d5b82-2d80-46c6-8b3c-6a2489347dd2.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511270603041624900",
+          "supplier_cost_usd": 0.53,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.01,
+          "product_margin_shadow": 0.8038,
+          "supplier_shipping_usd": 4,
+          "customer_shipping_grossup_shadow_usd": 4.4,
+          "customer_total_shadow_usd": 9.39,
+          "shipping_method": "CJPacket Liquid Line",
+          "shipping_aging": "9-23",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9067,
+            "total_inventory": 9067
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511270603041624900",
+          "supplier_cost_usd": 0.53,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.01,
+          "product_margin_shadow": 0.8038,
+          "supplier_shipping_usd": 4.88,
+          "customer_shipping_grossup_shadow_usd": 5.36,
+          "customer_total_shadow_usd": 10.35,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9067,
+            "total_inventory": 9067
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511270603041624900",
+          "supplier_cost_usd": 0.53,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.01,
+          "product_margin_shadow": 0.8038,
+          "supplier_shipping_usd": 4.75,
+          "customer_shipping_grossup_shadow_usd": 5.22,
+          "customer_total_shadow_usd": 10.21,
+          "shipping_method": "CJPacket Super Pure Electricity",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9067,
+            "total_inventory": 9067
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2511270603041624900",
+          "supplier_cost_usd": 0.53,
+          "retail_shadow_usd": 4.99,
+          "product_contribution_shadow_usd": 4.01,
+          "product_margin_shadow": 0.8038,
+          "supplier_shipping_usd": 2.43,
+          "customer_shipping_grossup_shadow_usd": 2.67,
+          "customer_total_shadow_usd": 7.66,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 9067,
+            "total_inventory": 9067
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "office",
+      "category": "crafts",
+      "id": "2604280731471620000",
+      "title": "New Embroidery DIY Landscape Handmade Fabric Craft Material Kit",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/f21da0f1-e023-49e0-9212-4e1b74e4255f.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604280731471620500",
+          "supplier_cost_usd": 1.91,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.45,
+          "product_margin_shadow": 0.6368,
+          "supplier_shipping_usd": 4.79,
+          "customer_shipping_grossup_shadow_usd": 5.26,
+          "customer_total_shadow_usd": 12.25,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6059,
+            "total_inventory": 6059
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604280731471620500",
+          "supplier_cost_usd": 1.91,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.45,
+          "product_margin_shadow": 0.6368,
+          "supplier_shipping_usd": 5.51,
+          "customer_shipping_grossup_shadow_usd": 6.05,
+          "customer_total_shadow_usd": 13.04,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6059,
+            "total_inventory": 6059
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604280731471620500",
+          "supplier_cost_usd": 1.91,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.45,
+          "product_margin_shadow": 0.6368,
+          "supplier_shipping_usd": 5.34,
+          "customer_shipping_grossup_shadow_usd": 5.87,
+          "customer_total_shadow_usd": 12.86,
+          "shipping_method": "CJPacket Super Pure Electricity",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 6059,
+            "total_inventory": 6059
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2604280731471620900",
+          "supplier_cost_usd": 2.09,
+          "retail_shadow_usd": 6.99,
+          "product_contribution_shadow_usd": 4.27,
+          "product_margin_shadow": 0.611,
+          "supplier_shipping_usd": 2.93,
+          "customer_shipping_grossup_shadow_usd": 3.22,
+          "customer_total_shadow_usd": 10.21,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5317,
+            "total_inventory": 5317
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "office",
+      "category": "stickers",
+      "id": "2508200728421609200",
+      "title": "Spaceman Astronaut Wall Decorations Stickers",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/89771cbe-49a8-4793-b868-e12db0133e70.jpg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2508200728421609400",
+          "supplier_cost_usd": 2.78,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.49,
+          "product_margin_shadow": 0.5621,
+          "supplier_shipping_usd": 4.86,
+          "customer_shipping_grossup_shadow_usd": 5.34,
+          "customer_total_shadow_usd": 13.33,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5886,
+            "total_inventory": 5886
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2508200728421609400",
+          "supplier_cost_usd": 2.78,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.49,
+          "product_margin_shadow": 0.5621,
+          "supplier_shipping_usd": 5.56,
+          "customer_shipping_grossup_shadow_usd": 6.11,
+          "customer_total_shadow_usd": 14.1,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5886,
+            "total_inventory": 5886
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2508200728421609400",
+          "supplier_cost_usd": 2.78,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.49,
+          "product_margin_shadow": 0.5621,
+          "supplier_shipping_usd": 5.42,
+          "customer_shipping_grossup_shadow_usd": 5.96,
+          "customer_total_shadow_usd": 13.95,
+          "shipping_method": "CJPacket Super Pure Electricity",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5886,
+            "total_inventory": 5886
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2508200728421609400",
+          "supplier_cost_usd": 2.78,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.49,
+          "product_margin_shadow": 0.5621,
+          "supplier_shipping_usd": 2.71,
+          "customer_shipping_grossup_shadow_usd": 2.98,
+          "customer_total_shadow_usd": 10.97,
+          "shipping_method": "CJPacket Asia Liquid Line",
+          "shipping_aging": "5-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 5886,
+            "total_inventory": 5886
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    }
+  ],
+  "rules": [
+    "Exact CJ product and exact variant only.",
+    "Fresh stock and destination shipping verified for IL/DE/US/SG.",
+    "HUNT Price Gate V2 shadow pricing only.",
+    "Final profit remains unverified until taxes/imports/live payment/refund costs are included.",
+    "No order, checkout, fulfillment or Production mutation."
+  ]
+}

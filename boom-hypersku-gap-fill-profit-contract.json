@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-HYPERSKU-GAP-FILL-PROFIT-SHADOW-V1",
+  "version": "HUNT-HYPERSKU-GAP-FILL-PROFIT-SHADOW-V2",
   "date": "2026-09-23",
   "mode": "CURATION_AND_QUOTE_GATE",
   "production_effect": false,
@@ -406,6 +406,26 @@
         "title": "Office Storage",
         "current_clean_candidates": 3
       }
+    ],
+    "post_cj_verified_products": 36,
+    "post_cj_category_rails": 131,
+    "post_cj_total_browsable_products": 5179,
+    "post_cj_remaining_zero_categories": 2,
+    "post_cj_zero_categories": [
+      {
+        "department": "home",
+        "category": "laundry",
+        "title": "Laundry",
+        "current_clean_candidates": 0,
+        "current_clean_candidates_after_cj": 0
+      },
+      {
+        "department": "home",
+        "category": "entryway",
+        "title": "Entryway",
+        "current_clean_candidates": 0,
+        "current_clean_candidates_after_cj": 0
+      }
     ]
   },
   "hypersku_target_distribution": {
@@ -586,5 +606,33 @@
     "Do not scrape or reverse-engineer HyperSKU; use official Search Products, Smart Sourcing, Private Products, manual import or approved Open API.",
     "BOOM Stylist may prioritize sourcing targets for thin/zero shelves but may not fabricate product cards."
   ],
-  "next": "SOURCE_EXACT_SKUS_FOR_ZERO_AND_THIN_CATEGORIES_THEN_RUN_COUNTRY_PRICE_GATE"
+  "next": "HYPERSKU_SMART_SOURCE_PRIORITY_1_REMAINING_ZERO_CATEGORIES_THEN_THIN_SHELVES",
+  "hypersku_priority_1_sourcing_queue": [
+    {
+      "department": "home",
+      "category": "laundry",
+      "title": "Laundry",
+      "required": "EXACT_HYPERSKU_SKU + VARIANT + DESTINATION_QUOTE + PROFIT_GATE",
+      "markets": [
+        "IL",
+        "DE",
+        "US",
+        "SG"
+      ],
+      "status": "SMART_SOURCING_REQUIRED"
+    },
+    {
+      "department": "home",
+      "category": "entryway",
+      "title": "Entryway",
+      "required": "EXACT_HYPERSKU_SKU + VARIANT + DESTINATION_QUOTE + PROFIT_GATE",
+      "markets": [
+        "IL",
+        "DE",
+        "US",
+        "SG"
+      ],
+      "status": "SMART_SOURCING_REQUIRED"
+    }
+  ]
 }

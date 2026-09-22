@@ -13,6 +13,8 @@ const defs=ctx.window.HuntCore.categoryDefs;
 const deptContract=JSON.parse(fs.readFileSync("boom-shelf-department-contract.json","utf8"));
 const truthMatrix=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-2026-09-23.json","utf8"));
 const truthIds=new Set(truthMatrix.products.map(x=>String(x.product_id)));
+const cjVerified=JSON.parse(fs.readFileSync("evidence/HUNT-CJ-GAP-FILL-VERIFIED-2026-09-23.json","utf8"));
+const cjVerifiedIds=new Set(cjVerified.results.map(x=>String(x.id)));
 const blocked=/\b(weapon|knife|blade|gun|firearm|ammo|ammunition|vape|cigarette|nicotine|cbd|thc|adult|hunting)\b/i;
 const specialCategories={
   camping:["camping-shelter","camping-sleep","camping-lighting","camping-cook","outdoors"],
@@ -79,6 +81,49 @@ for(const d of deptContract.departments){
     }
   }
 }
+
+// Inject exact CJ products that passed fresh stock + destination shipping in IL/DE/US/SG.
+// These are still Shadow-only because final landed profit is not yet verified.
+for(const p of cjVerified.results){
+  const dept=String(p.department||"");
+  const chosen=String(p.category||"");
+  const d=deptContract.departments.find(x=>x.slug===dept);
+  const cats=specialCategories[dept]||H.departments[dept]||[];
+  if(!d||!cats.includes(chosen)||!p.id||!p.image_url)continue;
+  const id=String(p.id),key="CJdropshipping:"+id;
+  const il=p.markets?.IL||{};
+  const marketVerified=["IL","DE","US","SG"].filter(cc=>p.markets?.[cc]?.state==="STOCK_SHIPPING_VERIFIED");
+  if(marketVerified.length!==4)continue;
+  const candidate={
+    provider:"CJdropshipping",
+    item_id:id,
+    department:dept,
+    department_title:d.title,
+    category:chosen,
+    category_title:(defs[chosen]&&defs[chosen].title)||chosen,
+    title:String(p.title||"Untitled product"),
+    image_url:String(p.image_url),
+    availability_verified:true,
+    availability_basis:"LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+    inventory_snapshot:null,
+    supplier_cost_min:Number(il.supplier_cost_usd)||null,
+    currency:"USD",
+    variant_count:null,
+    image_count:null,
+    truth_state:"CJ_VERIFIED_4_MARKETS",
+    markets_verified:marketVerified,
+    market_verification_state:"IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+    retail_shadow_usd:Number(il.retail_shadow_usd)||null,
+    customer_total_il_shadow_usd:Number(il.customer_total_shadow_usd)||null,
+    product_contribution_shadow_usd:Number(il.product_contribution_shadow_usd)||null,
+    final_profit_verified:false,
+    checkout_status:"DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
+    production_exposure:false,
+    _routeStrength:220,
+    _score:2000000
+  };
+  routes.set(key,candidate);
+}
 const grouped={};
 for(const d of deptContract.departments){
   const cats=specialCategories[d.slug]||H.departments[d.slug]||[];
@@ -110,7 +155,8 @@ for(const d of deptContract.departments){
     });
   }
   const heroPool=categoryRows.flatMap(c=>c.products.map(p=>({...p,_cat:c.slug})));
-  heroPool.sort((a,b)=>(b.truth_state==="GLOBAL_PRODUCT_TRUTH")-(a.truth_state==="GLOBAL_PRODUCT_TRUTH") || String(a.title).localeCompare(String(b.title)));
+  const truthRank=x=>x.truth_state==="CJ_VERIFIED_4_MARKETS"?3:x.truth_state==="GLOBAL_PRODUCT_TRUTH"?2:1;
+  heroPool.sort((a,b)=>truthRank(b)-truthRank(a) || String(a.title).localeCompare(String(b.title)));
   const hero=heroPool[0]||null;
   departments.push({
     slug:d.slug,title:d.title,
@@ -130,7 +176,8 @@ const out={
     staging:"/Users/adichehade/.hunt-final-candidate-v1/catalog-staging",
     taxonomy:"/Users/adichehade/.hunt-final-candidate-v1/hunt-department-map-v1.js",
     departments:"boom-shelf-department-contract.json",
-    product_truth:"evidence/HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-2026-09-23.json"
+    product_truth:"evidence/HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-2026-09-23.json",
+    cj_gap_fill_truth:"evidence/HUNT-CJ-GAP-FILL-VERIFIED-2026-09-23.json"
   },
   rules:[
     "One canonical department per product in this preview.",
@@ -155,6 +202,8 @@ const out={
     initial_shown_product_cards:selectedProducts,
     total_browsable_product_cards:routes.size,
     global_truth_products_available:truthIds.size,
+    cj_verified_4_market_products:cjVerifiedIds.size,
+    verified_truth_products_available:truthIds.size+cjVerifiedIds.size,
     production_live_products:0
   },
   departments

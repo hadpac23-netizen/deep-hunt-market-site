@@ -94,8 +94,14 @@ function setTheme(t){document.documentElement.dataset.huntTheme=t;$("#theme").te
 function withParam(k,v){const q=new URLSearchParams(location.search);q.set(k,v);return location.pathname+"?"+q.toString()}
 $("#theme").addEventListener("click",()=>setTheme(document.documentElement.dataset.huntTheme==="dark"?"light":"dark"));
 function card(p){
-  const truth=p.truth_state==="GLOBAL_PRODUCT_TRUTH";
-  return '<article class="card"><div class="media"><img loading="lazy" src="'+esc(p.image_url)+'" alt=""></div><div class="card-body"><div class="badges"><span class="badge '+(truth?'truth':'')+'">'+(truth?'GLOBAL TRUTH':'CATALOG SHADOW')+'</span><span class="badge">'+esc(p.provider)+'</span></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.category_title)+' · destination recheck before commercial use</p></div></article>';
+  const cj=p.truth_state==="CJ_VERIFIED_4_MARKETS";
+  const global=p.truth_state==="GLOBAL_PRODUCT_TRUTH";
+  const truth=cj||global;
+  const label=cj?"CJ VERIFIED 4/4":global?"GLOBAL TRUTH":"CATALOG SHADOW";
+  const note=cj
+    ? "IL · DE · US · SG stock + shipping verified · final profit recheck"
+    : "destination recheck before commercial use";
+  return '<article class="card"><div class="media"><img loading="lazy" src="'+esc(p.image_url)+'" alt=""></div><div class="card-body"><div class="badges"><span class="badge '+(truth?'truth':'')+'">'+label+'</span><span class="badge">'+esc(p.provider)+'</span></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.category_title)+' · '+esc(note)+'</p></div></article>';
 }
 function renderCategory(cat){
   const n=visible[cat.slug]||Math.min(24,cat.products.length);
