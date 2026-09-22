@@ -24,7 +24,7 @@ assert.equal(by.DE.sample_products,7);
 assert.equal(by.SE.sample_products,4);
 assert.equal(new Set(e.markets.map(x=>x.country)).size,33);
 assert(e.markets.every(x=>x.real_money_live===false));
-assert.equal(gate.version,"HUNT-COUNTRY-MARKET-GATE-V4");
+assert.equal(gate.version,"HUNT-COUNTRY-MARKET-GATE-V5");
 assert.equal(gate.eprolo_state.global_live_eligible_products,0);
 assert.equal(gate.eprolo_state.persisted_catalog_discovery_enabled,false);
 console.log("PASS boom-eprolo-global-country-engine");

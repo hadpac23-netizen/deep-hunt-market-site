@@ -43,7 +43,7 @@
         "variantId"
       ],
       "country_parameter": "countrycode",
-      "multimarket_shadow_status": "PASS_13_MARKET_CONTROLLED_SAMPLE",
+      "multimarket_shadow_status": "PASS_33_MARKET_CONTROLLED_DISCOVERY",
       "controlled_markets": [
         "IL",
         "DE",
@@ -139,7 +139,7 @@
     "no fake stock, shipping, margin or retail price"
   ],
   "storefront_role": "SUPPLIER_MESH_CONNECTED_NOT_LIVE_SHELF",
-  "next": "EXPAND_GLOBAL_PRODUCT_SAMPLE_AND_COMPLETE_MARKET_POLICY_PLUS_FINAL_PROFIT_GATES",
+  "next": "EXPAND_GLOBAL_COUNTRY_DISCOVERY_AND_CLARIFY_EPROLO_ORDER_COST_API",
   "variant_truth_policy": {
     "component_split_detection": "If component variants such as Top/Skirt coexist with Set/2pcs variants, a full-set listing must use Set/2pcs variant truth.",
     "exact_variant_image_required": true,
@@ -350,7 +350,16 @@
       "live_eligible_products": 0,
       "production_effect": false
     },
-    "global_markets_checked": 33
+    "global_markets_checked": 33,
+    "global_product_market_shadow": {
+      "products": 4,
+      "countries_represented": 32,
+      "shipping_shadow_product_market_pairs": 91,
+      "policy_mapped_shadow_pairs": 56,
+      "policy_hold_shadow_pairs": 35,
+      "live_product_market_pairs": 0,
+      "production_effect": false
+    }
   },
   "truth_policies": {
     "capacity_claim_gate": "IMPLAUSIBLE_STORAGE_CAPACITY_REQUIRES_PROOF",

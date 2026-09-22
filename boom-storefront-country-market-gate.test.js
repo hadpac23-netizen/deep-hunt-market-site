@@ -22,7 +22,7 @@ function allows(value,countryCode){
   return false;
 }
 
-assert.equal(contract.version,"HUNT-COUNTRY-MARKET-GATE-V4");
+assert.equal(contract.version,"HUNT-COUNTRY-MARKET-GATE-V5");
 assert.equal(contract.production_effect,false);
 assert.equal(contract.scope,"global_market_specific_shadow_eligibility");
 assert.equal(contract.eprolo_state.il_shadow_shelf_products,13);
@@ -37,6 +37,10 @@ assert.equal(contract.eprolo_state.global_markets_checked,33);
 assert.equal(contract.eprolo_state.markets_with_shipping_pass,31);
 assert.equal(contract.eprolo_state.global_market_matrix.length,33);
 assert(contract.eprolo_state.global_market_matrix.every(x=>x.real_money_live===false));
+assert.equal(contract.eprolo_state.global_product_market_shadow.products,4);
+assert.equal(contract.eprolo_state.global_product_market_shadow.countries_represented,32);
+assert.equal(contract.eprolo_state.global_product_market_shadow.shipping_shadow_product_market_pairs,91);
+assert.equal(contract.eprolo_state.global_product_market_shadow.live_product_market_pairs,0);
 assert.equal(contract.eprolo_state.global_wave2_checked_products,7);
 assert.deepEqual(contract.eprolo_state.shipping_discovery_markets,["IL","DE","FR","IT","ES","NL","GB","US","CA","AU","AE","JP","SG","SE","DK","FI","AT","BE","PL","PT","IE","CZ","GR","NO","CH","NZ","KR","HK","MY","TH","SA","MX","BR"]);
 assert.equal(contract.eprolo_state.shipping_pass_counts.SG,5);

@@ -70,7 +70,27 @@
         "AU",
         "AE",
         "JP",
-        "SG"
+        "SG",
+        "SE",
+        "DK",
+        "FI",
+        "AT",
+        "BE",
+        "PL",
+        "PT",
+        "IE",
+        "CZ",
+        "GR",
+        "NO",
+        "CH",
+        "NZ",
+        "KR",
+        "HK",
+        "MY",
+        "TH",
+        "SA",
+        "MX",
+        "BR"
       ],
       "mapped_policy_shadow_markets": [
         "DE",
@@ -80,13 +100,33 @@
         "NL",
         "GB",
         "US",
-        "AU"
+        "AU",
+        "SE",
+        "DK",
+        "FI",
+        "AT",
+        "BE",
+        "PL",
+        "PT",
+        "IE",
+        "CZ",
+        "GR"
       ],
       "unmapped_policy_hold_markets": [
         "CA",
         "AE",
         "JP",
-        "SG"
+        "SG",
+        "NO",
+        "CH",
+        "NZ",
+        "KR",
+        "HK",
+        "MY",
+        "TH",
+        "SA",
+        "MX",
+        "BR"
       ],
       "global_live_eligible_products": 0,
       "market_eligibility_policy": "DESTINATION_PRODUCT_TRUTH_X_SHIPPING_X_POLICY_X_PROFIT_X_OWNER_GATE",
@@ -125,7 +165,10 @@
         "MX",
         "BR"
       ],
-      "global_markets_checked": 33
+      "global_markets_checked": 33,
+      "global_product_market_shadow_pairs": 91,
+      "global_product_market_countries": 32,
+      "global_live_product_market_pairs": 0
     }
   },
   "price_gate_v2": {

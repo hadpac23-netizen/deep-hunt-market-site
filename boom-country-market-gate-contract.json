@@ -120,7 +120,27 @@
       "AU": 2,
       "AE": 2,
       "JP": 2,
-      "SG": 5
+      "SG": 5,
+      "SE": 4,
+      "DK": 4,
+      "FI": 3,
+      "AT": 4,
+      "BE": 4,
+      "PL": 4,
+      "PT": 4,
+      "IE": 4,
+      "CZ": 4,
+      "GR": 4,
+      "NO": 4,
+      "CH": 3,
+      "NZ": 3,
+      "KR": 4,
+      "HK": 3,
+      "MY": 3,
+      "TH": 4,
+      "SA": 0,
+      "MX": 4,
+      "BR": 1
     },
     "market_policy_states": {
       "IL": "REVIEW_REQUIRED",
@@ -135,7 +155,27 @@
       "AU": "REVIEW_REQUIRED",
       "AE": "HOLD_UNMAPPED",
       "JP": "HOLD_UNMAPPED",
-      "SG": "HOLD_UNMAPPED"
+      "SG": "HOLD_UNMAPPED",
+      "SE": "REVIEW_REQUIRED",
+      "DK": "REVIEW_REQUIRED",
+      "FI": "REVIEW_REQUIRED",
+      "AT": "REVIEW_REQUIRED",
+      "BE": "REVIEW_REQUIRED",
+      "PL": "REVIEW_REQUIRED",
+      "PT": "REVIEW_REQUIRED",
+      "IE": "REVIEW_REQUIRED",
+      "CZ": "REVIEW_REQUIRED",
+      "GR": "REVIEW_REQUIRED",
+      "NO": "HOLD_UNMAPPED",
+      "CH": "HOLD_UNMAPPED",
+      "NZ": "HOLD_UNMAPPED",
+      "KR": "HOLD_UNMAPPED",
+      "HK": "HOLD_UNMAPPED",
+      "MY": "HOLD_UNMAPPED",
+      "TH": "HOLD_UNMAPPED",
+      "SA": "HOLD_UNMAPPED",
+      "MX": "HOLD_UNMAPPED",
+      "BR": "HOLD_UNMAPPED"
     },
     "shipping_discovery_summary": {
       "strongest_current_sample_markets": [
@@ -466,7 +506,16 @@
         "market_policy_state": "HOLD_UNMAPPED",
         "real_money_live": false
       }
-    ]
+    ],
+    "global_product_market_shadow": {
+      "products": 4,
+      "countries_represented": 32,
+      "shipping_shadow_product_market_pairs": 91,
+      "policy_mapped_shadow_pairs": 56,
+      "policy_hold_shadow_pairs": 35,
+      "live_product_market_pairs": 0
+    },
+    "global_matrix_evidence": "evidence/HUNT-EPROLO-GLOBAL-COUNTRY-MATRIX-2026-09-23.json"
   },
   "runtime_rule": "For every exact destination, evaluate exact variant + fresh stock + current shipping quote + visual/spec truth + market policy + final profit. Never infer one country from a region or another country.",
   "provider_activation_rule": "EPROLO may be evaluated globally in SHADOW before persisted storefront discovery is enabled. Production discovery remains disabled until provider-level final-profit and launch gates pass.",
@@ -484,6 +533,7 @@
     ],
     "shadow_rule": "A product may be SHADOW_ELIGIBLE in one destination and BLOCKED/HOLD in another.",
     "live_rule": "LIVE requires every independent gate to PASS for the exact destination; a shipping pass alone never implies launch eligibility.",
-    "unknown_country_rule": "HOLD until shipping + market policy are mapped and reviewed."
+    "unknown_country_rule": "HOLD until shipping + market policy are mapped and reviewed.",
+    "market_count_verified": 33
   }
 }
