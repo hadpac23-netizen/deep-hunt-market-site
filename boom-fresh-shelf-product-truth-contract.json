@@ -2,7 +2,7 @@
   "version": "BOOM-FRESH-SHELF-PRODUCT-TRUTH-V1",
   "mode": "SHADOW",
   "owner": "commerce_truth_brain",
-  "authority": "EVIDENCE_ONLY",
+  "authority": "NONE",
   "purpose": "Separate shelf freshness from checkout readiness. A product may be fresh enough to display when price, stock and destination shipping are freshly verified, while still requiring a new quote at checkout.",
   "canonical_sources": {
     "catalog": "hunt_catalog_products",
@@ -71,5 +71,6 @@
     "Never promote a stale catalog stock count over a fresh variant quote.",
     "Never write a stock/shipping observation when the corresponding CJ verification flag is false.",
     "A product refresh failure leaves the previous state stale/recheck; it does not fabricate availability."
-  ]
+  ],
+  "evidence_write_scope": "Existing hunt_product_observations only, through controlled refresh worker; evaluator itself is read-only."
 }
