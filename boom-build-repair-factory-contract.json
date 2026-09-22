@@ -1,0 +1,44 @@
+{
+  "version": "BOOM-BUILD-REPAIR-FACTORY-V1",
+  "mode": "SHADOW",
+  "owners": {
+    "build": "innovation_brain",
+    "repair": "learning_governance_brain",
+    "release": "learning_governance_brain"
+  },
+  "reuses": [
+    "boom-incident-repair-contract.json",
+    "github_source_control",
+    "automation run ledger",
+    "Owner Gate"
+  ],
+  "build_flow": [
+    "brief_truth",
+    "source_context",
+    "minimal_change_plan",
+    "patch_candidate",
+    "tests",
+    "independent_review",
+    "preview_candidate",
+    "owner_gate",
+    "deploy_suppressed"
+  ],
+  "repair_flow": [
+    "detect",
+    "reproduce",
+    "root_cause",
+    "minimal_patch_candidate",
+    "tests",
+    "independent_review",
+    "rollback_plan",
+    "owner_gate",
+    "deploy_suppressed"
+  ],
+  "hard_rules": [
+    "Never patch Production directly.",
+    "Never skip reproduction/root cause for incident repair.",
+    "Tests and independent review precede Owner Gate.",
+    "SHADOW approval never performs deploy.",
+    "Rollback evidence is required for repair candidates."
+  ]
+}
