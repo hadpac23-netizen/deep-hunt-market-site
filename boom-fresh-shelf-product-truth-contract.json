@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-FRESH-SHELF-PRODUCT-TRUTH-V1",
+  "version": "BOOM-FRESH-SHELF-PRODUCT-TRUTH-V1.1-SCAN-AWARE",
   "mode": "SHADOW",
   "owner": "commerce_truth_brain",
   "authority": "NONE",
@@ -12,9 +12,12 @@
   },
   "truth_precedence": [
     "For CJ stock and destination shipping, hunt-cj-quote is canonical over inventory fields embedded in product detail.",
-    "Product detail remains canonical for current product/variant identity and retail-price/profit-gate data.",
+    "Fresh Shelf requires the latest controlled product scan for the destination to be VERIFIED.",
+    "Price, stock and shipping evidence must resolve to the exact variant selected by the controlled scan.",
+    "Product detail remains canonical for product/variant identity and retail-price/profit-gate inputs, but embedded inventory is not final CJ stock truth.",
     "A stale catalog stock_quantity never overrides a fresh variant quote.",
-    "recheck_before_checkout is shelf-eligible but never checkout-ready by itself."
+    "recheck_before_checkout is shelf-eligible but never checkout-ready by itself.",
+    "A single CJ product lookup 404 is PRODUCT_FAILED / recheck-required evidence, not proof that the product is permanently removed."
   ],
   "states": [
     "STALE_OR_UNVERIFIED",
@@ -26,10 +29,11 @@
     "catalog availability_verified=true",
     "catalog has non-empty image",
     "market_eligibility_status is recheck_before_checkout, eligible or allowed",
-    "fresh price observation with retail_verified=true and profit_gate_status=PASS",
-    "fresh stock observation from canonical quote with stock_verified=true and stock_available=true",
-    "fresh shipping observation for destination country with shipping_verified=true and numeric shipping amount",
-    "all three observation classes are within freshness window"
+    "latest controlled product observation for destination has scan_id and refresh_state=VERIFIED",
+    "fresh price observation for the controlled exact variant with retail_verified=true and profit_gate_status=PASS",
+    "fresh stock observation for the controlled exact variant from canonical quote with stock_verified=true and stock_available=true",
+    "fresh shipping observation for the controlled exact variant and destination with shipping_verified=true and numeric shipping amount",
+    "all required evidence is within freshness window"
   ],
   "checkout_live_requirements": [
     "all fresh shelf requirements",
@@ -48,13 +52,16 @@
       "Printful": 23,
       "Gooten": 18
     },
-    "catalog_market_status_recheck_before_checkout": 117,
-    "stale_catalog_source_rows": 117,
-    "stale_catalog_stock_rows": 117,
-    "pilot_fresh_shelf_verified_il": 3,
-    "pilot_checkout_live_verified": 0,
-    "last_pilot_observation": "2026-09-22T12:34:39.463889Z",
-    "state": "PILOT_FRESH_TRUTH_PROVEN_FULL_REFRESH_PENDING"
+    "cj_controlled_scan_id": "CJ-IL-20260922-A",
+    "cj_controlled_scan_rows": 76,
+    "cj_controlled_verified_il": 19,
+    "cj_product_lookup_failed_recheck": 50,
+    "cj_price_or_profit_blocked": 5,
+    "cj_no_verified_variant": 2,
+    "cj_checkout_live_verified": 0,
+    "positive_triad_any_source": 57,
+    "contradictory_positive_triad_vs_controlled_scan": 38,
+    "state": "CJ_CONTROLLED_SCAN_COMPLETE_19_FRESH_57_RECHECK_OR_BLOCKED"
   },
   "observed_endpoint_disagreement": {
     "product_detail_sample_count": 3,
@@ -65,12 +72,15 @@
   },
   "hard_rules": [
     "Never refresh a timestamp without a successful external evidence call.",
+    "Never count Price+Stock+Shipping alone as Fresh Shelf without a current controlled product scan marker.",
+    "Never mix price, stock or shipping evidence from a different variant than the controlled scan variant.",
     "Never mark checkout-ready from shelf freshness alone.",
     "Never change market_eligibility_status from this refresh lane.",
     "Never overwrite retail price from a supplier cost field.",
     "Never promote a stale catalog stock count over a fresh variant quote.",
-    "Never write a stock/shipping observation when the corresponding CJ verification flag is false.",
-    "A product refresh failure leaves the previous state stale/recheck; it does not fabricate availability."
+    "Never write a positive stock/shipping observation when the corresponding CJ verification flag is false.",
+    "A single product lookup failure is recheck evidence, not permanent-removal proof.",
+    "Unreconciled observations from another source do not override a newer controlled scan."
   ],
   "evidence_write_scope": "Existing hunt_product_observations only, through controlled refresh worker; evaluator itself is read-only."
 }
