@@ -323,6 +323,45 @@
 
 
 
+
+  async function renderCheckoutOrderTrackingProof(){
+    const host=$("#bs-checkout-order-tracking-proof");
+    const state=$("#bs-checkout-order-tracking-state");
+    if(!host)return;
+    const proof=window.BoomCheckoutOrderTrackingProof;
+    const contract=data.checkoutOrderTrackingContract||{};
+    if(!proof?.snapshot){
+      host.innerHTML='<div class="bs-empty bs-error">Checkout/Order/Tracking proof unavailable.</div>';
+      if(state)state.textContent="UNAVAILABLE";
+      return;
+    }
+    try{
+      const out=await proof.snapshot();
+      if(state)state.textContent=String(out.state||"UNKNOWN");
+      const stages=contract.stages||[];
+      const stats=out.stats||{};
+      host.innerHTML=`
+        <article class="bs-proof-summary">
+          <div><small>BOUND SESSIONS</small><strong>${esc(stats.bound_sessions??0)}</strong></div>
+          <div><small>USER-BOUND TEST ORDERS</small><strong>${esc(stats.user_bound_orders??0)}</strong></div>
+          <div><small>DRY-RUN PASS</small><strong>${esc(stats.dry_run_pass??0)}</strong></div>
+          <div><small>SUPPLIER ORDERS</small><strong>${esc(stats.supplier_order_rows??0)}</strong></div>
+          <div><small>TRACKING ROWS</small><strong>${esc(stats.tracking_rows??0)}</strong></div>
+          <div><small>SHIPPED EVENTS</small><strong>${esc(stats.shipped_event_rows??0)}</strong></div>
+        </article>
+        <div class="bs-proof-stages">${stages.map((x,i)=>{const pass=out.checks?.[x.id]===true;return `<article data-state="${pass?"PASS":"BLOCKED"}"><b>${i+1}</b><div><strong>${esc(x.id)}</strong><span>${pass?"PASS":"WAITING"}</span><small>${esc((x.requires||[]).join(" · "))}</small></div></article>`;}).join("")}</div>
+        <div class="bs-attribution-grid">
+          <article><small>HISTORICAL CJ BUSY</small><strong>${esc(out.historical_failures?.cj_busy??0)}</strong><span>Current code has transient retry + reconciliation.</span></article>
+          <article><small>HISTORICAL PHONE FORMAT</small><strong>${esc(out.historical_failures?.phone_format??0)}</strong><span>Current code normalizes Israel phone to +972.</span></article>
+          <article><small>LIVE IMPLIED?</small><strong>NO</strong><span>Sandbox E2E never activates real supplier logistics.</span></article>
+          <article><small>FIRST BLOCKER</small><strong>${esc(out.blocker||"none")}</strong><span>Evidence, not assumptions.</span></article>
+        </div>`;
+    }catch(error){
+      host.innerHTML=`<div class="bs-empty bs-error">Checkout/order/tracking evidence unavailable: ${esc(error?.message||"unknown")}</div>`;
+      if(state)state.textContent="UNKNOWN";
+    }
+  }
+
   async function renderPaymentLaunchGate(){
     const host=$("#bs-payment-launch-gate");
     const state=$("#bs-payment-launch-state");
@@ -821,12 +860,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json"),json("boom-marketing-profit-attribution-contract.json"),json("boom-marketing-cost-evidence-contract.json"),json("boom-payplus-sandbox-proof-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json"),json("boom-marketing-profit-attribution-contract.json"),json("boom-marketing-cost-evidence-contract.json"),json("boom-payplus-sandbox-proof-contract.json"),json("boom-checkout-order-tracking-proof-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderCheckoutOrderTrackingProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
