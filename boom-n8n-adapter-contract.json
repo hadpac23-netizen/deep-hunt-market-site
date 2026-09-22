@@ -38,7 +38,20 @@
     "timeout_ms": 15000,
     "max_payload_bytes": 131072,
     "idempotency_header": "X-BOOM-Run-ID",
-    "secret_fields_redacted": true
+    "secret_fields_redacted": true,
+    "allowed_capabilities": [
+      "read_verified_catalog_counts",
+      "emit_sanitized_run_events"
+    ],
+    "blocked_capabilities": [
+      "external_publish",
+      "customer_outreach",
+      "payment_activation",
+      "supplier_order",
+      "price_change",
+      "production_deploy",
+      "credential_change"
+    ]
   },
   "required_env": [
     "N8N_SHADOW_WEBHOOK_URL",
@@ -52,5 +65,24 @@
     "one successful shelf coverage SHADOW execution",
     "one controlled failure/retry proof",
     "Owner review before expanding allowlist"
+  ],
+  "connected": false,
+  "required_envelope": [
+    "mission_id",
+    "workflow_id",
+    "run_id",
+    "correlation_id",
+    "mode",
+    "requested_capability",
+    "idempotency_key",
+    "timeout_ms"
+  ],
+  "response_contract": [
+    "run_id",
+    "correlation_id",
+    "status",
+    "evidence_refs",
+    "error_code",
+    "completed_at"
   ]
 }
