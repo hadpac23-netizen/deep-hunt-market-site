@@ -1,0 +1,81 @@
+{
+  "version": "HUNT-STYLIST-F35-VISUAL-QA-ROUND2-V1",
+  "date": "2026-09-22",
+  "mode": "SHADOW_VISUAL_QA",
+  "market": "IL",
+  "production_effect": false,
+  "evidence_scope": {
+    "cj": "Real CJ catalog main images for the exact item IDs; useful for silhouette and visual language, not proof of exact selected variant color.",
+    "printful": "Exact product/variant metadata plus official Printful product descriptions/pages where available; exact variant artwork/mockup is still required before final visual pass."
+  },
+  "overall_status": "PARTIAL_VISUAL_PASS_WITH_REWORK",
+  "mastery_change": false,
+  "looks": [
+    {
+      "id": "LOOK-01",
+      "status": "REWORK",
+      "reason": "Oversized hoodie + wide-leg pant gives strong volume, while the strappy horsebit flat reads more refined/delicate than the casual-street brief.",
+      "keep": [
+        "oversized hoodie",
+        "wide-leg pant",
+        "simple beanie/bag"
+      ],
+      "change": "Replace footwear with a more grounded casual/street option once verified; do not hero this look yet."
+    },
+    {
+      "id": "LOOK-02",
+      "status": "PASS_WITH_EDIT",
+      "reason": "Soft wide-leg trouser + light loafer creates a coherent relaxed-smart base; oversized sweatshirt and bandana need restrained graphics so the look does not become busy.",
+      "keep": [
+        "light neutral top",
+        "soft trouser",
+        "light loafer"
+      ],
+      "change": "Treat bandana as optional support, not a second visual focal point."
+    },
+    {
+      "id": "LOOK-03",
+      "status": "PASS_DIRECTIONALLY",
+      "reason": "Hoodie + biker shorts + heavier ankle boot creates the strongest clear weekend/street silhouette in the current women's set.",
+      "keep": [
+        "hoodie",
+        "biker shorts",
+        "ankle boot"
+      ],
+      "change": "Lock artwork palette only after exact Printful mockups exist; bag/bandana should echo, not compete with, the hero graphic."
+    },
+    {
+      "id": "LOOK-04",
+      "status": "PASS_WITH_EDIT",
+      "reason": "Black-melange polo + light linen trouser is coherent smart-casual. Black/white tassel slip-on can work, but hat and tech accessory should stay visually quiet.",
+      "keep": [
+        "dark polo",
+        "light linen trouser",
+        "black/white footwear"
+      ],
+      "change": "Use one accessory focal point maximum."
+    },
+    {
+      "id": "LOOK-05",
+      "status": "REWORK",
+      "reason": "Quarter-zip + casual shorts is a strong weekend base, but the tassel slip-on reads dressier than the athletic/casual top-and-short combination.",
+      "keep": [
+        "quarter-zip",
+        "casual shorts",
+        "cap"
+      ],
+      "change": "Verify a cleaner men's sneaker/casual shoe before this becomes a Hero look."
+    }
+  ],
+  "assortment_learning": [
+    "Women: current verified footwear supports street, relaxed-smart and chunky-weekend directions, but not every shoe belongs in every look.",
+    "Men: verified footwear is still too narrow; a sneaker/casual-shoe lane should be added before high-confidence weekend styling.",
+    "Visual QA must distinguish product truth from aesthetic fit; passing stock/shipping/profit does not imply style pass."
+  ],
+  "next": [
+    "Verify at least 2 additional men's casual sneaker/low-profile footwear options.",
+    "Fetch exact Printful mockups/artwork before color-harmony scoring.",
+    "Re-run LOOK-01 and LOOK-05 after footwear gap is filled.",
+    "Keep mastery level unchanged until exact-image visual QA is complete."
+  ]
+}

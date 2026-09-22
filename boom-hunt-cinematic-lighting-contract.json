@@ -1,0 +1,82 @@
+{
+  "version": "BOOM-HUNT-CINEMATIC-LIGHTING-V1",
+  "mode": "SHADOW_DESIGN_SYSTEM",
+  "production_effect": false,
+  "objective": "Teach BOOM Stylist and Merchandising UX how HUNT Cinematic lighting should support product visibility, hierarchy and mood in both light and dark themes.",
+  "layers": [
+    {
+      "id": "AMBIENT",
+      "rule": "World/category atmosphere only; never alter product truth or source photography."
+    },
+    {
+      "id": "SHELF_SURFACE",
+      "rule": "Use depth, edge light and shadow to separate shelves/cards from the page without visual clutter."
+    },
+    {
+      "id": "PRODUCT_SPOTLIGHT",
+      "rule": "Keep the media bay neutral and bright enough that product colors remain readable in light and dark modes."
+    }
+  ],
+  "themes": {
+    "light": {
+      "base": "OFF_WHITE",
+      "palette": [
+        "#FBF8F2",
+        "#F4F1EA",
+        "#EEE9DF"
+      ],
+      "behavior": [
+        "warm off-white background",
+        "soft graphite text",
+        "subtle sapphire/gold ambient glow",
+        "low-contrast shelf shadow",
+        "neutral product media bay"
+      ]
+    },
+    "dark": {
+      "base": "SAPPHIRE_GRAPHITE",
+      "palette": [
+        "#020612",
+        "#06112D",
+        "#0B1633"
+      ],
+      "behavior": [
+        "deep cinematic shell",
+        "controlled sapphire/gold glow",
+        "stronger shelf depth",
+        "neutral lit product media bay",
+        "source images never darkened"
+      ]
+    }
+  },
+  "category_mood": {
+    "tech": "cool sapphire ambient bias",
+    "home": "warm architectural bias",
+    "beauty": "soft warm/rose bias",
+    "accessories": "slightly stronger warm edge light",
+    "default": "balanced sapphire + gold"
+  },
+  "hard_rules": [
+    "Never apply opacity, blend modes or darkening filters that change source product photography.",
+    "Product media remains visually neutral in dark mode.",
+    "Light mode is off-white, not clinical pure white.",
+    "Lighting creates hierarchy, not fake product attributes.",
+    "Theme transitions behave like a lighting cue, not a hard flash.",
+    "Mobile uses reduced shadow/glow for performance and clarity.",
+    "Reduced-motion preference disables lighting transition animation."
+  ],
+  "stylist_use": [
+    "Choose Hero products that remain readable under both themes.",
+    "Avoid shelves where every card has equal visual emphasis.",
+    "Use ambient category color only as a subtle context signal.",
+    "Keep one primary focal product per shelf or look.",
+    "Visual QA must check both themes before Owner Gate."
+  ],
+  "qa": {
+    "home_v16": "PASS_LIGHT_DARK_RENDER",
+    "commerce_continuity": "PASS_STATIC_QA",
+    "image_fidelity": "PASS_RULE_GUARD",
+    "exact_product_visuals": "SEPARATE_STYLIST_QA_REQUIRED"
+  },
+  "owner_gate_required": true
+}

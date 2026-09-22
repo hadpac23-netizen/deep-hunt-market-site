@@ -230,7 +230,7 @@
     const host=$("#bs-stylist-academy");
     if(!host)return;
     try{
-      const [academy,training,trainingV2,f35,baseline,round1,round2,lighting]=await Promise.all([
+      const [academy,training,trainingV2,f35,baseline,round1,round2,lighting,visualQa]=await Promise.all([
         json("boom-stylist-academy-contract.json"),
         json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-2026-09-22.json"),
         json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V2-IL-2026-09-22.json"),
@@ -238,12 +238,14 @@
         json("evidence/HUNT-F35-SIX-LAYER-PREFERENCE-BASELINE-2026-09-22.json"),
         json("evidence/HUNT-STYLIST-F35-ROUND1-2026-09-22.json"),
         json("evidence/HUNT-STYLIST-F35-ROUND2-2026-09-22.json"),
-        json("evidence/HUNT-CINEMATIC-LIGHTING-QA-2026-09-22.json")
+        json("evidence/HUNT-CINEMATIC-LIGHTING-QA-2026-09-22.json"),
+        json("evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND2-2026-09-22.json")
       ]);
       const tracks=(academy.tracks||[]).map(t=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(t.id)} · ${esc(t.name)}</strong><span class="bs-status NEXT">${esc((t.modules||[]).length)} modules</span></div><p>${esc((t.modules||[]).join(" · "))}</p></div>`).join("");
       const exams=(academy.exams||[]).map(e=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(e.name)}</strong><span class="bs-status NEXT">PASS ${esc(e.pass_score)}+</span></div><small>${esc(e.output_rule)}</small></div>`).join("");
       const layers=(f35.six_layers||[]).map(l=>`<span>${esc(l.id)} · ${esc(l.name)}</span>`).join("");
       const courses=(f35.multidisciplinary_curriculum||[]).map(c=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(c.id)} · ${esc(c.name)}</strong><span class="bs-status NEXT">${esc((c.skills||[]).length)} skills</span></div><small>${esc((c.sources||[]).join(" · "))}</small></div>`).join("");
+      const visualRows=(visualQa.looks||[]).map(x=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(x.id)}</strong><span class="bs-status ${x.status==="REWORK"?"BLOCKED":"NEXT"}">${esc(x.status)}</span></div><small>${esc(x.reason)}</small></div>`).join("");
       host.innerHTML=`
         <article class="bs-creative-card">
           <div class="bs-automation-head"><strong>Academy Curriculum</strong><span class="bs-status NEXT">${esc(academy.status)}</span></div>
@@ -310,6 +312,14 @@
           <small>LEARNING GATE</small>
           <p>${esc(lighting.stylist_learning?.reason)}</p>
           <code>evidence ready · exam not scored · mastery change false · Production unchanged</code>
+        </article>
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>Visual QA · 5 Looks</strong><span class="bs-status NEXT">${esc(visualQa.overall_status)}</span></div>
+          <p>${esc((visualQa.looks||[]).filter(x=>String(x.status).startsWith("PASS")).length)} looks can continue · ${esc((visualQa.looks||[]).filter(x=>x.status==="REWORK").length)} require rework.</p>
+          <div class="bs-run-list">${visualRows}</div>
+          <small>NEXT GAP</small>
+          <p>${esc(visualQa.next?.[0]||"Exact-image QA required.")}</p>
+          <code>exact Printful mockups still required · mastery change false</code>
         </article>`;
     }catch(error){
       host.innerHTML=`<div class="bs-empty bs-error">Stylist Academy unavailable: ${esc(error?.message||"unknown")}</div>`;

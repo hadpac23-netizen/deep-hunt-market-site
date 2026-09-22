@@ -285,9 +285,14 @@
     "product_truth_round2": "PASS_IL",
     "commerce_round2": "PASS_WITH_HIGH_SHIPPING_WARNINGS",
     "cinematic_lighting": "LIGHT_DARK_RENDER_PAIR_VERIFIED",
-    "cinematic_lighting_mastery": "TRAINING_EVIDENCE_ONLY"
+    "cinematic_lighting_mastery": "TRAINING_EVIDENCE_ONLY",
+    "visual_qa_round2": "PARTIAL_VISUAL_PASS_WITH_REWORK",
+    "looks_ready": 3,
+    "looks_rework": 2,
+    "mens_footwear_gap": "NEEDS_2_MORE_VERIFIED_CASUAL_OPTIONS",
+    "cinematic_lighting_qa": "V16_LIGHT_DARK_QA_PASS"
   },
-  "next": "RUN_EXACT_IMAGE_VISUAL_QA_FOR_F35_ROUND2_LOOKS_THEN_CINEMATIC_LIGHTING_EXAM",
+  "next": "VERIFY_MENS_CASUAL_FOOTWEAR_AND_EXACT_PRINTFUL_MOCKUPS_THEN_RERUN_VISUAL_QA",
   "f35_research_ref": "boom-f35-style-commerce-research-2026-09-22.json",
   "preference_layers": [
     {
@@ -818,5 +823,7 @@
       "no body criticism",
       "no unverified product claims"
     ]
-  }
+  },
+  "cinematic_lighting_ref": "boom-hunt-cinematic-lighting-contract.json",
+  "visual_qa_round2_ref": "evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND2-2026-09-22.json"
 }
