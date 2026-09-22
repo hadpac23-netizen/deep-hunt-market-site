@@ -56,8 +56,8 @@
     },
     {
       "id": "shelf_coverage",
-      "status": "CODED_17_RESOLVED_NEEDS_PREVIEW_EVIDENCE",
-      "evidence": "17 canonical department identities verified from HUNT Cinematic V16 + hunt-department-map-v1.js; server endpoint code remains not deployed and live sellable evidence still needs refresh."
+      "status": "BLOCKED_STALE_LIVE_EVIDENCE",
+      "evidence": "17 taxonomy identities resolved. Read-only Supabase audit at 2026-09-22T06:41:38Z found 14/17 coverage rows, 0 fresh 24h audits, 117 catalog rows, 0 fresh verified-sellable rows in 7 days; missing coverage rows: camping/electrical/garden."
     },
     {
       "id": "catalog_freshness",
@@ -96,8 +96,8 @@
     }
   ],
   "blockers": [
-    "Refresh live product/source/stock evidence; taxonomy is 17/17 but shelf readiness still requires fresh verified sellable counts.",
-    "Refresh live product/source/stock evidence; stale counts cannot satisfy shelf readiness.",
+    "Refresh live product/source/stock evidence: current audit has 0 fresh verified-sellable rows in 7 days and 0 fresh shelf audits in 24h.",
+    "Create/refresh coverage evidence for camping, electrical and garden without fabricating counts.",
     "Deploy only to a preview/test environment first: boom-shelf-coverage and boom-automation-gateway.",
     "Prove one real admin durable ledger write + Owner Gate decision in preview.",
     "Configure n8n server-only SHADOW URL/token and prove one read-only shelf workflow success plus one controlled failure/retry.",
