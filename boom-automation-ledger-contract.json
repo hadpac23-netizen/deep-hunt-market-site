@@ -1,43 +1,55 @@
 {
-  "version": "BOOM-AUTOMATION-LEDGER-V1",
-  "state": "SCHEMA_READY_NOT_APPLIED",
-  "source_of_truth": "Supabase Postgres after reviewed migration is applied",
+  "version": "BOOM-AUTOMATION-LEDGER-V1.1",
+  "state": "EXISTING_SCHEMA_REUSED_CODED_NEEDS_PREVIEW_PROOF",
+  "source_of_truth": "Existing Supabase BOOM tables in project boom-social-world",
+  "schema_change_required": false,
   "tables": [
     {
-      "id": "boom_automation_runs",
-      "purpose": "Durable mission/workflow/run/correlation state and execution summary",
-      "primary_key": "run_id",
-      "pii_policy": "No email, phone, address, credentials, payment data or raw customer content",
-      "retention": "Operational metadata only; retention policy to be set before production"
+      "id": "hunt_boom_team_runs",
+      "role": "durable_run_ledger",
+      "key": "run_key",
+      "mapping": "mission/workflow/run/correlation lineage stored in members/evidence; status and Owner Gate state persisted"
     },
     {
-      "id": "boom_automation_run_events",
-      "purpose": "Append-only state/evidence lineage for each run",
-      "primary_key": "id",
-      "pii_policy": "Sanitized metadata only",
-      "retention": "Operational trace; retention policy to be set before production"
+      "id": "hunt_boom_decisions",
+      "role": "approval_queue",
+      "key": "decision_key",
+      "mapping": "material workflow Owner Gate proposals and approved/rejected decisions"
     },
     {
-      "id": "boom_automation_approvals",
-      "purpose": "Owner/Admin approval decisions for material workflow gates",
-      "primary_key": "id",
-      "pii_policy": "Actor user UUID + reason text only; no secrets",
-      "retention": "Decision evidence"
+      "id": "hunt_boom_events",
+      "role": "event_evidence_log",
+      "key": "id",
+      "mapping": "sanitized runtime/incident/n8n execution evidence"
+    },
+    {
+      "id": "hunt_boom_learning_items",
+      "role": "learning_ledger",
+      "key": "learning_key",
+      "mapping": "testing-only learning proposals; no automatic behavior adoption"
     }
   ],
+  "adapters": {
+    "runtime": "boom-automation-ledger-adapter.js",
+    "learning": "boom-learning-ledger-adapter.js"
+  },
   "access": {
-    "anon": "NONE",
-    "authenticated": "Owner/Admin only via RLS",
-    "service_role": "Server-side adapters only; never browser",
-    "n8n": "Future server adapter through controlled gateway, never direct browser credentials"
+    "browser": "Owner/Admin through BoomRuntime and existing RLS",
+    "service_role": "Server-side Edge Functions only; never browser",
+    "n8n": "Indirect only through boom-automation-gateway; never direct database authority"
   },
   "invariants": [
-    "run_id, workflow_id, mission_id and correlation_id are always present",
-    "run state is constrained to canonical state machine values",
-    "material actions remain suppressed while control plane mode is SHADOW",
-    "approval rows are immutable decision evidence after insert",
-    "run events are append-only from client perspective",
-    "no raw secrets or customer PII in payload/evidence fields",
-    "every approval references one durable run"
-  ]
+    "No new ledger tables are introduced for Automation Control Plane V1.",
+    "mission_id, workflow_id, run_id and correlation_id are preserved in durable evidence.",
+    "Material actions remain suppressed in SHADOW even after a SHADOW approval decision.",
+    "Approval decisions are recorded in hunt_boom_decisions and never grant n8n authority.",
+    "Runtime and event payloads are sanitized before persistence.",
+    "No raw credentials, email, phone, address or payment data in automation evidence."
+  ],
+  "deployment_truth": {
+    "database_tables": "EXISTING",
+    "client_ledger_adapter": "CODED",
+    "preview_e2e": "NOT_PROVEN",
+    "production_change": false
+  }
 }
