@@ -133,6 +133,11 @@
       "id": "payplus_sandbox_status_proof",
       "status": "CODED_BLOCKED_NO_SANDBOX_EVIDENCE",
       "evidence": "Proof Matrix + Studio surface coded. Live audit: hunt_payplus_sandbox_evidence control OFF/unapproved; 0 sandbox evidence sessions; 0 status observations. J4 success/failure/refund fingerprints are not yet empirically proven. Live paid acceptance remains OFF."
+    },
+    {
+      "id": "payment_launch_gate",
+      "status": "CODED_SHADOW_ALL_ROUTES_PLANNED",
+      "evidence": "Provider-neutral Payment Launch Gate + Studio route matrix coded. Live audit: 6 payment routes, all status=planned, all approval_reference/approved_at null; hunt_payment_live OFF/unapproved; hunt_supplier_order_live OFF/unapproved. PayPlus account approval not yet evidenced and sandbox callback proof not yet collected."
     }
   ],
   "blockers": [
@@ -152,7 +157,8 @@
     "Connect a direct ad-platform cost source (e.g. Google Ads/Meta/TikTok) or prove GA4 cost-import coverage before paid spend, CAC or Marketing Net Profit can be verified.",
     "Complete PayPlus sandbox callback/status proof before Owner can consider enabling paid acceptance; First Real-Order Proof must not bypass this gate.",
     "PayPlus sandbox evidence control/session must be run in staging to collect signed success/failure observations before paid-state mapping can be proven.",
-    "Refund path requires a separate observed charge_method=4 staging fingerprint linked to the original transaction before refund launch."
+    "Refund path requires a separate observed charge_method=4 staging fingerprint linked to the original transaction before refund launch.",
+    "Each PSP route needs commercial/account approval evidence plus server credentials, sandbox/callback/refund/finance/settlement/legal scope proof before it can become a LIVE_READY_CANDIDATE."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
