@@ -149,6 +149,18 @@
         "J4 charge_method alone never proves paid",
         "Requires success + failure + idempotency + reference-integrity proof before paid acceptance"
       ]
+    },
+    {
+      "id": "payment_launch_gate",
+      "type": "PAYMENT_ROUTE_READINESS_EVALUATOR",
+      "status": "CODED_SHADOW_ALL_ROUTES_PLANNED",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Reads hunt_payment_routes + payment/supplier runtime controls",
+        "Requires processor/account/sandbox/callback/refund/finance/settlement/country/legal evidence",
+        "Cannot activate any route or master switch"
+      ]
     }
   ],
   "security_truth_rule": "verify_jwt=false in platform metadata is not by itself proof of exposure; webhook/custom-auth functions must be reviewed by their actual code/auth contract before classification.",
