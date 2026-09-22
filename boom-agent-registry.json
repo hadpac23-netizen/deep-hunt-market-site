@@ -283,7 +283,7 @@
     "canonical_agent": "category_merchandising_agent",
     "owner": "experience_brain",
     "representation": "TAXONOMY_MODULES_NOT_AGENTS",
-    "current_truth": "13 verified department identities + 4 unresolved target slots",
+    "current_truth": "17 verified canonical department identities",
     "rule": "Adding a department never creates a new Brain or Manager."
   },
   "no_duplicate_ownership": [
