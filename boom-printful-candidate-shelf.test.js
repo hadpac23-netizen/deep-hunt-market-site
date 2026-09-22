@@ -1,0 +1,16 @@
+const fs=require("fs"),assert=require("assert");
+const x=JSON.parse(fs.readFileSync("evidence/HUNT-PRINTFUL-CANDIDATE-SHELF-2026-09-22.json","utf8"));
+assert.equal(x.mode,"SHADOW_CANDIDATE_SHELF");
+assert.equal(x.authority,"NONE");
+assert.equal(x.production_exposure,false);
+assert.equal(x.audited_products,30);
+assert.equal(x.variants_verified,30);
+assert.equal(x.in_stock_verified,30);
+assert.equal(x.global_3_market_verified,27);
+assert.equal(x.country_limited,3);
+assert.equal(x.fresh_shelf_production_verified,0);
+assert.equal(x.checkout_live_verified,0);
+assert.equal(x.fulfillment,"DISABLED");
+assert(x.country_limited_candidates.every(p=>p.blocked_markets.length>0));
+assert(x.global_candidates.every(p=>p.verified_markets.length===3));
+console.log("PASS boom-printful-candidate-shelf");

@@ -62,11 +62,16 @@
     "cj_retry_scan_id": "CJ-IL-20260922-RETRY-B",
     "printful": {
       "catalog_state": "LIVE",
-      "unique_products": 22,
-      "in_stock_variants": 550,
-      "shipping_verified": false,
+      "catalog_api_count": 547,
+      "audited_products": 30,
+      "exact_variants_verified": 30,
+      "in_stock_verified": 30,
+      "shipping_verified_il_de_us": 27,
+      "country_limited_candidates": 3,
+      "candidate_shelf_state": "SHADOW_VERIFIED_CANDIDATES",
       "fulfillment_ready": false,
-      "fresh_shelf_verified": 0
+      "fresh_shelf_verified": 0,
+      "checkout_live_verified": 0
     },
     "gooten": {
       "catalog_state": "LIVE",
@@ -133,10 +138,10 @@
     },
     "ready_at_1000": []
   },
-  "remaining_truth_rule": "57 CJ products are Fresh Shelf Verified for IL. The remaining 19 CJ items stay blocked/recheck. Printful/Gooten public catalog liveness does not count as Fresh Shelf without destination shipping truth.",
+  "remaining_truth_rule": "57 CJ products are Fresh Shelf Verified for IL. The remaining 19 CJ items stay blocked/recheck. Printful now has 27 three-market Product Truth candidates plus 3 country-limited candidates in shadow, but all Printful candidates remain blocked from Production Fresh Shelf and checkout until fulfillment is explicitly approved and integrated. Gooten remains partial catalog truth.",
   "provider_rules": {
     "CJdropshipping": "Controlled scan VERIFIED + exact-variant retail/profit + stock + IL shipping evidence.",
-    "Printful": "Public product/variant stock is useful partial truth, but Fresh Shelf remains blocked until destination shipping + fulfillment credentials and HUNT retail price truth exist.",
+    "Printful": "Authenticated read-only Product Truth now proves exact variant, stock, supplier cost and destination shipping for the audited candidate set, with HUNT Price Gate V2 shadow pricing. Production Fresh Shelf and checkout remain blocked until fulfillment is explicitly approved and integrated.",
     "Gooten": "Public catalog availability/price is partial truth only; Fresh Shelf remains blocked until API credentials prove variants + destination shipping + fulfillment."
   },
   "price_gate_v2": {

@@ -1,0 +1,1364 @@
+{
+  "version": "HUNT-PRINTFUL-CANDIDATE-SHELF-2026-09-22-V1",
+  "mode": "SHADOW_CANDIDATE_SHELF",
+  "authority": "NONE",
+  "production_exposure": false,
+  "provider": "Printful",
+  "catalog_count": 547,
+  "audited_products": 30,
+  "variants_verified": 30,
+  "in_stock_verified": 30,
+  "global_3_market_verified": 27,
+  "country_limited": 3,
+  "fresh_shelf_production_verified": 0,
+  "checkout_live_verified": 0,
+  "fulfillment": "DISABLED",
+  "hard_rule": "Country-limited products must remain blocked in every market without a verified shipping quote.",
+  "global_candidates": [
+    {
+      "provider": "Printful",
+      "product_id": 655,
+      "title": "Unisex Adidas Premium Polo Shirt | GQ3114",
+      "variant_id": 16403,
+      "variant_name": "adidas Premium Polo Shirt (Black / L)",
+      "size": "L",
+      "color": "Black",
+      "in_stock": true,
+      "supplier_cost_usd": 41.75,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 74.99,
+          "product_profit_usd": 26.49,
+          "free_shipping_retail_usd": 96.99,
+          "free_shipping_profit_usd": 34.02
+        },
+        "DE": {
+          "supplier_shipping_usd": 4.99,
+          "customer_shipping_grossed_up_usd": 5.48,
+          "product_retail_usd": 74.99,
+          "product_profit_usd": 26.49,
+          "free_shipping_retail_usd": 83.99,
+          "free_shipping_profit_usd": 29.69
+        },
+        "US": {
+          "supplier_shipping_usd": 4.95,
+          "customer_shipping_grossed_up_usd": 5.44,
+          "product_retail_usd": 74.99,
+          "product_profit_usd": 26.49,
+          "free_shipping_retail_usd": 83.99,
+          "free_shipping_profit_usd": 29.73
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 770,
+      "title": "Unisex Adidas Space-Dyed Polo Shirt | A591",
+      "variant_id": 19660,
+      "variant_name": "Adidas Space-Dyed Polo Shirt A591 (Black Melange / L)",
+      "size": "L",
+      "color": "Black Melange",
+      "in_stock": true,
+      "supplier_cost_usd": 53.01,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 94.99,
+          "product_profit_usd": 33.43,
+          "free_shipping_retail_usd": 116.99,
+          "free_shipping_profit_usd": 40.96
+        },
+        "DE": {
+          "supplier_shipping_usd": 4.99,
+          "customer_shipping_grossed_up_usd": 5.48,
+          "product_retail_usd": 94.99,
+          "product_profit_usd": 33.43,
+          "free_shipping_retail_usd": 103.99,
+          "free_shipping_profit_usd": 36.63
+        },
+        "US": {
+          "supplier_shipping_usd": 4.95,
+          "customer_shipping_grossed_up_usd": 5.44,
+          "product_retail_usd": 94.99,
+          "product_profit_usd": 33.43,
+          "free_shipping_retail_usd": 103.99,
+          "free_shipping_profit_usd": 36.67
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 1628,
+      "title": "All-Over Print Oversized Cotton Hoodie",
+      "variant_id": 51469,
+      "variant_name": "All-Over Print Oversized Cotton Hoodie (White / 2XS)",
+      "size": "2XS",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 56.1,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 17.69,
+          "customer_shipping_grossed_up_usd": 19.44,
+          "product_retail_usd": 100.99,
+          "product_profit_usd": 35.8,
+          "free_shipping_retail_usd": 131.99,
+          "free_shipping_profit_usd": 46.32
+        },
+        "DE": {
+          "supplier_shipping_usd": 7.29,
+          "customer_shipping_grossed_up_usd": 8.01,
+          "product_retail_usd": 100.99,
+          "product_profit_usd": 35.8,
+          "free_shipping_retail_usd": 113.99,
+          "free_shipping_profit_usd": 40.34
+        },
+        "US": {
+          "supplier_shipping_usd": 8.29,
+          "customer_shipping_grossed_up_usd": 9.11,
+          "product_retail_usd": 100.99,
+          "product_profit_usd": 35.8,
+          "free_shipping_retail_usd": 114.99,
+          "free_shipping_profit_usd": 40.25
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 1590,
+      "title": "All-Over Print Oversized Cotton Sweatshirt",
+      "variant_id": 51480,
+      "variant_name": "All-Over Print Oversized Cotton Sweatshirt (White / 2XS)",
+      "size": "2XS",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 42.84,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 17.69,
+          "customer_shipping_grossed_up_usd": 19.44,
+          "product_retail_usd": 76.99,
+          "product_profit_usd": 27.22,
+          "free_shipping_retail_usd": 108.99,
+          "free_shipping_profit_usd": 38.65
+        },
+        "DE": {
+          "supplier_shipping_usd": 7.29,
+          "customer_shipping_grossed_up_usd": 8.01,
+          "product_retail_usd": 76.99,
+          "product_profit_usd": 27.22,
+          "free_shipping_retail_usd": 89.99,
+          "free_shipping_profit_usd": 31.76
+        },
+        "US": {
+          "supplier_shipping_usd": 8.29,
+          "customer_shipping_grossed_up_usd": 9.11,
+          "product_retail_usd": 76.99,
+          "product_profit_usd": 27.22,
+          "free_shipping_retail_usd": 91.99,
+          "free_shipping_profit_usd": 32.58
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 388,
+      "title": "All-Over Print Recycled Unisex Hoodie",
+      "variant_id": 18730,
+      "variant_name": "All-Over Print Recycled Unisex Hoodie (White / 2XS)",
+      "size": "2XS",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 46.75,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 17.69,
+          "customer_shipping_grossed_up_usd": 19.44,
+          "product_retail_usd": 83.99,
+          "product_profit_usd": 29.68,
+          "free_shipping_retail_usd": 115.99,
+          "free_shipping_profit_usd": 41.11
+        },
+        "DE": {
+          "supplier_shipping_usd": 7.29,
+          "customer_shipping_grossed_up_usd": 8.01,
+          "product_retail_usd": 83.99,
+          "product_profit_usd": 29.68,
+          "free_shipping_retail_usd": 96.99,
+          "free_shipping_profit_usd": 34.22
+        },
+        "US": {
+          "supplier_shipping_usd": 8.29,
+          "customer_shipping_grossed_up_usd": 9.11,
+          "product_retail_usd": 83.99,
+          "product_profit_usd": 29.68,
+          "free_shipping_retail_usd": 98.99,
+          "free_shipping_profit_usd": 35.04
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 638,
+      "title": "Adidas Dad Hat",
+      "variant_id": 16245,
+      "variant_name": "adidas Dad Hat (White / One size)",
+      "size": "One size",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 28.5,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 50.99,
+          "product_profit_usd": 17.9,
+          "free_shipping_retail_usd": 73.99,
+          "free_shipping_profit_usd": 26.34
+        },
+        "DE": {
+          "supplier_shipping_usd": 4.99,
+          "customer_shipping_grossed_up_usd": 5.48,
+          "product_retail_usd": 50.99,
+          "product_profit_usd": 17.9,
+          "free_shipping_retail_usd": 59.99,
+          "free_shipping_profit_usd": 21.1
+        },
+        "US": {
+          "supplier_shipping_usd": 4.69,
+          "customer_shipping_grossed_up_usd": 5.15,
+          "product_retail_usd": 50.99,
+          "product_profit_usd": 17.9,
+          "free_shipping_retail_usd": 59.99,
+          "free_shipping_profit_usd": 21.4
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 1586,
+      "title": "Adidas Fundamental Alliance Cap | AH607",
+      "variant_id": 49973,
+      "variant_name": "adidas® AH607 (Black / White / One size)",
+      "size": "One size",
+      "color": "Black / White",
+      "in_stock": true,
+      "supplier_cost_usd": 34.96,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 62.99,
+          "product_profit_usd": 22.36,
+          "free_shipping_retail_usd": 84.99,
+          "free_shipping_profit_usd": 29.89
+        },
+        "DE": {
+          "supplier_shipping_usd": 4.99,
+          "customer_shipping_grossed_up_usd": 5.48,
+          "product_retail_usd": 62.99,
+          "product_profit_usd": 22.36,
+          "free_shipping_retail_usd": 71.99,
+          "free_shipping_profit_usd": 25.56
+        },
+        "US": {
+          "supplier_shipping_usd": 4.69,
+          "customer_shipping_grossed_up_usd": 5.15,
+          "product_retail_usd": 62.99,
+          "product_profit_usd": 22.36,
+          "free_shipping_retail_usd": 70.99,
+          "free_shipping_profit_usd": 24.95
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 458,
+      "title": "All-Over Print Beanie",
+      "variant_id": 11950,
+      "variant_name": "All-Over Print Beanie (L)",
+      "size": "L",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 15.75,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 28.99,
+          "product_profit_usd": 10.63,
+          "free_shipping_retail_usd": 50.99,
+          "free_shipping_profit_usd": 18.16
+        },
+        "DE": {
+          "supplier_shipping_usd": 4.99,
+          "customer_shipping_grossed_up_usd": 5.48,
+          "product_retail_usd": 28.99,
+          "product_profit_usd": 10.63,
+          "free_shipping_retail_usd": 37.99,
+          "free_shipping_profit_usd": 13.83
+        },
+        "US": {
+          "supplier_shipping_usd": 4.69,
+          "customer_shipping_grossed_up_usd": 5.15,
+          "product_retail_usd": 28.99,
+          "product_profit_usd": 10.63,
+          "free_shipping_retail_usd": 36.99,
+          "free_shipping_profit_usd": 13.22
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 300,
+      "title": "Black Glossy Mug",
+      "variant_id": 9323,
+      "variant_name": "Black Glossy Mug (11 oz)",
+      "size": "11 oz",
+      "color": "Black",
+      "in_stock": true,
+      "supplier_cost_usd": 8.95,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 15.99,
+          "product_profit_usd": 5.6,
+          "free_shipping_retail_usd": 38.99,
+          "free_shipping_profit_usd": 14.04
+        },
+        "DE": {
+          "supplier_shipping_usd": 5.39,
+          "customer_shipping_grossed_up_usd": 5.92,
+          "product_retail_usd": 15.99,
+          "product_profit_usd": 5.6,
+          "free_shipping_retail_usd": 25.99,
+          "free_shipping_profit_usd": 9.31
+        },
+        "US": {
+          "supplier_shipping_usd": 6.69,
+          "customer_shipping_grossed_up_usd": 7.35,
+          "product_retail_usd": 15.99,
+          "product_profit_usd": 5.6,
+          "free_shipping_retail_usd": 27.99,
+          "free_shipping_profit_usd": 9.83
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 403,
+      "title": "White Ceramic Mug with Color Inside",
+      "variant_id": 17362,
+      "variant_name": "White Ceramic Mug with Color Inside (Dark Blue / 11 oz)",
+      "size": "11 oz",
+      "color": "Dark Blue",
+      "in_stock": true,
+      "supplier_cost_usd": 8.11,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 14.99,
+          "product_profit_usd": 5.53,
+          "free_shipping_retail_usd": 36.99,
+          "free_shipping_profit_usd": 13.06
+        },
+        "DE": {
+          "supplier_shipping_usd": 5.39,
+          "customer_shipping_grossed_up_usd": 5.92,
+          "product_retail_usd": 14.99,
+          "product_profit_usd": 5.53,
+          "free_shipping_retail_usd": 24.99,
+          "free_shipping_profit_usd": 9.24
+        },
+        "US": {
+          "supplier_shipping_usd": 6.69,
+          "customer_shipping_grossed_up_usd": 7.35,
+          "product_retail_usd": 14.99,
+          "product_profit_usd": 5.53,
+          "free_shipping_retail_usd": 26.99,
+          "free_shipping_profit_usd": 9.76
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 751,
+      "title": "Double Wall Clear Plastic Tumbler (16 oz)",
+      "variant_id": 19192,
+      "variant_name": "Double Wall Clear Plastic Tumbler (16 oz)",
+      "size": "16 oz",
+      "color": null,
+      "in_stock": true,
+      "supplier_cost_usd": 11.95,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 21.99,
+          "product_profit_usd": 8.06,
+          "free_shipping_retail_usd": 43.99,
+          "free_shipping_profit_usd": 15.59
+        },
+        "DE": {
+          "supplier_shipping_usd": 5.39,
+          "customer_shipping_grossed_up_usd": 5.92,
+          "product_retail_usd": 21.99,
+          "product_profit_usd": 8.06,
+          "free_shipping_retail_usd": 30.99,
+          "free_shipping_profit_usd": 10.86
+        },
+        "US": {
+          "supplier_shipping_usd": 6.69,
+          "customer_shipping_grossed_up_usd": 7.35,
+          "product_retail_usd": 21.99,
+          "product_profit_usd": 8.06,
+          "free_shipping_retail_usd": 33.99,
+          "free_shipping_profit_usd": 12.29
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 262,
+      "title": "All-Over Print Drawstring Bag",
+      "variant_id": 8894,
+      "variant_name": "All-Over Drawstring Bag (15″×17″)",
+      "size": "15″×17″",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 18.75,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 33.99,
+          "product_profit_usd": 12.18,
+          "free_shipping_retail_usd": 55.99,
+          "free_shipping_profit_usd": 19.71
+        },
+        "DE": {
+          "supplier_shipping_usd": 4.99,
+          "customer_shipping_grossed_up_usd": 5.48,
+          "product_retail_usd": 33.99,
+          "product_profit_usd": 12.18,
+          "free_shipping_retail_usd": 42.99,
+          "free_shipping_profit_usd": 15.38
+        },
+        "US": {
+          "supplier_shipping_usd": 4.69,
+          "customer_shipping_grossed_up_usd": 5.15,
+          "product_retail_usd": 33.99,
+          "product_profit_usd": 12.18,
+          "free_shipping_retail_usd": 41.99,
+          "free_shipping_profit_usd": 14.77
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 918,
+      "title": "All-Over Print American Football Jersey",
+      "variant_id": 23612,
+      "variant_name": "All-Over Print American Football Jersey (White / 2XS)",
+      "size": "2XS",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 36.72,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 65.99,
+          "product_profit_usd": 23.33,
+          "free_shipping_retail_usd": 87.99,
+          "free_shipping_profit_usd": 30.86
+        },
+        "DE": {
+          "supplier_shipping_usd": 4.99,
+          "customer_shipping_grossed_up_usd": 5.48,
+          "product_retail_usd": 65.99,
+          "product_profit_usd": 23.33,
+          "free_shipping_retail_usd": 74.99,
+          "free_shipping_profit_usd": 26.53
+        },
+        "US": {
+          "supplier_shipping_usd": 4.95,
+          "customer_shipping_grossed_up_usd": 5.44,
+          "product_retail_usd": 65.99,
+          "product_profit_usd": 23.33,
+          "free_shipping_retail_usd": 74.99,
+          "free_shipping_profit_usd": 26.57
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 279,
+      "title": "All-Over Print Backpack",
+      "variant_id": 9063,
+      "variant_name": "All-Over Print Backpack",
+      "size": "One size",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 38.95,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 51.99,
+          "customer_shipping_grossed_up_usd": 57.13,
+          "product_retail_usd": 69.99,
+          "product_profit_usd": 24.74,
+          "free_shipping_retail_usd": 162.99,
+          "free_shipping_profit_usd": 57.38
+        },
+        "DE": {
+          "supplier_shipping_usd": 13.79,
+          "customer_shipping_grossed_up_usd": 15.15,
+          "product_retail_usd": 69.99,
+          "product_profit_usd": 24.74,
+          "free_shipping_retail_usd": 94.99,
+          "free_shipping_profit_usd": 33.7
+        },
+        "US": {
+          "supplier_shipping_usd": 10.89,
+          "customer_shipping_grossed_up_usd": 11.97,
+          "product_retail_usd": 69.99,
+          "product_profit_usd": 24.74,
+          "free_shipping_retail_usd": 88.99,
+          "free_shipping_profit_usd": 31.14
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 605,
+      "title": "Rubber Case for AirPods®",
+      "variant_id": 15533,
+      "variant_name": "AirPods Cases (Black / AirPods Pro)",
+      "size": "AirPods Pro",
+      "color": "Black",
+      "in_stock": true,
+      "supplier_cost_usd": 12.5,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 8.29,
+          "customer_shipping_grossed_up_usd": 9.11,
+          "product_retail_usd": 22.99,
+          "product_profit_usd": 8.42,
+          "free_shipping_retail_usd": 37.99,
+          "free_shipping_profit_usd": 13.78
+        },
+        "DE": {
+          "supplier_shipping_usd": 7.29,
+          "customer_shipping_grossed_up_usd": 8.01,
+          "product_retail_usd": 22.99,
+          "product_profit_usd": 8.42,
+          "free_shipping_retail_usd": 35.99,
+          "free_shipping_profit_usd": 12.96
+        },
+        "US": {
+          "supplier_shipping_usd": 5.19,
+          "customer_shipping_grossed_up_usd": 5.7,
+          "product_retail_usd": 22.99,
+          "product_profit_usd": 8.42,
+          "free_shipping_retail_usd": 31.99,
+          "free_shipping_profit_usd": 11.42
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 681,
+      "title": "All-Over Print Case for AirPods®",
+      "variant_id": 16865,
+      "variant_name": "All-Over Print Case for AirPods® (White / AirPods Gen1)",
+      "size": "AirPods Gen1",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 18.25,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 8.29,
+          "customer_shipping_grossed_up_usd": 9.11,
+          "product_retail_usd": 32.99,
+          "product_profit_usd": 11.77,
+          "free_shipping_retail_usd": 47.99,
+          "free_shipping_profit_usd": 17.13
+        },
+        "DE": {
+          "supplier_shipping_usd": 7.29,
+          "customer_shipping_grossed_up_usd": 8.01,
+          "product_retail_usd": 32.99,
+          "product_profit_usd": 11.77,
+          "free_shipping_retail_usd": 45.99,
+          "free_shipping_profit_usd": 16.31
+        },
+        "US": {
+          "supplier_shipping_usd": 5.19,
+          "customer_shipping_grossed_up_usd": 5.7,
+          "product_retail_usd": 32.99,
+          "product_profit_usd": 11.77,
+          "free_shipping_retail_usd": 41.99,
+          "free_shipping_profit_usd": 14.77
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 181,
+      "title": "Clear Case for iPhone®",
+      "variant_id": 10996,
+      "variant_name": "Clear Case for iPhone® (iPhone 11 Pro Max)",
+      "size": "iPhone 11 Pro Max",
+      "color": null,
+      "in_stock": true,
+      "supplier_cost_usd": 11.5,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 8.29,
+          "customer_shipping_grossed_up_usd": 9.11,
+          "product_retail_usd": 20.99,
+          "product_profit_usd": 7.6,
+          "free_shipping_retail_usd": 35.99,
+          "free_shipping_profit_usd": 12.96
+        },
+        "DE": {
+          "supplier_shipping_usd": 7.29,
+          "customer_shipping_grossed_up_usd": 8.01,
+          "product_retail_usd": 20.99,
+          "product_profit_usd": 7.6,
+          "free_shipping_retail_usd": 33.99,
+          "free_shipping_profit_usd": 12.14
+        },
+        "US": {
+          "supplier_shipping_usd": 5.19,
+          "customer_shipping_grossed_up_usd": 5.7,
+          "product_retail_usd": 20.99,
+          "product_profit_usd": 7.6,
+          "free_shipping_retail_usd": 29.99,
+          "free_shipping_profit_usd": 10.6
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 924,
+      "title": "Area Rug",
+      "variant_id": 23702,
+      "variant_name": "24\" × 36\"",
+      "size": "24″×36″",
+      "color": null,
+      "in_stock": true,
+      "supplier_cost_usd": 24.54,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 13.09,
+          "customer_shipping_grossed_up_usd": 14.38,
+          "product_retail_usd": 43.99,
+          "product_profit_usd": 15.49,
+          "free_shipping_retail_usd": 67.99,
+          "free_shipping_profit_usd": 24.24
+        },
+        "DE": {
+          "supplier_shipping_usd": 10.09,
+          "customer_shipping_grossed_up_usd": 11.09,
+          "product_retail_usd": 43.99,
+          "product_profit_usd": 15.49,
+          "free_shipping_retail_usd": 61.99,
+          "free_shipping_profit_usd": 21.78
+        },
+        "US": {
+          "supplier_shipping_usd": 11.69,
+          "customer_shipping_grossed_up_usd": 12.85,
+          "product_retail_usd": 43.99,
+          "product_profit_usd": 15.49,
+          "free_shipping_retail_usd": 64.99,
+          "free_shipping_profit_usd": 22.91
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 83,
+      "title": "All-Over Print Basic Pillow",
+      "variant_id": 49853,
+      "variant_name": "All-Over Print Basic Pillow 14″×14″",
+      "size": "14″×14″",
+      "color": null,
+      "in_stock": true,
+      "supplier_cost_usd": 13.95,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 51.99,
+          "customer_shipping_grossed_up_usd": 57.13,
+          "product_retail_usd": 24.99,
+          "product_profit_usd": 8.79,
+          "free_shipping_retail_usd": 117.99,
+          "free_shipping_profit_usd": 41.43
+        },
+        "DE": {
+          "supplier_shipping_usd": 13.79,
+          "customer_shipping_grossed_up_usd": 15.15,
+          "product_retail_usd": 24.99,
+          "product_profit_usd": 8.79,
+          "free_shipping_retail_usd": 49.99,
+          "free_shipping_profit_usd": 17.75
+        },
+        "US": {
+          "supplier_shipping_usd": 10.89,
+          "customer_shipping_grossed_up_usd": 11.97,
+          "product_retail_usd": 24.99,
+          "product_profit_usd": 8.79,
+          "free_shipping_retail_usd": 44.99,
+          "free_shipping_profit_usd": 16.1
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 89,
+      "title": "All-Over Print Basic Pillow Case",
+      "variant_id": 49855,
+      "variant_name": "All-Over Print Basic Pillow Case 14″×14″",
+      "size": "14″×14″",
+      "color": null,
+      "in_stock": true,
+      "supplier_cost_usd": 11.75,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 20.99,
+          "product_profit_usd": 7.35,
+          "free_shipping_retail_usd": 43.99,
+          "free_shipping_profit_usd": 15.79
+        },
+        "DE": {
+          "supplier_shipping_usd": 4.99,
+          "customer_shipping_grossed_up_usd": 5.48,
+          "product_retail_usd": 20.99,
+          "product_profit_usd": 7.35,
+          "free_shipping_retail_usd": 29.99,
+          "free_shipping_profit_usd": 10.55
+        },
+        "US": {
+          "supplier_shipping_usd": 4.69,
+          "customer_shipping_grossed_up_usd": 5.15,
+          "product_retail_usd": 20.99,
+          "product_profit_usd": 7.35,
+          "free_shipping_retail_usd": 29.99,
+          "free_shipping_profit_usd": 10.85
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 938,
+      "title": "Luggage Tag",
+      "variant_id": 23889,
+      "variant_name": "2.4'' × 4''",
+      "size": "2.4″×4″",
+      "color": null,
+      "in_stock": true,
+      "supplier_cost_usd": 13.46,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 14.09,
+          "customer_shipping_grossed_up_usd": 15.48,
+          "product_retail_usd": 24.99,
+          "product_profit_usd": 9.28,
+          "free_shipping_retail_usd": 49.99,
+          "free_shipping_profit_usd": 17.94
+        },
+        "DE": {
+          "supplier_shipping_usd": 14.09,
+          "customer_shipping_grossed_up_usd": 15.48,
+          "product_retail_usd": 24.99,
+          "product_profit_usd": 9.28,
+          "free_shipping_retail_usd": 49.99,
+          "free_shipping_profit_usd": 17.94
+        },
+        "US": {
+          "supplier_shipping_usd": 6.19,
+          "customer_shipping_grossed_up_usd": 6.8,
+          "product_retail_usd": 24.99,
+          "product_profit_usd": 9.28,
+          "free_shipping_retail_usd": 35.99,
+          "free_shipping_profit_usd": 13.1
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 583,
+      "title": "Gaming Mouse Pad",
+      "variant_id": 14943,
+      "variant_name": "Gaming Mouse Pad (White / 18″×16″)",
+      "size": "18″×16″",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 11.95,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 15.59,
+          "customer_shipping_grossed_up_usd": 17.13,
+          "product_retail_usd": 21.99,
+          "product_profit_usd": 8.06,
+          "free_shipping_retail_usd": 49.99,
+          "free_shipping_profit_usd": 17.95
+        },
+        "DE": {
+          "supplier_shipping_usd": 10.99,
+          "customer_shipping_grossed_up_usd": 12.08,
+          "product_retail_usd": 21.99,
+          "product_profit_usd": 8.06,
+          "free_shipping_retail_usd": 40.99,
+          "free_shipping_profit_usd": 14.36
+        },
+        "US": {
+          "supplier_shipping_usd": 10.39,
+          "customer_shipping_grossed_up_usd": 11.42,
+          "product_retail_usd": 21.99,
+          "product_profit_usd": 8.06,
+          "free_shipping_retail_usd": 39.99,
+          "free_shipping_profit_usd": 14.05
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 946,
+      "title": "Ruled Line Spiral Notebook",
+      "variant_id": 24305,
+      "variant_name": "Generic brand (One Size)",
+      "size": "One size",
+      "color": null,
+      "in_stock": true,
+      "supplier_cost_usd": 8.46,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 15.59,
+          "customer_shipping_grossed_up_usd": 17.13,
+          "product_retail_usd": 15.99,
+          "product_profit_usd": 6.09,
+          "free_shipping_retail_usd": 42.99,
+          "free_shipping_profit_usd": 15.07
+        },
+        "DE": {
+          "supplier_shipping_usd": 10.39,
+          "customer_shipping_grossed_up_usd": 11.42,
+          "product_retail_usd": 15.99,
+          "product_profit_usd": 6.09,
+          "free_shipping_retail_usd": 33.99,
+          "free_shipping_profit_usd": 12.08
+        },
+        "US": {
+          "supplier_shipping_usd": 5.69,
+          "customer_shipping_grossed_up_usd": 6.25,
+          "product_retail_usd": 15.99,
+          "product_profit_usd": 6.09,
+          "free_shipping_retail_usd": 25.99,
+          "free_shipping_profit_usd": 9.5
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 507,
+      "title": "All-Over Print Biker Shorts",
+      "variant_id": 12741,
+      "variant_name": "All-Over Print Biker Shorts (White / L)",
+      "size": "L",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 27.75,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 49.99,
+          "product_profit_usd": 17.74,
+          "free_shipping_retail_usd": 71.99,
+          "free_shipping_profit_usd": 25.27
+        },
+        "DE": {
+          "supplier_shipping_usd": 4.99,
+          "customer_shipping_grossed_up_usd": 5.48,
+          "product_retail_usd": 49.99,
+          "product_profit_usd": 17.74,
+          "free_shipping_retail_usd": 58.99,
+          "free_shipping_profit_usd": 20.94
+        },
+        "US": {
+          "supplier_shipping_usd": 4.69,
+          "customer_shipping_grossed_up_usd": 5.15,
+          "product_retail_usd": 49.99,
+          "product_profit_usd": 17.74,
+          "free_shipping_retail_usd": 57.99,
+          "free_shipping_profit_usd": 20.33
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 1367,
+      "title": "All-Over Print Boxy Football Jersey",
+      "variant_id": 25458,
+      "variant_name": "All-Over Print Boxy Football Jersey (White / 2XS)",
+      "size": "2XS",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 37.74,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 67.99,
+          "product_profit_usd": 24.13,
+          "free_shipping_retail_usd": 89.99,
+          "free_shipping_profit_usd": 31.66
+        },
+        "DE": {
+          "supplier_shipping_usd": 4.99,
+          "customer_shipping_grossed_up_usd": 5.48,
+          "product_retail_usd": 67.99,
+          "product_profit_usd": 24.13,
+          "free_shipping_retail_usd": 76.99,
+          "free_shipping_profit_usd": 27.33
+        },
+        "US": {
+          "supplier_shipping_usd": 4.95,
+          "customer_shipping_grossed_up_usd": 5.44,
+          "product_retail_usd": 67.99,
+          "product_profit_usd": 24.13,
+          "free_shipping_retail_usd": 76.99,
+          "free_shipping_profit_usd": 27.37
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 531,
+      "title": "Men's Adidas Quarter-Zip Pullover | A401",
+      "variant_id": 13364,
+      "variant_name": "adidas A401 (Black / L)",
+      "size": "L",
+      "color": "Black",
+      "in_stock": true,
+      "supplier_cost_usd": 62.42,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 17.69,
+          "customer_shipping_grossed_up_usd": 19.44,
+          "product_retail_usd": 111.99,
+          "product_profit_usd": 39.49,
+          "free_shipping_retail_usd": 143.99,
+          "free_shipping_profit_usd": 50.92
+        },
+        "DE": {
+          "supplier_shipping_usd": 7.29,
+          "customer_shipping_grossed_up_usd": 8.01,
+          "product_retail_usd": 111.99,
+          "product_profit_usd": 39.49,
+          "free_shipping_retail_usd": 124.99,
+          "free_shipping_profit_usd": 44.03
+        },
+        "US": {
+          "supplier_shipping_usd": 8.79,
+          "customer_shipping_grossed_up_usd": 9.66,
+          "product_retail_usd": 111.99,
+          "product_profit_usd": 39.49,
+          "free_shipping_retail_usd": 127.99,
+          "free_shipping_profit_usd": 45.26
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 630,
+      "title": "All-Over Print Bandana",
+      "variant_id": 16033,
+      "variant_name": "All-Over Print Bandana (White / L)",
+      "size": "L",
+      "color": "White",
+      "in_stock": true,
+      "supplier_cost_usd": 10.5,
+      "verified_markets": [
+        "IL",
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [],
+      "candidate_state": "GLOBAL_3_MARKET_VERIFIED",
+      "country_pricing": {
+        "IL": {
+          "supplier_shipping_usd": 12.49,
+          "customer_shipping_grossed_up_usd": 13.73,
+          "product_retail_usd": 18.99,
+          "product_profit_usd": 6.78,
+          "free_shipping_retail_usd": 41.99,
+          "free_shipping_profit_usd": 15.22
+        },
+        "DE": {
+          "supplier_shipping_usd": 4.99,
+          "customer_shipping_grossed_up_usd": 5.48,
+          "product_retail_usd": 18.99,
+          "product_profit_usd": 6.78,
+          "free_shipping_retail_usd": 27.99,
+          "free_shipping_profit_usd": 9.98
+        },
+        "US": {
+          "supplier_shipping_usd": 4.69,
+          "customer_shipping_grossed_up_usd": 5.15,
+          "product_retail_usd": 18.99,
+          "product_profit_usd": 6.78,
+          "free_shipping_retail_usd": 27.99,
+          "free_shipping_profit_usd": 10.28
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    }
+  ],
+  "country_limited_candidates": [
+    {
+      "provider": "Printful",
+      "product_id": 679,
+      "title": "Unisex Performance Crew Neck T-Shirt | A4 N3142",
+      "variant_id": 17006,
+      "variant_name": "A4 N3142 (Black / L)",
+      "size": "L",
+      "color": "Black",
+      "in_stock": true,
+      "supplier_cost_usd": 17.64,
+      "verified_markets": [
+        "US"
+      ],
+      "blocked_markets": [
+        "IL",
+        "DE"
+      ],
+      "candidate_state": "COUNTRY_LIMITED",
+      "country_pricing": {
+        "US": {
+          "supplier_shipping_usd": 4.95,
+          "customer_shipping_grossed_up_usd": 5.44,
+          "product_retail_usd": 31.99,
+          "product_profit_usd": 11.47,
+          "free_shipping_retail_usd": 40.99,
+          "free_shipping_profit_usd": 14.71
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 672,
+      "title": "All-Over Print Crossbody Bag",
+      "variant_id": 16708,
+      "variant_name": "All-Over Print Crossbody Bag (Black)",
+      "size": "One size",
+      "color": "Black",
+      "in_stock": true,
+      "supplier_cost_usd": 23.97,
+      "verified_markets": [
+        "DE",
+        "US"
+      ],
+      "blocked_markets": [
+        "IL"
+      ],
+      "candidate_state": "COUNTRY_LIMITED",
+      "country_pricing": {
+        "DE": {
+          "supplier_shipping_usd": 9.29,
+          "customer_shipping_grossed_up_usd": 10.21,
+          "product_retail_usd": 42.99,
+          "product_profit_usd": 15.15,
+          "free_shipping_retail_usd": 59.99,
+          "free_shipping_profit_usd": 21.33
+        },
+        "US": {
+          "supplier_shipping_usd": 8.29,
+          "customer_shipping_grossed_up_usd": 9.11,
+          "product_retail_usd": 42.99,
+          "product_profit_usd": 15.15,
+          "free_shipping_retail_usd": 57.99,
+          "free_shipping_profit_usd": 20.51
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    },
+    {
+      "provider": "Printful",
+      "product_id": 793,
+      "title": "Acrylic Ornaments",
+      "variant_id": 20250,
+      "variant_name": "Acrylic Ornaments (Circle)",
+      "size": "Circle",
+      "color": null,
+      "in_stock": true,
+      "supplier_cost_usd": 7.8,
+      "verified_markets": [
+        "US"
+      ],
+      "blocked_markets": [
+        "IL",
+        "DE"
+      ],
+      "candidate_state": "COUNTRY_LIMITED",
+      "country_pricing": {
+        "US": {
+          "supplier_shipping_usd": 5.49,
+          "customer_shipping_grossed_up_usd": 6.03,
+          "product_retail_usd": 13.99,
+          "product_profit_usd": 4.93,
+          "free_shipping_retail_usd": 23.99,
+          "free_shipping_profit_usd": 8.54
+        }
+      },
+      "fulfillment": "DISABLED",
+      "checkout": "DISABLED"
+    }
+  ]
+}
