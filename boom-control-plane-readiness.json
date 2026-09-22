@@ -108,6 +108,16 @@
       "id": "profit_data_map_and_ledger",
       "status": "CODED_EXPECTED_ONLY_REALIZED_BLOCKED",
       "evidence": "Canonical profit sources mapped with no parallel schema. 8/8 unit-economics rows verified and profit-gate PASS; 0 order-finance rows; 8/8 orders are test; realized product profit and mission attainment remain blocked. Non-RLS profit rollup/attribution sources stay server-only until hardened."
+    },
+    {
+      "id": "hourly_profit_loop",
+      "status": "CODED_SHADOW_BLOCKED_UNVERIFIED",
+      "evidence": "Canonical f60t_hourly_profit_ledger reused. Live audit: 66 rows, 0 exact VERIFIED, 66 UNVERIFIED, 0 real-order rows, $0 exact-verified profit. Runtime accepts exact verification_status='VERIFIED' only and produces SHADOW next-hour proposals."
+    },
+    {
+      "id": "marketing_net_profit_attribution",
+      "status": "CODED_CONTRACT_BLOCKED_NO_REAL_ORDER_OR_COST_FEED",
+      "evidence": "Attribution contract requires non-test order + finance profit evidence + touchpoint linkage + actual marketing spend/fees. Current purchase bridge: 32 rows, 0 real-order-linked, 0 profit-evidence-ready; marketing cost feed not connected."
     }
   ],
   "blockers": [
@@ -121,7 +131,9 @@
     "Only after evidence review may Owner decide whether to merge/activate.",
     "Connect verified live profit economics evidence (revenue + all variable costs + returns + marketing attribution) before treating Net Profit/hour, CAC or LTV as real.",
     "Realized Profit remains blocked until non-test orders produce real finance-ledger evidence and auditable product allocation.",
-    "Harden RLS/server access for hunt_purchase_attribution_bridge and hunt_daily_owner_metrics before browser-side Profit Mission use."
+    "Harden RLS/server access for hunt_purchase_attribution_bridge and hunt_daily_owner_metrics before browser-side Profit Mission use.",
+    "Connect audited per-channel/campaign marketing cost evidence before CAC or Marketing Net Profit can be verified.",
+    "Hourly mission remains blocked until f60t_hourly_profit_ledger contains exact VERIFIED rows backed by non-test real-order finance evidence."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
