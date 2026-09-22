@@ -316,6 +316,83 @@
     }
   }
 
+
+  function renderAIOperatingFactory(){
+    const skills=data.operationalSkills||{};
+    const templates=data.workflowTemplates||{};
+    const router=data.aiRouter||{};
+    const creative=data.creativeFactory||{};
+    const buildRepair=data.buildRepairFactory||{};
+    const summary=$("#bs-ai-factory-summary");
+    if(summary){
+      summary.innerHTML=[
+        metric(skills.skills?.length||0,"Operational skills"),
+        metric(templates.templates?.length||0,"Workflow templates"),
+        metric(router.mode||"UNKNOWN","Router mode"),
+        metric(creative.mode||"UNKNOWN","Creative factory"),
+        metric(buildRepair.mode||"UNKNOWN","Build/repair")
+      ].join("");
+    }
+    const skillHost=$("#bs-skills-library");
+    if(skillHost){
+      skillHost.innerHTML=(skills.skills||[]).map(x=>`<article class="bs-skill-card">
+        <div class="bs-skill-head"><strong>${esc(x.title)}</strong><span class="bs-status ${x.material?"NEXT":"DONE"}">${x.material?"GATED":"READ-ONLY"}</span></div>
+        <small>${esc(x.id)} · ${esc(x.owner)}</small>
+        <p>${esc(x.purpose)}</p>
+        <div class="bs-tags">${(x.tools||[]).map(t=>`<span>${esc(t)}</span>`).join("")}</div>
+      </article>`).join("");
+    }
+    const tplHost=$("#bs-workflow-templates");
+    if(tplHost){
+      tplHost.innerHTML=(templates.templates||[]).map(x=>`<article class="bs-template-card">
+        <div class="bs-skill-head"><strong>${esc(x.title)}</strong><span class="bs-status ${x.material?"NEXT":"DONE"}">${x.material?"OWNER GATE":"SAFE PLAN"}</span></div>
+        <small>${esc(x.id)} · owner: ${esc(x.owner)}</small>
+        <div class="bs-journey-steps">${(x.skills||[]).map(id=>`<span>${esc(id)}</span>`).join("")}</div>
+        <button type="button" data-compile-template="${esc(x.id)}">Compile SHADOW Plan</button>
+      </article>`).join("");
+    }
+    const routerHost=$("#bs-router-policy");
+    if(routerHost){
+      routerHost.innerHTML=`<p>${esc(router.purpose||"")}</p>
+        <div class="bs-tags">${(router.dimensions||[]).map(d=>`<span>${esc(d.id)} ${esc(Math.round((Number(d.weight)||0)*100))}%</span>`).join("")}</div>
+        <code>authority: ${esc(router.authority||"NONE")} · ${esc(router.mode||"PLAN_ONLY")}</code>`;
+    }
+    const creativeHost=$("#bs-creative-factory");
+    if(creativeHost){
+      creativeHost.innerHTML=`<div class="bs-journey-steps">${(creative.stages||[]).map(x=>`<span>${esc(x)}</span>`).join("")}</div>
+        <p>${esc((creative.hard_rules||[]).join(" · "))}</p>`;
+    }
+    const repairHost=$("#bs-build-repair-factory");
+    if(repairHost){
+      repairHost.innerHTML=`<strong>Build</strong><div class="bs-journey-steps">${(buildRepair.build_flow||[]).map(x=>`<span>${esc(x)}</span>`).join("")}</div>
+        <strong>Repair</strong><div class="bs-journey-steps">${(buildRepair.repair_flow||[]).map(x=>`<span>${esc(x)}</span>`).join("")}</div>
+        <p>${esc((buildRepair.hard_rules||[]).join(" · "))}</p>`;
+    }
+  }
+
+  async function compileTemplatePreview(templateId){
+    const host=$("#bs-workflow-plan-preview");
+    const builder=window.BoomWorkflowBuilder;
+    if(!host)return;
+    if(!builder?.compile){
+      host.innerHTML='<span class="bs-error">Workflow Builder unavailable.</span>';
+      return;
+    }
+    try{
+      const plan=await builder.compile(templateId,{missionContext:{surface:"boom_brain_studio",preview:true}});
+      if(!plan?.ok){
+        host.innerHTML=`<span class="bs-error">Plan blocked: ${esc(plan?.reason||"unknown")}</span>`;
+        return;
+      }
+      host.innerHTML=`<strong>${esc(plan.title)}</strong>
+        <small>${esc(plan.workflow_plan_id)} · ${esc(plan.mode)} · dispatch: ${esc(plan.dispatch)}</small>
+        <div class="bs-journey-steps">${(plan.ordered_skills||[]).map(x=>`<span>${esc(x.skill_id)} → ${esc(x.owner)}</span>`).join("")}</div>
+        <p>tools: ${esc((plan.tool_dependencies||[]).join(" · ")||"none")} · gates: ${esc((plan.gates||[]).join(" · ")||"none")} · material suppressed: ${esc(plan.material_action_suppressed)}</p>`;
+    }catch(error){
+      host.innerHTML=`<span class="bs-error">Plan compile failed: ${esc(error?.message||"unknown")}</span>`;
+    }
+  }
+
   function renderAutomation(){
     const a=data.automation||{};
     const state=$("#bs-automation-state");
@@ -500,12 +577,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
@@ -520,6 +597,12 @@
     runtime?.emit?.("filter.apply",{surface:"brain_studio",filter:"action_owner",value:String(event.currentTarget.value||"")},{broadcast:false});
     renderActions();
   });
+  document.addEventListener("click",async event=>{
+    const compileBtn=event.target.closest?.("[data-compile-template]");
+    if(!compileBtn)return;
+    await compileTemplatePreview(String(compileBtn.dataset.compileTemplate||""));
+  });
+
   document.addEventListener("click",async event=>{
     const gateBtn=event.target.closest?.("[data-owner-gate-approve],[data-owner-gate-reject]");
     if(!gateBtn)return;
