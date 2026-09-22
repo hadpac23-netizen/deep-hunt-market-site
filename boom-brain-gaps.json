@@ -200,7 +200,7 @@
       "owner": "learning_governance_brain",
       "status": "IN_PROGRESS",
       "source": "F50",
-      "next": "Ledger contract + secure schema candidate are ready; next is reviewed canonical migration + live DB verification."
+      "next": "Existing hunt_boom_team_runs / hunt_boom_decisions / hunt_boom_events are the canonical ledger + Approval Queue. Adapter is coded; prove one real admin write + SHADOW decision in Preview. No new DB schema."
     },
     {
       "id": "tool_gateway",
@@ -216,7 +216,7 @@
       "owner": "boom_orchestrator",
       "status": "IN_PROGRESS",
       "source": "F50",
-      "next": "Plan-only SHADOW adapter exists; next is server transport after ledger migration and secret-reference gateway."
+      "next": "Canonical client adapter + server gateway are coded. boom-automation-gateway is NOT_DEPLOYED and n8n URL/token are NOT_CONFIGURED. First proof must be read-only shelf_coverage_17x1000 in Preview."
     },
     {
       "id": "shelf_coverage_17x1000",
@@ -256,7 +256,7 @@
       "owner": "boom_orchestrator",
       "status": "DONE",
       "source": "F50",
-      "next": "In-memory mission/workflow/run/correlation state machine is active on the branch; persist only after reviewed Run Ledger schema."
+      "next": "In-memory state machine is wired to existing BOOM durable ledger adapter; Preview persistence proof remains tracked under durable_run_ledger."
     },
     {
       "id": "a6_creative_learning_rewire",
