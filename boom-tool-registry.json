@@ -185,6 +185,29 @@
         "All unmapped markets default HOLD",
         "Requires owner/counsel-approved legal documents and market review before real-money launch"
       ]
+    },
+    {
+      "id": "performance_mobile_readiness",
+      "type": "PERFORMANCE_MOBILE_READINESS_EVALUATOR",
+      "status": "CODED_LOCAL_PASS_PREVIEW_PWA_PROOF_PENDING",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "390px local QA: 2,899 DOM nodes / 174 images / 0 touch violations",
+        "Progressive shelf mounting + PWA code-cache hardening",
+        "Preview PWA/runtime proof still required"
+      ]
+    },
+    {
+      "id": "launch_readiness_aggregator",
+      "type": "READ_ONLY_LAUNCH_AGGREGATOR",
+      "status": "CODED_READ_ONLY",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Aggregates boom-control-plane-readiness domain statuses",
+        "Does not mutate source gates or activation switches"
+      ]
     }
   ],
   "security_truth_rule": "verify_jwt=false in platform metadata is not by itself proof of exposure; webhook/custom-auth functions must be reviewed by their actual code/auth contract before classification.",
