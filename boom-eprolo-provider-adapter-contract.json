@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V11",
+  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V12",
   "date": "2026-09-22",
   "provider": "EPROLO",
   "owner": "commerce_truth_brain",
@@ -354,10 +354,32 @@
     "global_product_market_shadow": {
       "products": 4,
       "countries_represented": 32,
-      "shipping_shadow_product_market_pairs": 91,
-      "policy_mapped_shadow_pairs": 56,
-      "policy_hold_shadow_pairs": 35,
-      "live_product_market_pairs": 0
+      "possible_product_market_pairs": 132,
+      "shipping_shadow_product_market_pairs": 115,
+      "policy_mapped_shadow_pairs": 72,
+      "policy_hold_shadow_pairs": 43,
+      "live_product_market_pairs": 0,
+      "full_33_market_matrix": true
+    },
+    "global_gapfill_wave4": {
+      "products_checked": 2,
+      "markets_checked": 12,
+      "shipping_pass_counts": {
+        "DE": 2,
+        "FR": 2,
+        "IT": 2,
+        "ES": 2,
+        "NL": 2,
+        "GB": 2,
+        "US": 2,
+        "CA": 2,
+        "AU": 2,
+        "AE": 2,
+        "JP": 2,
+        "SG": 2
+      },
+      "live_eligible_products": 0,
+      "production_effect": false
     }
   },
   "truth_policies": {

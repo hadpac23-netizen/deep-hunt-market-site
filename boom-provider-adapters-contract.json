@@ -126,9 +126,13 @@
         "BR"
       ],
       "global_markets_checked": 33,
-      "global_product_market_shadow_pairs": 91,
+      "global_product_market_shadow_pairs": 115,
       "global_product_market_countries": 32,
-      "global_live_product_market_pairs": 0
+      "global_live_product_market_pairs": 0,
+      "global_product_market_possible_pairs": 132,
+      "global_product_market_policy_mapped_pairs": 72,
+      "global_product_market_policy_hold_pairs": 43,
+      "global_product_market_full_matrix": true
     }
   },
   "price_gate_v2": {
