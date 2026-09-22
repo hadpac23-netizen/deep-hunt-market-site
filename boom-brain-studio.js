@@ -67,6 +67,48 @@
 
 
 
+
+  async function renderConsolidationMap(){
+    const summary=$("#bs-consolidation-summary"),host=$("#bs-consolidation-map"),agentsHost=$("#bs-agent-map"),schedulerHost=$("#bs-scheduler-map");
+    if(!host)return;
+    try{
+      const [agents,skills,scheduler]=await Promise.all([
+        json("boom-agent-registry.json"),json("boom-skill-registry.json"),json("boom-scheduler-contract.json")
+      ]);
+      const rewired=(agents.legacy_manager_map||[]).filter(x=>!["SUPERSEDED_BY_PRIMARY_BRAIN","SPLIT_BY_DECISION_DOMAIN"].includes(x.classification)).length;
+      if(summary)summary.innerHTML=[
+        metric(8,"Primary brains"),
+        metric(agents.legacy_source?.manager_count||0,"Legacy managers mapped"),
+        metric(rewired,"Agent/adapter rewires"),
+        metric(skills.skills?.length||0,"Skills classified"),
+        metric(scheduler.jobs?.length||0,"Scheduler jobs mapped")
+      ].join("");
+      const byOwner=new Map();
+      for(const row of (agents.legacy_manager_map||[])){
+        const owner=row.new_owner||"split / superseded";
+        if(!byOwner.has(owner))byOwner.set(owner,[]);
+        byOwner.get(owner).push(row);
+      }
+      host.innerHTML=[...byOwner.entries()].map(([owner,rows])=>`<article class="bs-domain-card">
+        <small>${esc(owner)}</small><h3>${esc(rows.length)} legacy responsibilities</h3>
+        <div class="bs-tags">${rows.slice(0,12).map(x=>`<span>${esc(x.new_role||x.legacy_id)}</span>`).join("")}</div>
+        <p>${rows.length>12?esc((rows.length-12)+" more mapped in registry"):"One canonical owner per decision domain."}</p>
+      </article>`).join("");
+      if(agentsHost){
+        agentsHost.innerHTML=(agents.legacy_manager_map||[]).map(row=>`<article class="bs-map-row">
+          <code>${esc(row.legacy_id)}</code><span>→</span><strong>${esc(row.new_role||row.classification)}</strong><small>${esc(row.new_owner||row.classification)}</small>
+        </article>`).join("");
+      }
+      if(schedulerHost){
+        schedulerHost.innerHTML=(scheduler.jobs||[]).map(job=>`<article class="bs-map-row">
+          <code>${esc(job.id)}</code><span>${esc(job.schedule||"—")}</span><strong>${esc(job.operation)}</strong><small>${esc(job.status)}</small>
+        </article>`).join("");
+      }
+    }catch(error){
+      host.innerHTML=`<div class="bs-empty bs-error">Consolidation registries unavailable: ${esc(error?.message||"unknown")}</div>`;
+    }
+  }
+
   async function renderDomainWiring(){
     const host=$("#bs-domain-wiring");
     if(!host)return;
@@ -394,7 +436,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
