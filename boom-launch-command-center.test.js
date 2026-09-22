@@ -20,4 +20,5 @@ for(const needle of [
 assert(!js.includes('from("hunt_runtime_controls").update'),"launch command center must not change runtime controls");
 assert(!js.includes('hunt_payment_live").update'),"launch command center must not activate payments");
 assert(!js.includes('hunt_supplier_order_live").update'),"launch command center must not activate supplier fulfillment");
+assert(!js.includes('from("analytics_events")'),"launch command center must not fetch raw analytics session IDs in browser");
 console.log("BOOM Launch Command Center: PASS — canonical readiness + read-only live metrics, no activation authority");
