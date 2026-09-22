@@ -107,6 +107,22 @@
       if(input.exact_references_locked!==true)blockers.push("EXACT_REFERENCES_LOCKED_REQUIRED");
       if(input.proof_claims_boundary_reviewed!==true)blockers.push("PROOF_CLAIMS_BOUNDARY_REQUIRED");
     }
+    if(workflow==="supplier_product_intake"){
+      if(input.partner_identity_verified!==true)blockers.push("PARTNER_IDENTITY_REQUIRED");
+      if(input.official_api_or_feed_verified!==true)blockers.push("OFFICIAL_API_OR_FEED_REQUIRED");
+      if(input.terms_verified!==true)blockers.push("TERMS_VERIFICATION_REQUIRED");
+      if(input.media_rights_verified!==true)blockers.push("MEDIA_RIGHTS_REQUIRED");
+    }
+    if(workflow==="customer_lifecycle"){
+      if(input.identity_policy_ready!==true)blockers.push("IDENTITY_POLICY_REQUIRED");
+      if(input.privacy_consent_ready!==true)blockers.push("PRIVACY_CONSENT_REQUIRED");
+      if(input.event_source_verified!==true)blockers.push("EVENT_SOURCE_VERIFICATION_REQUIRED");
+    }
+    if(workflow==="analytics_learning_loop"){
+      if(input.evidence_quality_pass!==true)blockers.push("EVIDENCE_QUALITY_REQUIRED");
+      if(input.provenance_verified!==true)blockers.push("PROVENANCE_REQUIRED");
+      if(input.baseline_available!==true)blockers.push("BASELINE_REQUIRED");
+    }
     return {ok:blockers.length===0,blockers};
   }
   async function updateRunInput(runId,patch={}){
