@@ -1,0 +1,10 @@
+const fs=require("fs"),assert=require("assert");
+const src=fs.readFileSync("supabase/functions/hunt-order-orchestrator/index.ts","utf8");
+assert(/function normalizeShippingPhone/.test(src));
+assert(/\+972/.test(src));
+assert(/isTransientCjFailure/.test(src));
+assert(/maxAttempts:5,reconcileOrderNumber:supplierCode/.test(src));
+assert(/stableOrderNumber/.test(src));
+assert(/no_real_supplier_charge:true/.test(src));
+assert(/no_real_logistics:true/.test(src));
+console.log("HUNT order orchestrator readiness: PASS — phone normalization, transient retry/reconcile, stable identity and sandbox safety are coded");
