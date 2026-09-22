@@ -1,0 +1,112 @@
+{
+  "version": "BOOM-PAYPLUS-SANDBOX-STATUS-PROOF-V1",
+  "mode": "SHADOW",
+  "owner": "operations_brain",
+  "authority": "NONE",
+  "purpose": "Prove PayPlus callback semantics from real sandbox observations before any live paid/refund state is accepted.",
+  "canonical_sources": [
+    "hunt_runtime_controls:hunt_payplus_sandbox_evidence",
+    "hunt_payment_sessions",
+    "hunt_payment_events",
+    "hunt_payplus_status_observations"
+  ],
+  "provider_semantics": {
+    "charge_method_0": "CARD_CHECK_NOT_PAID",
+    "charge_method_1": "J4_CHARGE_CANDIDATE_REQUIRES_OBSERVED_SUCCESS_FINGERPRINT",
+    "charge_method_2": "APPROVAL_NOT_PAID",
+    "charge_method_3": "RECURRING_CANDIDATE_REQUIRES_SEPARATE_PROOF",
+    "charge_method_4": "REFUND_CANDIDATE_REQUIRES_ORIGINAL_TRANSACTION_LINK_AND_OBSERVED_REFUND_FINGERPRINT"
+  },
+  "proof_matrix": [
+    {
+      "id": "SIGNED_CALLBACK",
+      "required_for": [
+        "paid_acceptance",
+        "failure_mapping",
+        "refund_mapping"
+      ],
+      "pass_when": "at least one sandbox observation has signature_verified=true and ipn_full_verified=true"
+    },
+    {
+      "id": "J4_SUCCESS",
+      "required_for": [
+        "paid_acceptance"
+      ],
+      "pass_when": "sandbox observation charge_method=1 with signature+IPN verified and a stable provider_status/provider_code fingerprint explicitly classified as paid-success from sandbox evidence"
+    },
+    {
+      "id": "J4_FAILURE",
+      "required_for": [
+        "paid_acceptance"
+      ],
+      "pass_when": "sandbox failure callback with signature+IPN verified and a stable provider_status/provider_code fingerprint explicitly classified as not-paid"
+    },
+    {
+      "id": "DUPLICATE_CALLBACK_IDEMPOTENCY",
+      "required_for": [
+        "paid_acceptance"
+      ],
+      "pass_when": "replay of the same provider_event_id produces one durable payment event/observation and no duplicate paid transition"
+    },
+    {
+      "id": "REFERENCE_INTEGRITY",
+      "required_for": [
+        "paid_acceptance"
+      ],
+      "pass_when": "mismatched payment_request_uid, transaction_uid, more_info/session id, amount or currency is rejected"
+    },
+    {
+      "id": "CANCEL_NOT_PAID",
+      "required_for": [
+        "checkout_launch"
+      ],
+      "pass_when": "cancel/abandon path never creates paid state or real order"
+    },
+    {
+      "id": "REFUND",
+      "required_for": [
+        "refund_launch"
+      ],
+      "pass_when": "charge_method=4 sandbox/refund evidence is linked to original transaction and never classified as new revenue"
+    }
+  ],
+  "activation_profiles": {
+    "paid_acceptance_requires": [
+      "SIGNED_CALLBACK",
+      "J4_SUCCESS",
+      "J4_FAILURE",
+      "DUPLICATE_CALLBACK_IDEMPOTENCY",
+      "REFERENCE_INTEGRITY"
+    ],
+    "checkout_launch_requires": [
+      "SIGNED_CALLBACK",
+      "J4_SUCCESS",
+      "J4_FAILURE",
+      "DUPLICATE_CALLBACK_IDEMPOTENCY",
+      "REFERENCE_INTEGRITY",
+      "CANCEL_NOT_PAID"
+    ],
+    "refund_launch_requires": [
+      "REFUND"
+    ]
+  },
+  "observation_acceptance_rule": "No provider_status/provider_code combination may be classified as paid-success or refund-success until that exact fingerprint has been observed in PayPlus staging with signature_verified=true and ipn_full_verified=true.",
+  "current_truth": {
+    "control_enabled": false,
+    "control_owner_approved": false,
+    "sandbox_sessions": 0,
+    "sandbox_observations": 0,
+    "paid_acceptance_ready": false,
+    "checkout_launch_ready": false,
+    "refund_launch_ready": false
+  },
+  "hard_rules": [
+    "Never infer payment success from redirect URL alone.",
+    "Never infer payment success from charge_method=1 alone.",
+    "Never classify unknown provider_status/provider_code as paid.",
+    "Never classify refund as revenue.",
+    "Never mutate hunt_payplus_callback_accept_paid from this proof layer.",
+    "Never mutate hunt_supplier_order_live from this proof layer.",
+    "Live payment and supplier fulfillment remain OFF until separate Owner activation after proof."
+  ]
+}
