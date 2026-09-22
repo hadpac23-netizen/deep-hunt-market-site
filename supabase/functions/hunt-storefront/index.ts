@@ -1494,6 +1494,12 @@ function checkoutMap() {
         ? "Gooten RecipeID + server-only PartnerBillingKey are present and fulfillment is Owner-approved."
         : "Public catalog is live; RecipeID is required for variants/shipping and server-only PartnerBillingKey plus Owner/payment approval are required for order submission."
     },
+    EPROLO: {
+      mode: "APPROVAL_REQUIRED",
+      note: env("EPROLO_API_KEY") && env("EPROLO_API_SECRET")
+        ? "Signed EPROLO API credentials are connected for read-only catalog work. Exact product detail, destination shipping, profit gate and Owner approval remain required before shelf or checkout activation."
+        : "EPROLO adapter is staged, but server-side API credentials are not configured in this runtime."
+    },
     "Matterhorn Wholesale": {
       mode: "APPROVAL_REQUIRED",
       note: "Official supplier feed is connected for catalog, sizes and stock. Account, payment timing, shipping/returns and order activation remain approval-required."

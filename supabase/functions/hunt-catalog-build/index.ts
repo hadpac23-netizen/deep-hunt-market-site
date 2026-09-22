@@ -25,6 +25,15 @@ const providerAdapterState=()=>({
     partner_billing_key_used_for_catalog:false,
     shipping_proof:"NOT_VERIFIED",
     fulfillment:"DISABLED"
+  },
+  EPROLO:{
+    mode:has("EPROLO_API_KEY")&&has("EPROLO_API_SECRET")?"SIGNED_API_READY":"CREDENTIALS_REQUIRED",
+    api_key_present:has("EPROLO_API_KEY"),
+    api_secret_present:has("EPROLO_API_SECRET"),
+    credential_probe:"SIGNED_READ_ONLY_SMOKE",
+    shipping_proof:"PENDING_DESTINATION_QUOTE",
+    profit_gate:"PENDING_DESTINATION_QUOTE",
+    fulfillment:"DISABLED"
   }
 });
 function printfulHeaders(){

@@ -1,0 +1,66 @@
+{
+  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V1",
+  "date": "2026-09-22",
+  "provider": "EPROLO",
+  "owner": "commerce_truth_brain",
+  "role": "supplier_connector_adapter",
+  "mode": "SIGNED_API_CONNECTED_READ_ONLY",
+  "authority": "GATED",
+  "credentials": {
+    "storage": "LOCAL_SECRET_FILE_OR_SERVER_ENV_ONLY",
+    "canonical_env": [
+      "EPROLO_API_KEY",
+      "EPROLO_API_SECRET"
+    ],
+    "credentials_in_repo": false,
+    "one_key_secret_pair_per_account": true
+  },
+  "api_truth": {
+    "base": "https://openapi.eprolo.com/",
+    "auth": "SIGNED_MD5",
+    "categories": {
+      "status": "PASS",
+      "count": 10
+    },
+    "categories_level2": {
+      "status": "PASS",
+      "count": 193
+    },
+    "global_catalog": {
+      "status": "PASS",
+      "sample_count": 20
+    },
+    "account_products": {
+      "status": "EMPTY_OK",
+      "reason": "No products added to EPROLO account yet"
+    }
+  },
+  "staged_catalog": {
+    "unique_candidates": 7252,
+    "departments": 15,
+    "source": "official_readonly_api",
+    "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
+    "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+    "shipping_status": "PENDING_DESTINATION_QUOTE",
+    "profit_gate_status": "PENDING_DESTINATION_QUOTE"
+  },
+  "gates": [
+    "exact_product_detail_recheck",
+    "exact_variant_truth",
+    "fresh_stock_recheck",
+    "destination_shipping_quote",
+    "landed_cost",
+    "price_gate",
+    "owner_gate"
+  ],
+  "hard_blocks": [
+    "no order creation",
+    "no payment",
+    "no checkout activation",
+    "no shelf activation before shipping + profit truth",
+    "no secret exposure",
+    "no fake stock, shipping, margin or retail price"
+  ],
+  "storefront_role": "SUPPLIER_MESH_CONNECTED_NOT_LIVE_SHELF",
+  "next": "RUN_CONTROLLED_PRODUCT_DETAIL_SHIPPING_PROFIT_BATCH"
+}

@@ -1,0 +1,73 @@
+{
+  "version": "HUNT-EPROLO-CONNECTION-AUDIT-V1",
+  "date": "2026-09-22",
+  "provider": "EPROLO",
+  "mode": "READ_ONLY_CONNECTION_VERIFIED",
+  "production_effect": false,
+  "live_smoke": {
+    "categories": {
+      "status": "PASS",
+      "http": 200,
+      "code": 0,
+      "count": 10
+    },
+    "categories_level2": {
+      "status": "PASS",
+      "http": 200,
+      "code": 0,
+      "count": 193
+    },
+    "global_catalog": {
+      "status": "PASS",
+      "http": 200,
+      "code": 0,
+      "sample_count": 20
+    },
+    "account_products": {
+      "status": "EMPTY_OK",
+      "http": 200,
+      "code": -1,
+      "reason": "No data"
+    }
+  },
+  "staged_catalog": {
+    "unique_candidates": 7252,
+    "departments": {
+      "women": 540,
+      "men": 204,
+      "beauty": 1000,
+      "electrical": 1000,
+      "camping": 266,
+      "garden": 203,
+      "toys": 274,
+      "travel": 491,
+      "office": 412,
+      "gifts": 833,
+      "kitchen": 569,
+      "kids": 350,
+      "tech": 279,
+      "sports": 696,
+      "pets": 135
+    },
+    "source": "official_readonly_api"
+  },
+  "gates": {
+    "product_detail": "RECHECK_REQUIRED",
+    "variants": "RECHECK_REQUIRED_AT_ACTIVATION",
+    "stock": "SNAPSHOT_AVAILABLE_FRESH_RECHECK_REQUIRED",
+    "destination_shipping": "PENDING_DESTINATION_QUOTE",
+    "profit": "PENDING_DESTINATION_QUOTE",
+    "checkout": "DISABLED",
+    "fulfillment": "DISABLED",
+    "owner_gate": "REQUIRED"
+  },
+  "secrets": {
+    "local_secret_file_present": true,
+    "secrets_copied_into_repo": false,
+    "canonical_server_env": [
+      "EPROLO_API_KEY",
+      "EPROLO_API_SECRET"
+    ]
+  },
+  "result": "CONNECTED_TO_SUPPLIER_MESH_READ_ONLY"
+}

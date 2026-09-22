@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-PROVIDER-ADAPTERS-V1",
+  "version": "HUNT-PROVIDER-ADAPTERS-V2",
   "mode": "STAGED_READ_ONLY",
   "authority": "NONE",
   "production_deploy": false,
@@ -7,18 +7,40 @@
   "providers": {
     "Printful": {
       "public_catalog_fallback": true,
-      "required_credential_env": ["PRINTFUL_API_TOKEN"],
-      "optional_credential_env": ["PRINTFUL_STORE_ID"],
+      "required_credential_env": [
+        "PRINTFUL_API_TOKEN"
+      ],
+      "optional_credential_env": [
+        "PRINTFUL_STORE_ID"
+      ],
       "credential_probe": "READ_ONLY_STORE_ACCESS",
       "shipping_proof": "NOT_VERIFIED",
       "fulfillment": "DISABLED"
     },
     "Gooten": {
       "public_catalog_fallback": true,
-      "credential_env": ["GOOTEN_RECIPE_ID"],
+      "credential_env": [
+        "GOOTEN_RECIPE_ID"
+      ],
       "variant_probe": "READ_ONLY_PRODUCT_VARIANTS",
       "partner_billing_key_used_for_catalog": false,
       "shipping_proof": "NOT_VERIFIED",
+      "fulfillment": "DISABLED"
+    },
+    "EPROLO": {
+      "required_credential_env": [
+        "EPROLO_API_KEY",
+        "EPROLO_API_SECRET"
+      ],
+      "credential_storage": "SERVER_ONLY_OR_LOCAL_SECRET_FILE",
+      "credential_probe": "SIGNED_READ_ONLY_SMOKE",
+      "api_status": "CONNECTED_READ_ONLY",
+      "category_count": 10,
+      "subcategory_count": 193,
+      "staged_unique_candidates": 7252,
+      "product_detail_gate": "RECHECK_REQUIRED",
+      "shipping_proof": "PENDING_DESTINATION_QUOTE",
+      "profit_gate": "PENDING_DESTINATION_QUOTE",
       "fulfillment": "DISABLED"
     }
   },

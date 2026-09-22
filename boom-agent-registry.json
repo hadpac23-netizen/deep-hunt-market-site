@@ -224,6 +224,13 @@
       "new_role": "supplier_connector_adapter",
       "classification": "REWIRE_AS_ADAPTER",
       "authority": "GATED"
+    },
+    {
+      "legacy_id": "supplier-eprolo",
+      "new_owner": "commerce_truth_brain",
+      "new_role": "supplier_connector_adapter",
+      "classification": "REWIRE_AS_ADAPTER",
+      "authority": "GATED"
     }
   ],
   "split_rules": [
@@ -255,6 +262,30 @@
     },
     {
       "legacy_id": "supplier-hypersku",
+      "classification": "ADAPTER_NOT_DECISION_OWNER",
+      "targets": [
+        {
+          "owner": "commerce_truth_brain",
+          "role": "supplier_connector_adapter",
+          "owns": [
+            "product_mapping",
+            "variant_truth",
+            "inventory_quotes",
+            "shipping_quotes"
+          ]
+        },
+        {
+          "owner": "operations_brain",
+          "role": "tool_gateway",
+          "owns": [
+            "approved_order_execution",
+            "tracking_execution"
+          ]
+        }
+      ]
+    },
+    {
+      "legacy_id": "supplier-eprolo",
       "classification": "ADAPTER_NOT_DECISION_OWNER",
       "targets": [
         {
