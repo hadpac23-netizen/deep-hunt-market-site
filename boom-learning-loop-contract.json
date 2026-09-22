@@ -52,18 +52,33 @@
     "A learning item may graduate only with explicit evaluation evidence.",
     "Material policy/skill/price/publish behavior changes require Owner Gate."
   ],
-  "learning_states": [
-    "CANDIDATE",
-    "HOLD",
-    "REJECTED",
-    "EVAL_REQUIRED",
-    "TRUSTED"
-  ],
   "boundaries": {
     "auto_policy_change": false,
     "auto_skill_promotion": false,
     "auto_price_change": false,
     "auto_campaign_publish": false,
     "auto_prod_change": false
-  }
+  },
+  "storage_statuses": [
+    "testing",
+    "learned",
+    "adopted",
+    "rejected",
+    "stale"
+  ],
+  "logical_to_storage": {
+    "CANDIDATE": "testing",
+    "EVAL_REQUIRED": "testing",
+    "TRUSTED_EVIDENCE": "learned",
+    "ADOPTED_BEHAVIOR": "adopted",
+    "REJECTED": "rejected",
+    "STALE": "stale"
+  },
+  "graduation_rules": [
+    "New automation learning is first persisted as testing with eval_required=true.",
+    "testing never drives behavior automatically.",
+    "learned means evidence has passed evaluation; it is not automatically a material behavior change.",
+    "adopted requires graduation evidence and Owner Gate when the behavior is material.",
+    "behavior_rule remains null for a new candidate."
+  ]
 }
