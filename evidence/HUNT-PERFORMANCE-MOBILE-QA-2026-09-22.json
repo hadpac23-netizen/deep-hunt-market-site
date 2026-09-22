@@ -1,7 +1,7 @@
 {
-  "version": "HUNT-PERFORMANCE-MOBILE-QA-2026-09-22-V1",
-  "observed_at": "2026-09-22T12:02:00Z",
-  "source": "Chrome 153 headless + CDP against disposable QA worktree on allowed local origin",
+  "version": "HUNT-PERFORMANCE-MOBILE-QA-2026-09-22-V2",
+  "observed_at": "2026-09-22T12:11:58.955Z",
+  "source": "Chrome 153 headless + isolated CDP page per viewport on allowed local origin",
   "production_mutation": false,
   "timing_note": "Local FCP/load timings are diagnostic only and are not used as production performance claims.",
   "before": {
@@ -27,13 +27,13 @@
     "broken_images": 0,
     "console_problems": 0,
     "network_failures": 0,
-    "js_heap_used_mb": 4.33,
-    "decoded_static_kb": 1525
+    "js_heap_used_mb": 3.47
   },
   "improvement": {
-    "dom_nodes_percent": -60.9,
-    "images_percent": -63.5,
-    "initial_shelf_cards_percent": -79.7
+    "mobile_dom_nodes_percent": -60.9,
+    "mobile_images_percent": -63.5,
+    "mobile_initial_shelf_cards_percent": -79.7,
+    "note": "Negative percentages mean fewer initial elements after progressive mounting."
   },
   "tablet_structural_check": {
     "viewport": "768x1024",
@@ -69,6 +69,60 @@
     "browser_console": "PASS_LOCAL",
     "critical_fetches": "PASS_LOCAL",
     "pwa_update_behavior": "NEEDS_PREVIEW_PROOF",
-    "overall": "LOCAL_MOBILE_PASS_PREVIEW_PWA_PROOF_PENDING"
+    "overall": "LOCAL_MOBILE_PASS_PREVIEW_PWA_PROOF_PENDING",
+    "desktop_structural": "PASS_LOCAL",
+    "tablet_structural": "PASS_LOCAL"
+  },
+  "viewport_matrix": {
+    "mobile_390": {
+      "dom_nodes": 2899,
+      "images": 174,
+      "shelf_cards": 77,
+      "shelves": 8,
+      "horizontal_overflow": false,
+      "broken_images": 0,
+      "console_problems": 0,
+      "network_failures": 0,
+      "small_touch_targets": 0,
+      "fcp_local_ms": 208,
+      "load_local_ms": 164
+    },
+    "tablet_768": {
+      "dom_nodes": 3391,
+      "images": 208,
+      "shelf_cards": 111,
+      "shelves": 10,
+      "horizontal_overflow": false,
+      "broken_images": 0,
+      "console_problems": 0,
+      "network_failures": 0,
+      "small_touch_targets": 25,
+      "fcp_local_ms": 108,
+      "load_local_ms": 85
+    },
+    "desktop_1280": {
+      "dom_nodes": 4265,
+      "images": 269,
+      "shelf_cards": 172,
+      "shelves": 12,
+      "horizontal_overflow": false,
+      "broken_images": 0,
+      "console_problems": 0,
+      "network_failures": 0,
+      "fcp_local_ms": 84,
+      "load_local_ms": 73
+    },
+    "desktop_1440": {
+      "dom_nodes": 4265,
+      "images": 269,
+      "shelf_cards": 172,
+      "shelves": 12,
+      "horizontal_overflow": false,
+      "broken_images": 0,
+      "console_problems": 0,
+      "network_failures": 0,
+      "fcp_local_ms": 100,
+      "load_local_ms": 80
+    }
   }
 }
