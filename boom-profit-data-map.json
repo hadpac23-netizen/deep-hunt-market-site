@@ -1,0 +1,112 @@
+{
+  "version": "BOOM-PROFIT-DATA-MAP-V1",
+  "mode": "SHADOW",
+  "principle": "Reuse existing canonical HUNT economic stores. Do not create a parallel profit database.",
+  "lanes": [
+    {
+      "id": "product_truth",
+      "owner": "commerce_truth_brain",
+      "sources": [
+        {
+          "table": "hunt_catalog_products",
+          "role": "product/stock/source freshness truth"
+        },
+        {
+          "table": "hunt_product_observations",
+          "role": "price/shipping/availability observations"
+        }
+      ]
+    },
+    {
+      "id": "expected_unit_economics",
+      "owner": "commerce_truth_brain",
+      "sources": [
+        {
+          "table": "hunt_unit_economics",
+          "role": "sale price, supplier cost, supplier shipping, reserves, platform cost, contribution, safe CAC/coupon, profit gate",
+          "browser_access": "ADMIN_RLS"
+        }
+      ],
+      "status": "AVAILABLE_VERIFIED_LIMITED_SAMPLE"
+    },
+    {
+      "id": "realized_order_profit",
+      "owner": "commerce_truth_brain",
+      "sources": [
+        {
+          "table": "hunt_order_finance_ledger",
+          "role": "customer gross, supplier payable, reserves, contribution locked, available profit, settlement",
+          "browser_access": "ADMIN_RLS"
+        },
+        {
+          "table": "hunt_orders",
+          "role": "real/test order distinction, order value/status",
+          "browser_access": "ADMIN_RLS"
+        }
+      ],
+      "status": "NO_REAL_ROWS_YET"
+    },
+    {
+      "id": "marketing_attribution",
+      "owner": "growth_brain",
+      "sources": [
+        {
+          "table": "hunt_attribution_ledger",
+          "role": "first/last UTM linkage",
+          "browser_access": "NO_PUBLIC_DIRECT_ACCESS"
+        },
+        {
+          "table": "hunt_purchase_attribution_bridge",
+          "role": "order/profit attribution readiness bridge",
+          "browser_access": "SERVER_ONLY_UNTIL_RLS_HARDENED"
+        }
+      ],
+      "status": "HISTORICAL_ROWS_NO_REAL_ORDER_PROFIT_LINKAGE"
+    },
+    {
+      "id": "product_profit_score",
+      "owner": "commerce_truth_brain",
+      "sources": [
+        {
+          "table": "hunt_boom_product_scores",
+          "role": "freshness/demand/margin/reliability/shipping/diversity score and promotion eligibility",
+          "browser_access": "ADMIN_RLS"
+        }
+      ],
+      "status": "EMPTY_NEEDS_CALCULATION"
+    },
+    {
+      "id": "profit_policy",
+      "owner": "commerce_truth_brain",
+      "sources": [
+        {
+          "table": "hunt_profit_profiles",
+          "role": "refund reserve, fixed per-order cost, target and minimum margin",
+          "browser_access": "ADMIN_RLS"
+        }
+      ],
+      "status": "PROFILE_PRESENT"
+    },
+    {
+      "id": "owner_rollups",
+      "owner": "learning_governance_brain",
+      "sources": [
+        {
+          "table": "hunt_daily_owner_metrics",
+          "role": "daily order/gross metrics",
+          "browser_access": "SERVER_ONLY_UNTIL_RLS_HARDENED"
+        }
+      ],
+      "status": "ROWS_PRESENT_ACCESS_HARDENING_REQUIRED"
+    }
+  ],
+  "truth_rules": [
+    "Expected Profit may be calculated only from inputs_verified=true unit economics.",
+    "Realized Profit requires a non-test order plus an order finance ledger row.",
+    "Realized product-level profit additionally requires auditable allocation from finance/order evidence to provider+item_id(+variant_id).",
+    "Marketing net-profit attribution requires a real order, profit evidence and campaign/source linkage.",
+    "Test orders never count toward live revenue, realized profit, CAC, LTV or $10K/hour target attainment.",
+    "Browser Studio reads only RLS-protected admin sources; non-RLS sources stay server-only until hardened."
+  ],
+  "evidence": "evidence/HUNT-PROFIT-DATA-AUDIT-2026-09-22.json"
+}
