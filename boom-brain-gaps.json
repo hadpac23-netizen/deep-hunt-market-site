@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V2.3-FRESH-PRODUCT-TRUTH",
+  "version": "BOOM-BRAIN-GAPS-V2.4-CJ-FRESH-57",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -224,7 +224,7 @@
       "owner": "commerce_truth_brain",
       "status": "IN_PROGRESS",
       "source": "F35",
-      "next": "3 CJ products now have fresh IL truth. Next: run bounded refresh across the remaining CJ catalog, then refresh shelf coverage; taxonomy resolution still does not imply full inventory readiness."
+      "next": "CJ fresh contribution is now Women 19 / Accessories 14 / Tech 13 / Toys 6 / Beauty 4 / Pets 1. No canonical department reaches 1,000; continue supplier intake and verified shelf fill without fabricating counts."
     },
     {
       "id": "incident_repair_automation",
@@ -640,7 +640,7 @@
       "owner": "commerce_truth_brain",
       "status": "IN_PROGRESS",
       "source": "PRODUCT_TRUTH",
-      "next": "3 CJ products for IL now have fresh price+stock+shipping observations. Scale bounded refresh across all 76 CJ catalog rows, then approved suppliers; preserve checkout recheck."
+      "next": "57/76 CJ products are Fresh Shelf Verified for IL. Resolve/replace the remaining 19, then refresh approved non-CJ suppliers. Checkout recheck remains mandatory for all 57."
     },
     {
       "id": "cj_stock_truth_precedence",
@@ -656,7 +656,7 @@
       "owner": "commerce_truth_brain",
       "status": "CODED_NOT_DEPLOYED",
       "source": "PRODUCT_TRUTH",
-      "next": "Admin-only worker is coded with max batch 12, dry-run default and observation-only writes. Verify in Preview before deployment."
+      "next": "Manual controlled refresh proved the truth model. Worker remains code-only; verify in Preview before any scheduled/deployed automation."
     }
   ]
 }
