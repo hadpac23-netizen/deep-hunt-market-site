@@ -268,6 +268,10 @@
           <code>${esc(row.decision_key)}</code>
           <small>${esc(row.decision_type)} · priority ${esc(row.priority)}</small>
           <p>${esc(row.rationale||"Material workflow waiting for Owner Gate.")}</p>
+          <div class="bs-gate-actions">
+            <button type="button" data-owner-gate-approve data-decision-key="${esc(row.decision_key)}">Approve SHADOW</button>
+            <button type="button" data-owner-gate-reject data-decision-key="${esc(row.decision_key)}">Reject</button>
+          </div>
         </article>`).join(""):'<div class="bs-empty">No pending automation approvals.</div>';
       }
       if(incidentsHost){
@@ -495,6 +499,30 @@
     runtime?.emit?.("filter.apply",{surface:"brain_studio",filter:"action_owner",value:String(event.currentTarget.value||"")},{broadcast:false});
     renderActions();
   });
+  document.addEventListener("click",async event=>{
+    const gateBtn=event.target.closest?.("[data-owner-gate-approve],[data-owner-gate-reject]");
+    if(!gateBtn)return;
+    const key=String(gateBtn.dataset.decisionKey||"");
+    const approved=gateBtn.hasAttribute("data-owner-gate-approve");
+    const ledger=window.BoomAutomationLedger;
+    if(!key||!ledger?.decideProposal)return;
+    try{
+      await runtime?.runAction?.("boom.owner_gate.decide",{
+        key,
+        element:gateBtn,
+        execute:()=>ledger.decideProposal(key,approved),
+        announcePending:"Recording Owner Gate decision…",
+        announceSuccess:approved?"SHADOW approval recorded. No material action executed.":"SHADOW decision rejected.",
+        announceError:"Owner Gate decision could not be recorded.",
+        successDetail:{approved,shadow:true,material_action_suppressed:true},
+        errorDetail:error=>({error_code:runtime?.errorCode?.(error)||"ACTION_FAILED"}),
+        broadcastSuccess:false,
+        traceContext:{surface:"brain_studio",decision_owner:"OWNER",learning:"owner_gate"}
+      });
+      await renderDurableAutomation();
+    }catch{}
+  });
+
   document.addEventListener("click",event=>{
     const btn=event.target.closest?.("[data-gap-filter]");
     if(!btn)return;
