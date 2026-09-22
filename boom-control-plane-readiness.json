@@ -123,6 +123,11 @@
       "id": "marketing_cost_evidence_gateway",
       "status": "CODED_GA4_TRAFFIC_CONNECTED_COST_NOT_VERIFIED",
       "evidence": "Windsor GA4 HUNT DEAL is connected read-only. Last-30d audit: 25 sessions, 0 purchases, $0 purchase revenue, advertiser_ad_cost reports 0. Because no direct ad-platform connector or proven GA4 cost-import coverage exists, $0 is NOT accepted as verified spend. Cost/CAC/Marketing Net Profit remain UNKNOWN."
+    },
+    {
+      "id": "first_real_order_profit_proof",
+      "status": "CODED_SHADOW_BLOCKED_PAYMENT_ACCEPTANCE",
+      "evidence": "Proof Harness + Studio panel coded. Live audit at 2026-09-22T11:00:40Z: PayPlus accept-paid OFF/unapproved; supplier live OFF/unapproved; 8 orders all TEST; 0 finance rows; 32 bridge rows with 0 real-order-linked/profit-ready; 67 hourly rows, 0 exact VERIFIED. No Production mutation."
     }
   ],
   "blockers": [
@@ -139,7 +144,8 @@
     "Harden RLS/server access for hunt_purchase_attribution_bridge and hunt_daily_owner_metrics before browser-side Profit Mission use.",
     "Connect audited per-channel/campaign marketing cost evidence before CAC or Marketing Net Profit can be verified.",
     "Hourly mission remains blocked until f60t_hourly_profit_ledger contains exact VERIFIED rows backed by non-test real-order finance evidence.",
-    "Connect a direct ad-platform cost source (e.g. Google Ads/Meta/TikTok) or prove GA4 cost-import coverage before paid spend, CAC or Marketing Net Profit can be verified."
+    "Connect a direct ad-platform cost source (e.g. Google Ads/Meta/TikTok) or prove GA4 cost-import coverage before paid spend, CAC or Marketing Net Profit can be verified.",
+    "Complete PayPlus sandbox callback/status proof before Owner can consider enabling paid acceptance; First Real-Order Proof must not bypass this gate."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
