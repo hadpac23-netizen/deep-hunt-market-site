@@ -26,7 +26,7 @@
     {
       "id": "cj_supplier",
       "type": "SUPPLIER_CONNECTOR",
-      "status": "ACTIVE_FUNCTIONS_PRESENT",
+      "status": "ACTIVE_FUNCTIONS_PRESENT_PUBLIC_QUOTE_NEEDS_ABUSE_GUARD_PROOF",
       "owner_plane": "tool_gateway_plane",
       "authority": "NONE",
       "evidence": [
@@ -48,7 +48,8 @@
         "hunt-payment-session-prelaunch ACTIVE jwt=false metadata",
         "hunt-payplus-callback ACTIVE jwt=false webhook pattern",
         "hunt-payplus-sandbox-evidence ACTIVE"
-      ]
+      ],
+      "auth_classification": "custom user auth + signed callback; launch remains gated"
     },
     {
       "id": "order_orchestrator",
@@ -58,7 +59,8 @@
       "authority": "NONE",
       "evidence": [
         "hunt-order-orchestrator ACTIVE"
-      ]
+      ],
+      "auth_classification": "custom admin auth + runtime controls"
     },
     {
       "id": "creative_video_provider",
@@ -81,7 +83,8 @@
         "hunt-f60t-snapshot ACTIVE",
         "hunt-f60t-external-signals ACTIVE",
         "hunt-f60t-oauth ACTIVE jwt=true"
-      ]
+      ],
+      "auth_classification": "admin or hashed cron secret depending function"
     },
     {
       "id": "boom_automation_gateway",
@@ -99,5 +102,6 @@
     }
   ],
   "security_truth_rule": "verify_jwt=false in platform metadata is not by itself proof of exposure; webhook/custom-auth functions must be reviewed by their actual code/auth contract before classification.",
-  "material_rule": "ACTIVE function presence never implies permission to call it. Material permission is determined by Tool Gateway + Owner Gate."
+  "material_rule": "ACTIVE function presence never implies permission to call it. Material permission is determined by Tool Gateway + Owner Gate.",
+  "auth_review": "boom-critical-edge-auth-review.json"
 }
