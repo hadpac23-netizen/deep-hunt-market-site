@@ -1,0 +1,125 @@
+{
+  "version": "BOOM-PAYMENT-LAUNCH-GATE-V1",
+  "mode": "SHADOW",
+  "owner": "operations_brain",
+  "authority": "NONE",
+  "purpose": "Provide one provider-neutral readiness gate for HUNT payment routes. It evaluates evidence only and never activates a processor, route, live payment, supplier fulfillment, payout or refund.",
+  "canonical_sources": [
+    "hunt_payment_routes",
+    "hunt_runtime_controls:hunt_payment_live",
+    "hunt_runtime_controls:hunt_supplier_order_live",
+    "provider-specific sandbox/callback proof contracts",
+    "finance ledger proof",
+    "Owner Gate"
+  ],
+  "route_states": [
+    "PLANNED",
+    "BLOCKED",
+    "SANDBOX_READY",
+    "LIVE_READY_CANDIDATE",
+    "LIVE"
+  ],
+  "common_gates": [
+    {
+      "id": "ROUTE_EXISTS",
+      "material": false
+    },
+    {
+      "id": "COMMERCIAL_ACCOUNT_APPROVED",
+      "material": false
+    },
+    {
+      "id": "SERVER_CREDENTIALS_READY",
+      "material": false
+    },
+    {
+      "id": "SANDBOX_OR_TEST_PROOF",
+      "material": false
+    },
+    {
+      "id": "SUCCESS_CALLBACK_PROVEN",
+      "material": false
+    },
+    {
+      "id": "FAILURE_CALLBACK_PROVEN",
+      "material": false
+    },
+    {
+      "id": "IDEMPOTENCY_AND_REFERENCE_INTEGRITY_PROVEN",
+      "material": false
+    },
+    {
+      "id": "REFUND_PATH_PROVEN",
+      "material": false
+    },
+    {
+      "id": "FINANCE_LEDGER_PATH_PROVEN",
+      "material": false
+    },
+    {
+      "id": "SETTLEMENT_DESTINATION_VERIFIED",
+      "material": false
+    },
+    {
+      "id": "COUNTRY_CURRENCY_SCOPE_VERIFIED",
+      "material": false
+    },
+    {
+      "id": "LEGAL_CHECKOUT_DISCLOSURES_READY",
+      "material": false
+    },
+    {
+      "id": "OWNER_GATE_APPROVED",
+      "material": true
+    },
+    {
+      "id": "MASTER_PAYMENT_LIVE_SWITCH_ON",
+      "material": true
+    }
+  ],
+  "providers": {
+    "payplus": {
+      "processor": "payplus",
+      "account_gate": "SIGNED_OR_FORMALLY_APPROVED_MERCHANT_ACCOUNT",
+      "callback_proof": "boom-payplus-sandbox-proof-contract.json",
+      "current_account_state": "NOT_APPROVED_OR_SIGNED",
+      "current_callback_state": "NOT_PROVEN",
+      "notes": "Card/Apple Pay/Google Pay routes stay planned until PayPlus account approval plus staging callback proof."
+    },
+    "paypal": {
+      "processor": "paypal",
+      "account_gate": "BUSINESS_ACCOUNT_AND_API_LIVE_APPROVAL",
+      "current_account_state": "NOT_EVIDENCED",
+      "current_callback_state": "NOT_EVIDENCED",
+      "notes": "PayPal and wallet-via-PayPal routes remain planned until separate official API/account evidence is connected."
+    }
+  },
+  "dependency_rules": [
+    "Wallet route cannot be more ready than its processor route.",
+    "A route with status=planned and no approval_reference/approved_at is never LIVE_READY_CANDIDATE.",
+    "Master hunt_payment_live OFF means no route may become LIVE even if all other evidence passes.",
+    "Supplier fulfillment is a separate gate; payment live readiness does not enable hunt_supplier_order_live.",
+    "Route readiness never implies legal/tax/settlement readiness unless separately evidenced."
+  ],
+  "current_truth": {
+    "payment_live_enabled": false,
+    "payment_live_owner_approved": false,
+    "supplier_live_enabled": false,
+    "supplier_live_owner_approved": false,
+    "payplus_contract_or_account_approval": false,
+    "payplus_callback_proof": false,
+    "paypal_live_approval_evidence": false,
+    "route_rows": 6,
+    "live_routes": 0,
+    "state": "ALL_ROUTES_PLANNED_OR_BLOCKED"
+  },
+  "hard_rules": [
+    "Never activate a payment route from this evaluator.",
+    "Never infer commercial approval from configured code or an existing Edge Function.",
+    "Never infer live credentials from sandbox credentials.",
+    "Never expose processor secrets to the browser.",
+    "Never turn on hunt_payment_live or hunt_supplier_order_live.",
+    "Never classify a wallet as ready when its underlying processor is not ready.",
+    "Material activation always requires explicit Owner Gate outside this evaluator."
+  ]
+}
