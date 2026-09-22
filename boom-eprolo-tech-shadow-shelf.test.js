@@ -5,6 +5,8 @@ const w4=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-TECH-WAVE4-IL-SCAN-202
 const qa4=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-TECH-VISUAL-QA-2026-09-22.json","utf8"));
 const w5=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-TECH-WAVE5-IL-SCAN-2026-09-23.json","utf8"));
 const qa5=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-TECH-WAVE5-VISUAL-COMPLIANCE-QA-2026-09-23.json","utf8"));
+const w6=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-TECH-WAVE6-IL-SCAN-2026-09-23.json","utf8"));
+const qa6=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-TECH-WAVE6-VISUAL-SPEC-QA-2026-09-23.json","utf8"));
 const shelf=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-TECH-SHADOW-SHELF-2026-09-22.json","utf8"));
 
 assert.equal(w3a.production_effect,false);
@@ -48,19 +50,34 @@ assert.equal(qa5.summary.image_claim_blocked,1);
 assert.equal(qa5.summary.production_ready,0);
 assert.equal(qa5.summary.checkout_live,0);
 
-assert.equal(shelf.version,"HUNT-EPROLO-TECH-SHADOW-SHELF-V2");
+assert.equal(w6.production_effect,false);
+assert.equal(w6.summary.checked,8);
+assert.equal(w6.summary.shipping_verified,8);
+assert.equal(w6.summary.normal_shipping,5);
+assert.equal(w6.summary.high_shipping_review,3);
+assert.equal(w6.summary.final_profit_verified,0);
+assert.equal(w6.summary.checkout_live,0);
+
+assert.equal(qa6.production_effect,false);
+assert.equal(qa6.summary.reviewed,5);
+assert.equal(qa6.summary.pass_shadow_shelf,1);
+assert.equal(qa6.summary.pass_shadow_spec_review,2);
+assert.equal(qa6.summary.device_imagery_review,1);
+assert.equal(qa6.summary.exact_image_blocked,1);
+
+assert.equal(shelf.version,"HUNT-EPROLO-TECH-SHADOW-SHELF-V3");
 assert.equal(shelf.production_effect,false);
-assert.equal(shelf.summary.products,2);
-assert.equal(shelf.summary.exact_variant_images,2);
-assert.equal(shelf.summary.stock_verified,2);
-assert.equal(shelf.summary.shipping_verified_il,2);
-assert.equal(shelf.summary.spec_review_pending,1);
+assert.equal(shelf.summary.products,5);
+assert.equal(shelf.summary.exact_variant_images,5);
+assert.equal(shelf.summary.stock_verified,5);
+assert.equal(shelf.summary.shipping_verified_il,5);
+assert.equal(shelf.summary.spec_review_pending,3);
 assert.equal(shelf.summary.final_profit_verified,0);
 assert.equal(shelf.summary.checkout_live,0);
 assert.equal(shelf.summary.fulfillment_live,0);
 
 const ids=new Set(shelf.products.map(x=>x.product_id));
-assert.deepEqual(ids,new Set(["31417803","26935524"]));
+assert.deepEqual(ids,new Set(["31417803","26935524","26921252","26972478","26972443"]));
 const card=shelf.products.find(x=>x.product_id==="26935524");
 assert.equal(card.compatibility_gate,"GENERIC_ACCESSORY");
 assert.equal(card.spec_gate,"USB_3_0_AND_INTERFACE_SPEC_VERIFICATION_REQUIRED_BEFORE_PRODUCTION");
@@ -70,10 +87,11 @@ assert(shelf.products.every(x=>x.production_exposure===false));
 
 const held=new Set([
   ...qa4.items.filter(x=>x.status!=="PASS_SHADOW_SHELF").map(x=>x.product_id),
-  ...qa5.items.filter(x=>x.status!=="PASS_SHADOW_SHELF").map(x=>x.product_id)
+  ...qa5.items.filter(x=>x.status!=="PASS_SHADOW_SHELF").map(x=>x.product_id),
+  ...qa6.items.filter(x=>!["PASS_SHADOW_SHELF","PASS_SHADOW_SHELF_SPEC_REVIEW"].includes(x.status)).map(x=>x.product_id)
 ]);
-for(const id of ["31715253","29971464","29761463","31405053","29703672","31594991","19374325","31423107","21040880"]){
+for(const id of ["31715253","29971464","29761463","31405053","29703672","31594991","19374325","31423107","21040880","26971060","26972449"]){
   assert(held.has(id));
   assert(!ids.has(id));
 }
-console.log("PASS boom-eprolo-tech-shadow-shelf-v2");
+console.log("PASS boom-eprolo-tech-shadow-shelf-v3");

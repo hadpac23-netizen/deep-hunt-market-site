@@ -1,0 +1,51 @@
+{
+  "version": "HUNT-EPROLO-TECH-WAVE6-VISUAL-SPEC-QA-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW_QA",
+  "market": "IL",
+  "production_effect": false,
+  "items": [
+    {
+      "product_id": "26971060",
+      "status": "DEVICE_IMAGERY_REVIEW",
+      "reason": "Passive phone stand is visually clear, but exact supplier image uses highly recognizable third-party phone-device imagery. Hold until clean product-only imagery is available."
+    },
+    {
+      "product_id": "26921252",
+      "status": "PASS_SHADOW_SHELF",
+      "reason": "Exact Midnight Blue cable-organizer image is clean, generic and consistent with the passive accessory listing."
+    },
+    {
+      "product_id": "26972478",
+      "status": "PASS_SHADOW_SHELF_SPEC_REVIEW",
+      "reason": "Exact 4-port USB hub image is clean and the physical port layout is visible. USB3/PD performance claims remain spec-gated before Production."
+    },
+    {
+      "product_id": "26972449",
+      "status": "BLOCKED_EXACT_IMAGE_BROKEN",
+      "reason": "Exact 10-in-1 dock image URL returned 404; exact image truth is required before shelf use."
+    },
+    {
+      "product_id": "26972443",
+      "status": "PASS_SHADOW_SHELF_SPEC_REVIEW",
+      "reason": "Exact dual-HDMI hub image is clean and the physical two-HDMI layout is visible. HDMI/PD/USB performance claims remain spec-gated before Production."
+    }
+  ],
+  "summary": {
+    "reviewed": 5,
+    "pass_shadow_shelf": 1,
+    "pass_shadow_spec_review": 2,
+    "device_imagery_review": 1,
+    "exact_image_blocked": 1,
+    "production_ready": 0,
+    "checkout_live": 0
+  },
+  "hard_rules": [
+    "Passive accessory imagery should not rely on recognizable third-party device presentation when a clean product-only image is available.",
+    "Technical interface/performance claims remain spec-gated before Production.",
+    "Broken exact variant image blocks shelf candidacy.",
+    "Shipping economics do not override visual/spec truth.",
+    "No Production exposure.",
+    "Final profit remains blocked until EPROLO order-cost API behavior is resolved."
+  ]
+}
