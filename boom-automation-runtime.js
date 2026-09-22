@@ -107,6 +107,14 @@
       if(input.exact_references_locked!==true)blockers.push("EXACT_REFERENCES_LOCKED_REQUIRED");
       if(input.proof_claims_boundary_reviewed!==true)blockers.push("PROOF_CLAIMS_BOUNDARY_REQUIRED");
     }
+    if(workflow==="incident_repair"){
+      if(input.incident_reproduced!==true)blockers.push("INCIDENT_REPRODUCTION_REQUIRED");
+      if(input.root_cause_verified!==true)blockers.push("ROOT_CAUSE_VERIFICATION_REQUIRED");
+      if(input.patch_candidate_ready!==true)blockers.push("PATCH_CANDIDATE_REQUIRED");
+      if(input.tests_passed!==true)blockers.push("TEST_EVIDENCE_REQUIRED");
+      if(input.independent_review_passed!==true)blockers.push("INDEPENDENT_REVIEW_REQUIRED");
+      if(input.rollback_plan_ready!==true)blockers.push("ROLLBACK_PLAN_REQUIRED");
+    }
     if(workflow==="supplier_product_intake"){
       if(input.partner_identity_verified!==true)blockers.push("PARTNER_IDENTITY_REQUIRED");
       if(input.official_api_or_feed_verified!==true)blockers.push("OFFICIAL_API_OR_FEED_REQUIRED");
