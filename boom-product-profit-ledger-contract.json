@@ -1,0 +1,63 @@
+{
+  "version": "BOOM-PRODUCT-PROFIT-LEDGER-V1",
+  "mode": "SHADOW",
+  "owner": "commerce_truth_brain",
+  "storage_strategy": "DERIVED_READ_MODEL_REUSE_EXISTING_TABLES",
+  "schema_change_required": false,
+  "identity": [
+    "provider",
+    "item_id",
+    "variant_id",
+    "destination_country",
+    "currency"
+  ],
+  "lanes": {
+    "expected": {
+      "source": "hunt_unit_economics",
+      "required": [
+        "inputs_verified",
+        "sale_price_per_unit",
+        "supplier_cost_per_unit",
+        "supplier_shipping_cost",
+        "payment_reserve",
+        "refund_reserve",
+        "platform_cost",
+        "contribution_before_coupon",
+        "contribution_margin",
+        "max_safe_cac",
+        "profit_gate_status",
+        "calculated_at"
+      ],
+      "label": "EXPECTED_VERIFIED_UNIT_ECONOMICS"
+    },
+    "realized": {
+      "sources": [
+        "hunt_orders",
+        "hunt_order_finance_ledger"
+      ],
+      "required": [
+        "order_is_real",
+        "finance_ledger_present",
+        "available_profit",
+        "settlement_status"
+      ],
+      "label": "REALIZED_ORDER_PROFIT",
+      "product_allocation_rule": "Do not allocate realized order profit to a product unless auditable line-item allocation evidence exists."
+    }
+  },
+  "states": [
+    "UNKNOWN",
+    "EXPECTED_ONLY",
+    "REALIZED_ORDER_LEVEL",
+    "REALIZED_PRODUCT_LEVEL"
+  ],
+  "current_state": "EXPECTED_ONLY",
+  "exclusions": [
+    "test orders",
+    "unverified unit economics",
+    "orders without finance ledger evidence",
+    "marketing attribution without real-order profit evidence"
+  ],
+  "no_fake_rule": "Never convert expected contribution into realized profit. Never count test orders toward mission target.",
+  "material_authority": "NONE"
+}
