@@ -56,8 +56,8 @@
     },
     {
       "id": "shelf_coverage",
-      "status": "BLOCKED",
-      "evidence": "13 canonical department identities verified; 4 target slots unresolved; server endpoint code not deployed"
+      "status": "CODED_17_RESOLVED_NEEDS_PREVIEW_EVIDENCE",
+      "evidence": "17 canonical department identities verified from HUNT Cinematic V16 + hunt-department-map-v1.js; server endpoint code remains not deployed and live sellable evidence still needs refresh."
     },
     {
       "id": "catalog_freshness",
@@ -96,7 +96,7 @@
     }
   ],
   "blockers": [
-    "Resolve the four missing canonical department identities before claiming 17/17.",
+    "Refresh live product/source/stock evidence; taxonomy is 17/17 but shelf readiness still requires fresh verified sellable counts.",
     "Refresh live product/source/stock evidence; stale counts cannot satisfy shelf readiness.",
     "Deploy only to a preview/test environment first: boom-shelf-coverage and boom-automation-gateway.",
     "Prove one real admin durable ledger write + Owner Gate decision in preview.",
@@ -109,7 +109,7 @@
     "Preview Edge Functions",
     "Preview BOOM Studio integrity",
     "Durable ledger proof",
-    "Shelf evidence refresh + 17-department taxonomy resolution",
+    "Shelf evidence refresh for resolved 17-department taxonomy",
     "n8n read-only SHADOW proof",
     "Incident E2E",
     "Creative A6/A7 E2E",
