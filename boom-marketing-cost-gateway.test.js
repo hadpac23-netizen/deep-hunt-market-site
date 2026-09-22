@@ -10,7 +10,9 @@ assert.equal(r.verified,false);assert.equal(r.cost_truth,"UNKNOWN");assert.equal
 r=G.normalize({source_class:"OFFICIAL_AD_API",platform:"Google Ads",account_ref:"a1",period_start:"2026-09-01",period_end:"2026-09-22",currency:"USD",spend:120,channel_fees:2,evidence_ref:"api1",retrieved_at:"2026-09-22",verification_status:"VERIFIED",coverage_proven:true});
 assert.equal(r.verified,true);assert.equal(r.cost_truth,"VERIFIED");
 const a=G.aggregate([r.record]);
-assert.equal(a.verified,false); // raw record loses coverage proof; must normalize from evidence envelope, preventing silent trust.
-const a2=G.aggregate([{...r.record,coverage_proven:true}]);
-assert.equal(a2.verified,true);assert.equal(a2.spend,120);assert.equal(a2.fees,2);
+assert.equal(a.verified,true);assert.equal(a.spend,120);assert.equal(a.fees,2);
+const zero=G.aggregate([{...r.record,spend:0,channel_fees:0}]);
+assert.equal(zero.verified,false);assert.equal(zero.status,"NO_VERIFIED_COST_EVIDENCE");
+const zeroCovered=G.aggregate([{...r.record,spend:0,channel_fees:0,coverage_proven:true}]);
+assert.equal(zeroCovered.verified,true);assert.equal(zeroCovered.spend,0);
 console.log("BOOM Marketing Cost Gateway: PASS — missing cost is UNKNOWN, zero needs coverage proof, verified spend aggregates only with evidence");
