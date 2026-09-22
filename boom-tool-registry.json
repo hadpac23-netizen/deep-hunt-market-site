@@ -216,7 +216,7 @@
       "type": "PRODUCT_TRUTH_EVALUATOR",
       "status": "PILOT_PROVEN_FULL_REFRESH_PENDING",
       "owner_plane": "tool_gateway_plane",
-      "authority": "EVIDENCE_ONLY",
+      "authority": "NONE",
       "evidence": [
         "CJ quote endpoint is canonical for stock + destination shipping",
         "3 Israel pilot products have fresh price/stock/shipping observations",
