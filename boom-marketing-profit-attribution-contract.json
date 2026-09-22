@@ -81,7 +81,15 @@
     "real_order_linked_rows": 0,
     "profit_evidence_ready_rows": 0,
     "attribution_ledger_rows": 32,
-    "marketing_cost_feed": "NOT_CONNECTED",
-    "state": "NOT_READY_FOR_REAL_NET_PROFIT_ATTRIBUTION"
+    "marketing_cost_feed": "GA4_TRAFFIC_CONNECTED_COST_NOT_VERIFIED",
+    "state": "NOT_READY_FOR_REAL_NET_PROFIT_ATTRIBUTION",
+    "ga4_traffic_truth": {
+      "account": "HUNT DEAL",
+      "sessions_30d": 25,
+      "purchases_30d": 0,
+      "purchase_revenue_30d": 0,
+      "advertiser_ad_cost_reported": 0,
+      "spend_truth": "NOT_VERIFIED"
+    }
   }
 }
