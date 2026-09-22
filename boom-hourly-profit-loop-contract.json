@@ -1,0 +1,86 @@
+{
+  "version": "BOOM-HOURLY-PROFIT-LOOP-V1",
+  "mode": "SHADOW",
+  "owner": "boom_orchestrator",
+  "mission_target_net_profit_per_hour_usd": 10000,
+  "canonical_hourly_store": "f60t_hourly_profit_ledger",
+  "verification_rule": "Only exact verification_status='VERIFIED' counts. UNVERIFIED, PARTIAL, UNKNOWN or any other status counts as UNKNOWN for mission attainment.",
+  "source_truth": {
+    "observed_rows": 66,
+    "exact_verified_rows": 0,
+    "unverified_rows": 66,
+    "real_order_rows": 0,
+    "exact_verified_net_profit_usd": 0,
+    "latest_hour": "2026-09-22T10:00:00Z"
+  },
+  "loop": [
+    "read_latest_hourly_profit_evidence",
+    "reject_non_verified_statuses",
+    "read_expected_unit_economics_for_opportunity_context",
+    "read_real_order_profit_when_available",
+    "read_marketing_attribution_readiness",
+    "calculate_verified_target_gap",
+    "diagnose_primary_constraint",
+    "rank_non_material_next_hour_opportunities",
+    "prepare_material_proposals_for_owner_gate",
+    "record_learning_candidate"
+  ],
+  "constraints": [
+    {
+      "id": "NO_VERIFIED_REAL_PROFIT",
+      "priority": 1,
+      "next": "prove non-test order finance evidence"
+    },
+    {
+      "id": "NO_FRESH_SELLABLE_CATALOG",
+      "priority": 2,
+      "next": "refresh product/stock/source truth"
+    },
+    {
+      "id": "NO_MARKETING_COST_ATTRIBUTION",
+      "priority": 3,
+      "next": "connect actual cost evidence per channel/campaign"
+    },
+    {
+      "id": "LOW_QUALIFIED_TRAFFIC",
+      "priority": 4,
+      "next": "expand profitable organic/distribution opportunities"
+    },
+    {
+      "id": "LOW_CONVERSION",
+      "priority": 5,
+      "next": "diagnose product/checkout friction"
+    },
+    {
+      "id": "LOW_AOV",
+      "priority": 6,
+      "next": "test profit-positive bundles/upsells"
+    },
+    {
+      "id": "LOW_MARGIN",
+      "priority": 7,
+      "next": "review supplier/price/coupon economics"
+    },
+    {
+      "id": "HIGH_RETURN_RISK",
+      "priority": 8,
+      "next": "reduce risky product/supplier exposure"
+    }
+  ],
+  "allowed_outputs": [
+    "read_only_metrics",
+    "constraint_diagnosis",
+    "opportunity_ranking",
+    "experiment_proposal",
+    "owner_gate_proposal"
+  ],
+  "forbidden_outputs": [
+    "autonomous_ad_spend",
+    "autonomous_price_change",
+    "autonomous_discount_change",
+    "autonomous_publish",
+    "autonomous_customer_outreach",
+    "autonomous_supplier_order",
+    "autonomous_payment_action"
+  ]
+}
