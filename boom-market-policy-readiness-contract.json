@@ -1,0 +1,148 @@
+{
+  "version": "BOOM-MARKET-POLICY-READINESS-V1",
+  "mode": "SHADOW",
+  "owner": "learning_governance_brain",
+  "publication_owner": "owner_gate",
+  "authority": "NONE",
+  "purpose": "Gate HUNT market availability on reviewed legal, returns, shipping, identity and cancellation evidence without auto-generating or auto-publishing legal text.",
+  "canonical_dependencies": [
+    "hunt_business_identity",
+    "hunt_legal_document_versions (branch migration; not deployed to Production at audit time)",
+    "hunt_launch_readiness_evidence",
+    "shipping/quote truth",
+    "Owner/counsel review"
+  ],
+  "required_documents": [
+    "terms",
+    "privacy",
+    "returns",
+    "shipping"
+  ],
+  "required_identity_fields": [
+    "legal_entity_name",
+    "registration_number",
+    "registered_country",
+    "business_address",
+    "support_email",
+    "privacy_contact_email",
+    "returns_address"
+  ],
+  "global_hard_gates": [
+    "BUSINESS_IDENTITY_PUBLISHED",
+    "LEGAL_REGISTRY_DEPLOYED",
+    "TERMS_PUBLISHED",
+    "PRIVACY_PUBLISHED",
+    "RETURNS_PUBLISHED",
+    "SHIPPING_PUBLISHED",
+    "RETURNS_ADDRESS_READY",
+    "SUPPORT_CONTACT_READY",
+    "PRIVACY_CONTACT_READY",
+    "VERIFIED_SHIPPING_PROMISE_SOURCE",
+    "CANCELLATION_RETURN_FLOW_IMPLEMENTED",
+    "MARKET_SPECIFIC_REVIEW_APPROVED"
+  ],
+  "market_baselines": {
+    "IL": {
+      "state": "REVIEW_REQUIRED",
+      "requirements": [
+        "distance-sale disclosure includes business identity, principal characteristics, price/payment terms and cancellation method",
+        "14-day remote-sale cancellation baseline handled with category/exemption rules reviewed by counsel",
+        "prominent online cancellation route available where online contracting is available",
+        "refund/return fee rules and protected-consumer extended rights configured only after counsel review"
+      ],
+      "sources": [
+        "https://www.gov.il/BlobFolder/generalpage/information-olim-consumerism/he/smart-consumerism-he.pdf",
+        "https://main.knesset.gov.il/Activity/Legislation/Laws/Pages/LawBill.aspx?lawitemid=2002974"
+      ]
+    },
+    "EU": {
+      "state": "REVIEW_REQUIRED",
+      "requirements": [
+        "14-day withdrawal baseline for distance goods subject to exceptions",
+        "withdrawal information and standard process disclosed before purchase",
+        "easy-to-find online withdrawal function continuously available during withdrawal period",
+        "durable-medium acknowledgement after online withdrawal submission",
+        "seller identity, price and shipping/delivery information disclosed"
+      ],
+      "sources": [
+        "https://europa.eu/youreurope/citizens/consumers/shopping/returns/index_en.htm",
+        "https://eur-lex.europa.eu/eli/dir/2023/2673/oj"
+      ]
+    },
+    "GB": {
+      "state": "REVIEW_REQUIRED",
+      "requirements": [
+        "14 days to notify cancellation after receipt for online goods, subject to exceptions",
+        "another 14 days for return after cancellation notice",
+        "refund timing and standard-delivery refund rules reflected in policy",
+        "delivery within 30 days unless another period is agreed"
+      ],
+      "sources": [
+        "https://www.gov.uk/accepting-returns-and-giving-refunds",
+        "https://www.gov.uk/online-and-distance-selling-for-businesses"
+      ]
+    },
+    "US": {
+      "state": "REVIEW_REQUIRED",
+      "requirements": [
+        "shipping promises have reasonable basis",
+        "if no shipment time is stated, 30-day default rule is handled",
+        "delay notice obtains consent or cancellation/refund as required",
+        "refund workflow can promptly return unshipped-order funds"
+      ],
+      "sources": [
+        "https://www.ftc.gov/business-guidance/resources/business-guide-ftcs-mail-internet-or-telephone-order-merchandise-rule"
+      ]
+    },
+    "AU": {
+      "state": "REVIEW_REQUIRED",
+      "requirements": [
+        "returns policy does not waive Australian Consumer Law guarantees",
+        "major-problem refund/replacement rights are preserved",
+        "minor-problem remedy rules are not replaced by a blanket no-refunds term",
+        "change-of-mind policy, if offered, is clearly distinguished from statutory guarantees"
+      ],
+      "sources": [
+        "https://www.accc.gov.au/consumers/problem-with-a-product-or-service-you-bought/repair-replace-refund-cancel",
+        "https://www.accc.gov.au/consumers/buying-products-and-services/buying-online"
+      ]
+    }
+  },
+  "unmapped_market_policy": {
+    "state": "HOLD",
+    "rule": "Any country/territory not explicitly mapped and reviewed remains unavailable for real-money launch until its consumer, privacy, tax/import and shipping obligations are reviewed."
+  },
+  "shipping_truth_rules": [
+    "Never advertise a delivery promise shorter than the verified supplier/logistics estimate.",
+    "Country-specific delivery promise must be derived from current quote evidence, not a static marketing claim.",
+    "Customs, duties, taxes and import-responsibility wording must be market-reviewed before checkout.",
+    "If delivery evidence becomes stale or unavailable, checkout must degrade to HOLD/RECHECK rather than invent an ETA."
+  ],
+  "returns_truth_rules": [
+    "Statutory consumer remedies override narrower voluntary store policies where applicable.",
+    "Category exceptions (for example hygiene/perishable/personalized goods) must be explicitly mapped before use.",
+    "Return cost responsibility must be disclosed before purchase where required.",
+    "Refund timing must be market-specific and evidence-backed.",
+    "No blanket 'no refunds' wording may override statutory rights."
+  ],
+  "publication_rules": [
+    "No legal document becomes public unless owner_approved=true, status=published, effective_at is active and body content is non-empty.",
+    "Legal content is owner/counsel supplied; BOOM may flag gaps but does not create binding production legal text autonomously.",
+    "Market readiness may never be inferred from the existence of a legal page shell.",
+    "Any legal-source change or market expansion reopens review."
+  ],
+  "current_truth": {
+    "legal_registry_production": false,
+    "business_identity_published": false,
+    "published_legal_documents": 0,
+    "mapped_markets": [
+      "IL",
+      "EU",
+      "GB",
+      "US",
+      "AU"
+    ],
+    "default_other_markets": "HOLD",
+    "real_money_legal_ready": false
+  }
+}
