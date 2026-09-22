@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V12",
+  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V13",
   "date": "2026-09-22",
   "provider": "EPROLO",
   "owner": "commerce_truth_brain",
@@ -139,7 +139,7 @@
     "no fake stock, shipping, margin or retail price"
   ],
   "storefront_role": "SUPPLIER_MESH_CONNECTED_NOT_LIVE_SHELF",
-  "next": "EXPAND_GLOBAL_COUNTRY_DISCOVERY_AND_CLARIFY_EPROLO_ORDER_COST_API",
+  "next": "EXPAND_FROM_15_TO_DEPARTMENT_SCALE_GLOBAL_SHADOW_PRODUCTS_AND_CLARIFY_EPROLO_ORDER_COST_API",
   "variant_truth_policy": {
     "component_split_detection": "If component variants such as Top/Skirt coexist with Set/2pcs variants, a full-set listing must use Set/2pcs variant truth.",
     "exact_variant_image_required": true,
@@ -352,12 +352,12 @@
     },
     "global_markets_checked": 33,
     "global_product_market_shadow": {
-      "products": 4,
-      "countries_represented": 32,
-      "possible_product_market_pairs": 132,
-      "shipping_shadow_product_market_pairs": 115,
-      "policy_mapped_shadow_pairs": 72,
-      "policy_hold_shadow_pairs": 43,
+      "products": 15,
+      "countries_represented": 33,
+      "possible_product_market_pairs": 495,
+      "shipping_shadow_product_market_pairs": 455,
+      "policy_mapped_shadow_pairs": 281,
+      "policy_hold_shadow_pairs": 174,
       "live_product_market_pairs": 0,
       "full_33_market_matrix": true
     },
@@ -378,6 +378,13 @@
         "JP": 2,
         "SG": 2
       },
+      "live_eligible_products": 0,
+      "production_effect": false
+    },
+    "global_expansion_wave5": {
+      "products_checked": 11,
+      "markets_checked": 32,
+      "shipping_shadow_pairs": 329,
       "live_eligible_products": 0,
       "production_effect": false
     }

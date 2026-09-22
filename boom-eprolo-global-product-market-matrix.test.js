@@ -1,25 +1,35 @@
 const fs=require("fs"),assert=require("assert");
 const m=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-2026-09-23.json","utf8"));
-assert.equal(m.version,"HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-V1");
+assert.equal(m.version,"HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-V2");
 assert.equal(m.mode,"GLOBAL_SHADOW");
 assert.equal(m.provider,"EPROLO");
 assert.equal(m.production_effect,false);
-assert.equal(m.products_checked,4);
+assert.equal(m.products_checked,15);
 assert.equal(m.markets_checked,33);
-assert.equal(m.possible_product_market_pairs,132);
-assert.equal(m.shipping_shadow_product_market_pairs,115);
-assert.equal(m.policy_mapped_shadow_pairs,72);
-assert.equal(m.policy_hold_shadow_pairs,43);
-assert.equal(m.countries_represented,32);
+assert.equal(m.possible_product_market_pairs,495);
+assert.equal(m.shipping_shadow_product_market_pairs,455);
+assert.equal(m.policy_mapped_shadow_pairs,281);
+assert.equal(m.policy_hold_shadow_pairs,174);
+assert.equal(m.countries_represented,33);
 assert.equal(m.live_product_market_pairs,0);
-assert.deepEqual(m.product_pass_counts,{
-  "19374567":32,
-  "24539904":30,
-  "26556212":22,
-  "26921252":31
-});
+assert.equal(m.department_summary.women.products,6);
+assert.equal(m.department_summary.women.shipping_shadow_pairs,191);
+assert.equal(m.department_summary.men.products,1);
+assert.equal(m.department_summary.men.shipping_shadow_pairs,30);
+assert.equal(m.department_summary.kitchen.products,1);
+assert.equal(m.department_summary.kitchen.shipping_shadow_pairs,22);
+assert.equal(m.department_summary.tech.products,5);
+assert.equal(m.department_summary.tech.shipping_shadow_pairs,152);
+assert.equal(m.department_summary.pets.products,2);
+assert.equal(m.department_summary.pets.shipping_shadow_pairs,60);
+assert.equal(Object.keys(m.product_pass_counts).length,15);
+assert.equal(m.product_pass_counts["22272693"],33);
+assert.equal(m.product_pass_counts["19374567"],32);
+assert.equal(m.product_pass_counts["24539904"],30);
+assert.equal(m.product_pass_counts["26556212"],22);
 const pairs=m.products.reduce((n,p)=>n+p.shipping_shadow_markets.length,0);
-assert.equal(pairs,115);
+assert.equal(pairs,455);
+assert.equal(new Set(m.products.flatMap(p=>p.shipping_shadow_markets)).size,33);
 assert(m.products.every(p=>new Set(p.shipping_shadow_markets).size===p.shipping_shadow_markets.length));
-assert(!m.products.some(p=>p.market_truth?.SA?.live_eligible===true));
-console.log("PASS boom-eprolo-global-product-market-matrix");
+assert(m.products.every(p=>Object.values(p.market_truth).every(v=>v.live_eligible===false)));
+console.log("PASS boom-eprolo-global-product-market-matrix-v2");

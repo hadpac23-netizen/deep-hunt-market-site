@@ -22,7 +22,7 @@ function allows(value,countryCode){
   return false;
 }
 
-assert.equal(contract.version,"HUNT-COUNTRY-MARKET-GATE-V6");
+assert.equal(contract.version,"HUNT-COUNTRY-MARKET-GATE-V7");
 assert.equal(contract.production_effect,false);
 assert.equal(contract.scope,"global_market_specific_shadow_eligibility");
 assert.equal(contract.eprolo_state.il_shadow_shelf_products,13);
@@ -34,22 +34,22 @@ assert.deepEqual(contract.eprolo_state.unmapped_policy_hold_markets,["CA","AE","
 assert.equal(contract.eprolo_state.global_live_eligible_products,0);
 assert.equal(contract.eprolo_state.persisted_catalog_discovery_enabled,false);
 assert.equal(contract.eprolo_state.global_markets_checked,33);
-assert.equal(contract.eprolo_state.markets_with_shipping_pass,31);
+assert.equal(contract.eprolo_state.markets_with_shipping_pass,33);
 assert.equal(contract.eprolo_state.global_market_matrix.length,33);
 assert(contract.eprolo_state.global_market_matrix.every(x=>x.real_money_live===false));
-assert.equal(contract.eprolo_state.global_product_market_shadow.products,4);
-assert.equal(contract.eprolo_state.global_product_market_shadow.countries_represented,32);
-assert.equal(contract.eprolo_state.global_product_market_shadow.possible_product_market_pairs,132);
-assert.equal(contract.eprolo_state.global_product_market_shadow.shipping_shadow_product_market_pairs,115);
-assert.equal(contract.eprolo_state.global_product_market_shadow.policy_mapped_shadow_pairs,72);
-assert.equal(contract.eprolo_state.global_product_market_shadow.policy_hold_shadow_pairs,43);
+assert.equal(contract.eprolo_state.global_product_market_shadow.products,15);
+assert.equal(contract.eprolo_state.global_product_market_shadow.countries_represented,33);
+assert.equal(contract.eprolo_state.global_product_market_shadow.possible_product_market_pairs,495);
+assert.equal(contract.eprolo_state.global_product_market_shadow.shipping_shadow_product_market_pairs,455);
+assert.equal(contract.eprolo_state.global_product_market_shadow.policy_mapped_shadow_pairs,281);
+assert.equal(contract.eprolo_state.global_product_market_shadow.policy_hold_shadow_pairs,174);
 assert.equal(contract.eprolo_state.global_product_market_shadow.full_33_market_matrix,true);
 assert.equal(contract.eprolo_state.global_product_market_shadow.live_product_market_pairs,0);
 assert.equal(contract.eprolo_state.global_wave2_checked_products,7);
 assert.deepEqual(contract.eprolo_state.shipping_discovery_markets,["IL","DE","FR","IT","ES","NL","GB","US","CA","AU","AE","JP","SG","SE","DK","FI","AT","BE","PL","PT","IE","CZ","GR","NO","CH","NZ","KR","HK","MY","TH","SA","MX","BR"]);
-assert.equal(contract.eprolo_state.shipping_pass_counts.SG,5);
-assert.equal(contract.eprolo_state.shipping_pass_counts.DE,4);
-assert.equal(contract.eprolo_state.shipping_pass_counts.US,3);
+assert.equal(contract.eprolo_state.shipping_pass_counts.SG,15);
+assert.equal(contract.eprolo_state.shipping_pass_counts.DE,15);
+assert.equal(contract.eprolo_state.shipping_pass_counts.US,15);
 assert.equal(contract.eprolo_state.market_policy_states.CA,"HOLD_UNMAPPED");
 assert.equal(contract.eprolo_state.market_policy_states.DE,"REVIEW_REQUIRED");
 assert.equal(contract.global_operating_model.country_unit,"ISO_3166_1_ALPHA2");

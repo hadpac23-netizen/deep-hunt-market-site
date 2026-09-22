@@ -7,7 +7,7 @@ const costVerify=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-ORDER-COST-API
 const catalog=fs.readFileSync("supabase/functions/hunt-catalog-build/index.ts","utf8");
 const storefront=fs.readFileSync("supabase/functions/hunt-storefront/index.ts","utf8");
 
-assert.equal(contract.version,"HUNT-EPROLO-PROVIDER-ADAPTER-V12");
+assert.equal(contract.version,"HUNT-EPROLO-PROVIDER-ADAPTER-V13");
 assert.equal(contract.provider,"EPROLO");
 assert.equal(contract.mode,"SIGNED_API_CONNECTED_READ_ONLY");
 assert.equal(contract.authority,"GATED");
@@ -86,15 +86,19 @@ assert.equal(contract.current_live_validation.global_gapfill_wave4.markets_check
 assert.equal(contract.current_live_validation.global_gapfill_wave4.shipping_pass_counts.DE,2);
 assert.equal(contract.current_live_validation.global_gapfill_wave4.shipping_pass_counts.SG,2);
 assert.equal(contract.current_live_validation.global_gapfill_wave4.live_eligible_products,0);
+assert.equal(contract.current_live_validation.global_expansion_wave5.products_checked,11);
+assert.equal(contract.current_live_validation.global_expansion_wave5.markets_checked,32);
+assert.equal(contract.current_live_validation.global_expansion_wave5.shipping_shadow_pairs,329);
+assert.equal(contract.current_live_validation.global_expansion_wave5.live_eligible_products,0);
 assert.equal(contract.current_live_validation.global_discovery_wave3.shipping_pass_counts.SE,4);
 assert.equal(contract.current_live_validation.global_discovery_wave3.shipping_pass_counts.SA,0);
 assert.equal(contract.current_live_validation.global_markets_checked,33);
-assert.equal(contract.current_live_validation.global_product_market_shadow.products,4);
-assert.equal(contract.current_live_validation.global_product_market_shadow.countries_represented,32);
-assert.equal(contract.current_live_validation.global_product_market_shadow.possible_product_market_pairs,132);
-assert.equal(contract.current_live_validation.global_product_market_shadow.shipping_shadow_product_market_pairs,115);
-assert.equal(contract.current_live_validation.global_product_market_shadow.policy_mapped_shadow_pairs,72);
-assert.equal(contract.current_live_validation.global_product_market_shadow.policy_hold_shadow_pairs,43);
+assert.equal(contract.current_live_validation.global_product_market_shadow.products,15);
+assert.equal(contract.current_live_validation.global_product_market_shadow.countries_represented,33);
+assert.equal(contract.current_live_validation.global_product_market_shadow.possible_product_market_pairs,495);
+assert.equal(contract.current_live_validation.global_product_market_shadow.shipping_shadow_product_market_pairs,455);
+assert.equal(contract.current_live_validation.global_product_market_shadow.policy_mapped_shadow_pairs,281);
+assert.equal(contract.current_live_validation.global_product_market_shadow.policy_hold_shadow_pairs,174);
 assert.equal(contract.current_live_validation.global_product_market_shadow.full_33_market_matrix,true);
 assert.equal(contract.current_live_validation.global_product_market_shadow.live_product_market_pairs,0);
 assert.equal(contract.current_live_validation.global_live_eligible_products,0);
@@ -120,12 +124,12 @@ assert.deepEqual(adapters.providers.EPROLO.mapped_policy_shadow_markets,["DE","F
 assert.deepEqual(adapters.providers.EPROLO.unmapped_policy_hold_markets,["CA","AE","JP","SG"]);
 assert.equal(adapters.providers.EPROLO.global_live_eligible_products,0);
 assert.equal(adapters.providers.EPROLO.global_markets_checked,33);
-assert.equal(adapters.providers.EPROLO.global_product_market_possible_pairs,132);
-assert.equal(adapters.providers.EPROLO.global_product_market_shadow_pairs,115);
-assert.equal(adapters.providers.EPROLO.global_product_market_policy_mapped_pairs,72);
-assert.equal(adapters.providers.EPROLO.global_product_market_policy_hold_pairs,43);
+assert.equal(adapters.providers.EPROLO.global_product_market_possible_pairs,495);
+assert.equal(adapters.providers.EPROLO.global_product_market_shadow_pairs,455);
+assert.equal(adapters.providers.EPROLO.global_product_market_policy_mapped_pairs,281);
+assert.equal(adapters.providers.EPROLO.global_product_market_policy_hold_pairs,174);
 assert.equal(adapters.providers.EPROLO.global_product_market_full_matrix,true);
-assert.equal(adapters.providers.EPROLO.global_product_market_countries,32);
+assert.equal(adapters.providers.EPROLO.global_product_market_countries,33);
 assert.equal(adapters.providers.EPROLO.global_live_product_market_pairs,0);
 assert.deepEqual(adapters.providers.EPROLO.shadow_departments,["women","pets","tech"]);
 assert.equal(adapters.providers.EPROLO.final_profit,"NOT_VERIFIED_ORDER_COST_RECHECK_REQUIRED");
@@ -160,4 +164,4 @@ assert.equal(evidence.gates.fulfillment,"DISABLED");
 assert.equal(evidence.gates.owner_gate,"REQUIRED");
 assert.equal(evidence.secrets.secrets_copied_into_repo,false);
 
-console.log("PASS boom-eprolo-provider-adapter-v12");
+console.log("PASS boom-eprolo-provider-adapter-v13");
