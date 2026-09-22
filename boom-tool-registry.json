@@ -173,6 +173,18 @@
         "Requires persisted supplier order id + tracking number + shipped event for E2E PASS",
         "Test-only proof never implies live fulfillment readiness"
       ]
+    },
+    {
+      "id": "market_policy_readiness",
+      "type": "LEGAL_RETURNS_SHIPPING_READINESS_EVALUATOR",
+      "status": "CODED_SHADOW_PRODUCTION_LEGAL_REGISTRY_NOT_DEPLOYED",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Maps IL/EU/GB/US/AU baseline obligations from official sources",
+        "All unmapped markets default HOLD",
+        "Requires owner/counsel-approved legal documents and market review before real-money launch"
+      ]
     }
   ],
   "security_truth_rule": "verify_jwt=false in platform metadata is not by itself proof of exposure; webhook/custom-auth functions must be reviewed by their actual code/auth contract before classification.",
