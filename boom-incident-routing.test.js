@@ -11,7 +11,13 @@ const ledger={
   appendIncidentEvent:async(r,e,d)=>persisted.push(["incident",e,r.run_id,d.failed_workflow_id]),
   ensureApproval:async()=>null,recordOwnerDecision:async()=>null
 };
-const win={BoomAutomationLedger:ledger,dispatchEvent:()=>true};
+const win={
+  BoomAutomationLedger:ledger,
+  BoomN8nAdapter:{
+    dispatchShadow:async()=>{throw Object.assign(new Error("TEST_ADAPTER_FAILURE"),{code:"TEST_ADAPTER_FAILURE"});}
+  },
+  dispatchEvent:()=>true
+};
 function CustomEvent(type,init){this.type=type;this.detail=init?.detail;}
 const fetchFn=async p=>({ok:true,json:async()=>String(p).includes("tool-gateway")?gateway:control});
 const g={crypto:{randomUUID:(()=>{let n=0;return()=>String(++n)})()}};
@@ -19,13 +25,17 @@ new Function("window","CustomEvent","fetch","globalThis","console",source)(win,C
 (async()=>{
   const rt=win.BoomAutomationRuntime;await rt.ready();
   const run=await rt.createRun("shelf_coverage_17x1000",{missionId:"m1"});
-  await rt.fail(run.run_id,"TEST_FAILURE").catch(()=>{});
+  await rt.dispatchAdapter(run.run_id,{audit_reason:"controlled_failure_test"}).catch(error=>{
+    assert.equal(error.code,"TEST_ADAPTER_FAILURE");
+  });
+  const failed=rt.getRun(run.run_id);
+  assert.equal(failed.state,"FAILED");
   const incidents=rt.listRuns().filter(x=>x.workflow_id==="incident_repair");
   assert.equal(incidents.length,1);
   assert.equal(incidents[0].parent_run_id,run.run_id);
   assert.equal(incidents[0].state,"READY");
-  await rt.routeFailureToIncident(rt.getRun(run.run_id),"TEST_FAILURE");
+  await rt.routeFailureToIncident(rt.getRun(run.run_id),"TEST_ADAPTER_FAILURE");
   assert.equal(rt.listRuns().filter(x=>x.workflow_id==="incident_repair").length,1,"duplicate incident created");
   assert(persisted.some(x=>x[0]==="incident"&&x[1]==="incident.detected"));
-  console.log("BOOM incident routing: PASS — failure creates one linked READY incident, no auto-patch");
+  console.log("BOOM incident routing: PASS — adapter failure creates one linked READY incident, no auto-patch");
 })().catch(e=>{console.error(e);process.exit(1);});
