@@ -74,7 +74,10 @@
     "controlled_product_scan_status_rows": 76,
     "catalog_rows_updated": 0,
     "market_eligibility_rows_updated": 0,
-    "checkout_state_changed": false
+    "checkout_state_changed": false,
+    "controlled_product_scan_rows": 55,
+    "explicit_rows_total": 220,
+    "note": "220 rows were explicitly written in this workstream: 9 pilot price/stock/shipping + 54 batch A + 102 batch B + 55 controlled product-scan rows."
   },
   "refresh_run": {
     "destination_country": "IL",
@@ -157,5 +160,12 @@
     "checkout_live_verified": 0,
     "full_cj_scan_complete": true,
     "other_approved_supplier_refresh_pending": true
+  },
+  "strict_evaluator": {
+    "controlled_scans_24h": 76,
+    "verified_scan_state": 57,
+    "strict_fresh_shelf_verified_il": 57,
+    "strict_not_fresh": 19,
+    "rule": "Latest controlled-cj-refresh scan must be VERIFIED and Price/Stock/Shipping must match the exact scan variant."
   }
 }
