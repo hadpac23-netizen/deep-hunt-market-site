@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-OPERATIONAL-SKILLS-V1.2-PAYMENT",
+  "version": "BOOM-OPERATIONAL-SKILLS-V1.3-ORDER-E2E",
   "mode": "SHADOW",
   "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
   "skills": [
@@ -229,6 +229,27 @@
       "tools": [
         "supabase_runtime",
         "payment_launch_gate"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_checkout_order_tracking",
+      "title": "Review Checkout → Order → Tracking",
+      "owner": "operations_brain",
+      "purpose": "Prove checkout ownership, sandbox order, supplier order identity, persisted tracking and user-readable order state without live fulfillment.",
+      "inputs": [
+        "payment_session_or_evidence_window"
+      ],
+      "outputs": [
+        "e2e_state",
+        "stage_checks",
+        "blocker",
+        "historical_failures"
+      ],
+      "tools": [
+        "supabase_runtime",
+        "checkout_order_tracking_proof"
       ],
       "material": false,
       "owner_gate": false
