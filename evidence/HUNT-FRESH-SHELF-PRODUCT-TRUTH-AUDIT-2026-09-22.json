@@ -1,0 +1,83 @@
+{
+  "version": "HUNT-FRESH-SHELF-PRODUCT-TRUTH-AUDIT-2026-09-22-V1",
+  "observed_at": "2026-09-22T12:34:39.463889Z",
+  "production_mutation": "EVIDENCE_ONLY_OBSERVATIONS",
+  "baseline": {
+    "catalog_rows": 117,
+    "providers": {
+      "CJdropshipping": 76,
+      "Printful": 23,
+      "Gooten": 18
+    },
+    "catalog_market_eligibility_recheck_before_checkout": 117,
+    "catalog_source_fresh_7d": 0,
+    "catalog_stock_fresh_7d": 0,
+    "old_fresh_verified_sellable_7d_metric": 0
+  },
+  "root_cause": {
+    "all_catalog_rows_market_status": "recheck_before_checkout",
+    "stale_catalog_timestamps": true,
+    "endpoint_disagreement": true,
+    "detail_endpoint_note": "Three sampled CJ product details showed zero in-stock variants.",
+    "quote_endpoint_note": "For the same sampled variants, hunt-cj-quote returned stock_verified=true, stock_available=true and 5 shipping options to Israel.",
+    "canonical_decision": "Use hunt-cj-quote for CJ stock + destination shipping truth."
+  },
+  "pilot": [
+    {
+      "item_id": "1582554080420048896",
+      "category": "phoneaccessories",
+      "variant_id": "1582554080503934976",
+      "retail_price_usd": 7.99,
+      "supplier_cost_usd": 2.85,
+      "profit_gate": "PASS",
+      "origin": "CN",
+      "verified_inventory": 11724,
+      "shipping_to": "IL",
+      "cheapest_shipping_usd": 4.2,
+      "shipping_method": "CJPacket Liquid Line",
+      "aging": "9-23"
+    },
+    {
+      "item_id": "1805795784395739136",
+      "category": "dresses",
+      "variant_id": "1805795784412516352",
+      "retail_price_usd": 9.99,
+      "supplier_cost_usd": 4.33,
+      "profit_gate": "PASS",
+      "origin": "CN",
+      "verified_inventory": 13659,
+      "shipping_to": "IL",
+      "cheapest_shipping_usd": 7.5,
+      "shipping_method": "CJPacket Eub",
+      "aging": "12-50"
+    },
+    {
+      "item_id": "1366003969222119424",
+      "category": "bags",
+      "variant_id": "1366260771499151360",
+      "retail_price_usd": 7.99,
+      "supplier_cost_usd": 2.46,
+      "profit_gate": "PASS",
+      "origin": "CN",
+      "verified_inventory": 30000,
+      "shipping_to": "IL",
+      "cheapest_shipping_usd": 6.62,
+      "shipping_method": "CJPacket Eub",
+      "aging": "12-50"
+    }
+  ],
+  "evidence_written": {
+    "hunt_product_observations_rows_inserted": 9,
+    "price_rows": 3,
+    "stock_rows": 3,
+    "shipping_rows": 3,
+    "catalog_rows_updated": 0,
+    "market_eligibility_rows_updated": 0,
+    "checkout_state_changed": false
+  },
+  "post_pilot": {
+    "fresh_shelf_verified_il": 3,
+    "checkout_live_verified": 0,
+    "full_catalog_refresh_pending": true
+  }
+}
