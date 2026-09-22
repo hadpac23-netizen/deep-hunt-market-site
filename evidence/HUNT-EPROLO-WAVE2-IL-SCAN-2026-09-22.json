@@ -1,0 +1,388 @@
+{
+  "version": "HUNT-EPROLO-WAVE2-IL-SCAN-V1",
+  "date": "2026-09-22",
+  "mode": "READ_ONLY_SHADOW",
+  "destination": "IL",
+  "production_effect": false,
+  "summary": {
+    "checked": 10,
+    "shipping_verified": 10,
+    "normal_shipping": 3,
+    "high_shipping_review": 7,
+    "exact_variant_images": 10,
+    "final_profit_verified": 0,
+    "checkout_live": 0
+  },
+  "results": [
+    {
+      "department": "men",
+      "category": "men-tops",
+      "product_id": "25364597",
+      "supplier_category_id": 1221,
+      "title": "T-shirt men's buttoned Henry neck sports polo shirt",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant_scope": "SINGLE_PRODUCT_OR_COLOR_SIZE_VARIANTS",
+      "variant": {
+        "id": "638999885",
+        "title": "white-L",
+        "sku": "36869CB90C344EE685333FD500167F9A",
+        "supplier_cost_usd": 3.96,
+        "inventory_quantity": 791,
+        "weight_g": 300.0,
+        "imagesid": "495705916"
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202403/3ED842E66C2497D7D5ADED97B8041CB2.JPEG",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 10.58,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days",
+        "countrycode": "IL"
+      },
+      "shipping_to_retail_ratio": 1.177,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 8.99,
+        "projected_product_profit_usd": 4.22,
+        "projected_product_margin": 0.4695
+      },
+      "customer_shipping_grossup_shadow_usd": 11.63,
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "men",
+      "category": "men-bottoms",
+      "product_id": "25354414",
+      "supplier_category_id": 1230,
+      "title": "Autumn and Winter Men's New Sports and Leisure Light Plate Slim Fit Fitness Pants Men's Long Pants, Small Foot Strap Pants",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant_scope": "SINGLE_PRODUCT_OR_COLOR_SIZE_VARIANTS",
+      "variant": {
+        "id": "638853390",
+        "title": "Kaqijia logo-XL",
+        "sku": "DA8B0B260D254EB99ED91290B17BDF92",
+        "supplier_cost_usd": 4.95,
+        "inventory_quantity": 764,
+        "weight_g": 320.0,
+        "imagesid": "495591200"
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202403/7D7D247C0A08CC27415BD395767DC573.JPEG",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 10.55,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days",
+        "countrycode": "IL"
+      },
+      "shipping_to_retail_ratio": 1.056,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 9.99,
+        "projected_product_profit_usd": 4.14,
+        "projected_product_margin": 0.4145
+      },
+      "customer_shipping_grossup_shadow_usd": 11.59,
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "home",
+      "category": "lighting",
+      "product_id": "31495410",
+      "supplier_category_id": 46,
+      "title": "USB projection night light",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant_scope": "SINGLE_PRODUCT_OR_COLOR_SIZE_VARIANTS",
+      "variant": {
+        "id": "713316942",
+        "title": "Machine and 1 piece Set-5W",
+        "sku": "0D5E61DA9D31487B8AF4F30B424F5689",
+        "supplier_cost_usd": 7.07,
+        "inventory_quantity": 9987,
+        "weight_g": 210.0,
+        "imagesid": "570956982"
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/2B8AEFD3C2FEDA070C938E5D6372153F.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 9.48,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days",
+        "countrycode": "IL"
+      },
+      "shipping_to_retail_ratio": 0.73,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 12.99,
+        "projected_product_profit_usd": 4.75,
+        "projected_product_margin": 0.3657
+      },
+      "customer_shipping_grossup_shadow_usd": 10.42,
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "home",
+      "category": "lighting",
+      "product_id": "31458459",
+      "supplier_category_id": 109,
+      "title": "PVC Wooden Clock Multi-Function Alarm Clock LED Clock Thermometer Digital Clock Student Bedside Electronic Night Light Alarm",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant_scope": "SINGLE_PRODUCT_OR_COLOR_SIZE_VARIANTS",
+      "variant": {
+        "id": "712879247",
+        "title": "9123 White Wood White Lamp - Rectangle",
+        "sku": "B139BBBAB97B4BAFBE0344B8795461C9",
+        "supplier_cost_usd": 3.6,
+        "inventory_quantity": 258696,
+        "weight_g": 295.0,
+        "imagesid": "570430447"
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/F1472F3A3A648EAC4D5924228B9C6B68.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 11.17,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days",
+        "countrycode": "IL"
+      },
+      "shipping_to_retail_ratio": 1.242,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 8.99,
+        "projected_product_profit_usd": 4.58,
+        "projected_product_margin": 0.5096
+      },
+      "customer_shipping_grossup_shadow_usd": 12.27,
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "kitchen",
+      "category": "tableware",
+      "product_id": "28135745",
+      "supplier_category_id": 127,
+      "title": "Cotton thread placemat hand woven insulation mat bowl mat cup mat thickened and simple cotton linen table mat",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant_scope": "SINGLE_PRODUCT_OR_COLOR_SIZE_VARIANTS",
+      "variant": {
+        "id": "671058197",
+        "title": "dark gray-18",
+        "sku": "C28505C4860F4074855AB89A8620CBB3",
+        "supplier_cost_usd": 0.87,
+        "inventory_quantity": 10000,
+        "weight_g": 150.0,
+        "imagesid": "523397878"
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202412/27DB99FFBE99576DD2EE67DE310F32E9.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 7.39,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days",
+        "countrycode": "IL"
+      },
+      "shipping_to_retail_ratio": 1.234,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 5.99,
+        "projected_product_profit_usd": 4.58,
+        "projected_product_margin": 0.7648
+      },
+      "customer_shipping_grossup_shadow_usd": 8.12,
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "kitchen",
+      "category": "tableware",
+      "product_id": "30284442",
+      "supplier_category_id": 112,
+      "title": "110ML Kung Fu Tea Set Single Cup Tenmoku Glaze Jian Zhan Master Cup Tea Bowl Egg-shaped Small Tea Bowl",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant_scope": "SINGLE_PRODUCT_OR_COLOR_SIZE_VARIANTS",
+      "variant": {
+        "id": "696139797",
+        "title": "Yao Bian Tea Cup - Ancient Blue",
+        "sku": "1CDA441660014267A627B97AB5C9F5E9",
+        "supplier_cost_usd": 1.84,
+        "inventory_quantity": 990199,
+        "weight_g": 250.0,
+        "imagesid": "551632265"
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202509/55CEAC7E20A25154A352FD469E70126B.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 9.21,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days",
+        "countrycode": "IL"
+      },
+      "shipping_to_retail_ratio": 1.318,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 6.99,
+        "projected_product_profit_usd": 4.52,
+        "projected_product_margin": 0.6468
+      },
+      "customer_shipping_grossup_shadow_usd": 10.12,
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "tech",
+      "category": "phone-accessories",
+      "product_id": "26647469",
+      "supplier_category_id": 122,
+      "title": "Mobile phone ring buckle strap",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant_scope": "SINGLE_PRODUCT_OR_COLOR_SIZE_VARIANTS",
+      "variant": {
+        "id": "655080051",
+        "title": "Chinese Red",
+        "sku": "192B1190A52A45B19FBFE69284765819",
+        "supplier_cost_usd": 1.02,
+        "inventory_quantity": 693,
+        "weight_g": 50.0,
+        "imagesid": "508646492"
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202407/0D2A9FA14941642A0569B9F9D74BDBED.JPEG",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.07,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days",
+        "countrycode": "IL"
+      },
+      "shipping_to_retail_ratio": 0.846,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 5.99,
+        "projected_product_profit_usd": 4.43,
+        "projected_product_margin": 0.7397
+      },
+      "customer_shipping_grossup_shadow_usd": 5.57,
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "tech",
+      "category": "camera-accessories",
+      "product_id": "8532420",
+      "supplier_category_id": 39,
+      "title": "Wireless Bluetooth Smart Phone Camera Remote Control Shutter For Selfie Stick Monopod compatible Android IOS iPhone X iPhone 8",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant_scope": "SINGLE_PRODUCT_OR_COLOR_SIZE_VARIANTS",
+      "variant": {
+        "id": "194051278",
+        "title": "Orange",
+        "sku": "90BBAAD8E2DD493DAD0AB8D412C03F11",
+        "supplier_cost_usd": 1.09,
+        "inventory_quantity": 1918,
+        "weight_g": 50.0,
+        "imagesid": "100205038"
+      },
+      "exact_variant_image_url": "http://ae01.alicdn.com/kf/HTB1m1mGdjfguuRjSszcq6zb7FXaG.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.93,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days",
+        "countrycode": "IL"
+      },
+      "shipping_to_retail_ratio": 0.99,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 5.99,
+        "projected_product_profit_usd": 4.36,
+        "projected_product_margin": 0.728
+      },
+      "customer_shipping_grossup_shadow_usd": 6.52,
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "pets",
+      "category": "pet-accessories",
+      "product_id": "24181199",
+      "supplier_category_id": 1234,
+      "title": "New Pet Hat Ear Leakage Cotton Tie Dyed Dog Hat Anti peeling Sun Hat",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant_scope": "SINGLE_PRODUCT_OR_COLOR_SIZE_VARIANTS",
+      "variant": {
+        "id": "625408065",
+        "title": "rose-S",
+        "sku": "FA09E3A0670942FBAD400BAEC88DC0F5",
+        "supplier_cost_usd": 1.96,
+        "inventory_quantity": 569,
+        "weight_g": 50.0,
+        "imagesid": "483910466"
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202311/BE60608A2521E67705D667E4E9B628F4.jpeg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.07,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days",
+        "countrycode": "IL"
+      },
+      "shipping_to_retail_ratio": 0.725,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 6.99,
+        "projected_product_profit_usd": 4.4,
+        "projected_product_margin": 0.6296
+      },
+      "customer_shipping_grossup_shadow_usd": 5.57,
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "pets",
+      "category": "pet-accessories",
+      "product_id": "24167510",
+      "supplier_category_id": 1234,
+      "title": "Pet Knitted Christmas Scarf Creative VIP Teddy Scarf Cat Dog Pet Supplies",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant_scope": "SINGLE_PRODUCT_OR_COLOR_SIZE_VARIANTS",
+      "variant": {
+        "id": "625257020",
+        "title": "Green-S",
+        "sku": "8EBC7C5AF39041C38E8E9A67B06B8E79",
+        "supplier_cost_usd": 1.54,
+        "inventory_quantity": 494,
+        "weight_g": 50.0,
+        "imagesid": "483779194"
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202311/6C51788DDA9B91A8CDBBA45FF08E4CE3.jpeg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.07,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days",
+        "countrycode": "IL"
+      },
+      "shipping_to_retail_ratio": 0.725,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 6.99,
+        "projected_product_profit_usd": 4.82,
+        "projected_product_margin": 0.6897
+      },
+      "customer_shipping_grossup_shadow_usd": 5.57,
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    }
+  ]
+}

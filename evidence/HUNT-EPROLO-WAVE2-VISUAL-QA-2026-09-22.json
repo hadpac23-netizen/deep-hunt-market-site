@@ -1,0 +1,60 @@
+{
+  "version": "HUNT-EPROLO-WAVE2-VISUAL-QA-V1",
+  "date": "2026-09-22",
+  "mode": "SHADOW_VISUAL_QA",
+  "market": "IL",
+  "production_effect": false,
+  "items": [
+    {
+      "product_id": "31495410",
+      "department": "home",
+      "status": "BLOCKED_ON_IMAGE_CLAIM_REVIEW",
+      "reason": "Exact variant image contains promotional claim text including a cure-related phrase; HUNT should use clean product imagery without unverified claims."
+    },
+    {
+      "product_id": "24181199",
+      "department": "pets",
+      "status": "PASS_SHADOW_SHELF",
+      "reason": "Exact rose-S variant image is clean, product-focused and suitable for shelf/card display."
+    },
+    {
+      "product_id": "24167510",
+      "department": "pets",
+      "status": "PASS_SHADOW_SHELF",
+      "reason": "Exact Green-S variant image is clean, product-focused and suitable for shelf/card display."
+    }
+  ],
+  "summary": {
+    "reviewed": 3,
+    "pass_shadow_shelf": 2,
+    "claim_image_blocked": 1,
+    "production_ready": 0,
+    "checkout_live": 0,
+    "seasonal_pass": 1
+  },
+  "hard_rules": [
+    "Do not use supplier images containing unverified health/medical claims.",
+    "Exact variant image required.",
+    "Visual pass does not imply final profit or checkout readiness.",
+    "No Production exposure."
+  ],
+  "passes": [
+    {
+      "product_id": "24181199",
+      "status": "PASS_SHELF",
+      "note": "Exact rose-S variant image is clean, product-focused and suitable for shelf/card display."
+    },
+    {
+      "product_id": "24167510",
+      "status": "PASS_SHELF_SEASONAL",
+      "note": "Exact Green-S variant image is clean and suitable for seasonal shelf support. Do not promote as evergreen Hero automatically."
+    }
+  ],
+  "holds": [
+    {
+      "product_id": "31495410",
+      "status": "IMAGE_CLAIMS_REVIEW",
+      "reason": "Exact variant image contains promotional claim text including a cure-related phrase; HUNT should use clean product imagery without unverified claims."
+    }
+  ]
+}
