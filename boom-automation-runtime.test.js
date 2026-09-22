@@ -25,6 +25,16 @@ vm.runInContext(source,context,{filename:"boom-automation-runtime.js"});
 
   const creative=await rt.createRun("creative_publish",{missionId:"m-creative"});
   assert.equal(creative.state,"READY");
+  const blockedCreative=await rt.simulate(creative.run_id);
+  assert.equal(blockedCreative.state,"BLOCKED");
+  assert(blockedCreative.blockers.includes("PRODUCT_TRUTH_LIVE_REQUIRED"));
+  assert(blockedCreative.blockers.includes("EXACT_REFERENCES_LOCKED_REQUIRED"));
+  assert(blockedCreative.blockers.includes("PROOF_CLAIMS_BOUNDARY_REQUIRED"));
+  await rt.updateRunInput(creative.run_id,{
+    product_truth_live:true,
+    exact_references_locked:true,
+    proof_claims_boundary_reviewed:true
+  });
   const waiting=await rt.simulate(creative.run_id);
   assert.equal(waiting.state,"WAITING_OWNER");
   assert.equal(waiting.material_action_suppressed,true);
@@ -46,8 +56,15 @@ vm.runInContext(source,context,{filename:"boom-automation-runtime.js"});
 
   const customer=await rt.createRun("customer_lifecycle");
   let live=await rt.simulate(customer.run_id);
+  assert.equal(live.state,"BLOCKED");
+  await rt.updateRunInput(customer.run_id,{
+    identity_policy_ready:true,
+    privacy_consent_ready:true,
+    event_source_verified:true
+  });
+  live=await rt.simulate(customer.run_id);
   assert.equal(live.state,"WAITING_OWNER");
 
   assert(events.some(e=>e.detail?.event==="automation.run.created"));
-  console.log("BOOM automation runtime: PASS — shadow runs, owner gate, material suppression and tool allowlist verified");
+  console.log("BOOM automation runtime: PASS — evidence preflight, owner gate, material suppression and tool allowlist verified");
 })().catch(e=>{console.error(e);process.exit(1);});
