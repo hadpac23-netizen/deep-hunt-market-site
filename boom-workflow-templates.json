@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-WORKFLOW-TEMPLATES-V1.1-PROFIT",
+  "version": "BOOM-WORKFLOW-TEMPLATES-V1.2-PAYMENT",
   "mode": "SHADOW",
   "rule": "Templates compile reusable Skills into a plan. Compilation does not execute tools or material actions.",
   "templates": [
@@ -120,6 +120,17 @@
         "attribute_marketing_profit"
       ],
       "final_action": "next_hour_proposals",
+      "material": false
+    },
+    {
+      "id": "payment_launch_readiness_review",
+      "title": "Payment Route → Launch Readiness",
+      "owner": "operations_brain",
+      "trigger": "manual_or_launch_window",
+      "skills": [
+        "review_payment_launch_readiness"
+      ],
+      "final_action": "evidence_report_only",
       "material": false
     }
   ]
