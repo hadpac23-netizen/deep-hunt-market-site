@@ -214,14 +214,26 @@
     {
       "id": "fresh_shelf_product_truth",
       "type": "PRODUCT_TRUTH_EVALUATOR",
-      "status": "CJ_CONTROLLED_SCAN_COMPLETE_19_FRESH",
+      "status": "CJ_57_FRESH_PROVIDER_PARTIAL",
       "owner_plane": "tool_gateway_plane",
       "authority": "NONE",
       "evidence": [
-        "Controlled scan CJ-IL-20260922-A covered 76/76 CJ catalog rows",
-        "19 exact-variant Price+Stock+IL Shipping Fresh Shelf Verified",
-        "57 rows remain lookup-failed / profit-blocked / no verified variant",
-        "0 Checkout Live Verified; checkout-time re-quote remains mandatory"
+        "CJ latest controlled state: 57 strict Fresh / 19 blocked-recheck",
+        "Printful: 22 live unique products, 550 in-stock variants, shipping/fulfillment unverified",
+        "Gooten: 18 live public catalog products, variants/shipping unverified",
+        "0 Checkout Live Verified"
+      ]
+    },
+    {
+      "id": "cj_retail_price_gate_v2",
+      "type": "PRICE_EVALUATOR",
+      "status": "CODED_SHADOW_NOT_DEPLOYED",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Corrected margin floor accounts for payment/refund reserves",
+        "11 current REVIEW products analyzed; candidate retail deltas +$1 to +$6",
+        "No Production retail price mutation"
       ]
     }
   ],
