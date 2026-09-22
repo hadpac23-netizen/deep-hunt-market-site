@@ -230,11 +230,12 @@
     const host=$("#bs-stylist-academy");
     if(!host)return;
     try{
-      const [academy,training,f35,baseline]=await Promise.all([
+      const [academy,training,f35,baseline,round1]=await Promise.all([
         json("boom-stylist-academy-contract.json"),
         json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-2026-09-22.json"),
         json("boom-f35-style-commerce-research-2026-09-22.json"),
-        json("evidence/HUNT-F35-SIX-LAYER-PREFERENCE-BASELINE-2026-09-22.json")
+        json("evidence/HUNT-F35-SIX-LAYER-PREFERENCE-BASELINE-2026-09-22.json"),
+        json("evidence/HUNT-STYLIST-F35-ROUND1-2026-09-22.json")
       ]);
       const tracks=(academy.tracks||[]).map(t=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(t.id)} · ${esc(t.name)}</strong><span class="bs-status NEXT">${esc((t.modules||[]).length)} modules</span></div><p>${esc((t.modules||[]).join(" · "))}</p></div>`).join("");
       const exams=(academy.exams||[]).map(e=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(e.name)}</strong><span class="bs-status NEXT">PASS ${esc(e.pass_score)}+</span></div><small>${esc(e.output_rule)}</small></div>`).join("");
@@ -266,6 +267,20 @@
           <div class="bs-run-list">${courses}</div>
           <small>CASE-STUDY RULE</small>
           <p>${esc(f35.brand_case_study_policy?.blocked||"No copying.")}</p>
+        </article>
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>F35 Exam Round 1</strong><span class="bs-status NEXT">${esc(round1.round_status)}</span></div>
+          <p>Survey: ${esc(round1.survey_exam?.status)} · Style: ${esc(round1.style_exam?.status)} · Shelf: ${esc(round1.shelf_exam?.status)}</p>
+          <small>ASSORTMENT GAP</small>
+          <div class="bs-journey-steps">
+            <span>Footwear ${esc(round1.style_exam?.assortment?.footwear)}</span>
+            <span>Bottoms ${esc(round1.style_exam?.assortment?.bottoms)}</span>
+            <span>Tops ${esc(round1.style_exam?.assortment?.tops)}</span>
+            <span>Accessories ${esc(round1.style_exam?.assortment?.accessories)}</span>
+          </div>
+          <small>CURRENT HUNT QA</small>
+          <p>${esc(round1.current_hunt_comparison?.shelves_below_25pct_availability_verified)} shelves are below 25% availability-verified in the current snapshot. Existing layout is QA evidence, not training truth.</p>
+          <code>mastery change false · Production unchanged</code>
         </article>`;
     }catch(error){
       host.innerHTML=`<div class="bs-empty bs-error">Stylist Academy unavailable: ${esc(error?.message||"unknown")}</div>`;

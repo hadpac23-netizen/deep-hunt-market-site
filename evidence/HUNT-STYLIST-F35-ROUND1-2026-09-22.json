@@ -1,0 +1,618 @@
+{
+  "version": "BOOM-STYLIST-F35-ROUND1-V1",
+  "mode": "SHADOW_EXAM",
+  "production_effect": false,
+  "generated_at": "2026-09-22T18:25:44.978Z",
+  "survey_exam": {
+    "id": "DEPARTMENT-6-LAYER-SURVEY",
+    "status": "OBJECTIVE_COVERAGE_PASS",
+    "department_coverage": 17,
+    "preference_layers": 6,
+    "limitation": "External directional baseline only; not yet HUNT first-party preference truth."
+  },
+  "style_exam": {
+    "id": "STYLE-20-5",
+    "status": "BLOCKED_ASSORTMENT_GAP",
+    "assortment": {
+      "footwear": 0,
+      "bottoms": 1,
+      "tops": 8,
+      "accessories": 10
+    },
+    "reason": "A valid five-look exam needs enough complementary categories; current verified Printful set is top/accessory heavy."
+  },
+  "shelf_exam": {
+    "id": "SHELF-24",
+    "status": "SHADOW_COMPOSITION_READY_FOR_VISUAL_QA",
+    "verified_products_used": 24,
+    "shelves": [
+      {
+        "id": "STYLE_STATEMENT",
+        "title": "Style Statement",
+        "focus": [
+          "TREND",
+          "IDENTITY",
+          "PREMIUM_CRAFT"
+        ],
+        "ids": [
+          1628,
+          388,
+          1590,
+          458,
+          507,
+          630
+        ],
+        "roles": [
+          "hero",
+          "anchor",
+          "support",
+          "accessory",
+          "complete_the_look",
+          "discovery"
+        ],
+        "products": [
+          {
+            "provider": "Printful",
+            "product_id": 1628,
+            "title": "All-Over Print Oversized Cotton Hoodie",
+            "variant_id": 51469,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "hero",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 388,
+            "title": "All-Over Print Recycled Unisex Hoodie",
+            "variant_id": 18730,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "anchor",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 1590,
+            "title": "All-Over Print Oversized Cotton Sweatshirt",
+            "variant_id": 51480,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "support",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 458,
+            "title": "All-Over Print Beanie",
+            "variant_id": 11950,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "accessory",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 507,
+            "title": "All-Over Print Biker Shorts",
+            "variant_id": 12741,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "complete_the_look",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 630,
+            "title": "All-Over Print Bandana",
+            "variant_id": 16033,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "discovery",
+            "production_effect": false
+          }
+        ]
+      },
+      {
+        "id": "PREMIUM_EDIT",
+        "title": "Premium Edit",
+        "focus": [
+          "PREMIUM_CRAFT",
+          "FUNCTION",
+          "CONSCIOUS_LONG_LIFE",
+          "VALUE"
+        ],
+        "ids": [
+          531,
+          770,
+          655,
+          1586,
+          638,
+          918
+        ],
+        "roles": [
+          "hero",
+          "anchor",
+          "support",
+          "premium_step_up",
+          "support",
+          "discovery"
+        ],
+        "products": [
+          {
+            "provider": "Printful",
+            "product_id": 531,
+            "title": "Men's Adidas Quarter-Zip Pullover | A401",
+            "variant_id": 13364,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "hero",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 770,
+            "title": "Unisex Adidas Space-Dyed Polo Shirt | A591",
+            "variant_id": 19660,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "anchor",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 655,
+            "title": "Unisex Adidas Premium Polo Shirt | GQ3114",
+            "variant_id": 16403,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "support",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 1586,
+            "title": "Adidas Fundamental Alliance Cap | AH607",
+            "variant_id": 49973,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "premium_step_up",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 638,
+            "title": "Adidas Dad Hat",
+            "variant_id": 16245,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "support",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 918,
+            "title": "All-Over Print American Football Jersey",
+            "variant_id": 23612,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "discovery",
+            "production_effect": false
+          }
+        ]
+      },
+      {
+        "id": "EVERYDAY_TECH_GIFT",
+        "title": "Everyday Tech + Gift",
+        "focus": [
+          "FUNCTION",
+          "IDENTITY",
+          "VALUE"
+        ],
+        "ids": [
+          181,
+          605,
+          681,
+          583,
+          946,
+          403
+        ],
+        "roles": [
+          "hero",
+          "anchor",
+          "premium_step_up",
+          "support",
+          "entry_price",
+          "entry_price"
+        ],
+        "products": [
+          {
+            "provider": "Printful",
+            "product_id": 181,
+            "title": "Clear Case for iPhone®",
+            "variant_id": 10996,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "hero",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 605,
+            "title": "Rubber Case for AirPods®",
+            "variant_id": 15533,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "anchor",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 681,
+            "title": "All-Over Print Case for AirPods®",
+            "variant_id": 16865,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "premium_step_up",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 583,
+            "title": "Gaming Mouse Pad",
+            "variant_id": 14943,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "support",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 946,
+            "title": "Ruled Line Spiral Notebook",
+            "variant_id": 24305,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "entry_price",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 403,
+            "title": "White Ceramic Mug with Color Inside",
+            "variant_id": 17362,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "entry_price",
+            "production_effect": false
+          }
+        ]
+      },
+      {
+        "id": "HOME_TRAVEL_DISCOVERY",
+        "title": "Home + Travel Discovery",
+        "focus": [
+          "FUNCTION",
+          "IDENTITY",
+          "CONSCIOUS_LONG_LIFE",
+          "VALUE"
+        ],
+        "ids": [
+          924,
+          83,
+          89,
+          279,
+          262,
+          938
+        ],
+        "roles": [
+          "hero",
+          "anchor",
+          "support",
+          "premium_step_up",
+          "support",
+          "entry_price"
+        ],
+        "products": [
+          {
+            "provider": "Printful",
+            "product_id": 924,
+            "title": "Area Rug",
+            "variant_id": 23702,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "hero",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 83,
+            "title": "All-Over Print Basic Pillow",
+            "variant_id": 49853,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "anchor",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 89,
+            "title": "All-Over Print Basic Pillow Case",
+            "variant_id": 49855,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "support",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 279,
+            "title": "All-Over Print Backpack",
+            "variant_id": 9063,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "premium_step_up",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 262,
+            "title": "All-Over Print Drawstring Bag",
+            "variant_id": 8894,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "support",
+            "production_effect": false
+          },
+          {
+            "provider": "Printful",
+            "product_id": 938,
+            "title": "Luggage Tag",
+            "variant_id": 23889,
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "role": "entry_price",
+            "production_effect": false
+          }
+        ]
+      }
+    ],
+    "pass_claimed": false,
+    "reason": "Truth and composition constraints pass; visual hierarchy/style quality still require review."
+  },
+  "combined_exam": {
+    "id": "COMBINED-LOOK-SHELF",
+    "status": "BLOCKED_UNTIL_STYLE_EXAM",
+    "pass_claimed": false
+  },
+  "current_hunt_comparison": {
+    "snapshot_visible_products": 1480,
+    "snapshot_shelf_entries": 2057,
+    "shelves_measured": 52,
+    "shelves_below_25pct_availability_verified": 47,
+    "weakest_shelves": [
+      {
+        "shelf": "accessories",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "activewear",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "bath",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "beauty",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "bedding",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "blankets",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "bottoms",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "cleaning",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "crafts",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "dresses",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "drinkware",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "gifts",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "hoodies",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "jackets",
+        "entries": 41,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "jewelry",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "kids",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "kitchen",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "knitwear",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "lighting",
+        "entries": 42,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      },
+      {
+        "shelf": "men",
+        "entries": 44,
+        "availability_verified": 0,
+        "availability_verified_rate": 0,
+        "checkout_verified": 0
+      }
+    ],
+    "use_as_training_truth": false,
+    "use_as_qa_counterexample": true
+  },
+  "round_status": "PARTIAL_PASS_SURVEY_SHELF_STYLE_BLOCKED",
+  "mastery_change": false,
+  "next": [
+    "Expand verified assortment for footwear, bottoms and complete-look categories.",
+    "Run visual QA on the 24-product shadow shelf composition.",
+    "Collect Owner feedback on shelf hierarchy and preference-layer balance.",
+    "Do not change Production shelves."
+  ]
+}
