@@ -1,0 +1,19 @@
+{
+  "version": "HUNT-HOURLY-PROFIT-AUDIT-2026-09-22-V1",
+  "observed_at": "2026-09-22T10:20:01.359Z",
+  "source": "Supabase read-only audit",
+  "production_mutation": false,
+  "canonical_store": "f60t_hourly_profit_ledger",
+  "facts": {
+    "rows": 66,
+    "exact_verified_rows": 0,
+    "unverified_rows": 66,
+    "real_order_rows": 0,
+    "exact_verified_net_profit_usd": 0,
+    "latest_hour": "2026-09-22T10:00:00Z",
+    "rls_enabled": true,
+    "admin_select_policy": "Admins read F60T hourly profit"
+  },
+  "truth_rule": "Only exact verification_status='VERIFIED' counts. UNVERIFIED never counts toward the $10K/hour mission.",
+  "current_state": "BLOCKED_UNVERIFIED"
+}
