@@ -1,0 +1,1086 @@
+{
+  "version": "HUNT-EPROLO-GLOBAL-DISCOVERY-WAVE3-V1",
+  "date": "2026-09-23",
+  "mode": "READ_ONLY_GLOBAL_SHADOW",
+  "provider": "EPROLO",
+  "markets": [
+    "SE",
+    "DK",
+    "FI",
+    "AT",
+    "BE",
+    "PL",
+    "PT",
+    "IE",
+    "CZ",
+    "GR",
+    "NO",
+    "CH",
+    "NZ",
+    "KR",
+    "HK",
+    "MY",
+    "TH",
+    "SA",
+    "MX",
+    "BR"
+  ],
+  "production_effect": false,
+  "summary": {
+    "products_checked": 4,
+    "markets_checked": 20,
+    "shipping_pass_counts": {
+      "SE": 4,
+      "DK": 4,
+      "FI": 3,
+      "AT": 4,
+      "BE": 4,
+      "PL": 4,
+      "PT": 4,
+      "IE": 4,
+      "CZ": 4,
+      "GR": 4,
+      "NO": 4,
+      "CH": 3,
+      "NZ": 3,
+      "KR": 4,
+      "HK": 3,
+      "MY": 3,
+      "TH": 4,
+      "SA": 0,
+      "MX": 4,
+      "BR": 1
+    },
+    "eu_policy_review_markets": [
+      "AT",
+      "BE",
+      "CZ",
+      "DK",
+      "FI",
+      "GR",
+      "IE",
+      "PL",
+      "PT",
+      "SE"
+    ],
+    "unmapped_policy_hold_markets": [
+      "NO",
+      "CH",
+      "NZ",
+      "KR",
+      "HK",
+      "MY",
+      "TH",
+      "SA",
+      "MX",
+      "BR"
+    ],
+    "live_eligible_products": 0,
+    "production_effect": false
+  },
+  "results": [
+    {
+      "department": "women",
+      "product_id": "19374567",
+      "variant_id": "566150532",
+      "variant_title": "Black-L",
+      "retail_shadow_usd": 14.99,
+      "status": "GLOBAL_SHIPPING_DISCOVERY",
+      "markets": {
+        "SE": {
+          "shipping": {
+            "cost_usd": 4.47,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.298,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "DK": {
+          "shipping": {
+            "cost_usd": 6.76,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.451,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "FI": {
+          "shipping": {
+            "cost_usd": 7.09,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.473,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "AT": {
+          "shipping": {
+            "cost_usd": 5.83,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.389,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "BE": {
+          "shipping": {
+            "cost_usd": 5.73,
+            "method": "4PX Standard",
+            "shiptime": "10-18 DAYS"
+          },
+          "shipping_to_retail_ratio": 0.382,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "PL": {
+          "shipping": {
+            "cost_usd": 4.16,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.278,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "PT": {
+          "shipping": {
+            "cost_usd": 5.13,
+            "method": "CNE Standard",
+            "shiptime": "5-10 Days"
+          },
+          "shipping_to_retail_ratio": 0.342,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "IE": {
+          "shipping": {
+            "cost_usd": 5.96,
+            "method": "Wanb  Standard",
+            "shiptime": "7-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.398,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "CZ": {
+          "shipping": {
+            "cost_usd": 5.56,
+            "method": "YANWEN Express",
+            "shiptime": "8-15 Days"
+          },
+          "shipping_to_retail_ratio": 0.371,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "GR": {
+          "shipping": {
+            "cost_usd": 6.07,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.405,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "NO": {
+          "shipping": {
+            "cost_usd": 6.8,
+            "method": "YUN  Express",
+            "shiptime": "7-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.454,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "CH": {
+          "shipping": {
+            "cost_usd": 7.34,
+            "method": "YANWEN Express",
+            "shiptime": "6-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.49,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "NZ": {
+          "shipping": {
+            "cost_usd": 6.28,
+            "method": "YANWEN Express",
+            "shiptime": "8-15 Days"
+          },
+          "shipping_to_retail_ratio": 0.419,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "KR": {
+          "shipping": {
+            "cost_usd": 3.35,
+            "method": "YANWEN Express",
+            "shiptime": "6-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.223,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "HK": {
+          "shipping": {
+            "cost_usd": 6.31,
+            "method": "SF EXPRESS",
+            "shiptime": "2-4 Days(Need Phone Number)"
+          },
+          "shipping_to_retail_ratio": 0.421,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "MY": {
+          "shipping": {
+            "cost_usd": 5.86,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.391,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "TH": {
+          "shipping": {
+            "cost_usd": 3.92,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.262,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "SA": {
+          "shipping": {
+            "cost_usd": 14.93,
+            "method": "YANWEN Express",
+            "shiptime": "15-40 Days"
+          },
+          "shipping_to_retail_ratio": 0.996,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        },
+        "MX": {
+          "shipping": {
+            "cost_usd": 5.35,
+            "method": "YUN  Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.357,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "BR": {
+          "shipping": {
+            "cost_usd": 11.7,
+            "method": "YANWEN（Buyer be taxed）",
+            "shiptime": "20-30 days"
+          },
+          "shipping_to_retail_ratio": 0.781,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        }
+      }
+    },
+    {
+      "department": "men",
+      "product_id": "24539904",
+      "variant_id": "629377665",
+      "variant_title": "blue-2XL",
+      "retail_shadow_usd": 15.99,
+      "status": "GLOBAL_SHIPPING_DISCOVERY",
+      "markets": {
+        "SE": {
+          "shipping": {
+            "cost_usd": 7.07,
+            "method": "YANWEN Express",
+            "shiptime": "10-18 Days"
+          },
+          "shipping_to_retail_ratio": 0.442,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "DK": {
+          "shipping": {
+            "cost_usd": 9.22,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.577,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "FI": {
+          "shipping": {
+            "cost_usd": 10.86,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.679,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "AT": {
+          "shipping": {
+            "cost_usd": 8.45,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.528,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "BE": {
+          "shipping": {
+            "cost_usd": 8.79,
+            "method": "4PX Standard",
+            "shiptime": "10-18 DAYS"
+          },
+          "shipping_to_retail_ratio": 0.55,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "PL": {
+          "shipping": {
+            "cost_usd": 7.41,
+            "method": "Wanb Standard",
+            "shiptime": "10-15 Days"
+          },
+          "shipping_to_retail_ratio": 0.463,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "PT": {
+          "shipping": {
+            "cost_usd": 7.5,
+            "method": "CNE Standard",
+            "shiptime": "5-10 Days"
+          },
+          "shipping_to_retail_ratio": 0.469,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "IE": {
+          "shipping": {
+            "cost_usd": 8.79,
+            "method": "Wanb  Standard",
+            "shiptime": "7-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.55,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "CZ": {
+          "shipping": {
+            "cost_usd": 8.36,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.523,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "GR": {
+          "shipping": {
+            "cost_usd": 10.6,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.663,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "NO": {
+          "shipping": {
+            "cost_usd": 10.34,
+            "method": "YUN  Express",
+            "shiptime": "7-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.647,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "CH": {
+          "shipping": {
+            "cost_usd": 10.77,
+            "method": "YANWEN Express",
+            "shiptime": "6-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.674,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "NZ": {
+          "shipping": {
+            "cost_usd": 8.71,
+            "method": "YANWEN Express",
+            "shiptime": "8-15 Days"
+          },
+          "shipping_to_retail_ratio": 0.545,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "KR": {
+          "shipping": {
+            "cost_usd": 3.53,
+            "method": "YANWEN Express",
+            "shiptime": "6-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.221,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "HK": {
+          "shipping": {
+            "cost_usd": 6.03,
+            "method": "SF EXPRESS",
+            "shiptime": "2-4 Days(Need Phone Number)"
+          },
+          "shipping_to_retail_ratio": 0.377,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "MY": {
+          "shipping": {
+            "cost_usd": 6.98,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.437,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "TH": {
+          "shipping": {
+            "cost_usd": 6.12,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.383,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "SA": {
+          "shipping": {
+            "cost_usd": 16.98,
+            "method": "YANWEN Express",
+            "shiptime": "15-40 Days"
+          },
+          "shipping_to_retail_ratio": 1.062,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        },
+        "MX": {
+          "shipping": {
+            "cost_usd": 8.71,
+            "method": "YUN  Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.545,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "BR": {
+          "shipping": {
+            "cost_usd": 16.98,
+            "method": "YANWEN（Buyer be taxed）",
+            "shiptime": "20-30 days"
+          },
+          "shipping_to_retail_ratio": 1.062,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        }
+      }
+    },
+    {
+      "department": "kitchen",
+      "product_id": "26556212",
+      "variant_id": "654069536",
+      "variant_title": "Beech",
+      "retail_shadow_usd": 5.99,
+      "status": "GLOBAL_SHIPPING_DISCOVERY",
+      "markets": {
+        "SE": {
+          "shipping": {
+            "cost_usd": 3.18,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.531,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "DK": {
+          "shipping": {
+            "cost_usd": 4.78,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.798,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "FI": {
+          "shipping": {
+            "cost_usd": 5.12,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.855,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        },
+        "AT": {
+          "shipping": {
+            "cost_usd": 4.41,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.736,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "BE": {
+          "shipping": {
+            "cost_usd": 4.14,
+            "method": "4PX Standard",
+            "shiptime": "10-18 DAYS"
+          },
+          "shipping_to_retail_ratio": 0.691,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "PL": {
+          "shipping": {
+            "cost_usd": 2.47,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.412,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "PT": {
+          "shipping": {
+            "cost_usd": 3.85,
+            "method": "CNE Standard",
+            "shiptime": "5-10 Days"
+          },
+          "shipping_to_retail_ratio": 0.643,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "IE": {
+          "shipping": {
+            "cost_usd": 4.45,
+            "method": "Wanb  Standard",
+            "shiptime": "7-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.743,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "CZ": {
+          "shipping": {
+            "cost_usd": 3.97,
+            "method": "YANWEN Express",
+            "shiptime": "8-15 Days"
+          },
+          "shipping_to_retail_ratio": 0.663,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "GR": {
+          "shipping": {
+            "cost_usd": 3.85,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.643,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "NO": {
+          "shipping": {
+            "cost_usd": 4.4,
+            "method": "YANWEN",
+            "shiptime": "10-16 days"
+          },
+          "shipping_to_retail_ratio": 0.735,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "CH": {
+          "shipping": {
+            "cost_usd": 4.81,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.803,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        },
+        "NZ": {
+          "shipping": {
+            "cost_usd": 5.37,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.896,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        },
+        "KR": {
+          "shipping": {
+            "cost_usd": 3.07,
+            "method": "YANWEN Express",
+            "shiptime": "6-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.513,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "HK": {
+          "shipping": {
+            "cost_usd": 6.03,
+            "method": "SF EXPRESS",
+            "shiptime": "2-4 Days(Need Phone Number)"
+          },
+          "shipping_to_retail_ratio": 1.007,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        },
+        "MY": {
+          "shipping": {
+            "cost_usd": 5.04,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.841,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        },
+        "TH": {
+          "shipping": {
+            "cost_usd": 2.78,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.464,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "SA": {
+          "shipping": {
+            "cost_usd": 13.18,
+            "method": "YANWEN Express",
+            "shiptime": "15-40 Days"
+          },
+          "shipping_to_retail_ratio": 2.2,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        },
+        "MX": {
+          "shipping": {
+            "cost_usd": 4.27,
+            "method": "YUN  Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.713,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "BR": {
+          "shipping": null,
+          "shipping_to_retail_ratio": null,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        }
+      }
+    },
+    {
+      "department": "tech",
+      "product_id": "26921252",
+      "variant_id": "658204524",
+      "variant_title": "Midnight Blue",
+      "retail_shadow_usd": 7.99,
+      "status": "GLOBAL_SHIPPING_DISCOVERY",
+      "markets": {
+        "SE": {
+          "shipping": {
+            "cost_usd": 3.27,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.409,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "DK": {
+          "shipping": {
+            "cost_usd": 4.91,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.615,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "FI": {
+          "shipping": {
+            "cost_usd": 5.25,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.657,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "AT": {
+          "shipping": {
+            "cost_usd": 4.5,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.563,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "BE": {
+          "shipping": {
+            "cost_usd": 4.24,
+            "method": "4PX Standard",
+            "shiptime": "10-18 DAYS"
+          },
+          "shipping_to_retail_ratio": 0.531,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "PL": {
+          "shipping": {
+            "cost_usd": 2.59,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.324,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "PT": {
+          "shipping": {
+            "cost_usd": 3.93,
+            "method": "CNE Standard",
+            "shiptime": "5-10 Days"
+          },
+          "shipping_to_retail_ratio": 0.492,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "IE": {
+          "shipping": {
+            "cost_usd": 4.54,
+            "method": "Wanb  Standard",
+            "shiptime": "7-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.568,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "CZ": {
+          "shipping": {
+            "cost_usd": 4.08,
+            "method": "YANWEN Express",
+            "shiptime": "8-15 Days"
+          },
+          "shipping_to_retail_ratio": 0.511,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "GR": {
+          "shipping": {
+            "cost_usd": 4.0,
+            "method": "YUN Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.501,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "NO": {
+          "shipping": {
+            "cost_usd": 4.58,
+            "method": "YUN  Express",
+            "shiptime": "7-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.573,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "CH": {
+          "shipping": {
+            "cost_usd": 5.01,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.627,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "NZ": {
+          "shipping": {
+            "cost_usd": 4.99,
+            "method": "YANWEN Express",
+            "shiptime": "8-15 Days"
+          },
+          "shipping_to_retail_ratio": 0.625,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "KR": {
+          "shipping": {
+            "cost_usd": 3.08,
+            "method": "YANWEN Express",
+            "shiptime": "6-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.385,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "HK": {
+          "shipping": {
+            "cost_usd": 6.03,
+            "method": "SF EXPRESS",
+            "shiptime": "2-4 Days(Need Phone Number)"
+          },
+          "shipping_to_retail_ratio": 0.755,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "MY": {
+          "shipping": {
+            "cost_usd": 5.09,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.637,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "TH": {
+          "shipping": {
+            "cost_usd": 2.86,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.358,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "SA": {
+          "shipping": {
+            "cost_usd": 13.26,
+            "method": "YANWEN Express",
+            "shiptime": "15-40 Days"
+          },
+          "shipping_to_retail_ratio": 1.66,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        },
+        "MX": {
+          "shipping": {
+            "cost_usd": 4.43,
+            "method": "YUN  Standard",
+            "shiptime": "8-15Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.554,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": true,
+          "live_eligible": false
+        },
+        "BR": {
+          "shipping": {
+            "cost_usd": 9.02,
+            "method": "YANWEN（Buyer be taxed）",
+            "shiptime": "20-30 days"
+          },
+          "shipping_to_retail_ratio": 1.129,
+          "shipping_state": "HIGH_OR_MISSING",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "shadow_eligible": false,
+          "live_eligible": false
+        }
+      }
+    }
+  ],
+  "rules": [
+    "Shipping discovery is product + exact variant + destination specific.",
+    "EU destinations inherit only the existing EU policy REVIEW_REQUIRED baseline; this is not launch approval.",
+    "Non-mapped destinations remain HOLD_UNMAPPED for real-money launch.",
+    "No live checkout, fulfillment or Production exposure.",
+    "Final profit remains blocked until EPROLO order-cost API behavior is verified."
+  ]
+}

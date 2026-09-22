@@ -22,19 +22,23 @@ function allows(value,countryCode){
   return false;
 }
 
-assert.equal(contract.version,"HUNT-COUNTRY-MARKET-GATE-V3");
+assert.equal(contract.version,"HUNT-COUNTRY-MARKET-GATE-V4");
 assert.equal(contract.production_effect,false);
 assert.equal(contract.scope,"global_market_specific_shadow_eligibility");
 assert.equal(contract.eprolo_state.il_shadow_shelf_products,13);
 assert.equal(contract.eprolo_state.market_specific_shadow_products,2);
 assert.equal(contract.eprolo_state.global_unique_shadow_candidates,15);
-assert.deepEqual(contract.eprolo_state.shipping_discovery_markets,["IL","DE","FR","IT","ES","NL","GB","US","CA","AU","AE","JP","SG"]);
-assert.deepEqual(contract.eprolo_state.mapped_policy_shadow_markets,["IL","DE","FR","IT","ES","NL","GB","US","AU"]);
-assert.deepEqual(contract.eprolo_state.unmapped_policy_hold_markets,["CA","AE","JP","SG"]);
+assert.deepEqual(contract.eprolo_state.shipping_discovery_markets,["IL","DE","FR","IT","ES","NL","GB","US","CA","AU","AE","JP","SG","SE","DK","FI","AT","BE","PL","PT","IE","CZ","GR","NO","CH","NZ","KR","HK","MY","TH","SA","MX","BR"]);
+assert.deepEqual(contract.eprolo_state.mapped_policy_shadow_markets,["IL","DE","FR","IT","ES","NL","GB","US","AU","SE","DK","FI","AT","BE","PL","PT","IE","CZ","GR"]);
+assert.deepEqual(contract.eprolo_state.unmapped_policy_hold_markets,["CA","AE","JP","SG","NO","CH","NZ","KR","HK","MY","TH","SA","MX","BR"]);
 assert.equal(contract.eprolo_state.global_live_eligible_products,0);
 assert.equal(contract.eprolo_state.persisted_catalog_discovery_enabled,false);
+assert.equal(contract.eprolo_state.global_markets_checked,33);
+assert.equal(contract.eprolo_state.markets_with_shipping_pass,31);
+assert.equal(contract.eprolo_state.global_market_matrix.length,33);
+assert(contract.eprolo_state.global_market_matrix.every(x=>x.real_money_live===false));
 assert.equal(contract.eprolo_state.global_wave2_checked_products,7);
-assert.deepEqual(contract.eprolo_state.shipping_discovery_markets,["IL","DE","FR","IT","ES","NL","GB","US","CA","AU","AE","JP","SG"]);
+assert.deepEqual(contract.eprolo_state.shipping_discovery_markets,["IL","DE","FR","IT","ES","NL","GB","US","CA","AU","AE","JP","SG","SE","DK","FI","AT","BE","PL","PT","IE","CZ","GR","NO","CH","NZ","KR","HK","MY","TH","SA","MX","BR"]);
 assert.equal(contract.eprolo_state.shipping_pass_counts.SG,5);
 assert.equal(contract.eprolo_state.shipping_pass_counts.DE,4);
 assert.equal(contract.eprolo_state.shipping_pass_counts.US,3);

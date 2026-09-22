@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V9",
+  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V10",
   "date": "2026-09-22",
   "provider": "EPROLO",
   "owner": "commerce_truth_brain",
@@ -57,8 +57,29 @@
         "AU",
         "AE",
         "JP",
-        "SG"
-      ]
+        "SG",
+        "SE",
+        "DK",
+        "FI",
+        "AT",
+        "BE",
+        "PL",
+        "PT",
+        "IE",
+        "CZ",
+        "GR",
+        "NO",
+        "CH",
+        "NZ",
+        "KR",
+        "HK",
+        "MY",
+        "TH",
+        "SA",
+        "MX",
+        "BR"
+      ],
+      "global_discovery_status": "PASS_33_MARKET_CONTROLLED_SAMPLES"
     },
     "inventory": {
       "endpoint": "product_inventory.html",
@@ -81,7 +102,7 @@
     "source": "official_readonly_api",
     "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
     "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
-    "shipping_status": "LIVE_MULTIMARKET_VERIFIED_ON_CONTROLLED_SAMPLES",
+    "shipping_status": "LIVE_33_MARKET_CONTROLLED_DISCOVERY",
     "profit_gate_status": "SHADOW_ONLY_ORDER_COST_RECHECK_REQUIRED",
     "women_il_shadow_lane": {
       "scan_checked": 12,
@@ -118,7 +139,7 @@
     "no fake stock, shipping, margin or retail price"
   ],
   "storefront_role": "SUPPLIER_MESH_CONNECTED_NOT_LIVE_SHELF",
-  "next": "EXPAND_GLOBAL_COUNTRY_DISCOVERY_AND_CLARIFY_EPROLO_ORDER_COST_API",
+  "next": "EXPAND_GLOBAL_PRODUCT_SAMPLE_AND_COMPLETE_MARKET_POLICY_PLUS_FINAL_PROFIT_GATES",
   "variant_truth_policy": {
     "component_split_detection": "If component variants such as Top/Skirt coexist with Set/2pcs variants, a full-set listing must use Set/2pcs variant truth.",
     "exact_variant_image_required": true,
@@ -278,9 +299,58 @@
       "AU",
       "AE",
       "JP",
-      "SG"
+      "SG",
+      "SE",
+      "DK",
+      "FI",
+      "AT",
+      "BE",
+      "PL",
+      "PT",
+      "IE",
+      "CZ",
+      "GR",
+      "NO",
+      "CH",
+      "NZ",
+      "KR",
+      "HK",
+      "MY",
+      "TH",
+      "SA",
+      "MX",
+      "BR"
     ],
-    "global_live_eligible_products": 0
+    "global_live_eligible_products": 0,
+    "global_discovery_wave3": {
+      "products_checked": 4,
+      "markets_checked": 20,
+      "shipping_pass_counts": {
+        "SE": 4,
+        "DK": 4,
+        "FI": 3,
+        "AT": 4,
+        "BE": 4,
+        "PL": 4,
+        "PT": 4,
+        "IE": 4,
+        "CZ": 4,
+        "GR": 4,
+        "NO": 4,
+        "CH": 3,
+        "NZ": 3,
+        "KR": 4,
+        "HK": 3,
+        "MY": 3,
+        "TH": 4,
+        "SA": 0,
+        "MX": 4,
+        "BR": 1
+      },
+      "live_eligible_products": 0,
+      "production_effect": false
+    },
+    "global_markets_checked": 33
   },
   "truth_policies": {
     "capacity_claim_gate": "IMPLAUSIBLE_STORAGE_CAPACITY_REQUIRES_PROOF",
