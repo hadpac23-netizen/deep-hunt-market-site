@@ -56,13 +56,13 @@
     },
     {
       "id": "shelf_coverage",
-      "status": "BLOCKED_PARTIAL_FRESH_TRUTH",
-      "evidence": "17 taxonomy identities resolved. Production catalog still has 117 stale catalog rows and no fresh live shelf audit, but Fresh Shelf/Product Truth pilot now proves 3 CJ products for IL with fresh price+stock+shipping observations. Full 17-department refresh remains pending; coverage rows for camping/electrical/garden still missing."
+      "status": "BLOCKED_THIN_FRESH_COVERAGE",
+      "evidence": "CJ contributes 57 fresh verified products for IL: Women 19, Accessories 14, Tech 13, Toys 6, Beauty 4, Pets 1; all other canonical departments have 0 CJ fresh contribution in this run. No department reaches the 1,000-product readiness target. Multi-supplier coverage remains incomplete."
     },
     {
       "id": "catalog_freshness",
-      "status": "PILOT_REFRESHED_FULL_CATALOG_STALE",
-      "evidence": "3 CJ products now have 24h fresh observation truth for IL. Catalog source_fresh_at/last_stock_check_at fields remain stale by design because the refresh lane writes evidence observations only; no timestamp-only refresh is allowed."
+      "status": "CJ_MAJORITY_REFRESHED_OTHER_PROVIDERS_STALE",
+      "evidence": "57/76 CJ catalog products have current observation truth for IL; 19 CJ remain not fresh. Printful/Gooten catalog freshness has not been refreshed in this run. Catalog source_fresh_at/last_stock_check_at fields remain untouched by design."
     },
     {
       "id": "incident_repair",
@@ -161,8 +161,8 @@
     },
     {
       "id": "fresh_shelf_product_truth",
-      "status": "PILOT_PROVEN_FULL_REFRESH_PENDING",
-      "evidence": "Live CJ read-only recheck + evidence write on 2026-09-22: 3 sampled products across phoneaccessories/dresses/bags have fresh price + stock + IL shipping observations. hunt-cj-quote contradicted product-detail embedded inventory and is now canonical for CJ stock/shipping truth. 9 observations written; catalog/market eligibility/checkout state unchanged."
+      "status": "CJ_57_OF_76_FRESH_IL_REMAINDER_BLOCKED",
+      "evidence": "CJ Product Truth full controlled pass: 57/76 catalog products now have <24h verified Price + canonical quote Stock + IL Shipping evidence; 19 remain not fresh. All 57 remain recheck_before_checkout and 0 are Checkout Live Verified. 165 explicit evidence-only observations written; no catalog eligibility, price activation, payment or supplier-order mutation."
     }
   ],
   "blockers": [
@@ -191,7 +191,7 @@
     "Any unmapped country remains HOLD until consumer/privacy/tax/import/shipping obligations are reviewed.",
     "Verify PWA cache update, manifest/installability and offline shell on Preview before Performance/Mobile becomes launch PASS.",
     "Verify Launch Command Center on Preview against authenticated admin RLS and current readiness JSON before Owner launch review.",
-    "Run bounded Fresh Shelf/Product Truth refresh across the full CJ catalog and then across each approved supplier; 3-product pilot is proven but full shelf freshness is not."
+    "Resolve or replace the remaining 19 CJ products that are not Fresh Shelf Verified, then refresh approved non-CJ suppliers before shelf readiness can advance."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
