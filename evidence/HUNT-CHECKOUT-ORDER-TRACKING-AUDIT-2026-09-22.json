@@ -1,0 +1,73 @@
+{
+  "version": "HUNT-CHECKOUT-ORDER-TRACKING-AUDIT-2026-09-22-V1",
+  "observed_at": "2026-09-22T11:18:00Z",
+  "source": "Supabase read-only audit + current branch source inspection",
+  "production_mutation": false,
+  "data_truth": {
+    "orders": {
+      "rows": 8,
+      "real": 0,
+      "test": 8,
+      "user_bound": 8,
+      "with_tracking": 0,
+      "shipped": 0,
+      "delivered": 0
+    },
+    "order_events": {
+      "rows": 8,
+      "orders_with_events": 8,
+      "latest": "2026-09-15T13:00:09.894634Z"
+    },
+    "fulfillment": {
+      "rows": 8,
+      "with_supplier_order": 0,
+      "with_tracking": 0,
+      "shipped": 0,
+      "delivered": 0
+    },
+    "pipeline": {
+      "rows": 3,
+      "dry_run_pass": 1,
+      "sandbox_hold": 2,
+      "completed_pass": 0
+    }
+  },
+  "rls_truth": {
+    "hunt_payment_sessions": "RLS enabled; authenticated user SELECT own user_id only",
+    "hunt_orders": "RLS enabled; authenticated user SELECT own user_id only",
+    "hunt_order_events": "RLS enabled; user may read events only for own orders",
+    "hunt_fulfillment_orders": "RLS enabled; user may read fulfillment only through own payment session"
+  },
+  "historical_failures": [
+    {
+      "class": "TRANSIENT_PROVIDER",
+      "count": 4,
+      "example": "CJ_API_1603000_500 server busy / try again later"
+    },
+    {
+      "class": "ADDRESS_NORMALIZATION",
+      "count": 1,
+      "example": "CJ required Israel phone beginning +972 or 972"
+    }
+  ],
+  "current_code_truth": {
+    "israel_phone_normalization": "+972 normalization present in hunt-order-orchestrator",
+    "transient_retry": "CJ transient failures retry up to 5 attempts",
+    "ambiguous_create_reconciliation": "existing CJ order lookup by stable store order number is present",
+    "idempotent_supplier_identity": "stable order number derived from payment_session + group key",
+    "sandbox_safety": [
+      "isSandbox=1",
+      "no_real_supplier_charge=true",
+      "no_real_logistics=true"
+    ]
+  },
+  "conclusion": {
+    "checkout_account_binding": "STRUCTURALLY_READY",
+    "dry_run_validation": "PROVEN",
+    "sandbox_order_creation": "PROVEN",
+    "supplier_order_creation": "NOT_PROVEN_ON_CURRENT_EVIDENCE",
+    "tracking": "NOT_PROVEN",
+    "customer_tracking_visibility": "STRUCTURALLY_READY_BY_RLS_BUT_NO_TRACKING_ROW_TO_PROVE",
+    "overall_state": "BLOCKED_SUPPLIER_TRACKING_E2E"
+  }
+}
