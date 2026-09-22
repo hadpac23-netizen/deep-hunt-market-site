@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V1.8-PAYPLUS-SANDBOX",
+  "version": "BOOM-BRAIN-GAPS-V1.9-PAYMENT-LAUNCH-GATE",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -513,6 +513,30 @@
       "status": "NEXT",
       "source": "PAYMENT_TRUTH",
       "next": "After a proven sandbox charge, capture charge_method=4 refund observation linked to original transaction; never count refund as revenue."
+    },
+    {
+      "id": "payment_launch_gate",
+      "title": "Provider-Neutral Payment Launch Gate",
+      "owner": "operations_brain",
+      "status": "DONE",
+      "source": "PAYMENT_TRUTH",
+      "next": "Evaluator/Studio/Skill/Workflow are coded. Keep all routes planned until provider/account + technical + settlement/legal evidence exists."
+    },
+    {
+      "id": "payplus_commercial_account_approval",
+      "title": "PayPlus Commercial / Merchant Approval",
+      "owner": "operations_brain",
+      "status": "BLOCKED",
+      "source": "PAYMENT_TRUTH",
+      "next": "No signed/formally approved merchant evidence yet. Route approval_reference and approved_at remain empty."
+    },
+    {
+      "id": "paypal_live_approval",
+      "title": "PayPal Live Account / API Approval",
+      "owner": "operations_brain",
+      "status": "NEXT",
+      "source": "PAYMENT_TRUTH",
+      "next": "PayPal routes exist as planned only. Connect separate live account/API evidence before any sandbox/live readiness claim."
     }
   ]
 }
