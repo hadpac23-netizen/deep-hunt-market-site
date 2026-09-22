@@ -61,6 +61,32 @@ function allowedTitle(title: string): boolean {
   return true;
 }
 
+function normalizeCountryCode(value: unknown): string {
+  const code = cleanText(value).toUpperCase().replace(/[^A-Z]/g, "").slice(0, 2);
+  return /^[A-Z]{2}$/.test(code) ? code : "";
+}
+
+function marketEligibilityAllows(value: unknown, countryCode: string): boolean {
+  const status = cleanText(value).toLowerCase();
+  if (!status || status === "eligible" || status === "allowed" || status === "recheck_before_checkout") return true;
+  if (status === "blocked" || status === "ineligible") return false;
+
+  const parseCountries = (raw: string) => raw
+    .split(/[,;|\s]+/)
+    .map(x => x.trim().toUpperCase())
+    .filter(x => /^[A-Z]{2}$/.test(x));
+
+  if (status.startsWith("eligible:")) {
+    if (!countryCode) return false;
+    return parseCountries(status.slice("eligible:".length)).includes(countryCode);
+  }
+  if (status.startsWith("blocked:")) {
+    if (!countryCode) return false;
+    return !parseCountries(status.slice("blocked:".length)).includes(countryCode);
+  }
+  return false;
+}
+
 function catalogHaystack(raw: any): string {
   return [
     cleanText(raw?.title),
@@ -848,7 +874,7 @@ async function merchantDb() {
 }
 
 
-async function persistedCatalogShelves() {
+async function persistedCatalogShelves(countryCode = "") {
   const db = await merchantDb();
   if (!db) return {};
   const { data, error } = await db
@@ -868,7 +894,9 @@ async function persistedCatalogShelves() {
     const title = cleanText(row?.title);
     const image = cleanText(row?.image_url);
     const price = Number(row?.price_amount);
+    const marketStatus = cleanText(row?.market_eligibility_status) || "recheck_before_checkout";
     if (!freeLaunchProviders.has(provider)) continue;
+    if (!marketEligibilityAllows(marketStatus, countryCode)) continue;
     if (!itemId || !slug || !title || !allowedTitle(title)) continue;
     if (!image.startsWith("https://") || !Number.isFinite(price) || price <= 0) continue;
     if (!out[slug]) out[slug] = [];
@@ -889,7 +917,8 @@ async function persistedCatalogShelves() {
       stock_quantity: Number.isFinite(Number(row?.stock_quantity)) ? Math.max(0, Number(row.stock_quantity)) : null,
       source_fresh_at: row?.source_fresh_at || null,
       last_stock_check_at: row?.last_stock_check_at || null,
-      market_eligibility_status: cleanText(row?.market_eligibility_status) || "recheck_before_checkout",
+      market_eligibility_status: marketStatus,
+      market_country_code: countryCode || null,
       catalog_discovery: true,
       persisted_catalog: true
     });
@@ -1551,6 +1580,9 @@ Deno.serve(async (req: Request) => {
   const productId = cleanText(url.searchParams.get("product_id") || "");
   const rawShelf = cleanText(url.searchParams.get("shelf") || "").toLowerCase();
   const focusShelf = /^[a-z0-9]+$/.test(rawShelf) ? rawShelf : "";
+  const countryCode = normalizeCountryCode(
+    url.searchParams.get("country_code") || url.searchParams.get("country") || ""
+  );
 
   if (url.searchParams.get("shelves") === "1") {
     const priorityCjPromise = focusShelf
@@ -1565,7 +1597,7 @@ Deno.serve(async (req: Request) => {
       withProviderTimeout(printfulMarketShelves(), {}, 8000),
       withProviderTimeout(cjMarketShelves(focusShelf), {}, focusShelf ? 14000 : 10000),
       withProviderTimeout(gootenMarketShelves(), {}, 8000),
-      withProviderTimeout(persistedCatalogShelves(), {}, 3500),
+      withProviderTimeout(persistedCatalogShelves(countryCode), {}, 3500),
       priorityCjPromise
     ]);
     const matterhornShelves = matterhornMarketShelves();
@@ -1585,6 +1617,8 @@ Deno.serve(async (req: Request) => {
     const uniqueProducts = uniqueKeys.size;
     return new Response(JSON.stringify({
       shelves,
+      country_code: countryCode || null,
+      market_gate_mode: countryCode ? "DESTINATION_AWARE" : "GLOBAL_OR_RECHECK_ONLY",
       visible_product_count: uniqueProducts,
       shelf_entry_count: visibleEntries,
       provider_entry_counts: Object.fromEntries(

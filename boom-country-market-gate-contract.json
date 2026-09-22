@@ -1,0 +1,37 @@
+{
+  "version": "HUNT-COUNTRY-MARKET-GATE-V1",
+  "date": "2026-09-23",
+  "mode": "BRANCH_ONLY",
+  "production_effect": false,
+  "scope": "persisted_catalog_discovery",
+  "request_parameters": [
+    "country_code",
+    "country"
+  ],
+  "accepted_statuses": {
+    "global": [
+      "eligible",
+      "allowed",
+      "recheck_before_checkout"
+    ],
+    "explicit_allow": "eligible:DE,US",
+    "explicit_block": "blocked:IL"
+  },
+  "fail_closed_rules": [
+    "Market-specific eligibility requires a destination country.",
+    "Unknown market eligibility statuses are hidden.",
+    "Blocked/ineligible statuses are hidden.",
+    "No provider becomes launch-eligible merely because the country gate passes.",
+    "Checkout, shipping, profit and Owner Gate remain separate."
+  ],
+  "eprolo_state": {
+    "il_shadow_shelf_products": 13,
+    "market_specific_shadow_products": 2,
+    "global_unique_shadow_candidates": 15,
+    "markets": [
+      "DE",
+      "US"
+    ],
+    "production_exposure": false
+  }
+}
