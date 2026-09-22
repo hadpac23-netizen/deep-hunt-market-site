@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-FRESH-SHELF-PRODUCT-TRUTH-V1.1-CJ-FULL-REFRESH",
+  "version": "BOOM-FRESH-SHELF-PRODUCT-TRUTH-V1.3-MULTI-PROVIDER-READINESS",
   "mode": "SHADOW",
   "owner": "commerce_truth_brain",
   "authority": "NONE",
@@ -47,29 +47,48 @@
   },
   "current_truth": {
     "catalog_rows": 117,
-    "catalog_providers": {
+    "catalog_unique_products": {
       "CJdropshipping": 76,
-      "Printful": 23,
+      "Printful": 22,
       "Gooten": 18
     },
-    "catalog_market_status_recheck_before_checkout": 117,
-    "cj_catalog_rows": 76,
-    "cj_fresh_shelf_verified_il_24h": 57,
-    "cj_not_fresh_yet": 19,
-    "cj_checkout_recheck_required": 57,
-    "cj_checkout_live_verified": 0,
-    "explicit_observation_rows_written_today": 220,
-    "explicit_refresh_products": 55,
-    "additional_current_valid_products_from_cj_refresh_full": 2,
-    "newest_verified_observation": "2026-09-22T13:04:55.31846Z",
-    "state": "CJ_REFRESH_MAJORITY_VERIFIED_REMAINDER_BLOCKED_OR_UNRESOLVED",
-    "strict_controlled_scans_24h": 76,
-    "strict_verified_scan_state": 57,
-    "strict_fresh_shelf_verified_il_24h": 57,
-    "strict_not_fresh": 19,
-    "explicit_controlled_product_scan_rows_written": 55,
+    "cj_latest": {
+      "verified": 57,
+      "price_or_profit_blocked": 11,
+      "product_failed_after_retry": 6,
+      "no_verified_variant": 2,
+      "checkout_live_verified": 0
+    },
+    "cj_retry_scan_id": "CJ-IL-20260922-RETRY-B",
+    "printful": {
+      "catalog_state": "LIVE",
+      "unique_products": 22,
+      "in_stock_variants": 550,
+      "shipping_verified": false,
+      "fulfillment_ready": false,
+      "fresh_shelf_verified": 0
+    },
+    "gooten": {
+      "catalog_state": "LIVE",
+      "unique_products": 18,
+      "variants_verified": false,
+      "shipping_verified": false,
+      "fulfillment_ready": false,
+      "fresh_shelf_verified": 0
+    },
+    "strict_fresh_shelf_verified_il": 57,
+    "strict_fresh_by_category": {
+      "dresses": 17,
+      "bags": 14,
+      "phoneaccessories": 13,
+      "toys": 6,
+      "beauty": 4,
+      "pets": 1,
+      "plussize": 1,
+      "suits": 1
+    },
     "checkout_live_verified": 0,
-    "strict_evaluator": "controlled scan VERIFIED + same exact variant price/stock/shipping"
+    "state": "CJ_57_FRESH_PRINTFUL_GOOTEN_CATALOG_LIVE_SHIPPING_BLOCKED"
   },
   "observed_endpoint_disagreement": {
     "product_detail_sample_count": 3,
@@ -114,5 +133,16 @@
     },
     "ready_at_1000": []
   },
-  "remaining_truth_rule": "The 19 not-fresh CJ rows remain stale/recheck candidates; do not relabel them unavailable without a proven failure classification."
+  "remaining_truth_rule": "57 CJ products are Fresh Shelf Verified for IL. The remaining 19 CJ items stay blocked/recheck. Printful/Gooten public catalog liveness does not count as Fresh Shelf without destination shipping truth.",
+  "provider_rules": {
+    "CJdropshipping": "Controlled scan VERIFIED + exact-variant retail/profit + stock + IL shipping evidence.",
+    "Printful": "Public product/variant stock is useful partial truth, but Fresh Shelf remains blocked until destination shipping + fulfillment credentials and HUNT retail price truth exist.",
+    "Gooten": "Public catalog availability/price is partial truth only; Fresh Shelf remains blocked until API credentials prove variants + destination shipping + fulfillment."
+  },
+  "price_gate_v2": {
+    "status": "CODED_SHADOW_NOT_DEPLOYED",
+    "bug": "Old margin floor ignored payment/refund reserves while final margin gate subtracted them.",
+    "corrected_margin_floor": "supplier_cost / (reserve_denominator - target_margin)",
+    "production_price_changes": 0
+  }
 }
