@@ -189,24 +189,26 @@
     {
       "id": "performance_mobile_readiness",
       "type": "PERFORMANCE_MOBILE_READINESS_EVALUATOR",
-      "status": "CODED_LOCAL_PASS_PREVIEW_PWA_PROOF_PENDING",
+      "status": "CODED_LOCAL_RESPONSIVE_PASS_PREVIEW_PWA_PROOF_PENDING",
       "owner_plane": "run_evidence_plane",
       "authority": "NONE",
       "evidence": [
-        "390px local QA: 2,899 DOM nodes / 174 images / 0 touch violations",
-        "Progressive shelf mounting + PWA code-cache hardening",
-        "Preview PWA/runtime proof still required"
+        "Isolated QA: 390px 2,899 DOM / 174 images / 77 shelf cards / 0 touch violations",
+        "768px 3,391 DOM / 208 images; 1280/1440px 4,265 DOM / 269 images",
+        "All four viewports: no document overflow, broken images, console problems or network failures",
+        "Preview PWA update/installability/offline proof still required"
       ]
     },
     {
       "id": "launch_readiness_aggregator",
       "type": "READ_ONLY_LAUNCH_AGGREGATOR",
-      "status": "CODED_READ_ONLY",
+      "status": "CODED_READ_ONLY_PRIVACY_HARDENED",
       "owner_plane": "run_evidence_plane",
       "authority": "NONE",
       "evidence": [
         "Aggregates boom-control-plane-readiness domain statuses",
-        "Does not mutate source gates or activation switches"
+        "Admin RLS reads only for orders, finance, BOOM runs and decisions",
+        "Raw analytics session identifiers are not fetched in browser; session metric remains UNKNOWN until server aggregate"
       ]
     }
   ],
