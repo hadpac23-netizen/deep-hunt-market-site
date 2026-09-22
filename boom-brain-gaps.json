@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V1",
+  "version": "BOOM-BRAIN-GAPS-V2.6-CREDENTIAL-GATES",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -40,7 +40,7 @@
       "owner": "action_state_kernel",
       "status": "DONE",
       "source": "F35",
-      "next": "Journey test guest \u2192 sign-in \u2192 merge \u2192 profile."
+      "next": "Journey test guest → sign-in → merge → profile."
     },
     {
       "id": "cart_kernel",
@@ -184,7 +184,503 @@
       "owner": "learning_governance_brain",
       "status": "DONE",
       "source": "F50",
-      "next": "Browser E2E passes product \u2192 verified quote, guest \u2192 account merge, storage migration and admin authorization; payment remains disabled."
+      "next": "Browser E2E passes product → verified quote, guest → account merge, storage migration and admin authorization; payment remains disabled."
+    },
+    {
+      "id": "automation_control_plane",
+      "title": "Automation Control Plane contract",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Keep adapter authority at NONE; all execution routes through BOOM Orchestrator."
+    },
+    {
+      "id": "durable_run_ledger",
+      "title": "Durable Run Ledger + Approval Queue",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "F50",
+      "next": "Existing hunt_boom_team_runs / hunt_boom_decisions / hunt_boom_events are the canonical ledger + Approval Queue. Adapter is coded; prove one real admin write + SHADOW decision in Preview. No new DB schema."
+    },
+    {
+      "id": "tool_gateway",
+      "title": "Tool Gateway allowlist",
+      "owner": "operations_brain",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Fail-closed allowlist contract is implemented; material tools remain blocked in SHADOW."
+    },
+    {
+      "id": "n8n_adapter",
+      "title": "n8n execution adapter",
+      "owner": "boom_orchestrator",
+      "status": "IN_PROGRESS",
+      "source": "F50",
+      "next": "Canonical client adapter + server gateway are coded. boom-automation-gateway is NOT_DEPLOYED and n8n URL/token are NOT_CONFIGURED. First proof must be read-only shelf_coverage_17x1000 in Preview."
+    },
+    {
+      "id": "shelf_coverage_17x1000",
+      "title": "17 × 1,000 verified shelf coverage workflow",
+      "owner": "commerce_truth_brain",
+      "status": "IN_PROGRESS",
+      "source": "F35",
+      "next": "CJ fresh contribution is now Women 19 / Accessories 14 / Tech 13 / Toys 6 / Beauty 4 / Pets 1. No canonical department reaches 1,000; continue supplier intake and verified shelf fill without fabricating counts."
+    },
+    {
+      "id": "incident_repair_automation",
+      "title": "Incident & Repair workflow automation",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "LEGACY_REWIRE",
+      "next": "Canonical agent, parent lineage, auto-route and Studio panel are coded. Prove one controlled preview failure → incident → repair evidence → Owner Gate without Production deploy."
+    },
+    {
+      "id": "creative_publish_automation",
+      "title": "Creative → Visual QA → Owner Gate workflow",
+      "owner": "growth_brain",
+      "status": "IN_PROGRESS",
+      "source": "F50",
+      "next": "A6/A7 contracts and tested QA/router modules recovered. Add runtime evidence preflight; provider generation and external publish remain OFF."
+    },
+    {
+      "id": "customer_lifecycle_automation",
+      "title": "Cart / Order / Tracking / Support workflow",
+      "owner": "operations_brain",
+      "status": "IN_PROGRESS",
+      "source": "F50",
+      "next": "Existing order/fulfillment/event stores mapped and privacy preflight coded. External outreach/order mutations remain Owner-gated and OFF."
+    },
+    {
+      "id": "shadow_run_engine",
+      "title": "Shadow Run Engine",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F50",
+      "next": "In-memory state machine is wired to existing BOOM durable ledger adapter; Preview persistence proof remains tracked under durable_run_ledger."
+    },
+    {
+      "id": "a6_creative_learning_rewire",
+      "title": "A6 Creative Learning capability rewire",
+      "owner": "growth_brain",
+      "status": "DONE",
+      "source": "LEGACY_PR_7",
+      "next": "Preserve tournament + Red Team + Visual QA logic under canonical creative_publish workflow."
+    },
+    {
+      "id": "a7_integration_gate_rewire",
+      "title": "A7 Integration QA evidence gate rewire",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "LEGACY_PR_7",
+      "next": "Keep 6/6 evidence requirement; Alpha/Production remain separate Owner decisions."
+    },
+    {
+      "id": "supplier_product_intake_automation",
+      "title": "Supplier → Product Truth → Shelf Candidate",
+      "owner": "commerce_truth_brain",
+      "status": "IN_PROGRESS",
+      "source": "F50",
+      "next": "Existing partner/catalog/economics stores mapped and runtime evidence preflight coded. No supplier calls or shelf activation; prove with read-only preview evidence."
+    },
+    {
+      "id": "analytics_learning_loop",
+      "title": "Analytics → Evidence → Learning → Governed Change",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "F50",
+      "next": "Existing analytics/learning/experiment stores mapped and evidence/provenance/baseline preflight coded. No automatic policy or skill promotion."
+    },
+    {
+      "id": "canonical_agent_map",
+      "title": "Legacy Manager → Canonical Agent Map",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "LEGACY_PR_7",
+      "next": "31 legacy managers mapped; department managers collapsed to taxonomy modules."
+    },
+    {
+      "id": "canonical_skill_map",
+      "title": "Canonical Skill Registry",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F50",
+      "next": "24 skills classified; brain-named files no longer create ownership."
+    },
+    {
+      "id": "canonical_scheduler",
+      "title": "Single Scheduler Plane",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "LEGACY+F50",
+      "next": "Legacy 30-minute schedules preserved as NOT_ACTIVATED; n8n cannot grant material permission."
+    },
+    {
+      "id": "data_tool_gate_maps",
+      "title": "Data Ownership + Tool + Owner Gate Maps",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Keep maps synchronized when tables/functions/connectors are added."
+    },
+    {
+      "id": "critical_edge_auth_review",
+      "title": "Critical Edge Function Auth Classification",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "SECURITY",
+      "next": "Payment/order/F60T/Owner paths classified. CJ public read-only quote still needs abuse/rate-limit proof before automation scale."
+    },
+    {
+      "id": "operational_skills_library",
+      "title": "Operational Skills Library",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "8 reusable HUNT skills are registered under canonical Brain owners; expand only from proven repeated work."
+    },
+    {
+      "id": "workflow_builder",
+      "title": "Workflow Builder",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "PLAN_ONLY compiler creates SHADOW plans from approved templates; no tool execution authority."
+    },
+    {
+      "id": "ai_tool_router",
+      "title": "AI Tool / Model Router",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "PLAN_ONLY routing policy scores Quality/Cost/Speed/Privacy/Readiness; Tool Gateway and Owner Gate remain authoritative."
+    },
+    {
+      "id": "workflow_templates",
+      "title": "Reusable Workflow Templates",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "8 canonical templates compile reusable skills; material templates end at Owner Gate."
+    },
+    {
+      "id": "creative_factory_surface",
+      "title": "HUNT Creative Factory",
+      "owner": "growth_brain",
+      "status": "IN_PROGRESS",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "Factory contract wraps existing A6/A7; generation/publish remain SHADOW until Preview E2E evidence."
+    },
+    {
+      "id": "build_repair_factory_surface",
+      "title": "Build & Repair Factory",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "Build/repair flows are canonical and SHADOW; prove Preview patch/test/review/rollback evidence before any deploy."
+    },
+    {
+      "id": "profit_engine_v1",
+      "title": "Profit Engine V1",
+      "owner": "commerce_truth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Contract/runtime/Studio Mission Control are coded. Connect verified revenue + supplier/shipping/payment/discount/marketing/returns/cancellation/other-cost evidence before any live profit claim."
+    },
+    {
+      "id": "profit_marketing_attribution",
+      "title": "Marketing Net-Profit Attribution",
+      "owner": "growth_brain",
+      "status": "NEXT",
+      "source": "PROFIT_MISSION",
+      "next": "Join traffic/ad cost → order → contribution margin → returns → repeat revenue; do not optimize on ROAS alone."
+    },
+    {
+      "id": "profit_experiment_engine",
+      "title": "Profit Experiment Engine",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "PROFIT_MISSION",
+      "next": "Run controlled Preview experiments and compare verified contribution/net profit before any rollout."
+    },
+    {
+      "id": "profit_growth_loop",
+      "title": "Hourly Growth + Profit Learning Loop",
+      "owner": "boom_orchestrator",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Use $10K+/hour as aspirational mission target; produce evidence-backed next-hour proposals without autonomous spend, pricing or publish."
+    },
+    {
+      "id": "profit_data_map",
+      "title": "Profit Data Map",
+      "owner": "commerce_truth_brain",
+      "status": "DONE",
+      "source": "PROFIT_MISSION",
+      "next": "Reuse canonical stores; keep non-RLS attribution/owner rollups server-only until hardened."
+    },
+    {
+      "id": "product_profit_ledger",
+      "title": "Derived Product Profit Ledger",
+      "owner": "commerce_truth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Expected lane is coded from verified unit economics. Realized lane waits for non-test finance-ledger rows and auditable line-item allocation; no parallel DB table."
+    },
+    {
+      "id": "profit_data_access_hardening",
+      "title": "Profit Data Access Hardening",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "SECURITY",
+      "next": "Preview-only review/hardening for hunt_purchase_attribution_bridge and hunt_daily_owner_metrics before direct Studio use."
+    },
+    {
+      "id": "hourly_profit_loop",
+      "title": "Hourly Profit Mission Loop",
+      "owner": "boom_orchestrator",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Runtime/UI/skills/templates are coded. Current canonical ledger has 66 UNVERIFIED rows and 0 exact VERIFIED; wait for real order finance evidence before mission attainment."
+    },
+    {
+      "id": "marketing_profit_attribution",
+      "title": "Marketing Net-Profit Attribution",
+      "owner": "growth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Contract is coded. Connect actual channel/campaign cost evidence and real-order profit linkage; CAC/Marketing Net Profit remain UNKNOWN until both exist."
+    },
+    {
+      "id": "hourly_profit_verification_status",
+      "title": "Exact Hourly Verification Status Rule",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "PROFIT_MISSION_QA",
+      "next": "Keep exact equality check verification_status='VERIFIED'; never use substring matching that could treat UNVERIFIED as VERIFIED."
+    },
+    {
+      "id": "marketing_cost_gateway",
+      "title": "Marketing Cost Evidence Gateway",
+      "owner": "growth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Gateway + GA4 traffic evidence are coded. Direct paid-channel cost source or proven GA4 cost-import coverage is still required before CAC/Marketing Net Profit."
+    },
+    {
+      "id": "ga4_traffic_truth",
+      "title": "GA4 Traffic Truth",
+      "owner": "growth_brain",
+      "status": "DONE",
+      "source": "LIVE_CONNECTOR",
+      "next": "Use GA4 as traffic/behavior truth only. Do not treat advertiser_ad_cost=0 as verified zero spend without coverage proof."
+    },
+    {
+      "id": "first_real_order_profit_proof",
+      "title": "First Real-Order Profit Proof",
+      "owner": "commerce_truth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Harness/UI/tests are coded. Current blocker is PayPlus paid-acceptance proof; once a legal real order exists, verify finance settlement → attribution bridge → exact VERIFIED hourly row → target gap."
+    },
+    {
+      "id": "payplus_paid_acceptance_proof",
+      "title": "PayPlus Paid-Acceptance Proof",
+      "owner": "operations_brain",
+      "status": "BLOCKED",
+      "source": "PAYMENT_TRUTH",
+      "next": "Sandbox callback/status mapping must be proven before Owner considers enabling hunt_payplus_callback_accept_paid. Do not change live acceptance from Profit Engine."
+    },
+    {
+      "id": "payplus_sandbox_status_proof",
+      "title": "PayPlus Sandbox Status Proof",
+      "owner": "operations_brain",
+      "status": "IN_PROGRESS",
+      "source": "PAYMENT_TRUTH",
+      "next": "Matrix/evaluator/Studio are coded. Collect real staging success + failure callback observations, then prove idempotency/reference integrity; refund remains separate."
+    },
+    {
+      "id": "payplus_sandbox_observations",
+      "title": "PayPlus Staging Observations",
+      "owner": "operations_brain",
+      "status": "BLOCKED",
+      "source": "PAYMENT_TRUTH",
+      "next": "Current count is 0. Sandbox evidence control is OFF/unapproved and no token hash is configured for a proof run."
+    },
+    {
+      "id": "payplus_refund_status_proof",
+      "title": "PayPlus Refund Status Proof",
+      "owner": "operations_brain",
+      "status": "NEXT",
+      "source": "PAYMENT_TRUTH",
+      "next": "After a proven sandbox charge, capture charge_method=4 refund observation linked to original transaction; never count refund as revenue."
+    },
+    {
+      "id": "payment_launch_gate",
+      "title": "Provider-Neutral Payment Launch Gate",
+      "owner": "operations_brain",
+      "status": "DONE",
+      "source": "PAYMENT_TRUTH",
+      "next": "Evaluator/Studio/Skill/Workflow are coded. Keep all routes planned until provider/account + technical + settlement/legal evidence exists."
+    },
+    {
+      "id": "payplus_commercial_account_approval",
+      "title": "PayPlus Commercial / Merchant Approval",
+      "owner": "operations_brain",
+      "status": "BLOCKED",
+      "source": "PAYMENT_TRUTH",
+      "next": "No signed/formally approved merchant evidence yet. Route approval_reference and approved_at remain empty."
+    },
+    {
+      "id": "paypal_live_approval",
+      "title": "PayPal Live Account / API Approval",
+      "owner": "operations_brain",
+      "status": "NEXT",
+      "source": "PAYMENT_TRUTH",
+      "next": "PayPal routes exist as planned only. Connect separate live account/API evidence before any sandbox/live readiness claim."
+    },
+    {
+      "id": "checkout_order_tracking_e2e",
+      "title": "Checkout → Order → Tracking E2E",
+      "owner": "operations_brain",
+      "status": "IN_PROGRESS",
+      "source": "ORDER_TRUTH",
+      "next": "Proof runtime/Studio/Skill/Workflow coded. Need one successful CJ sandbox lineage to supplier_order_id + tracking_number + shipped event."
+    },
+    {
+      "id": "customer_order_visibility",
+      "title": "Customer Order / Tracking Visibility",
+      "owner": "experience_brain",
+      "status": "IN_PROGRESS",
+      "source": "ORDER_TRUTH",
+      "next": "RLS ownership path is structurally correct for sessions/orders/events/fulfillment. Tracking visibility cannot be proven until a tracking-bearing sandbox lineage exists."
+    },
+    {
+      "id": "cj_sandbox_transient_resilience",
+      "title": "CJ Sandbox Transient Resilience",
+      "owner": "operations_brain",
+      "status": "IN_PROGRESS",
+      "source": "ORDER_TRUTH",
+      "next": "Current source includes +972 normalization, transient retry/backoff and ambiguous-create reconciliation. Re-run sandbox E2E later to prove behavior; do not alter live supplier switch."
+    },
+    {
+      "id": "market_policy_readiness",
+      "title": "Market Legal / Returns / Shipping Readiness",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "LEGAL_MARKET_TRUTH",
+      "next": "Evaluator/Studio/Skill/Workflow coded for IL/EU/GB/US/AU with default HOLD for unmapped markets. Needs counsel/Owner review before enabling any market."
+    },
+    {
+      "id": "legal_registry_production",
+      "title": "Legal Document Registry Deployment",
+      "owner": "learning_governance_brain",
+      "status": "BLOCKED",
+      "source": "LEGAL_MARKET_TRUTH",
+      "next": "Migration exists in branch but Production table is absent. Validate migration in Preview near launch; do not deploy directly to Production now."
+    },
+    {
+      "id": "business_identity_publication",
+      "title": "Published Business Identity",
+      "owner": "operations_brain",
+      "status": "BLOCKED",
+      "source": "LEGAL_MARKET_TRUTH",
+      "next": "Business Identity is configured but not published; returns address, privacy contact and support email are not ready in live audit."
+    },
+    {
+      "id": "cancellation_return_flow",
+      "title": "Cancellation / Withdrawal / Return Flow",
+      "owner": "experience_brain",
+      "status": "NEXT",
+      "source": "LEGAL_MARKET_TRUTH",
+      "next": "Design one user-visible flow with market-specific rules; EU online withdrawal function and Israel prominent online cancellation route require dedicated readiness proof."
+    },
+    {
+      "id": "market_expansion_default_hold",
+      "title": "Unmapped Market Default HOLD",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "LEGAL_MARKET_TRUTH",
+      "next": "Keep every unmapped country blocked from real-money launch until reviewed."
+    },
+    {
+      "id": "performance_mobile_qa",
+      "title": "Performance / Mobile QA",
+      "owner": "experience_brain",
+      "status": "IN_PROGRESS",
+      "source": "LAUNCH_READINESS",
+      "next": "Local structural QA passes 390/768/1280/1440 after progressive shelf mounting. Preview must still prove service-worker update behavior, installability, offline shell and deployed-origin performance."
+    },
+    {
+      "id": "pwa_preview_proof",
+      "title": "PWA Preview Update / Installability Proof",
+      "owner": "experience_brain",
+      "status": "NEXT",
+      "source": "LAUNCH_QUALITY",
+      "next": "On Preview: install PWA, verify pwa2 worker activates, old cache is deleted, updated JS/CSS are served on first navigation, and offline shell loads."
+    },
+    {
+      "id": "launch_command_center",
+      "title": "Launch Command Center",
+      "owner": "boom_orchestrator",
+      "status": "IN_PROGRESS",
+      "source": "LAUNCH_READINESS",
+      "next": "Read-only command surface is coded and privacy-hardened. Verify authenticated admin RLS and readiness rendering on Preview before Owner launch review."
+    },
+    {
+      "id": "launch_session_aggregate",
+      "title": "Privacy-Safe Session Aggregate",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "OBSERVABILITY",
+      "next": "Do not fetch raw analytics session IDs in browser. Add a server-side aggregate later if Owner wants live 24h user/session count in Command Center."
+    },
+    {
+      "id": "fresh_shelf_product_truth",
+      "title": "Fresh Shelf / Product Truth",
+      "owner": "commerce_truth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PRODUCT_TRUTH",
+      "next": "57 CJ products are strict Fresh Shelf Verified for IL. Remaining CJ: 11 Profit Review, 6 repeated lookup failures, 2 no verified variant. Printful 22 live / 550 in-stock variants and Gooten 18 live are catalog-only until destination shipping credentials are verified."
+    },
+    {
+      "id": "cj_stock_truth_precedence",
+      "title": "CJ Stock Truth Precedence",
+      "owner": "commerce_truth_brain",
+      "status": "DONE",
+      "source": "PRODUCT_TRUTH",
+      "next": "Use hunt-cj-quote as canonical stock+shipping truth. Product-detail embedded inventory may be incomplete and must not override a fresh quote."
+    },
+    {
+      "id": "product_truth_refresh_worker",
+      "title": "Bounded Product Truth Refresh Worker",
+      "owner": "commerce_truth_brain",
+      "status": "CODED_NOT_DEPLOYED",
+      "source": "PRODUCT_TRUTH",
+      "next": "Worker is scan-aware and observation-only. Preview proof still required before deployment. Retry B confirms failure classification is useful and must not delete catalog rows."
+    },
+    {
+      "id": "cj_price_gate_v2",
+      "title": "CJ Reserve-Aware Price Gate V2",
+      "owner": "commerce_truth_brain",
+      "status": "SOURCE_SYNCED_NOT_DEPLOYED",
+      "source": "PRODUCT_TRUTH",
+      "next": "Preview-test synced hunt-storefront Price Gate V2. Do not deploy or change retail prices without Owner Gate."
+    },
+    {
+      "id": "printful_shipping_credentials",
+      "title": "Printful Shipping / Fulfillment Credentials",
+      "owner": "commerce_truth_brain",
+      "status": "OWNER_CREDENTIAL_ACTION_REQUIRED",
+      "source": "SUPPLIER_TRUTH",
+      "next": "Printful officially supports a custom API store. Owner must create a Private Token for the HUNT store and capture Store ID; then server-side shipping/variant proof can run. Do not expose token in browser."
+    },
+    {
+      "id": "gooten_shipping_credentials",
+      "title": "Gooten Variant / Shipping Credentials",
+      "owner": "commerce_truth_brain",
+      "status": "SUPPORT_REPLY_PENDING",
+      "source": "SUPPLIER_TRUTH",
+      "next": "Follow-up sent on Gooten request #369479 asking for RecipeID/API onboarding for read-only variants/shipping pilot. PartnerBillingKey remains server-only and is not needed for the initial read-only proof."
     }
   ]
 }

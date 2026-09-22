@@ -1,0 +1,97 @@
+{
+  "version": "BOOM-N8N-ADAPTER-V1",
+  "mode": "SHADOW",
+  "status": "CODED_NOT_DEPLOYED_NOT_CONNECTED",
+  "authority": "NONE",
+  "transport": {
+    "browser_to_boom": "supabase.functions.invoke('boom-automation-gateway') with authenticated admin JWT",
+    "boom_to_n8n": "server-side POST from Supabase Edge Function",
+    "n8n_auth": "Header/JWT secret stored only as Supabase project secret",
+    "webhook_secret_exposure": "FORBIDDEN_IN_BROWSER"
+  },
+  "compatibility": {
+    "n8n_major": "2.x compatible design",
+    "webhook": "Use n8n Webhook trigger with authenticated endpoint.",
+    "wait_resume": "Future approval/resume workflows may use execution.resumeUrl, but the resume URL must never become the Owner Gate authority.",
+    "publishing": "n8n publish/unpublish state is operational only; BOOM Owner Gate remains authoritative."
+  },
+  "safety": {
+    "first_allowed_workflow": "shelf_coverage_17x1000",
+    "allowed_workflows": [
+      "shelf_coverage_17x1000"
+    ],
+    "blocked_workflows": [
+      "supplier_product_intake",
+      "incident_repair",
+      "creative_publish",
+      "customer_lifecycle"
+    ],
+    "blocked_material_actions": [
+      "external_publish",
+      "payment_activation",
+      "supplier_order",
+      "production_deploy",
+      "price_change",
+      "customer_outreach",
+      "credential_change"
+    ],
+    "timeout_ms": 15000,
+    "max_payload_bytes": 131072,
+    "idempotency_header": "X-BOOM-Run-ID",
+    "secret_fields_redacted": true,
+    "allowed_capabilities": [
+      "read_verified_catalog_counts",
+      "emit_sanitized_run_events"
+    ],
+    "blocked_capabilities": [
+      "external_publish",
+      "customer_outreach",
+      "payment_activation",
+      "supplier_order",
+      "price_change",
+      "production_deploy",
+      "credential_change"
+    ]
+  },
+  "required_env": [
+    "N8N_SHADOW_WEBHOOK_URL",
+    "N8N_SHADOW_WEBHOOK_TOKEN"
+  ],
+  "activation_gate": [
+    "Edge Function review",
+    "safe read-only n8n workflow created",
+    "test webhook proof",
+    "no secret in browser/network logs",
+    "one successful shelf coverage SHADOW execution",
+    "one controlled failure/retry proof",
+    "Owner review before expanding allowlist"
+  ],
+  "connected": false,
+  "required_envelope": [
+    "mission_id",
+    "workflow_id",
+    "run_id",
+    "correlation_id",
+    "mode",
+    "requested_capability",
+    "idempotency_key",
+    "timeout_ms"
+  ],
+  "response_contract": [
+    "run_id",
+    "correlation_id",
+    "status",
+    "evidence_refs",
+    "error_code",
+    "completed_at"
+  ],
+  "deployment_truth": {
+    "client_adapter": "boom-n8n-adapter.js CODED",
+    "server_gateway": "supabase/functions/boom-automation-gateway CODED_NOT_DEPLOYED",
+    "n8n_webhook": "NOT_CONFIGURED",
+    "credentials": "NOT_CONFIGURED",
+    "first_live_action": "NONE"
+  },
+  "canonical_client": "boom-n8n-adapter.js",
+  "duplicate_adapter_policy": "No second browser/shadow adapter. All client dispatch goes through boom-n8n-adapter.js."
+}

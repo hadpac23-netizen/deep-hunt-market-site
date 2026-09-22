@@ -1,0 +1,107 @@
+{
+  "version": "BOOM-PERFORMANCE-MOBILE-READINESS-V1.1-ISOLATED-VIEWPORTS",
+  "mode": "SHADOW",
+  "owner": "experience_brain",
+  "authority": "NONE",
+  "purpose": "Gate HUNT launch on evidence-backed responsive integrity, initial DOM/image budgets, touch targets, critical browser errors and PWA cache/update behavior.",
+  "budgets": {
+    "mobile_390": {
+      "max_initial_dom_nodes": 3500,
+      "max_initial_images": 220,
+      "max_initial_shelf_cards": 100,
+      "max_small_touch_targets": 0,
+      "max_horizontal_overflow_px": 0,
+      "max_broken_images": 0,
+      "max_console_problems": 0,
+      "max_critical_network_failures": 0
+    },
+    "tablet_768": {
+      "max_initial_dom_nodes": 4000,
+      "max_initial_images": 250,
+      "max_horizontal_overflow_px": 0,
+      "max_broken_images": 0,
+      "max_console_problems": 0,
+      "max_critical_network_failures": 0
+    },
+    "desktop_1280": {
+      "max_initial_dom_nodes": 5000,
+      "max_initial_images": 320,
+      "max_horizontal_overflow_px": 0,
+      "max_broken_images": 0,
+      "max_console_problems": 0,
+      "max_critical_network_failures": 0
+    },
+    "desktop_1440": {
+      "max_initial_dom_nodes": 5000,
+      "max_initial_images": 320,
+      "max_horizontal_overflow_px": 0,
+      "max_broken_images": 0,
+      "max_console_problems": 0,
+      "max_critical_network_failures": 0
+    }
+  },
+  "performance_rules": [
+    "Initial homepage DOM must be bounded; catalog breadth belongs behind progressive shelf mounting and category pagination.",
+    "No product is removed from the catalog merely to satisfy homepage performance budgets.",
+    "Local timing numbers are diagnostic only; Preview/Production Web Vitals require a real deployed origin.",
+    "Critical storefront/API failures are launch blockers; intentional local-origin CORS failures are not counted once tested on an allowed origin.",
+    "A responsive rail may overflow inside its own scroll container, but the document itself may not horizontally overflow.",
+    "Each viewport QA is isolated in its own Chrome page to prevent navigation cancellation or scroll restoration from contaminating initial-load evidence."
+  ],
+  "pwa_rules": [
+    "Navigations use network-first.",
+    "JS/CSS/JSON/webmanifest use network-first to prevent one-navigation stale builds.",
+    "Images may use stale-while-revalidate.",
+    "Service Worker update checks bypass HTTP cache.",
+    "Cache namespace is versioned and old cache namespaces are deleted on activate.",
+    "Preview must prove update behavior, manifest/installability and offline shell before PWA readiness becomes PASS."
+  ],
+  "current_evidence": "evidence/HUNT-PERFORMANCE-MOBILE-QA-2026-09-22.json",
+  "current_truth": {
+    "mobile_390": {
+      "dom_nodes": 2899,
+      "images": 174,
+      "shelf_cards": 77,
+      "small_touch_targets": 0,
+      "horizontal_overflow": false,
+      "broken_images": 0,
+      "console_problems": 0,
+      "network_failures": 0
+    },
+    "tablet_768": {
+      "dom_nodes": 3391,
+      "images": 208,
+      "shelf_cards": 111,
+      "horizontal_overflow": false,
+      "broken_images": 0,
+      "console_problems": 0,
+      "network_failures": 0
+    },
+    "pwa_preview_proof": false,
+    "state": "LOCAL_RESPONSIVE_PASS_PREVIEW_PWA_PROOF_PENDING",
+    "desktop_1280": {
+      "dom_nodes": 4265,
+      "images": 269,
+      "shelf_cards": 172,
+      "horizontal_overflow": false,
+      "broken_images": 0,
+      "console_problems": 0,
+      "network_failures": 0
+    },
+    "desktop_1440": {
+      "dom_nodes": 4265,
+      "images": 269,
+      "shelf_cards": 172,
+      "horizontal_overflow": false,
+      "broken_images": 0,
+      "console_problems": 0,
+      "network_failures": 0
+    }
+  },
+  "hard_rules": [
+    "Never call local timing data a production Web Vitals result.",
+    "Never hide a network/console failure to obtain a PASS.",
+    "Never reduce Product Truth or remove catalog availability to fake a performance win.",
+    "Never call PWA readiness PASS until cache-update and installability are verified on Preview."
+  ]
+}

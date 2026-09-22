@@ -1,0 +1,85 @@
+{
+  "version": "BOOM-INCIDENT-REPAIR-V1",
+  "status": "CANONICAL_REWIRE",
+  "brain": "learning_governance_brain",
+  "agent_id": "incident_repair_agent",
+  "purpose": "Convert verified failures into reproducible, minimally-scoped repair work with evidence, tests, independent review and Owner Gate before deploy.",
+  "severity": {
+    "P0": "Checkout/payment/security/data-loss/production-wide critical failure",
+    "P1": "Major shopper journey or commerce truth failure with high impact",
+    "P2": "Functional defect with bounded impact or workaround",
+    "P3": "Minor visual/quality defect without material commerce impact"
+  },
+  "lifecycle": [
+    "DETECTED",
+    "TRIAGED",
+    "REPRODUCED",
+    "ROOT_CAUSE_FOUND",
+    "PATCH_PLANNED",
+    "PATCH_CANDIDATE",
+    "TESTED",
+    "INDEPENDENT_REVIEW",
+    "WAITING_OWNER",
+    "DEPLOY_CANDIDATE",
+    "POST_DEPLOY_VERIFY",
+    "RESOLVED",
+    "ROLLED_BACK",
+    "QUARANTINED"
+  ],
+  "flow": [
+    "detect",
+    "reproduce",
+    "classify_owner",
+    "root_cause",
+    "minimal_patch_plan",
+    "tests",
+    "independent_review",
+    "owner_gate",
+    "deploy_candidate",
+    "post_deploy_verify",
+    "rollback_learning"
+  ],
+  "rules": [
+    "Never patch from symptom only; reproduce or record BLOCKED_BY_MISSING_EVIDENCE.",
+    "Prefer the smallest reversible patch that fixes the verified root cause.",
+    "A passing local/unit test is not production proof.",
+    "Independent review must not be the same actor that authored the patch candidate.",
+    "No Production deploy, migration, payment change, supplier action or external publish without Owner Gate.",
+    "Every incident keeps correlation lineage back to the failed run/action.",
+    "Every resolved or rolled-back incident writes a learning record and regression guard."
+  ],
+  "storage": {
+    "runs": "hunt_boom_team_runs task=incident_repair",
+    "events": "hunt_boom_events entity_type=incident",
+    "approval": "hunt_boom_decisions decision_type=INCIDENT_OWNER_GATE",
+    "dedicated_new_table": false
+  },
+  "auto_route": {
+    "from": [
+      "automation.run.failed",
+      "automation.run.quarantined",
+      "automation.n8n.dispatch_failed",
+      "runtime.action.error",
+      "checkout.verification.failed",
+      "catalog.truth.failed"
+    ],
+    "behavior": "Create READY incident run only. Do not auto-patch, deploy, or send externally."
+  },
+  "owner_gate": [
+    "deploy_candidate",
+    "schema_change",
+    "security_policy_change",
+    "production_config_change",
+    "payment_change"
+  ],
+  "rollback": {
+    "required_for_material_patch": true,
+    "evidence": [
+      "pre_change_ref",
+      "candidate_ref",
+      "test_evidence",
+      "rollback_ref",
+      "post_deploy_checks"
+    ]
+  }
+}

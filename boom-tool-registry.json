@@ -1,0 +1,243 @@
+{
+  "version": "BOOM-CANONICAL-TOOL-REGISTRY-V1",
+  "rule": "Tools execute capabilities; no tool is a Primary Brain or decision owner.",
+  "runtime_tools": [
+    {
+      "id": "supabase_runtime",
+      "type": "DATA_AUTH_FUNCTIONS",
+      "status": "ACTIVE",
+      "owner_plane": "identity_session_kernel/tool_gateway_plane",
+      "authority": "NONE"
+    },
+    {
+      "id": "github_source_control",
+      "type": "SOURCE_CONTROL",
+      "status": "ACTIVE_FOR_DEVELOPMENT",
+      "owner_plane": "release_control_agent",
+      "authority": "NONE"
+    },
+    {
+      "id": "n8n",
+      "type": "WORKFLOW_EXECUTION",
+      "status": "CODED_NOT_DEPLOYED_NOT_CONNECTED",
+      "owner_plane": "automation_orchestration_plane",
+      "authority": "NONE"
+    },
+    {
+      "id": "cj_supplier",
+      "type": "SUPPLIER_CONNECTOR",
+      "status": "ACTIVE_FUNCTIONS_PRESENT_PUBLIC_QUOTE_NEEDS_ABUSE_GUARD_PROOF",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE",
+      "evidence": [
+        "hunt-cj-live-check ACTIVE jwt=true",
+        "hunt-cj-gap-scan ACTIVE jwt=true",
+        "hunt-cj-count-audit ACTIVE jwt=true",
+        "hunt-cj-shelf-fill ACTIVE jwt=true",
+        "hunt-cj-quote ACTIVE jwt=false metadata; auth mode must be reverified"
+      ]
+    },
+    {
+      "id": "payplus",
+      "type": "PAYMENT_CONNECTOR",
+      "status": "PRELAUNCH_FUNCTIONS_ACTIVE",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE",
+      "evidence": [
+        "hunt-payment-session ACTIVE jwt=false metadata",
+        "hunt-payment-session-prelaunch ACTIVE jwt=false metadata",
+        "hunt-payplus-callback ACTIVE jwt=false webhook pattern",
+        "hunt-payplus-sandbox-evidence ACTIVE"
+      ],
+      "auth_classification": "custom user auth + signed callback; launch remains gated"
+    },
+    {
+      "id": "order_orchestrator",
+      "type": "ORDER_FULFILLMENT",
+      "status": "ACTIVE_FUNCTION_PRESENT_MATERIAL_GATED",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE",
+      "evidence": [
+        "hunt-order-orchestrator ACTIVE"
+      ],
+      "auth_classification": "custom admin auth + runtime controls"
+    },
+    {
+      "id": "creative_video_provider",
+      "type": "AI_MEDIA",
+      "status": "ACTIVE_FUNCTION_PRESENT_BUT_BLOCKED_BY_SHADOW_GATE",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE",
+      "evidence": [
+        "hunt-boom-video-runway ACTIVE jwt=true",
+        "hunt-boom-media-vault ACTIVE jwt=true"
+      ]
+    },
+    {
+      "id": "f60t_signal_tools",
+      "type": "WORLD_SIGNAL_OBSERVATION",
+      "status": "ACTIVE_FUNCTIONS_PRESENT",
+      "owner_plane": "intelligence_brain",
+      "authority": "NONE",
+      "evidence": [
+        "hunt-f60t-snapshot ACTIVE",
+        "hunt-f60t-external-signals ACTIVE",
+        "hunt-f60t-oauth ACTIVE jwt=true"
+      ],
+      "auth_classification": "admin or hashed cron secret depending function"
+    },
+    {
+      "id": "boom_automation_gateway",
+      "type": "N8N_SERVER_GATEWAY",
+      "status": "CODE_ONLY_NOT_DEPLOYED",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE"
+    },
+    {
+      "id": "boom_shelf_coverage",
+      "type": "SERVER_TRUTH_READ",
+      "status": "CODE_ONLY_NOT_DEPLOYED",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE"
+    },
+    {
+      "id": "workflow_builder",
+      "type": "PLAN_COMPILER",
+      "status": "CODED_PLAN_ONLY",
+      "owner_plane": "automation_orchestration_plane",
+      "authority": "NONE"
+    },
+    {
+      "id": "ai_tool_router",
+      "type": "TOOL_MODEL_ROUTING",
+      "status": "CODED_PLAN_ONLY",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE"
+    },
+    {
+      "id": "marketing_cost_gateway",
+      "type": "COST_EVIDENCE_NORMALIZER",
+      "status": "CODED_TRAFFIC_SOURCE_CONNECTED_COST_NOT_VERIFIED",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Windsor GA4 account HUNT DEAL connected read-only",
+        "GA4 last-30d: 25 sessions, 0 purchases, 0 purchase revenue, advertiser_ad_cost=0",
+        "Zero ad cost is not considered verified without ad-platform/cost-import coverage evidence"
+      ]
+    },
+    {
+      "id": "first_real_order_proof",
+      "type": "READ_ONLY_PROOF_EVALUATOR",
+      "status": "CODED_SHADOW_BLOCKED_PAYMENT_ACCEPTANCE",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Reads runtime controls, real orders, finance ledger, attribution bridge and hourly profit ledger",
+        "Requires exact VERIFIED hourly status and finance-ledger evidence linkage",
+        "Cannot enable payment acceptance or supplier fulfillment"
+      ]
+    },
+    {
+      "id": "payplus_sandbox_proof",
+      "type": "PAYMENT_STATUS_PROOF_EVALUATOR",
+      "status": "CODED_SHADOW_NO_SANDBOX_OBSERVATIONS",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Requires real PayPlus staging callback observations",
+        "J4 charge_method alone never proves paid",
+        "Requires success + failure + idempotency + reference-integrity proof before paid acceptance"
+      ]
+    },
+    {
+      "id": "payment_launch_gate",
+      "type": "PAYMENT_ROUTE_READINESS_EVALUATOR",
+      "status": "CODED_SHADOW_ALL_ROUTES_PLANNED",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Reads hunt_payment_routes + payment/supplier runtime controls",
+        "Requires processor/account/sandbox/callback/refund/finance/settlement/country/legal evidence",
+        "Cannot activate any route or master switch"
+      ]
+    },
+    {
+      "id": "checkout_order_tracking_proof",
+      "type": "CHECKOUT_ORDER_TRACKING_E2E_EVALUATOR",
+      "status": "CODED_SHADOW_BLOCKED_SUPPLIER_TRACKING",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Reads canonical payment session, order, event, fulfillment and pipeline evidence",
+        "Requires persisted supplier order id + tracking number + shipped event for E2E PASS",
+        "Test-only proof never implies live fulfillment readiness"
+      ]
+    },
+    {
+      "id": "market_policy_readiness",
+      "type": "LEGAL_RETURNS_SHIPPING_READINESS_EVALUATOR",
+      "status": "CODED_SHADOW_PRODUCTION_LEGAL_REGISTRY_NOT_DEPLOYED",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Maps IL/EU/GB/US/AU baseline obligations from official sources",
+        "All unmapped markets default HOLD",
+        "Requires owner/counsel-approved legal documents and market review before real-money launch"
+      ]
+    },
+    {
+      "id": "performance_mobile_readiness",
+      "type": "PERFORMANCE_MOBILE_READINESS_EVALUATOR",
+      "status": "CODED_LOCAL_RESPONSIVE_PASS_PREVIEW_PWA_PROOF_PENDING",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Isolated QA: 390px 2,899 DOM / 174 images / 77 shelf cards / 0 touch violations",
+        "768px 3,391 DOM / 208 images; 1280/1440px 4,265 DOM / 269 images",
+        "All four viewports: no document overflow, broken images, console problems or network failures",
+        "Preview PWA update/installability/offline proof still required"
+      ]
+    },
+    {
+      "id": "launch_readiness_aggregator",
+      "type": "READ_ONLY_LAUNCH_AGGREGATOR",
+      "status": "CODED_READ_ONLY_PRIVACY_HARDENED",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Aggregates boom-control-plane-readiness domain statuses",
+        "Admin RLS reads only for orders, finance, BOOM runs and decisions",
+        "Raw analytics session identifiers are not fetched in browser; session metric remains UNKNOWN until server aggregate"
+      ]
+    },
+    {
+      "id": "fresh_shelf_product_truth",
+      "type": "PRODUCT_TRUTH_EVALUATOR",
+      "status": "CJ_57_FRESH_PROVIDER_PARTIAL",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE",
+      "evidence": [
+        "CJ latest controlled state: 57 strict Fresh / 19 blocked-recheck",
+        "Printful: 22 live unique products, 550 in-stock variants, shipping/fulfillment unverified",
+        "Gooten: 18 live public catalog products, variants/shipping unverified",
+        "0 Checkout Live Verified"
+      ]
+    },
+    {
+      "id": "cj_retail_price_gate_v2",
+      "type": "PRICE_EVALUATOR",
+      "status": "CODED_SHADOW_NOT_DEPLOYED",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Corrected margin floor accounts for payment/refund reserves",
+        "11 current REVIEW products analyzed; candidate retail deltas +$1 to +$6",
+        "No Production retail price mutation"
+      ]
+    }
+  ],
+  "security_truth_rule": "verify_jwt=false in platform metadata is not by itself proof of exposure; webhook/custom-auth functions must be reviewed by their actual code/auth contract before classification.",
+  "material_rule": "ACTIVE function presence never implies permission to call it. Material permission is determined by Tool Gateway + Owner Gate.",
+  "auth_review": "boom-critical-edge-auth-review.json"
+}

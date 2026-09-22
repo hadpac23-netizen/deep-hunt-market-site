@@ -1,0 +1,148 @@
+{
+  "version": "BOOM-FRESH-SHELF-PRODUCT-TRUTH-V1.3-MULTI-PROVIDER-READINESS",
+  "mode": "SHADOW",
+  "owner": "commerce_truth_brain",
+  "authority": "NONE",
+  "purpose": "Separate shelf freshness from checkout readiness. A product may be fresh enough to display when price, stock and destination shipping are freshly verified, while still requiring a new quote at checkout.",
+  "canonical_sources": {
+    "catalog": "hunt_catalog_products",
+    "observations": "hunt_product_observations",
+    "cj_product_detail": "hunt-storefront",
+    "cj_stock_shipping": "hunt-cj-quote"
+  },
+  "truth_precedence": [
+    "For CJ stock and destination shipping, hunt-cj-quote is canonical over inventory fields embedded in product detail.",
+    "Fresh Shelf requires the latest controlled product scan for the destination to be VERIFIED.",
+    "Price, stock and shipping evidence must resolve to the exact variant selected by the controlled scan.",
+    "Product detail remains canonical for product/variant identity and retail-price/profit-gate inputs, but embedded inventory is not final CJ stock truth.",
+    "A stale catalog stock_quantity never overrides a fresh variant quote.",
+    "recheck_before_checkout is shelf-eligible but never checkout-ready by itself.",
+    "A single CJ product lookup 404 is PRODUCT_FAILED / recheck-required evidence, not proof that the product is permanently removed."
+  ],
+  "states": [
+    "STALE_OR_UNVERIFIED",
+    "FRESH_SHELF_VERIFIED",
+    "CHECKOUT_RECHECK_REQUIRED",
+    "CHECKOUT_LIVE_VERIFIED"
+  ],
+  "fresh_shelf_requirements": [
+    "catalog availability_verified=true",
+    "catalog has non-empty image",
+    "market_eligibility_status is recheck_before_checkout, eligible or allowed",
+    "latest controlled product observation for destination has scan_id and refresh_state=VERIFIED",
+    "fresh price observation for the controlled exact variant with retail_verified=true and profit_gate_status=PASS",
+    "fresh stock observation for the controlled exact variant from canonical quote with stock_verified=true and stock_available=true",
+    "fresh shipping observation for the controlled exact variant and destination with shipping_verified=true and numeric shipping amount",
+    "all required evidence is within freshness window"
+  ],
+  "checkout_live_requirements": [
+    "all fresh shelf requirements",
+    "market_eligibility_status is eligible/allowed OR checkout policy explicitly accepts recheck after a new quote",
+    "a new checkout-time stock+shipping quote succeeds for the chosen exact variant and destination",
+    "selected variant is the variant represented by the quote"
+  ],
+  "freshness": {
+    "shelf_hours": 24,
+    "checkout_quote_minutes": 5
+  },
+  "current_truth": {
+    "catalog_rows": 117,
+    "catalog_unique_products": {
+      "CJdropshipping": 76,
+      "Printful": 22,
+      "Gooten": 18
+    },
+    "cj_latest": {
+      "verified": 57,
+      "price_or_profit_blocked": 11,
+      "product_failed_after_retry": 6,
+      "no_verified_variant": 2,
+      "checkout_live_verified": 0
+    },
+    "cj_retry_scan_id": "CJ-IL-20260922-RETRY-B",
+    "printful": {
+      "catalog_state": "LIVE",
+      "unique_products": 22,
+      "in_stock_variants": 550,
+      "shipping_verified": false,
+      "fulfillment_ready": false,
+      "fresh_shelf_verified": 0
+    },
+    "gooten": {
+      "catalog_state": "LIVE",
+      "unique_products": 18,
+      "variants_verified": false,
+      "shipping_verified": false,
+      "fulfillment_ready": false,
+      "fresh_shelf_verified": 0
+    },
+    "strict_fresh_shelf_verified_il": 57,
+    "strict_fresh_by_category": {
+      "dresses": 17,
+      "bags": 14,
+      "phoneaccessories": 13,
+      "toys": 6,
+      "beauty": 4,
+      "pets": 1,
+      "plussize": 1,
+      "suits": 1
+    },
+    "checkout_live_verified": 0,
+    "state": "CJ_57_FRESH_PRINTFUL_GOOTEN_CATALOG_LIVE_SHIPPING_BLOCKED"
+  },
+  "observed_endpoint_disagreement": {
+    "product_detail_sample_count": 3,
+    "product_detail_in_stock_variants": 0,
+    "cj_quote_stock_verified_count": 3,
+    "cj_quote_stock_available_count": 3,
+    "conclusion": "Do not use product-detail embedded inventory as final CJ stock truth."
+  },
+  "hard_rules": [
+    "Never refresh a timestamp without a successful external evidence call.",
+    "Never count Price+Stock+Shipping alone as Fresh Shelf without a current controlled product scan marker.",
+    "Never mix price, stock or shipping evidence from a different variant than the controlled scan variant.",
+    "Never mark checkout-ready from shelf freshness alone.",
+    "Never change market_eligibility_status from this refresh lane.",
+    "Never overwrite retail price from a supplier cost field.",
+    "Never promote a stale catalog stock count over a fresh variant quote.",
+    "Never write a positive stock/shipping observation when the corresponding CJ verification flag is false.",
+    "A single product lookup failure is recheck evidence, not permanent-removal proof.",
+    "Unreconciled observations from another source do not override a newer controlled scan."
+  ],
+  "evidence_write_scope": "Existing hunt_product_observations only, through controlled refresh worker; evaluator itself is read-only.",
+  "cj_fresh_department_contribution": {
+    "note": "Conservative CJ-only contribution to the 17 canonical departments; not total multi-supplier shelf readiness.",
+    "counts": {
+      "women": 19,
+      "accessories": 14,
+      "beauty": 4,
+      "tech": 13,
+      "pets": 1,
+      "toys": 6,
+      "men": 0,
+      "kids": 0,
+      "home": 0,
+      "kitchen": 0,
+      "electrical": 0,
+      "camping": 0,
+      "garden": 0,
+      "sports": 0,
+      "travel": 0,
+      "office": 0,
+      "gifts": 0
+    },
+    "ready_at_1000": []
+  },
+  "remaining_truth_rule": "57 CJ products are Fresh Shelf Verified for IL. The remaining 19 CJ items stay blocked/recheck. Printful/Gooten public catalog liveness does not count as Fresh Shelf without destination shipping truth.",
+  "provider_rules": {
+    "CJdropshipping": "Controlled scan VERIFIED + exact-variant retail/profit + stock + IL shipping evidence.",
+    "Printful": "Public product/variant stock is useful partial truth, but Fresh Shelf remains blocked until destination shipping + fulfillment credentials and HUNT retail price truth exist.",
+    "Gooten": "Public catalog availability/price is partial truth only; Fresh Shelf remains blocked until API credentials prove variants + destination shipping + fulfillment."
+  },
+  "price_gate_v2": {
+    "status": "CODED_SHADOW_NOT_DEPLOYED",
+    "bug": "Old margin floor ignored payment/refund reserves while final margin gate subtracted them.",
+    "corrected_margin_floor": "supplier_cost / (reserve_denominator - target_margin)",
+    "production_price_changes": 0
+  }
+}

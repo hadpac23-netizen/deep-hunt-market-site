@@ -560,6 +560,19 @@
       "telemetry": "seller_store_select",
       "accessibility": "labeled select+loading status",
       "failure_policy": "restore_previous"
+    },
+    {
+      "action_id": "boom.owner_gate.decide",
+      "owner": "boom_orchestrator",
+      "decision_owner": "OWNER",
+      "auth_policy": "admin",
+      "persistence": "server",
+      "optimistic": false,
+      "double_submit_guard": true,
+      "telemetry": "owner_gate_decision",
+      "accessibility": "approve/reject buttons + live status",
+      "failure_policy": "preserve_pending",
+      "trace_policy": "metadata_only_no_pii"
     }
   ]
 }

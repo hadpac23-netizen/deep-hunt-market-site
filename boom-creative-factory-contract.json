@@ -1,0 +1,30 @@
+{
+  "version": "BOOM-CREATIVE-FACTORY-V1",
+  "mode": "SHADOW",
+  "owner": "growth_brain",
+  "reuses": [
+    "boom-creative-learning-contract.json",
+    "boom-a7-integration-contract.json",
+    "creative_publish workflow"
+  ],
+  "stages": [
+    "product_truth_live",
+    "exact_reference_lock",
+    "claims_boundary",
+    "hook_tournament",
+    "concept_tournament",
+    "script_tournament",
+    "asset_candidate",
+    "red_team",
+    "visual_qa",
+    "owner_gate",
+    "publish_candidate_suppressed"
+  ],
+  "hard_rules": [
+    "No generation from unverified Product Truth.",
+    "No visual reinterpretation when exact reference is locked.",
+    "No claim outside verified evidence.",
+    "External publish remains suppressed in SHADOW.",
+    "Owner Gate is required before any external publish."
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "version": "BOOM-SUPABASE-RUNTIME-MAP-V1",
+  "project": "boom-social-world",
+  "project_ref": "zszlnahjqmwozwubetkm",
+  "observed_at": "2026-09-22",
+  "groups": [
+    {
+      "domain": "catalog_supplier",
+      "brain": "commerce_truth_brain",
+      "functions": [
+        "hunt-catalog-build",
+        "hunt-catalog-export",
+        "hunt-cj-v2-probe",
+        "hunt-cj-quote",
+        "hunt-cj-live-check",
+        "hunt-cj-gap-scan",
+        "hunt-cj-count-audit",
+        "hunt-cj-shelf-fill",
+        "hunt-cj-recent-page",
+        "hunt-cj-gap-current",
+        "hunt-cj-range-page",
+        "hunt-cj-scale-page",
+        "hunt-cj-scale-month"
+      ]
+    },
+    {
+      "domain": "commerce_economics",
+      "brain": "commerce_truth_brain",
+      "functions": [
+        "hunt-commerce-signal",
+        "hunt-commerce-learning",
+        "hunt-profit-engine",
+        "hunt-deal-engine",
+        "hunt-bundle-preview",
+        "hunt-shipping-chess-preview"
+      ]
+    },
+    {
+      "domain": "payment_order",
+      "brain": "operations_brain",
+      "functions": [
+        "hunt-payment-session",
+        "hunt-payment-options",
+        "hunt-payment-session-prelaunch",
+        "hunt-order-preview",
+        "hunt-order-orchestrator",
+        "hunt-payplus-callback",
+        "hunt-payplus-sandbox-evidence",
+        "hunt-finance-ledger-preview"
+      ]
+    },
+    {
+      "domain": "owner_release",
+      "brain": "boom_orchestrator",
+      "functions": [
+        "hunt-owner-mission-control",
+        "hunt-owner-activation",
+        "hunt-launch-readiness",
+        "hunt-business-identity"
+      ]
+    },
+    {
+      "domain": "boom_ai_media",
+      "brain": "growth_brain",
+      "functions": [
+        "hunt-boom-chat",
+        "hunt-boom-transcribe",
+        "hunt-boom-speak",
+        "hunt-boom-video-runway",
+        "hunt-boom-media-vault",
+        "hunt-boom-provider-readiness-probe"
+      ]
+    },
+    {
+      "domain": "intelligence_radar",
+      "brain": "intelligence_brain",
+      "functions": [
+        "hunt-f60t-snapshot",
+        "hunt-f60t-external-signals",
+        "hunt-f60t-oauth"
+      ]
+    },
+    {
+      "domain": "new_automation_code_only",
+      "brain": "boom_orchestrator",
+      "functions": [
+        "boom-automation-gateway",
+        "boom-shelf-coverage"
+      ],
+      "status": "NOT_DEPLOYED"
+    }
+  ],
+  "note": "Function status reflects observed platform inventory. Authorization/behavior must be verified per function; existence is not activation permission."
+}

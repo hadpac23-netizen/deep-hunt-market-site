@@ -1,0 +1,52 @@
+{
+  "version": "BOOM-CANONICAL-SCHEDULER-V1",
+  "mode": "SHADOW",
+  "owner": "boom_orchestrator",
+  "execution_adapter": "n8n_optional",
+  "authority_rule": "A schedule can trigger a workflow; it never grants permission to perform a material action.",
+  "concurrency": {
+    "default_per_workflow": 1,
+    "overlap_policy": "SKIP_OR_QUEUE_BY_WORKFLOW_POLICY",
+    "idempotency": "run_id + workflow key"
+  },
+  "jobs": [
+    {
+      "id": "category_health_legacy_30m",
+      "source": "legacy manager category-orchestrator",
+      "schedule": "*/30 * * * *",
+      "owner": "experience_brain",
+      "operation": "OBSERVE_AND_PROPOSE_ONLY",
+      "status": "PRESERVED_NOT_ACTIVATED"
+    },
+    {
+      "id": "site_reliability_legacy_30m",
+      "source": "legacy manager site-reliability",
+      "schedule": "*/30 * * * *",
+      "owner": "learning_governance_brain",
+      "operation": "OBSERVE_AND_INCIDENT_ROUTE",
+      "status": "PRESERVED_NOT_ACTIVATED"
+    },
+    {
+      "id": "shelf_coverage_17x1000",
+      "source": "new Automation Control Plane",
+      "schedule": null,
+      "owner": "commerce_truth_brain",
+      "operation": "READ_ONLY_AUDIT",
+      "status": "UNSCHEDULED_UNTIL_N8N_SHADOW_PROOF"
+    },
+    {
+      "id": "f60t_live_world_radar",
+      "source": "existing skill",
+      "schedule": null,
+      "owner": "intelligence_brain",
+      "operation": "OBSERVE_ONLY",
+      "status": "SCHEDULE_POLICY_NOT_LOCKED"
+    }
+  ],
+  "failure_policy": [
+    "A scheduler transport failure may route to Incident & Repair.",
+    "Missing evidence produces BLOCKED, not Incident.",
+    "No automatic retry may exceed the workflow retry budget.",
+    "No scheduled task may publish, spend, order, pay, contact a customer, or deploy without its normal Owner Gate."
+  ]
+}

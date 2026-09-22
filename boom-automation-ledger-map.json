@@ -1,0 +1,62 @@
+{
+  "version": "BOOM-AUTOMATION-LEDGER-MAP-V1",
+  "mode": "SHADOW",
+  "strategy": "REUSE_EXISTING_TABLES",
+  "source_of_truth": {
+    "runs": {
+      "table": "hunt_boom_team_runs",
+      "key": "run_key",
+      "mapping": {
+        "run_id": "run_key",
+        "workflow_id": "task",
+        "mode": "run_mode",
+        "state": "status",
+        "owner_gate_required": "owner_gate_required",
+        "lineage": "members",
+        "stage_snapshot": "candidate_outputs",
+        "owner_decision": "judge_verdict",
+        "evidence": "evidence",
+        "completed_at": "completed_at"
+      }
+    },
+    "events": {
+      "table": "hunt_boom_events",
+      "mapping": {
+        "owner": "source_manager_id",
+        "event_name": "event_type",
+        "severity": "severity",
+        "entity_type": "entity_type",
+        "run_id": "entity_key",
+        "title": "title",
+        "body": "body",
+        "payload": "payload"
+      }
+    },
+    "approvals": {
+      "table": "hunt_boom_decisions",
+      "key": "decision_key",
+      "mapping": {
+        "decision_key": "decision_key",
+        "title": "title",
+        "type": "decision_type",
+        "status": "status",
+        "priority": "priority",
+        "evidence": "source_reports",
+        "rationale": "rationale",
+        "action_class": "action_class",
+        "owner_approval_required": "owner_approval_required",
+        "proposed_action": "proposed_action",
+        "result": "result"
+      }
+    }
+  },
+  "rules": [
+    "No new automation ledger tables are required for V1.",
+    "Every run stores mission_id, workflow_id, run_id and correlation_id inside the lineage/evidence payload.",
+    "Every state transition emits a hunt_boom_events row with entity_type=automation_run.",
+    "Material workflows create exactly one proposed hunt_boom_decisions Owner Gate record per run.",
+    "The client may write only as an authenticated admin under existing RLS; no service_role key is exposed.",
+    "Owner approval closes SHADOW simulation only; external material actions stay suppressed.",
+    "No customer PII, supplier credentials, tokens, or raw secrets may enter these ledger payloads."
+  ]
+}

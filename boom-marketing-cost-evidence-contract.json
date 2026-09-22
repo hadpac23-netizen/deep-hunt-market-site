@@ -1,0 +1,131 @@
+{
+  "version": "BOOM-MARKETING-COST-EVIDENCE-GATEWAY-V1",
+  "mode": "SHADOW",
+  "owner": "growth_brain",
+  "authority": "NONE",
+  "purpose": "Normalize actual acquisition spend/fees into evidence records without guessing or treating missing integrations as zero cost.",
+  "accepted_source_classes": [
+    {
+      "id": "OFFICIAL_AD_API",
+      "examples": [
+        "Google Ads",
+        "Meta Ads",
+        "TikTok Ads",
+        "Microsoft Ads"
+      ],
+      "requirements": [
+        "official account connection",
+        "source account id",
+        "time window",
+        "currency",
+        "spend metric",
+        "retrieved_at",
+        "evidence_ref"
+      ]
+    },
+    {
+      "id": "ANALYTICS_COST_IMPORT",
+      "examples": [
+        "GA4 imported ad cost"
+      ],
+      "requirements": [
+        "coverage/linkage evidence",
+        "time window",
+        "currency",
+        "ad cost metric",
+        "retrieved_at",
+        "evidence_ref"
+      ]
+    },
+    {
+      "id": "VERIFIED_EXPORT",
+      "examples": [
+        "provider CSV/report export"
+      ],
+      "requirements": [
+        "provider identity",
+        "export period",
+        "currency",
+        "spend",
+        "file/evidence reference",
+        "review status"
+      ]
+    },
+    {
+      "id": "OWNER_VERIFIED_MANUAL",
+      "examples": [
+        "invoice/billing statement entered by Owner"
+      ],
+      "requirements": [
+        "owner verification",
+        "period",
+        "currency",
+        "spend",
+        "evidence reference"
+      ],
+      "note": "Manual entry is evidence-backed fallback, not estimated spend."
+    }
+  ],
+  "normalized_record": {
+    "required": [
+      "source_class",
+      "platform",
+      "account_ref",
+      "period_start",
+      "period_end",
+      "currency",
+      "spend",
+      "channel_fees",
+      "evidence_ref",
+      "retrieved_at",
+      "verification_status"
+    ],
+    "optional": [
+      "campaign_ref",
+      "ad_group_ref",
+      "country",
+      "notes"
+    ]
+  },
+  "verification_statuses": [
+    "VERIFIED",
+    "UNVERIFIED",
+    "PARTIAL",
+    "REJECTED"
+  ],
+  "zero_spend_rule": "spend=0 is VERIFIED only when coverage evidence proves the source covers the requested paid platform/account/time window. Missing connector or missing imported cost is UNKNOWN, not zero.",
+  "currency_rule": "Cross-currency Marketing Net Profit requires an evidenced FX rate/timestamp; otherwise keep per-currency results separate.",
+  "privacy_rule": "No customer PII, card/payment credentials or ad-account secrets in normalized records.",
+  "current_sources": [
+    {
+      "source": "Windsor Google Analytics 4",
+      "account_ref": "553246710",
+      "status": "TRAFFIC_CONNECTED_COST_NOT_VERIFIED",
+      "evidence": "evidence/HUNT-GA4-TRAFFIC-COST-AUDIT-2026-09-22.json"
+    }
+  ],
+  "current_missing": [
+    "Google Ads direct cost connector or proven GA4 cost-import coverage",
+    "Meta Ads cost connector when/if used",
+    "TikTok Ads cost connector when/if used",
+    "other paid-channel cost source when/if used"
+  ],
+  "hard_rules": [
+    "Never estimate spend from clicks, sessions, revenue or ROAS.",
+    "Never convert missing cost data into zero.",
+    "Never accept UNVERIFIED or PARTIAL records as CAC/Marketing Net Profit truth.",
+    "Never write campaign budgets or change external ads.",
+    "All external write actions remain Owner-gated elsewhere."
+  ],
+  "current_evidence_summary": {
+    "ga4_account_name": "HUNT DEAL",
+    "period": "last_30d_including_today",
+    "sessions": 25,
+    "purchases": 0,
+    "purchase_revenue": 0,
+    "advertiser_ad_cost_reported": 0,
+    "traffic_truth": "AVAILABLE",
+    "spend_truth": "NOT_VERIFIED",
+    "reason": "Only GA4 is connected through the current free connector path; no direct ad-platform cost connector or proven GA4 cost-import coverage."
+  }
+}

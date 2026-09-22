@@ -1,0 +1,82 @@
+{
+  "version": "HUNT-PAYMENT-LAUNCH-READINESS-AUDIT-2026-09-22-V1",
+  "observed_at": "2026-09-22T11:10:00Z",
+  "source": "Supabase read-only audit",
+  "production_mutation": false,
+  "routes": [
+    {
+      "route_key": "payplus_card",
+      "processor": "payplus",
+      "payment_method": "card",
+      "status": "planned",
+      "approval_reference": null,
+      "approved_at": null
+    },
+    {
+      "route_key": "payplus_apple_pay",
+      "processor": "payplus",
+      "payment_method": "apple_pay",
+      "status": "planned",
+      "approval_reference": null,
+      "approved_at": null
+    },
+    {
+      "route_key": "payplus_google_pay",
+      "processor": "payplus",
+      "payment_method": "google_pay",
+      "status": "planned",
+      "approval_reference": null,
+      "approved_at": null
+    },
+    {
+      "route_key": "paypal_wallet",
+      "processor": "paypal",
+      "payment_method": "paypal",
+      "status": "planned",
+      "approval_reference": null,
+      "approved_at": null
+    },
+    {
+      "route_key": "paypal_apple_pay",
+      "processor": "paypal",
+      "payment_method": "apple_pay",
+      "status": "planned",
+      "approval_reference": null,
+      "approved_at": null
+    },
+    {
+      "route_key": "paypal_google_pay",
+      "processor": "paypal",
+      "payment_method": "google_pay",
+      "status": "planned",
+      "approval_reference": null,
+      "approved_at": null
+    }
+  ],
+  "controls": {
+    "hunt_payment_live": {
+      "enabled": false,
+      "owner_approved": false
+    },
+    "hunt_payplus_callback_accept_paid": {
+      "enabled": false,
+      "owner_approved": false
+    },
+    "hunt_payplus_sandbox_evidence": {
+      "enabled": false,
+      "owner_approved": false
+    },
+    "hunt_supplier_order_live": {
+      "enabled": false,
+      "owner_approved": false
+    }
+  },
+  "conclusion": {
+    "live_routes": 0,
+    "live_ready_candidates": 0,
+    "payplus_state": "BLOCKED_ACCOUNT_APPROVAL_AND_SANDBOX_PROOF",
+    "paypal_state": "PLANNED_NO_LIVE_APPROVAL_EVIDENCE",
+    "master_payment_state": "OFF",
+    "supplier_live_state": "OFF"
+  }
+}

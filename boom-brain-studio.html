@@ -34,11 +34,17 @@
       </div>
       <div class="bs-truth glass">
         <strong id="bs-contract-state">Loading contracts…</strong>
-        <span>Read-only architecture surface. It does not publish, spend, change price, deploy, or execute supplier/payment actions.</span>
+        <span>Owner Control Room · automation is SHADOW. It does not publish, spend, change price, deploy, activate payments, or execute supplier orders.</span>
       </div>
     </section>
 
     <section class="bs-metrics" id="bs-metrics" aria-label="Brain OS metrics"></section>
+
+    <section class="bs-section bs-readiness-section">
+      <div class="bs-section-head"><div><small>ACTIVATION READINESS</small><h2>What is real, what is coded, what is still blocked</h2></div><span id="bs-readiness-state">Loading…</span></div>
+      <div id="bs-readiness" class="bs-readiness-grid"><div class="bs-empty">Loading readiness truth…</div></div>
+      <div id="bs-readiness-blockers" class="bs-readiness-blockers"></div>
+    </section>
 
     <section class="bs-section">
       <div class="bs-section-head"><div><small>COMMAND CHAIN</small><h2>Who runs before whom</h2></div><span>Owner → Orchestrator → specialist brains → learning</span></div>
@@ -103,6 +109,145 @@
     </section>
 
     <section class="bs-section">
+      <div class="bs-section-head"><div><small>AUTOMATION CONTROL PLANE</small><h2>BOOM decides. Workflow engines execute.</h2></div><span id="bs-automation-state">SHADOW</span></div>
+      <div class="bs-automation-banner glass">
+        <strong>n8n is an adapter — not a ninth brain.</strong>
+        <span>Supplier → Truth → Shelf · Incidents → Repair · Creative → QA → Owner Gate · Customers → Safe Actions · Analytics → Learning</span>
+      </div>
+      <div id="bs-automation-adapters" class="bs-automation-adapters"></div>
+      <div id="bs-automation-workflows" class="bs-automation-grid"></div>
+    </section>
+
+
+    <section class="bs-section">
+      <div class="bs-section-head"><div><small>AI OPERATING FACTORY</small><h2>Skills → Workflows → Router → Factories</h2></div><span>PLAN ONLY · SHADOW</span></div>
+      <div id="bs-ai-factory-summary" class="bs-shelf-summary"></div>
+      <div class="bs-columns">
+        <div>
+          <div class="bs-section-head"><div><small>SKILLS LIBRARY</small><h2>Reusable BOOM capabilities</h2></div><span>Brain-owned</span></div>
+          <div id="bs-skills-library" class="bs-skill-grid"><div class="bs-empty">Loading operational skills…</div></div>
+        </div>
+        <div>
+          <div class="bs-section-head"><div><small>WORKFLOW TEMPLATES</small><h2>Compile, do not execute</h2></div><span>Owner Gate preserved</span></div>
+          <div id="bs-workflow-templates" class="bs-template-grid"><div class="bs-empty">Loading templates…</div></div>
+          <div id="bs-workflow-plan-preview" class="bs-plan-preview glass"><span>No SHADOW plan compiled yet.</span></div>
+        </div>
+      </div>
+      <div class="bs-ai-factory-grid">
+        <article class="bs-factory-card">
+          <small>AI TOOL / MODEL ROUTER</small><h3>Quality + Cost + Speed + Privacy + Readiness</h3>
+          <div id="bs-router-policy"></div>
+        </article>
+        <article class="bs-factory-card">
+          <small>CREATIVE FACTORY</small><h3>Product Truth → Creative → QA → Owner Gate</h3>
+          <div id="bs-creative-factory"></div>
+        </article>
+        <article class="bs-factory-card">
+          <small>BUILD & REPAIR FACTORY</small><h3>Brief / Incident → Patch → Tests → Review</h3>
+          <div id="bs-build-repair-factory"></div>
+        </article>
+      </div>
+    </section>
+
+
+    <section class="bs-section bs-profit-section">
+      <div class="bs-section-head"><div><small>PROFIT MISSION CONTROL</small><h2>Sustainable verified net profit — every hour</h2></div><span>MISSION TARGET · NOT A GUARANTEE</span></div>
+      <div id="bs-profit-mission" class="bs-profit-hero glass"><div class="bs-empty">Loading Profit Engine…</div></div>
+      <div id="bs-profit-kpis" class="bs-shelf-summary"></div>
+      <div class="bs-profit-ledger-wrap">
+        <div class="bs-section-head"><div><small>PRODUCT PROFIT LEDGER</small><h2>Expected economics ≠ realized profit</h2></div><span>Existing HUNT stores · no parallel DB</span></div>
+        <div id="bs-product-profit-ledger-summary" class="bs-shelf-summary"></div>
+        <div id="bs-product-profit-ledger" class="bs-profit-ledger-grid"><div class="bs-empty">Loading verified profit evidence…</div></div>
+      </div>
+      <div class="bs-columns">
+        <div>
+          <div class="bs-section-head"><div><small>PROFIT ENGINES</small><h2>What BOOM optimizes</h2></div><span>Truth before scale</span></div>
+          <div id="bs-profit-modules" class="bs-profit-grid"><div class="bs-empty">Loading profit modules…</div></div>
+        </div>
+        <div>
+          <div class="bs-section-head"><div><small>HOURLY LOOP</small><h2>How the next hour gets smarter</h2></div><span>Observe → calculate → propose → learn</span></div>
+          <div id="bs-profit-loop" class="bs-journey-list"></div>
+          <div class="bs-section-head"><div><small>PROFIT MILESTONES</small><h2>Scale only from verified evidence</h2></div></div>
+          <div id="bs-profit-milestones" class="bs-milestone-row"></div>
+          <div class="bs-section-head"><div><small>LIVE HOURLY PROFIT REVIEW</small><h2>Exact VERIFIED only</h2></div><span>f60t_hourly_profit_ledger</span></div>
+          <div id="bs-hourly-profit-state" class="bs-hourly-profit-state glass"><div class="bs-empty">Loading hourly profit evidence…</div></div>
+          <div class="bs-section-head"><div><small>MARKETING NET-PROFIT ATTRIBUTION</small><h2>Orders + finance + touchpoint + real cost</h2></div><span id="bs-marketing-profit-state">Loading…</span></div>
+          <div id="bs-marketing-profit-attribution" class="bs-attribution-grid"><div class="bs-empty">Loading attribution truth…</div></div>
+          <div class="bs-section-head"><div><small>MARKETING COST EVIDENCE</small><h2>Traffic truth ≠ spend truth</h2></div><span id="bs-marketing-cost-state">Loading…</span></div>
+          <div id="bs-marketing-cost-evidence" class="bs-attribution-grid"><div class="bs-empty">Loading cost evidence…</div></div>
+          <div class="bs-section-head"><div><small>FIRST REAL-ORDER PROFIT PROOF</small><h2>Payment → Order → Finance → Settlement → Hourly VERIFIED</h2></div><span id="bs-first-real-order-state">Loading…</span></div>
+          <div id="bs-first-real-order-proof" class="bs-proof-grid"><div class="bs-empty">Loading real-order proof…</div></div>
+          <div class="bs-section-head"><div><small>PAYPLUS SANDBOX STATUS PROOF</small><h2>Signed callback → observed fingerprint → safe classification</h2></div><span id="bs-payplus-sandbox-state">Loading…</span></div>
+          <div id="bs-payplus-sandbox-proof" class="bs-proof-grid"><div class="bs-empty">Loading PayPlus sandbox proof…</div></div>
+          <div class="bs-section-head"><div><small>PAYMENT LAUNCH GATE</small><h2>Every PSP route must prove readiness before LIVE</h2></div><span id="bs-payment-launch-state">Loading…</span></div>
+          <div id="bs-payment-launch-gate" class="bs-payment-route-grid"><div class="bs-empty">Loading payment routes…</div></div>
+          <div class="bs-section-head"><div><small>CHECKOUT → ORDER → TRACKING E2E</small><h2>Account binding → supplier identity → tracking → customer visibility</h2></div><span id="bs-checkout-order-tracking-state">Loading…</span></div>
+          <div id="bs-checkout-order-tracking-proof" class="bs-proof-grid"><div class="bs-empty">Loading checkout/order/tracking proof…</div></div>
+        </div>
+      </div>
+      <div class="bs-profit-guard glass">
+        <strong>Profit target never overrides trust or safety.</strong>
+        <span>No autonomous paid spend, price change, discount change, publish, outreach, supplier order or payment action. Material actions stop at Owner Gate.</span>
+      </div>
+    </section>
+
+    <section class="bs-section bs-columns">
+      <div>
+        <div class="bs-section-head"><div><small>DURABLE RUN LEDGER</small><h2>Recent automation runs</h2></div><span>Existing BOOM tables · admin RLS</span></div>
+        <div id="bs-ledger-runs" class="bs-run-list"><div class="bs-empty">Loading run ledger…</div></div>
+      </div>
+      <div>
+        <div class="bs-section-head"><div><small>OWNER APPROVAL QUEUE</small><h2>Material actions waiting</h2></div><span>SHADOW · external action suppressed</span></div>
+        <div id="bs-approval-queue" class="bs-run-list"><div class="bs-empty">Loading approvals…</div></div>
+      </div>
+    </section>
+
+    <section class="bs-section">
+      <div class="bs-section-head"><div><small>OWNERSHIP / TOOLS / OWNER GATE</small><h2>Who owns truth. Which tool executes. Where BOOM must stop.</h2></div><span>Canonical control maps</span></div>
+      <div id="bs-control-map-summary" class="bs-shelf-summary"></div>
+      <div id="bs-control-maps" class="bs-control-map-grid"><div class="bs-empty">Loading ownership and tool maps…</div></div>
+    </section>
+
+    <section class="bs-section">
+      <div class="bs-section-head"><div><small>CONTROL PLANE CONSOLIDATION</small><h2>Brains → Agents → Skills → Scheduler</h2></div><span>No Brain Explosion</span></div>
+      <div id="bs-consolidation-summary" class="bs-shelf-summary"></div>
+      <div id="bs-consolidation-map" class="bs-consolidation-grid"><div class="bs-empty">Loading canonical registries…</div></div>
+      <div class="bs-columns bs-consolidation-detail">
+        <div><div class="bs-section-head"><div><small>LEGACY MANAGERS</small><h2>Rewire map</h2></div></div><div id="bs-agent-map" class="bs-map-list"></div></div>
+        <div><div class="bs-section-head"><div><small>SCHEDULER</small><h2>One trigger owner</h2></div></div><div id="bs-scheduler-map" class="bs-map-list"></div></div>
+      </div>
+    </section>
+
+    <section class="bs-section">
+      <div class="bs-section-head"><div><small>DOMAIN EXECUTION WIRING</small><h2>Existing data. One owner. No duplicate systems.</h2></div><span>Commerce · Customer · Learning</span></div>
+      <div id="bs-domain-wiring" class="bs-domain-grid"><div class="bs-empty">Loading canonical domain contracts…</div></div>
+    </section>
+
+    <section class="bs-section">
+      <div class="bs-section-head"><div><small>CREATIVE LEARNING · A6 → A7</small><h2>Truth before generation. Evidence before review.</h2></div><span>DRAFT_REVIEW · GENERATION OFF</span></div>
+      <div id="bs-creative-learning" class="bs-creative-grid"><div class="bs-empty">Loading recovered A6/A7 contracts…</div></div>
+    </section>
+
+    <section class="bs-section">
+      <div class="bs-section-head"><div><small>INCIDENT & REPAIR</small><h2>Failures become evidence-backed repair runs</h2></div><span>Detect → reproduce → root cause → patch → tests → review → Owner Gate</span></div>
+      <div id="bs-incidents" class="bs-run-list"><div class="bs-empty">Loading incidents…</div></div>
+    </section>
+
+    <section class="bs-section">
+      <div class="bs-section-head"><div><small>FRESH SHELF PRODUCT TRUTH</small><h2>Fresh price + stock + destination shipping</h2></div><span id="bs-fresh-shelf-state">Loading…</span></div>
+      <div id="bs-fresh-shelf-summary" class="bs-shelf-summary"></div>
+      <div id="bs-fresh-shelf-product-truth" class="bs-attribution-grid"><div class="bs-empty">Loading product truth evidence…</div></div>
+      <div class="bs-profit-guard glass"><strong>Shelf verified ≠ checkout verified.</strong><span>`recheck_before_checkout` products may appear only with fresh evidence; checkout still requires a new exact-variant stock/shipping quote.</span></div>
+    </section>
+
+    <section class="bs-section">
+      <div class="bs-section-head"><div><small>SHELF COVERAGE</small><h2>17 departments × 1,000 verified products</h2></div><span>Target, never fake inventory</span></div>
+      <div id="bs-shelf-target" class="bs-shelf-target glass"></div>
+      <div id="bs-shelf-coverage-summary" class="bs-shelf-summary"></div>
+      <div id="bs-shelf-coverage-matrix" class="bs-shelf-grid"><div class="bs-empty">Loading verified shelf evidence…</div></div>
+    </section>
+
+    <section class="bs-section">
       <div class="bs-section-head"><div><small>GOVERNANCE</small><h2>What can stop or constrain execution</h2></div><span>Budgets · circuit breaker · errors · reason codes · storage</span></div>
       <div id="bs-governance" class="bs-governance-grid"></div>
     </section>
@@ -110,6 +255,8 @@
     <section class="bs-section">
       <div class="bs-section-head"><div><small>LEGAL / LAUNCH GOVERNANCE</small><h2>Nothing publishes without verified identity and Owner Gate</h2></div><span>Terms · Privacy · Returns · Shipping</span></div>
       <div id="bs-legal-readiness" class="bs-journey-list"></div>
+      <div class="bs-section-head"><div><small>MARKET LEGAL / RETURNS / SHIPPING</small><h2>Mapped market or HOLD</h2></div><span id="bs-market-policy-state">Loading…</span></div>
+      <div id="bs-market-policy-readiness" class="bs-market-policy-grid"><div class="bs-empty">Loading market policy readiness…</div></div>
     </section>
 
     <section class="bs-section">
@@ -127,6 +274,23 @@
   <script src="market-core.js?v=boomcmd1"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
   <script src="boom-runtime.js?v=brainos2"></script>
+  <script src="boom-automation-ledger-adapter.js?v=ledger1"></script>
+  <script src="boom-learning-ledger-adapter.js?v=learn1"></script>
+  <script src="boom-n8n-adapter.js?v=n8n1"></script>
+  <script src="boom-shelf-coverage-audit.js?v=shelf1"></script>
+  <script src="boom-automation-runtime.js?v=auto2"></script>
+  <script src="boom-workflow-builder.js?v=factory1"></script>
+  <script src="boom-ai-tool-router.js?v=factory1"></script>
+  <script src="boom-profit-engine.js?v=profit1"></script>
+  <script src="boom-product-profit-ledger-adapter.js?v=profit1"></script>
+  <script src="boom-hourly-profit-loop.js?v=profit1"></script>
+  <script src="boom-marketing-cost-gateway.js?v=profit1"></script>
+  <script src="boom-first-real-order-proof.js?v=profit1"></script>
+  <script src="boom-payplus-sandbox-proof.js?v=payplus1"></script>
+  <script src="boom-payment-launch-gate.js?v=payment1"></script>
+  <script src="boom-checkout-order-tracking-proof.js?v=order1"></script>
+  <script src="boom-market-policy-readiness.js?v=legal2"></script>
+  <script src="boom-fresh-shelf-product-truth.js?v=truth1"></script>
   <script src="boom-brain-studio.js?v=brainos1"></script>
   <script src="hunt-theme.js?v=shop4"></script>
 </body>

@@ -1,0 +1,17 @@
+const assert=require("node:assert");
+const fs=require("node:fs");
+global.window={};
+require("./brand-video-router.js");
+const mission=JSON.parse(fs.readFileSync("brand-factory-seed-il-0001.json","utf8"));
+const plan=window.BoomVideoRouter.buildPlan(mission,{productImageUrl:mission.product_truth_snapshot.image_url,ownerApproved:false});
+assert.equal(plan.status,"DRAFT_PLAN");
+assert.equal(plan.execution_allowed,false);
+assert.equal(plan.shot_count,12);
+assert(plan.blockers.includes("OWNER_APPROVAL_REQUIRED"));
+assert(plan.blockers.includes("SERVER_SIDE_PROVIDER_CONNECTOR_REQUIRED"));
+assert(plan.shots.every(s=>s.requirements.aspect_ratio==="9:16"));
+assert(plan.shots.every(s=>s.requirements.input_mode==="image_to_video"));
+assert(plan.shots.every(s=>s.route.primary?.provider_id));
+assert(plan.provider_catalog.some(p=>p.id==="runway-gen45"&&p.maxSeconds===10));
+assert(plan.provider_catalog.some(p=>p.id==="google-veo31"&&p.nativeAudio===true));
+console.log("brand_video_router_tests=PASS");

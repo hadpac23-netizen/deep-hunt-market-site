@@ -1,0 +1,157 @@
+{
+  "version": "BOOM-CANONICAL-SKILL-REGISTRY-V1",
+  "rule": "A filename containing 'brain' does not create a Primary Brain. The Brain Registry is the only authority for Primary Brains.",
+  "skills": [
+    {
+      "path": "skills/boom-action-state-kernel.md",
+      "owner": "action_state_kernel",
+      "type": "CONTROL_PLANE",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-commerce-brain.md",
+      "owner": "commerce_truth_brain",
+      "type": "LEGACY_MIXED_SKILL",
+      "status": "SPLIT_MERGE"
+    },
+    {
+      "path": "skills/boom-commerce-truth-brain.md",
+      "owner": "commerce_truth_brain",
+      "type": "BRAIN_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-design-system-kernel.md",
+      "owner": "design_system_kernel",
+      "type": "CONTROL_PLANE",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-digital-marketing-university.md",
+      "owner": "growth_brain",
+      "type": "CURRICULUM_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-experience-brain.md",
+      "owner": "experience_brain",
+      "type": "BRAIN_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-free-growth-engine.md",
+      "owner": "growth_brain",
+      "type": "DOMAIN_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-growth-brain.md",
+      "owner": "growth_brain",
+      "type": "BRAIN_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-identity-session-kernel.md",
+      "owner": "identity_session_kernel",
+      "type": "CONTROL_PLANE",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-learning-governance-brain.md",
+      "owner": "learning_governance_brain",
+      "type": "BRAIN_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-marketing-brain.md",
+      "owner": "growth_brain",
+      "type": "DOMAIN_SKILL",
+      "status": "MERGE_WITH_GROWTH"
+    },
+    {
+      "path": "skills/boom-navigation-flow-kernel.md",
+      "owner": "navigation_flow_kernel",
+      "type": "CONTROL_PLANE",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-observability-kernel.md",
+      "owner": "observability_kernel",
+      "type": "CONTROL_PLANE",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-operations-brain.md",
+      "owner": "operations_brain",
+      "type": "BRAIN_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-orchestrator.md",
+      "owner": "boom_orchestrator",
+      "type": "BRAIN_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-personalization-brain.md",
+      "owner": "experience_brain",
+      "type": "DOMAIN_SKILL",
+      "status": "REWIRE_NOT_BRAIN"
+    },
+    {
+      "path": "skills/boom-resource-budget-kernel.md",
+      "owner": "boom_orchestrator",
+      "type": "CONTROL_PLANE",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-sales-advertising-brain.md",
+      "owner": "growth_brain",
+      "type": "DOMAIN_SKILL",
+      "status": "MERGE_WITH_GROWTH"
+    },
+    {
+      "path": "skills/boom-world-commerce-radar.md",
+      "owner": "intelligence_brain",
+      "type": "DOMAIN_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/f35-research-verification.md",
+      "owner": "intelligence_brain",
+      "type": "RESEARCH_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/f50-invention-engine.md",
+      "owner": "innovation_brain",
+      "type": "INNOVATION_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/f60t-live-world-radar.md",
+      "owner": "intelligence_brain",
+      "type": "RADAR_SKILL",
+      "status": "KEEP"
+    },
+    {
+      "path": "skills/hunt-marketplace-brain.md",
+      "owner": "commerce_truth_brain",
+      "type": "DOMAIN_MODULE",
+      "status": "REWIRE_NOT_BRAIN"
+    },
+    {
+      "path": "skills/hunt-promotion-engine.md",
+      "owner": "growth_brain",
+      "type": "DOMAIN_SKILL",
+      "status": "KEEP"
+    }
+  ],
+  "split_merge_notes": {
+    "skills/boom-commerce-brain.md": "Split truth/economics into commerce_truth_brain; ranking/personalization into experience_brain; promotion into growth_brain.",
+    "skills/boom-marketing-brain.md": "Merge operating guidance under growth_brain; retain specialized marketing capability.",
+    "skills/boom-sales-advertising-brain.md": "Merge merchandising/advertising capability under growth_brain with Experience/Commerce truth dependencies.",
+    "skills/boom-personalization-brain.md": "Personalization is an Experience skill, not a ninth brain.",
+    "skills/hunt-marketplace-brain.md": "Marketplace is a commerce domain module with Operations/Growth interfaces, not a Primary Brain."
+  }
+}

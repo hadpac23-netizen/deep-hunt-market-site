@@ -1,0 +1,345 @@
+{
+  "version": "BOOM-OPERATIONAL-SKILLS-V1.6-PRODUCT-TRUTH",
+  "mode": "SHADOW",
+  "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
+  "skills": [
+    {
+      "id": "check_product_truth",
+      "title": "Check Product Truth",
+      "owner": "commerce_truth_brain",
+      "purpose": "Verify supplier identity, product/variant truth, stock, price, shipping, media and market eligibility.",
+      "inputs": [
+        "product_id_or_supplier_item",
+        "market"
+      ],
+      "outputs": [
+        "truth_state",
+        "evidence_refs",
+        "blockers"
+      ],
+      "tools": [
+        "supabase_runtime",
+        "cj_supplier"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "audit_supplier",
+      "title": "Audit Supplier",
+      "owner": "commerce_truth_brain",
+      "purpose": "Verify official API/feed, terms, media rights, shipping support and supplier evidence before intake.",
+      "inputs": [
+        "supplier_id"
+      ],
+      "outputs": [
+        "supplier_readiness",
+        "evidence_refs",
+        "blockers"
+      ],
+      "tools": [
+        "supabase_runtime"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "fill_shelf_candidate",
+      "title": "Fill Shelf Candidate",
+      "owner": "commerce_truth_brain",
+      "purpose": "Find verified sellable candidates for a department gap without activating inventory.",
+      "inputs": [
+        "department",
+        "gap_target"
+      ],
+      "outputs": [
+        "candidate_products",
+        "coverage_delta_proposal"
+      ],
+      "tools": [
+        "supabase_runtime",
+        "cj_supplier"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "build_feature_candidate",
+      "title": "Build Feature Candidate",
+      "owner": "innovation_brain",
+      "purpose": "Turn an approved product/UX brief into a code-change candidate with tests and evidence.",
+      "inputs": [
+        "brief",
+        "constraints",
+        "source_refs"
+      ],
+      "outputs": [
+        "patch_candidate",
+        "tests",
+        "evidence_refs"
+      ],
+      "tools": [
+        "github_source_control"
+      ],
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "create_ad_candidate",
+      "title": "Create Ad Candidate",
+      "owner": "growth_brain",
+      "purpose": "Create hook, concept, script and media candidate from verified Product Truth.",
+      "inputs": [
+        "product_truth",
+        "campaign_goal",
+        "locked_references"
+      ],
+      "outputs": [
+        "creative_candidate",
+        "claims",
+        "visual_qa"
+      ],
+      "tools": [
+        "creative_video_provider"
+      ],
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "create_motion_candidate",
+      "title": "Create Motion Candidate",
+      "owner": "growth_brain",
+      "purpose": "Create premium brand/product motion candidate while preserving locked visual references.",
+      "inputs": [
+        "locked_reference",
+        "motion_brief"
+      ],
+      "outputs": [
+        "motion_candidate",
+        "visual_qa",
+        "reference_match"
+      ],
+      "tools": [
+        "creative_video_provider"
+      ],
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "repair_incident",
+      "title": "Repair Incident",
+      "owner": "learning_governance_brain",
+      "purpose": "Reproduce, find root cause, create minimal patch candidate, test, review and prepare rollback.",
+      "inputs": [
+        "incident_id",
+        "evidence_refs"
+      ],
+      "outputs": [
+        "root_cause",
+        "patch_candidate",
+        "tests",
+        "rollback_plan"
+      ],
+      "tools": [
+        "github_source_control",
+        "supabase_runtime"
+      ],
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "research_market",
+      "title": "Research Market",
+      "owner": "intelligence_brain",
+      "purpose": "Collect fresh market evidence and convert it into sourced opportunities or risks.",
+      "inputs": [
+        "research_question",
+        "markets"
+      ],
+      "outputs": [
+        "evidence_pack",
+        "findings",
+        "confidence"
+      ],
+      "tools": [
+        "f60t_signal_tools"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "attribute_marketing_profit",
+      "title": "Attribute Marketing Profit",
+      "owner": "growth_brain",
+      "purpose": "Join real order, finance, touchpoint and actual channel-cost evidence before claiming marketing net profit or CAC.",
+      "inputs": [
+        "time_window",
+        "channel_or_campaign"
+      ],
+      "outputs": [
+        "attribution_state",
+        "realized_profit",
+        "marketing_net_profit",
+        "cac",
+        "blockers"
+      ],
+      "tools": [
+        "supabase_runtime",
+        "marketing_cost_gateway"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_hourly_profit",
+      "title": "Review Hourly Profit",
+      "owner": "boom_orchestrator",
+      "purpose": "Read exact-VERIFIED hourly profit evidence, calculate the mission gap and propose next-hour actions without execution.",
+      "inputs": [
+        "hour_window",
+        "mission_target"
+      ],
+      "outputs": [
+        "verified_profit_per_hour",
+        "target_gap",
+        "constraint",
+        "proposals"
+      ],
+      "tools": [
+        "supabase_runtime"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_payment_launch_readiness",
+      "title": "Review Payment Launch Readiness",
+      "owner": "operations_brain",
+      "purpose": "Evaluate every HUNT payment route against commercial/account, sandbox, callback, refund, finance, settlement, country/currency, legal and Owner Gate evidence without activation.",
+      "inputs": [
+        "processor_or_route",
+        "market"
+      ],
+      "outputs": [
+        "route_state",
+        "missing_gates",
+        "blocker",
+        "evidence_refs"
+      ],
+      "tools": [
+        "supabase_runtime",
+        "payment_launch_gate"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_checkout_order_tracking",
+      "title": "Review Checkout → Order → Tracking",
+      "owner": "operations_brain",
+      "purpose": "Prove checkout ownership, sandbox order, supplier order identity, persisted tracking and user-readable order state without live fulfillment.",
+      "inputs": [
+        "payment_session_or_evidence_window"
+      ],
+      "outputs": [
+        "e2e_state",
+        "stage_checks",
+        "blocker",
+        "historical_failures"
+      ],
+      "tools": [
+        "supabase_runtime",
+        "checkout_order_tracking_proof"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_market_policy_readiness",
+      "title": "Review Market Legal / Returns / Shipping Readiness",
+      "owner": "learning_governance_brain",
+      "purpose": "Gate each market using published business identity, legal documents, verified shipping promises, cancellation/return flow and market-specific review.",
+      "inputs": [
+        "country_or_market",
+        "launch_scope"
+      ],
+      "outputs": [
+        "market_state",
+        "missing_gates",
+        "source_baseline",
+        "owner_review_required"
+      ],
+      "tools": [
+        "market_policy_readiness"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_performance_mobile",
+      "title": "Review Performance / Mobile Readiness",
+      "owner": "experience_brain",
+      "purpose": "Evaluate responsive integrity, homepage initial-render budgets, touch targets, critical browser failures and PWA update readiness.",
+      "inputs": [
+        "qa_evidence",
+        "preview_state"
+      ],
+      "outputs": [
+        "mobile_state",
+        "tablet_state",
+        "pwa_state",
+        "blockers"
+      ],
+      "tools": [
+        "performance_mobile_readiness"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_launch_readiness",
+      "title": "Review Launch Readiness",
+      "owner": "boom_orchestrator",
+      "purpose": "Aggregate canonical domain gates and live non-sensitive launch metrics into one owner-facing report without changing any source gate.",
+      "inputs": [
+        "readiness_snapshot",
+        "launch_scope"
+      ],
+      "outputs": [
+        "overall_state",
+        "domain_states",
+        "top_blockers",
+        "live_metrics"
+      ],
+      "tools": [
+        "launch_readiness_aggregator"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "refresh_product_truth_evidence",
+      "title": "Refresh Product Truth Evidence",
+      "owner": "commerce_truth_brain",
+      "purpose": "Recheck CJ product identity, retail/profit gate, variant stock and destination shipping; write evidence observations only and preserve checkout recheck policy.",
+      "inputs": [
+        "provider",
+        "destination_country",
+        "batch_limit"
+      ],
+      "outputs": [
+        "fresh_shelf_verified",
+        "stale_or_unverified",
+        "checkout_recheck_required",
+        "evidence_refs"
+      ],
+      "tools": [
+        "supabase_runtime",
+        "cj_supplier",
+        "fresh_shelf_product_truth"
+      ],
+      "material": false,
+      "owner_gate": false
+    }
+  ]
+}

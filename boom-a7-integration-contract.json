@@ -1,0 +1,60 @@
+{
+  "version": "BOOM-A7-INTEGRATION-QA-V1",
+  "source_pr": 7,
+  "purpose": "Integrate A1-A6 evidence into one readiness result before any alpha/creative activation.",
+  "stages": [
+    {
+      "id": "A1",
+      "name": "Product Truth",
+      "owner": "commerce_truth_brain"
+    },
+    {
+      "id": "A2",
+      "name": "Decision Brain + Taste DNA",
+      "owner": "experience_brain"
+    },
+    {
+      "id": "A3",
+      "name": "Memory & Actions",
+      "owner": "experience_brain"
+    },
+    {
+      "id": "A4",
+      "name": "Dynamic Worlds",
+      "owner": "experience_brain"
+    },
+    {
+      "id": "A5",
+      "name": "Stylist + Safe Mirror",
+      "owner": "experience_brain"
+    },
+    {
+      "id": "A6",
+      "name": "Creative Learning",
+      "owner": "growth_brain"
+    }
+  ],
+  "readiness": {
+    "required_pass": "6/6",
+    "pass_status": "READY_FOR_OWNER_ALPHA_REVIEW",
+    "blocked_status": "BLOCKED_EVIDENCE_REQUIRED"
+  },
+  "boundaries": {
+    "production_ready": false,
+    "production_changed": false,
+    "execution_allowed": false,
+    "supplier_calls": 0,
+    "ai_provider_calls": 0,
+    "spend_authorized": false,
+    "publishing_authorized": false,
+    "payments_activated": false,
+    "order_routing_activated": false,
+    "owner_gate": "OWNER_REVIEW_REQUIRED"
+  },
+  "control_plane_mapping": {
+    "run_ledger": "hunt_boom_team_runs",
+    "evidence_events": "hunt_boom_events",
+    "owner_gate": "hunt_boom_decisions",
+    "orchestrator": "boom_orchestrator"
+  }
+}

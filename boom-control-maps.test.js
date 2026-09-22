@@ -1,0 +1,13 @@
+const fs=require("fs"),assert=require("assert");
+const data=JSON.parse(fs.readFileSync("boom-data-ownership-map.json","utf8"));
+const gates=JSON.parse(fs.readFileSync("boom-owner-gate-map.json","utf8"));
+const tools=JSON.parse(fs.readFileSync("boom-tool-registry.json","utf8"));
+const runtime=JSON.parse(fs.readFileSync("boom-supabase-runtime-map.json","utf8"));
+assert.equal(new Set(data.stores.map(x=>x.table)).size,data.stores.length);
+assert(data.stores.some(x=>x.table==="hunt_boom_decisions"&&x.approver==="OWNER"));
+assert(gates.actions.length>=10&&gates.actions.every(x=>x.gate==="REQUIRED"));
+assert(tools.runtime_tools.every(x=>x.authority==="NONE"));
+assert.equal(tools.runtime_tools.find(x=>x.id==="n8n").status,"CODED_NOT_DEPLOYED_NOT_CONNECTED");
+assert.equal(tools.runtime_tools.find(x=>x.id==="boom_automation_gateway").status,"CODE_ONLY_NOT_DEPLOYED");
+assert.equal(runtime.groups.find(x=>x.domain==="new_automation_code_only").status,"NOT_DEPLOYED");
+console.log("BOOM control maps: PASS — ownership, tools, Owner Gate and deploy truth coherent");

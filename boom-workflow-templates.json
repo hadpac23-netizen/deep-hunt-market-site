@@ -1,0 +1,199 @@
+{
+  "version": "BOOM-WORKFLOW-TEMPLATES-V1.6-PRODUCT-TRUTH",
+  "mode": "SHADOW",
+  "rule": "Templates compile reusable Skills into a plan. Compilation does not execute tools or material actions.",
+  "templates": [
+    {
+      "id": "supplier_intake_to_shelf",
+      "title": "Supplier Intake → Shelf Candidate",
+      "owner": "commerce_truth_brain",
+      "trigger": "manual_or_supplier_feed",
+      "skills": [
+        "audit_supplier",
+        "check_product_truth",
+        "fill_shelf_candidate"
+      ],
+      "final_action": "shelf_candidate_only",
+      "material": false
+    },
+    {
+      "id": "shelf_gap_recovery",
+      "title": "Shelf Gap Recovery",
+      "owner": "commerce_truth_brain",
+      "trigger": "shelf_coverage_gap",
+      "skills": [
+        "research_market",
+        "audit_supplier",
+        "check_product_truth",
+        "fill_shelf_candidate"
+      ],
+      "final_action": "coverage_proposal",
+      "material": false
+    },
+    {
+      "id": "product_ad_factory",
+      "title": "Product → Ad Candidate",
+      "owner": "growth_brain",
+      "trigger": "promotion_candidate",
+      "skills": [
+        "check_product_truth",
+        "create_ad_candidate"
+      ],
+      "final_action": "owner_review",
+      "material": true
+    },
+    {
+      "id": "brand_motion_factory",
+      "title": "Locked Reference → Motion Candidate",
+      "owner": "growth_brain",
+      "trigger": "manual_creative_brief",
+      "skills": [
+        "create_motion_candidate"
+      ],
+      "final_action": "owner_review",
+      "material": true
+    },
+    {
+      "id": "incident_repair_factory",
+      "title": "Incident → Repair Candidate",
+      "owner": "learning_governance_brain",
+      "trigger": "runtime_failure",
+      "skills": [
+        "repair_incident"
+      ],
+      "final_action": "owner_review_before_deploy",
+      "material": true
+    },
+    {
+      "id": "feature_build_factory",
+      "title": "Brief → Feature Candidate",
+      "owner": "innovation_brain",
+      "trigger": "approved_build_brief",
+      "skills": [
+        "research_market",
+        "build_feature_candidate"
+      ],
+      "final_action": "owner_review_before_preview",
+      "material": true
+    },
+    {
+      "id": "market_opportunity_scan",
+      "title": "Market Opportunity Scan",
+      "owner": "intelligence_brain",
+      "trigger": "manual_or_scheduler",
+      "skills": [
+        "research_market"
+      ],
+      "final_action": "evidence_pack",
+      "material": false
+    },
+    {
+      "id": "launch_readiness_review",
+      "title": "Launch Readiness Review",
+      "owner": "boom_orchestrator",
+      "trigger": "launch_window",
+      "skills": [
+        "check_product_truth",
+        "research_market"
+      ],
+      "final_action": "owner_launch_decision",
+      "material": true
+    },
+    {
+      "id": "marketing_profit_review",
+      "title": "Marketing → Realized Net Profit Review",
+      "owner": "growth_brain",
+      "trigger": "hourly_or_manual",
+      "skills": [
+        "attribute_marketing_profit"
+      ],
+      "final_action": "evidence_and_opportunity_report",
+      "material": false
+    },
+    {
+      "id": "hourly_profit_review",
+      "title": "Hourly Profit Mission Review",
+      "owner": "boom_orchestrator",
+      "trigger": "hourly_or_manual",
+      "skills": [
+        "review_hourly_profit",
+        "attribute_marketing_profit"
+      ],
+      "final_action": "next_hour_proposals",
+      "material": false
+    },
+    {
+      "id": "payment_launch_readiness_review",
+      "title": "Payment Route → Launch Readiness",
+      "owner": "operations_brain",
+      "trigger": "manual_or_launch_window",
+      "skills": [
+        "review_payment_launch_readiness"
+      ],
+      "final_action": "evidence_report_only",
+      "material": false
+    },
+    {
+      "id": "checkout_order_tracking_e2e",
+      "title": "Checkout → Order → Tracking E2E",
+      "owner": "operations_brain",
+      "trigger": "manual_or_launch_window",
+      "skills": [
+        "review_checkout_order_tracking"
+      ],
+      "final_action": "evidence_report_only",
+      "material": false
+    },
+    {
+      "id": "market_policy_launch_review",
+      "title": "Market → Legal / Returns / Shipping Launch Review",
+      "owner": "learning_governance_brain",
+      "trigger": "market_enablement_or_launch_window",
+      "skills": [
+        "review_market_policy_readiness"
+      ],
+      "final_action": "hold_or_owner_review",
+      "material": false
+    },
+    {
+      "id": "performance_mobile_review",
+      "title": "Performance → Mobile / PWA Review",
+      "owner": "experience_brain",
+      "trigger": "manual_or_preview",
+      "skills": [
+        "review_performance_mobile"
+      ],
+      "final_action": "evidence_report_only",
+      "material": false
+    },
+    {
+      "id": "launch_command_review",
+      "title": "Launch Command Review",
+      "owner": "boom_orchestrator",
+      "trigger": "manual_or_launch_window",
+      "skills": [
+        "review_launch_readiness",
+        "review_performance_mobile",
+        "review_payment_launch_readiness",
+        "review_checkout_order_tracking",
+        "review_market_policy_readiness",
+        "review_hourly_profit"
+      ],
+      "final_action": "owner_launch_readiness_report",
+      "material": false
+    },
+    {
+      "id": "fresh_shelf_product_truth_refresh",
+      "title": "Stale Catalog → Fresh Shelf Truth",
+      "owner": "commerce_truth_brain",
+      "trigger": "freshness_gap_or_manual",
+      "skills": [
+        "refresh_product_truth_evidence",
+        "check_product_truth",
+        "fill_shelf_candidate"
+      ],
+      "final_action": "evidence_refresh_only",
+      "material": false
+    }
+  ]
+}

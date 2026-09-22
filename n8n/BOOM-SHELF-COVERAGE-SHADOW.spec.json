@@ -1,0 +1,108 @@
+{
+  "version": "BOOM-N8N-SHELF-COVERAGE-SHADOW-V1",
+  "status": "SPEC_READY_NOT_CONNECTED",
+  "purpose": "Read-only HUNT shelf coverage analysis under BOOM authority.",
+  "security": {
+    "inbound": "Header auth required: X-BOOM-Webhook-Token",
+    "mode_header": "X-BOOM-Mode must equal SHADOW",
+    "idempotency": "X-BOOM-Run-ID required",
+    "credentials": "No Supabase credentials, supplier secrets, payment secrets, or customer data in n8n.",
+    "authority": "NONE",
+    "material_actions": "FORBIDDEN"
+  },
+  "input_contract": {
+    "required": [
+      "mode",
+      "authority",
+      "workflow_id",
+      "run_id",
+      "mission_id",
+      "correlation_id",
+      "payload"
+    ],
+    "workflow_id": "shelf_coverage_17x1000",
+    "payload": {
+      "allowed": [
+        "coverage_snapshot",
+        "requested_departments",
+        "audit_reason"
+      ],
+      "forbidden": [
+        "email",
+        "phone",
+        "address",
+        "token",
+        "secret",
+        "credential",
+        "payment",
+        "supplier_order"
+      ]
+    }
+  },
+  "logical_nodes": [
+    {
+      "id": "webhook",
+      "type": "Webhook",
+      "operation": "POST",
+      "auth": "headerAuth",
+      "action": "accept BOOM SHADOW run"
+    },
+    {
+      "id": "validate",
+      "type": "Guard",
+      "action": "require SHADOW + workflow_id + run identity; reject otherwise"
+    },
+    {
+      "id": "analyze",
+      "type": "Transform",
+      "action": "classify each department UNRESOLVED/UNKNOWN/EMPTY/CRITICAL/THIN/BUILDING/READY and compute gap_to_1000"
+    },
+    {
+      "id": "gap_queue",
+      "type": "Transform",
+      "action": "return read-only supplier gap candidates; never contact supplier"
+    },
+    {
+      "id": "respond",
+      "type": "RespondToWebhook",
+      "action": "return sanitized analysis to BOOM"
+    }
+  ],
+  "output_contract": {
+    "fields": [
+      "ok",
+      "workflow_id",
+      "run_id",
+      "correlation_id",
+      "summary",
+      "departments",
+      "gap_queue"
+    ],
+    "summary": [
+      "resolved",
+      "unresolved",
+      "fresh",
+      "stale",
+      "ready",
+      "known_verified_total",
+      "target_total"
+    ],
+    "gap_queue_rule": "Proposal only. BOOM commerce_truth_brain must review; no supplier outreach or catalog activation."
+  },
+  "failure_policy": {
+    "invalid_identity": "HTTP 400",
+    "wrong_workflow": "HTTP 403",
+    "wrong_mode": "HTTP 403",
+    "duplicate_run": "return prior safe result when possible",
+    "internal_error": "HTTP 500 + sanitized code only",
+    "retry": "BOOM Runtime owns bounded retries"
+  },
+  "done_when": [
+    "one test webhook succeeds",
+    "one invalid workflow is rejected",
+    "one duplicate run proves idempotent handling",
+    "one controlled error returns to BOOM retry path",
+    "no secret appears in n8n execution input/output",
+    "Owner reviews evidence before expanding allowlist"
+  ]
+}

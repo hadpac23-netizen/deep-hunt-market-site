@@ -1,0 +1,77 @@
+{
+  "version": "BOOM-AI-TOOL-ROUTER-V1",
+  "mode": "PLAN_ONLY",
+  "authority": "NONE",
+  "owner": "boom_orchestrator",
+  "purpose": "Select an eligible model/tool route per task using quality, cost, speed, privacy and readiness. Router proposes; Tool Gateway authorizes; Owner Gate controls material actions.",
+  "dimensions": [
+    {
+      "id": "quality",
+      "weight": 0.4
+    },
+    {
+      "id": "cost",
+      "weight": 0.2
+    },
+    {
+      "id": "speed",
+      "weight": 0.15
+    },
+    {
+      "id": "privacy",
+      "weight": 0.15
+    },
+    {
+      "id": "readiness",
+      "weight": 0.1
+    }
+  ],
+  "hard_gates": [
+    "tool must be allowlisted",
+    "tool status must permit requested capability",
+    "required evidence/privacy policy must pass",
+    "no material action from router",
+    "locked-reference creative tasks require reference-preservation capability"
+  ],
+  "routes": [
+    {
+      "task": "code_build",
+      "preferred_classes": [
+        "CODE_AGENT",
+        "SOURCE_CONTROL"
+      ],
+      "fallback": "manual_review"
+    },
+    {
+      "task": "research",
+      "preferred_classes": [
+        "WORLD_SIGNAL_OBSERVATION",
+        "RESEARCH"
+      ],
+      "fallback": "manual_review"
+    },
+    {
+      "task": "workflow_execution",
+      "preferred_classes": [
+        "WORKFLOW_EXECUTION"
+      ],
+      "fallback": "boom_runtime_only"
+    },
+    {
+      "task": "image_video_motion",
+      "preferred_classes": [
+        "AI_MEDIA"
+      ],
+      "fallback": "draft_only"
+    },
+    {
+      "task": "commerce_truth",
+      "preferred_classes": [
+        "DATA_AUTH_FUNCTIONS",
+        "SUPPLIER_CONNECTOR"
+      ],
+      "fallback": "hold_unknown"
+    }
+  ],
+  "learning_rule": "Observed outcomes may propose score updates through Learning Governance; no automatic provider promotion."
+}

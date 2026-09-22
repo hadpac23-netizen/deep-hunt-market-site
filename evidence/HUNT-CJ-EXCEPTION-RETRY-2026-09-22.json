@@ -1,0 +1,32 @@
+{
+  "version": "HUNT-CJ-EXCEPTION-RETRY-2026-09-22-V1",
+  "observed_at": "2026-09-22T13:20:35.925Z",
+  "retry_scan_id": "CJ-IL-20260922-RETRY-B",
+  "previous_controlled_state": {
+    "verified": 57,
+    "product_failed": 12,
+    "price_or_profit_blocked": 5,
+    "no_verified_variant": 2
+  },
+  "retry_scope": {
+    "products": 19,
+    "product_lookup_attempts": 3,
+    "variant_probe_limit_normal": 12,
+    "variant_probe_limit_no_variant": 18
+  },
+  "result": {
+    "verified_recovered": 0,
+    "product_failed_after_3_retries": 6,
+    "price_or_profit_blocked": 11,
+    "no_verified_variant": 2
+  },
+  "conclusion": "Most earlier CJ lookup failures had already recovered in the canonical scan. The remaining 19 are now better classified; no additional Fresh Shelf products were promoted.",
+  "price_gate_bug": {
+    "found": true,
+    "old_margin_floor": "supplier_cost / (1 - target_margin)",
+    "corrected_margin_floor": "supplier_cost / (reserve_denominator - target_margin)",
+    "production_price_changes": 0,
+    "deployment_changes": 0
+  },
+  "hard_truth": "57 CJ products remain Fresh Shelf Verified for IL; 19 remain blocked/recheck; 0 Checkout Live Verified."
+}

@@ -1,0 +1,62 @@
+{
+  "version": "BOOM-CRITICAL-EDGE-AUTH-REVIEW-V1",
+  "observed_at": "2026-09-22",
+  "scope": "Critical existing Supabase Edge Functions relevant to the new Control Plane.",
+  "findings": [
+    {
+      "function": "hunt-cj-quote",
+      "verify_jwt": false,
+      "class": "PUBLIC_READ_ONLY_SUPPLIER_QUOTE",
+      "mutates_db": false,
+      "auth": "No user/admin auth observed; supplier credentials remain server-side environment variables.",
+      "control": "READ_ONLY_ONLY",
+      "next": "Add/verify abuse protection, rate limiting and bounded supplier API consumption before automation scale."
+    },
+    {
+      "function": "hunt-payment-session",
+      "verify_jwt": false,
+      "class": "CUSTOM_USER_AUTH_PAYMENT_SESSION",
+      "mutates_db": true,
+      "auth": "Authorization/Bearer + Supabase user lookup observed.",
+      "control": "PAYMENT REMAINS PRELAUNCH / OWNER-GATED",
+      "next": "Preserve custom auth and payment-mode gates; do not infer activation from ACTIVE function status."
+    },
+    {
+      "function": "hunt-order-orchestrator",
+      "verify_jwt": false,
+      "class": "CUSTOM_ADMIN_ORDER_ORCHESTRATOR",
+      "mutates_db": true,
+      "auth": "Admin profile check observed; runtime controls and dry_run/sandbox/live mode checks present.",
+      "control": "MATERIAL ORDER EXECUTION OWNER-GATED",
+      "next": "Control Plane must not call live path unless runtime controls + Owner Gate are both verified."
+    },
+    {
+      "function": "hunt-payplus-callback",
+      "verify_jwt": false,
+      "class": "SIGNED_PAYMENT_CALLBACK",
+      "mutates_db": true,
+      "auth": "Callback signature/secret verification signals observed; service role used server-side.",
+      "control": "WEBHOOK_ONLY",
+      "next": "Keep callback isolated from browser-triggered Owner actions; proof exact signature/status behavior in payment launch QA."
+    },
+    {
+      "function": "hunt-owner-activation",
+      "verify_jwt": false,
+      "class": "CUSTOM_BEARER_ADMIN_OWNER_GATE",
+      "mutates_db": false,
+      "auth": "Bearer user lookup + admin check observed.",
+      "control": "OWNER CONTROL",
+      "next": "Treat as existing owner-control capability; central decision queue remains canonical for new automation."
+    },
+    {
+      "function": "hunt-f60t-snapshot",
+      "verify_jwt": false,
+      "class": "ADMIN_OR_HASHED_CRON_SECRET",
+      "mutates_db": true,
+      "auth": "Admin path or x-f60t-cron-secret compared to stored hash.",
+      "control": "OBSERVATION/RADAR",
+      "next": "Scheduler may trigger observation only; material downstream action still requires normal gates."
+    }
+  ],
+  "rule": "verify_jwt=false is metadata, not a verdict. Classification requires code-level auth/behavior evidence."
+}

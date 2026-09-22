@@ -1,0 +1,95 @@
+{
+  "version": "BOOM-MARKETING-NET-PROFIT-ATTRIBUTION-V1",
+  "mode": "SHADOW",
+  "owner": "growth_brain",
+  "purpose": "Attribute verified realized profit to marketing source/campaign only when purchase, finance and acquisition-cost evidence are all present.",
+  "canonical_sources": [
+    {
+      "source": "hunt_attribution_ledger",
+      "role": "first/last UTM and click/provider linkage",
+      "access": "SERVER_ONLY_OR_REVIEWED_ADMIN_ENDPOINT"
+    },
+    {
+      "source": "hunt_purchase_attribution_bridge",
+      "role": "real-order + finance evidence readiness bridge",
+      "access": "SERVER_ONLY_UNTIL_RLS_HARDENED"
+    },
+    {
+      "source": "hunt_order_finance_ledger",
+      "role": "realized available profit",
+      "access": "ADMIN_RLS"
+    },
+    {
+      "source": "hunt_orders",
+      "role": "non-test order truth",
+      "access": "ADMIN_RLS"
+    },
+    {
+      "source": "hunt_marketing_experiments",
+      "role": "experiment/channel metadata; not proof of spend",
+      "access": "REVIEW_BEFORE_BROWSER_USE"
+    },
+    {
+      "source": "external_channel_cost_evidence",
+      "role": "actual spend/fees by source/campaign/time window",
+      "access": "REQUIRED_FOR_PAID_NET_PROFIT"
+    }
+  ],
+  "attribution_states": [
+    "NO_REAL_ORDER",
+    "NO_FINANCE_EVIDENCE",
+    "NO_TOUCHPOINT_LINKAGE",
+    "NO_COST_EVIDENCE",
+    "ATTRIBUTED_REALIZED_PROFIT",
+    "ATTRIBUTED_NET_PROFIT"
+  ],
+  "required_for_conversion_claim": [
+    "order_is_test=false",
+    "real_order_linked=true",
+    "server_purchase_confirmation=true",
+    "purchase_touchpoint_linkage=true",
+    "conversion_claim_allowed=true"
+  ],
+  "required_for_profit_claim": [
+    "finance_ledger_present=true",
+    "finance_is_test=false",
+    "profit_evidence_ready=true",
+    "available_profit is numeric"
+  ],
+  "required_for_paid_net_profit_claim": [
+    "all profit requirements",
+    "actual marketing spend/fees for matching source/campaign/time window",
+    "currency normalization evidence"
+  ],
+  "formulas": {
+    "attributed_realized_profit": "sum(available_profit for claim-eligible real orders)",
+    "marketing_net_profit": "attributed_realized_profit - actual_marketing_spend - channel_fees",
+    "cac": "actual_marketing_spend / attributable_new_customers",
+    "roas": "attributed_revenue / actual_marketing_spend (diagnostic only; never primary profit KPI)"
+  },
+  "hard_rules": [
+    "Never infer paid spend from campaign presence.",
+    "Missing marketing cost evidence means Marketing Net Profit and CAC are UNKNOWN.",
+    "Never count test orders.",
+    "Never claim attribution when conversion_claim_allowed is false.",
+    "Never optimize solely on ROAS.",
+    "No campaign budget/publish/change authority.",
+    "Material growth actions require Owner Gate."
+  ],
+  "current_truth": {
+    "purchase_bridge_rows": 32,
+    "real_order_linked_rows": 0,
+    "profit_evidence_ready_rows": 0,
+    "attribution_ledger_rows": 32,
+    "marketing_cost_feed": "GA4_TRAFFIC_CONNECTED_COST_NOT_VERIFIED",
+    "state": "NOT_READY_FOR_REAL_NET_PROFIT_ATTRIBUTION",
+    "ga4_traffic_truth": {
+      "account": "HUNT DEAL",
+      "sessions_30d": 25,
+      "purchases_30d": 0,
+      "purchase_revenue_30d": 0,
+      "advertiser_ad_cost_reported": 0,
+      "spend_truth": "NOT_VERIFIED"
+    }
+  }
+}

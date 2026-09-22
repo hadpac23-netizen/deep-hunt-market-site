@@ -1,12 +1,24 @@
 {
-  "version": "BOOM-LEGAL-READINESS-V1",
+  "version": "BOOM-LEGAL-READINESS-V1.1-MARKET-GATED",
   "owner": "learning_governance_brain",
   "publication_owner": "owner_gate",
   "required_documents": [
-    {"doc_key":"terms","title":"Terms of Service"},
-    {"doc_key":"privacy","title":"Privacy Policy"},
-    {"doc_key":"returns","title":"Returns & Refund Policy"},
-    {"doc_key":"shipping","title":"Shipping Policy"}
+    {
+      "doc_key": "terms",
+      "title": "Terms of Service"
+    },
+    {
+      "doc_key": "privacy",
+      "title": "Privacy Policy"
+    },
+    {
+      "doc_key": "returns",
+      "title": "Returns & Refund Policy"
+    },
+    {
+      "doc_key": "shipping",
+      "title": "Shipping Policy"
+    }
   ],
   "required_business_identity_fields": [
     "legal_entity_name",
@@ -25,5 +37,8 @@
     "Legal delivery surfaces render database text as plain text and do not execute embedded markup."
   ],
   "delivery_surface": "legal.html?doc=<terms|privacy|returns|shipping>",
-  "current_source": "hunt_legal_document_versions"
+  "current_source": "hunt_legal_document_versions",
+  "market_policy_contract": "boom-market-policy-readiness-contract.json",
+  "production_registry_state": "NOT_DEPLOYED_AT_2026-09-22_AUDIT",
+  "launch_invariant": "Global legal pages are necessary but not sufficient; each target market must also pass its own market-specific review."
 }

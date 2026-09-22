@@ -1,0 +1,94 @@
+{
+  "version": "BOOM-OWNER-GATE-MAP-V1",
+  "final_approver": "OWNER",
+  "queue": "hunt_boom_decisions",
+  "actions": [
+    {
+      "action": "external_publish",
+      "decision_owner": "growth_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "paid_spend",
+      "decision_owner": "growth_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "creative_provider_generation",
+      "decision_owner": "growth_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "price_change",
+      "decision_owner": "commerce_truth_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "payment_activation",
+      "decision_owner": "operations_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "supplier_order",
+      "decision_owner": "operations_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "fulfillment_release",
+      "decision_owner": "operations_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "customer_outreach",
+      "decision_owner": "operations_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "refund_or_order_mutation",
+      "decision_owner": "operations_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "credential_change",
+      "decision_owner": "learning_governance_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "production_deploy",
+      "decision_owner": "learning_governance_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "schema_or_security_policy_change",
+      "decision_owner": "learning_governance_brain",
+      "execution_owner": "operations_brain",
+      "gate": "REQUIRED"
+    },
+    {
+      "action": "policy_or_skill_graduation_material",
+      "decision_owner": "learning_governance_brain",
+      "execution_owner": "boom_orchestrator",
+      "gate": "REQUIRED"
+    }
+  ],
+  "non_material_examples": [
+    "read-only truth checks",
+    "internal draft generation without provider call",
+    "sanitized analytics evaluation",
+    "gap report",
+    "incident creation",
+    "candidate learning record"
+  ],
+  "rule": "Owner approval does not bypass product truth, security, privacy, legal, payment, or reliability gates."
+}

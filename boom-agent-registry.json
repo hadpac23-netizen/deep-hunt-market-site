@@ -1,0 +1,296 @@
+{
+  "version": "BOOM-CANONICAL-AGENT-REGISTRY-V1",
+  "principle": "Eight Primary Brains own decisions. Agents specialize. Tools/adapters execute. Departments are data/modules, not brains.",
+  "legacy_source": {
+    "branch": "feature/boom-brand-factory-v1",
+    "file": "boom-manager-registry.json",
+    "manager_count": 31,
+    "department_manager_count": 11
+  },
+  "legacy_manager_map": [
+    {
+      "legacy_id": "boom-executive",
+      "new_owner": "boom_orchestrator",
+      "new_role": "orchestrator",
+      "classification": "SUPERSEDED_BY_PRIMARY_BRAIN",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "category-orchestrator",
+      "new_owner": "experience_brain",
+      "new_role": "category_merchandising_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "inventory-truth",
+      "new_owner": "commerce_truth_brain",
+      "new_role": "inventory_truth_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "sale-readiness",
+      "new_owner": "commerce_truth_brain",
+      "new_role": "sale_readiness_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "pricing-profit",
+      "new_owner": "commerce_truth_brain",
+      "new_role": "pricing_profit_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "supplier-shipping",
+      "new_owner": "commerce_truth_brain",
+      "new_role": "supplier_shipping_truth_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "checkout-payment",
+      "new_owner": "operations_brain",
+      "new_role": "checkout_payment_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "marketing-growth",
+      "new_owner": "growth_brain",
+      "new_role": "marketing_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "sales-conversion",
+      "new_owner": "growth_brain",
+      "new_role": "conversion_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "returns-care",
+      "new_owner": "operations_brain",
+      "new_role": "customer_care_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "feedback-intelligence",
+      "new_owner": "experience_brain",
+      "new_role": "shopper_intelligence_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "integration-connections",
+      "new_owner": "operations_brain",
+      "new_role": "integration_health_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "site-reliability",
+      "new_owner": "learning_governance_brain",
+      "new_role": "reliability_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "repair-engineering",
+      "new_owner": "learning_governance_brain",
+      "new_role": "incident_repair_agent",
+      "classification": "MERGE_INTO_CANONICAL_AGENT",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "trust-compliance",
+      "new_owner": "learning_governance_brain",
+      "new_role": "trust_compliance_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "analytics-truth",
+      "new_owner": "learning_governance_brain",
+      "new_role": "analytics_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "security-access",
+      "new_owner": "learning_governance_brain",
+      "new_role": "security_governance_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "finance-reconciliation",
+      "new_owner": "operations_brain",
+      "new_role": "finance_reconciliation_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "release-control",
+      "new_owner": "learning_governance_brain",
+      "new_role": "release_control_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "merchandising-ux",
+      "new_owner": "experience_brain",
+      "new_role": "merchandising_ux_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "country-localization",
+      "new_owner": null,
+      "new_role": null,
+      "classification": "SPLIT_BY_DECISION_DOMAIN",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "decision-intelligence",
+      "new_owner": "experience_brain",
+      "new_role": "decision_intelligence_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "hunt-worlds-flow",
+      "new_owner": "experience_brain",
+      "new_role": "dynamic_worlds_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "boom-stylist",
+      "new_owner": "experience_brain",
+      "new_role": "stylist_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "boom-mirror",
+      "new_owner": "experience_brain",
+      "new_role": "mirror_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "creative-brand-factory",
+      "new_owner": "growth_brain",
+      "new_role": "creative_brand_factory_agent",
+      "classification": "MERGE_INTO_A6_CANONICAL",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "experimentation-learning",
+      "new_owner": "learning_governance_brain",
+      "new_role": "experiment_governance_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "knowledge-freshness",
+      "new_owner": "intelligence_brain",
+      "new_role": "knowledge_freshness_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "memory-continuity",
+      "new_owner": "experience_brain",
+      "new_role": "memory_continuity_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "INTERNAL"
+    },
+    {
+      "legacy_id": "share-referral",
+      "new_owner": "growth_brain",
+      "new_role": "referral_agent",
+      "classification": "REWIRE_AS_AGENT",
+      "authority": "GATED"
+    },
+    {
+      "legacy_id": "supplier-hypersku",
+      "new_owner": "commerce_truth_brain",
+      "new_role": "supplier_connector_adapter",
+      "classification": "REWIRE_AS_ADAPTER",
+      "authority": "GATED"
+    }
+  ],
+  "split_rules": [
+    {
+      "legacy_id": "country-localization",
+      "classification": "SPLIT_BY_DECISION_DOMAIN",
+      "targets": [
+        {
+          "owner": "commerce_truth_brain",
+          "role": "country_readiness_agent",
+          "owns": [
+            "shipping_market",
+            "country_rules",
+            "commercial_eligibility",
+            "payment_readiness"
+          ]
+        },
+        {
+          "owner": "experience_brain",
+          "role": "localization_agent",
+          "owns": [
+            "language",
+            "currency_display",
+            "tax_display",
+            "localized_presentation"
+          ]
+        }
+      ]
+    },
+    {
+      "legacy_id": "supplier-hypersku",
+      "classification": "ADAPTER_NOT_DECISION_OWNER",
+      "targets": [
+        {
+          "owner": "commerce_truth_brain",
+          "role": "supplier_connector_adapter",
+          "owns": [
+            "product_mapping",
+            "variant_truth",
+            "inventory_quotes",
+            "shipping_quotes"
+          ]
+        },
+        {
+          "owner": "operations_brain",
+          "role": "tool_gateway",
+          "owns": [
+            "approved_order_execution",
+            "tracking_execution"
+          ]
+        }
+      ]
+    }
+  ],
+  "department_policy": {
+    "legacy_department_managers": 11,
+    "canonical_agent": "category_merchandising_agent",
+    "owner": "experience_brain",
+    "representation": "TAXONOMY_MODULES_NOT_AGENTS",
+    "current_truth": "17 verified canonical department identities",
+    "rule": "Adding a department never creates a new Brain or Manager."
+  },
+  "no_duplicate_ownership": [
+    "boom_orchestrator is the only central command owner",
+    "one material action has exactly one decision owner",
+    "cross-domain legacy managers must split instead of owning two domains",
+    "supplier/provider names are adapters/tools, not Brains",
+    "department/category names are modules/data, not Brains"
+  ]
+}

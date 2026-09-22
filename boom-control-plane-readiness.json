@@ -1,0 +1,218 @@
+{
+  "version": "BOOM-CONTROL-PLANE-READINESS-V1",
+  "observed_at": "2026-09-22",
+  "overall": "NOT_READY_FOR_ACTIVATION",
+  "production_changed": false,
+  "n8n_connected": false,
+  "new_edge_functions_deployed": false,
+  "payment_activation_changed": false,
+  "supplier_orders_enabled": false,
+  "external_publish_enabled": false,
+  "areas": [
+    {
+      "id": "brain_os",
+      "status": "DONE",
+      "evidence": "8 Primary Brains + canonical shared control planes"
+    },
+    {
+      "id": "legacy_manager_consolidation",
+      "status": "DONE",
+      "evidence": "31 legacy managers mapped to agents/modules/adapters; legacy departments collapsed to taxonomy modules"
+    },
+    {
+      "id": "skill_registry",
+      "status": "DONE",
+      "evidence": "24 existing skills classified under canonical owners"
+    },
+    {
+      "id": "data_tool_owner_gate_maps",
+      "status": "DONE",
+      "evidence": "Data Ownership, Tool Registry, Supabase Runtime and Owner Gate maps"
+    },
+    {
+      "id": "scheduler_plane",
+      "status": "DONE_CONTRACT_ONLY",
+      "evidence": "single orchestrator-owned scheduler; preserved legacy schedules not activated"
+    },
+    {
+      "id": "shadow_run_engine",
+      "status": "DONE_CODE",
+      "evidence": "state machine, BLOCKED, retries/quarantine, correlation lineage, material suppression"
+    },
+    {
+      "id": "durable_run_ledger",
+      "status": "CODED_NEEDS_PREVIEW_PROOF",
+      "evidence": "existing hunt_boom_team_runs/events/decisions reused; no new ledger tables"
+    },
+    {
+      "id": "owner_gate_ui",
+      "status": "CODED_NEEDS_PREVIEW_PROOF",
+      "evidence": "Approve SHADOW / Reject mapped to canonical action; decision recording only"
+    },
+    {
+      "id": "n8n_adapter",
+      "status": "CODED_NOT_CONNECTED",
+      "evidence": "server-side gateway + client adapter + read-only shelf spec; no URL/token configured"
+    },
+    {
+      "id": "shelf_coverage",
+      "status": "BLOCKED_PARTIAL_FRESH_INVENTORY",
+      "evidence": "Strict IL coverage: 57 Fresh Shelf Verified, all from CJ. Category counts: dresses 17, bags 14, phoneaccessories 13, toys 6, beauty 4, pets 1, plussize 1, suits 1. Printful 22 live unique products / 550 in-stock variants and Gooten 18 live products are NOT counted Fresh because destination shipping/fulfillment credentials are not verified. 17×1,000 target remains unclaimed."
+    },
+    {
+      "id": "catalog_freshness",
+      "status": "CJ_FRESH_PARTIAL_OTHER_PROVIDERS_CATALOG_ONLY",
+      "evidence": "CJ latest controlled state: 57 VERIFIED, 11 Price/Profit blocked, 6 Product Failed after retry, 2 No Verified Variant. Printful 22/22 unique products live; Gooten 18/18 live; both remain shipping/fulfillment blocked and therefore 0 Fresh Shelf."
+    },
+    {
+      "id": "incident_repair",
+      "status": "CODED_NEEDS_PREVIEW_E2E",
+      "evidence": "failure auto-route, parent lineage, evidence preflight, no auto-patch/deploy"
+    },
+    {
+      "id": "creative_a6_a7",
+      "status": "CODED_GENERATION_OFF",
+      "evidence": "A6/A7 recovered from PR #7; Product Truth/reference/claims gates; provider generation blocked"
+    },
+    {
+      "id": "supplier_intake",
+      "status": "CODED_SHADOW_ONLY",
+      "evidence": "partner/API/terms/media preflight; no supplier call/order/activation"
+    },
+    {
+      "id": "customer_lifecycle",
+      "status": "CODED_SHADOW_ONLY",
+      "evidence": "identity/privacy/event preflight; outreach/refund/order mutation OFF"
+    },
+    {
+      "id": "learning_loop",
+      "status": "CODED_TESTING_ONLY",
+      "evidence": "evidence/provenance/baseline preflight; candidate persists as testing; no behavior auto-adoption"
+    },
+    {
+      "id": "critical_edge_auth",
+      "status": "IN_PROGRESS",
+      "evidence": "critical paths classified; CJ public read-only quote still needs abuse/rate-limit proof before automation scale"
+    },
+    {
+      "id": "ai_operating_factory",
+      "status": "CODED_SHADOW_NEEDS_PREVIEW_PROOF",
+      "evidence": "8 operational skills + 8 workflow templates + plan-only Workflow Builder + plan-only AI Tool Router + Creative Factory + Build & Repair Factory are coded in BOOM Studio. Material paths remain Owner-gated and suppressed."
+    },
+    {
+      "id": "profit_engine",
+      "status": "CODED_SHADOW_NEEDS_LIVE_ECONOMICS_EVIDENCE",
+      "evidence": "Profit Engine V1 is coded with a $10,000+/hour aspirational verified-net-profit mission target, complete-cost evidence gate, 10 profit modules, hourly learning loop, milestone policy and Owner Gate material-action suppression. Live profit/CAC/LTV/returns evidence is not yet connected."
+    },
+    {
+      "id": "profit_data_map_and_ledger",
+      "status": "CODED_EXPECTED_ONLY_REALIZED_BLOCKED",
+      "evidence": "Canonical profit sources mapped with no parallel schema. 8/8 unit-economics rows verified and profit-gate PASS; 0 order-finance rows; 8/8 orders are test; realized product profit and mission attainment remain blocked. Non-RLS profit rollup/attribution sources stay server-only until hardened."
+    },
+    {
+      "id": "hourly_profit_loop",
+      "status": "CODED_SHADOW_BLOCKED_UNVERIFIED",
+      "evidence": "Canonical f60t_hourly_profit_ledger reused. Live audit: 66 rows, 0 exact VERIFIED, 66 UNVERIFIED, 0 real-order rows, $0 exact-verified profit. Runtime accepts exact verification_status='VERIFIED' only and produces SHADOW next-hour proposals."
+    },
+    {
+      "id": "marketing_net_profit_attribution",
+      "status": "CODED_CONTRACT_BLOCKED_NO_REAL_ORDER_OR_COST_FEED",
+      "evidence": "Attribution contract requires non-test order + finance profit evidence + touchpoint linkage + actual marketing spend/fees. Current purchase bridge: 32 rows, 0 real-order-linked, 0 profit-evidence-ready; marketing cost feed not connected."
+    },
+    {
+      "id": "marketing_cost_evidence_gateway",
+      "status": "CODED_GA4_TRAFFIC_CONNECTED_COST_NOT_VERIFIED",
+      "evidence": "Windsor GA4 HUNT DEAL is connected read-only. Last-30d audit: 25 sessions, 0 purchases, $0 purchase revenue, advertiser_ad_cost reports 0. Because no direct ad-platform connector or proven GA4 cost-import coverage exists, $0 is NOT accepted as verified spend. Cost/CAC/Marketing Net Profit remain UNKNOWN."
+    },
+    {
+      "id": "first_real_order_profit_proof",
+      "status": "CODED_SHADOW_BLOCKED_PAYMENT_ACCEPTANCE",
+      "evidence": "Proof Harness + Studio panel coded. Live audit at 2026-09-22T11:00:40Z: PayPlus accept-paid OFF/unapproved; supplier live OFF/unapproved; 8 orders all TEST; 0 finance rows; 32 bridge rows with 0 real-order-linked/profit-ready; 67 hourly rows, 0 exact VERIFIED. No Production mutation."
+    },
+    {
+      "id": "payplus_sandbox_status_proof",
+      "status": "CODED_BLOCKED_NO_SANDBOX_EVIDENCE",
+      "evidence": "Proof Matrix + Studio surface coded. Live audit: hunt_payplus_sandbox_evidence control OFF/unapproved; 0 sandbox evidence sessions; 0 status observations. J4 success/failure/refund fingerprints are not yet empirically proven. Live paid acceptance remains OFF."
+    },
+    {
+      "id": "payment_launch_gate",
+      "status": "CODED_SHADOW_ALL_ROUTES_PLANNED",
+      "evidence": "Provider-neutral Payment Launch Gate + Studio route matrix coded. Live audit: 6 payment routes, all status=planned, all approval_reference/approved_at null; hunt_payment_live OFF/unapproved; hunt_supplier_order_live OFF/unapproved. PayPlus account approval not yet evidenced and sandbox callback proof not yet collected."
+    },
+    {
+      "id": "checkout_order_tracking_e2e",
+      "status": "CODED_SHADOW_BLOCKED_SUPPLIER_TRACKING_E2E",
+      "evidence": "Read-only audit: 8/8 test orders user-bound; RLS protects payment sessions/orders/events/fulfillment by ownership; 1 dry-run validation PASS; 8 fulfillment rows; 0 supplier_order_id; 0 tracking rows; 0 shipped events. Historical blockers: 4 CJ transient busy failures + 1 Israel phone-format failure. Current source has +972 normalization, up-to-5 transient retries and stable-order reconciliation, but these fixes still need a successful sandbox E2E proof."
+    },
+    {
+      "id": "legal_returns_shipping_market_readiness",
+      "status": "CODED_SHADOW_BLOCKED_IDENTITY_AND_LEGAL_REGISTRY",
+      "evidence": "Market Policy evaluator + Studio matrix coded. IL/EU/GB/US/AU have official-source baselines; all other markets default HOLD. Production audit: business identity configured but not published; returns address/privacy contact/support email absent; hunt_legal_document_versions migration exists in branch but is not deployed in Production; legacy legal_policies launch gate remains PARTIAL; Shipping Chess gate is PASS."
+    },
+    {
+      "id": "performance_mobile_qa",
+      "status": "LOCAL_RESPONSIVE_PASS_PREVIEW_PWA_PROOF_PENDING",
+      "evidence": "Isolated Chrome 153 QA on allowed local origin after progressive shelf mounting: 390px 2,899 DOM / 174 images / 77 shelf cards / 0 small touch targets; 768px 3,391 DOM / 208 images / 111 shelf cards; 1280px and 1440px each 4,265 DOM / 269 images / 172 shelf cards. All four: no document horizontal overflow, 0 broken images, 0 console problems, 0 network failures. Mobile before patch: 7,416 DOM / 477 images / 380 shelf cards. PWA cache/update source hardening is coded; Preview install/update/offline proof still pending."
+    },
+    {
+      "id": "launch_command_center",
+      "status": "CODED_READ_ONLY_NEEDS_PREVIEW_PROOF",
+      "evidence": "Existing BOOM Command Center aggregates canonical readiness domains, top blockers and admin-only launch metrics. Raw analytics session IDs were removed from browser queries; session/user metric remains UNKNOWN until a privacy-safe server-side aggregate is connected. Orders/finance/BOOM runs/decisions use RLS-protected admin reads. Authority NONE."
+    },
+    {
+      "id": "fresh_shelf_product_truth",
+      "status": "CJ_57_FRESH_OTHER_PROVIDERS_PARTIAL",
+      "evidence": "Strict IL truth remains 57 CJ Fresh Shelf Verified, 11 Price/Profit blocked, 6 product lookup failures after retry, 2 no verified variant, 0 Checkout Live Verified. Printful 22 live unique / 550 in-stock variants remains credential+shipping blocked. Gooten 18 live remains RecipeID/variants/shipping blocked; support follow-up sent on ticket #369479."
+    },
+    {
+      "id": "cj_price_gate_v2",
+      "status": "SOURCE_SYNCED_BRANCH_NOT_DEPLOYED",
+      "evidence": "Deployed hunt-storefront source was synced into GitHub branch and patched to reserve-aware margin floor supplier_cost/(reserveDenominator-targetMargin). Regression test PASS. Production Edge Function remains unchanged; no repricing occurred."
+    }
+  ],
+  "blockers": [
+    "Create/refresh coverage evidence for camping, electrical and garden without fabricating counts.",
+    "Deploy only to a preview/test environment first: boom-shelf-coverage and boom-automation-gateway.",
+    "Prove one real admin durable ledger write + Owner Gate decision in preview.",
+    "Configure n8n server-only SHADOW URL/token and prove one read-only shelf workflow success plus one controlled failure/retry.",
+    "Complete CJ quote abuse/rate-limit proof before scheduled automation scale.",
+    "Run controlled Incident E2E and A6/A7 Creative E2E without provider generation.",
+    "Only after evidence review may Owner decide whether to merge/activate.",
+    "Connect verified live profit economics evidence (revenue + all variable costs + returns + marketing attribution) before treating Net Profit/hour, CAC or LTV as real.",
+    "Realized Profit remains blocked until non-test orders produce real finance-ledger evidence and auditable product allocation.",
+    "Harden RLS/server access for hunt_purchase_attribution_bridge and hunt_daily_owner_metrics before browser-side Profit Mission use.",
+    "Connect audited per-channel/campaign marketing cost evidence before CAC or Marketing Net Profit can be verified.",
+    "Hourly mission remains blocked until f60t_hourly_profit_ledger contains exact VERIFIED rows backed by non-test real-order finance evidence.",
+    "Connect a direct ad-platform cost source (e.g. Google Ads/Meta/TikTok) or prove GA4 cost-import coverage before paid spend, CAC or Marketing Net Profit can be verified.",
+    "Complete PayPlus sandbox callback/status proof before Owner can consider enabling paid acceptance; First Real-Order Proof must not bypass this gate.",
+    "PayPlus sandbox evidence control/session must be run in staging to collect signed success/failure observations before paid-state mapping can be proven.",
+    "Refund path requires a separate observed charge_method=4 staging fingerprint linked to the original transaction before refund launch.",
+    "Each PSP route needs commercial/account approval evidence plus server credentials, sandbox/callback/refund/finance/settlement/legal scope proof before it can become a LIVE_READY_CANDIDATE.",
+    "Checkout/Orders/Tracking needs one successful sandbox supplier-order lineage with persisted supplier_order_id + tracking_number + shipped event; current evidence has none.",
+    "Publish a complete owner-approved Business Identity before public/real-money launch.",
+    "Deploy and verify the legal document registry in Preview before Production; current Production does not contain hunt_legal_document_versions.",
+    "Owner/counsel must supply and approve Terms, Privacy, Returns and Shipping content; BOOM must not fabricate binding legal text.",
+    "Implement a verifiable cancellation/withdrawal/return path appropriate to each enabled market.",
+    "Any unmapped country remains HOLD until consumer/privacy/tax/import/shipping obligations are reviewed.",
+    "Verify PWA cache update, manifest/installability and offline shell on Preview before Performance/Mobile becomes launch PASS.",
+    "Verify Launch Command Center on Preview against authenticated admin RLS and current readiness JSON before Owner launch review.",
+    "Resolve or replace the remaining 19 CJ products that are not Fresh Shelf Verified, then refresh approved non-CJ suppliers before shelf readiness can advance.",
+    "Resolve 6 CJ product lookup failures only after repeated evidence; do not auto-delete on 404.",
+    "Review/deploy CJ Price Gate V2 in Preview before repricing the 11 Price/Profit-blocked products; any Production price change requires Owner Gate.",
+    "Resolve the 2 CJ products with no verified variant or keep them off Fresh Shelf.",
+    "Connect/verify Printful fulfillment token/store plus destination shipping before counting Printful as Fresh Shelf.",
+    "Connect/verify Gooten API credentials plus variants/destination shipping before counting Gooten as Fresh Shelf."
+  ],
+  "activation_sequence": [
+    "Preview Edge Functions",
+    "Preview BOOM Studio integrity",
+    "Durable ledger proof",
+    "Shelf evidence refresh for resolved 17-department taxonomy",
+    "n8n read-only SHADOW proof",
+    "Incident E2E",
+    "Creative A6/A7 E2E",
+    "Supplier/Customer/Learning shadow proofs",
+    "Independent review",
+    "Owner activation decision"
+  ]
+}

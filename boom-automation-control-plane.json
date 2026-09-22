@@ -1,0 +1,264 @@
+{
+  "version": "BOOM-AUTOMATION-CONTROL-PLANE-V1",
+  "mode": "SHADOW",
+  "authority": {
+    "owner": "OWNER",
+    "command": "boom_orchestrator",
+    "rule": "Automation engines execute approved workflows; they never become decision owners.",
+    "owner_gate_required_for": [
+      "production_deploy",
+      "external_publish",
+      "paid_spend",
+      "price_change",
+      "payment_activation",
+      "supplier_order",
+      "fulfillment_release",
+      "customer_outreach",
+      "credential_change",
+      "destructive_data_change"
+    ]
+  },
+  "execution_contract": {
+    "required_ids": [
+      "mission_id",
+      "workflow_id",
+      "run_id",
+      "correlation_id"
+    ],
+    "states": [
+      "DRAFT",
+      "READY",
+      "RUNNING",
+      "BLOCKED",
+      "WAITING_OWNER",
+      "RETRY_WAIT",
+      "SUCCEEDED",
+      "FAILED",
+      "QUARANTINED",
+      "CANCELLED"
+    ],
+    "idempotency": "Every side-effect step must declare an idempotency key.",
+    "retries": "Bounded retries only; repeated failure routes to QUARANTINED and Incident & Repair.",
+    "timeout": "Every external step must define a timeout and fail closed.",
+    "evidence": "Material decisions require evidence references; UNKNOWN never becomes PASS.",
+    "secrets": "No secrets in workflow JSON or client code; adapters receive secret references only.",
+    "data_minimization": "Only fields required for the step may cross an adapter boundary."
+  },
+  "adapters": [
+    {
+      "id": "n8n_adapter",
+      "role": "Workflow execution engine / connector nervous system",
+      "status": "CODED_NOT_DEPLOYED_NOT_CONNECTED",
+      "authority": "NONE",
+      "may": [
+        "receive approved workflow runs",
+        "call approved tool-gateway operations",
+        "emit run events",
+        "wait for Owner Gate",
+        "retry bounded transient failures"
+      ],
+      "may_not": [
+        "approve itself",
+        "write directly to privileged Supabase paths",
+        "activate payment",
+        "place supplier orders",
+        "publish externally",
+        "change production",
+        "hold raw secrets"
+      ],
+      "note": "boom-n8n-adapter.js + boom-automation-gateway are coded. Edge gateway is not deployed; n8n URL/token are not configured; no n8n execution has occurred."
+    },
+    {
+      "id": "agent_builder_adapter",
+      "role": "Optional development/build assistant adapter",
+      "status": "OPTIONAL_NOT_CONNECTED",
+      "authority": "NONE",
+      "note": "No runtime dependency. Any future builder must operate through reviewed code changes, tests and Owner Gate."
+    }
+  ],
+  "targets": {
+    "departments": 17,
+    "target_products_per_department": 1000,
+    "truth_rule": "Targets are planning goals only. Shelf readiness must be computed from real verified catalog records; never synthesize counts."
+  },
+  "workflows": [
+    {
+      "id": "supplier_product_intake",
+      "name": "Supplier → Product Truth → Shelf",
+      "owner": "commerce_truth_brain",
+      "mode": "SHADOW",
+      "trigger": [
+        "supplier_feed_event",
+        "manual_admin_intake"
+      ],
+      "stages": [
+        "source_identity",
+        "product_truth",
+        "variant_truth",
+        "stock_truth",
+        "shipping_truth",
+        "landed_cost",
+        "profit_truth",
+        "category_mapping",
+        "media_quality",
+        "shelf_candidate"
+      ],
+      "gate": "partner identity + official API/feed + terms + media rights",
+      "material_action": "none",
+      "final_owner_gate": false,
+      "failure_route": "incident_repair",
+      "contract": "boom-supplier-product-intake-contract.json",
+      "output": "SHELF_CANDIDATE only; activation is a separate approved action"
+    },
+    {
+      "id": "shelf_coverage_17x1000",
+      "name": "17 Department Shelf Coverage",
+      "owner": "commerce_truth_brain",
+      "mode": "SHADOW",
+      "trigger": [
+        "catalog_change",
+        "scheduled_audit",
+        "manual_admin_audit"
+      ],
+      "stages": [
+        "count_verified_sellable_items",
+        "detect_empty_or_thin_shelves",
+        "detect_stale_stock_or_price",
+        "detect_media_gaps",
+        "produce_department_gap_report",
+        "route_supplier_intake"
+      ],
+      "gate": "evidence_complete",
+      "truth": [
+        "verified_count",
+        "fresh_stock",
+        "fresh_price",
+        "shipping_supported",
+        "media_present"
+      ],
+      "material_action": "none",
+      "final_owner_gate": false,
+      "failure_route": "incident_repair"
+    },
+    {
+      "id": "incident_repair",
+      "name": "Detect → Reproduce → Root Cause → Repair → QA",
+      "owner": "learning_governance_brain",
+      "mode": "SHADOW",
+      "trigger": [
+        "runtime_anomaly",
+        "failed_workflow",
+        "manual_incident"
+      ],
+      "stages": [
+        "detect",
+        "reproduce",
+        "classify_owner",
+        "root_cause",
+        "minimal_patch_plan",
+        "tests",
+        "independent_review",
+        "owner_gate",
+        "deploy_candidate",
+        "post_deploy_verify",
+        "rollback_learning"
+      ],
+      "gate": "owner_gate_before_deploy",
+      "material_action": "deploy_candidate",
+      "final_owner_gate": true,
+      "failure_route": "quarantine"
+    },
+    {
+      "id": "creative_publish",
+      "name": "Product → Creative → Visual QA → Owner Gate → Publish",
+      "owner": "growth_brain",
+      "mode": "SHADOW",
+      "trigger": [
+        "promotion_candidate",
+        "manual_campaign_request"
+      ],
+      "stages": [
+        "commerce_truth_recheck",
+        "exact_reference_lock",
+        "claims_boundary",
+        "hook_tournament",
+        "concept_tournament",
+        "script_tournament",
+        "red_team",
+        "visual_qa",
+        "owner_gate",
+        "publish_candidate",
+        "performance_measure"
+      ],
+      "gate": "product_truth_live + exact_references_locked + proof_claims_boundary_reviewed",
+      "material_action": "external_publish",
+      "final_owner_gate": true,
+      "failure_route": "creative_revision",
+      "a6_contract": "boom-creative-learning-contract.json",
+      "a7_contract": "boom-a7-integration-contract.json"
+    },
+    {
+      "id": "customer_lifecycle",
+      "name": "Cart / Order / Tracking / Support",
+      "owner": "operations_brain",
+      "mode": "SHADOW",
+      "trigger": [
+        "cart_event",
+        "order_event",
+        "tracking_event",
+        "support_event"
+      ],
+      "stages": [
+        "identity_policy",
+        "consent_policy",
+        "event_classification",
+        "next_best_safe_action",
+        "owner_or_policy_gate",
+        "customer_action_candidate",
+        "outcome_measure"
+      ],
+      "gate": "identity policy + privacy/consent + verified event source",
+      "material_action": "customer_outreach_or_order_action",
+      "final_owner_gate": true,
+      "failure_route": "incident_repair",
+      "contract": "boom-customer-lifecycle-contract.json"
+    },
+    {
+      "id": "analytics_learning_loop",
+      "name": "Publish / Commerce → Analytics → Learning → Next Decision",
+      "owner": "learning_governance_brain",
+      "mode": "SHADOW",
+      "trigger": [
+        "run_completed",
+        "commerce_event",
+        "campaign_event",
+        "incident_closed"
+      ],
+      "stages": [
+        "collect_sanitized_evidence",
+        "quality_check",
+        "attribute_outcome",
+        "compare_baseline",
+        "create_learning_record",
+        "propose_policy_or_skill_update",
+        "owner_gate_if_material"
+      ],
+      "gate": "evidence quality + provenance + baseline",
+      "material_action": "policy_or_skill_change",
+      "final_owner_gate": true,
+      "failure_route": "hold_unmeasured",
+      "contract": "boom-learning-loop-contract.json"
+    }
+  ],
+  "events": [
+    "automation.run.created",
+    "automation.run.started",
+    "automation.run.waiting_owner",
+    "automation.run.retry_wait",
+    "automation.run.succeeded",
+    "automation.run.failed",
+    "automation.run.quarantined",
+    "automation.owner.approved",
+    "automation.owner.rejected"
+  ]
+}

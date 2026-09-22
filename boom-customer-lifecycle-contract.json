@@ -1,0 +1,88 @@
+{
+  "version": "BOOM-CUSTOMER-LIFECYCLE-V1",
+  "brain": "operations_brain",
+  "agents": [
+    "order_agent",
+    "fulfillment_agent",
+    "tracking_agent",
+    "returns_agent",
+    "support_agent"
+  ],
+  "workflow_id": "customer_lifecycle",
+  "mode": "SHADOW",
+  "purpose": "Observe and classify cart/order/tracking/support events, prepare safe next actions, and prevent silent customer outreach or order mutations.",
+  "source_of_truth": {
+    "orders": {
+      "table": "hunt_orders",
+      "access": "OWNER_OR_ADMIN_READ"
+    },
+    "fulfillment": {
+      "table": "hunt_fulfillment_orders",
+      "access": "OWNER_OR_ADMIN_READ"
+    },
+    "events": {
+      "table": "hunt_order_events",
+      "access": "OWNER_OR_ADMIN_READ"
+    },
+    "runtime_events": {
+      "table": "hunt_boom_events",
+      "access": "ADMIN_CONTROL_PLANE"
+    }
+  },
+  "preconditions": [
+    "identity_policy_ready",
+    "privacy_consent_ready",
+    "event_source_verified"
+  ],
+  "stages": [
+    "identity_policy",
+    "privacy_consent_policy",
+    "event_classification",
+    "order_fulfillment_truth",
+    "next_best_safe_action",
+    "owner_or_policy_gate",
+    "customer_action_candidate",
+    "outcome_measure"
+  ],
+  "action_classes": {
+    "internal_status_read": {
+      "material": false,
+      "owner_gate": false
+    },
+    "internal_support_task": {
+      "material": false,
+      "owner_gate": false
+    },
+    "customer_outreach": {
+      "material": true,
+      "owner_gate": true
+    },
+    "refund_or_order_mutation": {
+      "material": true,
+      "owner_gate": true
+    },
+    "supplier_or_fulfillment_mutation": {
+      "material": true,
+      "owner_gate": true
+    }
+  },
+  "privacy": {
+    "ledger_pii": "FORBIDDEN",
+    "fields_never_copied_to_run_ledger": [
+      "email",
+      "phone",
+      "shipping_address",
+      "billing_address",
+      "payment_details",
+      "tracking_token"
+    ],
+    "customer_visible_action": "Must use approved channel/policy and Owner Gate where material."
+  },
+  "boundaries": {
+    "outreach": false,
+    "refund": false,
+    "cancel_order": false,
+    "change_order": false,
+    "supplier_action": false
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "version": "HUNT-SHELF-LIVE-AUDIT-2026-09-22-V1",
+  "observed_at": "2026-09-22T06:41:38.638289Z",
+  "source": "Supabase boom-social-world read-only SQL audit",
+  "production_mutation": false,
+  "target": {
+    "departments": 17,
+    "verified_sellable_per_department": 1000,
+    "total": 17000
+  },
+  "coverage_table": {
+    "table": "hunt_shelf_coverage",
+    "target_rows": 17,
+    "rows_present": 14,
+    "fresh_24h_audits": 0,
+    "missing_rows": [
+      "camping",
+      "electrical",
+      "garden"
+    ]
+  },
+  "catalog_table": {
+    "table": "hunt_catalog_products",
+    "total_rows": 117,
+    "fresh_verified_sellable_7d": 0,
+    "newest_source_fresh_at": "2026-09-13T14:01:43.58834Z",
+    "newest_stock_check_at": "2026-09-13T14:01:43.58834Z"
+  },
+  "readiness": {
+    "state": "BLOCKED_STALE_EVIDENCE",
+    "taxonomy_17_resolved": true,
+    "inventory_17x1000_ready": false,
+    "rule": "Taxonomy resolution never implies shelf readiness. Only fresh verified sellable evidence counts."
+  },
+  "notes": [
+    "No live write was performed.",
+    "The coverage table still lacks rows for camping, electrical and garden.",
+    "Existing live_verified_products values are stale under the 24h coverage audit rule.",
+    "All catalog rows fail the 7-day fresh verified-sellable freshness gate as of observed_at."
+  ]
+}

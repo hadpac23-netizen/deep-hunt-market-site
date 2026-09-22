@@ -1,0 +1,171 @@
+{
+  "version": "HUNT-FRESH-SHELF-PRODUCT-TRUTH-AUDIT-2026-09-22-V2-FULL-CJ-SCAN",
+  "observed_at": "2026-09-22T13:06:02.043289Z",
+  "production_mutation": "EVIDENCE_ONLY_OBSERVATIONS",
+  "baseline": {
+    "catalog_rows": 117,
+    "providers": {
+      "CJdropshipping": 76,
+      "Printful": 23,
+      "Gooten": 18
+    },
+    "catalog_market_eligibility_recheck_before_checkout": 117,
+    "catalog_source_fresh_7d": 0,
+    "catalog_stock_fresh_7d": 0,
+    "old_fresh_verified_sellable_7d_metric": 0
+  },
+  "root_cause": {
+    "all_catalog_rows_market_status": "recheck_before_checkout",
+    "stale_catalog_timestamps": true,
+    "endpoint_disagreement": true,
+    "detail_endpoint_note": "Three sampled CJ product details showed zero in-stock variants.",
+    "quote_endpoint_note": "For the same sampled variants, hunt-cj-quote returned stock_verified=true, stock_available=true and 5 shipping options to Israel.",
+    "canonical_decision": "Use hunt-cj-quote for CJ stock + destination shipping truth."
+  },
+  "pilot": [
+    {
+      "item_id": "1582554080420048896",
+      "category": "phoneaccessories",
+      "variant_id": "1582554080503934976",
+      "retail_price_usd": 7.99,
+      "supplier_cost_usd": 2.85,
+      "profit_gate": "PASS",
+      "origin": "CN",
+      "verified_inventory": 11724,
+      "shipping_to": "IL",
+      "cheapest_shipping_usd": 4.2,
+      "shipping_method": "CJPacket Liquid Line",
+      "aging": "9-23"
+    },
+    {
+      "item_id": "1805795784395739136",
+      "category": "dresses",
+      "variant_id": "1805795784412516352",
+      "retail_price_usd": 9.99,
+      "supplier_cost_usd": 4.33,
+      "profit_gate": "PASS",
+      "origin": "CN",
+      "verified_inventory": 13659,
+      "shipping_to": "IL",
+      "cheapest_shipping_usd": 7.5,
+      "shipping_method": "CJPacket Eub",
+      "aging": "12-50"
+    },
+    {
+      "item_id": "1366003969222119424",
+      "category": "bags",
+      "variant_id": "1366260771499151360",
+      "retail_price_usd": 7.99,
+      "supplier_cost_usd": 2.46,
+      "profit_gate": "PASS",
+      "origin": "CN",
+      "verified_inventory": 30000,
+      "shipping_to": "IL",
+      "cheapest_shipping_usd": 6.62,
+      "shipping_method": "CJPacket Eub",
+      "aging": "12-50"
+    }
+  ],
+  "evidence_written": {
+    "controlled_rows_written": 133,
+    "pilot_price_stock_shipping_rows": 9,
+    "first_batch_price_stock_shipping_rows": 9,
+    "remaining_verified_price_stock_shipping_rows": 39,
+    "controlled_product_scan_status_rows": 76,
+    "catalog_rows_updated": 0,
+    "market_eligibility_rows_updated": 0,
+    "checkout_state_changed": false,
+    "controlled_product_scan_rows": 55,
+    "explicit_rows_total": 220,
+    "note": "220 rows were explicitly written in this workstream: 9 pilot price/stock/shipping + 54 batch A + 102 batch B + 55 controlled product-scan rows."
+  },
+  "refresh_run": {
+    "destination_country": "IL",
+    "cj_catalog_rows": 76,
+    "initial_pilot_products": 3,
+    "remaining_scanned": 73,
+    "first_pass": {
+      "verified": 18,
+      "product_failed": 48,
+      "no_verified_variant": 2,
+      "price_or_profit_blocked": 5
+    },
+    "retry_of_product_failures": {
+      "scanned": 48,
+      "verified": 34,
+      "product_failed": 5,
+      "no_verified_variant": 2,
+      "price_or_profit_blocked": 7
+    },
+    "explicit_verified_products": 55,
+    "additional_valid_recent_products_from_other_current_refresh_evidence": 2,
+    "final_db_fresh_shelf_verified_il": 57,
+    "final_db_not_fresh_yet": 19,
+    "checkout_recheck_required": 57,
+    "checkout_live_verified": 0
+  },
+  "department_contribution": {
+    "note": "CJ-only conservative contribution; not full shelf readiness across all suppliers.",
+    "counts": {
+      "women": 19,
+      "accessories": 14,
+      "beauty": 4,
+      "tech": 13,
+      "pets": 1,
+      "toys": 6,
+      "men": 0,
+      "kids": 0,
+      "home": 0,
+      "kitchen": 0,
+      "electrical": 0,
+      "camping": 0,
+      "garden": 0,
+      "sports": 0,
+      "travel": 0,
+      "office": 0,
+      "gifts": 0
+    },
+    "target_per_department": 1000,
+    "ready_departments": 0
+  },
+  "remaining": {
+    "db_not_fresh_count": 19,
+    "classes_observed_in_scan": [
+      "PRICE_OR_PROFIT_BLOCKED",
+      "NO_VERIFIED_VARIANT",
+      "PRODUCT_FAILED"
+    ],
+    "rule": "Keep unresolved products out of Fresh Shelf Verified until new evidence passes. A failure is not automatically an out-of-stock or delist decision."
+  },
+  "full_cj_scan": {
+    "scan_id": "CJ-IL-20260922-A",
+    "destination_country": "IL",
+    "catalog_rows_scanned": 76,
+    "verified": 19,
+    "product_lookup_failed_recheck": 50,
+    "price_or_profit_blocked": 5,
+    "no_verified_variant": 2,
+    "controlled_exact_variant_fresh": 19,
+    "verified_missing_exact_variant_evidence": 0,
+    "rule": "A single 404/lookup failure is RECHECK_REQUIRED evidence, not permanent-removal proof."
+  },
+  "unreconciled_observation_guard": {
+    "positive_triad_any_source": 57,
+    "contradictory_positive_triad_vs_controlled_scan": 38,
+    "decision": "Do not count positive Price+Stock+Shipping alone. Latest controlled scan marker must be VERIFIED and the triad must match its exact variant."
+  },
+  "post_pilot": {
+    "fresh_shelf_verified_il": 19,
+    "checkout_recheck_required": 19,
+    "checkout_live_verified": 0,
+    "full_cj_scan_complete": true,
+    "other_approved_supplier_refresh_pending": true
+  },
+  "strict_evaluator": {
+    "controlled_scans_24h": 76,
+    "verified_scan_state": 57,
+    "strict_fresh_shelf_verified_il": 57,
+    "strict_not_fresh": 19,
+    "rule": "Latest controlled-cj-refresh scan must be VERIFIED and Price/Stock/Shipping must match the exact scan variant."
+  }
+}

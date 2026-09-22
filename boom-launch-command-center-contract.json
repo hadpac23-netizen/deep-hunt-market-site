@@ -1,0 +1,141 @@
+{
+  "version": "BOOM-LAUNCH-COMMAND-CENTER-V1",
+  "mode": "READ_ONLY",
+  "owner": "boom_orchestrator",
+  "authority": "NONE",
+  "purpose": "Aggregate canonical launch readiness into one owner-facing surface without replacing source-of-truth domain gates.",
+  "domains": [
+    {
+      "id": "inventory",
+      "label": "Inventory Truth",
+      "area_ids": [
+        "shelf_coverage",
+        "catalog_freshness"
+      ],
+      "owner": "commerce_truth_brain"
+    },
+    {
+      "id": "payments",
+      "label": "Payments",
+      "area_ids": [
+        "payment_launch_gate",
+        "payplus_sandbox_status_proof"
+      ],
+      "owner": "operations_brain"
+    },
+    {
+      "id": "orders",
+      "label": "Orders & Tracking",
+      "area_ids": [
+        "checkout_order_tracking_e2e",
+        "first_real_order_profit_proof"
+      ],
+      "owner": "operations_brain"
+    },
+    {
+      "id": "legal",
+      "label": "Legal / Returns / Shipping",
+      "area_ids": [
+        "legal_returns_shipping_market_readiness"
+      ],
+      "owner": "learning_governance_brain"
+    },
+    {
+      "id": "performance",
+      "label": "Performance / Mobile",
+      "area_ids": [
+        "performance_mobile_qa"
+      ],
+      "owner": "experience_brain"
+    },
+    {
+      "id": "profit",
+      "label": "Profit Truth",
+      "area_ids": [
+        "profit_engine",
+        "profit_data_map_and_ledger",
+        "hourly_profit_loop",
+        "marketing_net_profit_attribution"
+      ],
+      "owner": "commerce_truth_brain"
+    },
+    {
+      "id": "automation",
+      "label": "Automation / n8n",
+      "area_ids": [
+        "n8n_adapter",
+        "durable_run_ledger",
+        "owner_gate_ui"
+      ],
+      "owner": "boom_orchestrator"
+    },
+    {
+      "id": "suppliers",
+      "label": "Supplier Readiness",
+      "area_ids": [
+        "supplier_intake",
+        "critical_edge_auth"
+      ],
+      "owner": "commerce_truth_brain"
+    }
+  ],
+  "live_metrics": [
+    {
+      "id": "internal_sessions_24h",
+      "label": "Internal sessions · 24h",
+      "source": "SERVER_SIDE_AGGREGATE_PENDING",
+      "truth_rule": "Remain UNKNOWN in browser until a privacy-safe server-side aggregate is connected; do not fetch raw analytics session IDs client-side."
+    },
+    {
+      "id": "real_orders",
+      "label": "Real orders",
+      "source": "hunt_orders where is_test=false"
+    },
+    {
+      "id": "real_finance_rows",
+      "label": "Real finance rows",
+      "source": "hunt_order_finance_ledger where is_test=false"
+    },
+    {
+      "id": "automation_runs",
+      "label": "Automation runs",
+      "source": "hunt_boom_team_runs"
+    },
+    {
+      "id": "owner_gate_pending",
+      "label": "Owner Gate pending",
+      "source": "hunt_boom_decisions owner_approval_required=true and unresolved"
+    }
+  ],
+  "status_policy": {
+    "blocked_prefixes": [
+      "BLOCKED",
+      "STALE",
+      "NOT_READY",
+      "NOT_DEPLOYED",
+      "FAIL"
+    ],
+    "review_markers": [
+      "NEEDS",
+      "IN_PROGRESS",
+      "SHADOW",
+      "PLANNED",
+      "PENDING",
+      "UNKNOWN"
+    ],
+    "ready_prefixes": [
+      "DONE",
+      "PASS",
+      "READY"
+    ]
+  },
+  "hard_rules": [
+    "Command Center never overrides domain source-of-truth status.",
+    "Unknown/unavailable metric remains UNKNOWN; never coerce missing data to zero unless a canonical query proves zero.",
+    "Test orders never count as real orders or revenue.",
+    "No button in Launch Command Center activates payment, supplier fulfillment, publishing, pricing or deployment.",
+    "Overall READY is impossible while boom-control-plane-readiness.overall is NOT_READY_FOR_ACTIVATION.",
+    "Performance local PASS remains Preview-pending until PWA/runtime proof is complete.",
+    "Launch Command Center never fetches raw analytics session identifiers in the browser."
+  ]
+}

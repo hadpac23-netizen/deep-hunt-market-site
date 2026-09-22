@@ -1,0 +1,49 @@
+{
+  "version": "HUNT-FIRST-REAL-ORDER-PROOF-AUDIT-2026-09-22-V1",
+  "observed_at": "2026-09-22T11:00:40.26435Z",
+  "source": "Supabase read-only audit",
+  "production_mutation": false,
+  "controls": {
+    "hunt_payplus_callback_accept_paid": {
+      "enabled": false,
+      "owner_approved": false
+    },
+    "hunt_supplier_order_live": {
+      "enabled": false,
+      "owner_approved": false
+    },
+    "hunt_finance_ledger_preview": {
+      "enabled": true,
+      "owner_approved": true
+    }
+  },
+  "orders": {
+    "total": 8,
+    "real": 0,
+    "test": 8
+  },
+  "finance": {
+    "total": 0,
+    "real": 0,
+    "test": 0,
+    "settled_real": 0
+  },
+  "bridge": {
+    "rows": 32,
+    "real_order_linked": 0,
+    "profit_evidence_ready": 0
+  },
+  "hourly": {
+    "rows": 67,
+    "verified_exact": 0,
+    "unverified": 67,
+    "real_order_rows": 0,
+    "verified_net_profit": 0
+  },
+  "conclusion": {
+    "proof_state": "BLOCKED_PAYMENT_ACCEPTANCE",
+    "reason": "PayPlus paid acceptance remains owner-unapproved/off pending sandbox callback/status proof. No real orders or real finance evidence exist yet.",
+    "live_supplier_order_state": "OFF",
+    "mission_profit_state": "UNKNOWN"
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "version": "HUNT-DEPARTMENT-COVERAGE-V1",
+  "target_departments": 17,
+  "target_verified_sellable_per_department": 1000,
+  "readiness": "CANONICAL_17_RESOLVED_EVIDENCE_STILL_REQUIRED",
+  "source_truth": {
+    "verified_department_source": "HUNT Cinematic V16 navigation + hunt-department-map-v1.js",
+    "verified_department_count": 17,
+    "unresolved_count": 0,
+    "observed_from_local_qa": "/Users/adichehade/.hunt-final-candidate-v1",
+    "rule": "Department identity is resolved. Shelf readiness still requires fresh verified sellable product evidence; 17/17 taxonomy does not imply 17/17 ready inventory."
+  },
+  "departments": [
+    {
+      "slug": "women",
+      "title": "Women",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "men",
+      "title": "Men",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "kids",
+      "title": "Kids & Baby",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "beauty",
+      "title": "Beauty",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "accessories",
+      "title": "Accessories & Jewelry",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "tech",
+      "title": "Phone & Tech",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "home",
+      "title": "Home & Living",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "kitchen",
+      "title": "Kitchen",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_CINEMATIC_V16 + HUNT_DEPARTMENT_MAP_V1"
+    },
+    {
+      "slug": "electrical",
+      "title": "Electrical & Appliances",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_CINEMATIC_V16 + HUNT_DEPARTMENT_MAP_V1"
+    },
+    {
+      "slug": "camping",
+      "title": "Camping & Outdoor",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_CINEMATIC_V16 + HUNT_DEPARTMENT_MAP_V1"
+    },
+    {
+      "slug": "garden",
+      "title": "Garden & Outdoor",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_CINEMATIC_V16 + HUNT_DEPARTMENT_MAP_V1"
+    },
+    {
+      "slug": "sports",
+      "title": "Sports & Outdoors",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "pets",
+      "title": "Pets",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "toys",
+      "title": "Toys",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "travel",
+      "title": "Travel",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "office",
+      "title": "Office & Crafts",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "gifts",
+      "title": "Gifts & Party",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    }
+  ],
+  "sellable_truth": {
+    "table": "hunt_catalog_products",
+    "required": [
+      "availability_verified = true",
+      "positive price_amount",
+      "image_url present",
+      "fresh source evidence",
+      "stock known and positive when stock_quantity is provided",
+      "market eligibility not blocked",
+      "authenticity verified when product class requires authenticity"
+    ],
+    "supplemental_table": "hunt_shelf_coverage",
+    "rules": [
+      "live_verified_products is evidence only when last_live_audit_at is present and fresh",
+      "null live_verified_products means UNKNOWN, never zero and never verified",
+      "static_unique_products and curated_eligible_products are not substitutes for live verification",
+      "department readiness requires verified sellable evidence, not catalog entry count"
+    ]
+  },
+  "states": [
+    "UNRESOLVED",
+    "UNKNOWN",
+    "EMPTY",
+    "CRITICAL",
+    "THIN",
+    "BUILDING",
+    "READY"
+  ],
+  "thresholds": {
+    "EMPTY": {
+      "max": 0
+    },
+    "CRITICAL": {
+      "min": 1,
+      "max": 49
+    },
+    "THIN": {
+      "min": 50,
+      "max": 249
+    },
+    "BUILDING": {
+      "min": 250,
+      "max": 999
+    },
+    "READY": {
+      "min": 1000
+    }
+  },
+  "workflow": {
+    "id": "shelf_coverage_17x1000",
+    "owner": "commerce_truth_brain",
+    "execution": "READ_ONLY_AUDIT_FIRST",
+    "output": [
+      "verified_count_by_department",
+      "gap_to_1000",
+      "stale_or_unknown_evidence",
+      "empty_or_thin_subshelves",
+      "supplier_gap_queue"
+    ],
+    "next_route": "supplier_product_intake",
+    "publish_or_activate": false
+  }
+}

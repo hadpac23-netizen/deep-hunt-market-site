@@ -4,7 +4,7 @@
   const client=runtime.getSupabaseClient();
   if(!client)return;
   const $=q=>document.querySelector(q);
-  let rows=[];
+  let rows=[], readiness=null, launchContract=null, perfReadiness=null, liveLaunchMetrics=null;
 
   function label(v){return String(v||"").replaceAll("_"," ")}
   function setStatus(text,tone=""){
@@ -59,6 +59,98 @@
     const list=filtered().sort((a,b)=>score(b)-score(a)||Number(b.priority)-Number(a.priority));
     $("#hd-command-board").innerHTML=list.length?list.map(card).join(""):'<div class="hd-review-empty">No tasks match these filters.</div>';
   }
+
+  async function fetchJson(path){
+    const response=await fetch(path,{cache:"no-store"});
+    if(!response.ok)throw new Error("HTTP "+response.status+" "+path);
+    return response.json();
+  }
+  function launchSeverity(status){
+    const s=String(status||"UNKNOWN").toUpperCase();
+    if(/^(BLOCKED|STALE|NOT_)|FAIL/.test(s))return 4;
+    if(/PENDING|NEEDS|IN_PROGRESS|UNKNOWN|PLANNED/.test(s))return 3;
+    if(/^CODED|SHADOW|TESTING_ONLY/.test(s))return 2;
+    if(/DONE|PASS|READY/.test(s))return 0;
+    return 2;
+  }
+  function launchTone(status){
+    const n=launchSeverity(status);
+    return n>=4?"blocked":n>=2?"review":"done";
+  }
+  function metricCard(value,label,detail=""){
+    return '<article><strong>'+H.esc(value)+'</strong><span>'+H.esc(label)+'</span>'+(detail?'<small>'+H.esc(detail)+'</small>':"")+'</article>';
+  }
+  async function loadLiveLaunchMetrics(){
+    const cutoff=new Date(Date.now()-86400000).toISOString();
+    const results=await Promise.allSettled([
+      client.from("hunt_orders").select("id,total_amount,currency,is_test").eq("is_test",false).limit(1000),
+      client.from("hunt_order_finance_ledger").select("id,currency,available_profit,is_test").eq("is_test",false).limit(1000),
+      client.from("hunt_boom_team_runs").select("id,status,created_at").gte("created_at",cutoff).limit(1000),
+      client.from("hunt_boom_decisions").select("id,status,owner_approval_required,created_at").eq("owner_approval_required",true).limit(1000)
+    ]);
+    const data=i=>results[i]?.status==="fulfilled"&&!results[i].value?.error?(results[i].value.data||[]):null;
+    const orders=data(0),finance=data(1),runs=data(2),decisions=data(3);
+    const sessions=null;
+    const currencies=finance===null?[]:[...new Set(finance.map(x=>String(x.currency||"").toUpperCase()).filter(Boolean))];
+    const profit=finance===null?null:finance.reduce((sum,x)=>sum+(Number(x.available_profit)||0),0);
+    const resolved=new Set(["approved","rejected","done","completed","cancelled","canceled"]);
+    const pending=decisions===null?null:decisions.filter(x=>!resolved.has(String(x.status||"").toLowerCase())).length;
+    return {
+      internal_sessions_24h:sessions,
+      real_orders:orders===null?null:orders.length,
+      real_finance_rows:finance===null?null:finance.length,
+      realized_profit:profit,
+      realized_profit_currency:currencies.length===1?currencies[0]:(currencies.length===0?"USD":"MULTI"),
+      automation_runs_24h:runs===null?null:runs.length,
+      owner_gate_pending:pending
+    };
+  }
+  function renderLaunchCommandCenter(){
+    const overall=$("#hd-launch-overall"),metrics=$("#hd-launch-live-metrics"),grid=$("#hd-launch-domain-grid");
+    const blockers=$("#hd-launch-blockers"),perf=$("#hd-launch-performance");
+    if(!overall||!metrics||!grid||!blockers||!perf)return;
+    if(!readiness||!launchContract){
+      overall.textContent="READINESS UNAVAILABLE";
+      overall.className="hd-merchant-status blocked";
+      grid.innerHTML='<div class="hd-review-empty">Canonical readiness files are unavailable.</div>';
+      return;
+    }
+    overall.textContent=String(readiness.overall||"UNKNOWN").replaceAll("_"," ");
+    overall.className="hd-merchant-status "+launchTone(readiness.overall);
+    const m=liveLaunchMetrics||{};
+    const val=v=>v===null||v===undefined?"UNKNOWN":String(v);
+    const profit=m.realized_profit===null||m.realized_profit===undefined?"UNKNOWN":(m.realized_profit_currency==="MULTI"?"MULTI":m.realized_profit_currency+" "+Number(m.realized_profit).toLocaleString(undefined,{maximumFractionDigits:2}));
+    metrics.innerHTML=[
+      metricCard(val(m.internal_sessions_24h),"Internal sessions · 24h","UNKNOWN until server-side aggregate is connected"),
+      metricCard(val(m.real_orders),"Real orders","is_test=false only"),
+      metricCard(val(m.real_finance_rows),"Real finance rows","Test ledger excluded"),
+      metricCard(profit,"Realized profit","Finance evidence only"),
+      metricCard(val(m.automation_runs_24h),"Automation runs · 24h","Canonical team-run ledger"),
+      metricCard(val(m.owner_gate_pending),"Owner Gates pending","Unresolved material decisions")
+    ].join("");
+    const areas=new Map((readiness.areas||[]).map(x=>[x.id,x]));
+    grid.innerHTML=(launchContract.domains||[]).map(domain=>{
+      const rows=(domain.area_ids||[]).map(id=>areas.get(id)).filter(Boolean);
+      const worst=rows.slice().sort((a,b)=>launchSeverity(b.status)-launchSeverity(a.status))[0]||{status:"UNKNOWN",evidence:"No readiness evidence"};
+      return '<article class="hd-launch-domain" data-tone="'+launchTone(worst.status)+'">'+
+        '<div class="hd-command-card-top"><div><small>'+H.esc(domain.owner||"")+'</small><h3>'+H.esc(domain.label||domain.id)+'</h3></div>'+
+        '<span class="hd-merchant-status '+launchTone(worst.status)+'">'+H.esc(String(worst.status||"UNKNOWN").replaceAll("_"," "))+'</span></div>'+
+        '<p>'+H.esc(worst.evidence||"No evidence available.")+'</p>'+
+        '<div class="hd-launch-domain-sources">'+rows.map(x=>'<span>'+H.esc(x.id)+': '+H.esc(x.status)+'</span>').join("")+'</div></article>';
+    }).join("");
+    blockers.innerHTML=(readiness.blockers||[]).slice(0,10).map((b,i)=>'<article><b>'+(i+1)+'</b><span>'+H.esc(b)+'</span></article>').join("")||'<div class="hd-review-empty">No blockers recorded.</div>';
+    const p=perfReadiness?.current_truth||{};
+    const mob=p.mobile_390||{},tab=p.tablet_768||{};
+    perf.innerHTML=[
+      metricCard(val(mob.dom_nodes),"390px DOM nodes","Budget ≤ "+val(perfReadiness?.budgets?.mobile_390?.max_initial_dom_nodes)),
+      metricCard(val(mob.images),"390px images","Budget ≤ "+val(perfReadiness?.budgets?.mobile_390?.max_initial_images)),
+      metricCard(val(mob.shelf_cards),"Initial shelf cards","Progressive mounting"),
+      metricCard(val(mob.small_touch_targets),"Small touch targets","Target = 0"),
+      metricCard(val(tab.dom_nodes),"768px DOM nodes","Structural QA"),
+      metricCard(p.pwa_preview_proof?"PASS":"PENDING","PWA Preview proof","Update/install/offline")
+    ].join("");
+  }
+
   async function load(){
     const {data:{session}}=await client.auth.getSession();
     if(!session){
@@ -67,11 +159,20 @@
     }
     const {data:profile}=await client.from("profiles").select("is_admin").eq("id",session.user.id).maybeSingle();
     if(!profile?.is_admin){setStatus("Admin access required.","error");return;}
-    const {data,error}=await client.from("hunt_boom_command_queue")
-      .select("id,title,workstream,status,priority,impact,effort,cost_mode,blocker,next_action,success_metric,owner_approval_required,evidence_note,updated_at")
-      .order("priority",{ascending:false}).order("impact",{ascending:false});
-    if(error){setStatus(error.message||"Could not load BOOM queue.","error");return;}
-    rows=data||[]; $("#hd-command-dashboard").hidden=false; $("#hd-command-status").hidden=true; render();
+    const [queueResult,readinessResult,launchResult,perfResult,metricsResult]=await Promise.all([
+      client.from("hunt_boom_command_queue")
+        .select("id,title,workstream,status,priority,impact,effort,cost_mode,blocker,next_action,success_metric,owner_approval_required,evidence_note,updated_at")
+        .order("priority",{ascending:false}).order("impact",{ascending:false}),
+      fetchJson("boom-control-plane-readiness.json").catch(()=>null),
+      fetchJson("boom-launch-command-center-contract.json").catch(()=>null),
+      fetchJson("boom-performance-mobile-readiness-contract.json").catch(()=>null),
+      loadLiveLaunchMetrics().catch(()=>null)
+    ]);
+    if(queueResult.error){setStatus(queueResult.error.message||"Could not load BOOM queue.","error");return;}
+    rows=queueResult.data||[];
+    readiness=readinessResult; launchContract=launchResult; perfReadiness=perfResult; liveLaunchMetrics=metricsResult;
+    $("#hd-command-dashboard").hidden=false; $("#hd-command-status").hidden=true;
+    renderLaunchCommandCenter(); render();
   }
   document.addEventListener("click",async event=>{
     const button=event.target.closest?.("[data-command-save]");
