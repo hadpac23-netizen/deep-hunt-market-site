@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V1.9-PAYMENT-LAUNCH-GATE",
+  "version": "BOOM-BRAIN-GAPS-V2.0-CHECKOUT-ORDER-TRACKING",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -537,6 +537,30 @@
       "status": "NEXT",
       "source": "PAYMENT_TRUTH",
       "next": "PayPal routes exist as planned only. Connect separate live account/API evidence before any sandbox/live readiness claim."
+    },
+    {
+      "id": "checkout_order_tracking_e2e",
+      "title": "Checkout → Order → Tracking E2E",
+      "owner": "operations_brain",
+      "status": "IN_PROGRESS",
+      "source": "ORDER_TRUTH",
+      "next": "Proof runtime/Studio/Skill/Workflow coded. Need one successful CJ sandbox lineage to supplier_order_id + tracking_number + shipped event."
+    },
+    {
+      "id": "customer_order_visibility",
+      "title": "Customer Order / Tracking Visibility",
+      "owner": "experience_brain",
+      "status": "IN_PROGRESS",
+      "source": "ORDER_TRUTH",
+      "next": "RLS ownership path is structurally correct for sessions/orders/events/fulfillment. Tracking visibility cannot be proven until a tracking-bearing sandbox lineage exists."
+    },
+    {
+      "id": "cj_sandbox_transient_resilience",
+      "title": "CJ Sandbox Transient Resilience",
+      "owner": "operations_brain",
+      "status": "IN_PROGRESS",
+      "source": "ORDER_TRUTH",
+      "next": "Current source includes +972 normalization, transient retry/backoff and ambiguous-create reconciliation. Re-run sandbox E2E later to prove behavior; do not alter live supplier switch."
     }
   ]
 }
