@@ -706,6 +706,44 @@
   }
 
 
+
+  async function renderFreshShelfProductTruth(){
+    const host=$("#bs-fresh-shelf-product-truth");
+    const summary=$("#bs-fresh-shelf-summary");
+    const state=$("#bs-fresh-shelf-state");
+    if(!host)return;
+    const truth=window.BoomFreshShelfProductTruth;
+    if(!truth?.snapshot){
+      host.innerHTML='<div class="bs-empty bs-error">Fresh Shelf Product Truth unavailable.</div>';
+      if(state)state.textContent="UNAVAILABLE";
+      return;
+    }
+    try{
+      const report=await truth.snapshot({country:"IL",hours:24,provider:"CJdropshipping"});
+      if(state)state.textContent=`${report.fresh_shelf_verified} FRESH · ${report.checkout_recheck_required} RECHECK · ${report.stale_or_unverified} STALE`;
+      if(summary){
+        summary.innerHTML=[
+          metric(report.total_catalog,"CJ catalog rows"),
+          metric(report.fresh_shelf_verified,"Fresh shelf verified · IL"),
+          metric(report.checkout_recheck_required,"Checkout recheck required"),
+          metric(report.checkout_live_verified,"Checkout live verified"),
+          metric(report.stale_or_unverified,"Stale / unverified")
+        ].join("");
+      }
+      const fresh=(report.rows||[]).filter(x=>x.fresh_shelf_verified).slice(0,12);
+      host.innerHTML=fresh.length?fresh.map(x=>`<article>
+        <small>${esc(x.category||"product")} · ${esc(x.provider||"")}</small>
+        <strong>${esc(x.item_id||"")}</strong>
+        <span>${esc(x.state)} · price ✓ · stock ✓ · shipping IL ✓</span>
+        <span>market: ${esc(x.market_status||"unknown")} · newest: ${esc(x.evidence?.newest||"unknown")}</span>
+      </article>`).join(""):'<div class="bs-empty">No fresh shelf-verified CJ products for IL in the selected window.</div>';
+    }catch(error){
+      if(summary)summary.innerHTML="";
+      host.innerHTML=`<div class="bs-empty bs-error">Fresh product truth unavailable: ${esc(error?.message||"unknown")}</div>`;
+      if(state)state.textContent="UNKNOWN";
+    }
+  }
+
   async function renderShelfCoverage(){
     const summaryHost=$("#bs-shelf-coverage-summary");
     const grid=$("#bs-shelf-coverage-matrix");
@@ -909,12 +947,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json"),json("boom-marketing-profit-attribution-contract.json"),json("boom-marketing-cost-evidence-contract.json"),json("boom-payplus-sandbox-proof-contract.json"),json("boom-checkout-order-tracking-proof-contract.json"),json("boom-market-policy-readiness-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy,freshShelfProductTruth]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json"),json("boom-marketing-profit-attribution-contract.json"),json("boom-marketing-cost-evidence-contract.json"),json("boom-payplus-sandbox-proof-contract.json"),json("boom-checkout-order-tracking-proof-contract.json"),json("boom-market-policy-readiness-contract.json"),json("boom-fresh-shelf-product-truth-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy,freshShelfProductTruth};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderCheckoutOrderTrackingProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderMarketPolicyReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderCheckoutOrderTrackingProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderFreshShelfProductTruth();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderMarketPolicyReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
