@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-OPERATIONAL-SKILLS-V1.5-LAUNCH",
+  "version": "BOOM-OPERATIONAL-SKILLS-V1.6-PRODUCT-TRUTH",
   "mode": "SHADOW",
   "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
   "skills": [
@@ -313,6 +313,30 @@
       ],
       "tools": [
         "launch_readiness_aggregator"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "refresh_product_truth_evidence",
+      "title": "Refresh Product Truth Evidence",
+      "owner": "commerce_truth_brain",
+      "purpose": "Recheck CJ product identity, retail/profit gate, variant stock and destination shipping; write evidence observations only and preserve checkout recheck policy.",
+      "inputs": [
+        "provider",
+        "destination_country",
+        "batch_limit"
+      ],
+      "outputs": [
+        "fresh_shelf_verified",
+        "stale_or_unverified",
+        "checkout_recheck_required",
+        "evidence_refs"
+      ],
+      "tools": [
+        "supabase_runtime",
+        "cj_supplier",
+        "fresh_shelf_product_truth"
       ],
       "material": false,
       "owner_gate": false
