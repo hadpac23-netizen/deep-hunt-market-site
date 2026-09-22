@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-WORKFLOW-TEMPLATES-V1",
+  "version": "BOOM-WORKFLOW-TEMPLATES-V1.1-PROFIT",
   "mode": "SHADOW",
   "rule": "Templates compile reusable Skills into a plan. Compilation does not execute tools or material actions.",
   "templates": [
@@ -98,6 +98,29 @@
       ],
       "final_action": "owner_launch_decision",
       "material": true
+    },
+    {
+      "id": "marketing_profit_review",
+      "title": "Marketing → Realized Net Profit Review",
+      "owner": "growth_brain",
+      "trigger": "hourly_or_manual",
+      "skills": [
+        "attribute_marketing_profit"
+      ],
+      "final_action": "evidence_and_opportunity_report",
+      "material": false
+    },
+    {
+      "id": "hourly_profit_review",
+      "title": "Hourly Profit Mission Review",
+      "owner": "boom_orchestrator",
+      "trigger": "hourly_or_manual",
+      "skills": [
+        "review_hourly_profit",
+        "attribute_marketing_profit"
+      ],
+      "final_action": "next_hour_proposals",
+      "material": false
     }
   ]
 }
