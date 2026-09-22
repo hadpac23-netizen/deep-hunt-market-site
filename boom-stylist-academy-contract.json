@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-STYLIST-ACADEMY-V3",
+  "version": "BOOM-STYLIST-ACADEMY-V4",
   "mode": "SHADOW_TRAINING",
   "status": "F35_MULTIDISCIPLINARY_PLUS_CINEMATIC_LIGHTING_READY",
   "production_influence": false,
@@ -275,7 +275,7 @@
     "mastery_level": 0,
     "completed_exams": 0,
     "production_shelf_authority": false,
-    "training_dataset": "37_VERIFIED_PRODUCTS_IL_27_PRINTFUL_10_CJ",
+    "training_dataset": "40_VERIFIED_PRODUCTS_IL_27_PRINTFUL_13_CJ",
     "course_research": "PUBLIC_OFFICIAL_CURRICULA_AND_CASE_STUDIES_MAPPED",
     "course_completion": "NOT_CLAIMED",
     "survey_layers": 6,
@@ -287,13 +287,16 @@
     "cinematic_lighting": "LIGHT_DARK_RENDER_PAIR_VERIFIED",
     "cinematic_lighting_mastery": "TRAINING_EVIDENCE_ONLY",
     "visual_qa_round2": "PARTIAL_VISUAL_PASS_WITH_REWORK",
-    "looks_ready": 4,
-    "looks_rework": 1,
+    "looks_ready": 5,
+    "looks_rework": 0,
     "mens_footwear_gap": "STYLE_GAP_IMPROVED_COMMERCIAL_GAP_REMAINS",
     "cinematic_lighting_qa": "V16_LIGHT_DARK_QA_PASS",
-    "visual_qa_round3": "4_CONTINUE_1_REWORK"
+    "visual_qa_round3": "4_CONTINUE_1_REWORK",
+    "visual_qa_round4": "5_CONTINUE_0_REWORK_EXACT_MOCKUPS_PENDING",
+    "hero_ready": 0,
+    "footwear_learning": "STYLE_FIT_IMPROVED_COMMERCIAL_SHIPPING_WARNINGS_REMAIN"
   },
-  "next": "FETCH_EXACT_PRINTFUL_MOCKUPS_AND_REWORK_LOOK01",
+  "next": "FETCH_EXACT_PRINTFUL_MOCKUPS_THEN_RUN_TWO_THEME_SHELF_VISUAL_EXAM",
   "f35_research_ref": "boom-f35-style-commerce-research-2026-09-22.json",
   "preference_layers": [
     {
@@ -828,5 +831,7 @@
   "cinematic_lighting_ref": "boom-hunt-cinematic-lighting-contract.json",
   "visual_qa_round2_ref": "evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND2-2026-09-22.json",
   "training_set_v3_ref": "evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V3-IL-2026-09-22.json",
-  "visual_qa_round3_ref": "evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND3-2026-09-22.json"
+  "visual_qa_round3_ref": "evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND3-2026-09-22.json",
+  "training_set_v4_ref": "evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V4-IL-2026-09-22.json",
+  "visual_qa_round4_ref": "evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND4-2026-09-22.json"
 }

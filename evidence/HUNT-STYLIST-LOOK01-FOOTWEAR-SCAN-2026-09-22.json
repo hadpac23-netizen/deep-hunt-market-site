@@ -1,0 +1,54 @@
+{
+  "version": "HUNT-STYLIST-LOOK01-FOOTWEAR-SCAN-V1",
+  "destination": "IL",
+  "mode": "READ_ONLY",
+  "order_creation": false,
+  "production_effect": false,
+  "results": [
+    {
+      "item_id": "2609070619011621100",
+      "title": "Womens Large-size Round-toe Lace-up Fashionable Casual Shoes",
+      "status": "VERIFIED",
+      "variant_id": "2609070619011621900",
+      "supplier_cost_usd": 5.76,
+      "retail_price_usd": 10.99,
+      "profit_gate": "PASS",
+      "shipping": {
+        "name": "CJPacket Eub",
+        "price_usd": 10.65,
+        "aging": "12-50"
+      },
+      "shipping_to_retail_ratio": 0.969
+    },
+    {
+      "item_id": "2609080151291612100",
+      "title": "Trendy White Sneakers Casual And Breathable Agnes Shoes",
+      "status": "VERIFIED",
+      "variant_id": "2609080151291613700",
+      "supplier_cost_usd": 2.38,
+      "retail_price_usd": 7.99,
+      "profit_gate": "PASS",
+      "shipping": {
+        "name": "CJPacket Eub",
+        "price_usd": 10.65,
+        "aging": "12-50"
+      },
+      "shipping_to_retail_ratio": 1.333
+    },
+    {
+      "item_id": "2609090215431635200",
+      "title": "Breathable Flyknit Slip-on Casual Shoes With A Soft Sole That Wont Tire Your Feet",
+      "status": "VERIFIED",
+      "variant_id": "2609090215431636100",
+      "supplier_cost_usd": 2.74,
+      "retail_price_usd": 7.99,
+      "profit_gate": "PASS",
+      "shipping": {
+        "name": "CJPacket Eub",
+        "price_usd": 10.65,
+        "aging": "12-50"
+      },
+      "shipping_to_retail_ratio": 1.333
+    }
+  ]
+}

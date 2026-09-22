@@ -1,0 +1,81 @@
+{
+  "version": "HUNT-STYLIST-F35-VISUAL-QA-ROUND4-V1",
+  "date": "2026-09-22",
+  "mode": "SHADOW_VISUAL_REWORK",
+  "market": "IL",
+  "training_set": "HUNT-STYLIST-TRAINING-SET-V4-IL",
+  "production_effect": false,
+  "overall_status": "5_CONTINUE_0_REWORK_EXACT_MOCKUPS_PENDING",
+  "mastery_change": false,
+  "learning_rule": "Style Fit, Product Truth, Commercial Fit and Digital Display Fit are separate gates.",
+  "look01_rework": {
+    "look_id": "LOOK-01",
+    "previous_footwear_id": "2609080904291620900",
+    "new_footwear": {
+      "product_id": "2609070619011621100",
+      "variant_id": "2609070619011621900",
+      "title": "Light Gray low-profile lace-up casual sneaker",
+      "exact_variant_color": "Light Gray",
+      "exact_variant_size": "36",
+      "exact_variant_image_url": "https://cf.cjdropshipping.com/quick/product/20a00dcc-0b90-4ab1-a267-3643f127dca1.jpg",
+      "product_truth_il": "PASS",
+      "style_fit": "PASS_WITH_EDIT",
+      "commercial_fit": "WARNING_HIGH_SHIPPING",
+      "shipping_il_usd": 10.65,
+      "retail_price_usd": 10.99,
+      "shipping_to_retail_ratio": 0.969,
+      "visual_note": "White hoodie + Beige wide-leg pant + Light Gray low-profile sneaker forms a coherent neutral casual-street base. Keep beanie and bag quiet so the silhouette remains the focus."
+    },
+    "exact_bottom": {
+      "product_id": "2609080947141606700",
+      "variant_id": "2609080947141607600",
+      "exact_variant_color": "Beige",
+      "exact_variant_size": "S",
+      "exact_variant_image_url": "https://cf.cjdropshipping.com/quick/product/320678ce-9d93-4413-b0c9-241ac722f928.jpg"
+    }
+  },
+  "looks": [
+    {
+      "id": "LOOK-01",
+      "status": "PASS_WITH_EDIT",
+      "hero_ready": false,
+      "note": "Neutral casual-street direction now coherent; commercial Hero blocked by high footwear shipping and exact Printful mockup pending."
+    },
+    {
+      "id": "LOOK-02",
+      "status": "PASS_WITH_EDIT",
+      "hero_ready": false,
+      "note": "Relaxed-smart base works; keep bandana secondary and await exact Printful artwork."
+    },
+    {
+      "id": "LOOK-03",
+      "status": "PASS_DIRECTIONALLY",
+      "hero_ready": false,
+      "note": "Strong women weekend/street silhouette; exact Printful mockups still required."
+    },
+    {
+      "id": "LOOK-04",
+      "status": "PASS_WITH_EDIT",
+      "hero_ready": false,
+      "note": "Smart-casual direction works; keep accessories visually quiet."
+    },
+    {
+      "id": "LOOK-05",
+      "status": "PASS_WITH_EDIT",
+      "hero_ready": false,
+      "note": "Casual sneaker fixed the style mismatch; commercial Hero remains blocked by high shipping burden."
+    }
+  ],
+  "counters": {
+    "looks_can_continue": 5,
+    "looks_rework": 0,
+    "hero_ready": 0
+  },
+  "next": [
+    "Fetch exact Printful mockups/artwork for all Printful items in the five looks.",
+    "Keep high-shipping CJ footwear for style training only unless shipping economics improve.",
+    "Search for lower-shipping footwear substitutes before commercial Hero approval.",
+    "Run two-theme shelf render after exact mockups are available.",
+    "Do not change Production shelves or mastery level."
+  ]
+}
