@@ -1,0 +1,75 @@
+{
+  "version": "BOOM-FRESH-SHELF-PRODUCT-TRUTH-V1",
+  "mode": "SHADOW",
+  "owner": "commerce_truth_brain",
+  "authority": "EVIDENCE_ONLY",
+  "purpose": "Separate shelf freshness from checkout readiness. A product may be fresh enough to display when price, stock and destination shipping are freshly verified, while still requiring a new quote at checkout.",
+  "canonical_sources": {
+    "catalog": "hunt_catalog_products",
+    "observations": "hunt_product_observations",
+    "cj_product_detail": "hunt-storefront",
+    "cj_stock_shipping": "hunt-cj-quote"
+  },
+  "truth_precedence": [
+    "For CJ stock and destination shipping, hunt-cj-quote is canonical over inventory fields embedded in product detail.",
+    "Product detail remains canonical for current product/variant identity and retail-price/profit-gate data.",
+    "A stale catalog stock_quantity never overrides a fresh variant quote.",
+    "recheck_before_checkout is shelf-eligible but never checkout-ready by itself."
+  ],
+  "states": [
+    "STALE_OR_UNVERIFIED",
+    "FRESH_SHELF_VERIFIED",
+    "CHECKOUT_RECHECK_REQUIRED",
+    "CHECKOUT_LIVE_VERIFIED"
+  ],
+  "fresh_shelf_requirements": [
+    "catalog availability_verified=true",
+    "catalog has non-empty image",
+    "market_eligibility_status is recheck_before_checkout, eligible or allowed",
+    "fresh price observation with retail_verified=true and profit_gate_status=PASS",
+    "fresh stock observation from canonical quote with stock_verified=true and stock_available=true",
+    "fresh shipping observation for destination country with shipping_verified=true and numeric shipping amount",
+    "all three observation classes are within freshness window"
+  ],
+  "checkout_live_requirements": [
+    "all fresh shelf requirements",
+    "market_eligibility_status is eligible/allowed OR checkout policy explicitly accepts recheck after a new quote",
+    "a new checkout-time stock+shipping quote succeeds for the chosen exact variant and destination",
+    "selected variant is the variant represented by the quote"
+  ],
+  "freshness": {
+    "shelf_hours": 24,
+    "checkout_quote_minutes": 5
+  },
+  "current_truth": {
+    "catalog_rows": 117,
+    "catalog_providers": {
+      "CJdropshipping": 76,
+      "Printful": 23,
+      "Gooten": 18
+    },
+    "catalog_market_status_recheck_before_checkout": 117,
+    "stale_catalog_source_rows": 117,
+    "stale_catalog_stock_rows": 117,
+    "pilot_fresh_shelf_verified_il": 3,
+    "pilot_checkout_live_verified": 0,
+    "last_pilot_observation": "2026-09-22T12:34:39.463889Z",
+    "state": "PILOT_FRESH_TRUTH_PROVEN_FULL_REFRESH_PENDING"
+  },
+  "observed_endpoint_disagreement": {
+    "product_detail_sample_count": 3,
+    "product_detail_in_stock_variants": 0,
+    "cj_quote_stock_verified_count": 3,
+    "cj_quote_stock_available_count": 3,
+    "conclusion": "Do not use product-detail embedded inventory as final CJ stock truth."
+  },
+  "hard_rules": [
+    "Never refresh a timestamp without a successful external evidence call.",
+    "Never mark checkout-ready from shelf freshness alone.",
+    "Never change market_eligibility_status from this refresh lane.",
+    "Never overwrite retail price from a supplier cost field.",
+    "Never promote a stale catalog stock count over a fresh variant quote.",
+    "Never write a stock/shipping observation when the corresponding CJ verification flag is false.",
+    "A product refresh failure leaves the previous state stale/recheck; it does not fabricate availability."
+  ]
+}
