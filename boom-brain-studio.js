@@ -793,6 +793,55 @@
     if(!host)return;
     host.innerHTML=data.journeys.journeys.map(j=>`<article class="bs-journey"><h3>${esc(j.id)}</h3><p>${esc(j.goal)}</p><div class="bs-journey-steps">${j.steps.map(step=>`<span>${esc(step.kind)}: ${esc(step.ref)}${step.optional?" · optional":""}</span>`).join("")}</div></article>`).join("");
   }
+
+  function renderMarketPolicyReadiness(){
+    const host=$("#bs-market-policy-readiness");
+    const state=$("#bs-market-policy-state");
+    if(!host)return;
+    const contract=data.marketPolicy||{};
+    const evaluator=window.BoomMarketPolicyReadiness;
+    if(!evaluator?.evaluate){
+      host.innerHTML='<div class="bs-empty bs-error">Market Policy evaluator unavailable.</div>';
+      if(state)state.textContent="UNAVAILABLE";
+      return;
+    }
+    const global={
+      business_identity_published:false,
+      legal_registry_deployed:false,
+      terms_published:false,
+      privacy_published:false,
+      returns_published:false,
+      shipping_published:false,
+      returns_address_ready:false,
+      support_contact_ready:false,
+      privacy_contact_ready:false,
+      verified_shipping_promise_source:true,
+      cancellation_return_flow_implemented:false
+    };
+    const markets=[
+      {country:"IL",label:"Israel",key:"IL"},
+      {country:"DE",label:"EU",key:"EU"},
+      {country:"GB",label:"United Kingdom",key:"GB"},
+      {country:"US",label:"United States",key:"US"},
+      {country:"AU",label:"Australia",key:"AU"},
+      {country:"CA",label:"Other / unmapped example",key:"UNMAPPED"}
+    ];
+    const results=markets.map(x=>({...x,result:evaluator.evaluate({country:x.country,global,market:{review_approved:false}})}));
+    const ready=results.filter(x=>x.result.state==="READY_FOR_OWNER_REVIEW").length;
+    const holds=results.filter(x=>String(x.result.state).startsWith("HOLD")).length;
+    if(state)state.textContent=`${ready} READY · ${holds} HOLD · real money BLOCKED`;
+    host.innerHTML=results.map(x=>{
+      const baseline=contract.market_baselines?.[x.key]||null;
+      const reqs=baseline?.requirements||[];
+      return `<article class="bs-market-policy-card" data-state="${esc(x.result.state)}">
+        <div class="bs-skill-head"><strong>${esc(x.label)}</strong><span class="bs-status NEXT">${esc(x.result.state)}</span></div>
+        <p>First blocker: <b>${esc(x.result.blocker||"none")}</b></p>
+        <div class="bs-route-gates">${Object.entries(x.result.checks||{}).slice(0,12).map(([k,v])=>`<span data-pass="${v===true?"1":"0"}">${v===true?"✓":"·"} ${esc(k)}</span>`).join("")}</div>
+        <small>${baseline?esc(reqs.slice(0,3).join(" · ")):"Unmapped market: HOLD until consumer/privacy/tax/import/shipping review."}</small>
+      </article>`;
+    }).join("");
+  }
+
   function renderLegalReadiness(){
     const host=$("#bs-legal-readiness");
     if(!host)return;
@@ -860,12 +909,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json"),json("boom-marketing-profit-attribution-contract.json"),json("boom-marketing-cost-evidence-contract.json"),json("boom-payplus-sandbox-proof-contract.json"),json("boom-checkout-order-tracking-proof-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json"),json("boom-marketing-profit-attribution-contract.json"),json("boom-marketing-cost-evidence-contract.json"),json("boom-payplus-sandbox-proof-contract.json"),json("boom-checkout-order-tracking-proof-contract.json"),json("boom-market-policy-readiness-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderCheckoutOrderTrackingProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderCheckoutOrderTrackingProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderMarketPolicyReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
