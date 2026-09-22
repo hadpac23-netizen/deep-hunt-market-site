@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V1.3-PROFIT-MISSION",
+  "version": "BOOM-BRAIN-GAPS-V1.4-PROFIT-DATA",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -409,6 +409,30 @@
       "status": "IN_PROGRESS",
       "source": "PROFIT_MISSION",
       "next": "Use $10K+/hour as aspirational mission target; produce evidence-backed next-hour proposals without autonomous spend, pricing or publish."
+    },
+    {
+      "id": "profit_data_map",
+      "title": "Profit Data Map",
+      "owner": "commerce_truth_brain",
+      "status": "DONE",
+      "source": "PROFIT_MISSION",
+      "next": "Reuse canonical stores; keep non-RLS attribution/owner rollups server-only until hardened."
+    },
+    {
+      "id": "product_profit_ledger",
+      "title": "Derived Product Profit Ledger",
+      "owner": "commerce_truth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Expected lane is coded from verified unit economics. Realized lane waits for non-test finance-ledger rows and auditable line-item allocation; no parallel DB table."
+    },
+    {
+      "id": "profit_data_access_hardening",
+      "title": "Profit Data Access Hardening",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "SECURITY",
+      "next": "Preview-only review/hardening for hunt_purchase_attribution_bridge and hunt_daily_owner_metrics before direct Studio use."
     }
   ]
 }
