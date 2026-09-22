@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V1.7-FIRST-REAL-ORDER",
+  "version": "BOOM-BRAIN-GAPS-V1.8-PAYPLUS-SANDBOX",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -489,6 +489,30 @@
       "status": "BLOCKED",
       "source": "PAYMENT_TRUTH",
       "next": "Sandbox callback/status mapping must be proven before Owner considers enabling hunt_payplus_callback_accept_paid. Do not change live acceptance from Profit Engine."
+    },
+    {
+      "id": "payplus_sandbox_status_proof",
+      "title": "PayPlus Sandbox Status Proof",
+      "owner": "operations_brain",
+      "status": "IN_PROGRESS",
+      "source": "PAYMENT_TRUTH",
+      "next": "Matrix/evaluator/Studio are coded. Collect real staging success + failure callback observations, then prove idempotency/reference integrity; refund remains separate."
+    },
+    {
+      "id": "payplus_sandbox_observations",
+      "title": "PayPlus Staging Observations",
+      "owner": "operations_brain",
+      "status": "BLOCKED",
+      "source": "PAYMENT_TRUTH",
+      "next": "Current count is 0. Sandbox evidence control is OFF/unapproved and no token hash is configured for a proof run."
+    },
+    {
+      "id": "payplus_refund_status_proof",
+      "title": "PayPlus Refund Status Proof",
+      "owner": "operations_brain",
+      "status": "NEXT",
+      "source": "PAYMENT_TRUTH",
+      "next": "After a proven sandbox charge, capture charge_method=4 refund observation linked to original transaction; never count refund as revenue."
     }
   ]
 }
