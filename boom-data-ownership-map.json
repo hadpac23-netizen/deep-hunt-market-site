@@ -1,0 +1,111 @@
+{
+  "version": "BOOM-DATA-OWNERSHIP-MAP-V1",
+  "rule": "Tables store evidence/state; Primary Brains own decisions. Database access never transfers decision authority.",
+  "stores": [
+    {
+      "table": "profiles",
+      "owner": "identity_session_kernel",
+      "brain": "operations_brain",
+      "purpose": "identity/admin/session profile truth",
+      "access": "RLS"
+    },
+    {
+      "table": "hunt_catalog_products",
+      "owner": "commerce_truth_brain",
+      "purpose": "normalized catalog/product truth",
+      "access": "public read; controlled writes elsewhere"
+    },
+    {
+      "table": "hunt_shelf_coverage",
+      "owner": "commerce_truth_brain",
+      "purpose": "shelf coverage evidence",
+      "access": "server-only direct client deny"
+    },
+    {
+      "table": "hunt_partner_candidates",
+      "owner": "commerce_truth_brain",
+      "purpose": "supplier/partner candidate evidence",
+      "access": "server-only direct client deny"
+    },
+    {
+      "table": "hunt_partner_matrix",
+      "owner": "commerce_truth_brain",
+      "purpose": "partner integration/rights/terms truth",
+      "access": "admin RLS"
+    },
+    {
+      "table": "hunt_profit_profiles",
+      "owner": "commerce_truth_brain",
+      "purpose": "owner-approved economics policy",
+      "access": "admin RLS"
+    },
+    {
+      "table": "hunt_unit_economics",
+      "owner": "commerce_truth_brain",
+      "purpose": "verified per-item economics",
+      "access": "admin read"
+    },
+    {
+      "table": "hunt_orders",
+      "owner": "operations_brain",
+      "purpose": "order truth",
+      "access": "owner/admin read"
+    },
+    {
+      "table": "hunt_fulfillment_orders",
+      "owner": "operations_brain",
+      "purpose": "fulfillment/tracking truth",
+      "access": "owner/admin read"
+    },
+    {
+      "table": "hunt_order_events",
+      "owner": "operations_brain",
+      "purpose": "order event timeline",
+      "access": "owner/admin read"
+    },
+    {
+      "table": "hunt_marketing_experiments",
+      "owner": "learning_governance_brain",
+      "proposer": "growth_brain",
+      "purpose": "experiment state/results",
+      "access": "admin RLS"
+    },
+    {
+      "table": "analytics_events",
+      "owner": "learning_governance_brain",
+      "purpose": "analytics evidence",
+      "access": "authenticated read; constrained public insert"
+    },
+    {
+      "table": "hunt_boom_learning_items",
+      "owner": "learning_governance_brain",
+      "purpose": "candidate/trusted learning ledger",
+      "access": "admin RLS"
+    },
+    {
+      "table": "hunt_boom_team_runs",
+      "owner": "boom_orchestrator",
+      "purpose": "durable run ledger",
+      "access": "admin RLS"
+    },
+    {
+      "table": "hunt_boom_events",
+      "owner": "learning_governance_brain",
+      "purpose": "sanitized evidence/incident/run events",
+      "access": "admin control-plane policies"
+    },
+    {
+      "table": "hunt_boom_decisions",
+      "owner": "boom_orchestrator",
+      "approver": "OWNER",
+      "purpose": "central Owner Gate decision queue",
+      "access": "admin RLS"
+    }
+  ],
+  "prohibitions": [
+    "No PII or secrets in run/evidence payloads.",
+    "No direct client read of server-only tables.",
+    "No table may become a second decision owner.",
+    "Unknown/null truth stays UNKNOWN."
+  ]
+}
