@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-OPERATIONAL-SKILLS-V1.4-MARKET-POLICY",
+  "version": "BOOM-OPERATIONAL-SKILLS-V1.5-LAUNCH",
   "mode": "SHADOW",
   "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
   "skills": [
@@ -271,6 +271,48 @@
       ],
       "tools": [
         "market_policy_readiness"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_performance_mobile",
+      "title": "Review Performance / Mobile Readiness",
+      "owner": "experience_brain",
+      "purpose": "Evaluate responsive integrity, homepage initial-render budgets, touch targets, critical browser failures and PWA update readiness.",
+      "inputs": [
+        "qa_evidence",
+        "preview_state"
+      ],
+      "outputs": [
+        "mobile_state",
+        "tablet_state",
+        "pwa_state",
+        "blockers"
+      ],
+      "tools": [
+        "performance_mobile_readiness"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_launch_readiness",
+      "title": "Review Launch Readiness",
+      "owner": "boom_orchestrator",
+      "purpose": "Aggregate canonical domain gates and live non-sensitive launch metrics into one owner-facing report without changing any source gate.",
+      "inputs": [
+        "readiness_snapshot",
+        "launch_scope"
+      ],
+      "outputs": [
+        "overall_state",
+        "domain_states",
+        "top_blockers",
+        "live_metrics"
+      ],
+      "tools": [
+        "launch_readiness_aggregator"
       ],
       "material": false,
       "owner_gate": false
