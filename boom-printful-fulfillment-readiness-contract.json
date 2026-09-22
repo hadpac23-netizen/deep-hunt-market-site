@@ -1,0 +1,49 @@
+{
+  "version": "HUNT-PRINTFUL-FULFILLMENT-READINESS-V1",
+  "mode": "DRAFT_TEST_ONLY",
+  "authority": "NONE",
+  "production_checkout": false,
+  "live_fulfillment": false,
+  "token_policy": {
+    "client_type": "STORE",
+    "store": "Adi's Store",
+    "required_scopes": [
+      "orders",
+      "sync_products/read"
+    ],
+    "server_side_only": true
+  },
+  "sequence": [
+    "verify oauth scopes",
+    "verify read access to orders",
+    "estimate order costs before any draft",
+    "create draft only with confirm=false",
+    "verify returned status=draft",
+    "never call confirm endpoint in this phase",
+    "later test webhook receiver with simulator",
+    "Owner Gate before any live fulfillment"
+  ],
+  "hard_blocks": [
+    "POST /orders/{id}/confirm",
+    "confirm=true",
+    "Production checkout activation",
+    "automatic supplier submission",
+    "client-side token exposure"
+  ],
+  "charge_rule": "Draft orders are not charged or fulfilled until confirmed.",
+  "design_requirement": "Catalog items require a Printful-compatible variant and print file/template before a complete order can be fulfilled.",
+  "webhook_readiness": [
+    "order_created",
+    "order_updated",
+    "order_failed",
+    "package_shipped"
+  ],
+  "current_state": {
+    "product_truth_candidates": 27,
+    "country_limited_candidates": 3,
+    "current_product_token_scope": "sync_products/read",
+    "orders_scope_ready": false,
+    "draft_order_tested": false,
+    "live_order_tested": false
+  }
+}
