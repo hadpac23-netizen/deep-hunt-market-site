@@ -1,0 +1,71 @@
+{
+  "version": "HUNT-STYLIST-F35-VISUAL-QA-ROUND3-V1",
+  "date": "2026-09-22",
+  "mode": "SHADOW_VISUAL_REWORK",
+  "market": "IL",
+  "training_set": "HUNT-STYLIST-TRAINING-SET-V3-IL",
+  "production_effect": false,
+  "overall_status": "4_CONTINUE_1_REWORK",
+  "mastery_change": false,
+  "learning_rule": "Style Fit and Commercial Fit are separate gates. A product can improve the look while remaining commercially unsuitable for Hero placement.",
+  "rework": {
+    "look_id": "LOOK-05",
+    "previous_footwear_id": "2609080443011631100",
+    "new_footwear": {
+      "product_id": "2609090656121615600",
+      "variant_id": "2609090656121616500",
+      "title": "New Mens Slip-on Sneakers For Spring And Summer",
+      "product_truth_il": "PASS",
+      "style_fit": "PASS_WITH_EDIT",
+      "commercial_fit": "WARNING_HIGH_SHIPPING",
+      "shipping_il_usd": 12.68,
+      "retail_price_usd": 10.99,
+      "shipping_to_retail_ratio": 1.154,
+      "visual_note": "The casual colorful sneaker fits the quarter-zip + shorts weekend language better than the previous tassel slip-on. Because the shoe is visually busy, cap and backpack should remain neutral."
+    }
+  },
+  "looks": [
+    {
+      "id": "LOOK-01",
+      "status": "REWORK",
+      "hero_ready": false,
+      "note": "Needs a more grounded casual/street footwear option; current refined flat conflicts with the street brief."
+    },
+    {
+      "id": "LOOK-02",
+      "status": "PASS_WITH_EDIT",
+      "hero_ready": false,
+      "note": "Relaxed-smart base works; keep bandana secondary and await exact Printful artwork."
+    },
+    {
+      "id": "LOOK-03",
+      "status": "PASS_DIRECTIONALLY",
+      "hero_ready": false,
+      "note": "Strongest women weekend/street silhouette; exact Printful mockups still required."
+    },
+    {
+      "id": "LOOK-04",
+      "status": "PASS_WITH_EDIT",
+      "hero_ready": false,
+      "note": "Smart-casual direction works; keep accessories visually quiet."
+    },
+    {
+      "id": "LOOK-05",
+      "status": "PASS_WITH_EDIT",
+      "hero_ready": false,
+      "note": "Style mismatch improved with casual sneaker; commercial Hero remains blocked by high shipping burden."
+    }
+  ],
+  "counters": {
+    "looks_can_continue": 4,
+    "looks_rework": 1,
+    "hero_ready": 0
+  },
+  "next": [
+    "Fetch exact Printful mockups/artwork for color-harmony QA.",
+    "Keep LOOK-05 sneaker for style training only unless shipping economics improve.",
+    "Verify another neutral men's casual sneaker with lower shipping burden.",
+    "Rework LOOK-01 footwear.",
+    "Do not change Production shelves or mastery level."
+  ]
+}

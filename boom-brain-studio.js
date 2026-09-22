@@ -230,16 +230,16 @@
     const host=$("#bs-stylist-academy");
     if(!host)return;
     try{
-      const [academy,training,trainingV2,f35,baseline,round1,round2,lighting,visualQa]=await Promise.all([
+      const [academy,training,trainingCurrent,f35,baseline,round1,round2,lighting,visualQa]=await Promise.all([
         json("boom-stylist-academy-contract.json"),
         json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-2026-09-22.json"),
-        json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V2-IL-2026-09-22.json"),
+        json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V3-IL-2026-09-22.json"),
         json("boom-f35-style-commerce-research-2026-09-22.json"),
         json("evidence/HUNT-F35-SIX-LAYER-PREFERENCE-BASELINE-2026-09-22.json"),
         json("evidence/HUNT-STYLIST-F35-ROUND1-2026-09-22.json"),
         json("evidence/HUNT-STYLIST-F35-ROUND2-2026-09-22.json"),
         json("evidence/HUNT-CINEMATIC-LIGHTING-QA-2026-09-22.json"),
-        json("evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND2-2026-09-22.json")
+        json("evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND3-2026-09-22.json")
       ]);
       const tracks=(academy.tracks||[]).map(t=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(t.id)} · ${esc(t.name)}</strong><span class="bs-status NEXT">${esc((t.modules||[]).length)} modules</span></div><p>${esc((t.modules||[]).join(" · "))}</p></div>`).join("");
       const exams=(academy.exams||[]).map(e=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(e.name)}</strong><span class="bs-status NEXT">PASS ${esc(e.pass_score)}+</span></div><small>${esc(e.output_rule)}</small></div>`).join("");
@@ -254,8 +254,8 @@
           <code>production influence false · autonomous shelf reorder false · publish false</code>
         </article>
         <article class="bs-creative-card">
-          <div class="bs-automation-head"><strong>Verified Training Set</strong><span class="bs-status DONE">${esc(trainingV2.verified_products)} products · IL</span></div>
-          <p>Base: ${esc(training.verified_products)} Printful/global candidates · CJ IL additions: ${esc(trainingV2.cj_il_verified_added)} · Product Truth source preserved.</p>
+          <div class="bs-automation-head"><strong>Verified Training Set</strong><span class="bs-status DONE">${esc(trainingCurrent.verified_products)} products · IL</span></div>
+          <p>Base: ${esc(training.verified_products)} Printful/global candidates · CJ IL additions: ${esc(trainingCurrent.cj_il_verified_added)} · Product Truth source preserved.</p>
           <small>EXAMS</small>
           <div class="bs-run-list">${exams}</div>
           <small>CURRENT MASTERY</small>

@@ -1,0 +1,69 @@
+{
+  "version": "HUNT-STYLIST-MENS-FOOTWEAR-GAP-SCAN-V1",
+  "destination": "IL",
+  "mode": "READ_ONLY",
+  "order_creation": false,
+  "production_effect": false,
+  "results": [
+    {
+      "item_id": "2609090839181617400",
+      "title": "Washed Leather Sneakers Mens Casual Leather Shoes",
+      "status": "PRICE_OR_PROFIT_BLOCKED",
+      "variant_id": "2609090839181618400",
+      "supplier_cost_usd": 48.88,
+      "retail_price_usd": 75.99,
+      "profit_gate": "REVIEW",
+      "shipping": {
+        "name": "CJPacket Eub",
+        "price_usd": 14.94,
+        "aging": "12-50"
+      },
+      "shipping_to_retail_ratio": 0.197
+    },
+    {
+      "item_id": "2609070907571625600",
+      "title": "Solid-color Thick-soled Sneakers Mens Casual Shoes",
+      "status": "PRICE_OR_PROFIT_BLOCKED",
+      "variant_id": "2609070907571626500",
+      "supplier_cost_usd": 18.33,
+      "retail_price_usd": 28.99,
+      "profit_gate": "REVIEW",
+      "shipping": {
+        "name": "CJPacket Eub",
+        "price_usd": 15.2,
+        "aging": "12-50"
+      },
+      "shipping_to_retail_ratio": 0.524
+    },
+    {
+      "item_id": "2609090656121615600",
+      "title": "New Mens Slip-on Sneakers For Spring And Summer",
+      "status": "VERIFIED",
+      "variant_id": "2609090656121616500",
+      "supplier_cost_usd": 5.3,
+      "retail_price_usd": 10.99,
+      "profit_gate": "PASS",
+      "shipping": {
+        "name": "CJPacket Eub",
+        "price_usd": 12.68,
+        "aging": "12-50"
+      },
+      "shipping_to_retail_ratio": 1.154
+    },
+    {
+      "item_id": "2609071057221613500",
+      "title": "Mens Fashionable Casual Low-top Sports Shoes",
+      "status": "PRICE_OR_PROFIT_BLOCKED",
+      "variant_id": "2609071057221614700",
+      "supplier_cost_usd": 17.46,
+      "retail_price_usd": 26.99,
+      "profit_gate": "REVIEW",
+      "shipping": {
+        "name": "CJPacket Eub",
+        "price_usd": 14.44,
+        "aging": "12-50"
+      },
+      "shipping_to_retail_ratio": 0.535
+    }
+  ]
+}
