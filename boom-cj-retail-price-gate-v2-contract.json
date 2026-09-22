@@ -1,0 +1,39 @@
+{
+  "version": "HUNT-CJ-RETAIL-PRICE-GATE-V2",
+  "mode": "SHADOW",
+  "authority": "NONE",
+  "owner": "commerce_truth_brain",
+  "purpose": "Correct CJ retail-price floor so the price generator and its own post-reserve margin gate are mathematically consistent.",
+  "defaults": {
+    "min_profit_usd": 4,
+    "payment_reserve_rate": 0.04,
+    "refund_reserve_rate": 0.05,
+    "target_product_margin": 0.35
+  },
+  "formula": {
+    "reserve_denominator": "1 - payment_reserve_rate - refund_reserve_rate",
+    "contribution_floor": "(supplier_cost + min_profit_usd) / reserve_denominator",
+    "corrected_margin_floor": "supplier_cost / (reserve_denominator - target_product_margin)",
+    "retail": "max(0.99, ceil(max(contribution_floor, corrected_margin_floor)) - 0.01)",
+    "projected_profit": "retail * reserve_denominator - supplier_cost",
+    "projected_margin": "projected_profit / retail"
+  },
+  "bug_found": {
+    "old_margin_floor": "supplier_cost / (1 - target_product_margin)",
+    "problem": "Old margin floor ignored payment/refund reserves while the final margin gate subtracted them, so a generated retail price could immediately fail its own gate."
+  },
+  "current_review": {
+    "blocked_items": 11,
+    "corrected_price_deltas_usd": {
+      "min": 1,
+      "max": 6
+    },
+    "price_changes_applied_to_production": 0
+  },
+  "hard_rules": [
+    "No automatic Production retail-price changes.",
+    "Shipping remains priced separately.",
+    "Repricing is a material commerce action and requires Owner Gate.",
+    "Product Truth may use V2 only after the storefront price source is deployed and reverified."
+  ]
+}
