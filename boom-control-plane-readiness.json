@@ -162,12 +162,12 @@
     {
       "id": "fresh_shelf_product_truth",
       "status": "CJ_57_FRESH_OTHER_PROVIDERS_PARTIAL",
-      "evidence": "57/76 CJ products pass strict scan-aware exact-variant Product Truth for IL. Retry B reclassified the remaining 19 to 11 Price/Profit blocked, 6 product lookup failures after 3 retries, 2 no verified variant. Printful/Gooten public catalogs are live but shipping credentials/evidence are missing. 0 Checkout Live Verified."
+      "evidence": "Strict IL truth remains 57 CJ Fresh Shelf Verified, 11 Price/Profit blocked, 6 product lookup failures after retry, 2 no verified variant, 0 Checkout Live Verified. Printful 22 live unique / 550 in-stock variants remains credential+shipping blocked. Gooten 18 live remains RecipeID/variants/shipping blocked; support follow-up sent on ticket #369479."
     },
     {
       "id": "cj_price_gate_v2",
-      "status": "CODED_SHADOW_NOT_DEPLOYED",
-      "evidence": "Found formula inconsistency: old margin floor ignored 9% payment/refund reserves while final margin gate deducted them. V2 uses supplier_cost/(reserve_denominator-target_margin); 11 blocked items would require +$1 to +$6 retail under defaults. No Production prices changed."
+      "status": "SOURCE_SYNCED_BRANCH_NOT_DEPLOYED",
+      "evidence": "Deployed hunt-storefront source was synced into GitHub branch and patched to reserve-aware margin floor supplier_cost/(reserveDenominator-targetMargin). Regression test PASS. Production Edge Function remains unchanged; no repricing occurred."
     }
   ],
   "blockers": [
