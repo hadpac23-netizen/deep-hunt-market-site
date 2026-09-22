@@ -177,19 +177,16 @@ async function gooten(out:Record<string,any[]>){
 
 async function printfulCredentialProbe(){
   if(!has("PRINTFUL_API_TOKEN"))return {ok:false,state:"TOKEN_REQUIRED"};
-  const storesRes=await fetch("https://api.printful.com/stores",{headers:printfulHeaders()});
-  if(!storesRes.ok)return {ok:false,state:"AUTH_PROBE_FAILED",http:storesRes.status};
-  const storesJson=await storesRes.json();
-  const stores=Array.isArray(storesJson?.result)?storesJson.result:[];
-  const expected=env("PRINTFUL_STORE_ID");
-  const selected=expected?stores.find((s:any)=>String(s?.id)===expected):stores[0];
-  if(!selected?.id)return {ok:false,state:expected?"EXPECTED_STORE_NOT_FOUND":"NO_STORE_FOUND"};
-  const h=printfulHeaders(); h["X-PF-Store-Id"]=String(selected.id);
-  const r=await fetch("https://api.printful.com/store/products?limit=1",{headers:h});
-  if(!r.ok)return {ok:false,state:"STORE_PROBE_FAILED",http:r.status,store_id:String(selected.id)};
-  const d=await r.json();
+  const store=env("PRINTFUL_STORE_ID");
+  const r=await fetch("https://api.printful.com/store/products",{headers:printfulHeaders()});
+  const d=await r.json().catch(()=>({}));
+  if(!r.ok){
+    const msg=clean(d?.result||d?.error||d?.message);
+    if(r.status===400&&/store_id/i.test(msg)&&!store)return {ok:false,state:"STORE_ID_REQUIRED_FOR_TOKEN",http:r.status};
+    return {ok:false,state:"STORE_PROBE_FAILED",http:r.status};
+  }
   const rows=Array.isArray(d?.result)?d.result:[];
-  return {ok:true,state:"READ_ONLY_STORE_ACCESS_VERIFIED",store_id:String(selected.id),sample_count:rows.length};
+  return {ok:true,state:"READ_ONLY_STORE_ACCESS_VERIFIED",store_id:store||null,sample_count:rows.length};
 }
 
 async function gootenVariantProbe(productId:string,countryCode:string){

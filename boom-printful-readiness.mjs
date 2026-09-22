@@ -27,27 +27,18 @@ const getJson = async (path, extraHeaders = {}) => {
   return { ok: r.ok, status: r.status, body };
 };
 
-const stores = await getJson("/stores");
-result.auth = stores.ok ? "VERIFIED" : `FAILED_HTTP_${stores.status}`;
+const storeHeaders = expectedStoreId ? { "X-PF-Store-Id": expectedStoreId } : {};
+const products = await getJson("/store/products", storeHeaders);
+result.auth = products.ok ? "VERIFIED" : `FAILED_HTTP_${products.status}`;
+result.store = products.ok ? "STORE_CONTEXT_VERIFIED" : "STORE_CONTEXT_FAILED";
+result.sync_products = products.ok ? "READ_ONLY_VERIFIED" : `FAILED_HTTP_${products.status}`;
 
-const storeList = Array.isArray(stores.body?.result) ? stores.body.result : [];
-const selected = expectedStoreId
-  ? storeList.find((s) => String(s?.id) === expectedStoreId)
-  : storeList[0];
-
-if (selected?.id) {
-  result.store = "VERIFIED";
-  result.store_id = String(selected.id);
-  result.store_name = String(selected.name || "");
-} else if (stores.ok) {
-  result.store = expectedStoreId ? "EXPECTED_STORE_NOT_FOUND" : "NO_STORE_FOUND";
-}
-
-if (stores.ok && selected?.id) {
-  const storeHeaders = { "X-PF-Store-Id": String(selected.id) };
-  const products = await getJson("/store/products?limit=1", storeHeaders);
-  result.sync_products = products.ok ? "READ_ONLY_VERIFIED" : `FAILED_HTTP_${products.status}`;
+const rows = Array.isArray(products.body?.result) ? products.body.result : [];
+result.sample_count = rows.length;
+if (expectedStoreId) result.store_id = expectedStoreId;
+if (!products.ok) {
+  result.api_error = products.body?.result || products.body?.error || products.body?.message || products.body?.code || "UNKNOWN";
 }
 
 console.log(JSON.stringify(result, null, 2));
-if (result.auth !== "VERIFIED" || result.store !== "VERIFIED") process.exit(3);
+if (result.auth !== "VERIFIED" || result.sync_products !== "READ_ONLY_VERIFIED") process.exit(3);

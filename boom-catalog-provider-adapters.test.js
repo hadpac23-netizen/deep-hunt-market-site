@@ -26,6 +26,8 @@ assert.equal(adapters.mode,"STAGED_READ_ONLY");
 assert.equal(adapters.authority,"NONE");
 assert.equal(adapters.production_deploy,false);
 assert.equal(adapters.credentials_in_repo,false);
+assert.deepEqual(adapters.providers.Printful.required_credential_env,["PRINTFUL_API_TOKEN"]);
+assert.deepEqual(adapters.providers.Printful.optional_credential_env,["PRINTFUL_STORE_ID"]);
 assert.equal(adapters.providers.Gooten.partner_billing_key_used_for_catalog,false);
 
 console.log("HUNT Catalog Provider Adapters: PASS — read-only credential gates staged; no fulfillment or Production repricing enabled");
