@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-OPERATIONAL-SKILLS-V1.3-ORDER-E2E",
+  "version": "BOOM-OPERATIONAL-SKILLS-V1.4-MARKET-POLICY",
   "mode": "SHADOW",
   "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
   "skills": [
@@ -250,6 +250,27 @@
       "tools": [
         "supabase_runtime",
         "checkout_order_tracking_proof"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_market_policy_readiness",
+      "title": "Review Market Legal / Returns / Shipping Readiness",
+      "owner": "learning_governance_brain",
+      "purpose": "Gate each market using published business identity, legal documents, verified shipping promises, cancellation/return flow and market-specific review.",
+      "inputs": [
+        "country_or_market",
+        "launch_scope"
+      ],
+      "outputs": [
+        "market_state",
+        "missing_gates",
+        "source_baseline",
+        "owner_review_required"
+      ],
+      "tools": [
+        "market_policy_readiness"
       ],
       "material": false,
       "owner_gate": false
