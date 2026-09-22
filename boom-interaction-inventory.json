@@ -444,6 +444,18 @@
       "selector": "[data-gap-filter]",
       "action_id": "filter.apply",
       "status": "mapped"
+    },
+    {
+      "file": "boom-brain-studio.js",
+      "selector": "[data-owner-gate-approve]",
+      "action_id": "boom.owner_gate.decide",
+      "status": "mapped"
+    },
+    {
+      "file": "boom-brain-studio.js",
+      "selector": "[data-owner-gate-reject]",
+      "action_id": "boom.owner_gate.decide",
+      "status": "mapped"
     }
   ]
 }
