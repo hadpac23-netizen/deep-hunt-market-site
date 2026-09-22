@@ -83,15 +83,14 @@
   async function loadLiveLaunchMetrics(){
     const cutoff=new Date(Date.now()-86400000).toISOString();
     const results=await Promise.allSettled([
-      client.from("analytics_events").select("session_id,created_at").gte("created_at",cutoff).limit(5000),
       client.from("hunt_orders").select("id,total_amount,currency,is_test").eq("is_test",false).limit(1000),
       client.from("hunt_order_finance_ledger").select("id,currency,available_profit,is_test").eq("is_test",false).limit(1000),
       client.from("hunt_boom_team_runs").select("id,status,created_at").gte("created_at",cutoff).limit(1000),
       client.from("hunt_boom_decisions").select("id,status,owner_approval_required,created_at").eq("owner_approval_required",true).limit(1000)
     ]);
     const data=i=>results[i]?.status==="fulfilled"&&!results[i].value?.error?(results[i].value.data||[]):null;
-    const analytics=data(0),orders=data(1),finance=data(2),runs=data(3),decisions=data(4);
-    const sessions=analytics===null?null:new Set(analytics.map(x=>String(x.session_id||"")).filter(Boolean)).size;
+    const orders=data(0),finance=data(1),runs=data(2),decisions=data(3);
+    const sessions=null;
     const currencies=finance===null?[]:[...new Set(finance.map(x=>String(x.currency||"").toUpperCase()).filter(Boolean))];
     const profit=finance===null?null:finance.reduce((sum,x)=>sum+(Number(x.available_profit)||0),0);
     const resolved=new Set(["approved","rejected","done","completed","cancelled","canceled"]);
@@ -122,7 +121,7 @@
     const val=v=>v===null||v===undefined?"UNKNOWN":String(v);
     const profit=m.realized_profit===null||m.realized_profit===undefined?"UNKNOWN":(m.realized_profit_currency==="MULTI"?"MULTI":m.realized_profit_currency+" "+Number(m.realized_profit).toLocaleString(undefined,{maximumFractionDigits:2}));
     metrics.innerHTML=[
-      metricCard(val(m.internal_sessions_24h),"Internal sessions · 24h","HUNT analytics, not GA4 users"),
+      metricCard(val(m.internal_sessions_24h),"Internal sessions · 24h","UNKNOWN until server-side aggregate is connected"),
       metricCard(val(m.real_orders),"Real orders","is_test=false only"),
       metricCard(val(m.real_finance_rows),"Real finance rows","Test ledger excluded"),
       metricCard(profit,"Realized profit","Finance evidence only"),
