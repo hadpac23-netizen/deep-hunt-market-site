@@ -24,9 +24,9 @@
     }
     if(contract.connected===true)return {ok:false,reason:"LIVE_TRANSPORT_NOT_IMPLEMENTED"};
     if(contract.mode!=="SHADOW")return {ok:false,reason:"ADAPTER_NOT_SHADOW"};
-    if(contract.blocked_capabilities.includes(capability))return {ok:false,reason:"CAPABILITY_BLOCKED"};
-    if(!contract.initial_capabilities.includes(capability))return {ok:false,reason:"CAPABILITY_NOT_ALLOWLISTED"};
-    if(run.workflow_id!==contract.allowed_initial_workflow)return {ok:false,reason:"WORKFLOW_NOT_ALLOWLISTED"};
+    if((contract.safety?.blocked_capabilities||[]).includes(capability))return {ok:false,reason:"CAPABILITY_BLOCKED"};
+    if(!(contract.safety?.allowed_capabilities||[]).includes(capability))return {ok:false,reason:"CAPABILITY_NOT_ALLOWLISTED"};
+    if(!(contract.safety?.allowed_workflows||[]).includes(run.workflow_id))return {ok:false,reason:"WORKFLOW_NOT_ALLOWLISTED"};
 
     return {
       ok:true,
