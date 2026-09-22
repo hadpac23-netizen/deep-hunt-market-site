@@ -201,3 +201,10 @@ html[data-hunt-theme="dark"] :is(.hd-review-photos img,.hd-review-file-preview i
 .hd-merchant-status.testing{color:#b06c00}.hd-merchant-status.won{color:#12834d}.hd-merchant-status.lost{color:#b82f40}.hd-merchant-status.inconclusive{color:#7d67d9}
 
 .hd-shelf-progressive-sentinel{width:100%;height:1px;pointer-events:none;visibility:hidden}
+
+
+/* BOOM mobile touch-target hardening */
+.hd-brand{min-height:44px;display:inline-flex!important;align-items:center}
+.hd-theme-toggle{min-width:44px!important;height:44px!important}
+#hd-shopping-survey-skip{width:44px!important;height:44px!important}
+@media(max-width:430px){.hd-theme-toggle{min-width:44px!important;height:44px!important}}
