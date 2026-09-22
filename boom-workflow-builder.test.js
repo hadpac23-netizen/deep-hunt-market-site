@@ -8,7 +8,7 @@ const src=fs.readFileSync("boom-workflow-builder.js","utf8");
 const ctx={window:{},Date:{now:()=>123},fetch:async p=>({ok:true,json:async()=>files[p]})};vm.createContext(ctx);vm.runInContext(src,ctx);
 (async()=>{
  const B=ctx.window.BoomWorkflowBuilder; const st=await B.ready();
- assert.equal(st.skills,11);assert.equal(st.templates,11);
+ assert.equal(st.skills,12);assert.equal(st.templates,12);
  const p=await B.compile("product_ad_factory",{missionContext:{product_id:"p1",email:"strip-me"}});
  assert.equal(p.ok,true);assert.equal(p.dispatch,false);assert.equal(p.mode,"SHADOW");
  assert.equal(p.material_action_suppressed,true);assert.deepEqual(p.gates,["OWNER_GATE"]);
