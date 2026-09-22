@@ -1,0 +1,106 @@
+{
+  "version": "BOOM-FIRST-REAL-ORDER-PROOF-V1",
+  "mode": "SHADOW",
+  "owner": "commerce_truth_brain",
+  "authority": "NONE",
+  "purpose": "Prove the first real HUNT order end-to-end from verified provider payment through realized finance evidence into an exact VERIFIED hourly profit row, without enabling live payment or supplier fulfillment.",
+  "canonical_sources": [
+    "hunt_runtime_controls",
+    "hunt_payment_sessions",
+    "hunt_payment_events",
+    "hunt_payplus_status_observations",
+    "hunt_orders",
+    "hunt_order_finance_ledger",
+    "hunt_purchase_attribution_bridge",
+    "f60t_hourly_profit_ledger"
+  ],
+  "stages": [
+    {
+      "id": "PAYMENT_ACCEPTANCE_READY",
+      "requires": [
+        "hunt_payplus_callback_accept_paid enabled=true",
+        "hunt_payplus_callback_accept_paid owner_approved=true",
+        "provider callback/status mapping proof complete"
+      ]
+    },
+    {
+      "id": "REAL_PAYMENT_CONFIRMED",
+      "requires": [
+        "payment session mode=live",
+        "server/provider payment confirmation",
+        "paid timestamp",
+        "non-test order linked"
+      ]
+    },
+    {
+      "id": "REAL_ORDER_CREATED",
+      "requires": [
+        "hunt_orders.is_test=false",
+        "payment_session.order_id matches order.id"
+      ]
+    },
+    {
+      "id": "FINANCE_LEDGER_LOCKED",
+      "requires": [
+        "finance ledger exists",
+        "finance ledger is_test=false",
+        "order_id matches",
+        "contribution_locked is numeric"
+      ]
+    },
+    {
+      "id": "REALIZED_PROFIT_SETTLED",
+      "requires": [
+        "settlement_status=settled",
+        "available_profit is numeric",
+        "finance evidence ready=true"
+      ]
+    },
+    {
+      "id": "HOURLY_PROFIT_VERIFIED",
+      "requires": [
+        "f60t_hourly_profit_ledger verification_status exactly VERIFIED",
+        "confirmed_real_orders>0",
+        "settled_real_orders>0",
+        "hourly evidence contains source finance ledger id"
+      ]
+    },
+    {
+      "id": "MISSION_GAP_PROVEN",
+      "requires": [
+        "verified hourly USD net profit is numeric",
+        "target gap calculated from $10,000/hour mission"
+      ]
+    }
+  ],
+  "blocker_precedence": [
+    "PAYMENT_ACCEPTANCE_KILL_SWITCH_OFF",
+    "NO_REAL_PAYMENT",
+    "NO_REAL_ORDER",
+    "NO_REAL_FINANCE_LEDGER",
+    "PROFIT_NOT_SETTLED",
+    "ATTRIBUTION_BRIDGE_NOT_READY",
+    "NO_EXACT_VERIFIED_HOURLY_ROW",
+    "HOURLY_EVIDENCE_LINK_MISSING"
+  ],
+  "current_live_truth": {
+    "payment_acceptance_enabled": false,
+    "payment_acceptance_owner_approved": false,
+    "supplier_order_live_enabled": false,
+    "finance_preview_enabled": true,
+    "real_orders": 0,
+    "real_finance_rows": 0,
+    "exact_verified_hourly_rows": 0,
+    "state": "BLOCKED_PAYMENT_ACCEPTANCE"
+  },
+  "hard_rules": [
+    "Never enable payment acceptance from this proof layer.",
+    "Never enable live supplier orders from this proof layer.",
+    "Never turn preview/test finance into realized profit.",
+    "Never count is_test=true orders or finance rows.",
+    "Never treat LOCKED_EVIDENCE, PARTIAL or UNVERIFIED hourly status as VERIFIED.",
+    "Never calculate mission attainment from expected unit economics.",
+    "Every proof stage must cite canonical row identifiers/evidence references.",
+    "Material activation remains an explicit Owner decision outside this proof layer."
+  ]
+}
