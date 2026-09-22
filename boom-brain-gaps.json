@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V1.5-HOURLY-PROFIT",
+  "version": "BOOM-BRAIN-GAPS-V1.6-MARKETING-COST",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -457,6 +457,22 @@
       "status": "DONE",
       "source": "PROFIT_MISSION_QA",
       "next": "Keep exact equality check verification_status='VERIFIED'; never use substring matching that could treat UNVERIFIED as VERIFIED."
+    },
+    {
+      "id": "marketing_cost_gateway",
+      "title": "Marketing Cost Evidence Gateway",
+      "owner": "growth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Gateway + GA4 traffic evidence are coded. Direct paid-channel cost source or proven GA4 cost-import coverage is still required before CAC/Marketing Net Profit."
+    },
+    {
+      "id": "ga4_traffic_truth",
+      "title": "GA4 Traffic Truth",
+      "owner": "growth_brain",
+      "status": "DONE",
+      "source": "LIVE_CONNECTOR",
+      "next": "Use GA4 as traffic/behavior truth only. Do not treat advertiser_ad_cost=0 as verified zero spend without coverage proof."
     }
   ]
 }
