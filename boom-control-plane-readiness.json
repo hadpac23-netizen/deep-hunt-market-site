@@ -56,13 +56,13 @@
     },
     {
       "id": "shelf_coverage",
-      "status": "BLOCKED_THIN_FRESH_COVERAGE",
-      "evidence": "CJ contributes 57 fresh verified products for IL: Women 19, Accessories 14, Tech 13, Toys 6, Beauty 4, Pets 1; all other canonical departments have 0 CJ fresh contribution in this run. No department reaches the 1,000-product readiness target. Multi-supplier coverage remains incomplete."
+      "status": "BLOCKED_PARTIAL_FRESH_INVENTORY",
+      "evidence": "CJ controlled scan complete: 19/76 CJ rows currently Fresh Shelf Verified for IL. This is not enough for the 17×1,000 target; Printful/Gooten freshness and department coverage remain unresolved. Missing coverage evidence: camping/electrical/garden."
     },
     {
       "id": "catalog_freshness",
-      "status": "CJ_MAJORITY_REFRESHED_OTHER_PROVIDERS_STALE",
-      "evidence": "57/76 CJ catalog products have current observation truth for IL; 19 CJ remain not fresh. Printful/Gooten catalog freshness has not been refreshed in this run. Catalog source_fresh_at/last_stock_check_at fields remain untouched by design."
+      "status": "CJ_SCAN_COMPLETE_OTHER_PROVIDERS_PENDING",
+      "evidence": "CJ 76-row controlled scan complete with 19 exact-variant fresh products. Catalog timestamps remain untouched; freshness derives from observation evidence. Printful and Gooten still require equivalent controlled refresh."
     },
     {
       "id": "incident_repair",
@@ -161,8 +161,8 @@
     },
     {
       "id": "fresh_shelf_product_truth",
-      "status": "CJ_57_OF_76_FRESH_IL_REMAINDER_BLOCKED",
-      "evidence": "CJ Product Truth full controlled pass: 57/76 catalog products now have <24h verified Price + canonical quote Stock + IL Shipping evidence; 19 remain not fresh. All 57 remain recheck_before_checkout and 0 are Checkout Live Verified. 165 explicit evidence-only observations written; no catalog eligibility, price activation, payment or supplier-order mutation."
+      "status": "CJ_CONTROLLED_SCAN_COMPLETE_PARTIAL_SHELF_READY",
+      "evidence": "Controlled scan CJ-IL-20260922-A covered all 76 CJ catalog rows: 19 VERIFIED with exact-variant Price+Stock+IL Shipping, 50 PRODUCT_FAILED/recheck, 5 Price/Profit blocked, 2 no verified variant. 0 Checkout Live Verified. Unreconciled positive observations from other sources do not override the controlled scan."
     }
   ],
   "blockers": [
@@ -191,7 +191,9 @@
     "Any unmapped country remains HOLD until consumer/privacy/tax/import/shipping obligations are reviewed.",
     "Verify PWA cache update, manifest/installability and offline shell on Preview before Performance/Mobile becomes launch PASS.",
     "Verify Launch Command Center on Preview against authenticated admin RLS and current readiness JSON before Owner launch review.",
-    "Resolve or replace the remaining 19 CJ products that are not Fresh Shelf Verified, then refresh approved non-CJ suppliers before shelf readiness can advance."
+    "Resolve or replace the remaining 19 CJ products that are not Fresh Shelf Verified, then refresh approved non-CJ suppliers before shelf readiness can advance.",
+    "Run equivalent controlled Product Truth refresh for approved Printful and Gooten inventory before counting those providers as Fresh Shelf.",
+    "Recheck 50 CJ product lookup failures before removal decisions; one 404 is not permanent-removal proof."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
