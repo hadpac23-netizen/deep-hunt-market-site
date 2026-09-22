@@ -1,0 +1,108 @@
+{
+  "version": "HUNT-EPROLO-MULTIMARKET-SHADOW-SHELF-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW_MARKET_SPECIFIC",
+  "provider": "EPROLO",
+  "production_effect": false,
+  "summary": {
+    "unique_products": 2,
+    "DE_products": 2,
+    "US_products": 2,
+    "IL_products": 0,
+    "final_profit_verified": 0,
+    "checkout_live": 0
+  },
+  "products": [
+    {
+      "provider": "EPROLO",
+      "product_id": "24539904",
+      "department": "men",
+      "category": "men-tops",
+      "supplier_title": "New Autumn Pullover Men's Sweater O-neck Patchwork Long Sleeve Warm Slim Sweaters Men Casual Fashion Sweater Men Clothing",
+      "variant_id": "629377665",
+      "variant_title": "blue-2XL",
+      "supplier_cost_usd": 8.53,
+      "inventory_quantity": 999,
+      "retail_price_shadow_usd": 15.99,
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202312/6C65C2DAAA52B07B44795BCB6ACDAA9C.jpg",
+      "eligible_markets": [
+        "DE",
+        "US"
+      ],
+      "market_shipping": {
+        "DE": {
+          "shipping": {
+            "cost_usd": 7.07,
+            "method": "4PX Standard",
+            "shiptime": "6-12 DAYS"
+          },
+          "shipping_to_retail_ratio": 0.442,
+          "state": "NORMAL"
+        },
+        "US": {
+          "shipping": {
+            "cost_usd": 8.1,
+            "method": "Sunlinkgo Express",
+            "shiptime": "10-15 days"
+          },
+          "shipping_to_retail_ratio": 0.507,
+          "state": "NORMAL"
+        }
+      },
+      "il_state": "BLOCKED_HIGH_SHIPPING_OR_NOT_NORMAL",
+      "final_profit_verified": false,
+      "production_exposure": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "provider": "EPROLO",
+      "product_id": "26556212",
+      "department": "kitchen",
+      "category": "kitchen-tools",
+      "supplier_title": "Manual Beech Lemon Juicer",
+      "variant_id": "654069536",
+      "variant_title": "Beech",
+      "supplier_cost_usd": 1.2,
+      "inventory_quantity": 629,
+      "retail_price_shadow_usd": 5.99,
+      "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202406/B105ADA913F4DC31124F534B2EAF4C76.JPEG",
+      "eligible_markets": [
+        "DE",
+        "US"
+      ],
+      "market_shipping": {
+        "DE": {
+          "shipping": {
+            "cost_usd": 4.12,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.688,
+          "state": "NORMAL"
+        },
+        "US": {
+          "shipping": {
+            "cost_usd": 4.45,
+            "method": "CNE Standard(For Partial ZIP)",
+            "shiptime": "8-15 Days"
+          },
+          "shipping_to_retail_ratio": 0.743,
+          "state": "NORMAL"
+        }
+      },
+      "il_state": "BLOCKED_HIGH_SHIPPING_OR_NOT_NORMAL",
+      "final_profit_verified": false,
+      "production_exposure": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    }
+  ],
+  "hard_rules": [
+    "Destination-specific eligibility is mandatory.",
+    "Do not expose these products in IL under the current shipping economics.",
+    "No Production shelf activation.",
+    "No checkout or fulfillment.",
+    "Final profit remains blocked until EPROLO order-cost API is verified."
+  ]
+}

@@ -54,7 +54,14 @@
       "pet_shadow_shelf_products": 2,
       "total_shadow_shelf_products": 13,
       "women_shadow_shelf_products": 6,
-      "tech_shadow_shelf_products": 5
+      "tech_shadow_shelf_products": 5,
+      "il_shadow_shelf_products": 13,
+      "market_specific_shadow_products": 2,
+      "global_unique_shadow_candidates": 15,
+      "market_specific_markets": [
+        "DE",
+        "US"
+      ]
     }
   },
   "price_gate_v2": {

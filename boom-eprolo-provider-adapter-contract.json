@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V7",
+  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V8",
   "date": "2026-09-22",
   "provider": "EPROLO",
   "owner": "commerce_truth_brain",
@@ -102,7 +102,7 @@
     "no fake stock, shipping, margin or retail price"
   ],
   "storefront_role": "SUPPLIER_MESH_CONNECTED_NOT_LIVE_SHELF",
-  "next": "EPROLO_SUPPORT_CLARIFY_ORDER_COST_API_AND_CONTINUE_GENERIC_PASSIVE_TECH_EXPANSION_WITH_SPEC_GATES",
+  "next": "CONNECT_COUNTRY_ENGINE_TO_MARKET_SPECIFIC_SHADOW_ELIGIBILITY_AND_CLARIFY_EPROLO_ORDER_COST_API",
   "variant_truth_policy": {
     "component_split_detection": "If component variants such as Top/Skirt coexist with Set/2pcs variants, a full-set listing must use Set/2pcs variant truth.",
     "exact_variant_image_required": true,
@@ -196,7 +196,33 @@
       "tech_shadow_shelf_added": 3,
       "final_profit_verified": 0,
       "checkout_live": 0
-    }
+    },
+    "multimarket_wave1": {
+      "checked": 7,
+      "market_pass_counts": {
+        "IL": 0,
+        "DE": 4,
+        "US": 3
+      },
+      "visual_reviewed": 4,
+      "market_shadow_pass": 2,
+      "brand_rights_review": 1,
+      "claim_function_review": 1,
+      "DE_shadow_products": 2,
+      "US_shadow_products": 2,
+      "IL_shadow_products_added": 0,
+      "production_effect": false
+    },
+    "il_shadow_shelf_products": 13,
+    "market_specific_shadow_products": 2,
+    "global_unique_shadow_candidates": 15,
+    "departments_with_any_shadow_candidates": [
+      "women",
+      "pets",
+      "tech",
+      "men",
+      "kitchen"
+    ]
   },
   "truth_policies": {
     "capacity_claim_gate": "IMPLAUSIBLE_STORAGE_CAPACITY_REQUIRES_PROOF",

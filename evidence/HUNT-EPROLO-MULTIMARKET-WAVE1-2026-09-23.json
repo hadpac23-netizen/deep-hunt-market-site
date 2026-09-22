@@ -1,0 +1,333 @@
+{
+  "version": "HUNT-EPROLO-MULTIMARKET-WAVE1-V1",
+  "date": "2026-09-23",
+  "mode": "READ_ONLY_SHADOW",
+  "markets": [
+    "IL",
+    "DE",
+    "US"
+  ],
+  "production_effect": false,
+  "summary": {
+    "checked": 7,
+    "market_pass_counts": {
+      "IL": 0,
+      "DE": 4,
+      "US": 3
+    },
+    "production_effect": false
+  },
+  "results": [
+    {
+      "department": "men",
+      "category": "men-bottoms",
+      "product_id": "25354414",
+      "supplier_category_id": 1230,
+      "title": "Autumn and Winter Men's New Sports and Leisure Light Plate Slim Fit Fitness Pants Men's Long Pants, Small Foot Strap Pants",
+      "status": "MULTIMARKET_QUOTED",
+      "variant": {
+        "id": "638853390",
+        "title": "Kaqijia logo-XL",
+        "supplier_cost_usd": 4.95,
+        "inventory_quantity": 764,
+        "weight_g": 320.0
+      },
+      "retail_shadow_usd": 9.99,
+      "markets": {
+        "IL": {
+          "shipping": {
+            "cost_usd": 10.55,
+            "method": "YANWEN Express",
+            "shiptime": "10-18 Days"
+          },
+          "shipping_to_retail_ratio": 1.056,
+          "state": "HIGH_OR_MISSING"
+        },
+        "DE": {
+          "shipping": {
+            "cost_usd": 5.64,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.565,
+          "state": "NORMAL"
+        },
+        "US": {
+          "shipping": {
+            "cost_usd": 6.03,
+            "method": "Sunlinkgo Express",
+            "shiptime": "10-15 days"
+          },
+          "shipping_to_retail_ratio": 0.604,
+          "state": "NORMAL"
+        }
+      }
+    },
+    {
+      "department": "men",
+      "category": "men-tops",
+      "product_id": "24539904",
+      "supplier_category_id": 1256,
+      "title": "New Autumn Pullover Men's Sweater O-neck Patchwork Long Sleeve Warm Slim Sweaters Men Casual Fashion Sweater Men Clothing",
+      "status": "MULTIMARKET_QUOTED",
+      "variant": {
+        "id": "629377665",
+        "title": "blue-2XL",
+        "supplier_cost_usd": 8.53,
+        "inventory_quantity": 999,
+        "weight_g": 500.0
+      },
+      "retail_shadow_usd": 15.99,
+      "markets": {
+        "IL": {
+          "shipping": {
+            "cost_usd": 15.0,
+            "method": "YANWEN Express",
+            "shiptime": "10-18 Days"
+          },
+          "shipping_to_retail_ratio": 0.938,
+          "state": "HIGH_OR_MISSING"
+        },
+        "DE": {
+          "shipping": {
+            "cost_usd": 7.07,
+            "method": "4PX Standard",
+            "shiptime": "6-12 DAYS"
+          },
+          "shipping_to_retail_ratio": 0.442,
+          "state": "NORMAL"
+        },
+        "US": {
+          "shipping": {
+            "cost_usd": 8.1,
+            "method": "Sunlinkgo Express",
+            "shiptime": "10-15 days"
+          },
+          "shipping_to_retail_ratio": 0.507,
+          "state": "NORMAL"
+        }
+      }
+    },
+    {
+      "department": "men",
+      "category": "men-shoes",
+      "product_id": "29971473",
+      "supplier_category_id": 63,
+      "title": " New Men's Casual Shoes, Comfortable and Breathable Sports Shoes, Slip-On Dad Shoes, Soft Sole Cloth Shoes",
+      "status": "MULTIMARKET_QUOTED",
+      "variant": {
+        "id": "692464518",
+        "title": "Green-40",
+        "supplier_cost_usd": 3.13,
+        "inventory_quantity": 4998,
+        "weight_g": 650.0
+      },
+      "retail_shadow_usd": 7.99,
+      "markets": {
+        "IL": {
+          "shipping": {
+            "cost_usd": 19.11,
+            "method": "YANWEN Express",
+            "shiptime": "10-18 Days"
+          },
+          "shipping_to_retail_ratio": 2.392,
+          "state": "HIGH_OR_MISSING"
+        },
+        "DE": {
+          "shipping": {
+            "cost_usd": 8.17,
+            "method": "4PX Standard",
+            "shiptime": "6-12 DAYS"
+          },
+          "shipping_to_retail_ratio": 1.023,
+          "state": "HIGH_OR_MISSING"
+        },
+        "US": {
+          "shipping": {
+            "cost_usd": 9.75,
+            "method": "Sunlinkgo Express",
+            "shiptime": "10-15 days"
+          },
+          "shipping_to_retail_ratio": 1.22,
+          "state": "HIGH_OR_MISSING"
+        }
+      }
+    },
+    {
+      "department": "home",
+      "category": "lighting",
+      "product_id": "31441975",
+      "supplier_category_id": 109,
+      "title": "Smart LED Motion Sensor Night Light with Wireless Charging and Magnetic Base, Bedside Lamp for Bedroom, Cabinet, Home Use",
+      "status": "MULTIMARKET_QUOTED",
+      "variant": {
+        "id": "712700343",
+        "title": "White Light",
+        "supplier_cost_usd": 0.94,
+        "inventory_quantity": 87263,
+        "weight_g": 110.0
+      },
+      "retail_shadow_usd": 5.99,
+      "markets": {
+        "IL": {
+          "shipping": {
+            "cost_usd": 6.89,
+            "method": "YANWEN Express For Battery",
+            "shiptime": "15-40 Days"
+          },
+          "shipping_to_retail_ratio": 1.15,
+          "state": "HIGH_OR_MISSING"
+        },
+        "DE": {
+          "shipping": {
+            "cost_usd": 4.68,
+            "method": "Wanb Standard",
+            "shiptime": "7-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.781,
+          "state": "NORMAL"
+        },
+        "US": {
+          "shipping": {
+            "cost_usd": 5.21,
+            "method": "SHUNLING",
+            "shiptime": "10-15 days"
+          },
+          "shipping_to_retail_ratio": 0.87,
+          "state": "HIGH_OR_MISSING"
+        }
+      }
+    },
+    {
+      "department": "home",
+      "category": "lighting",
+      "product_id": "29095247",
+      "supplier_category_id": 109,
+      "title": "Intelligent ultra-thin wireless LED human body sensing light rechargeable magnetic strip light strip light strip",
+      "status": "MULTIMARKET_QUOTED",
+      "variant": {
+        "id": "682149124",
+        "title": "Black (tri color dimming)-10CM",
+        "supplier_cost_usd": 3.01,
+        "inventory_quantity": 345,
+        "weight_g": 120.0
+      },
+      "retail_shadow_usd": 7.99,
+      "markets": {
+        "IL": {
+          "shipping": null,
+          "shipping_to_retail_ratio": null,
+          "state": "HIGH_OR_MISSING"
+        },
+        "DE": {
+          "shipping": {
+            "cost_usd": 8.24,
+            "method": "YunExpress",
+            "shiptime": "7-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 1.031,
+          "state": "HIGH_OR_MISSING"
+        },
+        "US": {
+          "shipping": {
+            "cost_usd": 13.5,
+            "method": "YANWEN",
+            "shiptime": "10-16 days"
+          },
+          "shipping_to_retail_ratio": 1.69,
+          "state": "HIGH_OR_MISSING"
+        }
+      }
+    },
+    {
+      "department": "kitchen",
+      "category": "kitchen-tools",
+      "product_id": "26556212",
+      "supplier_category_id": 115,
+      "title": "Manual Beech Lemon Juicer",
+      "status": "MULTIMARKET_QUOTED",
+      "variant": {
+        "id": "654069536",
+        "title": "Beech",
+        "supplier_cost_usd": 1.2,
+        "inventory_quantity": 629,
+        "weight_g": 50.0
+      },
+      "retail_shadow_usd": 5.99,
+      "markets": {
+        "IL": {
+          "shipping": {
+            "cost_usd": 5.07,
+            "method": "YANWEN Express",
+            "shiptime": "10-18 Days"
+          },
+          "shipping_to_retail_ratio": 0.846,
+          "state": "HIGH_OR_MISSING"
+        },
+        "DE": {
+          "shipping": {
+            "cost_usd": 4.12,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.688,
+          "state": "NORMAL"
+        },
+        "US": {
+          "shipping": {
+            "cost_usd": 4.45,
+            "method": "CNE Standard(For Partial ZIP)",
+            "shiptime": "8-15 Days"
+          },
+          "shipping_to_retail_ratio": 0.743,
+          "state": "NORMAL"
+        }
+      }
+    },
+    {
+      "department": "kitchen",
+      "category": "drinkware",
+      "product_id": "31640357",
+      "supplier_category_id": 112,
+      "title": "Simple Hand-Drawn Stripe Ceramic Mug, Creative Multi-Color Gift Cup, Coffee Cup with Saucer",
+      "status": "MULTIMARKET_QUOTED",
+      "variant": {
+        "id": "715592684",
+        "title": "Brown  Embossed Box-260ML",
+        "supplier_cost_usd": 3.24,
+        "inventory_quantity": 779,
+        "weight_g": 1050.0
+      },
+      "retail_shadow_usd": 7.99,
+      "markets": {
+        "IL": {
+          "shipping": {
+            "cost_usd": 27.65,
+            "method": "YANWEN Express",
+            "shiptime": "10-18 Days"
+          },
+          "shipping_to_retail_ratio": 3.461,
+          "state": "HIGH_OR_MISSING"
+        },
+        "DE": {
+          "shipping": {
+            "cost_usd": 10.67,
+            "method": "4PX Standard",
+            "shiptime": "6-12 DAYS"
+          },
+          "shipping_to_retail_ratio": 1.335,
+          "state": "HIGH_OR_MISSING"
+        },
+        "US": {
+          "shipping": {
+            "cost_usd": 12.93,
+            "method": "Sunlinkgo Express",
+            "shiptime": "10-15 days"
+          },
+          "shipping_to_retail_ratio": 1.618,
+          "state": "HIGH_OR_MISSING"
+        }
+      }
+    }
+  ]
+}

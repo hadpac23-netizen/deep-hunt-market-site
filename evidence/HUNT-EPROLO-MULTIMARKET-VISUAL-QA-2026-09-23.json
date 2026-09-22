@@ -1,0 +1,54 @@
+{
+  "version": "HUNT-EPROLO-MULTIMARKET-VISUAL-QA-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW_MARKET_QA",
+  "production_effect": false,
+  "items": [
+    {
+      "product_id": "26556212",
+      "status": "PASS_MARKET_SHADOW",
+      "eligible_markets": [
+        "DE",
+        "US"
+      ],
+      "reason": "Exact Beech lemon-juicer image is clean, generic and consistent with the product."
+    },
+    {
+      "product_id": "24539904",
+      "status": "PASS_MARKET_SHADOW",
+      "eligible_markets": [
+        "DE",
+        "US"
+      ],
+      "reason": "Exact blue-2XL sweater image is clean and presents the product without visible third-party branding."
+    },
+    {
+      "product_id": "25354414",
+      "status": "BRAND_RIGHTS_REVIEW",
+      "eligible_markets": [],
+      "reason": "Exact pants variant contains a visible logo/mark; do not surface until brand/rights status is resolved."
+    },
+    {
+      "product_id": "31441975",
+      "status": "CLAIM_FUNCTION_REVIEW",
+      "eligible_markets": [],
+      "reason": "Supplier image contains an eye-comfort claim and does not clearly substantiate the full wireless-charging functionality in the title."
+    }
+  ],
+  "summary": {
+    "reviewed": 4,
+    "pass_market_shadow": 2,
+    "brand_rights_review": 1,
+    "claim_function_review": 1,
+    "production_ready": 0,
+    "checkout_live": 0
+  },
+  "hard_rules": [
+    "Market eligibility is destination-specific.",
+    "A product blocked in IL may still be eligible in DE/US if shipping economics and all truth gates pass there.",
+    "Visible brand marks require rights review.",
+    "Health/performance claims require verification.",
+    "No Production exposure.",
+    "Final profit remains blocked until EPROLO order-cost API behavior is resolved."
+  ]
+}
