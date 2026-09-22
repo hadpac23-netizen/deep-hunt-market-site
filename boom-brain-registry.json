@@ -198,6 +198,11 @@
       "id": "run_evidence_plane",
       "owner": "learning_governance_brain",
       "purpose": "Durable run/evidence lineage for mission_id, workflow_id, run_id, correlation_id, outcomes and rollback learning."
+    },
+    {
+      "id": "scheduler_plane",
+      "owner": "boom_orchestrator",
+      "purpose": "One canonical schedule registry. Triggers runs only; never grants material action permission."
     }
   ],
   "rules": [
@@ -214,7 +219,10 @@
     "Automation engines such as n8n are execution adapters only; they never become decision owners or bypass BOOM Orchestrator.",
     "Every automated run must carry mission_id, workflow_id, run_id and correlation_id.",
     "Every side effect requires idempotency, timeout, bounded retry and a failure route.",
-    "Targets such as 17 departments × 1,000 products are planning goals; only verified catalog evidence may mark shelf readiness."
+    "Targets such as 17 departments × 1,000 products are planning goals; only verified catalog evidence may mark shelf readiness.",
+    "Legacy Managers have no decision authority after canonical mapping; boom-agent-registry.json defines their new Agent/Module/Adapter role.",
+    "A skill filename containing 'brain' never creates a Primary Brain; boom-brain-registry.json is the sole Primary Brain authority.",
+    "Department growth changes taxonomy data/modules, not the number of Brains or Agents."
   ],
   "lifecycle_modes": {
     "OFF": "Defined but not running.",
