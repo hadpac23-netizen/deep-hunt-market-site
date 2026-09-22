@@ -322,6 +322,55 @@
 
 
 
+
+  async function renderPaymentLaunchGate(){
+    const host=$("#bs-payment-launch-gate");
+    const state=$("#bs-payment-launch-state");
+    if(!host)return;
+    const gate=window.BoomPaymentLaunchGate;
+    if(!gate?.snapshot){
+      host.innerHTML='<div class="bs-empty bs-error">Payment Launch Gate unavailable.</div>';
+      if(state)state.textContent="UNAVAILABLE";
+      return;
+    }
+    try{
+      const proof=data.payplusSandboxProof?.current_truth||{};
+      const providerEvidence={
+        payplus:{
+          account_approved:false,
+          server_credentials_ready:false,
+          sandbox_proven:proof.sandbox_observations>0,
+          success_callback_proven:proof.paid_acceptance_ready===true,
+          failure_callback_proven:proof.paid_acceptance_ready===true,
+          idempotency_integrity_proven:proof.paid_acceptance_ready===true,
+          refund_proven:proof.refund_launch_ready===true,
+          finance_ledger_proven:false,
+          settlement_destination_verified:false,
+          country_currency_scope_verified:false,
+          legal_checkout_ready:false,
+          owner_gate_approved:false
+        },
+        paypal:{
+          account_approved:false,server_credentials_ready:false,sandbox_proven:false,
+          success_callback_proven:false,failure_callback_proven:false,idempotency_integrity_proven:false,
+          refund_proven:false,finance_ledger_proven:false,settlement_destination_verified:false,
+          country_currency_scope_verified:false,legal_checkout_ready:false,owner_gate_approved:false
+        }
+      };
+      const out=await gate.snapshot(providerEvidence);
+      if(state)state.textContent=`${out.summary.live} LIVE · ${out.summary.candidates} READY CANDIDATES · ${out.summary.planned} PLANNED`;
+      host.innerHTML=(out.routes||[]).map(r=>`<article class="bs-payment-route">
+        <div class="bs-skill-head"><strong>${esc(r.display_name||r.route_key)}</strong><span class="bs-status ${r.state==="LIVE"?"DONE":"NEXT"}">${esc(r.state)}</span></div>
+        <small>${esc(r.processor)} · ${esc(r.payment_method)}</small>
+        <p>First blocker: <b>${esc(r.blocker||"none")}</b></p>
+        <div class="bs-route-gates">${Object.entries(r.checks||{}).map(([k,v])=>`<span data-pass="${v===true?"1":"0"}">${v===true?"✓":"·"} ${esc(k)}</span>`).join("")}</div>
+      </article>`).join("")||'<div class="bs-empty">No payment routes configured.</div>';
+    }catch(error){
+      host.innerHTML=`<div class="bs-empty bs-error">Payment route readiness unavailable: ${esc(error?.message||"unknown")}</div>`;
+      if(state)state.textContent="UNKNOWN";
+    }
+  }
+
   async function renderPayPlusSandboxProof(){
     const host=$("#bs-payplus-sandbox-proof");
     const state=$("#bs-payplus-sandbox-state");
@@ -777,7 +826,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
