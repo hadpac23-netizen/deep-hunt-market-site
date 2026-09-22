@@ -29,7 +29,7 @@ assert.equal(contract.current_live_validation.initial_truth_batch.checked,6);
 assert.equal(contract.current_live_validation.initial_truth_batch.shipping_verified,6);
 assert.equal(contract.current_live_validation.women_dresses_v2.checked,12);
 assert.equal(contract.current_live_validation.women_dresses_v2.shipping_verified,12);
-assert.equal(contract.current_live_validation.women_shadow_shelf.products,4);
+assert.equal(contract.current_live_validation.women_shadow_shelf.products,6);
 assert.equal(contract.current_live_validation.women_shadow_shelf.final_profit_verified,0);
 assert.equal(contract.current_live_validation.women_shadow_shelf.checkout_live,0);
 assert.equal(contract.current_live_validation.production_effect,false);
@@ -39,7 +39,7 @@ assert.deepEqual(adapters.providers.EPROLO.required_credential_env,["EPROLO_API_
 assert.equal(adapters.providers.EPROLO.api_status,"CONNECTED_READ_ONLY");
 assert.equal(adapters.providers.EPROLO.shipping_proof,"CONTROLLED_IL_BATCH_VERIFIED");
 assert.equal(adapters.providers.EPROLO.profit_gate,"SHADOW_ONLY_ORDER_COST_RECHECK_REQUIRED");
-assert.equal(adapters.providers.EPROLO.shadow_shelf_products,4);
+assert.equal(adapters.providers.EPROLO.shadow_shelf_products,6);
 assert.equal(adapters.providers.EPROLO.final_profit,"NOT_VERIFIED_ORDER_COST_RECHECK_REQUIRED");
 assert.equal(adapters.providers.EPROLO.variant_truth_policy,"FULL_SET_COMPONENT_SCOPE_AND_EXACT_VARIANT_IMAGE");
 assert.equal(adapters.providers.EPROLO.fulfillment,"DISABLED");

@@ -38,6 +38,22 @@
       "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202307/8002386D72FA509BA913CA3550561F8B.jpg",
       "status": "PASS_SHELF",
       "note": "Exact color/size variant image is live and clearly distinguishable from the generic main image."
+    },
+    {
+      "product_id": "22272701",
+      "variant_id": "603568575",
+      "variant_title": "Black-M",
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202307/5292A256F710D0E79032C48A1B51195A.jpg",
+      "status": "PASS_SHELF_SECONDARY",
+      "note": "Exact Black-M variant rendered clearly in both Light and Dark QA. Shipping ratio is near the review threshold, so keep as secondary shelf support until final order-cost validation."
+    },
+    {
+      "product_id": "22274780",
+      "variant_id": "603592044",
+      "variant_title": "as  picture-M-China",
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202307/3A136D7294029C5D7394AA5DD5699310.jpg",
+      "status": "PASS_SHELF",
+      "note": "Exact variant image rendered cleanly in both themes and presents the product clearly for shelf/card use."
     }
   ],
   "holds": [
@@ -64,14 +80,6 @@
     {
       "product_id": "19404377",
       "reason": "HIGH_SHIPPING_BURDEN"
-    },
-    {
-      "product_id": "22272701",
-      "reason": "VISUAL_QA_NOT_RUN_YET"
-    },
-    {
-      "product_id": "22274780",
-      "reason": "VISUAL_QA_NOT_RUN_YET"
     }
   ],
   "hard_rules": [
@@ -80,5 +88,15 @@
     "Visible or named third-party brand marks require rights review before shelf exposure.",
     "Visual QA is separate from Product Truth and Commercial Truth.",
     "No Production exposure from this evidence."
-  ]
+  ],
+  "newly_reviewed": [
+    "22272701",
+    "22274780"
+  ],
+  "summary": {
+    "visual_passes": 6,
+    "holds": 6,
+    "production_ready": 0,
+    "checkout_live": 0
+  }
 }

@@ -53,6 +53,8 @@
     "order_cost_estimate": {
       "endpoint": "getCostByProduct.html",
       "status": "METHOD_OR_AUTH_PLACEMENT_RECHECK_REQUIRED",
+      "final_profit_gate": "BLOCKED",
+      "observed_detail": "GET_405_POST_FORM_415_POST_JSON_SIGN_NOT_READ_FROM_BODY",
       "live_order_created": false
     }
   },
@@ -63,7 +65,20 @@
     "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
     "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
     "shipping_status": "LIVE_IL_VERIFIED_ON_CONTROLLED_BATCH",
-    "profit_gate_status": "SHADOW_ONLY_ORDER_COST_RECHECK_REQUIRED"
+    "profit_gate_status": "SHADOW_ONLY_ORDER_COST_RECHECK_REQUIRED",
+    "women_il_shadow_lane": {
+      "scan_checked": 12,
+      "live_shipping_verified": 12,
+      "normal_shipping_candidates": 10,
+      "exact_variant_url_present": 10,
+      "visual_qa_pass": 6,
+      "shadow_shelf_candidates": 6,
+      "final_profit_verified": 0,
+      "production_exposure": 0,
+      "checkout_live": 0
+    },
+    "variant_scope_rule": "FULL_SET_LISTINGS_MUST_USE_FULL_SET_VARIANTS",
+    "visual_gate": "EXACT_VARIANT_IMAGE_PLUS_BRANDING_IP_REVIEW"
   },
   "gates": [
     "exact_variant_truth",
@@ -86,7 +101,7 @@
     "no fake stock, shipping, margin or retail price"
   ],
   "storefront_role": "SUPPLIER_MESH_CONNECTED_NOT_LIVE_SHELF",
-  "next": "EXPAND_CONTROLLED_SHADOW_BATCHES_BY_DEPARTMENT_AND_VERIFY_ORDER_COST_METHOD",
+  "next": "VERIFY_EPROLO_ORDER_COST_ESTIMATE_METHOD_THEN_RUN_FINAL_PROFIT_GATE_ON_6_WOMEN_SHADOW_CANDIDATES",
   "variant_truth_policy": {
     "component_split_detection": "If component variants such as Top/Skirt coexist with Set/2pcs variants, a full-set listing must use Set/2pcs variant truth.",
     "exact_variant_image_required": true,
@@ -107,10 +122,10 @@
       "high_shipping_review": 2
     },
     "women_shadow_shelf": {
-      "products": 4,
-      "exact_variant_images": 4,
-      "stock_verified": 4,
-      "shipping_verified": 4,
+      "products": 6,
+      "exact_variant_images": 6,
+      "stock_verified": 6,
+      "shipping_verified": 6,
       "final_profit_verified": 0,
       "checkout_live": 0
     },
