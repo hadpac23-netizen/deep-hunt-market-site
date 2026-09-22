@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V2.4-CJ-CONTROLLED-SCAN",
+  "version": "BOOM-BRAIN-GAPS-V2.5-PROVIDER-TRUTH",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -640,7 +640,7 @@
       "owner": "commerce_truth_brain",
       "status": "IN_PROGRESS",
       "source": "PRODUCT_TRUTH",
-      "next": "CJ controlled scan complete: 19/76 exact-variant Fresh Shelf Verified for IL; 57 remain recheck/blocked. Next: retry CJ lookup failures and run equivalent controlled refresh for approved Printful/Gooten."
+      "next": "57 CJ products are strict Fresh Shelf Verified for IL. Remaining CJ: 11 Profit Review, 6 repeated lookup failures, 2 no verified variant. Printful 22 live / 550 in-stock variants and Gooten 18 live are catalog-only until destination shipping credentials are verified."
     },
     {
       "id": "cj_stock_truth_precedence",
@@ -656,7 +656,31 @@
       "owner": "commerce_truth_brain",
       "status": "CODED_NOT_DEPLOYED",
       "source": "PRODUCT_TRUTH",
-      "next": "Worker now persists scan_id + product outcome and exact-variant evidence; local/manual controlled scan proved the model. Verify in Preview before deployment."
+      "next": "Worker is scan-aware and observation-only. Preview proof still required before deployment. Retry B confirms failure classification is useful and must not delete catalog rows."
+    },
+    {
+      "id": "cj_price_gate_v2",
+      "title": "CJ Reserve-Aware Price Gate V2",
+      "owner": "commerce_truth_brain",
+      "status": "CODED_NOT_DEPLOYED",
+      "source": "PRODUCT_TRUTH",
+      "next": "Preview-test corrected reserve-aware margin floor. Do not change Production retail prices without Owner Gate."
+    },
+    {
+      "id": "printful_shipping_credentials",
+      "title": "Printful Shipping / Fulfillment Credentials",
+      "owner": "commerce_truth_brain",
+      "status": "BLOCKED",
+      "source": "SUPPLIER_TRUTH",
+      "next": "22/22 unique catalog products and 550 in-stock variants are live; connect store/API credentials and prove destination shipping before Fresh Shelf."
+    },
+    {
+      "id": "gooten_shipping_credentials",
+      "title": "Gooten Variant / Shipping Credentials",
+      "owner": "commerce_truth_brain",
+      "status": "BLOCKED",
+      "source": "SUPPLIER_TRUTH",
+      "next": "18/18 public catalog products are live; API credentials are required to prove variants, destination shipping and fulfillment before Fresh Shelf."
     }
   ]
 }
