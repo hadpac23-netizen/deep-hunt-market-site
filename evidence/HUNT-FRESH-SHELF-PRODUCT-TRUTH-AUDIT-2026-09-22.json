@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-FRESH-SHELF-PRODUCT-TRUTH-AUDIT-2026-09-22-V2-FULL-CJ",
+  "version": "HUNT-FRESH-SHELF-PRODUCT-TRUTH-AUDIT-2026-09-22-V2-FULL-CJ-SCAN",
   "observed_at": "2026-09-22T13:06:02.043289Z",
   "production_mutation": "EVIDENCE_ONLY_OBSERVATIONS",
   "baseline": {
@@ -67,14 +67,14 @@
     }
   ],
   "evidence_written": {
-    "pilot_rows": 9,
-    "batch_a_rows": 54,
-    "batch_b_rows": 102,
-    "explicit_rows_total": 165,
+    "controlled_rows_written": 133,
+    "pilot_price_stock_shipping_rows": 9,
+    "first_batch_price_stock_shipping_rows": 9,
+    "remaining_verified_price_stock_shipping_rows": 39,
+    "controlled_product_scan_status_rows": 76,
     "catalog_rows_updated": 0,
     "market_eligibility_rows_updated": 0,
-    "checkout_state_changed": false,
-    "supplier_order_created": false
+    "checkout_state_changed": false
   },
   "refresh_run": {
     "destination_country": "IL",
@@ -133,5 +133,29 @@
       "PRODUCT_FAILED"
     ],
     "rule": "Keep unresolved products out of Fresh Shelf Verified until new evidence passes. A failure is not automatically an out-of-stock or delist decision."
+  },
+  "full_cj_scan": {
+    "scan_id": "CJ-IL-20260922-A",
+    "destination_country": "IL",
+    "catalog_rows_scanned": 76,
+    "verified": 19,
+    "product_lookup_failed_recheck": 50,
+    "price_or_profit_blocked": 5,
+    "no_verified_variant": 2,
+    "controlled_exact_variant_fresh": 19,
+    "verified_missing_exact_variant_evidence": 0,
+    "rule": "A single 404/lookup failure is RECHECK_REQUIRED evidence, not permanent-removal proof."
+  },
+  "unreconciled_observation_guard": {
+    "positive_triad_any_source": 57,
+    "contradictory_positive_triad_vs_controlled_scan": 38,
+    "decision": "Do not count positive Price+Stock+Shipping alone. Latest controlled scan marker must be VERIFIED and the triad must match its exact variant."
+  },
+  "post_pilot": {
+    "fresh_shelf_verified_il": 19,
+    "checkout_recheck_required": 19,
+    "checkout_live_verified": 0,
+    "full_cj_scan_complete": true,
+    "other_approved_supplier_refresh_pending": true
   }
 }
