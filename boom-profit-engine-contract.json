@@ -1,0 +1,169 @@
+{
+  "version": "BOOM-PROFIT-ENGINE-V1",
+  "mode": "SHADOW",
+  "mission": {
+    "name": "HUNT Sustainable Net Profit Mission",
+    "target_net_profit_per_hour_usd": 10000,
+    "target_type": "ASPIRATIONAL_MISSION_TARGET",
+    "rule": "The target is a direction and gap metric, never a guarantee and never permission to overspend, over-discount, misprice, or bypass Product Truth / Owner Gate."
+  },
+  "owner_model": {
+    "mission_owner": "boom_orchestrator",
+    "economics_owner": "commerce_truth_brain",
+    "traffic_conversion_owner": "growth_brain",
+    "experience_owner": "experience_brain",
+    "execution_owner": "operations_brain",
+    "evidence_learning_owner": "learning_governance_brain"
+  },
+  "north_star": {
+    "id": "verified_net_profit_per_hour",
+    "label": "Verified Net Profit / Hour",
+    "status_rule": "UNKNOWN until all required revenue and cost evidence for the hour is complete."
+  },
+  "required_hourly_inputs": [
+    "gross_revenue",
+    "supplier_cost",
+    "shipping_cost",
+    "payment_fees",
+    "discount_cost",
+    "marketing_cost",
+    "returns_cost",
+    "cancellation_refund_cost",
+    "other_variable_cost"
+  ],
+  "derived_metrics": [
+    "gross_margin",
+    "contribution_margin",
+    "verified_net_profit",
+    "net_profit_per_order",
+    "target_gap",
+    "target_attainment_percent"
+  ],
+  "growth_levers": [
+    "qualified_users_per_hour",
+    "conversion_rate",
+    "orders_per_hour",
+    "average_order_value",
+    "contribution_margin_rate",
+    "repeat_revenue_share",
+    "customer_acquisition_cost",
+    "return_rate"
+  ],
+  "modules": [
+    {
+      "id": "profit_score",
+      "owner": "commerce_truth_brain",
+      "purpose": "Rank product opportunity using verified unit economics plus commercial quality.",
+      "dimensions": [
+        "net_margin",
+        "conversion",
+        "freshness",
+        "stock_reliability",
+        "return_risk",
+        "customer_relevance"
+      ]
+    },
+    {
+      "id": "smart_pricing",
+      "owner": "commerce_truth_brain",
+      "purpose": "Propose price/discount ranges above an owner-configured margin floor.",
+      "material_action": "price_change",
+      "owner_gate": true
+    },
+    {
+      "id": "profit_deal_builder",
+      "owner": "growth_brain",
+      "purpose": "Propose bundles/upsells by expected contribution profit, relevance and fulfillment truth.",
+      "material_action": "offer_publish",
+      "owner_gate": true
+    },
+    {
+      "id": "next_best_offer",
+      "owner": "growth_brain",
+      "purpose": "Choose the safest expected-profit-positive offer candidate for the current shopper context.",
+      "material_action": "customer_offer",
+      "owner_gate": true
+    },
+    {
+      "id": "ltv_retention",
+      "owner": "growth_brain",
+      "purpose": "Measure repeat revenue and propose retention opportunities using consented behavior only.",
+      "material_action": "customer_outreach",
+      "owner_gate": true
+    },
+    {
+      "id": "supplier_profit_score",
+      "owner": "commerce_truth_brain",
+      "purpose": "Compare suppliers by landed cost, shipping, reliability, cancellation/return evidence and quality."
+    },
+    {
+      "id": "return_risk",
+      "owner": "commerce_truth_brain",
+      "purpose": "Reduce priority when verified return/cancellation economics weaken expected net profit."
+    },
+    {
+      "id": "marketing_profit_attribution",
+      "owner": "growth_brain",
+      "purpose": "Attribute ad/channel cost through orders, margin, returns and repeat revenue instead of ROAS alone."
+    },
+    {
+      "id": "profit_shelf_ranking",
+      "owner": "experience_brain",
+      "purpose": "Propose shelf order using profit quality plus relevance without hiding Product Truth or stock freshness."
+    },
+    {
+      "id": "profit_experiment_engine",
+      "owner": "learning_governance_brain",
+      "purpose": "Compare controlled variants by verified contribution/net profit before proposing rollout.",
+      "material_action": "rollout",
+      "owner_gate": true
+    }
+  ],
+  "hourly_loop": [
+    "observe_demand_and_traffic",
+    "verify_product_and_supplier_truth",
+    "calculate_complete_unit_economics",
+    "measure_conversion_and_order_mix",
+    "attribute_marketing_and_return_cost",
+    "calculate_verified_net_profit",
+    "compare_to_10000_hourly_target",
+    "rank_profit_opportunities",
+    "propose_next_hour_actions",
+    "owner_gate_material_actions",
+    "measure_outcome_and_learn"
+  ],
+  "action_priorities": [
+    "STOP_VERIFIED_LOSS",
+    "PROTECT_MARGIN_AND_TRUST",
+    "FIX_CONVERSION_FRICTION",
+    "EXPAND_PROFITABLE_ORGANIC_TRAFFIC",
+    "EXPAND_PROFITABLE_BUNDLES_AND_RETENTION",
+    "SCALE_PAID_TRAFFIC_ONLY_WITH_VERIFIED_INCREMENTAL_PROFIT"
+  ],
+  "hard_guardrails": [
+    "Never fabricate revenue, costs, profit, conversion, CAC, LTV, return rate or target attainment.",
+    "Incomplete cost evidence means net profit is UNKNOWN, not estimated as verified.",
+    "Product Truth and fulfillment truth precede promotion.",
+    "No autonomous paid spend.",
+    "No autonomous price or discount change.",
+    "No autonomous external publish or customer outreach.",
+    "No supplier order or payment action from Profit Engine.",
+    "Owner Gate is mandatory for material actions.",
+    "Growth may not be purchased below the configured margin floor or above the configured CAC/cash limits.",
+    "Customer trust, privacy, legal rules and fulfillment quality override the profit target."
+  ],
+  "milestone_policy": {
+    "rule": "Use evidence-backed milestones instead of pretending the $10,000/hour target is already achievable.",
+    "sequence_usd_per_hour": [
+      1,
+      10,
+      100,
+      500,
+      1000,
+      2500,
+      5000,
+      10000
+    ],
+    "graduation": "Advance only after a sustained verified window defined by Owner; no automatic target graduation."
+  }
+}
