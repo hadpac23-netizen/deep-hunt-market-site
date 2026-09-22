@@ -1,6 +1,6 @@
 const fs=require("fs"),vm=require("vm"),assert=require("assert");
 const c=JSON.parse(fs.readFileSync("boom-fresh-shelf-product-truth-contract.json","utf8"));
-assert.equal(c.authority,"EVIDENCE_ONLY");
+assert.equal(c.authority,"NONE");
 assert(c.truth_precedence.some(x=>/hunt-cj-quote is canonical/.test(x)));
 assert(c.hard_rules.some(x=>/Never refresh a timestamp/.test(x)));
 const src=fs.readFileSync("boom-fresh-shelf-product-truth.js","utf8");
