@@ -113,6 +113,18 @@
       "status": "CODED_PLAN_ONLY",
       "owner_plane": "tool_gateway_plane",
       "authority": "NONE"
+    },
+    {
+      "id": "marketing_cost_gateway",
+      "type": "COST_EVIDENCE_NORMALIZER",
+      "status": "CODED_TRAFFIC_SOURCE_CONNECTED_COST_NOT_VERIFIED",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Windsor GA4 account HUNT DEAL connected read-only",
+        "GA4 last-30d: 25 sessions, 0 purchases, 0 purchase revenue, advertiser_ad_cost=0",
+        "Zero ad cost is not considered verified without ad-platform/cost-import coverage evidence"
+      ]
     }
   ],
   "security_truth_rule": "verify_jwt=false in platform metadata is not by itself proof of exposure; webhook/custom-auth functions must be reviewed by their actual code/auth contract before classification.",
