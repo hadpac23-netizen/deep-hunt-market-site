@@ -485,6 +485,20 @@
     return rows;
   }
 
+  let shelfMountObserver = null;
+
+  function initialShelfMountLimit() {
+    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 8;
+    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 10;
+    return 12;
+  }
+
+  function shelfMountBatchSize() {
+    if (window.matchMedia?.("(max-width: 760px)")?.matches) return 6;
+    if (window.matchMedia?.("(max-width: 1100px)")?.matches) return 8;
+    return 10;
+  }
+
   function renderMarketShelvesData(data, mode = "live") {
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
@@ -496,32 +510,92 @@
     window.HuntMarketShelves = data;
     window.dispatchEvent(new CustomEvent("hunt:shelves", {detail:data}));
 
+    shelfMountObserver?.disconnect?.();
+    shelfMountObserver = null;
+
     const renderedKeys = new Set();
     const limit = shelfItemLimit();
-    const html = orderedShelfDepartments().map(([department, slugs]) => {
-      const sections = slugs.map(slug => {
+    const queue = [];
+    for (const [department, slugs] of orderedShelfDepartments()) {
+      for (const slug of slugs) {
         const meta = shelfMeta[slug];
         let items = Array.isArray(shelves[slug]) ? shelves[slug].filter(item => isShelfFit(slug, item)) : [];
         if (department.startsWith("Women") && slug !== "women") items = items.filter(isWomenShelfItem);
-        if (!meta || items.length < 4) return "";
+        if (!meta || items.length < 4) continue;
         const selected = selectShelfItems(items, limit, renderedKeys);
         const cards = selected.map(shelfCard).join("");
         const categoryHref = department.startsWith("Women") && slug !== "women"
           ? `category.html?c=women&sub=${encodeURIComponent(slug)}`
           : (window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`);
-        return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
-      }).filter(Boolean).join("");
-      if (!sections) return "";
-      return `<section class="hd-shelf-department"><div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>${sections}</section>`;
-    }).join("");
+        queue.push({
+          department,
+          html:`<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`
+        });
+      }
+    }
 
-    root.innerHTML = html || '<div class="hd-shelf-loading glass">No catalog products available.</div>';
+    root.replaceChildren();
+    if (!queue.length) {
+      root.innerHTML = '<div class="hd-shelf-loading glass">No catalog products available.</div>';
+      return false;
+    }
+
+    const departmentNodes = new Map();
+    const ensureDepartment = department => {
+      if (departmentNodes.has(department)) return departmentNodes.get(department);
+      const section = document.createElement("section");
+      section.className = "hd-shelf-department";
+      section.innerHTML = `<div class="hd-shelf-department-head"><span>DEPARTMENT</span><h2>${esc(department)}</h2></div>`;
+      departmentNodes.set(department, section);
+      root.appendChild(section);
+      return section;
+    };
+
+    let mounted = 0;
+    const mountBatch = count => {
+      const target = Math.min(queue.length, mounted + Math.max(1, count));
+      for (; mounted < target; mounted += 1) {
+        const row = queue[mounted];
+        ensureDepartment(row.department).insertAdjacentHTML("beforeend", row.html);
+      }
+      window.dispatchEvent(new CustomEvent("hunt:shelf-batch-mounted", {
+        detail:{mounted,total:queue.length,mode}
+      }));
+      return mounted >= queue.length;
+    };
+
+    const initial = initialShelfMountLimit();
+    const doneInitially = mountBatch(initial);
+    if (!doneInitially) {
+      const sentinel = document.createElement("div");
+      sentinel.className = "hd-shelf-progressive-sentinel";
+      sentinel.setAttribute("aria-hidden", "true");
+      root.appendChild(sentinel);
+      if ("IntersectionObserver" in window) {
+        shelfMountObserver = new IntersectionObserver(entries => {
+          if (!entries.some(entry => entry.isIntersecting)) return;
+          const done = mountBatch(shelfMountBatchSize());
+          if (done) {
+            shelfMountObserver?.disconnect?.();
+            shelfMountObserver = null;
+            sentinel.remove();
+          } else {
+            root.appendChild(sentinel);
+          }
+        }, {rootMargin:"1200px 0px"});
+        shelfMountObserver.observe(sentinel);
+      } else {
+        mountBatch(queue.length);
+        sentinel.remove();
+      }
+    }
+
     const fullCatalogCount = Number(data?.catalog_total_product_count || 0);
     const count = fullCatalogCount || Number(data?.visible_product_count || 0);
     const label = fullCatalogCount ? "CATALOG" : (mode === "live" ? "LIVE" : mode === "hybrid" ? "READY" : "CATALOG");
     counter.textContent = `${count.toLocaleString()} ${label}`;
     counter.title = fullCatalogCount
-      ? "BOOM quality catalog across category pages; home shelves remain curated for speed."
+      ? "BOOM quality catalog across category pages; home shelves mount progressively for speed."
       : (mode === "hybrid" ? "Verified catalog with live supplier refresh merged in" : (mode === "live" ? "Live supplier refresh" : "Verified catalog snapshot while live suppliers refresh"));
     return true;
   }
