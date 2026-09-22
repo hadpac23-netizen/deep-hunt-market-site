@@ -76,7 +76,9 @@
     "home_v16": "PASS_LIGHT_DARK_RENDER",
     "commerce_continuity": "PASS_STATIC_QA",
     "image_fidelity": "PASS_RULE_GUARD",
-    "exact_product_visuals": "SEPARATE_STYLIST_QA_REQUIRED"
+    "exact_product_visuals": "PARTIAL_CJ_EXACT_PRINTFUL_BASE_IMAGES",
+    "two_theme_look_board": "PASS_BOTH_THEMES",
+    "final_printful_artwork": "PENDING"
   },
   "owner_gate_required": true
 }

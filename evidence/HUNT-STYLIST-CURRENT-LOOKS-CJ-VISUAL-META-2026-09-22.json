@@ -1,0 +1,89 @@
+{
+  "version": "HUNT-STYLIST-CURRENT-LOOKS-CJ-VISUAL-META-V1",
+  "date": "2026-09-22",
+  "mode": "READ_ONLY",
+  "production_effect": false,
+  "items": [
+    {
+      "product_id": "2609080947141606700",
+      "title": "Womens Casual Solid-color Wide-leg Pants",
+      "variant_id": "2609080947141607600",
+      "color": "Beige",
+      "size": "S",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/320678ce-9d93-4413-b0c9-241ac722f928.jpg",
+      "image_scope": "EXACT_VARIANT"
+    },
+    {
+      "product_id": "2609070619011621100",
+      "title": "Womens Large-size Round-toe Lace-up Fashionable Casual Shoes",
+      "variant_id": "2609070619011621900",
+      "color": "Light Gray",
+      "size": "36",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/20a00dcc-0b90-4ab1-a267-3643f127dca1.jpg",
+      "image_scope": "EXACT_VARIANT"
+    },
+    {
+      "product_id": "2609070646371634700",
+      "title": "Womens Casual Fashionable Long Pants With An Elastic Waist And Pleats",
+      "variant_id": "2609070646371635600",
+      "color": "Apricot",
+      "size": "0XL",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/93db6365-edcf-4e28-8766-33d0bb1cc920.jpg",
+      "image_scope": "EXACT_VARIANT"
+    },
+    {
+      "product_id": "2609081212521623500",
+      "title": "Womens Plus-Size Flat-Fabric Loafer Shoes",
+      "variant_id": "2609081212521624700",
+      "color": "White",
+      "size": "36",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/24f753b0-cdc5-41af-8838-76880462ca1c.jpg",
+      "image_scope": "EXACT_VARIANT"
+    },
+    {
+      "product_id": "2609090301381604500",
+      "title": "Women's Platform Round Head Ankle Boots",
+      "variant_id": "2609090301381605400",
+      "color": "Gray",
+      "size": "35",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/75871859-2e1f-4c27-bfcb-7975586518d4.jpg",
+      "image_scope": "EXACT_VARIANT"
+    },
+    {
+      "product_id": "2609070326191624000",
+      "title": "Mens Straight Leg Solid Color Casual Linen Pants With Drawstring And Elastic Waist",
+      "variant_id": "2609070326191624900",
+      "color": "White",
+      "size": "S",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/b1538cf6-ac40-4eee-aee8-f7c420e9a00c.jpg",
+      "image_scope": "EXACT_VARIANT"
+    },
+    {
+      "product_id": "2609080443011631100",
+      "title": "New Men's Slip-on Casual Shoes For Everyday Wear",
+      "variant_id": "2609080443011631900",
+      "color": "C6 White",
+      "size": "39",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/a2bd7068-e6be-4fea-aa6a-d81af432f104.jpg",
+      "image_scope": "EXACT_VARIANT"
+    },
+    {
+      "product_id": "2609090321561625000",
+      "title": "Men's Casual Pocket Shortsfashionable Street-style Trendy Shorts",
+      "variant_id": "2609090321561626600",
+      "color": "S",
+      "size": "Black",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/0948c040-2799-4f32-babc-adbe08b9f058.jpg",
+      "image_scope": "EXACT_VARIANT"
+    },
+    {
+      "product_id": "2609090656121615600",
+      "title": "New Mens Slip-on Sneakers For Spring And Summer",
+      "variant_id": "2609090656121616500",
+      "color": "L85 White And Blue",
+      "size": "39",
+      "image_url": "https://cf.cjdropshipping.com/quick/product/26496435-a25f-4666-830d-27dc6bc93d72.jpg",
+      "image_scope": "EXACT_VARIANT"
+    }
+  ]
+}

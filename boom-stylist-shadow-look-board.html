@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BOOM Stylist Shadow Look Board</title>
+<style>
+:root{
+  --bg:#f4f1ea;--panel:#fbf8f2;--panel2:#eee9df;--ink:#172033;--muted:#6a7280;
+  --edge:rgba(23,32,51,.10);--gold:#b57a1d;--blue:#0d4dba;--shadow:0 24px 60px rgba(50,56,70,.12);
+}
+html[data-theme="dark"]{
+  --bg:#020612;--panel:#08122f;--panel2:#0b1633;--ink:#f7f8fb;--muted:#aeb7cc;
+  --edge:rgba(255,255,255,.11);--gold:#e7b248;--blue:#5a8dff;--shadow:0 32px 80px rgba(0,0,0,.42);
+}
+*{box-sizing:border-box}
+body{margin:0;background:
+radial-gradient(65% 35% at 10% 0%,rgba(34,86,190,.10),transparent 70%),
+radial-gradient(55% 28% at 90% 0%,rgba(181,122,29,.09),transparent 70%),var(--bg);
+color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{width:min(1540px,calc(100% - 48px));margin:0 auto;padding:34px 0 90px}
+header{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:26px}
+.eyebrow{font-size:12px;letter-spacing:.22em;color:var(--gold);font-weight:800}
+h1{font-family:Georgia,serif;font-size:42px;margin:8px 0 6px;line-height:1}
+header p{margin:0;color:var(--muted)}
+.badge{border:1px solid var(--edge);background:var(--panel);padding:10px 14px;border-radius:999px;font-size:12px;font-weight:800;box-shadow:var(--shadow)}
+.look{background:linear-gradient(155deg,var(--panel),var(--panel2));border:1px solid var(--edge);border-radius:28px;padding:22px;margin:18px 0 28px;box-shadow:var(--shadow)}
+.look-head{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:16px}
+.look-head h2{margin:0;font-size:24px}.look-head small{color:var(--muted)}
+.status{font-size:11px;font-weight:900;letter-spacing:.08em;border:1px solid var(--edge);padding:8px 10px;border-radius:999px;background:var(--panel)}
+.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.card{border:1px solid var(--edge);background:var(--panel);border-radius:20px;overflow:hidden;min-width:0}
+.media{height:260px;background:
+radial-gradient(circle at 50% 42%,rgba(255,255,255,.98) 0%,rgba(255,255,255,.78) 32%,transparent 64%),
+linear-gradient(160deg,#fbfaf6,#f0ede6);
+display:grid;place-items:center;padding:14px}
+.media img{width:100%;height:100%;object-fit:contain;mix-blend-mode:normal;opacity:1;filter:drop-shadow(0 18px 24px rgba(15,23,42,.18))}
+.meta{padding:13px 14px 15px}.role{font-size:10px;letter-spacing:.15em;color:var(--gold);font-weight:900;text-transform:uppercase}
+.title{font-weight:800;font-size:14px;line-height:1.25;margin:7px 0 8px;min-height:35px}
+.detail{font-size:11px;color:var(--muted);line-height:1.45}.scope{font-size:10px;margin-top:8px;color:var(--blue);font-weight:800}
+footer{color:var(--muted);font-size:12px;padding:10px 2px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}.media{height:220px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div><div class="eyebrow">BOOM STYLIST · SHADOW VISUAL QA</div><h1>5 Looks · HUNT Cinematic</h1><p id="mode-copy"></p></div>
+  <div class="badge" id="theme-badge"></div>
+</header>
+<div id="looks"></div>
+<footer>CJ: exact variant images where available · Printful: official catalog base images only · Production unchanged.</footer>
+</main>
+<script id="data" type="application/json">{
+  "version": "HUNT-STYLIST-CURRENT-LOOK-VISUAL-MAP-V1",
+  "date": "2026-09-22",
+  "mode": "SHADOW_VISUAL",
+  "production_effect": false,
+  "limitations": [
+    "CJ items use exact variant images where available.",
+    "Printful items use official catalog base images, not final artwork/mockups.",
+    "No final color-harmony or artwork score may be claimed for Printful until exact mockups exist."
+  ],
+  "looks": [
+    {
+      "id": "LOOK-01",
+      "audience": "women",
+      "occasion": "casual_street",
+      "items": [
+        {
+          "role": "top",
+          "product_id": "1628",
+          "title": "All-Over Print Oversized Cotton Hoodie",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/fb/fb56069c088406ddf01d7b15b61e49d8_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        },
+        {
+          "role": "bottom",
+          "product_id": "2609080947141606700",
+          "title": "Womens Casual Solid-color Wide-leg Pants",
+          "provider": "CJdropshipping",
+          "verified_markets": [
+            "IL"
+          ],
+          "shipping_flag": "NORMAL_SHIPPING_BURDEN",
+          "visual": {
+            "image_url": "https://cf.cjdropshipping.com/quick/product/320678ce-9d93-4413-b0c9-241ac722f928.jpg",
+            "image_scope": "EXACT_VARIANT",
+            "exact_variant": true,
+            "color": "Beige",
+            "size": "S"
+          }
+        },
+        {
+          "role": "footwear",
+          "product_id": "2609070619011621100",
+          "title": "Light Gray low-profile lace-up casual sneaker",
+          "provider": "CJdropshipping",
+          "verified_markets": [
+            "IL"
+          ],
+          "shipping_flag": "HIGH_SHIPPING_BURDEN",
+          "visual": {
+            "image_url": "https://cf.cjdropshipping.com/quick/product/20a00dcc-0b90-4ab1-a267-3643f127dca1.jpg",
+            "image_scope": "EXACT_VARIANT",
+            "exact_variant": true,
+            "color": "Light Gray",
+            "size": "36"
+          }
+        },
+        {
+          "role": "accessory",
+          "product_id": "458",
+          "title": "All-Over Print Beanie",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/products/458/product_1608131329.jpg",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        },
+        {
+          "role": "bag",
+          "product_id": "262",
+          "title": "All-Over Print Drawstring Bag",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/0f/0f04d73474287ef01d6f5541c3a63de2_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        }
+      ],
+      "product_truth_il": true,
+      "high_shipping_burden_items": [
+        "2609080904291620900"
+      ],
+      "commercial_note": "STYLE_OK_FOR_TRAINING_BUT_DO_NOT_HERO_WITHOUT_SHIPPING_STRATEGY"
+    },
+    {
+      "id": "LOOK-02",
+      "audience": "women",
+      "occasion": "smart_casual",
+      "items": [
+        {
+          "role": "top",
+          "product_id": "1590",
+          "title": "All-Over Print Oversized Cotton Sweatshirt",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/5e/5e47506d1377bbb249974c7d17546fd4_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        },
+        {
+          "role": "bottom",
+          "product_id": "2609070646371634700",
+          "title": "Womens Casual Fashionable Long Pants With An Elastic Waist And Pleats",
+          "provider": "CJdropshipping",
+          "verified_markets": [
+            "IL"
+          ],
+          "shipping_flag": "NORMAL_SHIPPING_BURDEN",
+          "visual": {
+            "image_url": "https://cf.cjdropshipping.com/quick/product/93db6365-edcf-4e28-8766-33d0bb1cc920.jpg",
+            "image_scope": "EXACT_VARIANT",
+            "exact_variant": true,
+            "color": "Apricot",
+            "size": "0XL"
+          }
+        },
+        {
+          "role": "footwear",
+          "product_id": "2609081212521623500",
+          "title": "Womens Plus-Size Flat-Fabric Loafer Shoes",
+          "provider": "CJdropshipping",
+          "verified_markets": [
+            "IL"
+          ],
+          "shipping_flag": "HIGH_SHIPPING_BURDEN",
+          "visual": {
+            "image_url": "https://cf.cjdropshipping.com/quick/product/24f753b0-cdc5-41af-8838-76880462ca1c.jpg",
+            "image_scope": "EXACT_VARIANT",
+            "exact_variant": true,
+            "color": "White",
+            "size": "36"
+          }
+        },
+        {
+          "role": "accessory",
+          "product_id": "630",
+          "title": "All-Over Print Bandana",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/3d/3d2c903719c4ade552b062343c7f902e_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        },
+        {
+          "role": "tech",
+          "product_id": "181",
+          "title": "Clear Case for iPhone®",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/products/181/product_1570615955.jpg",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        }
+      ],
+      "product_truth_il": true,
+      "high_shipping_burden_items": [
+        "2609081212521623500"
+      ],
+      "commercial_note": "STYLE_OK_FOR_TRAINING_BUT_DO_NOT_HERO_WITHOUT_SHIPPING_STRATEGY"
+    },
+    {
+      "id": "LOOK-03",
+      "audience": "women",
+      "occasion": "weekend",
+      "items": [
+        {
+          "role": "top",
+          "product_id": "388",
+          "title": "All-Over Print Recycled Unisex Hoodie",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/7c/7c6f71d3de5db0ef1f05f397fc497f0b_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        },
+        {
+          "role": "bottom",
+          "product_id": "507",
+          "title": "All-Over Print Biker Shorts",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/7d/7d1076436ed8ba443d102b65039fdc2c_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        },
+        {
+          "role": "footwear",
+          "product_id": "2609090301381604500",
+          "title": "Women's Platform Round Head Ankle Boots",
+          "provider": "CJdropshipping",
+          "verified_markets": [
+            "IL"
+          ],
+          "shipping_flag": "HIGH_SHIPPING_BURDEN",
+          "visual": {
+            "image_url": "https://cf.cjdropshipping.com/quick/product/75871859-2e1f-4c27-bfcb-7975586518d4.jpg",
+            "image_scope": "EXACT_VARIANT",
+            "exact_variant": true,
+            "color": "Gray",
+            "size": "35"
+          }
+        },
+        {
+          "role": "accessory",
+          "product_id": "630",
+          "title": "All-Over Print Bandana",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/3d/3d2c903719c4ade552b062343c7f902e_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        },
+        {
+          "role": "bag",
+          "product_id": "262",
+          "title": "All-Over Print Drawstring Bag",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/0f/0f04d73474287ef01d6f5541c3a63de2_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        }
+      ],
+      "product_truth_il": true,
+      "high_shipping_burden_items": [
+        "2609090301381604500"
+      ],
+      "commercial_note": "STYLE_OK_FOR_TRAINING_BUT_DO_NOT_HERO_WITHOUT_SHIPPING_STRATEGY"
+    },
+    {
+      "id": "LOOK-04",
+      "audience": "men",
+      "occasion": "smart_casual",
+      "items": [
+        {
+          "role": "top",
+          "product_id": "770",
+          "title": "Unisex Adidas Space-Dyed Polo Shirt | A591",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/26/26bc3c18ab447467ffa8b85c8bb34068_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        },
+        {
+          "role": "bottom",
+          "product_id": "2609070326191624000",
+          "title": "Mens Straight Leg Solid Color Casual Linen Pants With Drawstring And Elastic Waist",
+          "provider": "CJdropshipping",
+          "verified_markets": [
+            "IL"
+          ],
+          "shipping_flag": "NORMAL_SHIPPING_BURDEN",
+          "visual": {
+            "image_url": "https://cf.cjdropshipping.com/quick/product/b1538cf6-ac40-4eee-aee8-f7c420e9a00c.jpg",
+            "image_scope": "EXACT_VARIANT",
+            "exact_variant": true,
+            "color": "White",
+            "size": "S"
+          }
+        },
+        {
+          "role": "footwear",
+          "product_id": "2609080443011631100",
+          "title": "New Men's Slip-on Casual Shoes For Everyday Wear",
+          "provider": "CJdropshipping",
+          "verified_markets": [
+            "IL"
+          ],
+          "shipping_flag": "HIGH_SHIPPING_BURDEN",
+          "visual": {
+            "image_url": "https://cf.cjdropshipping.com/quick/product/a2bd7068-e6be-4fea-aa6a-d81af432f104.jpg",
+            "image_scope": "EXACT_VARIANT",
+            "exact_variant": true,
+            "color": "C6 White",
+            "size": "39"
+          }
+        },
+        {
+          "role": "accessory",
+          "product_id": "638",
+          "title": "Adidas Dad Hat",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/c4/c45ba3c882b8ecb672b30ac5c1041955_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        },
+        {
+          "role": "tech",
+          "product_id": "681",
+          "title": "All-Over Print Case for AirPods®",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/35/3590046c51744ee1db489e35cc117820_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        }
+      ],
+      "product_truth_il": true,
+      "high_shipping_burden_items": [
+        "2609080443011631100"
+      ],
+      "commercial_note": "STYLE_OK_FOR_TRAINING_BUT_DO_NOT_HERO_WITHOUT_SHIPPING_STRATEGY"
+    },
+    {
+      "id": "LOOK-05",
+      "audience": "men",
+      "occasion": "weekend",
+      "items": [
+        {
+          "role": "top",
+          "product_id": "531",
+          "title": "Men's Adidas Quarter-Zip Pullover | A401",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/26/2693766afb61273a00cd50e1e3295cd6_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        },
+        {
+          "role": "bottom",
+          "product_id": "2609090321561625000",
+          "title": "Men's Casual Pocket Shortsfashionable Street-style Trendy Shorts",
+          "provider": "CJdropshipping",
+          "verified_markets": [
+            "IL"
+          ],
+          "shipping_flag": "NORMAL_SHIPPING_BURDEN",
+          "visual": {
+            "image_url": "https://cf.cjdropshipping.com/quick/product/0948c040-2799-4f32-babc-adbe08b9f058.jpg",
+            "image_scope": "EXACT_VARIANT",
+            "exact_variant": true,
+            "color": "S",
+            "size": "Black"
+          }
+        },
+        {
+          "role": "footwear",
+          "product_id": "2609090656121615600",
+          "title": "New Mens Slip-on Sneakers For Spring And Summer",
+          "provider": "CJdropshipping",
+          "verified_markets": [
+            "IL"
+          ],
+          "shipping_flag": "HIGH_SHIPPING_BURDEN",
+          "visual": {
+            "image_url": "https://cf.cjdropshipping.com/quick/product/26496435-a25f-4666-830d-27dc6bc93d72.jpg",
+            "image_scope": "EXACT_VARIANT",
+            "exact_variant": true,
+            "color": "L85 White And Blue",
+            "size": "39"
+          }
+        },
+        {
+          "role": "accessory",
+          "product_id": "1586",
+          "title": "Adidas Fundamental Alliance Cap | AH607",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/c4/c44a8740ac632ba550d1d3bf728db44c_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        },
+        {
+          "role": "bag",
+          "product_id": "279",
+          "title": "All-Over Print Backpack",
+          "provider": "Printful",
+          "verified_markets": [
+            "IL",
+            "DE",
+            "US"
+          ],
+          "shipping_flag": "GLOBAL_SOURCE",
+          "visual": {
+            "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/1c/1cb4394b298d1d9e5d622976d8b89213_l",
+            "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+            "exact_variant": false,
+            "color": null,
+            "size": null
+          }
+        }
+      ],
+      "product_truth_il": true,
+      "high_shipping_burden_items": [
+        "2609080443011631100"
+      ],
+      "commercial_note": "STYLE_OK_FOR_TRAINING_BUT_DO_NOT_HERO_WITHOUT_SHIPPING_STRATEGY"
+    }
+  ]
+}</script>
+<script>
+const data=JSON.parse(document.querySelector("#data").textContent);
+const qs=new URLSearchParams(location.search); const theme=qs.get("theme")==="dark"?"dark":"light";
+document.documentElement.dataset.theme=theme;
+document.querySelector("#theme-badge").textContent=theme==="dark"?"DARK · SAPPHIRE / GRAPHITE":"LIGHT · OFF-WHITE";
+document.querySelector("#mode-copy").textContent=theme==="dark"?"Deep shell, neutral product spotlight, stronger shelf depth.":"Warm off-white shell, neutral product spotlight, softer shelf depth.";
+const states={LOOK_01:"PASS WITH EDIT",LOOK_02:"PASS WITH EDIT",LOOK_03:"PASS DIRECTIONALLY",LOOK_04:"PASS WITH EDIT",LOOK_05:"PASS WITH EDIT"};
+document.querySelector("#looks").innerHTML=data.looks.map(look=>{
+ const status=states[look.id.replace("-","_")]||"SHADOW QA";
+ return '<section class="look"><div class="look-head"><div><h2>'+look.id+' · '+look.audience.replaceAll("_"," ")+'</h2><small>'+look.occasion.replaceAll("_"," ")+'</small></div><span class="status">'+status+'</span></div><div class="grid">'+look.items.map(item=>{
+  const v=item.visual||{};
+  const detail=[v.color&&('Color: '+v.color),v.size&&('Size: '+v.size)].filter(Boolean).join(' · ');
+  return '<article class="card"><div class="media"><img src="'+v.image_url+'" alt=""></div><div class="meta"><div class="role">'+item.role+'</div><div class="title">'+item.title+'</div><div class="detail">'+(detail||'Catalog/base visual')+'</div><div class="scope">'+(v.exact_variant?'EXACT VARIANT':'PRINTFUL BASE IMAGE')+'</div></div></article>';
+ }).join("")+'</div></section>';
+}).join("");
+</script>
+</body>
+</html>

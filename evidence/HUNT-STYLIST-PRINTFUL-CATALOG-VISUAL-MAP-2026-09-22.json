@@ -1,0 +1,106 @@
+{
+  "version": "HUNT-STYLIST-PRINTFUL-CATALOG-VISUAL-MAP-V1",
+  "date": "2026-09-22",
+  "mode": "READ_ONLY_LOCAL_CATALOG",
+  "production_effect": false,
+  "items": [
+    {
+      "product_id": "630",
+      "title": "All-Over Print Bandana",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/3d/3d2c903719c4ade552b062343c7f902e_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "accessories.json"
+    },
+    {
+      "product_id": "279",
+      "title": "All-Over Print Backpack",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/1c/1cb4394b298d1d9e5d622976d8b89213_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "bags.json"
+    },
+    {
+      "product_id": "262",
+      "title": "All-Over Print Drawstring Bag",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/0f/0f04d73474287ef01d6f5541c3a63de2_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "bags.json"
+    },
+    {
+      "product_id": "507",
+      "title": "All-Over Print Biker Shorts",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/7d/7d1076436ed8ba443d102b65039fdc2c_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "bottoms.json"
+    },
+    {
+      "product_id": "458",
+      "title": "All-Over Print Beanie",
+      "image_url": "https://files.cdn.printful.com/o/products/458/product_1608131329.jpg",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "hats.json"
+    },
+    {
+      "product_id": "1586",
+      "title": "Adidas Fundamental Alliance Cap | AH607",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/c4/c44a8740ac632ba550d1d3bf728db44c_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "hats.json"
+    },
+    {
+      "product_id": "638",
+      "title": "Adidas Dad Hat",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/c4/c45ba3c882b8ecb672b30ac5c1041955_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "hats.json"
+    },
+    {
+      "product_id": "388",
+      "title": "All-Over Print Recycled Unisex Hoodie",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/7c/7c6f71d3de5db0ef1f05f397fc497f0b_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "hoodies.json"
+    },
+    {
+      "product_id": "1590",
+      "title": "All-Over Print Oversized Cotton Sweatshirt",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/5e/5e47506d1377bbb249974c7d17546fd4_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "hoodies.json"
+    },
+    {
+      "product_id": "1628",
+      "title": "All-Over Print Oversized Cotton Hoodie",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/fb/fb56069c088406ddf01d7b15b61e49d8_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "hoodies.json"
+    },
+    {
+      "product_id": "531",
+      "title": "Men's Adidas Quarter-Zip Pullover | A401",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/26/2693766afb61273a00cd50e1e3295cd6_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "men.json"
+    },
+    {
+      "product_id": "181",
+      "title": "Clear Case for iPhone®",
+      "image_url": "https://files.cdn.printful.com/o/products/181/product_1570615955.jpg",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "phonecases.json"
+    },
+    {
+      "product_id": "681",
+      "title": "All-Over Print Case for AirPods®",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/35/3590046c51744ee1db489e35cc117820_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "tech.json"
+    },
+    {
+      "product_id": "770",
+      "title": "Unisex Adidas Space-Dyed Polo Shirt | A591",
+      "image_url": "https://files.cdn.printful.com/o/upload/product-catalog-img/26/26bc3c18ab447467ffa8b85c8bb34068_l",
+      "image_scope": "OFFICIAL_PRINTFUL_CATALOG_BASE_IMAGE",
+      "source_shard": "tops.json"
+    }
+  ]
+}

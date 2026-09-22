@@ -33,6 +33,8 @@ assert.equal(c.current_state.visual_qa_round4,"5_CONTINUE_0_REWORK_EXACT_MOCKUPS
 assert.equal(c.current_state.looks_ready,5);
 assert.equal(c.current_state.looks_rework,0);
 assert.equal(c.current_state.hero_ready,0);
+assert.equal(c.current_state.two_theme_look_board,"PASS_BOTH_THEMES_BASE_IMAGES_ONLY");
+assert.equal(c.current_state.exact_printful_artwork,"PENDING");
 assert(c.brand_case_study_policy.blocked.includes("Do not copy"));
 assert.equal(lighting.production_effect,false);
 assert.equal(lighting.renders.light.result,"PASS");

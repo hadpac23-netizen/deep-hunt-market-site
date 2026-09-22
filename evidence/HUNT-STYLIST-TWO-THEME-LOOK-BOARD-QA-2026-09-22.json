@@ -1,0 +1,72 @@
+{
+  "version": "HUNT-STYLIST-TWO-THEME-LOOK-BOARD-QA-V1",
+  "date": "2026-09-22",
+  "mode": "LOCAL_SHADOW_RENDER",
+  "production_effect": false,
+  "input_visual_map": "evidence/HUNT-STYLIST-CURRENT-LOOK-VISUAL-MAP-2026-09-22.json",
+  "render_page": "boom-stylist-shadow-look-board.html",
+  "themes": {
+    "light": {
+      "palette": "OFF_WHITE",
+      "result": "PASS_DISPLAY",
+      "observations": [
+        "Warm off-white shell keeps the five looks readable without a clinical pure-white feel.",
+        "Neutral product bays preserve product photography and prevent cards from flattening into the page.",
+        "LOOK-01 reads as a coherent white/beige/light-gray neutral street composition.",
+        "LOOK-05 keeps the colorful sneaker as the visual focal point while the remaining pieces stay comparatively quiet."
+      ]
+    },
+    "dark": {
+      "palette": "SAPPHIRE_GRAPHITE",
+      "result": "PASS_DISPLAY",
+      "observations": [
+        "Dark shell increases shelf depth while product media stays bright and color-faithful.",
+        "White and neutral Printful catalog images remain legible instead of being darkened.",
+        "Card hierarchy remains readable across all five looks.",
+        "The product bay behaves like a lit display window against the cinematic dark interface."
+      ]
+    }
+  },
+  "look_display_results": [
+    {
+      "id": "LOOK-01",
+      "display_state": "PASS_WITH_EDIT",
+      "note": "Neutral palette and low-profile shoe now read coherently; final Printful artwork still pending."
+    },
+    {
+      "id": "LOOK-02",
+      "display_state": "PASS_WITH_EDIT",
+      "note": "Apricot/white relaxed-smart composition reads clearly; bandana must remain secondary after final artwork."
+    },
+    {
+      "id": "LOOK-03",
+      "display_state": "PASS_DIRECTIONALLY",
+      "note": "White base plus darker boot produces a clear weekend/street contrast."
+    },
+    {
+      "id": "LOOK-04",
+      "display_state": "PASS_WITH_EDIT",
+      "note": "Gray/white/black smart-casual palette remains coherent in both themes."
+    },
+    {
+      "id": "LOOK-05",
+      "display_state": "PASS_WITH_EDIT",
+      "note": "Colorful sneaker works as focal point; shipping still blocks commercial Hero use."
+    }
+  ],
+  "source_truth": {
+    "cj": "Exact variant images/colors for current CJ items.",
+    "printful": "Official Printful catalog base images only, not final artwork/mockups."
+  },
+  "gate_state": {
+    "silhouette_display_qa": "PASS_BOTH_THEMES",
+    "exact_printful_artwork_qa": "PENDING",
+    "commercial_hero_gate": "BLOCKED",
+    "mastery_change": false
+  },
+  "next": [
+    "Acquire exact Printful mockups/artwork without exposing secrets.",
+    "Re-run two-theme board with final artwork before any Hero/Production shelf approval.",
+    "Continue searching for lower-shipping footwear substitutes."
+  ]
+}

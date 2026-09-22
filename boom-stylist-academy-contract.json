@@ -294,9 +294,11 @@
     "visual_qa_round3": "4_CONTINUE_1_REWORK",
     "visual_qa_round4": "5_CONTINUE_0_REWORK_EXACT_MOCKUPS_PENDING",
     "hero_ready": 0,
-    "footwear_learning": "STYLE_FIT_IMPROVED_COMMERCIAL_SHIPPING_WARNINGS_REMAIN"
+    "footwear_learning": "STYLE_FIT_IMPROVED_COMMERCIAL_SHIPPING_WARNINGS_REMAIN",
+    "two_theme_look_board": "PASS_BOTH_THEMES_BASE_IMAGES_ONLY",
+    "exact_printful_artwork": "PENDING"
   },
-  "next": "FETCH_EXACT_PRINTFUL_MOCKUPS_THEN_RUN_TWO_THEME_SHELF_VISUAL_EXAM",
+  "next": "ACQUIRE_EXACT_PRINTFUL_MOCKUPS_THEN_RERUN_TWO_THEME_BOARD_AND_COMMERCIAL_HERO_GATE",
   "f35_research_ref": "boom-f35-style-commerce-research-2026-09-22.json",
   "preference_layers": [
     {
@@ -833,5 +835,6 @@
   "training_set_v3_ref": "evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V3-IL-2026-09-22.json",
   "visual_qa_round3_ref": "evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND3-2026-09-22.json",
   "training_set_v4_ref": "evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V4-IL-2026-09-22.json",
-  "visual_qa_round4_ref": "evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND4-2026-09-22.json"
+  "visual_qa_round4_ref": "evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND4-2026-09-22.json",
+  "two_theme_look_board_ref": "evidence/HUNT-STYLIST-TWO-THEME-LOOK-BOARD-QA-2026-09-22.json"
 }

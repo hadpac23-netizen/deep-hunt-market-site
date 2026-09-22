@@ -230,7 +230,7 @@
     const host=$("#bs-stylist-academy");
     if(!host)return;
     try{
-      const [academy,training,trainingCurrent,f35,baseline,round1,round2,lighting,visualQa]=await Promise.all([
+      const [academy,training,trainingCurrent,f35,baseline,round1,round2,lighting,visualQa,twoThemeQa]=await Promise.all([
         json("boom-stylist-academy-contract.json"),
         json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-2026-09-22.json"),
         json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V4-IL-2026-09-22.json"),
@@ -239,7 +239,8 @@
         json("evidence/HUNT-STYLIST-F35-ROUND1-2026-09-22.json"),
         json("evidence/HUNT-STYLIST-F35-ROUND2-2026-09-22.json"),
         json("evidence/HUNT-CINEMATIC-LIGHTING-QA-2026-09-22.json"),
-        json("evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND4-2026-09-22.json")
+        json("evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND4-2026-09-22.json"),
+        json("evidence/HUNT-STYLIST-TWO-THEME-LOOK-BOARD-QA-2026-09-22.json")
       ]);
       const tracks=(academy.tracks||[]).map(t=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(t.id)} · ${esc(t.name)}</strong><span class="bs-status NEXT">${esc((t.modules||[]).length)} modules</span></div><p>${esc((t.modules||[]).join(" · "))}</p></div>`).join("");
       const exams=(academy.exams||[]).map(e=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(e.name)}</strong><span class="bs-status NEXT">PASS ${esc(e.pass_score)}+</span></div><small>${esc(e.output_rule)}</small></div>`).join("");
@@ -311,7 +312,9 @@
           </div>
           <small>LEARNING GATE</small>
           <p>${esc(lighting.stylist_learning?.reason)}</p>
-          <code>evidence ready · exam not scored · mastery change false · Production unchanged</code>
+          <small>TWO-THEME LOOK BOARD</small>
+          <p>Light: ${esc(twoThemeQa.themes?.light?.result)} · Dark: ${esc(twoThemeQa.themes?.dark?.result)} · Exact Printful artwork: ${esc(twoThemeQa.gate_state?.exact_printful_artwork_qa)}.</p>
+          <code>display QA pass · Hero blocked · mastery change false · Production unchanged</code>
         </article>
         <article class="bs-creative-card">
           <div class="bs-automation-head"><strong>Visual QA · 5 Looks</strong><span class="bs-status NEXT">${esc(visualQa.overall_status)}</span></div>
