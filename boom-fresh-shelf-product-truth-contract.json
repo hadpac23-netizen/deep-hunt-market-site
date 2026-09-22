@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-FRESH-SHELF-PRODUCT-TRUTH-V1.1-SCAN-AWARE",
+  "version": "BOOM-FRESH-SHELF-PRODUCT-TRUTH-V1.1-CJ-FULL-REFRESH",
   "mode": "SHADOW",
   "owner": "commerce_truth_brain",
   "authority": "NONE",
@@ -52,16 +52,17 @@
       "Printful": 23,
       "Gooten": 18
     },
-    "cj_controlled_scan_id": "CJ-IL-20260922-A",
-    "cj_controlled_scan_rows": 76,
-    "cj_controlled_verified_il": 19,
-    "cj_product_lookup_failed_recheck": 50,
-    "cj_price_or_profit_blocked": 5,
-    "cj_no_verified_variant": 2,
+    "catalog_market_status_recheck_before_checkout": 117,
+    "cj_catalog_rows": 76,
+    "cj_fresh_shelf_verified_il_24h": 57,
+    "cj_not_fresh_yet": 19,
+    "cj_checkout_recheck_required": 57,
     "cj_checkout_live_verified": 0,
-    "positive_triad_any_source": 57,
-    "contradictory_positive_triad_vs_controlled_scan": 38,
-    "state": "CJ_CONTROLLED_SCAN_COMPLETE_19_FRESH_57_RECHECK_OR_BLOCKED"
+    "explicit_observation_rows_written_today": 165,
+    "explicit_refresh_products": 55,
+    "additional_current_valid_products_from_cj_refresh_full": 2,
+    "newest_verified_observation": "2026-09-22T13:04:55.31846Z",
+    "state": "CJ_REFRESH_MAJORITY_VERIFIED_REMAINDER_BLOCKED_OR_UNRESOLVED"
   },
   "observed_endpoint_disagreement": {
     "product_detail_sample_count": 3,
@@ -82,5 +83,29 @@
     "A single product lookup failure is recheck evidence, not permanent-removal proof.",
     "Unreconciled observations from another source do not override a newer controlled scan."
   ],
-  "evidence_write_scope": "Existing hunt_product_observations only, through controlled refresh worker; evaluator itself is read-only."
+  "evidence_write_scope": "Existing hunt_product_observations only, through controlled refresh worker; evaluator itself is read-only.",
+  "cj_fresh_department_contribution": {
+    "note": "Conservative CJ-only contribution to the 17 canonical departments; not total multi-supplier shelf readiness.",
+    "counts": {
+      "women": 19,
+      "accessories": 14,
+      "beauty": 4,
+      "tech": 13,
+      "pets": 1,
+      "toys": 6,
+      "men": 0,
+      "kids": 0,
+      "home": 0,
+      "kitchen": 0,
+      "electrical": 0,
+      "camping": 0,
+      "garden": 0,
+      "sports": 0,
+      "travel": 0,
+      "office": 0,
+      "gifts": 0
+    },
+    "ready_at_1000": []
+  },
+  "remaining_truth_rule": "The 19 not-fresh CJ rows remain stale/recheck candidates; do not relabel them unavailable without a proven failure classification."
 }
