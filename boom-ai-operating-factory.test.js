@@ -10,10 +10,10 @@ const tools=json("boom-tool-registry.json");
 const owners=new Set(brains.primary_brains.map(x=>x.id));
 const skillIds=new Set(skills.skills.map(x=>x.id));
 
-assert.equal(skills.skills.length,11);
-assert.equal(templates.templates.length,11);
-assert.equal(new Set(skills.skills.map(x=>x.id)).size,11);
-assert.equal(new Set(templates.templates.map(x=>x.id)).size,11);
+assert.equal(skills.skills.length,12);
+assert.equal(templates.templates.length,12);
+assert.equal(new Set(skills.skills.map(x=>x.id)).size,12);
+assert.equal(new Set(templates.templates.map(x=>x.id)).size,12);
 
 for(const s of skills.skills){
   assert(owners.has(s.owner),"unknown skill owner "+s.owner);
@@ -33,4 +33,4 @@ assert.equal(repair.mode,"SHADOW");
 assert(repair.hard_rules.some(x=>/Never patch Production directly/i.test(x)));
 assert(tools.runtime_tools.some(x=>x.id==="workflow_builder"&&x.authority==="NONE"));
 assert(tools.runtime_tools.some(x=>x.id==="ai_tool_router"&&x.authority==="NONE"));
-console.log("BOOM AI operating factory: PASS — 11 skills, 11 templates, canonical owners, material Owner Gates, plan-only router");
+console.log("BOOM AI operating factory: PASS — 12 skills, 12 templates, canonical owners, material Owner Gates, plan-only router");
