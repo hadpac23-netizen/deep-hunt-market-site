@@ -1,0 +1,72 @@
+{
+  "version": "HUNT-PROFIT-DATA-AUDIT-2026-09-22-V1",
+  "observed_at": "2026-09-22T10:16:49.755667Z",
+  "source": "Supabase read-only audit",
+  "production_mutation": false,
+  "facts": {
+    "hunt_unit_economics": {
+      "rows": 8,
+      "verified_rows": 8,
+      "profit_gate_pass_rows": 8,
+      "newest_calculated_at": "2026-09-20T16:57:03.369596Z"
+    },
+    "hunt_order_finance_ledger": {
+      "rows": 0,
+      "real_rows": 0,
+      "test_rows": 0,
+      "real_available_profit": 0,
+      "newest_calculated_at": null
+    },
+    "hunt_orders": {
+      "rows": 8,
+      "real_rows": 0,
+      "test_rows": 8,
+      "real_order_value": 0,
+      "newest_placed_at": "2026-09-15T13:00:09.821245Z"
+    },
+    "hunt_purchase_attribution_bridge": {
+      "rows": 32,
+      "real_linked_rows": 0,
+      "profit_evidence_ready_rows": 0
+    },
+    "hunt_attribution_ledger": {
+      "rows": 32
+    },
+    "hunt_boom_product_scores": {
+      "rows": 0,
+      "promotion_eligible_rows": 0,
+      "newest_calculated_at": null
+    },
+    "hunt_profit_profiles": {
+      "rows": 1
+    },
+    "hunt_daily_owner_metrics": {
+      "rows": 11
+    }
+  },
+  "access_truth": {
+    "browser_admin_safe_rls_tables": [
+      "hunt_unit_economics",
+      "hunt_order_finance_ledger",
+      "hunt_boom_product_scores",
+      "hunt_profit_profiles",
+      "hunt_orders"
+    ],
+    "server_only_until_hardened": [
+      "hunt_purchase_attribution_bridge",
+      "hunt_daily_owner_metrics"
+    ],
+    "notes": [
+      "hunt_purchase_attribution_bridge had RLS disabled at audit time.",
+      "hunt_daily_owner_metrics had RLS disabled at audit time.",
+      "hunt_attribution_ledger has RLS enabled with no public access policy."
+    ]
+  },
+  "conclusion": {
+    "expected_profit_evidence": "AVAILABLE_FOR_8_VERIFIED_UNIT_ECONOMICS_ROWS",
+    "realized_profit_evidence": "NOT_AVAILABLE_NO_REAL_FINANCE_LEDGER_ROWS",
+    "product_profit_scores": "NOT_POPULATED",
+    "marketing_profit_attribution": "NOT_REALIZED_NO_REAL_ORDER_LINKAGE",
+    "current_profit_engine_state": "SHADOW_EXPECTED_ONLY"
+  }
+}
