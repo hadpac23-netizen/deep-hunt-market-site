@@ -224,7 +224,7 @@
       "owner": "commerce_truth_brain",
       "status": "IN_PROGRESS",
       "source": "F35",
-      "next": "Truth contract + server-only coverage endpoint + Studio matrix are coded. Current source proves 13 canonical departments, 4 unresolved; live catalog evidence is stale. Deploy preview and refresh source evidence before readiness."
+      "next": "17 canonical department identities are now resolved from V16 + department map. Next: Preview-deploy read-only coverage endpoint and refresh fresh verified sellable evidence; taxonomy resolution does not imply inventory readiness."
     },
     {
       "id": "incident_repair_automation",
