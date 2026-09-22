@@ -1,0 +1,17 @@
+const fs=require("fs"),vm=require("vm"),assert=require("assert");
+const contract=JSON.parse(fs.readFileSync("boom-profit-engine-contract.json","utf8"));
+const src=fs.readFileSync("boom-profit-engine.js","utf8");
+const ctx={window:{}};vm.createContext(ctx);vm.runInContext(src,ctx);
+const P=ctx.window.BoomProfitEngine;
+assert.equal(P.targetNetProfitPerHourUsd,10000);
+assert.equal(contract.mission.target_type,"ASPIRATIONAL_MISSION_TARGET");
+assert(contract.hard_guardrails.some(x=>/Never fabricate/i.test(x)));
+assert(contract.modules.filter(x=>x.material_action).every(x=>x.owner_gate===true));
+let r=P.evaluateHour({gross_revenue:1000,supplier_cost:400});
+assert.equal(r.verified,false);assert.equal(r.verified_net_profit,null);
+r=P.evaluateHour({gross_revenue:1000,supplier_cost:400,shipping_cost:100,payment_fees:30,discount_cost:50,marketing_cost:100,returns_cost:20,cancellation_refund_cost:0,other_variable_cost:0,orders:10,qualified_users:100});
+assert.equal(r.verified,true);assert.equal(r.verified_net_profit,300);assert.equal(r.net_profit_per_order,30);assert.equal(r.target_gap,9700);assert.equal(r.material_action_authorized,false);
+assert.equal(P.requiredOrdersForTarget(25),400);
+const s=P.productProfitScore({net_margin:.5,conversion:.6,freshness:1,stock_reliability:.9,return_risk:.1,customer_relevance:.8});
+assert.equal(s.verified,true);assert(s.score>0&&s.score<=100);assert.equal(s.material_action_authorized,false);
+console.log("BOOM Profit Engine: PASS — $10K/hour mission target, complete-cost truth, score, target gap, no material authority");
