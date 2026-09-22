@@ -10,8 +10,9 @@ const ALLOWED_ORIGINS=new Set([
 const DEPARTMENTS=[
   ["women","Women"],["men","Men"],["kids","Kids & Baby"],["beauty","Beauty"],
   ["accessories","Accessories & Jewelry"],["tech","Phone & Tech"],["home","Home & Living"],
-  ["sports","Sports & Outdoors"],["pets","Pets"],["toys","Toys"],["travel","Travel"],
-  ["office","Office & Crafts"],["gifts","Gifts & Party"]
+  ["kitchen","Kitchen"],["electrical","Electrical & Appliances"],["camping","Camping & Outdoor"],
+  ["garden","Garden & Outdoor"],["sports","Sports & Outdoors"],["pets","Pets"],["toys","Toys"],
+  ["travel","Travel"],["office","Office & Crafts"],["gifts","Gifts & Party"]
 ];
 const TARGET=1000;
 const MAX_FRESH_HOURS=24;
@@ -86,16 +87,9 @@ Deno.serve(async(req:Request)=>{
         curated_eligible_products:Number.isFinite(Number(row?.curated_eligible_products))?Number(row.curated_eligible_products):null
       };
     });
-    for(let i=14;i<=17;i++){
-      departments.push({
-        slug:null,title:"Unresolved department "+i,resolved:false,state:"UNRESOLVED",
-        verified_count:null,stale_verified_count:null,gap_to_target:TARGET,evidence_fresh:false,
-        providers:[],last_live_audit_at:null,static_unique_products:0,curated_eligible_products:null
-      });
-    }
     const summary={
       target_departments:17,target_per_department:TARGET,target_total:17*TARGET,
-      canonical_resolved:13,unresolved:4,
+      canonical_resolved:17,unresolved:0,
       ready:departments.filter((x:any)=>x.state==="READY").length,
       unknown:departments.filter((x:any)=>x.state==="UNKNOWN").length,
       stale:departments.filter((x:any)=>x.resolved&&!x.evidence_fresh).length,
