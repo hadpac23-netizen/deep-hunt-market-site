@@ -1,4 +1,4 @@
-const CACHE="hunt-shell-pwa1";
+const CACHE="hunt-shell-pwa2";
 const CORE=[
   "./",
   "./index.html",
@@ -53,7 +53,11 @@ self.addEventListener("fetch",event=>{
     event.respondWith(networkFirst(request));
     return;
   }
-  if(/\.(?:js|css|svg|png|jpg|jpeg|webp|json|webmanifest)$/i.test(url.pathname)){
+  if(/\.(?:js|css|json|webmanifest)$/i.test(url.pathname)){
+    event.respondWith(networkFirst(request));
+    return;
+  }
+  if(/\.(?:svg|png|jpg|jpeg|webp)$/i.test(url.pathname)){
     event.respondWith(staleWhileRevalidate(request));
   }
 });
