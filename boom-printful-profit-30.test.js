@@ -1,0 +1,14 @@
+const fs=require("fs"),assert=require("assert");
+const s=fs.readFileSync("boom-printful-profit-30.mjs","utf8");
+assert(s.includes('chosen.slice(0,30)'));
+assert(s.includes('post("/shipping/rates"'));
+assert(s.includes('const grossedShipping=ship/reserve'));
+assert(s.includes('const freeGate=priceGate(cost+ship)'));
+assert(s.includes('order_creation:false'));
+assert(s.includes('fulfillment:"DISABLED"'));
+assert(s.includes('checkout:"DISABLED"'));
+assert(!s.includes('post("/orders'));
+assert(!s.includes('method:"DELETE"'));
+assert(!s.includes('method:"PUT"'));
+assert(s.includes("const reserve=.91,targetMargin=.35,minProfit=4"));
+console.log("PASS boom-printful-profit-30");
