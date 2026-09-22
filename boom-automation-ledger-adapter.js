@@ -196,6 +196,46 @@
     return data||[];
   }
 
+
+  async function decideProposal(decisionKey,approved,{reason=""}={}){
+    const key=String(decisionKey||"");
+    if(!/^(automation_owner_gate|incident_owner_gate):/.test(key)){
+      throw Object.assign(new Error("DECISION_KEY_NOT_AUTOMATION_GATE"),{code:"DECISION_KEY_NOT_AUTOMATION_GATE"});
+    }
+    const db=await client();
+    const status=approved===true?"approved":"rejected";
+    const now=new Date().toISOString();
+    const {data,error}=await db.from("hunt_boom_decisions").update({
+      status,
+      rationale:String(reason||"Owner decision recorded from BOOM Studio SHADOW control.").slice(0,2000),
+      result:sanitize({
+        approved:approved===true,
+        shadow_mode:true,
+        material_action_suppressed:true,
+        decision_only:true,
+        decided_at:now
+      }),
+      updated_at:now
+    }).eq("decision_key",key).eq("status","proposed").select("id,decision_key,status,proposed_action").maybeSingle();
+    if(error)throw error;
+    if(!data)throw Object.assign(new Error("DECISION_NOT_PENDING"),{code:"DECISION_NOT_PENDING"});
+
+    const runId=String(data?.proposed_action?.run_id||"");
+    try{
+      await db.from("hunt_boom_events").insert({
+        source_manager_id:"boom_orchestrator",
+        event_type:approved===true?"owner_gate.approved_shadow":"owner_gate.rejected_shadow",
+        severity:"info",
+        entity_type:"owner_gate",
+        entity_key:key,
+        title:approved===true?"Owner approved SHADOW decision":"Owner rejected SHADOW decision",
+        body:"Decision recorded only; no external/material action executed.",
+        payload:sanitize({decision_key:key,run_id:runId,approved:approved===true,material_action_suppressed:true})
+      });
+    }catch{}
+    return data;
+  }
+
   async function listRecent(limit=25){
     const db=await client();
     const capped=Math.max(1,Math.min(Number(limit)||25,100));
@@ -217,5 +257,5 @@
     return data||[];
   }
 
-  window.BoomAutomationLedger={version,sanitize,upsertRun,appendEvent,appendIncidentEvent,ensureApproval,recordOwnerDecision,listRecent,listIncidents,listPendingApprovals};
+  window.BoomAutomationLedger={version,sanitize,upsertRun,appendEvent,appendIncidentEvent,ensureApproval,recordOwnerDecision,decideProposal,listRecent,listIncidents,listPendingApprovals};
 })();
