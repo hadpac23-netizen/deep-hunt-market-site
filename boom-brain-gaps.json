@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V2.5-PROVIDER-TRUTH",
+  "version": "BOOM-BRAIN-GAPS-V2.6-CREDENTIAL-GATES",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -662,25 +662,25 @@
       "id": "cj_price_gate_v2",
       "title": "CJ Reserve-Aware Price Gate V2",
       "owner": "commerce_truth_brain",
-      "status": "CODED_NOT_DEPLOYED",
+      "status": "SOURCE_SYNCED_NOT_DEPLOYED",
       "source": "PRODUCT_TRUTH",
-      "next": "Preview-test corrected reserve-aware margin floor. Do not change Production retail prices without Owner Gate."
+      "next": "Preview-test synced hunt-storefront Price Gate V2. Do not deploy or change retail prices without Owner Gate."
     },
     {
       "id": "printful_shipping_credentials",
       "title": "Printful Shipping / Fulfillment Credentials",
       "owner": "commerce_truth_brain",
-      "status": "BLOCKED",
+      "status": "OWNER_CREDENTIAL_ACTION_REQUIRED",
       "source": "SUPPLIER_TRUTH",
-      "next": "22/22 unique catalog products and 550 in-stock variants are live; connect store/API credentials and prove destination shipping before Fresh Shelf."
+      "next": "Printful officially supports a custom API store. Owner must create a Private Token for the HUNT store and capture Store ID; then server-side shipping/variant proof can run. Do not expose token in browser."
     },
     {
       "id": "gooten_shipping_credentials",
       "title": "Gooten Variant / Shipping Credentials",
       "owner": "commerce_truth_brain",
-      "status": "BLOCKED",
+      "status": "SUPPORT_REPLY_PENDING",
       "source": "SUPPLIER_TRUTH",
-      "next": "18/18 public catalog products are live; API credentials are required to prove variants, destination shipping and fulfillment before Fresh Shelf."
+      "next": "Follow-up sent on Gooten request #369479 asking for RecipeID/API onboarding for read-only variants/shipping pilot. PartnerBillingKey remains server-only and is not needed for the initial read-only proof."
     }
   ]
 }
