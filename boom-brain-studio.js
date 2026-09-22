@@ -319,6 +319,42 @@
 
 
 
+
+  async function renderHourlyProfitReview(){
+    const host=$("#bs-hourly-profit-state");
+    const attrHost=$("#bs-marketing-profit-attribution");
+    const attrState=$("#bs-marketing-profit-state");
+    if(host){
+      try{
+        const loop=window.BoomHourlyProfitLoop;
+        if(!loop?.run)throw new Error("Hourly Profit Loop unavailable");
+        const report=await loop.run({hours:24});
+        const d=report.diagnosis||{};
+        const snap=report.snapshot||{};
+        host.innerHTML=`<div class="bs-hourly-main">
+          <div><small>24H OBSERVED ROWS</small><strong>${esc(snap.rows??0)}</strong></div>
+          <div><small>EXACT VERIFIED ROWS</small><strong>${esc(snap.exact_verified_rows??0)}</strong></div>
+          <div><small>VERIFIED NET PROFIT / HOUR</small><strong>${d.verified_net_profit_per_hour===null?"UNKNOWN":"$"+Number(d.verified_net_profit_per_hour).toLocaleString()}</strong></div>
+          <div><small>TARGET GAP</small><strong>${d.target_gap===null?"UNKNOWN":"$"+Number(d.target_gap).toLocaleString()}</strong></div>
+        </div>
+        <div class="bs-hourly-diagnosis"><b>${esc(d.status||"UNKNOWN")}</b><span>constraint: ${esc(d.primary_constraint||"none")}</span><small>latest observed: ${esc(d.latest_observed_status||snap.latest_row?.verification_status||"none")}</small></div>
+        <div class="bs-profit-proposals">${(d.proposals||[]).map(p=>`<span>${esc(p.priority)} · ${esc(p.type)} · ${esc(p.action)}${p.owner_gate?" · Owner Gate":""}</span>`).join("")||"<span>No proposals until evidence is available.</span>"}</div>`;
+      }catch(error){
+        host.innerHTML=`<div class="bs-empty bs-error">Hourly profit evidence unavailable: ${esc(error?.message||"unknown")}</div>`;
+      }
+    }
+    const a=data.marketingProfitAttribution||{};
+    if(attrState)attrState.textContent=String(a.current_truth?.state||"UNKNOWN");
+    if(attrHost){
+      attrHost.innerHTML=[
+        `<article><small>REAL ORDERS LINKED</small><strong>${esc(a.current_truth?.real_order_linked_rows??0)}</strong><span>Required before conversion/profit claims.</span></article>`,
+        `<article><small>PROFIT EVIDENCE READY</small><strong>${esc(a.current_truth?.profit_evidence_ready_rows??0)}</strong><span>Finance evidence must be real and non-test.</span></article>`,
+        `<article><small>MARKETING COST FEED</small><strong>${esc(a.current_truth?.marketing_cost_feed||"UNKNOWN")}</strong><span>Paid net profit and CAC stay UNKNOWN without actual spend/fee evidence.</span></article>`,
+        `<article><small>PRIMARY KPI</small><strong>Marketing Net Profit</strong><span>ROAS is diagnostic only.</span></article>`
+      ].join("");
+    }
+  }
+
   async function renderProductProfitLedger(){
     const summary=$("#bs-product-profit-ledger-summary");
     const host=$("#bs-product-profit-ledger");
@@ -657,12 +693,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json"),json("boom-marketing-profit-attribution-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
