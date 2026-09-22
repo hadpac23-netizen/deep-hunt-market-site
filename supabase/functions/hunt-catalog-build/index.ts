@@ -12,8 +12,9 @@ const env=(name:string)=>clean(Deno.env.get(name)||"");
 const has=(name:string)=>Boolean(env(name));
 const providerAdapterState=()=>({
   Printful:{
-    mode:has("PRINTFUL_API_TOKEN")&&has("PRINTFUL_STORE_ID")?"AUTHENTICATED_CATALOG_READY":"PUBLIC_DISCOVERY",
+    mode:has("PRINTFUL_API_TOKEN")?"AUTH_TOKEN_PRESENT":"PUBLIC_DISCOVERY",
     token_present:has("PRINTFUL_API_TOKEN"),
+    store_id_optional_for_single_store_token:true,
     store_present:has("PRINTFUL_STORE_ID"),
     shipping_proof:"NOT_VERIFIED",
     fulfillment:"DISABLED"
@@ -175,12 +176,20 @@ async function gooten(out:Record<string,any[]>){
 }
 
 async function printfulCredentialProbe(){
-  if(!has("PRINTFUL_API_TOKEN")||!has("PRINTFUL_STORE_ID"))return {ok:false,state:"TOKEN_STORE_REQUIRED"};
-  const r=await fetch("https://api.printful.com/store/products?limit=1",{headers:printfulHeaders()});
-  if(!r.ok)return {ok:false,state:"PROBE_FAILED",http:r.status};
+  if(!has("PRINTFUL_API_TOKEN"))return {ok:false,state:"TOKEN_REQUIRED"};
+  const storesRes=await fetch("https://api.printful.com/stores",{headers:printfulHeaders()});
+  if(!storesRes.ok)return {ok:false,state:"AUTH_PROBE_FAILED",http:storesRes.status};
+  const storesJson=await storesRes.json();
+  const stores=Array.isArray(storesJson?.result)?storesJson.result:[];
+  const expected=env("PRINTFUL_STORE_ID");
+  const selected=expected?stores.find((s:any)=>String(s?.id)===expected):stores[0];
+  if(!selected?.id)return {ok:false,state:expected?"EXPECTED_STORE_NOT_FOUND":"NO_STORE_FOUND"};
+  const h=printfulHeaders(); h["X-PF-Store-Id"]=String(selected.id);
+  const r=await fetch("https://api.printful.com/store/products?limit=1",{headers:h});
+  if(!r.ok)return {ok:false,state:"STORE_PROBE_FAILED",http:r.status,store_id:String(selected.id)};
   const d=await r.json();
   const rows=Array.isArray(d?.result)?d.result:[];
-  return {ok:true,state:"READ_ONLY_STORE_ACCESS_VERIFIED",sample_count:rows.length};
+  return {ok:true,state:"READ_ONLY_STORE_ACCESS_VERIFIED",store_id:String(selected.id),sample_count:rows.length};
 }
 
 async function gootenVariantProbe(productId:string,countryCode:string){
