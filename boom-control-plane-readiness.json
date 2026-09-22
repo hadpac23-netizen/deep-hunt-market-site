@@ -143,6 +143,11 @@
       "id": "checkout_order_tracking_e2e",
       "status": "CODED_SHADOW_BLOCKED_SUPPLIER_TRACKING_E2E",
       "evidence": "Read-only audit: 8/8 test orders user-bound; RLS protects payment sessions/orders/events/fulfillment by ownership; 1 dry-run validation PASS; 8 fulfillment rows; 0 supplier_order_id; 0 tracking rows; 0 shipped events. Historical blockers: 4 CJ transient busy failures + 1 Israel phone-format failure. Current source has +972 normalization, up-to-5 transient retries and stable-order reconciliation, but these fixes still need a successful sandbox E2E proof."
+    },
+    {
+      "id": "legal_returns_shipping_market_readiness",
+      "status": "CODED_SHADOW_BLOCKED_IDENTITY_AND_LEGAL_REGISTRY",
+      "evidence": "Market Policy evaluator + Studio matrix coded. IL/EU/GB/US/AU have official-source baselines; all other markets default HOLD. Production audit: business identity configured but not published; returns address/privacy contact/support email absent; hunt_legal_document_versions migration exists in branch but is not deployed in Production; legacy legal_policies launch gate remains PARTIAL; Shipping Chess gate is PASS."
     }
   ],
   "blockers": [
@@ -164,7 +169,12 @@
     "PayPlus sandbox evidence control/session must be run in staging to collect signed success/failure observations before paid-state mapping can be proven.",
     "Refund path requires a separate observed charge_method=4 staging fingerprint linked to the original transaction before refund launch.",
     "Each PSP route needs commercial/account approval evidence plus server credentials, sandbox/callback/refund/finance/settlement/legal scope proof before it can become a LIVE_READY_CANDIDATE.",
-    "Checkout/Orders/Tracking needs one successful sandbox supplier-order lineage with persisted supplier_order_id + tracking_number + shipped event; current evidence has none."
+    "Checkout/Orders/Tracking needs one successful sandbox supplier-order lineage with persisted supplier_order_id + tracking_number + shipped event; current evidence has none.",
+    "Publish a complete owner-approved Business Identity before public/real-money launch.",
+    "Deploy and verify the legal document registry in Preview before Production; current Production does not contain hunt_legal_document_versions.",
+    "Owner/counsel must supply and approve Terms, Privacy, Returns and Shipping content; BOOM must not fabricate binding legal text.",
+    "Implement a verifiable cancellation/withdrawal/return path appropriate to each enabled market.",
+    "Any unmapped country remains HOLD until consumer/privacy/tax/import/shipping obligations are reviewed."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
