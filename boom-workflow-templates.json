@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-WORKFLOW-TEMPLATES-V1.3-ORDER-E2E",
+  "version": "BOOM-WORKFLOW-TEMPLATES-V1.4-MARKET-POLICY",
   "mode": "SHADOW",
   "rule": "Templates compile reusable Skills into a plan. Compilation does not execute tools or material actions.",
   "templates": [
@@ -142,6 +142,17 @@
         "review_checkout_order_tracking"
       ],
       "final_action": "evidence_report_only",
+      "material": false
+    },
+    {
+      "id": "market_policy_launch_review",
+      "title": "Market → Legal / Returns / Shipping Launch Review",
+      "owner": "learning_governance_brain",
+      "trigger": "market_enablement_or_launch_window",
+      "skills": [
+        "review_market_policy_readiness"
+      ],
+      "final_action": "hold_or_owner_review",
       "material": false
     }
   ]
