@@ -48,7 +48,7 @@
     {
       "id": "n8n_adapter",
       "role": "Workflow execution engine / connector nervous system",
-      "status": "CODED_NOT_CONNECTED",
+      "status": "SHADOW_PLAN_ONLY",
       "authority": "NONE",
       "may": [
         "receive approved workflow runs",
@@ -66,7 +66,7 @@
         "change production",
         "hold raw secrets"
       ],
-      "note": "Admin-only Supabase Edge Gateway and browser-safe client adapter are coded. No n8n URL/secret is configured and no workflow is connected."
+      "note": "Contract + plan-only adapter implemented. No network transport, credentials, DB writes or material execution."
     },
     {
       "id": "agent_builder_adapter",
