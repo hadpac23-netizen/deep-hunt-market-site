@@ -1,0 +1,151 @@
+{
+  "version": "HUNT-EPROLO-GLOBAL-COUNTRY-ENGINE-V1",
+  "date": "2026-09-23",
+  "mode": "GLOBAL_SHADOW",
+  "provider": "EPROLO",
+  "production_effect": false,
+  "country_key": "ISO_3166_1_ALPHA2",
+  "gates": [
+    "exact_variant_truth",
+    "fresh_stock",
+    "destination_shipping",
+    "visual_spec_compatibility",
+    "market_policy",
+    "final_profit",
+    "owner_gate"
+  ],
+  "summary": {
+    "markets_checked": 13,
+    "products_in_controlled_sample": 7,
+    "markets_with_at_least_one_shipping_pass": 12,
+    "mapped_policy_markets": 9,
+    "unmapped_policy_hold_markets": 4,
+    "live_eligible_products": 0
+  },
+  "markets": [
+    {
+      "country": "IL",
+      "shipping_pass_count": 0,
+      "sample_products": 7,
+      "market_policy_state": "REVIEW_REQUIRED",
+      "shipping_discovery": "NO_PASS_IN_SAMPLE",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "DE",
+      "shipping_pass_count": 4,
+      "sample_products": 7,
+      "market_policy_state": "REVIEW_REQUIRED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "FR",
+      "shipping_pass_count": 4,
+      "sample_products": 7,
+      "market_policy_state": "REVIEW_REQUIRED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "IT",
+      "shipping_pass_count": 3,
+      "sample_products": 7,
+      "market_policy_state": "REVIEW_REQUIRED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "ES",
+      "shipping_pass_count": 4,
+      "sample_products": 7,
+      "market_policy_state": "REVIEW_REQUIRED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "NL",
+      "shipping_pass_count": 3,
+      "sample_products": 7,
+      "market_policy_state": "REVIEW_REQUIRED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "GB",
+      "shipping_pass_count": 4,
+      "sample_products": 7,
+      "market_policy_state": "REVIEW_REQUIRED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "US",
+      "shipping_pass_count": 3,
+      "sample_products": 7,
+      "market_policy_state": "REVIEW_REQUIRED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "CA",
+      "shipping_pass_count": 4,
+      "sample_products": 7,
+      "market_policy_state": "HOLD_UNMAPPED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "AU",
+      "shipping_pass_count": 2,
+      "sample_products": 7,
+      "market_policy_state": "REVIEW_REQUIRED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "AE",
+      "shipping_pass_count": 2,
+      "sample_products": 7,
+      "market_policy_state": "HOLD_UNMAPPED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "JP",
+      "shipping_pass_count": 2,
+      "sample_products": 7,
+      "market_policy_state": "HOLD_UNMAPPED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    },
+    {
+      "country": "SG",
+      "shipping_pass_count": 5,
+      "sample_products": 7,
+      "market_policy_state": "HOLD_UNMAPPED",
+      "shipping_discovery": "PASS_SOME",
+      "shadow_research_allowed": true,
+      "real_money_live": false
+    }
+  ],
+  "rules": [
+    "A product may be eligible for Shadow in one country and blocked in another.",
+    "Shipping discovery never implies legal or real-money launch readiness.",
+    "Unmapped policy markets remain HOLD for real-money launch.",
+    "Final profit remains blocked until EPROLO order-cost API behavior is verified.",
+    "No Production exposure, checkout or fulfillment."
+  ]
+}

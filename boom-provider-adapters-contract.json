@@ -39,7 +39,7 @@
       "subcategory_count": 193,
       "staged_unique_candidates": 7252,
       "product_detail_gate": "RECHECK_REQUIRED",
-      "shipping_proof": "CONTROLLED_IL_BATCH_VERIFIED",
+      "shipping_proof": "CONTROLLED_MULTIMARKET_BATCH_VERIFIED",
       "profit_gate": "SHADOW_ONLY_ORDER_COST_RECHECK_REQUIRED",
       "fulfillment": "DISABLED",
       "shadow_shelf_products": 6,
@@ -89,7 +89,22 @@
         "SG"
       ],
       "global_live_eligible_products": 0,
-      "market_eligibility_policy": "DESTINATION_PRODUCT_TRUTH_X_SHIPPING_X_POLICY_X_PROFIT_X_OWNER_GATE"
+      "market_eligibility_policy": "DESTINATION_PRODUCT_TRUTH_X_SHIPPING_X_POLICY_X_PROFIT_X_OWNER_GATE",
+      "shipping_markets_verified": [
+        "IL",
+        "DE",
+        "FR",
+        "IT",
+        "ES",
+        "NL",
+        "GB",
+        "US",
+        "CA",
+        "AU",
+        "AE",
+        "JP",
+        "SG"
+      ]
     }
   },
   "price_gate_v2": {

@@ -1,0 +1,26 @@
+const fs=require("fs"),assert=require("assert");
+const e=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-GLOBAL-COUNTRY-ENGINE-2026-09-23.json","utf8"));
+const gate=JSON.parse(fs.readFileSync("boom-country-market-gate-contract.json","utf8"));
+
+assert.equal(e.version,"HUNT-EPROLO-GLOBAL-COUNTRY-ENGINE-V1");
+assert.equal(e.mode,"GLOBAL_SHADOW");
+assert.equal(e.provider,"EPROLO");
+assert.equal(e.production_effect,false);
+assert.equal(e.country_key,"ISO_3166_1_ALPHA2");
+assert.equal(e.summary.markets_checked,13);
+assert.equal(e.summary.products_in_controlled_sample,7);
+assert.equal(e.summary.markets_with_at_least_one_shipping_pass,12);
+assert.equal(e.summary.mapped_policy_markets,9);
+assert.equal(e.summary.unmapped_policy_hold_markets,4);
+assert.equal(e.summary.live_eligible_products,0);
+const by=Object.fromEntries(e.markets.map(x=>[x.country,x]));
+assert.equal(by.IL.shipping_pass_count,0);
+assert.equal(by.SG.shipping_pass_count,5);
+assert.equal(by.DE.shipping_pass_count,4);
+assert.equal(by.CA.market_policy_state,"HOLD_UNMAPPED");
+assert.equal(by.DE.market_policy_state,"REVIEW_REQUIRED");
+assert(e.markets.every(x=>x.real_money_live===false));
+assert.equal(gate.version,"HUNT-COUNTRY-MARKET-GATE-V3");
+assert.equal(gate.eprolo_state.global_live_eligible_products,0);
+assert.equal(gate.eprolo_state.persisted_catalog_discovery_enabled,false);
+console.log("PASS boom-eprolo-global-country-engine");

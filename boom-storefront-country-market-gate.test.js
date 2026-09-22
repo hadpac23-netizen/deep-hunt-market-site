@@ -22,17 +22,26 @@ function allows(value,countryCode){
   return false;
 }
 
-assert.equal(contract.version,"HUNT-COUNTRY-MARKET-GATE-V2");
+assert.equal(contract.version,"HUNT-COUNTRY-MARKET-GATE-V3");
 assert.equal(contract.production_effect,false);
-assert.equal(contract.scope,"persisted_catalog_discovery");
+assert.equal(contract.scope,"global_market_specific_shadow_eligibility");
 assert.equal(contract.eprolo_state.il_shadow_shelf_products,13);
 assert.equal(contract.eprolo_state.market_specific_shadow_products,2);
 assert.equal(contract.eprolo_state.global_unique_shadow_candidates,15);
-assert.deepEqual(contract.eprolo_state.shipping_discovery_markets,["DE","FR","IT","ES","NL","GB","US","CA","AU","AE","JP","SG"]);
-assert.deepEqual(contract.eprolo_state.mapped_policy_shadow_markets,["DE","FR","IT","ES","NL","GB","US","AU"]);
+assert.deepEqual(contract.eprolo_state.shipping_discovery_markets,["IL","DE","FR","IT","ES","NL","GB","US","CA","AU","AE","JP","SG"]);
+assert.deepEqual(contract.eprolo_state.mapped_policy_shadow_markets,["IL","DE","FR","IT","ES","NL","GB","US","AU"]);
 assert.deepEqual(contract.eprolo_state.unmapped_policy_hold_markets,["CA","AE","JP","SG"]);
 assert.equal(contract.eprolo_state.global_live_eligible_products,0);
 assert.equal(contract.eprolo_state.persisted_catalog_discovery_enabled,false);
+assert.equal(contract.eprolo_state.global_wave2_checked_products,7);
+assert.deepEqual(contract.eprolo_state.shipping_discovery_markets,["IL","DE","FR","IT","ES","NL","GB","US","CA","AU","AE","JP","SG"]);
+assert.equal(contract.eprolo_state.shipping_pass_counts.SG,5);
+assert.equal(contract.eprolo_state.shipping_pass_counts.DE,4);
+assert.equal(contract.eprolo_state.shipping_pass_counts.US,3);
+assert.equal(contract.eprolo_state.market_policy_states.CA,"HOLD_UNMAPPED");
+assert.equal(contract.eprolo_state.market_policy_states.DE,"REVIEW_REQUIRED");
+assert.equal(contract.global_operating_model.country_unit,"ISO_3166_1_ALPHA2");
+assert.equal(contract.global_operating_model.live_rule.includes("every independent gate"),true);
 
 assert.equal(normalizeCountryCode("de"),"DE");
 assert.equal(normalizeCountryCode(" us "),"US");

@@ -42,7 +42,23 @@
         "productid",
         "variantId"
       ],
-      "country_parameter": "countrycode"
+      "country_parameter": "countrycode",
+      "multimarket_shadow_status": "PASS_13_MARKET_CONTROLLED_SAMPLE",
+      "controlled_markets": [
+        "IL",
+        "DE",
+        "FR",
+        "IT",
+        "ES",
+        "NL",
+        "GB",
+        "US",
+        "CA",
+        "AU",
+        "AE",
+        "JP",
+        "SG"
+      ]
     },
     "inventory": {
       "endpoint": "product_inventory.html",
@@ -65,7 +81,7 @@
     "source": "official_readonly_api",
     "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
     "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
-    "shipping_status": "LIVE_IL_VERIFIED_ON_CONTROLLED_BATCH",
+    "shipping_status": "LIVE_MULTIMARKET_VERIFIED_ON_CONTROLLED_SAMPLES",
     "profit_gate_status": "SHADOW_ONLY_ORDER_COST_RECHECK_REQUIRED",
     "women_il_shadow_lane": {
       "scan_checked": 12,
@@ -102,7 +118,7 @@
     "no fake stock, shipping, margin or retail price"
   ],
   "storefront_role": "SUPPLIER_MESH_CONNECTED_NOT_LIVE_SHELF",
-  "next": "EXPAND_MARKET_SPECIFIC_SHIPPING_MATRIX_BY_REGION_AND_COMPLETE_MARKET_POLICY_PLUS_EPROLO_ORDER_COST_GATES",
+  "next": "EXPAND_GLOBAL_COUNTRY_DISCOVERY_AND_CLARIFY_EPROLO_ORDER_COST_API",
   "variant_truth_policy": {
     "component_split_detection": "If component variants such as Top/Skirt coexist with Set/2pcs variants, a full-set listing must use Set/2pcs variant truth.",
     "exact_variant_image_required": true,

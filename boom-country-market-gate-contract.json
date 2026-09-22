@@ -1,9 +1,9 @@
 {
-  "version": "HUNT-COUNTRY-MARKET-GATE-V2",
+  "version": "HUNT-COUNTRY-MARKET-GATE-V3",
   "date": "2026-09-23",
   "mode": "BRANCH_ONLY",
   "production_effect": false,
-  "scope": "persisted_catalog_discovery",
+  "scope": "global_market_specific_shadow_eligibility",
   "request_parameters": [
     "country_code",
     "country"
@@ -18,17 +18,20 @@
     "explicit_block": "blocked:IL"
   },
   "fail_closed_rules": [
-    "Market-specific eligibility requires a destination country.",
+    "Market-specific eligibility requires an exact destination country.",
     "Unknown market eligibility statuses are hidden.",
     "Blocked/ineligible statuses are hidden.",
+    "A shipping pass never overrides product truth, market policy, final-profit, payment, tax/import or Owner Gate.",
+    "Unmapped policy markets may be researched in Shadow but remain HOLD for real-money launch.",
     "No provider becomes launch-eligible merely because the country gate passes.",
-    "Checkout, shipping, profit and Owner Gate remain separate."
+    "Checkout, fulfillment and supplier order submission remain separate material gates."
   ],
   "eprolo_state": {
     "il_shadow_shelf_products": 13,
     "market_specific_shadow_products": 2,
     "global_unique_shadow_candidates": 15,
     "shipping_discovery_markets": [
+      "IL",
       "DE",
       "FR",
       "IT",
@@ -43,6 +46,7 @@
       "SG"
     ],
     "mapped_policy_shadow_markets": [
+      "IL",
       "DE",
       "FR",
       "IT",
@@ -61,8 +65,84 @@
     "global_live_eligible_products": 0,
     "persisted_catalog_discovery_enabled": false,
     "blocker": "FINAL_PROFIT_AND_MARKET_LAUNCH_GATES_NOT_VERIFIED",
-    "production_exposure": false
+    "production_exposure": false,
+    "global_wave2_checked_products": 7,
+    "shipping_pass_counts": {
+      "IL": 0,
+      "DE": 4,
+      "FR": 4,
+      "IT": 3,
+      "ES": 4,
+      "NL": 3,
+      "GB": 4,
+      "US": 3,
+      "CA": 4,
+      "AU": 2,
+      "AE": 2,
+      "JP": 2,
+      "SG": 5
+    },
+    "market_policy_states": {
+      "IL": "REVIEW_REQUIRED",
+      "DE": "REVIEW_REQUIRED",
+      "FR": "REVIEW_REQUIRED",
+      "IT": "REVIEW_REQUIRED",
+      "ES": "REVIEW_REQUIRED",
+      "NL": "REVIEW_REQUIRED",
+      "GB": "REVIEW_REQUIRED",
+      "US": "REVIEW_REQUIRED",
+      "CA": "HOLD_UNMAPPED",
+      "AU": "REVIEW_REQUIRED",
+      "AE": "HOLD_UNMAPPED",
+      "JP": "HOLD_UNMAPPED",
+      "SG": "HOLD_UNMAPPED"
+    },
+    "shipping_discovery_summary": {
+      "strongest_current_sample_markets": [
+        {
+          "country": "SG",
+          "pass_count": 5
+        },
+        {
+          "country": "DE",
+          "pass_count": 4
+        },
+        {
+          "country": "FR",
+          "pass_count": 4
+        },
+        {
+          "country": "ES",
+          "pass_count": 4
+        },
+        {
+          "country": "GB",
+          "pass_count": 4
+        },
+        {
+          "country": "CA",
+          "pass_count": 4
+        }
+      ],
+      "note": "Counts are from the controlled seven-product EPROLO sample only; they are not global market rankings or launch claims."
+    }
   },
-  "runtime_rule": "When a country is selected, evaluate exact destination eligibility; do not infer availability from region or another country.",
-  "provider_activation_rule": "A provider may be understood by the country engine before it is allowed into persisted storefront discovery. EPROLO remains excluded until its provider-level gates pass."
+  "runtime_rule": "For every exact destination, evaluate exact variant + fresh stock + current shipping quote + visual/spec truth + market policy + final profit. Never infer one country from a region or another country.",
+  "provider_activation_rule": "EPROLO may be evaluated globally in SHADOW before persisted storefront discovery is enabled. Production discovery remains disabled until provider-level final-profit and launch gates pass.",
+  "global_operating_model": {
+    "country_unit": "ISO_3166_1_ALPHA2",
+    "product_market_key": "provider + product_id + variant_id + destination_country",
+    "independent_gates": [
+      "EXACT_VARIANT_TRUTH",
+      "FRESH_STOCK",
+      "DESTINATION_SHIPPING",
+      "VISUAL_SPEC_COMPATIBILITY",
+      "MARKET_POLICY",
+      "FINAL_PROFIT",
+      "OWNER_GATE"
+    ],
+    "shadow_rule": "A product may be SHADOW_ELIGIBLE in one destination and BLOCKED/HOLD in another.",
+    "live_rule": "LIVE requires every independent gate to PASS for the exact destination; a shipping pass alone never implies launch eligibility.",
+    "unknown_country_rule": "HOLD until shipping + market policy are mapped and reviewed."
+  }
 }
