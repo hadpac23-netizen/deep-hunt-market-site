@@ -1,0 +1,149 @@
+{
+  "version": "HUNT-GA4-TRAFFIC-COST-AUDIT-2026-09-22-V1",
+  "observed_at": "2026-09-22T10:34:00Z",
+  "source": "Windsor.ai read-only Google Analytics 4 connector",
+  "account": {
+    "id": "553246710",
+    "name": "HUNT DEAL"
+  },
+  "period": "last_30d_including_today",
+  "production_mutation": false,
+  "rows": [
+    {
+      "date": "2026-09-08",
+      "channel": "Direct",
+      "sessions": 1,
+      "active_users": 1,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-08",
+      "channel": "Referral",
+      "sessions": 1,
+      "active_users": 1,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-09",
+      "channel": "Referral",
+      "sessions": 1,
+      "active_users": 1,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-11",
+      "channel": "Direct",
+      "sessions": 5,
+      "active_users": 3,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-13",
+      "channel": "Direct",
+      "sessions": 2,
+      "active_users": 2,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-15",
+      "channel": "Direct",
+      "sessions": 1,
+      "active_users": 1,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-15",
+      "channel": "Referral",
+      "sessions": 3,
+      "active_users": 1,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-16",
+      "channel": "Direct",
+      "sessions": 2,
+      "active_users": 1,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-17",
+      "channel": "Direct",
+      "sessions": 2,
+      "active_users": 2,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-18",
+      "channel": "Direct",
+      "sessions": 1,
+      "active_users": 1,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-20",
+      "channel": "Direct",
+      "sessions": 1,
+      "active_users": 1,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-21",
+      "channel": "Direct",
+      "sessions": 4,
+      "active_users": 1,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    },
+    {
+      "date": "2026-09-21",
+      "channel": "Unassigned",
+      "sessions": 1,
+      "active_users": 1,
+      "purchases": 0,
+      "purchase_revenue": 0,
+      "advertiser_ad_cost": 0
+    }
+  ],
+  "totals": {
+    "sessions": 25,
+    "purchases": 0,
+    "purchase_revenue": 0,
+    "advertiser_ad_cost_reported": 0
+  },
+  "connector_truth": {
+    "windsor_connected_connectors": [
+      "googleanalytics4"
+    ],
+    "direct_ad_platform_connectors_connected": [],
+    "insightfulpipe_status": "SUBSCRIPTION_REQUIRED_NO_ACTIVE_PLAN"
+  },
+  "conclusion": {
+    "traffic_truth": "AVAILABLE",
+    "ecommerce_purchase_truth": "NO_PURCHASES_REPORTED",
+    "marketing_spend_truth": "NOT_VERIFIED",
+    "rule": "GA4 advertiser_ad_cost=0 is not accepted as verified zero spend unless ad-cost coverage/linkage evidence proves the relevant paid channels are connected/imported."
+  }
+}
