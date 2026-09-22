@@ -137,6 +137,18 @@
         "Requires exact VERIFIED hourly status and finance-ledger evidence linkage",
         "Cannot enable payment acceptance or supplier fulfillment"
       ]
+    },
+    {
+      "id": "payplus_sandbox_proof",
+      "type": "PAYMENT_STATUS_PROOF_EVALUATOR",
+      "status": "CODED_SHADOW_NO_SANDBOX_OBSERVATIONS",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Requires real PayPlus staging callback observations",
+        "J4 charge_method alone never proves paid",
+        "Requires success + failure + idempotency + reference-integrity proof before paid acceptance"
+      ]
     }
   ],
   "security_truth_rule": "verify_jwt=false in platform metadata is not by itself proof of exposure; webhook/custom-auth functions must be reviewed by their actual code/auth contract before classification.",
