@@ -1,0 +1,27 @@
+{
+  "version": "BOOM-WORKFLOW-BUILDER-V1",
+  "mode": "PLAN_ONLY",
+  "authority": "NONE",
+  "inputs": [
+    "template_id",
+    "mission_context",
+    "approved_overrides"
+  ],
+  "compile_rules": [
+    "all skill IDs must exist in operational skill library",
+    "owner must resolve to an existing Primary Brain",
+    "tools are execution dependencies, never decision owners",
+    "material templates require Owner Gate",
+    "compiled plan inherits SHADOW until Owner activation decision",
+    "secrets/PII are forbidden from compiled plan"
+  ],
+  "output": [
+    "workflow_plan_id",
+    "template_id",
+    "ordered_skills",
+    "owners",
+    "tool_dependencies",
+    "gates",
+    "execution_mode"
+  ]
+}
