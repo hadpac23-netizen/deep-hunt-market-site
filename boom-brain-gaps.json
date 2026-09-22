@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V1.4-PROFIT-DATA",
+  "version": "BOOM-BRAIN-GAPS-V1.5-HOURLY-PROFIT",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -433,6 +433,30 @@
       "status": "NEXT",
       "source": "SECURITY",
       "next": "Preview-only review/hardening for hunt_purchase_attribution_bridge and hunt_daily_owner_metrics before direct Studio use."
+    },
+    {
+      "id": "hourly_profit_loop",
+      "title": "Hourly Profit Mission Loop",
+      "owner": "boom_orchestrator",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Runtime/UI/skills/templates are coded. Current canonical ledger has 66 UNVERIFIED rows and 0 exact VERIFIED; wait for real order finance evidence before mission attainment."
+    },
+    {
+      "id": "marketing_profit_attribution",
+      "title": "Marketing Net-Profit Attribution",
+      "owner": "growth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Contract is coded. Connect actual channel/campaign cost evidence and real-order profit linkage; CAC/Marketing Net Profit remain UNKNOWN until both exist."
+    },
+    {
+      "id": "hourly_profit_verification_status",
+      "title": "Exact Hourly Verification Status Rule",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "PROFIT_MISSION_QA",
+      "next": "Keep exact equality check verification_status='VERIFIED'; never use substring matching that could treat UNVERIFIED as VERIFIED."
     }
   ]
 }
