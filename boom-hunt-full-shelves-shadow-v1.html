@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" data-hunt-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HUNT Full Shelves · BOOM Stylist Shadow</title>
+<style>
+:root{
+  --bg:#050914;--ink:#f7f8fb;--muted:#a9b2c6;--panel:rgba(11,18,38,.82);--panel2:rgba(13,22,49,.94);
+  --edge:rgba(255,255,255,.11);--spark:#f2d36b;--media:#f4f1eb;--media2:#fffdf8;--glow:rgba(77,112,255,.28);
+  --shadow:0 30px 80px rgba(0,0,0,.42);--accent:#6d8cff;--accent2:#c98fb9
+}
+html[data-hunt-theme="light"]{
+  --bg:#f3f0e8;--ink:#182035;--muted:#6f7684;--panel:rgba(252,249,242,.88);--panel2:rgba(245,241,232,.97);
+  --edge:rgba(24,32,53,.11);--spark:#96691b;--media:#fbfaf6;--media2:#f3efe7;--glow:rgba(70,102,190,.13);
+  --shadow:0 26px 66px rgba(38,44,61,.12)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:
+radial-gradient(62% 48% at 12% 3%,var(--glow),transparent 70%),
+radial-gradient(55% 40% at 91% 11%,color-mix(in srgb,var(--accent2) 18%,transparent),transparent 72%)}
+button{font:inherit}
+.topbar{position:sticky;top:0;z-index:50;padding:12px clamp(16px,3vw,42px);backdrop-filter:blur(20px);background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--edge)}
+.topline{display:flex;align-items:center;gap:16px}
+.brand{font:800 24px/1 Georgia,serif;letter-spacing:.04em;white-space:nowrap}.brand span{color:var(--spark)}
+.shadow-note{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:850;white-space:nowrap}
+.theme{margin-left:auto;border:1px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 12px;cursor:pointer}
+.dept-nav{display:flex;gap:7px;overflow:auto;scrollbar-width:none;margin-top:10px;padding-bottom:1px}.dept-nav::-webkit-scrollbar{display:none}
+.dept-nav button,.cat-chip{border:1px solid var(--edge);background:var(--panel);color:var(--muted);border-radius:999px;padding:8px 11px;font-weight:780;font-size:11px;cursor:pointer;white-space:nowrap}
+.dept-nav button.active{color:var(--ink);border-color:color-mix(in srgb,var(--accent) 60%,var(--edge));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 18%,transparent)}
+.stage{min-height:72vh;padding:86px clamp(20px,5vw,74px) 64px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(330px,.66fr);gap:6vw;align-items:center;border-bottom:1px solid var(--edge)}
+.eyebrow{font-size:11px;letter-spacing:.22em;color:var(--spark);font-weight:900;margin-bottom:16px}
+h1{font:700 clamp(58px,8vw,126px)/.84 Georgia,"Times New Roman",serif;letter-spacing:-.055em;margin:0}
+.lede{max-width:680px;font-size:clamp(16px,1.4vw,21px);line-height:1.55;color:var(--muted);margin:26px 0}
+.stats{display:flex;gap:9px;flex-wrap:wrap}.stat{border:1px solid var(--edge);background:var(--panel);border-radius:999px;padding:8px 11px;color:var(--muted);font-size:10px;font-weight:800}
+.hero{position:relative;aspect-ratio:.78;border-radius:34px;overflow:hidden;border:1px solid var(--edge);background:linear-gradient(155deg,var(--panel2),var(--panel));box-shadow:var(--shadow)}
+.hero-media{position:absolute;inset:0 0 27%;display:grid;place-items:center;background:radial-gradient(circle at 50% 43%,rgba(255,255,255,.98),rgba(255,255,255,.74) 34%,transparent 67%),linear-gradient(160deg,var(--media2),var(--media))}
+.hero-media img{width:100%;height:100%;object-fit:contain;padding:24px;filter:drop-shadow(0 25px 34px rgba(16,25,43,.22))}
+.hero-meta{position:absolute;left:18px;right:18px;bottom:16px;padding:16px;border:1px solid var(--edge);border-radius:20px;background:color-mix(in srgb,var(--panel2) 88%,transparent);backdrop-filter:blur(18px)}
+.hero-meta small{display:block;color:var(--spark);font-size:9px;letter-spacing:.14em;font-weight:900;margin-bottom:6px}.hero-meta strong{display:block;font:700 21px/1.16 Georgia,serif}.hero-meta span{display:block;color:var(--muted);font-size:10px;margin-top:7px}
+.category-index{padding:26px clamp(20px,5vw,74px);border-bottom:1px solid var(--edge);display:flex;gap:8px;overflow:auto;scrollbar-width:none}.category-index::-webkit-scrollbar{display:none}
+.shelves{padding:10px 0 110px}
+.shelf{padding:66px clamp(20px,5vw,74px) 44px;border-bottom:1px solid var(--edge)}
+.shelf-head{display:flex;gap:18px;align-items:flex-end;justify-content:space-between;margin-bottom:24px}
+.shelf-head .copy p{margin:0 0 8px;color:var(--spark);font-size:10px;font-weight:900;letter-spacing:.17em}.shelf-head h2{font:700 clamp(34px,4vw,62px)/.92 Georgia,serif;margin:0;letter-spacing:-.04em}.shelf-head .meta{color:var(--muted);font-size:11px;margin-top:8px}
+.density{border:1px solid var(--edge);border-radius:999px;padding:8px 11px;color:var(--muted);font-size:9px;font-weight:900;letter-spacing:.10em}
+.density.thin{color:#d6a24d}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(245px,22vw);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:16px 3vw 28px 1px;scrollbar-width:none}.rail::-webkit-scrollbar{display:none}
+.card{height:420px;position:relative;border:1px solid var(--edge);border-radius:26px;overflow:hidden;background:linear-gradient(155deg,var(--panel2),var(--panel));scroll-snap-align:center;box-shadow:0 20px 54px rgba(0,0,0,.18)}
+.media{position:absolute;inset:0 0 38%;background:linear-gradient(160deg,var(--media2),var(--media));display:grid;place-items:center;overflow:hidden}
+.media img{width:100%;height:100%;object-fit:contain;padding:18px;filter:drop-shadow(0 20px 26px rgba(15,23,42,.18));transition:transform .5s cubic-bezier(.16,.8,.2,1)}.card:hover img{transform:scale(1.035)}
+.card-body{position:absolute;left:0;right:0;bottom:0;min-height:39%;padding:18px;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--panel2) 97%,transparent) 20%)}
+.badges{display:flex;gap:6px;flex-wrap:wrap}.badge{font-size:8px;letter-spacing:.09em;font-weight:900;border:1px solid var(--edge);border-radius:999px;padding:5px 7px;color:var(--muted)}.badge.truth{color:var(--spark)}
+.card h3{font:700 18px/1.16 Georgia,serif;margin:10px 0 7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.card p{font-size:10px;color:var(--muted);margin:0}
+.more{display:block;margin:12px auto 0;border:1px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:999px;padding:10px 16px;font-size:11px;font-weight:850;cursor:pointer}
+.more[hidden]{display:none}
+.qa{position:fixed;right:16px;bottom:16px;z-index:60;border:1px solid var(--edge);border-radius:999px;padding:8px 10px;background:var(--panel);color:var(--muted);font-size:9px;letter-spacing:.09em;font-weight:850;backdrop-filter:blur(14px)}
+.empty{padding:60px;color:var(--muted)}
+@media(max-width:980px){.stage{grid-template-columns:1fr;min-height:auto;padding-top:62px}.hero{width:min(500px,82vw);justify-self:center}.rail{grid-auto-columns:minmax(240px,55vw)}}
+@media(max-width:620px){.shadow-note{display:none}.stage{padding:45px 17px 42px}h1{font-size:58px}.hero{width:92vw}.category-index,.shelf{padding-left:17px;padding-right:17px}.rail{grid-auto-columns:82vw;padding-right:10vw}.card{height:400px}.qa{display:none}.shelf-head{align-items:flex-start;flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topline"><div class="brand">HUNT<span>✦</span></div><div class="shadow-note">FULL SHELVES · BOOM STYLIST · SHADOW ONLY</div><button class="theme" id="theme">Light</button></div>
+  <nav class="dept-nav" id="dept-nav" aria-label="Departments"></nav>
+</header>
+<main>
+  <section class="stage" id="stage">
+    <div>
+      <div class="eyebrow" id="eyebrow"></div>
+      <h1 id="title"></h1>
+      <p class="lede">Cinematic first. Every shelf is isolated by canonical department and category. BOOM Stylist arranges the scene, but Product Truth and taxonomy decide what is allowed inside it.</p>
+      <div class="stats" id="stats"></div>
+    </div>
+    <article class="hero" id="hero">
+      <div class="hero-media"><img id="hero-image" alt=""></div>
+      <div class="hero-meta"><small id="hero-kicker"></small><strong id="hero-title"></strong><span id="hero-status"></span></div>
+    </article>
+  </section>
+  <nav class="category-index" id="category-index" aria-label="Categories"></nav>
+  <section class="shelves" id="shelves"></section>
+</main>
+<div class="qa">CATALOG SHADOW · PRODUCTION OFF</div>
+<script>
+let data=null,active=0,visible={};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const qp=new URLSearchParams(location.search);
+function setTheme(t){document.documentElement.dataset.huntTheme=t;$("#theme").textContent=t==="dark"?"Light":"Dark";history.replaceState(null,"",withParam("theme",t))}
+function withParam(k,v){const q=new URLSearchParams(location.search);q.set(k,v);return location.pathname+"?"+q.toString()}
+$("#theme").addEventListener("click",()=>setTheme(document.documentElement.dataset.huntTheme==="dark"?"light":"dark"));
+function card(p){
+  const truth=p.truth_state==="GLOBAL_PRODUCT_TRUTH";
+  return '<article class="card"><div class="media"><img loading="lazy" src="'+esc(p.image_url)+'" alt=""></div><div class="card-body"><div class="badges"><span class="badge '+(truth?'truth':'')+'">'+(truth?'GLOBAL TRUTH':'CATALOG SHADOW')+'</span><span class="badge">'+esc(p.provider)+'</span></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.category_title)+' · destination recheck before commercial use</p></div></article>';
+}
+function renderCategory(cat){
+  const n=visible[cat.slug]||Math.min(24,cat.products.length);
+  const products=cat.products.slice(0,n).map(card).join("");
+  return '<section class="shelf" id="cat-'+esc(cat.slug)+'"><div class="shelf-head"><div class="copy"><p>CANONICAL CATEGORY</p><h2>'+esc(cat.title)+'</h2><div class="meta">'+cat.clean_candidate_count+' clean candidates · '+Math.min(n,cat.products.length)+' shown</div></div><span class="density '+(cat.density_state==="THIN"?'thin':'')+'">'+esc(cat.density_state)+'</span></div><div class="rail">'+products+'</div><button class="more" data-more="'+esc(cat.slug)+'" '+(n>=cat.products.length?'hidden':'')+'>Load 24 more</button></section>';
+}
+function render(){
+  const d=data.departments[active];
+  visible={};
+  document.title="HUNT · "+d.title+" · Full Shelves Shadow";
+  [...$("#dept-nav").children].forEach((b,i)=>b.classList.toggle("active",i===active));
+  $("#eyebrow").textContent="BOOM STYLIST · "+d.category_rails+" CATEGORY SHELVES";
+  $("#title").textContent=d.title;
+  $("#stats").innerHTML=[
+    d.clean_candidate_count+" clean candidates",
+    d.category_rails+" category rails",
+    d.initial_shown_products+" visible on first pass",
+    "no cross-department filler"
+  ].map(x=>'<span class="stat">'+esc(x)+'</span>').join("");
+  if(d.hero){
+    $("#hero").hidden=false;$("#hero-image").src=d.hero.image_url;$("#hero-title").textContent=d.hero.title;
+    $("#hero-kicker").textContent=(d.hero.truth_state==="GLOBAL_PRODUCT_TRUTH"?"GLOBAL TRUTH":"CATALOG SHADOW")+" · "+d.hero.category_title.toUpperCase();
+    $("#hero-status").textContent="Canonical "+d.slug+" / "+d.hero.category+" · Production off";
+  }else $("#hero").hidden=true;
+  $("#category-index").innerHTML=d.categories.map(c=>'<button class="cat-chip" data-cat="'+esc(c.slug)+'">'+esc(c.title)+' · '+c.clean_candidate_count+'</button>').join("");
+  $("#shelves").innerHTML=d.categories.length?d.categories.map(renderCategory).join(""):'<div class="empty">No clean canonical candidates yet.</div>';
+  const q=new URLSearchParams(location.search);q.set("dept",d.slug);history.replaceState(null,"",location.pathname+"?"+q.toString());
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+$("#dept-nav").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b)return;active=Number(b.dataset.i)||0;render()});
+$("#category-index").addEventListener("click",e=>{const b=e.target.closest("button[data-cat]");if(!b)return;document.getElementById("cat-"+b.dataset.cat)?.scrollIntoView({behavior:"smooth",block:"start"})});
+$("#shelves").addEventListener("click",e=>{const b=e.target.closest("button[data-more]");if(!b)return;const slug=b.dataset.more;const d=data.departments[active];const cat=d.categories.find(x=>x.slug===slug);visible[slug]=Math.min((visible[slug]||24)+24,cat.products.length);const node=document.getElementById("cat-"+slug);node.outerHTML=renderCategory(cat)});
+fetch("./evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json").then(r=>r.json()).then(j=>{
+ data=j;$("#dept-nav").innerHTML=j.departments.map((d,i)=>'<button type="button" data-i="'+i+'">'+esc(d.title)+'</button>').join("");
+ const requested=qp.get("dept");const idx=j.departments.findIndex(x=>x.slug===requested);active=idx>=0?idx:0;
+ setTheme(qp.get("theme")==="light"?"light":"dark");render();
+}).catch(err=>{$("#shelves").innerHTML='<div class="empty">Preview failed: '+esc(err.message)+'</div>'});
+</script>
+</body>
+</html>

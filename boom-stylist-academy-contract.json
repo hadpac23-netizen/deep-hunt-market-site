@@ -142,7 +142,7 @@
   "exams": [
     {
       "id": "STYLE-20-5",
-      "name": "20 Products → 5 Looks",
+      "name": "20 Products \u2192 5 Looks",
       "input_rule": "20 Product Truth verified products",
       "output_rule": "5 coherent looks with product IDs, rationale and confidence",
       "scoring": {
@@ -157,7 +157,7 @@
     },
     {
       "id": "SHELF-24",
-      "name": "24 Products → Shelf Composition",
+      "name": "24 Products \u2192 Shelf Composition",
       "input_rule": "24 Product Truth verified products",
       "output_rule": "ordered shelf with hero/anchor/support roles and mobile/desktop variants",
       "scoring": {
@@ -173,7 +173,7 @@
     },
     {
       "id": "COMBINED-LOOK-SHELF",
-      "name": "Look → Shelf → Commercial Truth",
+      "name": "Look \u2192 Shelf \u2192 Commercial Truth",
       "input_rule": "one selected look plus complementary verified catalog",
       "output_rule": "hero shelf, complete-the-look rail and reasoning without changing Production",
       "scoring": {
@@ -188,7 +188,7 @@
     },
     {
       "id": "DEPARTMENT-6-LAYER-SURVEY",
-      "name": "17 Departments × 6 Preference Layers",
+      "name": "17 Departments \u00d7 6 Preference Layers",
       "input_rule": "All 17 canonical HUNT departments plus current external demand evidence",
       "output_rule": "Per-department six-layer preference map with evidence freshness, confidence and shelf implications",
       "scoring": {
@@ -203,7 +203,7 @@
     },
     {
       "id": "CINEMATIC-LIGHTING-2THEME",
-      "name": "HUNT Cinematic Lighting · Light + Dark",
+      "name": "HUNT Cinematic Lighting \u00b7 Light + Dark",
       "input_rule": "Same verified shelf/product composition rendered in off-white Light Mode and cinematic Dark Mode",
       "output_rule": "Both themes preserve product-image fidelity, readable hierarchy, shelf depth and commerce clarity",
       "scoring": {
@@ -303,7 +303,11 @@
     "global_taxonomy_routing": "PASS_15_PRODUCTS_33_MARKETS_SHADOW",
     "canonical_department_count": 17,
     "stylist_taxonomy_authority": "ARRANGE_ONLY_NO_RECLASSIFY",
-    "global_market_arrangement": "COUNTRY_SPECIFIC_SHADOW_ONLY"
+    "global_market_arrangement": "COUNTRY_SPECIFIC_SHADOW_ONLY",
+    "full_shelves_shadow_preview": "PASS_17_DEPARTMENTS_95_CATEGORY_RAILS",
+    "full_shelves_unique_products": 5143,
+    "full_shelves_taxonomy_discipline": "PASS_NO_CROSS_DEPARTMENT_DUPLICATION",
+    "full_shelves_production_authority": false
   },
   "next": "EXACT_PRINTFUL_ARTWORK_THEN_FINAL_CINEMATIC_VISUAL_EXAM_AND_OWNER_GATE",
   "f35_research_ref": "boom-f35-style-commerce-research-2026-09-22.json",
@@ -456,7 +460,7 @@
         "giftability"
       ],
       "learn_from": [
-        "CHANEL Métiers d’art",
+        "CHANEL M\u00e9tiers d\u2019art",
         "LCF styling",
         "FIT visual presentation",
         "Etsy trend data"
@@ -680,7 +684,7 @@
       "id": "C3",
       "name": "Luxury Codes & Craft",
       "sources": [
-        "CHANEL Métiers d’art / Haute Couture public materials",
+        "CHANEL M\u00e9tiers d\u2019art / Haute Couture public materials",
         "INSIDE LVMH public learning path"
       ],
       "skills": [
