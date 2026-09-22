@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V2.1-MARKET-POLICY",
+  "version": "BOOM-BRAIN-GAPS-V2.2-LAUNCH-COMMAND",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -601,6 +601,30 @@
       "status": "DONE",
       "source": "LEGAL_MARKET_TRUTH",
       "next": "Keep every unmapped country blocked from real-money launch until reviewed."
+    },
+    {
+      "id": "performance_mobile_qa",
+      "title": "Performance / Mobile QA",
+      "owner": "experience_brain",
+      "status": "IN_PROGRESS",
+      "source": "LAUNCH_QUALITY",
+      "next": "Local 390px budgets pass after progressive shelf mount and touch-target hardening. Prove PWA cache update/installability/offline shell on Preview before launch PASS."
+    },
+    {
+      "id": "pwa_preview_proof",
+      "title": "PWA Preview Update / Installability Proof",
+      "owner": "experience_brain",
+      "status": "NEXT",
+      "source": "LAUNCH_QUALITY",
+      "next": "On Preview: install PWA, verify pwa2 worker activates, old cache is deleted, updated JS/CSS are served on first navigation, and offline shell loads."
+    },
+    {
+      "id": "launch_command_center",
+      "title": "Launch Command Center",
+      "owner": "boom_orchestrator",
+      "status": "IN_PROGRESS",
+      "source": "LAUNCH_CONTROL",
+      "next": "Upgrade existing command center to aggregate canonical readiness + live non-sensitive metrics; validate admin-RLS reads on Preview."
     }
   ]
 }
