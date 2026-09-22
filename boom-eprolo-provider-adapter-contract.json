@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V5",
+  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V6",
   "date": "2026-09-22",
   "provider": "EPROLO",
   "owner": "commerce_truth_brain",
@@ -102,7 +102,7 @@
     "no fake stock, shipping, margin or retail price"
   ],
   "storefront_role": "SUPPLIER_MESH_CONNECTED_NOT_LIVE_SHELF",
-  "next": "EPROLO_SUPPORT_CLARIFY_ORDER_COST_API_AND_EXPAND_GENERIC_LOW_SHIPPING_TECH_CANDIDATES",
+  "next": "EPROLO_SUPPORT_CLARIFY_ORDER_COST_API_AND_EXPAND_GENERIC_TECH_WITH_COMPLIANCE_GATES",
   "variant_truth_policy": {
     "component_split_detection": "If component variants such as Top/Skirt coexist with Set/2pcs variants, a full-set listing must use Set/2pcs variant truth.",
     "exact_variant_image_required": true,
@@ -144,7 +144,7 @@
       "visual_qa_pass": 2,
       "claim_image_blocked": 1
     },
-    "total_shadow_shelf_products": 9,
+    "total_shadow_shelf_products": 10,
     "departments_with_shadow_candidates": [
       "women",
       "pets",
@@ -168,6 +168,27 @@
       "tech_shadow_shelf_products": 1,
       "final_profit_verified": 0,
       "checkout_live": 0
-    }
+    },
+    "tech_wave5": {
+      "checked": 6,
+      "shipping_verified": 6,
+      "normal_shipping": 6,
+      "visual_spec_pass": 1,
+      "powered_electronics_review": 2,
+      "blocked_brand_health_claims": 1,
+      "battery_capacity_review": 1,
+      "variant_function_mismatch": 1,
+      "tech_shadow_shelf_added": 1,
+      "final_profit_verified": 0,
+      "checkout_live": 0
+    },
+    "tech_shadow_shelf_products": 2
+  },
+  "truth_policies": {
+    "capacity_claim_gate": "IMPLAUSIBLE_STORAGE_CAPACITY_REQUIRES_PROOF",
+    "powered_electronics_gate": "COMPLIANCE_AND_PERFORMANCE_REVIEW_BEFORE_PRODUCTION",
+    "battery_capacity_gate": "BATTERY_CAPACITY_AND_COMPLIANCE_PROOF_REQUIRED",
+    "variant_function_gate": "VARIANT_FUNCTION_MUST_MATCH_LISTING_PROMISES",
+    "health_claim_gate": "HEALTH_GPS_WATERPROOF_CLAIMS_REQUIRE_VERIFICATION"
   }
 }

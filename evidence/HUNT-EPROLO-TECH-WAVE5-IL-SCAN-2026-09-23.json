@@ -1,0 +1,209 @@
+{
+  "version": "HUNT-EPROLO-TECH-WAVE5-IL-SCAN-V1",
+  "date": "2026-09-23",
+  "mode": "READ_ONLY_SHADOW",
+  "destination": "IL",
+  "production_effect": false,
+  "summary": {
+    "checked": 6,
+    "shipping_verified": 6,
+    "normal_shipping": 6,
+    "high_shipping_review": 0,
+    "final_profit_verified": 0,
+    "checkout_live": 0
+  },
+  "results": [
+    {
+      "category": "wireless-microphone",
+      "product_id": "29703672",
+      "supplier_category_id": 46,
+      "title": "Wireless Lapel Microphone for Outdoor Computer Live Streaming Noise Reduction Universal Small Microphone",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "689498798",
+        "title": "H63 One-to-One Type-C Interface",
+        "supplier_cost_usd": 4.51,
+        "inventory_quantity": 2240,
+        "weight_g": 150.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202507/0D0D640AEEDD21CD3A9451ED3C680C83.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 7.82,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 0.783,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "compliance_gate": "POWERED_ELECTRONICS_REVIEW",
+      "price_gate_shadow": {
+        "retail_usd": 9.99,
+        "projected_product_profit_usd": 4.58,
+        "projected_product_margin": 0.4585
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "category": "card-reader",
+      "product_id": "26935524",
+      "supplier_category_id": 45,
+      "title": "USB 3.0 Four in One USB 3.1 CF SD TF MS Memory Card/DSLR Camera Card Reader Type-c",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "658376303",
+        "title": "USB3.0",
+        "supplier_cost_usd": 4.95,
+        "inventory_quantity": 482,
+        "weight_g": 120.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202408/4AACD2DA50AC806B0B879C3C5FEFF6BE.JPEG",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 7.34,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 0.735,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "compliance_gate": "STANDARD_ACCESSORY_REVIEW",
+      "price_gate_shadow": {
+        "retail_usd": 9.99,
+        "projected_product_profit_usd": 4.14,
+        "projected_product_margin": 0.4145
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "category": "smart-watch",
+      "product_id": "31594991",
+      "supplier_category_id": 41,
+      "title": "Smart Watch Waterproof Watch Smart Voice Assistant H59",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "714516839",
+        "title": "Beige",
+        "supplier_cost_usd": 13.34,
+        "inventory_quantity": 996,
+        "weight_g": 160.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202605/E5FF98B3101FF0DC452548C53201A1B3.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 8.67,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 0.361,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "compliance_gate": "POWERED_ELECTRONICS_REVIEW",
+      "price_gate_shadow": {
+        "retail_usd": 23.99,
+        "projected_product_profit_usd": 8.49,
+        "projected_product_margin": 0.3539
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "category": "bluetooth-headset",
+      "product_id": "19374325",
+      "supplier_category_id": 41,
+      "title": "New Private Model H3 Mirror Digital Display Touch Touch Bluetooth Headset 5.1 Large Capacity Power Bank S20",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "566148441",
+        "title": " H3S White-Bluetooth Earphone",
+        "supplier_cost_usd": 9.43,
+        "inventory_quantity": 3000,
+        "weight_g": 169.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202206/CD591067866DFD80EDF6EBCB8234F164.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 6.72,
+        "method": "SUNYOU Express",
+        "shiptime": "10-15 Days"
+      },
+      "shipping_to_retail_ratio": 0.396,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "compliance_gate": "POWERED_ELECTRONICS_REVIEW",
+      "price_gate_shadow": {
+        "retail_usd": 16.99,
+        "projected_product_profit_usd": 6.03,
+        "projected_product_margin": 0.355
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "category": "wifi-repeater",
+      "product_id": "31423107",
+      "supplier_category_id": 110,
+      "title": "300M WiFi Range Extender Signal Booster Wireless Repeater WPS Router WiFi Signal Amplifier",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "712501517",
+        "title": "Black  EU ",
+        "supplier_cost_usd": 6.19,
+        "inventory_quantity": 9804,
+        "weight_g": 150.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/222C6D15E99D1058BC7ADB69B01E998B.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 7.82,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 0.652,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "compliance_gate": "POWERED_ELECTRONICS_REVIEW",
+      "price_gate_shadow": {
+        "retail_usd": 11.99,
+        "projected_product_profit_usd": 4.72,
+        "projected_product_margin": 0.3937
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "category": "phone-stand",
+      "product_id": "21040880",
+      "supplier_category_id": 41,
+      "title": "New mobile phone photo magnetic suction wireless charging stand Bluetooth Desktop lazy charging rack selfie stick",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "587850051",
+        "title": "Basic Pink",
+        "supplier_cost_usd": 7.73,
+        "inventory_quantity": 756,
+        "weight_g": 150.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202303/03D08BD4AE6774EA5FE0ED941A63681A.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 8.05,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 0.575,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "compliance_gate": "POWERED_ELECTRONICS_REVIEW",
+      "price_gate_shadow": {
+        "retail_usd": 13.99,
+        "projected_product_profit_usd": 5.0,
+        "projected_product_margin": 0.3575
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    }
+  ]
+}

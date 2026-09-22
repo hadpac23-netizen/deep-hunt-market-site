@@ -38,5 +38,5 @@ assert.equal(contract.current_live_validation.wave2.checked,10);
 assert.equal(contract.current_live_validation.wave2.pet_shadow_shelf_products,2);
 assert.equal(contract.current_live_validation.wave2.final_profit_verified,0);
 assert.equal(adapters.providers.EPROLO.pet_shadow_shelf_products,2);
-assert.equal(adapters.providers.EPROLO.total_shadow_shelf_products,9);
+assert.equal(adapters.providers.EPROLO.total_shadow_shelf_products,10);
 console.log("PASS boom-eprolo-wave2");
