@@ -98,6 +98,11 @@
       "id": "ai_operating_factory",
       "status": "CODED_SHADOW_NEEDS_PREVIEW_PROOF",
       "evidence": "8 operational skills + 8 workflow templates + plan-only Workflow Builder + plan-only AI Tool Router + Creative Factory + Build & Repair Factory are coded in BOOM Studio. Material paths remain Owner-gated and suppressed."
+    },
+    {
+      "id": "profit_engine",
+      "status": "CODED_SHADOW_NEEDS_LIVE_ECONOMICS_EVIDENCE",
+      "evidence": "Profit Engine V1 is coded with a $10,000+/hour aspirational verified-net-profit mission target, complete-cost evidence gate, 10 profit modules, hourly learning loop, milestone policy and Owner Gate material-action suppression. Live profit/CAC/LTV/returns evidence is not yet connected."
     }
   ],
   "blockers": [
@@ -108,7 +113,8 @@
     "Configure n8n server-only SHADOW URL/token and prove one read-only shelf workflow success plus one controlled failure/retry.",
     "Complete CJ quote abuse/rate-limit proof before scheduled automation scale.",
     "Run controlled Incident E2E and A6/A7 Creative E2E without provider generation.",
-    "Only after evidence review may Owner decide whether to merge/activate."
+    "Only after evidence review may Owner decide whether to merge/activate.",
+    "Connect verified live profit economics evidence (revenue + all variable costs + returns + marketing attribution) before treating Net Profit/hour, CAC or LTV as real."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
