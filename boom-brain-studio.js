@@ -320,6 +320,39 @@
 
 
 
+
+  async function renderFirstRealOrderProof(){
+    const host=$("#bs-first-real-order-proof");
+    const state=$("#bs-first-real-order-state");
+    if(!host)return;
+    const proof=window.BoomFirstRealOrderProof;
+    if(!proof?.snapshot){
+      host.innerHTML='<div class="bs-empty bs-error">First Real-Order Proof unavailable.</div>';
+      if(state)state.textContent="UNAVAILABLE";
+      return;
+    }
+    try{
+      const out=await proof.snapshot();
+      if(state)state.textContent=String(out.state||"UNKNOWN");
+      const truth=out.live_truth||{};
+      const stages=out.stages||[];
+      host.innerHTML=`
+        <article class="bs-proof-summary">
+          <div><small>PAYMENT ACCEPTANCE</small><strong>${truth.payment_acceptance_enabled&&truth.payment_acceptance_owner_approved?"READY":"BLOCKED"}</strong></div>
+          <div><small>REAL ORDER</small><strong>${truth.real_order_found?"FOUND":"NONE"}</strong></div>
+          <div><small>REAL FINANCE</small><strong>${truth.real_finance_found?"FOUND":"NONE"}</strong></div>
+          <div><small>HOURLY EVIDENCE</small><strong>${truth.hourly_found?"FOUND":"NONE"}</strong></div>
+          <div><small>VERIFIED PROFIT / HOUR</small><strong>${out.verified_net_profit_per_hour===null?"UNKNOWN":"$"+Number(out.verified_net_profit_per_hour).toLocaleString()}</strong></div>
+          <div><small>TARGET GAP</small><strong>${out.target_gap===null?"UNKNOWN":"$"+Number(out.target_gap).toLocaleString()}</strong></div>
+        </article>
+        <div class="bs-proof-stages">${stages.map((x,i)=>`<article data-state="${esc(x.status)}"><b>${i+1}</b><div><strong>${esc(x.id)}</strong><span>${esc(x.status)}</span><small>${esc(x.reason||"evidence satisfied")}</small></div></article>`).join("")||'<div class="bs-empty">No proof stages evaluated.</div>'}</div>
+        <div class="bs-profit-guard glass"><strong>Current blocker: ${esc(out.blocker||"none")}</strong><span>Proof layer has zero activation authority. It cannot enable payment acceptance, live supplier orders, pricing, publishing or payouts.</span></div>`;
+    }catch(error){
+      host.innerHTML=`<div class="bs-empty bs-error">Real-order proof unavailable: ${esc(error?.message||"unknown")}</div>`;
+      if(state)state.textContent="UNKNOWN";
+    }
+  }
+
   async function renderHourlyProfitReview(){
     const host=$("#bs-hourly-profit-state");
     const attrHost=$("#bs-marketing-profit-attribution");
@@ -711,7 +744,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
