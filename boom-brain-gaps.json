@@ -222,17 +222,17 @@
       "id": "shelf_coverage_17x1000",
       "title": "17 × 1,000 verified shelf coverage workflow",
       "owner": "commerce_truth_brain",
-      "status": "NEXT",
+      "status": "IN_PROGRESS",
       "source": "F35",
-      "next": "Count only verified sellable catalog evidence; report empty/thin shelves and route intake without fabricating inventory."
+      "next": "Truth contract + server-only coverage endpoint + Studio matrix are coded. Current source proves 13 canonical departments, 4 unresolved; live catalog evidence is stale. Deploy preview and refresh source evidence before readiness."
     },
     {
       "id": "incident_repair_automation",
       "title": "Incident & Repair workflow automation",
       "owner": "learning_governance_brain",
-      "status": "NEXT",
-      "source": "F50",
-      "next": "Route failed runs through reproduce → root cause → minimal patch → tests → independent review → Owner Gate."
+      "status": "IN_PROGRESS",
+      "source": "LEGACY_REWIRE",
+      "next": "Canonical agent, parent lineage, auto-route and Studio panel are coded. Prove one controlled preview failure → incident → repair evidence → Owner Gate without Production deploy."
     },
     {
       "id": "creative_publish_automation",
@@ -246,9 +246,9 @@
       "id": "customer_lifecycle_automation",
       "title": "Cart / Order / Tracking / Support workflow",
       "owner": "operations_brain",
-      "status": "NEXT",
+      "status": "IN_PROGRESS",
       "source": "F50",
-      "next": "Require identity, privacy and consent proof before any customer-facing action."
+      "next": "Existing order/fulfillment/event stores mapped and privacy preflight coded. External outreach/order mutations remain Owner-gated and OFF."
     },
     {
       "id": "shadow_run_engine",
@@ -273,6 +273,22 @@
       "status": "DONE",
       "source": "LEGACY_PR_7",
       "next": "Keep 6/6 evidence requirement; Alpha/Production remain separate Owner decisions."
+    },
+    {
+      "id": "supplier_product_intake_automation",
+      "title": "Supplier → Product Truth → Shelf Candidate",
+      "owner": "commerce_truth_brain",
+      "status": "IN_PROGRESS",
+      "source": "F50",
+      "next": "Existing partner/catalog/economics stores mapped and runtime evidence preflight coded. No supplier calls or shelf activation; prove with read-only preview evidence."
+    },
+    {
+      "id": "analytics_learning_loop",
+      "title": "Analytics → Evidence → Learning → Governed Change",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "F50",
+      "next": "Existing analytics/learning/experiment stores mapped and evidence/provenance/baseline preflight coded. No automatic policy or skill promotion."
     }
   ]
 }
