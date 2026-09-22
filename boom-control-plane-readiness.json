@@ -103,6 +103,11 @@
       "id": "profit_engine",
       "status": "CODED_SHADOW_NEEDS_LIVE_ECONOMICS_EVIDENCE",
       "evidence": "Profit Engine V1 is coded with a $10,000+/hour aspirational verified-net-profit mission target, complete-cost evidence gate, 10 profit modules, hourly learning loop, milestone policy and Owner Gate material-action suppression. Live profit/CAC/LTV/returns evidence is not yet connected."
+    },
+    {
+      "id": "profit_data_map_and_ledger",
+      "status": "CODED_EXPECTED_ONLY_REALIZED_BLOCKED",
+      "evidence": "Canonical profit sources mapped with no parallel schema. 8/8 unit-economics rows verified and profit-gate PASS; 0 order-finance rows; 8/8 orders are test; realized product profit and mission attainment remain blocked. Non-RLS profit rollup/attribution sources stay server-only until hardened."
     }
   ],
   "blockers": [
@@ -114,7 +119,9 @@
     "Complete CJ quote abuse/rate-limit proof before scheduled automation scale.",
     "Run controlled Incident E2E and A6/A7 Creative E2E without provider generation.",
     "Only after evidence review may Owner decide whether to merge/activate.",
-    "Connect verified live profit economics evidence (revenue + all variable costs + returns + marketing attribution) before treating Net Profit/hour, CAC or LTV as real."
+    "Connect verified live profit economics evidence (revenue + all variable costs + returns + marketing attribution) before treating Net Profit/hour, CAC or LTV as real.",
+    "Realized Profit remains blocked until non-test orders produce real finance-ledger evidence and auditable product allocation.",
+    "Harden RLS/server access for hunt_purchase_attribution_bridge and hunt_daily_owner_metrics before browser-side Profit Mission use."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
