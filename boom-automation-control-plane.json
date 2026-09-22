@@ -103,10 +103,12 @@
         "media_quality",
         "shelf_candidate"
       ],
-      "gate": "commerce_truth_pass",
-      "material_action": "shelf_activation",
+      "gate": "partner identity + official API/feed + terms + media rights",
+      "material_action": "none",
       "final_owner_gate": false,
-      "failure_route": "incident_repair"
+      "failure_route": "incident_repair",
+      "contract": "boom-supplier-product-intake-contract.json",
+      "output": "SHELF_CANDIDATE only; activation is a separate approved action"
     },
     {
       "id": "shelf_coverage_17x1000",
@@ -215,10 +217,11 @@
         "customer_action_candidate",
         "outcome_measure"
       ],
-      "gate": "privacy_and_consent",
+      "gate": "identity policy + privacy/consent + verified event source",
       "material_action": "customer_outreach_or_order_action",
       "final_owner_gate": true,
-      "failure_route": "incident_repair"
+      "failure_route": "incident_repair",
+      "contract": "boom-customer-lifecycle-contract.json"
     },
     {
       "id": "analytics_learning_loop",
@@ -240,10 +243,11 @@
         "propose_policy_or_skill_update",
         "owner_gate_if_material"
       ],
-      "gate": "evidence_quality",
+      "gate": "evidence quality + provenance + baseline",
       "material_action": "policy_or_skill_change",
       "final_owner_gate": true,
-      "failure_route": "hold_unmeasured"
+      "failure_route": "hold_unmeasured",
+      "contract": "boom-learning-loop-contract.json"
     }
   ],
   "events": [
