@@ -1,0 +1,339 @@
+{
+  "version": "HUNT-F35-SIX-LAYER-PREFERENCE-BASELINE-V1",
+  "date": "2026-09-22",
+  "scope": "GLOBAL_DIRECTIONAL_PLUS_SELECTED_US_SECTOR_STUDIES",
+  "warning": "This is external-market baseline evidence, not HUNT first-party preference truth. HUNT behavior must later validate or override it.",
+  "layers": [
+    "VALUE",
+    "FUNCTION",
+    "TREND",
+    "IDENTITY",
+    "PREMIUM_CRAFT",
+    "CONSCIOUS_LONG_LIFE"
+  ],
+  "departments": [
+    {
+      "slug": "women",
+      "priority": [
+        "VALUE",
+        "TREND",
+        "IDENTITY",
+        "PREMIUM_CRAFT"
+      ],
+      "signals": [
+        "versatile current silhouettes",
+        "mix high/low price points",
+        "expressive accessories/details",
+        "quality must justify premium"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "slug": "men",
+      "priority": [
+        "FUNCTION",
+        "VALUE",
+        "TREND",
+        "PREMIUM_CRAFT"
+      ],
+      "signals": [
+        "versatile essentials",
+        "layering",
+        "current/preppy/street cues",
+        "quality step-up"
+      ],
+      "confidence": "MEDIUM_HIGH"
+    },
+    {
+      "slug": "kids",
+      "priority": [
+        "FUNCTION",
+        "VALUE",
+        "IDENTITY",
+        "CONSCIOUS_LONG_LIFE"
+      ],
+      "signals": [
+        "durable/easy-care",
+        "playful personalization",
+        "clear use guidance",
+        "longer-use value"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "slug": "beauty",
+      "priority": [
+        "FUNCTION",
+        "VALUE",
+        "IDENTITY",
+        "PREMIUM_CRAFT"
+      ],
+      "signals": [
+        "product quality/performance first",
+        "selective splurge",
+        "hyperpersonalization by attitude",
+        "fragrance layering/portfolio behavior"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "slug": "accessories",
+      "priority": [
+        "IDENTITY",
+        "TREND",
+        "PREMIUM_CRAFT",
+        "VALUE"
+      ],
+      "signals": [
+        "embroidered/handmade detail",
+        "whimsical jewelry",
+        "brooch/statement accents",
+        "timeless eyewear plus statement options"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "slug": "tech",
+      "priority": [
+        "FUNCTION",
+        "IDENTITY",
+        "VALUE",
+        "CONSCIOUS_LONG_LIFE"
+      ],
+      "signals": [
+        "device compatibility",
+        "MagSafe ecosystem",
+        "clear/silicone/rugged/kickstand families",
+        "personalized playful cases"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "slug": "home",
+      "priority": [
+        "FUNCTION",
+        "IDENTITY",
+        "CONSCIOUS_LONG_LIFE",
+        "VALUE"
+      ],
+      "signals": [
+        "comfort",
+        "organization/storage",
+        "modular/multi-use",
+        "personal gallery/decor expression",
+        "lighting as atmosphere and task"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "slug": "kitchen",
+      "priority": [
+        "FUNCTION",
+        "CONSCIOUS_LONG_LIFE",
+        "VALUE",
+        "IDENTITY"
+      ],
+      "signals": [
+        "workflow and storage",
+        "pantry/beverage zones",
+        "durable materials",
+        "task + ambient lighting",
+        "transitional/modern mix"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "slug": "electrical",
+      "priority": [
+        "FUNCTION",
+        "CONSCIOUS_LONG_LIFE",
+        "VALUE",
+        "PREMIUM_CRAFT"
+      ],
+      "signals": [
+        "reliability",
+        "energy/use efficiency",
+        "simple controls",
+        "good integration into room aesthetic"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "slug": "camping",
+      "priority": [
+        "FUNCTION",
+        "CONSCIOUS_LONG_LIFE",
+        "VALUE",
+        "IDENTITY"
+      ],
+      "signals": [
+        "portable",
+        "weather-resistant",
+        "multi-use",
+        "easy setup/storage"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "slug": "garden",
+      "priority": [
+        "FUNCTION",
+        "CONSCIOUS_LONG_LIFE",
+        "IDENTITY",
+        "VALUE"
+      ],
+      "signals": [
+        "outdoor comfort zones",
+        "weatherability",
+        "low maintenance",
+        "indoor-to-outdoor visual continuity"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "slug": "sports",
+      "priority": [
+        "FUNCTION",
+        "VALUE",
+        "TREND",
+        "CONSCIOUS_LONG_LIFE"
+      ],
+      "signals": [
+        "activity-specific fit",
+        "performance evidence",
+        "portable/compact gear",
+        "style without unsupported claims"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "slug": "pets",
+      "priority": [
+        "FUNCTION",
+        "VALUE",
+        "CONSCIOUS_LONG_LIFE",
+        "IDENTITY"
+      ],
+      "signals": [
+        "pet budget resilience but rising value-seeking",
+        "comfort/calming",
+        "cleanability/durability",
+        "home-friendly design"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "slug": "toys",
+      "priority": [
+        "IDENTITY",
+        "FUNCTION",
+        "TREND",
+        "PREMIUM_CRAFT"
+      ],
+      "signals": [
+        "kidult/collector growth",
+        "screen-free cozy play",
+        "STEM/maker creativity",
+        "blind-box/collectible self-expression",
+        "nostalgia"
+      ],
+      "confidence": "HIGH"
+    },
+    {
+      "slug": "travel",
+      "priority": [
+        "FUNCTION",
+        "VALUE",
+        "IDENTITY",
+        "CONSCIOUS_LONG_LIFE"
+      ],
+      "signals": [
+        "organization",
+        "lightweight/durable",
+        "security",
+        "personalization/set logic"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "slug": "office",
+      "priority": [
+        "FUNCTION",
+        "IDENTITY",
+        "CONSCIOUS_LONG_LIFE",
+        "VALUE"
+      ],
+      "signals": [
+        "organization",
+        "ergonomic usefulness",
+        "creative/hobby support",
+        "desk aesthetics",
+        "modularity"
+      ],
+      "confidence": "MEDIUM_HIGH"
+    },
+    {
+      "slug": "gifts",
+      "priority": [
+        "IDENTITY",
+        "TREND",
+        "VALUE",
+        "PREMIUM_CRAFT"
+      ],
+      "signals": [
+        "personalization",
+        "meaningful keepsakes",
+        "seasonal/occasion relevance",
+        "presentation",
+        "bundle logic"
+      ],
+      "confidence": "HIGH"
+    }
+  ],
+  "evidence": [
+    {
+      "source": "DHL Marketplace Trends 2026",
+      "use": "global category purchase incidence and shopper profiles"
+    },
+    {
+      "source": "Pinterest Predicts 2026",
+      "use": "emerging cross-category aesthetics and trend signals"
+    },
+    {
+      "source": "Etsy Spring/Summer 2026 Trend Report",
+      "use": "current search/sales signals for handmade, decor, accessories and phone cases"
+    },
+    {
+      "source": "IKEA Life at Home 2026",
+      "use": "comfort, control, storage, adaptability and home needs"
+    },
+    {
+      "source": "Houzz Kitchen/Outdoor Trends 2026",
+      "use": "kitchen function/storage and outdoor living zones"
+    },
+    {
+      "source": "McKinsey State of Beauty 2025/2026",
+      "use": "beauty value, efficacy, fragmentation, fragrance and personalization"
+    },
+    {
+      "source": "Toy Association 2026",
+      "use": "collectibles, kidults, cozy play, maker/STEM and self-expression"
+    },
+    {
+      "source": "APPA 2026",
+      "use": "pet spending resilience and value-seeking"
+    },
+    {
+      "source": "Apple current accessory taxonomy",
+      "use": "phone-case compatibility, MagSafe, materials and functional accessory families"
+    }
+  ],
+  "shelf_engine_rules": [
+    "Every shelf should expose more than one preference layer; avoid a single aesthetic monoculture.",
+    "Hero positions may be TREND/IDENTITY/PREMIUM, but anchors must preserve FUNCTION/VALUE.",
+    "Country and Product Truth gates override trend preference.",
+    "Use first-party HUNT behavior to learn layer weights per category; never infer sensitive traits.",
+    "Refresh external trend evidence on a schedule; do not freeze 2026 trends as permanent taste."
+  ],
+  "next": "RUN_SHADOW_SHELF_COMPOSITIONS_USING_LAYER_BALANCE_AND_COMPARE_TO_CURRENT_HUNT_LAYOUT"
+}

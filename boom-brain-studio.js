@@ -230,12 +230,16 @@
     const host=$("#bs-stylist-academy");
     if(!host)return;
     try{
-      const [academy,training]=await Promise.all([
+      const [academy,training,f35,baseline]=await Promise.all([
         json("boom-stylist-academy-contract.json"),
-        json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-2026-09-22.json")
+        json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-2026-09-22.json"),
+        json("boom-f35-style-commerce-research-2026-09-22.json"),
+        json("evidence/HUNT-F35-SIX-LAYER-PREFERENCE-BASELINE-2026-09-22.json")
       ]);
       const tracks=(academy.tracks||[]).map(t=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(t.id)} · ${esc(t.name)}</strong><span class="bs-status NEXT">${esc((t.modules||[]).length)} modules</span></div><p>${esc((t.modules||[]).join(" · "))}</p></div>`).join("");
       const exams=(academy.exams||[]).map(e=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(e.name)}</strong><span class="bs-status NEXT">PASS ${esc(e.pass_score)}+</span></div><small>${esc(e.output_rule)}</small></div>`).join("");
+      const layers=(f35.six_layers||[]).map(l=>`<span>${esc(l.id)} · ${esc(l.name)}</span>`).join("");
+      const courses=(f35.multidisciplinary_curriculum||[]).map(c=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(c.id)} · ${esc(c.name)}</strong><span class="bs-status NEXT">${esc((c.skills||[]).length)} skills</span></div><small>${esc((c.sources||[]).join(" · "))}</small></div>`).join("");
       host.innerHTML=`
         <article class="bs-creative-card">
           <div class="bs-automation-head"><strong>Academy Curriculum</strong><span class="bs-status NEXT">${esc(academy.status)}</span></div>
@@ -250,6 +254,18 @@
           <div class="bs-run-list">${exams}</div>
           <small>CURRENT MASTERY</small>
           <p>Level ${esc(academy.current_state?.mastery_level)} · ${esc((academy.mastery||[])[academy.current_state?.mastery_level]?.name||"UNTRAINED")}</p>
+        </article>
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>F35 · 6 Preference Layers</strong><span class="bs-status DONE">${esc(baseline.departments?.length||0)}/17 mapped</span></div>
+          <div class="bs-journey-steps">${layers}</div>
+          <p>External market baseline only. HUNT first-party behavior must validate or override these weights.</p>
+          <code>Value · Function · Trend · Identity · Premium/Craft · Conscious/Long-life</code>
+        </article>
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>Multidisciplinary Course Round</strong><span class="bs-status NEXT">RESEARCHED · NOT COMPLETED</span></div>
+          <div class="bs-run-list">${courses}</div>
+          <small>CASE-STUDY RULE</small>
+          <p>${esc(f35.brand_case_study_policy?.blocked||"No copying.")}</p>
         </article>`;
     }catch(error){
       host.innerHTML=`<div class="bs-empty bs-error">Stylist Academy unavailable: ${esc(error?.message||"unknown")}</div>`;
