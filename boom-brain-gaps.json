@@ -289,6 +289,46 @@
       "status": "IN_PROGRESS",
       "source": "F50",
       "next": "Existing analytics/learning/experiment stores mapped and evidence/provenance/baseline preflight coded. No automatic policy or skill promotion."
+    },
+    {
+      "id": "canonical_agent_map",
+      "title": "Legacy Manager → Canonical Agent Map",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "LEGACY_PR_7",
+      "next": "31 legacy managers mapped; department managers collapsed to taxonomy modules."
+    },
+    {
+      "id": "canonical_skill_map",
+      "title": "Canonical Skill Registry",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F50",
+      "next": "24 skills classified; brain-named files no longer create ownership."
+    },
+    {
+      "id": "canonical_scheduler",
+      "title": "Single Scheduler Plane",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "LEGACY+F50",
+      "next": "Legacy 30-minute schedules preserved as NOT_ACTIVATED; n8n cannot grant material permission."
+    },
+    {
+      "id": "data_tool_gate_maps",
+      "title": "Data Ownership + Tool + Owner Gate Maps",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "F50",
+      "next": "Keep maps synchronized when tables/functions/connectors are added."
+    },
+    {
+      "id": "critical_edge_auth_review",
+      "title": "Critical Edge Function Auth Classification",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "SECURITY",
+      "next": "Payment/order/F60T/Owner paths classified. CJ public read-only quote still needs abuse/rate-limit proof before automation scale."
     }
   ]
 }
