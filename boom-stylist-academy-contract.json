@@ -238,13 +238,17 @@
     "mastery_level": 0,
     "completed_exams": 0,
     "production_shelf_authority": false,
-    "training_dataset": "27_GLOBAL_VERIFIED_PRINTFUL_PRODUCTS_READY",
+    "training_dataset": "36_VERIFIED_PRODUCTS_IL_27_PRINTFUL_9_CJ",
     "course_research": "PUBLIC_OFFICIAL_CURRICULA_AND_CASE_STUDIES_MAPPED",
     "course_completion": "NOT_CLAIMED",
     "survey_layers": 6,
-    "departments_mapped": 17
+    "departments_mapped": 17,
+    "assortment_gate_il": "PASS_4_FOOTWEAR_6_BOTTOMS",
+    "style_round2": "READY_FOR_VISUAL_QA",
+    "product_truth_round2": "PASS_IL",
+    "commerce_round2": "PASS_WITH_HIGH_SHIPPING_WARNINGS"
   },
-  "next": "RUN_F35_SIX_LAYER_BASELINE_SURVEY_THEN_DEPARTMENT_SHADOW_EXAMS",
+  "next": "RUN_EXACT_IMAGE_VISUAL_QA_FOR_F35_ROUND2_LOOKS",
   "f35_research_ref": "boom-f35-style-commerce-research-2026-09-22.json",
   "preference_layers": [
     {

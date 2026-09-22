@@ -230,12 +230,14 @@
     const host=$("#bs-stylist-academy");
     if(!host)return;
     try{
-      const [academy,training,f35,baseline,round1]=await Promise.all([
+      const [academy,training,trainingV2,f35,baseline,round1,round2]=await Promise.all([
         json("boom-stylist-academy-contract.json"),
         json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-2026-09-22.json"),
+        json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V2-IL-2026-09-22.json"),
         json("boom-f35-style-commerce-research-2026-09-22.json"),
         json("evidence/HUNT-F35-SIX-LAYER-PREFERENCE-BASELINE-2026-09-22.json"),
-        json("evidence/HUNT-STYLIST-F35-ROUND1-2026-09-22.json")
+        json("evidence/HUNT-STYLIST-F35-ROUND1-2026-09-22.json"),
+        json("evidence/HUNT-STYLIST-F35-ROUND2-2026-09-22.json")
       ]);
       const tracks=(academy.tracks||[]).map(t=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(t.id)} · ${esc(t.name)}</strong><span class="bs-status NEXT">${esc((t.modules||[]).length)} modules</span></div><p>${esc((t.modules||[]).join(" · "))}</p></div>`).join("");
       const exams=(academy.exams||[]).map(e=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(e.name)}</strong><span class="bs-status NEXT">PASS ${esc(e.pass_score)}+</span></div><small>${esc(e.output_rule)}</small></div>`).join("");
@@ -249,12 +251,12 @@
           <code>production influence false · autonomous shelf reorder false · publish false</code>
         </article>
         <article class="bs-creative-card">
-          <div class="bs-automation-head"><strong>Verified Training Set</strong><span class="bs-status DONE">${esc(training.verified_products)} products</span></div>
-          <p>Country-limited excluded: ${esc(training.excluded_country_limited)} · training only · Product Truth source preserved.</p>
+          <div class="bs-automation-head"><strong>Verified Training Set</strong><span class="bs-status DONE">${esc(trainingV2.verified_products)} products · IL</span></div>
+          <p>Base: ${esc(training.verified_products)} Printful/global candidates · CJ IL additions: ${esc(trainingV2.cj_il_verified_added)} · Product Truth source preserved.</p>
           <small>EXAMS</small>
           <div class="bs-run-list">${exams}</div>
           <small>CURRENT MASTERY</small>
-          <p>Level ${esc(academy.current_state?.mastery_level)} · ${esc((academy.mastery||[])[academy.current_state?.mastery_level]?.name||"UNTRAINED")}</p>
+          <p>Level ${esc(academy.current_state?.mastery_level)} · ${esc((academy.mastery||[])[academy.current_state?.mastery_level]?.name||"UNTRAINED")} · no promotion without completed visual exam.</p>
         </article>
         <article class="bs-creative-card">
           <div class="bs-automation-head"><strong>F35 · 6 Preference Layers</strong><span class="bs-status DONE">${esc(baseline.departments?.length||0)}/17 mapped</span></div>
@@ -281,6 +283,19 @@
           <small>CURRENT HUNT QA</small>
           <p>${esc(round1.current_hunt_comparison?.shelves_below_25pct_availability_verified)} shelves are below 25% availability-verified in the current snapshot. Existing layout is QA evidence, not training truth.</p>
           <code>mastery change false · Production unchanged</code>
+        </article>
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>F35 Exam Round 2 · IL</strong><span class="bs-status DONE">${esc(round2.assortment_gate?.status)} ASSORTMENT</span></div>
+          <p>5 complete looks built · Product Truth: ${esc(round2.style_exam?.product_truth_gate)} · Style state: ${esc(round2.style_exam?.status)}.</p>
+          <div class="bs-journey-steps">
+            <span>Footwear ${esc(round2.assortment_gate?.assortment?.footwear)}</span>
+            <span>Bottoms ${esc(round2.assortment_gate?.assortment?.bottoms)}</span>
+            <span>Tops ${esc(round2.assortment_gate?.assortment?.tops)}</span>
+            <span>Accessories ${esc(round2.assortment_gate?.assortment?.accessories)}</span>
+          </div>
+          <small>COMMERCE</small>
+          <p>${esc(round2.commerce_exam?.warning)}</p>
+          <code>subjective score false · visual QA next · Production unchanged</code>
         </article>`;
     }catch(error){
       host.innerHTML=`<div class="bs-empty bs-error">Stylist Academy unavailable: ${esc(error?.message||"unknown")}</div>`;

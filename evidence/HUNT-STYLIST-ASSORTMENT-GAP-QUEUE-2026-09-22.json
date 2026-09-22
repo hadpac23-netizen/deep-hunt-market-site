@@ -1,0 +1,571 @@
+{
+  "version": "HUNT-STYLIST-ASSORTMENT-GAP-QUEUE-V1",
+  "mode": "CANDIDATE_RECHECK_ONLY",
+  "production_effect": false,
+  "product_truth_claimed": false,
+  "lanes": {
+    "footwear": {
+      "source_candidates": 58,
+      "selected_for_recheck": 18,
+      "buckets": {
+        "women": 7,
+        "men": 7,
+        "kids": 0,
+        "general": 4
+      },
+      "candidates": [
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070911581613000",
+          "title": "Breathable British-style Men's Casual Sneakers",
+          "category": "shoes",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual",
+            "sneakers"
+          ],
+          "supplier_snapshot_price_usd": 15.62,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609071057221613500",
+          "title": "Men's Fashionable Casual Low-top Sports Shoes",
+          "category": "shoes",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual",
+            "sport"
+          ],
+          "supplier_snapshot_price_usd": 17.46,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070907571625600",
+          "title": "Solid-color Thick-soled Sneakers Men's Casual Shoes",
+          "category": "shoes",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual",
+            "sneakers"
+          ],
+          "supplier_snapshot_price_usd": 18.33,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080434021600800",
+          "title": "Men's French-style Fashionable Casual Low-cut Dress Shoes",
+          "category": "shoes",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual",
+            "formal"
+          ],
+          "supplier_snapshot_price_usd": 18.85,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080904291620900",
+          "title": "Suede Strappy Sandals With A Back-strap Horsebit Buckle For Women",
+          "category": "shoes",
+          "gender_bucket": "women",
+          "style_tags": [
+            "sandals"
+          ],
+          "supplier_snapshot_price_usd": 5.3,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 6
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070619011621100",
+          "title": "Women's Large-size Round-toe Lace-up Fashionable Casual Shoes",
+          "category": "shoes",
+          "gender_bucket": "women",
+          "style_tags": [
+            "casual"
+          ],
+          "supplier_snapshot_price_usd": 5.76,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 6
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080443011631100",
+          "title": "New Men's Slip-on Casual Shoes For Everyday Wear",
+          "category": "shoes",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual"
+          ],
+          "supplier_snapshot_price_usd": 6.98,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 6
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609090301381604500",
+          "title": "Women's Platform Round Head Ankle Boots",
+          "category": "shoes",
+          "gender_bucket": "women",
+          "style_tags": [
+            "boots"
+          ],
+          "supplier_snapshot_price_usd": 7.16,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 6
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080801491626800",
+          "title": "Women's Velvet Maillard-colored High-heeled Ankle Boots",
+          "category": "shoes",
+          "gender_bucket": "women",
+          "style_tags": [
+            "boots"
+          ],
+          "supplier_snapshot_price_usd": 9.25,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 6
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080850241625700",
+          "title": "Men's High-top Stylish Mid-calf Boots",
+          "category": "shoes",
+          "gender_bucket": "men",
+          "style_tags": [
+            "boots"
+          ],
+          "supplier_snapshot_price_usd": 10.12,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 6
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609071008451607500",
+          "title": "Leather Boots Casual Shoes Plus Size Spring And Summer",
+          "category": "shoes",
+          "gender_bucket": "general",
+          "style_tags": [
+            "casual",
+            "boots"
+          ],
+          "supplier_snapshot_price_usd": 10.12,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 6
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080353011631800",
+          "title": "Men's Casual Leather Shoes Breathable Genuine Leather Shoes For Men",
+          "category": "shoes",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual"
+          ],
+          "supplier_snapshot_price_usd": 10.47,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 6
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080132301632800",
+          "title": "Braided Cable Lightweight Low-Top Loafer Shoes For Women",
+          "category": "shoes",
+          "gender_bucket": "women",
+          "style_tags": [],
+          "supplier_snapshot_price_usd": 12.57,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 6
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080151291612100",
+          "title": "Trendy White Sneakers Casual And Breathable Agnes Shoes",
+          "category": "shoes",
+          "gender_bucket": "general",
+          "style_tags": [
+            "casual",
+            "sneakers"
+          ],
+          "supplier_snapshot_price_usd": 2.38,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 4
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609081212521623500",
+          "title": "Women's Plus-Size Flat-Fabric Loafer Shoes",
+          "category": "shoes",
+          "gender_bucket": "women",
+          "style_tags": [],
+          "supplier_snapshot_price_usd": 3.53,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 4
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080955271622000",
+          "title": "Women's Fleece-lined, Warm, Closed-toe Fuzzy Slippers",
+          "category": "shoes",
+          "gender_bucket": "women",
+          "style_tags": [
+            "slippers"
+          ],
+          "supplier_snapshot_price_usd": 4.76,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 4
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080749181617400",
+          "title": "Fashionable Round-toe Plus-size Color-block Open-toe Sandals",
+          "category": "shoes",
+          "gender_bucket": "general",
+          "style_tags": [
+            "sandals"
+          ],
+          "supplier_snapshot_price_usd": 5.76,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 4
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070204581627900",
+          "title": "Printed Fabric Wedge Tassel Round Toe Sandals",
+          "category": "shoes",
+          "gender_bucket": "general",
+          "style_tags": [
+            "sandals"
+          ],
+          "supplier_snapshot_price_usd": 6.28,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 4
+        }
+      ]
+    },
+    "bottoms": {
+      "source_candidates": 103,
+      "selected_for_recheck": 18,
+      "buckets": {
+        "women": 8,
+        "men": 8,
+        "kids": 1,
+        "general": 1
+      },
+      "candidates": [
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080933501636400",
+          "title": "Men's Breathable Linen Casual Beach Shorts",
+          "category": "bottoms",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual",
+            "shorts"
+          ],
+          "supplier_snapshot_price_usd": 4.04,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609090321561625000",
+          "title": "Men's Casual Pocket Shortsfashionable Street-style Trendy Shorts",
+          "category": "bottoms",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual",
+            "shorts"
+          ],
+          "supplier_snapshot_price_usd": 4.04,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609090849311624100",
+          "title": "Men's Sporty Casual Patchwork Pants",
+          "category": "bottoms",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual",
+            "sport",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 4.74,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080947141606700",
+          "title": "Women's Casual Solid-color Wide-leg Pants",
+          "category": "bottoms",
+          "gender_bucket": "women",
+          "style_tags": [
+            "casual",
+            "wide_leg",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 4.92,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070726421618000",
+          "title": "Women's Loose Draping Casual Dance Pants",
+          "category": "bottoms",
+          "gender_bucket": "women",
+          "style_tags": [
+            "casual",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 5.02,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070646371634700",
+          "title": "Women's Casual Fashionable Long Pants With An Elastic Waist And Pleats",
+          "category": "bottoms",
+          "gender_bucket": "women",
+          "style_tags": [
+            "casual",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 5.06,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070326191624000",
+          "title": "Men's Straight Leg Solid Color Casual Linen Pants With Drawstring And Elastic Waist",
+          "category": "bottoms",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual",
+            "straight_leg",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 5.25,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2504150212561623300",
+          "title": "Men's Pure Color Casual Versatile Loose Shorts",
+          "category": "bottoms",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual",
+            "shorts"
+          ],
+          "supplier_snapshot_price_usd": 5.62,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070924381629000",
+          "title": "Solid-color Casual PU Leather Pants Women's Trousers",
+          "category": "bottoms",
+          "gender_bucket": "women",
+          "style_tags": [
+            "casual",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 6.12,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2096889895772676098",
+          "title": "Women's 2024 Autumn And Winter Rubber Waist Overalls High Street Loose Straight Leg Wide Leg Sports Casual Pants",
+          "category": "bottoms",
+          "gender_bucket": "women",
+          "style_tags": [
+            "casual",
+            "sport",
+            "wide_leg",
+            "straight_leg",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 6.69,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070315101607000",
+          "title": "Women's American-style Retro Camouflage Utility Casual Trousers",
+          "category": "bottoms",
+          "gender_bucket": "women",
+          "style_tags": [
+            "casual",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 6.77,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070804591612300",
+          "title": "Women's Elastic Versatile Casual Trousers",
+          "category": "bottoms",
+          "gender_bucket": "women",
+          "style_tags": [
+            "casual",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 7.12,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070736251616600",
+          "title": "Loose-fitting Casual Sweatpants For Men And Women",
+          "category": "bottoms",
+          "gender_bucket": "women",
+          "style_tags": [
+            "casual",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 7.12,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609090308071611900",
+          "title": "Adjustable Waist Non-Iron Men's Pants Lightweight Business Gentleman Straight-Leg Trousers",
+          "category": "bottoms",
+          "gender_bucket": "men",
+          "style_tags": [
+            "formal",
+            "straight_leg",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 7.47,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080531431619800",
+          "title": "Men's Anti-wrinkle Elastic Waist Micro-cone Straight Casual Pants",
+          "category": "bottoms",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 7.6,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609070920581620500",
+          "title": "Men's Loose-fit Straight-leg Casual Sweatpants",
+          "category": "bottoms",
+          "gender_bucket": "men",
+          "style_tags": [
+            "casual",
+            "straight_leg",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 9.76,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 8
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080237461615500",
+          "title": "Solid-color Childrens Cornstitch Triangle Shorts",
+          "category": "bottoms",
+          "gender_bucket": "kids",
+          "style_tags": [
+            "shorts"
+          ],
+          "supplier_snapshot_price_usd": 4.48,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 6
+        },
+        {
+          "provider": "CJdropshipping",
+          "item_id": "2609080212571634400",
+          "title": "Loose-fitting Casual High-waisted Sweatpants",
+          "category": "bottoms",
+          "gender_bucket": "general",
+          "style_tags": [
+            "casual",
+            "trousers"
+          ],
+          "supplier_snapshot_price_usd": 5.09,
+          "snapshot_availability_verified": false,
+          "required_next": "EXACT_VARIANT_STOCK_SHIPPING_PROFIT_RECHECK_IL",
+          "queue_score": 6
+        }
+      ]
+    }
+  },
+  "summary": {
+    "footwear_source": 58,
+    "footwear_queue": 18,
+    "bottoms_source": 103,
+    "bottoms_queue": 18,
+    "total_queue": 36
+  },
+  "next": "RUN_READ_ONLY_PRODUCT_TRUTH_RECHECK_IN_SMALL_BATCHES; ONLY VERIFIED ITEMS MAY ENTER STYLIST TRAINING"
+}

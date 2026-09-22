@@ -1,0 +1,77 @@
+{
+  "version": "HUNT-STYLIST-ASSORTMENT-MINI-LIVE-SCAN-V1",
+  "destination": "IL",
+  "mode": "READ_ONLY",
+  "order_creation": false,
+  "production_effect": false,
+  "results": [
+    {
+      "item_id": "2609070911581613000",
+      "lane": "footwear",
+      "title": "Breathable British-style Mens Casual Sneakers",
+      "variant_id": "2609070911581613800",
+      "variant_name": null,
+      "supplier_cost_usd": 15.62,
+      "retail_price_usd": 24.99,
+      "retail_verified": true,
+      "profit_gate": "REVIEW",
+      "shipping": {
+        "name": "CJPacket Eub",
+        "price_usd": 14.82,
+        "aging": "12-50"
+      },
+      "status": "PRICE_OR_PROFIT_BLOCKED"
+    },
+    {
+      "item_id": "2609080904291620900",
+      "lane": "footwear",
+      "title": "New Style Suede Strappy Sandals With A Back-strap Horsebit Buckle For Women",
+      "variant_id": "2609080904291621800",
+      "variant_name": null,
+      "supplier_cost_usd": 5.3,
+      "retail_price_usd": 10.99,
+      "retail_verified": true,
+      "profit_gate": "PASS",
+      "shipping": {
+        "name": "CJPacket Eub",
+        "price_usd": 10.65,
+        "aging": "12-50"
+      },
+      "status": "VERIFIED"
+    },
+    {
+      "item_id": "2609090308071611900",
+      "lane": "bottoms",
+      "title": "Adjustable Waist Non-Iron Men's Pants Lightweight Business Gentleman Straight-Leg Trousers",
+      "variant_id": "2609090308071612900",
+      "variant_name": null,
+      "supplier_cost_usd": 7.47,
+      "retail_price_usd": 12.99,
+      "retail_verified": true,
+      "profit_gate": "REVIEW",
+      "shipping": {
+        "name": "CJPacket Eub",
+        "price_usd": 9.27,
+        "aging": "12-50"
+      },
+      "status": "PRICE_OR_PROFIT_BLOCKED"
+    },
+    {
+      "item_id": "2609080947141606700",
+      "lane": "bottoms",
+      "title": "Womens Casual Solid-color Wide-leg Pants",
+      "variant_id": "2609080947141607600",
+      "variant_name": null,
+      "supplier_cost_usd": 4.92,
+      "retail_price_usd": 9.99,
+      "retail_verified": true,
+      "profit_gate": "PASS",
+      "shipping": {
+        "name": "CJPacket Eub",
+        "price_usd": 7.12,
+        "aging": "12-50"
+      },
+      "status": "VERIFIED"
+    }
+  ]
+}

@@ -1,0 +1,378 @@
+{
+  "version": "BOOM-STYLIST-F35-ROUND2-V1",
+  "market": "IL",
+  "mode": "SHADOW_EXAM",
+  "production_effect": false,
+  "training_set": "HUNT-STYLIST-TRAINING-SET-V2-IL",
+  "assortment_gate": {
+    "status": "PASS",
+    "assortment": {
+      "footwear": 4,
+      "bottoms": 6,
+      "tops": 8,
+      "accessories": 10
+    }
+  },
+  "style_exam": {
+    "id": "STYLE-20-5",
+    "status": "READY_FOR_VISUAL_QA",
+    "product_truth_gate": "PASS",
+    "looks": [
+      {
+        "id": "LOOK-01",
+        "audience": "women",
+        "occasion": "casual_street",
+        "items": [
+          {
+            "role": "top",
+            "product_id": "1628",
+            "title": "All-Over Print Oversized Cotton Hoodie",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          },
+          {
+            "role": "bottom",
+            "product_id": "2609080947141606700",
+            "title": "Womens Casual Solid-color Wide-leg Pants",
+            "provider": "CJdropshipping",
+            "verified_markets": [
+              "IL"
+            ],
+            "shipping_flag": "NORMAL_SHIPPING_BURDEN"
+          },
+          {
+            "role": "footwear",
+            "product_id": "2609080904291620900",
+            "title": "New Style Suede Strappy Sandals With A Back-strap Horsebit Buckle For Women",
+            "provider": "CJdropshipping",
+            "verified_markets": [
+              "IL"
+            ],
+            "shipping_flag": "HIGH_SHIPPING_BURDEN"
+          },
+          {
+            "role": "accessory",
+            "product_id": "458",
+            "title": "All-Over Print Beanie",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          },
+          {
+            "role": "bag",
+            "product_id": "262",
+            "title": "All-Over Print Drawstring Bag",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          }
+        ],
+        "product_truth_il": true,
+        "high_shipping_burden_items": [
+          "2609080904291620900"
+        ],
+        "commercial_note": "STYLE_OK_FOR_TRAINING_BUT_DO_NOT_HERO_WITHOUT_SHIPPING_STRATEGY"
+      },
+      {
+        "id": "LOOK-02",
+        "audience": "women",
+        "occasion": "smart_casual",
+        "items": [
+          {
+            "role": "top",
+            "product_id": "1590",
+            "title": "All-Over Print Oversized Cotton Sweatshirt",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          },
+          {
+            "role": "bottom",
+            "product_id": "2609070646371634700",
+            "title": "Womens Casual Fashionable Long Pants With An Elastic Waist And Pleats",
+            "provider": "CJdropshipping",
+            "verified_markets": [
+              "IL"
+            ],
+            "shipping_flag": "NORMAL_SHIPPING_BURDEN"
+          },
+          {
+            "role": "footwear",
+            "product_id": "2609081212521623500",
+            "title": "Womens Plus-Size Flat-Fabric Loafer Shoes",
+            "provider": "CJdropshipping",
+            "verified_markets": [
+              "IL"
+            ],
+            "shipping_flag": "HIGH_SHIPPING_BURDEN"
+          },
+          {
+            "role": "accessory",
+            "product_id": "630",
+            "title": "All-Over Print Bandana",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          },
+          {
+            "role": "tech",
+            "product_id": "181",
+            "title": "Clear Case for iPhone®",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          }
+        ],
+        "product_truth_il": true,
+        "high_shipping_burden_items": [
+          "2609081212521623500"
+        ],
+        "commercial_note": "STYLE_OK_FOR_TRAINING_BUT_DO_NOT_HERO_WITHOUT_SHIPPING_STRATEGY"
+      },
+      {
+        "id": "LOOK-03",
+        "audience": "women",
+        "occasion": "weekend",
+        "items": [
+          {
+            "role": "top",
+            "product_id": "388",
+            "title": "All-Over Print Recycled Unisex Hoodie",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          },
+          {
+            "role": "bottom",
+            "product_id": "507",
+            "title": "All-Over Print Biker Shorts",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          },
+          {
+            "role": "footwear",
+            "product_id": "2609090301381604500",
+            "title": "Women's Platform Round Head Ankle Boots",
+            "provider": "CJdropshipping",
+            "verified_markets": [
+              "IL"
+            ],
+            "shipping_flag": "HIGH_SHIPPING_BURDEN"
+          },
+          {
+            "role": "accessory",
+            "product_id": "630",
+            "title": "All-Over Print Bandana",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          },
+          {
+            "role": "bag",
+            "product_id": "262",
+            "title": "All-Over Print Drawstring Bag",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          }
+        ],
+        "product_truth_il": true,
+        "high_shipping_burden_items": [
+          "2609090301381604500"
+        ],
+        "commercial_note": "STYLE_OK_FOR_TRAINING_BUT_DO_NOT_HERO_WITHOUT_SHIPPING_STRATEGY"
+      },
+      {
+        "id": "LOOK-04",
+        "audience": "men",
+        "occasion": "smart_casual",
+        "items": [
+          {
+            "role": "top",
+            "product_id": "770",
+            "title": "Unisex Adidas Space-Dyed Polo Shirt | A591",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          },
+          {
+            "role": "bottom",
+            "product_id": "2609070326191624000",
+            "title": "Mens Straight Leg Solid Color Casual Linen Pants With Drawstring And Elastic Waist",
+            "provider": "CJdropshipping",
+            "verified_markets": [
+              "IL"
+            ],
+            "shipping_flag": "NORMAL_SHIPPING_BURDEN"
+          },
+          {
+            "role": "footwear",
+            "product_id": "2609080443011631100",
+            "title": "New Men's Slip-on Casual Shoes For Everyday Wear",
+            "provider": "CJdropshipping",
+            "verified_markets": [
+              "IL"
+            ],
+            "shipping_flag": "HIGH_SHIPPING_BURDEN"
+          },
+          {
+            "role": "accessory",
+            "product_id": "638",
+            "title": "Adidas Dad Hat",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          },
+          {
+            "role": "tech",
+            "product_id": "681",
+            "title": "All-Over Print Case for AirPods®",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          }
+        ],
+        "product_truth_il": true,
+        "high_shipping_burden_items": [
+          "2609080443011631100"
+        ],
+        "commercial_note": "STYLE_OK_FOR_TRAINING_BUT_DO_NOT_HERO_WITHOUT_SHIPPING_STRATEGY"
+      },
+      {
+        "id": "LOOK-05",
+        "audience": "men",
+        "occasion": "weekend",
+        "items": [
+          {
+            "role": "top",
+            "product_id": "531",
+            "title": "Men's Adidas Quarter-Zip Pullover | A401",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          },
+          {
+            "role": "bottom",
+            "product_id": "2609090321561625000",
+            "title": "Men's Casual Pocket Shortsfashionable Street-style Trendy Shorts",
+            "provider": "CJdropshipping",
+            "verified_markets": [
+              "IL"
+            ],
+            "shipping_flag": "NORMAL_SHIPPING_BURDEN"
+          },
+          {
+            "role": "footwear",
+            "product_id": "2609080443011631100",
+            "title": "New Men's Slip-on Casual Shoes For Everyday Wear",
+            "provider": "CJdropshipping",
+            "verified_markets": [
+              "IL"
+            ],
+            "shipping_flag": "HIGH_SHIPPING_BURDEN"
+          },
+          {
+            "role": "accessory",
+            "product_id": "1586",
+            "title": "Adidas Fundamental Alliance Cap | AH607",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          },
+          {
+            "role": "bag",
+            "product_id": "279",
+            "title": "All-Over Print Backpack",
+            "provider": "Printful",
+            "verified_markets": [
+              "IL",
+              "DE",
+              "US"
+            ],
+            "shipping_flag": "GLOBAL_SOURCE"
+          }
+        ],
+        "product_truth_il": true,
+        "high_shipping_burden_items": [
+          "2609080443011631100"
+        ],
+        "commercial_note": "STYLE_OK_FOR_TRAINING_BUT_DO_NOT_HERO_WITHOUT_SHIPPING_STRATEGY"
+      }
+    ],
+    "subjective_score_claimed": false,
+    "reason": "Five complete verified looks exist for IL; visual coherence, color harmony and brand-fit still require visual QA."
+  },
+  "commerce_exam": {
+    "status": "PASS_WITH_WARNINGS",
+    "warning": "High shipping-to-retail ratio on several footwear items; use for style training, not automatic hero placement.",
+    "high_shipping_look_count": 5
+  },
+  "mastery_change": false,
+  "next": [
+    "Run Visual QA on exact product images/mockups.",
+    "Score style coherence and HUNT brand fit only after visual evidence.",
+    "Keep high-shipping footwear out of commercial hero slots unless shipping/bundle economics improve."
+  ]
+}
