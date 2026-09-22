@@ -317,6 +317,47 @@
   }
 
 
+
+  function renderProfitMission(){
+    const p=data.profitEngine||{};
+    const engine=window.BoomProfitEngine;
+    const mission=$("#bs-profit-mission");
+    const kpis=$("#bs-profit-kpis");
+    const modules=$("#bs-profit-modules");
+    const loop=$("#bs-profit-loop");
+    const milestones=$("#bs-profit-milestones");
+    const target=Number(p.mission?.target_net_profit_per_hour_usd||engine?.targetNetProfitPerHourUsd||10000);
+    const current=engine?.evaluateHour?engine.evaluateHour({}):null;
+    if(mission){
+      mission.innerHTML=`<div><small>MISSION TARGET</small><strong>${target.toLocaleString()}+ <em>verified net profit / hour</em></strong>
+        <p>${esc(p.mission?.rule||"Target is directional, not guaranteed.")}</p></div>
+        <div class="bs-profit-state"><span>ACTUAL NOW</span><b>${current?.verified?"VERIFIED":"UNKNOWN"}</b><small>${esc(current?.status||"LIVE EVIDENCE NOT CONNECTED")}</small></div>`;
+    }
+    if(kpis){
+      kpis.innerHTML=[
+        metric("UNKNOWN","Verified Net Profit / Hour"),
+        metric("$"+target.toLocaleString(),"Mission target / Hour"),
+        metric("UNKNOWN","Target gap"),
+        metric("UNKNOWN","Net Profit / Order"),
+        metric("UNKNOWN","CAC"),
+        metric("UNKNOWN","LTV")
+      ].join("");
+    }
+    if(modules){
+      modules.innerHTML=(p.modules||[]).map(x=>`<article class="bs-profit-card">
+        <div class="bs-skill-head"><strong>${esc(x.id)}</strong><span class="bs-status ${x.owner_gate?"NEXT":"DONE"}">${x.owner_gate?"OWNER GATE":"ANALYZE"}</span></div>
+        <small>${esc(x.owner)}</small><p>${esc(x.purpose)}</p>
+        ${x.material_action?`<code>material: ${esc(x.material_action)}</code>`:""}
+      </article>`).join("");
+    }
+    if(loop){
+      loop.innerHTML=(p.hourly_loop||[]).map((x,i)=>`<article class="bs-journey"><h3>${i+1}. ${esc(x)}</h3></article>`).join("");
+    }
+    if(milestones){
+      milestones.innerHTML=(p.milestone_policy?.sequence_usd_per_hour||[]).map(x=>`<span>${Number(x).toLocaleString()}/h</span>`).join("");
+    }
+  }
+
   function renderAIOperatingFactory(){
     const skills=data.operationalSkills||{};
     const templates=data.workflowTemplates||{};
@@ -577,12 +618,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
