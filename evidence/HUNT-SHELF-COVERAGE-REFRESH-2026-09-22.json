@@ -1,0 +1,48 @@
+{
+  "version": "HUNT-SHELF-COVERAGE-REFRESH-2026-09-22-V1",
+  "observed_at": "2026-09-22T13:30:18.951241Z",
+  "catalog": {
+    "rows": 117,
+    "unique_products": {
+      "CJdropshipping": 76,
+      "Printful": 22,
+      "Gooten": 18
+    },
+    "duplicate_catalog_rows": {
+      "Printful": 1
+    }
+  },
+  "fresh_shelf_verified_il": {
+    "total": 57,
+    "by_provider": {
+      "CJdropshipping": 57,
+      "Printful": 0,
+      "Gooten": 0
+    },
+    "by_category": {
+      "dresses": 17,
+      "bags": 14,
+      "phoneaccessories": 13,
+      "toys": 6,
+      "beauty": 4,
+      "pets": 1,
+      "plussize": 1,
+      "suits": 1
+    }
+  },
+  "provider_partial_truth": {
+    "Printful": {
+      "live_unique_products": 22,
+      "in_stock_variants": 550,
+      "shipping_verified": false
+    },
+    "Gooten": {
+      "live_unique_products": 18,
+      "variants_verified": false,
+      "shipping_verified": false
+    }
+  },
+  "launch_truth": "BLOCKED_PARTIAL_FRESH_INVENTORY",
+  "target_claimed": false,
+  "note": "17×1,000 inventory target is not claimed. Current full Product Truth supports only 57 Fresh Shelf products for IL."
+}
