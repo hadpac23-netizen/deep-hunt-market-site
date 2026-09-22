@@ -210,6 +210,18 @@
         "Admin RLS reads only for orders, finance, BOOM runs and decisions",
         "Raw analytics session identifiers are not fetched in browser; session metric remains UNKNOWN until server aggregate"
       ]
+    },
+    {
+      "id": "fresh_shelf_product_truth",
+      "type": "PRODUCT_TRUTH_EVALUATOR",
+      "status": "PILOT_PROVEN_FULL_REFRESH_PENDING",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "EVIDENCE_ONLY",
+      "evidence": [
+        "CJ quote endpoint is canonical for stock + destination shipping",
+        "3 Israel pilot products have fresh price/stock/shipping observations",
+        "recheck_before_checkout remains unchanged and requires checkout-time re-quote"
+      ]
     }
   ],
   "security_truth_rule": "verify_jwt=false in platform metadata is not by itself proof of exposure; webhook/custom-auth functions must be reviewed by their actual code/auth contract before classification.",
