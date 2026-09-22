@@ -1,57 +1,55 @@
 {
   "version": "HUNT-EPROLO-TECH-WAVE5-VISUAL-COMPLIANCE-QA-V1",
   "date": "2026-09-23",
-  "mode": "SHADOW_VISUAL_COMPLIANCE_QA",
+  "mode": "SHADOW_QA",
   "market": "IL",
   "production_effect": false,
   "items": [
     {
       "product_id": "29703672",
-      "status": "POWERED_ELECTRONICS_PERFORMANCE_REVIEW",
-      "reason": "Exact image is clean, but noise-reduction/performance and powered-electronics compliance require verification before shelf activation."
+      "status": "COMPATIBILITY_COMPLIANCE_REVIEW",
+      "reason": "Exact Type-C microphone image is clean, but active electronics and interface compatibility require verification before shelf use."
     },
     {
       "product_id": "26935524",
-      "status": "PASS_SHADOW_SHELF_SPEC_REVIEW",
-      "reason": "Generic card reader with clean exact variant image. USB 3.0/interface specs must be verified before Production, but it is acceptable as a Shadow candidate."
+      "status": "PASS_SHADOW_SHELF",
+      "reason": "Generic USB 3.0 multi-card reader; exact variant image is clear and product/variant presentation is consistent."
     },
     {
       "product_id": "31594991",
-      "status": "BLOCKED_BRAND_HEALTH_CLAIMS",
-      "reason": "Exact image includes third-party watermark/branding and health/GPS/waterproof claims. Requires clean imagery and claims verification."
+      "status": "BLOCKED_BRAND_HEALTH_CLAIMS_IMAGE",
+      "reason": "Exact image contains visible third-party branding/watermarking and health/GPS/waterproof promotional claims; do not use on HUNT shelf without clean authorized imagery and claim verification."
     },
     {
       "product_id": "19374325",
-      "status": "BATTERY_CAPACITY_COMPLIANCE_REVIEW",
-      "reason": "Bluetooth headset listing also claims large-capacity power-bank functionality. Battery/capacity/compliance proof required."
+      "status": "COMPLIANCE_REVIEW",
+      "reason": "Bluetooth headset exact image is clean, but active wireless electronics require compliance review before shelf use."
     },
     {
       "product_id": "31423107",
-      "status": "PERFORMANCE_COMPLIANCE_REVIEW",
-      "reason": "Generic image is clean, but the 300M range claim and powered-network-device compliance require verification."
+      "status": "REGULATORY_COMPLIANCE_REVIEW",
+      "reason": "Wi-Fi repeater exact variant is clear, but radio/network equipment requires market compliance verification before shelf use."
     },
     {
       "product_id": "21040880",
-      "status": "VARIANT_FUNCTION_MISMATCH_REVIEW",
-      "reason": "Selected variant is 'Basic Pink' while the listing promises wireless charging/Bluetooth functions. Exact functional scope is not yet proven."
+      "status": "FUNCTIONAL_MATCH_REVIEW",
+      "reason": "Exact Basic Pink image does not clearly substantiate all wireless-charging/Bluetooth/selfie functions asserted by the source listing."
     }
   ],
   "summary": {
     "reviewed": 6,
     "pass_shadow_shelf": 1,
-    "powered_electronics_review": 2,
-    "blocked_brand_health_claims": 1,
-    "battery_capacity_review": 1,
-    "variant_function_mismatch": 1,
+    "compatibility_or_compliance_review": 4,
+    "image_claim_blocked": 1,
     "production_ready": 0,
     "checkout_live": 0
   },
-  "new_truth_rules": [
-    "Implausible storage-capacity claims require proof before any shelf candidacy.",
-    "Battery/power-bank products require capacity and compliance proof.",
-    "Powered electronics require compliance/performance review before Production.",
-    "Variant functional scope must match listing promises.",
-    "Health/GPS/waterproof claims require separate claims verification.",
-    "Shadow shelf may include a generic accessory with spec review pending, but Production may not."
+  "hard_rules": [
+    "Shipping economics never override compatibility, claim or compliance truth.",
+    "Health/performance claims in supplier imagery require verification.",
+    "Active wireless/radio electronics require compliance review before shelf use.",
+    "Exact variant image must substantiate the source listing.",
+    "No Production exposure.",
+    "Final profit remains blocked until EPROLO order-cost API behavior is resolved."
   ]
 }

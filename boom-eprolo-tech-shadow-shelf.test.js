@@ -43,9 +43,10 @@ assert.equal(w5.summary.checkout_live,0);
 assert.equal(qa5.production_effect,false);
 assert.equal(qa5.summary.reviewed,6);
 assert.equal(qa5.summary.pass_shadow_shelf,1);
-assert.equal(qa5.summary.blocked_brand_health_claims,1);
-assert.equal(qa5.summary.battery_capacity_review,1);
-assert.equal(qa5.summary.variant_function_mismatch,1);
+assert.equal(qa5.summary.compatibility_or_compliance_review,4);
+assert.equal(qa5.summary.image_claim_blocked,1);
+assert.equal(qa5.summary.production_ready,0);
+assert.equal(qa5.summary.checkout_live,0);
 
 assert.equal(shelf.version,"HUNT-EPROLO-TECH-SHADOW-SHELF-V2");
 assert.equal(shelf.production_effect,false);
@@ -69,7 +70,7 @@ assert(shelf.products.every(x=>x.production_exposure===false));
 
 const held=new Set([
   ...qa4.items.filter(x=>x.status!=="PASS_SHADOW_SHELF").map(x=>x.product_id),
-  ...qa5.items.filter(x=>x.status!=="PASS_SHADOW_SHELF_SPEC_REVIEW").map(x=>x.product_id)
+  ...qa5.items.filter(x=>x.status!=="PASS_SHADOW_SHELF").map(x=>x.product_id)
 ]);
 for(const id of ["31715253","29971464","29761463","31405053","29703672","31594991","19374325","31423107","21040880"]){
   assert(held.has(id));
