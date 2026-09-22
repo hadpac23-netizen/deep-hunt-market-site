@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-OPERATIONAL-SKILLS-V1",
+  "version": "BOOM-OPERATIONAL-SKILLS-V1.1-PROFIT",
   "mode": "SHADOW",
   "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
   "skills": [
@@ -163,6 +163,49 @@
       ],
       "tools": [
         "f60t_signal_tools"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "attribute_marketing_profit",
+      "title": "Attribute Marketing Profit",
+      "owner": "growth_brain",
+      "purpose": "Join real order, finance, touchpoint and actual channel-cost evidence before claiming marketing net profit or CAC.",
+      "inputs": [
+        "time_window",
+        "channel_or_campaign"
+      ],
+      "outputs": [
+        "attribution_state",
+        "realized_profit",
+        "marketing_net_profit",
+        "cac",
+        "blockers"
+      ],
+      "tools": [
+        "supabase_runtime"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_hourly_profit",
+      "title": "Review Hourly Profit",
+      "owner": "boom_orchestrator",
+      "purpose": "Read exact-VERIFIED hourly profit evidence, calculate the mission gap and propose next-hour actions without execution.",
+      "inputs": [
+        "hour_window",
+        "mission_target"
+      ],
+      "outputs": [
+        "verified_profit_per_hour",
+        "target_gap",
+        "constraint",
+        "proposals"
+      ],
+      "tools": [
+        "supabase_runtime"
       ],
       "material": false,
       "owner_gate": false
