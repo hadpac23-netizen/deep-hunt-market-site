@@ -1,0 +1,49 @@
+{
+  "version": "HUNT-EPROLO-TECH-VISUAL-QA-V1",
+  "date": "2026-09-22",
+  "mode": "SHADOW_VISUAL_QA",
+  "market": "IL",
+  "production_effect": false,
+  "items": [
+    {
+      "product_id": "31715253",
+      "status": "COMPATIBILITY_REVIEW",
+      "reason": "Exact variant image is clean, but the listing is explicitly for WHOOP hardware. Compatibility must be verified before shelf use."
+    },
+    {
+      "product_id": "29971464",
+      "status": "BRAND_COMPATIBILITY_REVIEW",
+      "reason": "Exact variant image uses third-party watch-device imagery and the listing references multiple brands. Hold until compatibility/rights presentation is cleaned up."
+    },
+    {
+      "product_id": "29761463",
+      "status": "COMPATIBILITY_REVIEW",
+      "reason": "Exact variant image is clean, but the listing claims compatibility with specific Sennheiser models. Functional compatibility must be verified."
+    },
+    {
+      "product_id": "31417803",
+      "status": "PASS_SHADOW_SHELF",
+      "reason": "Exact variant image is clean, generic and consistent with the listed decorative ring-watch product."
+    },
+    {
+      "product_id": "31405053",
+      "status": "COMPATIBILITY_REVIEW",
+      "reason": "Exact variant image is clean, but source title/variant naming are not clear enough to verify device compatibility confidently."
+    }
+  ],
+  "summary": {
+    "reviewed": 5,
+    "pass_shadow_shelf": 1,
+    "compatibility_review": 3,
+    "brand_compatibility_review": 1,
+    "production_ready": 0,
+    "checkout_live": 0
+  },
+  "hard_rules": [
+    "Shipping economics do not override compatibility truth.",
+    "Third-party device imagery or brand compatibility claims require separate review.",
+    "Exact variant image required.",
+    "No Production exposure.",
+    "Final profit remains blocked until EPROLO order-cost API behavior is resolved."
+  ]
+}

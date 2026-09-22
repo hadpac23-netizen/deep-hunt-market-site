@@ -1,0 +1,249 @@
+{
+  "version": "HUNT-EPROLO-WAVE3A-IL-SCAN-V1",
+  "date": "2026-09-22",
+  "mode": "READ_ONLY_SHADOW",
+  "destination": "IL",
+  "production_effect": false,
+  "summary": {
+    "checked": 8,
+    "shipping_verified": 7,
+    "normal_shipping": 0,
+    "high_shipping_review": 7,
+    "final_profit_verified": 0,
+    "checkout_live": 0
+  },
+  "results": [
+    {
+      "department": "men",
+      "category": "men-bottoms",
+      "product_id": "25354414",
+      "supplier_category_id": 1230,
+      "title": "Autumn and Winter Men's New Sports and Leisure Light Plate Slim Fit Fitness Pants Men's Long Pants, Small Foot Strap Pants",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "638853390",
+        "title": "Kaqijia logo-XL",
+        "supplier_cost_usd": 4.95,
+        "inventory_quantity": 764,
+        "weight_g": 320.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202403/7D7D247C0A08CC27415BD395767DC573.JPEG",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 10.55,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 1.056,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 9.99,
+        "projected_product_profit_usd": 4.14,
+        "projected_product_margin": 0.4145
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "men",
+      "category": "men-tops",
+      "product_id": "24539904",
+      "supplier_category_id": 1256,
+      "title": "New Autumn Pullover Men's Sweater O-neck Patchwork Long Sleeve Warm Slim Sweaters Men Casual Fashion Sweater Men Clothing",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "629377665",
+        "title": "blue-2XL",
+        "supplier_cost_usd": 8.53,
+        "inventory_quantity": 999,
+        "weight_g": 500.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202312/6C65C2DAAA52B07B44795BCB6ACDAA9C.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 15.0,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 0.938,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 15.99,
+        "projected_product_profit_usd": 6.02,
+        "projected_product_margin": 0.3765
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "men",
+      "category": "men-shoes",
+      "product_id": "29971473",
+      "supplier_category_id": 63,
+      "title": "New Men's Casual Shoes, Comfortable and Breathable Sports Shoes, Slip-On Dad Shoes, Soft Sole Cloth Shoes",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "692464518",
+        "title": "Green-40",
+        "supplier_cost_usd": 3.13,
+        "inventory_quantity": 4998,
+        "weight_g": 650.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/9BBB42ED3DC0A9113BF83D5AD4360235.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 19.11,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 2.392,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 7.99,
+        "projected_product_profit_usd": 4.14,
+        "projected_product_margin": 0.5183
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "men",
+      "category": "home-slippers",
+      "product_id": "31422894",
+      "supplier_category_id": 63,
+      "title": "Men's Home Bath Anti-slip Indoor Couple Slippers",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "712498827",
+        "title": "Green-40-41",
+        "supplier_cost_usd": 2.49,
+        "inventory_quantity": 109,
+        "weight_g": 463.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/92E1F0C2DF6785F63230979B855ED457.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 13.77,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 1.723,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 7.99,
+        "projected_product_profit_usd": 4.78,
+        "projected_product_margin": 0.5984
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "home",
+      "category": "lighting",
+      "product_id": "31441975",
+      "supplier_category_id": 109,
+      "title": "Smart LED Motion Sensor Night Light with Wireless Charging and Magnetic Base, Bedside Lamp for Bedroom, Cabinet, Home Use",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "712700343",
+        "title": "White Light",
+        "supplier_cost_usd": 0.94,
+        "inventory_quantity": 87263,
+        "weight_g": 110.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/8F6987612A07528215830132FD867CB8.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 6.89,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 1.15,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 5.99,
+        "projected_product_profit_usd": 4.51,
+        "projected_product_margin": 0.7531
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "home",
+      "category": "lighting",
+      "product_id": "29095247",
+      "supplier_category_id": 109,
+      "title": "Intelligent ultra-thin wireless LED human body sensing light rechargeable magnetic strip light strip light strip",
+      "status": "NO_IL_SHIPPING_QUOTE"
+    },
+    {
+      "department": "home",
+      "category": "lighting",
+      "product_id": "29509210",
+      "supplier_category_id": 109,
+      "title": "Human body sensing night light intelligent charging bedroom bedside voice control home wireless corridor cabinet night light",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "687420872",
+        "title": "1250mAh - White Light-LED",
+        "supplier_cost_usd": 3.01,
+        "inventory_quantity": 603,
+        "weight_g": 250.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202506/ECC62AB421B4933D3AF05E5EF9ADA28D.JPEG",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 10.13,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 1.268,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 7.99,
+        "projected_product_profit_usd": 4.26,
+        "projected_product_margin": 0.5333
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "home",
+      "category": "digital-clock",
+      "product_id": "28638952",
+      "supplier_category_id": 110,
+      "title": "Student electronic clock Internet celebrity LED large screen mirror intelligent alarm clock luminous temperature and humidity pr",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "676996951",
+        "title": "Black and white light ",
+        "supplier_cost_usd": 5.02,
+        "inventory_quantity": 403,
+        "weight_g": 230.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202502/02D0F7E0B7AF17825A59ECEF4CB7A09A.JPEG",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 9.67,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 0.968,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 9.99,
+        "projected_product_profit_usd": 4.07,
+        "projected_product_margin": 0.4075
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 const fs=require("fs"),assert=require("assert");
 const scan=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-WAVE2-IL-SCAN-2026-09-22.json","utf8"));
 const qa=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-WAVE2-VISUAL-QA-2026-09-22.json","utf8"));
-const shelf=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-PETS-SHADOW-SHELF-2026-09-22.json","utf8"));
+const shelf=JSON.parse(fs.readFileSync("evidence/HUNT-EPROLO-WAVE2-SHADOW-SHELF-2026-09-22.json","utf8"));
 const contract=JSON.parse(fs.readFileSync("boom-eprolo-provider-adapter-contract.json","utf8"));
 const adapters=JSON.parse(fs.readFileSync("boom-provider-adapters-contract.json","utf8"));
 
@@ -38,5 +38,5 @@ assert.equal(contract.current_live_validation.wave2.checked,10);
 assert.equal(contract.current_live_validation.wave2.pet_shadow_shelf_products,2);
 assert.equal(contract.current_live_validation.wave2.final_profit_verified,0);
 assert.equal(adapters.providers.EPROLO.pet_shadow_shelf_products,2);
-assert.equal(adapters.providers.EPROLO.total_shadow_shelf_products,8);
+assert.equal(adapters.providers.EPROLO.total_shadow_shelf_products,9);
 console.log("PASS boom-eprolo-wave2");

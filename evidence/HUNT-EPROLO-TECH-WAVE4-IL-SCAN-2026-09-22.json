@@ -1,0 +1,177 @@
+{
+  "version": "HUNT-EPROLO-TECH-WAVE4-IL-SCAN-V1",
+  "date": "2026-09-22",
+  "mode": "READ_ONLY_SHADOW",
+  "destination": "IL",
+  "production_effect": false,
+  "summary": {
+    "checked": 5,
+    "shipping_verified": 5,
+    "normal_shipping": 4,
+    "high_shipping_review": 1,
+    "final_profit_verified": 0,
+    "checkout_live": 0
+  },
+  "results": [
+    {
+      "department": "tech",
+      "category": "wearable-accessories",
+      "product_id": "31715253",
+      "supplier_category_id": 43,
+      "title": "Cross-border Hot Sale Waterproof Nylon Strap with Silver Metal for Whoop 5.0 PEAK/LIFE",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "716810168",
+        "title": "Dark Red-Suitable for WHOOP MG",
+        "supplier_cost_usd": 11.55,
+        "inventory_quantity": 99,
+        "weight_g": 50.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202606/ACBBE498D1B35BA767E1AD6655FF961C.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.07,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 0.242,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 20.99,
+        "projected_product_profit_usd": 7.55,
+        "projected_product_margin": 0.3597
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "tech",
+      "category": "wearable-accessories",
+      "product_id": "29971464",
+      "supplier_category_id": 43,
+      "title": "Apple iWatch, Huawei Watch 5, Samsung GT5 Silicone Watch Band with Soft Magnetic Adsorption and Lychee Pattern",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "692464394",
+        "title": "Gray with Orange-18MM Universal",
+        "supplier_cost_usd": 2.54,
+        "inventory_quantity": 99999,
+        "weight_g": 50.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/0E4D3DDAA1F0D4544045E00422A5680E.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.14,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 0.643,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 7.99,
+        "projected_product_profit_usd": 4.73,
+        "projected_product_margin": 0.5921
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "tech",
+      "category": "audio-accessories",
+      "product_id": "29761463",
+      "supplier_category_id": 45,
+      "title": "Adapter for Sennheiser HD650 Earphone Jack HD580 HD25 HD518 HD660 HD600 Jack",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "690149375",
+        "title": "Style 3",
+        "supplier_cost_usd": 2.34,
+        "inventory_quantity": 550,
+        "weight_g": 50.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202507/E698624DBDE6B9949C2B175459F4D534.JPEG",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.51,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 0.788,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 6.99,
+        "projected_product_profit_usd": 4.02,
+        "projected_product_margin": 0.5752
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "tech",
+      "category": "watch-cases",
+      "product_id": "21997241",
+      "supplier_category_id": 43,
+      "title": "Suitable for iwatch8 Apple Watch Case Protection Case PC Single Row Diamond Hollow Case 41MM45MM",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "600019070",
+        "title": "Rose powder-45MM",
+        "supplier_cost_usd": 1.41,
+        "inventory_quantity": 797,
+        "weight_g": 50.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202306/85E440E8301B6A7FB2017370506C667D.jpeg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.07,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 0.846,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 5.99,
+        "projected_product_profit_usd": 4.04,
+        "projected_product_margin": 0.6746
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "tech",
+      "category": "wearable-accessories",
+      "product_id": "31417803",
+      "supplier_category_id": 43,
+      "title": "Fashionable Silver Flower Ring Watch with Large Numbers, Stylish and Unique Decorative Watch for Students, Wholesale",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "712438901",
+        "title": "Green",
+        "supplier_cost_usd": 1.64,
+        "inventory_quantity": 889,
+        "weight_g": 50.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/EE8AA8742123BF4EBC67BCC1D960286F.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.51,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 0.788,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 6.99,
+        "projected_product_profit_usd": 4.72,
+        "projected_product_margin": 0.6754
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    }
+  ]
+}

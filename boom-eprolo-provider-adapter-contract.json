@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V4",
+  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V5",
   "date": "2026-09-22",
   "provider": "EPROLO",
   "owner": "commerce_truth_brain",
@@ -52,9 +52,10 @@
     },
     "order_cost_estimate": {
       "endpoint": "getCostByProduct.html",
-      "status": "METHOD_OR_AUTH_PLACEMENT_RECHECK_REQUIRED",
+      "official_docs_method": "GET",
+      "live_status": "DOC_LIVE_MISMATCH_SUPPORT_REQUIRED",
+      "observed": "GET_405_POST_REACHES_ENDPOINT_BUT_PARAMETERS_NOT_BOUND",
       "final_profit_gate": "BLOCKED",
-      "observed_detail": "GET_405_POST_FORM_415_POST_JSON_SIGN_NOT_READ_FROM_BODY",
       "live_order_created": false
     }
   },
@@ -101,7 +102,7 @@
     "no fake stock, shipping, margin or retail price"
   ],
   "storefront_role": "SUPPLIER_MESH_CONNECTED_NOT_LIVE_SHELF",
-  "next": "VERIFY_EPROLO_ORDER_COST_ESTIMATE_METHOD_THEN_RUN_FINAL_PROFIT_GATE_ON_6_WOMEN_AND_2_PET_SHADOW_CANDIDATES",
+  "next": "EPROLO_SUPPORT_CLARIFY_ORDER_COST_API_AND_EXPAND_GENERIC_LOW_SHIPPING_TECH_CANDIDATES",
   "variant_truth_policy": {
     "component_split_detection": "If component variants such as Top/Skirt coexist with Set/2pcs variants, a full-set listing must use Set/2pcs variant truth.",
     "exact_variant_image_required": true,
@@ -143,10 +144,30 @@
       "visual_qa_pass": 2,
       "claim_image_blocked": 1
     },
-    "total_shadow_shelf_products": 8,
+    "total_shadow_shelf_products": 9,
     "departments_with_shadow_candidates": [
       "women",
-      "pets"
-    ]
+      "pets",
+      "tech"
+    ],
+    "wave3": {
+      "men_home_checked": 8,
+      "men_home_shipping_verified": 7,
+      "men_home_normal_shipping": 0,
+      "kitchen_tech_checked": 8,
+      "kitchen_tech_shipping_verified": 8,
+      "kitchen_tech_normal_shipping": 1
+    },
+    "tech_wave4": {
+      "checked": 5,
+      "shipping_verified": 5,
+      "normal_shipping": 4,
+      "visual_pass": 1,
+      "compatibility_review": 3,
+      "brand_compatibility_review": 1,
+      "tech_shadow_shelf_products": 1,
+      "final_profit_verified": 0,
+      "checkout_live": 0
+    }
   }
 }

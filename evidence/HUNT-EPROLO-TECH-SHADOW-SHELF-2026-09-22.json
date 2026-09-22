@@ -1,0 +1,59 @@
+{
+  "version": "HUNT-EPROLO-TECH-SHADOW-SHELF-V1",
+  "date": "2026-09-22",
+  "mode": "SHADOW_CANDIDATE_SHELF",
+  "market": "IL",
+  "provider": "EPROLO",
+  "production_effect": false,
+  "summary": {
+    "products": 1,
+    "exact_variant_images": 1,
+    "stock_verified": 1,
+    "shipping_verified_il": 1,
+    "final_profit_verified": 0,
+    "checkout_live": 0,
+    "fulfillment_live": 0
+  },
+  "products": [
+    {
+      "provider": "EPROLO",
+      "product_id": "31417803",
+      "department": "tech",
+      "category": "wearable-accessories",
+      "supplier_title": "Fashionable Silver Flower Ring Watch with Large Numbers, Stylish and Unique Decorative Watch for Students, Wholesale",
+      "variant_id": "712438901",
+      "variant_title": "Green",
+      "stock_verified": true,
+      "stock_available": true,
+      "inventory_quantity": 889,
+      "supplier_cost_usd": 1.64,
+      "shipping_il": {
+        "cost_usd": 5.51,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 0.788,
+      "retail_price_shadow_usd": 6.99,
+      "customer_shipping_grossup_shadow_usd": 6.05,
+      "customer_total_shadow_usd": 13.04,
+      "projected_product_profit_shadow_usd": 4.72,
+      "projected_product_margin_shadow": 0.6754,
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/EE8AA8742123BF4EBC67BCC1D960286F.jpg",
+      "visual_status": "PASS_SHELF",
+      "compatibility_gate": "NOT_APPLICABLE_GENERIC_PRODUCT",
+      "final_profit_verified": false,
+      "final_profit_blocker": "EPROLO_ORDER_COST_DOC_LIVE_MISMATCH",
+      "production_exposure": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    }
+  ],
+  "hard_rules": [
+    "Shadow shelf only.",
+    "Compatibility-review products stay out.",
+    "Brand/device imagery review stays separate.",
+    "No live checkout or fulfillment.",
+    "No Production mutation.",
+    "Final profit remains blocked until EPROLO order-cost API is verified."
+  ]
+}

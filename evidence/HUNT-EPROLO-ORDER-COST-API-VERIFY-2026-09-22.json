@@ -1,0 +1,65 @@
+{
+  "version": "HUNT-EPROLO-ORDER-COST-API-VERIFY-V1",
+  "date": "2026-09-22",
+  "provider": "EPROLO",
+  "mode": "READ_ONLY_VERIFICATION",
+  "production_effect": false,
+  "endpoint": "getCostByProduct.html",
+  "official_documentation": {
+    "method": "GET",
+    "auth": {
+      "apiKey": "HEADER",
+      "timestamp": "QUERY",
+      "sign": "QUERY",
+      "sign_formula": "MD5(apiKey + timestamp + apiSecret)"
+    },
+    "required_parameters": [
+      "shipping_country_code",
+      "skulistName.variantsid",
+      "skulistName.quantity"
+    ]
+  },
+  "live_observations": [
+    {
+      "attempt": "GET documented dotted query",
+      "result": "HTTP_405"
+    },
+    {
+      "attempt": "POST application/x-www-form-urlencoded",
+      "result": "HTTP_415"
+    },
+    {
+      "attempt": "POST JSON nested object",
+      "result": "HTTP_200_CODE_-1_PARAMETER_EMPTY"
+    },
+    {
+      "attempt": "POST query dotted + empty JSON body",
+      "result": "HTTP_200_CODE_-1_PARAMETER_EMPTY"
+    },
+    {
+      "attempt": "POST query bracket notation",
+      "result": "HTTP_200_CODE_-1_PARAMETER_EMPTY"
+    },
+    {
+      "attempt": "POST query JSON-string skulistName",
+      "result": "HTTP_200_CODE_-1_PARAMETER_EMPTY"
+    },
+    {
+      "attempt": "POST JSON stringified object/array skulistName",
+      "result": "HTTP_200_CODE_-1_PARAMETER_EMPTY"
+    }
+  ],
+  "conclusion": "DOC_LIVE_MISMATCH_SUPPORT_REQUIRED",
+  "safety": {
+    "live_order_created": false,
+    "checkout_activated": false,
+    "payment_attempted": false,
+    "production_mutated": false
+  },
+  "impact": {
+    "shipping_api": "VERIFIED_LIVE_IL",
+    "supplier_cost": "VERIFIED_FROM_FRESH_CATALOG_VARIANT",
+    "price_gate": "SHADOW_ONLY",
+    "final_profit": "BLOCKED_UNTIL_ORDER_COST_API_VERIFIED"
+  }
+}

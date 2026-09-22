@@ -1,0 +1,273 @@
+{
+  "version": "HUNT-EPROLO-WAVE3B-IL-SCAN-V1",
+  "date": "2026-09-22",
+  "mode": "READ_ONLY_SHADOW",
+  "destination": "IL",
+  "production_effect": false,
+  "summary": {
+    "checked": 8,
+    "shipping_verified": 8,
+    "normal_shipping": 1,
+    "high_shipping_review": 7,
+    "final_profit_verified": 0,
+    "checkout_live": 0
+  },
+  "results": [
+    {
+      "department": "kitchen",
+      "category": "tableware",
+      "product_id": "31342874",
+      "supplier_category_id": 112,
+      "title": "4-Cavity Silicone Ice Cream Mold with Lids, Large BPA-Free Frozen Dessert Tray, DIY Popsicle Maker Kit",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "711580635",
+        "title": "Pink-2",
+        "supplier_cost_usd": 2.84,
+        "inventory_quantity": 761,
+        "weight_g": 400.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202604/7543B4748EE8FFB5D993AD523654188A.JPEG",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 12.79,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 1.601,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 7.99,
+        "projected_product_profit_usd": 4.43,
+        "projected_product_margin": 0.5546
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "kitchen",
+      "category": "kitchen-tools",
+      "product_id": "26556212",
+      "supplier_category_id": 115,
+      "title": "Manual Beech Lemon Juicer",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "654069536",
+        "title": "Beech",
+        "supplier_cost_usd": 1.2,
+        "inventory_quantity": 629,
+        "weight_g": 50.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202406/B105ADA913F4DC31124F534B2EAF4C76.JPEG",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.07,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 0.846,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 5.99,
+        "projected_product_profit_usd": 4.25,
+        "projected_product_margin": 0.7097
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "kitchen",
+      "category": "drinkware",
+      "product_id": "31640357",
+      "supplier_category_id": 112,
+      "title": "Simple Hand-Drawn Stripe Ceramic Mug, Creative Multi-Color Gift Cup, Coffee Cup with Saucer",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "715592684",
+        "title": "Brown  Embossed Box-260ML",
+        "supplier_cost_usd": 3.24,
+        "inventory_quantity": 779,
+        "weight_g": 1050.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202605/DC6AC4C65A5EE015EBCF854429784F87.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 27.65,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 3.461,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 7.99,
+        "projected_product_profit_usd": 4.03,
+        "projected_product_margin": 0.5045
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "kitchen",
+      "category": "kitchen-textiles",
+      "product_id": "30370940",
+      "supplier_category_id": 127,
+      "title": "Cowboy Thick Canvas Apron Work Clothes Printing",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "697210414",
+        "title": "Red Brown-Custom Children's 57cm",
+        "supplier_cost_usd": 4.51,
+        "inventory_quantity": 4999,
+        "weight_g": 470.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202510/DCC17E9678C74A784726DDFAB100B6EC.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 13.92,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 1.393,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 9.99,
+        "projected_product_profit_usd": 4.58,
+        "projected_product_margin": 0.4585
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "tech",
+      "category": "phone-accessories",
+      "product_id": "31417827",
+      "supplier_category_id": 45,
+      "title": "Phone Case Wristband Ring Stand Back Strap Holder Universal Protective Cover Bracket Foldable Lazy Use",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "712439149",
+        "title": "26Push-Pull Bracket",
+        "supplier_cost_usd": 0.92,
+        "inventory_quantity": 888849,
+        "weight_g": 50.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/A7930DDBE0A8F27761B4F5088E4F5829.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 4.92,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 0.821,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 5.99,
+        "projected_product_profit_usd": 4.53,
+        "projected_product_margin": 0.7564
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "tech",
+      "category": "camera-accessories",
+      "product_id": "8532420",
+      "supplier_category_id": 39,
+      "title": "Wireless Bluetooth Smart Phone Camera Remote Control Shutter For Selfie Stick Monopod compatible Android IOS iPhone X iPhone 8",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "194051278",
+        "title": "Orange",
+        "supplier_cost_usd": 1.09,
+        "inventory_quantity": 1918,
+        "weight_g": 50.0
+      },
+      "exact_variant_image_url": "http://ae01.alicdn.com/kf/HTB1m1mGdjfguuRjSszcq6zb7FXaG.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.93,
+        "method": "YANWEN Express For Battery",
+        "shiptime": "15-40 Days"
+      },
+      "shipping_to_retail_ratio": 0.99,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 5.99,
+        "projected_product_profit_usd": 4.36,
+        "projected_product_margin": 0.728
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "tech",
+      "category": "card-reader",
+      "product_id": "31405053",
+      "supplier_category_id": 45,
+      "title": "Universal Multi-Function Card Reader for Apple Type-C Phones",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "712277287",
+        "title": "Dual SIM Dual Standby  Pearl Shine Bag Packaging",
+        "supplier_cost_usd": 1.67,
+        "inventory_quantity": 8432,
+        "weight_g": 50.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/BA7E1FBB061CD851C6616556F43EF3B1.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 4.92,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 0.704,
+      "commercial_training_flag": "NORMAL_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 6.99,
+        "projected_product_profit_usd": 4.69,
+        "projected_product_margin": 0.6711
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    },
+    {
+      "department": "tech",
+      "category": "phone-cases",
+      "product_id": "24799417",
+      "supplier_category_id": 36,
+      "title": "Original Graffiti Ornaments Phone Case Cute Pink TransparentSoft Silicone Phone Case For iPhone 15 14 13 12  Pro Max Cover",
+      "status": "SHIPPING_VERIFIED_PRICE_SHADOW",
+      "variant": {
+        "id": "632381971",
+        "title": "Pink-for iphone13",
+        "supplier_cost_usd": 0.69,
+        "inventory_quantity": 999,
+        "weight_g": 52.0
+      },
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202401/9B24ABAA3C34447CBCD2542BF1A357F6.jpg",
+      "image_scope": "EXACT_VARIANT",
+      "shipping_il": {
+        "cost_usd": 5.11,
+        "method": "YANWEN Express",
+        "shiptime": "10-18 Days"
+      },
+      "shipping_to_retail_ratio": 0.853,
+      "commercial_training_flag": "HIGH_SHIPPING_BURDEN",
+      "price_gate_shadow": {
+        "retail_usd": 5.99,
+        "projected_product_profit_usd": 4.76,
+        "projected_product_margin": 0.7948
+      },
+      "final_profit_verified": false,
+      "checkout": "DISABLED",
+      "fulfillment": "DISABLED"
+    }
+  ]
+}
