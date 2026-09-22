@@ -83,8 +83,8 @@
     {
       "id": "internal_sessions_24h",
       "label": "Internal sessions · 24h",
-      "source": "analytics_events.session_id",
-      "truth_rule": "Internal HUNT analytics only; not interchangeable with GA4 users."
+      "source": "SERVER_SIDE_AGGREGATE_PENDING",
+      "truth_rule": "Remain UNKNOWN in browser until a privacy-safe server-side aggregate is connected; do not fetch raw analytics session IDs client-side."
     },
     {
       "id": "real_orders",
@@ -135,6 +135,7 @@
     "Test orders never count as real orders or revenue.",
     "No button in Launch Command Center activates payment, supplier fulfillment, publishing, pricing or deployment.",
     "Overall READY is impossible while boom-control-plane-readiness.overall is NOT_READY_FOR_ACTIVATION.",
-    "Performance local PASS remains Preview-pending until PWA/runtime proof is complete."
+    "Performance local PASS remains Preview-pending until PWA/runtime proof is complete.",
+    "Launch Command Center never fetches raw analytics session identifiers in the browser."
   ]
 }
