@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V1.1-AUTOMATION",
+  "version": "BOOM-BRAIN-GAPS-V1.2-AI-OPERATING-FACTORY",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -329,6 +329,54 @@
       "status": "IN_PROGRESS",
       "source": "SECURITY",
       "next": "Payment/order/F60T/Owner paths classified. CJ public read-only quote still needs abuse/rate-limit proof before automation scale."
+    },
+    {
+      "id": "operational_skills_library",
+      "title": "Operational Skills Library",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "8 reusable HUNT skills are registered under canonical Brain owners; expand only from proven repeated work."
+    },
+    {
+      "id": "workflow_builder",
+      "title": "Workflow Builder",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "PLAN_ONLY compiler creates SHADOW plans from approved templates; no tool execution authority."
+    },
+    {
+      "id": "ai_tool_router",
+      "title": "AI Tool / Model Router",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "PLAN_ONLY routing policy scores Quality/Cost/Speed/Privacy/Readiness; Tool Gateway and Owner Gate remain authoritative."
+    },
+    {
+      "id": "workflow_templates",
+      "title": "Reusable Workflow Templates",
+      "owner": "boom_orchestrator",
+      "status": "DONE",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "8 canonical templates compile reusable skills; material templates end at Owner Gate."
+    },
+    {
+      "id": "creative_factory_surface",
+      "title": "HUNT Creative Factory",
+      "owner": "growth_brain",
+      "status": "IN_PROGRESS",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "Factory contract wraps existing A6/A7; generation/publish remain SHADOW until Preview E2E evidence."
+    },
+    {
+      "id": "build_repair_factory_surface",
+      "title": "Build & Repair Factory",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "AI_WORKFLOW_LEARNING",
+      "next": "Build/repair flows are canonical and SHADOW; prove Preview patch/test/review/rollback evidence before any deploy."
     }
   ]
 }
