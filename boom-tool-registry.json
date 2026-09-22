@@ -161,6 +161,18 @@
         "Requires processor/account/sandbox/callback/refund/finance/settlement/country/legal evidence",
         "Cannot activate any route or master switch"
       ]
+    },
+    {
+      "id": "checkout_order_tracking_proof",
+      "type": "CHECKOUT_ORDER_TRACKING_E2E_EVALUATOR",
+      "status": "CODED_SHADOW_BLOCKED_SUPPLIER_TRACKING",
+      "owner_plane": "run_evidence_plane",
+      "authority": "NONE",
+      "evidence": [
+        "Reads canonical payment session, order, event, fulfillment and pipeline evidence",
+        "Requires persisted supplier order id + tracking number + shipped event for E2E PASS",
+        "Test-only proof never implies live fulfillment readiness"
+      ]
     }
   ],
   "security_truth_rule": "verify_jwt=false in platform metadata is not by itself proof of exposure; webhook/custom-auth functions must be reviewed by their actual code/auth contract before classification.",
