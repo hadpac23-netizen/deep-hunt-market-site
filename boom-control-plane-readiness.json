@@ -128,6 +128,11 @@
       "id": "first_real_order_profit_proof",
       "status": "CODED_SHADOW_BLOCKED_PAYMENT_ACCEPTANCE",
       "evidence": "Proof Harness + Studio panel coded. Live audit at 2026-09-22T11:00:40Z: PayPlus accept-paid OFF/unapproved; supplier live OFF/unapproved; 8 orders all TEST; 0 finance rows; 32 bridge rows with 0 real-order-linked/profit-ready; 67 hourly rows, 0 exact VERIFIED. No Production mutation."
+    },
+    {
+      "id": "payplus_sandbox_status_proof",
+      "status": "CODED_BLOCKED_NO_SANDBOX_EVIDENCE",
+      "evidence": "Proof Matrix + Studio surface coded. Live audit: hunt_payplus_sandbox_evidence control OFF/unapproved; 0 sandbox evidence sessions; 0 status observations. J4 success/failure/refund fingerprints are not yet empirically proven. Live paid acceptance remains OFF."
     }
   ],
   "blockers": [
@@ -145,7 +150,9 @@
     "Connect audited per-channel/campaign marketing cost evidence before CAC or Marketing Net Profit can be verified.",
     "Hourly mission remains blocked until f60t_hourly_profit_ledger contains exact VERIFIED rows backed by non-test real-order finance evidence.",
     "Connect a direct ad-platform cost source (e.g. Google Ads/Meta/TikTok) or prove GA4 cost-import coverage before paid spend, CAC or Marketing Net Profit can be verified.",
-    "Complete PayPlus sandbox callback/status proof before Owner can consider enabling paid acceptance; First Real-Order Proof must not bypass this gate."
+    "Complete PayPlus sandbox callback/status proof before Owner can consider enabling paid acceptance; First Real-Order Proof must not bypass this gate.",
+    "PayPlus sandbox evidence control/session must be run in staging to collect signed success/failure observations before paid-state mapping can be proven.",
+    "Refund path requires a separate observed charge_method=4 staging fingerprint linked to the original transaction before refund launch."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
