@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V1.2-AI-OPERATING-FACTORY",
+  "version": "BOOM-BRAIN-GAPS-V1.3-PROFIT-MISSION",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -377,6 +377,38 @@
       "status": "IN_PROGRESS",
       "source": "AI_WORKFLOW_LEARNING",
       "next": "Build/repair flows are canonical and SHADOW; prove Preview patch/test/review/rollback evidence before any deploy."
+    },
+    {
+      "id": "profit_engine_v1",
+      "title": "Profit Engine V1",
+      "owner": "commerce_truth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Contract/runtime/Studio Mission Control are coded. Connect verified revenue + supplier/shipping/payment/discount/marketing/returns/cancellation/other-cost evidence before any live profit claim."
+    },
+    {
+      "id": "profit_marketing_attribution",
+      "title": "Marketing Net-Profit Attribution",
+      "owner": "growth_brain",
+      "status": "NEXT",
+      "source": "PROFIT_MISSION",
+      "next": "Join traffic/ad cost → order → contribution margin → returns → repeat revenue; do not optimize on ROAS alone."
+    },
+    {
+      "id": "profit_experiment_engine",
+      "title": "Profit Experiment Engine",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "PROFIT_MISSION",
+      "next": "Run controlled Preview experiments and compare verified contribution/net profit before any rollout."
+    },
+    {
+      "id": "profit_growth_loop",
+      "title": "Hourly Growth + Profit Learning Loop",
+      "owner": "boom_orchestrator",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Use $10K+/hour as aspirational mission target; produce evidence-backed next-hour proposals without autonomous spend, pricing or publish."
     }
   ]
 }
