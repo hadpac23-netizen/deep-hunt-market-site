@@ -321,6 +321,39 @@
 
 
 
+
+  async function renderPayPlusSandboxProof(){
+    const host=$("#bs-payplus-sandbox-proof");
+    const state=$("#bs-payplus-sandbox-state");
+    if(!host)return;
+    const p=window.BoomPayPlusSandboxProof;
+    const baseline=data.payplusSandboxProof||{};
+    if(!p?.evaluate){
+      host.innerHTML='<div class="bs-empty bs-error">PayPlus Sandbox Proof unavailable.</div>';
+      if(state)state.textContent="UNAVAILABLE";
+      return;
+    }
+    const truth=baseline.current_truth||{};
+    const out=p.evaluate({
+      control:{enabled:truth.control_enabled===true,owner_approved:truth.control_owner_approved===true},
+      sessions:Array.from({length:Number(truth.sandbox_sessions||0)},(_,i)=>({id:"baseline-"+i})),
+      observations:[]
+    });
+    if(state)state.textContent=String(out.state||"UNKNOWN");
+    const matrix=baseline.proof_matrix||[];
+    host.innerHTML=`
+      <article class="bs-proof-summary">
+        <div><small>SANDBOX CONTROL</small><strong>${truth.control_enabled&&truth.control_owner_approved?"READY":"OFF"}</strong></div>
+        <div><small>SESSIONS</small><strong>${esc(truth.sandbox_sessions??0)}</strong></div>
+        <div><small>OBSERVATIONS</small><strong>${esc(truth.sandbox_observations??0)}</strong></div>
+        <div><small>PAID ACCEPTANCE</small><strong>${truth.paid_acceptance_ready?"READY":"NOT PROVEN"}</strong></div>
+        <div><small>CHECKOUT</small><strong>${truth.checkout_launch_ready?"READY":"NOT PROVEN"}</strong></div>
+        <div><small>REFUND</small><strong>${truth.refund_launch_ready?"READY":"NOT PROVEN"}</strong></div>
+      </article>
+      <div class="bs-proof-stages">${matrix.map((x,i)=>`<article data-state="BLOCKED"><b>${i+1}</b><div><strong>${esc(x.id)}</strong><span>NOT PROVEN</span><small>${esc(x.pass_when||"sandbox evidence required")}</small></div></article>`).join("")}</div>
+      <div class="bs-profit-guard glass"><strong>Current blocker: ${esc(out.blocker||"NO_SANDBOX_EVIDENCE")}</strong><span>J4 alone never means paid. Exact PayPlus staging fingerprints must be observed with verified signature + IPN before classification.</span></div>`;
+  }
+
   async function renderFirstRealOrderProof(){
     const host=$("#bs-first-real-order-proof");
     const state=$("#bs-first-real-order-state");
@@ -739,12 +772,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json"),json("boom-marketing-profit-attribution-contract.json"),json("boom-marketing-cost-evidence-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json"),json("boom-marketing-profit-attribution-contract.json"),json("boom-marketing-cost-evidence-contract.json"),json("boom-payplus-sandbox-proof-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
