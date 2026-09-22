@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-WORKFLOW-TEMPLATES-V1.2-PAYMENT",
+  "version": "BOOM-WORKFLOW-TEMPLATES-V1.3-ORDER-E2E",
   "mode": "SHADOW",
   "rule": "Templates compile reusable Skills into a plan. Compilation does not execute tools or material actions.",
   "templates": [
@@ -129,6 +129,17 @@
       "trigger": "manual_or_launch_window",
       "skills": [
         "review_payment_launch_readiness"
+      ],
+      "final_action": "evidence_report_only",
+      "material": false
+    },
+    {
+      "id": "checkout_order_tracking_e2e",
+      "title": "Checkout → Order → Tracking E2E",
+      "owner": "operations_brain",
+      "trigger": "manual_or_launch_window",
+      "skills": [
+        "review_checkout_order_tracking"
       ],
       "final_action": "evidence_report_only",
       "material": false
