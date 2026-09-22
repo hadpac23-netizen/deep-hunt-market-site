@@ -1,0 +1,55 @@
+{
+  "version": "HUNT-CINEMATIC-LIGHTING-QA-V1",
+  "date": "2026-09-22",
+  "mode": "LOCAL_SHADOW_RENDER",
+  "production_effect": false,
+  "source_worktree": "/Users/adichehade/.hunt-final-candidate-v1",
+  "source_branch": "feature/hunt-cinematic-lab-v1",
+  "page": "hunt-cinematic-v16.html",
+  "renders": {
+    "light": {
+      "theme": "light",
+      "palette": "OFF_WHITE",
+      "screenshot_path": "/tmp/hunt-v16-light.png",
+      "result": "PASS",
+      "observations": [
+        "Off-white canvas is warm and readable rather than pure white.",
+        "Hero product remains on a neutral illuminated product bay.",
+        "Navigation, category chips, CTA and product copy retain readable contrast."
+      ]
+    },
+    "dark": {
+      "theme": "dark",
+      "palette": "DEEP_NAVY_GRAPHITE",
+      "screenshot_path": "/tmp/hunt-v16-dark.png",
+      "result": "PASS",
+      "observations": [
+        "Ambient site background becomes cinematic and deep without darkening the product image.",
+        "Hero product remains on the same neutral illuminated product bay.",
+        "Navigation, category chips, CTA and product copy retain readable contrast."
+      ]
+    }
+  },
+  "same_product_cross_theme": {
+    "observed": true,
+    "title": "Winter Cute Cartoon Smile Flannel Slippers Wholesale Home Fuzzy Slippers",
+    "product_image_fidelity": "PASS",
+    "note": "Product photography remained visually consistent between Light and Dark; theme changed the surrounding interface, not the product source image."
+  },
+  "system_checks": {
+    "theme_preflight_before_first_paint": "PASS",
+    "theme_color_meta_sync": "PASS",
+    "product_mix_blend_guard": "PASS",
+    "product_opacity_guard": "PASS",
+    "neutral_product_bay_light": "PASS",
+    "theme_transition_cue": "PASS",
+    "production_deploy": "NOT_DONE"
+  },
+  "stylist_learning": {
+    "track": "M3 Digital Retail Lighting & Cinematic Display",
+    "exam": "CINEMATIC-LIGHTING-2THEME",
+    "exam_state": "EVIDENCE_READY_NOT_SCORED",
+    "mastery_change": false,
+    "reason": "Exact-image visual QA for the five Round 2 looks is still pending; no subjective style score is claimed."
+  }
+}

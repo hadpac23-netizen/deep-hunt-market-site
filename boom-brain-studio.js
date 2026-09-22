@@ -230,14 +230,15 @@
     const host=$("#bs-stylist-academy");
     if(!host)return;
     try{
-      const [academy,training,trainingV2,f35,baseline,round1,round2]=await Promise.all([
+      const [academy,training,trainingV2,f35,baseline,round1,round2,lighting]=await Promise.all([
         json("boom-stylist-academy-contract.json"),
         json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-2026-09-22.json"),
         json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V2-IL-2026-09-22.json"),
         json("boom-f35-style-commerce-research-2026-09-22.json"),
         json("evidence/HUNT-F35-SIX-LAYER-PREFERENCE-BASELINE-2026-09-22.json"),
         json("evidence/HUNT-STYLIST-F35-ROUND1-2026-09-22.json"),
-        json("evidence/HUNT-STYLIST-F35-ROUND2-2026-09-22.json")
+        json("evidence/HUNT-STYLIST-F35-ROUND2-2026-09-22.json"),
+        json("evidence/HUNT-CINEMATIC-LIGHTING-QA-2026-09-22.json")
       ]);
       const tracks=(academy.tracks||[]).map(t=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(t.id)} · ${esc(t.name)}</strong><span class="bs-status NEXT">${esc((t.modules||[]).length)} modules</span></div><p>${esc((t.modules||[]).join(" · "))}</p></div>`).join("");
       const exams=(academy.exams||[]).map(e=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(e.name)}</strong><span class="bs-status NEXT">PASS ${esc(e.pass_score)}+</span></div><small>${esc(e.output_rule)}</small></div>`).join("");
@@ -296,6 +297,19 @@
           <small>COMMERCE</small>
           <p>${esc(round2.commerce_exam?.warning)}</p>
           <code>subjective score false · visual QA next · Production unchanged</code>
+        </article>
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>M3 · Cinematic Lighting</strong><span class="bs-status DONE">LIGHT + DARK RENDERED</span></div>
+          <p>Off-white Light Mode: ${esc(lighting.renders?.light?.result)} · Cinematic Dark Mode: ${esc(lighting.renders?.dark?.result)} · Product image fidelity: ${esc(lighting.same_product_cross_theme?.product_image_fidelity)}.</p>
+          <div class="bs-journey-steps">
+            <span>Ambient world light</span>
+            <span>Shelf edge light</span>
+            <span>Product spotlight</span>
+            <span>Image fidelity</span>
+          </div>
+          <small>LEARNING GATE</small>
+          <p>${esc(lighting.stylist_learning?.reason)}</p>
+          <code>evidence ready · exam not scored · mastery change false · Production unchanged</code>
         </article>`;
     }catch(error){
       host.innerHTML=`<div class="bs-empty bs-error">Stylist Academy unavailable: ${esc(error?.message||"unknown")}</div>`;

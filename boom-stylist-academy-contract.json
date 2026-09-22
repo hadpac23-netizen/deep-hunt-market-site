@@ -1,7 +1,7 @@
 {
-  "version": "BOOM-STYLIST-ACADEMY-V2",
+  "version": "BOOM-STYLIST-ACADEMY-V3",
   "mode": "SHADOW_TRAINING",
-  "status": "F35_MULTIDISCIPLINARY_CURRICULUM_READY",
+  "status": "F35_MULTIDISCIPLINARY_PLUS_CINEMATIC_LIGHTING_READY",
   "production_influence": false,
   "publishing_authorized": false,
   "autonomous_shelf_reorder": false,
@@ -90,6 +90,22 @@
         "market availability",
         "blocked-item suppression",
         "recheck-before-checkout"
+      ]
+    },
+    {
+      "id": "M3",
+      "name": "Digital Retail Lighting & Cinematic Display",
+      "modules": [
+        "ambient world light",
+        "shelf and surface edge light",
+        "product spotlight and image fidelity",
+        "off-white light mode hierarchy",
+        "dark mode contrast without image darkening",
+        "theme transition as lighting cue",
+        "department-specific atmosphere",
+        "mobile lighting simplification",
+        "accessibility and text contrast",
+        "commerce-first lighting: never sacrifice price or product truth"
       ]
     },
     {
@@ -184,6 +200,27 @@
         "uncertainty_handling": 10
       },
       "pass_score": 85
+    },
+    {
+      "id": "CINEMATIC-LIGHTING-2THEME",
+      "name": "HUNT Cinematic Lighting · Light + Dark",
+      "input_rule": "Same verified shelf/product composition rendered in off-white Light Mode and cinematic Dark Mode",
+      "output_rule": "Both themes preserve product-image fidelity, readable hierarchy, shelf depth and commerce clarity",
+      "scoring": {
+        "product_image_fidelity": 25,
+        "hierarchy_and_focus": 20,
+        "shelf_depth": 15,
+        "text_price_legibility": 15,
+        "light_dark_continuity": 15,
+        "responsive_sanity": 10
+      },
+      "pass_score": 85,
+      "hard_fail": [
+        "product image is darkened, blended or recolored by theme",
+        "price or truth label loses readable contrast",
+        "theme change alters product truth or ordering",
+        "lighting obscures CTA or navigation"
+      ]
     }
   ],
   "mastery": [
@@ -195,7 +232,7 @@
     {
       "level": 1,
       "name": "FOUNDATIONS",
-      "requirement": "S1/S2/M1 knowledge checks pass"
+      "requirement": "S1/S2/M1/M3 knowledge checks pass"
     },
     {
       "level": 2,
@@ -246,9 +283,11 @@
     "assortment_gate_il": "PASS_4_FOOTWEAR_6_BOTTOMS",
     "style_round2": "READY_FOR_VISUAL_QA",
     "product_truth_round2": "PASS_IL",
-    "commerce_round2": "PASS_WITH_HIGH_SHIPPING_WARNINGS"
+    "commerce_round2": "PASS_WITH_HIGH_SHIPPING_WARNINGS",
+    "cinematic_lighting": "LIGHT_DARK_RENDER_PAIR_VERIFIED",
+    "cinematic_lighting_mastery": "TRAINING_EVIDENCE_ONLY"
   },
-  "next": "RUN_EXACT_IMAGE_VISUAL_QA_FOR_F35_ROUND2_LOOKS",
+  "next": "RUN_EXACT_IMAGE_VISUAL_QA_FOR_F35_ROUND2_LOOKS_THEN_CINEMATIC_LIGHTING_EXAM",
   "f35_research_ref": "boom-f35-style-commerce-research-2026-09-22.json",
   "preference_layers": [
     {
