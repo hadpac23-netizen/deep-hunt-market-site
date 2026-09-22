@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V2.0-CHECKOUT-ORDER-TRACKING",
+  "version": "BOOM-BRAIN-GAPS-V2.1-MARKET-POLICY",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -561,6 +561,46 @@
       "status": "IN_PROGRESS",
       "source": "ORDER_TRUTH",
       "next": "Current source includes +972 normalization, transient retry/backoff and ambiguous-create reconciliation. Re-run sandbox E2E later to prove behavior; do not alter live supplier switch."
+    },
+    {
+      "id": "market_policy_readiness",
+      "title": "Market Legal / Returns / Shipping Readiness",
+      "owner": "learning_governance_brain",
+      "status": "IN_PROGRESS",
+      "source": "LEGAL_MARKET_TRUTH",
+      "next": "Evaluator/Studio/Skill/Workflow coded for IL/EU/GB/US/AU with default HOLD for unmapped markets. Needs counsel/Owner review before enabling any market."
+    },
+    {
+      "id": "legal_registry_production",
+      "title": "Legal Document Registry Deployment",
+      "owner": "learning_governance_brain",
+      "status": "BLOCKED",
+      "source": "LEGAL_MARKET_TRUTH",
+      "next": "Migration exists in branch but Production table is absent. Validate migration in Preview near launch; do not deploy directly to Production now."
+    },
+    {
+      "id": "business_identity_publication",
+      "title": "Published Business Identity",
+      "owner": "operations_brain",
+      "status": "BLOCKED",
+      "source": "LEGAL_MARKET_TRUTH",
+      "next": "Business Identity is configured but not published; returns address, privacy contact and support email are not ready in live audit."
+    },
+    {
+      "id": "cancellation_return_flow",
+      "title": "Cancellation / Withdrawal / Return Flow",
+      "owner": "experience_brain",
+      "status": "NEXT",
+      "source": "LEGAL_MARKET_TRUTH",
+      "next": "Design one user-visible flow with market-specific rules; EU online withdrawal function and Israel prominent online cancellation route require dedicated readiness proof."
+    },
+    {
+      "id": "market_expansion_default_hold",
+      "title": "Unmapped Market Default HOLD",
+      "owner": "learning_governance_brain",
+      "status": "DONE",
+      "source": "LEGAL_MARKET_TRUTH",
+      "next": "Keep every unmapped country blocked from real-money launch until reviewed."
     }
   ]
 }
