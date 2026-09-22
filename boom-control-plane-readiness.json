@@ -162,7 +162,7 @@
     {
       "id": "fresh_shelf_product_truth",
       "status": "CJ_CONTROLLED_SCAN_COMPLETE_PARTIAL_SHELF_READY",
-      "evidence": "Controlled scan CJ-IL-20260922-A covered all 76 CJ catalog rows: 19 VERIFIED with exact-variant Price+Stock+IL Shipping, 50 PRODUCT_FAILED/recheck, 5 Price/Profit blocked, 2 no verified variant. 0 Checkout Live Verified. Unreconciled positive observations from other sources do not override the controlled scan."
+      "evidence": "Strict Product Truth proof now passes 57/76 CJ catalog products for IL: latest controlled scan VERIFIED + exact same variant Price/Stock/Shipping within 24h. 19 remain not fresh; all 57 remain recheck_before_checkout and 0 are Checkout Live Verified. 220 evidence-only observations were explicitly written in this workstream; no catalog eligibility, live payment or supplier-order mutation."
     }
   ],
   "blockers": [
