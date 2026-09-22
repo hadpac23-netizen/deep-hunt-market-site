@@ -93,6 +93,11 @@
       "id": "critical_edge_auth",
       "status": "IN_PROGRESS",
       "evidence": "critical paths classified; CJ public read-only quote still needs abuse/rate-limit proof before automation scale"
+    },
+    {
+      "id": "ai_operating_factory",
+      "status": "CODED_SHADOW_NEEDS_PREVIEW_PROOF",
+      "evidence": "8 operational skills + 8 workflow templates + plan-only Workflow Builder + plan-only AI Tool Router + Creative Factory + Build & Repair Factory are coded in BOOM Studio. Material paths remain Owner-gated and suppressed."
     }
   ],
   "blockers": [
