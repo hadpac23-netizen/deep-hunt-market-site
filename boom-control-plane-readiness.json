@@ -56,13 +56,13 @@
     },
     {
       "id": "shelf_coverage",
-      "status": "BLOCKED_STALE_LIVE_EVIDENCE",
-      "evidence": "17 taxonomy identities resolved. Read-only Supabase audit at 2026-09-22T06:41:38Z found 14/17 coverage rows, 0 fresh 24h audits, 117 catalog rows, 0 fresh verified-sellable rows in 7 days; missing coverage rows: camping/electrical/garden."
+      "status": "BLOCKED_PARTIAL_FRESH_TRUTH",
+      "evidence": "17 taxonomy identities resolved. Production catalog still has 117 stale catalog rows and no fresh live shelf audit, but Fresh Shelf/Product Truth pilot now proves 3 CJ products for IL with fresh price+stock+shipping observations. Full 17-department refresh remains pending; coverage rows for camping/electrical/garden still missing."
     },
     {
       "id": "catalog_freshness",
-      "status": "STALE_AT_AUDIT",
-      "evidence": "2026-09-22 audit observed zero products passing the 7-day fresh verified-sellable filter; source evidence observed around Sep 11–13"
+      "status": "PILOT_REFRESHED_FULL_CATALOG_STALE",
+      "evidence": "3 CJ products now have 24h fresh observation truth for IL. Catalog source_fresh_at/last_stock_check_at fields remain stale by design because the refresh lane writes evidence observations only; no timestamp-only refresh is allowed."
     },
     {
       "id": "incident_repair",
@@ -158,10 +158,14 @@
       "id": "launch_command_center",
       "status": "CODED_READ_ONLY_NEEDS_PREVIEW_PROOF",
       "evidence": "Existing BOOM Command Center aggregates canonical readiness domains, top blockers and admin-only launch metrics. Raw analytics session IDs were removed from browser queries; session/user metric remains UNKNOWN until a privacy-safe server-side aggregate is connected. Orders/finance/BOOM runs/decisions use RLS-protected admin reads. Authority NONE."
+    },
+    {
+      "id": "fresh_shelf_product_truth",
+      "status": "PILOT_PROVEN_FULL_REFRESH_PENDING",
+      "evidence": "Live CJ read-only recheck + evidence write on 2026-09-22: 3 sampled products across phoneaccessories/dresses/bags have fresh price + stock + IL shipping observations. hunt-cj-quote contradicted product-detail embedded inventory and is now canonical for CJ stock/shipping truth. 9 observations written; catalog/market eligibility/checkout state unchanged."
     }
   ],
   "blockers": [
-    "Refresh live product/source/stock evidence: current audit has 0 fresh verified-sellable rows in 7 days and 0 fresh shelf audits in 24h.",
     "Create/refresh coverage evidence for camping, electrical and garden without fabricating counts.",
     "Deploy only to a preview/test environment first: boom-shelf-coverage and boom-automation-gateway.",
     "Prove one real admin durable ledger write + Owner Gate decision in preview.",
@@ -186,7 +190,8 @@
     "Implement a verifiable cancellation/withdrawal/return path appropriate to each enabled market.",
     "Any unmapped country remains HOLD until consumer/privacy/tax/import/shipping obligations are reviewed.",
     "Verify PWA cache update, manifest/installability and offline shell on Preview before Performance/Mobile becomes launch PASS.",
-    "Verify Launch Command Center on Preview against authenticated admin RLS and current readiness JSON before Owner launch review."
+    "Verify Launch Command Center on Preview against authenticated admin RLS and current readiness JSON before Owner launch review.",
+    "Run bounded Fresh Shelf/Product Truth refresh across the full CJ catalog and then across each approved supplier; 3-product pilot is proven but full shelf freshness is not."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
