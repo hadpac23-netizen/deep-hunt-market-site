@@ -1,14 +1,43 @@
 {
-  "version": "HUNT-EPROLO-MULTIMARKET-SHADOW-SHELF-V1",
+  "version": "HUNT-EPROLO-MULTIMARKET-SHADOW-SHELF-V2",
   "date": "2026-09-23",
-  "mode": "SHADOW_MARKET_SPECIFIC",
+  "mode": "SHADOW_MARKET_SPECIFIC_GLOBAL",
   "provider": "EPROLO",
   "production_effect": false,
   "summary": {
     "unique_products": 2,
-    "DE_products": 2,
-    "US_products": 2,
-    "IL_products": 0,
+    "markets_checked": 13,
+    "shadow_product_counts_by_market": {
+      "IL": 0,
+      "DE": 2,
+      "FR": 2,
+      "IT": 2,
+      "ES": 2,
+      "NL": 2,
+      "GB": 2,
+      "US": 2,
+      "CA": 2,
+      "AU": 1,
+      "AE": 1,
+      "JP": 1,
+      "SG": 2
+    },
+    "mapped_policy_shadow_counts_by_market": {
+      "IL": 0,
+      "DE": 2,
+      "FR": 2,
+      "IT": 2,
+      "ES": 2,
+      "NL": 2,
+      "GB": 2,
+      "US": 2,
+      "CA": 0,
+      "AU": 1,
+      "AE": 0,
+      "JP": 0,
+      "SG": 0
+    },
+    "live_eligible_products": 0,
     "final_profit_verified": 0,
     "checkout_live": 0
   },
@@ -25,11 +54,37 @@
       "inventory_quantity": 999,
       "retail_price_shadow_usd": 15.99,
       "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202312/6C65C2DAAA52B07B44795BCB6ACDAA9C.jpg",
-      "eligible_markets": [
+      "shadow_eligible_markets": [
         "DE",
-        "US"
+        "FR",
+        "IT",
+        "ES",
+        "NL",
+        "GB",
+        "US",
+        "CA",
+        "AU",
+        "AE",
+        "JP",
+        "SG"
       ],
-      "market_shipping": {
+      "mapped_policy_shadow_markets": [
+        "DE",
+        "FR",
+        "IT",
+        "ES",
+        "NL",
+        "GB",
+        "US",
+        "AU"
+      ],
+      "unmapped_policy_hold_markets": [
+        "CA",
+        "AE",
+        "JP",
+        "SG"
+      ],
+      "market_truth": {
         "DE": {
           "shipping": {
             "cost_usd": 7.07,
@@ -37,7 +92,70 @@
             "shiptime": "6-12 DAYS"
           },
           "shipping_to_retail_ratio": 0.442,
-          "state": "NORMAL"
+          "shipping_state": "NORMAL",
+          "market_policy_state": "EU_REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "FR": {
+          "shipping": {
+            "cost_usd": 7.33,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.458,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "EU_REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "IT": {
+          "shipping": {
+            "cost_usd": 7.59,
+            "method": "4PX Standard",
+            "shiptime": "8-13 DAYS"
+          },
+          "shipping_to_retail_ratio": 0.475,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "EU_REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "ES": {
+          "shipping": {
+            "cost_usd": 5.86,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.366,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "EU_REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "NL": {
+          "shipping": {
+            "cost_usd": 8.19,
+            "method": "4PX Standard",
+            "shiptime": "10-18 DAYS"
+          },
+          "shipping_to_retail_ratio": 0.512,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "EU_REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "GB": {
+          "shipping": {
+            "cost_usd": 5.6,
+            "method": "YUN Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.35,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
         },
         "US": {
           "shipping": {
@@ -46,10 +164,72 @@
             "shiptime": "10-15 days"
           },
           "shipping_to_retail_ratio": 0.507,
-          "state": "NORMAL"
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "CA": {
+          "shipping": {
+            "cost_usd": 8.27,
+            "method": "JIAYOU  EXP",
+            "shiptime": "7-10 Days"
+          },
+          "shipping_to_retail_ratio": 0.517,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "AU": {
+          "shipping": {
+            "cost_usd": 7.84,
+            "method": "UBI Economy",
+            "shiptime": "6-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.49,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "AE": {
+          "shipping": {
+            "cost_usd": 10.08,
+            "method": "4PX Express",
+            "shiptime": "6-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.63,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "JP": {
+          "shipping": {
+            "cost_usd": 6.38,
+            "method": "YANWEN Express",
+            "shiptime": "6-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.399,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "SG": {
+          "shipping": {
+            "cost_usd": 5.34,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.334,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
         }
       },
-      "il_state": "BLOCKED_HIGH_SHIPPING_OR_NOT_NORMAL",
       "final_profit_verified": false,
       "production_exposure": false,
       "checkout": "DISABLED",
@@ -67,11 +247,31 @@
       "inventory_quantity": 629,
       "retail_price_shadow_usd": 5.99,
       "exact_variant_image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202406/B105ADA913F4DC31124F534B2EAF4C76.JPEG",
-      "eligible_markets": [
+      "shadow_eligible_markets": [
         "DE",
+        "FR",
+        "IT",
+        "ES",
+        "NL",
+        "GB",
+        "US",
+        "CA",
+        "SG"
+      ],
+      "mapped_policy_shadow_markets": [
+        "DE",
+        "FR",
+        "IT",
+        "ES",
+        "NL",
+        "GB",
         "US"
       ],
-      "market_shipping": {
+      "unmapped_policy_hold_markets": [
+        "CA",
+        "SG"
+      ],
+      "market_truth": {
         "DE": {
           "shipping": {
             "cost_usd": 4.12,
@@ -79,7 +279,70 @@
             "shiptime": "8-12Ｄays"
           },
           "shipping_to_retail_ratio": 0.688,
-          "state": "NORMAL"
+          "shipping_state": "NORMAL",
+          "market_policy_state": "EU_REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "FR": {
+          "shipping": {
+            "cost_usd": 3.62,
+            "method": "YANWEN Express",
+            "shiptime": "8-12 Days"
+          },
+          "shipping_to_retail_ratio": 0.604,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "EU_REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "IT": {
+          "shipping": {
+            "cost_usd": 4.63,
+            "method": "YUN  Standard",
+            "shiptime": "8-13Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.773,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "EU_REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "ES": {
+          "shipping": {
+            "cost_usd": 3.38,
+            "method": "YUN Standard",
+            "shiptime": "8-12Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.564,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "EU_REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "NL": {
+          "shipping": {
+            "cost_usd": 4.08,
+            "method": "4PX Standard",
+            "shiptime": "10-18 DAYS"
+          },
+          "shipping_to_retail_ratio": 0.681,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "EU_REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "GB": {
+          "shipping": {
+            "cost_usd": 3.01,
+            "method": "YUN Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.503,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
         },
         "US": {
           "shipping": {
@@ -88,10 +351,36 @@
             "shiptime": "8-15 Days"
           },
           "shipping_to_retail_ratio": 0.743,
-          "state": "NORMAL"
+          "shipping_state": "NORMAL",
+          "market_policy_state": "REVIEW_REQUIRED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "CA": {
+          "shipping": {
+            "cost_usd": 3.72,
+            "method": "JIAYOU  EXP",
+            "shiptime": "7-10 Days"
+          },
+          "shipping_to_retail_ratio": 0.621,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
+        },
+        "SG": {
+          "shipping": {
+            "cost_usd": 3.02,
+            "method": "YUN  Standard",
+            "shiptime": "6-10Ｄays"
+          },
+          "shipping_to_retail_ratio": 0.504,
+          "shipping_state": "NORMAL",
+          "market_policy_state": "HOLD_UNMAPPED",
+          "product_market_shadow_pass": true,
+          "live_eligible": false
         }
       },
-      "il_state": "BLOCKED_HIGH_SHIPPING_OR_NOT_NORMAL",
       "final_profit_verified": false,
       "production_exposure": false,
       "checkout": "DISABLED",
@@ -99,10 +388,11 @@
     }
   ],
   "hard_rules": [
-    "Destination-specific eligibility is mandatory.",
-    "Do not expose these products in IL under the current shipping economics.",
-    "No Production shelf activation.",
-    "No checkout or fulfillment.",
-    "Final profit remains blocked until EPROLO order-cost API is verified."
+    "Destination-specific shipping eligibility is mandatory.",
+    "Product/visual truth must pass independently of destination shipping.",
+    "Unmapped markets remain legal HOLD even when shipping passes.",
+    "Mapped markets remain REVIEW_REQUIRED until owner/counsel/legal readiness gates pass.",
+    "Final profit remains blocked until EPROLO order-cost API is verified.",
+    "No Production shelf activation, checkout or fulfillment."
   ]
 }

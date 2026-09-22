@@ -1,0 +1,101 @@
+{
+  "version": "HUNT-EPROLO-MARKET-ELIGIBILITY-V1",
+  "date": "2026-09-23",
+  "provider": "EPROLO",
+  "mode": "SHADOW_GLOBAL",
+  "authority": "NONE",
+  "purpose": "Evaluate EPROLO product eligibility independently for each destination market instead of using Israel-only truth.",
+  "decision_formula": [
+    "EXACT_PRODUCT_VARIANT_TRUTH",
+    "FRESH_STOCK",
+    "EXACT_OR_APPROVED_PRODUCT_MEDIA",
+    "BRAND_CLAIM_COMPATIBILITY_COMPLIANCE_GATES",
+    "DESTINATION_SHIPPING_QUOTE",
+    "DESTINATION_SHIPPING_ECONOMICS",
+    "MARKET_POLICY",
+    "FINAL_PROFIT",
+    "OWNER_GATE"
+  ],
+  "states": {
+    "SHIPPING_DISCOVERY_PASS": "Supplier currently returns an acceptable destination quote; not sufficient for sale.",
+    "PRODUCT_MARKET_SHADOW_PASS": "Product truth and destination shipping pass; legal/profit/live gates may still block.",
+    "MARKET_POLICY_HOLD": "Supplier shipping may pass, but the destination is not yet mapped/approved for HUNT real-money launch.",
+    "PROFIT_HOLD": "Final provider order-cost/profit evidence is not verified.",
+    "LIVE_ELIGIBLE": "Reserved for all hard gates PASS plus Owner Gate; currently no EPROLO product has this state."
+  },
+  "mapped_policy_regions": {
+    "IL": "REVIEW_REQUIRED",
+    "DE": "EU_REVIEW_REQUIRED",
+    "FR": "EU_REVIEW_REQUIRED",
+    "IT": "EU_REVIEW_REQUIRED",
+    "ES": "EU_REVIEW_REQUIRED",
+    "NL": "EU_REVIEW_REQUIRED",
+    "GB": "REVIEW_REQUIRED",
+    "US": "REVIEW_REQUIRED",
+    "AU": "REVIEW_REQUIRED"
+  },
+  "unmapped_discovery_markets": {
+    "CA": "HOLD_UNMAPPED",
+    "AE": "HOLD_UNMAPPED",
+    "JP": "HOLD_UNMAPPED",
+    "SG": "HOLD_UNMAPPED"
+  },
+  "current_wave2": {
+    "products_checked": 7,
+    "markets_checked": [
+      "IL",
+      "DE",
+      "FR",
+      "IT",
+      "ES",
+      "NL",
+      "GB",
+      "US",
+      "CA",
+      "AU",
+      "AE",
+      "JP",
+      "SG"
+    ],
+    "shipping_pass_counts": {
+      "IL": 0,
+      "DE": 4,
+      "FR": 4,
+      "IT": 3,
+      "ES": 4,
+      "NL": 3,
+      "GB": 4,
+      "US": 3,
+      "CA": 4,
+      "AU": 2,
+      "AE": 2,
+      "JP": 2,
+      "SG": 5
+    },
+    "product_truth_pass_ids": [
+      "24539904",
+      "26556212"
+    ],
+    "product_truth_hold_ids": [
+      "25354414",
+      "31441975"
+    ],
+    "shipping_only_discovery_ids": [
+      "29971473"
+    ],
+    "no_normal_shipping_ids": [
+      "29095247",
+      "31640357"
+    ],
+    "live_eligible_products": 0
+  },
+  "global_rules": [
+    "Never infer worldwide availability from one destination quote.",
+    "A product may be eligible in one country and blocked in another.",
+    "EU policy mapping does not imply equal shipping economics; each EU destination is quoted separately.",
+    "Unmapped markets may be researched in SHADOW but remain unavailable for real-money checkout.",
+    "Market legal readiness and supplier shipping readiness are separate gates.",
+    "Final profit remains blocked until the EPROLO order-cost API mismatch is resolved.",
+    "No automatic Production activation."
+  ]
+}

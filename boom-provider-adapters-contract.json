@@ -60,8 +60,36 @@
       "global_unique_shadow_candidates": 15,
       "market_specific_markets": [
         "DE",
-        "US"
-      ]
+        "FR",
+        "IT",
+        "ES",
+        "NL",
+        "GB",
+        "US",
+        "CA",
+        "AU",
+        "AE",
+        "JP",
+        "SG"
+      ],
+      "mapped_policy_shadow_markets": [
+        "DE",
+        "FR",
+        "IT",
+        "ES",
+        "NL",
+        "GB",
+        "US",
+        "AU"
+      ],
+      "unmapped_policy_hold_markets": [
+        "CA",
+        "AE",
+        "JP",
+        "SG"
+      ],
+      "global_live_eligible_products": 0,
+      "market_eligibility_policy": "DESTINATION_PRODUCT_TRUTH_X_SHIPPING_X_POLICY_X_PROFIT_X_OWNER_GATE"
     }
   },
   "price_gate_v2": {

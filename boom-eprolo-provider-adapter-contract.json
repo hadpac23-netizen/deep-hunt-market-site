@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V8",
+  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V9",
   "date": "2026-09-22",
   "provider": "EPROLO",
   "owner": "commerce_truth_brain",
@@ -102,7 +102,7 @@
     "no fake stock, shipping, margin or retail price"
   ],
   "storefront_role": "SUPPLIER_MESH_CONNECTED_NOT_LIVE_SHELF",
-  "next": "CONNECT_COUNTRY_ENGINE_TO_MARKET_SPECIFIC_SHADOW_ELIGIBILITY_AND_CLARIFY_EPROLO_ORDER_COST_API",
+  "next": "EXPAND_MARKET_SPECIFIC_SHIPPING_MATRIX_BY_REGION_AND_COMPLETE_MARKET_POLICY_PLUS_EPROLO_ORDER_COST_GATES",
   "variant_truth_policy": {
     "component_split_detection": "If component variants such as Top/Skirt coexist with Set/2pcs variants, a full-set listing must use Set/2pcs variant truth.",
     "exact_variant_image_required": true,
@@ -222,7 +222,49 @@
       "tech",
       "men",
       "kitchen"
-    ]
+    ],
+    "multimarket_wave2": {
+      "products_checked": 7,
+      "markets_checked": 13,
+      "shipping_pass_counts": {
+        "IL": 0,
+        "DE": 4,
+        "FR": 4,
+        "IT": 3,
+        "ES": 4,
+        "NL": 3,
+        "GB": 4,
+        "US": 3,
+        "CA": 4,
+        "AU": 2,
+        "AE": 2,
+        "JP": 2,
+        "SG": 5
+      },
+      "product_truth_pass": 2,
+      "product_truth_holds": 2,
+      "shipping_only_discovery": 1,
+      "no_normal_shipping": 2,
+      "market_specific_shadow_products": 2,
+      "live_eligible_products": 0,
+      "production_effect": false
+    },
+    "global_market_scope": [
+      "IL",
+      "DE",
+      "FR",
+      "IT",
+      "ES",
+      "NL",
+      "GB",
+      "US",
+      "CA",
+      "AU",
+      "AE",
+      "JP",
+      "SG"
+    ],
+    "global_live_eligible_products": 0
   },
   "truth_policies": {
     "capacity_claim_gate": "IMPLAUSIBLE_STORAGE_CAPACITY_REQUIRES_PROOF",
