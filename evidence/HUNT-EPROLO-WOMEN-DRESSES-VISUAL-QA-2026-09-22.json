@@ -1,0 +1,84 @@
+{
+  "version": "HUNT-EPROLO-WOMEN-DRESSES-VISUAL-QA-V1",
+  "date": "2026-09-22",
+  "mode": "SHADOW_VISUAL_QA",
+  "provider": "EPROLO",
+  "market": "IL",
+  "production_effect": false,
+  "exact_variant_image_required": true,
+  "passes": [
+    {
+      "product_id": "19374567",
+      "variant_id": "566150532",
+      "variant_title": "Black-L",
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202206/FA1C4527321CA7DF1A36A60771A37FFA.jpg",
+      "status": "PASS_SHELF",
+      "note": "Exact black variant image is live, product is clearly visible, generic listing language, suitable for shelf/card display."
+    },
+    {
+      "product_id": "19999035",
+      "variant_id": "574938742",
+      "variant_title": "Apricot-XL",
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202211/E8E1721A6F41456F67721795ACCEF4A5.jpg",
+      "status": "PASS_SHELF",
+      "note": "Exact apricot variant image is live and clearly presents the product; suitable for Cinematic shelf support."
+    },
+    {
+      "product_id": "22274784",
+      "variant_id": "603592081",
+      "variant_title": "Set-M",
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202307/367B456005DFDDE13C1991C8AC3F0B2B.jpg",
+      "status": "PASS_SHELF_SECONDARY",
+      "note": "Exact full-set variant image is live. Strong visual signal, but lifestyle composition is better for secondary rail than primary Hero."
+    },
+    {
+      "product_id": "22272693",
+      "variant_id": "603568523",
+      "variant_title": "Begonia red-M",
+      "exact_variant_image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202307/8002386D72FA509BA913CA3550561F8B.jpg",
+      "status": "PASS_SHELF",
+      "note": "Exact color/size variant image is live and clearly distinguishable from the generic main image."
+    }
+  ],
+  "holds": [
+    {
+      "product_id": "22272694",
+      "reason": "IMAGE_FRESHNESS_BLOCKED_AND_BRAND_RIGHTS_REVIEW"
+    },
+    {
+      "product_id": "22272657",
+      "reason": "VISIBLE_BRAND_MARK_ON_CATALOG_IMAGE_REVIEW_REQUIRED"
+    },
+    {
+      "product_id": "22272639",
+      "reason": "BRAND_RIGHTS_REVIEW_TITLE_MARK_TRAF"
+    },
+    {
+      "product_id": "22272691",
+      "reason": "BRAND_RIGHTS_REVIEW_TITLE_MARK_KPYTOMOA"
+    },
+    {
+      "product_id": "19427493",
+      "reason": "HIGH_SHIPPING_BURDEN"
+    },
+    {
+      "product_id": "19404377",
+      "reason": "HIGH_SHIPPING_BURDEN"
+    },
+    {
+      "product_id": "22272701",
+      "reason": "VISUAL_QA_NOT_RUN_YET"
+    },
+    {
+      "product_id": "22274780",
+      "reason": "VISUAL_QA_NOT_RUN_YET"
+    }
+  ],
+  "hard_rules": [
+    "Never use a generic main image when an exact variant image exists and differs.",
+    "Never price a full-set listing from a component-only variant.",
+    "Visible or named third-party brand marks require rights review before shelf exposure.",
+    "Visual QA is separate from Product Truth and Commercial Truth.",
+    "No Production exposure from this evidence."
+  ]
+}

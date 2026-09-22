@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V1",
+  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V2",
   "date": "2026-09-22",
   "provider": "EPROLO",
   "owner": "commerce_truth_brain",
@@ -33,6 +33,27 @@
     "account_products": {
       "status": "EMPTY_OK",
       "reason": "No products added to EPROLO account yet"
+    },
+    "shipping_quote": {
+      "endpoint": "get_product_shiping_fees.html",
+      "method": "GET",
+      "status": "PASS_IL_LIVE",
+      "required": [
+        "productid",
+        "variantId"
+      ],
+      "country_parameter": "countrycode"
+    },
+    "inventory": {
+      "endpoint": "product_inventory.html",
+      "method": "GET",
+      "status": "AVAILABLE",
+      "note": "Global catalog variant inventory is also present; fresh recheck remains required at activation."
+    },
+    "order_cost_estimate": {
+      "endpoint": "getCostByProduct.html",
+      "status": "METHOD_OR_AUTH_PLACEMENT_RECHECK_REQUIRED",
+      "live_order_created": false
     }
   },
   "staged_catalog": {
@@ -41,16 +62,19 @@
     "source": "official_readonly_api",
     "availability_basis": "EPROLO_READONLY_API_SNAPSHOT",
     "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
-    "shipping_status": "PENDING_DESTINATION_QUOTE",
-    "profit_gate_status": "PENDING_DESTINATION_QUOTE"
+    "shipping_status": "LIVE_IL_VERIFIED_ON_CONTROLLED_BATCH",
+    "profit_gate_status": "SHADOW_ONLY_ORDER_COST_RECHECK_REQUIRED"
   },
   "gates": [
-    "exact_product_detail_recheck",
     "exact_variant_truth",
+    "full_set_component_scope_truth",
     "fresh_stock_recheck",
+    "exact_variant_image",
+    "brand_rights_review",
     "destination_shipping_quote",
-    "landed_cost",
+    "order_cost_recheck",
     "price_gate",
+    "visual_qa",
     "owner_gate"
   ],
   "hard_blocks": [
@@ -62,5 +86,34 @@
     "no fake stock, shipping, margin or retail price"
   ],
   "storefront_role": "SUPPLIER_MESH_CONNECTED_NOT_LIVE_SHELF",
-  "next": "RUN_CONTROLLED_PRODUCT_DETAIL_SHIPPING_PROFIT_BATCH"
+  "next": "EXPAND_CONTROLLED_SHADOW_BATCHES_BY_DEPARTMENT_AND_VERIFY_ORDER_COST_METHOD",
+  "variant_truth_policy": {
+    "component_split_detection": "If component variants such as Top/Skirt coexist with Set/2pcs variants, a full-set listing must use Set/2pcs variant truth.",
+    "exact_variant_image_required": true,
+    "generic_main_image_is_not_variant_truth": true,
+    "brand_or_visible_mark_requires_rights_review": true
+  },
+  "current_live_validation": {
+    "market": "IL",
+    "initial_truth_batch": {
+      "checked": 6,
+      "shipping_verified": 6,
+      "final_profit_verified": 0
+    },
+    "women_dresses_v2": {
+      "checked": 12,
+      "shipping_verified": 12,
+      "normal_shipping_candidates": 10,
+      "high_shipping_review": 2
+    },
+    "women_shadow_shelf": {
+      "products": 4,
+      "exact_variant_images": 4,
+      "stock_verified": 4,
+      "shipping_verified": 4,
+      "final_profit_verified": 0,
+      "checkout_live": 0
+    },
+    "production_effect": false
+  }
 }

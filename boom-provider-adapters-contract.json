@@ -39,9 +39,12 @@
       "subcategory_count": 193,
       "staged_unique_candidates": 7252,
       "product_detail_gate": "RECHECK_REQUIRED",
-      "shipping_proof": "PENDING_DESTINATION_QUOTE",
-      "profit_gate": "PENDING_DESTINATION_QUOTE",
-      "fulfillment": "DISABLED"
+      "shipping_proof": "CONTROLLED_IL_BATCH_VERIFIED",
+      "profit_gate": "SHADOW_ONLY_ORDER_COST_RECHECK_REQUIRED",
+      "fulfillment": "DISABLED",
+      "shadow_shelf_products": 4,
+      "final_profit": "NOT_VERIFIED_ORDER_COST_RECHECK_REQUIRED",
+      "variant_truth_policy": "FULL_SET_COMPONENT_SCOPE_AND_EXACT_VARIANT_IMAGE"
     }
   },
   "price_gate_v2": {
