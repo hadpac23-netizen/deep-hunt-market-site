@@ -1,0 +1,69 @@
+{
+  "version": "BOOM-ANALYTICS-LEARNING-LOOP-V1",
+  "brain": "learning_governance_brain",
+  "agents": [
+    "analytics_agent",
+    "eval_agent",
+    "experiment_governance_agent",
+    "decision_memory_agent"
+  ],
+  "workflow_id": "analytics_learning_loop",
+  "mode": "SHADOW",
+  "purpose": "Turn sanitized outcome evidence into evaluated learning proposals without silently changing policy, skills, ranking, prices, campaigns, or production.",
+  "source_of_truth": {
+    "analytics": {
+      "table": "analytics_events",
+      "access": "AUTHENTICATED_READ",
+      "use": "outcome evidence; Studio remains admin-gated"
+    },
+    "learning": {
+      "table": "hunt_boom_learning_items",
+      "access": "ADMIN_RLS",
+      "use": "candidate/trusted learning ledger"
+    },
+    "experiments": {
+      "table": "hunt_marketing_experiments",
+      "access": "ADMIN_RLS",
+      "use": "controlled experiment evidence"
+    },
+    "run_events": {
+      "table": "hunt_boom_events",
+      "access": "ADMIN_CONTROL_PLANE",
+      "use": "run/incident outcomes"
+    }
+  },
+  "stages": [
+    "collect_sanitized_evidence",
+    "quality_check",
+    "provenance_check",
+    "baseline_compare",
+    "outcome_attribution",
+    "confidence_calibration",
+    "candidate_learning",
+    "eval_or_experiment_required",
+    "graduation_review",
+    "owner_gate_if_material"
+  ],
+  "truth_rules": [
+    "A single outcome never becomes a behavior rule automatically.",
+    "Missing baseline or provenance means HOLD/UNKNOWN, not improvement.",
+    "Correlation is not treated as causation.",
+    "Failed and rolled-back runs are learning evidence too.",
+    "A learning item may graduate only with explicit evaluation evidence.",
+    "Material policy/skill/price/publish behavior changes require Owner Gate."
+  ],
+  "learning_states": [
+    "CANDIDATE",
+    "HOLD",
+    "REJECTED",
+    "EVAL_REQUIRED",
+    "TRUSTED"
+  ],
+  "boundaries": {
+    "auto_policy_change": false,
+    "auto_skill_promotion": false,
+    "auto_price_change": false,
+    "auto_campaign_publish": false,
+    "auto_prod_change": false
+  }
+}
