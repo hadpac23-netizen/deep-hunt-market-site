@@ -1,0 +1,74 @@
+{
+  "version": "HUNT-PERFORMANCE-MOBILE-QA-2026-09-22-V1",
+  "observed_at": "2026-09-22T12:02:00Z",
+  "source": "Chrome 153 headless + CDP against disposable QA worktree on allowed local origin",
+  "production_mutation": false,
+  "timing_note": "Local FCP/load timings are diagnostic only and are not used as production performance claims.",
+  "before": {
+    "viewport": "390x844",
+    "dom_nodes": 7416,
+    "images": 477,
+    "initial_shelf_cards": 380,
+    "small_touch_targets": 3,
+    "horizontal_overflow": false,
+    "broken_images": 0,
+    "console_problems": 0,
+    "network_failures": 0
+  },
+  "after": {
+    "viewport": "390x844",
+    "dom_nodes": 2899,
+    "images": 174,
+    "lazy_images": 174,
+    "initial_shelf_cards": 77,
+    "mounted_shelves": 8,
+    "small_touch_targets": 0,
+    "horizontal_overflow": false,
+    "broken_images": 0,
+    "console_problems": 0,
+    "network_failures": 0,
+    "js_heap_used_mb": 4.33,
+    "decoded_static_kb": 1525
+  },
+  "improvement": {
+    "dom_nodes_percent": -60.9,
+    "images_percent": -63.5,
+    "initial_shelf_cards_percent": -79.7
+  },
+  "tablet_structural_check": {
+    "viewport": "768x1024",
+    "dom_nodes": 3307,
+    "images": 202,
+    "horizontal_overflow": false,
+    "broken_images": 0,
+    "console_problems": 0,
+    "network_failures": 0
+  },
+  "fixes": [
+    "Homepage shelves now mount progressively: 8 initial on <=760px, then IntersectionObserver batches.",
+    "All homepage product images remain lazy-loaded.",
+    "Mobile brand, theme toggle and survey close controls now expose >=44px hit areas.",
+    "Service Worker cache bumped to hunt-shell-pwa2.",
+    "JS/CSS/JSON/webmanifest changed from stale-while-revalidate to network-first.",
+    "Service Worker registration now uses updateViaCache=none.",
+    "Homepage asset query versions bumped so the performance patch cannot be hidden by the old PWA cache."
+  ],
+  "pwa_truth": {
+    "stale_code_issue_observed": true,
+    "root_cause": "Old service worker used stale-while-revalidate for JS/CSS, so the first navigation after the patch could receive cached code.",
+    "source_fix_coded": true,
+    "preview_runtime_update_proof": false,
+    "installability_proof": false,
+    "state": "CODED_NEEDS_PREVIEW_PWA_PROOF"
+  },
+  "conclusion": {
+    "mobile_layout": "PASS_LOCAL",
+    "mobile_initial_dom_budget": "PASS_LOCAL",
+    "mobile_image_budget": "PASS_LOCAL",
+    "mobile_touch_targets": "PASS_LOCAL",
+    "browser_console": "PASS_LOCAL",
+    "critical_fetches": "PASS_LOCAL",
+    "pwa_update_behavior": "NEEDS_PREVIEW_PROOF",
+    "overall": "LOCAL_MOBILE_PASS_PREVIEW_PWA_PROOF_PENDING"
+  }
+}
