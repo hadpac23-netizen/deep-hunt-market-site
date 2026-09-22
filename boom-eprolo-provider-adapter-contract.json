@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V10",
+  "version": "HUNT-EPROLO-PROVIDER-ADAPTER-V11",
   "date": "2026-09-22",
   "provider": "EPROLO",
   "owner": "commerce_truth_brain",
@@ -43,7 +43,7 @@
         "variantId"
       ],
       "country_parameter": "countrycode",
-      "multimarket_shadow_status": "PASS_33_MARKET_CONTROLLED_DISCOVERY",
+      "multimarket_shadow_status": "PASS_13_MARKET_CONTROLLED_SAMPLE",
       "controlled_markets": [
         "IL",
         "DE",
@@ -357,8 +357,7 @@
       "shipping_shadow_product_market_pairs": 91,
       "policy_mapped_shadow_pairs": 56,
       "policy_hold_shadow_pairs": 35,
-      "live_product_market_pairs": 0,
-      "production_effect": false
+      "live_product_market_pairs": 0
     }
   },
   "truth_policies": {
