@@ -1,0 +1,43 @@
+{
+  "version": "BOOM-AUTOMATION-LEDGER-V1",
+  "state": "SCHEMA_READY_NOT_APPLIED",
+  "source_of_truth": "Supabase Postgres after reviewed migration is applied",
+  "tables": [
+    {
+      "id": "boom_automation_runs",
+      "purpose": "Durable mission/workflow/run/correlation state and execution summary",
+      "primary_key": "run_id",
+      "pii_policy": "No email, phone, address, credentials, payment data or raw customer content",
+      "retention": "Operational metadata only; retention policy to be set before production"
+    },
+    {
+      "id": "boom_automation_run_events",
+      "purpose": "Append-only state/evidence lineage for each run",
+      "primary_key": "id",
+      "pii_policy": "Sanitized metadata only",
+      "retention": "Operational trace; retention policy to be set before production"
+    },
+    {
+      "id": "boom_automation_approvals",
+      "purpose": "Owner/Admin approval decisions for material workflow gates",
+      "primary_key": "id",
+      "pii_policy": "Actor user UUID + reason text only; no secrets",
+      "retention": "Decision evidence"
+    }
+  ],
+  "access": {
+    "anon": "NONE",
+    "authenticated": "Owner/Admin only via RLS",
+    "service_role": "Server-side adapters only; never browser",
+    "n8n": "Future server adapter through controlled gateway, never direct browser credentials"
+  },
+  "invariants": [
+    "run_id, workflow_id, mission_id and correlation_id are always present",
+    "run state is constrained to canonical state machine values",
+    "material actions remain suppressed while control plane mode is SHADOW",
+    "approval rows are immutable decision evidence after insert",
+    "run events are append-only from client perspective",
+    "no raw secrets or customer PII in payload/evidence fields",
+    "every approval references one durable run"
+  ]
+}
