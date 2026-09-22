@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V2.2-LAUNCH-COMMAND",
+  "version": "BOOM-BRAIN-GAPS-V2.2-PERFORMANCE-LAUNCH-COMMAND",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -607,8 +607,8 @@
       "title": "Performance / Mobile QA",
       "owner": "experience_brain",
       "status": "IN_PROGRESS",
-      "source": "LAUNCH_QUALITY",
-      "next": "Local 390px budgets pass after progressive shelf mount and touch-target hardening. Prove PWA cache update/installability/offline shell on Preview before launch PASS."
+      "source": "LAUNCH_READINESS",
+      "next": "Local structural QA passes 390/768/1280/1440 after progressive shelf mounting. Preview must still prove service-worker update behavior, installability, offline shell and deployed-origin performance."
     },
     {
       "id": "pwa_preview_proof",
@@ -623,8 +623,16 @@
       "title": "Launch Command Center",
       "owner": "boom_orchestrator",
       "status": "IN_PROGRESS",
-      "source": "LAUNCH_CONTROL",
-      "next": "Upgrade existing command center to aggregate canonical readiness + live non-sensitive metrics; validate admin-RLS reads on Preview."
+      "source": "LAUNCH_READINESS",
+      "next": "Read-only command surface is coded and privacy-hardened. Verify authenticated admin RLS and readiness rendering on Preview before Owner launch review."
+    },
+    {
+      "id": "launch_session_aggregate",
+      "title": "Privacy-Safe Session Aggregate",
+      "owner": "learning_governance_brain",
+      "status": "NEXT",
+      "source": "OBSERVABILITY",
+      "next": "Do not fetch raw analytics session IDs in browser. Add a server-side aggregate later if Owner wants live 24h user/session count in Command Center."
     }
   ]
 }
