@@ -226,6 +226,43 @@
     }
   }
 
+  async function renderHuntBrandDesign(){
+    const host=$("#bs-hunt-brand-design");
+    if(!host)return;
+    try{
+      const [lane,brief]=await Promise.all([
+        json("boom-hunt-brand-design-contract.json"),
+        json("boom-hunt-core-01-design-brief.json")
+      ]);
+      const flow=(lane.flow||[]).map(x=>`<span>${esc(x)}</span>`).join("");
+      const team=(lane.team||[]).map(x=>`<span>${esc(x.agent)} · ${esc(x.stage)}</span>`).join("");
+      const products=(lane.collection?.products||[]).map(p=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(p.title)}</strong><span class="bs-status NEXT">${esc(p.slot)}</span></div><small>Printful #${esc(p.product_id)} · ${esc(p.role)}</small></div>`).join("");
+      const directions=(brief.design_directions||[]).map(d=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(d.name)}</strong><span class="bs-status NEXT">${esc(d.id)}</span></div><p>${esc(d.idea)}</p></div>`).join("");
+      host.innerHTML=`
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>${esc(lane.collection?.working_name||"HUNT Collection")}</strong><span class="bs-status NEXT">${esc(lane.status)}</span></div>
+          <p>${esc(lane.purpose)}</p>
+          <small>TEAM</small><div class="bs-journey-steps">${team}</div>
+          <small>FLOW</small><div class="bs-journey-steps">${flow}</div>
+          <code>publish false · product creation false · checkout false · Owner Gate required</code>
+        </article>
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>Collection Zero · 5 verified bases</strong><span class="bs-status DONE">PRODUCT TRUTH SOURCE</span></div>
+          <div class="bs-run-list">${products}</div>
+          <small>NEXT</small>
+          <p>${esc(lane.next)}</p>
+        </article>
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>Design Directions</strong><span class="bs-status NEXT">OWNER PICK</span></div>
+          <div class="bs-run-list">${directions}</div>
+          <small>COMMERCE RULE</small>
+          <p>${esc(brief.commerce_recheck)}</p>
+        </article>`;
+    }catch(error){
+      host.innerHTML=`<div class="bs-empty bs-error">Brand design lane unavailable: ${esc(error?.message||"unknown")}</div>`;
+    }
+  }
+
   async function renderCreativeLearning(){
     const host=$("#bs-creative-learning");
     if(!host)return;
@@ -952,7 +989,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy,freshShelfProductTruth};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderCheckoutOrderTrackingProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderFreshShelfProductTruth();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderMarketPolicyReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderCheckoutOrderTrackingProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderHuntBrandDesign();renderCreativeLearning();renderDurableAutomation();renderFreshShelfProductTruth();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderMarketPolicyReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");

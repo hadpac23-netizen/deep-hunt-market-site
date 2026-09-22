@@ -1,0 +1,98 @@
+{
+  "version": "BOOM-HUNT-BRAND-DESIGN-V1",
+  "mode": "SHADOW_DESIGN",
+  "status": "DESIGN_BRIEFS_READY",
+  "production_changed": false,
+  "publishing_authorized": false,
+  "printful_product_creation_authorized": false,
+  "purpose": "Turn verified Printful bases into a HUNT-owned collection through Stylist selection, brand design, visual QA, post-design cost truth and Owner Gate.",
+  "source_evidence": "evidence/HUNT-PRINTFUL-CANDIDATE-SHELF-2026-09-22.json",
+  "collection": {
+    "id": "HUNT-CORE-01",
+    "working_name": "HUNT CORE 01",
+    "design_state": "BRIEF_ONLY",
+    "products": [
+      {
+        "slot": "hero_apparel",
+        "product_id": 1628,
+        "title": "All-Over Print Oversized Cotton Hoodie",
+        "role": "statement piece"
+      },
+      {
+        "slot": "headwear",
+        "product_id": 458,
+        "title": "All-Over Print Beanie",
+        "role": "accessible wearable"
+      },
+      {
+        "slot": "bag",
+        "product_id": 262,
+        "title": "All-Over Print Drawstring Bag",
+        "role": "mobile lifestyle"
+      },
+      {
+        "slot": "drinkware",
+        "product_id": 403,
+        "title": "White Ceramic Mug with Color Inside",
+        "role": "entry-price gift"
+      },
+      {
+        "slot": "tech",
+        "product_id": 181,
+        "title": "Clear Case for iPhone®",
+        "role": "daily-use tech"
+      }
+    ]
+  },
+  "team": [
+    {
+      "stage": "select",
+      "owner": "experience_brain",
+      "agent": "stylist_agent",
+      "responsibility": "collection coherence, use case, category balance and style direction"
+    },
+    {
+      "stage": "design",
+      "owner": "growth_brain",
+      "agent": "creative_brand_factory_agent",
+      "responsibility": "art direction, graphics, placement concepts, mockup briefs and collection language"
+    },
+    {
+      "stage": "visual_qa",
+      "owner": "growth_brain",
+      "agent": "brand-creative-qa.js",
+      "responsibility": "product fidelity, clarity, brand consistency and safe claims"
+    },
+    {
+      "stage": "requote",
+      "owner": "commerce_truth_brain",
+      "agent": "pricing_profit_agent",
+      "responsibility": "re-check exact Printful variant, decoration-dependent cost, shipping and Price Gate after design is locked"
+    },
+    {
+      "stage": "approve",
+      "owner": "OWNER",
+      "agent": "owner_gate",
+      "responsibility": "approve shortlist before any product creation or publishing"
+    }
+  ],
+  "flow": [
+    "verified_candidate",
+    "stylist_shortlist",
+    "brand_design_brief",
+    "mockup_concepts",
+    "visual_qa",
+    "post_design_cost_requote",
+    "owner_gate",
+    "printful_product_create_later"
+  ],
+  "hard_rules": [
+    "Use only Printful candidates with verified variant, stock and destination shipping evidence.",
+    "Do not treat pre-design supplier cost as final if decoration, placement or print technique can change fulfillment cost.",
+    "Do not create or publish a Printful product from this lane.",
+    "Do not activate checkout or fulfillment.",
+    "No third-party brand is used as the core identity of HUNT CORE 01.",
+    "Owner Gate is required before external product creation."
+  ],
+  "next": "OWNER_DIRECTION_PICK_BEFORE_ARTWORK_GENERATION"
+}

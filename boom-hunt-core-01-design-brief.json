@@ -1,0 +1,106 @@
+{
+  "version": "HUNT-CORE-01-DESIGN-BRIEF-V1",
+  "mode": "BRIEF_ONLY",
+  "collection": "HUNT CORE 01",
+  "objective": "Create one recognizable HUNT collection across apparel, accessory, bag, drinkware and tech without changing Product Truth or creating supplier products.",
+  "stylist_direction": {
+    "character": [
+      "clean",
+      "premium",
+      "recognizable",
+      "global",
+      "easy to wear/use"
+    ],
+    "avoid": [
+      "visual clutter",
+      "unreadable micro-details",
+      "random unrelated graphics",
+      "copying another brand identity"
+    ],
+    "consistency_rule": "One mark system and one visual language must work across all five products."
+  },
+  "design_directions": [
+    {
+      "id": "CORE_MARK",
+      "name": "Core Mark",
+      "idea": "Minimal HUNT identity with one strong focal mark and restrained supporting detail."
+    },
+    {
+      "id": "SIGNAL_SYSTEM",
+      "name": "Signal System",
+      "idea": "HUNT mark plus directional lines, coordinates/grid language or star/signal accents as a repeatable system."
+    },
+    {
+      "id": "NIGHT_DROP",
+      "name": "Night Drop",
+      "idea": "A darker premium collection language with controlled luminous accents and a stronger back/edge graphic."
+    }
+  ],
+  "product_briefs": [
+    {
+      "product_id": 1628,
+      "title": "All-Over Print Oversized Cotton Hoodie",
+      "priority": "HERO",
+      "placements": [
+        "front focal mark",
+        "back secondary graphic",
+        "optional sleeve detail"
+      ],
+      "designer_task": "Create the collection hero while preserving readability from distance."
+    },
+    {
+      "product_id": 458,
+      "title": "All-Over Print Beanie",
+      "priority": "CORE",
+      "placements": [
+        "front centered mark",
+        "small repeat/pattern option"
+      ],
+      "designer_task": "Reduce the identity to a simple mark that still reads at small scale."
+    },
+    {
+      "product_id": 262,
+      "title": "All-Over Print Drawstring Bag",
+      "priority": "CORE",
+      "placements": [
+        "center graphic",
+        "repeat pattern option"
+      ],
+      "designer_task": "Translate the apparel language into a portable lifestyle piece."
+    },
+    {
+      "product_id": 403,
+      "title": "White Ceramic Mug with Color Inside",
+      "priority": "ENTRY",
+      "placements": [
+        "single-side mark",
+        "wrap system"
+      ],
+      "designer_task": "Create an accessible entry product that still feels like the same collection."
+    },
+    {
+      "product_id": 181,
+      "title": "Clear Case for iPhone®",
+      "priority": "TECH",
+      "placements": [
+        "vertical mark",
+        "corner mark",
+        "repeat micro-pattern"
+      ],
+      "designer_task": "Keep controls/camera areas visually clear and make the identity work on a transparent base."
+    }
+  ],
+  "visual_qa": [
+    "HUNT identity is recognizable without relying on another brand.",
+    "Artwork remains readable at intended physical size.",
+    "Placement does not collide with product functional areas.",
+    "Collection looks related across all five products.",
+    "No unverified product or performance claims.",
+    "Printful exact template and print-area requirements must be checked before final artwork export."
+  ],
+  "commerce_recheck": "After a direction and placement are selected, re-quote exact fulfillment cost, shipping and Price Gate before Owner approval.",
+  "owner_gate": {
+    "required": true,
+    "decision": "Choose one direction or request a hybrid before any artwork generation or Printful product creation."
+  }
+}

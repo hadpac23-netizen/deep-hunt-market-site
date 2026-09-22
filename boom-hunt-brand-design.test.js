@@ -1,0 +1,32 @@
+const fs=require("fs"),assert=require("assert");
+const lane=JSON.parse(fs.readFileSync("boom-hunt-brand-design-contract.json","utf8"));
+const shelf=JSON.parse(fs.readFileSync("evidence/HUNT-PRINTFUL-CANDIDATE-SHELF-2026-09-22.json","utf8"));
+const html=fs.readFileSync("boom-brain-studio.html","utf8");
+const js=fs.readFileSync("boom-brain-studio.js","utf8");
+const brief=JSON.parse(fs.readFileSync("boom-hunt-core-01-design-brief.json","utf8"));
+assert.equal(lane.mode,"SHADOW_DESIGN");
+assert.equal(lane.production_changed,false);
+assert.equal(lane.publishing_authorized,false);
+assert.equal(lane.printful_product_creation_authorized,false);
+assert.equal(lane.status,"DESIGN_BRIEFS_READY");
+assert.equal(brief.mode,"BRIEF_ONLY");
+assert.equal(brief.design_directions.length,3);
+assert.equal(brief.product_briefs.length,5);
+assert.equal(brief.owner_gate.required,true);
+assert.equal(lane.collection.products.length,5);
+const verified=new Map((shelf.global_candidates||[]).map(x=>[x.product_id,x]));
+for(const p of lane.collection.products){
+  const v=verified.get(p.product_id);
+  assert(v,`Product ${p.product_id} must come from global verified candidates`);
+  assert.deepEqual(v.verified_markets,["IL","DE","US"]);
+  assert.equal(v.fulfillment,"DISABLED");
+  assert.equal(v.checkout,"DISABLED");
+}
+assert(lane.flow.includes("post_design_cost_requote"));
+assert(lane.flow.includes("owner_gate"));
+assert(html.includes('id="bs-hunt-brand-design"'));
+assert(js.includes("async function renderHuntBrandDesign()"));
+assert(js.includes('json("boom-hunt-brand-design-contract.json")'));
+assert(js.includes('json("boom-hunt-core-01-design-brief.json")'));
+assert(js.includes("OWNER PICK"));
+console.log("PASS boom-hunt-brand-design");
