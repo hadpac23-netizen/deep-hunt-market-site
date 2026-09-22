@@ -226,6 +226,36 @@
     }
   }
 
+  async function renderStylistAcademy(){
+    const host=$("#bs-stylist-academy");
+    if(!host)return;
+    try{
+      const [academy,training]=await Promise.all([
+        json("boom-stylist-academy-contract.json"),
+        json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-2026-09-22.json")
+      ]);
+      const tracks=(academy.tracks||[]).map(t=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(t.id)} · ${esc(t.name)}</strong><span class="bs-status NEXT">${esc((t.modules||[]).length)} modules</span></div><p>${esc((t.modules||[]).join(" · "))}</p></div>`).join("");
+      const exams=(academy.exams||[]).map(e=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(e.name)}</strong><span class="bs-status NEXT">PASS ${esc(e.pass_score)}+</span></div><small>${esc(e.output_rule)}</small></div>`).join("");
+      host.innerHTML=`
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>Academy Curriculum</strong><span class="bs-status NEXT">${esc(academy.status)}</span></div>
+          <p>${esc(academy.objective)}</p>
+          <div class="bs-run-list">${tracks}</div>
+          <code>production influence false · autonomous shelf reorder false · publish false</code>
+        </article>
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>Verified Training Set</strong><span class="bs-status DONE">${esc(training.verified_products)} products</span></div>
+          <p>Country-limited excluded: ${esc(training.excluded_country_limited)} · training only · Product Truth source preserved.</p>
+          <small>EXAMS</small>
+          <div class="bs-run-list">${exams}</div>
+          <small>CURRENT MASTERY</small>
+          <p>Level ${esc(academy.current_state?.mastery_level)} · ${esc((academy.mastery||[])[academy.current_state?.mastery_level]?.name||"UNTRAINED")}</p>
+        </article>`;
+    }catch(error){
+      host.innerHTML=`<div class="bs-empty bs-error">Stylist Academy unavailable: ${esc(error?.message||"unknown")}</div>`;
+    }
+  }
+
   async function renderHuntBrandDesign(){
     const host=$("#bs-hunt-brand-design");
     if(!host)return;
@@ -989,7 +1019,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy,freshShelfProductTruth};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderCheckoutOrderTrackingProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderHuntBrandDesign();renderCreativeLearning();renderDurableAutomation();renderFreshShelfProductTruth();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderMarketPolicyReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderCheckoutOrderTrackingProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderStylistAcademy();renderHuntBrandDesign();renderCreativeLearning();renderDurableAutomation();renderFreshShelfProductTruth();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderMarketPolicyReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");

@@ -1,0 +1,18 @@
+const fs=require("fs"),assert=require("assert");
+const c=JSON.parse(fs.readFileSync("boom-stylist-academy-contract.json","utf8"));
+assert.equal(c.mode,"SHADOW_TRAINING");
+assert.equal(c.production_influence,false);
+assert.equal(c.autonomous_shelf_reorder,false);
+assert(c.tracks.some(x=>x.id==="S2"));
+assert(c.tracks.some(x=>x.id==="M1"));
+assert(c.exams.every(x=>x.pass_score===85));
+assert(c.safety_and_trust.some(x=>x.includes("Do not critique")));
+assert(c.mastery[c.mastery.length-1].requirement.includes("Owner Gate"));
+assert.equal(c.current_state.mastery_level,0);
+assert(c.current_state.training_dataset.includes("27_GLOBAL_VERIFIED"));
+const html=fs.readFileSync("boom-brain-studio.html","utf8");
+const js=fs.readFileSync("boom-brain-studio.js","utf8");
+assert(html.includes('id="bs-stylist-academy"'));
+assert(js.includes("async function renderStylistAcademy()"));
+assert(js.includes("HUNT-STYLIST-ACADEMY-TRAINING-SET-2026-09-22.json"));
+console.log("PASS boom-stylist-academy");

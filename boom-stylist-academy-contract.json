@@ -1,0 +1,229 @@
+{
+  "version": "BOOM-STYLIST-ACADEMY-V1",
+  "mode": "SHADOW_TRAINING",
+  "status": "CURRICULUM_READY",
+  "production_influence": false,
+  "publishing_authorized": false,
+  "autonomous_shelf_reorder": false,
+  "owners": {
+    "style": {
+      "brain": "experience_brain",
+      "agent": "stylist_agent"
+    },
+    "merchandising": {
+      "brain": "experience_brain",
+      "agent": "merchandising_ux_agent"
+    },
+    "truth": {
+      "brain": "commerce_truth_brain",
+      "agent": "inventory_truth_agent"
+    },
+    "learning": {
+      "brain": "learning_governance_brain",
+      "agent": "experiment_governance_agent"
+    },
+    "gate": "OWNER"
+  },
+  "objective": "Train BOOM to understand style and visual merchandising, then prove it in repeatable shadow exams before influencing HUNT shelves.",
+  "tracks": [
+    {
+      "id": "S1",
+      "name": "Style Foundations",
+      "modules": [
+        "color harmony",
+        "garment attributes",
+        "silhouette as garment shape",
+        "layering",
+        "occasion matching",
+        "season/context",
+        "accessory pairing",
+        "complete-the-look"
+      ]
+    },
+    {
+      "id": "S2",
+      "name": "AI Style Intelligence",
+      "modules": [
+        "visual style tagging",
+        "text-to-style taxonomy",
+        "product similarity",
+        "outfit composition",
+        "Taste DNA adaptation",
+        "explainable recommendations",
+        "trend/context signals",
+        "confidence and abstention"
+      ]
+    },
+    {
+      "id": "S3",
+      "name": "HUNT Brand DNA",
+      "modules": [
+        "clean premium language",
+        "recognizable HUNT identity",
+        "collection coherence",
+        "brand yes/no examples",
+        "owner feedback learning"
+      ]
+    },
+    {
+      "id": "M1",
+      "name": "Shelf & Visual Merchandising",
+      "modules": [
+        "hero-anchor-support hierarchy",
+        "color rhythm",
+        "category grouping",
+        "price ladder",
+        "newness rotation",
+        "complete-the-look adjacency",
+        "visual density",
+        "mobile vs desktop composition"
+      ]
+    },
+    {
+      "id": "M2",
+      "name": "Commercial Shelf Truth",
+      "modules": [
+        "verified stock only",
+        "country shipping eligibility",
+        "price/profit gates",
+        "variant truth",
+        "market availability",
+        "blocked-item suppression",
+        "recheck-before-checkout"
+      ]
+    },
+    {
+      "id": "L1",
+      "name": "Learning Loop",
+      "modules": [
+        "owner approve/reject labels",
+        "reason codes",
+        "aggregate click/save/cart/purchase signals",
+        "return/cancel signals when available",
+        "A/B shadow comparisons",
+        "regression tests"
+      ]
+    }
+  ],
+  "safety_and_trust": [
+    "Do not critique or rank a person's body.",
+    "Do not infer sensitive traits from appearance.",
+    "Style recommendations use stated preferences, fit/size data, context, product attributes and Taste DNA.",
+    "Do not expose unverified products, variants, prices, stock or shipping.",
+    "Do not autonomously publish, reorder Production shelves or change prices.",
+    "When confidence is low, abstain or ask for more context instead of inventing certainty."
+  ],
+  "shelf_roles": [
+    "hero",
+    "anchor",
+    "support",
+    "complete_the_look",
+    "accessory",
+    "entry_price",
+    "premium_step_up",
+    "discovery"
+  ],
+  "exams": [
+    {
+      "id": "STYLE-20-5",
+      "name": "20 Products → 5 Looks",
+      "input_rule": "20 Product Truth verified products",
+      "output_rule": "5 coherent looks with product IDs, rationale and confidence",
+      "scoring": {
+        "style_coherence": 25,
+        "product_truth": 20,
+        "variety": 15,
+        "hunt_brand_fit": 15,
+        "practicality": 15,
+        "explanation": 10
+      },
+      "pass_score": 85
+    },
+    {
+      "id": "SHELF-24",
+      "name": "24 Products → Shelf Composition",
+      "input_rule": "24 Product Truth verified products",
+      "output_rule": "ordered shelf with hero/anchor/support roles and mobile/desktop variants",
+      "scoring": {
+        "visual_hierarchy": 20,
+        "product_truth": 20,
+        "category_coherence": 15,
+        "color_rhythm": 10,
+        "commercial_balance": 15,
+        "discovery_diversity": 10,
+        "responsive_composition": 10
+      },
+      "pass_score": 85
+    },
+    {
+      "id": "COMBINED-LOOK-SHELF",
+      "name": "Look → Shelf → Commercial Truth",
+      "input_rule": "one selected look plus complementary verified catalog",
+      "output_rule": "hero shelf, complete-the-look rail and reasoning without changing Production",
+      "scoring": {
+        "cross_surface_consistency": 20,
+        "product_truth": 25,
+        "brand_fit": 15,
+        "merchandising_quality": 20,
+        "commercial_sanity": 10,
+        "explainability": 10
+      },
+      "pass_score": 85
+    }
+  ],
+  "mastery": [
+    {
+      "level": 0,
+      "name": "UNTRAINED",
+      "requirement": "curriculum only"
+    },
+    {
+      "level": 1,
+      "name": "FOUNDATIONS",
+      "requirement": "S1/S2/M1 knowledge checks pass"
+    },
+    {
+      "level": 2,
+      "name": "STYLE_SHADOW_PASS",
+      "requirement": "STYLE-20-5 >= 85 in 3 rounds"
+    },
+    {
+      "level": 3,
+      "name": "SHELF_SHADOW_PASS",
+      "requirement": "SHELF-24 >= 85 in 3 rounds"
+    },
+    {
+      "level": 4,
+      "name": "SHADOW_CHAMPION",
+      "requirement": "COMBINED-LOOK-SHELF >= 85 plus no truth violations"
+    },
+    {
+      "level": 5,
+      "name": "PRODUCTION_CANDIDATE",
+      "requirement": "Owner Gate + controlled experiment; no autonomous activation"
+    }
+  ],
+  "training_sources": {
+    "allowed": [
+      "verified HUNT Product Truth evidence",
+      "Printful/CJ official product metadata",
+      "owner feedback",
+      "curated reference examples",
+      "privacy-safe aggregate behavioral signals when available"
+    ],
+    "forbidden": [
+      "fake inventory",
+      "invented prices",
+      "unverified shipping",
+      "body-judgment labels",
+      "sensitive-trait inference"
+    ]
+  },
+  "current_state": {
+    "mastery_level": 0,
+    "completed_exams": 0,
+    "production_shelf_authority": false,
+    "training_dataset": "27_GLOBAL_VERIFIED_PRINTFUL_PRODUCTS_READY"
+  },
+  "next": "BUILD_VERIFIED_TRAINING_SET_AND_RUN_BASELINE_SHADOW_EXAMS"
+}
