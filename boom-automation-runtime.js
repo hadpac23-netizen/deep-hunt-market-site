@@ -288,6 +288,22 @@
     }
   }
 
+
+  async function recordLearningCandidate(runId,proposal={}){
+    await ready();
+    const run=runs.get(String(runId));
+    if(!run)throw Object.assign(new Error("RUN_NOT_FOUND"),{code:"RUN_NOT_FOUND"});
+    if(run.workflow_id!=="analytics_learning_loop")throw Object.assign(new Error("LEARNING_WORKFLOW_REQUIRED"),{code:"LEARNING_WORKFLOW_REQUIRED"});
+    const check=preflight(run);
+    if(!check.ok)throw Object.assign(new Error("LEARNING_EVIDENCE_BLOCKED"),{code:"LEARNING_EVIDENCE_BLOCKED",blockers:check.blockers});
+    if(!["WAITING_OWNER","SUCCEEDED"].includes(run.state))throw Object.assign(new Error("LEARNING_RUN_NOT_REVIEWABLE"),{code:"LEARNING_RUN_NOT_REVIEWABLE"});
+    const ledger=window.BoomLearningLedger;
+    if(!ledger?.propose)throw Object.assign(new Error("LEARNING_LEDGER_UNAVAILABLE"),{code:"LEARNING_LEDGER_UNAVAILABLE"});
+    const result=await ledger.propose(clone(run),proposal);
+    await persistRunEvent(run,"automation.learning.candidate_recorded",{learning_status:String(result?.status||"testing")});
+    return clone(result);
+  }
+
   async function authorizeTool(toolId,{ownerApproved=false}={}){
     await ready();
     const tool=gateway.tools.find(x=>x.id===String(toolId));
@@ -299,5 +315,5 @@
   function getRun(runId){const run=runs.get(String(runId));return run?clone(run):null;}
   function listRuns(){return [...runs.values()].map(clone);}
 
-  window.BoomAutomationRuntime={version,ready,createRun,preflight,updateRunInput,simulate,dispatchAdapter,routeFailureToIncident,ownerDecision,fail,retry,authorizeTool,getRun,listRuns};
+  window.BoomAutomationRuntime={version,ready,createRun,preflight,updateRunInput,simulate,dispatchAdapter,routeFailureToIncident,recordLearningCandidate,ownerDecision,fail,retry,authorizeTool,getRun,listRuns};
 })();
