@@ -1,0 +1,103 @@
+{
+  "version": "BOOM-WORKFLOW-TEMPLATES-V1",
+  "mode": "SHADOW",
+  "rule": "Templates compile reusable Skills into a plan. Compilation does not execute tools or material actions.",
+  "templates": [
+    {
+      "id": "supplier_intake_to_shelf",
+      "title": "Supplier Intake → Shelf Candidate",
+      "owner": "commerce_truth_brain",
+      "trigger": "manual_or_supplier_feed",
+      "skills": [
+        "audit_supplier",
+        "check_product_truth",
+        "fill_shelf_candidate"
+      ],
+      "final_action": "shelf_candidate_only",
+      "material": false
+    },
+    {
+      "id": "shelf_gap_recovery",
+      "title": "Shelf Gap Recovery",
+      "owner": "commerce_truth_brain",
+      "trigger": "shelf_coverage_gap",
+      "skills": [
+        "research_market",
+        "audit_supplier",
+        "check_product_truth",
+        "fill_shelf_candidate"
+      ],
+      "final_action": "coverage_proposal",
+      "material": false
+    },
+    {
+      "id": "product_ad_factory",
+      "title": "Product → Ad Candidate",
+      "owner": "growth_brain",
+      "trigger": "promotion_candidate",
+      "skills": [
+        "check_product_truth",
+        "create_ad_candidate"
+      ],
+      "final_action": "owner_review",
+      "material": true
+    },
+    {
+      "id": "brand_motion_factory",
+      "title": "Locked Reference → Motion Candidate",
+      "owner": "growth_brain",
+      "trigger": "manual_creative_brief",
+      "skills": [
+        "create_motion_candidate"
+      ],
+      "final_action": "owner_review",
+      "material": true
+    },
+    {
+      "id": "incident_repair_factory",
+      "title": "Incident → Repair Candidate",
+      "owner": "learning_governance_brain",
+      "trigger": "runtime_failure",
+      "skills": [
+        "repair_incident"
+      ],
+      "final_action": "owner_review_before_deploy",
+      "material": true
+    },
+    {
+      "id": "feature_build_factory",
+      "title": "Brief → Feature Candidate",
+      "owner": "innovation_brain",
+      "trigger": "approved_build_brief",
+      "skills": [
+        "research_market",
+        "build_feature_candidate"
+      ],
+      "final_action": "owner_review_before_preview",
+      "material": true
+    },
+    {
+      "id": "market_opportunity_scan",
+      "title": "Market Opportunity Scan",
+      "owner": "intelligence_brain",
+      "trigger": "manual_or_scheduler",
+      "skills": [
+        "research_market"
+      ],
+      "final_action": "evidence_pack",
+      "material": false
+    },
+    {
+      "id": "launch_readiness_review",
+      "title": "Launch Readiness Review",
+      "owner": "boom_orchestrator",
+      "trigger": "launch_window",
+      "skills": [
+        "check_product_truth",
+        "research_market"
+      ],
+      "final_action": "owner_launch_decision",
+      "material": true
+    }
+  ]
+}
