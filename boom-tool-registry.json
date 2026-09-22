@@ -214,13 +214,14 @@
     {
       "id": "fresh_shelf_product_truth",
       "type": "PRODUCT_TRUTH_EVALUATOR",
-      "status": "PILOT_PROVEN_FULL_REFRESH_PENDING",
+      "status": "CJ_CONTROLLED_SCAN_COMPLETE_19_FRESH",
       "owner_plane": "tool_gateway_plane",
       "authority": "NONE",
       "evidence": [
-        "CJ quote endpoint is canonical for stock + destination shipping",
-        "3 Israel pilot products have fresh price/stock/shipping observations",
-        "recheck_before_checkout remains unchanged and requires checkout-time re-quote"
+        "Controlled scan CJ-IL-20260922-A covered 76/76 CJ catalog rows",
+        "19 exact-variant Price+Stock+IL Shipping Fresh Shelf Verified",
+        "57 rows remain lookup-failed / profit-blocked / no verified variant",
+        "0 Checkout Live Verified; checkout-time re-quote remains mandatory"
       ]
     }
   ],
