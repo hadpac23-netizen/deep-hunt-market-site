@@ -138,6 +138,11 @@
       "id": "payment_launch_gate",
       "status": "CODED_SHADOW_ALL_ROUTES_PLANNED",
       "evidence": "Provider-neutral Payment Launch Gate + Studio route matrix coded. Live audit: 6 payment routes, all status=planned, all approval_reference/approved_at null; hunt_payment_live OFF/unapproved; hunt_supplier_order_live OFF/unapproved. PayPlus account approval not yet evidenced and sandbox callback proof not yet collected."
+    },
+    {
+      "id": "checkout_order_tracking_e2e",
+      "status": "CODED_SHADOW_BLOCKED_SUPPLIER_TRACKING_E2E",
+      "evidence": "Read-only audit: 8/8 test orders user-bound; RLS protects payment sessions/orders/events/fulfillment by ownership; 1 dry-run validation PASS; 8 fulfillment rows; 0 supplier_order_id; 0 tracking rows; 0 shipped events. Historical blockers: 4 CJ transient busy failures + 1 Israel phone-format failure. Current source has +972 normalization, up-to-5 transient retries and stable-order reconciliation, but these fixes still need a successful sandbox E2E proof."
     }
   ],
   "blockers": [
@@ -158,7 +163,8 @@
     "Complete PayPlus sandbox callback/status proof before Owner can consider enabling paid acceptance; First Real-Order Proof must not bypass this gate.",
     "PayPlus sandbox evidence control/session must be run in staging to collect signed success/failure observations before paid-state mapping can be proven.",
     "Refund path requires a separate observed charge_method=4 staging fingerprint linked to the original transaction before refund launch.",
-    "Each PSP route needs commercial/account approval evidence plus server credentials, sandbox/callback/refund/finance/settlement/legal scope proof before it can become a LIVE_READY_CANDIDATE."
+    "Each PSP route needs commercial/account approval evidence plus server credentials, sandbox/callback/refund/finance/settlement/legal scope proof before it can become a LIVE_READY_CANDIDATE.",
+    "Checkout/Orders/Tracking needs one successful sandbox supplier-order lineage with persisted supplier_order_id + tracking_number + shipped event; current evidence has none."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
