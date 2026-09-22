@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-PERFORMANCE-MOBILE-READINESS-V1",
+  "version": "BOOM-PERFORMANCE-MOBILE-READINESS-V1.1-ISOLATED-VIEWPORTS",
   "mode": "SHADOW",
   "owner": "experience_brain",
   "authority": "NONE",
@@ -22,6 +22,22 @@
       "max_broken_images": 0,
       "max_console_problems": 0,
       "max_critical_network_failures": 0
+    },
+    "desktop_1280": {
+      "max_initial_dom_nodes": 5000,
+      "max_initial_images": 320,
+      "max_horizontal_overflow_px": 0,
+      "max_broken_images": 0,
+      "max_console_problems": 0,
+      "max_critical_network_failures": 0
+    },
+    "desktop_1440": {
+      "max_initial_dom_nodes": 5000,
+      "max_initial_images": 320,
+      "max_horizontal_overflow_px": 0,
+      "max_broken_images": 0,
+      "max_console_problems": 0,
+      "max_critical_network_failures": 0
     }
   },
   "performance_rules": [
@@ -29,7 +45,8 @@
     "No product is removed from the catalog merely to satisfy homepage performance budgets.",
     "Local timing numbers are diagnostic only; Preview/Production Web Vitals require a real deployed origin.",
     "Critical storefront/API failures are launch blockers; intentional local-origin CORS failures are not counted once tested on an allowed origin.",
-    "A responsive rail may overflow inside its own scroll container, but the document itself may not horizontally overflow."
+    "A responsive rail may overflow inside its own scroll container, but the document itself may not horizontally overflow.",
+    "Each viewport QA is isolated in its own Chrome page to prevent navigation cancellation or scroll restoration from contaminating initial-load evidence."
   ],
   "pwa_rules": [
     "Navigations use network-first.",
@@ -52,15 +69,34 @@
       "network_failures": 0
     },
     "tablet_768": {
-      "dom_nodes": 3307,
-      "images": 202,
+      "dom_nodes": 3391,
+      "images": 208,
+      "shelf_cards": 111,
       "horizontal_overflow": false,
       "broken_images": 0,
       "console_problems": 0,
       "network_failures": 0
     },
     "pwa_preview_proof": false,
-    "state": "LOCAL_MOBILE_PASS_PREVIEW_PWA_PROOF_PENDING"
+    "state": "LOCAL_RESPONSIVE_PASS_PREVIEW_PWA_PROOF_PENDING",
+    "desktop_1280": {
+      "dom_nodes": 4265,
+      "images": 269,
+      "shelf_cards": 172,
+      "horizontal_overflow": false,
+      "broken_images": 0,
+      "console_problems": 0,
+      "network_failures": 0
+    },
+    "desktop_1440": {
+      "dom_nodes": 4265,
+      "images": 269,
+      "shelf_cards": 172,
+      "horizontal_overflow": false,
+      "broken_images": 0,
+      "console_problems": 0,
+      "network_failures": 0
+    }
   },
   "hard_rules": [
     "Never call local timing data a production Web Vitals result.",
