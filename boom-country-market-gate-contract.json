@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-COUNTRY-MARKET-GATE-V1",
+  "version": "HUNT-COUNTRY-MARKET-GATE-V2",
   "date": "2026-09-23",
   "mode": "BRANCH_ONLY",
   "production_effect": false,
@@ -28,10 +28,41 @@
     "il_shadow_shelf_products": 13,
     "market_specific_shadow_products": 2,
     "global_unique_shadow_candidates": 15,
-    "markets": [
+    "shipping_discovery_markets": [
       "DE",
-      "US"
+      "FR",
+      "IT",
+      "ES",
+      "NL",
+      "GB",
+      "US",
+      "CA",
+      "AU",
+      "AE",
+      "JP",
+      "SG"
     ],
+    "mapped_policy_shadow_markets": [
+      "DE",
+      "FR",
+      "IT",
+      "ES",
+      "NL",
+      "GB",
+      "US",
+      "AU"
+    ],
+    "unmapped_policy_hold_markets": [
+      "CA",
+      "AE",
+      "JP",
+      "SG"
+    ],
+    "global_live_eligible_products": 0,
+    "persisted_catalog_discovery_enabled": false,
+    "blocker": "FINAL_PROFIT_AND_MARKET_LAUNCH_GATES_NOT_VERIFIED",
     "production_exposure": false
-  }
+  },
+  "runtime_rule": "When a country is selected, evaluate exact destination eligibility; do not infer availability from region or another country.",
+  "provider_activation_rule": "A provider may be understood by the country engine before it is allowed into persisted storefront discovery. EPROLO remains excluded until its provider-level gates pass."
 }
