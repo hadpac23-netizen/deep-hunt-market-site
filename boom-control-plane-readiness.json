@@ -118,6 +118,11 @@
       "id": "marketing_net_profit_attribution",
       "status": "CODED_CONTRACT_BLOCKED_NO_REAL_ORDER_OR_COST_FEED",
       "evidence": "Attribution contract requires non-test order + finance profit evidence + touchpoint linkage + actual marketing spend/fees. Current purchase bridge: 32 rows, 0 real-order-linked, 0 profit-evidence-ready; marketing cost feed not connected."
+    },
+    {
+      "id": "marketing_cost_evidence_gateway",
+      "status": "CODED_GA4_TRAFFIC_CONNECTED_COST_NOT_VERIFIED",
+      "evidence": "Windsor GA4 HUNT DEAL is connected read-only. Last-30d audit: 25 sessions, 0 purchases, $0 purchase revenue, advertiser_ad_cost reports 0. Because no direct ad-platform connector or proven GA4 cost-import coverage exists, $0 is NOT accepted as verified spend. Cost/CAC/Marketing Net Profit remain UNKNOWN."
     }
   ],
   "blockers": [
@@ -133,7 +138,8 @@
     "Realized Profit remains blocked until non-test orders produce real finance-ledger evidence and auditable product allocation.",
     "Harden RLS/server access for hunt_purchase_attribution_bridge and hunt_daily_owner_metrics before browser-side Profit Mission use.",
     "Connect audited per-channel/campaign marketing cost evidence before CAC or Marketing Net Profit can be verified.",
-    "Hourly mission remains blocked until f60t_hourly_profit_ledger contains exact VERIFIED rows backed by non-test real-order finance evidence."
+    "Hourly mission remains blocked until f60t_hourly_profit_ledger contains exact VERIFIED rows backed by non-test real-order finance evidence.",
+    "Connect a direct ad-platform cost source (e.g. Google Ads/Meta/TikTok) or prove GA4 cost-import coverage before paid spend, CAC or Marketing Net Profit can be verified."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
