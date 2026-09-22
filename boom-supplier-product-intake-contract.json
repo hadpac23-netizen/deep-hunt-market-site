@@ -1,0 +1,93 @@
+{
+  "version": "BOOM-SUPPLIER-PRODUCT-INTAKE-V1",
+  "brain": "commerce_truth_brain",
+  "agents": [
+    "supplier_truth_agent",
+    "product_truth_agent",
+    "pricing_profit_agent",
+    "shipping_truth_agent",
+    "category_merchandising_agent"
+  ],
+  "workflow_id": "supplier_product_intake",
+  "mode": "SHADOW",
+  "purpose": "Convert an approved official supplier/feed source into a verified shelf candidate without ordering, publishing, or fabricating commerce truth.",
+  "source_of_truth": {
+    "partner_candidate": {
+      "table": "hunt_partner_candidates",
+      "access": "SERVER_ONLY_RLS",
+      "use": "candidate/evidence context only"
+    },
+    "partner_matrix": {
+      "table": "hunt_partner_matrix",
+      "access": "ADMIN_RLS",
+      "use": "official API, terms, media rights, order/tracking verification and owner gate"
+    },
+    "catalog": {
+      "table": "hunt_catalog_products",
+      "access": "READ",
+      "use": "normalized product truth"
+    },
+    "profit_profile": {
+      "table": "hunt_profit_profiles",
+      "access": "ADMIN_RLS",
+      "use": "owner-approved economics policy"
+    },
+    "unit_economics": {
+      "table": "hunt_unit_economics",
+      "access": "ADMIN_READ",
+      "use": "verified landed economics/profit gate"
+    }
+  },
+  "preconditions": [
+    "partner_identity_verified",
+    "official_api_or_feed_verified",
+    "terms_verified",
+    "media_rights_verified"
+  ],
+  "stages": [
+    "source_identity",
+    "partner_policy",
+    "official_api_feed_truth",
+    "product_normalization",
+    "variant_truth",
+    "stock_freshness",
+    "country_shipping_truth",
+    "landed_cost",
+    "profit_profile",
+    "unit_economics",
+    "authenticity_market_restrictions",
+    "media_quality",
+    "category_mapping",
+    "shelf_candidate"
+  ],
+  "pass_requirements": [
+    "availability_verified",
+    "fresh source evidence",
+    "price > 0",
+    "image/media belongs to the product",
+    "market eligibility not blocked",
+    "shipping support is verified for target market before checkout",
+    "profit inputs verified and profit gate passes",
+    "authenticity requirement satisfied where applicable"
+  ],
+  "boundaries": {
+    "supplier_contact": false,
+    "supplier_order": false,
+    "catalog_activation": false,
+    "price_change": false,
+    "external_publish": false,
+    "payment": false,
+    "invented_stock": false,
+    "invented_shipping": false,
+    "invented_margin": false
+  },
+  "output": {
+    "states": [
+      "BLOCKED",
+      "RECHECK_REQUIRED",
+      "SHELF_CANDIDATE"
+    ],
+    "shelf_activation": "SEPARATE_APPROVED_ACTION",
+    "failure_route": "incident_repair"
+  }
+}
