@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V1.6-MARKETING-COST",
+  "version": "BOOM-BRAIN-GAPS-V1.7-FIRST-REAL-ORDER",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -473,6 +473,22 @@
       "status": "DONE",
       "source": "LIVE_CONNECTOR",
       "next": "Use GA4 as traffic/behavior truth only. Do not treat advertiser_ad_cost=0 as verified zero spend without coverage proof."
+    },
+    {
+      "id": "first_real_order_profit_proof",
+      "title": "First Real-Order Profit Proof",
+      "owner": "commerce_truth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PROFIT_MISSION",
+      "next": "Harness/UI/tests are coded. Current blocker is PayPlus paid-acceptance proof; once a legal real order exists, verify finance settlement → attribution bridge → exact VERIFIED hourly row → target gap."
+    },
+    {
+      "id": "payplus_paid_acceptance_proof",
+      "title": "PayPlus Paid-Acceptance Proof",
+      "owner": "operations_brain",
+      "status": "BLOCKED",
+      "source": "PAYMENT_TRUTH",
+      "next": "Sandbox callback/status mapping must be proven before Owner considers enabling hunt_payplus_callback_accept_paid. Do not change live acceptance from Profit Engine."
     }
   ]
 }
