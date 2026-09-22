@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BRAIN-GAPS-V2.2-PERFORMANCE-LAUNCH-COMMAND",
+  "version": "BOOM-BRAIN-GAPS-V2.3-FRESH-PRODUCT-TRUTH",
   "updated_for": "BOOM Brain OS v1",
   "items": [
     {
@@ -224,7 +224,7 @@
       "owner": "commerce_truth_brain",
       "status": "IN_PROGRESS",
       "source": "F35",
-      "next": "17 canonical department identities are now resolved from V16 + department map. Next: Preview-deploy read-only coverage endpoint and refresh fresh verified sellable evidence; taxonomy resolution does not imply inventory readiness."
+      "next": "3 CJ products now have fresh IL truth. Next: run bounded refresh across the remaining CJ catalog, then refresh shelf coverage; taxonomy resolution still does not imply full inventory readiness."
     },
     {
       "id": "incident_repair_automation",
@@ -633,6 +633,30 @@
       "status": "NEXT",
       "source": "OBSERVABILITY",
       "next": "Do not fetch raw analytics session IDs in browser. Add a server-side aggregate later if Owner wants live 24h user/session count in Command Center."
+    },
+    {
+      "id": "fresh_shelf_product_truth",
+      "title": "Fresh Shelf / Product Truth",
+      "owner": "commerce_truth_brain",
+      "status": "IN_PROGRESS",
+      "source": "PRODUCT_TRUTH",
+      "next": "3 CJ products for IL now have fresh price+stock+shipping observations. Scale bounded refresh across all 76 CJ catalog rows, then approved suppliers; preserve checkout recheck."
+    },
+    {
+      "id": "cj_stock_truth_precedence",
+      "title": "CJ Stock Truth Precedence",
+      "owner": "commerce_truth_brain",
+      "status": "DONE",
+      "source": "PRODUCT_TRUTH",
+      "next": "Use hunt-cj-quote as canonical stock+shipping truth. Product-detail embedded inventory may be incomplete and must not override a fresh quote."
+    },
+    {
+      "id": "product_truth_refresh_worker",
+      "title": "Bounded Product Truth Refresh Worker",
+      "owner": "commerce_truth_brain",
+      "status": "CODED_NOT_DEPLOYED",
+      "source": "PRODUCT_TRUTH",
+      "next": "Admin-only worker is coded with max batch 12, dry-run default and observation-only writes. Verify in Preview before deployment."
     }
   ]
 }
