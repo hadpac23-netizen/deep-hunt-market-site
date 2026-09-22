@@ -1,0 +1,40 @@
+{
+  "version": "HUNT-PRINTFUL-GOOTEN-LIVE-AUDIT-2026-09-22-V1",
+  "observed_at": "2026-09-22T13:28:23.346Z",
+  "destination_country": "IL",
+  "Printful": {
+    "provider_state": "CATALOG_LIVE",
+    "checkout_mode": "APPROVAL_REQUIRED",
+    "catalog_rows": 23,
+    "unique_products_audited": 22,
+    "live_product_details": 22,
+    "failed": 0,
+    "availability_true": 22,
+    "priced": 22,
+    "total_variants": 550,
+    "in_stock_variants": 550,
+    "blocker": "Fulfillment token/store, shipping verification and HUNT payment approval are still required.",
+    "fresh_shelf_verified": 0
+  },
+  "Gooten": {
+    "provider_state": "CATALOG_LIVE",
+    "connector_stage": "PUBLIC_CATALOG_LIVE",
+    "checkout_mode": "APPROVAL_REQUIRED",
+    "catalog_rows": 18,
+    "unique_products_audited": 18,
+    "live_product_details": 18,
+    "failed": 0,
+    "availability_true": 18,
+    "priced": 18,
+    "variants_verified": 0,
+    "blocker": "Verified Gooten API credentials are required for variants, destination shipping quotes and fulfillment.",
+    "fresh_shelf_verified": 0
+  },
+  "evidence_written": {
+    "controlled_provider_product_observations": 40,
+    "Printful": 22,
+    "Gooten": 18,
+    "state": "CATALOG_LIVE_SHIPPING_BLOCKED"
+  },
+  "rule": "Public catalog liveness is not Fresh Shelf readiness. Shipping and destination evidence remain mandatory."
+}
