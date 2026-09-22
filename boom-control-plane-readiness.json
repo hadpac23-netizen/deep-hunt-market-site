@@ -151,13 +151,13 @@
     },
     {
       "id": "performance_mobile_qa",
-      "status": "LOCAL_PASS_PREVIEW_PWA_PROOF_PENDING",
-      "evidence": "Chrome 153 local QA on allowed origin after progressive shelf patch: 390px = 2,899 DOM nodes / 174 images / 77 initial shelf cards / 0 small touch targets / no document overflow / 0 broken images / 0 console problems / 0 critical fetch failures. Before: 7,416 nodes / 477 images / 380 shelf cards. PWA JS/CSS cache changed to network-first and pwa2, but Preview update/installability/offline proof is still required."
+      "status": "LOCAL_RESPONSIVE_PASS_PREVIEW_PWA_PROOF_PENDING",
+      "evidence": "Isolated Chrome 153 QA on allowed local origin after progressive shelf mounting: 390px 2,899 DOM / 174 images / 77 shelf cards / 0 small touch targets; 768px 3,391 DOM / 208 images / 111 shelf cards; 1280px and 1440px each 4,265 DOM / 269 images / 172 shelf cards. All four: no document horizontal overflow, 0 broken images, 0 console problems, 0 network failures. Mobile before patch: 7,416 DOM / 477 images / 380 shelf cards. PWA cache/update source hardening is coded; Preview install/update/offline proof still pending."
     },
     {
       "id": "launch_command_center",
       "status": "CODED_READ_ONLY_NEEDS_PREVIEW_PROOF",
-      "evidence": "Existing BOOM Command Center is being upgraded to aggregate canonical readiness areas, blockers and non-sensitive launch metrics. It has authority NONE and cannot activate payment, supplier fulfillment, pricing, publishing or deployment."
+      "evidence": "Existing BOOM Command Center aggregates canonical readiness domains, top blockers and admin-only launch metrics. Raw analytics session IDs were removed from browser queries; session/user metric remains UNKNOWN until a privacy-safe server-side aggregate is connected. Orders/finance/BOOM runs/decisions use RLS-protected admin reads. Authority NONE."
     }
   ],
   "blockers": [
@@ -186,7 +186,7 @@
     "Implement a verifiable cancellation/withdrawal/return path appropriate to each enabled market.",
     "Any unmapped country remains HOLD until consumer/privacy/tax/import/shipping obligations are reviewed.",
     "Verify PWA cache update, manifest/installability and offline shell on Preview before Performance/Mobile becomes launch PASS.",
-    "Verify Launch Command Center on Preview against authenticated admin RLS and current readiness JSON before using it for Owner launch review."
+    "Verify Launch Command Center on Preview against authenticated admin RLS and current readiness JSON before Owner launch review."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
