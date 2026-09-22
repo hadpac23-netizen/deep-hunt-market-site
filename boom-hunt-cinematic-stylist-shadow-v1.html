@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" data-hunt-theme="dark" data-hunt-world="women">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HUNT Cinematic · BOOM Stylist Shadow</title>
+<style>
+:root{
+  --bg:#020612;--ink:#f7f8fb;--muted:#aeb7cc;--spark:#ffe073;--blue:#2f6bff;
+  --panel:rgba(5,13,34,.78);--panel2:rgba(8,18,47,.90);--edge:rgba(255,255,255,.10);
+  --world-accent:#5b7dff;--world-accent2:#d78aae;--world-glow:rgba(91,125,255,.34);
+  --media:#f3f0e9;--media2:#fbf9f4;--shadow:0 34px 90px rgba(0,0,0,.48);
+}
+html[data-hunt-theme="light"]{
+  --bg:#f4f1ea;--ink:#172033;--muted:#6b7382;--spark:#9a6a18;--blue:#0d4dba;
+  --panel:rgba(251,248,242,.82);--panel2:rgba(242,238,229,.94);--edge:rgba(23,32,51,.10);
+  --media:#fbfaf6;--media2:#f2eee6;--shadow:0 28px 72px rgba(50,56,70,.13);
+}
+html[data-hunt-world="men"]{--world-accent:#4775c7;--world-accent2:#b87942;--world-glow:rgba(71,117,199,.30)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;background:
+radial-gradient(70% 52% at 15% 3%,var(--world-glow),transparent 68%),
+radial-gradient(58% 44% at 88% 14%,color-mix(in srgb,var(--world-accent2) 20%,transparent),transparent 70%)}
+html[data-hunt-theme="light"] body::before{opacity:.55}
+a{color:inherit;text-decoration:none}
+.topbar{position:fixed;z-index:20;top:0;left:0;right:0;height:76px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:22px;padding:0 clamp(18px,4vw,58px);backdrop-filter:blur(18px);background:color-mix(in srgb,var(--bg) 74%,transparent);border-bottom:1px solid var(--edge)}
+.brand{font:800 23px/1 Georgia,serif;letter-spacing:.04em}.brand span{color:var(--spark)}
+.scene-nav{display:flex;gap:7px;justify-content:center;overflow:auto;scrollbar-width:none}.scene-nav::-webkit-scrollbar{display:none}
+.scene-nav button,.theme-toggle{border:1px solid var(--edge);background:var(--panel);color:var(--muted);border-radius:999px;padding:9px 13px;font-weight:750;font-size:12px;cursor:pointer}
+.scene-nav button.active{color:var(--ink);border-color:color-mix(in srgb,var(--world-accent) 46%,var(--edge));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--world-accent) 18%,transparent)}
+.qa-badge{position:fixed;right:18px;bottom:18px;z-index:30;border:1px solid var(--edge);border-radius:999px;padding:8px 11px;background:var(--panel);backdrop-filter:blur(14px);font-size:10px;letter-spacing:.10em;color:var(--muted)}
+.stage{min-height:100vh;padding:140px clamp(22px,6vw,88px) 90px;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.78fr);gap:6vw;align-items:center;position:relative}
+.stage::after{content:"";position:absolute;left:8vw;right:8vw;bottom:7vh;height:1px;background:linear-gradient(90deg,transparent,var(--edge),transparent)}
+.copy{max-width:760px}
+.eyebrow{color:var(--spark);font-size:11px;letter-spacing:.22em;font-weight:900;margin-bottom:18px}
+h1{font:700 clamp(62px,8vw,132px)/.82 Georgia,"Times New Roman",serif;letter-spacing:-.055em;margin:0;max-width:930px}
+.lede{font-size:clamp(17px,1.5vw,23px);line-height:1.55;color:var(--muted);max-width:620px;margin:26px 0}
+.layers{display:flex;flex-wrap:wrap;gap:8px}.layers span{font-size:10px;letter-spacing:.10em;font-weight:850;border:1px solid var(--edge);background:var(--panel);padding:8px 10px;border-radius:999px;color:var(--muted)}
+.hero{position:relative;width:min(480px,38vw);justify-self:end;aspect-ratio:.78;border:1px solid var(--edge);border-radius:38px;overflow:hidden;background:linear-gradient(155deg,var(--panel2),var(--panel));box-shadow:var(--shadow);transform-style:preserve-3d}
+.hero-glow{position:absolute;inset:12% 7% 19%;border-radius:50%;background:radial-gradient(circle,var(--world-glow),color-mix(in srgb,var(--world-accent2) 13%,transparent) 42%,transparent 72%);filter:blur(25px)}
+.hero-media{position:absolute;inset:0 0 27%;display:grid;place-items:center;background:radial-gradient(circle at 50% 44%,rgba(255,255,255,.96),rgba(255,255,255,.70) 31%,transparent 65%),linear-gradient(160deg,var(--media2),var(--media));overflow:hidden}
+.hero-media img{width:100%;height:100%;object-fit:contain;padding:26px;filter:drop-shadow(0 28px 34px rgba(15,23,42,.24));transition:transform .65s cubic-bezier(.16,.8,.2,1)}
+.hero:hover .hero-media img{transform:scale(1.04) translateY(-4px)}
+.hero-meta{position:absolute;left:20px;right:20px;bottom:18px;padding:17px 18px;border:1px solid var(--edge);border-radius:22px;background:color-mix(in srgb,var(--panel2) 84%,transparent);backdrop-filter:blur(20px)}
+.hero-meta small{display:block;color:var(--spark);font-size:9px;letter-spacing:.16em;font-weight:900;margin-bottom:7px}
+.hero-meta strong{display:block;font:700 22px/1.14 Georgia,serif}.hero-meta span{display:block;color:var(--muted);font-size:11px;margin-top:7px}
+.sequence{padding:105px clamp(22px,6vw,88px) 110px;border-top:1px solid var(--edge);background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 94%,transparent),var(--bg))}
+.section-head{max-width:760px;margin-bottom:36px}.section-head p{color:var(--spark);font-size:11px;letter-spacing:.20em;font-weight:900}.section-head h2{font:700 clamp(42px,6vw,82px)/.92 Georgia,serif;letter-spacing:-.045em;margin:10px 0}.section-head span{color:var(--muted);line-height:1.55}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,30vw);gap:20px;overflow-x:auto;padding:22px 4vw 40px 2px;scroll-snap-type:x mandatory;scrollbar-width:none}.rail::-webkit-scrollbar{display:none}
+.card{position:relative;height:520px;border:1px solid var(--edge);border-radius:30px;overflow:hidden;background:linear-gradient(155deg,var(--panel2),var(--panel));box-shadow:0 26px 62px rgba(0,0,0,.24);scroll-snap-align:center}
+.card-media{position:absolute;inset:0 0 34%;display:grid;place-items:center;background:radial-gradient(circle at 50% 44%,rgba(255,255,255,.96),rgba(255,255,255,.70) 31%,transparent 65%),linear-gradient(160deg,var(--media2),var(--media))}
+.card-media img{width:100%;height:100%;object-fit:contain;padding:22px;filter:drop-shadow(0 22px 28px rgba(15,23,42,.20));transition:transform .55s cubic-bezier(.16,.8,.2,1)}.card:hover img{transform:scale(1.04)}
+.card-body{position:absolute;left:0;right:0;bottom:0;padding:22px;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--panel2) 96%,transparent) 24%);min-height:36%}
+.role{color:var(--spark);font-size:9px;letter-spacing:.15em;font-weight:900}.card h3{font:700 20px/1.15 Georgia,serif;margin:11px 0 9px}.card p{color:var(--muted);font-size:11px;line-height:1.5;margin:0}.flag{display:inline-flex;margin-top:12px;padding:7px 9px;border-radius:999px;border:1px solid var(--edge);font-size:9px;font-weight:850;color:var(--muted)}
+.flag.hold{color:#d59d33}
+.discovery{padding:72px clamp(22px,6vw,88px) 120px}.discovery-strip{display:flex;gap:10px;flex-wrap:wrap}.discovery-strip span{border:1px solid var(--edge);background:var(--panel);border-radius:999px;padding:9px 11px;color:var(--muted);font-size:10px;font-weight:800}
+.fade{animation:sceneIn .65s cubic-bezier(.16,.8,.2,1)}
+@keyframes sceneIn{from{opacity:.28;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media(max-width:980px){.topbar{grid-template-columns:auto auto}.scene-nav{grid-column:1/-1;order:3;padding:8px 0}.stage{grid-template-columns:1fr;padding-top:160px}.hero{justify-self:center;width:min(520px,80vw)}.rail{grid-auto-columns:minmax(250px,58vw)}}
+@media(max-width:620px){.topbar{height:auto;min-height:72px;padding:12px 15px}.scene-nav{justify-content:flex-start}.stage{padding:155px 18px 70px}.hero{width:92vw;border-radius:26px}h1{font-size:58px}.sequence,.discovery{padding-left:18px;padding-right:18px}.rail{grid-auto-columns:80vw;padding-right:14vw}.card{height:470px}.qa-badge{display:none}}
+.qa-compact .stage{min-height:760px;padding-top:105px;padding-bottom:55px}.qa-compact .hero{width:min(390px,34vw)}\n@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">HUNT<span>✦</span></div>
+  <nav class="scene-nav" id="scene-nav" aria-label="Stylist scenes"></nav>
+  <button class="theme-toggle" id="theme-toggle" type="button">Light</button>
+</header>
+<main>
+  <section class="stage" id="stage">
+    <div class="copy">
+      <div class="eyebrow" id="eyebrow"></div>
+      <h1 id="scene-title"></h1>
+      <p class="lede">A shopping world that reveals products like scenes, not rows. BOOM Stylist chooses the focal point, then builds the look around it.</p>
+      <div class="layers" id="layers"></div>
+    </div>
+    <article class="hero" id="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-media"><img id="hero-image" alt=""></div>
+      <div class="hero-meta"><small id="hero-kicker"></small><strong id="hero-title"></strong><span id="hero-status"></span></div>
+    </article>
+  </section>
+  <section class="sequence" id="sequence">
+    <div class="section-head"><p>COMPLETE THE LOOK</p><h2>One scene. One visual logic.</h2><span id="sequence-copy"></span></div>
+    <div class="rail" id="rail"></div>
+  </section>
+  <section class="discovery">
+    <div class="section-head"><p>DISCOVERY STREAM</p><h2>Keep the world coherent.</h2><span>Broader discovery comes after the core look. Product Truth and commercial gates continue to override styling.</span></div>
+    <div class="discovery-strip" id="gate-strip"></div>
+  </section>
+</main>
+<div class="qa-badge">SHADOW · BOOM STYLIST · PRODUCTION OFF</div>
+<script>
+let data=null,active=0;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function theme(next){document.documentElement.dataset.huntTheme=next;$("#theme-toggle").textContent=next==="dark"?"Light":"Dark"}
+$("#theme-toggle").addEventListener("click",()=>theme(document.documentElement.dataset.huntTheme==="dark"?"light":"dark"));
+function render(){
+ const scene=data.scenes[active];document.documentElement.dataset.huntWorld=scene.world;
+ [...$("#scene-nav").children].forEach((b,i)=>b.classList.toggle("active",i===active));
+ $("#eyebrow").textContent=scene.eyebrow+" · "+scene.world.toUpperCase();
+ $("#scene-title").textContent=scene.title;
+ $("#layers").innerHTML=scene.preference_layers.map(x=>"<span>"+esc(x.replaceAll("_"," / "))+"</span>").join("");
+ const h=scene.hero;$("#hero-image").src=h.visual.image_url;$("#hero-title").textContent=h.title;$("#hero-kicker").textContent="SHADOW HERO · "+h.role.toUpperCase();
+ $("#hero-status").textContent="Style "+scene.gates.style_fit+" · Product Truth "+scene.gates.product_truth+" · Commercial "+scene.gates.commercial_fit;
+ $("#sequence-copy").textContent=scene.gates.exact_artwork==="PASS"?"Exact artwork ready.":"Printful final artwork still pending; silhouette/display QA only.";
+ $("#rail").innerHTML=scene.rail.map(item=>{
+  const hold=item.high_shipping_burden;
+  const detail=[item.visual.color&&("Color "+item.visual.color),item.visual.size&&("Size "+item.visual.size)].filter(Boolean).join(" · ");
+  return '<article class="card"><div class="card-media"><img src="'+esc(item.visual.image_url)+'" alt=""></div><div class="card-body"><div class="role">'+esc(item.role.toUpperCase())+'</div><h3>'+esc(item.title)+'</h3><p>'+esc(detail||item.provider)+'</p><span class="flag '+(hold?'hold':'')+'">'+(hold?'COMMERCIAL HOLD · SHIPPING':'SUPPORT · '+esc(item.visual.image_scope))+'</span></div></article>';
+ }).join("");
+ $("#gate-strip").innerHTML=Object.entries(scene.gates).map(([k,v])=>"<span>"+esc(k.replaceAll("_"," ").toUpperCase())+" · "+esc(v)+"</span>").join("");
+ $("#stage").classList.remove("fade");$("#sequence").classList.remove("fade");void $("#stage").offsetWidth;$("#stage").classList.add("fade");$("#sequence").classList.add("fade");
+}
+fetch("./evidence/HUNT-CINEMATIC-STYLIST-SHELF-SHADOW-2026-09-22.json").then(r=>r.json()).then(j=>{
+ data=j;$("#scene-nav").innerHTML=j.scenes.map((s,i)=>'<button type="button" data-i="'+i+'">'+esc(s.scene_id.replace("LOOK-","Scene "))+'</button>').join("");
+ $("#scene-nav").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b)return;active=Number(b.dataset.i)||0;render();window.scrollTo({top:0,behavior:"smooth"})});
+ const q=new URLSearchParams(location.search);if(q.get("qa")==="compact")document.documentElement.classList.add("qa-compact");theme(q.get("theme")==="light"?"light":"dark");render();
+}).catch(err=>{document.body.innerHTML="<pre style='padding:40px'>Shadow scene failed: "+esc(err.message)+"</pre>"});
+</script>
+</body>
+</html>

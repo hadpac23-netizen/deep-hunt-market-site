@@ -1,0 +1,44 @@
+{
+  "version": "HUNT-CINEMATIC-STYLIST-INTEGRATION-QA-V1",
+  "date": "2026-09-22",
+  "mode": "LOCAL_SHADOW_RENDER",
+  "production_effect": false,
+  "render_page": "boom-hunt-cinematic-stylist-shadow-v1.html",
+  "baseline": "HUNT Cinematic V16 original scene architecture",
+  "results": {
+    "light": {
+      "stage": "PASS",
+      "hero": "PASS",
+      "complete_the_look_rail": "PASS",
+      "product_media_fidelity": "PASS",
+      "layout_mode": "CINEMATIC_SCENE_NOT_GRID"
+    },
+    "dark": {
+      "stage": "PASS",
+      "hero": "PASS",
+      "complete_the_look_rail": "PASS",
+      "product_media_fidelity": "PASS",
+      "layout_mode": "CINEMATIC_SCENE_NOT_GRID"
+    },
+    "scene_navigation": "PASS_5_SCENES",
+    "commercial_gate_visibility": "PASS",
+    "owner_gate_visibility": "PASS"
+  },
+  "invariants": [
+    "Cinematic scene architecture is preserved.",
+    "One visual Hero per scene.",
+    "Complete-the-Look remains a horizontal cinematic rail.",
+    "Dark mode does not darken product photography.",
+    "Light mode remains warm off-white.",
+    "Commercial holds remain separate from style fit.",
+    "No Production mutation."
+  ],
+  "gate_state": {
+    "visual_scenes_ready": 5,
+    "commercial_hero_ready": 0,
+    "exact_printful_artwork": "PENDING",
+    "owner_gate": "REQUIRED",
+    "mastery_change": false
+  },
+  "next": "CONNECT_SHADOW_INTEGRATION_STATUS_TO_BOOM_STUDIO_AND_KEEP_PRODUCTION_OFF"
+}

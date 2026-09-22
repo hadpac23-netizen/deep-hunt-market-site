@@ -230,7 +230,7 @@
     const host=$("#bs-stylist-academy");
     if(!host)return;
     try{
-      const [academy,training,trainingCurrent,f35,baseline,round1,round2,lighting,visualQa,twoThemeQa]=await Promise.all([
+      const [academy,training,trainingCurrent,f35,baseline,round1,round2,lighting,visualQa,twoThemeQa,cinematicIntegrationQa]=await Promise.all([
         json("boom-stylist-academy-contract.json"),
         json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-2026-09-22.json"),
         json("evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V4-IL-2026-09-22.json"),
@@ -240,7 +240,8 @@
         json("evidence/HUNT-STYLIST-F35-ROUND2-2026-09-22.json"),
         json("evidence/HUNT-CINEMATIC-LIGHTING-QA-2026-09-22.json"),
         json("evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND4-2026-09-22.json"),
-        json("evidence/HUNT-STYLIST-TWO-THEME-LOOK-BOARD-QA-2026-09-22.json")
+        json("evidence/HUNT-STYLIST-TWO-THEME-LOOK-BOARD-QA-2026-09-22.json"),
+        json("evidence/HUNT-CINEMATIC-STYLIST-INTEGRATION-QA-2026-09-22.json")
       ]);
       const tracks=(academy.tracks||[]).map(t=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(t.id)} · ${esc(t.name)}</strong><span class="bs-status NEXT">${esc((t.modules||[]).length)} modules</span></div><p>${esc((t.modules||[]).join(" · "))}</p></div>`).join("");
       const exams=(academy.exams||[]).map(e=>`<div class="bs-run"><div class="bs-run-head"><strong>${esc(e.name)}</strong><span class="bs-status NEXT">PASS ${esc(e.pass_score)}+</span></div><small>${esc(e.output_rule)}</small></div>`).join("");
@@ -323,6 +324,17 @@
           <small>NEXT GAP</small>
           <p>${esc(visualQa.next?.[0]||"Exact-image QA required.")}</p>
           <code>exact Printful mockups still required · mastery change false</code>
+        </article>
+        <article class="bs-creative-card">
+          <div class="bs-automation-head"><strong>Cinematic Shelf Integration</strong><span class="bs-status DONE">${esc(cinematicIntegrationQa.results?.scene_navigation)}</span></div>
+          <p>Original scene architecture preserved: Stage → Hero → Cinematic Rail → Discovery. Light: ${esc(cinematicIntegrationQa.results?.light?.layout_mode)} · Dark: ${esc(cinematicIntegrationQa.results?.dark?.layout_mode)}.</p>
+          <div class="bs-journey-steps">
+            <span>Visual scenes ${esc(cinematicIntegrationQa.gate_state?.visual_scenes_ready)}</span>
+            <span>Commercial Hero ${esc(cinematicIntegrationQa.gate_state?.commercial_hero_ready)}</span>
+            <span>Printful artwork ${esc(cinematicIntegrationQa.gate_state?.exact_printful_artwork)}</span>
+            <span>Owner Gate ${esc(cinematicIntegrationQa.gate_state?.owner_gate)}</span>
+          </div>
+          <code>cinematic first · no generic grid · Production unchanged</code>
         </article>`;
     }catch(error){
       host.innerHTML=`<div class="bs-empty bs-error">Stylist Academy unavailable: ${esc(error?.message||"unknown")}</div>`;

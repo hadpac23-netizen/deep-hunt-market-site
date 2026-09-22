@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-STYLIST-ACADEMY-V4",
+  "version": "BOOM-STYLIST-ACADEMY-V5",
   "mode": "SHADOW_TRAINING",
   "status": "F35_MULTIDISCIPLINARY_PLUS_CINEMATIC_LIGHTING_READY",
   "production_influence": false,
@@ -296,9 +296,12 @@
     "hero_ready": 0,
     "footwear_learning": "STYLE_FIT_IMPROVED_COMMERCIAL_SHIPPING_WARNINGS_REMAIN",
     "two_theme_look_board": "PASS_BOTH_THEMES_BASE_IMAGES_ONLY",
-    "exact_printful_artwork": "PENDING"
+    "exact_printful_artwork": "PENDING",
+    "cinematic_shelf_integration": "PASS_SHADOW_SCENE_RENDER",
+    "cinematic_visual_scenes": 5,
+    "cinematic_commercial_hero_ready": 0
   },
-  "next": "ACQUIRE_EXACT_PRINTFUL_MOCKUPS_THEN_RERUN_TWO_THEME_BOARD_AND_COMMERCIAL_HERO_GATE",
+  "next": "EXACT_PRINTFUL_ARTWORK_THEN_FINAL_CINEMATIC_VISUAL_EXAM_AND_OWNER_GATE",
   "f35_research_ref": "boom-f35-style-commerce-research-2026-09-22.json",
   "preference_layers": [
     {
@@ -836,5 +839,7 @@
   "visual_qa_round3_ref": "evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND3-2026-09-22.json",
   "training_set_v4_ref": "evidence/HUNT-STYLIST-ACADEMY-TRAINING-SET-V4-IL-2026-09-22.json",
   "visual_qa_round4_ref": "evidence/HUNT-STYLIST-F35-VISUAL-QA-ROUND4-2026-09-22.json",
-  "two_theme_look_board_ref": "evidence/HUNT-STYLIST-TWO-THEME-LOOK-BOARD-QA-2026-09-22.json"
+  "two_theme_look_board_ref": "evidence/HUNT-STYLIST-TWO-THEME-LOOK-BOARD-QA-2026-09-22.json",
+  "cinematic_shelf_integration_ref": "evidence/HUNT-CINEMATIC-STYLIST-SHELF-SHADOW-2026-09-22.json",
+  "cinematic_shelf_integration_qa_ref": "evidence/HUNT-CINEMATIC-STYLIST-INTEGRATION-QA-2026-09-22.json"
 }
