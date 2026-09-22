@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-WORKFLOW-TEMPLATES-V1.5-LAUNCH",
+  "version": "BOOM-WORKFLOW-TEMPLATES-V1.6-PRODUCT-TRUTH",
   "mode": "SHADOW",
   "rule": "Templates compile reusable Skills into a plan. Compilation does not execute tools or material actions.",
   "templates": [
@@ -180,6 +180,19 @@
         "review_hourly_profit"
       ],
       "final_action": "owner_launch_readiness_report",
+      "material": false
+    },
+    {
+      "id": "fresh_shelf_product_truth_refresh",
+      "title": "Stale Catalog → Fresh Shelf Truth",
+      "owner": "commerce_truth_brain",
+      "trigger": "freshness_gap_or_manual",
+      "skills": [
+        "refresh_product_truth_evidence",
+        "check_product_truth",
+        "fill_shelf_candidate"
+      ],
+      "final_action": "evidence_refresh_only",
       "material": false
     }
   ]
