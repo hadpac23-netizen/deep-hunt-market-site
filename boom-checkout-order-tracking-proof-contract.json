@@ -1,0 +1,135 @@
+{
+  "version": "BOOM-CHECKOUT-ORDER-TRACKING-PROOF-V1",
+  "mode": "SHADOW",
+  "owner": "operations_brain",
+  "authority": "NONE",
+  "purpose": "Prove HUNT checkout-to-order-to-tracking continuity using existing canonical stores without live payment, real supplier charges or Production activation.",
+  "canonical_sources": [
+    "hunt_payment_sessions",
+    "hunt_orders",
+    "hunt_order_events",
+    "hunt_fulfillment_orders",
+    "hunt_order_pipeline_runs",
+    "hunt-order-orchestrator"
+  ],
+  "stages": [
+    {
+      "id": "CHECKOUT_SESSION_BOUND",
+      "requires": [
+        "payment session has user_id",
+        "shipping snapshot complete",
+        "idempotency key present"
+      ]
+    },
+    {
+      "id": "ACCOUNT_ORDER_BINDING",
+      "requires": [
+        "test order has same user_id lineage as payment session",
+        "order_id linked back to payment session"
+      ]
+    },
+    {
+      "id": "DRY_RUN_VALIDATED",
+      "requires": [
+        "order pipeline run_mode=dry_run stage=validated status=pass"
+      ]
+    },
+    {
+      "id": "SANDBOX_ORDER_CREATED",
+      "requires": [
+        "hunt_orders.is_test=true",
+        "order_source=supplier_sandbox"
+      ]
+    },
+    {
+      "id": "FULFILLMENT_ROW_CREATED",
+      "requires": [
+        "fulfillment row links payment_session_id + order_id",
+        "provider/group identity persisted"
+      ]
+    },
+    {
+      "id": "SUPPLIER_ORDER_CREATED",
+      "requires": [
+        "supplier_order_id present",
+        "supplier_status indicates created/submitted or later"
+      ]
+    },
+    {
+      "id": "TRACKING_ASSIGNED",
+      "requires": [
+        "fulfillment tracking_number present",
+        "order tracking_number present",
+        "carrier present"
+      ]
+    },
+    {
+      "id": "SHIPPED_EVENT_RECORDED",
+      "requires": [
+        "order status=shipped",
+        "order event status=shipped"
+      ]
+    },
+    {
+      "id": "CUSTOMER_READ_PATH",
+      "requires": [
+        "RLS ownership policies proven for session/order/events/fulfillment"
+      ]
+    },
+    {
+      "id": "IDEMPOTENT_RETRY_PATH",
+      "requires": [
+        "stable supplier order identity",
+        "transient retry",
+        "ambiguous create reconciliation"
+      ]
+    }
+  ],
+  "current_truth": {
+    "test_orders": 8,
+    "user_bound_test_orders": 8,
+    "fulfillment_rows": 8,
+    "supplier_order_rows": 0,
+    "tracking_rows": 0,
+    "dry_run_pass_rows": 1,
+    "sandbox_completed_pass_rows": 0,
+    "state": "BLOCKED_SUPPLIER_TRACKING_E2E"
+  },
+  "known_failure_classes": {
+    "CJ_BUSY_TRANSIENT": {
+      "observed": true,
+      "handling_in_current_code": [
+        "up to 5 internal attempts",
+        "exponential backoff",
+        "reconcile by stable order number"
+      ],
+      "proof_state": "CODED_NOT_E2E_PROVEN"
+    },
+    "IL_PHONE_FORMAT": {
+      "observed": true,
+      "handling_in_current_code": [
+        "00 international normalization",
+        "972 normalization",
+        "+972 conversion from leading 0"
+      ],
+      "proof_state": "CODED_NOT_E2E_PROVEN"
+    }
+  },
+  "ownership_security": {
+    "payment_sessions": "OWN_USER_SELECT",
+    "orders": "OWN_USER_SELECT",
+    "order_events": "OWN_ORDER_SELECT",
+    "fulfillment_orders": "OWN_PAYMENT_SESSION_SELECT",
+    "browser_write_authority": "NONE"
+  },
+  "pass_rule": "E2E_PASS requires one sandbox test lineage that reaches supplier_order_id + tracking_number + shipped order event, while retaining is_test=true and no_real_supplier_charge/no_real_logistics evidence.",
+  "live_rule": "Sandbox E2E PASS never implies live fulfillment readiness. Live payment, real supplier order and payout remain separate Owner-gated launch decisions.",
+  "hard_rules": [
+    "Never count a test order as a real sale.",
+    "Never call tracking proven without a persisted tracking_number.",
+    "Never call customer tracking proven from RLS alone; a readable tracking-bearing sandbox lineage is required.",
+    "Never retry a supplier create with a new external identity after an ambiguous response; reconcile first.",
+    "Never expose shipping/customer PII in BOOM Studio proof output.",
+    "Never enable live payment or live supplier fulfillment from this proof layer."
+  ]
+}
