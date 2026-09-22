@@ -1,0 +1,13 @@
+const fs=require("fs"),assert=require("assert");
+const s=fs.readFileSync("boom-printful-product-truth.mjs","utf8");
+assert(s.includes('get("/products")'));
+assert(s.includes('get("/products/"+product.id)'));
+assert(s.includes('post("/shipping/rates"'));
+assert(s.includes('order_creation:false'));
+assert(s.includes('fulfillment:"DISABLED"'));
+assert(s.includes('checkout:"DISABLED"'));
+assert(!s.includes('post("/orders'));
+assert(!s.includes('method:"DELETE"'));
+assert(!s.includes('method:"PUT"'));
+assert(s.includes("const reserve=.91,targetMargin=.35,minProfit=4"));
+console.log("PASS boom-printful-product-truth");
