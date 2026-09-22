@@ -1,0 +1,29 @@
+{
+  "version": "HUNT-PROVIDER-ADAPTERS-V1",
+  "mode": "STAGED_READ_ONLY",
+  "authority": "NONE",
+  "production_deploy": false,
+  "credentials_in_repo": false,
+  "providers": {
+    "Printful": {
+      "public_catalog_fallback": true,
+      "credential_env": ["PRINTFUL_API_TOKEN", "PRINTFUL_STORE_ID"],
+      "credential_probe": "READ_ONLY_STORE_ACCESS",
+      "shipping_proof": "NOT_VERIFIED",
+      "fulfillment": "DISABLED"
+    },
+    "Gooten": {
+      "public_catalog_fallback": true,
+      "credential_env": ["GOOTEN_RECIPE_ID"],
+      "variant_probe": "READ_ONLY_PRODUCT_VARIANTS",
+      "partner_billing_key_used_for_catalog": false,
+      "shipping_proof": "NOT_VERIFIED",
+      "fulfillment": "DISABLED"
+    }
+  },
+  "price_gate_v2": {
+    "mode": "SHADOW",
+    "authority": "NONE",
+    "production_price_changes": 0
+  }
+}
