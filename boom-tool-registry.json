@@ -19,7 +19,7 @@
     {
       "id": "n8n",
       "type": "WORKFLOW_EXECUTION",
-      "status": "CODED_NOT_CONNECTED",
+      "status": "CODED_NOT_DEPLOYED_NOT_CONNECTED",
       "owner_plane": "automation_orchestration_plane",
       "authority": "NONE"
     },
@@ -97,6 +97,20 @@
       "id": "boom_shelf_coverage",
       "type": "SERVER_TRUTH_READ",
       "status": "CODE_ONLY_NOT_DEPLOYED",
+      "owner_plane": "tool_gateway_plane",
+      "authority": "NONE"
+    },
+    {
+      "id": "workflow_builder",
+      "type": "PLAN_COMPILER",
+      "status": "CODED_PLAN_ONLY",
+      "owner_plane": "automation_orchestration_plane",
+      "authority": "NONE"
+    },
+    {
+      "id": "ai_tool_router",
+      "type": "TOOL_MODEL_ROUTING",
+      "status": "CODED_PLAN_ONLY",
       "owner_plane": "tool_gateway_plane",
       "authority": "NONE"
     }
