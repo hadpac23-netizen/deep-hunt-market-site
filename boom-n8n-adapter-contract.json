@@ -1,7 +1,7 @@
 {
   "version": "BOOM-N8N-ADAPTER-V1",
   "mode": "SHADOW",
-  "status": "CODED_NOT_CONNECTED",
+  "status": "CODED_NOT_DEPLOYED_NOT_CONNECTED",
   "authority": "NONE",
   "transport": {
     "browser_to_boom": "supabase.functions.invoke('boom-automation-gateway') with authenticated admin JWT",
@@ -84,5 +84,14 @@
     "evidence_refs",
     "error_code",
     "completed_at"
-  ]
+  ],
+  "deployment_truth": {
+    "client_adapter": "boom-n8n-adapter.js CODED",
+    "server_gateway": "supabase/functions/boom-automation-gateway CODED_NOT_DEPLOYED",
+    "n8n_webhook": "NOT_CONFIGURED",
+    "credentials": "NOT_CONFIGURED",
+    "first_live_action": "NONE"
+  },
+  "canonical_client": "boom-n8n-adapter.js",
+  "duplicate_adapter_policy": "No second browser/shadow adapter. All client dispatch goes through boom-n8n-adapter.js."
 }
