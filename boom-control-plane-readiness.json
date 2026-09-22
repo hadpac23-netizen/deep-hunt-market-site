@@ -148,6 +148,16 @@
       "id": "legal_returns_shipping_market_readiness",
       "status": "CODED_SHADOW_BLOCKED_IDENTITY_AND_LEGAL_REGISTRY",
       "evidence": "Market Policy evaluator + Studio matrix coded. IL/EU/GB/US/AU have official-source baselines; all other markets default HOLD. Production audit: business identity configured but not published; returns address/privacy contact/support email absent; hunt_legal_document_versions migration exists in branch but is not deployed in Production; legacy legal_policies launch gate remains PARTIAL; Shipping Chess gate is PASS."
+    },
+    {
+      "id": "performance_mobile_qa",
+      "status": "LOCAL_PASS_PREVIEW_PWA_PROOF_PENDING",
+      "evidence": "Chrome 153 local QA on allowed origin after progressive shelf patch: 390px = 2,899 DOM nodes / 174 images / 77 initial shelf cards / 0 small touch targets / no document overflow / 0 broken images / 0 console problems / 0 critical fetch failures. Before: 7,416 nodes / 477 images / 380 shelf cards. PWA JS/CSS cache changed to network-first and pwa2, but Preview update/installability/offline proof is still required."
+    },
+    {
+      "id": "launch_command_center",
+      "status": "CODED_READ_ONLY_NEEDS_PREVIEW_PROOF",
+      "evidence": "Existing BOOM Command Center is being upgraded to aggregate canonical readiness areas, blockers and non-sensitive launch metrics. It has authority NONE and cannot activate payment, supplier fulfillment, pricing, publishing or deployment."
     }
   ],
   "blockers": [
@@ -174,7 +184,9 @@
     "Deploy and verify the legal document registry in Preview before Production; current Production does not contain hunt_legal_document_versions.",
     "Owner/counsel must supply and approve Terms, Privacy, Returns and Shipping content; BOOM must not fabricate binding legal text.",
     "Implement a verifiable cancellation/withdrawal/return path appropriate to each enabled market.",
-    "Any unmapped country remains HOLD until consumer/privacy/tax/import/shipping obligations are reviewed."
+    "Any unmapped country remains HOLD until consumer/privacy/tax/import/shipping obligations are reviewed.",
+    "Verify PWA cache update, manifest/installability and offline shell on Preview before Performance/Mobile becomes launch PASS.",
+    "Verify Launch Command Center on Preview against authenticated admin RLS and current readiness JSON before using it for Owner launch review."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
