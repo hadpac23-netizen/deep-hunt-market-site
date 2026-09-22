@@ -184,7 +184,8 @@
         "blockers"
       ],
       "tools": [
-        "supabase_runtime"
+        "supabase_runtime",
+        "marketing_cost_gateway"
       ],
       "material": false,
       "owner_gate": false
