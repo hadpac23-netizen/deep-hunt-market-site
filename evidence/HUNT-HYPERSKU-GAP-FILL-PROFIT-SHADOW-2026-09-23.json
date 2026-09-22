@@ -1,0 +1,1259 @@
+{
+  "version": "HUNT-HYPERSKU-GAP-FILL-PROFIT-SHADOW-V1",
+  "date": "2026-09-23",
+  "provider": "HyperSKU",
+  "production_effect": false,
+  "summary": {
+    "curated_targets": 71,
+    "zero_categories": 38,
+    "thin_categories": 26,
+    "public_profit_benchmarks": 12,
+    "exact_private_products_known": 1,
+    "final_profit_verified_products": 0
+  },
+  "targets": [
+    {
+      "id": 1,
+      "source_category": "Tech",
+      "target": "Magnetic phone mount",
+      "stylist_score": 94,
+      "priority": "A",
+      "department": "tech",
+      "preferred_categories": [
+        "stands-holders",
+        "chargers-cables",
+        "electronics",
+        "audio",
+        "wearables"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 2,
+      "source_category": "Tech",
+      "target": "Wireless charging pad",
+      "stylist_score": 91,
+      "priority": "A",
+      "department": "tech",
+      "preferred_categories": [
+        "stands-holders",
+        "chargers-cables",
+        "electronics",
+        "audio",
+        "wearables"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 3,
+      "source_category": "Tech",
+      "target": "Mini LED ring light",
+      "stylist_score": 90,
+      "priority": "A",
+      "department": "tech",
+      "preferred_categories": [
+        "stands-holders",
+        "chargers-cables",
+        "electronics",
+        "audio",
+        "wearables"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 4,
+      "source_category": "Lifestyle",
+      "target": "Portable neck fan",
+      "stylist_score": 86,
+      "priority": "A",
+      "department": "home",
+      "preferred_categories": [
+        "home-decor",
+        "small-appliances"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 5,
+      "source_category": "Home",
+      "target": "Ribbed ceramic vase",
+      "stylist_score": 93,
+      "priority": "A",
+      "department": "home",
+      "preferred_categories": [
+        "home-decor",
+        "home-textiles",
+        "lighting"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 6,
+      "source_category": "Home",
+      "target": "Aromatherapy diffuser",
+      "stylist_score": 92,
+      "priority": "A",
+      "department": "home",
+      "preferred_categories": [
+        "home-decor",
+        "home-textiles",
+        "lighting"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 7,
+      "source_category": "Kitchen",
+      "target": "Electric jar opener",
+      "stylist_score": 88,
+      "priority": "A",
+      "department": "kitchen",
+      "preferred_categories": [
+        "kitchen-tools",
+        "kitchen-appliances",
+        "cookware"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 8,
+      "source_category": "Beauty",
+      "target": "Facial ice roller",
+      "stylist_score": 87,
+      "priority": "A",
+      "department": "beauty",
+      "preferred_categories": [
+        "beauty-tools",
+        "skincare"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 9,
+      "source_category": "Pets",
+      "target": "Adjustable pet collar",
+      "stylist_score": 87,
+      "priority": "A",
+      "department": "pets",
+      "preferred_categories": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-walk"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 10,
+      "source_category": "Pets",
+      "target": "Interactive cat toy",
+      "stylist_score": 90,
+      "priority": "A",
+      "department": "pets",
+      "preferred_categories": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-walk"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 11,
+      "source_category": "Pets",
+      "target": "Pet grooming gloves",
+      "stylist_score": 84,
+      "priority": "A",
+      "department": "pets",
+      "preferred_categories": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-walk"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 12,
+      "source_category": "Sports",
+      "target": "Resistance band set",
+      "stylist_score": 86,
+      "priority": "A",
+      "department": "sports",
+      "preferred_categories": [
+        "fitness",
+        "fitness-accessories",
+        "outdoors"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products/"
+    },
+    {
+      "id": 13,
+      "source_category": "Accessories",
+      "target": "Statement earrings",
+      "stylist_score": 97,
+      "priority": "A",
+      "department": "accessories",
+      "preferred_categories": [
+        "jewelry",
+        "watches",
+        "belts",
+        "scarves",
+        "keychains"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 14,
+      "source_category": "Accessories",
+      "target": "Layered necklaces",
+      "stylist_score": 95,
+      "priority": "A",
+      "department": "accessories",
+      "preferred_categories": [
+        "jewelry",
+        "watches",
+        "belts",
+        "scarves",
+        "keychains"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 15,
+      "source_category": "Accessories",
+      "target": "Minimal rings",
+      "stylist_score": 94,
+      "priority": "A",
+      "department": "accessories",
+      "preferred_categories": [
+        "jewelry",
+        "watches",
+        "belts",
+        "scarves",
+        "keychains"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 16,
+      "source_category": "Accessories",
+      "target": "Bracelet stacks",
+      "stylist_score": 93,
+      "priority": "B",
+      "department": "accessories",
+      "preferred_categories": [
+        "jewelry",
+        "watches",
+        "belts",
+        "scarves",
+        "keychains"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 17,
+      "source_category": "Bags",
+      "target": "Mini shoulder bags",
+      "stylist_score": 98,
+      "priority": "A",
+      "department": "accessories",
+      "preferred_categories": [
+        "bags",
+        "bag-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 18,
+      "source_category": "Bags",
+      "target": "Structured crossbody bags",
+      "stylist_score": 97,
+      "priority": "A",
+      "department": "accessories",
+      "preferred_categories": [
+        "bags",
+        "bag-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 19,
+      "source_category": "Bags",
+      "target": "Fashion tote bags",
+      "stylist_score": 94,
+      "priority": "A",
+      "department": "accessories",
+      "preferred_categories": [
+        "bags",
+        "bag-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 20,
+      "source_category": "Bags",
+      "target": "Compact fashion backpacks",
+      "stylist_score": 92,
+      "priority": "B",
+      "department": "accessories",
+      "preferred_categories": [
+        "bags",
+        "bag-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 21,
+      "source_category": "Accessories",
+      "target": "Fashion sunglasses",
+      "stylist_score": 96,
+      "priority": "A",
+      "department": "accessories",
+      "preferred_categories": [
+        "jewelry",
+        "watches",
+        "belts",
+        "scarves",
+        "keychains"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 22,
+      "source_category": "Accessories",
+      "target": "Hair claw / barrette sets",
+      "stylist_score": 91,
+      "priority": "B",
+      "department": "accessories",
+      "preferred_categories": [
+        "jewelry",
+        "watches",
+        "belts",
+        "scarves",
+        "keychains"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 23,
+      "source_category": "Accessories",
+      "target": "Scarves and neck accessories",
+      "stylist_score": 89,
+      "priority": "B",
+      "department": "accessories",
+      "preferred_categories": [
+        "jewelry",
+        "watches",
+        "belts",
+        "scarves",
+        "keychains"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 24,
+      "source_category": "Accessories",
+      "target": "Fashion caps and hats",
+      "stylist_score": 88,
+      "priority": "B",
+      "department": "accessories",
+      "preferred_categories": [
+        "jewelry",
+        "watches",
+        "belts",
+        "scarves",
+        "keychains"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 25,
+      "source_category": "Women",
+      "target": "Matching co-ord sets",
+      "stylist_score": 98,
+      "priority": "A",
+      "department": "women",
+      "preferred_categories": [
+        "women-dresses",
+        "women-tops",
+        "women-shoes",
+        "women-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 26,
+      "source_category": "Women",
+      "target": "Midi / maxi dresses",
+      "stylist_score": 97,
+      "priority": "A",
+      "department": "women",
+      "preferred_categories": [
+        "women-dresses",
+        "women-tops",
+        "women-shoes",
+        "women-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 27,
+      "source_category": "Women",
+      "target": "Soft knit cardigans",
+      "stylist_score": 94,
+      "priority": "A",
+      "department": "women",
+      "preferred_categories": [
+        "women-dresses",
+        "women-tops",
+        "women-shoes",
+        "women-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 28,
+      "source_category": "Women",
+      "target": "Short fashion jackets",
+      "stylist_score": 94,
+      "priority": "A",
+      "department": "women",
+      "preferred_categories": [
+        "women-dresses",
+        "women-tops",
+        "women-shoes",
+        "women-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 29,
+      "source_category": "Shoes",
+      "target": "Low-profile sneakers",
+      "stylist_score": 96,
+      "priority": "A",
+      "department": "women",
+      "preferred_categories": [
+        "women-shoes"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 30,
+      "source_category": "Shoes",
+      "target": "Women loafers",
+      "stylist_score": 94,
+      "priority": "A",
+      "department": "women",
+      "preferred_categories": [
+        "women-shoes"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 31,
+      "source_category": "Shoes",
+      "target": "Fashion ankle boots",
+      "stylist_score": 93,
+      "priority": "B",
+      "department": "women",
+      "preferred_categories": [
+        "women-shoes"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 32,
+      "source_category": "Men",
+      "target": "Oversized tees",
+      "stylist_score": 91,
+      "priority": "B",
+      "department": "men",
+      "preferred_categories": [
+        "men-tops",
+        "men-bottoms",
+        "men-accessories",
+        "men-shoes"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 33,
+      "source_category": "Men",
+      "target": "Streetwear hoodies",
+      "stylist_score": 92,
+      "priority": "B",
+      "department": "men",
+      "preferred_categories": [
+        "men-tops",
+        "men-bottoms",
+        "men-accessories",
+        "men-shoes"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 34,
+      "source_category": "Men",
+      "target": "Lightweight streetwear jackets",
+      "stylist_score": 94,
+      "priority": "A",
+      "department": "men",
+      "preferred_categories": [
+        "men-tops",
+        "men-bottoms",
+        "men-accessories",
+        "men-shoes"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 35,
+      "source_category": "Men",
+      "target": "Cargo / relaxed pants",
+      "stylist_score": 91,
+      "priority": "B",
+      "department": "men",
+      "preferred_categories": [
+        "men-tops",
+        "men-bottoms",
+        "men-accessories",
+        "men-shoes"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 36,
+      "source_category": "Men",
+      "target": "Crossbody bags",
+      "stylist_score": 93,
+      "priority": "B",
+      "department": "men",
+      "preferred_categories": [
+        "men-tops",
+        "men-bottoms",
+        "men-accessories",
+        "men-shoes"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/fashion-products/"
+    },
+    {
+      "id": 37,
+      "source_category": "Sports",
+      "target": "Adjustable resistance bands with handles",
+      "stylist_score": 91,
+      "priority": "A",
+      "department": "sports",
+      "preferred_categories": [
+        "fitness",
+        "fitness-accessories",
+        "outdoors"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/fitness-dropshipping-products-2026/"
+    },
+    {
+      "id": 38,
+      "source_category": "Sports",
+      "target": "Textured foam roller",
+      "stylist_score": 84,
+      "priority": "B",
+      "department": "sports",
+      "preferred_categories": [
+        "fitness",
+        "fitness-accessories",
+        "outdoors"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/fitness-dropshipping-products-2026/"
+    },
+    {
+      "id": 39,
+      "source_category": "Sports",
+      "target": "Smart jump rope with counter",
+      "stylist_score": 92,
+      "priority": "A",
+      "department": "sports",
+      "preferred_categories": [
+        "fitness",
+        "fitness-accessories",
+        "outdoors"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/fitness-dropshipping-products-2026/"
+    },
+    {
+      "id": 40,
+      "source_category": "Sports",
+      "target": "Yoga mat with alignment guides",
+      "stylist_score": 90,
+      "priority": "A",
+      "department": "sports",
+      "preferred_categories": [
+        "fitness",
+        "fitness-accessories",
+        "outdoors"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/fitness-dropshipping-products-2026/"
+    },
+    {
+      "id": 41,
+      "source_category": "Sports",
+      "target": "Massage gun with attachments",
+      "stylist_score": 88,
+      "priority": "B",
+      "department": "sports",
+      "preferred_categories": [
+        "fitness",
+        "fitness-accessories",
+        "outdoors"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/fitness-dropshipping-products-2026/"
+    },
+    {
+      "id": 42,
+      "source_category": "Sports",
+      "target": "Adjustable ankle/wrist weights",
+      "stylist_score": 83,
+      "priority": "B",
+      "department": "sports",
+      "preferred_categories": [
+        "fitness",
+        "fitness-accessories",
+        "outdoors"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/fitness-dropshipping-products-2026/"
+    },
+    {
+      "id": 43,
+      "source_category": "Sports",
+      "target": "Core sliders / gliding discs",
+      "stylist_score": 87,
+      "priority": "B",
+      "department": "sports",
+      "preferred_categories": [
+        "fitness",
+        "fitness-accessories",
+        "outdoors"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/fitness-dropshipping-products-2026/"
+    },
+    {
+      "id": 44,
+      "source_category": "Sports",
+      "target": "Adjustable grip strengthener",
+      "stylist_score": 82,
+      "priority": "B",
+      "department": "sports",
+      "preferred_categories": [
+        "fitness",
+        "fitness-accessories",
+        "outdoors"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/fitness-dropshipping-products-2026/"
+    },
+    {
+      "id": 45,
+      "source_category": "School",
+      "target": "Backpacks",
+      "stylist_score": 93,
+      "priority": "A",
+      "department": "office",
+      "preferred_categories": [
+        "stationery",
+        "office-storage"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-back-to-school-dropshipping-products/"
+    },
+    {
+      "id": 46,
+      "source_category": "School",
+      "target": "Pencil cases / stationery organizers",
+      "stylist_score": 88,
+      "priority": "B",
+      "department": "office",
+      "preferred_categories": [
+        "stationery",
+        "office-storage"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-back-to-school-dropshipping-products/"
+    },
+    {
+      "id": 47,
+      "source_category": "School",
+      "target": "Reusable water bottles",
+      "stylist_score": 90,
+      "priority": "A",
+      "department": "office",
+      "preferred_categories": [
+        "stationery",
+        "office-storage"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-back-to-school-dropshipping-products/"
+    },
+    {
+      "id": 48,
+      "source_category": "School",
+      "target": "Lunch bags / boxes",
+      "stylist_score": 89,
+      "priority": "B",
+      "department": "office",
+      "preferred_categories": [
+        "stationery",
+        "office-storage"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-back-to-school-dropshipping-products/"
+    },
+    {
+      "id": 49,
+      "source_category": "School",
+      "target": "Notebooks / planners",
+      "stylist_score": 86,
+      "priority": "B",
+      "department": "office",
+      "preferred_categories": [
+        "stationery",
+        "office-storage"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-back-to-school-dropshipping-products/"
+    },
+    {
+      "id": 50,
+      "source_category": "School",
+      "target": "Desk organizers",
+      "stylist_score": 87,
+      "priority": "B",
+      "department": "office",
+      "preferred_categories": [
+        "stationery",
+        "office-storage"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-back-to-school-dropshipping-products/"
+    },
+    {
+      "id": 51,
+      "source_category": "Tech",
+      "target": "Kids smartwatches",
+      "stylist_score": 78,
+      "priority": "B",
+      "department": "tech",
+      "preferred_categories": [
+        "stands-holders",
+        "chargers-cables",
+        "electronics",
+        "audio",
+        "wearables"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-back-to-school-dropshipping-products/"
+    },
+    {
+      "id": 52,
+      "source_category": "Tech",
+      "target": "Portable chargers / charging cables",
+      "stylist_score": 91,
+      "priority": "A",
+      "department": "tech",
+      "preferred_categories": [
+        "stands-holders",
+        "chargers-cables",
+        "electronics",
+        "audio",
+        "wearables"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-back-to-school-dropshipping-products/"
+    },
+    {
+      "id": 53,
+      "source_category": "Home",
+      "target": "Dorm / study room decor",
+      "stylist_score": 94,
+      "priority": "A",
+      "department": "home",
+      "preferred_categories": [
+        "home-decor",
+        "home-textiles",
+        "lighting"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-back-to-school-dropshipping-products/"
+    },
+    {
+      "id": 54,
+      "source_category": "Tech",
+      "target": "Laptop sleeves / tech cases",
+      "stylist_score": 93,
+      "priority": "A",
+      "department": "tech",
+      "preferred_categories": [
+        "stands-holders",
+        "chargers-cables",
+        "electronics",
+        "audio",
+        "wearables"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-back-to-school-dropshipping-products/"
+    },
+    {
+      "id": 55,
+      "source_category": "Baby",
+      "target": "Muslin swaddle blankets",
+      "stylist_score": 90,
+      "priority": "A",
+      "department": "kids",
+      "preferred_categories": [
+        "baby",
+        "kids-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-baby-dropshipping-products/"
+    },
+    {
+      "id": 56,
+      "source_category": "Baby",
+      "target": "Silicone feeding sets",
+      "stylist_score": 87,
+      "priority": "B",
+      "department": "kids",
+      "preferred_categories": [
+        "baby",
+        "kids-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-baby-dropshipping-products/"
+    },
+    {
+      "id": 57,
+      "source_category": "Baby",
+      "target": "Teething toys",
+      "stylist_score": 84,
+      "priority": "B",
+      "department": "kids",
+      "preferred_categories": [
+        "baby",
+        "kids-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-baby-dropshipping-products/"
+    },
+    {
+      "id": 58,
+      "source_category": "Baby",
+      "target": "Diaper bag backpacks",
+      "stylist_score": 93,
+      "priority": "A",
+      "department": "kids",
+      "preferred_categories": [
+        "baby",
+        "kids-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-baby-dropshipping-products/"
+    },
+    {
+      "id": 59,
+      "source_category": "Baby",
+      "target": "Baby nail file sets",
+      "stylist_score": 82,
+      "priority": "B",
+      "department": "kids",
+      "preferred_categories": [
+        "baby",
+        "kids-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-baby-dropshipping-products/"
+    },
+    {
+      "id": 60,
+      "source_category": "Baby",
+      "target": "Portable baby bottle warmers",
+      "stylist_score": 75,
+      "priority": "B",
+      "department": "kids",
+      "preferred_categories": [
+        "baby",
+        "kids-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-baby-dropshipping-products/"
+    },
+    {
+      "id": 61,
+      "source_category": "Baby",
+      "target": "Soft baby books",
+      "stylist_score": 89,
+      "priority": "B",
+      "department": "kids",
+      "preferred_categories": [
+        "baby",
+        "kids-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-baby-dropshipping-products/"
+    },
+    {
+      "id": 62,
+      "source_category": "Baby",
+      "target": "Baby play mats",
+      "stylist_score": 85,
+      "priority": "B",
+      "department": "kids",
+      "preferred_categories": [
+        "baby",
+        "kids-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-baby-dropshipping-products/"
+    },
+    {
+      "id": 63,
+      "source_category": "Baby",
+      "target": "Muslin hooded baby towels",
+      "stylist_score": 91,
+      "priority": "A",
+      "department": "kids",
+      "preferred_categories": [
+        "baby",
+        "kids-accessories"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/blog/best-baby-dropshipping-products/"
+    },
+    {
+      "id": 64,
+      "source_category": "Pets",
+      "target": "Interactive pet toys",
+      "stylist_score": 92,
+      "priority": "A",
+      "department": "pets",
+      "preferred_categories": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-walk"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products-pets/"
+    },
+    {
+      "id": 65,
+      "source_category": "Pets",
+      "target": "Pet feeders",
+      "stylist_score": 84,
+      "priority": "B",
+      "department": "pets",
+      "preferred_categories": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-walk"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products-pets/"
+    },
+    {
+      "id": 66,
+      "source_category": "Pets",
+      "target": "Pet collars",
+      "stylist_score": 88,
+      "priority": "B",
+      "department": "pets",
+      "preferred_categories": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-walk"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products-pets/"
+    },
+    {
+      "id": 67,
+      "source_category": "Pets",
+      "target": "Pet leashes",
+      "stylist_score": 87,
+      "priority": "B",
+      "department": "pets",
+      "preferred_categories": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-walk"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products-pets/"
+    },
+    {
+      "id": 68,
+      "source_category": "Pets",
+      "target": "Pet apparel",
+      "stylist_score": 89,
+      "priority": "B",
+      "department": "pets",
+      "preferred_categories": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-walk"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products-pets/"
+    },
+    {
+      "id": 69,
+      "source_category": "Pets",
+      "target": "Pet beds",
+      "stylist_score": 86,
+      "priority": "B",
+      "department": "pets",
+      "preferred_categories": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-walk"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products-pets/"
+    },
+    {
+      "id": 70,
+      "source_category": "Pets",
+      "target": "Pet cooling mats",
+      "stylist_score": 88,
+      "priority": "B",
+      "department": "pets",
+      "preferred_categories": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-walk"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products-pets/"
+    },
+    {
+      "id": 71,
+      "source_category": "Pets",
+      "target": "Pet dental chews",
+      "stylist_score": 70,
+      "priority": "B",
+      "department": "pets",
+      "preferred_categories": [
+        "pet-accessories",
+        "pet-toys",
+        "pet-grooming",
+        "pet-walk"
+      ],
+      "status": "EXACT_SKU_AND_COUNTRY_QUOTE_REQUIRED",
+      "source": "https://www.hypersku.com/trending-products-pets/"
+    }
+  ],
+  "benchmarks": [
+    {
+      "department": "outdoor",
+      "name": "Portable neck fan",
+      "hyper_public_cost_usd": 2.8,
+      "hyper_public_avg_selling_usd": 12.99,
+      "hunt_price_gate_shadow_usd": 7.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.47,
+      "hunt_product_margin_pre_shipping": 0.5596,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 9.02,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    },
+    {
+      "department": "sports",
+      "name": "Resistance band set",
+      "hyper_public_cost_usd": 2.1,
+      "hyper_public_avg_selling_usd": 11.99,
+      "hunt_price_gate_shadow_usd": 6.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.26,
+      "hunt_product_margin_pre_shipping": 0.6096,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 8.81,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    },
+    {
+      "department": "beauty",
+      "name": "Facial ice roller",
+      "hyper_public_cost_usd": 2.4,
+      "hyper_public_avg_selling_usd": 13.99,
+      "hunt_price_gate_shadow_usd": 7.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.87,
+      "hunt_product_margin_pre_shipping": 0.6096,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 10.33,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    },
+    {
+      "department": "pets",
+      "name": "Adjustable pet collar",
+      "hyper_public_cost_usd": 2.6,
+      "hyper_public_avg_selling_usd": 13.5,
+      "hunt_price_gate_shadow_usd": 7.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.67,
+      "hunt_product_margin_pre_shipping": 0.5846,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 9.69,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    },
+    {
+      "department": "pets",
+      "name": "Interactive cat toy",
+      "hyper_public_cost_usd": 2.5,
+      "hyper_public_avg_selling_usd": 13.5,
+      "hunt_price_gate_shadow_usd": 7.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.77,
+      "hunt_product_margin_pre_shipping": 0.5971,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 9.79,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    },
+    {
+      "department": "pets",
+      "name": "Pet grooming glove",
+      "hyper_public_cost_usd": 2.2,
+      "hyper_public_avg_selling_usd": 11.49,
+      "hunt_price_gate_shadow_usd": 6.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.16,
+      "hunt_product_margin_pre_shipping": 0.5953,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 8.26,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    },
+    {
+      "department": "home",
+      "name": "Ribbed ceramic vase",
+      "hyper_public_cost_usd": 4.5,
+      "hyper_public_avg_selling_usd": 17.99,
+      "hunt_price_gate_shadow_usd": 9.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.59,
+      "hunt_product_margin_pre_shipping": 0.4595,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 11.87,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    },
+    {
+      "department": "home",
+      "name": "Aromatherapy diffuser",
+      "hyper_public_cost_usd": 4.9,
+      "hyper_public_avg_selling_usd": 19.99,
+      "hunt_price_gate_shadow_usd": 9.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.19,
+      "hunt_product_margin_pre_shipping": 0.4195,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 13.29,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    },
+    {
+      "department": "kitchen",
+      "name": "Electric jar opener",
+      "hyper_public_cost_usd": 5.8,
+      "hyper_public_avg_selling_usd": 22.99,
+      "hunt_price_gate_shadow_usd": 10.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.2,
+      "hunt_product_margin_pre_shipping": 0.3822,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 15.12,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    },
+    {
+      "department": "tech",
+      "name": "Mini LED light",
+      "hyper_public_cost_usd": 3.6,
+      "hyper_public_avg_selling_usd": 15.99,
+      "hunt_price_gate_shadow_usd": 8.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.58,
+      "hunt_product_margin_pre_shipping": 0.5096,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 10.95,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    },
+    {
+      "department": "tech",
+      "name": "Magnetic phone mount",
+      "hyper_public_cost_usd": 1.7,
+      "hyper_public_avg_selling_usd": 10.99,
+      "hunt_price_gate_shadow_usd": 6.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.66,
+      "hunt_product_margin_pre_shipping": 0.6668,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 8.3,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    },
+    {
+      "department": "tech",
+      "name": "Wireless charging pad",
+      "hyper_public_cost_usd": 3.1,
+      "hyper_public_avg_selling_usd": 14.99,
+      "hunt_price_gate_shadow_usd": 7.99,
+      "hunt_product_contribution_pre_shipping_usd": 4.17,
+      "hunt_product_margin_pre_shipping": 0.522,
+      "contribution_at_hyper_avg_sell_pre_shipping_usd": 10.54,
+      "final_profit_verified": false,
+      "shipping_quote_required": true
+    }
+  ],
+  "exact_private_product_701425": {
+    "spu": "701425",
+    "sku": "100701425000249",
+    "product_cost_usd": 5.54,
+    "hunt_price_gate_shadow_usd": 10.99,
+    "hunt_product_contribution_pre_shipping_usd": 4.46,
+    "hunt_product_margin_pre_shipping": 0.4059,
+    "variant_matrix_status": "BLOCKED_EXACT_VARIANT_FEED",
+    "final_profit_verified": false,
+    "blocker": "EXACT_VARIANT_FEED_PLUS_DESTINATION_SHIPPING_QUOTE_REQUIRED"
+  }
+}
