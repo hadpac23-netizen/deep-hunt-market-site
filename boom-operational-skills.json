@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-OPERATIONAL-SKILLS-V1.1-PROFIT",
+  "version": "BOOM-OPERATIONAL-SKILLS-V1.2-PAYMENT",
   "mode": "SHADOW",
   "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
   "skills": [
@@ -207,6 +207,28 @@
       ],
       "tools": [
         "supabase_runtime"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "review_payment_launch_readiness",
+      "title": "Review Payment Launch Readiness",
+      "owner": "operations_brain",
+      "purpose": "Evaluate every HUNT payment route against commercial/account, sandbox, callback, refund, finance, settlement, country/currency, legal and Owner Gate evidence without activation.",
+      "inputs": [
+        "processor_or_route",
+        "market"
+      ],
+      "outputs": [
+        "route_state",
+        "missing_gates",
+        "blocker",
+        "evidence_refs"
+      ],
+      "tools": [
+        "supabase_runtime",
+        "payment_launch_gate"
       ],
       "material": false,
       "owner_gate": false
