@@ -318,6 +318,45 @@
 
 
 
+
+  async function renderProductProfitLedger(){
+    const summary=$("#bs-product-profit-ledger-summary");
+    const host=$("#bs-product-profit-ledger");
+    if(!host)return;
+    const ledger=window.BoomProductProfitLedger;
+    if(!ledger?.snapshot){
+      host.innerHTML='<div class="bs-empty bs-error">Product Profit Ledger adapter unavailable.</div>';
+      return;
+    }
+    try{
+      const snap=await ledger.snapshot();
+      const expected=snap.expected||[];
+      const realized=snap.realized||{};
+      if(summary){
+        summary.innerHTML=[
+          metric(expected.length,"Verified expected rows"),
+          metric(realized.real_finance_rows??0,"Real finance rows"),
+          metric(realized.product_level_allocation?"YES":"NO","Realized product allocation"),
+          metric("$"+Number(realized.realized_available_profit||0).toLocaleString(),"Mission-eligible realized profit")
+        ].join("");
+      }
+      const expectedPreview=expected.slice(0,12);
+      host.innerHTML=[
+        `<article class="bs-profit-lane"><div class="bs-skill-head"><strong>EXPECTED PROFIT</strong><span class="bs-status DONE">VERIFIED UNIT ECONOMICS</span></div>
+          <p>Calculated from inputs_verified unit economics. It can guide pricing/CAC decisions, but it does <b>not</b> count as realized profit.</p>
+          <div class="bs-profit-ledger-rows">${expectedPreview.length?expectedPreview.map(row=>`<div><code>${esc(row.provider)} · ${esc(row.item_id)}</code><span>${esc(row.currency||"")} ${esc(row.contribution_before_coupon??"UNKNOWN")} contribution</span><small>${esc(row.profit_gate_status||"UNKNOWN")} · ${esc(row.destination_country||"GLOBAL")}</small></div>`).join(""):'<span class="bs-empty">No verified expected rows.</span>'}</div>
+        </article>`,
+        `<article class="bs-profit-lane"><div class="bs-skill-head"><strong>REALIZED PROFIT</strong><span class="bs-status ${realized.real_finance_rows?"DONE":"NEXT"}">${realized.real_finance_rows?"ORDER LEVEL":"NO REAL EVIDENCE"}</span></div>
+          <p>Only non-test finance ledger evidence counts toward the $10K/hour mission. Product allocation stays blocked until auditable line-item allocation exists.</p>
+          <div class="bs-profit-realized"><strong>${Number(realized.realized_available_profit||0).toLocaleString()}</strong><small>${esc(realized.reason||"UNKNOWN")}</small></div>
+        </article>`
+      ].join("");
+    }catch(error){
+      if(summary)summary.innerHTML="";
+      host.innerHTML=`<div class="bs-empty bs-error">Profit evidence unavailable: ${esc(error?.message||"unknown")}. Mission profit remains UNKNOWN.</div>`;
+    }
+  }
+
   function renderProfitMission(){
     const p=data.profitEngine||{};
     const engine=window.BoomProfitEngine;
@@ -623,7 +662,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
