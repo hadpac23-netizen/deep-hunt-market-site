@@ -1,0 +1,120 @@
+{
+  "version": "BOOM-CONTROL-PLANE-READINESS-V1",
+  "observed_at": "2026-09-22",
+  "overall": "NOT_READY_FOR_ACTIVATION",
+  "production_changed": false,
+  "n8n_connected": false,
+  "new_edge_functions_deployed": false,
+  "payment_activation_changed": false,
+  "supplier_orders_enabled": false,
+  "external_publish_enabled": false,
+  "areas": [
+    {
+      "id": "brain_os",
+      "status": "DONE",
+      "evidence": "8 Primary Brains + canonical shared control planes"
+    },
+    {
+      "id": "legacy_manager_consolidation",
+      "status": "DONE",
+      "evidence": "31 legacy managers mapped to agents/modules/adapters; legacy departments collapsed to taxonomy modules"
+    },
+    {
+      "id": "skill_registry",
+      "status": "DONE",
+      "evidence": "24 existing skills classified under canonical owners"
+    },
+    {
+      "id": "data_tool_owner_gate_maps",
+      "status": "DONE",
+      "evidence": "Data Ownership, Tool Registry, Supabase Runtime and Owner Gate maps"
+    },
+    {
+      "id": "scheduler_plane",
+      "status": "DONE_CONTRACT_ONLY",
+      "evidence": "single orchestrator-owned scheduler; preserved legacy schedules not activated"
+    },
+    {
+      "id": "shadow_run_engine",
+      "status": "DONE_CODE",
+      "evidence": "state machine, BLOCKED, retries/quarantine, correlation lineage, material suppression"
+    },
+    {
+      "id": "durable_run_ledger",
+      "status": "CODED_NEEDS_PREVIEW_PROOF",
+      "evidence": "existing hunt_boom_team_runs/events/decisions reused; no new ledger tables"
+    },
+    {
+      "id": "owner_gate_ui",
+      "status": "CODED_NEEDS_PREVIEW_PROOF",
+      "evidence": "Approve SHADOW / Reject mapped to canonical action; decision recording only"
+    },
+    {
+      "id": "n8n_adapter",
+      "status": "CODED_NOT_CONNECTED",
+      "evidence": "server-side gateway + client adapter + read-only shelf spec; no URL/token configured"
+    },
+    {
+      "id": "shelf_coverage",
+      "status": "BLOCKED",
+      "evidence": "13 canonical department identities verified; 4 target slots unresolved; server endpoint code not deployed"
+    },
+    {
+      "id": "catalog_freshness",
+      "status": "STALE_AT_AUDIT",
+      "evidence": "2026-09-22 audit observed zero products passing the 7-day fresh verified-sellable filter; source evidence observed around Sep 11–13"
+    },
+    {
+      "id": "incident_repair",
+      "status": "CODED_NEEDS_PREVIEW_E2E",
+      "evidence": "failure auto-route, parent lineage, evidence preflight, no auto-patch/deploy"
+    },
+    {
+      "id": "creative_a6_a7",
+      "status": "CODED_GENERATION_OFF",
+      "evidence": "A6/A7 recovered from PR #7; Product Truth/reference/claims gates; provider generation blocked"
+    },
+    {
+      "id": "supplier_intake",
+      "status": "CODED_SHADOW_ONLY",
+      "evidence": "partner/API/terms/media preflight; no supplier call/order/activation"
+    },
+    {
+      "id": "customer_lifecycle",
+      "status": "CODED_SHADOW_ONLY",
+      "evidence": "identity/privacy/event preflight; outreach/refund/order mutation OFF"
+    },
+    {
+      "id": "learning_loop",
+      "status": "CODED_TESTING_ONLY",
+      "evidence": "evidence/provenance/baseline preflight; candidate persists as testing; no behavior auto-adoption"
+    },
+    {
+      "id": "critical_edge_auth",
+      "status": "IN_PROGRESS",
+      "evidence": "critical paths classified; CJ public read-only quote still needs abuse/rate-limit proof before automation scale"
+    }
+  ],
+  "blockers": [
+    "Resolve the four missing canonical department identities before claiming 17/17.",
+    "Refresh live product/source/stock evidence; stale counts cannot satisfy shelf readiness.",
+    "Deploy only to a preview/test environment first: boom-shelf-coverage and boom-automation-gateway.",
+    "Prove one real admin durable ledger write + Owner Gate decision in preview.",
+    "Configure n8n server-only SHADOW URL/token and prove one read-only shelf workflow success plus one controlled failure/retry.",
+    "Complete CJ quote abuse/rate-limit proof before scheduled automation scale.",
+    "Run controlled Incident E2E and A6/A7 Creative E2E without provider generation.",
+    "Only after evidence review may Owner decide whether to merge/activate."
+  ],
+  "activation_sequence": [
+    "Preview Edge Functions",
+    "Preview BOOM Studio integrity",
+    "Durable ledger proof",
+    "Shelf evidence refresh + 17-department taxonomy resolution",
+    "n8n read-only SHADOW proof",
+    "Incident E2E",
+    "Creative A6/A7 E2E",
+    "Supplier/Customer/Learning shadow proofs",
+    "Independent review",
+    "Owner activation decision"
+  ]
+}
