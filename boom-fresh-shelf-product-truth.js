@@ -1,33 +1,43 @@
 (() => {
   "use strict";
   if(window.BoomFreshShelfProductTruth?.version)return;
-  const version="BOOM-FRESH-SHELF-PRODUCT-TRUTH-V1";
+  const version="BOOM-FRESH-SHELF-PRODUCT-TRUTH-V1.1-SCAN-AWARE";
   const runtime=()=>window.BoomRuntime;
   const clean=v=>String(v??"").trim();
   const allowedShelfMarket=new Set(["recheck_before_checkout","eligible","allowed"]);
   const readyMarket=new Set(["eligible","allowed"]);
   const truthy=v=>v===true||String(v).toLowerCase()==="true";
   const recent=(ts,hours)=>{const n=Date.parse(ts||"");return Number.isFinite(n)&&Date.now()-n<=hours*3600000&&Date.now()>=n;};
+  const newest=rows=>[...(rows||[])].sort((a,b)=>Date.parse(b?.observed_at||0)-Date.parse(a?.observed_at||0))[0]||null;
 
   function evaluateProduct(product={},observations=[],country="IL",hours=24){
+    const countryCode=clean(country).toUpperCase();
     const obs=(observations||[]).filter(x=>clean(x.provider)===clean(product.provider)&&clean(x.item_id)===clean(product.item_id)&&recent(x.observed_at,hours));
-    const price=obs.find(x=>x.observation_type==="price"&&x.availability_verified===true&&Number(x.price_amount)>0&&truthy(x.payload?.retail_verified)&&clean(x.payload?.profit_gate_status).toUpperCase()==="PASS");
-    const stock=obs.find(x=>x.observation_type==="stock"&&x.availability_verified===true&&truthy(x.payload?.stock_verified)&&truthy(x.payload?.stock_available));
-    const shipping=obs.find(x=>x.observation_type==="shipping"&&x.availability_verified===true&&clean(x.destination_country).toUpperCase()===clean(country).toUpperCase()&&Number.isFinite(Number(x.shipping_amount))&&truthy(x.payload?.shipping_verified));
+    const scan=newest(obs.filter(x=>x.observation_type==="product"&&clean(x.payload?.source)==="controlled-cj-refresh"&&clean(x.payload?.destination_country).toUpperCase()===countryCode));
+    const scanState=clean(scan?.payload?.refresh_state).toUpperCase();
+    const scanVerified=Boolean(scan&&scan.availability_verified===true&&scanState==="VERIFIED"&&clean(scan.payload?.scan_id));
+    const variantId=clean(scan?.payload?.variant_id);
+    const sameVariant=x=>!variantId||clean(x?.payload?.variant_id)===variantId;
+
+    const price=newest(obs.filter(x=>x.observation_type==="price"&&sameVariant(x)&&x.availability_verified===true&&Number(x.price_amount)>0&&truthy(x.payload?.retail_verified)&&clean(x.payload?.profit_gate_status).toUpperCase()==="PASS"));
+    const stock=newest(obs.filter(x=>x.observation_type==="stock"&&sameVariant(x)&&x.availability_verified===true&&truthy(x.payload?.stock_verified)&&truthy(x.payload?.stock_available)));
+    const shipping=newest(obs.filter(x=>x.observation_type==="shipping"&&sameVariant(x)&&x.availability_verified===true&&clean(x.destination_country).toUpperCase()===countryCode&&Number.isFinite(Number(x.shipping_amount))&&truthy(x.payload?.shipping_verified)));
+
     const market=clean(product.market_eligibility_status).toLowerCase();
     const base=product.availability_verified===true&&Number(product.price_amount)>0&&clean(product.image_url)!==""&&allowedShelfMarket.has(market);
-    const shelf=Boolean(base&&price&&stock&&shipping);
+    const shelf=Boolean(base&&scanVerified&&price&&stock&&shipping);
     return {
       provider:product.provider||null,item_id:product.item_id||null,category:product.category||null,
       state:shelf?(readyMarket.has(market)?"FRESH_SHELF_VERIFIED":"CHECKOUT_RECHECK_REQUIRED"):"STALE_OR_UNVERIFIED",
       fresh_shelf_verified:shelf,
       checkout_live_verified:false,
       market_status:market||null,
+      scan:{verified:scanVerified,state:scanState||null,scan_id:scan?.payload?.scan_id||null,variant_id:variantId||null,observed_at:scan?.observed_at||null},
       evidence:{
         price:Boolean(price),stock:Boolean(stock),shipping:Boolean(shipping),
-        newest:[price?.observed_at,stock?.observed_at,shipping?.observed_at].filter(Boolean).sort().pop()||null
+        newest:[scan?.observed_at,price?.observed_at,stock?.observed_at,shipping?.observed_at].filter(Boolean).sort().pop()||null
       },
-      first_blocker:!base?"CATALOG_BASE_TRUTH":(!price?"FRESH_PRICE":(!stock?"FRESH_STOCK":(!shipping?"FRESH_SHIPPING":(readyMarket.has(market)?"CHECKOUT_QUOTE_REQUIRED":"MARKET_RECHECK_REQUIRED"))))
+      first_blocker:!base?"CATALOG_BASE_TRUTH":(!scanVerified?"CONTROLLED_SCAN_VERIFIED":(!price?"FRESH_PRICE_SAME_VARIANT":(!stock?"FRESH_STOCK_SAME_VARIANT":(!shipping?"FRESH_SHIPPING_SAME_VARIANT":(readyMarket.has(market)?"CHECKOUT_QUOTE_REQUIRED":"MARKET_RECHECK_REQUIRED")))))
     };
   }
 
@@ -59,6 +69,7 @@
     if(obsRes.error)throw obsRes.error;
     const catalog=catalogRes.data||[], observations=obsRes.data||[];
     const rows=catalog.map(p=>evaluateProduct(p,observations,country,hours));
+    const scanStates=rows.reduce((m,x)=>{const k=x.scan?.state||"NO_CONTROLLED_SCAN";m[k]=(m[k]||0)+1;return m;},{});
     return {
       version,mode:"SHADOW",country:clean(country).toUpperCase(),freshness_hours:hours,
       total_catalog:catalog.length,
@@ -66,6 +77,7 @@
       checkout_live_verified:rows.filter(x=>x.checkout_live_verified).length,
       checkout_recheck_required:rows.filter(x=>x.state==="CHECKOUT_RECHECK_REQUIRED").length,
       stale_or_unverified:rows.filter(x=>x.state==="STALE_OR_UNVERIFIED").length,
+      scan_states:scanStates,
       rows,
       material_action_authorized:false
     };
