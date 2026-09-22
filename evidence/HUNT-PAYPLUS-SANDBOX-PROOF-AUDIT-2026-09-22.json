@@ -1,0 +1,45 @@
+{
+  "version": "HUNT-PAYPLUS-SANDBOX-PROOF-AUDIT-2026-09-22-V1",
+  "observed_at": "2026-09-22T11:08:00Z",
+  "source": "Supabase read-only audit + official PayPlus API documentation",
+  "production_mutation": false,
+  "live_truth": {
+    "sandbox_evidence_control": {
+      "enabled": false,
+      "owner_approved": false,
+      "token_hash_ready": false
+    },
+    "sandbox_evidence_sessions": 0,
+    "status_observations": 0,
+    "sandbox_status_observations": 0,
+    "signature_verified_observations": 0,
+    "ipn_full_verified_observations": 0,
+    "accepted_paid_true_observations": 0
+  },
+  "official_provider_truth": {
+    "staging_base": "https://restapidev.payplus.co.il/api/v1.0/",
+    "callback_success_supported": true,
+    "failure_callback_supported_when_send_failure_callback_true": true,
+    "charge_methods": {
+      "0": "Card Check (J2) — not payment",
+      "1": "Charge (J4) — immediate charge candidate",
+      "2": "Approval (J5) — not final payment",
+      "3": "Recurring Payments — module-dependent",
+      "4": "Refund — refund transaction"
+    },
+    "ipn_full_endpoint": "PaymentPages/ipn-full",
+    "notes": [
+      "PayPlus documentation confirms callbacks are server-side transaction updates.",
+      "PayPlus documents J4 as immediate charge and Refund as charge_method 4.",
+      "Provider status/code fingerprints still require empirical sandbox observations before HUNT accepts paid/refund state."
+    ]
+  },
+  "conclusion": {
+    "state": "BLOCKED_NO_SANDBOX_EVIDENCE",
+    "paid_acceptance_proven": false,
+    "failure_mapping_proven": false,
+    "refund_mapping_proven": false,
+    "cancel_mapping_proven": false,
+    "duplicate_callback_proven": false
+  }
+}
