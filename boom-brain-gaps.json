@@ -200,7 +200,7 @@
       "owner": "learning_governance_brain",
       "status": "IN_PROGRESS",
       "source": "F50",
-      "next": "Existing BOOM tables mapped and adapter wired; verify one real admin SHADOW write on a preview before marking DONE."
+      "next": "Ledger contract + secure schema candidate are ready; next is reviewed canonical migration + live DB verification."
     },
     {
       "id": "tool_gateway",
@@ -216,7 +216,7 @@
       "owner": "boom_orchestrator",
       "status": "IN_PROGRESS",
       "source": "F50",
-      "next": "Edge Gateway + client adapter coded. Configure server-only n8n SHADOW URL/token, deploy preview, then prove one allowlisted shelf-coverage run and one controlled failure."
+      "next": "Plan-only SHADOW adapter exists; next is server transport after ledger migration and secret-reference gateway."
     },
     {
       "id": "shelf_coverage_17x1000",
