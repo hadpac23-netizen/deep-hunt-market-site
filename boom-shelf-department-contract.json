@@ -2,115 +2,116 @@
   "version": "HUNT-DEPARTMENT-COVERAGE-V1",
   "target_departments": 17,
   "target_verified_sellable_per_department": 1000,
-  "readiness": "BLOCKED_UNTIL_17_CANONICAL_DEPARTMENTS_RESOLVED",
+  "readiness": "CANONICAL_17_RESOLVED_EVIDENCE_STILL_REQUIRED",
   "source_truth": {
-    "verified_department_source": "HUNT_LAYERED_TAXONOMY_V2 / V16 storefront snapshot",
-    "verified_department_count": 13,
-    "unresolved_count": 4,
-    "rule": "Never invent missing department identities. Never claim 17/17 from a 13-department source."
+    "verified_department_source": "HUNT Cinematic V16 navigation + hunt-department-map-v1.js",
+    "verified_department_count": 17,
+    "unresolved_count": 0,
+    "observed_from_local_qa": "/Users/adichehade/.hunt-final-candidate-v1",
+    "rule": "Department identity is resolved. Shelf readiness still requires fresh verified sellable product evidence; 17/17 taxonomy does not imply 17/17 ready inventory."
   },
   "departments": [
     {
       "slug": "women",
       "title": "Women",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     },
     {
       "slug": "men",
       "title": "Men",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     },
     {
       "slug": "kids",
       "title": "Kids & Baby",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     },
     {
       "slug": "beauty",
       "title": "Beauty",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     },
     {
       "slug": "accessories",
       "title": "Accessories & Jewelry",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     },
     {
       "slug": "tech",
       "title": "Phone & Tech",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     },
     {
       "slug": "home",
       "title": "Home & Living",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
+    },
+    {
+      "slug": "kitchen",
+      "title": "Kitchen",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_CINEMATIC_V16 + HUNT_DEPARTMENT_MAP_V1"
+    },
+    {
+      "slug": "electrical",
+      "title": "Electrical & Appliances",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_CINEMATIC_V16 + HUNT_DEPARTMENT_MAP_V1"
+    },
+    {
+      "slug": "camping",
+      "title": "Camping & Outdoor",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_CINEMATIC_V16 + HUNT_DEPARTMENT_MAP_V1"
+    },
+    {
+      "slug": "garden",
+      "title": "Garden & Outdoor",
+      "status": "VERIFIED_SOURCE",
+      "source": "HUNT_CINEMATIC_V16 + HUNT_DEPARTMENT_MAP_V1"
     },
     {
       "slug": "sports",
       "title": "Sports & Outdoors",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     },
     {
       "slug": "pets",
       "title": "Pets",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     },
     {
       "slug": "toys",
       "title": "Toys",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     },
     {
       "slug": "travel",
       "title": "Travel",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     },
     {
       "slug": "office",
       "title": "Office & Crafts",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     },
     {
       "slug": "gifts",
       "title": "Gifts & Party",
       "status": "VERIFIED_SOURCE",
-      "source": "HUNT_LAYERED_TAXONOMY_V2"
-    },
-    {
-      "slug": null,
-      "title": "Unresolved department 14",
-      "status": "UNRESOLVED",
-      "source": "OWNER/V16_TAXONOMY_REQUIRED"
-    },
-    {
-      "slug": null,
-      "title": "Unresolved department 15",
-      "status": "UNRESOLVED",
-      "source": "OWNER/V16_TAXONOMY_REQUIRED"
-    },
-    {
-      "slug": null,
-      "title": "Unresolved department 16",
-      "status": "UNRESOLVED",
-      "source": "OWNER/V16_TAXONOMY_REQUIRED"
-    },
-    {
-      "slug": null,
-      "title": "Unresolved department 17",
-      "status": "UNRESOLVED",
-      "source": "OWNER/V16_TAXONOMY_REQUIRED"
+      "source": "HUNT_LAYERED_TAXONOMY_V2 + HUNT_CINEMATIC_V16"
     }
   ],
   "sellable_truth": {
