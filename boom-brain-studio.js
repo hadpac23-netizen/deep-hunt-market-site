@@ -68,6 +68,50 @@
 
 
 
+
+  async function renderControlMaps(){
+    const summary=$("#bs-control-map-summary"),host=$("#bs-control-maps");
+    if(!host)return;
+    try{
+      const [dataMap,gateMap,toolMap,supabaseMap]=await Promise.all([
+        json("boom-data-ownership-map.json"),
+        json("boom-owner-gate-map.json"),
+        json("boom-tool-registry.json"),
+        json("boom-supabase-runtime-map.json")
+      ]);
+      if(summary)summary.innerHTML=[
+        metric(dataMap.stores?.length||0,"Owned data stores"),
+        metric(toolMap.runtime_tools?.length||0,"Canonical tools"),
+        metric(gateMap.actions?.length||0,"Material Owner Gates"),
+        metric((supabaseMap.groups||[]).reduce((n,g)=>n+(g.functions?.length||0),0),"Mapped Edge Functions"),
+        metric((toolMap.runtime_tools||[]).filter(x=>/NOT_DEPLOYED|NOT_CONNECTED/.test(x.status||"")).length,"Not active by truth")
+      ].join("");
+      const ownerGroups=new Map();
+      for(const row of (dataMap.stores||[])){
+        const owner=row.owner||"unowned";
+        if(!ownerGroups.has(owner))ownerGroups.set(owner,[]);
+        ownerGroups.get(owner).push(row.table);
+      }
+      const ownership=[...ownerGroups.entries()].map(([owner,tables])=>`<article class="bs-control-card">
+        <small>DATA OWNER</small><h3>${esc(owner)}</h3>
+        <div class="bs-tags">${tables.map(x=>`<span>${esc(x)}</span>`).join("")}</div>
+      </article>`).join("");
+      const tools=(toolMap.runtime_tools||[]).map(row=>`<article class="bs-control-card">
+        <small>TOOL · ${esc(row.type)}</small><h3>${esc(row.id)}</h3>
+        <p>${esc(row.status)} · authority ${esc(row.authority)}</p>
+        <code>${esc(row.owner_plane)}</code>
+      </article>`).join("");
+      const gates=(gateMap.actions||[]).map(row=>`<article class="bs-control-card">
+        <small>OWNER GATE</small><h3>${esc(row.action)}</h3>
+        <p>decision: ${esc(row.decision_owner)} · execute: ${esc(row.execution_owner)}</p>
+        <code>${esc(row.gate)}</code>
+      </article>`).join("");
+      host.innerHTML=ownership+tools+gates;
+    }catch(error){
+      host.innerHTML=`<div class="bs-empty bs-error">Control maps unavailable: ${esc(error?.message||"unknown")}</div>`;
+    }
+  }
+
   async function renderConsolidationMap(){
     const summary=$("#bs-consolidation-summary"),host=$("#bs-consolidation-map"),agentsHost=$("#bs-agent-map"),schedulerHost=$("#bs-scheduler-map");
     if(!host)return;
@@ -436,7 +480,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
