@@ -66,6 +66,59 @@
 
 
 
+
+  async function renderDomainWiring(){
+    const host=$("#bs-domain-wiring");
+    if(!host)return;
+    try{
+      const [supplier,customer,learning]=await Promise.all([
+        json("boom-supplier-product-intake-contract.json"),
+        json("boom-customer-lifecycle-contract.json"),
+        json("boom-learning-loop-contract.json")
+      ]);
+      const cards=[
+        {
+          kicker:"COMMERCE TRUTH",
+          title:"Supplier → Shelf Candidate",
+          brain:supplier.brain,
+          agents:supplier.agents,
+          gates:supplier.preconditions,
+          stores:Object.entries(supplier.source_of_truth||{}).map(([k,v])=>k+": "+v.table),
+          boundary:"supplier order OFF · activation OFF · invented truth forbidden"
+        },
+        {
+          kicker:"OPERATIONS",
+          title:"Customer Lifecycle",
+          brain:customer.brain,
+          agents:customer.agents,
+          gates:customer.preconditions,
+          stores:Object.entries(customer.source_of_truth||{}).map(([k,v])=>k+": "+v.table),
+          boundary:"outreach/refund/order mutation OFF · PII forbidden in run ledger"
+        },
+        {
+          kicker:"LEARNING GOVERNANCE",
+          title:"Analytics → Learning",
+          brain:learning.brain,
+          agents:learning.agents,
+          gates:["evidence_quality_pass","provenance_verified","baseline_available"],
+          stores:Object.entries(learning.source_of_truth||{}).map(([k,v])=>k+": "+v.table),
+          boundary:"no auto policy · no auto skill promotion · no auto price/publish/prod"
+        }
+      ];
+      host.innerHTML=cards.map(card=>`<article class="bs-domain-card">
+        <small>${esc(card.kicker)}</small>
+        <h3>${esc(card.title)}</h3>
+        <p><strong>${esc(card.brain)}</strong></p>
+        <div class="bs-tags">${(card.agents||[]).map(x=>`<span>${esc(x)}</span>`).join("")}</div>
+        <div class="bs-domain-block"><b>GATES</b>${(card.gates||[]).map(x=>`<code>${esc(typeof x==="string"?x:x.id||x)}</code>`).join("")}</div>
+        <div class="bs-domain-block"><b>SOURCE OF TRUTH</b>${(card.stores||[]).map(x=>`<code>${esc(x)}</code>`).join("")}</div>
+        <p class="bs-domain-boundary">${esc(card.boundary)}</p>
+      </article>`).join("");
+    }catch(error){
+      host.innerHTML=`<div class="bs-empty bs-error">Domain wiring unavailable: ${esc(error?.message||"unknown")}</div>`;
+    }
+  }
+
   async function renderCreativeLearning(){
     const host=$("#bs-creative-learning");
     if(!host)return;
@@ -341,7 +394,7 @@
       ]);
       data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderDomainWiring();renderCreativeLearning();renderDurableAutomation();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
