@@ -7,6 +7,13 @@ const html=fs.readFileSync("boom-hunt-cinematic-stylist-shadow-v1.html","utf8");
 const studio=fs.readFileSync("boom-brain-studio.js","utf8");
 
 assert.equal(c.mode,"SHADOW_INTEGRATION");
+assert.equal(c.version,"BOOM-HUNT-CINEMATIC-STYLIST-INTEGRATION-V2");
+assert.equal(c.taxonomy_routing,"boom-hunt-taxonomy-stylist-routing-contract.json");
+assert.equal(c.current_state.global_taxonomy_routing,"PASS_15_PRODUCTS_CANONICAL");
+assert.equal(c.current_state.global_market_matrix,"15_PRODUCTS_X_33_MARKETS");
+assert.equal(c.current_state.shipping_shadow_product_market_pairs,455);
+assert.equal(c.current_state.canonical_departments,17);
+assert.equal(c.current_state.taxonomy_review_products,0);
 assert.equal(c.production_effect,false);
 assert(c.baseline_rule.includes("Cinematic first"));
 assert.equal(c.current_state.verified_products,40);
@@ -48,6 +55,10 @@ assert.equal(academy.current_state.cinematic_visual_scenes,5);
 assert.equal(academy.current_state.cinematic_commercial_hero_ready,0);
 assert.equal(academy.current_state.production_shelf_authority,false);
 assert.equal(academy.current_state.mastery_level,0);
+assert.equal(academy.current_state.global_taxonomy_routing,"PASS_15_PRODUCTS_33_MARKETS_SHADOW");
+assert.equal(academy.current_state.canonical_department_count,17);
+assert.equal(academy.current_state.stylist_taxonomy_authority,"ARRANGE_ONLY_NO_RECLASSIFY");
+assert.equal(academy.current_state.global_market_arrangement,"COUNTRY_SPECIFIC_SHADOW_ONLY");
 
 assert(html.includes("A shopping world that reveals products like scenes, not rows."));
 assert(html.includes('class="hero"'));

@@ -1,6 +1,6 @@
 {
-  "version": "BOOM-HUNT-CINEMATIC-STYLIST-INTEGRATION-V1",
-  "date": "2026-09-22",
+  "version": "BOOM-HUNT-CINEMATIC-STYLIST-INTEGRATION-V2",
+  "date": "2026-09-23",
   "mode": "SHADOW_INTEGRATION",
   "production_effect": false,
   "baseline": "HUNT Cinematic V16 original scene architecture",
@@ -19,8 +19,10 @@
     "discovery_stream": "Broader exploration after the core look, preserving category/taste context."
   },
   "gates": [
+    "CANONICAL_TAXONOMY",
     "PRODUCT_TRUTH",
-    "STYLE_FIT",
+    "COUNTRY_MARKET_ELIGIBILITY",
+    "STYLE_OR_MERCHANDISING_FIT",
     "DISPLAY_FIT_LIGHT",
     "DISPLAY_FIT_DARK",
     "COMMERCIAL_FIT",
@@ -33,7 +35,11 @@
     "Light mode remains warm off-white, never clinical pure white.",
     "One dominant focal product per scene.",
     "Exact Printful artwork/mockups remain required before final visual approval.",
-    "No Production shelf reorder or publish from this integration."
+    "No Production shelf reorder or publish from this integration.",
+    "Department and category routing happens before Stylist composition.",
+    "Stylist must never move a product into another department/category for visual convenience.",
+    "Cross-department complete-the-look keeps each product canonical taxonomy identity.",
+    "Country-specific blocked products remain absent from that destination shelf."
   ],
   "current_state": {
     "training_set": "HUNT-STYLIST-TRAINING-SET-V4-IL",
@@ -42,7 +48,21 @@
     "two_theme_display_qa": "PASS_BOTH_THEMES_BASE_IMAGES_ONLY",
     "exact_printful_artwork": "PENDING",
     "commercial_hero_ready": 0,
-    "production_authority": false
+    "production_authority": false,
+    "global_taxonomy_routing": "PASS_15_PRODUCTS_CANONICAL",
+    "global_market_matrix": "15_PRODUCTS_X_33_MARKETS",
+    "shipping_shadow_product_market_pairs": 455,
+    "canonical_departments": 17,
+    "current_eprolo_departments": [
+      "kitchen",
+      "men",
+      "pets",
+      "tech",
+      "women"
+    ],
+    "taxonomy_review_products": 0
   },
-  "next": "BUILD_AND_RENDER_CINEMATIC_SCENE_ADAPTER_SHADOW"
+  "next": "SCALE_CANONICAL_CATEGORY_ASSORTMENT_PER_DEPARTMENT_THEN_RENDER_COUNTRY_SPECIFIC_CINEMATIC_SHADOW_SHELVES",
+  "taxonomy_routing": "boom-hunt-taxonomy-stylist-routing-contract.json",
+  "market_truth": "evidence/HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-2026-09-23.json"
 }

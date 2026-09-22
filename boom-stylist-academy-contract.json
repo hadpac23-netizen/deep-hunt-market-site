@@ -299,7 +299,11 @@
     "exact_printful_artwork": "PENDING",
     "cinematic_shelf_integration": "PASS_SHADOW_SCENE_RENDER",
     "cinematic_visual_scenes": 5,
-    "cinematic_commercial_hero_ready": 0
+    "cinematic_commercial_hero_ready": 0,
+    "global_taxonomy_routing": "PASS_15_PRODUCTS_33_MARKETS_SHADOW",
+    "canonical_department_count": 17,
+    "stylist_taxonomy_authority": "ARRANGE_ONLY_NO_RECLASSIFY",
+    "global_market_arrangement": "COUNTRY_SPECIFIC_SHADOW_ONLY"
   },
   "next": "EXACT_PRINTFUL_ARTWORK_THEN_FINAL_CINEMATIC_VISUAL_EXAM_AND_OWNER_GATE",
   "f35_research_ref": "boom-f35-style-commerce-research-2026-09-22.json",

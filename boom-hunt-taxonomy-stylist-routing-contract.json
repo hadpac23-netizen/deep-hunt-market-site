@@ -1,0 +1,78 @@
+{
+  "version": "HUNT-TAXONOMY-STYLIST-ROUTING-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW_ONLY",
+  "production_effect": false,
+  "canonical_sources": {
+    "departments": "boom-shelf-department-contract.json",
+    "category_taxonomy": "/Users/adichehade/.hunt-final-candidate-v1/catalog-taxonomy.json",
+    "department_map": "/Users/adichehade/.hunt-final-candidate-v1/hunt-department-map-v1.js",
+    "market_truth": "evidence/HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-2026-09-23.json"
+  },
+  "hierarchy": [
+    "department",
+    "category",
+    "subcategory_when_canonical",
+    "country_market_shelf",
+    "stylist_scene_role",
+    "cinematic_slot"
+  ],
+  "owners": {
+    "department_and_category": "commerce_truth_brain",
+    "country_market_eligibility": "country_market_gate",
+    "visual_merchandising": "stylist_agent",
+    "cinematic_scene": "experience_brain",
+    "publish": "OWNER_GATE"
+  },
+  "rules": [
+    "Every product must resolve to exactly one canonical department before Stylist sees it.",
+    "Every product must resolve to a canonical category or TAXONOMY_REVIEW; provider category names never create new HUNT departments automatically.",
+    "Subcategory is optional and must not be invented when no canonical deeper level exists.",
+    "Country shelf eligibility is evaluated after taxonomy; a product may exist in one country shelf and be absent in another.",
+    "BOOM Stylist may rank and arrange only products already eligible for that exact country/department/category shadow shelf.",
+    "BOOM Stylist may not change department/category identity, price, stock, shipping truth, policy status or provider truth.",
+    "Complete-the-look may reference another department only as a labeled complement; the referenced product keeps its own canonical department/category.",
+    "Cinematic presentation never changes taxonomy or Product Truth.",
+    "No autonomous Production reorder, publish, checkout activation or fulfillment."
+  ],
+  "stylist_permissions": {
+    "allowed": [
+      "shadow reorder inside same country + department + category",
+      "assign hero/anchor/support/discovery roles in shadow",
+      "build complete-the-look relationships while preserving source taxonomy",
+      "optimize visual rhythm, density and light/dark presentation",
+      "abstain when category or visual confidence is low"
+    ],
+    "forbidden": [
+      "move product to a different canonical department to improve aesthetics",
+      "invent new category or subcategory",
+      "surface market-blocked product",
+      "override Product Truth, spec, compatibility, authenticity or shipping gates",
+      "publish to Production"
+    ]
+  },
+  "current_state": {
+    "canonical_departments": 17,
+    "truth_products_routed": 15,
+    "countries_in_global_matrix": 33,
+    "shipping_shadow_product_market_pairs": 455,
+    "departments_with_current_eprolo_truth": [
+      "kitchen",
+      "men",
+      "pets",
+      "tech",
+      "women"
+    ],
+    "category_routes": {
+      "women/women-dresses": 6,
+      "pets/pet-accessories": 2,
+      "tech/wearable-accessories": 1,
+      "tech/electronics": 3,
+      "tech/computer-accessories": 1,
+      "men/men-tops": 1,
+      "kitchen/kitchen-tools": 1
+    },
+    "taxonomy_review_products": 0,
+    "production_authority": false
+  }
+}
