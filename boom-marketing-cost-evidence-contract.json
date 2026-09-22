@@ -116,5 +116,16 @@
     "Never accept UNVERIFIED or PARTIAL records as CAC/Marketing Net Profit truth.",
     "Never write campaign budgets or change external ads.",
     "All external write actions remain Owner-gated elsewhere."
-  ]
+  ],
+  "current_evidence_summary": {
+    "ga4_account_name": "HUNT DEAL",
+    "period": "last_30d_including_today",
+    "sessions": 25,
+    "purchases": 0,
+    "purchase_revenue": 0,
+    "advertiser_ad_cost_reported": 0,
+    "traffic_truth": "AVAILABLE",
+    "spend_truth": "NOT_VERIFIED",
+    "reason": "Only GA4 is connected through the current free connector path; no direct ad-platform cost connector or proven GA4 cost-import coverage."
+  }
 }
