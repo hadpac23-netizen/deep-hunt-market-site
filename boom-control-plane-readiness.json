@@ -57,12 +57,12 @@
     {
       "id": "shelf_coverage",
       "status": "BLOCKED_PARTIAL_FRESH_INVENTORY",
-      "evidence": "CJ controlled scan complete: 19/76 CJ rows currently Fresh Shelf Verified for IL. This is not enough for the 17×1,000 target; Printful/Gooten freshness and department coverage remain unresolved. Missing coverage evidence: camping/electrical/garden."
+      "evidence": "Strict IL coverage: 57 Fresh Shelf Verified, all from CJ. Category counts: dresses 17, bags 14, phoneaccessories 13, toys 6, beauty 4, pets 1, plussize 1, suits 1. Printful 22 live unique products / 550 in-stock variants and Gooten 18 live products are NOT counted Fresh because destination shipping/fulfillment credentials are not verified. 17×1,000 target remains unclaimed."
     },
     {
       "id": "catalog_freshness",
-      "status": "CJ_SCAN_COMPLETE_OTHER_PROVIDERS_PENDING",
-      "evidence": "CJ 76-row controlled scan complete with 19 exact-variant fresh products. Catalog timestamps remain untouched; freshness derives from observation evidence. Printful and Gooten still require equivalent controlled refresh."
+      "status": "CJ_FRESH_PARTIAL_OTHER_PROVIDERS_CATALOG_ONLY",
+      "evidence": "CJ latest controlled state: 57 VERIFIED, 11 Price/Profit blocked, 6 Product Failed after retry, 2 No Verified Variant. Printful 22/22 unique products live; Gooten 18/18 live; both remain shipping/fulfillment blocked and therefore 0 Fresh Shelf."
     },
     {
       "id": "incident_repair",
@@ -161,8 +161,13 @@
     },
     {
       "id": "fresh_shelf_product_truth",
-      "status": "CJ_CONTROLLED_SCAN_COMPLETE_PARTIAL_SHELF_READY",
-      "evidence": "Strict Product Truth proof now passes 57/76 CJ catalog products for IL: latest controlled scan VERIFIED + exact same variant Price/Stock/Shipping within 24h. 19 remain not fresh; all 57 remain recheck_before_checkout and 0 are Checkout Live Verified. 220 evidence-only observations were explicitly written in this workstream; no catalog eligibility, live payment or supplier-order mutation."
+      "status": "CJ_57_FRESH_OTHER_PROVIDERS_PARTIAL",
+      "evidence": "57/76 CJ products pass strict scan-aware exact-variant Product Truth for IL. Retry B reclassified the remaining 19 to 11 Price/Profit blocked, 6 product lookup failures after 3 retries, 2 no verified variant. Printful/Gooten public catalogs are live but shipping credentials/evidence are missing. 0 Checkout Live Verified."
+    },
+    {
+      "id": "cj_price_gate_v2",
+      "status": "CODED_SHADOW_NOT_DEPLOYED",
+      "evidence": "Found formula inconsistency: old margin floor ignored 9% payment/refund reserves while final margin gate deducted them. V2 uses supplier_cost/(reserve_denominator-target_margin); 11 blocked items would require +$1 to +$6 retail under defaults. No Production prices changed."
     }
   ],
   "blockers": [
@@ -192,8 +197,11 @@
     "Verify PWA cache update, manifest/installability and offline shell on Preview before Performance/Mobile becomes launch PASS.",
     "Verify Launch Command Center on Preview against authenticated admin RLS and current readiness JSON before Owner launch review.",
     "Resolve or replace the remaining 19 CJ products that are not Fresh Shelf Verified, then refresh approved non-CJ suppliers before shelf readiness can advance.",
-    "Run equivalent controlled Product Truth refresh for approved Printful and Gooten inventory before counting those providers as Fresh Shelf.",
-    "Recheck 50 CJ product lookup failures before removal decisions; one 404 is not permanent-removal proof."
+    "Resolve 6 CJ product lookup failures only after repeated evidence; do not auto-delete on 404.",
+    "Review/deploy CJ Price Gate V2 in Preview before repricing the 11 Price/Profit-blocked products; any Production price change requires Owner Gate.",
+    "Resolve the 2 CJ products with no verified variant or keep them off Fresh Shelf.",
+    "Connect/verify Printful fulfillment token/store plus destination shipping before counting Printful as Fresh Shelf.",
+    "Connect/verify Gooten API credentials plus variants/destination shipping before counting Gooten as Fresh Shelf."
   ],
   "activation_sequence": [
     "Preview Edge Functions",
