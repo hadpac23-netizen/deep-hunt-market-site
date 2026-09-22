@@ -1,0 +1,171 @@
+{
+  "version": "BOOM-OPERATIONAL-SKILLS-V1",
+  "mode": "SHADOW",
+  "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
+  "skills": [
+    {
+      "id": "check_product_truth",
+      "title": "Check Product Truth",
+      "owner": "commerce_truth_brain",
+      "purpose": "Verify supplier identity, product/variant truth, stock, price, shipping, media and market eligibility.",
+      "inputs": [
+        "product_id_or_supplier_item",
+        "market"
+      ],
+      "outputs": [
+        "truth_state",
+        "evidence_refs",
+        "blockers"
+      ],
+      "tools": [
+        "supabase_runtime",
+        "cj_supplier"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "audit_supplier",
+      "title": "Audit Supplier",
+      "owner": "commerce_truth_brain",
+      "purpose": "Verify official API/feed, terms, media rights, shipping support and supplier evidence before intake.",
+      "inputs": [
+        "supplier_id"
+      ],
+      "outputs": [
+        "supplier_readiness",
+        "evidence_refs",
+        "blockers"
+      ],
+      "tools": [
+        "supabase_runtime"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "fill_shelf_candidate",
+      "title": "Fill Shelf Candidate",
+      "owner": "commerce_truth_brain",
+      "purpose": "Find verified sellable candidates for a department gap without activating inventory.",
+      "inputs": [
+        "department",
+        "gap_target"
+      ],
+      "outputs": [
+        "candidate_products",
+        "coverage_delta_proposal"
+      ],
+      "tools": [
+        "supabase_runtime",
+        "cj_supplier"
+      ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "build_feature_candidate",
+      "title": "Build Feature Candidate",
+      "owner": "innovation_brain",
+      "purpose": "Turn an approved product/UX brief into a code-change candidate with tests and evidence.",
+      "inputs": [
+        "brief",
+        "constraints",
+        "source_refs"
+      ],
+      "outputs": [
+        "patch_candidate",
+        "tests",
+        "evidence_refs"
+      ],
+      "tools": [
+        "github_source_control"
+      ],
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "create_ad_candidate",
+      "title": "Create Ad Candidate",
+      "owner": "growth_brain",
+      "purpose": "Create hook, concept, script and media candidate from verified Product Truth.",
+      "inputs": [
+        "product_truth",
+        "campaign_goal",
+        "locked_references"
+      ],
+      "outputs": [
+        "creative_candidate",
+        "claims",
+        "visual_qa"
+      ],
+      "tools": [
+        "creative_video_provider"
+      ],
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "create_motion_candidate",
+      "title": "Create Motion Candidate",
+      "owner": "growth_brain",
+      "purpose": "Create premium brand/product motion candidate while preserving locked visual references.",
+      "inputs": [
+        "locked_reference",
+        "motion_brief"
+      ],
+      "outputs": [
+        "motion_candidate",
+        "visual_qa",
+        "reference_match"
+      ],
+      "tools": [
+        "creative_video_provider"
+      ],
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "repair_incident",
+      "title": "Repair Incident",
+      "owner": "learning_governance_brain",
+      "purpose": "Reproduce, find root cause, create minimal patch candidate, test, review and prepare rollback.",
+      "inputs": [
+        "incident_id",
+        "evidence_refs"
+      ],
+      "outputs": [
+        "root_cause",
+        "patch_candidate",
+        "tests",
+        "rollback_plan"
+      ],
+      "tools": [
+        "github_source_control",
+        "supabase_runtime"
+      ],
+      "material": true,
+      "owner_gate": true
+    },
+    {
+      "id": "research_market",
+      "title": "Research Market",
+      "owner": "intelligence_brain",
+      "purpose": "Collect fresh market evidence and convert it into sourced opportunities or risks.",
+      "inputs": [
+        "research_question",
+        "markets"
+      ],
+      "outputs": [
+        "evidence_pack",
+        "findings",
+        "confidence"
+      ],
+      "tools": [
+        "f60t_signal_tools"
+      ],
+      "material": false,
+      "owner_gate": false
+    }
+  ]
+}
