@@ -1,0 +1,162 @@
+{
+  "version": "HUNT-F35-PRODUCT-PLACEMENT-AUDIT-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW_AUDIT_ONLY",
+  "production_effect": false,
+  "scope": {
+    "products_scanned": 5854,
+    "departments": 17,
+    "category_rails": 133
+  },
+  "findings": {
+    "root_causes": [
+      {
+        "id": "SELF_PROVING_CATEGORY",
+        "severity": "CRITICAL",
+        "finding": "canonicalCategory() accepts the requested canonical category before independent semantic validation; H.matches() may also use product.category as evidence.",
+        "effect": "An upstream wrong category can survive unchanged and appear valid."
+      },
+      {
+        "id": "OVERBROAD_MATCH_RULES",
+        "severity": "CRITICAL",
+        "finding": "Some matchers are much broader than the product class. Examples: women-shoes matches generic women terms; women-swim matches generic women; men-accessories matches generic men's/male terms.",
+        "effect": "A dress, phone case, bag or other item can satisfy the wrong category."
+      },
+      {
+        "id": "NO_CROSS_CATEGORY_CONFLICT_GATE",
+        "severity": "HIGH",
+        "finding": "There is no hard negative/conflict pass that says a phone case cannot be evening wear, a pet bed cannot be plush toys, or a women's item cannot be men's-only when the title is explicit.",
+        "effect": "Positive keyword hits can override obvious product-type contradictions."
+      },
+      {
+        "id": "NO_ABSTENTION_CONFIDENCE",
+        "severity": "HIGH",
+        "finding": "Routing lacks a canonical placement confidence/review state for ambiguous products.",
+        "effect": "Ambiguous products are forced into a shelf instead of TAXONOMY_REVIEW."
+      },
+      {
+        "id": "TITLE_PLUS_CANONICAL_CATEGORY_BIAS",
+        "severity": "HIGH",
+        "finding": "Matching uses title plus current category, so the category being tested can influence its own pass.",
+        "effect": "Evaluation is not independent."
+      },
+      {
+        "id": "FIRST_MATCH_ORDER_BIAS",
+        "severity": "MEDIUM",
+        "finding": "When several categories match, routing can resolve by taxonomy order rather than evidence strength.",
+        "effect": "Overlap such as dress/evening/skirt or home-decor/mirror can land inconsistently."
+      }
+    ],
+    "diagnostic_independent_match": {
+      "note": "Current category was stripped before testing existing H.matches(); these figures diagnose rule coverage/overlap and are not an error count because current specs are incomplete/overbroad.",
+      "independent_same_only": 2272,
+      "independent_other_only": 331,
+      "independent_multi_includes_current": 1298,
+      "independent_multi_excludes_current": 357,
+      "independent_none": 1596
+    },
+    "high_precision_suspect_scan": {
+      "note": "Keyword scan found 499 unique suspects; some word senses are false positives (e.g. smart bracelet vs jewelry), so every correction still requires deterministic product-type evidence.",
+      "unique_suspects": 499,
+      "obvious_examples": [
+        {
+          "current": "women/women-evening",
+          "title": "Trendy brand suitable for iPhone ... cartoon phone case",
+          "expected_family": "tech/phone-cases"
+        },
+        {
+          "current": "women/women-swim",
+          "title": "Colorful Flower Phone Case Apple ...",
+          "expected_family": "tech/phone-cases"
+        },
+        {
+          "current": "men/men-tops",
+          "title": "Pleated Print Fashion Suit Women's ... Two Piece Set",
+          "expected_family": "women"
+        },
+        {
+          "current": "women/women-underwear",
+          "title": "New Men's Computer Handbag ...",
+          "expected_family": "bags/men-accessories"
+        },
+        {
+          "current": "women/women-shoes",
+          "title": "Anti collision sports knee pads basketball equipment ...",
+          "expected_family": "sports"
+        },
+        {
+          "current": "garden/outdoor-living",
+          "title": "Rattan Cat Bed & House ...",
+          "expected_family": "pets/pet-houses"
+        },
+        {
+          "current": "toys/plush-toys",
+          "title": "Carrot Cat Bed ... Pet Small Dog Bed",
+          "expected_family": "pets/pet-houses"
+        },
+        {
+          "current": "women/women-bottoms",
+          "title": "Ripped Jeans Women ...",
+          "expected_family": "women/women-jeans"
+        }
+      ]
+    }
+  },
+  "required_solution": {
+    "name": "HUNT Product Placement Gate V1",
+    "order": [
+      "1. Normalize supplier fields without trusting supplier/category placement.",
+      "2. Detect product_type from title + supplier taxonomy + structured attributes.",
+      "3. Apply hard department eligibility.",
+      "4. Apply hard category eligibility.",
+      "5. Apply explicit negative/conflict rules.",
+      "6. Score positive evidence independently from current category.",
+      "7. Require one clear winner above threshold.",
+      "8. If ambiguous/conflicted/unsupported => TAXONOMY_REVIEW, not shelf.",
+      "9. Only after placement PASS run stock/shipping/profit gates.",
+      "10. Stylist may rank inside a passed shelf but may never change placement."
+    ],
+    "decision_states": [
+      "PLACEMENT_PASS",
+      "PLACEMENT_REVIEW",
+      "PLACEMENT_REJECT",
+      "TAXONOMY_UNKNOWN"
+    ],
+    "required_output": [
+      "product_id",
+      "provider",
+      "detected_product_type",
+      "department",
+      "category",
+      "confidence",
+      "positive_evidence",
+      "negative_evidence",
+      "conflicts",
+      "source_taxonomy",
+      "placement_state",
+      "reason_codes",
+      "review_required"
+    ],
+    "hard_rules": [
+      "Current HUNT category is never positive evidence for its own validation.",
+      "Supplier category is a prior/evidence source, never sole authority.",
+      "Explicit product type outranks generic audience words.",
+      "Explicit gender contradiction blocks gender-only department placement unless product is clearly unisex.",
+      "A product may have one canonical department/category only.",
+      "No cross-category filler to improve shelf density.",
+      "Unknown/ambiguous routes stay out of canonical shelves until reviewed."
+    ]
+  },
+  "implementation_sequence": [
+    "A. Build independent ProductType detector.",
+    "B. Add Department Gate.",
+    "C. Add Category Gate + negative rules.",
+    "D. Add conflict/abstention.",
+    "E. Audit all 5854 current products in shadow.",
+    "F. Produce MOVE / KEEP / REVIEW diff only.",
+    "G. Owner review high-impact moves.",
+    "H. Rebuild shelves from placement truth.",
+    "I. Rerun Gap Fill only after corrected taxonomy."
+  ],
+  "production_change": false
+}
