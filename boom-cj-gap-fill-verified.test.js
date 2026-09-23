@@ -3,18 +3,21 @@ const e=JSON.parse(fs.readFileSync("evidence/HUNT-CJ-GAP-FILL-VERIFIED-2026-09-2
 assert.equal(e.version,"HUNT-CJ-GAP-FILL-VERIFIED-V2");
 assert.equal(e.provider,"CJdropshipping");
 assert.equal(e.mode,"READ_ONLY_SHADOW");
-assert.equal(e.summary.products_checked,36);
-assert.equal(e.summary.categories_filled,36);
-assert.equal(e.summary.products_verified_4_of_4,36);
-assert.deepEqual(e.summary.market_pass_counts,{IL:36,DE:36,US:36,SG:36});
+assert.equal(e.summary.products_checked,37);
+assert.equal(e.summary.categories_filled,37);
+assert.equal(e.summary.products_verified_4_of_4,37);
+assert.deepEqual(e.summary.market_pass_counts,{IL:37,DE:37,US:37,SG:37});
 assert(e.summary.product_contribution_shadow_min_usd>=4);
 assert(e.summary.product_contribution_shadow_max_usd>e.summary.product_contribution_shadow_min_usd);
 assert.equal(e.summary.final_profit_verified_products,0);
 assert.equal(e.summary.checkout_live,0);
 assert.equal(e.summary.fulfillment_live,0);
 assert.equal(e.summary.production_effect,false);
-assert.equal(e.results.length,36);
-assert.equal(new Set(e.results.map(x=>x.department+"/"+x.category)).size,36);
+assert.equal(e.results.length,37);
+assert.equal(new Set(e.results.map(x=>x.department+"/"+x.category)).size,37);
+const laundry=e.results.find(x=>x.department==="home"&&x.category==="laundry");
+assert(laundry,"Laundry must be filled by verified CJ truth");
+assert.equal(laundry.id,"2411110427421627400");
 for(const p of e.results){
   assert.equal(p.status,"MARKET_QUOTES_VERIFIED");
   for(const cc of ["IL","DE","US","SG"]){

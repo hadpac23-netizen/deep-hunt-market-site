@@ -396,6 +396,8 @@ async function cjMarketShelves(focusSlug = "") {
     socks: ["men cotton socks", "men crew socks", "men ankle socks", "men dress socks"],
     kitchen: ["kitchen gadgets", "cooking utensils", "small kitchen appliance", "kitchen tools"],
     cleaning: ["cleaning brush", "household mop", "window cleaning tool", "laundry cleaning tool"],
+    laundry: ["laundry basket", "laundry hamper", "clothes drying rack", "laundry organizer"],
+    entryway: ["entryway shoe rack", "hall tree", "entryway storage", "wall key holder"],
     sunglasses: ["women polarized sunglasses", "fashion sunglasses women", "retro UV400 sunglasses"],
     yoga: ["yoga mat", "yoga block"],
     swimming: ["swimming goggles", "swim training gear"],
@@ -449,7 +451,7 @@ async function cjMarketShelves(focusSlug = "") {
     sports: ["fitness equipment"]
   };
   const queries = focusSlug && focusedQueries[focusSlug] ? focusedQueries[focusSlug] : [""];
-  const deeperFocus = new Set(["petclothing","aquarium","mensleepwear","menaccessories","kidsshoes","babyshoes","activebottoms","socks","kitchen","cleaning","menunderwear","hoodies","fitnessequipment","runningcycling","sunglasses","racketsports","sportstowels","petbeds","catfurniture","petfeeders","pettoys","petgrooming","pettravel","crafts","gifts","hats","ornaments","wallart","swimming","swimwear","stationery","toys","travel","gaming","beauty","sets"]);
+  const deeperFocus = new Set(["petclothing","aquarium","mensleepwear","menaccessories","kidsshoes","babyshoes","activebottoms","socks","kitchen","cleaning","laundry","entryway","menunderwear","hoodies","fitnessequipment","runningcycling","sunglasses","racketsports","sportstowels","petbeds","catfurniture","petfeeders","pettoys","petgrooming","pettravel","crafts","gifts","hats","ornaments","wallart","swimming","swimwear","stationery","toys","travel","gaming","beauty","sets"]);
   const queryLimit = deeperFocus.has(focusSlug) ? 4 : 2;
   const products: any[] = [];
   const seenProducts = new Set<string>();
@@ -506,6 +508,8 @@ async function cjMarketShelves(focusSlug = "") {
     bath: /\b(bathroom|bath|shower|soap dispenser|bath mat|towel)\b/i,
     lighting: /\b(lamp|lighting|night light|desk light|led light)\b/i,
     cleaning: /\b(cleaning|cleaner|mop|brush|squeegee|dust|laundry)\b/i,
+    laundry: /\b(laundry|hamper|clothes basket|dirty clothes|drying rack|washer|dryer)\b/i,
+    entryway: /\b(entryway|hallway|foyer|hall tree|shoe rack|shoe storage|coat rack|key holder|console table)\b/i,
     tech: /\b(phone|tablet|computer|electronic|electronics|charging|charger|audio|earbuds|speaker)\b/i,
     phonecases: /\b(phone case|iphone case|mobile case|magsafe case|tough case|clear case|snap case|leather case|camera protection case)\b/i,
     phoneaccessories: /\b(screen protector|phone stand|phone holder|charging cable|charger|wireless charger|charging stand)\b/i,

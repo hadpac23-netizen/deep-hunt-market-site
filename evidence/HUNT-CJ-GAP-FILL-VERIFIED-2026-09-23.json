@@ -10,14 +10,14 @@
     "SG"
   ],
   "summary": {
-    "products_checked": 36,
-    "categories_filled": 36,
-    "products_verified_4_of_4": 36,
+    "products_checked": 37,
+    "categories_filled": 37,
+    "products_verified_4_of_4": 37,
     "market_pass_counts": {
-      "IL": 36,
-      "DE": 36,
-      "US": 36,
-      "SG": 36
+      "IL": 37,
+      "DE": 37,
+      "US": 37,
+      "SG": 37
     },
     "product_contribution_shadow_min_usd": 4.01,
     "product_contribution_shadow_max_usd": 11.7,
@@ -3501,6 +3501,101 @@
             "area_id": "1",
             "storage_num": 5886,
             "total_inventory": 5886
+          },
+          "final_profit_verified": false
+        }
+      },
+      "production_effect": false
+    },
+    {
+      "department": "home",
+      "category": "laundry",
+      "id": "2411110427421627400",
+      "title": "Foldable Moisture-proof Stripes Laundry Basket Dirty Clothes Basket Laundry Basket",
+      "image_url": "https://oss-cf.cjdropshipping.com/product/2024/11/11/04/171b0af1-de13-4a65-9a30-714eda52c33f_fine.jpeg",
+      "status": "MARKET_QUOTES_VERIFIED",
+      "markets": {
+        "IL": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2411110427421627600",
+          "supplier_cost_usd": 2.63,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.64,
+          "product_margin_shadow": 0.5808,
+          "supplier_shipping_usd": 9.02,
+          "customer_shipping_grossup_shadow_usd": 9.91,
+          "customer_total_shadow_usd": 17.90,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "12-50",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10982,
+            "total_inventory": 10982
+          },
+          "final_profit_verified": false
+        },
+        "DE": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2411110427421627600",
+          "supplier_cost_usd": 2.63,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.64,
+          "product_margin_shadow": 0.5808,
+          "supplier_shipping_usd": 8.64,
+          "customer_shipping_grossup_shadow_usd": 9.49,
+          "customer_total_shadow_usd": 17.48,
+          "shipping_method": "CJPacket Ordinary I",
+          "shipping_aging": "8-18",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10982,
+            "total_inventory": 10982
+          },
+          "final_profit_verified": false
+        },
+        "US": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2411110427421627600",
+          "supplier_cost_usd": 2.63,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.64,
+          "product_margin_shadow": 0.5808,
+          "supplier_shipping_usd": 9.17,
+          "customer_shipping_grossup_shadow_usd": 10.08,
+          "customer_total_shadow_usd": 18.07,
+          "shipping_method": "LuWei Ordinary US",
+          "shipping_aging": "5-11",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10982,
+            "total_inventory": 10982
+          },
+          "final_profit_verified": false
+        },
+        "SG": {
+          "state": "STOCK_SHIPPING_VERIFIED",
+          "variant_id": "2411110427421627600",
+          "supplier_cost_usd": 2.63,
+          "retail_shadow_usd": 7.99,
+          "product_contribution_shadow_usd": 4.64,
+          "product_margin_shadow": 0.5808,
+          "supplier_shipping_usd": 4.49,
+          "customer_shipping_grossup_shadow_usd": 4.93,
+          "customer_total_shadow_usd": 12.92,
+          "shipping_method": "CJPacket Eub",
+          "shipping_aging": "7-10",
+          "selected_origin": {
+            "country_code": "CN",
+            "area": "China Warehouse",
+            "area_id": "1",
+            "storage_num": 10982,
+            "total_inventory": 10982
           },
           "final_profit_verified": false
         }

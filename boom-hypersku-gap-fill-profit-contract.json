@@ -407,18 +407,11 @@
         "current_clean_candidates": 3
       }
     ],
-    "post_cj_verified_products": 36,
-    "post_cj_category_rails": 131,
-    "post_cj_total_browsable_products": 5179,
-    "post_cj_remaining_zero_categories": 2,
+    "post_cj_verified_products": 37,
+    "post_cj_category_rails": 132,
+    "post_cj_total_browsable_products": 5180,
+    "post_cj_remaining_zero_categories": 1,
     "post_cj_zero_categories": [
-      {
-        "department": "home",
-        "category": "laundry",
-        "title": "Laundry",
-        "current_clean_candidates": 0,
-        "current_clean_candidates_after_cj": 0
-      },
       {
         "department": "home",
         "category": "entryway",
@@ -608,19 +601,6 @@
   ],
   "next": "HYPERSKU_SMART_SOURCE_PRIORITY_1_REMAINING_ZERO_CATEGORIES_THEN_THIN_SHELVES",
   "hypersku_priority_1_sourcing_queue": [
-    {
-      "department": "home",
-      "category": "laundry",
-      "title": "Laundry",
-      "required": "EXACT_HYPERSKU_SKU + VARIANT + DESTINATION_QUOTE + PROFIT_GATE",
-      "markets": [
-        "IL",
-        "DE",
-        "US",
-        "SG"
-      ],
-      "status": "SMART_SOURCING_REQUIRED"
-    },
     {
       "department": "home",
       "category": "entryway",

@@ -1,0 +1,10 @@
+const fs=require("fs"),assert=require("assert");
+const src=fs.readFileSync("supabase/functions/hunt-storefront/index.ts","utf8");
+assert(src.includes('laundry: ["laundry basket", "laundry hamper", "clothes drying rack", "laundry organizer"]'));
+assert(src.includes('entryway: ["entryway shoe rack", "hall tree", "entryway storage", "wall key holder"]'));
+assert(src.includes('laundry: /\\b(laundry|hamper|clothes basket|dirty clothes|drying rack|washer|dryer)\\b/i'));
+assert(src.includes('entryway: /\\b(entryway|hallway|foyer|hall tree|shoe rack|shoe storage|coat rack|key holder|console table)\\b/i'));
+assert(/deeperFocus = new Set\(\[[^\]]*"laundry"[^\]]*"entryway"/.test(src));
+assert(src.includes('url.searchParams.get("shelf")'));
+assert(src.includes('withProviderTimeout(cjMarketShelves(focusShelf), {}, focusShelf ? 14000 : 10000)'));
+console.log("PASS boom-cj-home-gap-focused-search");

@@ -9,18 +9,22 @@ assert.equal(e.mode,"FULL_VISUAL_SHADOW_PREVIEW");
 assert.equal(e.production_effect,false);
 assert.equal(e.summary.canonical_departments,17);
 assert.equal(e.summary.departments_with_products,17);
-assert.equal(e.summary.globally_unique_routed_products,5179);
-assert.equal(e.summary.category_rails,131);
-assert.equal(e.summary.initial_shown_product_cards,1676);
-assert.equal(e.summary.total_browsable_product_cards,5179);
+assert.equal(e.summary.globally_unique_routed_products,5180);
+assert.equal(e.summary.category_rails,132);
+assert.equal(e.summary.initial_shown_product_cards,1677);
+assert.equal(e.summary.total_browsable_product_cards,5180);
 assert.equal(e.summary.production_live_products,0);
-assert.equal(e.summary.cj_verified_4_market_products,36);
-assert.equal(e.summary.verified_truth_products_available,51);
+assert.equal(e.summary.cj_verified_4_market_products,37);
+assert.equal(e.summary.verified_truth_products_available,52);
 assert.equal(e.departments.length,17);
 const cjVerified=e.departments.flatMap(d=>d.categories.flatMap(c=>c.products)).filter(p=>p.truth_state==="CJ_VERIFIED_4_MARKETS");
-assert.equal(cjVerified.length,36);
+assert.equal(cjVerified.length,37);
 assert(cjVerified.every(p=>Array.isArray(p.markets_verified)&&p.markets_verified.length===4));
 assert(cjVerified.every(p=>p.final_profit_verified===false));
+const laundry=e.departments.find(d=>d.slug==="home")?.categories.find(c=>c.slug==="laundry");
+assert(laundry,"home/laundry rail must exist");
+assert.equal(laundry.clean_candidate_count,1);
+assert.equal(laundry.products[0].item_id,"2411110427421627400");
 
 const deptSlugs=e.departments.map(x=>x.slug);
 assert.equal(new Set(deptSlugs).size,17);
@@ -51,9 +55,9 @@ for(const d of e.departments){
     }
   }
 }
-assert.equal(rails,131);
-assert.equal(cards,5179);
-assert.equal(seen.size,5179);
+assert.equal(rails,132);
+assert.equal(cards,5180);
+assert.equal(seen.size,5180);
 
 assert.equal(routing.current_state.canonical_departments,17);
 assert.equal(routing.current_state.taxonomy_review_products,0);

@@ -4,20 +4,13 @@
   "production_effect": false,
   "summary": {
     "original_zero_categories": 38,
-    "filled_by_verified_cj": 36,
-    "remaining_zero_categories": 2,
-    "cj_verified_products": 36,
-    "total_browsable_products": 5179,
-    "category_rails": 131
+    "filled_by_verified_cj": 37,
+    "remaining_zero_categories": 1,
+    "cj_verified_products": 37,
+    "total_browsable_products": 5180,
+    "category_rails": 132
   },
   "remaining_zero_categories": [
-    {
-      "department": "home",
-      "category": "laundry",
-      "title": "Laundry",
-      "current_clean_candidates": 0,
-      "current_clean_candidates_after_cj": 0
-    },
     {
       "department": "home",
       "category": "entryway",
@@ -27,6 +20,13 @@
     }
   ],
   "filled_categories": [
+    {
+      "department": "home",
+      "category": "laundry",
+      "title": "Laundry",
+      "current_clean_candidates": 0,
+      "current_clean_candidates_after_cj": 1
+    },
     {
       "department": "women",
       "category": "women-knitwear",

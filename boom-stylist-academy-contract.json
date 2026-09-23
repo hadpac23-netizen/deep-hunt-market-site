@@ -304,12 +304,12 @@
     "canonical_department_count": 17,
     "stylist_taxonomy_authority": "ARRANGE_ONLY_NO_RECLASSIFY",
     "global_market_arrangement": "COUNTRY_SPECIFIC_SHADOW_ONLY",
-    "full_shelves_shadow_preview": "PASS_17_DEPARTMENTS_131_CATEGORY_RAILS",
-    "full_shelves_unique_products": 5179,
+    "full_shelves_shadow_preview": "PASS_17_DEPARTMENTS_132_CATEGORY_RAILS",
+    "full_shelves_unique_products": 5180,
     "full_shelves_taxonomy_discipline": "PASS_NO_CROSS_DEPARTMENT_DUPLICATION",
     "full_shelves_production_authority": false,
-    "cj_verified_4_market_products": 36,
-    "remaining_zero_categories": 2
+    "cj_verified_4_market_products": 37,
+    "remaining_zero_categories": 1
   },
   "next": "EXACT_PRINTFUL_ARTWORK_THEN_FINAL_CINEMATIC_VISUAL_EXAM_AND_OWNER_GATE",
   "f35_research_ref": "boom-f35-style-commerce-research-2026-09-22.json",

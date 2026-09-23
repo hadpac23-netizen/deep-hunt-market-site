@@ -23,18 +23,18 @@
   "summary": {
     "canonical_departments": 17,
     "departments_with_products": 17,
-    "globally_unique_routed_products": 5179,
+    "globally_unique_routed_products": 5180,
     "source_rows": 17000,
     "blocked_rows": 100,
     "no_image_rows": 0,
     "unclassified_occurrences": 7788,
-    "category_rails": 131,
-    "thin_rails": 52,
-    "initial_shown_product_cards": 1676,
-    "total_browsable_product_cards": 5179,
+    "category_rails": 132,
+    "thin_rails": 53,
+    "initial_shown_product_cards": 1677,
+    "total_browsable_product_cards": 5180,
     "global_truth_products_available": 15,
-    "cj_verified_4_market_products": 36,
-    "verified_truth_products_available": 51,
+    "cj_verified_4_market_products": 37,
+    "verified_truth_products_available": 52,
     "production_live_products": 0
   },
   "departments": [
@@ -60721,9 +60721,9 @@
     {
       "slug": "home",
       "title": "Home & Living",
-      "clean_candidate_count": 119,
-      "category_rails": 13,
-      "initial_shown_products": 101,
+      "clean_candidate_count": 120,
+      "category_rails": 14,
+      "initial_shown_products": 102,
       "hero": {
         "provider": "CJdropshipping",
         "item_id": "2504040442271628900",
@@ -63316,6 +63316,46 @@
               "image_count": 14,
               "truth_state": "CATALOG_SHADOW_DESTINATION_RECHECK",
               "checkout_status": "PRODUCT_DETAIL_RECHECK_REQUIRED",
+              "production_exposure": false
+            }
+          ]
+        },
+        {
+          "slug": "laundry",
+          "title": "Laundry",
+          "clean_candidate_count": 1,
+          "initial_shown_count": 1,
+          "density_state": "THIN",
+          "products": [
+            {
+              "provider": "CJdropshipping",
+              "item_id": "2411110427421627400",
+              "department": "home",
+              "department_title": "Home & Living",
+              "category": "laundry",
+              "category_title": "Laundry",
+              "title": "Foldable Moisture-proof Stripes Laundry Basket Dirty Clothes Basket Laundry Basket",
+              "image_url": "https://oss-cf.cjdropshipping.com/product/2024/11/11/04/171b0af1-de13-4a65-9a30-714eda52c33f_fine.jpeg",
+              "availability_verified": true,
+              "availability_basis": "LIVE_CJ_STOCK_SHIPPING_4_MARKETS",
+              "inventory_snapshot": null,
+              "supplier_cost_min": 2.63,
+              "currency": "USD",
+              "variant_count": null,
+              "image_count": null,
+              "truth_state": "CJ_VERIFIED_4_MARKETS",
+              "markets_verified": [
+                "IL",
+                "DE",
+                "US",
+                "SG"
+              ],
+              "market_verification_state": "IL_DE_US_SG_STOCK_SHIPPING_VERIFIED",
+              "retail_shadow_usd": 7.99,
+              "customer_total_il_shadow_usd": 17.9,
+              "product_contribution_shadow_usd": 4.64,
+              "final_profit_verified": false,
+              "checkout_status": "DISABLED_FINAL_PROFIT_RECHECK_REQUIRED",
               "production_exposure": false
             }
           ]

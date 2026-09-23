@@ -3,10 +3,10 @@ const e=JSON.parse(fs.readFileSync("evidence/HUNT-SHELF-GAP-STATUS-POST-CJ-2026-
 assert.equal(e.version,"HUNT-SHELF-GAP-STATUS-POST-CJ-V1");
 assert.equal(e.production_effect,false);
 assert.equal(e.summary.original_zero_categories,38);
-assert.equal(e.summary.filled_by_verified_cj,36);
-assert.equal(e.summary.remaining_zero_categories,2);
-assert.equal(e.summary.cj_verified_products,36);
-assert.equal(e.summary.total_browsable_products,5179);
-assert.equal(e.summary.category_rails,131);
-assert.deepEqual(e.remaining_zero_categories.map(x=>x.department+"/"+x.category).sort(),["home/entryway","home/laundry"]);
+assert.equal(e.summary.filled_by_verified_cj,37);
+assert.equal(e.summary.remaining_zero_categories,1);
+assert.equal(e.summary.cj_verified_products,37);
+assert.equal(e.summary.total_browsable_products,5180);
+assert.equal(e.summary.category_rails,132);
+assert.deepEqual(e.remaining_zero_categories.map(x=>x.department+"/"+x.category).sort(),["home/entryway"]);
 console.log("PASS boom-shelf-gap-status-post-cj");
