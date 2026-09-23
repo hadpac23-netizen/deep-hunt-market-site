@@ -22,7 +22,7 @@
       return;
     }
     try{
-      const [contract,shelves,taxonomy,detailTaxonomy,stage4Queue,stage6Evidence,stage6Preview,stage7Empty,stage7Thin,stage7Final,stage7Manifest,stage8Shortlist,stage8Shipping,stage8QualityProfit,stage8Belts,stage8Combined,stage8External,stage8Packet,stage8Sources,stage8Outreach,judge]=await Promise.all([
+      const [contract,shelves,taxonomy,detailTaxonomy,stage4Queue,stage6Evidence,stage6Preview,stage7Empty,stage7Thin,stage7Final,stage7Manifest,stage8Shortlist,stage8Shipping,stage8QualityProfit,stage8Belts,stage8Combined,stage8External,stage8Packet,stage8Sources,stage8Outreach,finalProfitReadiness,judge]=await Promise.all([
         fetchJson("boom-product-placement-gate-contract.json"),
         fetchJson("evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json"),
         fetchJson("evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json").catch(()=>({verified:[],summary:{}})),
@@ -43,6 +43,7 @@
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-EXTERNAL-SOURCE-PACKET-2026-09-23.json").catch(()=>({summary:{},rails:[]})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-ALTERNATIVE-SOURCE-MATRIX-2026-09-23.json").catch(()=>({summary:{},rails:[]})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-SUPPLIER-OUTREACH-PACKETS-2026-09-23.json").catch(()=>({summary:{},suppliers:{}})),
+        fetchJson("evidence/HUNT-FINAL-PROFIT-READINESS-709-2026-09-23.json").catch(()=>({summary:{}})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-LOCAL-JUDGE-2026-09-23.json").catch(()=>({summary:{},calibration:{},proposals:[]}))
       ]);
       const taxonomyKeep=new Map((taxonomy.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
@@ -126,6 +127,7 @@
       cards.push('<article><small>STAGE 8 · EXTERNAL SOURCE PACKET</small><strong>'+esc(stage8Packet.summary?.requested_initial_candidates||0)+' initial candidates · '+esc(stage8Packet.summary?.preferred_candidates||0)+' preferred · '+esc(stage8Packet.summary?.rails||0)+' rails</strong><span>HyperSKU state: '+esc(stage8Packet.summary?.hypersku_message_state||'UNKNOWN')+' · markets: '+esc((stage8Packet.summary?.markets||[]).join('/'))+' · Final Net Profit Verified: '+esc(stage8Packet.summary?.final_net_profit_verified_products||0)+'.</span></article>');
       cards.push('<article><small>STAGE 8 · ALTERNATIVE SOURCE MATRIX</small><strong>'+esc(stage8Sources.summary?.primary_provider||'UNKNOWN')+' → '+esc(stage8Sources.summary?.secondary_provider||'UNKNOWN')+' → '+esc(stage8Sources.summary?.tertiary_provider||'UNKNOWN')+' → '+esc(stage8Sources.summary?.api_connected_provider||'UNKNOWN')+'</strong><span>HyperSKU: '+esc(stage8Sources.summary?.outbound_state?.HyperSKU||'UNKNOWN')+' · Sup: '+esc(stage8Sources.summary?.outbound_state?.SupDropshipping||'UNKNOWN')+' · SourcinBox: '+esc(stage8Sources.summary?.outbound_state?.SourcinBox||'UNKNOWN')+' · verified new inventory: '+esc(stage8Sources.summary?.verified_new_inventory_products||0)+'.</span></article>');
       cards.push('<article><small>STAGE 8 · SUPPLIER OUTREACH PACKETS</small><strong>'+esc(stage8Outreach.summary?.suppliers||0)+' suppliers · '+esc(stage8Outreach.summary?.rails||0)+' rails · '+esc(stage8Outreach.summary?.requested_initial_candidates_per_supplier||0)+' initial/supplier</strong><span>HyperSKU: '+esc(stage8Outreach.summary?.outbound?.HyperSKU||'UNKNOWN')+' · Sup: '+esc(stage8Outreach.summary?.outbound?.SupDropshipping||'UNKNOWN')+' · SourcinBox: '+esc(stage8Outreach.summary?.outbound?.SourcinBox||'UNKNOWN')+'.</span></article>');
+      cards.push('<article><small>FINAL PROFIT TRUTH · READINESS</small><strong>'+esc(finalProfitReadiness.summary?.gate_ready_products||0)+' products · '+esc(finalProfitReadiness.summary?.product_market_pairs||0)+' pairs ready for controlled evidence</strong><span>'+esc(finalProfitReadiness.summary?.pairs_requiring_real_non_test_order_for_final_profit||0)+' pairs still require real non-test order evidence · Final Net Profit Verified: '+esc(finalProfitReadiness.summary?.final_profit_verified_products||0)+'.</span></article>');
       const precision=judge.calibration?.selected_threshold?.precision;
       cards.push('<article><small>LOCAL REVIEW JUDGE</small><strong>'+esc(judge.summary?.review_proposals||0)+' guarded review proposals</strong><span>Cross-rail: '+esc(judge.summary?.cross_rail_review_candidates||0)+' · Guard blocked: '+esc(judge.summary?.guard_blocked_proposals||0)+' · Holdout precision: '+esc(precision!=null?(precision*100).toFixed(2)+'%':'UNKNOWN')+' · Authority: NONE.</span></article>');
       for(const proposal of (judge.proposals||[]).filter(x=>x.effect==="CROSS_RAIL_REVIEW_CANDIDATE").slice(0,8)){

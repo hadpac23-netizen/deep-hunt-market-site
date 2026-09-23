@@ -1,0 +1,27 @@
+{
+  "version": "BOOM-FINAL-PROFIT-READINESS-V1",
+  "mode": "SHADOW",
+  "owner": "commerce_truth_brain",
+  "authority": "NONE",
+  "purpose": "Separate prelaunch economics readiness from realized Final Net Profit truth without substituting reserves or assumptions for actual costs.",
+  "states": [
+    "READY_FOR_CONTROLLED_ORDER_EVIDENCE",
+    "FINAL_PROFIT_INPUTS_PARTIAL",
+    "FINAL_NET_PROFIT_VERIFIED"
+  ],
+  "rules": [
+    "Projected Product Contribution is not Final Net Profit.",
+    "A test/sandbox order may validate evidence capture but never counts as realized revenue or Final Net Profit.",
+    "Final Net Profit requires a real non-test order and complete required cost evidence.",
+    "Any missing required cost input keeps Final Net Profit UNKNOWN.",
+    "Tax/import responsibility may be verified before launch, but actual order economics still require realized order evidence.",
+    "No live payment activation, supplier order, price change or Production mutation from this contract."
+  ],
+  "owner_gate": {
+    "shadow_readiness_analysis": false,
+    "test_order_execution": true,
+    "live_payment_activation": true,
+    "supplier_order": true,
+    "production_promotion": true
+  }
+}
