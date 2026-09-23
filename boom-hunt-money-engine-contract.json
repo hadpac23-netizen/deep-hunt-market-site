@@ -1,0 +1,115 @@
+{
+  "version": "HUNT-MONEY-ENGINE-V1",
+  "mode": "SHADOW",
+  "authority": "NONE",
+  "production_effect": false,
+  "canonical_parent": "BOOM-PROFIT-ENGINE-V1",
+  "prompt_refs": [
+    "docs/HUNT-GLOBAL-DISTRIBUTION-OS-SKILL-PACK-V1.md",
+    "docs/HUNT-PROFIT-SHIPPING-OS-MASTER-PROMPT.md",
+    "docs/HUNT-MONEY-ENGINE-MASTER-PROMPT.md"
+  ],
+  "audit_reuse_extend": {
+    "rule": "AUDIT → REUSE → EXTEND → CREATE ONLY IF MISSING",
+    "reused": [
+      "boom-profit-engine-contract.json",
+      "boom-product-profit-ledger-contract.json",
+      "boom-country-market-gate-contract.json",
+      "boom-marketing-profit-attribution-contract.json",
+      "boom-hourly-profit-loop-contract.json",
+      "existing Shipping Chess / Price Gate / Deal Builder / Commerce Truth / Owner Gate"
+    ],
+    "extended": [
+      "route-level complete landed-cost evaluation",
+      "contribution density diagnostics",
+      "money-role classification",
+      "cart route comparison"
+    ],
+    "forbidden_duplicates": [
+      "parallel profit truth store",
+      "new Primary Brain",
+      "parallel payment/order/fulfillment authority",
+      "parallel distribution truth"
+    ]
+  },
+  "owners": {
+    "economics_truth": "commerce_truth_brain",
+    "offer_and_distribution_proposals": "growth_brain",
+    "shopper_relevance": "experience_brain",
+    "execution": "operations_brain",
+    "coordination": "boom_orchestrator",
+    "evidence_learning": "learning_governance_brain"
+  },
+  "product_money_roles": [
+    "TRAFFIC_PRODUCT",
+    "PROFIT_PRODUCT",
+    "BASKET_BUILDER",
+    "SHIPPING_SPONSOR",
+    "RETENTION_PRODUCT",
+    "HOLD",
+    "UNKNOWN"
+  ],
+  "route_required_inputs": [
+    "destination",
+    "sale_price",
+    "customer_shipping_revenue",
+    "supplier_cost",
+    "supplier_shipping_cost",
+    "payment_fees",
+    "fx_cost",
+    "tax_import_cost",
+    "discount_cost",
+    "affiliate_creator_cost",
+    "marketing_cost",
+    "expected_return_refund_cost",
+    "other_variable_cost"
+  ],
+  "truth_gates": [
+    "product_truth_verified",
+    "stock_verified",
+    "shipping_quote_verified"
+  ],
+  "defaults": {
+    "min_projected_contribution_usd": 4,
+    "min_projected_margin_rate": 0.35
+  },
+  "contribution_density": {
+    "metrics": [
+      "projected_contribution_per_shipping_dollar",
+      "projected_contribution_per_chargeable_kg",
+      "projected_contribution_per_acquisition_dollar"
+    ],
+    "rule": "Return null for a density metric when its denominator is missing or not evidence-backed. Never coerce missing cost to zero."
+  },
+  "owner_gate_actions": [
+    "production_price_change",
+    "production_shipping_charge_change",
+    "discount_or_coupon_change",
+    "free_shipping_activation",
+    "production_supplier_routing_change",
+    "external_publish_or_outreach",
+    "paid_spend",
+    "supplier_order",
+    "payment_activation",
+    "major_live_inventory_block"
+  ],
+  "hard_rules": [
+    "UNKNOWN never becomes zero or invented truth.",
+    "Projected contribution never becomes realized or verified net profit.",
+    "A test order never counts as realized profit.",
+    "A route decision remains bound to exact variant, supplier, warehouse and destination evidence.",
+    "No live price, shipping, discount, supplier, payment or fulfillment mutation is authorized by this evaluator.",
+    "Customer trust, legal/policy truth and fulfillment quality override optimization."
+  ],
+  "fallback": "Return UNKNOWN/HOLD with the first blocker and preserve the current safe route.",
+  "success_metrics": [
+    "verified_net_contribution_per_order",
+    "verified_net_profit_per_hour",
+    "complete_cost_contribution_margin",
+    "contribution_per_shipping_dollar",
+    "contribution_per_chargeable_kg",
+    "repeat_contribution_share",
+    "return_refund_leakage",
+    "verified_customer_acquisition_cost"
+  ]
+}

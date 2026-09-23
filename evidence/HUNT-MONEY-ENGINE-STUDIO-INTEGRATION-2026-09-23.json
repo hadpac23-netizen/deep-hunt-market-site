@@ -1,0 +1,64 @@
+{
+  "version": "HUNT-MONEY-ENGINE-STUDIO-INTEGRATION-EVIDENCE-V1",
+  "date": "2026-09-23",
+  "branch": "feature/hunt-product-placement-gate-v1",
+  "production_effect": false,
+  "live_payment": false,
+  "supplier_order": false,
+  "summary": {
+    "prompt_pack_persisted": 3,
+    "domain_skill_registered": true,
+    "runtime_evaluator_wired": true,
+    "boom_studio_surface_wired": true,
+    "owner_gate_preserved": true,
+    "no_parallel_primary_brain": true,
+    "no_parallel_profit_store": true
+  },
+  "studio_surface": {
+    "section": "PROFIT MISSION CONTROL",
+    "panel": "HUNT MONEY ENGINE",
+    "cards": [
+      "COUNTRY LANDED-COST GATE",
+      "DIM / PACKAGING GATE",
+      "CART SHIPPING SOLVER",
+      "CONTRIBUTION DENSITY",
+      "PRODUCT MONEY ROLES",
+      "REALIZED PROFIT LOOP"
+    ]
+  },
+  "evaluator": {
+    "file": "boom-hunt-money-engine.js",
+    "mode": "SHADOW",
+    "authority": "NONE",
+    "fail_closed_without_evidence": true,
+    "projected_profit_never_promoted_to_realized": true,
+    "route_choice_requires_owner_gate_for_execution": true
+  },
+  "qa": {
+    "tests_passed": [
+      "boom-hunt-money-engine.test.js",
+      "boom-brain-studio-money-engine.test.js",
+      "boom-profit-engine.test.js",
+      "boom-product-profit-ledger-adapter.test.js",
+      "boom-hourly-profit-loop.test.js",
+      "boom-skill-registry.test.js",
+      "boom-automation-control-plane.test.js",
+      "boom-marketing-profit-attribution-contract.test.js"
+    ],
+    "node_syntax_passed": [
+      "boom-hunt-money-engine.js",
+      "boom-brain-studio.js"
+    ],
+    "json_contracts_parsed": true,
+    "git_diff_check": true,
+    "browser_check": {
+      "page_source": "current worktree local static server",
+      "money_engine_heading_found": true,
+      "money_engine_script_found": true,
+      "severe_js_errors_observed": 0,
+      "authenticated_private_render_verified": false,
+      "blocker": "Fresh headless browser correctly stopped at BOOM owner/admin access gate; private authenticated Studio UI was not falsely claimed as visually verified."
+    }
+  },
+  "owner_gate_note": "No live price, shipping charge, free-shipping, supplier routing, paid spend, supplier order, payment or inventory mutation is authorized by this change."
+}

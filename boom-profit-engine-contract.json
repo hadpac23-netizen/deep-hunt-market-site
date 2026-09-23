@@ -15,6 +15,19 @@
     "execution_owner": "operations_brain",
     "evidence_learning_owner": "learning_governance_brain"
   },
+  "extensions": [
+    {
+      "id": "hunt_profit_shipping_money_engine",
+      "contract": "boom-hunt-money-engine-contract.json",
+      "skill": "skills/hunt-profit-shipping-money-engine.md",
+      "prompt_refs": [
+        "docs/HUNT-PROFIT-SHIPPING-OS-MASTER-PROMPT.md",
+        "docs/HUNT-MONEY-ENGINE-MASTER-PROMPT.md",
+        "docs/HUNT-GLOBAL-DISTRIBUTION-OS-SKILL-PACK-V1.md"
+      ],
+      "rule": "Extend the canonical Profit Engine; do not create a parallel profit brain or truth store."
+    }
+  ],
   "north_star": {
     "id": "verified_net_profit_per_hour",
     "label": "Verified Net Profit / Hour",

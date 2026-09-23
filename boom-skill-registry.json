@@ -151,6 +151,12 @@
       "owner": "boom_orchestrator",
       "type": "CONTROL_PLANE_SKILL",
       "status": "KEEP"
+    },
+    {
+      "path": "skills/hunt-profit-shipping-money-engine.md",
+      "owner": "commerce_truth_brain",
+      "type": "DOMAIN_SKILL",
+      "status": "KEEP"
     }
   ],
   "split_merge_notes": {

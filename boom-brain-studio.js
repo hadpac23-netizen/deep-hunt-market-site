@@ -712,6 +712,34 @@
     }
   }
 
+  function renderMoneyEngine(){
+    const host=$("#bs-money-engine");
+    const state=$("#bs-money-engine-state");
+    const guard=$("#bs-money-engine-guard");
+    const contract=data.moneyEngine||{};
+    const engine=window.BoomHuntMoneyEngine;
+    if(!host)return;
+    if(!engine?.evaluateRoute){
+      host.innerHTML='<div class="bs-empty bs-error">Money Engine evaluator unavailable.</div>';
+      if(state)state.textContent="UNAVAILABLE";
+      return;
+    }
+    const failClosed=engine.evaluateRoute({});
+    if(state)state.textContent=`${esc(contract.mode||"SHADOW")} · ${esc(failClosed.status||"UNKNOWN")} WITHOUT EVIDENCE`;
+    const reused=contract.audit_reuse_extend?.reused||[];
+    host.innerHTML=[
+      `<article class="bs-profit-card"><div class="bs-skill-head"><strong>COUNTRY LANDED-COST GATE</strong><span class="bs-status DONE">SHADOW</span></div><small>Commerce Truth</small><p>Exact variant × supplier × warehouse × destination. Missing cost truth returns UNKNOWN.</p><code>${esc(failClosed.reason_codes?.[0]||"UNKNOWN")}</code></article>`,
+      `<article class="bs-profit-card"><div class="bs-skill-head"><strong>DIM / PACKAGING GATE</strong><span class="bs-status DONE">ANALYZE</span></div><small>Shipping economics</small><p>Contribution per chargeable kg / volume. Bulky routes stay REVIEW until package truth exists.</p></article>`,
+      `<article class="bs-profit-card"><div class="bs-skill-head"><strong>CART SHIPPING SOLVER</strong><span class="bs-status NEXT">OWNER GATE TO EXECUTE</span></div><small>Shipping Chess</small><p>Compare supplier, warehouse, split/consolidate and free-shipping funding before proposing a route.</p></article>`,
+      `<article class="bs-profit-card"><div class="bs-skill-head"><strong>CONTRIBUTION DENSITY</strong><span class="bs-status DONE">DIAGNOSTIC</span></div><small>Money Engine</small><p>Contribution per shipping dollar, chargeable kg and verified acquisition dollar.</p></article>`,
+      `<article class="bs-profit-card"><div class="bs-skill-head"><strong>PRODUCT MONEY ROLES</strong><span class="bs-status DONE">EVIDENCE-BASED</span></div><small>Traffic · Profit · Basket · Shipping Sponsor · Retention</small><p>No role is assigned from clicks or intuition alone; missing performance evidence remains UNKNOWN.</p></article>`,
+      `<article class="bs-profit-card"><div class="bs-skill-head"><strong>REALIZED PROFIT LOOP</strong><span class="bs-status DONE">REUSE</span></div><small>Product Profit Ledger + Hourly Profit</small><p>Real non-test finance evidence feeds route, distribution and supplier learning. Projected contribution never becomes realized profit.</p></article>`
+    ].join("");
+    if(guard){
+      guard.innerHTML=`<strong>No parallel profit brain was created.</strong><span>Reused ${esc(reused.length)} existing BOOM/HUNT systems. Prompts loaded: ${esc((contract.prompt_refs||[]).length)}. This layer has authority ${esc(contract.authority||"NONE")}; live price, shipping, free-shipping, routing, spend, supplier order and payment remain Owner-Gated.</span>`;
+    }
+  }
+
   function renderProfitMission(){
     const p=data.profitEngine||{};
     const engine=window.BoomProfitEngine;
@@ -1099,12 +1127,12 @@
   async function boot(){
     try{
       if(!await guardAdmin())return;
-      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy,freshShelfProductTruth]=await Promise.all([
-        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json"),json("boom-marketing-profit-attribution-contract.json"),json("boom-marketing-cost-evidence-contract.json"),json("boom-payplus-sandbox-proof-contract.json"),json("boom-checkout-order-tracking-proof-contract.json"),json("boom-market-policy-readiness-contract.json"),json("boom-fresh-shelf-product-truth-contract.json")
+      const [brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,moneyEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy,freshShelfProductTruth]=await Promise.all([
+        json("boom-brain-registry.json"),json("boom-action-contract.json"),json("boom-interaction-inventory.json"),json("boom-surface-contract.json"),json("boom-brain-gaps.json"),json("boom-journey-contract.json"),json("boom-commerce-handoff-contract.json"),json("boom-payment-order-state-contract.json"),json("boom-payplus-proof-contract.json"),json("boom-legal-readiness-contract.json"),json("boom-guest-merge-matrix.json"),json("boom-mission-budget-contract.json"),json("boom-brain-health-policy.json"),json("boom-error-taxonomy.json"),json("boom-decision-reason-codes.json"),json("boom-storage-contract.json"),json("boom-automation-control-plane.json"),json("boom-operational-skills.json"),json("boom-workflow-templates.json"),json("boom-ai-tool-router.json"),json("boom-creative-factory-contract.json"),json("boom-build-repair-factory-contract.json"),json("boom-profit-engine-contract.json"),json("boom-hunt-money-engine-contract.json"),json("boom-marketing-profit-attribution-contract.json"),json("boom-marketing-cost-evidence-contract.json"),json("boom-payplus-sandbox-proof-contract.json"),json("boom-checkout-order-tracking-proof-contract.json"),json("boom-market-policy-readiness-contract.json"),json("boom-fresh-shelf-product-truth-contract.json")
       ]);
-      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy,freshShelfProductTruth};
+      data={brains,actions,inventory,surfaces,gaps,journeys,commerce,states,payplusProof,legal,merge,budgets,health,errors,reasons,storage,automation,operationalSkills,workflowTemplates,aiRouter,creativeFactory,buildRepairFactory,profitEngine,moneyEngine,marketingProfitAttribution,marketingCostEvidence,payplusSandboxProof,checkoutOrderTrackingContract,marketPolicy,freshShelfProductTruth};
       $("#bs-contract-state").textContent=`${brains.version} · contracts loaded`;
-      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderCheckoutOrderTrackingProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderStylistAcademy();renderHuntBrandDesign();renderCreativeLearning();renderDurableAutomation();renderFreshShelfProductTruth();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderMarketPolicyReadiness();renderJourneys();renderMerge();renderFiles();
+      renderMetrics();renderReadiness();renderFlow();renderBrains();renderKernels();fillOwnerFilter();renderActions();renderSurfaces();renderGaps();renderAutomation();renderAIOperatingFactory();renderProfitMission();renderMoneyEngine();renderProductProfitLedger();renderHourlyProfitReview();renderFirstRealOrderProof();renderPayPlusSandboxProof();renderPaymentLaunchGate();renderCheckoutOrderTrackingProof();renderControlMaps();renderConsolidationMap();renderDomainWiring();renderStylistAcademy();renderHuntBrandDesign();renderCreativeLearning();renderDurableAutomation();renderFreshShelfProductTruth();renderShelfCoverage();renderGovernance();renderCommerceHandoff();renderOperationsState();renderLegalReadiness();renderMarketPolicyReadiness();renderJourneys();renderMerge();renderFiles();
     }catch(error){
       $("#bs-contract-state").textContent="Contract load failed";
       $("#bs-contract-state").classList.add("bs-error");
