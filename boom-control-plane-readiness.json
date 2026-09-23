@@ -172,7 +172,7 @@
     {
       "id": "product_placement_gate",
       "status": "CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE8",
-      "evidence": "Stage8 supplier recovery uses official/read-only supplier data after Stage7 evidence recovery. Current combined shadow preview: 3,652 canonical products, 33 FULL, 33 GOOD, 62 THIN, 5 EMPTY. 49 newly sourced products are shadow-admitted; Final Net Profit verified remains 0. Five empty rails require external/manual sourcing. Production mutation remains OFF."
+      "evidence": "Stage8 supplier recovery uses official/read-only supplier data after Stage7 evidence recovery. Visual-strict combined shadow preview: 3,637 canonical products, 32 FULL, 34 GOOD, 62 THIN, 5 EMPTY. 34 newly sourced products are shadow-admitted after semantic visual QA; Final Net Profit verified remains 0. Five empty rails require external/manual sourcing. Production mutation remains OFF."
     }
   ],
   "blockers": [

@@ -1,0 +1,24 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-BELT-VISUAL-QA-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW_MANUAL_VISUAL_QA",
+  "production_effect": false,
+  "summary": {
+    "visually_approved": 7,
+    "visual_review": 0
+  },
+  "approved_item_ids": [
+    "24417191",
+    "26768012",
+    "26768011",
+    "26767971",
+    "26768005",
+    "26776035",
+    "26776036"
+  ],
+  "rules": [
+    "All seven products were visually reviewed in a contact sheet and are belts as the primary product.",
+    "Visual PASS does not imply Final Net Profit Verified.",
+    "No Production mutation or supplier order."
+  ]
+}

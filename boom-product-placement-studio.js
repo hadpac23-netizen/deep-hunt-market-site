@@ -93,7 +93,7 @@
           metric(s6.REVIEW||0,"Stage6 overlap REVIEW"),
           metric(stage7Final.summary?.total_stage7_recovered||0,"Stage7 recovered"),
           metric(stage7Manifest.summary?.empty_rails||0,"Stage7 empty gaps"),
-          metric(stage8Combined.summary?.unique_gate_pass_candidates||0,"Stage8 gate candidates"),
+          metric(stage8Combined.summary?.visual_gate_pass_candidates||0,"Stage8 gate candidates"),
           metric(stage8Combined.summary?.shadow_admitted||0,"Stage8 shadow admitted"),
           metric(stage8Combined.summary?.rails_empty||0,"Stage8 empty gaps"),
           metric(judge.summary?.review_proposals||0,"Local Judge · REVIEW only"),

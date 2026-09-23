@@ -1,0 +1,17 @@
+{
+  "version": "HUNT-STAGE8-CJ-OFFICE-VERIFY-V1",
+  "date": "2026-09-23",
+  "mode": "READ_ONLY_SHADOW",
+  "production_effect": false,
+  "item": {
+    "provider": "CJdropshipping",
+    "item_id": "1873971085362515969",
+    "rail": "office/office-furniture",
+    "title": "110X50X94cm One Draw, Two Tiers With Keyboard Rack Computer Desk"
+  },
+  "title": "110X50X94cm One Draw, Two Tiers With Keyboard Rack Computer Desk",
+  "status": "NO_SINGLE_VARIANT_4_OF_4",
+  "variant_count": 1,
+  "markets": {},
+  "final_net_profit_verified": false
+}
