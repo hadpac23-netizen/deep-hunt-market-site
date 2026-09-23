@@ -1,0 +1,478 @@
+{
+  "version": "HUNT-THIN-RAIL-SOURCING-QUEUE-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW",
+  "production_effect": false,
+  "target_density": 24,
+  "summary": {
+    "thin_rails": 28,
+    "missing_slots_to_12": 181,
+    "missing_slots_to_24": 517,
+    "empty_rails": 0
+  },
+  "rules": [
+    "No filler or cross-category rerouting.",
+    "Real supplier-backed products only.",
+    "Shadow listing may be provisional; SELL_READY requires exact variant, stock, destination shipping and Profit Truth.",
+    "Supplier catalog claims and media quality are not treated as verified quality without evidence/sample/QC."
+  ],
+  "rails": [
+    {
+      "department": "women",
+      "category": "women-evening",
+      "title": "Evening & Occasion",
+      "current_products": 10,
+      "need_for_12": 2,
+      "need_for_24": 14,
+      "provider_counts": {
+        "EPROLO": 10
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "women",
+      "category": "women-skirts",
+      "title": "Skirts",
+      "current_products": 3,
+      "need_for_12": 9,
+      "need_for_24": 21,
+      "provider_counts": {
+        "EPROLO": 3
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "women",
+      "category": "women-sleepwear",
+      "title": "Sleepwear",
+      "current_products": 1,
+      "need_for_12": 11,
+      "need_for_24": 23,
+      "provider_counts": {
+        "CJdropshipping": 1
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "women",
+      "category": "women-socks",
+      "title": "Socks",
+      "current_products": 7,
+      "need_for_12": 5,
+      "need_for_24": 17,
+      "provider_counts": {
+        "CJdropshipping": 7
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "men",
+      "category": "men-tops",
+      "title": "Shirts & T-Shirts",
+      "current_products": 6,
+      "need_for_12": 6,
+      "need_for_24": 18,
+      "provider_counts": {
+        "EPROLO": 6
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "men",
+      "category": "men-jeans",
+      "title": "Jeans & Denim",
+      "current_products": 1,
+      "need_for_12": 11,
+      "need_for_24": 23,
+      "provider_counts": {
+        "EPROLO": 1
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "men",
+      "category": "men-bottoms",
+      "title": "Pants & Shorts",
+      "current_products": 2,
+      "need_for_12": 10,
+      "need_for_24": 22,
+      "provider_counts": {
+        "EPROLO": 2
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "men",
+      "category": "men-outerwear",
+      "title": "Jackets & Coats",
+      "current_products": 7,
+      "need_for_12": 5,
+      "need_for_24": 17,
+      "provider_counts": {
+        "EPROLO": 5,
+        "CJdropshipping": 2
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "men",
+      "category": "men-knitwear",
+      "title": "Knitwear & Sweaters",
+      "current_products": 1,
+      "need_for_12": 11,
+      "need_for_24": 23,
+      "provider_counts": {
+        "CJdropshipping": 1
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "men",
+      "category": "men-socks",
+      "title": "Socks",
+      "current_products": 10,
+      "need_for_12": 2,
+      "need_for_24": 14,
+      "provider_counts": {
+        "CJdropshipping": 10
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "men",
+      "category": "men-hoodies",
+      "title": "Hoodies & Sweatshirts",
+      "current_products": 5,
+      "need_for_12": 7,
+      "need_for_24": 19,
+      "provider_counts": {
+        "CJdropshipping": 5
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "men",
+      "category": "men-clothing",
+      "title": "More Men",
+      "current_products": 1,
+      "need_for_12": 11,
+      "need_for_24": 23,
+      "provider_counts": {
+        "CJdropshipping": 1
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "beauty",
+      "category": "nails",
+      "title": "Nails",
+      "current_products": 2,
+      "need_for_12": 10,
+      "need_for_24": 22,
+      "provider_counts": {
+        "CJdropshipping": 2
+      },
+      "next_supplier_lanes": [
+        "EPROLO_agent_sourcing",
+        "Blanka_if_economics_pass",
+        "HyperSKU_agent_sourcing"
+      ]
+    },
+    {
+      "department": "accessories",
+      "category": "jewelry-bracelets",
+      "title": "Bracelets",
+      "current_products": 11,
+      "need_for_12": 1,
+      "need_for_24": 13,
+      "provider_counts": {
+        "EPROLO": 11
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "CJ_manual_exact_variant_verify",
+        "EPROLO_agent_sourcing"
+      ]
+    },
+    {
+      "department": "accessories",
+      "category": "scarves",
+      "title": "Scarves & Wraps",
+      "current_products": 7,
+      "need_for_12": 5,
+      "need_for_24": 17,
+      "provider_counts": {
+        "EPROLO": 7
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "CJ_manual_exact_variant_verify",
+        "EPROLO_agent_sourcing"
+      ]
+    },
+    {
+      "department": "accessories",
+      "category": "gloves",
+      "title": "Gloves",
+      "current_products": 1,
+      "need_for_12": 11,
+      "need_for_24": 23,
+      "provider_counts": {
+        "EPROLO": 1
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "CJ_manual_exact_variant_verify",
+        "EPROLO_agent_sourcing"
+      ]
+    },
+    {
+      "department": "accessories",
+      "category": "bag-accessories",
+      "title": "Bag Accessories",
+      "current_products": 2,
+      "need_for_12": 10,
+      "need_for_24": 22,
+      "provider_counts": {
+        "CJdropshipping": 1,
+        "EPROLO": 1
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "CJ_manual_exact_variant_verify",
+        "EPROLO_agent_sourcing"
+      ]
+    },
+    {
+      "department": "home",
+      "category": "rugs",
+      "title": "Rugs & Mats",
+      "current_products": 5,
+      "need_for_12": 7,
+      "need_for_24": 19,
+      "provider_counts": {
+        "EPROLO": 5
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "home",
+      "category": "curtains",
+      "title": "Curtains & Window",
+      "current_products": 8,
+      "need_for_12": 4,
+      "need_for_24": 16,
+      "provider_counts": {
+        "EPROLO": 8
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "home",
+      "category": "mirrors",
+      "title": "Mirrors",
+      "current_products": 4,
+      "need_for_12": 8,
+      "need_for_24": 20,
+      "provider_counts": {
+        "EPROLO": 3,
+        "CJdropshipping": 1
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "home",
+      "category": "laundry",
+      "title": "Laundry",
+      "current_products": 5,
+      "need_for_12": 7,
+      "need_for_24": 19,
+      "provider_counts": {
+        "EPROLO": 4,
+        "CJdropshipping": 1
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "home",
+      "category": "entryway",
+      "title": "Entryway",
+      "current_products": 4,
+      "need_for_12": 8,
+      "need_for_24": 20,
+      "provider_counts": {
+        "EPROLO": 4
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "camping",
+      "category": "camping-sleep",
+      "title": "Sleep & Comfort",
+      "current_products": 10,
+      "need_for_12": 2,
+      "need_for_24": 14,
+      "provider_counts": {
+        "EPROLO": 10
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "sports",
+      "category": "active-bottoms",
+      "title": "Active Bottoms",
+      "current_products": 9,
+      "need_for_12": 3,
+      "need_for_24": 15,
+      "provider_counts": {
+        "EPROLO": 5,
+        "CJdropshipping": 4
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "sports",
+      "category": "fitness-accessories",
+      "title": "Fitness Accessories",
+      "current_products": 7,
+      "need_for_12": 5,
+      "need_for_24": 17,
+      "provider_counts": {
+        "EPROLO": 4,
+        "CJdropshipping": 3
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "pets",
+      "category": "aquarium",
+      "title": "Aquarium",
+      "current_products": 7,
+      "need_for_12": 5,
+      "need_for_24": 17,
+      "provider_counts": {
+        "CJdropshipping": 3,
+        "EPROLO": 4
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "toys",
+      "category": "building-toys",
+      "title": "Building Toys",
+      "current_products": 11,
+      "need_for_12": 1,
+      "need_for_24": 13,
+      "provider_counts": {
+        "EPROLO": 5,
+        "CJdropshipping": 6
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    },
+    {
+      "department": "office",
+      "category": "stickers",
+      "title": "Stickers",
+      "current_products": 8,
+      "need_for_12": 4,
+      "need_for_24": 16,
+      "provider_counts": {
+        "EPROLO": 7,
+        "CJdropshipping": 1
+      },
+      "next_supplier_lanes": [
+        "HyperSKU_agent_sourcing",
+        "EPROLO_agent_sourcing",
+        "CJ_manual_exact_variant_verify"
+      ]
+    }
+  ]
+}

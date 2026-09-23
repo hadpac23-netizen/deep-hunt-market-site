@@ -1,0 +1,106 @@
+{
+  "version": "HUNT-SUPPLIER-READINESS-MATRIX-V1",
+  "date": "2026-09-23",
+  "mode": "PRELAUNCH",
+  "suppliers": [
+    {
+      "supplier": "EPROLO",
+      "current_role": "PRIMARY_SHADOW_CATALOG_AND_SHIPPING_VERIFICATION",
+      "current_shelf_products": 5539,
+      "gate_ready_products": 670,
+      "strengths": [
+        "official API available",
+        "large catalog",
+        "exact-variant inventory available on verified pulls",
+        "shipping quote verification to IL/DE/US/SG",
+        "agent sourcing available"
+      ],
+      "limits": [
+        "final supplier order cost not realized",
+        "many categories remain thin despite deep pulls",
+        "final quality/sample proof not available for most products"
+      ],
+      "status": "ACTIVE_SHADOW"
+    },
+    {
+      "supplier": "CJdropshipping",
+      "current_role": "VERIFIED_PLUS_PROVISIONAL_SHADOW_FILL",
+      "current_shelf_products": 302,
+      "gate_ready_products": 39,
+      "provisional_shadow_only_products": 263,
+      "strengths": [
+        "official HUNT/CJ path",
+        "verified stock+shipping exists for 39 products across 4 pilot markets",
+        "broad category discovery"
+      ],
+      "limits": [
+        "263 focused candidates failed strict single-variant 4-market proof in current verification chain",
+        "provisional catalog pricing cannot count as verified profit"
+      ],
+      "status": "MIXED_VERIFIED_AND_PROVISIONAL"
+    },
+    {
+      "supplier": "HyperSKU",
+      "current_role": "MANUAL_AGENT_SOURCING_CANDIDATE",
+      "strengths": [
+        "manual sourcing",
+        "Shopify direct connection offered",
+        "sourcing request in progress"
+      ],
+      "limits": [
+        "Open API unavailable before 2000 orders",
+        "no read-only exception",
+        "HUNT custom-store automation not available yet"
+      ],
+      "status": "WAITING_SOURCING_DETAILS"
+    },
+    {
+      "supplier": "BT Case / Jimi",
+      "current_role": "PRIVATE_LABEL_OR_STOCK_SUPPLIER_CANDIDATE",
+      "strengths": [
+        "phone-case factory",
+        "broad iPhone/Samsung/Xiaomi/Oppo/Vivo coverage claimed",
+        "MOQ commonly 10-20 per color/model",
+        "sample cases generally free except shipping",
+        "OEM/private label",
+        "photos/videos with written permission possible",
+        "Excel updates possible"
+      ],
+      "limits": [
+        "no API",
+        "no direct-to-customer/blind dropshipping",
+        "no standard certificates supplied yet",
+        "quality claims not independently verified"
+      ],
+      "status": "WAITING_SELECTED_MODEL_PRICES_AND_QC"
+    },
+    {
+      "supplier": "Gooten",
+      "current_role": "PRINT_ON_DEMAND_CANDIDATE",
+      "current_shelf_products": 13,
+      "gate_ready_products": 0,
+      "strengths": [
+        "no platform subscription/MOQ reported",
+        "custom API possible"
+      ],
+      "limits": [
+        "authenticated product/variant/shipping proof still missing for HUNT"
+      ],
+      "status": "WAITING_API_ACCOUNT_PROOF"
+    },
+    {
+      "supplier": "FragranceX",
+      "current_role": "FRAGRANCE_WHOLESALE_DROPSHIP_CANDIDATE",
+      "strengths": [
+        "wholesale/dropship program",
+        "no account fee/minimum order previously reported",
+        "datafeed after approval"
+      ],
+      "limits": [
+        "API threshold details and feed/shipping specifics still pending"
+      ],
+      "status": "WAITING_REPLY"
+    }
+  ],
+  "owner_rule": "No supplier becomes LIVE from this matrix; supplier activation remains Owner-Gated."
+}
