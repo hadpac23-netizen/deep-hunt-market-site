@@ -1,6 +1,6 @@
 {
   "version": "BOOM-CONTROL-PLANE-READINESS-V1",
-  "observed_at": "2026-09-22",
+  "observed_at": "2026-09-23",
   "overall": "NOT_READY_FOR_ACTIVATION",
   "production_changed": false,
   "n8n_connected": false,
@@ -168,6 +168,11 @@
       "id": "cj_price_gate_v2",
       "status": "CODED_SHADOW_NOT_DEPLOYED",
       "evidence": "Found formula inconsistency: old margin floor ignored 9% payment/refund reserves while final margin gate deducted them. V2 uses supplier_cost/(reserve_denominator-target_margin); 11 blocked items would require +$1 to +$6 retail under defaults. No Production prices changed."
+    },
+    {
+      "id": "product_placement_gate",
+      "status": "CODED_SHADOW_ALWAYS_ON_STUDIO",
+      "evidence": "Independent Product Placement Gate V1 audits current HUNT shelf evidence without trusting current category. Studio auto-refreshes the audit every 60s. Supplier intake requires placement PASS before shelf candidate. Automatic Product moves and Production mutations remain OFF."
     }
   ],
   "blockers": [

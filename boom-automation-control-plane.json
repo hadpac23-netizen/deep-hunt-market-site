@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-AUTOMATION-CONTROL-PLANE-V1",
+  "version": "BOOM-AUTOMATION-CONTROL-PLANE-V1.1-PLACEMENT-GATE",
   "mode": "SHADOW",
   "authority": {
     "owner": "OWNER",
@@ -84,7 +84,7 @@
   "workflows": [
     {
       "id": "supplier_product_intake",
-      "name": "Supplier → Product Truth → Shelf",
+      "name": "Supplier → Product Truth → Placement Gate → Profit → Shelf",
       "owner": "commerce_truth_brain",
       "mode": "SHADOW",
       "trigger": [
@@ -94,21 +94,55 @@
       "stages": [
         "source_identity",
         "product_truth",
+        "product_type_detection",
+        "department_gate",
+        "category_gate",
+        "placement_conflict_check",
+        "placement_decision",
         "variant_truth",
         "stock_truth",
         "shipping_truth",
         "landed_cost",
         "profit_truth",
-        "category_mapping",
         "media_quality",
         "shelf_candidate"
       ],
-      "gate": "partner identity + official API/feed + terms + media rights",
+      "gate": "partner identity + official API/feed + terms + media rights + PLACEMENT_PASS",
       "material_action": "none",
       "final_owner_gate": false,
       "failure_route": "incident_repair",
       "contract": "boom-supplier-product-intake-contract.json",
-      "output": "SHELF_CANDIDATE only; activation is a separate approved action"
+      "output": "SHELF_CANDIDATE only after PLACEMENT_PASS; activation is a separate approved action",
+      "placement_contract": "boom-product-placement-gate-contract.json"
+    },
+    {
+      "id": "product_placement_watch",
+      "name": "Always-on Product Placement Watch",
+      "owner": "commerce_truth_brain",
+      "mode": "SHADOW_ALWAYS_ON",
+      "trigger": [
+        "supplier_feed_event",
+        "catalog_change",
+        "shelf_rebuild_request",
+        "studio_open",
+        "scheduled_audit"
+      ],
+      "stages": [
+        "normalize_source",
+        "detect_product_type",
+        "detect_gender",
+        "department_gate",
+        "category_gate",
+        "conflict_check",
+        "placement_decision",
+        "emit_move_review_unknown_evidence"
+      ],
+      "gate": "independent placement evidence; current category never self-proves",
+      "material_action": "none",
+      "final_owner_gate": false,
+      "failure_route": "taxonomy_review",
+      "contract": "boom-product-placement-gate-contract.json",
+      "output": "KEEP / MOVE recommendation / HOLD_REVIEW / HOLD_UNKNOWN; never auto-move Production"
     },
     {
       "id": "shelf_coverage_17x1000",
@@ -259,6 +293,9 @@
     "automation.run.failed",
     "automation.run.quarantined",
     "automation.owner.approved",
-    "automation.owner.rejected"
+    "automation.owner.rejected",
+    "catalog.product.placement_checked",
+    "catalog.product.placement_review",
+    "catalog.product.placement_move_proposed"
   ]
 }

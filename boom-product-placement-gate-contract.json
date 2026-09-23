@@ -1,0 +1,88 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1",
+  "mode": "SHADOW_ALWAYS_ON",
+  "authority": "NONE",
+  "owner": "commerce_truth_brain",
+  "decision_owner": "commerce_truth_brain",
+  "purpose": "Independently determine canonical HUNT department/category before any product becomes a shelf candidate.",
+  "enforcement_point": "MANDATORY_BEFORE_SHELF_CANDIDATE",
+  "studio_surface": "BOOM Brain Studio",
+  "triggers": [
+    "supplier_feed_event",
+    "manual_admin_intake",
+    "catalog_change",
+    "shelf_rebuild_request",
+    "studio_open",
+    "studio_refresh"
+  ],
+  "inputs": [
+    "provider",
+    "item_id",
+    "title",
+    "supplier_category",
+    "supplier_taxonomy",
+    "structured_attributes",
+    "current_department",
+    "current_category"
+  ],
+  "outputs": [
+    "decision",
+    "placement_action",
+    "detected_product_type",
+    "canonical_department",
+    "canonical_category",
+    "confidence",
+    "positive_evidence",
+    "negative_evidence",
+    "conflicts",
+    "reason_codes",
+    "review_required"
+  ],
+  "decision_states": [
+    "PASS",
+    "REVIEW",
+    "REJECT",
+    "UNKNOWN"
+  ],
+  "placement_actions": [
+    "KEEP",
+    "MOVE",
+    "HOLD_REVIEW",
+    "HOLD_UNKNOWN"
+  ],
+  "invariants": [
+    "Current HUNT department/category never counts as positive evidence for its own validation.",
+    "Supplier taxonomy is evidence, never sole authority.",
+    "Explicit product type outranks generic audience words such as women, men, ladies or male.",
+    "Explicit gender contradiction blocks a gender-only department unless the product is clearly unisex.",
+    "One product has exactly one canonical department and one canonical category.",
+    "No cross-category filler to improve shelf density.",
+    "Ambiguous or unsupported placement returns REVIEW/UNKNOWN and never reaches canonical shelf activation.",
+    "Stylist may rank within a passed rail but may not override placement.",
+    "Placement PASS does not imply Product Truth, shipping, stock, profit or checkout readiness."
+  ],
+  "workflow_order": [
+    "normalize_source",
+    "detect_product_type",
+    "detect_gender",
+    "department_gate",
+    "category_gate",
+    "conflict_check",
+    "confidence",
+    "placement_decision",
+    "emit_evidence"
+  ],
+  "always_on_policy": {
+    "studio_watch": true,
+    "studio_refresh_seconds": 60,
+    "supplier_intake_required": true,
+    "catalog_change_recheck": true,
+    "automatic_product_move": false,
+    "production_mutation": false
+  },
+  "owner_gate": {
+    "shadow_audit": false,
+    "shadow_move_proposal": false,
+    "production_bulk_reclassification": true
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-OPERATIONAL-SKILLS-V1.7-BDIF-SHADOW",
+  "version": "BOOM-OPERATIONAL-SKILLS-V1.8-PLACEMENT-GATE",
   "mode": "SHADOW",
   "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
   "skills": [
@@ -427,6 +427,29 @@
         "cost_latency_metrics",
         "calibration_metrics",
         "promotion_recommendation"
+      ],
+      "tools": [],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "classify_product_placement",
+      "title": "Classify Product Placement",
+      "owner": "commerce_truth_brain",
+      "purpose": "Independently determine canonical department/category before shelf candidacy; ambiguous products abstain to review.",
+      "inputs": [
+        "provider",
+        "item_id",
+        "title",
+        "supplier_taxonomy",
+        "structured_attributes"
+      ],
+      "outputs": [
+        "placement_decision",
+        "canonical_department",
+        "canonical_category",
+        "confidence",
+        "reason_codes"
       ],
       "tools": [],
       "material": false,

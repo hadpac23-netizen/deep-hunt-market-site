@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-SUPPLIER-PRODUCT-INTAKE-V1",
+  "version": "BOOM-SUPPLIER-PRODUCT-INTAKE-V1.1-PLACEMENT-GATE",
   "brain": "commerce_truth_brain",
   "agents": [
     "supplier_truth_agent",
@@ -10,7 +10,7 @@
   ],
   "workflow_id": "supplier_product_intake",
   "mode": "SHADOW",
-  "purpose": "Convert an approved official supplier/feed source into a verified shelf candidate without ordering, publishing, or fabricating commerce truth.",
+  "purpose": "Convert an approved official supplier/feed source into a placement-verified shelf candidate without ordering, publishing, or fabricating commerce truth.",
   "source_of_truth": {
     "partner_candidate": {
       "table": "hunt_partner_candidates",
@@ -49,6 +49,11 @@
     "partner_policy",
     "official_api_feed_truth",
     "product_normalization",
+    "product_type_detection",
+    "department_gate",
+    "category_gate",
+    "placement_conflict_check",
+    "placement_decision",
     "variant_truth",
     "stock_freshness",
     "country_shipping_truth",
@@ -57,10 +62,10 @@
     "unit_economics",
     "authenticity_market_restrictions",
     "media_quality",
-    "category_mapping",
     "shelf_candidate"
   ],
   "pass_requirements": [
+    "placement_decision = PASS",
     "availability_verified",
     "fresh source evidence",
     "price > 0",
@@ -88,6 +93,13 @@
       "SHELF_CANDIDATE"
     ],
     "shelf_activation": "SEPARATE_APPROVED_ACTION",
-    "failure_route": "incident_repair"
-  }
+    "failure_route": "incident_repair",
+    "placement_block_states": [
+      "REVIEW",
+      "REJECT",
+      "UNKNOWN"
+    ]
+  },
+  "placement_contract": "boom-product-placement-gate-contract.json",
+  "placement_rule": "REVIEW / REJECT / UNKNOWN never becomes SHELF_CANDIDATE. Current category cannot validate itself."
 }
