@@ -22,7 +22,7 @@
       return;
     }
     try{
-      const [contract,shelves,taxonomy,detailTaxonomy,stage4Queue,stage6Evidence,stage6Preview,stage7Empty,stage7Thin,stage7Final,stage7Manifest,stage8Shortlist,stage8Shipping,stage8QualityProfit,stage8Belts,stage8Combined,stage8External,stage8Packet,judge]=await Promise.all([
+      const [contract,shelves,taxonomy,detailTaxonomy,stage4Queue,stage6Evidence,stage6Preview,stage7Empty,stage7Thin,stage7Final,stage7Manifest,stage8Shortlist,stage8Shipping,stage8QualityProfit,stage8Belts,stage8Combined,stage8External,stage8Packet,stage8Sources,judge]=await Promise.all([
         fetchJson("boom-product-placement-gate-contract.json"),
         fetchJson("evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json"),
         fetchJson("evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json").catch(()=>({verified:[],summary:{}})),
@@ -41,6 +41,7 @@
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-COMBINED-ADMISSION-PREVIEW-2026-09-23.json").catch(()=>({summary:{}})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-EXTERNAL-SOURCE-MANIFEST-2026-09-23.json").catch(()=>({summary:{},rails:[]})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-EXTERNAL-SOURCE-PACKET-2026-09-23.json").catch(()=>({summary:{},rails:[]})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-ALTERNATIVE-SOURCE-MATRIX-2026-09-23.json").catch(()=>({summary:{},rails:[]})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-LOCAL-JUDGE-2026-09-23.json").catch(()=>({summary:{},calibration:{},proposals:[]}))
       ]);
       const taxonomyKeep=new Map((taxonomy.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
@@ -122,6 +123,7 @@
       cards.push('<article><small>STAGE 8 · COMBINED SHADOW PREVIEW</small><strong>'+esc(stage8Combined.summary?.canonical_products_shadow||0)+' canonical · '+esc(stage8Combined.summary?.rails_full_24||0)+' FULL · '+esc(stage8Combined.summary?.rails_good_12_to_23||0)+' GOOD · '+esc(stage8Combined.summary?.rails_thin_1_to_11||0)+' THIN · '+esc(stage8Combined.summary?.rails_empty||0)+' EMPTY</strong><span>'+esc(stage8Combined.summary?.shadow_admitted||0)+' visual-approved newly sourced products are Shadow-only · all non-approved candidates remain outside admission · Final Net Profit Verified: '+esc(stage8Combined.summary?.final_net_profit_verified_products||0)+' · Production unchanged.</span></article>');
       cards.push('<article><small>STAGE 8 · EXTERNAL SOURCE HANDOFF</small><strong>'+esc(stage8External.summary?.empty_rails||0)+' empty rails · gap '+esc(stage8External.summary?.total_gap_to_good||0)+' to GOOD · HyperSKU manual sourcing: '+esc(stage8External.summary?.hypersku_manual_sourcing_rails||0)+' rails</strong><span>EPROLO Wave A + deep scan exhausted for these gaps. CJ remains provisional unless product-detail/quote verifies. HyperSKU stays manual until API eligibility.</span></article>');
       cards.push('<article><small>STAGE 8 · EXTERNAL SOURCE PACKET</small><strong>'+esc(stage8Packet.summary?.requested_initial_candidates||0)+' initial candidates · '+esc(stage8Packet.summary?.preferred_candidates||0)+' preferred · '+esc(stage8Packet.summary?.rails||0)+' rails</strong><span>HyperSKU state: '+esc(stage8Packet.summary?.hypersku_message_state||'UNKNOWN')+' · markets: '+esc((stage8Packet.summary?.markets||[]).join('/'))+' · Final Net Profit Verified: '+esc(stage8Packet.summary?.final_net_profit_verified_products||0)+'.</span></article>');
+      cards.push('<article><small>STAGE 8 · ALTERNATIVE SOURCE ROUTING</small><strong>'+esc(stage8Sources.summary?.primary_provider||'UNKNOWN')+' primary · '+esc(stage8Sources.summary?.secondary_provider||'UNKNOWN')+' secondary · '+esc(stage8Sources.summary?.paid_hold_provider||'NONE')+' HOLD</strong><span>Verified new inventory from alternatives: '+esc(stage8Sources.summary?.verified_new_inventory_products||0)+' · every secondary source still requires exact SKU/variant/stock/shipping/media/profit truth.</span></article>');
       const precision=judge.calibration?.selected_threshold?.precision;
       cards.push('<article><small>LOCAL REVIEW JUDGE</small><strong>'+esc(judge.summary?.review_proposals||0)+' guarded review proposals</strong><span>Cross-rail: '+esc(judge.summary?.cross_rail_review_candidates||0)+' · Guard blocked: '+esc(judge.summary?.guard_blocked_proposals||0)+' · Holdout precision: '+esc(precision!=null?(precision*100).toFixed(2)+'%':'UNKNOWN')+' · Authority: NONE.</span></article>');
       for(const proposal of (judge.proposals||[]).filter(x=>x.effect==="CROSS_RAIL_REVIEW_CANDIDATE").slice(0,8)){

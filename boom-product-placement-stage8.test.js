@@ -13,8 +13,9 @@ const preview=read("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-COMBINED-ADMISSION-PR
 const ext=read("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-EXTERNAL-SOURCE-MANIFEST-2026-09-23.json");
 const cj=read("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-CJ-OFFICE-VERIFY-2026-09-23.json");
 const packet=read("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-EXTERNAL-SOURCE-PACKET-2026-09-23.json");
+const sources=read("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-ALTERNATIVE-SOURCE-MATRIX-2026-09-23.json");
 
-for(const x of [qa,ship,qp,visual,belts,beltVisual,preview,ext,cj,packet])assert.equal(x.production_effect,false);
+for(const x of [qa,ship,qp,visual,belts,beltVisual,preview,ext,cj,packet,sources])assert.equal(x.production_effect,false);
 assert.equal(preview.summary.stage7_canonical_products,s7.summary.canonical_products);
 assert.equal(preview.summary.shadow_admitted,(visual.summary.visually_approved||0)+(beltVisual.summary.visually_approved||0));
 assert.equal(preview.summary.canonical_products_shadow,s7.summary.canonical_products+preview.summary.shadow_admitted);
@@ -33,4 +34,10 @@ assert.equal(packet.summary.hypersku_message_state,"NOT_SENT_WAITING_FOR_REPLY")
 assert.equal(packet.summary.final_net_profit_verified_products,0);
 assert(packet.rails.every(x=>x.production_effect===false));
 assert(packet.rails.every(x=>x.commercial_requirements?.dropship_no_prepurchase===true));
+assert.equal(sources.summary.rails,packet.summary.rails);
+assert.equal(sources.summary.primary_provider,"HyperSKU");
+assert.equal(sources.summary.secondary_provider,"SupDropshipping");
+assert.equal(sources.summary.paid_hold_provider,"Syncee");
+assert.equal(sources.summary.verified_new_inventory_products,0);
+assert(sources.rails.every(x=>x.production_effect===false));
 console.log("Product Placement Stage8 Supplier Recovery Visual-Strict: PASS");

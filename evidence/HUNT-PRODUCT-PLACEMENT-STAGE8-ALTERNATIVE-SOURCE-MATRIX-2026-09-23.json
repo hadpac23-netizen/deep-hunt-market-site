@@ -1,0 +1,157 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-ALTERNATIVE-SOURCE-MATRIX-V1",
+  "date": "2026-09-23",
+  "mode": "SOURCE_ROUTING_ONLY",
+  "production_effect": false,
+  "summary": {
+    "rails": 5,
+    "primary_provider": "HyperSKU",
+    "secondary_provider": "SupDropshipping",
+    "paid_hold_provider": "Syncee",
+    "verified_new_inventory_products": 0,
+    "final_net_profit_verified_products": 0
+  },
+  "providers": {
+    "HyperSKU": {
+      "priority": 1,
+      "state": "PRIMARY_MANUAL_SOURCING_WAITING_REPLY",
+      "cost_state": "NO_PLATFORM_FEE_ASSUMED_FROM_EXISTING_THREAD_NOT_REVERIFIED_HERE",
+      "api_state": "OPEN_API_BLOCKED_UNTIL_2000_ORDERS",
+      "catalog_state": "NO_EXACT_SKU_QUOTE_FOR_STAGE8_GAPS",
+      "next_action": "WAIT_CURRENT_THREAD_REPLY_THEN_SEND_STAGE8_PACKET",
+      "sources": [
+        "GMAIL_CURRENT_THREAD"
+      ],
+      "verified_inventory": false
+    },
+    "SupDropshipping": {
+      "priority": 2,
+      "state": "SECONDARY_CANDIDATE_REQUIRES_ACCOUNT_AGENT_AND_API_APPROVAL",
+      "cost_state": "BASIC_FREE_PUBLIC_PLAN",
+      "api_state": "OPEN_API_BY_AGENT_REQUEST",
+      "catalog_state": "PUBLIC_CATEGORY_COVERAGE_ONLY_NOT_EXACT_SKU_VERIFIED",
+      "capabilities": [
+        "product_sourcing",
+        "quality_inspection",
+        "global_shipping",
+        "custom_packaging",
+        "open_api_by_request"
+      ],
+      "official_sources": [
+        "https://www.supdropshipping.com/pricing/",
+        "https://www.supdropshipping.com/sup-dropshipping-open-api/",
+        "https://www.supdropshipping.com/",
+        "https://www.supdropshipping.com/accessories/",
+        "https://www.supdropshipping.com/apparel/",
+        "https://www.supdropshipping.com/office-supplies/",
+        "https://www.supdropshipping.com/home-decor/"
+      ],
+      "verified_inventory": false
+    },
+    "Syncee": {
+      "priority": 99,
+      "state": "HOLD_PAID_RETAILER_AUTOMATION",
+      "cost_state": "FREE_BROWSE_ONLY_PAID_TO_IMPORT_MANAGE_PRODUCTS",
+      "api_state": "NOT_SELECTED",
+      "catalog_state": "NOT_EVALUATED_FOR_STAGE8_PRODUCTS",
+      "official_sources": [
+        "https://help.syncee.com/en/articles/8885830-pricing-and-plans",
+        "https://www.syncee.com/pricing"
+      ],
+      "verified_inventory": false
+    },
+    "Printful": {
+      "priority": 99,
+      "state": "NOT_FIT_FOR_STAGE8_GAPS_AND_FULFILLMENT_NOT_READY",
+      "catalog_state": "POD_CATALOG_LIVE",
+      "blocker": "FULFILLMENT_TOKEN_STORE_AND_DESTINATION_SHIPPING_PROOF",
+      "verified_inventory": false
+    },
+    "Gooten": {
+      "priority": 99,
+      "state": "NOT_FIT_FOR_STAGE8_GAPS_AND_VARIANT_SHIPPING_NOT_READY",
+      "catalog_state": "PUBLIC_CATALOG_LIVE",
+      "blocker": "AUTHENTICATED_VARIANT_AND_DESTINATION_SHIPPING_PROOF",
+      "verified_inventory": false
+    }
+  },
+  "rails": [
+    {
+      "rail": "accessories/gloves",
+      "provider_route": {
+        "HyperSKU": "MANUAL_SOURCING_REQUEST",
+        "SupDropshipping": "PUBLIC_ACCESSORIES_COVERAGE_EXPLICIT_GLOVES",
+        "Syncee": "HOLD_PAID",
+        "Printful": "NOT_SELECTED",
+        "Gooten": "NOT_SELECTED"
+      },
+      "primary_provider": "HyperSKU",
+      "secondary_provider": "SupDropshipping",
+      "admission_rule": "NO_PROVIDER_BECOMES_SHELF_SOURCE_WITHOUT_EXACT_SKU_VARIANT_STOCK_SHIPPING_MEDIA_RIGHTS_AND_PROFIT_TRUTH",
+      "production_effect": false
+    },
+    {
+      "rail": "home/furniture",
+      "provider_route": {
+        "HyperSKU": "MANUAL_SOURCING_REQUEST",
+        "SupDropshipping": "PUBLIC_HOME_DECOR_AND_AGENT_SOURCING_PARTIAL_FURNITURE_COVERAGE",
+        "Syncee": "HOLD_PAID",
+        "Printful": "NOT_FIT",
+        "Gooten": "NOT_FIT"
+      },
+      "primary_provider": "HyperSKU",
+      "secondary_provider": "SupDropshipping",
+      "admission_rule": "NO_PROVIDER_BECOMES_SHELF_SOURCE_WITHOUT_EXACT_SKU_VARIANT_STOCK_SHIPPING_MEDIA_RIGHTS_AND_PROFIT_TRUTH",
+      "production_effect": false
+    },
+    {
+      "rail": "men/men-clothing",
+      "provider_route": {
+        "HyperSKU": "MANUAL_SOURCING_REQUEST",
+        "SupDropshipping": "PUBLIC_APPAREL_COVERAGE",
+        "Syncee": "HOLD_PAID",
+        "Printful": "POD_ONLY_NOT_CURRENT_GAP_ROUTE",
+        "Gooten": "POD_ONLY_NOT_CURRENT_GAP_ROUTE"
+      },
+      "primary_provider": "HyperSKU",
+      "secondary_provider": "SupDropshipping",
+      "admission_rule": "NO_PROVIDER_BECOMES_SHELF_SOURCE_WITHOUT_EXACT_SKU_VARIANT_STOCK_SHIPPING_MEDIA_RIGHTS_AND_PROFIT_TRUTH",
+      "production_effect": false
+    },
+    {
+      "rail": "office/office-furniture",
+      "provider_route": {
+        "HyperSKU": "MANUAL_SOURCING_REQUEST",
+        "SupDropshipping": "PUBLIC_OFFICE_SUPPLIES_PLUS_AGENT_SOURCING_PARTIAL_FURNITURE_COVERAGE",
+        "Syncee": "HOLD_PAID",
+        "Printful": "NOT_FIT",
+        "Gooten": "NOT_FIT"
+      },
+      "primary_provider": "HyperSKU",
+      "secondary_provider": "SupDropshipping",
+      "admission_rule": "NO_PROVIDER_BECOMES_SHELF_SOURCE_WITHOUT_EXACT_SKU_VARIANT_STOCK_SHIPPING_MEDIA_RIGHTS_AND_PROFIT_TRUTH",
+      "production_effect": false
+    },
+    {
+      "rail": "tech/smart-home",
+      "provider_route": {
+        "HyperSKU": "MANUAL_SOURCING_REQUEST",
+        "SupDropshipping": "AGENT_SOURCING_POSSIBLE_BUT_PUBLIC_SMART_HOME_COVERAGE_NOT_VERIFIED",
+        "Syncee": "HOLD_PAID",
+        "Printful": "NOT_FIT",
+        "Gooten": "NOT_FIT"
+      },
+      "primary_provider": "HyperSKU",
+      "secondary_provider": "SupDropshipping",
+      "admission_rule": "NO_PROVIDER_BECOMES_SHELF_SOURCE_WITHOUT_EXACT_SKU_VARIANT_STOCK_SHIPPING_MEDIA_RIGHTS_AND_PROFIT_TRUTH",
+      "production_effect": false
+    }
+  ],
+  "rules": [
+    "Public category coverage is not exact SKU proof.",
+    "Free/basic access does not imply API approval.",
+    "No scraping.",
+    "No provider can bypass Placement, Quality, Variant/Stock, Shipping, Media Rights or Profit gates.",
+    "No Production mutation or supplier order."
+  ]
+}
