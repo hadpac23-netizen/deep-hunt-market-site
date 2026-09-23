@@ -1,7 +1,7 @@
 const fs=require("fs");
 const assert=require("assert");
 const p=JSON.parse(fs.readFileSync("boom-automation-control-plane.json","utf8"));
-assert.equal(p.version,"BOOM-AUTOMATION-CONTROL-PLANE-V1.1-PLACEMENT-GATE");
+assert.equal(p.version,"BOOM-AUTOMATION-CONTROL-PLANE-V1.2-PLACEMENT-TAXONOMY");
 assert.equal(p.mode,"SHADOW");
 assert.equal(p.authority.command,"boom_orchestrator");
 assert.equal(p.targets.departments,17);
@@ -17,6 +17,8 @@ for(const w of p.workflows){
 }
 const intake=p.workflows.find(x=>x.id==="supplier_product_intake");
 assert(intake && intake.stages.includes("placement_decision"),"supplier intake must include placement decision");
+assert(intake.stages.includes("supplier_taxonomy_verification"),"supplier intake must include supplier taxonomy verification");
+assert(intake.stages.indexOf("supplier_taxonomy_verification")<intake.stages.indexOf("department_gate"),"supplier taxonomy must run before department gate");
 assert(intake.stages.indexOf("placement_decision")<intake.stages.indexOf("shelf_candidate"),"placement must run before shelf candidate");
 assert(String(intake.gate).includes("PLACEMENT_PASS"),"supplier intake must require placement PASS");
 const placementWatch=p.workflows.find(x=>x.id==="product_placement_watch");
