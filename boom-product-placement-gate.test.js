@@ -28,3 +28,20 @@ assert.notEqual(r.canonical_category,"jewelry-rings");
 r=e("New Men's Computer Handbag Light Notebook 15.6 Inch Business Briefcase","women","women-underwear");
 assert.notEqual(r.canonical_category,"stationery");
 console.log("Product Placement false-positive regressions: PASS");
+
+for(const [title,dep,cat,bad] of [
+  ["Handmade Plush Cat Ear Fox Headband Accessory Realistic Animal Ears","toys","plush-toys","plush-toys"],
+  ["AirPods silicone wireless Bluetooth earphone protective case","tech","audio","audio"],
+  ["WebCam Cover Shutter Magnet Slider Privacy Sticker","tech","cameras","cameras"],
+  ["Refrigerator Egg Storage Box Kitchen Large Capacity","home","home-storage","home-storage"],
+  ["Dog socks pet socks non-slip cotton socks","accessories","socks","socks"],
+  ["Pet absorbent towel dog cat bath towel","home","home-textiles","home-textiles"],
+  ["Transparent Waterproof Glue Home Decoration Repair Leak","home","home-decor","home-decor"],
+  ["Reusable Drinking Straw with Cleaning Brush","home","cleaning","cleaning"],
+  ["Automotive Sunshade Mirror LED Makeup Mirror","home","mirrors","mirrors"],
+  ["Hand Sanitizer Dispenser Bracelet Wristband","accessories","jewelry-bracelets","jewelry-bracelets"]
+]){
+  const q=e(title,dep,cat);
+  assert(!(q.decision==="PASS"&&q.canonical_category===bad),title+" must not self-validate wrong category");
+}
+console.log("Product Placement Stage 2 regressions: PASS");

@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1",
+  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1.1-STAGE2",
   "mode": "SHADOW_ALWAYS_ON",
   "authority": "NONE",
   "owner": "commerce_truth_brain",
@@ -84,5 +84,31 @@
     "shadow_audit": false,
     "shadow_move_proposal": false,
     "production_bulk_reclassification": true
+  },
+  "classification_layers": [
+    {
+      "id": "L1_EXPLICIT_PRODUCT_TYPE",
+      "status": "ACTIVE",
+      "rule": "High-precision explicit product-type evidence; current category never counts as evidence."
+    },
+    {
+      "id": "L2_DETERMINISTIC_CATEGORY_VALIDATION",
+      "status": "ACTIVE",
+      "rule": "High-precision validation rules for Beauty, Kids, Kitchen, Tech, Sports, Pets, Camping, Travel, Home and other major categories; unsafe cross-category suggestions abstain to REVIEW."
+    },
+    {
+      "id": "L3_SUPPLIER_TAXONOMY_ATTRIBUTES",
+      "status": "NEXT",
+      "rule": "Use independent official supplier taxonomy/attributes to resolve remaining UNKNOWN items; supplier category is evidence but never sole authority."
+    }
+  ],
+  "current_shadow_snapshot": {
+    "products_checked": 5854,
+    "keep_supported": 1546,
+    "safe_move_candidates": 322,
+    "rule_or_conflict_review": 983,
+    "unknown_hold": 3003,
+    "automatic_moves": 0,
+    "production_mutations": 0
   }
 }

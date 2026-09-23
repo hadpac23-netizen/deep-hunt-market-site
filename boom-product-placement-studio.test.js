@@ -40,6 +40,6 @@ assert(skills.skills.some(x=>x.id==="classify_product_placement"&&x.owner==="com
 assert(supplier.stages.includes("placement_decision"));
 assert(supplier.stages.indexOf("placement_decision")<supplier.stages.indexOf("shelf_candidate"));
 assert(supplier.pass_requirements.includes("placement_decision = PASS"));
-assert(readiness.areas.some(x=>x.id==="product_placement_gate"&&x.status==="CODED_SHADOW_ALWAYS_ON_STUDIO"));
+assert(readiness.areas.some(x=>x.id==="product_placement_gate"&&x.status==="CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE2"));
 
 console.log("BOOM Studio Product Placement Gate: PASS");
