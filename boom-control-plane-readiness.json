@@ -171,8 +171,8 @@
     },
     {
       "id": "product_placement_gate",
-      "status": "CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE6",
-      "evidence": "Stage6 Overlap Resolution covers Gift Decor, Kitchen/Drinkware, Electrical Lighting, Beauty Tools, Sports/Fitness and Pet Accessories. BOOM Studio reruns the overlap runtime every 60s. SAFE_MOVE is preview-only; Production mutation remains OFF."
+      "status": "CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE7",
+      "evidence": "Stage7 exhausts placement recovery before sourcing. Current shadow result: 3,603 canonical products; 32 FULL, 32 GOOD, 59 THIN, 10 EMPTY. Gap Map: 64 healthy, 36 evidence-first, 23 new-source-required, 10 source-misplaced/unsupported. Production mutation remains OFF."
     }
   ],
   "blockers": [

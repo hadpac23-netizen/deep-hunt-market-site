@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-AUTOMATION-CONTROL-PLANE-V1.3-PLACEMENT-OVERLAP",
+  "version": "BOOM-AUTOMATION-CONTROL-PLANE-V1.4-PLACEMENT-RECOVERY",
   "mode": "SHADOW",
   "authority": {
     "owner": "OWNER",
@@ -140,7 +140,10 @@
         "overlap_resolution",
         "conflict_check",
         "placement_decision",
-        "emit_move_review_unknown_evidence"
+        "emit_move_review_unknown_evidence",
+        "empty_thin_recovery",
+        "sourcing_gap_classification",
+        "empty_thin_recovery_assessment"
       ],
       "gate": "independent placement evidence; current category never self-proves",
       "material_action": "none",
@@ -148,7 +151,8 @@
       "failure_route": "taxonomy_review",
       "contract": "boom-product-placement-gate-contract.json",
       "output": "KEEP / MOVE recommendation / HOLD_REVIEW / HOLD_UNKNOWN; never auto-move Production",
-      "overlap_contract": "boom-product-placement-stage6-contract.json"
+      "overlap_contract": "boom-product-placement-stage6-contract.json",
+      "recovery_contract": "boom-product-placement-stage7-contract.json"
     },
     {
       "id": "shelf_coverage_17x1000",

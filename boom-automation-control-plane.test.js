@@ -1,7 +1,7 @@
 const fs=require("fs");
 const assert=require("assert");
 const p=JSON.parse(fs.readFileSync("boom-automation-control-plane.json","utf8"));
-assert.equal(p.version,"BOOM-AUTOMATION-CONTROL-PLANE-V1.3-PLACEMENT-OVERLAP");
+assert(/^BOOM-AUTOMATION-CONTROL-PLANE-V1\.4-.*RECOVERY$/.test(p.version),"Stage7 recovery control-plane version required");
 assert.equal(p.mode,"SHADOW");
 assert.equal(p.authority.command,"boom_orchestrator");
 assert.equal(p.targets.departments,17);
@@ -23,6 +23,9 @@ assert(intake.stages.indexOf("placement_decision")<intake.stages.indexOf("shelf_
 assert(String(intake.gate).includes("PLACEMENT_PASS"),"supplier intake must require placement PASS");
 const placementWatch=p.workflows.find(x=>x.id==="product_placement_watch");
 assert(placementWatch && placementWatch.mode==="SHADOW_ALWAYS_ON","always-on placement watch required");
+assert(placementWatch.stages.includes("empty_thin_recovery"),"placement watch must recover empty/thin rails");
+assert(placementWatch.stages.includes("sourcing_gap_classification"),"placement watch must classify sourcing gaps");
+assert.equal(placementWatch.recovery_contract,"boom-product-placement-stage7-contract.json");
 const n8n=p.adapters.find(x=>x.id==="n8n_adapter");
 assert(n8n,"n8n adapter required");
 assert.equal(n8n.authority,"NONE");

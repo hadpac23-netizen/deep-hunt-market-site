@@ -1,0 +1,43 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE7-RECOVERY-V1",
+  "mode": "SHADOW_ALWAYS_ON",
+  "authority": "NONE",
+  "owner": "commerce_truth_brain",
+  "purpose": "Recover clean inventory from Stage6 quarantine before any new sourcing, then classify residual rails into evidence-blocked versus true source gaps.",
+  "inputs": [
+    "stage6_rebuild_preview",
+    "stage6_quarantine",
+    "stage7_empty_recovery",
+    "stage7_thin_recovery_wave_a",
+    "stage7_thin_recovery_wave_b",
+    "stage7_thin_recovery_wave_c"
+  ],
+  "states": [
+    "HEALTHY",
+    "EVIDENCE_BLOCKED_CAN_REACH_GOOD",
+    "NEW_SOURCE_REQUIRED_TO_REACH_GOOD",
+    "SOURCE_MISPLACED_OR_UNSUPPORTED",
+    "TRUE_SOURCE_GAP"
+  ],
+  "rules": [
+    "Existing source count is not shelf truth.",
+    "Only Stage6 quarantine products may be recovered.",
+    "No Stage6 SAFE MOVE is overridden.",
+    "Recovery KEEP requires independent supplier taxonomy or explicit product-type evidence.",
+    "REVIEW, UNKNOWN and HOLD remain quarantined.",
+    "New sourcing begins only after recovery is exhausted or insufficient.",
+    "Every newly sourced product must re-enter Product Placement Gate before quality, stock, shipping and profit gates.",
+    "Shelf density never overrides placement truth."
+  ],
+  "owner_gate": {
+    "shadow_recovery_audit": false,
+    "shadow_rebuild_preview": false,
+    "production_rebuild": true,
+    "bulk_supplier_activation": true
+  },
+  "studio": {
+    "surface": "BOOM Brain Studio Product Placement Gate",
+    "refresh_seconds": 60,
+    "always_on": true
+  }
+}

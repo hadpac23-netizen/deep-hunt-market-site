@@ -1,0 +1,14 @@
+const assert=require("node:assert/strict");
+const fs=require("node:fs");
+const contract=JSON.parse(fs.readFileSync("boom-product-placement-stage7-contract.json","utf8"));
+const preview=JSON.parse(fs.readFileSync("evidence/HUNT-PRODUCT-PLACEMENT-STAGE7-REBUILD-PREVIEW-2026-09-23.json","utf8"));
+const gaps=JSON.parse(fs.readFileSync("evidence/HUNT-PRODUCT-PLACEMENT-STAGE7-GAP-MAP-2026-09-23.json","utf8"));
+assert.equal(contract.mode,"SHADOW_ALWAYS_ON");
+assert.equal(contract.authority,"NONE");
+assert.equal(preview.production_effect,false);
+assert.equal(gaps.production_effect,false);
+assert(preview.summary.stage7_recovered_keep>0);
+assert(gaps.summary.states.HEALTHY>0);
+assert(gaps.rules.some(x=>/new sourcing begins only/i.test(x)));
+assert.equal(contract.owner_gate.production_rebuild,true);
+console.log("Product Placement Stage7 Recovery: PASS");

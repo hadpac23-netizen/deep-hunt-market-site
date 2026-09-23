@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1.4-STAGE6-OVERLAP",
+  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1.5-STAGE7-RECOVERY",
   "mode": "SHADOW_ALWAYS_ON",
   "authority": "NONE",
   "owner": "commerce_truth_brain",
@@ -73,7 +73,9 @@
     "conflict_check",
     "confidence",
     "placement_decision",
-    "emit_evidence"
+    "emit_evidence",
+    "empty_thin_recovery",
+    "sourcing_gap_classification"
   ],
   "always_on_policy": {
     "studio_watch": true,
@@ -108,6 +110,11 @@
       "id": "L4_OVERLAP_RESOLUTION",
       "status": "ACTIVE",
       "rule": "High-overlap rails separate product family from subtype; feature/context words cannot override primary product family. SAFE_MOVE remains shadow-only."
+    },
+    {
+      "id": "L5_EMPTY_THIN_RECOVERY",
+      "status": "ACTIVE",
+      "rule": "Recover only high-confidence KEEP from Stage6 quarantine before any new sourcing; residual rails are classified as evidence-blocked or source-required."
     }
   ],
   "current_shadow_snapshot": {
@@ -175,5 +182,37 @@
     "hold_out_of_scope": 1,
     "clean_rebuild_canonical_products": 3371,
     "clean_rebuild_empty_rails": 32
+  },
+  "stage7_recovery_contract": "boom-product-placement-stage7-contract.json",
+  "stage7_recovery_snapshot": {
+    "recovered_keep": 232,
+    "canonical_products": 3603,
+    "rails_full": 32,
+    "rails_good": 32,
+    "rails_thin": 59,
+    "rails_empty": 10,
+    "healthy_rails": 64,
+    "evidence_blocked_rails": 36,
+    "new_source_required_rails": 23,
+    "source_misplaced_or_unsupported_rails": 10
+  },
+  "recovery_contract": "boom-product-placement-stage7-contract.json",
+  "recovery_rule": "Evidence-blocked empty/thin rails must exhaust Stage7 recovery before supplier sourcing. Shelf density is never placement evidence.",
+  "stage7_snapshot": {
+    "canonical_products": 3603,
+    "rails_full_24": 32,
+    "rails_good_12_to_23": 32,
+    "rails_thin_1_to_11": 59,
+    "rails_empty": 10,
+    "empty_recovered": 174,
+    "thin_recovered": 58,
+    "total_recovered": 232,
+    "gap_states": {
+      "healthy": 64,
+      "evidence_blocked_can_reach_good": 36,
+      "new_source_required_to_reach_good": 23,
+      "source_misplaced_or_unsupported": 10
+    },
+    "production_mutation": false
   }
 }

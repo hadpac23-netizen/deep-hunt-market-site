@@ -22,7 +22,7 @@
       return;
     }
     try{
-      const [contract,shelves,taxonomy,detailTaxonomy,stage4Queue,stage6Evidence,stage6Preview,judge]=await Promise.all([
+      const [contract,shelves,taxonomy,detailTaxonomy,stage4Queue,stage6Evidence,stage6Preview,stage7Empty,stage7Thin,stage7Final,stage7Manifest,judge]=await Promise.all([
         fetchJson("boom-product-placement-gate-contract.json"),
         fetchJson("evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json"),
         fetchJson("evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json").catch(()=>({verified:[],summary:{}})),
@@ -30,6 +30,10 @@
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE4-QUEUE-2026-09-23.json").catch(()=>({summary:{},top_unknown_rails:[]})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE6-OVERLAP-RESOLUTION-2026-09-23.json").catch(()=>({summary:{states:{}},results:[]})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE6-REBUILD-PREVIEW-2026-09-23.json").catch(()=>({summary:{}})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE7-EMPTY-RECOVERY-2026-09-23.json").catch(()=>({summary:{}})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE7-THIN-RECOVERY-2026-09-23.json").catch(()=>({summary:{}})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE7-FINAL-PREVIEW-2026-09-23.json").catch(()=>({summary:{}})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE7-SOURCING-MANIFEST-2026-09-23.json").catch(()=>({summary:{},rails:[]})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-LOCAL-JUDGE-2026-09-23.json").catch(()=>({summary:{},calibration:{},proposals:[]}))
       ]);
       const taxonomyKeep=new Map((taxonomy.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
@@ -67,6 +71,8 @@
         return {...product,supplier_category_id:ev.supplier_category_id||null};
       }).filter(Boolean);
       const overlapReport=overlapGate?.audit?overlapGate.audit(overlapInputs):{summary:{}};
+      const s6Runtime=overlapReport.summary||{};
+      const s6=(s6Runtime.total||0)>0?s6Runtime:(stage6Evidence.summary?.states||{});
       const ps=report.summary||{};
       if(state)state.textContent="ALWAYS ON · SHADOW · "+String(ps.total||0)+" CHECKED";
       if(summary){
@@ -77,8 +83,10 @@
           metric(ps.HOLD_UNKNOWN||0,"UNKNOWN · held"),
           metric(taxonomy.summary?.taxonomy_verified_keep_support||0,"Supplier taxonomy KEEP support"),
           metric(detailTaxonomy.summary?.states?.SUPPLIER_TAXONOMY_CONFLICT_CURRENT_RAIL||0,"Supplier taxonomy conflicts · REVIEW"),
-          metric(overlapReport.summary?.SAFE_MOVE_CANDIDATE||0,"Stage6 SAFE MOVE · shadow"),
-          metric(overlapReport.summary?.REVIEW||0,"Stage6 overlap REVIEW"),
+          metric(s6.SAFE_MOVE_CANDIDATE||0,"Stage6 SAFE MOVE · shadow"),
+          metric(s6.REVIEW||0,"Stage6 overlap REVIEW"),
+          metric(stage7Final.summary?.total_stage7_recovered||0,"Stage7 recovered"),
+          metric(stage7Manifest.summary?.empty_rails||0,"Stage7 empty gaps"),
           metric(judge.summary?.review_proposals||0,"Local Judge · REVIEW only"),
           metric(contract.always_on_policy?.studio_refresh_seconds||60,"Refresh seconds")
         ].join("");
@@ -95,9 +103,11 @@
       cards.push('<article><small>ENFORCEMENT</small><strong>'+esc(contract.enforcement_point||"MANDATORY")+'</strong><span>Auto move: '+(contract.always_on_policy?.automatic_product_move?"ON":"OFF")+' · Production mutation: '+(contract.always_on_policy?.production_mutation?"ON":"OFF")+'</span></article>');
       cards.push('<article><small>SUPPLIER TAXONOMY</small><strong>'+esc(taxonomy.summary?.taxonomy_verified_keep_support||0)+' verified KEEP supports</strong><span>Official EPROLO read-only taxonomy · KEEP support only · never auto-MOVE.</span></article>');
       cards.push('<article><small>SUPPLIER TAXONOMY CONFLICTS</small><strong>'+esc(detailTaxonomy.summary?.states?.SUPPLIER_TAXONOMY_CONFLICT_CURRENT_RAIL||0)+' REVIEW-only conflicts</strong><span>Exact supplier taxonomy disagrees with the current rail. Conflict overrides title PASS and cannot auto-MOVE.</span></article>');
-      const s6=overlapReport.summary||{};
       cards.push('<article><small>STAGE 6 · OVERLAP RESOLUTION</small><strong>'+esc((s6.KEEP||0)+' KEEP · '+(s6.SAFE_MOVE_CANDIDATE||0)+' SAFE MOVE · '+(s6.REVIEW||0)+' REVIEW · '+(s6.UNKNOWN||0)+' UNKNOWN')+'</strong><span>Runs every Studio refresh on Gift Decor, Drinkware, Electrical Lighting, Beauty Tools, Sports/Fitness and Pet Accessories. Feature words cannot override primary product family.</span></article>');
       cards.push('<article><small>STAGE 6 · CLEAN REBUILD PREVIEW</small><strong>'+esc(stage6Preview.summary?.canonical_products||0)+' canonical products · '+esc(stage6Preview.summary?.rails_empty||0)+' empty rails</strong><span>Shadow preview only · '+esc(stage6Preview.summary?.rails_full_24||0)+' FULL · '+esc(stage6Preview.summary?.rails_good_12_to_23||0)+' GOOD · '+esc(stage6Preview.summary?.rails_thin_1_to_11||0)+' THIN. Profit Gate comes after placement truth.</span></article>');
+      cards.push('<article><small>STAGE 7 · EMPTY/THIN RECOVERY</small><strong>'+esc((stage7Empty.summary?.keep_recoverable||0)+' empty KEEP · '+(stage7Thin.summary?.keep_recoverable||0)+' thin KEEP · '+(stage7Final.summary?.total_stage7_recovered||0)+' total recovered')+'</strong><span>Evidence recovery before sourcing · REVIEW/UNKNOWN remain quarantined · no Production mutation.</span></article>');
+      cards.push('<article><small>STAGE 7 · FINAL CLEAN PREVIEW</small><strong>'+esc(stage7Final.summary?.canonical_products||0)+' canonical · '+esc(stage7Final.summary?.rails_full_24||0)+' FULL · '+esc(stage7Final.summary?.rails_good_12_to_23||0)+' GOOD · '+esc(stage7Final.summary?.rails_thin_1_to_11||0)+' THIN · '+esc(stage7Final.summary?.rails_empty||0)+' EMPTY</strong><span>Recovery only. No newly sourced inventory is counted here.</span></article>');
+      cards.push('<article><small>STAGE 7 · SOURCING MANIFEST</small><strong>'+esc(stage7Manifest.summary?.empty_rails||0)+' EMPTY · '+esc(stage7Manifest.summary?.thin_rails||0)+' THIN · '+esc(stage7Manifest.summary?.new_source_required||0)+' NEW SOURCE · '+esc(stage7Manifest.summary?.evidence_blocked||0)+' EVIDENCE FIRST · '+esc(stage7Manifest.summary?.source_misplaced_or_unsupported||0)+' MISPLACED SOURCE</strong><span>Gap to GOOD: '+esc(stage7Manifest.summary?.total_gap_to_good||0)+' · Gap to FULL: '+esc(stage7Manifest.summary?.total_gap_to_24||0)+' · every new candidate must pass Placement → Quality → Stock/Shipping → Profit before shelf admission.</span></article>');
       const precision=judge.calibration?.selected_threshold?.precision;
       cards.push('<article><small>LOCAL REVIEW JUDGE</small><strong>'+esc(judge.summary?.review_proposals||0)+' guarded review proposals</strong><span>Cross-rail: '+esc(judge.summary?.cross_rail_review_candidates||0)+' · Guard blocked: '+esc(judge.summary?.guard_blocked_proposals||0)+' · Holdout precision: '+esc(precision!=null?(precision*100).toFixed(2)+'%':'UNKNOWN')+' · Authority: NONE.</span></article>');
       for(const proposal of (judge.proposals||[]).filter(x=>x.effect==="CROSS_RAIL_REVIEW_CANDIDATE").slice(0,8)){

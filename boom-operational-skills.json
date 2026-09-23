@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-OPERATIONAL-SKILLS-V1.9-PLACEMENT-OVERLAP",
+  "version": "BOOM-OPERATIONAL-SKILLS-V2.0-STAGE7-RECOVERY",
   "mode": "SHADOW",
   "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
   "skills": [
@@ -472,6 +472,27 @@
         "target_rail",
         "reason",
         "confidence"
+      ],
+      "tools": [],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "recover_empty_thin_rails",
+      "title": "Recover Empty and Thin Rails",
+      "owner": "commerce_truth_brain",
+      "purpose": "Exhaust placement-evidence recovery before requesting new supplier inventory.",
+      "inputs": [
+        "stage6_rebuild_preview",
+        "supplier_taxonomy",
+        "quarantine",
+        "current_shelves"
+      ],
+      "outputs": [
+        "recovered_keep",
+        "remaining_empty",
+        "remaining_thin",
+        "sourcing_manifest"
       ],
       "tools": [],
       "material": false,
