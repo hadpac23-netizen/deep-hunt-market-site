@@ -1,0 +1,55 @@
+{
+  "version": "BOOM-BDIF-HUNT-1000-TRUTH-GAP-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW",
+  "production_effect": false,
+  "pilot_contract": "boom-bdif-hunt-1000-pilot-contract.json",
+  "summary": {
+    "selected_products": 1000,
+    "product_market_pairs": 4000,
+    "provider_counts": {
+      "CJdropshipping": 39,
+      "Gooten": 13,
+      "EPROLO": 948
+    },
+    "departments_represented": 17,
+    "categories_represented": 132,
+    "current_hunt_shadow_candidates": 1000,
+    "deterministic_product_gate": {
+      "PASS": 156,
+      "UNKNOWN": 3844
+    },
+    "deterministic_profit_gate": {
+      "PASS": 156,
+      "UNKNOWN": 3844
+    },
+    "gate_benchmark_ready_pairs": 156,
+    "full_pilot_input_ready_pairs": 0,
+    "business_outcome_ready_pairs": 0,
+    "model_assisted_bdif": "NOT_RUN",
+    "winner_status": "NOT_DETERMINED"
+  },
+  "product_truth_coverage": {
+    "product_identity_verified": 1000,
+    "supplier_price_verified": 1000,
+    "stock_verified": 987,
+    "media_quality_verified": 13,
+    "category_verified": 1000
+  },
+  "market_truth_coverage": {
+    "exact_variant_verified_pairs": 180,
+    "shipping_verified_pairs": 156,
+    "shipping_provisional_pairs": 50,
+    "target_price_proven_pairs": 156,
+    "estimated_margin_proven_pairs": 156,
+    "landed_cost_provisional_pairs": 206
+  },
+  "interpretation": [
+    "The 1,000-product cohort is real and source-backed.",
+    "Current HUNT shadow-shelf inclusion is not equivalent to live sell readiness.",
+    "Deterministic BDIF intentionally returns UNKNOWN when exact variant or destination shipping is not VERIFIED.",
+    "FULL_PILOT_INPUT_READY remains strict; provisional target price, margin or landed cost do not count as verified.",
+    "Model-assisted BDIF has not been run; no model comparison or winner is claimed.",
+    "Business-profit superiority cannot be measured until real attributed outcomes exist."
+  ]
+}

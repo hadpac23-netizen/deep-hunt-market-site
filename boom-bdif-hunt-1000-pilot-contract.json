@@ -1,0 +1,58 @@
+{
+  "version": "BOOM-BDIF-HUNT-1000-PILOT-V1",
+  "mode": "SHADOW",
+  "authority": "NONE",
+  "production_effect": false,
+  "pilot_size": 1000,
+  "target_markets": ["IL", "DE", "US", "SG"],
+  "purpose": "Build one real-product cohort and compare decision behavior without inventing missing truth or declaring a business winner before outcome evidence exists.",
+  "lanes": {
+    "CURRENT_HUNT": {
+      "role": "existing shadow-shelf baseline",
+      "rule": "Record current HUNT shadow eligibility exactly as represented by existing shelf evidence; do not reinterpret it as live sell readiness."
+    },
+    "DETERMINISTIC_BDIF": {
+      "role": "policy/truth gate baseline",
+      "rule": "Run the canonical BDIF kernel with hard truth requirements and UNKNOWN fail-closed behavior."
+    },
+    "MODEL_ASSISTED_BDIF": {
+      "role": "future evaluated candidate",
+      "rule": "Must use actual model outputs with model/version/cost/latency captured. Never fabricate model results.",
+      "initial_status": "NOT_RUN"
+    }
+  },
+  "required_product_fields": [
+    "supplier",
+    "product_identity",
+    "exact_variant",
+    "stock",
+    "supplier_price",
+    "shipping_by_destination",
+    "destination",
+    "landed_cost",
+    "target_price",
+    "estimated_margin",
+    "media_quality",
+    "category",
+    "metadata"
+  ],
+  "readiness_levels": {
+    "COHORT_REAL_PRODUCT": "Product exists in current HUNT shadow evidence with supplier identity and product id.",
+    "GATE_BENCHMARK_READY": "Exact variant, stock and destination shipping are VERIFIED for the evaluated market.",
+    "FULL_PILOT_INPUT_READY": "All required product fields including target price, estimated margin and media quality are verified/proven for the evaluated market.",
+    "BUSINESS_OUTCOME_READY": "Real order/outcome evidence exists and realized economics can be attributed without inference."
+  },
+  "evaluation_rules": [
+    "The same selected 1,000 products are used for every lane.",
+    "Unknown, stale or conflicted evidence remains non-PASS.",
+    "Current HUNT shadow shelf status is not treated as live sell readiness.",
+    "Gate correctness may be measured before launch; business-profit superiority may not be claimed until real outcomes exist.",
+    "Model-assisted results remain NOT_RUN until real model execution is captured.",
+    "No Production deploy, live payment, supplier order, price mutation or fulfillment activation is permitted by this pilot."
+  ],
+  "margin_reference": {
+    "source": "boom-cj-retail-price-gate-v2-contract.json",
+    "target_product_margin": 0.35,
+    "note": "Used only where existing verified shadow economics are present; never invented for suppliers without verified economics."
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "version": "BOOM-BDIF-HUNT-PHASE-C-STATUS-V1",
+  "date": "2026-09-23",
+  "branch": "feature/bdif-hunt-1000-pilot-v1",
+  "mode": "SHADOW",
+  "production_effect": false,
+  "checkout_change": false,
+  "payment_activation": false,
+  "supplier_order": false,
+  "summary": {
+    "selected_products": 1000,
+    "product_market_pairs": 4000,
+    "provider_counts": {
+      "CJdropshipping": 39,
+      "Gooten": 13,
+      "EPROLO": 948
+    },
+    "departments_represented": 17,
+    "categories_represented": 132,
+    "current_hunt_shadow_candidates": 1000,
+    "deterministic_product_gate": {
+      "PASS": 156,
+      "UNKNOWN": 3844
+    },
+    "deterministic_profit_gate": {
+      "PASS": 156,
+      "UNKNOWN": 3844
+    },
+    "gate_benchmark_ready_pairs": 156,
+    "full_pilot_input_ready_pairs": 0,
+    "business_outcome_ready_pairs": 0,
+    "model_assisted_bdif": "NOT_RUN",
+    "winner_status": "NOT_DETERMINED"
+  },
+  "truth_coverage": {
+    "product_identity_verified": 1000,
+    "supplier_price_verified": 1000,
+    "stock_verified": 987,
+    "media_quality_verified": 13,
+    "category_verified": 1000
+  },
+  "market_truth_coverage": {
+    "exact_variant_verified_pairs": 180,
+    "shipping_verified_pairs": 156,
+    "shipping_provisional_pairs": 50,
+    "target_price_proven_pairs": 156,
+    "estimated_margin_proven_pairs": 156,
+    "landed_cost_provisional_pairs": 206
+  },
+  "provider_breakdown": {
+    "CJdropshipping": {
+      "products": 39,
+      "product_market_pairs": 156,
+      "gate_pass_pairs": 156,
+      "exact_variant_verified_pairs": 156,
+      "shipping_verified_pairs": 156,
+      "shipping_provisional_pairs": 0,
+      "media_quality_verified_products": 0,
+      "stock_verified_products": 39
+    },
+    "EPROLO": {
+      "products": 948,
+      "product_market_pairs": 3792,
+      "gate_pass_pairs": 0,
+      "exact_variant_verified_pairs": 24,
+      "shipping_verified_pairs": 0,
+      "shipping_provisional_pairs": 50,
+      "media_quality_verified_products": 13,
+      "stock_verified_products": 948
+    },
+    "Gooten": {
+      "products": 13,
+      "product_market_pairs": 52,
+      "gate_pass_pairs": 0,
+      "exact_variant_verified_pairs": 0,
+      "shipping_verified_pairs": 0,
+      "shipping_provisional_pairs": 0,
+      "media_quality_verified_products": 0,
+      "stock_verified_products": 0
+    }
+  },
+  "interpretation": {
+    "what_is_real": "All 1,000 selected products come from current HUNT supplier-backed shadow evidence.",
+    "what_is_proven_now": "156 CJ product-market pairs have exact variant + stock + destination shipping verified and pass the deterministic Product Gate.",
+    "what_is_not_proven": "No pair is FULL_PILOT_INPUT_READY because target price/margin/landed cost remain provisional and media quality is not verified for most products.",
+    "model_assisted": "NOT_RUN — no fake model outputs or benchmark scores were created.",
+    "business_winner": "NOT_DETERMINED — realized business outcome evidence is still zero."
+  },
+  "verification_queue": [
+    {
+      "priority": 1,
+      "provider": "CJdropshipping",
+      "scope": "39 products / 156 market pairs",
+      "goal": "Convert gate-ready pairs into full pilot inputs.",
+      "missing": [
+        "media_quality_verification",
+        "final landed-cost components (tax/import where applicable)",
+        "payment/returns/FX assumptions or verified reserves",
+        "full pilot target-price/economics proof"
+      ],
+      "do_not_do": [
+        "Production repricing",
+        "live checkout",
+        "supplier orders"
+      ]
+    },
+    {
+      "priority": 2,
+      "provider": "EPROLO",
+      "scope": "948 products / 3792 market pairs",
+      "goal": "Backfill exact variant and destination shipping truth in controlled batches.",
+      "missing": [
+        "exact_variant for most products",
+        "VERIFIED destination shipping (current global matrix is provisional/shadow for enriched subset)",
+        "target price",
+        "estimated margin",
+        "media QA for most products"
+      ],
+      "do_not_do": [
+        "promote provisional shipping to VERIFIED",
+        "bulk live exposure"
+      ]
+    },
+    {
+      "priority": 3,
+      "provider": "Gooten",
+      "scope": "13 products / 52 market pairs",
+      "goal": "Obtain authenticated API/account proof before claiming stock/shipping readiness.",
+      "missing": [
+        "exact variants",
+        "stock/production availability",
+        "destination shipping quotes",
+        "media QA",
+        "target-price/economics proof"
+      ],
+      "do_not_do": [
+        "treat public catalog snapshot as live stock",
+        "submit live orders"
+      ]
+    }
+  ],
+  "next_gate": "Do not run MODEL_ASSISTED_BDIF as a scored competitor until an independently labeled truth/eval set exists. It may be run later with model/version/cost/latency captured."
+}
