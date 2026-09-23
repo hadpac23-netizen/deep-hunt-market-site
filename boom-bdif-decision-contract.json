@@ -1,0 +1,85 @@
+{
+  "version": "BOOM-BDIF-DECISION-CONTRACT-V1",
+  "mode": "SHADOW",
+  "authority": "NONE",
+  "owner": "boom_orchestrator",
+  "purpose": "Canonical machine-readable decision envelope shared by BOOM/HUNT decision engines without granting execution authority.",
+  "statuses": [
+    "PASS",
+    "REVIEW",
+    "REJECT",
+    "UNKNOWN",
+    "ESCALATE"
+  ],
+  "risk_levels": [
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+  ],
+  "required_fields": [
+    "decision_id",
+    "decision_type",
+    "options",
+    "selected",
+    "confidence",
+    "confidence_basis",
+    "truth_quality",
+    "risk",
+    "reasons",
+    "evidence_refs",
+    "engine_used",
+    "policy_checks",
+    "requires_owner_gate",
+    "timestamp"
+  ],
+  "optional_fields": [
+    "model",
+    "model_version",
+    "cost",
+    "latency_ms",
+    "predicted_outcome",
+    "actual_outcome",
+    "evaluation",
+    "human_override",
+    "owner_decision",
+    "correlation_id",
+    "run_id"
+  ],
+  "option_labels": [
+    "PASS",
+    "REVIEW",
+    "REJECT",
+    "UNKNOWN",
+    "ESCALATE"
+  ],
+  "truth_quality_states": [
+    "VERIFIED",
+    "PROVISIONAL",
+    "STALE",
+    "CONFLICTED",
+    "UNKNOWN"
+  ],
+  "confidence_basis": [
+    "DETERMINISTIC_POLICY",
+    "CALIBRATED_HISTORY",
+    "UNCALIBRATED_MODEL",
+    "MULTI_JUDGE",
+    "HUMAN"
+  ],
+  "invariants": [
+    "No free-form-only material decision.",
+    "UNKNOWN is a valid terminal recommendation and must never be silently coerced to PASS or REJECT.",
+    "Rules and hard policies outrank model guesses.",
+    "Evidence refs are required for material PASS/REJECT decisions.",
+    "Confidence without calibration evidence must be labeled UNCALIBRATED_MODEL.",
+    "Decision output never grants execution authority.",
+    "CRITICAL actions require Owner Gate even when decision selected is PASS."
+  ],
+  "existing_reuse": {
+    "reason_codes": "boom-decision-reason-codes.json",
+    "owner_gate": "boom-owner-gate-map.json",
+    "evidence_freshness": "boom-evidence-confidence-policy.json",
+    "orchestrator": "boom-brain-registry.json"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "version": "BOOM-BDIF-MODEL-ROUTER-MAP-V1",
+  "mode": "SHADOW",
+  "owner": "boom_orchestrator",
+  "router_reuse": "boom-ai-tool-router.json",
+  "levels": [
+    {
+      "level": "L0",
+      "name": "DETERMINISTIC_RULES",
+      "use": "known policy/rule decisions",
+      "status": "REUSE_EXISTING_RULES"
+    },
+    {
+      "level": "L1",
+      "name": "TINY_LOCAL_CLASSIFIER",
+      "use": "cheap narrow classification when benchmarked",
+      "status": "NOT_YET_PROVEN"
+    },
+    {
+      "level": "L2",
+      "name": "SPECIALIST_DECISION_MODEL",
+      "use": "domain-specific decision engines when benchmarked",
+      "status": "NOT_YET_PROVEN"
+    },
+    {
+      "level": "L3",
+      "name": "GENERAL_AI",
+      "use": "ambiguous reasoning where rules/local models are insufficient",
+      "status": "ROUTER_PLAN_ONLY"
+    },
+    {
+      "level": "L4",
+      "name": "MULTI_MODEL_DEEP_REASONING",
+      "use": "high-value/high-ambiguity independent judging",
+      "status": "NOT_YET_PROVEN"
+    },
+    {
+      "level": "L5",
+      "name": "HUMAN_OWNER",
+      "use": "critical/material or unresolved decisions",
+      "status": "ACTIVE_OWNER_GATE"
+    }
+  ],
+  "routing_dimensions": [
+    "complexity",
+    "risk",
+    "value",
+    "ambiguity",
+    "confidence",
+    "cost",
+    "latency",
+    "consequences"
+  ],
+  "rules": [
+    "Use the cheapest capable level that satisfies risk and evidence requirements.",
+    "Model routing never bypasses Tool Gateway, hard policies or Owner Gate.",
+    "Provider promotion requires benchmark/outcome evidence, not brand preference.",
+    "UNKNOWN from a lower level can escalate upward; it must not silently become PASS."
+  ]
+}

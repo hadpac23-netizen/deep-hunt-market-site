@@ -203,6 +203,11 @@
       "id": "scheduler_plane",
       "owner": "boom_orchestrator",
       "purpose": "One canonical schedule registry. Triggers runs only; never grants material action permission."
+    },
+    {
+      "id": "decision_intelligence_fabric",
+      "owner": "boom_orchestrator",
+      "purpose": "Canonical truth, policy, decision, calibration, routing, multi-judge, simulation and decision-ledger protocol shared across existing Brains; never a Primary Brain."
     }
   ],
   "rules": [
@@ -222,7 +227,8 @@
     "Targets such as 17 departments × 1,000 products are planning goals; only verified catalog evidence may mark shelf readiness.",
     "Legacy Managers have no decision authority after canonical mapping; boom-agent-registry.json defines their new Agent/Module/Adapter role.",
     "A skill filename containing 'brain' never creates a Primary Brain; boom-brain-registry.json is the sole Primary Brain authority.",
-    "Department growth changes taxonomy data/modules, not the number of Brains or Agents."
+    "Department growth changes taxonomy data/modules, not the number of Brains or Agents.",
+    "BDIF is shared decision infrastructure, never a ninth Primary Brain."
   ],
   "lifecycle_modes": {
     "OFF": "Defined but not running.",

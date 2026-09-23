@@ -1,0 +1,33 @@
+{
+  "version": "BOOM-BDIF-BUSINESS-SIMULATION-V1",
+  "mode": "SHADOW",
+  "owner": "commerce_truth_brain",
+  "purpose": "Run optimistic/expected/pessimistic sensitivity analysis only from supplied verified/provisional numeric inputs.",
+  "scenario_names": [
+    "OPTIMISTIC",
+    "EXPECTED",
+    "PESSIMISTIC"
+  ],
+  "supported_adjustments": [
+    "sale_price_pct",
+    "supplier_cost_pct",
+    "shipping_cost_pct",
+    "payment_fees_pct",
+    "return_cost_pct",
+    "marketing_cost_pct",
+    "other_variable_cost_pct"
+  ],
+  "rules": [
+    "Scenario percentages are inputs; BDIF must not invent them.",
+    "Missing base economics required for the requested result returns UNKNOWN.",
+    "Simulation output is a forecast/sensitivity result, never REALIZED_ORDER_PROFIT.",
+    "Every scenario preserves the base evidence refs and the exact adjustments used."
+  ],
+  "output_metrics": [
+    "revenue",
+    "total_variable_cost",
+    "contribution",
+    "contribution_margin"
+  ],
+  "profit_source": "boom-profit-engine-contract.json"
+}

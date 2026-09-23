@@ -1,0 +1,33 @@
+{
+  "version": "BOOM-BDIF-EVALUATION-V1",
+  "mode": "SHADOW",
+  "owner": "learning_governance_brain",
+  "pilot_scope": "HUNT_1000_REAL_PRODUCTS",
+  "candidates": [
+    "CURRENT_HUNT",
+    "DETERMINISTIC_BDIF",
+    "MODEL_ASSISTED_BDIF"
+  ],
+  "dataset_rules": [
+    "Use the same 1,000 real products for all candidates.",
+    "Each product must retain supplier/product/variant/stock/price/shipping/destination/economics/media/category evidence.",
+    "Include good, bad, ambiguous, missing, stale, conflicted and adversarial cases.",
+    "No candidate may mutate Production or live checkout during evaluation."
+  ],
+  "metrics": [
+    "accuracy",
+    "consistency",
+    "latency",
+    "cost",
+    "brier_score",
+    "expected_calibration_error",
+    "precision",
+    "recall",
+    "false_positive_rate",
+    "false_negative_rate",
+    "abstention_quality",
+    "business_outcome_delta"
+  ],
+  "selection_rule": "No model/engine is promoted because it looks smart; it must beat the relevant baseline on measured quality without worsening guarded business outcomes.",
+  "owner_gate_before_production": true
+}

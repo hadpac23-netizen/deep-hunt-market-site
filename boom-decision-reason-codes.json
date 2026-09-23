@@ -17,7 +17,11 @@
     {"code":"BUDGET_BLOCK","meaning":"Mission resource budget does not permit execution."},
     {"code":"EXPERIMENT_EVIDENCE","meaning":"Decision follows an experiment/holdout result."},
     {"code":"CIRCUIT_BREAKER","meaning":"Brain health policy recommends demotion or stop."},
-    {"code":"ROLLBACK_TRIGGERED","meaning":"System returned to a prior safe state after failure."}
+    {"code":"ROLLBACK_TRIGGERED","meaning":"System returned to a prior safe state after failure."},
+    {"code":"EVIDENCE_UNKNOWN","meaning":"Required evidence is absent or not proven; decision must not be coerced to pass/fail."},
+    {"code":"JUDGE_DISAGREEMENT","meaning":"Independent judges disagree; route to review or escalation according to risk."},
+    {"code":"CALIBRATION_UNPROVEN","meaning":"Claimed confidence lacks sufficient historical calibration evidence."},
+    {"code":"SIMULATION_INPUT_MISSING","meaning":"Required verified/provisional numeric input is missing for business simulation."}
   ],
   "rule":"Every material Orchestrator decision records one or more reason codes plus evidence refs; reason codes never replace evidence."
 }

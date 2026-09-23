@@ -1,0 +1,35 @@
+{
+  "version": "BOOM-BDIF-TRUTH-CONTRACT-V1",
+  "mode": "SHADOW",
+  "owner": "commerce_truth_brain",
+  "purpose": "Canonical fact envelope and five-state truth model for all BDIF decisions.",
+  "states": {
+    "VERIFIED": "Evidence is current enough and verified for the requested decision.",
+    "PROVISIONAL": "Evidence exists but is not yet strong enough for a verified material decision.",
+    "STALE": "Evidence was previously useful but is too old for the current decision.",
+    "CONFLICTED": "Authoritative or material evidence sources disagree.",
+    "UNKNOWN": "Required evidence is absent, unreadable, unsupported or not proven."
+  },
+  "fact_required_fields": [
+    "fact_id",
+    "fact_type",
+    "value",
+    "source",
+    "observed_at",
+    "truth_state",
+    "freshness_state",
+    "confidence",
+    "owner",
+    "dependencies",
+    "evidence_refs"
+  ],
+  "rules": [
+    "Missing evidence is UNKNOWN, never False and never True.",
+    "Stale evidence cannot satisfy a VERIFIED-only policy.",
+    "Conflicted evidence cannot be resolved by model preference alone.",
+    "A supplier claim is not Product Truth until the required source and freshness policy pass.",
+    "Facts may be rechecked and promoted/demoted, but every transition preserves evidence lineage."
+  ],
+  "freshness_adapter": "boom-evidence-confidence-policy.json",
+  "decision_owner_rule": "Tables and tools store observations; Primary Brains own decisions."
+}

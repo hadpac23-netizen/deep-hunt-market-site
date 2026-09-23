@@ -1,0 +1,40 @@
+{
+  "version": "BOOM-BDIF-LEDGER-MAP-V1",
+  "mode": "SHADOW",
+  "schema_change_required": false,
+  "purpose": "Reuse existing BOOM ledgers for BDIF evidence, decisions, runs, outcomes and learning before considering any migration.",
+  "tables": {
+    "hunt_boom_team_runs": {
+      "role": "run_lineage",
+      "stores": [
+        "mission_id",
+        "workflow_id",
+        "run_id",
+        "correlation_id",
+        "candidate_outputs",
+        "judge_verdict",
+        "evidence",
+        "owner_gate_required"
+      ]
+    },
+    "hunt_boom_decisions": {
+      "role": "owner_gate_and_decision_queue",
+      "status_semantics": "Keep existing approval workflow status separate from BDIF selected outcome.",
+      "bdif_storage": "Store canonical BDIF envelope inside proposed_action.bdif_decision and/or result.bdif_decision; do not overload status with PASS/REVIEW/REJECT."
+    },
+    "hunt_boom_events": {
+      "role": "sanitized_evidence_and_outcome_events"
+    },
+    "hunt_boom_learning_items": {
+      "role": "proposed_learning_and_evaluation_results",
+      "rule": "testing/learned never silently changes production behavior"
+    }
+  },
+  "invariants": [
+    "No schema migration in Phase B unless existing JSON/evidence fields prove insufficient.",
+    "Decision evidence and actual outcome must retain correlation lineage.",
+    "Raw credentials, payment data, addresses, email and phone are excluded from BDIF evidence payloads.",
+    "Owner override is recorded but is not automatically treated as ground truth."
+  ],
+  "existing_adapter": "boom-automation-ledger-adapter.js"
+}

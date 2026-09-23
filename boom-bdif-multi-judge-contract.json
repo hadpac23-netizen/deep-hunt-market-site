@@ -1,0 +1,22 @@
+{
+  "version": "BOOM-BDIF-MULTI-JUDGE-V1",
+  "mode": "SHADOW",
+  "owner": "learning_governance_brain",
+  "purpose": "Aggregate independent decision judgments while preserving disagreement and hard-policy precedence.",
+  "rules": [
+    "Hard policy result is evaluated before judge aggregation.",
+    "Judges must be independent enough that one output is not copied as another judge's evidence.",
+    "If HIGH or CRITICAL risk judges disagree on selected outcome, return ESCALATE.",
+    "If LOW or MEDIUM risk judges disagree, return REVIEW unless an explicit evaluated policy says otherwise.",
+    "If all judges select the same outcome, probabilities may be averaged and confidence_basis becomes MULTI_JUDGE.",
+    "Missing judge evidence never counts as agreement."
+  ],
+  "required_judge_fields": [
+    "judge_id",
+    "selected",
+    "options",
+    "confidence_basis",
+    "evidence_refs"
+  ],
+  "disagreement_reason_code": "JUDGE_DISAGREEMENT"
+}

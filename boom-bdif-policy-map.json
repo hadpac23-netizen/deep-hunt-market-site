@@ -1,0 +1,94 @@
+{
+  "version": "BOOM-BDIF-POLICY-MAP-V1",
+  "mode": "SHADOW",
+  "owner": "boom_orchestrator",
+  "precedence": [
+    "HARD_POLICY",
+    "VERIFIED_TRUTH",
+    "SPECIALIST_JUDGE",
+    "MODEL",
+    "HEURISTIC"
+  ],
+  "rules": [
+    {
+      "id": "HUNT_EXACT_VARIANT_REQUIRED",
+      "domain": "HUNT",
+      "decision": "ProductGate",
+      "condition": "exact_variant truth_state must be VERIFIED for purchase execution",
+      "on_missing": "UNKNOWN",
+      "execution_effect": "BLOCK",
+      "reason_code": "EVIDENCE_UNKNOWN"
+    },
+    {
+      "id": "HUNT_STOCK_REQUIRED",
+      "domain": "HUNT",
+      "decision": "StockTrust",
+      "condition": "stock truth_state must be VERIFIED and quantity > 0",
+      "on_missing": "UNKNOWN",
+      "on_verified_failure": "REJECT",
+      "execution_effect": "BLOCK",
+      "reason_code": "FULFILLMENT_FAIL"
+    },
+    {
+      "id": "HUNT_SHIPPING_REQUIRED",
+      "domain": "HUNT",
+      "decision": "ShippingDecision",
+      "condition": "destination shipping proof must be VERIFIED",
+      "on_missing": "UNKNOWN",
+      "on_verified_failure": "REJECT",
+      "execution_effect": "BLOCK",
+      "reason_code": "FULFILLMENT_FAIL"
+    },
+    {
+      "id": "HUNT_DESTINATION_SUPPORTED",
+      "domain": "HUNT",
+      "decision": "CountryFit",
+      "condition": "destination_supported must not be VERIFIED false",
+      "on_verified_failure": "REJECT",
+      "execution_effect": "BLOCK",
+      "reason_code": "COMMERCE_TRUTH_BLOCK"
+    },
+    {
+      "id": "HUNT_MARGIN_FLOOR",
+      "domain": "HUNT",
+      "decision": "ProfitGate",
+      "condition": "verified contribution margin must be >= configured floor",
+      "on_missing": "UNKNOWN",
+      "on_verified_failure": "REJECT",
+      "execution_effect": "BLOCK",
+      "reason_code": "MARGIN_FAIL"
+    },
+    {
+      "id": "HUNT_NET_PROFIT_TRUTH",
+      "domain": "HUNT",
+      "decision": "ProfitGate",
+      "condition": "net profit remains UNKNOWN until all required revenue and variable-cost inputs are verified",
+      "on_missing": "UNKNOWN",
+      "execution_effect": "NO_VERIFIED_NET_PROFIT_CLAIM",
+      "source": "boom-profit-engine-contract.json"
+    },
+    {
+      "id": "BOOM_MATERIAL_OWNER_GATE",
+      "domain": "BOOM",
+      "decision": "OwnerGateDecision",
+      "condition": "material actions listed in boom-owner-gate-map.json require Owner approval",
+      "on_match": "ESCALATE",
+      "execution_effect": "OWNER_GATE",
+      "reason_code": "OWNER_GATE_REQUIRED"
+    },
+    {
+      "id": "BOOM_POLICY_OVERRIDES_MODEL",
+      "domain": "BOOM",
+      "decision": "ALL",
+      "condition": "hard policy failure cannot be overruled by model confidence",
+      "on_match": "POLICY_RESULT",
+      "execution_effect": "FAIL_CLOSED"
+    }
+  ],
+  "existing_reuse": {
+    "profit": "boom-profit-engine-contract.json",
+    "owner_gate": "boom-owner-gate-map.json",
+    "reason_codes": "boom-decision-reason-codes.json",
+    "commerce_truth": "boom-brain-registry.json"
+  }
+}

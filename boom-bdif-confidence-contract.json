@@ -1,0 +1,33 @@
+{
+  "version": "BOOM-BDIF-CONFIDENCE-CALIBRATION-V1",
+  "mode": "SHADOW",
+  "owner": "learning_governance_brain",
+  "purpose": "Separate evidence freshness from empirically calibrated decision confidence.",
+  "metrics": [
+    "brier_score",
+    "expected_calibration_error",
+    "accuracy",
+    "precision",
+    "recall",
+    "false_positive_rate",
+    "false_negative_rate",
+    "abstention_rate",
+    "abstention_quality"
+  ],
+  "rules": [
+    "Raw model confidence is not accepted as calibrated confidence.",
+    "Deterministic policy outputs must be labeled DETERMINISTIC_POLICY rather than model confidence.",
+    "Calibration must be measured per decision_type and model/version where sample size supports it.",
+    "If calibration evidence is insufficient, confidence basis remains UNCALIBRATED_MODEL.",
+    "Low or unproven confidence may return REVIEW, UNKNOWN or ESCALATE rather than forced binary output."
+  ],
+  "sample_thresholds": {
+    "minimum_calibration_sample_size": "OWNER_CONFIGURED",
+    "maximum_ece_for_auto_medium_risk": "OWNER_CONFIGURED",
+    "maximum_brier_for_auto_medium_risk": "OWNER_CONFIGURED"
+  },
+  "existing_reuse": {
+    "freshness_policy": "boom-evidence-confidence-policy.json",
+    "learning_loop": "boom-learning-loop-contract.json"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-OPERATIONAL-SKILLS-V1.6-PRODUCT-TRUTH",
+  "version": "BOOM-OPERATIONAL-SKILLS-V1.7-BDIF-SHADOW",
   "mode": "SHADOW",
   "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
   "skills": [
@@ -338,6 +338,97 @@
         "cj_supplier",
         "fresh_shelf_product_truth"
       ],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "compile_bdif_decision",
+      "title": "Compile BDIF Decision",
+      "owner": "boom_orchestrator",
+      "purpose": "Normalize a specialist/rule result into the canonical BDIF machine-readable decision contract without granting execution authority.",
+      "inputs": [
+        "decision_type",
+        "truth_facts",
+        "policy_checks",
+        "evidence_refs",
+        "risk"
+      ],
+      "outputs": [
+        "bdif_decision"
+      ],
+      "tools": [],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "calibrate_decision_confidence",
+      "title": "Calibrate Decision Confidence",
+      "owner": "learning_governance_brain",
+      "purpose": "Measure Brier score, calibration error and abstention quality from labeled historical decisions without changing live thresholds.",
+      "inputs": [
+        "decision_type",
+        "prediction_records",
+        "actual_outcomes"
+      ],
+      "outputs": [
+        "calibration_metrics",
+        "calibration_state"
+      ],
+      "tools": [],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "aggregate_bdif_judges",
+      "title": "Aggregate BDIF Judges",
+      "owner": "learning_governance_brain",
+      "purpose": "Combine independent judges after hard policies and preserve disagreement as REVIEW/ESCALATE rather than hiding it.",
+      "inputs": [
+        "judge_decisions",
+        "risk",
+        "hard_policy_decision"
+      ],
+      "outputs": [
+        "aggregated_decision",
+        "disagreement_state"
+      ],
+      "tools": [],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "simulate_business_scenario",
+      "title": "Simulate Business Scenario",
+      "owner": "commerce_truth_brain",
+      "purpose": "Run supplied optimistic/expected/pessimistic unit-economics sensitivities without claiming simulated contribution as realized profit.",
+      "inputs": [
+        "verified_base_economics",
+        "scenario_adjustments"
+      ],
+      "outputs": [
+        "scenario_results",
+        "sensitivity_summary"
+      ],
+      "tools": [],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "evaluate_bdif_engine",
+      "title": "Evaluate BDIF Engine",
+      "owner": "learning_governance_brain",
+      "purpose": "Compare Current HUNT, deterministic BDIF and model-assisted BDIF on the same held-out pilot cases before any production promotion.",
+      "inputs": [
+        "evaluation_dataset",
+        "candidate_outputs"
+      ],
+      "outputs": [
+        "quality_metrics",
+        "cost_latency_metrics",
+        "calibration_metrics",
+        "promotion_recommendation"
+      ],
+      "tools": [],
       "material": false,
       "owner_gate": false
     }

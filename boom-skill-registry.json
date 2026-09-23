@@ -145,6 +145,12 @@
       "owner": "growth_brain",
       "type": "DOMAIN_SKILL",
       "status": "KEEP"
+    },
+    {
+      "path": "skills/boom-decision-intelligence-fabric.md",
+      "owner": "boom_orchestrator",
+      "type": "CONTROL_PLANE_SKILL",
+      "status": "KEEP"
     }
   ],
   "split_merge_notes": {
