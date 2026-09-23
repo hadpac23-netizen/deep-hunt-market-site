@@ -30,8 +30,15 @@ for(const x of moveRows){
   const k=x.placement.canonical_department+"/"+x.placement.canonical_category;
   byTarget[k]=(byTarget[k]||0)+1;
 }
+const reasonCounts={};
+for(const row of report.rows||[])for(const code of row.placement?.reason_codes||[])reasonCounts[code]=(reasonCounts[code]||0)+1;
+const reviewByReason={};
+for(const row of reviewRows){
+  const key=(row.placement?.reason_codes||[]).join("|")||"UNSPECIFIED";
+  reviewByReason[key]=(reviewByReason[key]||0)+1;
+}
 const out={
-  version:"HUNT-PRODUCT-PLACEMENT-GATE-AUDIT-V1",
+  version:"HUNT-PRODUCT-PLACEMENT-GATE-AUDIT-V1.1-TRIAGE",
   date:"2026-09-23",
   mode:"SHADOW_ALWAYS_ON",
   production_effect:false,
@@ -39,18 +46,27 @@ const out={
   summary:report.summary,
   counts:{
     keep:keepRows.length,
-    move_recommended:moveRows.length,
-    review:reviewRows.length,
-    unknown:unknownRows.length
+    safe_move_candidates:moveRows.length,
+    rule_or_conflict_review:reviewRows.length,
+    unknown_hold:unknownRows.length
+  },
+  triage:{
+    safe_move_candidates:moveRows.length,
+    rule_or_conflict_review:reviewRows.length,
+    unknown_hold:unknownRows.length,
+    auto_move_enabled:false,
+    production_mutation:false,
+    reason_counts:reasonCounts,
+    review_reason_counts:reviewByReason
   },
   top_current_error_rails:Object.entries(byCurrent).sort((a,b)=>b[1]-a[1]).slice(0,30).map(([rail,count])=>({rail,count})),
   top_target_rails:Object.entries(byTarget).sort((a,b)=>b[1]-a[1]).slice(0,30).map(([rail,count])=>({rail,count})),
-  move_examples:moveRows.slice(0,200),
-  review_examples:reviewRows.slice(0,100),
-  unknown_examples:unknownRows.slice(0,100),
+  safe_move_candidates:moveRows,
+  review_queue:reviewRows,
+  unknown_sample:unknownRows.slice(0,250),
   rules:[
     "Current HUNT category is not used as positive evidence.",
-    "MOVE is a shadow recommendation only; no catalog row is mutated.",
+    "SAFE_MOVE_CANDIDATE is a shadow recommendation only; no catalog row is mutated.",
     "REVIEW/UNKNOWN never become shelf activation.",
     "Product Placement PASS is separate from stock/shipping/profit readiness."
   ]

@@ -13,9 +13,9 @@
     {type:"wearable_accessory",priority:98,dest:["tech","wearable-accessories"],re:rx("\\b(watch strap|watch band|smartwatch band|smart watch band|iwatch band)\\b")},
     {type:"camera",priority:97,dest:["tech","cameras"],re:rx("\\b(camera|webcam|dash cam|security cam|ccd camera)\\b"),exclude:rx("\\bcamera frame\\b")},
     {type:"charger_cable",priority:96,dest:["tech","chargers-cables"],re:rx("\\b(charger|charging cable|data cable|usb cable|type[- ]?c cable|lightning cable)\\b")},
-    {type:"power_bank",priority:96,dest:["tech","power-banks"],re:rx("\\b(power bank|portable charger)\\b")},
+    {type:"power_bank",priority:96,dest:["tech","power-banks"],re:rx("\\b(power bank|portable charger)\\b"),exclude:rx("\\b(blanket|shawl|lamp|lights?|lantern|headlight|flashlight|bicycle|bike|heated|electric blanket)\\b")},
     {type:"gaming",priority:95,dest:["tech","gaming"],re:rx("\\b(gaming mouse|gaming keyboard|gamepad|game controller|joystick|xbox controller|playstation controller)\\b")},
-    {type:"pet_bed_house",priority:95,dest:["pets","pet-houses"],re:rx("\\b(cat bed|dog bed|pet bed|cat house|dog house|pet house|cat condo|pet condo|cat cave)\\b")},
+    {type:"pet_bed_house",priority:95,dest:["pets","pet-houses"],re:rx("\\b(cat bed|dog bed|pet bed|cat house|dog house|pet house|cat condo|pet condo|cat cave)\\b"),exclude:rx("\\b(sign|plaque|wall decor|decoration|ozone|disinfection machine|sterilizer)\\b")},
     {type:"pet_grooming",priority:95,dest:["pets","pet-grooming"],re:rx("\\b(pet grooming|dog grooming|cat grooming|pet brush|dog brush|cat brush|deshedding|pet clipper|pet nail clipper)\\b")},
     {type:"aquarium",priority:95,dest:["pets","aquarium"],re:rx("\\b(aquarium|fish tank|fish filter|fish feeder|aquatic pump)\\b")},
     {type:"building_toy",priority:94,dest:["toys","building-toys"],re:rx("\\b(building blocks?|construction blocks?|brick set|building toy|construction toy)\\b")},
@@ -33,7 +33,7 @@
     {type:"wall_decor",priority:91,dest:["home","wall-decor"],re:rx("\\b(wall art|wall decor|wall hanging|wall clock|wall shelf|wall sticker)\\b")},
     {type:"mirror",priority:90,dest:["home","mirrors"],re:rx("\\b(wall mirror|full length mirror|bathroom mirror|dressing mirror|desktop mirror)\\b"),exclude:rx("\\b(phone case|holder|bracket)\\b")},
     {type:"home_lighting",priority:90,dest:["home","lighting"],re:rx("\\b(table lamp|desk lamp|bedside lamp|night light|ceiling light|wall light|home lamp)\\b")},
-    {type:"fitness_accessory",priority:90,dest:["sports","fitness-accessories"],re:rx("\\b(resistance band|exercise band|yoga mat|ab roller|foam roller|jump rope|fitness accessory|gym accessory)\\b")},
+    {type:"fitness_accessory",priority:90,dest:["sports","fitness-accessories"],re:rx("\\b(resistance band|exercise band|yoga mat|ab roller|foam roller|jump rope|fitness accessory|gym accessory)\\b"),exclude:rx("\\b(socks?|handbag|shoulder bag|travel bag|computer bag|backpack)\\b")},
     {type:"active_bottoms",priority:89,dest:["sports","active-bottoms"],re:rx("\\b(yoga pants|gym shorts|sports shorts|running pants|training pants|workout leggings)\\b")},
     {type:"sports_gear",priority:88,dest:["sports","sports-gear"],re:rx("\\b(basketball|football|soccer|tennis|badminton|volleyball).{0,20}\\b(ball|racket|gear|equipment|training)\\b")},
     {type:"earrings",priority:84,dest:["accessories","jewelry-earrings"],re:rx("\\bearrings?\\b"),exclude:rx("\\b(camera|craft|diy|beads?|phone case|keychain)\\b")},
@@ -47,17 +47,17 @@
     {type:"hair_accessory",priority:80,dest:["accessories","hair-accessories"],re:rx("\\b(hair clip|hair claw|hair tie|scrunchie|headband|barrette|hair pin)\\b")},
     {type:"boxers",priority:92,dest:["men","men-boxers"],re:rx("\\b(boxer briefs|boxer shorts|boxers)\\b")},
     {type:"women_underwear",priority:92,dest:["women","women-underwear"],re:rx("\\b(panties|women'?s underwear|women'?s briefs|ladies underwear|sports bra|wireless bra)\\b")},
-    {type:"women_swim",priority:92,dest:["women","women-swim"],re:rx("\\b(bikini|swimsuit|one[- ]piece swimsuit|beach cover[- ]?up)\\b"),exclude:rx("\\b(girl|kids?|children|baby)\\b")},
-    {type:"evening_dress",priority:93,dest:["women","women-evening"],re:rx("\\b(evening dress|prom dress|cocktail dress|formal dress|party dress|banquet dress)\\b")},
+    {type:"women_swim",priority:92,dest:["women","women-swim"],re:rx("\\b(bikini|swimsuit|one[- ]piece swimsuit|beach cover[- ]?up)\\b"),exclude:rx("\\b(girl|kids?|children|baby|wax|shaver|trimmer|hair removal|depilation|jewelry|ring tie|metal ring)\\b")},
+    {type:"evening_dress",priority:93,dest:["women","women-evening"],re:rx("\\b(evening dress|prom dress|cocktail dress|formal dress|party dress|banquet dress)\\b"),exclude:rx("\\b(necklace|earring|jewelry|pendant|bracelet|ring set)\\b")},
     {type:"dress",priority:90,dest:["women","women-dresses"],re:rx("\\b(women|women'?s|womens|ladies|woman|female).{0,50}\\bdress\\b|\\bdress\\b.{0,50}\\b(women|women'?s|womens|ladies|woman|female)\\b")},
     {type:"skirt",priority:91,dest:["women","women-skirts"],re:rx("\\b(women|women'?s|womens|ladies|woman|female).{0,40}\\bskirt\\b|\\bskirt\\b.{0,40}\\b(women|women'?s|womens|ladies|woman|female)\\b")},
-    {type:"women_jeans",priority:92,dest:["women","women-jeans"],re:rx("\\b(women|women'?s|womens|ladies|woman|female).{0,45}\\b(jeans?|denim pants|denim trousers)\\b|\\b(jeans?|denim pants|denim trousers)\\b.{0,45}\\b(women|women'?s|womens|ladies|woman|female)\\b")},
-    {type:"men_jeans",priority:92,dest:["men","men-jeans"],re:rx("\\b(men|men'?s|mens|male|man).{0,45}\\b(jeans?|denim pants|denim trousers)\\b|\\b(jeans?|denim pants|denim trousers)\\b.{0,45}\\b(men|men'?s|mens|male|man)\\b")},
-    {type:"women_shoes",priority:91,dest:["women","women-shoes"],re:rx("\\b(women|women'?s|womens|ladies|woman|female).{0,45}\\b(shoes?|sneakers?|boots?|sandals?|slippers?)\\b|\\b(shoes?|sneakers?|boots?|sandals?|slippers?)\\b.{0,45}\\b(women|women'?s|womens|ladies|woman|female)\\b"),exclude:rx("\\bshoe rack|shoe cabinet\\b")},
-    {type:"men_shoes",priority:91,dest:["men","men-shoes"],re:rx("\\b(men|men'?s|mens|male|man).{0,45}\\b(shoes?|sneakers?|boots?|sandals?|slippers?)\\b|\\b(shoes?|sneakers?|boots?|sandals?|slippers?)\\b.{0,45}\\b(men|men'?s|mens|male|man)\\b"),exclude:rx("\\bshoe rack|shoe cabinet\\b")},
+    {type:"women_jeans",priority:92,dest:["women","women-jeans"],re:rx("\\b(women|women'?s|womens|ladies|woman|female).{0,45}\\b(jeans|denim pants|denim trousers)\\b|\\b(jeans|denim pants|denim trousers)\\b.{0,45}\\b(women|women'?s|womens|ladies|woman|female)\\b"),exclude:rx("\\b(jacket|coat|hoodie|outerwear)\\b")},
+    {type:"men_jeans",priority:92,dest:["men","men-jeans"],re:rx("\\b(men|men'?s|mens|male|man).{0,45}\\b(jeans|denim pants|denim trousers)\\b|\\b(jeans|denim pants|denim trousers)\\b.{0,45}\\b(men|men'?s|mens|male|man)\\b"),exclude:rx("\\b(jacket|coat|hoodie|outerwear)\\b")},
+    {type:"women_shoes",priority:91,dest:["women","women-shoes"],re:rx("\\b(women|women'?s|womens|ladies|woman|female).{0,45}\\b(shoes?|sneakers?|boots?|sandals?|slippers?)\\b|\\b(shoes?|sneakers?|boots?|sandals?|slippers?)\\b.{0,45}\\b(women|women'?s|womens|ladies|woman|female)\\b"),exclude:rx("\\b(shoe rack|shoe cabinet|shoe bag|gym bag|backpack|shoe cover|toe cap|protective gear)\\b")},
+    {type:"men_shoes",priority:91,dest:["men","men-shoes"],re:rx("\\b(men|men'?s|mens|male|man).{0,45}\\b(shoes?|sneakers?|boots?|sandals?|slippers?)\\b|\\b(shoes?|sneakers?|boots?|sandals?|slippers?)\\b.{0,45}\\b(men|men'?s|mens|male|man)\\b"),exclude:rx("\\b(shoe rack|shoe cabinet|shoe bag|gym bag|backpack|shoe cover|toe cap|protective gear)\\b")},
     {type:"women_outerwear",priority:90,dest:["women","women-outerwear"],re:rx("\\b(women|women'?s|womens|ladies|woman|female).{0,45}\\b(jacket|coat|parka|windbreaker|outerwear)\\b|\\b(jacket|coat|parka|windbreaker|outerwear)\\b.{0,45}\\b(women|women'?s|womens|ladies|woman|female)\\b")},
     {type:"men_outerwear",priority:90,dest:["men","men-outerwear"],re:rx("\\b(men|men'?s|mens|male|man).{0,45}\\b(jacket|coat|parka|windbreaker|outerwear)\\b|\\b(jacket|coat|parka|windbreaker|outerwear)\\b.{0,45}\\b(men|men'?s|mens|male|man)\\b")},
-    {type:"women_hoodie",priority:90,dest:["women","women-hoodies"],re:rx("\\b(women|women'?s|womens|ladies|woman|female).{0,45}\\b(hoodie|sweatshirt)\\b|\\b(hoodie|sweatshirt)\\b.{0,45}\\b(women|women'?s|womens|ladies|woman|female)\\b")},
+    {type:"women_hoodie",priority:90,dest:["women","women-hoodies"],exclude:rx("\\bt[- ]?shirt\\b"),re:rx("\\b(women|women'?s|womens|ladies|woman|female).{0,45}\\b(hoodie|sweatshirt)\\b|\\b(hoodie|sweatshirt)\\b.{0,45}\\b(women|women'?s|womens|ladies|woman|female)\\b")},
     {type:"men_hoodie",priority:90,dest:["men","men-hoodies"],re:rx("\\b(men|men'?s|mens|male|man).{0,45}\\b(hoodie|sweatshirt)\\b|\\b(hoodie|sweatshirt)\\b.{0,45}\\b(men|men'?s|mens|male|man)\\b")},
     {type:"women_knitwear",priority:89,dest:["women","women-knitwear"],re:rx("\\b(women|women'?s|womens|ladies|woman|female).{0,45}\\b(sweater|cardigan|knitwear|pullover)\\b|\\b(sweater|cardigan|knitwear|pullover)\\b.{0,45}\\b(women|women'?s|womens|ladies|woman|female)\\b")},
     {type:"men_knitwear",priority:89,dest:["men","men-knitwear"],re:rx("\\b(men|men'?s|mens|male|man).{0,45}\\b(sweater|cardigan|knitwear|pullover)\\b|\\b(sweater|cardigan|knitwear|pullover)\\b.{0,45}\\b(men|men'?s|mens|male|man)\\b")},
@@ -70,9 +70,9 @@
 
   function detectGender(title){
     const t=clean(title).toLowerCase();
-    const men=/\b(men|men's|mens|male|man|gentlemen|boys?)\b/i.test(t);
-    const women=/\b(women|women's|womens|female|woman|ladies|lady|girls?)\b/i.test(t);
-    const kids=/\b(kids?|children|child|baby|toddler|infant|newborn)\b/i.test(t);
+    const men=/\b(men|men's|mens|male|man|gentlemen)\b/i.test(t);
+    const women=/\b(women|women's|womens|female|woman|ladies|lady)\b/i.test(t);
+    const kids=/\b(kids?|children|child|baby|toddler|infant|newborn|boys?|girls?)\b/i.test(t);
     if(men&&women)return "UNISEX";
     if(kids&&!men&&!women)return "KIDS";
     if(men&&!women)return "MEN";
@@ -92,9 +92,18 @@
     if(!hits.length)return {state:"UNKNOWN",hits:[]};
     const top=hits[0];
     const conflicting=hits.filter(x=>x.priority>=top.priority-1 && (x.dest[0]!==top.dest[0]||x.dest[1]!==top.dest[1]));
-    if(conflicting.length>1)return {state:"CONFLICTED",hits:conflicting};
+    if(conflicting.length>=1)return {state:"CONFLICTED",hits:[top,...conflicting]};
     return {state:"VERIFIED",...top,hits};
   }
+
+  const SAFE_MOVE_TYPES=new Set([
+    "phone_case","pet_bed_house","pet_grooming","building_toy",
+    "fitness_accessory","sports_gear","earrings","necklace","ring","watch",
+    "wearable_accessory","power_bank","gaming","bag_accessory",
+    "boxers","women_underwear","women_swim","evening_dress",
+    "women_jeans","men_jeans","women_shoes","men_shoes","women_hoodie",
+    "active_bottoms","garden_tool"
+  ]);
 
   function evaluate(product={}){
     const currentDepartment=clean(product.current_department||product.department);
@@ -107,33 +116,48 @@
     if(type.state==="CONFLICTED"){
       conflicts.push(...type.hits.map(x=>x.type+":"+x.dest.join("/")));
       reasonCodes.push("PLACEMENT_TYPE_CONFLICT");
-      return {decision:"REVIEW",placement_action:"HOLD_REVIEW",detected_product_type:null,canonical_department:null,canonical_category:null,confidence:0,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
+      return {decision:"REVIEW",placement_action:"HOLD_REVIEW",move_tier:"RULE_REFINEMENT",detected_product_type:null,canonical_department:null,canonical_category:null,confidence:0,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
     }
 
     if(type.state==="VERIFIED"){
       const [dep,cat]=type.dest;
       positive.push(evidence("EXPLICIT_PRODUCT_TYPE",type.match),evidence("DETECTED_TYPE",type.type));
       const same=dep===currentDepartment&&cat===currentCategory;
-      if(!same){
-        negative.push(evidence("CURRENT_PLACEMENT_CONTRADICTS_TYPE",(currentDepartment||"UNKNOWN")+"/"+(currentCategory||"UNKNOWN")));
-        reasonCodes.push("CURRENT_PLACEMENT_MISMATCH");
-      }else reasonCodes.push("PLACEMENT_SUPPORTED");
-      return {decision:same?"PASS":"REJECT",placement_action:same?"KEEP":"MOVE",detected_product_type:type.type,canonical_department:dep,canonical_category:cat,confidence:0.98,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:!same,gender};
+      if(same){
+        reasonCodes.push("PLACEMENT_SUPPORTED");
+        return {decision:"PASS",placement_action:"KEEP",move_tier:"NONE",detected_product_type:type.type,canonical_department:dep,canonical_category:cat,confidence:0.98,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:false,gender};
+      }
+      negative.push(evidence("CURRENT_PLACEMENT_CONTRADICTS_TYPE",(currentDepartment||"UNKNOWN")+"/"+(currentCategory||"UNKNOWN")));
+      reasonCodes.push("CURRENT_PLACEMENT_MISMATCH");
+
+      if((currentDepartment==="kids"||gender==="KIDS")&&dep!=="kids"){
+        conflicts.push("KIDS_AUDIENCE_CROSS_DEPARTMENT");
+        reasonCodes.push("KIDS_DEPARTMENT_PROTECTION");
+        return {decision:"REVIEW",placement_action:"HOLD_REVIEW",move_tier:"RULE_REFINEMENT",detected_product_type:type.type,canonical_department:null,canonical_category:null,suggested_department:dep,suggested_category:cat,confidence:0.60,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
+      }
+
+      if(!SAFE_MOVE_TYPES.has(type.type)){
+        reasonCodes.push("TYPE_RULE_REQUIRES_REFINEMENT");
+        return {decision:"REVIEW",placement_action:"HOLD_REVIEW",move_tier:"RULE_REFINEMENT",detected_product_type:type.type,canonical_department:null,canonical_category:null,suggested_department:dep,suggested_category:cat,confidence:0.70,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
+      }
+
+      reasonCodes.push("SAFE_MOVE_CANDIDATE");
+      return {decision:"REJECT",placement_action:"MOVE",move_tier:"SAFE_MOVE_CANDIDATE",detected_product_type:type.type,canonical_department:dep,canonical_category:cat,confidence:0.98,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
     }
 
     if(currentDepartment==="men"&&gender==="WOMEN"){
       negative.push(evidence("EXPLICIT_GENDER_CONFLICT","WOMEN title in men department"));
       reasonCodes.push("GENDER_DEPARTMENT_CONFLICT");
-      return {decision:"REVIEW",placement_action:"HOLD_REVIEW",detected_product_type:null,canonical_department:"women",canonical_category:null,confidence:0.90,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
+      return {decision:"REVIEW",placement_action:"HOLD_REVIEW",move_tier:"RULE_REFINEMENT",detected_product_type:null,canonical_department:"women",canonical_category:null,confidence:0.90,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
     }
     if(currentDepartment==="women"&&gender==="MEN"){
       negative.push(evidence("EXPLICIT_GENDER_CONFLICT","MEN title in women department"));
       reasonCodes.push("GENDER_DEPARTMENT_CONFLICT");
-      return {decision:"REVIEW",placement_action:"HOLD_REVIEW",detected_product_type:null,canonical_department:"men",canonical_category:null,confidence:0.90,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
+      return {decision:"REVIEW",placement_action:"HOLD_REVIEW",move_tier:"RULE_REFINEMENT",detected_product_type:null,canonical_department:"men",canonical_category:null,confidence:0.90,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
     }
 
     reasonCodes.push("NO_INDEPENDENT_PLACEMENT_PROOF");
-    return {decision:"UNKNOWN",placement_action:"HOLD_UNKNOWN",detected_product_type:null,canonical_department:null,canonical_category:null,confidence:0,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
+    return {decision:"UNKNOWN",placement_action:"HOLD_UNKNOWN",move_tier:"NO_EVIDENCE",detected_product_type:null,canonical_department:null,canonical_category:null,confidence:0,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
   }
 
   function audit(products=[]){

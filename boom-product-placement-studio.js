@@ -48,8 +48,8 @@
       if(summary){
         summary.innerHTML=[
           metric(ps.KEEP||0,"KEEP · supported"),
-          metric(ps.MOVE||0,"MOVE · recommendation"),
-          metric(ps.HOLD_REVIEW||0,"REVIEW · held"),
+          metric(ps.MOVE||0,"SAFE MOVE · candidate"),
+          metric(ps.HOLD_REVIEW||0,"RULE / CONFLICT REVIEW · held"),
           metric(ps.HOLD_UNKNOWN||0,"UNKNOWN · held"),
           metric(contract.always_on_policy?.studio_refresh_seconds||60,"Refresh seconds")
         ].join("");
@@ -66,11 +66,11 @@
       cards.push('<article><small>ENFORCEMENT</small><strong>'+esc(contract.enforcement_point||"MANDATORY")+'</strong><span>Auto move: '+(contract.always_on_policy?.automatic_product_move?"ON":"OFF")+' · Production mutation: '+(contract.always_on_policy?.production_mutation?"ON":"OFF")+'</span></article>');
       if(topRails.length){
         const text=topRails.map(row=>row[0]+" ("+row[1]+")").join(" · ");
-        cards.push('<article><small>TOP MIXED RAILS</small><strong>'+esc(text)+'</strong><span>Move recommendations only · current category is never evidence.</span></article>');
+        cards.push('<article><small>TOP MIXED RAILS</small><strong>'+esc(text)+'</strong><span>SAFE MOVE candidates only · no automatic mutation · current category is never evidence.</span></article>');
       }
       for(const row of moves.slice(0,18)){
         const placement=row.placement||{};
-        cards.push('<article><small>'+esc(row.provider||"")+' · '+esc(row.item_id||"")+'</small><strong>'+esc(row.title||"")+'</strong><span>'+esc(row.current_department)+'/'+esc(row.current_category)+' → '+esc(placement.canonical_department)+'/'+esc(placement.canonical_category)+'</span><span>'+esc(placement.detected_product_type||"type unknown")+' · confidence '+esc(Math.round((placement.confidence||0)*100))+'% · MOVE SHADOW ONLY</span></article>');
+        cards.push('<article><small>'+esc(row.provider||"")+' · '+esc(row.item_id||"")+'</small><strong>'+esc(row.title||"")+'</strong><span>'+esc(row.current_department)+'/'+esc(row.current_category)+' → '+esc(placement.canonical_department)+'/'+esc(placement.canonical_category)+'</span><span>'+esc(placement.detected_product_type||"type unknown")+' · confidence '+esc(Math.round((placement.confidence||0)*100))+'% · SAFE MOVE CANDIDATE · SHADOW ONLY</span></article>');
       }
       if(reviews.length){
         cards.push('<article><small>REVIEW QUEUE</small><strong>'+esc(reviews.length)+' explicit conflicts</strong><span>Held from automatic placement; requires better evidence or rule refinement.</span></article>');
