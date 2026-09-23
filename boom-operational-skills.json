@@ -520,6 +520,29 @@
       "tools": [],
       "material": false,
       "owner_gate": false
+    },
+    {
+      "id": "recover_true_supplier_gaps",
+      "title": "Recover True Supplier Gaps",
+      "owner": "commerce_truth_brain",
+      "purpose": "Source products only for true remaining shelf gaps after placement-evidence recovery is exhausted.",
+      "inputs": [
+        "stage7_gap_map",
+        "official_supplier_catalog",
+        "supplier_taxonomy",
+        "shipping_quote",
+        "price_gate"
+      ],
+      "outputs": [
+        "strict_shortlist",
+        "shipping_verified",
+        "quality_profit_gate",
+        "shadow_admission_preview",
+        "external_source_manifest"
+      ],
+      "tools": [],
+      "material": false,
+      "owner_gate": false
     }
   ]
 }

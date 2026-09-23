@@ -78,7 +78,9 @@
     "sourcing_gap_classification",
     "supplier_gap_discovery",
     "supplier_candidate_truth_gate",
-    "supplier_recovery_preview"
+    "supplier_recovery_preview",
+    "supplier_gap_recovery",
+    "external_source_handoff"
   ],
   "always_on_policy": {
     "studio_watch": true,
@@ -219,18 +221,17 @@
     "production_mutation": false
   },
   "supplier_recovery_contract": "boom-product-placement-stage8-contract.json",
-  "supplier_recovery_rule": "Only Stage7 residual sourcing gaps may enter Stage8 read-only discovery; candidates must pass placement, stock, 4-market shipping, media technical QA and Price Gate before shadow selection.",
+  "supplier_recovery_rule": "Only true sourcing gaps remaining after Stage7 may enter Stage8 supplier recovery. New candidates must pass placement, image quality, exact variant stock, destination shipping, and projected Product Contribution before Shadow admission.",
   "stage8_snapshot": {
-    "qa_shortlist_candidates": 65,
-    "shipping_verified_4_of_4": 63,
-    "media_profit_gate_pass": 46,
-    "selected_products": 41,
-    "canonical_products": 3644,
+    "canonical_products_shadow": 3652,
     "rails_full_24": 33,
     "rails_good_12_to_23": 33,
-    "rails_thin_1_to_11": 61,
-    "rails_empty": 6,
+    "rails_thin_1_to_11": 62,
+    "rails_empty": 5,
+    "new_shadow_admitted": 49,
+    "reserve_candidates": 17,
     "final_net_profit_verified_products": 0,
+    "external_manual_sourcing_rails": 5,
     "production_mutation": false
   }
 }

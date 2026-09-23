@@ -1,0 +1,526 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-P0-BELT-GATE-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW_GATE_ONLY",
+  "production_effect": false,
+  "summary": {
+    "primary_belt_candidates": 7,
+    "shadow_admission_candidates": 7,
+    "hold_review": 0,
+    "final_net_profit_verified_products": 0
+  },
+  "rules": [
+    "Belt must be the primary product, not an accessory mentioned in a clothing title.",
+    "Shipping must verify 4/4 IL/DE/US/SG.",
+    "Image >=500px both dimensions.",
+    "Projected contribution floor $3.99 and margin floor 35%.",
+    "Not Final Net Profit.",
+    "No Production mutation or supplier order."
+  ],
+  "results": [
+    {
+      "provider": "EPROLO",
+      "item_id": "24417191",
+      "rail": "accessories/belts",
+      "title": "Black Metal Buckle Pu Leather Elastic Waist Belt Personality Women New Fashion Tide All-match Spring Autumn",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202312/D320CDB3362DA08C672283EE57F3CF5F.jpg",
+      "supplier_cost_min": 2.97,
+      "currency": "USD",
+      "exact_variant": {
+        "id": "627943108",
+        "sku": "812A5FFF4A7C481ABBB8043302A0B5BC",
+        "title": "black",
+        "supplier_cost_usd": 2.97,
+        "inventory_quantity": 1500,
+        "weight_g": 220
+      },
+      "inventory_snapshot": 1500,
+      "availability_verified": true,
+      "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+      "production_effect": false,
+      "markets": {
+        "IL": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 8.82,
+          "method": "YANWEN Express",
+          "eta": "10-18 Days",
+          "retail_shadow_usd": 7.99,
+          "projected_order_contribution_usd": 4.3,
+          "product_margin_shadow": 0.5383
+        },
+        "DE": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 5.23,
+          "method": "Wanb  Standard",
+          "eta": "7-15 Days",
+          "retail_shadow_usd": 7.99,
+          "projected_order_contribution_usd": 4.3,
+          "product_margin_shadow": 0.5383
+        },
+        "US": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 5.99,
+          "method": "YANWEN (For Partial ZIP)",
+          "eta": "8-15 Days",
+          "retail_shadow_usd": 7.99,
+          "projected_order_contribution_usd": 4.3,
+          "product_margin_shadow": 0.5383
+        },
+        "SG": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 3.9,
+          "method": "YUN  Standard",
+          "eta": "6-10Ｄays",
+          "retail_shadow_usd": 7.99,
+          "projected_order_contribution_usd": 4.3,
+          "product_margin_shadow": 0.5383
+        }
+      },
+      "verified_markets": 4,
+      "image_qa": {
+        "state": "PASS",
+        "reason": "IMAGE_PASS",
+        "width": 800,
+        "height": 800,
+        "format": "WEBP"
+      },
+      "min_projected_product_contribution_usd": 4.3,
+      "min_projected_product_margin": 0.5383,
+      "state": "SHADOW_ADMISSION_CANDIDATE",
+      "reasons": [],
+      "final_net_profit_verified": false
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "26768012",
+      "rail": "accessories/belts",
+      "title": "New style men's the Year of the Loong automatic belt buckle men's casual belt leather fashion belt",
+      "image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202407/B310F001B6BAB8FD54A386BAEE8C3AF8.JPEG",
+      "supplier_cost_min": 3.41,
+      "currency": "USD",
+      "exact_variant": {
+        "id": "656465601",
+        "sku": "9DB4CD658D39459892D8236F933A78C0",
+        "title": "Golden Horse Rotation  Crocodile Pattern Black-130cm",
+        "supplier_cost_usd": 3.41,
+        "inventory_quantity": 740,
+        "weight_g": 260
+      },
+      "inventory_snapshot": 6531,
+      "availability_verified": true,
+      "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+      "production_effect": false,
+      "markets": {
+        "IL": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 8.85,
+          "method": "YUN Express",
+          "eta": "8-15Ｄays",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.77,
+          "product_margin_shadow": 0.5307
+        },
+        "DE": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 5.5,
+          "method": "Wanb  Standard",
+          "eta": "7-15 Days",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.77,
+          "product_margin_shadow": 0.5307
+        },
+        "US": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 6.39,
+          "method": "YANWEN (For Partial ZIP)",
+          "eta": "8-15 Days",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.77,
+          "product_margin_shadow": 0.5307
+        },
+        "SG": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 4.1,
+          "method": "YUN  Standard",
+          "eta": "6-10Ｄays",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.77,
+          "product_margin_shadow": 0.5307
+        }
+      },
+      "verified_markets": 4,
+      "image_qa": {
+        "state": "PASS",
+        "reason": "IMAGE_PASS",
+        "width": 800,
+        "height": 800,
+        "format": "JPEG"
+      },
+      "min_projected_product_contribution_usd": 4.77,
+      "min_projected_product_margin": 0.5307,
+      "state": "SHADOW_ADMISSION_CANDIDATE",
+      "reasons": [],
+      "final_net_profit_verified": false
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "26768011",
+      "rail": "accessories/belts",
+      "title": "Men's automatic buckle belt",
+      "image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202407/E3D2B72FC1FE579F30FF37ADA73DF01D.JPEG",
+      "supplier_cost_min": 3.41,
+      "currency": "USD",
+      "exact_variant": {
+        "id": "656465589",
+        "sku": "85F66918ACA147439543895F1AC29B85",
+        "title": "Black-120cm",
+        "supplier_cost_usd": 3.41,
+        "inventory_quantity": 775,
+        "weight_g": 190
+      },
+      "inventory_snapshot": 775,
+      "availability_verified": true,
+      "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+      "production_effect": false,
+      "markets": {
+        "IL": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 8.16,
+          "method": "YANWEN Express",
+          "eta": "10-18 Days",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.77,
+          "product_margin_shadow": 0.5307
+        },
+        "DE": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 5.04,
+          "method": "Wanb  Standard",
+          "eta": "7-15 Days",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.77,
+          "product_margin_shadow": 0.5307
+        },
+        "US": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 6.04,
+          "method": "YANWEN (For Partial ZIP)",
+          "eta": "8-15 Days",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.77,
+          "product_margin_shadow": 0.5307
+        },
+        "SG": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 3.74,
+          "method": "YUN  Standard",
+          "eta": "6-10Ｄays",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.77,
+          "product_margin_shadow": 0.5307
+        }
+      },
+      "verified_markets": 4,
+      "image_qa": {
+        "state": "PASS",
+        "reason": "IMAGE_PASS",
+        "width": 1920,
+        "height": 1920,
+        "format": "JPEG"
+      },
+      "min_projected_product_contribution_usd": 4.77,
+      "min_projected_product_margin": 0.5307,
+      "state": "SHADOW_ADMISSION_CANDIDATE",
+      "reasons": [],
+      "final_net_profit_verified": false
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "26767971",
+      "rail": "accessories/belts",
+      "title": "Western Cowboy Belt Versatile Bull Head Big Board Buckle Cowboy Carving Ethnic Style Male Punk PU Leather Belt",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202407/857FEBF801F0E71CA3FA68025421521D.jpg",
+      "supplier_cost_min": 3.59,
+      "currency": "USD",
+      "exact_variant": {
+        "id": "656465217",
+        "sku": "4337D4179F4B40ADB77BFBA81FA15B64",
+        "title": "Brown-125",
+        "supplier_cost_usd": 3.59,
+        "inventory_quantity": 3000,
+        "weight_g": 185
+      },
+      "inventory_snapshot": 18000,
+      "availability_verified": true,
+      "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+      "production_effect": false,
+      "markets": {
+        "IL": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 8.05,
+          "method": "YANWEN Express",
+          "eta": "10-18 Days",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.59,
+          "product_margin_shadow": 0.5107
+        },
+        "DE": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 5.0,
+          "method": "Wanb  Standard",
+          "eta": "7-15 Days",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.59,
+          "product_margin_shadow": 0.5107
+        },
+        "US": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 5.99,
+          "method": "YANWEN (For Partial ZIP)",
+          "eta": "8-15 Days",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.59,
+          "product_margin_shadow": 0.5107
+        },
+        "SG": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 3.71,
+          "method": "YUN  Standard",
+          "eta": "6-10Ｄays",
+          "retail_shadow_usd": 8.99,
+          "projected_order_contribution_usd": 4.59,
+          "product_margin_shadow": 0.5107
+        }
+      },
+      "verified_markets": 4,
+      "image_qa": {
+        "state": "PASS",
+        "reason": "IMAGE_PASS",
+        "width": 1200,
+        "height": 1200,
+        "format": "JPEG"
+      },
+      "min_projected_product_contribution_usd": 4.59,
+      "min_projected_product_margin": 0.5107,
+      "state": "SHADOW_ADMISSION_CANDIDATE",
+      "reasons": [],
+      "final_net_profit_verified": false
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "26768005",
+      "rail": "accessories/belts",
+      "title": "Belt men's high-end fashion automatic buckle business belt men's pants belt top layer cowhide leather belt men's style",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202407/403205DA578A985A4A9112DBC1F13E50.jpg",
+      "supplier_cost_min": 6.15,
+      "currency": "USD",
+      "exact_variant": {
+        "id": "656465498",
+        "sku": "84067449D5B043D88E1C64D8C262F52D",
+        "title": "G89807 Silver Buckle-130cm",
+        "supplier_cost_usd": 6.15,
+        "inventory_quantity": 3000,
+        "weight_g": 330
+      },
+      "inventory_snapshot": 72000,
+      "availability_verified": true,
+      "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+      "production_effect": false,
+      "markets": {
+        "IL": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 11.25,
+          "method": "YANWEN Express",
+          "eta": "10-18 Days",
+          "retail_shadow_usd": 11.99,
+          "projected_order_contribution_usd": 4.76,
+          "product_margin_shadow": 0.3971
+        },
+        "DE": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 5.95,
+          "method": "YUN Standard",
+          "eta": "8-12Ｄays",
+          "retail_shadow_usd": 11.99,
+          "projected_order_contribution_usd": 4.76,
+          "product_margin_shadow": 0.3971
+        },
+        "US": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 6.4,
+          "method": "Sunlinkgo Express",
+          "eta": "10-15 days",
+          "retail_shadow_usd": 11.99,
+          "projected_order_contribution_usd": 4.76,
+          "product_margin_shadow": 0.3971
+        },
+        "SG": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 4.46,
+          "method": "YUN  Standard",
+          "eta": "6-10Ｄays",
+          "retail_shadow_usd": 11.99,
+          "projected_order_contribution_usd": 4.76,
+          "product_margin_shadow": 0.3971
+        }
+      },
+      "verified_markets": 4,
+      "image_qa": {
+        "state": "PASS",
+        "reason": "IMAGE_PASS",
+        "width": 800,
+        "height": 800,
+        "format": "JPEG"
+      },
+      "min_projected_product_contribution_usd": 4.76,
+      "min_projected_product_margin": 0.3971,
+      "state": "SHADOW_ADMISSION_CANDIDATE",
+      "reasons": [],
+      "final_net_profit_verified": false
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "26776035",
+      "rail": "accessories/belts",
+      "title": "Ethnic style V-dragon automatic buckle belt, personalized dragon pattern embossed denim belt",
+      "image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202407/6D9278B20437B8E2DDF788DAE643897D.JPEG",
+      "supplier_cost_min": 7.34,
+      "currency": "USD",
+      "exact_variant": {
+        "id": "656563475",
+        "sku": "62F48A5DC5094E849A8E823D86DBAAEC",
+        "title": "Black V-Dragon Ancient Silver Buckle-120cm",
+        "supplier_cost_usd": 7.34,
+        "inventory_quantity": 786,
+        "weight_g": 230
+      },
+      "inventory_snapshot": 10770,
+      "availability_verified": true,
+      "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+      "production_effect": false,
+      "markets": {
+        "IL": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 9.04,
+          "method": "YANWEN Express",
+          "eta": "10-18 Days",
+          "retail_shadow_usd": 13.99,
+          "projected_order_contribution_usd": 5.39,
+          "product_margin_shadow": 0.3853
+        },
+        "DE": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 5.3,
+          "method": "Wanb  Standard",
+          "eta": "7-15 Days",
+          "retail_shadow_usd": 13.99,
+          "projected_order_contribution_usd": 5.39,
+          "product_margin_shadow": 0.3853
+        },
+        "US": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 6.09,
+          "method": "YANWEN (For Partial ZIP)",
+          "eta": "8-15 Days",
+          "retail_shadow_usd": 13.99,
+          "projected_order_contribution_usd": 5.39,
+          "product_margin_shadow": 0.3853
+        },
+        "SG": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 3.95,
+          "method": "YUN  Standard",
+          "eta": "6-10Ｄays",
+          "retail_shadow_usd": 13.99,
+          "projected_order_contribution_usd": 5.39,
+          "product_margin_shadow": 0.3853
+        }
+      },
+      "verified_markets": 4,
+      "image_qa": {
+        "state": "PASS",
+        "reason": "IMAGE_PASS",
+        "width": 900,
+        "height": 900,
+        "format": "JPEG"
+      },
+      "min_projected_product_contribution_usd": 5.39,
+      "min_projected_product_margin": 0.3853,
+      "state": "SHADOW_ADMISSION_CANDIDATE",
+      "reasons": [],
+      "final_net_profit_verified": false
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "26776036",
+      "rail": "accessories/belts",
+      "title": "Male Chinese Dragon Belt Cowskin Genuine Leather Belt for Men Carving Dragon Pattern Automatic Buckle Belt Strap",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202407/7906EA1C0D4AD60ED072DA203EA254AB.jpg",
+      "supplier_cost_min": 12.12,
+      "currency": "USD",
+      "exact_variant": {
+        "id": "656563506",
+        "sku": "30038EA75867400F8B1E69D5B714288A",
+        "title": "Silver buckle Coffee-125cm",
+        "supplier_cost_usd": 12.12,
+        "inventory_quantity": 20,
+        "weight_g": 260
+      },
+      "inventory_snapshot": 361,
+      "availability_verified": true,
+      "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+      "production_effect": false,
+      "markets": {
+        "IL": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 9.7,
+          "method": "YANWEN Express",
+          "eta": "10-18 Days",
+          "retail_shadow_usd": 21.99,
+          "projected_order_contribution_usd": 7.89,
+          "product_margin_shadow": 0.3588
+        },
+        "DE": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 5.5,
+          "method": "Wanb  Standard",
+          "eta": "7-15 Days",
+          "retail_shadow_usd": 21.99,
+          "projected_order_contribution_usd": 7.89,
+          "product_margin_shadow": 0.3588
+        },
+        "US": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 6.39,
+          "method": "YANWEN (For Partial ZIP)",
+          "eta": "8-15 Days",
+          "retail_shadow_usd": 21.99,
+          "projected_order_contribution_usd": 7.89,
+          "product_margin_shadow": 0.3588
+        },
+        "SG": {
+          "state": "VERIFIED",
+          "shipping_cost_usd": 4.1,
+          "method": "YUN  Standard",
+          "eta": "6-10Ｄays",
+          "retail_shadow_usd": 21.99,
+          "projected_order_contribution_usd": 7.89,
+          "product_margin_shadow": 0.3588
+        }
+      },
+      "verified_markets": 4,
+      "image_qa": {
+        "state": "PASS",
+        "reason": "IMAGE_PASS",
+        "width": 900,
+        "height": 900,
+        "format": "JPEG"
+      },
+      "min_projected_product_contribution_usd": 7.89,
+      "min_projected_product_margin": 0.3588,
+      "state": "SHADOW_ADMISSION_CANDIDATE",
+      "reasons": [],
+      "final_net_profit_verified": false
+    }
+  ]
+}

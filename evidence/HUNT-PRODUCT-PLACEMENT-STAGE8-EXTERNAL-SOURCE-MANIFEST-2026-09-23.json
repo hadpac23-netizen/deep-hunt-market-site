@@ -1,0 +1,130 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-EXTERNAL-SOURCE-MANIFEST-V1",
+  "date": "2026-09-23",
+  "mode": "READ_ONLY_EXTERNAL_SOURCE_PLAN",
+  "production_effect": false,
+  "summary": {
+    "empty_rails": 5,
+    "total_gap_to_good": 60,
+    "total_gap_to_full": 120,
+    "rails_with_cj_provisional": 0,
+    "hypersku_manual_sourcing_rails": 5
+  },
+  "rules": [
+    "EPROLO Wave A plus deep scan is considered exhausted for these empty rails.",
+    "CJ provisional candidates cannot enter admission until product detail, exact variant, stock and destination quote verify.",
+    "HyperSKU is manual sourcing only until API eligibility; no fake API assumption.",
+    "External source discovery never bypasses Placement, Quality, Shipping or Profit gates.",
+    "No Production mutation or supplier order."
+  ],
+  "rails": [
+    {
+      "rail": "accessories/gloves",
+      "canonical_count": 0,
+      "gap_to_good": 12,
+      "gap_to_full": 24,
+      "cj_provisional_candidates": 0,
+      "cj_state": "NO_CLEAN_CJ_SNAPSHOT_CANDIDATE",
+      "hypersku_state": "MANUAL_SOURCING_REQUEST_RECOMMENDED",
+      "eprolo_state": "EXHAUSTED_WAVE_A_PLUS_DEEP_SCAN_NO_CLEAN_ADMISSION_CANDIDATE",
+      "target_requirements": [
+        "primary product type exactly matches rail",
+        "high-quality main image >=500px both dimensions",
+        "exact variant and stock truth",
+        "worldwide shipping evidence with IL/DE/US/SG validation where supported",
+        "supplier cost enabling >=$3.99 projected Product Contribution and >=35% projected product margin",
+        "no MOQ/pre-purchase if dropship lane",
+        "media usage rights",
+        "QC/sample path"
+      ],
+      "production_effect": false
+    },
+    {
+      "rail": "home/furniture",
+      "canonical_count": 0,
+      "gap_to_good": 12,
+      "gap_to_full": 24,
+      "cj_provisional_candidates": 0,
+      "cj_state": "NO_CLEAN_CJ_SNAPSHOT_CANDIDATE",
+      "hypersku_state": "MANUAL_SOURCING_REQUEST_RECOMMENDED",
+      "eprolo_state": "EXHAUSTED_WAVE_A_PLUS_DEEP_SCAN_NO_CLEAN_ADMISSION_CANDIDATE",
+      "target_requirements": [
+        "primary product type exactly matches rail",
+        "high-quality main image >=500px both dimensions",
+        "exact variant and stock truth",
+        "worldwide shipping evidence with IL/DE/US/SG validation where supported",
+        "supplier cost enabling >=$3.99 projected Product Contribution and >=35% projected product margin",
+        "no MOQ/pre-purchase if dropship lane",
+        "media usage rights",
+        "QC/sample path"
+      ],
+      "production_effect": false
+    },
+    {
+      "rail": "men/men-clothing",
+      "canonical_count": 0,
+      "gap_to_good": 12,
+      "gap_to_full": 24,
+      "cj_provisional_candidates": 0,
+      "cj_state": "NO_CLEAN_CJ_SNAPSHOT_CANDIDATE",
+      "hypersku_state": "MANUAL_SOURCING_REQUEST_RECOMMENDED",
+      "eprolo_state": "EXHAUSTED_WAVE_A_PLUS_DEEP_SCAN_NO_CLEAN_ADMISSION_CANDIDATE",
+      "target_requirements": [
+        "primary product type exactly matches rail",
+        "high-quality main image >=500px both dimensions",
+        "exact variant and stock truth",
+        "worldwide shipping evidence with IL/DE/US/SG validation where supported",
+        "supplier cost enabling >=$3.99 projected Product Contribution and >=35% projected product margin",
+        "no MOQ/pre-purchase if dropship lane",
+        "media usage rights",
+        "QC/sample path"
+      ],
+      "production_effect": false
+    },
+    {
+      "rail": "office/office-furniture",
+      "canonical_count": 0,
+      "gap_to_good": 12,
+      "gap_to_full": 24,
+      "cj_provisional_candidates": 0,
+      "cj_state": "NO_CLEAN_CJ_SNAPSHOT_CANDIDATE",
+      "hypersku_state": "MANUAL_SOURCING_REQUEST_RECOMMENDED",
+      "eprolo_state": "EXHAUSTED_WAVE_A_PLUS_DEEP_SCAN_NO_CLEAN_ADMISSION_CANDIDATE",
+      "target_requirements": [
+        "primary product type exactly matches rail",
+        "high-quality main image >=500px both dimensions",
+        "exact variant and stock truth",
+        "worldwide shipping evidence with IL/DE/US/SG validation where supported",
+        "supplier cost enabling >=$3.99 projected Product Contribution and >=35% projected product margin",
+        "no MOQ/pre-purchase if dropship lane",
+        "media usage rights",
+        "QC/sample path"
+      ],
+      "production_effect": false
+    },
+    {
+      "rail": "tech/smart-home",
+      "canonical_count": 0,
+      "gap_to_good": 12,
+      "gap_to_full": 24,
+      "cj_provisional_candidates": 0,
+      "cj_state": "NO_CLEAN_CJ_SNAPSHOT_CANDIDATE",
+      "hypersku_state": "MANUAL_SOURCING_REQUEST_RECOMMENDED",
+      "eprolo_state": "EXHAUSTED_WAVE_A_PLUS_DEEP_SCAN_NO_CLEAN_ADMISSION_CANDIDATE",
+      "target_requirements": [
+        "primary product type exactly matches rail",
+        "high-quality main image >=500px both dimensions",
+        "exact variant and stock truth",
+        "worldwide shipping evidence with IL/DE/US/SG validation where supported",
+        "supplier cost enabling >=$3.99 projected Product Contribution and >=35% projected product margin",
+        "no MOQ/pre-purchase if dropship lane",
+        "media usage rights",
+        "QC/sample path"
+      ],
+      "production_effect": false
+    }
+  ],
+  "cj_provisional": {
+    "men_clothing": []
+  }
+}

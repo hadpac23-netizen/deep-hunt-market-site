@@ -29,11 +29,13 @@ assert(studio.includes("STAGE 7 · FINAL CLEAN PREVIEW"));
 assert(studio.includes("STAGE 7 · SOURCING MANIFEST"));
 assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-P0-QA-SHORTLIST-V2-2026-09-23.json"));
 assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-P0-SHIPPING-VERIFY-2026-09-23.json"));
-assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-P0-MEDIA-PROFIT-GATE-2026-09-23.json"));
-assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-P0-SELECTION-2026-09-23.json"));
-assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-P0-PREVIEW-2026-09-23.json"));
+assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-P0-QUALITY-PROFIT-GATE-2026-09-23.json"));
+assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-P0-BELT-GATE-2026-09-23.json"));
+assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-COMBINED-ADMISSION-PREVIEW-2026-09-23.json"));
+assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-EXTERNAL-SOURCE-MANIFEST-2026-09-23.json"));
 assert(studio.includes("STAGE 8 · SUPPLIER RECOVERY GATE"));
-assert(studio.includes("STAGE 8 · P0 CLEAN PREVIEW"));
+assert(studio.includes("STAGE 8 · COMBINED SHADOW PREVIEW"));
+assert(studio.includes("STAGE 8 · EXTERNAL SOURCE HANDOFF"));
 assert(studio.includes("setInterval(run,60000)"));
 assert(studio.includes('document.body.dataset.adminReady!=="true"'));
 

@@ -1,36 +1,38 @@
 {
   "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-SUPPLIER-RECOVERY-V1",
-  "mode": "SHADOW_READ_ONLY",
+  "mode": "SHADOW_ALWAYS_ON",
   "authority": "NONE",
   "owner": "commerce_truth_brain",
-  "purpose": "Fill only residual true supplier gaps after Stage7 recovery, using official supplier data and full truth gates.",
-  "workflow": [
-    "read_stage7_sourcing_manifest",
-    "official_supplier_discovery",
-    "strict_primary_product_type_filter",
-    "exclude_existing_hunt_items",
-    "exact_variant_and_stock_truth",
-    "destination_shipping_truth",
-    "media_technical_qa",
-    "price_gate_v2_1",
-    "diversity_and_density_selection",
-    "shadow_preview"
+  "purpose": "Fill only true sourcing gaps after Stage7 recovery using official supplier sources and strict truth gates.",
+  "pipeline": [
+    "stage7_gap_map",
+    "official_supplier_read_only_discovery",
+    "strict_primary_product_type_qa",
+    "existing_catalog_dedupe",
+    "exact_variant_stock_truth",
+    "destination_shipping_4_of_4",
+    "technical_image_qa",
+    "semantic_visual_qa",
+    "projected_product_contribution_gate",
+    "shadow_admission_preview",
+    "media_rights_and_final_profit_truth_before_production"
   ],
   "rules": [
     "Supplier category is a discovery hint, never sufficient placement evidence.",
-    "Primary product noun and audience must be explicit.",
-    "Existing HUNT products are not counted as new-source recovery.",
-    "EPROLO candidates require exact in-stock variant and 4-of-4 shipping for IL/DE/US/SG.",
-    "CJ candidates remain provisional until product-detail and shipping verification pass.",
-    "Media technical QA is not semantic visual-quality approval.",
+    "Primary product type must match the target rail.",
+    "Existing HUNT source items are excluded from new-source recovery.",
+    "One exact variant must pass stock and destination shipping truth where required.",
+    "Image technical quality and category-semantic visual fit are separate gates.",
+    "Near-duplicate products do not count as useful shelf diversity.",
     "Projected Product Contribution is not Final Net Profit.",
-    "Production mutation, checkout activation and supplier ordering remain blocked."
+    "Media-use rights remain a Production blocker when not explicitly verified.",
+    "No supplier order, checkout activation, payment activation or Production mutation."
   ],
   "owner_gate": {
     "read_only_supplier_discovery": false,
-    "shadow_candidate_gate": false,
-    "shadow_preview": false,
-    "production_shelf_rebuild": true,
+    "shadow_quality_shipping_profit_checks": false,
+    "shadow_admission_preview": false,
+    "production_catalog_admission": true,
     "supplier_order": true
   }
 }

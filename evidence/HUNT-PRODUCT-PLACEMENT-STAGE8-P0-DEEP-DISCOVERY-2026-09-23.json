@@ -1,0 +1,324 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-P0-DEEP-DISCOVERY-V1",
+  "date": "2026-09-23",
+  "mode": "READ_ONLY_SUPPLIER_DISCOVERY",
+  "production_effect": false,
+  "summary": {
+    "target_rails": 6,
+    "rails_with_candidates": 2,
+    "total_candidates": 14,
+    "api_errors": 0
+  },
+  "rules": [
+    "Official EPROLO API only.",
+    "Deep pages 31-90 only; earlier pages were already covered by Wave A.",
+    "Strict primary product-type title match required.",
+    "Candidate is not shelf admission.",
+    "No Production mutation or supplier order."
+  ],
+  "rails": {
+    "accessories/belts": [
+      {
+        "provider": "EPROLO",
+        "item_id": "24417191",
+        "rail": "accessories/belts",
+        "title": "Black Metal Buckle Pu Leather Elastic Waist Belt Personality Women New Fashion Tide All-match Spring Autumn",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202312/D320CDB3362DA08C672283EE57F3CF5F.jpg",
+        "supplier_cost_min": 2.97,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "627943108",
+          "sku": "812A5FFF4A7C481ABBB8043302A0B5BC",
+          "title": "black",
+          "supplier_cost_usd": 2.97,
+          "inventory_quantity": 1500,
+          "weight_g": 220
+        },
+        "inventory_snapshot": 1500,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "26768012",
+        "rail": "accessories/belts",
+        "title": "New style men's the Year of the Loong automatic belt buckle men's casual belt leather fashion belt",
+        "image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202407/B310F001B6BAB8FD54A386BAEE8C3AF8.JPEG",
+        "supplier_cost_min": 3.41,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "656465601",
+          "sku": "9DB4CD658D39459892D8236F933A78C0",
+          "title": "Golden Horse Rotation  Crocodile Pattern Black-130cm",
+          "supplier_cost_usd": 3.41,
+          "inventory_quantity": 740,
+          "weight_g": 260
+        },
+        "inventory_snapshot": 6531,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "26768011",
+        "rail": "accessories/belts",
+        "title": "Men's automatic buckle belt",
+        "image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202407/E3D2B72FC1FE579F30FF37ADA73DF01D.JPEG",
+        "supplier_cost_min": 3.41,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "656465589",
+          "sku": "85F66918ACA147439543895F1AC29B85",
+          "title": "Black-120cm",
+          "supplier_cost_usd": 3.41,
+          "inventory_quantity": 775,
+          "weight_g": 190
+        },
+        "inventory_snapshot": 775,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "26767971",
+        "rail": "accessories/belts",
+        "title": "Western Cowboy Belt Versatile Bull Head Big Board Buckle Cowboy Carving Ethnic Style Male Punk PU Leather Belt",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202407/857FEBF801F0E71CA3FA68025421521D.jpg",
+        "supplier_cost_min": 3.59,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "656465217",
+          "sku": "4337D4179F4B40ADB77BFBA81FA15B64",
+          "title": "Brown-125",
+          "supplier_cost_usd": 3.59,
+          "inventory_quantity": 3000,
+          "weight_g": 185
+        },
+        "inventory_snapshot": 18000,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "26768005",
+        "rail": "accessories/belts",
+        "title": "Belt men's high-end fashion automatic buckle business belt men's pants belt top layer cowhide leather belt men's style",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202407/403205DA578A985A4A9112DBC1F13E50.jpg",
+        "supplier_cost_min": 6.15,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "656465498",
+          "sku": "84067449D5B043D88E1C64D8C262F52D",
+          "title": "G89807 Silver Buckle-130cm",
+          "supplier_cost_usd": 6.15,
+          "inventory_quantity": 3000,
+          "weight_g": 330
+        },
+        "inventory_snapshot": 72000,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "26776035",
+        "rail": "accessories/belts",
+        "title": "Ethnic style V-dragon automatic buckle belt, personalized dragon pattern embossed denim belt",
+        "image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202407/6D9278B20437B8E2DDF788DAE643897D.JPEG",
+        "supplier_cost_min": 7.34,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "656563475",
+          "sku": "62F48A5DC5094E849A8E823D86DBAAEC",
+          "title": "Black V-Dragon Ancient Silver Buckle-120cm",
+          "supplier_cost_usd": 7.34,
+          "inventory_quantity": 786,
+          "weight_g": 230
+        },
+        "inventory_snapshot": 10770,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "29747920",
+        "rail": "accessories/belts",
+        "title": "Elegant Print Sleeve Open Front Long Women's Sun Protection Jacket with Waist Belt",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202507/C650FD564554ADA8AC13A82D68E43F01.jpg",
+        "supplier_cost_min": 8.07,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "690009127",
+          "sku": "7918928071684770A344ADD8D7860075",
+          "title": "Picture Color-XXL",
+          "supplier_cost_usd": 8.07,
+          "inventory_quantity": 1000,
+          "weight_g": 320
+        },
+        "inventory_snapshot": 4000,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "19931334",
+        "rail": "accessories/belts",
+        "title": "Women Vintage Short Sleeve Animal Striped Print Buckle Belt Midi Shirt Dress Female Chic Side Zipper Dress",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202210/62651A3927D784557D73663B663D1AAE.jpg",
+        "supplier_cost_min": 11.47,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "574051973",
+          "sku": "3B4E1DD9121441D89C4061008C267A9C",
+          "title": "As picture-XS-China",
+          "supplier_cost_usd": 11.47,
+          "inventory_quantity": 992,
+          "weight_g": 280
+        },
+        "inventory_snapshot": 3937,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "26776036",
+        "rail": "accessories/belts",
+        "title": "Male Chinese Dragon Belt Cowskin Genuine Leather Belt for Men Carving Dragon Pattern Automatic Buckle Belt Strap",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202407/7906EA1C0D4AD60ED072DA203EA254AB.jpg",
+        "supplier_cost_min": 12.12,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "656563506",
+          "sku": "30038EA75867400F8B1E69D5B714288A",
+          "title": "Silver buckle Coffee-125cm",
+          "supplier_cost_usd": 12.12,
+          "inventory_quantity": 20,
+          "weight_g": 260
+        },
+        "inventory_snapshot": 361,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "26790684",
+        "rail": "accessories/belts",
+        "title": "Fashionable waist belt shirt style MIDI dress",
+        "image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202407/744B6430B985A326F034BB649786911B.JPEG",
+        "supplier_cost_min": 13.02,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "656742670",
+          "sku": "EE51E466E1B74285BFCCB6B6207584CF",
+          "title": "blue-XS",
+          "supplier_cost_usd": 13.02,
+          "inventory_quantity": 726,
+          "weight_g": 620
+        },
+        "inventory_snapshot": 2311,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "29514025",
+        "rail": "accessories/belts",
+        "title": "Striped waist belt camisole jumpsuit/pants for women",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202506/281D694333BCC342D09510CF5DB71DA5.jpg",
+        "supplier_cost_min": 13.63,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "687489416",
+          "sku": "D055F7BEB3E64EBBA058382E0DBA4AEB",
+          "title": "L-gray",
+          "supplier_cost_usd": 13.63,
+          "inventory_quantity": 500,
+          "weight_g": 310
+        },
+        "inventory_snapshot": 1500,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "29516443",
+        "rail": "accessories/belts",
+        "title": "Women's collar sleeveless vest set with waist belt and shorts",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202506/341E4DA9524836B92955674521131757.jpg",
+        "supplier_cost_min": 21.73,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "687514298",
+          "sku": "C1DE8129E4AE47E38D3F04252D3A8E3A",
+          "title": "white set-L",
+          "supplier_cost_usd": 21.73,
+          "inventory_quantity": 500,
+          "weight_g": 450
+        },
+        "inventory_snapshot": 2000,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "23679479",
+        "rail": "accessories/belts",
+        "title": "Nerazzurri Winter Long Oversized Colorful Thick Warm Shaggy Faux Fur Trench Coat for Women with Leather Belt European Fashion",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202310/05688BBF84396DC807FB35F6DF7D45F4.jpg",
+        "supplier_cost_min": 85.64,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "619759252",
+          "sku": "9B409DB9D189487E943C5A974CF9DF3E",
+          "title": "Multi-One Size",
+          "supplier_cost_usd": 85.64,
+          "inventory_quantity": 10,
+          "weight_g": 1800
+        },
+        "inventory_snapshot": 10,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      }
+    ],
+    "accessories/gloves": [],
+    "home/furniture": [],
+    "office/office-furniture": [],
+    "tech/smart-home": [],
+    "men/men-clothing": [
+      {
+        "provider": "EPROLO",
+        "item_id": "27648723",
+        "rail": "men/men-clothing",
+        "title": "Men's hooded thick double-sided velvet camouflage jumpsuit home clothes pajamas",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202411/709367B48E887AC95A3E9FA63143CB32.jpg",
+        "supplier_cost_min": 17.47,
+        "currency": "USD",
+        "exact_variant": {
+          "id": "665631633",
+          "sku": "15030E3F938C4B6EBBEAE79E76E3E1E6",
+          "title": "Light blue grid-XL",
+          "supplier_cost_usd": 17.47,
+          "inventory_quantity": 999,
+          "weight_g": 950
+        },
+        "inventory_snapshot": 62861,
+        "availability_verified": true,
+        "availability_basis": "FRESH_EPROLO_OFFICIAL_API_STAGE8_DEEP",
+        "production_effect": false
+      }
+    ]
+  },
+  "errors": []
+}

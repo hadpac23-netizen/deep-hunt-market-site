@@ -146,7 +146,9 @@
         "empty_thin_recovery_assessment",
         "supplier_gap_discovery",
         "supplier_candidate_truth_gate",
-        "supplier_recovery_preview"
+        "supplier_recovery_preview",
+        "supplier_gap_recovery",
+        "external_source_handoff"
       ],
       "gate": "independent placement evidence; current category never self-proves",
       "material_action": "none",
