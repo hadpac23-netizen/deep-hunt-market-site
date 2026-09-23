@@ -1,0 +1,38 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE4-V1",
+  "mode": "SHADOW_ALWAYS_ON",
+  "authority": "NONE",
+  "owner": "commerce_truth_brain",
+  "purpose": "Resolve placement UNKNOWN without guessing by escalating through independent evidence sources.",
+  "evidence_ladder": [
+    {"level":"L1","source":"deterministic_title_product_type","authority":"KEEP_OR_SAFE_MOVE_WHEN_HIGH_PRECISION"},
+    {"level":"L2","source":"official_supplier_taxonomy_exact_product_membership","authority":"KEEP_SUPPORT_ONLY"},
+    {"level":"L3","source":"official_structured_attributes","authority":"KEEP_OR_REVIEW_SUPPORT"},
+    {"level":"L4","source":"visual_product_type_evidence","authority":"ASSIST_ONLY_REQUIRES_SECOND_SOURCE"},
+    {"level":"L5","source":"owner_or_human_review","authority":"REVIEW_RESOLUTION"}
+  ],
+  "rules": [
+    "Current HUNT category never counts as evidence.",
+    "Visual evidence alone cannot create MOVE or PASS.",
+    "Supplier taxonomy exact membership may support KEEP only in a pre-mapped category.",
+    "Structured supplier attributes may support product type but must pass conflict checks.",
+    "Any disagreement between title, supplier taxonomy, attributes or visual evidence returns REVIEW.",
+    "UNKNOWN remains out of strict canonical rebuild until evidence is sufficient.",
+    "No Production mutation or automatic bulk move."
+  ],
+  "resolution_routes": [
+    "EPROLO_TAXONOMY_RETRY",
+    "EPROLO_CATEGORY_MAPPING_NEEDED",
+    "CJ_OFFICIAL_DETAIL_TAXONOMY_REFRESH",
+    "GOOTEN_METADATA_REFRESH",
+    "OTHER_SUPPLIER_METADATA_REFRESH",
+    "VISUAL_EVIDENCE_SECONDARY",
+    "OWNER_REVIEW"
+  ],
+  "studio": {
+    "surface": "BOOM Brain Studio Product Placement Gate",
+    "refresh_seconds": 60,
+    "show_queue_counts": true,
+    "show_top_unknown_rails": true
+  }
+}

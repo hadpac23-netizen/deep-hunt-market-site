@@ -1,0 +1,12 @@
+const assert=require("node:assert/strict");
+const fs=require("node:fs");
+const d=JSON.parse(fs.readFileSync("evidence/HUNT-PRODUCT-PLACEMENT-LOCAL-JUDGE-2026-09-23.json","utf8"));
+assert.equal(d.mode,"SHADOW_REVIEW_ONLY");
+assert.equal(d.production_effect,false);
+assert(d.calibration?.selected_threshold?.precision>=0.95);
+assert(d.summary?.unknown_scored>0);
+assert(Array.isArray(d.proposals));
+assert(d.proposals.every(x=>x.decision_authority==="NONE_REVIEW_ONLY"));
+assert(d.proposals.every(x=>x.production_effect===false));
+assert(d.rules.some(x=>/never creates PASS, KEEP or MOVE automatically/i.test(x)));
+console.log("Product Placement Local Review Judge: PASS");

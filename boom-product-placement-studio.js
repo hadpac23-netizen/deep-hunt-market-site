@@ -22,10 +22,12 @@
       return;
     }
     try{
-      const [contract,shelves,taxonomy]=await Promise.all([
+      const [contract,shelves,taxonomy,stage4Queue,judge]=await Promise.all([
         fetchJson("boom-product-placement-gate-contract.json"),
         fetchJson("evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json"),
-        fetchJson("evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json").catch(()=>({verified:[],summary:{}}))
+        fetchJson("evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json").catch(()=>({verified:[],summary:{}})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE4-QUEUE-2026-09-23.json").catch(()=>({summary:{},top_unknown_rails:[]})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-LOCAL-JUDGE-2026-09-23.json").catch(()=>({summary:{},calibration:{},proposals:[]}))
       ]);
       const taxonomyKeep=new Map((taxonomy.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
       const products=[];
@@ -57,6 +59,7 @@
           metric(ps.HOLD_REVIEW||0,"RULE / CONFLICT REVIEW · held"),
           metric(ps.HOLD_UNKNOWN||0,"UNKNOWN · held"),
           metric(taxonomy.summary?.taxonomy_verified_keep_support||0,"Supplier taxonomy KEEP support"),
+          metric(judge.summary?.review_proposals||0,"Local Judge · REVIEW only"),
           metric(contract.always_on_policy?.studio_refresh_seconds||60,"Refresh seconds")
         ].join("");
       }
@@ -71,9 +74,23 @@
       const cards=[];
       cards.push('<article><small>ENFORCEMENT</small><strong>'+esc(contract.enforcement_point||"MANDATORY")+'</strong><span>Auto move: '+(contract.always_on_policy?.automatic_product_move?"ON":"OFF")+' · Production mutation: '+(contract.always_on_policy?.production_mutation?"ON":"OFF")+'</span></article>');
       cards.push('<article><small>SUPPLIER TAXONOMY</small><strong>'+esc(taxonomy.summary?.taxonomy_verified_keep_support||0)+' verified KEEP supports</strong><span>Official EPROLO read-only taxonomy · KEEP support only · never auto-MOVE.</span></article>');
+      const precision=judge.calibration?.selected_threshold?.precision;
+      cards.push('<article><small>LOCAL REVIEW JUDGE</small><strong>'+esc(judge.summary?.review_proposals||0)+' guarded review proposals</strong><span>Cross-rail: '+esc(judge.summary?.cross_rail_review_candidates||0)+' · Guard blocked: '+esc(judge.summary?.guard_blocked_proposals||0)+' · Holdout precision: '+esc(precision!=null?(precision*100).toFixed(2)+'%':'UNKNOWN')+' · Authority: NONE.</span></article>');
+      for(const proposal of (judge.proposals||[]).filter(x=>x.effect==="CROSS_RAIL_REVIEW_CANDIDATE").slice(0,8)){
+        cards.push('<article><small>JUDGE REVIEW · '+esc(proposal.provider||"")+' · '+esc(proposal.item_id||"")+'</small><strong>'+esc(proposal.title||"")+'</strong><span>'+esc(proposal.current_rail)+' ⇢ '+esc(proposal.proposed_rail)+'</span><span>REVIEW ONLY · no PASS/MOVE authority · best similarity '+esc(proposal.judge_confidence_basis?.best_similarity??"")+'</span></article>');
+      }
       if(topRails.length){
         const text=topRails.map(row=>row[0]+" ("+row[1]+")").join(" · ");
         cards.push('<article><small>TOP MIXED RAILS</small><strong>'+esc(text)+'</strong><span>SAFE MOVE candidates only · no automatic mutation · current category is never evidence.</span></article>');
+      }
+      const routes=stage4Queue.summary?.primary_routes||{};
+      const routeText=Object.entries(routes).sort((a,b)=>b[1]-a[1]).map(([route,count])=>route+" ("+count+")").join(" · ");
+      if(routeText){
+        cards.push('<article><small>UNKNOWN RESOLUTION ROUTES</small><strong>'+esc(routeText)+'</strong><span>Evidence ladder: supplier taxonomy / metadata first; visual evidence is secondary only and cannot move a product by itself.</span></article>');
+      }
+      const unknownRails=(stage4Queue.top_unknown_rails||stage4Queue.summary?.top_unknown_rails||[]).slice(0,8);
+      if(unknownRails.length){
+        cards.push('<article><small>TOP UNKNOWN RAILS</small><strong>'+esc(unknownRails.map(x=>x.rail+" ("+x.count+")").join(" · "))+'</strong><span>Prioritized for Stage 4 evidence refresh; no forced placement.</span></article>');
       }
       for(const row of moves.slice(0,18)){
         const placement=row.placement||{};

@@ -64,3 +64,25 @@ r=gate.evaluate({
 });
 assert.notEqual(r.decision,"PASS");
 console.log("Product Placement supplier-taxonomy KEEP support: PASS");
+
+for(const title of [
+  "Outdoor water bottle hooks beverages portable storage tools hiking buckles backpacks hanging ropes",
+  "Outdoor Sports Waist Bag Fitness Multi functional Water Bottle Bag Running Phone Waist Bag"
+]){
+  const q=e(title,"kitchen","drinkware");
+  assert(!(q.decision==="PASS"&&q.canonical_category==="drinkware"),title+" must not self-validate as drinkware");
+}
+console.log("Product Placement promoted-type regressions: PASS");
+
+for(const [title,dep,cat] of [
+  ["Bracelet style data cable suitable for Apple Android fast power bank short charging cable","tech","chargers-cables"],
+  ["Silicone Head Nail Art Stamping Pen Butterfly Floral DIY Nail Stamp Transfer Tool","beauty","beauty-tools"],
+  ["2-in-1 Portable Folding Ice Ball Maker Bottle Silicone Freezer Ice Mold","kitchen","bakeware"],
+  ["Reflective Escape-Proof Cat Harness Adjustable Vest with AirTag Holder","pets","pet-accessories"],
+  ["Halloween Witch Hat Headband Hair Accessory","accessories","hats"],
+  ["Shockproof Quick Dry Sports Bra Women Padded Gym Running Bra","sports","fitness"]
+]){
+  const q=e(title,dep,cat);
+  assert.notEqual(q.placement_action,"MOVE",title+" must not auto-move across an ambiguous rail boundary");
+}
+console.log("Product Placement conservative SAFE_MOVE regressions: PASS");

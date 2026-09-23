@@ -171,8 +171,8 @@
     },
     {
       "id": "product_placement_gate",
-      "status": "CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE3",
-      "evidence": "Product Placement Gate V1.2 combines deterministic product-type rules with official EPROLO taxonomy KEEP support. Studio auto-refreshes every 60s. Supplier taxonomy never auto-creates MOVE. Production mutation remains OFF."
+      "status": "CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE4",
+      "evidence": "Product Placement Gate combines deterministic rules + official supplier taxonomy KEEP support + guarded local TF-IDF Review Judge. Judge has no action authority. Studio refresh=60s. Auto-move and Production mutation remain OFF."
     }
   ],
   "blockers": [

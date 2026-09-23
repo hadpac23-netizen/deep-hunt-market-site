@@ -12,7 +12,7 @@
     {type:"smart_wearable",priority:99,dest:["tech","wearables"],re:rx("\\b(smart ?watch|smart bracelet|fitness tracker|heart rate.{0,25}bracelet|blood oxygen.{0,25}bracelet)\\b")},
     {type:"wearable_accessory",priority:98,dest:["tech","wearable-accessories"],re:rx("\\b(watch strap|watch band|smartwatch band|smart watch band|iwatch band)\\b")},
     {type:"camera",priority:97,dest:["tech","cameras"],re:rx("\\b(camera|webcam|dash cam|security cam|ccd camera)\\b"),exclude:rx("\\b(camera frame|webcam cover|camera cover|privacy sticker|fill light|camera light|camera mount|camera base|card reader)\\b")},
-    {type:"charger_cable",priority:96,dest:["tech","chargers-cables"],re:rx("\\b(charger|charging cable|data cable|usb cable|type[- ]?c cable|lightning cable)\\b")},
+    {type:"charger_cable",priority:96,dest:["tech","chargers-cables"],re:rx("\\b(charger|charging cable|data cable|usb cable|type[- ]?c cable|lightning cable)\\b"),exclude:rx("\\b(storage case|storage bag|pouch|organizer|power bank|powerbank|battery pack)\\b")},
     {type:"power_bank",priority:96,dest:["tech","power-banks"],re:rx("\\b(power bank|portable charger)\\b"),exclude:rx("\\b(blanket|shawl|lamp|lights?|lantern|headlight|flashlight|bicycle|bike|heated|electric blanket)\\b")},
     {type:"gaming",priority:95,dest:["tech","gaming"],re:rx("\\b(gaming mouse|gaming keyboard|gamepad|game controller|joystick|xbox controller|playstation controller)\\b")},
     {type:"pet_bed_house",priority:95,dest:["pets","pet-houses"],re:rx("\\b(cat bed|dog bed|pet bed|cat house|dog house|pet house|cat condo|pet condo|cat cave)\\b"),exclude:rx("\\b(sign|plaque|wall decor|decoration|ozone|disinfection machine|sterilizer)\\b")},
@@ -44,7 +44,7 @@
     {type:"hat",priority:85,dest:["accessories","hats"],re:rx("\\b(beanie|bucket hat|baseball cap|sun hat|beret)\\b")},
     {type:"bag_accessory",priority:80,dest:["accessories","bag-accessories"],re:rx("\\b(bag strap|bag charm|bag chain|bag organizer|purse strap|handbag strap)\\b")},
     {type:"bag",priority:80,dest:["accessories","bags"],re:rx("\\b(handbag|shoulder bag|crossbody bag|tote bag|purse)\\b"),exclude:rx("\\b(storage bag|laundry bag|trash bag|sleeping bag)\\b")},
-    {type:"hair_accessory",priority:80,dest:["accessories","hair-accessories"],re:rx("\\b(hair clip|hair claw|hair tie|scrunchie|headband|barrette|hair pin)\\b")},
+    {type:"hair_accessory",priority:80,dest:["accessories","hair-accessories"],re:rx("\\b(hair clip|hair claw|hair tie|scrunchie|headband|barrette|hair pin)\\b"),exclude:rx("\\b(headlamp|headlight|sweatband|sports|pet|dog|cat|animal ears?|cosplay)\\b")},
     {type:"boxers",priority:92,dest:["men","men-boxers"],re:rx("\\b(boxer briefs|boxer shorts|boxers)\\b")},
     {type:"women_underwear",priority:92,dest:["women","women-underwear"],re:rx("\\b(panties|women'?s underwear|women'?s briefs|ladies underwear|sports bra|wireless bra)\\b")},
     {type:"women_swim",priority:92,dest:["women","women-swim"],re:rx("\\b(bikini|swimsuit|one[- ]piece swimsuit|beach cover[- ]?up)\\b"),exclude:rx("\\b(girl|kids?|children|baby|wax|shaver|trimmer|hair removal|depilation|jewelry|ring tie|metal ring)\\b")},
@@ -72,16 +72,16 @@
     {type:"beauty_hair",priority:85,dest:["beauty","hair"],re:rx("\\b(wig|hair extension|hair extensions|hair dryer|blow dryer|curling iron|hair curler|hair straightener|flat iron|shampoo|conditioner|hair oil|hair serum|hair mask)\\b"),exclude:rx("\\b(pet|dog|cat)\\b")},
     {type:"beauty_tool",priority:84,dest:["beauty","beauty-tools"],re:rx("\\b(makeup brush|make-up brush|makeup sponge|beauty sponge|eyelash curler|facial roller|jade roller|gua sha|blackhead remover|pore cleaner|facial cleansing device|makeup mirror)\\b")},
     {type:"fragrance",priority:86,dest:["beauty","fragrance"],re:rx("\\b(eau de parfum|eau de toilette|perfume|cologne|fragrance spray|body fragrance|parfum)\\b"),exclude:rx("\\b(diffuser|air freshener|car perfume|pet)\\b")},
-    {type:"nails",priority:85,dest:["beauty","nails"],re:rx("\\b(nail polish|gel polish|press[- ]?on nails?|false nails?|fake nails?|nail tips|manicure set|nail art)\\b")},
+    {type:"nails",priority:85,dest:["beauty","nails"],re:rx("\\b(nail polish|gel polish|press[- ]?on nails?|false nails?|fake nails?|nail tips|manicure set|nail art)\\b"),exclude:rx("\\b(bag|pouch|packaging|drawstring|holder|storage case)\\b")},
 
-    {type:"kids_shoes",priority:94,dest:["kids","kids-shoes"],re:rx("\\b(kids?|children|child|boys?|girls?|baby|toddler).{0,45}\\b(shoes?|sneakers?|sandals?|boots?|slippers?)\\b|\\b(shoes?|sneakers?|sandals?|boots?|slippers?)\\b.{0,45}\\b(kids?|children|child|boys?|girls?|baby|toddler)\\b"),exclude:rx("\\b(shoe rack|shoe bag|shoe cover)\\b")},
-    {type:"kids_clothing",priority:90,dest:["kids","kids-clothing"],re:rx("\\b(kids?|children|child|boys?|girls?).{0,50}\\b(t[- ]?shirt|shirt|pants|trousers|shorts|dress|skirt|jacket|coat|hoodie|sweater|clothing|outfit|set)\\b|\\b(t[- ]?shirt|shirt|pants|trousers|shorts|dress|skirt|jacket|coat|hoodie|sweater)\\b.{0,50}\\b(kids?|children|child|boys?|girls?)\\b")},
+    {type:"kids_shoes",priority:94,dest:["kids","kids-shoes"],re:rx("\\b(kids?|children|child|boys?|girls|girl\\x27s|baby|toddler).{0,45}\\b(shoes?|sneakers?|sandals?|boots?|slippers?)\\b|\\b(shoes?|sneakers?|sandals?|boots?|slippers?)\\b.{0,45}\\b(kids?|children|child|boys?|girls|girl\\x27s|baby|toddler)\\b"),exclude:rx("\\b(shoe rack|shoe bag|shoe cover)\\b")},
+    {type:"kids_clothing",priority:90,dest:["kids","kids-clothing"],re:rx("\\b(kids?|children|child|boys?|girls|girl\\x27s).{0,50}\\b(t[- ]?shirt|shirt|pants|trousers|shorts|dress|skirt|jacket|coat|hoodie|sweater|clothing|outfit|set)\\b|\\b(t[- ]?shirt|shirt|pants|trousers|shorts|dress|skirt|jacket|coat|hoodie|sweater)\\b.{0,50}\\b(kids?|children|child|boys?|girls|girl\\x27s)\\b")},
     {type:"baby_product",priority:89,dest:["kids","baby"],re:rx("\\b(baby bib|baby bottle|pacifier|dummy pacifier|swaddle|baby blanket|baby romper|newborn romper|baby feeding|teether|baby teether|diaper bag|nappy bag)\\b")},
-    {type:"kids_accessory",priority:82,dest:["kids","kids-accessories"],re:rx("\\b(kids?|children|boys?|girls?|baby|toddler).{0,40}\\b(headband|hair clip|hat|cap|beanie|backpack|school bag|gloves|scarf)\\b|\\b(headband|hair clip|hat|cap|beanie|backpack|school bag|gloves|scarf)\\b.{0,40}\\b(kids?|children|boys?|girls?|baby|toddler)\\b")},
+    {type:"kids_accessory",priority:82,dest:["kids","kids-accessories"],re:rx("\\b(kids?|children|boys?|girls|girl\\x27s|baby|toddler).{0,40}\\b(headband|hair clip|hat|cap|beanie|backpack|school bag|gloves|scarf)\\b|\\b(headband|hair clip|hat|cap|beanie|backpack|school bag|gloves|scarf)\\b.{0,40}\\b(kids?|children|boys?|girls|girl\\x27s|baby|toddler)\\b")},
 
-    {type:"drinkware",priority:84,dest:["kitchen","drinkware"],re:rx("\\b(tumbler|travel mug|coffee mug|tea mug|drinking cup|water bottle|vacuum bottle|thermos|vacuum flask|straw cup|glass cup)\\b"),exclude:rx("\\b(baby bottle|pet bottle|spray bottle)\\b")},
+    {type:"drinkware",priority:84,dest:["kitchen","drinkware"],re:rx("\\b(tumbler|travel mug|coffee mug|tea mug|drinking cup|water bottle|vacuum bottle|thermos|vacuum flask|straw cup|glass cup)\\b"),exclude:rx("\\b(baby bottle|pet bottle|spray bottle|carrier bag|waist bag|bottle bag|pouch|holder|hook|hooks|hanging rope|storage tool|lunch bag|case|pet|dog|cat)\\b")},
     {type:"cookware",priority:84,dest:["kitchen","cookware"],re:rx("\\b(frying pan|fry pan|saucepan|cooking pot|stock pot|wok|baking pan|baking tray|roasting pan|casserole pot)\\b")},
-    {type:"tableware",priority:83,dest:["kitchen","tableware"],re:rx("\\b(dinner plate|ceramic plate|dinnerware|tableware|cutlery set|flatware|spoon fork set|fork spoon set|serving bowl|salad bowl|rice bowl)\\b")},
+    {type:"tableware",priority:83,dest:["kitchen","tableware"],re:rx("\\b(dinner plate|ceramic plate|dinnerware|tableware|cutlery set|flatware|spoon fork set|fork spoon set|serving bowl|salad bowl|rice bowl)\\b"),exclude:rx("\\b(baby|children|kids?|camping|outdoor|pet|dog|cat|storage bag|pouch|carrier)\\b")},
     {type:"kitchen_tool",priority:82,dest:["kitchen","kitchen-tools"],re:rx("\\b(vegetable peeler|kitchen peeler|silicone spatula|kitchen spatula|kitchen whisk|cheese grater|kitchen tongs|can opener|garlic press|pizza cutter|kitchen scissors|measuring spoons?|measuring cups?)\\b")},
     {type:"food_storage",priority:82,dest:["kitchen","food-storage"],re:rx("\\b(food storage container|food container|lunch box|bento box|food jar|grain storage|rice storage|spice jar|airtight container)\\b")},
 
@@ -93,7 +93,7 @@
     {type:"toy_vehicle",priority:84,dest:["toys","toy-vehicles"],re:rx("\\b(remote control car|rc car|toy car|toy truck|toy excavator|toy tractor|toy vehicle|remote control truck)\\b")},
     {type:"educational_toy",priority:81,dest:["toys","educational-toys"],re:rx("\\b(educational toy|learning toy|montessori toy|stem toy|learning board|busy board|math toy|alphabet toy)\\b")},
 
-    {type:"computer_accessory",priority:81,dest:["tech","computer-accessories"],re:rx("\\b(usb hub|docking station|card reader|memory card reader|mouse pad|mousepad|laptop cooling pad|laptop sleeve|keyboard cover|webcam cover)\\b"),exclude:rx("\\bgaming\\b")},
+    {type:"computer_accessory",priority:81,dest:["tech","computer-accessories"],re:rx("\\b(usb hub|docking station|card reader|memory card reader|mouse pad|mousepad|laptop cooling pad|laptop sleeve|keyboard cover|webcam cover)\\b"),exclude:rx("\\b(gaming|privacy sticker|webcam cover|camera cover|laptop sleeve|notebook bag|carrying bag|protective bag)\\b")},
     {type:"audio",priority:85,dest:["tech","audio"],re:rx("\\b(headphones?|earphones?|earbuds?|bluetooth speaker|portable speaker|wireless speaker|microphone|soundbar|audio receiver)\\b"),exclude:rx("\\b(cleaning|protective case|protective cover|earphone case|headphone case|storage case|audio cable|headphone cable|earphone cable)\\b")},
     {type:"stand_holder",priority:84,dest:["tech","stands-holders"],re:rx("\\b(phone stand|mobile phone stand|tablet stand|laptop stand|phone holder|car phone holder|magnetic phone holder|tablet holder|desk phone holder)\\b")},
     {type:"tech_accessory",priority:78,dest:["tech","phone-accessories"],re:rx("\\b(screen protector|tempered glass|camera lens protector|phone lanyard|phone strap|sim card tool)\\b")},
@@ -102,7 +102,8 @@
     {type:"outdoor_sports",priority:80,dest:["sports","outdoors"],re:rx("\\b(hiking poles?|trekking poles?|hiking gear|outdoor sports|climbing harness|climbing carabiner|camping hiking backpack)\\b")},
     {type:"sports_top",priority:78,dest:["sports","active-tops"],re:rx("\\b(sports top|workout top|gym top|running shirt|training shirt|yoga top|fitness top)\\b")},
 
-    {type:"pet_accessory",priority:83,dest:["pets","pet-accessories"],re:rx("\\b(dog leash|pet leash|dog collar|cat collar|pet collar|dog harness|cat harness|pet harness|pet bowl|dog bowl|cat bowl|pet feeder|poop bag|pet waste bag|cat scratcher|scratching post)\\b")},
+    {type:"pet_walk",priority:88,dest:["pets","pet-walk"],re:rx("\\b(dog leash|pet leash|dog collar|cat collar|pet collar|dog harness|cat harness|pet harness|dog lead|pet lead|chest harness|anti[- ]?pull harness)\\b")},
+    {type:"pet_accessory",priority:83,dest:["pets","pet-accessories"],re:rx("\\b(pet bowl|dog bowl|cat bowl|pet feeder|poop bag|pet waste bag|cat scratcher|scratching post|pet carrier|pet backpack)\\b")},
     {type:"pet_toy",priority:82,dest:["pets","pet-toys"],re:rx("\\b(dog toy|cat toy|pet toy|chew toy for dog|cat teaser|cat wand|dog ball toy)\\b")},
 
     {type:"camping_shelter",priority:85,dest:["camping","camping-shelter"],re:rx("\\b(camping tent|outdoor tent|backpacking tent|beach tent|canopy tent|camping tarp|tent tarp)\\b")},
@@ -121,7 +122,7 @@
     const t=clean(title).toLowerCase();
     const men=/\b(men|men's|mens|male|man|gentlemen)\b/i.test(t);
     const women=/\b(women|women's|womens|female|woman|ladies|lady)\b/i.test(t);
-    const kids=/\b(kids?|children|child|baby|toddler|infant|newborn|boys?|girls?)\b/i.test(t);
+    const kids=/\b(kids?|children|child|baby|toddler|infant|newborn|boys?|girls|girl\x27s)\b/i.test(t);
     if(men&&women)return "UNISEX";
     if(kids&&!men&&!women)return "KIDS";
     if(men&&!women)return "MEN";
@@ -148,10 +149,10 @@
   const SAFE_MOVE_TYPES=new Set([
     "phone_case","pet_bed_house","pet_grooming","building_toy",
     "fitness_accessory","sports_gear","earrings","necklace","ring","watch",
-    "wearable_accessory","power_bank","gaming","bag_accessory",
-    "boxers","women_underwear","women_swim","evening_dress",
-    "women_jeans","men_jeans","women_shoes","men_shoes","women_hoodie",
-    "active_bottoms","garden_tool"
+    "wearable_accessory","gaming","bag_accessory","boxers",
+    "women_swim","evening_dress","women_jeans","men_jeans",
+    "women_shoes","men_shoes","women_hoodie","active_bottoms",
+    "garden_tool","fragrance","computer_accessory","charger_cable"
   ]);
 
   function evaluate(product={}){
