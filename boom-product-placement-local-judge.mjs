@@ -7,6 +7,11 @@ const OUT="evidence/HUNT-PRODUCT-PLACEMENT-LOCAL-JUDGE-2026-09-23.json";
 const shelves=JSON.parse(fs.readFileSync(SHELF,"utf8"));
 const tax=fs.existsSync(TAX)?JSON.parse(fs.readFileSync(TAX,"utf8")):{verified:[]};
 const taxMap=new Map((tax.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
+const DETAIL_TAXONOMY="evidence/HUNT-EPROLO-DETAIL-TAXONOMY-STAGE5-2026-09-23.json";
+const detailTaxonomy=fs.existsSync(DETAIL_TAXONOMY)?JSON.parse(fs.readFileSync(DETAIL_TAXONOMY,"utf8")):{results:[]};
+const taxonomyConflict=new Map((detailTaxonomy.results||[])
+  .filter(x=>x.state==="SUPPLIER_TAXONOMY_CONFLICT_CURRENT_RAIL")
+  .map(x=>["EPROLO:"+String(x.item_id),x]));
 
 const STOP=new Set(("new fashion style trendy hot sale wholesale dropshipping product products item items quality high premium simple portable creative design suitable use using with for from and the a an of to in on by is are be this that these those color colours colors size sizes one two three pcs piece pieces set sets latest women woman womens female lady ladies men man mens male unisex").split(/\s+/));
 
@@ -23,11 +28,14 @@ const rows=[];
 for(const dep of shelves.departments||[])for(const cat of dep.categories||[])for(const p of cat.products||[]){
   const key=p.provider+":"+String(p.item_id||"");
   const tx=taxMap.get(key);
+  const conflict=taxonomyConflict.get(key);
   const input={
     provider:p.provider,item_id:String(p.item_id||""),title:p.title||"",
     current_department:dep.slug,current_category:cat.slug,
-    supplier_category_id:tx?.supplier_category_id||null,
-    supplier_taxonomy_current_rail_verified:!!(tx&&tx.current_rail===railOf(dep.slug,cat.slug))
+    supplier_category_id:tx?.supplier_category_id||conflict?.supplier_category_id||null,
+    supplier_taxonomy_current_rail_verified:!!(tx&&tx.current_rail===railOf(dep.slug,cat.slug)),
+    supplier_taxonomy_conflict_current_rail:!!(conflict&&conflict.current_rail===railOf(dep.slug,cat.slug)),
+    supplier_taxonomy_suggested_rail:Array.isArray(conflict?.suggested_rail)?conflict.suggested_rail[0]:(conflict?.suggested_rail||null)
   };
   rows.push({...input,placement:gate.evaluate(input)});
 }

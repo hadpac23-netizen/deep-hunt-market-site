@@ -163,6 +163,23 @@
     const type=detectProductType(product);
     const positive=[],negative=[],conflicts=[],reasonCodes=[];
 
+    if(product.supplier_taxonomy_conflict_current_rail===true){
+      const supplierTarget=product.supplier_taxonomy_suggested_rail||null;
+      conflicts.push("SUPPLIER_TAXONOMY_CONFLICT:"+String(supplierTarget||"UNMAPPED"));
+      negative.push(evidence("SUPPLIER_TAXONOMY_CONFLICT_CURRENT_RAIL",product.supplier_category_id||"verified"));
+      reasonCodes.push("SUPPLIER_TAXONOMY_CONFLICT_REVIEW");
+      return {
+        decision:"REVIEW",placement_action:"HOLD_REVIEW",move_tier:"SUPPLIER_CONFLICT",
+        detected_product_type:type.state==="VERIFIED"?type.type:null,
+        canonical_department:null,canonical_category:null,
+        suggested_department:supplierTarget?String(supplierTarget).split("/")[0]:null,
+        suggested_category:supplierTarget?String(supplierTarget).split("/")[1]:null,
+        confidence:0.99,positive_evidence:positive,negative_evidence:negative,conflicts,
+        reason_codes:reasonCodes,review_required:true,gender,
+        evidence_basis:"OFFICIAL_SUPPLIER_TAXONOMY_CONFLICT"
+      };
+    }
+
     if(type.state==="CONFLICTED"){
       conflicts.push(...type.hits.map(x=>x.type+":"+x.dest.join("/")));
       reasonCodes.push("PLACEMENT_TYPE_CONFLICT");

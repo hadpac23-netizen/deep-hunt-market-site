@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1.2-GUARDED-REVIEW-JUDGE",
+  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1.3-STAGE5-OFFICIAL-TAXONOMY",
   "mode": "SHADOW_ALWAYS_ON",
   "authority": "NONE",
   "owner": "commerce_truth_brain",
@@ -139,5 +139,23 @@
       "adult bag to Kids guard"
     ],
     "rule": "Judge proposal never creates PASS, KEEP or MOVE. It only prioritizes REVIEW."
-  }
+  },
+  "supplier_taxonomy_sources": [
+    {
+      "source": "EPROLO /app/getCategory.html",
+      "purpose": "official category IDs + names",
+      "authority": "mapping evidence only"
+    },
+    {
+      "source": "EPROLO server-rendered product detail",
+      "purpose": "exact product -> supplier category membership",
+      "authority": "KEEP_SUPPORT_ONLY"
+    },
+    {
+      "source": "EPROLO signed product-list API",
+      "purpose": "catalog membership / refresh",
+      "authority": "KEEP_SUPPORT_ONLY"
+    }
+  ],
+  "supplier_taxonomy_rule": "Exact supplier taxonomy may support KEEP only when the product identity is observed in a pre-approved exact mapping. Broad/unmapped categories remain UNKNOWN. Cross-rail conflicts are REVIEW only. Supplier taxonomy never auto-MOVEs a product."
 }

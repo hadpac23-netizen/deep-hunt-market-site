@@ -171,8 +171,8 @@
     },
     {
       "id": "product_placement_gate",
-      "status": "CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE4",
-      "evidence": "Product Placement Gate combines deterministic rules + official supplier taxonomy KEEP support + guarded local TF-IDF Review Judge. Judge has no action authority. Studio refresh=60s. Auto-move and Production mutation remain OFF."
+      "status": "CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE5",
+      "evidence": "Product Placement Gate combines deterministic type rules, official EPROLO category tree, exact server-rendered supplier product taxonomy KEEP support, and guarded Local Review Judge. 958 supplier-taxonomy KEEP supports are recorded; no supplier taxonomy source can auto-MOVE. Studio refresh=60s. Production mutation remains OFF."
     }
   ],
   "blockers": [

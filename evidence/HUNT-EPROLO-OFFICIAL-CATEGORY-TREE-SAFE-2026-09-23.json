@@ -1,0 +1,613 @@
+{
+  "version": "HUNT-EPROLO-OFFICIAL-CATEGORY-TREE-SAFE-V1.1-CORRECTED",
+  "date": "2026-09-23",
+  "source": "https://eprolo.com/app/getCategory.html",
+  "source_code": "0",
+  "source_message": "Successful operation",
+  "production_effect": false,
+  "exact_mapping": {
+    "beauty/hair": [
+      86
+    ],
+    "beauty/makeup": [
+      87
+    ],
+    "beauty/skincare": [
+      88
+    ],
+    "beauty/fragrance": [
+      89
+    ],
+    "beauty/beauty-tools": [
+      93
+    ],
+    "sports/fitness": [
+      69
+    ],
+    "sports/cycling": [
+      67
+    ],
+    "camping/outdoors": [
+      72
+    ],
+    "travel/luggage": [
+      154
+    ],
+    "home/home-storage": [
+      144
+    ],
+    "home/cleaning": [
+      117
+    ],
+    "home/home-decor": [
+      140
+    ],
+    "home/home-textiles": [
+      148
+    ],
+    "tech/cameras": [
+      39
+    ],
+    "tech/audio": [
+      40,
+      44
+    ],
+    "tech/wearables": [
+      43
+    ],
+    "tech/phone-cases": [
+      36
+    ],
+    "tech/power-banks": [
+      38
+    ],
+    "women/women-shoes": [
+      64
+    ],
+    "men/men-shoes": [
+      63
+    ],
+    "accessories/jewelry-rings": [
+      33
+    ],
+    "accessories/jewelry-necklaces": [
+      47
+    ],
+    "accessories/jewelry-earrings": [
+      48
+    ],
+    "accessories/watches": [
+      49
+    ],
+    "accessories/jewelry-bracelets": [
+      50
+    ],
+    "kids/baby-clothing": [
+      165
+    ],
+    "kids/baby": [
+      95,
+      97
+    ],
+    "kitchen/kitchen-appliances": [
+      115
+    ],
+    "gifts/party": [
+      145
+    ],
+    "toys/toys": [
+      100
+    ],
+    "men/men-bags": [
+      56
+    ],
+    "accessories/bags": [
+      55,
+      58,
+      62
+    ]
+  },
+  "ambiguous_supplier_category_ids": [
+    31,
+    41,
+    45,
+    46,
+    68,
+    70,
+    73,
+    109,
+    110,
+    112,
+    126,
+    127,
+    128,
+    130,
+    134,
+    163
+  ],
+  "rules": [
+    "Category IDs and names come directly from EPROLO public category endpoint.",
+    "Restricted/out-of-scope categories are omitted from HUNT placement automation.",
+    "Only exact/low-ambiguity mappings may support KEEP.",
+    "Broad/overlapping supplier categories remain UNKNOWN/REVIEW and cannot self-prove a HUNT rail.",
+    "Supplier taxonomy never auto-MOVEs a product."
+  ],
+  "tree": [
+    {
+      "id": 24,
+      "name": "Fashion & Clothing",
+      "subcategories": [
+        {
+          "id": 37,
+          "name": "T-Shirts"
+        },
+        {
+          "id": 104,
+          "name": "Dresses"
+        },
+        {
+          "id": 106,
+          "name": "Hoodies & Sweatshirts"
+        },
+        {
+          "id": 108,
+          "name": "Jeans"
+        },
+        {
+          "id": 155,
+          "name": "Jackets & Coats"
+        },
+        {
+          "id": 156,
+          "name": "Blouses & Shirts"
+        },
+        {
+          "id": 157,
+          "name": "Sweaters"
+        },
+        {
+          "id": 158,
+          "name": "Suits & Sets"
+        },
+        {
+          "id": 159,
+          "name": "Socks & Leggings"
+        },
+        {
+          "id": 160,
+          "name": "Accessories"
+        },
+        {
+          "id": 161,
+          "name": "Others"
+        },
+        {
+          "id": 164,
+          "name": "Pants"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Shoes & Bags",
+      "subcategories": [
+        {
+          "id": 55,
+          "name": "Women's Bags"
+        },
+        {
+          "id": 56,
+          "name": "Men's Bags"
+        },
+        {
+          "id": 57,
+          "name": "Wallets"
+        },
+        {
+          "id": 58,
+          "name": "Backpacks"
+        },
+        {
+          "id": 61,
+          "name": "Coin Purses & Holders"
+        },
+        {
+          "id": 62,
+          "name": "Functional Bags"
+        },
+        {
+          "id": 63,
+          "name": "Men's Shoes"
+        },
+        {
+          "id": 64,
+          "name": "Women's Shoes"
+        },
+        {
+          "id": 65,
+          "name": "Shoe Accessories"
+        },
+        {
+          "id": 154,
+          "name": " Luggage & Travel Bags"
+        },
+        {
+          "id": 166,
+          "name": " Kids & Baby's Bags"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Beauty & Health",
+      "subcategories": [
+        {
+          "id": 86,
+          "name": "Hair Care & Styling"
+        },
+        {
+          "id": 87,
+          "name": "Makeup"
+        },
+        {
+          "id": 88,
+          "name": "Skin Care"
+        },
+        {
+          "id": 89,
+          "name": "Fragrances & Deodorants"
+        },
+        {
+          "id": 90,
+          "name": "Beauty Essentials"
+        },
+        {
+          "id": 91,
+          "name": "Shaving & Hair Removal"
+        },
+        {
+          "id": 92,
+          "name": "Bath & Shower"
+        },
+        {
+          "id": 93,
+          "name": "Tools & Accessories"
+        },
+        {
+          "id": 129,
+          "name": "Health Care"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Jewelry & Accessories",
+      "subcategories": [
+        {
+          "id": 32,
+          "name": "Fine Jewelry"
+        },
+        {
+          "id": 33,
+          "name": "Rings"
+        },
+        {
+          "id": 47,
+          "name": "Necklaces & Pendants"
+        },
+        {
+          "id": 48,
+          "name": "Earrings"
+        },
+        {
+          "id": 49,
+          "name": "Watches"
+        },
+        {
+          "id": 50,
+          "name": "Bracelets & Bangles"
+        },
+        {
+          "id": 51,
+          "name": "Jewelry Sets & More"
+        },
+        {
+          "id": 131,
+          "name": "Beads & DIY Jewelry"
+        },
+        {
+          "id": 138,
+          "name": "Wedding & Engagement"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Home Improvement",
+      "subcategories": [
+        {
+          "id": 109,
+          "name": "Lights & Lighting"
+        },
+        {
+          "id": 110,
+          "name": "Home Appliances"
+        },
+        {
+          "id": 111,
+          "name": "Bathroom Fixtures"
+        },
+        {
+          "id": 112,
+          "name": "Kitchen Fixtures"
+        },
+        {
+          "id": 115,
+          "name": "Kitchen Appliances"
+        },
+        {
+          "id": 116,
+          "name": "Security & Protection"
+        },
+        {
+          "id": 117,
+          "name": "Cleaning Tools"
+        },
+        {
+          "id": 119,
+          "name": "Household Appliances"
+        },
+        {
+          "id": 120,
+          "name": "Personal Care Appliances"
+        },
+        {
+          "id": 127,
+          "name": "Kitchen & Bar"
+        },
+        {
+          "id": 128,
+          "name": "Pet Products "
+        },
+        {
+          "id": 134,
+          "name": " Garden Supplies "
+        },
+        {
+          "id": 140,
+          "name": " Home Decor"
+        },
+        {
+          "id": 144,
+          "name": "Home Storage & Organization"
+        },
+        {
+          "id": 145,
+          "name": "Festive & Party Supplies "
+        },
+        {
+          "id": 148,
+          "name": "Home Textile"
+        },
+        {
+          "id": 163,
+          "name": "Office & School Supplies"
+        },
+        {
+          "id": 1214,
+          "name": "Clothes for pets"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Consumer Electronic",
+      "subcategories": [
+        {
+          "id": 39,
+          "name": "Camera & Photo"
+        },
+        {
+          "id": 40,
+          "name": "Speakers"
+        },
+        {
+          "id": 41,
+          "name": "Smart Electronics"
+        },
+        {
+          "id": 43,
+          "name": "Wearable Devices"
+        },
+        {
+          "id": 44,
+          "name": "Earphones & Headphones"
+        },
+        {
+          "id": 45,
+          "name": "Accessories & Parts"
+        },
+        {
+          "id": 46,
+          "name": "Home Audio & Video"
+        },
+        {
+          "id": 124,
+          "name": "Tablet & Mini PC"
+        },
+        {
+          "id": 126,
+          "name": "Computer & Office"
+        },
+        {
+          "id": 130,
+          "name": " Power Source "
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Phones & Accessories",
+      "subcategories": [
+        {
+          "id": 31,
+          "name": "Moblie Phone Accessories"
+        },
+        {
+          "id": 36,
+          "name": "Phone Bags & Cases"
+        },
+        {
+          "id": 38,
+          "name": "Power Bank"
+        },
+        {
+          "id": 122,
+          "name": "Mobile Phone Parts"
+        },
+        {
+          "id": 162,
+          "name": "Smart Phone"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "name": "Sports & Outdoors",
+      "subcategories": [
+        {
+          "id": 66,
+          "name": "Sports Clothing"
+        },
+        {
+          "id": 67,
+          "name": "Cycling"
+        },
+        {
+          "id": 68,
+          "name": "Swimming"
+        },
+        {
+          "id": 69,
+          "name": "Fitness & Body Building"
+        },
+        {
+          "id": 70,
+          "name": "Sport Bags"
+        },
+        {
+          "id": 71,
+          "name": "Fishing"
+        },
+        {
+          "id": 72,
+          "name": "Camping & Hiking"
+        },
+        {
+          "id": 73,
+          "name": "Sport Accessories"
+        },
+        {
+          "id": 75,
+          "name": "Outdoor Lightings"
+        },
+        {
+          "id": 139,
+          "name": "Entertainment "
+        },
+        {
+          "id": 141,
+          "name": "Golf"
+        },
+        {
+          "id": 143,
+          "name": "Tennis"
+        },
+        {
+          "id": 146,
+          "name": "Badminton"
+        },
+        {
+          "id": 147,
+          "name": "Ping Pong"
+        },
+        {
+          "id": 153,
+          "name": " Skiing & Snowboarding"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Mother & Kids",
+      "subcategories": [
+        {
+          "id": 95,
+          "name": "Baby Care"
+        },
+        {
+          "id": 97,
+          "name": "Feeding"
+        },
+        {
+          "id": 98,
+          "name": "Pregnancy & Maternity"
+        },
+        {
+          "id": 99,
+          "name": "Activity & Gear"
+        },
+        {
+          "id": 100,
+          "name": "Toys & Hobbies"
+        },
+        {
+          "id": 149,
+          "name": "Safety Equipment"
+        },
+        {
+          "id": 150,
+          "name": "Baby Souvenirs"
+        },
+        {
+          "id": 165,
+          "name": "Baby Clothing"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Cars & Motocycles",
+      "subcategories": [
+        {
+          "id": 76,
+          "name": "Car Lights"
+        },
+        {
+          "id": 77,
+          "name": "Car Electronics"
+        },
+        {
+          "id": 78,
+          "name": "Motorcycle Accessories & Parts"
+        },
+        {
+          "id": 79,
+          "name": "Car Wash & Maintenance"
+        },
+        {
+          "id": 80,
+          "name": "Car Repair Tools"
+        },
+        {
+          "id": 82,
+          "name": "Interior Accessories"
+        },
+        {
+          "id": 83,
+          "name": "Exterior Accessories"
+        }
+      ]
+    }
+  ]
+}

@@ -7,6 +7,11 @@ const source=JSON.parse(fs.readFileSync(SOURCE,"utf8"));
 const TAXONOMY_REFRESH="evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json";
 const taxonomy=fs.existsSync(TAXONOMY_REFRESH)?JSON.parse(fs.readFileSync(TAXONOMY_REFRESH,"utf8")):{verified:[]};
 const taxonomyKeep=new Map((taxonomy.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
+const DETAIL_TAXONOMY="evidence/HUNT-EPROLO-DETAIL-TAXONOMY-STAGE5-2026-09-23.json";
+const detailTaxonomy=fs.existsSync(DETAIL_TAXONOMY)?JSON.parse(fs.readFileSync(DETAIL_TAXONOMY,"utf8")):{results:[]};
+const taxonomyConflict=new Map((detailTaxonomy.results||[])
+  .filter(x=>x.state==="SUPPLIER_TAXONOMY_CONFLICT_CURRENT_RAIL")
+  .map(x=>["EPROLO:"+String(x.item_id),x]));
 
 const canonical=new Map();
 const quarantined=[];
@@ -23,12 +28,16 @@ let keep=0,move=0,review=0,unknown=0;
 for(const dep of source.departments||[]){
   for(const cat of dep.categories||[]){
     for(const p of cat.products||[]){
-      const tx=taxonomyKeep.get(p.provider+":"+String(p.item_id||""));
+      const key=p.provider+":"+String(p.item_id||"");
+      const tx=taxonomyKeep.get(key);
+      const conflict=taxonomyConflict.get(key);
       const placement=gate.evaluate({
         provider:p.provider,item_id:String(p.item_id||""),title:p.title||"",
         current_department:dep.slug,current_category:cat.slug,
-        supplier_category_id:tx?.supplier_category_id||null,
-        supplier_taxonomy_current_rail_verified:!!(tx&&tx.current_rail===dep.slug+"/"+cat.slug)
+        supplier_category_id:tx?.supplier_category_id||conflict?.supplier_category_id||null,
+        supplier_taxonomy_current_rail_verified:!!(tx&&tx.current_rail===dep.slug+"/"+cat.slug),
+        supplier_taxonomy_conflict_current_rail:!!(conflict&&conflict.current_rail===dep.slug+"/"+cat.slug),
+        supplier_taxonomy_suggested_rail:Array.isArray(conflict?.suggested_rail)?conflict.suggested_rail[0]:(conflict?.suggested_rail||null)
       });
       const base={...p,placement_truth:placement};
       if(placement.placement_action==="KEEP"){

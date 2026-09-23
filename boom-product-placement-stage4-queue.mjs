@@ -7,7 +7,15 @@ const OUT="evidence/HUNT-PRODUCT-PLACEMENT-STAGE4-QUEUE-2026-09-23.json";
 const shelves=JSON.parse(fs.readFileSync(SHELVES,"utf8"));
 const tax=fs.existsSync(TAX)?JSON.parse(fs.readFileSync(TAX,"utf8")):{verified:[],rail_mapping:{},scan_meta:{}};
 const taxKeep=new Map((tax.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
+const DETAIL_TAXONOMY="evidence/HUNT-EPROLO-DETAIL-TAXONOMY-STAGE5-2026-09-23.json";
+const detailTaxonomy=fs.existsSync(DETAIL_TAXONOMY)?JSON.parse(fs.readFileSync(DETAIL_TAXONOMY,"utf8")):{results:[]};
+const taxonomyConflict=new Map((detailTaxonomy.results||[])
+  .filter(x=>x.state==="SUPPLIER_TAXONOMY_CONFLICT_CURRENT_RAIL")
+  .map(x=>["EPROLO:"+String(x.item_id),x]));
 const railMapping=tax.rail_mapping||{};
+const OFFICIAL_TREE="evidence/HUNT-EPROLO-OFFICIAL-CATEGORY-TREE-SAFE-2026-09-23.json";
+const officialTree=fs.existsSync(OFFICIAL_TREE)?JSON.parse(fs.readFileSync(OFFICIAL_TREE,"utf8")):{exact_mapping:{}};
+const officialExact=officialTree.exact_mapping||{};
 const apiErrorRails=new Set();
 for(const meta of Object.values(tax.scan_meta||{})){
   if(meta?.stop_reason==="API_ERROR")for(const rail of meta.rails||[])apiErrorRails.add(rail);
@@ -18,13 +26,16 @@ for(const dep of shelves.departments||[]){
   for(const cat of dep.categories||[]){
     for(const p of cat.products||[]){
       const key=p.provider+":"+String(p.item_id||"");
+      const conflict=taxonomyConflict.get(key);
       products.push({
         provider:p.provider,item_id:String(p.item_id||""),title:p.title||"",
         image_url:p.image_url||null,
         current_department:dep.slug,current_category:cat.slug,
         current_rail:dep.slug+"/"+cat.slug,
         supplier_taxonomy_current_rail_verified:!!(taxKeep.get(key)&&taxKeep.get(key)?.current_rail===dep.slug+"/"+cat.slug),
-        supplier_category_id:taxKeep.get(key)?.supplier_category_id||null,
+        supplier_taxonomy_conflict_current_rail:!!(conflict&&conflict.current_rail===dep.slug+"/"+cat.slug),
+        supplier_taxonomy_suggested_rail:Array.isArray(conflict?.suggested_rail)?conflict.suggested_rail[0]:(conflict?.suggested_rail||null),
+        supplier_category_id:taxKeep.get(key)?.supplier_category_id||conflict?.supplier_category_id||null,
         source_evidence:p.source_evidence||null
       });
     }
@@ -38,6 +49,7 @@ for(const x of unknown)railCounts.set(x.current_rail,(railCounts.get(x.current_r
 
 function primaryRoute(x){
   if(x.provider==="EPROLO"){
+    if(officialExact[x.current_rail])return "EPROLO_PUBLIC_DETAIL_TAXONOMY";
     if(railMapping[x.current_rail]){
       return apiErrorRails.has(x.current_rail)?"EPROLO_TAXONOMY_RETRY":"EPROLO_TAXONOMY_DEEPER_SCAN";
     }

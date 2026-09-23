@@ -20,7 +20,8 @@ RAIL_TO_SUPPLIER_CATEGORIES={
   "tech/phone-accessories":[122],
   "home/lighting":[109],
   "kitchen/kitchen-tools":[115],
-  "pets/pet-accessories":[1234]
+  "pets/pet-accessories":[1234],
+ "kids/kids-clothing":[165]
 }
 MAX_PAGES=6
 PAGE_SIZE=200

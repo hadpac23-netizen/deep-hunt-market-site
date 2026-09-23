@@ -86,3 +86,15 @@ for(const [title,dep,cat] of [
   assert.notEqual(q.placement_action,"MOVE",title+" must not auto-move across an ambiguous rail boundary");
 }
 console.log("Product Placement conservative SAFE_MOVE regressions: PASS");
+
+r=gate.evaluate({
+  title:"Boys casual clothing set",
+  current_department:"kids",current_category:"kids-clothing",
+  supplier_taxonomy_conflict_current_rail:true,
+  supplier_category_id:165,
+  supplier_taxonomy_suggested_rail:"kids/baby-clothing"
+});
+assert.equal(r.decision,"REVIEW");
+assert.equal(r.placement_action,"HOLD_REVIEW");
+assert(r.reason_codes.includes("SUPPLIER_TAXONOMY_CONFLICT_REVIEW"));
+console.log("Product Placement supplier conflict override: PASS");

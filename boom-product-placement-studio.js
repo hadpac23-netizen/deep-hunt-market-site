@@ -22,26 +22,32 @@
       return;
     }
     try{
-      const [contract,shelves,taxonomy,stage4Queue,judge]=await Promise.all([
+      const [contract,shelves,taxonomy,detailTaxonomy,stage4Queue,judge]=await Promise.all([
         fetchJson("boom-product-placement-gate-contract.json"),
         fetchJson("evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json"),
         fetchJson("evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json").catch(()=>({verified:[],summary:{}})),
+        fetchJson("evidence/HUNT-EPROLO-DETAIL-TAXONOMY-STAGE5-2026-09-23.json").catch(()=>({results:[],summary:{states:{}}})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE4-QUEUE-2026-09-23.json").catch(()=>({summary:{},top_unknown_rails:[]})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-LOCAL-JUDGE-2026-09-23.json").catch(()=>({summary:{},calibration:{},proposals:[]}))
       ]);
       const taxonomyKeep=new Map((taxonomy.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
+      const taxonomyConflict=new Map((detailTaxonomy.results||[]).filter(x=>x.state==="SUPPLIER_TAXONOMY_CONFLICT_CURRENT_RAIL").map(x=>["EPROLO:"+String(x.item_id),x]));
       const products=[];
       for(const dep of shelves.departments||[]){
         for(const cat of dep.categories||[]){
           for(const product of cat.products||[]){
-            const tx=taxonomyKeep.get(product.provider+":"+String(product.item_id||""));
+            const key=product.provider+":"+String(product.item_id||"");
+            const tx=taxonomyKeep.get(key);
+            const conflict=taxonomyConflict.get(key);
             products.push({
               provider:product.provider,
               item_id:String(product.item_id||""),
               title:product.title||"",
               supplier_category:product.supplier_category||null,
-              supplier_category_id:tx?.supplier_category_id||null,
+              supplier_category_id:tx?.supplier_category_id||conflict?.supplier_category_id||null,
               supplier_taxonomy_current_rail_verified:!!(tx&&tx.current_rail===dep.slug+"/"+cat.slug),
+              supplier_taxonomy_conflict_current_rail:!!(conflict&&conflict.current_rail===dep.slug+"/"+cat.slug),
+              supplier_taxonomy_suggested_rail:Array.isArray(conflict?.suggested_rail)?conflict.suggested_rail[0]:(conflict?.suggested_rail||null),
               source_evidence:product.source_evidence||null,
               current_department:dep.slug,
               current_category:cat.slug
@@ -59,6 +65,7 @@
           metric(ps.HOLD_REVIEW||0,"RULE / CONFLICT REVIEW · held"),
           metric(ps.HOLD_UNKNOWN||0,"UNKNOWN · held"),
           metric(taxonomy.summary?.taxonomy_verified_keep_support||0,"Supplier taxonomy KEEP support"),
+          metric(detailTaxonomy.summary?.states?.SUPPLIER_TAXONOMY_CONFLICT_CURRENT_RAIL||0,"Supplier taxonomy conflicts · REVIEW"),
           metric(judge.summary?.review_proposals||0,"Local Judge · REVIEW only"),
           metric(contract.always_on_policy?.studio_refresh_seconds||60,"Refresh seconds")
         ].join("");
@@ -74,6 +81,7 @@
       const cards=[];
       cards.push('<article><small>ENFORCEMENT</small><strong>'+esc(contract.enforcement_point||"MANDATORY")+'</strong><span>Auto move: '+(contract.always_on_policy?.automatic_product_move?"ON":"OFF")+' · Production mutation: '+(contract.always_on_policy?.production_mutation?"ON":"OFF")+'</span></article>');
       cards.push('<article><small>SUPPLIER TAXONOMY</small><strong>'+esc(taxonomy.summary?.taxonomy_verified_keep_support||0)+' verified KEEP supports</strong><span>Official EPROLO read-only taxonomy · KEEP support only · never auto-MOVE.</span></article>');
+      cards.push('<article><small>SUPPLIER TAXONOMY CONFLICTS</small><strong>'+esc(detailTaxonomy.summary?.states?.SUPPLIER_TAXONOMY_CONFLICT_CURRENT_RAIL||0)+' REVIEW-only conflicts</strong><span>Exact supplier taxonomy disagrees with the current rail. Conflict overrides title PASS and cannot auto-MOVE.</span></article>');
       const precision=judge.calibration?.selected_threshold?.precision;
       cards.push('<article><small>LOCAL REVIEW JUDGE</small><strong>'+esc(judge.summary?.review_proposals||0)+' guarded review proposals</strong><span>Cross-rail: '+esc(judge.summary?.cross_rail_review_candidates||0)+' · Guard blocked: '+esc(judge.summary?.guard_blocked_proposals||0)+' · Holdout precision: '+esc(precision!=null?(precision*100).toFixed(2)+'%':'UNKNOWN')+' · Authority: NONE.</span></article>');
       for(const proposal of (judge.proposals||[]).filter(x=>x.effect==="CROSS_RAIL_REVIEW_CANDIDATE").slice(0,8)){
