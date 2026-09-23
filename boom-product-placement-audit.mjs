@@ -2,14 +2,20 @@ import fs from "fs";
 import gate from "./boom-product-placement-gate.js";
 
 const shelves=JSON.parse(fs.readFileSync("evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json","utf8"));
+const TAXONOMY_REFRESH="evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json";
+const taxonomy=fs.existsSync(TAXONOMY_REFRESH)?JSON.parse(fs.readFileSync(TAXONOMY_REFRESH,"utf8")):{verified:[]};
+const taxonomyKeep=new Map((taxonomy.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
 const products=[];
 for(const dep of shelves.departments||[]){
   for(const cat of dep.categories||[]){
     for(const p of cat.products||[]){
+      const tx=taxonomyKeep.get(p.provider+":"+String(p.item_id));
       products.push({
         provider:p.provider,item_id:String(p.item_id),title:p.title||"",
         current_department:dep.slug,current_category:cat.slug,
         supplier_category:p.supplier_category||null,
+        supplier_category_id:tx?.supplier_category_id||null,
+        supplier_taxonomy_current_rail_verified:!!(tx&&tx.current_rail===dep.slug+"/"+cat.slug),
         source_evidence:p.source_evidence||null
       });
     }
@@ -43,6 +49,7 @@ const out={
   mode:"SHADOW_ALWAYS_ON",
   production_effect:false,
   source:"evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json",
+  supplier_taxonomy_evidence:fs.existsSync(TAXONOMY_REFRESH)?TAXONOMY_REFRESH:null,
   summary:report.summary,
   counts:{
     keep:keepRows.length,
@@ -63,7 +70,7 @@ const out={
   top_target_rails:Object.entries(byTarget).sort((a,b)=>b[1]-a[1]).slice(0,30).map(([rail,count])=>({rail,count})),
   safe_move_candidates:moveRows,
   review_queue:reviewRows,
-  unknown_sample:unknownRows.slice(0,250),
+  unknown_queue:unknownRows,
   rules:[
     "Current HUNT category is not used as positive evidence.",
     "SAFE_MOVE_CANDIDATE is a shadow recommendation only; no catalog row is mutated.",

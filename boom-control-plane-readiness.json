@@ -171,8 +171,8 @@
     },
     {
       "id": "product_placement_gate",
-      "status": "CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE2",
-      "evidence": "Always-on Product Placement Gate V1.1 verified in BOOM Studio: 5,854 checked; 1,546 KEEP, 322 SAFE MOVE candidates, 983 RULE/CONFLICT REVIEW, 3,003 UNKNOWN. Refresh=60s. Supplier intake requires PLACEMENT_PASS. Auto-move and Production mutation remain OFF."
+      "status": "CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE3",
+      "evidence": "Product Placement Gate V1.2 combines deterministic product-type rules with official EPROLO taxonomy KEEP support. Studio auto-refreshes every 60s. Supplier taxonomy never auto-creates MOVE. Production mutation remains OFF."
     }
   ],
   "blockers": [

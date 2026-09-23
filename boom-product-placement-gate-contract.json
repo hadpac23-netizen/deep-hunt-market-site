@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1.1-STAGE2",
+  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1.2-SUPPLIER-TAXONOMY",
   "mode": "SHADOW_ALWAYS_ON",
   "authority": "NONE",
   "owner": "commerce_truth_brain",
@@ -59,12 +59,14 @@
     "No cross-category filler to improve shelf density.",
     "Ambiguous or unsupported placement returns REVIEW/UNKNOWN and never reaches canonical shelf activation.",
     "Stylist may rank within a passed rail but may not override placement.",
-    "Placement PASS does not imply Product Truth, shipping, stock, profit or checkout readiness."
+    "Placement PASS does not imply Product Truth, shipping, stock, profit or checkout readiness.",
+    "Official supplier taxonomy may support KEEP only when product identity is observed in a pre-mapped supplier category."
   ],
   "workflow_order": [
     "normalize_source",
     "detect_product_type",
     "detect_gender",
+    "supplier_taxonomy_verification",
     "department_gate",
     "category_gate",
     "conflict_check",
@@ -110,5 +112,18 @@
     "unknown_hold": 3003,
     "automatic_moves": 0,
     "production_mutations": 0
+  },
+  "supplier_taxonomy_policy": {
+    "authority": "KEEP_SUPPORT_ONLY",
+    "requirements": [
+      "product_id observed in official supplier category during fresh read-only refresh",
+      "supplier category id must be mapped unambiguously to the same canonical HUNT rail",
+      "explicit product-type or gender conflict still overrides taxonomy support"
+    ],
+    "never_allowed": [
+      "auto MOVE from supplier taxonomy alone",
+      "Production mutation",
+      "category self-validation"
+    ]
   }
 }

@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-AUTOMATION-CONTROL-PLANE-V1.1-PLACEMENT-GATE",
+  "version": "BOOM-AUTOMATION-CONTROL-PLANE-V1.2-PLACEMENT-TAXONOMY",
   "mode": "SHADOW",
   "authority": {
     "owner": "OWNER",
@@ -95,6 +95,7 @@
         "source_identity",
         "product_truth",
         "product_type_detection",
+        "supplier_taxonomy_verification",
         "department_gate",
         "category_gate",
         "placement_conflict_check",
@@ -131,6 +132,7 @@
         "normalize_source",
         "detect_product_type",
         "detect_gender",
+        "supplier_taxonomy_verification",
         "department_gate",
         "category_gate",
         "conflict_check",

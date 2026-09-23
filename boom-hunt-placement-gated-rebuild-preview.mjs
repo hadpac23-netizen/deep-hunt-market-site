@@ -4,6 +4,9 @@ import gate from "./boom-product-placement-gate.js";
 const SOURCE="evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json";
 const OUT="evidence/HUNT-PLACEMENT-GATED-REBUILD-PREVIEW-2026-09-23.json";
 const source=JSON.parse(fs.readFileSync(SOURCE,"utf8"));
+const TAXONOMY_REFRESH="evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json";
+const taxonomy=fs.existsSync(TAXONOMY_REFRESH)?JSON.parse(fs.readFileSync(TAXONOMY_REFRESH,"utf8")):{verified:[]};
+const taxonomyKeep=new Map((taxonomy.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
 
 const canonical=new Map();
 const quarantined=[];
@@ -20,9 +23,12 @@ let keep=0,move=0,review=0,unknown=0;
 for(const dep of source.departments||[]){
   for(const cat of dep.categories||[]){
     for(const p of cat.products||[]){
+      const tx=taxonomyKeep.get(p.provider+":"+String(p.item_id||""));
       const placement=gate.evaluate({
         provider:p.provider,item_id:String(p.item_id||""),title:p.title||"",
-        current_department:dep.slug,current_category:cat.slug
+        current_department:dep.slug,current_category:cat.slug,
+        supplier_category_id:tx?.supplier_category_id||null,
+        supplier_taxonomy_current_rail_verified:!!(tx&&tx.current_rail===dep.slug+"/"+cat.slug)
       });
       const base={...p,placement_truth:placement};
       if(placement.placement_action==="KEEP"){
@@ -70,6 +76,7 @@ const out={
   version:"HUNT-PLACEMENT-GATED-REBUILD-PREVIEW-V1",
   date:"2026-09-23",mode:"STRICT_PLACEMENT_SHADOW_PREVIEW",
   production_effect:false,source:SOURCE,
+  supplier_taxonomy_evidence:fs.existsSync(TAXONOMY_REFRESH)?TAXONOMY_REFRESH:null,
   summary:{
     source_products:keep+move+review+unknown,
     strict_canonical_products:total,

@@ -22,19 +22,24 @@
       return;
     }
     try{
-      const [contract,shelves]=await Promise.all([
+      const [contract,shelves,taxonomy]=await Promise.all([
         fetchJson("boom-product-placement-gate-contract.json"),
-        fetchJson("evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json")
+        fetchJson("evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json"),
+        fetchJson("evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json").catch(()=>({verified:[],summary:{}}))
       ]);
+      const taxonomyKeep=new Map((taxonomy.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
       const products=[];
       for(const dep of shelves.departments||[]){
         for(const cat of dep.categories||[]){
           for(const product of cat.products||[]){
+            const tx=taxonomyKeep.get(product.provider+":"+String(product.item_id||""));
             products.push({
               provider:product.provider,
               item_id:String(product.item_id||""),
               title:product.title||"",
               supplier_category:product.supplier_category||null,
+              supplier_category_id:tx?.supplier_category_id||null,
+              supplier_taxonomy_current_rail_verified:!!(tx&&tx.current_rail===dep.slug+"/"+cat.slug),
               source_evidence:product.source_evidence||null,
               current_department:dep.slug,
               current_category:cat.slug
@@ -51,6 +56,7 @@
           metric(ps.MOVE||0,"SAFE MOVE · candidate"),
           metric(ps.HOLD_REVIEW||0,"RULE / CONFLICT REVIEW · held"),
           metric(ps.HOLD_UNKNOWN||0,"UNKNOWN · held"),
+          metric(taxonomy.summary?.taxonomy_verified_keep_support||0,"Supplier taxonomy KEEP support"),
           metric(contract.always_on_policy?.studio_refresh_seconds||60,"Refresh seconds")
         ].join("");
       }
@@ -64,6 +70,7 @@
       const topRails=[...currentCounts.entries()].sort((a,b)=>b[1]-a[1]).slice(0,8);
       const cards=[];
       cards.push('<article><small>ENFORCEMENT</small><strong>'+esc(contract.enforcement_point||"MANDATORY")+'</strong><span>Auto move: '+(contract.always_on_policy?.automatic_product_move?"ON":"OFF")+' · Production mutation: '+(contract.always_on_policy?.production_mutation?"ON":"OFF")+'</span></article>');
+      cards.push('<article><small>SUPPLIER TAXONOMY</small><strong>'+esc(taxonomy.summary?.taxonomy_verified_keep_support||0)+' verified KEEP supports</strong><span>Official EPROLO read-only taxonomy · KEEP support only · never auto-MOVE.</span></article>');
       if(topRails.length){
         const text=topRails.map(row=>row[0]+" ("+row[1]+")").join(" · ");
         cards.push('<article><small>TOP MIXED RAILS</small><strong>'+esc(text)+'</strong><span>SAFE MOVE candidates only · no automatic mutation · current category is never evidence.</span></article>');

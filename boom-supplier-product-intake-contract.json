@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-SUPPLIER-PRODUCT-INTAKE-V1.1-PLACEMENT-GATE",
+  "version": "BOOM-SUPPLIER-PRODUCT-INTAKE-V1.2-PLACEMENT-TAXONOMY",
   "brain": "commerce_truth_brain",
   "agents": [
     "supplier_truth_agent",
@@ -50,6 +50,7 @@
     "official_api_feed_truth",
     "product_normalization",
     "product_type_detection",
+    "supplier_taxonomy_verification",
     "department_gate",
     "category_gate",
     "placement_conflict_check",
@@ -101,5 +102,6 @@
     ]
   },
   "placement_contract": "boom-product-placement-gate-contract.json",
-  "placement_rule": "REVIEW / REJECT / UNKNOWN never becomes SHELF_CANDIDATE. Current category cannot validate itself."
+  "placement_rule": "REVIEW / REJECT / UNKNOWN never becomes SHELF_CANDIDATE. Current category cannot validate itself.",
+  "supplier_taxonomy_rule": "Official supplier taxonomy may support KEEP only when the exact product identity is observed in a pre-mapped supplier category. It cannot auto-create MOVE."
 }

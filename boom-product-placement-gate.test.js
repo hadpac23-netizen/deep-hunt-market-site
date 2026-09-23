@@ -45,3 +45,22 @@ for(const [title,dep,cat,bad] of [
   assert(!(q.decision==="PASS"&&q.canonical_category===bad),title+" must not self-validate wrong category");
 }
 console.log("Product Placement Stage 2 regressions: PASS");
+
+r=gate.evaluate({
+  title:"Ambiguous fashion item with no deterministic type words",
+  current_department:"women",current_category:"women-dresses",
+  supplier_category_id:1241,
+  supplier_taxonomy_current_rail_verified:true
+});
+assert.equal(r.decision,"PASS");
+assert.equal(r.placement_action,"KEEP");
+assert(r.reason_codes.includes("SUPPLIER_TAXONOMY_KEEP_SUPPORT"));
+
+r=gate.evaluate({
+  title:"Men shoes leather loafer",
+  current_department:"women",current_category:"women-dresses",
+  supplier_category_id:1241,
+  supplier_taxonomy_current_rail_verified:true
+});
+assert.notEqual(r.decision,"PASS");
+console.log("Product Placement supplier-taxonomy KEEP support: PASS");

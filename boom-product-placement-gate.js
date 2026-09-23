@@ -205,6 +205,12 @@
       return {decision:"REVIEW",placement_action:"HOLD_REVIEW",move_tier:"RULE_REFINEMENT",detected_product_type:null,canonical_department:"men",canonical_category:null,confidence:0.90,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
     }
 
+    if(product.supplier_taxonomy_current_rail_verified===true){
+      positive.push(evidence("SUPPLIER_TAXONOMY_VERIFIED_CURRENT_RAIL",product.supplier_category_id||"verified"));
+      reasonCodes.push("SUPPLIER_TAXONOMY_KEEP_SUPPORT");
+      return {decision:"PASS",placement_action:"KEEP",move_tier:"NONE",detected_product_type:null,canonical_department:currentDepartment,canonical_category:currentCategory,confidence:0.92,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:false,gender};
+    }
+
     reasonCodes.push("NO_INDEPENDENT_PLACEMENT_PROOF");
     return {decision:"UNKNOWN",placement_action:"HOLD_UNKNOWN",move_tier:"NO_EVIDENCE",detected_product_type:null,canonical_department:null,canonical_category:null,confidence:0,positive_evidence:positive,negative_evidence:negative,conflicts,reason_codes:reasonCodes,review_required:true,gender};
   }
