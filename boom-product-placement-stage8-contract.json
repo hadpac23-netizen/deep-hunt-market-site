@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-SUPPLIER-RECOVERY-V1.2-ALTERNATIVE-SOURCES",
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-SUPPLIER-RECOVERY-V1.2-VERIFIED-SOURCE-MATRIX",
   "mode": "SHADOW_ALWAYS_ON",
   "authority": "NONE",
   "owner": "commerce_truth_brain",
@@ -28,7 +28,8 @@
     "Media-use rights remain a Production blocker when not explicitly verified.",
     "No supplier order, checkout activation, payment activation or Production mutation.",
     "Do not send another HyperSKU follow-up while the current thread is unanswered. Use the Stage8 packet only after HyperSKU replies or Owner explicitly requests a new follow-up.",
-    "HyperSKU is primary manual sourcing; SupDropshipping is secondary candidate pending account/agent/API approval and exact SKU truth. Syncee remains HOLD while retailer automation requires a paid plan."
+    "HyperSKU is primary manual sourcing; SupDropshipping is secondary candidate pending account/agent/API approval and exact SKU truth. Syncee remains HOLD while retailer automation requires a paid plan.",
+    "HyperSKU > SupDropshipping > SourcinBox > CJdropshipping for remaining five empty rails; every route remains read-only/manual until exact SKU truth passes all gates."
   ],
   "owner_gate": {
     "read_only_supplier_discovery": false,
@@ -42,5 +43,6 @@
   "hyper_sourcing_message_state": "NOT_SENT_WAITING_FOR_REPLY",
   "external_source_rule": "Do not send another HyperSKU follow-up while the current thread is unanswered. Use the Stage8 packet only after HyperSKU replies or Owner explicitly requests a new follow-up.",
   "alternative_source_matrix": "evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-ALTERNATIVE-SOURCE-MATRIX-2026-09-23.json",
-  "alternative_source_rule": "HyperSKU is primary manual sourcing; SupDropshipping is secondary candidate pending account/agent/API approval and exact SKU truth. Syncee remains HOLD while retailer automation requires a paid plan."
+  "alternative_source_rule": "HyperSKU is primary manual sourcing; SupDropshipping is secondary candidate pending account/agent/API approval and exact SKU truth. Syncee remains HOLD while retailer automation requires a paid plan.",
+  "source_routing_rule": "HyperSKU > SupDropshipping > SourcinBox > CJdropshipping for remaining five empty rails; every route remains read-only/manual until exact SKU truth passes all gates."
 }

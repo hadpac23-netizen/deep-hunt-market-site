@@ -2,115 +2,147 @@ import fs from "fs";
 
 const PACKET="evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-EXTERNAL-SOURCE-PACKET-2026-09-23.json";
 const OUT="evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-ALTERNATIVE-SOURCE-MATRIX-2026-09-23.json";
-
 const packet=JSON.parse(fs.readFileSync(PACKET,"utf8"));
 
 const providers={
   HyperSKU:{
     priority:1,
     state:"PRIMARY_MANUAL_SOURCING_WAITING_REPLY",
-    cost_state:"NO_PLATFORM_FEE_ASSUMED_FROM_EXISTING_THREAD_NOT_REVERIFIED_HERE",
-    api_state:"OPEN_API_BLOCKED_UNTIL_2000_ORDERS",
-    catalog_state:"NO_EXACT_SKU_QUOTE_FOR_STAGE8_GAPS",
-    next_action:"WAIT_CURRENT_THREAD_REPLY_THEN_SEND_STAGE8_PACKET",
-    sources:["GMAIL_CURRENT_THREAD"],
-    verified_inventory:false
+    public_subscription_state:"NO_SUBSCRIPTION_FEE",
+    public_api_capability:"OPEN_API_EXISTS",
+    account_api_eligibility:"BLOCKED_UNTIL_2000_ORDERS_CONFIRMED_BY_HYPERSKU_EMAIL",
+    sourcing_state:"MANUAL_SOURCING_AVAILABLE",
+    thread_state:"CURRENT_THREAD_WAITING_REPLY",
+    exact_stage8_inventory_verified:false,
+    official_sources:[
+      "https://www.hypersku.com/pricing/",
+      "https://support.hypersku.com/en/articles/2941652-what-s-hypersku-how-to-sign-up-and-get-started"
+    ],
+    account_evidence:"GMAIL_THREAD_HUNT_DEAL_HYPERSKU_OPEN_API",
+    next_action:"WAIT_CURRENT_THREAD_REPLY_THEN_SEND_STAGE8_PACKET"
   },
   SupDropshipping:{
     priority:2,
-    state:"SECONDARY_CANDIDATE_REQUIRES_ACCOUNT_AGENT_AND_API_APPROVAL",
-    cost_state:"BASIC_FREE_PUBLIC_PLAN",
-    api_state:"OPEN_API_BY_AGENT_REQUEST",
-    catalog_state:"PUBLIC_CATEGORY_COVERAGE_ONLY_NOT_EXACT_SKU_VERIFIED",
-    capabilities:["product_sourcing","quality_inspection","global_shipping","custom_packaging","open_api_by_request"],
+    state:"SECONDARY_MANUAL_SOURCING_WAITING_REPLY",
+    public_plan_state:"BASIC_FREE",
+    public_sourcing_state:"PRODUCT_SOURCING_AND_AGENT_SUPPORTED",
+    public_api_capability:"OPEN_API_AVAILABLE_BY_DEDICATED_AGENT_REQUEST",
+    thread_state:"OUTREACH_SENT_2026_09_20_NO_REPLY",
+    exact_stage8_inventory_verified:false,
+    public_category_evidence:{
+      "accessories/gloves":"EXPLICIT_PUBLIC_COVERAGE",
+      "home/furniture":"HOME_DECOR_AND_AGENT_SOURCING_ONLY_NO_EXACT_FURNITURE_SKU",
+      "men/men-clothing":"APPAREL_COVERAGE_ONLY_NO_EXACT_STAGE8_SKU",
+      "office/office-furniture":"OFFICE_SUPPLIES_AND_AGENT_SOURCING_ONLY_NO_EXACT_FURNITURE_SKU",
+      "tech/smart-home":"NOT_VERIFIED_PUBLICLY"
+    },
     official_sources:[
       "https://www.supdropshipping.com/pricing/",
       "https://www.supdropshipping.com/sup-dropshipping-open-api/",
-      "https://www.supdropshipping.com/",
+      "https://www.supdropshipping.com/product-sourcing/",
       "https://www.supdropshipping.com/accessories/",
-      "https://www.supdropshipping.com/apparel/",
+      "https://www.supdropshipping.com/home-decor/",
       "https://www.supdropshipping.com/office-supplies/",
-      "https://www.supdropshipping.com/home-decor/"
+      "https://www.supdropshipping.com/what-to-sell/"
     ],
-    verified_inventory:false
+    account_evidence:"GMAIL_SENT_HUNT_DEAL_OPEN_API_GLOBAL_FULFILLMENT_BRANDING_PILOT",
+    next_action:"WAIT_CURRENT_OUTREACH_REPLY_NO_DUPLICATE"
+  },
+  SourcinBox:{
+    priority:3,
+    state:"TERTIARY_MANUAL_SOURCING_NOT_CONTACTED",
+    public_subscription_state:"NO_SUBSCRIPTION_OR_MONTHLY_FEE",
+    public_sourcing_state:"FREE_PRODUCT_SOURCING_AND_QUOTATION",
+    public_fulfillment_state:"GLOBAL_SHIPPING_QUALITY_INSPECTION_ORDER_FULFILLMENT",
+    public_moq_state:"NO_MOQ_FOR_DROPSHIPPING_PRODUCTS",
+    public_api_state:"NO_GENERAL_OPEN_API_VERIFIED_IN_CURRENT_RESEARCH",
+    thread_state:"NO_EXISTING_GMAIL_THREAD_FOUND",
+    exact_stage8_inventory_verified:false,
+    official_sources:[
+      "https://www.sourcinbox.com/app-features",
+      "https://www.sourcinbox.com/dropshipping-services",
+      "https://www.sourcinbox.com/contact-us",
+      "https://help.sourcinbox.com/en/article/a-general-introduction-of-sourcinbox-1ihp1q5/"
+    ],
+    next_action:"OWNER_GATE_BEFORE_FIRST_OUTREACH"
+  },
+  CJdropshipping:{
+    priority:4,
+    state:"API_CONNECTED_USE_ONLY_WHEN_EXACT_VARIANT_AND_DESTINATION_QUOTE_PASS",
+    public_api_state:"FREE_API_AVAILABLE",
+    api_resource_state:"POINTS_BASED_ACCESS_2026",
+    current_stage8_result:"OFFICE_FURNITURE_CANDIDATE_FAILED_SINGLE_VARIANT_4_OF_4",
+    exact_stage8_inventory_verified:false,
+    official_sources:[
+      "https://developers.cjdropshipping.com/en/summary/",
+      "https://developers.cjdropshipping.com/en/api/api2/",
+      "https://developers.cjdropshipping.com/en/api/api2/standard/points.html"
+    ],
+    next_action:"KEEP_READ_ONLY_QUERYING_WHEN_NEW_CLEAN_CANDIDATE_APPEARS"
   },
   Syncee:{
     priority:99,
     state:"HOLD_PAID_RETAILER_AUTOMATION",
-    cost_state:"FREE_BROWSE_ONLY_PAID_TO_IMPORT_MANAGE_PRODUCTS",
-    api_state:"NOT_SELECTED",
-    catalog_state:"NOT_EVALUATED_FOR_STAGE8_PRODUCTS",
-    official_sources:[
-      "https://help.syncee.com/en/articles/8885830-pricing-and-plans",
-      "https://www.syncee.com/pricing"
-    ],
-    verified_inventory:false
+    exact_stage8_inventory_verified:false
   },
   Printful:{
     priority:99,
-    state:"NOT_FIT_FOR_STAGE8_GAPS_AND_FULFILLMENT_NOT_READY",
-    catalog_state:"POD_CATALOG_LIVE",
-    blocker:"FULFILLMENT_TOKEN_STORE_AND_DESTINATION_SHIPPING_PROOF",
-    verified_inventory:false
+    state:"NOT_FIT_FOR_CURRENT_FIVE_GAPS",
+    exact_stage8_inventory_verified:false
   },
   Gooten:{
     priority:99,
-    state:"NOT_FIT_FOR_STAGE8_GAPS_AND_VARIANT_SHIPPING_NOT_READY",
-    catalog_state:"PUBLIC_CATALOG_LIVE",
-    blocker:"AUTHENTICATED_VARIANT_AND_DESTINATION_SHIPPING_PROOF",
-    verified_inventory:false
+    state:"NOT_FIT_FOR_CURRENT_FIVE_GAPS",
+    exact_stage8_inventory_verified:false
   }
 };
 
-const railCoverage={
+const coverage={
   "accessories/gloves":{
     HyperSKU:"MANUAL_SOURCING_REQUEST",
-    SupDropshipping:"PUBLIC_ACCESSORIES_COVERAGE_EXPLICIT_GLOVES",
-    Syncee:"HOLD_PAID",
-    Printful:"NOT_SELECTED",
-    Gooten:"NOT_SELECTED"
+    SupDropshipping:"EXPLICIT_PUBLIC_GLOVES_COVERAGE_BUT_NO_EXACT_SKU_TRUTH",
+    SourcinBox:"MANUAL_SOURCING_REQUEST",
+    CJdropshipping:"NO_CLEAN_VERIFIED_STAGE8_CANDIDATE"
   },
   "home/furniture":{
     HyperSKU:"MANUAL_SOURCING_REQUEST",
-    SupDropshipping:"PUBLIC_HOME_DECOR_AND_AGENT_SOURCING_PARTIAL_FURNITURE_COVERAGE",
-    Syncee:"HOLD_PAID",
-    Printful:"NOT_FIT",
-    Gooten:"NOT_FIT"
+    SupDropshipping:"AGENT_SOURCING_HOME_DECOR_LANE_NO_EXACT_FURNITURE_SKU_TRUTH",
+    SourcinBox:"MANUAL_SOURCING_REQUEST_WITH_BULKY_SHIPPING_CAUTION",
+    CJdropshipping:"NO_CLEAN_VERIFIED_STAGE8_CANDIDATE"
   },
   "men/men-clothing":{
     HyperSKU:"MANUAL_SOURCING_REQUEST",
-    SupDropshipping:"PUBLIC_APPAREL_COVERAGE",
-    Syncee:"HOLD_PAID",
-    Printful:"POD_ONLY_NOT_CURRENT_GAP_ROUTE",
-    Gooten:"POD_ONLY_NOT_CURRENT_GAP_ROUTE"
+    SupDropshipping:"PUBLIC_APPAREL_COVERAGE_NO_EXACT_STAGE8_SKU_TRUTH",
+    SourcinBox:"MANUAL_SOURCING_REQUEST",
+    CJdropshipping:"PROVISIONAL_CANDIDATES_REQUIRE_PRODUCT_DETAIL_AND_4_OF_4_QUOTE"
   },
   "office/office-furniture":{
     HyperSKU:"MANUAL_SOURCING_REQUEST",
-    SupDropshipping:"PUBLIC_OFFICE_SUPPLIES_PLUS_AGENT_SOURCING_PARTIAL_FURNITURE_COVERAGE",
-    Syncee:"HOLD_PAID",
-    Printful:"NOT_FIT",
-    Gooten:"NOT_FIT"
+    SupDropshipping:"OFFICE_SUPPLIES_AGENT_SOURCING_NO_EXACT_FURNITURE_SKU_TRUTH",
+    SourcinBox:"MANUAL_SOURCING_REQUEST_WITH_BULKY_SHIPPING_CAUTION",
+    CJdropshipping:"TESTED_CANDIDATE_NO_SINGLE_VARIANT_4_OF_4"
   },
   "tech/smart-home":{
     HyperSKU:"MANUAL_SOURCING_REQUEST",
-    SupDropshipping:"AGENT_SOURCING_POSSIBLE_BUT_PUBLIC_SMART_HOME_COVERAGE_NOT_VERIFIED",
-    Syncee:"HOLD_PAID",
-    Printful:"NOT_FIT",
-    Gooten:"NOT_FIT"
+    SupDropshipping:"AGENT_SOURCING_ONLY_PUBLIC_SMART_HOME_COVERAGE_NOT_VERIFIED",
+    SourcinBox:"MANUAL_SOURCING_REQUEST",
+    CJdropshipping:"NO_CLEAN_VERIFIED_STAGE8_CANDIDATE"
   }
 };
 
 const rails=(packet.rails||[]).map(r=>({
   rail:r.rail,
-  provider_route:railCoverage[r.rail]||{},
-  primary_provider:"HyperSKU",
-  secondary_provider:"SupDropshipping",
-  admission_rule:"NO_PROVIDER_BECOMES_SHELF_SOURCE_WITHOUT_EXACT_SKU_VARIANT_STOCK_SHIPPING_MEDIA_RIGHTS_AND_PROFIT_TRUTH",
+  provider_route:coverage[r.rail]||{},
+  ordered_routes:["HyperSKU","SupDropshipping","SourcinBox","CJdropshipping"],
+  admission_rule:"NO_PROVIDER_BECOMES_SHELF_SOURCE_WITHOUT_EXACT_SKU_VARIANT_STOCK_SHIPPING_MEDIA_RIGHTS_VISUAL_QA_AND_PROFIT_TRUTH",
+  furniture_shipping_rule:["home/furniture","office/office-furniture"].includes(r.rail)
+    ?"BULKY_ITEM_REQUIRES_DESTINATION_LANDED_COST_AND_DIMENSIONAL_SHIPPING_REVIEW"
+    :"STANDARD_DESTINATION_SHIPPING_GATE",
   production_effect:false
 }));
 
 const out={
-  version:"HUNT-PRODUCT-PLACEMENT-STAGE8-ALTERNATIVE-SOURCE-MATRIX-V1",
+  version:"HUNT-PRODUCT-PLACEMENT-STAGE8-ALTERNATIVE-SOURCE-MATRIX-V2-VERIFIED",
   date:"2026-09-23",
   mode:"SOURCE_ROUTING_ONLY",
   production_effect:false,
@@ -118,21 +150,30 @@ const out={
     rails:rails.length,
     primary_provider:"HyperSKU",
     secondary_provider:"SupDropshipping",
-    paid_hold_provider:"Syncee",
+    tertiary_provider:"SourcinBox",
+    api_connected_provider:"CJdropshipping",
     verified_new_inventory_products:0,
-    final_net_profit_verified_products:0
+    final_net_profit_verified_products:0,
+    outbound_state:{
+      HyperSKU:"WAITING_REPLY",
+      SupDropshipping:"WAITING_REPLY",
+      SourcinBox:"NOT_CONTACTED_OWNER_GATE"
+    }
   },
   providers,
   rails,
   rules:[
-    "Public category coverage is not exact SKU proof.",
+    "Public category coverage is never exact SKU proof.",
+    "Public API capability and account-specific API eligibility are separate states.",
     "Free/basic access does not imply API approval.",
     "No scraping.",
-    "No provider can bypass Placement, Quality, Variant/Stock, Shipping, Media Rights or Profit gates.",
+    "Bulky furniture requires dimensional/destination shipping review before profit admission.",
+    "No duplicate supplier follow-up while an existing thread is waiting for reply.",
+    "No first SourcinBox outreach without Owner Gate.",
+    "No provider can bypass Placement, Semantic Visual QA, Variant/Stock, Shipping, Media Rights or Profit gates.",
     "No Production mutation or supplier order."
   ]
 };
-
 fs.writeFileSync(OUT,JSON.stringify(out,null,2)+"\n");
 console.log(JSON.stringify(out.summary,null,2));
-for(const r of rails)console.log(r.rail,"=>",r.primary_provider,"/",r.secondary_provider,"|",r.provider_route.SupDropshipping);
+for(const r of rails)console.log(r.rail,"=>",r.ordered_routes.join(" > "));

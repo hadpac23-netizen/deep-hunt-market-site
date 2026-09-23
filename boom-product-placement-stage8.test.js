@@ -37,7 +37,11 @@ assert(packet.rails.every(x=>x.commercial_requirements?.dropship_no_prepurchase=
 assert.equal(sources.summary.rails,packet.summary.rails);
 assert.equal(sources.summary.primary_provider,"HyperSKU");
 assert.equal(sources.summary.secondary_provider,"SupDropshipping");
-assert.equal(sources.summary.paid_hold_provider,"Syncee");
+assert.equal(sources.summary.tertiary_provider,"SourcinBox");
+assert.equal(sources.summary.api_connected_provider,"CJdropshipping");
 assert.equal(sources.summary.verified_new_inventory_products,0);
+assert.equal(sources.summary.outbound_state.HyperSKU,"WAITING_REPLY");
+assert.equal(sources.summary.outbound_state.SupDropshipping,"WAITING_REPLY");
+assert.equal(sources.summary.outbound_state.SourcinBox,"NOT_CONTACTED_OWNER_GATE");
 assert(sources.rails.every(x=>x.production_effect===false));
 console.log("Product Placement Stage8 Supplier Recovery Visual-Strict: PASS");
