@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-OPERATIONAL-SKILLS-V2.0-STAGE7-RECOVERY",
+  "version": "BOOM-OPERATIONAL-SKILLS-V2.1-SUPPLIER-RECOVERY",
   "mode": "SHADOW",
   "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
   "skills": [
@@ -493,6 +493,29 @@
         "remaining_empty",
         "remaining_thin",
         "sourcing_manifest"
+      ],
+      "tools": [],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "recover_supplier_gaps",
+      "title": "Recover Supplier Gaps",
+      "owner": "commerce_truth_brain",
+      "purpose": "Use official supplier data to fill only residual sourcing gaps after placement recovery.",
+      "inputs": [
+        "stage7_sourcing_manifest",
+        "official_supplier_catalog",
+        "placement_rules",
+        "shipping_markets",
+        "price_gate"
+      ],
+      "outputs": [
+        "strict_shortlist",
+        "shipping_verified",
+        "media_profit_gate",
+        "shadow_selection",
+        "shadow_preview"
       ],
       "tools": [],
       "material": false,

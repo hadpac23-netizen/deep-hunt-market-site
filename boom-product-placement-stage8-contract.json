@@ -1,0 +1,36 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-SUPPLIER-RECOVERY-V1",
+  "mode": "SHADOW_READ_ONLY",
+  "authority": "NONE",
+  "owner": "commerce_truth_brain",
+  "purpose": "Fill only residual true supplier gaps after Stage7 recovery, using official supplier data and full truth gates.",
+  "workflow": [
+    "read_stage7_sourcing_manifest",
+    "official_supplier_discovery",
+    "strict_primary_product_type_filter",
+    "exclude_existing_hunt_items",
+    "exact_variant_and_stock_truth",
+    "destination_shipping_truth",
+    "media_technical_qa",
+    "price_gate_v2_1",
+    "diversity_and_density_selection",
+    "shadow_preview"
+  ],
+  "rules": [
+    "Supplier category is a discovery hint, never sufficient placement evidence.",
+    "Primary product noun and audience must be explicit.",
+    "Existing HUNT products are not counted as new-source recovery.",
+    "EPROLO candidates require exact in-stock variant and 4-of-4 shipping for IL/DE/US/SG.",
+    "CJ candidates remain provisional until product-detail and shipping verification pass.",
+    "Media technical QA is not semantic visual-quality approval.",
+    "Projected Product Contribution is not Final Net Profit.",
+    "Production mutation, checkout activation and supplier ordering remain blocked."
+  ],
+  "owner_gate": {
+    "read_only_supplier_discovery": false,
+    "shadow_candidate_gate": false,
+    "shadow_preview": false,
+    "production_shelf_rebuild": true,
+    "supplier_order": true
+  }
+}

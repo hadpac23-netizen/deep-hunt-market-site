@@ -1,0 +1,1327 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-P0-SELECTION-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW_SELECTION_ONLY",
+  "production_effect": false,
+  "summary": {
+    "stage8_gate_pass_input": 46,
+    "selected_products": 41,
+    "selected_rails": 4,
+    "final_net_profit_verified_products": 0,
+    "production_effect": false
+  },
+  "selection_by_rail": {
+    "accessories/scarves": {
+      "existing_count": 0,
+      "pass_candidates": 1,
+      "selected": 1,
+      "deferred": 0,
+      "resulting_count": 1,
+      "resulting_state": "THIN"
+    },
+    "men/men-bags": {
+      "existing_count": 0,
+      "pass_candidates": 29,
+      "selected": 24,
+      "deferred": 5,
+      "resulting_count": 24,
+      "resulting_state": "FULL"
+    },
+    "pets/pet-beds": {
+      "existing_count": 0,
+      "pass_candidates": 1,
+      "selected": 1,
+      "deferred": 0,
+      "resulting_count": 1,
+      "resulting_state": "THIN"
+    },
+    "women/women-clothing": {
+      "existing_count": 0,
+      "pass_candidates": 15,
+      "selected": 15,
+      "deferred": 0,
+      "resulting_count": 15,
+      "resulting_state": "GOOD"
+    }
+  },
+  "selected": [
+    {
+      "provider": "EPROLO",
+      "item_id": "32465172",
+      "rail": "accessories/scarves",
+      "title": "Vintage Ethnic Pattern Silk Scarf for Women, Pure Satin Silk Gift Square Scarf, Mulberry Silk Scarf",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202608/F1733892D384D2F677687B0AD041BE96.jpg",
+      "exact_variant": {
+        "id": "728466432",
+        "sku": "9E4210ACFC60442191511DBAB0E57C54",
+        "title": "Black and White Patchwork-66cm",
+        "supplier_cost_usd": 7.07,
+        "inventory_quantity": 1999,
+        "weight_g": 80
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1200,
+        "height": 1200,
+        "content_type": "image/jpeg",
+        "bytes": 767142
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.75,
+      "projected_margin_min": 0.3657,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19535251",
+      "rail": "men/men-bags",
+      "title": "BANGE New Men's Backpack Business Computer Backpack College Student Waterproof Casual Schoolbag Backpack",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/341E48A73B9150C267DB6D9435FD229C.jpg",
+      "exact_variant": {
+        "id": "568424607",
+        "sku": "BB8EE6FC2ECD4708AAA656A2659C40DC",
+        "title": "Black",
+        "supplier_cost_usd": 21.5,
+        "inventory_quantity": 500,
+        "weight_g": 860
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 120658
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 13.98,
+      "projected_margin_min": 0.3586,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19535184",
+      "rail": "men/men-bags",
+      "title": "New Shoulder Chest Bag Men's Messenger Bag Korean Version Casual Bag Cycling Bag For Men",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/EDCF71D99762E95506967E8DF63846E7.jpg",
+      "exact_variant": {
+        "id": "568424271",
+        "sku": "1206E8BD949B4E599E6E579F0C9E8BD6",
+        "title": "Silver Grey",
+        "supplier_cost_usd": 18.3,
+        "inventory_quantity": 500,
+        "weight_g": 610
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 78350
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 11.72,
+      "projected_margin_min": 0.3553,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19541425",
+      "rail": "men/men-bags",
+      "title": "New Chest Bag Men's Shoulder Bag Korean Version Function Oblique Cross Bag Expansion Business Pyramid Hard Shell Small Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/73B6CAB9F268A2187A8FD16DE0915343.jpg",
+      "exact_variant": {
+        "id": "568507251",
+        "sku": "897AD6C05FB64F83B17062A41E2C0169",
+        "title": "Grey",
+        "supplier_cost_usd": 18.3,
+        "inventory_quantity": 500,
+        "weight_g": 720
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 125857
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 11.72,
+      "projected_margin_min": 0.3553,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19535176",
+      "rail": "men/men-bags",
+      "title": "New Product Chest Bag Messenger Bag Men's Men's Chest Bag Casual Shoulder Bag Large Capacity Men's Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/5FD4D06620DB47C4CC0E629B36D7D8DD.jpg",
+      "exact_variant": {
+        "id": "568424232",
+        "sku": "E68C81A69D6444F594B02B07B3355E13",
+        "title": "Grey",
+        "supplier_cost_usd": 15.28,
+        "inventory_quantity": 500,
+        "weight_g": 620
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 119586
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 10.19,
+      "projected_margin_min": 0.3641,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19541423",
+      "rail": "men/men-bags",
+      "title": "New Men's Shoulder Chest Bag Korean Version Of The Trend Brand Riding Messenger Bag Casual Men's Chest Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/FD6AD882A1DB057860BD23AD0262E4B3.jpg",
+      "exact_variant": {
+        "id": "568507247",
+        "sku": "8DA6825B9688423F852E2A078FE629DC",
+        "title": "Denim Blue",
+        "supplier_cost_usd": 15.28,
+        "inventory_quantity": 500,
+        "weight_g": 500
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 163232
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 10.19,
+      "projected_margin_min": 0.3641,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19034140",
+      "rail": "men/men-bags",
+      "title": "Genuine Leather Men's Waist Bag First Layer Leather Multifunctional Chest Bag Retro Messenger Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202204/0A0538AD410740E688504EE14E8437F7.jpg",
+      "exact_variant": {
+        "id": "561267575",
+        "sku": "61856FB2D674479F897D14FD834851CD",
+        "title": "Coffee",
+        "supplier_cost_usd": 14.9,
+        "inventory_quantity": 3000,
+        "weight_g": 310
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1001,
+        "height": 1001,
+        "content_type": "image/jpeg",
+        "bytes": 253195
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 9.66,
+      "projected_margin_min": 0.3579,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19535203",
+      "rail": "men/men-bags",
+      "title": "New Men's One Shoulder Messenger Bag Trendy Cool Chest Bag Large Capacity Light Weight Men's Bag Sling Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/458E8F63339A96BC9B582ABABA8C8AA4.jpg",
+      "exact_variant": {
+        "id": "568424366",
+        "sku": "6EAF5645A01447648ABC0DC89DC7FE91",
+        "title": "Grey",
+        "supplier_cost_usd": 13.39,
+        "inventory_quantity": 500,
+        "weight_g": 500
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 60172
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 8.44,
+      "projected_margin_min": 0.3519,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19535228",
+      "rail": "men/men-bags",
+      "title": "Bange New Shoulder Bag Men's Korean Version Men's Chest Bag Light Business Function Messenger Bag Trendy",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/A5C3AB67C203A54A57602052A6A1CFB9.jpg",
+      "exact_variant": {
+        "id": "568424541",
+        "sku": "9637AFA184474C928DAD9261A00D4E77",
+        "title": "Grey",
+        "supplier_cost_usd": 13.39,
+        "inventory_quantity": 500,
+        "weight_g": 580
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 179865
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 8.44,
+      "projected_margin_min": 0.3519,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19535276",
+      "rail": "men/men-bags",
+      "title": "BANGE New Men's Chest Bag Waterproof EVA Hard Shell Shoulder Bag Trend Diagonal Small Bag Chest Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/B1C2E4155C4791AE7DA51C94AB59AF75.jpg",
+      "exact_variant": {
+        "id": "568424746",
+        "sku": "E30A0F21B50741CFA3711939A949D258",
+        "title": "Grey",
+        "supplier_cost_usd": 13.39,
+        "inventory_quantity": 500,
+        "weight_g": 620
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 79158
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 8.44,
+      "projected_margin_min": 0.3519,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19535232",
+      "rail": "men/men-bags",
+      "title": "BANGE Chest Bag Men's One-Shoulder Messenger Bag Hard Shell Polyhedron Trend Men's Bag New Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/B6BE5B7D7CEA4E6980D372B2E4A7CA4C.jpg",
+      "exact_variant": {
+        "id": "568424549",
+        "sku": "381D77C999CB4ADC8F397C5199ECA48A",
+        "title": "Black",
+        "supplier_cost_usd": 12.64,
+        "inventory_quantity": 500,
+        "weight_g": 600
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 69760
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 8.28,
+      "projected_margin_min": 0.3602,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19535238",
+      "rail": "men/men-bags",
+      "title": "BANGE Men's New One-Shoulder Chest Bag Korean Version Fashion Function Messenger Couple Men's Bag Chest Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/420FD8074D665BB6A77A8C331F1639A3.jpg",
+      "exact_variant": {
+        "id": "568424574",
+        "sku": "F2BEEE35FB254897B4540E59292AAA75",
+        "title": "Black",
+        "supplier_cost_usd": 12.64,
+        "inventory_quantity": 500,
+        "weight_g": 430
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 66435
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 8.28,
+      "projected_margin_min": 0.3602,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19535201",
+      "rail": "men/men-bags",
+      "title": "BANGE New Waist Bag Men's Chest Bag Waterproof Shoulder Bag Korean Version EVA Hard Shell Messenger Bag Couples Waist Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/4B28DFE1AC0E6FAEA110487AF1EBC15D.jpg",
+      "exact_variant": {
+        "id": "568424359",
+        "sku": "9DFA2B77513F4FC6B638B06FA9445D22",
+        "title": "Yellow",
+        "supplier_cost_usd": 11.5,
+        "inventory_quantity": 500,
+        "weight_g": 320
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 79452
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 7.6,
+      "projected_margin_min": 0.3621,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "11622522",
+      "rail": "men/men-bags",
+      "title": "WEIXIER Brand Men High Quality Microfiber Synthetic Leather Tote Fashion Male Bag Messenger Business Handbag Laptop Shoulder Bag",
+      "image_url": "https://ae04.alicdn.com/kf/HTB1JDMBatjvK1RjSspiq6AEqXXaV.jpg",
+      "exact_variant": {
+        "id": "349987514",
+        "sku": "9FE1444F306941B4ACADB73302A9E7D1",
+        "title": "Black",
+        "supplier_cost_usd": 9.81,
+        "inventory_quantity": 989,
+        "weight_g": 4100
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/webp",
+        "bytes": 99720
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 6.56,
+      "projected_margin_min": 0.3647,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "18674198",
+      "rail": "men/men-bags",
+      "title": "Messenger bag casual men's bag crossbody bags one shoulder",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202201/4261494EC84F702C2C4BCC3801939911.jpg",
+      "exact_variant": {
+        "id": "556412677",
+        "sku": "BADBAD4C96064FC68171F4DB1C8075CE",
+        "title": "Royal blue",
+        "supplier_cost_usd": 8.11,
+        "inventory_quantity": 3000,
+        "weight_g": 410
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 320840
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 5.53,
+      "projected_margin_min": 0.369,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "18674161",
+      "rail": "men/men-bags",
+      "title": "Casual messenger bag new trend handbag men's shoulder bag tablet computer diagonal bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202201/1C8CE401DD32A78050EDA2D7DA937EB2.jpg",
+      "exact_variant": {
+        "id": "556412579",
+        "sku": "F971F87A27DA46BDB640D73AFA407AAB",
+        "title": "Black",
+        "supplier_cost_usd": 7.73,
+        "inventory_quantity": 3000,
+        "weight_g": 370
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 68232
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 5,
+      "projected_margin_min": 0.3575,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "28515385",
+      "rail": "men/men-bags",
+      "title": "Men's sports chest bag shoulder bag simple men's crossbody bag fashionable small shoulder bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202502/8EDFE9B60BB2E84DCF8F5167BACAFC1C.jpg",
+      "exact_variant": {
+        "id": "675564983",
+        "sku": "08036DAEA5174E43A976B37ED9F2879E",
+        "title": "gray",
+        "supplier_cost_usd": 5.18,
+        "inventory_quantity": 19934,
+        "weight_g": 550
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 170000
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.82,
+      "projected_margin_min": 0.4387,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19371756",
+      "rail": "men/men-bags",
+      "title": "Men's Shoulder Bag Multifunctional Outdoor Sports Satchel Trend Brand Fashion Vertical Mobile Phone Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202206/0F05C6025AF31757F99077FB475B83F5.jpg",
+      "exact_variant": {
+        "id": "566120135",
+        "sku": "25308276808C434DAABDB563D062C9BA",
+        "title": "Black",
+        "supplier_cost_usd": 4.33,
+        "inventory_quantity": 3000,
+        "weight_g": 380
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 129995
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.76,
+      "projected_margin_min": 0.4766,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "11622500",
+      "rail": "men/men-bags",
+      "title": "WEIXIER brand men's bag youth messenger bag zipper leather bag Ipad handbag men's shoulder bag",
+      "image_url": "https://ae04.alicdn.com/kf/H4d6c5219d5d246efa4bfc5b9efe6487cM.jpg",
+      "exact_variant": {
+        "id": "349985631",
+        "sku": "A0F1114EC7304366A1A963AB41437D9F",
+        "title": "Light Brown",
+        "supplier_cost_usd": 5.28,
+        "inventory_quantity": 785,
+        "weight_g": 4100
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/webp",
+        "bytes": 156072
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.72,
+      "projected_margin_min": 0.4296,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "20235317",
+      "rail": "men/men-bags",
+      "title": "Chest Bag Waterproof Men's Waist Bag Casual Outdoor Sports One Shoulder Messenger Bag Fashion Korean Fashion Men's Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202212/EBFB0C43944476B3CA1AD5A872FE442D.jpeg",
+      "exact_variant": {
+        "id": "578033507",
+        "sku": "D0C8F1AEDB27498ABC22C8C760339C3D",
+        "title": "Single Layer Common Grey",
+        "supplier_cost_usd": 1.69,
+        "inventory_quantity": 669,
+        "weight_g": 210
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 159885
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.67,
+      "projected_margin_min": 0.6682,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "31416137",
+      "rail": "men/men-bags",
+      "title": "Chest Pack Outdoor Hiking Cycling Single Shoulder Crossbody Canvas Chest Bag Outdoor Sports Bag Street Fashion Men's Backpack",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/5E048069B9B0703746531D195E0E67B4.jpg",
+      "exact_variant": {
+        "id": "712419618",
+        "sku": "E133BC9EFC5342E29491D4EEE5113C81",
+        "title": "Blue C",
+        "supplier_cost_usd": 0.79,
+        "inventory_quantity": 81316,
+        "weight_g": 170
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 134906
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.66,
+      "projected_margin_min": 0.7781,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "30468125",
+      "rail": "men/men-bags",
+      "title": "Shoulder bag saddle bag zipper diagonal cross bag men's bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202510/BA81CF5778E198B1C4A5E6102FCB7FD5.jpg",
+      "exact_variant": {
+        "id": "698495288",
+        "sku": "8A5A3EE55AFA48CE8FB084FAD76A303A",
+        "title": "Gray-Length 24cm * Height 19cm * Thickness 5cm",
+        "supplier_cost_usd": 7.17,
+        "inventory_quantity": 100,
+        "weight_g": 560
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1000,
+        "height": 1000,
+        "content_type": "image/jpeg",
+        "bytes": 189925
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.65,
+      "projected_margin_min": 0.358,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "19363138",
+      "rail": "men/men-bags",
+      "title": "New Bags For Men Solid Color Zipper Bag Men's Messenger Bag Outdoor Messenger Bag Shoulder Tooling Bag",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202206/AEAF20EF633A90B28CFBFB3572F50398.jpg",
+      "exact_variant": {
+        "id": "565991829",
+        "sku": "E78BEB456C414591923F54E1D3A54524",
+        "title": "Grey",
+        "supplier_cost_usd": 4.52,
+        "inventory_quantity": 3000,
+        "weight_g": 360
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 123135
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.57,
+      "projected_margin_min": 0.4575,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "10468857",
+      "rail": "men/men-bags",
+      "title": "New Fashion Men's Backpack Bag Male Polyester Laptop Backpack Computer Bags high school student college students bag male",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202012/3C2CEDBCEFC3F3CE5918509BAA47E8DD.jpg",
+      "exact_variant": {
+        "id": "300078430",
+        "sku": "BD0C2080711543E499157E8312BDDA37",
+        "title": "Pink",
+        "supplier_cost_usd": 4.74,
+        "inventory_quantity": 3750,
+        "weight_g": 590
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 87243
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.35,
+      "projected_margin_min": 0.4355,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "28515384",
+      "rail": "men/men-bags",
+      "title": "Chest bag men's backpack USB charging backpack single shoulder chest bag commuting backpack waterproof",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202502/A6CD9B64395AD05D2DB4F56EDF3B6244.jpg",
+      "exact_variant": {
+        "id": "675564980",
+        "sku": "7C952067F6924A2493E4D715CFF80C44",
+        "title": "dark brown",
+        "supplier_cost_usd": 3.1,
+        "inventory_quantity": 9999,
+        "weight_g": 500
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 170448
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.17,
+      "projected_margin_min": 0.522,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "10575883",
+      "rail": "pets/pet-beds",
+      "title": "Warm Soft Fleece Pet Mat Travel Cat Litter Dog Blanket Puppy Cushion Pet Pad Dog Bed  Cheap 5 Size for Small And Large Dogs",
+      "image_url": "http://ae01.alicdn.com/kf/HTB1pi.hbeSSBuNjy0Flq6zBpVXax.jpg",
+      "exact_variant": {
+        "id": "303950995",
+        "sku": "F44C5D93EF2949AAB7E59CA325A55403",
+        "title": "Pink-47x33cm",
+        "supplier_cost_usd": 3.65,
+        "inventory_quantity": 1998,
+        "weight_g": 160
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 900,
+        "height": 900,
+        "content_type": "image/webp",
+        "bytes": 93456
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.53,
+      "projected_margin_min": 0.504,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "30053098",
+      "rail": "women/women-clothing",
+      "title": "Women's Traditional Dress Long Robe Two-piece Set",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/1F3DB74A49181595715D2188A2D3AA89.jpg",
+      "exact_variant": {
+        "id": "693307055",
+        "sku": "A8DA201A880340D9BCB7D1F62FA7CFC3",
+        "title": "Apricot-M",
+        "supplier_cost_usd": 21.51,
+        "inventory_quantity": 999,
+        "weight_g": 800
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 857,
+        "height": 857,
+        "content_type": "image/jpeg",
+        "bytes": 155043
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 13.97,
+      "projected_margin_min": 0.3583,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "30183932",
+      "rail": "women/women-clothing",
+      "title": "Checkered neck hanging tank top women's patchwork A-line skirt two-piece set",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202509/DF92E859D8D63E1F2D33521205215EB3.jpg",
+      "exact_variant": {
+        "id": "694847296",
+        "sku": "5218A6FD05864F099CA7B35DA02307DF",
+        "title": "set-L",
+        "supplier_cost_usd": 19.38,
+        "inventory_quantity": 999,
+        "weight_g": 650
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1200,
+        "height": 1200,
+        "content_type": "image/jpeg",
+        "bytes": 252711
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 12.46,
+      "projected_margin_min": 0.3561,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "30183941",
+      "rail": "women/women-clothing",
+      "title": "Women's two-piece set of one collar lace striped short top and lace A-line short skirt",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202509/2374A205709D3D064E16A0F0057CB0A8.jpg",
+      "exact_variant": {
+        "id": "694847350",
+        "sku": "DFBCA730DC52499A99CC171C5930D0A0",
+        "title": "Black Stripe Two-Piece Set-L",
+        "supplier_cost_usd": 18.32,
+        "inventory_quantity": 999,
+        "weight_g": 650
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1200,
+        "height": 1200,
+        "content_type": "image/jpeg",
+        "bytes": 223534
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 11.7,
+      "projected_margin_min": 0.3547,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "29964830",
+      "rail": "women/women-clothing",
+      "title": "Cross-border Street Purple Sports Hooded Sweatshirt Set Women's  Jacket Long Pants Two-piece Set",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/2297A199EFB4903ECC050D670E6482B2.jpg",
+      "exact_variant": {
+        "id": "692378354",
+        "sku": "3BF8530247B3411E98EE81AD3E29EFFF",
+        "title": "Dark Purple-L",
+        "supplier_cost_usd": 18.32,
+        "inventory_quantity": 650,
+        "weight_g": 880
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1034,
+        "height": 1034,
+        "content_type": "image/jpeg",
+        "bytes": 83994
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 11.7,
+      "projected_margin_min": 0.3547,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "31403880",
+      "rail": "women/women-clothing",
+      "title": "Casual women's two-piece set with loose top and harem wide-leg pants, includes belt",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/86E0DDBEFC3BA267524AFE74E2C12E1A.jpg",
+      "exact_variant": {
+        "id": "712264629",
+        "sku": "993B7D944F3D49EDADD3B4625D194046",
+        "title": "Navy Blue-XXL",
+        "supplier_cost_usd": 15.12,
+        "inventory_quantity": 1688,
+        "weight_g": 920
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 111072
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 10.35,
+      "projected_margin_min": 0.3698,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "31247576",
+      "rail": "women/women-clothing",
+      "title": "V-neck sleeveless women's jumpsuit",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202603/75C69F675CA1CCBD03B487D7C036658E.jpg",
+      "exact_variant": {
+        "id": "710089257",
+        "sku": "4B9BF625B95F407791850930D6F52946",
+        "title": "Red Blue Brown-XL",
+        "supplier_cost_usd": 15.33,
+        "inventory_quantity": 500,
+        "weight_g": 750
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1600,
+        "height": 1600,
+        "content_type": "image/jpeg",
+        "bytes": 205548
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 10.14,
+      "projected_margin_min": 0.3623,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "31403543",
+      "rail": "women/women-clothing",
+      "title": "Two piece set of contrasting women's skirts and shirts",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/AD8EC81A4B836CD2999B24D9B911CCC7.jpg",
+      "exact_variant": {
+        "id": "712260809",
+        "sku": "EDD823613CB74EF6B299FB39A3425A53",
+        "title": "Gray White-XXXL",
+        "supplier_cost_usd": 14.27,
+        "inventory_quantity": 9999,
+        "weight_g": 520
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1131,
+        "height": 1131,
+        "content_type": "image/jpeg",
+        "bytes": 150944
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 9.38,
+      "projected_margin_min": 0.3609,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "30860754",
+      "rail": "women/women-clothing",
+      "title": "Women's Casual Outfit Set, Solid Color Long Sleeve Hooded Zip-Up Sweatshirt with Elastic Waist Wide Leg Pants",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202601/869C5DFEE628A3AB92953BEF6DF02061.jpg",
+      "exact_variant": {
+        "id": "705276641",
+        "sku": "E9E771C4B2D34FC6BECDF77FA0B0805F",
+        "title": "Apricot-XL",
+        "supplier_cost_usd": 12.99,
+        "inventory_quantity": 2000,
+        "weight_g": 950
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1000,
+        "height": 1000,
+        "content_type": "image/jpeg",
+        "bytes": 232611
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 8.84,
+      "projected_margin_min": 0.3685,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "30854673",
+      "rail": "women/women-clothing",
+      "title": "Fashionable Style Solid Color Hoodie Set Women's Casual Jumpsuit Autumn Winter Outfit",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202601/F4ED4770F3943D91A28EAA1EB636F2D6.jpg",
+      "exact_variant": {
+        "id": "705207164",
+        "sku": "0B5C7770DF4740F0A12534144E19120A",
+        "title": "2XL-Gray",
+        "supplier_cost_usd": 10.86,
+        "inventory_quantity": 16879,
+        "weight_g": 760
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1200,
+        "height": 1200,
+        "content_type": "image/jpeg",
+        "bytes": 239132
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 7.33,
+      "projected_margin_min": 0.3667,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "31648854",
+      "rail": "women/women-clothing",
+      "title": "Casual Women's Hoodie and Pants Two-Piece Set, Half-Zip Pullover, Loose Fit,",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202605/50BA03B589DBFBC63506BF88FE933847.jpg",
+      "exact_variant": {
+        "id": "715697396",
+        "sku": "A001D96E390446B597D1CDA2D232B53A",
+        "title": "Blue-XL",
+        "supplier_cost_usd": 10.97,
+        "inventory_quantity": 1688,
+        "weight_g": 920
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 814,
+        "height": 814,
+        "content_type": "image/jpeg",
+        "bytes": 43847
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 7.22,
+      "projected_margin_min": 0.3612,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "30910846",
+      "rail": "women/women-clothing",
+      "title": "Cotton Linen Women's Fashion Casual Two-Piece Set Loose Women's Outfit",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202601/542534726F82A2560E9BC2EF2AA7E0B0.jpg",
+      "exact_variant": {
+        "id": "705839858",
+        "sku": "B40D702E65D34F609D0C7B73E05A592D",
+        "title": "Army Green-5XL",
+        "supplier_cost_usd": 8.73,
+        "inventory_quantity": 9999,
+        "weight_g": 750
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1001,
+        "height": 1001,
+        "content_type": "image/jpeg",
+        "bytes": 70763
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 5.82,
+      "projected_margin_min": 0.364,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "30910845",
+      "rail": "women/women-clothing",
+      "title": "Women's Two-Piece Set with Oversized Half-Zip Hoodie and Wide-Leg Sweatpants Casual Outfit",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202601/4D406ACC4A7C60A97BB58D785EA92B3D.jpg",
+      "exact_variant": {
+        "id": "705839799",
+        "sku": "C99F13C155B64E33B27F15B9AE6DC148",
+        "title": "Bean green-XL",
+        "supplier_cost_usd": 8.92,
+        "inventory_quantity": 9999,
+        "weight_g": 850
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1064,
+        "height": 1064,
+        "content_type": "image/jpeg",
+        "bytes": 60673
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 5.63,
+      "projected_margin_min": 0.3522,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "30089792",
+      "rail": "women/women-clothing",
+      "title": "Women's T-shirt with breasted jumpsuit",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/C72B4D616F985578B682922AD981D446.jpg",
+      "exact_variant": {
+        "id": "693762811",
+        "sku": "045841EE5316446F85CA273BB32779E7",
+        "title": "M-Dark Brown",
+        "supplier_cost_usd": 8.94,
+        "inventory_quantity": 1000,
+        "weight_g": 350
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1600,
+        "height": 1600,
+        "content_type": "image/jpeg",
+        "bytes": 495348
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 5.61,
+      "projected_margin_min": 0.3509,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "32695439",
+      "rail": "women/women-clothing",
+      "title": "Leopard Print Long Sleeve Splicing V-Neck Women's Jumpsuit",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202609/AF3CA69B738B90F83658CF96E5700B92.jpg",
+      "exact_variant": {
+        "id": "731325558",
+        "sku": "7ABD6664D3984B20A2A6C87B7580E172",
+        "title": "Black-XL",
+        "supplier_cost_usd": 8.11,
+        "inventory_quantity": 6666,
+        "weight_g": 330
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 800,
+        "height": 800,
+        "content_type": "image/jpeg",
+        "bytes": 127007
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 5.53,
+      "projected_margin_min": 0.369,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    },
+    {
+      "provider": "EPROLO",
+      "item_id": "29964725",
+      "rail": "women/women-clothing",
+      "title": "Women's Basic V-neck Solid Color Jumpsuit",
+      "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/7589D0B1478A075559F83EAE62861C06.jpg",
+      "exact_variant": {
+        "id": "692376995",
+        "sku": "869BBA0D4E274A9B893F22F0322D7794",
+        "title": "M-Black",
+        "supplier_cost_usd": 7.03,
+        "inventory_quantity": 888,
+        "weight_g": 250
+      },
+      "media_technical": {
+        "state": "PASS",
+        "http": 200,
+        "width": 1600,
+        "height": 1600,
+        "content_type": "image/jpeg",
+        "bytes": 207888
+      },
+      "shipping_status": "VERIFIED_4_OF_4",
+      "projected_contribution_min_usd": 4.79,
+      "projected_margin_min": 0.3688,
+      "profit_gate_v21_pass": true,
+      "stage8_gate": "PASS",
+      "final_net_profit_verified": false,
+      "production_effect": false,
+      "selection_reason": "STAGE8_PASS_DIVERSITY_GUARD"
+    }
+  ],
+  "rules": [
+    "Only Stage8 gate PASS products are eligible.",
+    "Selection never exceeds the 24-product FULL threshold for a rail.",
+    "A title-diversity guard reduces near-duplicate shelf fill where possible.",
+    "Projected contribution is not Final Net Profit.",
+    "No Production mutation or supplier order."
+  ]
+}

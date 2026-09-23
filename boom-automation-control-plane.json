@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-AUTOMATION-CONTROL-PLANE-V1.4-PLACEMENT-RECOVERY",
+  "version": "BOOM-AUTOMATION-CONTROL-PLANE-V1.5-STAGE8-SUPPLIER-RECOVERY",
   "mode": "SHADOW",
   "authority": {
     "owner": "OWNER",
@@ -143,7 +143,10 @@
         "emit_move_review_unknown_evidence",
         "empty_thin_recovery",
         "sourcing_gap_classification",
-        "empty_thin_recovery_assessment"
+        "empty_thin_recovery_assessment",
+        "supplier_gap_discovery",
+        "supplier_candidate_truth_gate",
+        "supplier_recovery_preview"
       ],
       "gate": "independent placement evidence; current category never self-proves",
       "material_action": "none",
@@ -152,7 +155,8 @@
       "contract": "boom-product-placement-gate-contract.json",
       "output": "KEEP / MOVE recommendation / HOLD_REVIEW / HOLD_UNKNOWN; never auto-move Production",
       "overlap_contract": "boom-product-placement-stage6-contract.json",
-      "recovery_contract": "boom-product-placement-stage7-contract.json"
+      "recovery_contract": "boom-product-placement-stage7-contract.json",
+      "supplier_recovery_contract": "boom-product-placement-stage8-contract.json"
     },
     {
       "id": "shelf_coverage_17x1000",

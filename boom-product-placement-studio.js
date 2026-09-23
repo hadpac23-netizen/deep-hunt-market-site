@@ -22,7 +22,7 @@
       return;
     }
     try{
-      const [contract,shelves,taxonomy,detailTaxonomy,stage4Queue,stage6Evidence,stage6Preview,stage7Empty,stage7Thin,stage7Final,stage7Manifest,judge]=await Promise.all([
+      const [contract,shelves,taxonomy,detailTaxonomy,stage4Queue,stage6Evidence,stage6Preview,stage7Empty,stage7Thin,stage7Final,stage7Manifest,stage8Shortlist,stage8Shipping,stage8Gate,stage8Selection,stage8Preview,judge]=await Promise.all([
         fetchJson("boom-product-placement-gate-contract.json"),
         fetchJson("evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json"),
         fetchJson("evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json").catch(()=>({verified:[],summary:{}})),
@@ -34,6 +34,11 @@
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE7-THIN-RECOVERY-2026-09-23.json").catch(()=>({summary:{}})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE7-FINAL-PREVIEW-2026-09-23.json").catch(()=>({summary:{}})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE7-SOURCING-MANIFEST-2026-09-23.json").catch(()=>({summary:{},rails:[]})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-P0-QA-SHORTLIST-V2-2026-09-23.json").catch(()=>({summary:{}})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-P0-SHIPPING-VERIFY-2026-09-23.json").catch(()=>({summary:{}})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-P0-MEDIA-PROFIT-GATE-2026-09-23.json").catch(()=>({summary:{}})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-P0-SELECTION-2026-09-23.json").catch(()=>({summary:{}})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-P0-PREVIEW-2026-09-23.json").catch(()=>({summary:{}})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-LOCAL-JUDGE-2026-09-23.json").catch(()=>({summary:{},calibration:{},proposals:[]}))
       ]);
       const taxonomyKeep=new Map((taxonomy.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
@@ -87,6 +92,9 @@
           metric(s6.REVIEW||0,"Stage6 overlap REVIEW"),
           metric(stage7Final.summary?.total_stage7_recovered||0,"Stage7 recovered"),
           metric(stage7Manifest.summary?.empty_rails||0,"Stage7 empty gaps"),
+          metric(stage8Gate.summary?.stage8_gate_pass||0,"Stage8 gate PASS"),
+          metric(stage8Selection.summary?.selected_products||0,"Stage8 selected"),
+          metric(stage8Preview.summary?.rails_empty||0,"Stage8 empty gaps"),
           metric(judge.summary?.review_proposals||0,"Local Judge · REVIEW only"),
           metric(contract.always_on_policy?.studio_refresh_seconds||60,"Refresh seconds")
         ].join("");
@@ -108,6 +116,8 @@
       cards.push('<article><small>STAGE 7 · EMPTY/THIN RECOVERY</small><strong>'+esc((stage7Empty.summary?.keep_recoverable||0)+' empty KEEP · '+(stage7Thin.summary?.keep_recoverable||0)+' thin KEEP · '+(stage7Final.summary?.total_stage7_recovered||0)+' total recovered')+'</strong><span>Evidence recovery before sourcing · REVIEW/UNKNOWN remain quarantined · no Production mutation.</span></article>');
       cards.push('<article><small>STAGE 7 · FINAL CLEAN PREVIEW</small><strong>'+esc(stage7Final.summary?.canonical_products||0)+' canonical · '+esc(stage7Final.summary?.rails_full_24||0)+' FULL · '+esc(stage7Final.summary?.rails_good_12_to_23||0)+' GOOD · '+esc(stage7Final.summary?.rails_thin_1_to_11||0)+' THIN · '+esc(stage7Final.summary?.rails_empty||0)+' EMPTY</strong><span>Recovery only. No newly sourced inventory is counted here.</span></article>');
       cards.push('<article><small>STAGE 7 · SOURCING MANIFEST</small><strong>'+esc(stage7Manifest.summary?.empty_rails||0)+' EMPTY · '+esc(stage7Manifest.summary?.thin_rails||0)+' THIN · '+esc(stage7Manifest.summary?.new_source_required||0)+' NEW SOURCE · '+esc(stage7Manifest.summary?.evidence_blocked||0)+' EVIDENCE FIRST · '+esc(stage7Manifest.summary?.source_misplaced_or_unsupported||0)+' MISPLACED SOURCE</strong><span>Gap to GOOD: '+esc(stage7Manifest.summary?.total_gap_to_good||0)+' · Gap to FULL: '+esc(stage7Manifest.summary?.total_gap_to_24||0)+' · every new candidate must pass Placement → Quality → Stock/Shipping → Profit before shelf admission.</span></article>');
+      cards.push('<article><small>STAGE 8 · SUPPLIER RECOVERY GATE</small><strong>'+esc((stage8Shortlist.summary?.shortlisted_candidates||0)+' shortlist · '+(stage8Shipping.summary?.verified_4_of_4||0)+' shipping 4/4 · '+(stage8Gate.summary?.stage8_gate_pass||0)+' gate PASS · '+(stage8Selection.summary?.selected_products||0)+' selected')+'</strong><span>Official supplier data only · strict primary type · media technical QA · Price Gate V2.1 · Final Net Profit Verified: '+esc(stage8Gate.summary?.final_net_profit_verified_products||0)+'.</span></article>');
+      cards.push('<article><small>STAGE 8 · P0 CLEAN PREVIEW</small><strong>'+esc(stage8Preview.summary?.canonical_products||0)+' canonical · '+esc(stage8Preview.summary?.rails_full_24||0)+' FULL · '+esc(stage8Preview.summary?.rails_good_12_to_23||0)+' GOOD · '+esc(stage8Preview.summary?.rails_thin_1_to_11||0)+' THIN · '+esc(stage8Preview.summary?.rails_empty||0)+' EMPTY</strong><span>41 selected products are Shadow only. Semantic visual-quality review and Final Profit Truth remain separate gates; Production is unchanged.</span></article>');
       const precision=judge.calibration?.selected_threshold?.precision;
       cards.push('<article><small>LOCAL REVIEW JUDGE</small><strong>'+esc(judge.summary?.review_proposals||0)+' guarded review proposals</strong><span>Cross-rail: '+esc(judge.summary?.cross_rail_review_candidates||0)+' · Guard blocked: '+esc(judge.summary?.guard_blocked_proposals||0)+' · Holdout precision: '+esc(precision!=null?(precision*100).toFixed(2)+'%':'UNKNOWN')+' · Authority: NONE.</span></article>');
       for(const proposal of (judge.proposals||[]).filter(x=>x.effect==="CROSS_RAIL_REVIEW_CANDIDATE").slice(0,8)){

@@ -1,0 +1,1868 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-P0-PREVIEW-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW_PREVIEW_ONLY",
+  "production_effect": false,
+  "summary": {
+    "stage7_canonical_products": 3603,
+    "stage8_selected_products": 41,
+    "canonical_products": 3644,
+    "rails_full_24": 33,
+    "rails_good_12_to_23": 33,
+    "rails_thin_1_to_11": 61,
+    "rails_empty": 6,
+    "final_net_profit_verified_products": 0,
+    "production_effect": false
+  },
+  "rules": [
+    "Preview adds only Stage8 selected PASS products to Stage7 canonical counts.",
+    "No CJ provisional item is counted.",
+    "Semantic visual-quality review remains separate from technical media QA.",
+    "Final Net Profit remains unverified.",
+    "No Production mutation."
+  ],
+  "recovered_rails": [
+    {
+      "rail": "accessories/scarves",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 1
+    },
+    {
+      "rail": "men/men-bags",
+      "count": 24,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 24
+    },
+    {
+      "rail": "pets/pet-beds",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 1
+    },
+    {
+      "rail": "women/women-clothing",
+      "count": 15,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 15
+    }
+  ],
+  "empty_rails": [
+    {
+      "rail": "accessories/belts",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/gloves",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/furniture",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-clothing",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "office/office-furniture",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/smart-home",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    }
+  ],
+  "thin_rails": [
+    {
+      "rail": "accessories/bag-accessories",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/hair-accessories",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/scarves",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 1
+    },
+    {
+      "rail": "accessories/socks",
+      "count": 9,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/watches",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 2,
+      "total": 2,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "beauty/body-care",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "camping/camping-cook",
+      "count": 2,
+      "state": "THIN",
+      "empty_recovery": 2,
+      "thin_recovery": 0,
+      "total": 2,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "camping/camping-lighting",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "camping/camping-sleep",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "electrical/electrical-accessories",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "electrical/home-appliances",
+      "count": 9,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "garden/garden-decor",
+      "count": 7,
+      "state": "THIN",
+      "empty_recovery": 7,
+      "thin_recovery": 0,
+      "total": 7,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "garden/garden-lighting",
+      "count": 7,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "garden/garden-tools",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 2,
+      "total": 2,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "garden/outdoor-living",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "garden/watering",
+      "count": 9,
+      "state": "THIN",
+      "empty_recovery": 9,
+      "thin_recovery": 0,
+      "total": 9,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "gifts/gift-decor",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/bath",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 4,
+      "thin_recovery": 0,
+      "total": 4,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/bedding",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/cleaning",
+      "count": 7,
+      "state": "THIN",
+      "empty_recovery": 7,
+      "thin_recovery": 0,
+      "total": 7,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/curtains",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/entryway",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/home-decor",
+      "count": 9,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/home-storage",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/home-textiles",
+      "count": 2,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/laundry",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/lighting",
+      "count": 10,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 3,
+      "total": 3,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/mirrors",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/rugs",
+      "count": 5,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/tools-diy",
+      "count": 2,
+      "state": "THIN",
+      "empty_recovery": 2,
+      "thin_recovery": 0,
+      "total": 2,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kitchen/bakeware",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 3,
+      "thin_recovery": 0,
+      "total": 3,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kitchen/food-storage",
+      "count": 8,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-accessories",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 5,
+      "thin_recovery": 1,
+      "total": 6,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-bottoms",
+      "count": 2,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-hoodies",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-jeans",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-knitwear",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-outerwear",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-socks",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-tops",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "office/crafts",
+      "count": 5,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "office/office-storage",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "office/stickers",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/aquarium",
+      "count": 8,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/pet-accessories",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/pet-beds",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 1
+    },
+    {
+      "rail": "pets/pet-feeding",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/pet-toys",
+      "count": 2,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "sports/fitness-accessories",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "sports/outdoors",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "sports/sports-gear",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/electronics",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 3,
+      "thin_recovery": 0,
+      "total": 3,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "toys/building-toys",
+      "count": 11,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "toys/educational-toys",
+      "count": 5,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "toys/toys",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-bottoms",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-evening",
+      "count": 8,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-skirts",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-sleepwear",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-socks",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-underwear",
+      "count": 7,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 3,
+      "total": 3,
+      "stage8_selected": 0
+    }
+  ],
+  "rails": [
+    {
+      "rail": "accessories/bag-accessories",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/bags",
+      "count": 22,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/belts",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/gloves",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/hair-accessories",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/hats",
+      "count": 16,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 12,
+      "total": 12,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/jewelry",
+      "count": 12,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/jewelry-bracelets",
+      "count": 42,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/jewelry-earrings",
+      "count": 88,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/jewelry-necklaces",
+      "count": 76,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/jewelry-rings",
+      "count": 35,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/keychains",
+      "count": 33,
+      "state": "FULL",
+      "empty_recovery": 33,
+      "thin_recovery": 0,
+      "total": 33,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/scarves",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 1
+    },
+    {
+      "rail": "accessories/socks",
+      "count": 9,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "accessories/watches",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 2,
+      "total": 2,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "beauty/beauty-tools",
+      "count": 142,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "beauty/body-care",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "beauty/fragrance",
+      "count": 181,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "beauty/hair",
+      "count": 205,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "beauty/makeup",
+      "count": 158,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "beauty/nails",
+      "count": 15,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "beauty/skincare",
+      "count": 173,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "camping/camping-cook",
+      "count": 2,
+      "state": "THIN",
+      "empty_recovery": 2,
+      "thin_recovery": 0,
+      "total": 2,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "camping/camping-lighting",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "camping/camping-shelter",
+      "count": 12,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "camping/camping-sleep",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "camping/outdoors",
+      "count": 45,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "electrical/electrical-accessories",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "electrical/electrical-lighting",
+      "count": 99,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "electrical/home-appliances",
+      "count": 9,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "garden/garden-decor",
+      "count": 7,
+      "state": "THIN",
+      "empty_recovery": 7,
+      "thin_recovery": 0,
+      "total": 7,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "garden/garden-lighting",
+      "count": 7,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "garden/garden-tools",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 2,
+      "total": 2,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "garden/outdoor-living",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "garden/planters",
+      "count": 15,
+      "state": "GOOD",
+      "empty_recovery": 15,
+      "thin_recovery": 0,
+      "total": 15,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "garden/watering",
+      "count": 9,
+      "state": "THIN",
+      "empty_recovery": 9,
+      "thin_recovery": 0,
+      "total": 9,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "gifts/gift-decor",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "gifts/party",
+      "count": 141,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/bath",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 4,
+      "thin_recovery": 0,
+      "total": 4,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/bedding",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/cleaning",
+      "count": 7,
+      "state": "THIN",
+      "empty_recovery": 7,
+      "thin_recovery": 0,
+      "total": 7,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/curtains",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/entryway",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/furniture",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/home-decor",
+      "count": 9,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/home-storage",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/home-textiles",
+      "count": 2,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/laundry",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/lighting",
+      "count": 10,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 3,
+      "total": 3,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/mirrors",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/rugs",
+      "count": 5,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/tools-diy",
+      "count": 2,
+      "state": "THIN",
+      "empty_recovery": 2,
+      "thin_recovery": 0,
+      "total": 2,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "home/wall-decor",
+      "count": 17,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kids/baby",
+      "count": 27,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kids/baby-clothing",
+      "count": 23,
+      "state": "GOOD",
+      "empty_recovery": 23,
+      "thin_recovery": 0,
+      "total": 23,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kids/kids-accessories",
+      "count": 18,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kids/kids-clothing",
+      "count": 110,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kids/kids-shoes",
+      "count": 71,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kitchen/bakeware",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 3,
+      "thin_recovery": 0,
+      "total": 3,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kitchen/cookware",
+      "count": 12,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kitchen/drinkware",
+      "count": 128,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kitchen/food-storage",
+      "count": 8,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kitchen/kitchen-appliances",
+      "count": 17,
+      "state": "GOOD",
+      "empty_recovery": 17,
+      "thin_recovery": 0,
+      "total": 17,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kitchen/kitchen-tools",
+      "count": 14,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 4,
+      "total": 4,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "kitchen/tableware",
+      "count": 15,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 5,
+      "total": 5,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-accessories",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 5,
+      "thin_recovery": 1,
+      "total": 6,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-bags",
+      "count": 24,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 24
+    },
+    {
+      "rail": "men/men-bottoms",
+      "count": 2,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-boxers",
+      "count": 14,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-clothing",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-hoodies",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-jeans",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-knitwear",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-outerwear",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-shoes",
+      "count": 97,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-socks",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-suits",
+      "count": 12,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 4,
+      "total": 4,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-tops",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "men/men-underwear",
+      "count": 19,
+      "state": "GOOD",
+      "empty_recovery": 19,
+      "thin_recovery": 0,
+      "total": 19,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "office/crafts",
+      "count": 5,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "office/office-furniture",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "office/office-storage",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "office/stationery",
+      "count": 13,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "office/stickers",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/aquarium",
+      "count": 8,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/pet-accessories",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/pet-beds",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 1
+    },
+    {
+      "rail": "pets/pet-clothing",
+      "count": 44,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/pet-feeding",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/pet-grooming",
+      "count": 21,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/pet-houses",
+      "count": 26,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/pet-toys",
+      "count": 2,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 1,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "pets/pet-walk",
+      "count": 21,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "sports/active-bottoms",
+      "count": 22,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "sports/cycling",
+      "count": 63,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "sports/fitness",
+      "count": 75,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "sports/fitness-accessories",
+      "count": 4,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "sports/outdoors",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "sports/sports-bags",
+      "count": 25,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "sports/sports-gear",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/audio",
+      "count": 35,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/cameras",
+      "count": 18,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/chargers-cables",
+      "count": 142,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/computer-accessories",
+      "count": 21,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/electronics",
+      "count": 3,
+      "state": "THIN",
+      "empty_recovery": 3,
+      "thin_recovery": 0,
+      "total": 3,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/gaming",
+      "count": 39,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/phone-cases",
+      "count": 56,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/power-banks",
+      "count": 14,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/smart-home",
+      "count": 0,
+      "state": "EMPTY",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/stands-holders",
+      "count": 22,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/wearable-accessories",
+      "count": 15,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "tech/wearables",
+      "count": 20,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "toys/building-toys",
+      "count": 11,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "toys/educational-toys",
+      "count": 5,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "toys/plush-toys",
+      "count": 68,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "toys/toys",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "travel/luggage",
+      "count": 16,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 12,
+      "total": 12,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-bottoms",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-clothing",
+      "count": 15,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 15
+    },
+    {
+      "rail": "women/women-dresses",
+      "count": 133,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-evening",
+      "count": 8,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-hoodies",
+      "count": 12,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 3,
+      "total": 3,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-jeans",
+      "count": 28,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-knitwear",
+      "count": 19,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-outerwear",
+      "count": 14,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-shoes",
+      "count": 203,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-skirts",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-sleepwear",
+      "count": 1,
+      "state": "THIN",
+      "empty_recovery": 1,
+      "thin_recovery": 0,
+      "total": 1,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-socks",
+      "count": 6,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-suits",
+      "count": 12,
+      "state": "GOOD",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-swim",
+      "count": 42,
+      "state": "FULL",
+      "empty_recovery": 0,
+      "thin_recovery": 0,
+      "total": 0,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-tops",
+      "count": 18,
+      "state": "GOOD",
+      "empty_recovery": 18,
+      "thin_recovery": 0,
+      "total": 18,
+      "stage8_selected": 0
+    },
+    {
+      "rail": "women/women-underwear",
+      "count": 7,
+      "state": "THIN",
+      "empty_recovery": 0,
+      "thin_recovery": 3,
+      "total": 3,
+      "stage8_selected": 0
+    }
+  ]
+}

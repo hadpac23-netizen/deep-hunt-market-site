@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1.5-STAGE7-RECOVERY",
+  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1.6-STAGE8-SUPPLIER-RECOVERY",
   "mode": "SHADOW_ALWAYS_ON",
   "authority": "NONE",
   "owner": "commerce_truth_brain",
@@ -75,7 +75,10 @@
     "placement_decision",
     "emit_evidence",
     "empty_thin_recovery",
-    "sourcing_gap_classification"
+    "sourcing_gap_classification",
+    "supplier_gap_discovery",
+    "supplier_candidate_truth_gate",
+    "supplier_recovery_preview"
   ],
   "always_on_policy": {
     "studio_watch": true,
@@ -213,6 +216,21 @@
       "new_source_required_to_reach_good": 23,
       "source_misplaced_or_unsupported": 10
     },
+    "production_mutation": false
+  },
+  "supplier_recovery_contract": "boom-product-placement-stage8-contract.json",
+  "supplier_recovery_rule": "Only Stage7 residual sourcing gaps may enter Stage8 read-only discovery; candidates must pass placement, stock, 4-market shipping, media technical QA and Price Gate before shadow selection.",
+  "stage8_snapshot": {
+    "qa_shortlist_candidates": 65,
+    "shipping_verified_4_of_4": 63,
+    "media_profit_gate_pass": 46,
+    "selected_products": 41,
+    "canonical_products": 3644,
+    "rails_full_24": 33,
+    "rails_good_12_to_23": 33,
+    "rails_thin_1_to_11": 61,
+    "rails_empty": 6,
+    "final_net_profit_verified_products": 0,
     "production_mutation": false
   }
 }
