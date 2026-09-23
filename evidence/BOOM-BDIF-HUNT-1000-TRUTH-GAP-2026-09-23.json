@@ -13,17 +13,17 @@
       "EPROLO": 948
     },
     "departments_represented": 17,
-    "categories_represented": 132,
+    "categories_represented": 133,
     "current_hunt_shadow_candidates": 1000,
     "deterministic_product_gate": {
-      "PASS": 156,
-      "UNKNOWN": 3844
+      "PASS": 2844,
+      "UNKNOWN": 1156
     },
     "deterministic_profit_gate": {
-      "PASS": 156,
-      "UNKNOWN": 3844
+      "PASS": 2844,
+      "UNKNOWN": 1156
     },
-    "gate_benchmark_ready_pairs": 156,
+    "gate_benchmark_ready_pairs": 2844,
     "full_pilot_input_ready_pairs": 0,
     "business_outcome_ready_pairs": 0,
     "model_assisted_bdif": "NOT_RUN",
@@ -37,12 +37,12 @@
     "category_verified": 1000
   },
   "market_truth_coverage": {
-    "exact_variant_verified_pairs": 180,
-    "shipping_verified_pairs": 156,
-    "shipping_provisional_pairs": 50,
-    "target_price_proven_pairs": 156,
-    "estimated_margin_proven_pairs": 156,
-    "landed_cost_provisional_pairs": 206
+    "exact_variant_verified_pairs": 2876,
+    "shipping_verified_pairs": 2844,
+    "shipping_provisional_pairs": 47,
+    "target_price_proven_pairs": 4000,
+    "estimated_margin_proven_pairs": 4000,
+    "landed_cost_provisional_pairs": 2891
   },
   "interpretation": [
     "The 1,000-product cohort is real and source-backed.",

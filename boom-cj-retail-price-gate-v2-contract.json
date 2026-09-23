@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-CJ-RETAIL-PRICE-GATE-V2",
+  "version": "HUNT-CJ-RETAIL-PRICE-GATE-V2.1",
   "mode": "SHADOW",
   "authority": "NONE",
   "owner": "commerce_truth_brain",
@@ -14,7 +14,7 @@
     "reserve_denominator": "1 - payment_reserve_rate - refund_reserve_rate",
     "contribution_floor": "(supplier_cost + min_profit_usd) / reserve_denominator",
     "corrected_margin_floor": "supplier_cost / (reserve_denominator - target_product_margin)",
-    "retail": "max(0.99, ceil(max(contribution_floor, corrected_margin_floor)) - 0.01)",
+    "retail": "max(0.99, ceil(max(contribution_floor, corrected_margin_floor) + 0.01) - 0.01)",
     "projected_profit": "retail * reserve_denominator - supplier_cost",
     "projected_margin": "projected_profit / retail"
   },
@@ -28,7 +28,8 @@
       "min": 1,
       "max": 6
     },
-    "price_changes_applied_to_production": 0
+    "price_changes_applied_to_production": 0,
+    "v2_1_rounding_fix": "The .99 rounding now adds 0.01 before ceil so the chosen .99 price never falls below an integer/near-integer hard floor."
   },
   "hard_rules": [
     "No automatic Production retail-price changes.",

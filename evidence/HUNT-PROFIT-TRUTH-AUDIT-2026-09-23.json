@@ -1,0 +1,259 @@
+{
+  "version": "HUNT-PROFIT-TRUTH-AUDIT-V1",
+  "date": "2026-09-23",
+  "mode": "SHADOW",
+  "production_effect": false,
+  "summary": {
+    "unique_shelf_products": 5591,
+    "provider_counts": {
+      "EPROLO": 5539,
+      "CJdropshipping": 39,
+      "Gooten": 13
+    },
+    "projected_product_contribution_checked": 5591,
+    "provisional_catalog_price_projection_products": 0,
+    "projected_contribution_min_usd": 4.0,
+    "projected_contribution_median_usd": 4.58,
+    "projected_contribution_p90_usd": 9.13,
+    "projected_contribution_max_usd": 126.55,
+    "projected_margin_min": 0.3501,
+    "projected_margin_median": 0.4315,
+    "projected_margin_max": 0.904,
+    "price_gate_tolerance_pass": 5591,
+    "cj_stock_shipping_verified_market_pairs": 156,
+    "eprolo_existing_shipping_shadow_pairs": 455,
+    "eprolo_thin_rail_verified_market_pairs": 2585,
+    "eprolo_thin_rail_verified_4_of_4_products": 616,
+    "eprolo_deep_verified_market_pairs": 216,
+    "eprolo_deep_verified_4_of_4_products": 54,
+    "destination_aware_projected_order_contribution_pairs": 2957,
+    "destination_aware_projected_order_contribution_min_usd": 3.99,
+    "destination_aware_projected_order_contribution_median_usd": 4.58,
+    "destination_aware_projected_order_contribution_max_usd": 125.64,
+    "gate_ready_final_profit_recheck_products": 709,
+    "final_profit_verified_products": 0,
+    "checkout_live": 0,
+    "payment_live": 0,
+    "fulfillment_live": 0
+  },
+  "department_projected_contribution_median_usd": {
+    "accessories": 4.51,
+    "beauty": 4.2,
+    "camping": 4.77,
+    "electrical": 4.59,
+    "garden": 4.49,
+    "gifts": 4.51,
+    "home": 4.61,
+    "kids": 4.63,
+    "kitchen": 4.64,
+    "men": 5.68,
+    "office": 4.54,
+    "pets": 4.51,
+    "sports": 4.55,
+    "tech": 4.65,
+    "toys": 4.51,
+    "travel": 4.75,
+    "women": 5.72
+  },
+  "cj_verified_market_pair_examples": [
+    {
+      "product_id": "2506190632221611300",
+      "market": "IL",
+      "customer_total_shadow_usd": 21.25,
+      "supplier_product_usd": 7.63,
+      "supplier_shipping_usd": 6.61,
+      "projected_order_contribution_after_9pct_reserve_usd": 5.1,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2506190632221611300",
+      "market": "DE",
+      "customer_total_shadow_usd": 21.64,
+      "supplier_product_usd": 7.63,
+      "supplier_shipping_usd": 6.96,
+      "projected_order_contribution_after_9pct_reserve_usd": 5.1,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2506190632221611300",
+      "market": "US",
+      "customer_total_shadow_usd": 21.35,
+      "supplier_product_usd": 7.63,
+      "supplier_shipping_usd": 6.7,
+      "projected_order_contribution_after_9pct_reserve_usd": 5.1,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2506190632221611300",
+      "market": "SG",
+      "customer_total_shadow_usd": 17.8,
+      "supplier_product_usd": 7.63,
+      "supplier_shipping_usd": 3.47,
+      "projected_order_contribution_after_9pct_reserve_usd": 5.1,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2604230929501628900",
+      "market": "IL",
+      "customer_total_shadow_usd": 12.75,
+      "supplier_product_usd": 1.65,
+      "supplier_shipping_usd": 5.24,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.71,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2604230929501628900",
+      "market": "DE",
+      "customer_total_shadow_usd": 13.43,
+      "supplier_product_usd": 1.65,
+      "supplier_shipping_usd": 5.86,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.71,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2604230929501628900",
+      "market": "US",
+      "customer_total_shadow_usd": 13.31,
+      "supplier_product_usd": 1.65,
+      "supplier_shipping_usd": 5.75,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.71,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2604230929501628900",
+      "market": "SG",
+      "customer_total_shadow_usd": 10.15,
+      "supplier_product_usd": 1.65,
+      "supplier_shipping_usd": 2.88,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.71,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "1603284781016961024",
+      "market": "IL",
+      "customer_total_shadow_usd": 15.36,
+      "supplier_product_usd": 2.71,
+      "supplier_shipping_usd": 6.71,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.56,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "1603284781016961024",
+      "market": "DE",
+      "customer_total_shadow_usd": 15.73,
+      "supplier_product_usd": 2.71,
+      "supplier_shipping_usd": 7.04,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.56,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "1603284781016961024",
+      "market": "US",
+      "customer_total_shadow_usd": 15.46,
+      "supplier_product_usd": 2.71,
+      "supplier_shipping_usd": 6.8,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.56,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "1603284781016961024",
+      "market": "SG",
+      "customer_total_shadow_usd": 11.85,
+      "supplier_product_usd": 2.71,
+      "supplier_shipping_usd": 3.51,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.56,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2604220946291608500",
+      "market": "IL",
+      "customer_total_shadow_usd": 30.18,
+      "supplier_product_usd": 10.78,
+      "supplier_shipping_usd": 9.27,
+      "projected_order_contribution_after_9pct_reserve_usd": 7.41,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2604220946291608500",
+      "market": "DE",
+      "customer_total_shadow_usd": 29.68,
+      "supplier_product_usd": 10.78,
+      "supplier_shipping_usd": 8.82,
+      "projected_order_contribution_after_9pct_reserve_usd": 7.41,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2604220946291608500",
+      "market": "US",
+      "customer_total_shadow_usd": 30.35,
+      "supplier_product_usd": 10.78,
+      "supplier_shipping_usd": 9.43,
+      "projected_order_contribution_after_9pct_reserve_usd": 7.41,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2604220946291608500",
+      "market": "SG",
+      "customer_total_shadow_usd": 25.04,
+      "supplier_product_usd": 10.78,
+      "supplier_shipping_usd": 4.6,
+      "projected_order_contribution_after_9pct_reserve_usd": 7.41,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2510080819521649800",
+      "market": "IL",
+      "customer_total_shadow_usd": 19.52,
+      "supplier_product_usd": 5.14,
+      "supplier_shipping_usd": 7.76,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.86,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2510080819521649800",
+      "market": "DE",
+      "customer_total_shadow_usd": 19.43,
+      "supplier_product_usd": 5.14,
+      "supplier_shipping_usd": 7.68,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.86,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2510080819521649800",
+      "market": "US",
+      "customer_total_shadow_usd": 19.64,
+      "supplier_product_usd": 5.14,
+      "supplier_shipping_usd": 7.87,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.86,
+      "final_profit_verified": false
+    },
+    {
+      "product_id": "2510080819521649800",
+      "market": "SG",
+      "customer_total_shadow_usd": 15.34,
+      "supplier_product_usd": 5.14,
+      "supplier_shipping_usd": 3.96,
+      "projected_order_contribution_after_9pct_reserve_usd": 4.86,
+      "final_profit_verified": false
+    }
+  ],
+  "profit_layers": {
+    "PROJECTED_PRODUCT_CONTRIBUTION": "Price Gate V2 supplier-cost projection after 9% payment/refund reserve; shipping is priced separately.",
+    "PROJECTED_ORDER_CONTRIBUTION": "For CJ verified market pairs, customer shipping gross-up offsets supplier shipping after the same 9% reserve; still excludes tax/import, FX, marketing and realized returns.",
+    "FINAL_NET_PROFIT_VERIFIED": "Requires complete attributed order economics. None are verified yet."
+  },
+  "final_profit_blockers": [
+    "tax_and_import_by_destination_not_fully_verified",
+    "payment_processor_actual_fee_not_realized",
+    "fx_cost_not_realized",
+    "marketing_cost_per_order_not_realized",
+    "returns_refunds_not_realized",
+    "supplier_final_order_cost_api_not_verified_for_EPROLO"
+  ],
+  "rules": [
+    "Never label projected contribution as final net profit.",
+    "No live price change from this audit.",
+    "No checkout/payment/order/fulfillment activation.",
+    "Unknown final-cost components keep FINAL_NET_PROFIT_VERIFIED=false."
+  ]
+}

@@ -147,6 +147,15 @@ function buildProduct(row,indexes){
         "evidence/HUNT-CJ-GAP-FILL-VERIFIED-2026-09-23.json"
       ]);
     }
+  } else if(row.exact_variant?.id&&isNum(row.exact_variant?.inventory_quantity)&&Number(row.exact_variant.inventory_quantity)>0){
+    stock=truth("VERIFIED",{
+      quantity:Number(row.exact_variant.inventory_quantity),
+      variant_id:String(row.exact_variant.id),
+      basis:"EPROLO_EXACT_VARIANT_INVENTORY"
+    },[
+      "evidence/HUNT-EPROLO-THIN-RAIL-PULL-2026-09-23.json",
+      "evidence/HUNT-EPROLO-THIN-RAIL-SHIPPING-VERIFY-2026-09-23.json"
+    ]);
   }
   const category=truth(
     row.department&&row.category?"VERIFIED":"UNKNOWN",
@@ -162,6 +171,32 @@ function buildProduct(row,indexes){
     let estimatedMargin=truth("UNKNOWN",null,[]);
     let landedCost=truth("UNKNOWN",null,[]);
     let finalProfitVerified=false;
+
+    // Prefer the current canonical shelf evidence when Phase C has enriched
+    // the exact variant + destination shipping after the original pilot snapshot.
+    const currentShip=row.destination_shipping?.[market];
+    if(row.exact_variant?.id){
+      exactVariant=truth("VERIFIED",{variant_id:String(row.exact_variant.id),variant_name:row.exact_variant.name||row.exact_variant.title||null},[sourceRef]);
+    }
+    if(currentShip?.state==="STOCK_SHIPPING_VERIFIED"){
+      const ship=currentShip.shipping||currentShip;
+      const cost=ship.cost_usd??currentShip.supplier_shipping_usd;
+      if(isNum(cost)){
+        shipping=truth("VERIFIED",{supported:true,cost_usd:Number(cost),method:ship.method||currentShip.shipping_method||null,eta:ship.eta||currentShip.shipping_aging||null},[sourceRef]);
+      }
+    }
+    if(isNum(row.profit_truth?.target_retail_shadow_usd)){
+      targetPrice=truth("PROVISIONAL",{amount_usd:Number(row.profit_truth.target_retail_shadow_usd),basis:"CURRENT_PRICE_GATE_V2_SHADOW"},[sourceRef]);
+    }
+    if(isNum(row.profit_truth?.projected_product_margin)){
+      estimatedMargin=truth("PROVISIONAL",{margin:Number(row.profit_truth.projected_product_margin),contribution_usd:Number(row.profit_truth.projected_product_contribution_usd)},[sourceRef]);
+    }
+    if(supplierPrice.truth_state==="VERIFIED"&&shipping.truth_state==="VERIFIED"){
+      landedCost=truth("PROVISIONAL",{
+        pre_tax_supplier_landed_cost_usd:round2(Number(row.supplier_cost_min)+Number(shipping.value.cost_usd)),
+        excludes:["tax_import","payment_fees","returns","marketing","fx"]
+      },[sourceRef]);
+    }
 
     if(cj&&cj.markets&&cj.markets[market]){
       const m=cj.markets[market];
@@ -179,7 +214,7 @@ function buildProduct(row,indexes){
         },[ref]);
       }
       finalProfitVerified=m.final_profit_verified===true;
-    } else if(ep&&ep.market_truth&&ep.market_truth[market]){
+    } else if(shipping.truth_state!=="VERIFIED"&&ep&&ep.market_truth&&ep.market_truth[market]){
       const m=ep.market_truth[market];
       const ref="evidence/HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-2026-09-23.json";
       if(m.shipping&&isNum(m.shipping.cost_usd)){
@@ -212,29 +247,29 @@ function buildProduct(row,indexes){
     });
 
     let profitGate={selected:"UNKNOWN",reason:"ECONOMICS_NOT_VERIFIED_FOR_PILOT"};
-    if(cj&&cj.markets&&cj.markets[market]){
-      const m=cj.markets[market];
-      if(isNum(m.product_margin_shadow)){
-        const r=bdif.evaluateHuntProductGate({
-          decision_id:"pilot-profit:"+row.provider+":"+row.item_id+":"+market,
-          risk:"MEDIUM",
-          facts:{
-            product_identity:productIdentity,
-            exact_variant:exactVariant,
-            stock,
-            shipping,
-            destination_supported:truth("VERIFIED",shipping.value?.supported!==false,shipping.evidence_refs)
-          },
-          require_economics:true,
-          economics:{
-            inputs_verified:true,
-            contribution_margin:Number(m.product_margin_shadow),
-            margin_floor:MARGIN_FLOOR,
-            evidence_refs:["evidence/HUNT-CJ-GAP-FILL-VERIFIED-2026-09-23.json"]
-          }
-        });
-        profitGate={selected:r.selected,reasons:r.reasons};
-      }
+    const cjMargin=cj?.markets?.[market]?.product_margin_shadow;
+    const currentMargin=row.profit_truth?.projected_product_margin;
+    const marginForGate=isNum(cjMargin)?Number(cjMargin):(isNum(currentMargin)?Number(currentMargin):null);
+    if(marginForGate!=null&&exactVariant.truth_state==="VERIFIED"&&shipping.truth_state==="VERIFIED"){
+      const r=bdif.evaluateHuntProductGate({
+        decision_id:"pilot-profit:"+row.provider+":"+row.item_id+":"+market,
+        risk:"MEDIUM",
+        facts:{
+          product_identity:productIdentity,
+          exact_variant:exactVariant,
+          stock,
+          shipping,
+          destination_supported:truth("VERIFIED",shipping.value?.supported!==false,shipping.evidence_refs)
+        },
+        require_economics:true,
+        economics:{
+          inputs_verified:true,
+          contribution_margin:marginForGate,
+          margin_floor:MARGIN_FLOOR,
+          evidence_refs:isNum(cjMargin)?["evidence/HUNT-CJ-GAP-FILL-VERIFIED-2026-09-23.json"]:[sourceRef]
+        }
+      });
+      profitGate={selected:r.selected,reasons:r.reasons};
     }
 
     const gateReady=["VERIFIED"].every(s=>s===exactVariant.truth_state)&&stock.truth_state==="VERIFIED"&&shipping.truth_state==="VERIFIED";
@@ -296,7 +331,11 @@ function counts(list,fn){
 function main(){
   const rows=flattenFullShelves();
   const indexes={cj:cjIndex(),eprolo:eproloMarketIndex(),visual:visualIndex()};
-  const priorityIds=new Set([...indexes.eprolo.keys(),...indexes.visual.keys()]);
+  const priorityIds=new Set([
+    ...indexes.eprolo.keys(),
+    ...indexes.visual.keys(),
+    ...rows.filter(r=>r.provider==="EPROLO"&&r.sell_state==="GATE_READY_FINAL_PROFIT_RECHECK").map(r=>String(r.item_id))
+  ]);
   const selected=selectCohort(rows,priorityIds);
   const products=selected.map(row=>buildProduct(row,indexes));
 
@@ -328,7 +367,7 @@ function main(){
     mode:"SHADOW",
     production_effect:false,
     source:"evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json",
-    selection_rule:"All non-EPROLO products are retained first; remaining slots use deterministic category round-robin over EPROLO to maximize taxonomy coverage. No product is fabricated.",
+    selection_rule:"All non-EPROLO products are retained first; then EPROLO products with fresh gate-ready exact-variant + 4-market shipping evidence; remaining slots use deterministic category round-robin to preserve taxonomy coverage. No product is fabricated.",
     target_markets:TARGET_MARKETS,
     summary:{
       source_unique_products:rows.length,

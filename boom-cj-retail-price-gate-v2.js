@@ -1,7 +1,7 @@
 (() => {
   "use strict";
   if(window.HuntCjRetailPriceGateV2?.version)return;
-  const version="HUNT-CJ-RETAIL-PRICE-GATE-V2";
+  const version="HUNT-CJ-RETAIL-PRICE-GATE-V2.1";
   function price(sourceCost,opts={}){
     const cost=Number(sourceCost);
     if(!Number.isFinite(cost)||cost<=0)return null;
@@ -14,7 +14,7 @@
     const marginDenominator=Math.max(.05,reserve-targetMargin);
     const marginFloor=cost/marginDenominator;
     const raw=Math.max(contributionFloor,marginFloor);
-    const retail=Math.max(.99,Math.ceil(raw)-.01);
+    const retail=Math.max(.99,Math.ceil(raw+.01)-.01);
     const projectedProfit=retail*reserve-cost;
     const projectedMargin=retail>0?projectedProfit/retail:0;
     return {
