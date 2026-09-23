@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-SUPPLIER-RECOVERY-V1",
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-SUPPLIER-RECOVERY-V1.1-EXTERNAL-PACKET",
   "mode": "SHADOW_ALWAYS_ON",
   "authority": "NONE",
   "owner": "commerce_truth_brain",
@@ -26,13 +26,18 @@
     "Near-duplicate products do not count as useful shelf diversity.",
     "Projected Product Contribution is not Final Net Profit.",
     "Media-use rights remain a Production blocker when not explicitly verified.",
-    "No supplier order, checkout activation, payment activation or Production mutation."
+    "No supplier order, checkout activation, payment activation or Production mutation.",
+    "Do not send another HyperSKU follow-up while the current thread is unanswered. Use the Stage8 packet only after HyperSKU replies or Owner explicitly requests a new follow-up."
   ],
   "owner_gate": {
     "read_only_supplier_discovery": false,
     "shadow_quality_shipping_profit_checks": false,
     "shadow_admission_preview": false,
     "production_catalog_admission": true,
-    "supplier_order": true
-  }
+    "supplier_order": true,
+    "send_supplier_follow_up": true
+  },
+  "external_source_packet": "evidence/HUNT-PRODUCT-PLACEMENT-STAGE8-EXTERNAL-SOURCE-PACKET-2026-09-23.json",
+  "hyper_sourcing_message_state": "NOT_SENT_WAITING_FOR_REPLY",
+  "external_source_rule": "Do not send another HyperSKU follow-up while the current thread is unanswered. Use the Stage8 packet only after HyperSKU replies or Owner explicitly requests a new follow-up."
 }
