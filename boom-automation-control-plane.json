@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-AUTOMATION-CONTROL-PLANE-V1.2-PLACEMENT-TAXONOMY",
+  "version": "BOOM-AUTOMATION-CONTROL-PLANE-V1.3-PLACEMENT-OVERLAP",
   "mode": "SHADOW",
   "authority": {
     "owner": "OWNER",
@@ -98,6 +98,7 @@
         "supplier_taxonomy_verification",
         "department_gate",
         "category_gate",
+        "overlap_resolution",
         "placement_conflict_check",
         "placement_decision",
         "variant_truth",
@@ -114,7 +115,8 @@
       "failure_route": "incident_repair",
       "contract": "boom-supplier-product-intake-contract.json",
       "output": "SHELF_CANDIDATE only after PLACEMENT_PASS; activation is a separate approved action",
-      "placement_contract": "boom-product-placement-gate-contract.json"
+      "placement_contract": "boom-product-placement-gate-contract.json",
+      "overlap_contract": "boom-product-placement-stage6-contract.json"
     },
     {
       "id": "product_placement_watch",
@@ -135,6 +137,7 @@
         "supplier_taxonomy_verification",
         "department_gate",
         "category_gate",
+        "overlap_resolution",
         "conflict_check",
         "placement_decision",
         "emit_move_review_unknown_evidence"
@@ -144,7 +147,8 @@
       "final_owner_gate": false,
       "failure_route": "taxonomy_review",
       "contract": "boom-product-placement-gate-contract.json",
-      "output": "KEEP / MOVE recommendation / HOLD_REVIEW / HOLD_UNKNOWN; never auto-move Production"
+      "output": "KEEP / MOVE recommendation / HOLD_REVIEW / HOLD_UNKNOWN; never auto-move Production",
+      "overlap_contract": "boom-product-placement-stage6-contract.json"
     },
     {
       "id": "shelf_coverage_17x1000",

@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-OPERATIONAL-SKILLS-V1.8-PLACEMENT-GATE",
+  "version": "BOOM-OPERATIONAL-SKILLS-V1.9-PLACEMENT-OVERLAP",
   "mode": "SHADOW",
   "rule": "Operational Skills are reusable capabilities under existing Primary Brains. A Skill never becomes a Brain and never bypasses Tool Gateway or Owner Gate.",
   "skills": [
@@ -450,6 +450,28 @@
         "canonical_category",
         "confidence",
         "reason_codes"
+      ],
+      "tools": [],
+      "material": false,
+      "owner_gate": false
+    },
+    {
+      "id": "resolve_product_placement_overlap",
+      "title": "Resolve Product Placement Overlap",
+      "owner": "commerce_truth_brain",
+      "purpose": "Separate product family and subtype in high-overlap HUNT rails before canonical shelf placement.",
+      "inputs": [
+        "provider",
+        "item_id",
+        "title",
+        "supplier_category_id",
+        "current_rail"
+      ],
+      "outputs": [
+        "overlap_state",
+        "target_rail",
+        "reason",
+        "confidence"
       ],
       "tools": [],
       "material": false,

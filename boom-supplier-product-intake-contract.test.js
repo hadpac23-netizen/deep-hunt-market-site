@@ -6,6 +6,8 @@ assert.equal(c.boundaries.supplier_order,false);
 assert.equal(c.boundaries.invented_stock,false);
 assert(c.stages.includes("unit_economics"));
 assert(c.stages.includes("placement_decision"));
+assert(c.stages.includes("overlap_resolution"));
+assert(c.stages.indexOf("overlap_resolution")<c.stages.indexOf("placement_decision"));
 assert(c.stages.indexOf("placement_decision")<c.stages.indexOf("shelf_candidate"));
 assert(c.pass_requirements.includes("placement_decision = PASS"));
 assert.deepEqual(c.output.placement_block_states,["REVIEW","REJECT","UNKNOWN"]);

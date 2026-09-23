@@ -11,11 +11,15 @@ const readiness=JSON.parse(fs.readFileSync("boom-control-plane-readiness.json","
 assert(html.includes('id="bs-placement-watch"'));
 assert(html.includes('id="bs-placement-state"'));
 assert(/boom-product-placement-gate\.js\?v=placement\d+/.test(html));
+assert(/boom-product-placement-overlap-gate\.js\?v=placement\d+/.test(html));
 assert(/boom-product-placement-studio\.js\?v=placement\d+/.test(html));
 assert(studio.includes("BoomProductPlacementGate"));
 assert(studio.includes("evidence/HUNT-PRODUCT-PLACEMENT-LOCAL-JUDGE-2026-09-23.json"));
 assert(studio.includes("evidence/HUNT-EPROLO-DETAIL-TAXONOMY-STAGE5-2026-09-23.json"));
 assert(studio.includes("SUPPLIER TAXONOMY CONFLICTS"));
+assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE6-OVERLAP-RESOLUTION-2026-09-23.json"));
+assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE6-REBUILD-PREVIEW-2026-09-23.json"));
+assert(studio.includes("STAGE 6 · OVERLAP RESOLUTION"));
 assert(studio.includes("setInterval(run,60000)"));
 assert(studio.includes('document.body.dataset.adminReady!=="true"'));
 
@@ -45,11 +49,11 @@ assert(skills.skills.some(x=>x.id==="classify_product_placement"&&x.owner==="com
 assert(supplier.stages.includes("placement_decision"));
 assert(supplier.stages.indexOf("placement_decision")<supplier.stages.indexOf("shelf_candidate"));
 assert(supplier.pass_requirements.includes("placement_decision = PASS"));
-assert(readiness.areas.some(x=>x.id==="product_placement_gate"&&x.status==="CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE5"));
+assert(readiness.areas.some(x=>x.id==="product_placement_gate"&&x.status==="CODED_SHADOW_ALWAYS_ON_STUDIO_STAGE6"));
 
 console.log("BOOM Studio Product Placement Gate: PASS");
 
 assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE4-QUEUE-2026-09-23.json"));
 assert(studio.includes("UNKNOWN RESOLUTION ROUTES"));
 assert(studio.includes("visual evidence is secondary only"));
-console.log("BOOM Studio Stage 5 evidence surface: PASS");
+console.log("BOOM Studio Stage 6 evidence surface: PASS");

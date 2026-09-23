@@ -1,7 +1,7 @@
 const fs=require("fs");
 const assert=require("assert");
 const p=JSON.parse(fs.readFileSync("boom-automation-control-plane.json","utf8"));
-assert.equal(p.version,"BOOM-AUTOMATION-CONTROL-PLANE-V1.2-PLACEMENT-TAXONOMY");
+assert.equal(p.version,"BOOM-AUTOMATION-CONTROL-PLANE-V1.3-PLACEMENT-OVERLAP");
 assert.equal(p.mode,"SHADOW");
 assert.equal(p.authority.command,"boom_orchestrator");
 assert.equal(p.targets.departments,17);

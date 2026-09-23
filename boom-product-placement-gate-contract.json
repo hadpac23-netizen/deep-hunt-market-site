@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1.3-STAGE5-OFFICIAL-TAXONOMY",
+  "version": "HUNT-PRODUCT-PLACEMENT-GATE-V1.4-STAGE6-OVERLAP",
   "mode": "SHADOW_ALWAYS_ON",
   "authority": "NONE",
   "owner": "commerce_truth_brain",
@@ -69,6 +69,7 @@
     "supplier_taxonomy_verification",
     "department_gate",
     "category_gate",
+    "overlap_resolution",
     "conflict_check",
     "confidence",
     "placement_decision",
@@ -100,16 +101,21 @@
     },
     {
       "id": "L3_SUPPLIER_TAXONOMY_ATTRIBUTES",
-      "status": "NEXT",
-      "rule": "Use independent official supplier taxonomy/attributes to resolve remaining UNKNOWN items; supplier category is evidence but never sole authority."
+      "status": "ACTIVE",
+      "rule": "Use independent official supplier taxonomy/attributes to resolve UNKNOWN items; exact mappings support KEEP, conflicts go to REVIEW, and broad mappings abstain."
+    },
+    {
+      "id": "L4_OVERLAP_RESOLUTION",
+      "status": "ACTIVE",
+      "rule": "High-overlap rails separate product family from subtype; feature/context words cannot override primary product family. SAFE_MOVE remains shadow-only."
     }
   ],
   "current_shadow_snapshot": {
     "products_checked": 5854,
-    "keep_supported": 1546,
-    "safe_move_candidates": 322,
-    "rule_or_conflict_review": 983,
-    "unknown_hold": 3003,
+    "keep_supported": 2402,
+    "safe_move_candidates": 369,
+    "rule_or_conflict_review": 973,
+    "unknown_hold": 2110,
     "automatic_moves": 0,
     "production_mutations": 0
   },
@@ -157,5 +163,17 @@
       "authority": "KEEP_SUPPORT_ONLY"
     }
   ],
-  "supplier_taxonomy_rule": "Exact supplier taxonomy may support KEEP only when the product identity is observed in a pre-approved exact mapping. Broad/unmapped categories remain UNKNOWN. Cross-rail conflicts are REVIEW only. Supplier taxonomy never auto-MOVEs a product."
+  "supplier_taxonomy_rule": "Exact supplier taxonomy may support KEEP only when the product identity is observed in a pre-approved exact mapping. Broad/unmapped categories remain UNKNOWN. Cross-rail conflicts are REVIEW only. Supplier taxonomy never auto-MOVEs a product.",
+  "overlap_contract": "boom-product-placement-stage6-contract.json",
+  "overlap_rule": "High-overlap rails run Product Placement Stage6 before final placement decision. SAFE_MOVE is shadow-only; REVIEW/UNKNOWN/HOLD fail closed.",
+  "stage6_overlap_snapshot": {
+    "target_products": 1288,
+    "keep": 454,
+    "safe_move_candidates": 495,
+    "review": 140,
+    "unknown": 198,
+    "hold_out_of_scope": 1,
+    "clean_rebuild_canonical_products": 3371,
+    "clean_rebuild_empty_rails": 32
+  }
 }

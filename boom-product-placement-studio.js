@@ -22,12 +22,14 @@
       return;
     }
     try{
-      const [contract,shelves,taxonomy,detailTaxonomy,stage4Queue,judge]=await Promise.all([
+      const [contract,shelves,taxonomy,detailTaxonomy,stage4Queue,stage6Evidence,stage6Preview,judge]=await Promise.all([
         fetchJson("boom-product-placement-gate-contract.json"),
         fetchJson("evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json"),
         fetchJson("evidence/HUNT-EPROLO-PLACEMENT-TAXONOMY-REFRESH-2026-09-23.json").catch(()=>({verified:[],summary:{}})),
         fetchJson("evidence/HUNT-EPROLO-DETAIL-TAXONOMY-STAGE5-2026-09-23.json").catch(()=>({results:[],summary:{states:{}}})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE4-QUEUE-2026-09-23.json").catch(()=>({summary:{},top_unknown_rails:[]})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE6-OVERLAP-RESOLUTION-2026-09-23.json").catch(()=>({summary:{states:{}},results:[]})),
+        fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-STAGE6-REBUILD-PREVIEW-2026-09-23.json").catch(()=>({summary:{}})),
         fetchJson("evidence/HUNT-PRODUCT-PLACEMENT-LOCAL-JUDGE-2026-09-23.json").catch(()=>({summary:{},calibration:{},proposals:[]}))
       ]);
       const taxonomyKeep=new Map((taxonomy.verified||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
@@ -50,12 +52,21 @@
               supplier_taxonomy_suggested_rail:Array.isArray(conflict?.suggested_rail)?conflict.suggested_rail[0]:(conflict?.suggested_rail||null),
               source_evidence:product.source_evidence||null,
               current_department:dep.slug,
-              current_category:cat.slug
+              current_category:cat.slug,
+              current_rail:dep.slug+"/"+cat.slug
             });
           }
         }
       }
       const report=gate.audit(products);
+      const overlapGate=window.BoomProductPlacementOverlapGate;
+      const stage6Map=new Map((stage6Evidence.results||[]).map(x=>[x.provider+":"+String(x.item_id),x]));
+      const overlapInputs=products.map(product=>{
+        const ev=stage6Map.get(product.provider+":"+String(product.item_id));
+        if(!ev)return null;
+        return {...product,supplier_category_id:ev.supplier_category_id||null};
+      }).filter(Boolean);
+      const overlapReport=overlapGate?.audit?overlapGate.audit(overlapInputs):{summary:{}};
       const ps=report.summary||{};
       if(state)state.textContent="ALWAYS ON · SHADOW · "+String(ps.total||0)+" CHECKED";
       if(summary){
@@ -66,6 +77,8 @@
           metric(ps.HOLD_UNKNOWN||0,"UNKNOWN · held"),
           metric(taxonomy.summary?.taxonomy_verified_keep_support||0,"Supplier taxonomy KEEP support"),
           metric(detailTaxonomy.summary?.states?.SUPPLIER_TAXONOMY_CONFLICT_CURRENT_RAIL||0,"Supplier taxonomy conflicts · REVIEW"),
+          metric(overlapReport.summary?.SAFE_MOVE_CANDIDATE||0,"Stage6 SAFE MOVE · shadow"),
+          metric(overlapReport.summary?.REVIEW||0,"Stage6 overlap REVIEW"),
           metric(judge.summary?.review_proposals||0,"Local Judge · REVIEW only"),
           metric(contract.always_on_policy?.studio_refresh_seconds||60,"Refresh seconds")
         ].join("");
@@ -82,6 +95,9 @@
       cards.push('<article><small>ENFORCEMENT</small><strong>'+esc(contract.enforcement_point||"MANDATORY")+'</strong><span>Auto move: '+(contract.always_on_policy?.automatic_product_move?"ON":"OFF")+' · Production mutation: '+(contract.always_on_policy?.production_mutation?"ON":"OFF")+'</span></article>');
       cards.push('<article><small>SUPPLIER TAXONOMY</small><strong>'+esc(taxonomy.summary?.taxonomy_verified_keep_support||0)+' verified KEEP supports</strong><span>Official EPROLO read-only taxonomy · KEEP support only · never auto-MOVE.</span></article>');
       cards.push('<article><small>SUPPLIER TAXONOMY CONFLICTS</small><strong>'+esc(detailTaxonomy.summary?.states?.SUPPLIER_TAXONOMY_CONFLICT_CURRENT_RAIL||0)+' REVIEW-only conflicts</strong><span>Exact supplier taxonomy disagrees with the current rail. Conflict overrides title PASS and cannot auto-MOVE.</span></article>');
+      const s6=overlapReport.summary||{};
+      cards.push('<article><small>STAGE 6 · OVERLAP RESOLUTION</small><strong>'+esc((s6.KEEP||0)+' KEEP · '+(s6.SAFE_MOVE_CANDIDATE||0)+' SAFE MOVE · '+(s6.REVIEW||0)+' REVIEW · '+(s6.UNKNOWN||0)+' UNKNOWN')+'</strong><span>Runs every Studio refresh on Gift Decor, Drinkware, Electrical Lighting, Beauty Tools, Sports/Fitness and Pet Accessories. Feature words cannot override primary product family.</span></article>');
+      cards.push('<article><small>STAGE 6 · CLEAN REBUILD PREVIEW</small><strong>'+esc(stage6Preview.summary?.canonical_products||0)+' canonical products · '+esc(stage6Preview.summary?.rails_empty||0)+' empty rails</strong><span>Shadow preview only · '+esc(stage6Preview.summary?.rails_full_24||0)+' FULL · '+esc(stage6Preview.summary?.rails_good_12_to_23||0)+' GOOD · '+esc(stage6Preview.summary?.rails_thin_1_to_11||0)+' THIN. Profit Gate comes after placement truth.</span></article>');
       const precision=judge.calibration?.selected_threshold?.precision;
       cards.push('<article><small>LOCAL REVIEW JUDGE</small><strong>'+esc(judge.summary?.review_proposals||0)+' guarded review proposals</strong><span>Cross-rail: '+esc(judge.summary?.cross_rail_review_candidates||0)+' · Guard blocked: '+esc(judge.summary?.guard_blocked_proposals||0)+' · Holdout precision: '+esc(precision!=null?(precision*100).toFixed(2)+'%':'UNKNOWN')+' · Authority: NONE.</span></article>');
       for(const proposal of (judge.proposals||[]).filter(x=>x.effect==="CROSS_RAIL_REVIEW_CANDIDATE").slice(0,8)){

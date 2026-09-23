@@ -1,0 +1,44 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE6-OVERLAP-V1",
+  "mode": "SHADOW_ALWAYS_ON",
+  "authority": "NONE",
+  "owner": "commerce_truth_brain",
+  "purpose": "Resolve high-overlap HUNT rails by separating product family from subtype before canonical shelf placement.",
+  "target_rails": [
+    "gifts/gift-decor",
+    "kitchen/drinkware",
+    "electrical/electrical-lighting",
+    "beauty/beauty-tools",
+    "sports/fitness",
+    "pets/pet-accessories"
+  ],
+  "states": ["KEEP", "SAFE_MOVE_CANDIDATE", "REVIEW", "UNKNOWN", "HOLD_OUT_OF_SCOPE"],
+  "precedence": [
+    "out_of_scope_hold",
+    "official_supplier_family",
+    "explicit_product_subtype",
+    "cross_source_conflict",
+    "keep_or_safe_move",
+    "review_or_unknown"
+  ],
+  "rules": [
+    "Current HUNT rail is never positive evidence.",
+    "A product feature or use case cannot override the product's primary family.",
+    "Exact supplier taxonomy outranks generic audience or contextual words.",
+    "SAFE_MOVE_CANDIDATE is shadow-only and never mutates Production.",
+    "Supplier/title disagreement returns REVIEW.",
+    "Broad supplier categories require subtype evidence.",
+    "Out-of-scope or risky items are held out of canonical shelf rebuild.",
+    "Shelf density cannot override placement truth."
+  ],
+  "owner_gate": {
+    "shadow_overlap_audit": false,
+    "shadow_safe_move_preview": false,
+    "production_bulk_reclassification": true
+  },
+  "studio": {
+    "surface": "BOOM Brain Studio Product Placement Gate",
+    "refresh_seconds": 60,
+    "always_on": true
+  }
+}

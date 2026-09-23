@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-SUPPLIER-PRODUCT-INTAKE-V1.2-PLACEMENT-TAXONOMY",
+  "version": "BOOM-SUPPLIER-PRODUCT-INTAKE-V1.3-PLACEMENT-OVERLAP",
   "brain": "commerce_truth_brain",
   "agents": [
     "supplier_truth_agent",
@@ -53,6 +53,7 @@
     "supplier_taxonomy_verification",
     "department_gate",
     "category_gate",
+    "overlap_resolution",
     "placement_conflict_check",
     "placement_decision",
     "variant_truth",
@@ -103,5 +104,7 @@
   },
   "placement_contract": "boom-product-placement-gate-contract.json",
   "placement_rule": "REVIEW / REJECT / UNKNOWN never becomes SHELF_CANDIDATE. Current category cannot validate itself.",
-  "supplier_taxonomy_rule": "Official supplier taxonomy may support KEEP only when the exact product identity is observed in a pre-mapped supplier category. It cannot auto-create MOVE."
+  "supplier_taxonomy_rule": "Official supplier taxonomy may support KEEP only when the exact product identity is observed in a pre-mapped supplier category. It cannot auto-create MOVE.",
+  "overlap_contract": "boom-product-placement-stage6-contract.json",
+  "overlap_rule": "High-overlap families must pass overlap resolution before placement decision. SAFE_MOVE remains shadow-only; REVIEW/UNKNOWN/HOLD do not become shelf candidates."
 }
