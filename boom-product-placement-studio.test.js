@@ -35,11 +35,13 @@ assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-COMBINED-ADMISSION-PREVIEW
 assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-EXTERNAL-SOURCE-MANIFEST-2026-09-23.json"));
 assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-EXTERNAL-SOURCE-PACKET-2026-09-23.json"));
 assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-ALTERNATIVE-SOURCE-MATRIX-2026-09-23.json"));
+assert(studio.includes("HUNT-PRODUCT-PLACEMENT-STAGE8-SUPPLIER-OUTREACH-PACKETS-2026-09-23.json"));
 assert(studio.includes("STAGE 8 · SUPPLIER RECOVERY GATE"));
 assert(studio.includes("STAGE 8 · COMBINED SHADOW PREVIEW"));
 assert(studio.includes("STAGE 8 · EXTERNAL SOURCE HANDOFF"));
 assert(studio.includes("STAGE 8 · EXTERNAL SOURCE PACKET"));
 assert(studio.includes("STAGE 8 · ALTERNATIVE SOURCE MATRIX"));
+assert(studio.includes("STAGE 8 · SUPPLIER OUTREACH PACKETS"));
 assert(studio.includes("setInterval(run,60000)"));
 assert(studio.includes('document.body.dataset.adminReady!=="true"'));
 

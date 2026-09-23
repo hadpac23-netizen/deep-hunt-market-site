@@ -1,0 +1,1014 @@
+{
+  "version": "HUNT-PRODUCT-PLACEMENT-STAGE8-SUPPLIER-OUTREACH-PACKETS-V1",
+  "date": "2026-09-23",
+  "mode": "DRAFT_ONLY_NOT_SENT",
+  "production_effect": false,
+  "summary": {
+    "suppliers": 3,
+    "rails": 5,
+    "requested_initial_candidates_per_supplier": 60,
+    "requested_preferred_candidates_per_supplier": 120,
+    "outbound": {
+      "HyperSKU": "WAITING_REPLY_DO_NOT_SEND_DUPLICATE",
+      "SupDropshipping": "WAITING_REPLY_DO_NOT_SEND_DUPLICATE",
+      "SourcinBox": "OWNER_GATE_REQUIRED_BEFORE_FIRST_OUTREACH"
+    },
+    "final_net_profit_verified_products": 0
+  },
+  "rules": [
+    "Drafts only; no external message is sent by this artifact.",
+    "HyperSKU and SupDropshipping must not receive duplicate follow-ups while their current threads are unanswered.",
+    "First SourcinBox outreach requires Owner Gate.",
+    "Supplier replies do not create shelf admission; all candidates must pass Placement, Visual QA, Variant/Stock, Shipping, Media Rights and Profit gates.",
+    "Furniture requires dimensional shipping review.",
+    "No Production mutation or supplier order."
+  ],
+  "suppliers": {
+    "HyperSKU": {
+      "send_state": "WAITING_REPLY_DO_NOT_SEND_DUPLICATE",
+      "thread_state": "CURRENT_THREAD_WAITING_REPLY",
+      "account_api_eligibility": "BLOCKED_UNTIL_2000_ORDERS_CONFIRMED_BY_HYPERSKU_EMAIL",
+      "mode": "MANUAL_SOURCING_PRE_API",
+      "packet": {
+        "subject": "HUNT DEAL — 5 verified catalog gaps for manual sourcing",
+        "opening": "We completed a strict catalog cleanup and isolated five true sourcing gaps for HUNT DEAL. We would like HyperSKU to source these manually during the pre-API stage.",
+        "request": "Please provide clean candidates that match the exact product family requirements below. We prefer 12 strong candidates per rail initially and up to 24 if quality and economics are strong.",
+        "constraints": [
+          "No inventory purchase upfront.",
+          "Dropship one-by-one to end customers.",
+          "Exact SKU/variant, stock, cost and destination shipping must be verifiable before listing.",
+          "Please avoid semantically adjacent products that only mention the target keyword.",
+          "Images must clearly show the exact product being sold.",
+          "Please include media usage rights and QC/sample options."
+        ],
+        "rails": [
+          {
+            "rail": "accessories/gloves",
+            "product_type": "fashion gloves",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "winter gloves",
+              "leather gloves",
+              "knitted gloves",
+              "thermal gloves",
+              "mittens"
+            ],
+            "reject_terms": [
+              "work gloves",
+              "safety gloves",
+              "boxing gloves",
+              "cycling gloves",
+              "medical gloves",
+              "oven gloves",
+              "pet gloves",
+              "costume gloves"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "home/furniture",
+            "product_type": "home furniture",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "coffee table",
+              "side table",
+              "bedside table",
+              "nightstand",
+              "bookshelf",
+              "bookcase",
+              "storage cabinet",
+              "shoe cabinet",
+              "bed frame",
+              "dining chair",
+              "accent chair",
+              "sofa",
+              "couch"
+            ],
+            "reject_terms": [
+              "furniture cover",
+              "furniture leg",
+              "furniture handle",
+              "lamp",
+              "decor",
+              "organizer",
+              "pet furniture",
+              "miniature furniture",
+              "replacement wheels"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "men/men-clothing",
+            "product_type": "men's clothing sets / one-piece apparel",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "men's two-piece set",
+              "men's outfit set",
+              "men's jumpsuit",
+              "men's overall",
+              "men's matching set",
+              "men's shirt and shorts set",
+              "men's polo and shorts set"
+            ],
+            "reject_terms": [
+              "women",
+              "girls",
+              "kids",
+              "baby",
+              "sleepwear",
+              "pajamas",
+              "underwear",
+              "costume"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "office/office-furniture",
+            "product_type": "office furniture",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "office chair",
+              "office desk",
+              "computer desk",
+              "desk chair",
+              "office cabinet",
+              "filing cabinet",
+              "file cabinet",
+              "standing desk"
+            ],
+            "reject_terms": [
+              "chair wheels",
+              "chair mat",
+              "desk mat",
+              "desk organizer",
+              "desk hook",
+              "desk lamp",
+              "cushion",
+              "replacement part",
+              "holder",
+              "stand"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "tech/smart-home",
+            "product_type": "smart home devices",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "smart plug",
+              "smart socket",
+              "smart switch",
+              "smart doorbell",
+              "smart thermostat",
+              "smart door lock",
+              "zigbee hub",
+              "zigbee gateway",
+              "zigbee door sensor",
+              "zigbee motion sensor",
+              "tuya hub",
+              "tuya gateway",
+              "wifi switch",
+              "wifi plug"
+            ],
+            "reject_terms": [
+              "smart watch",
+              "smart bracelet",
+              "trash can",
+              "bin",
+              "remote control",
+              "sterilizer",
+              "dispenser",
+              "camera remote",
+              "tv remote"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          }
+        ],
+        "response_schema": [
+          "supplier product ID / SKU",
+          "exact variants",
+          "current supplier cost per variant",
+          "current stock by warehouse if available",
+          "shipping cost and ETA to IL / DE / US / SG",
+          "main image plus gallery images",
+          "media usage rights for storefront display",
+          "QC / sample path",
+          "MOQ / pre-purchase requirement if any",
+          "tracking capability"
+        ]
+      }
+    },
+    "SupDropshipping": {
+      "send_state": "WAITING_REPLY_DO_NOT_SEND_DUPLICATE",
+      "thread_state": "OUTREACH_SENT_2026_09_20_NO_REPLY",
+      "api_state": "OPEN_API_AVAILABLE_BY_DEDICATED_AGENT_REQUEST",
+      "mode": "AGENT_SOURCING_PLUS_API_ELIGIBILITY_DISCUSSION",
+      "packet": {
+        "subject": "HUNT DEAL — exact sourcing brief for 5 remaining catalog gaps",
+        "opening": "Following our Open API / fulfillment inquiry, we have now reduced our catalog gaps to five exact product families.",
+        "request": "Please source products matching the exact families below and return quote-ready candidates. We need strict product-type matches, not broad category matches.",
+        "constraints": [
+          "Basic/free sourcing lane preferred.",
+          "No pre-purchased inventory.",
+          "Please confirm whether our account can request Open API access and what approval steps apply.",
+          "For furniture, please include dimensional shipping / volumetric weight and country-specific shipping cost.",
+          "For gloves and clothing, exclude work/safety/costume products where our brief says fashion/general apparel only."
+        ],
+        "rails": [
+          {
+            "rail": "accessories/gloves",
+            "product_type": "fashion gloves",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "winter gloves",
+              "leather gloves",
+              "knitted gloves",
+              "thermal gloves",
+              "mittens"
+            ],
+            "reject_terms": [
+              "work gloves",
+              "safety gloves",
+              "boxing gloves",
+              "cycling gloves",
+              "medical gloves",
+              "oven gloves",
+              "pet gloves",
+              "costume gloves"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "home/furniture",
+            "product_type": "home furniture",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "coffee table",
+              "side table",
+              "bedside table",
+              "nightstand",
+              "bookshelf",
+              "bookcase",
+              "storage cabinet",
+              "shoe cabinet",
+              "bed frame",
+              "dining chair",
+              "accent chair",
+              "sofa",
+              "couch"
+            ],
+            "reject_terms": [
+              "furniture cover",
+              "furniture leg",
+              "furniture handle",
+              "lamp",
+              "decor",
+              "organizer",
+              "pet furniture",
+              "miniature furniture",
+              "replacement wheels"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "men/men-clothing",
+            "product_type": "men's clothing sets / one-piece apparel",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "men's two-piece set",
+              "men's outfit set",
+              "men's jumpsuit",
+              "men's overall",
+              "men's matching set",
+              "men's shirt and shorts set",
+              "men's polo and shorts set"
+            ],
+            "reject_terms": [
+              "women",
+              "girls",
+              "kids",
+              "baby",
+              "sleepwear",
+              "pajamas",
+              "underwear",
+              "costume"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "office/office-furniture",
+            "product_type": "office furniture",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "office chair",
+              "office desk",
+              "computer desk",
+              "desk chair",
+              "office cabinet",
+              "filing cabinet",
+              "file cabinet",
+              "standing desk"
+            ],
+            "reject_terms": [
+              "chair wheels",
+              "chair mat",
+              "desk mat",
+              "desk organizer",
+              "desk hook",
+              "desk lamp",
+              "cushion",
+              "replacement part",
+              "holder",
+              "stand"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "tech/smart-home",
+            "product_type": "smart home devices",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "smart plug",
+              "smart socket",
+              "smart switch",
+              "smart doorbell",
+              "smart thermostat",
+              "smart door lock",
+              "zigbee hub",
+              "zigbee gateway",
+              "zigbee door sensor",
+              "zigbee motion sensor",
+              "tuya hub",
+              "tuya gateway",
+              "wifi switch",
+              "wifi plug"
+            ],
+            "reject_terms": [
+              "smart watch",
+              "smart bracelet",
+              "trash can",
+              "bin",
+              "remote control",
+              "sterilizer",
+              "dispenser",
+              "camera remote",
+              "tv remote"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          }
+        ],
+        "response_schema": [
+          "supplier product ID / SKU",
+          "exact variants",
+          "current supplier cost per variant",
+          "current stock by warehouse if available",
+          "shipping cost and ETA to IL / DE / US / SG",
+          "main image plus gallery images",
+          "media usage rights for storefront display",
+          "QC / sample path",
+          "MOQ / pre-purchase requirement if any",
+          "tracking capability"
+        ]
+      }
+    },
+    "SourcinBox": {
+      "send_state": "OWNER_GATE_REQUIRED_BEFORE_FIRST_OUTREACH",
+      "thread_state": "NO_EXISTING_GMAIL_THREAD_FOUND",
+      "mode": "FIRST_MANUAL_SOURCING_REQUEST",
+      "packet": {
+        "subject": "HUNT DEAL — global dropshipping sourcing request for 5 exact product families",
+        "opening": "We are evaluating SourcinBox as a sourcing and fulfillment partner for HUNT DEAL, a global multi-category storefront.",
+        "request": "We currently need strong, quote-ready candidates in five exact product families. Please source 12 high-quality candidates per family initially, with up to 24 preferred if the products meet our quality and landed-cost requirements.",
+        "constraints": [
+          "Zero-inventory launch: no inventory pre-purchase.",
+          "No MOQ for the dropshipping lane preferred.",
+          "One-by-one fulfillment to end customers.",
+          "Please include actual product cost plus shipping, not product cost alone.",
+          "For furniture, volumetric/dimensional shipping must be included.",
+          "Please include QC/sample options and media usage rights.",
+          "We need IL / DE / US / SG shipping evidence before listing."
+        ],
+        "rails": [
+          {
+            "rail": "accessories/gloves",
+            "product_type": "fashion gloves",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "winter gloves",
+              "leather gloves",
+              "knitted gloves",
+              "thermal gloves",
+              "mittens"
+            ],
+            "reject_terms": [
+              "work gloves",
+              "safety gloves",
+              "boxing gloves",
+              "cycling gloves",
+              "medical gloves",
+              "oven gloves",
+              "pet gloves",
+              "costume gloves"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "home/furniture",
+            "product_type": "home furniture",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "coffee table",
+              "side table",
+              "bedside table",
+              "nightstand",
+              "bookshelf",
+              "bookcase",
+              "storage cabinet",
+              "shoe cabinet",
+              "bed frame",
+              "dining chair",
+              "accent chair",
+              "sofa",
+              "couch"
+            ],
+            "reject_terms": [
+              "furniture cover",
+              "furniture leg",
+              "furniture handle",
+              "lamp",
+              "decor",
+              "organizer",
+              "pet furniture",
+              "miniature furniture",
+              "replacement wheels"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "men/men-clothing",
+            "product_type": "men's clothing sets / one-piece apparel",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "men's two-piece set",
+              "men's outfit set",
+              "men's jumpsuit",
+              "men's overall",
+              "men's matching set",
+              "men's shirt and shorts set",
+              "men's polo and shorts set"
+            ],
+            "reject_terms": [
+              "women",
+              "girls",
+              "kids",
+              "baby",
+              "sleepwear",
+              "pajamas",
+              "underwear",
+              "costume"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "office/office-furniture",
+            "product_type": "office furniture",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "office chair",
+              "office desk",
+              "computer desk",
+              "desk chair",
+              "office cabinet",
+              "filing cabinet",
+              "file cabinet",
+              "standing desk"
+            ],
+            "reject_terms": [
+              "chair wheels",
+              "chair mat",
+              "desk mat",
+              "desk organizer",
+              "desk hook",
+              "desk lamp",
+              "cushion",
+              "replacement part",
+              "holder",
+              "stand"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          },
+          {
+            "rail": "tech/smart-home",
+            "product_type": "smart home devices",
+            "requested_initial_candidates": 12,
+            "requested_preferred_candidates": 24,
+            "positive_terms": [
+              "smart plug",
+              "smart socket",
+              "smart switch",
+              "smart doorbell",
+              "smart thermostat",
+              "smart door lock",
+              "zigbee hub",
+              "zigbee gateway",
+              "zigbee door sensor",
+              "zigbee motion sensor",
+              "tuya hub",
+              "tuya gateway",
+              "wifi switch",
+              "wifi plug"
+            ],
+            "reject_terms": [
+              "smart watch",
+              "smart bracelet",
+              "trash can",
+              "bin",
+              "remote control",
+              "sterilizer",
+              "dispenser",
+              "camera remote",
+              "tv remote"
+            ],
+            "markets": [
+              "IL",
+              "DE",
+              "US",
+              "SG"
+            ],
+            "quality_requirements": {
+              "main_image_min_px": 800,
+              "multiple_product_images_preferred": true,
+              "clean_product_photography": true,
+              "no_misleading_title_image_mismatch": true,
+              "no_watermark_preferred": true
+            },
+            "economics_requirements": {
+              "projected_product_contribution_min_usd": 3.99,
+              "projected_product_margin_min": 0.35,
+              "final_net_profit_verified_required_before_live_sell": true,
+              "final_net_profit_current_state": "NOT_VERIFIED"
+            },
+            "commercial_requirements": {
+              "dropship_no_prepurchase": true,
+              "no_moq_preferred": true,
+              "exact_variant_required": true,
+              "stock_truth_required": true,
+              "supplier_cost_required": true,
+              "destination_shipping_quote_required": true,
+              "destination_eta_required": true,
+              "tracking_required": true,
+              "qc_or_sample_path_required": true,
+              "media_usage_rights_required": true
+            }
+          }
+        ],
+        "response_schema": [
+          "supplier product ID / SKU",
+          "exact variants",
+          "current supplier cost per variant",
+          "current stock by warehouse if available",
+          "shipping cost and ETA to IL / DE / US / SG",
+          "main image plus gallery images",
+          "media usage rights for storefront display",
+          "QC / sample path",
+          "MOQ / pre-purchase requirement if any",
+          "tracking capability"
+        ]
+      }
+    }
+  }
+}
