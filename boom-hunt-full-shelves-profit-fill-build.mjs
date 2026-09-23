@@ -12,6 +12,7 @@ const GENERAL_GAP=path.join(SOURCE,"hunt-eprolo-gap-fill-v1.json");
 const THIN_PULL="evidence/HUNT-EPROLO-THIN-RAIL-PULL-2026-09-23.json";
 const THIN_SHIPPING="evidence/HUNT-EPROLO-THIN-RAIL-SHIPPING-VERIFY-2026-09-23.json";
 const EPROLO_DEEP_VERIFY="evidence/HUNT-EPROLO-MEN-WOMEN-DEEP-SHIPPING-VERIFY-2026-09-23.json";
+const CJ_THIN_SELECTION="evidence/HUNT-CJ-THIN-RAIL-SELECTION-2026-09-23.json";
 const TARGET=24;
 const BLOCKED=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|firework|explosives|explosive device|explosive material|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|steroid|diet pill|laxative|slimming|weight[- ]?loss|camp stove|gas stove|fuel canister|lighter|torch burner)\b/i;
 
@@ -224,6 +225,23 @@ if(fs.existsSync(EPROLO_DEEP_VERIFY)){
   }
 }
 
+if(fs.existsSync(CJ_THIN_SELECTION)){
+  const selected=JSON.parse(fs.readFileSync(CJ_THIN_SELECTION,"utf8"));
+  for(const p of selected.products||[]){
+    sourceCandidates.push({
+      provider:"CJdropshipping",item_id:String(p.item_id),department:String(p.department),category:String(p.category),
+      title:p.title,image_url:p.image_url,availability_verified:p.availability_verified===true,
+      availability_basis:"CJ_FOCUSED_OFFICIAL_CATALOG_SHADOW_ONLY",
+      inventory_snapshot:Number(p.stock_quantity||0)||null,
+      supplier_cost_min:Number(p.price_amount)||null,currency:String(p.currency||"USD"),
+      variant_count:Number(p.variant_count||0)||null,image_count:null,
+      catalog_price_provisional:true,
+      source_evidence:"evidence/HUNT-CJ-THIN-RAIL-SELECTION-2026-09-23.json",
+      _source:"CJ_CATALOG_SHADOW_ONLY",_route:240
+    });
+  }
+}
+
 const pools=new Map();
 for(const raw of sourceCandidates){
   const dep=String(raw.department||raw.primary_department||"");
@@ -311,6 +329,7 @@ const out={
     fresh_eprolo_thin_rail_pull:fs.existsSync(THIN_PULL)?THIN_PULL:null,
     fresh_eprolo_thin_rail_shipping:fs.existsSync(THIN_SHIPPING)?THIN_SHIPPING:null,
     fresh_eprolo_deep_verify:fs.existsSync(EPROLO_DEEP_VERIFY)?EPROLO_DEEP_VERIFY:null,
+    cj_catalog_shadow_selection:fs.existsSync(CJ_THIN_SELECTION)?CJ_THIN_SELECTION:null,
     cj_truth:"evidence/HUNT-CJ-GAP-FILL-VERIFIED-2026-09-23.json",
     eprolo_market_truth:"evidence/HUNT-EPROLO-GLOBAL-PRODUCT-MARKET-MATRIX-2026-09-23.json"
   },

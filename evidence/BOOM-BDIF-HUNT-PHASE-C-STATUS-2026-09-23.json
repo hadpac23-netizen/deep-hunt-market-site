@@ -1,5 +1,5 @@
 {
-  "version": "BOOM-BDIF-HUNT-PHASE-C-STATUS-V3",
+  "version": "BOOM-BDIF-HUNT-PHASE-C-STATUS-V4",
   "date": "2026-09-23",
   "branch": "feature/hunt-shadow-shelf-profit-fill-v1",
   "mode": "SHADOW",
@@ -8,11 +8,12 @@
   "payment_activation": false,
   "supplier_order": false,
   "catalog": {
-    "unique_shadow_products": 5591,
-    "rails_full_24": 57,
-    "rails_good_12_to_23": 36,
-    "rails_thin_1_to_11": 40,
+    "unique_shadow_products": 5854,
+    "rails_full_24": 65,
+    "rails_good_12_to_23": 40,
+    "rails_thin_1_to_11": 28,
     "rails_empty": 0,
+    "provisional_catalog_price_projections": 263,
     "gate_ready_final_profit_recheck_products": 709
   },
   "pilot": {
@@ -51,7 +52,8 @@
     "final_profit_verified_products": 0,
     "eprolo_deep_verified_market_pairs": 216,
     "destination_aware_projected_order_contribution_pairs": 2957,
-    "destination_aware_projected_order_contribution_median_usd": 4.58
+    "destination_aware_projected_order_contribution_median_usd": 4.58,
+    "provisional_catalog_price_projection_products": 263
   },
   "provider_pilot_breakdown": {
     "CJdropshipping": {
@@ -80,9 +82,9 @@
     }
   },
   "interpretation": {
-    "shelves": "All 133 canonical rails are non-empty; men/men-jeans was recovered through fresh exact-variant EPROLO verification after fixing a taxonomy safety-filter false positive.",
-    "what_improved": "Gate Ready shelf products increased from 39 to 709. The 1,000-product pilot increased from 156 to 2844 gate-ready product-market pairs.",
-    "profit_truth": "All 5591 shelf products pass the current projected Product Contribution floor; none are labeled final net profit.",
+    "shelves": "All 133 canonical rails are non-empty. 263 CJ catalog candidates are allowed only as SHADOW display fill with provisional catalog price truth; they remain blocked from Gate Ready until exact variant + destination shipping verify.",
+    "what_improved": "Shadow assortment is now 5854 products; 65 rails are FULL, 40 GOOD, 28 remain THIN, 0 are EMPTY. Gate Ready remains 709; provisional shelf-fill does not inflate this number.",
+    "profit_truth": "5591 products have verified supplier-cost Product Contribution projections. 263 additional CJ catalog shelf-fill products have only provisional catalog-price projections and are excluded from verified profit counts.",
     "what_is_still_unknown": "Full pilot input readiness remains zero because target retail/landed-cost completeness and most visual QA are still provisional; realized business outcomes remain zero.",
     "model_assisted": "NOT_RUN — independent labels are still required for a scored model comparison.",
     "business_winner": "NOT_DETERMINED — no realized order outcomes."
@@ -91,5 +93,12 @@
     "Continue thin-rail supplier gap fill without relaxing taxonomy or truth gates.",
     "Complete landed-cost/final-profit inputs for Gate Ready products.",
     "Build independent labeled evaluation set before Model-Assisted BDIF scoring."
-  ]
+  ],
+  "cj_shadow_only": {
+    "catalog_candidates_added": 263,
+    "four_market_verified_added": 0,
+    "sell_ready": 0,
+    "checkout": "BLOCKED",
+    "profit_truth": "PROVISIONAL_CATALOG_PRICE_PROJECTION"
+  }
 }

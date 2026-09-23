@@ -44,7 +44,7 @@ function selectCohort(rows,priorityIds=new Set()){
     chosen.push(row); chosenKeys.add(key); return true;
   };
 
-  rows.filter(r=>r.provider!=="EPROLO")
+  rows.filter(r=>r.provider!=="EPROLO" && (r.provider!=="CJdropshipping" || r.sell_state==="GATE_READY_FINAL_PROFIT_RECHECK"))
     .sort((a,b)=>(a.provider+":"+a.item_id).localeCompare(b.provider+":"+b.item_id))
     .forEach(add);
 
@@ -367,7 +367,7 @@ function main(){
     mode:"SHADOW",
     production_effect:false,
     source:"evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json",
-    selection_rule:"All non-EPROLO products are retained first; then EPROLO products with fresh gate-ready exact-variant + 4-market shipping evidence; remaining slots use deterministic category round-robin to preserve taxonomy coverage. No product is fabricated.",
+    selection_rule:"Verified/non-provisional non-EPROLO benchmark candidates are retained first; provisional CJ catalog shelf-fill is excluded from the scored cohort. Then EPROLO products with fresh gate-ready exact-variant + 4-market shipping evidence are prioritized; remaining slots use deterministic category round-robin. No product is fabricated.",
     target_markets:TARGET_MARKETS,
     summary:{
       source_unique_products:rows.length,

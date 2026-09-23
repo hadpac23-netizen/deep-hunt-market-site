@@ -4,7 +4,7 @@
   "mode": "SHADOW",
   "production_effect": false,
   "source": "evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json",
-  "selection_rule": "All non-EPROLO products are retained first; then EPROLO products with fresh gate-ready exact-variant + 4-market shipping evidence; remaining slots use deterministic category round-robin to preserve taxonomy coverage. No product is fabricated.",
+  "selection_rule": "Verified/non-provisional non-EPROLO benchmark candidates are retained first; provisional CJ catalog shelf-fill is excluded from the scored cohort. Then EPROLO products with fresh gate-ready exact-variant + 4-market shipping evidence are prioritized; remaining slots use deterministic category round-robin. No product is fabricated.",
   "target_markets": [
     "IL",
     "DE",
@@ -12,7 +12,7 @@
     "SG"
   ],
   "summary": {
-    "source_unique_products": 5591,
+    "source_unique_products": 5854,
     "selected_products": 1000,
     "provider_counts": {
       "CJdropshipping": 39,
