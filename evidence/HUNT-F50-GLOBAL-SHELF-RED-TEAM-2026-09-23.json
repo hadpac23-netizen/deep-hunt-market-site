@@ -1,0 +1,285 @@
+{
+  "version": "HUNT-F50-GLOBAL-SHELF-RED-TEAM-V1",
+  "date": "2026-09-23",
+  "mode": "RESEARCH_DECISION_SUPPORT_ONLY",
+  "production_effect": false,
+  "email_sent": false,
+  "current_hunt_snapshot": {
+    "canonical_products_shadow": 3637,
+    "rails_full_24": 32,
+    "rails_good_12_to_23": 34,
+    "rails_thin_1_to_11": 62,
+    "rails_empty": 5,
+    "final_net_profit_verified_products": 0,
+    "empty_rails": [
+      "accessories/gloves",
+      "home/furniture",
+      "men/men-clothing",
+      "office/office-furniture",
+      "tech/smart-home"
+    ]
+  },
+  "global_demand_signal": {
+    "source": "DHL Marketplace Trends, survey Dec 2025-Feb 2026, 29,000 shoppers across 29 countries",
+    "url": "https://www.dhl.com/global-en/microsites/ec/ecommerce-insights/insights/reports/2025-marketplace-trends.html",
+    "marketplace_purchase_categories_pct": {
+      "clothing": 63,
+      "footwear": 47,
+      "electronics": 45,
+      "beauty_cosmetics_perfume_toiletries": 43,
+      "food_beverages": 36,
+      "household_products": 34,
+      "home_furnishings": 34,
+      "books": 32,
+      "health_supplements": 30,
+      "sport_leisure_hobby": 29,
+      "toys_games": 29,
+      "pet_products": 25,
+      "office_supplies": 24,
+      "jewellery": 21,
+      "car_parts": 15,
+      "garden_supplies": 15,
+      "designer_goods": 13,
+      "medical_ppe": 13
+    }
+  },
+  "red_team_findings": {
+    "P0_existing_empty_rails": [
+      "accessories/gloves",
+      "home/furniture",
+      "men/men-clothing",
+      "office/office-furniture",
+      "tech/smart-home"
+    ],
+    "P1_existing_thin_rails_high_global_value": [
+      "men/men-tops",
+      "men/men-jeans",
+      "men/men-bottoms",
+      "men/men-outerwear",
+      "men/men-knitwear",
+      "men/men-hoodies",
+      "men/men-socks",
+      "women/women-bottoms",
+      "women/women-skirts",
+      "women/women-sleepwear",
+      "pets/pet-feeding",
+      "pets/pet-beds",
+      "pets/pet-toys",
+      "home/bedding",
+      "home/bath",
+      "home-home-textiles",
+      "home/lighting",
+      "sports/sports-gear",
+      "sports/fitness-accessories",
+      "travel/luggage",
+      "toys/educational-toys"
+    ],
+    "true_missing_product_families_recommended": [
+      {
+        "rail": "accessories/sunglasses-eyewear",
+        "priority": "P1",
+        "reason": "Large accessories family absent from HUNT; Etsy explicitly separates Sunglasses & Eyewear."
+      },
+      {
+        "rail": "accessories/umbrellas-rain",
+        "priority": "P2",
+        "reason": "Distinct accessories family; Etsy explicitly lists Umbrellas & Rain Accessories."
+      },
+      {
+        "rail": "tech/screen-protectors",
+        "priority": "P1",
+        "reason": "HUNT has phone cases but no dedicated screen-protection family; owner requirement included phone protectors."
+      },
+      {
+        "rail": "travel/travel-accessories",
+        "priority": "P1",
+        "reason": "HUNT travel has only Luggage; Target travel essentials include packing cubes, neck pillows, bottle accessories and packable bags."
+      },
+      {
+        "rail": "pets/pet-carriers-travel",
+        "priority": "P1",
+        "reason": "Chewy treats carriers/travel as a major pet family; absent from HUNT."
+      },
+      {
+        "rail": "pets/pet-crates-gates",
+        "priority": "P1",
+        "reason": "Chewy treats crates, pens and gates as a major pet family; absent from HUNT."
+      },
+      {
+        "rail": "pets/pet-cleaning-waste",
+        "priority": "P1",
+        "reason": "Chewy has dedicated cleaning/potty/waste families; absent from HUNT."
+      },
+      {
+        "rail": "pets/pet-training",
+        "priority": "P2",
+        "reason": "Chewy lists training tools/supplies; absent from HUNT."
+      },
+      {
+        "rail": "pets/cat-furniture-scratchers",
+        "priority": "P2",
+        "reason": "Chewy separates cat furniture/scratchers; current HUNT pet-houses does not cleanly cover this family."
+      },
+      {
+        "rail": "kids/baby-care",
+        "priority": "P1",
+        "reason": "Target separates baby care and baby bath; HUNT only has baby and baby-clothing."
+      },
+      {
+        "rail": "kids/baby-feeding-accessories",
+        "priority": "P1",
+        "reason": "Target separates nursing/feeding; HUNT has no baby feeding family. Non-consumable accessories only for initial lane."
+      },
+      {
+        "rail": "kids/nursery-soft-goods",
+        "priority": "P2",
+        "reason": "Target nursery includes bedding, blankets and room essentials. Initial lane should avoid safety-critical furniture/gear."
+      },
+      {
+        "rail": "toys/games-puzzles",
+        "priority": "P1",
+        "reason": "Toys & games are 29% of global marketplace purchases and Etsy/Chewy-style marketplaces separate games/puzzles from generic toys."
+      },
+      {
+        "rail": "gifts/gift-wrap-packaging",
+        "priority": "P2",
+        "reason": "Etsy party taxonomy explicitly separates gift bags, tissue, ribbons, bows, tags and wrapping paper."
+      }
+    ],
+    "facet_collection_not_canonical_rail": [
+      {
+        "name": "plus-size",
+        "reason": "Size is an attribute across dresses/tops/jeans/etc.; making it a canonical rail would duplicate product placement."
+      },
+      {
+        "name": "maternity",
+        "reason": "Use audience/life-stage facet unless a product family has distinct sourcing/fit truth."
+      },
+      {
+        "name": "boys-girls-toddler",
+        "reason": "Age/gender facets over Kids product families prevent duplicate shelves."
+      },
+      {
+        "name": "wedding",
+        "reason": "Wedding is an occasion spanning jewelry, gifts, decor, clothing and party; use a collection."
+      },
+      {
+        "name": "seasonal-holiday",
+        "reason": "Seasonality should be merchandising metadata, not product family."
+      },
+      {
+        "name": "luxury-vip",
+        "reason": "Quality/price tier spans categories; use collection and supplier/authenticity gates."
+      },
+      {
+        "name": "sport",
+        "values": ["running","football","basketball","swimming","tennis","padel","yoga","hiking","cycling","gym"],
+        "reason": "Sport/activity is cross-cutting metadata. Product family should remain e.g. apparel, gear, bag or accessory."
+      },
+      {
+        "name": "pet-species",
+        "values": ["dog","cat","small-pet","aquarium"],
+        "reason": "Species is a facet; base product family remains bed, carrier, feeder, toy, grooming, etc."
+      }
+    ],
+    "intentional_hold_not_for_hypersku_now": [
+      {
+        "family": "food-beverage",
+        "global_signal_pct": 36,
+        "reason": "Strong demand but food safety, shelf life, cross-border compliance and fulfillment complexity."
+      },
+      {
+        "family": "health-supplements",
+        "global_signal_pct": 30,
+        "reason": "Regulated/high-risk claims and country-specific compliance."
+      },
+      {
+        "family": "medical-ppe",
+        "global_signal_pct": 13,
+        "reason": "Medical/regulatory compliance and claims risk."
+      },
+      {
+        "family": "books-media",
+        "global_signal_pct": 32,
+        "reason": "Large demand but weak fit for current dropship suppliers and likely thin contribution after shipping."
+      },
+      {
+        "family": "automotive-parts",
+        "global_signal_pct": 15,
+        "reason": "Compatibility, safety and returns complexity. Consider later as a separately governed vertical."
+      },
+      {
+        "family": "designer-goods",
+        "global_signal_pct": 13,
+        "reason": "Authenticity and trademark/counterfeit risk; only authorized/verified feeds."
+      },
+      {
+        "family": "home-improvement-building-materials",
+        "reason": "Large retailer category but bulky/compatibility/shipping risk. Consider later with lightweight hardware subset only."
+      },
+      {
+        "family": "high-ticket-computers-tv-phones",
+        "reason": "Warranty, fraud, returns and capital/chargeback exposure. Keep separate from accessories lane for launch."
+      }
+    ],
+    "supplier_request_strategy": {
+      "do_not_send_original_5_only": true,
+      "recommended_structure": [
+        "P0: solve the 5 currently empty rails",
+        "P1: top up high-demand thin rails, especially apparel/home/pets/travel/toys",
+        "P1-new: ask sourcing capability for missing product families before adding rails",
+        "Keep facets/collections out of supplier placement taxonomy",
+        "Furniture/office furniture must be compact/foldable where possible and quote-first by destination",
+        "Every supplied SKU still passes Placement -> Visual QA -> Variant/Stock -> Shipping -> Profit Truth"
+      ]
+    }
+  },
+  "web_sources": [
+    {
+      "name": "DHL Marketplace Trends 2026 survey",
+      "url": "https://www.dhl.com/global-en/microsites/ec/ecommerce-insights/insights/reports/2025-marketplace-trends.html"
+    },
+    {
+      "name": "DHL E-Commerce Trends 2025",
+      "url": "https://www.dhl.com/global-en/microsites/ec/ecommerce-insights/insights/reports/2025-ecommerce-trends-report.html"
+    },
+    {
+      "name": "Etsy Categories",
+      "url": "https://www.etsy.com/il-en/categories"
+    },
+    {
+      "name": "Target Travel Essentials",
+      "url": "https://www.target.com/c/travel-essentials/shipping/-/N-68650"
+    },
+    {
+      "name": "Target Baby",
+      "url": "https://www.target.com/c/-/N-5xtlyZxmf9o"
+    },
+    {
+      "name": "Chewy Dog Supplies",
+      "url": "https://www.chewy.com/b/dog-288"
+    },
+    {
+      "name": "Chewy Cat Supplies",
+      "url": "https://www.chewy.com/b/cat-325"
+    },
+    {
+      "name": "Best Buy Electronics",
+      "url": "https://www.bestbuy.com/site/electronics/misc/pcmcat144600050035.c?id=pcmcat144600050035"
+    },
+    {
+      "name": "Home Depot 2025 Annual Report / product lines",
+      "url": "https://ir.homedepot.com/~/media/Files/H/HomeDepot-IR/2026/THD_AnnualReport_2025_vf.pdf"
+    },
+    {
+      "name": "Decathlon Sports",
+      "url": "https://www.decathlon.co.uk/"
+    },
+    {
+      "name": "Sephora",
+      "url": "https://www.sephora.com/"
+    }
+  ],
+  "decision_state": "OWNER_REVIEW_BEFORE_HYPERSKU_REPLY",
+  "next_action": "Build HyperSKU sourcing brief V2 from approved F50 priorities; do not send yet."
+}
