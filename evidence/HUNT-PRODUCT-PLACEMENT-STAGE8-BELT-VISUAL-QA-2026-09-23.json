@@ -18,6 +18,7 @@
   ],
   "rules": [
     "All seven products were visually reviewed in a contact sheet and are belts as the primary product.",
+    "This generator revalidates that every visually approved item still passes the Stage8 technical Belt Gate.",
     "Visual PASS does not imply Final Net Profit Verified.",
     "No Production mutation or supplier order."
   ]
