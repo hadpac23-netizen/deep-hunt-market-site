@@ -50,6 +50,7 @@ function paint(){
   inspector();
 }
 window.addEventListener("dragon:control-plane",e=>{current=e.detail||null;setTimeout(paint,0)});
+window.addEventListener("dragon:evidence-ledger",()=>setTimeout(paint,0));
 document.addEventListener("click",e=>{if(e.target.closest("[data-dc-node],[data-dc-right-tab]"))setTimeout(paint,0)});
 const obs=new MutationObserver(()=>{const p=document.querySelector("#dragon-core-right-panel");if(p&&!p.querySelector("[data-control-plane-card]"))paint()});
 function init(){const p=document.querySelector("#dragon-core-right-panel");if(p)obs.observe(p,{childList:true});paint();setTimeout(paint,600);setTimeout(paint,1500)}
