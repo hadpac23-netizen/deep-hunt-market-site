@@ -217,9 +217,10 @@ async function maybeApplyCheckoutOffer(ctx:any,body:any,pricing:any,requestDiges
 async function buildProfitPreview(ctx:any,pricing:any){
   const lines=Array.isArray(pricing?.line_items)?pricing.line_items:[];
   const issues:string[]=[];
+  const missingNumber=(value:any)=>value===null||value===undefined||value===""||!Number.isFinite(Number(value));
   if(!lines.length)issues.push("LINE_ITEMS_MISSING");
-  if(lines.some((x:any)=>!Number.isFinite(Number(x?.supplier_cost_per_unit))))issues.push("SUPPLIER_PRODUCT_COST_UNKNOWN");
-  if(lines.some((x:any)=>!Number.isFinite(Number(x?.shipping_amount))))issues.push("SUPPLIER_SHIPPING_COST_UNKNOWN");
+  if(lines.some((x:any)=>missingNumber(x?.supplier_cost_per_unit)))issues.push("SUPPLIER_PRODUCT_COST_UNKNOWN");
+  if(lines.some((x:any)=>missingNumber(x?.shipping_amount)))issues.push("SUPPLIER_SHIPPING_COST_UNKNOWN");
 
   const {data:profile}=await ctx.supabaseAdmin
     .from("hunt_profit_profiles")
