@@ -207,7 +207,7 @@
       "name": "Agent Lease",
       "owner": "boom_orchestrator",
       "source": "audit",
-      "status": "CONNECTED_SHADOW",
+      "status": "READY_SHADOW",
       "surface": "Executions",
       "aliases": []
     },
@@ -1036,13 +1036,23 @@
       "retry/escalation decision",
       "handoff contract",
       "owner gate derivation",
-      "derived evidence summary"
+      "derived evidence summary",
+      "expires_at-authoritative lease policy",
+      "runtime manager alias routing"
     ],
     "remaining": [
-      "lease duration/renewal policy",
       "persistent evidence ledger",
       "activated retry/circuit-breaker executor after Owner approval",
       "single scheduler ownership/activation after Owner approval"
     ]
+  },
+  "runtime_aliases": {
+    "supplier-cj": "commerce_truth_brain",
+    "supplier-eprolo": "commerce_truth_brain",
+    "f35-research": "intelligence_brain",
+    "f35-acquisition": "growth_brain",
+    "sales-director": "growth_brain",
+    "daily-10k-mission": "growth_brain",
+    "dynamic-merchandising": "experience_brain"
   }
 }
