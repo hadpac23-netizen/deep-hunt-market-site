@@ -97,3 +97,40 @@ Every migration follows:
 ## Production boundary
 
 This Fusion Audit and registry are branch-only. They do not deploy, enable payments, enable supplier live ordering, publish campaigns, or alter Production.
+
+
+## Control Plane V1 — Shadow connected
+
+The branch now contains a non-executing canonical Control Plane adapter over the existing BOOM Studio runtime.
+
+Current flow:
+
+`Existing command → canonical Run → canonical Brain/Manager → Shadow Lease → declared action permissions → derived Evidence → retry/escalation decision → Owner Gate → Handoff → Learning surface`
+
+Implemented in Shadow:
+- sanitized BOOM Studio runtime snapshot,
+- canonical run envelope,
+- derived queue from existing commands,
+- manager → canonical Brain routing,
+- shadow Agent Lease,
+- declared action-class permissions,
+- deterministic retry/escalation decision,
+- structured Handoff Contract,
+- Owner Gate derivation,
+- derived Evidence summary.
+
+Still intentionally incomplete:
+- tool-level permission registry,
+- persistent Evidence Ledger,
+- lease expiry/renewal policy,
+- mission/API/model/browser budgets,
+- one canonical Scheduler owner,
+- any activated executor.
+
+Important boundaries:
+- no second Supabase client,
+- no second persistent queue,
+- no new production executor,
+- no command text/body exported to the Control Plane snapshot,
+- material actions remain Owner-gated,
+- Control Plane V1 cannot publish, deploy, charge, spend or place supplier orders.
