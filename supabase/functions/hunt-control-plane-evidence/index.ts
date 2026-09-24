@@ -60,8 +60,8 @@ function normalizeRow(x:any){
   if(!claim)throw new Error("CLAIM_REQUIRED");
   const supporting=Math.max(0,Math.min(1000,Number(x?.supporting_sources||0)));
   const contradictory=Math.max(0,Math.min(1000,Number(x?.contradictory_sources||0)));
-  const confidence=["LOW","MEDIUM","HIGH"].includes(clean(x?.confidence).toUpperCase())
-    ?clean(x.confidence).toUpperCase():"LOW";
+  const requested=clean(x?.confidence).toLowerCase();
+  const confidence=["low","medium","high"].includes(requested)?requested:"low";
   return {
     insight_id:null,
     claim,
