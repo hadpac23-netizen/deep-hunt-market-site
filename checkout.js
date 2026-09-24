@@ -270,6 +270,17 @@
         shippingAmount:Number(session.shipping_amount||0),
         totalAmount:Number(session.total_amount||0)
       });
+
+      if (data?.profit_preview && window.DragonOrderProfit?.savePreview) {
+        const profitEvidence = window.DragonOrderProfit.savePreview(data.profit_preview,{
+          payment_session_id:session.id,
+          country_code:country
+        });
+        if (profitEvidence) {
+          window.dispatchEvent(new CustomEvent("hunt:order-profit-preview",{detail:profitEvidence}));
+        }
+      }
+
       await checkShippingChess(cart,country);
     } catch (err) {
       resetQuote(friendlyQuoteError(String(err?.message || "QUOTE_FAILED")));
