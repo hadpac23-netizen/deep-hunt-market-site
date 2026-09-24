@@ -28,8 +28,8 @@ function prepare(state={}){
   return Object.freeze({
     schema:"BOOM_CONTROL_EVIDENCE_LEDGER_V1",
     table:"boom_evidence",
-    persistence_enabled:false,
-    writer_deployed:false,
+    persistence_enabled:state?.runtime_evidence?.evidence_persistence_enabled===true,
+    writer_deployed:state?.runtime_evidence?.evidence_writer_deployed===true,
     rows:Object.freeze(rows),
     counts:Object.freeze({
       prepared:rows.length,
