@@ -1,0 +1,19 @@
+/* DRAGON CORE · Product Truth UI */
+.dc-product-truth-badge{
+  position:absolute;left:50%;top:-20px;transform:translateX(-50%);
+  border:1px solid rgba(255,173,23,.22);border-radius:999px;
+  background:rgba(8,12,17,.92);padding:3px 6px;
+  font-size:4.7px;font-weight:950;letter-spacing:.06em;white-space:nowrap;
+  color:#d7a83e;box-shadow:0 5px 14px rgba(0,0,0,.22)
+}
+.dc-product-truth-badge.ready{color:#69dda0;border-color:#245c41}
+.dc-product-truth-badge.prep{color:#e0ae46;border-color:#654c1d}
+.dc-product-truth-card{border-color:rgba(255,173,23,.34)!important;background:rgba(255,173,23,.035)}
+.dc-product-truth-card>p b{color:#ffcb65}
+.dc-truth-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:8px 0}
+.dc-truth-metrics span{border:1px solid rgba(255,173,23,.16);border-radius:7px;padding:6px;color:#697785;font-size:5.2px}
+.dc-truth-metrics b{display:block;color:#f5d37f;font-size:9px;margin-bottom:2px}
+.dc-truth-note{border-top:1px solid rgba(255,173,23,.10);padding-top:6px;margin-top:7px!important}
+.dc-product-truth-summary{border-color:rgba(255,173,23,.23)!important}
+.dc-product-truth-summary>.dc-chip{float:right}
+.dc-truth-blockers{margin-top:7px!important;color:#9b7e3f!important}
