@@ -4,7 +4,6 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 const BASE=Deno.env.get("SUPABASE_URL")||"";
 const SERVICE=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";
 const PUBLISHABLE=Deno.env.get("SUPABASE_ANON_KEY")||"";
-const PERSISTENCE_ENABLED=Deno.env.get("DRAGON_CONTROL_PERSISTENCE_ENABLED")==="true";
 
 const admin=createClient(BASE,SERVICE,{auth:{persistSession:false,autoRefreshToken:false}});
 const clean=(v:unknown)=>String(v??"").trim();
@@ -41,6 +40,21 @@ async function requireAdmin(req:Request){
   const {data:profile}=await admin.from("profiles").select("is_admin").eq("id",user.id).maybeSingle();
   return profile?.is_admin===true?user:null;
 }
+async function persistenceGate(){
+  const {data,error}=await admin
+    .from("hunt_runtime_controls")
+    .select("enabled,owner_approved,note,updated_at")
+    .eq("key","dragon_control_evidence_persistence")
+    .maybeSingle();
+  if(error)return {enabled:false,owner_approved:false,error:error.message};
+  return {
+    enabled:data?.enabled===true,
+    owner_approved:data?.owner_approved===true,
+    note:data?.note||null,
+    updated_at:data?.updated_at||null
+  };
+}
+
 function normalizeRow(x:any){
   const claim=clean(x?.claim).slice(0,1000);
   if(!claim)throw new Error("CLAIM_REQUIRED");
@@ -71,11 +85,14 @@ Deno.serve(async(req:Request)=>{
   const action=clean(body?.action||"preview").toLowerCase();
   const rows=(Array.isArray(body?.rows)?body.rows:[]).slice(0,100).map(normalizeRow);
 
+  const gate=await persistenceGate();
+
   if(action==="preview"){
     return json(req,{
       ok:true,
       action:"preview",
-      persistence_enabled:PERSISTENCE_ENABLED,
+      persistence_enabled:gate.enabled===true&&gate.owner_approved===true,
+      gate,
       rows,
       production_effect:false,
       persisted:false
@@ -83,12 +100,13 @@ Deno.serve(async(req:Request)=>{
   }
 
   if(action!=="persist")return json(req,{error:"unknown action"},400);
-  if(!PERSISTENCE_ENABLED){
+  if(!(gate.enabled===true&&gate.owner_approved===true)){
     return json(req,{
       ok:false,
       error:"CONTROL_PERSISTENCE_DISABLED",
       persisted:false,
-      owner_gate_required:true
+      owner_gate_required:true,
+      gate
     },409);
   }
   if(!rows.length)return json(req,{error:"rows required"},400);
