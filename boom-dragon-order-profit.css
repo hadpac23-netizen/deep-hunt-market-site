@@ -1,0 +1,17 @@
+/* DRAGON CORE · Order → Profit truth */
+.dc-order-profit-badge{
+  position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);
+  border:1px solid rgba(99,216,110,.20);border-radius:999px;
+  background:rgba(7,12,17,.94);padding:3px 6px;font-size:4.6px;
+  font-weight:950;letter-spacing:.055em;white-space:nowrap;z-index:8
+}
+.dc-order-profit-badge.ready{color:#73dda2;border-color:#245c41}
+.dc-order-profit-badge.prep{color:#dfa94a;border-color:#644c1e}
+.dc-order-profit-card{border-color:rgba(99,216,110,.28)!important;background:rgba(99,216,110,.025)}
+.dc-order-profit-card>p b{color:#8be5aa}
+.dc-profit-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin:8px 0}
+.dc-profit-metrics span{border:1px solid rgba(99,216,110,.13);border-radius:7px;padding:6px;color:#697785;font-size:5.2px}
+.dc-profit-metrics b{display:block;color:#a4e8b7;font-size:8px;margin-bottom:2px}
+.dc-profit-note{border-top:1px solid rgba(99,216,110,.09);padding-top:6px;margin-top:7px!important;color:#748291!important}
+.dc-order-profit-summary{border-color:rgba(99,216,110,.19)!important}
+.dc-order-profit-summary>.dc-chip{float:right}
