@@ -50,13 +50,13 @@ decisions:[
 owner:[
  {hub:"Vision",leaves:["Goals","Strategy","Personal KPI"]},
  {hub:"Freedom",leaves:["Time Freedom","Life Design","Owner Only"]},
- {hub:"Control",leaves:["Approvals","Policies","Guardrails"]}
+ {hub:"Control",leaves:["Approvals","Policies","Run Queue","Leases","Permissions"]}
 ],
 f35:[{hub:"Research",leaves:["Market Intel","Competitive Edge","Trend Analysis","Global View"]}],
 f50:[{hub:"Systems",leaves:["Automation","Efficiency","Systems","Scale"]}],
 f60t:[{hub:"Demand",leaves:["Platform","Timing","Campaigns","Attribution"]}],
 stylist:[{hub:"Creative",leaves:["Hooks","Scripts","Visuals","Creative ID","Learning"]}],
-verifier:[{hub:"Trust",leaves:["Data Check","Quality Control","Trust & Audit"]}]
+verifier:[{hub:"Trust",leaves:["Evidence","Evals","Retry","Handoff","Audit"]}]
 };
 
 const VIEWS={
@@ -99,7 +99,7 @@ const CONNECTIONS=[
 ["Orders → Profit truth","Live order + cost evidence","PREP"],
 ["Content → Journey → Profit","Creative identity + attribution + profit evidence","PREP"],
 ["Supplier / Shipping truth","Fresh quote + SLA evidence","PREP"],
-["Control Plane","Run engine · permissions · scheduler · leases","PREP"],
+["Control Plane","Derived runs · routing · leases · handoff","SHADOW"],
 ["Memory / Learning Archive","Preserved backlog · no silent deletion","READY"],
 ["Owner authority","Material actions remain gated","GATED"]
 ];
