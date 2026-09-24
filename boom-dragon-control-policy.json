@@ -1,0 +1,228 @@
+{
+  "schema": "BOOM_CONTROL_POLICY_V1",
+  "mode": "SHADOW_ONLY",
+  "execution_enabled": false,
+  "budget_policy": {
+    "status": "ZERO_EXTERNAL_SPEND_DEFAULT",
+    "external_spend_usd": 0,
+    "paid_browser_usd": 0,
+    "paid_media_usd": 0,
+    "paid_generation_usd": 0,
+    "note": "No paid external execution unless Owner explicitly changes the budget."
+  },
+  "tool_classes": [
+    {
+      "id": "runtime_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "research_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "repo_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "repo_stage_fix",
+      "risk": "MEDIUM",
+      "owner_gate": false
+    },
+    {
+      "id": "catalog_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "supplier_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "supplier_quote",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "pricing_compute",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "analytics_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "security_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "checkout_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "order_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "payment_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "marketing_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "marketing_draft",
+      "risk": "MEDIUM",
+      "owner_gate": false
+    },
+    {
+      "id": "creative_draft",
+      "risk": "MEDIUM",
+      "owner_gate": false
+    },
+    {
+      "id": "visual_qa",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "personalization_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "evaluation_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "learning_read",
+      "risk": "LOW",
+      "owner_gate": false
+    },
+    {
+      "id": "production_deploy",
+      "risk": "CRITICAL",
+      "owner_gate": true
+    },
+    {
+      "id": "payment_charge",
+      "risk": "CRITICAL",
+      "owner_gate": true
+    },
+    {
+      "id": "supplier_live_order",
+      "risk": "CRITICAL",
+      "owner_gate": true
+    },
+    {
+      "id": "campaign_publish",
+      "risk": "HIGH",
+      "owner_gate": true
+    },
+    {
+      "id": "external_message",
+      "risk": "HIGH",
+      "owner_gate": true
+    },
+    {
+      "id": "live_price_change",
+      "risk": "HIGH",
+      "owner_gate": true
+    },
+    {
+      "id": "permission_change",
+      "risk": "CRITICAL",
+      "owner_gate": true
+    }
+  ],
+  "brain_grants": {
+    "boom_orchestrator": [
+      "runtime_read",
+      "repo_read",
+      "evaluation_read",
+      "learning_read"
+    ],
+    "intelligence_brain": [
+      "research_read",
+      "analytics_read",
+      "catalog_read",
+      "supplier_read",
+      "evaluation_read"
+    ],
+    "innovation_brain": [
+      "research_read",
+      "repo_read",
+      "repo_stage_fix",
+      "creative_draft",
+      "visual_qa",
+      "evaluation_read"
+    ],
+    "commerce_truth_brain": [
+      "catalog_read",
+      "supplier_read",
+      "supplier_quote",
+      "pricing_compute",
+      "analytics_read"
+    ],
+    "experience_brain": [
+      "catalog_read",
+      "analytics_read",
+      "personalization_read",
+      "visual_qa"
+    ],
+    "growth_brain": [
+      "research_read",
+      "analytics_read",
+      "marketing_read",
+      "marketing_draft",
+      "creative_draft",
+      "visual_qa"
+    ],
+    "operations_brain": [
+      "runtime_read",
+      "checkout_read",
+      "order_read",
+      "payment_read",
+      "supplier_read",
+      "repo_read",
+      "repo_stage_fix"
+    ],
+    "learning_governance_brain": [
+      "runtime_read",
+      "repo_read",
+      "repo_stage_fix",
+      "analytics_read",
+      "security_read",
+      "evaluation_read",
+      "learning_read"
+    ]
+  },
+  "material_actions": {
+    "production_deploy": "production_deploy",
+    "payment_charge": "payment_charge",
+    "supplier_live_order": "supplier_live_order",
+    "campaign_publish": "campaign_publish",
+    "external_message": "external_message",
+    "live_price_change": "live_price_change",
+    "permission_change": "permission_change"
+  },
+  "rules": [
+    "Tool-class grant does not imply execution authority.",
+    "All grants are preparation/read/stage permissions while Control Plane is SHADOW_ONLY.",
+    "Critical/high material actions always require Owner Gate.",
+    "Unknown tool classes fail closed.",
+    "No paid external service is authorized by this policy."
+  ]
+}
