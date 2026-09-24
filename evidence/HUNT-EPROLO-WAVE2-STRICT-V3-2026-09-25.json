@@ -1,0 +1,103 @@
+{
+  "version": "HUNT-EPROLO-WAVE2-STRICT-V3",
+  "date": "2026-09-25",
+  "provider": "EPROLO",
+  "source_function": "hunt-eprolo-wave2-readonly",
+  "source_function_version": 3,
+  "mode": "READ_ONLY_SHADOW",
+  "production_effect": false,
+  "destinations": [
+    "IL",
+    "DE",
+    "US"
+  ],
+  "summary": {
+    "checked": 17,
+    "technical_shadow_pass": 2,
+    "taxonomy_hold": 3,
+    "language_hold": 2,
+    "compliance_review": 7,
+    "health_claim_review": 2,
+    "brand_compatibility_review": 5,
+    "image_technical_pass": 17,
+    "all_3_markets_shipping_pass": 17,
+    "physical_quality_verified": 0,
+    "visual_merchandising_verified": 0,
+    "final_profit_verified": 0,
+    "fully_ready": 0
+  },
+  "technical_shadow_pass_products": [
+    {
+      "product_id": "24539908",
+      "department": "men",
+      "category": "men-tops",
+      "supplier_cost_usd": 11.88,
+      "inventory_snapshot": 592,
+      "stocked_variant_count": 20,
+      "shipping": {
+        "IL": {
+          "cost_usd": 16.84,
+          "shadow_retail_usd": 51.99
+        },
+        "DE": {
+          "cost_usd": 7.94,
+          "shadow_retail_usd": 35.99
+        },
+        "US": {
+          "cost_usd": 9.39,
+          "shadow_retail_usd": 37.99
+        }
+      }
+    },
+    {
+      "product_id": "25395988",
+      "department": "men",
+      "category": "men-bottoms",
+      "supplier_cost_usd": 14.85,
+      "inventory_snapshot": 791,
+      "stocked_variant_count": 21,
+      "shipping": {
+        "IL": {
+          "cost_usd": 20.13,
+          "shadow_retail_usd": 62.99
+        },
+        "DE": {
+          "cost_usd": 8.95,
+          "shadow_retail_usd": 42.99
+        },
+        "US": {
+          "cost_usd": 9.82,
+          "shadow_retail_usd": 44.99
+        }
+      }
+    }
+  ],
+  "mapping_truth": {
+    "digital_clock_category_110": "REMOVED_FROM_ACTIVE_SCAN_SUPPLIER_CATEGORY_CONTAMINATION",
+    "fashion_accessories": "MAPPING_REQUIRED"
+  },
+  "unresolved_hard_gates": [
+    "visual merchandising review",
+    "physical/material quality review",
+    "fresh stock recheck before activation",
+    "final supplier order-cost endpoint verification",
+    "final profit truth",
+    "owner gate"
+  ],
+  "hard_blocks": {
+    "payment": "OFF",
+    "supplier_live_order": "OFF",
+    "checkout_activation": "OFF",
+    "production_catalog_write": false
+  },
+  "support_status": {
+    "order_cost_question_prepared": true,
+    "gmail_send_failed": true,
+    "gmail_draft_failed": true,
+    "sent": false
+  },
+  "secrets": {
+    "stored_in": "SUPABASE_VAULT",
+    "values_in_git": false
+  }
+}
