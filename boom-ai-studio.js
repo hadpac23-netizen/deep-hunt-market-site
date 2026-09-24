@@ -39,6 +39,7 @@
       }
     }
   ):null;
+  if(client)window.BOOM_SUPABASE_CLIENT=client;
   const $=q=>document.querySelector(q);
   const $$=q=>[...document.querySelectorAll(q)];
   const esc=v=>H.esc?.(v)??String(v??"");
