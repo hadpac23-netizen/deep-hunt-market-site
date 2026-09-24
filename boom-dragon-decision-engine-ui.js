@@ -41,6 +41,13 @@
       '<div class="dc-decision-score"><strong>'+esc(c.readiness_score)+'</strong><span>/100<br>READINESS</span></div>'+
       '<h3>'+esc(c.status)+' · Risk '+esc(c.risk)+'</h3>'+
       '<p>Confidence <b>'+esc(c.confidence)+'% · '+esc(c.confidence_label)+'</b>. Score and confidence are intentionally separate.</p>'+
+      (c.evidence_refresh
+        ? '<p class="dc-decision-refresh"><b>EVIDENCE REFRESH</b><br>Observed '+esc(c.evidence_refresh.observed_at||"—")+
+          ' · Confidence support +'+esc(c.evidence_refresh.confidence_support||0)+
+          ' · Product source '+(c.evidence_refresh.product_source_stale?"STALE":"CURRENT")+
+          ' · Journey source '+(c.evidence_refresh.journey_source_stale?"STALE":"CURRENT")+
+          ' · Security '+esc(c.evidence_refresh.security_status||"UNKNOWN")+'</p>'
+        : '')+
       '<div class="dc-decision-dimensions">'+dimensionRows(c)+'</div>'+
       '<p class="dc-decision-next"><b>NEXT SAFE ACTION</b><br>'+esc(c.next_action?.text||"No action")+'</p>'+
       '<p>Owner Gate: <b>'+(c.owner_gate_required?"REQUIRED":"Not required for this preparation step")+'</b> · Execution: '+esc(c.execution_mode)+'</p>'+
@@ -66,6 +73,9 @@
       '<p>'+(c
         ? 'Confidence '+esc(c.confidence)+'% · Risk '+esc(c.risk)+' · '+esc(c.execution_mode)
         : 'Waiting for truth layers…')+'</p>'+
+      (c?.evidence_refresh
+        ? '<p>Evidence observed now · source staleness remains authoritative.</p>'
+        : '')+
       '<p>Next: '+esc(c?.next_action?.text||"Load evidence")+'</p>'+
     '</section>';
   }
