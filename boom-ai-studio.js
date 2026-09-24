@@ -2738,10 +2738,12 @@
       }))),
       commands:Object.freeze((state.commands||[]).map(x=>Object.freeze({
         id:x.id,mission_id:x.mission_id,parent_run_id:x.parent_run_id,
-        title:x.title,target_manager_id:x.target_manager_id,worker_id:x.worker_id,
+        title:x.title,target_manager_id:x.target_manager_id,target_worker_id:x.target_worker_id,
         status:x.status,action_class:x.action_class,tool_class:x.tool_class,priority:x.priority,
         owner_approval_required:x.owner_approval_required===true,
-        retry_count:Number(x.retry_count||0),
+        repeat_count:Number(x.repeat_count||0),
+        retry_attempts:Number.isFinite(Number(x.retry_attempts))?Number(x.retry_attempts):null,
+        expires_at:x.expires_at||null,
         evidence_count:evidenceCount(x),
         created_at:x.created_at,updated_at:x.updated_at,
         started_at:x.started_at,completed_at:x.completed_at
