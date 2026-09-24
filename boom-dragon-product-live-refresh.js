@@ -37,6 +37,12 @@
       priced_products:priced,
       image_products:images,
       providers:Object.freeze(providers),
+      sample_products:Object.freeze(products.slice(0,12).map(p=>Object.freeze({
+        provider:clean(p?.provider)||"CJdropshipping",
+        item_id:clean(p?.item_id),
+        title:clean(p?.title),
+        supplier_cost:Number.isFinite(Number(p?.supplier_cost))?Number(p.supplier_cost):null
+      })).filter(p=>p.item_id)),
       discovery_fresh:products.length>0&&payload.production_effect===false,
       detail_truth_ready:false,
       detail_requirements:Object.freeze([
