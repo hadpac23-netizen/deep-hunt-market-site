@@ -23,3 +23,6 @@
 .dc-decision-summary{border-color:rgba(255,92,67,.22)!important}
 .dc-decision-summary>.dc-chip{float:right}
 .dc-chip.hold{color:#ff907b!important;border-color:#7b382e!important}
+
+.dc-decision-refresh{border:1px solid rgba(39,212,238,.16);border-radius:7px;padding:7px;background:rgba(39,212,238,.025);color:#7f98a4!important}
+.dc-decision-refresh b{color:#67d9ed!important}
