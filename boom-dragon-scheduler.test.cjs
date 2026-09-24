@@ -1,0 +1,15 @@
+const fs=require("fs"),assert=require("node:assert/strict");
+const S=require("./boom-dragon-scheduler.js");
+const managers=JSON.parse(fs.readFileSync("boom-manager-registry.json","utf8"));
+const policy=JSON.parse(fs.readFileSync("boom-dragon-scheduler-policy.json","utf8"));
+const state=S.compile(managers,policy);
+assert.equal(state.canonical_owner,"boom_orchestrator");
+assert.equal(state.mode,"SHADOW_ONLY");
+assert.equal(state.activation_enabled,false);
+assert.equal(state.execution_changed,false);
+assert.equal(state.status,"INVENTORIED_SHADOW");
+assert(state.tasks.some(x=>x.manager_id==="category-orchestrator"));
+assert(state.tasks.some(x=>x.manager_id==="site-reliability"));
+assert(state.tasks.some(x=>x.id==="f60t-hourly"));
+assert(state.tasks.every(x=>x.canonical_owner==="boom_orchestrator"));
+console.log("DRAGON Scheduler inventory tests: PASS");
