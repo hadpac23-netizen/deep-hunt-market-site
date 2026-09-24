@@ -207,7 +207,7 @@
       "name": "Agent Lease",
       "owner": "boom_orchestrator",
       "source": "audit",
-      "status": "READY_SHADOW",
+      "status": "ACTIVE_INTERNAL",
       "surface": "Executions",
       "aliases": []
     },
@@ -225,7 +225,7 @@
       "name": "Canonical Scheduler",
       "owner": "boom_orchestrator",
       "source": "audit+repo",
-      "status": "OWNER_ASSIGNED_SHADOW",
+      "status": "ACTIVE_CANONICAL",
       "surface": "Executions",
       "aliases": [
         "cron",
@@ -918,7 +918,7 @@
       "name": "Retry / Circuit Breaker / Escalation",
       "owner": "boom_orchestrator",
       "source": "dragon-control-plane",
-      "status": "READY_SHADOW",
+      "status": "ACTIVE_INTERNAL_SAFE",
       "surface": "Executions / Verifier",
       "aliases": [
         "Retry Policy",
@@ -941,7 +941,7 @@
       "name": "Derived Evidence Ledger",
       "owner": "learning_governance_brain",
       "source": "dragon-control-plane",
-      "status": "WRITER_READY_BRANCH_PERSISTENCE_OFF",
+      "status": "ACTIVE_INTERNAL",
       "surface": "Verifier / Decisions",
       "aliases": [
         "Evidence Summary"
@@ -1021,7 +1021,7 @@
     "Compute Router"
   ],
   "control_plane_v1": {
-    "status": "SHADOW_CONNECTED",
+    "status": "INTERNAL_ACTIVE_MATERIAL_OFF",
     "execution_enabled": false,
     "persistent_queue_created": false,
     "second_runtime_client_created": false,
@@ -1045,10 +1045,19 @@
       "admin-gated evidence writer prepared with persistence disabled"
     ],
     "remaining": [
-      "deploy and explicitly enable persistent evidence writer after Owner approval",
-      "activate retry/circuit-breaker executor after Owner approval",
-      "migrate/activate schedules under canonical scheduler owner after Owner approval"
-    ]
+      "observe first automatic cron execution",
+      "optional end-to-end Edge writer invocation with an authenticated admin session",
+      "security hardening blockers remain separate from Control Plane activation"
+    ],
+    "internal_maintenance_enabled": true,
+    "material_execution_enabled": false,
+    "evidence_persistence_enabled": true,
+    "circuit_breaker_enabled": true,
+    "blind_retry_enabled": false,
+    "scheduler_engine": "pg_cron",
+    "scheduler_owner": "boom_orchestrator",
+    "scheduler_job_id": 26,
+    "scheduler_job_name": "dragon-control-maintenance-5m"
   },
   "runtime_aliases": {
     "supplier-cj": "commerce_truth_brain",
