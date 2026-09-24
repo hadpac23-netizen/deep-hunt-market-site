@@ -55,24 +55,34 @@ function managerById(registry={},id=""){
     (registry.departments||[]).find(x=>x.id===id) || null;
 }
 
-function permissionsFor(manager={}){
+function toolClassPolicy(controlPolicy={},toolClass=""){
+  const id=clean(toolClass);
+  if(!id)return null;
+  return (controlPolicy.tool_classes||[]).find(x=>x.id===id)||null;
+}
+function permissionsFor(manager={},brain="UNMAPPED",controlPolicy={}){
   const declared=Array.isArray(manager.can_auto)?manager.can_auto.map(clean).filter(Boolean):[];
   const ownerGate=Array.isArray(manager.owner_gate)?manager.owner_gate.map(clean).filter(Boolean):[];
+  const grants=Array.isArray(controlPolicy?.brain_grants?.[brain])?controlPolicy.brain_grants[brain]:[];
   return Object.freeze({
     declared_action_classes:freezeArray(declared),
     owner_gate_classes:freezeArray(ownerGate),
+    tool_classes:freezeArray(grants),
     execution_enabled:false,
     mode:"SHADOW_ONLY",
-    tool_scope:"UNMAPPED_BY_TOOL",
-    rule:"Declared manager permissions are preserved; Control Plane V1 does not expand or execute them."
+    tool_scope:grants.length?"CANONICAL_SHADOW":"UNMAPPED_BY_TOOL",
+    rule:"Declared manager permissions are preserved; tool classes are preparation/read grants only while Control Plane is SHADOW_ONLY."
   });
 }
 
-function requiresOwnerGate(command={},manager={}){
+function requiresOwnerGate(command={},manager={},controlPolicy={}){
   const action=clean(command.action_class).toUpperCase();
+  const toolClass=clean(command.tool_class);
+  const toolPolicy=toolClassPolicy(controlPolicy,toolClass);
   if(command.owner_approval_required===true)return true;
   if(MATERIAL_CLASSES.has(action))return true;
   if((manager.owner_gate||[]).map(x=>clean(x).toUpperCase()).includes(action))return true;
+  if(toolPolicy?.owner_gate===true)return true;
   return false;
 }
 
@@ -155,8 +165,8 @@ function compileRun(command={},ctx={}){
     id:clean(command.target_manager_id),can_auto:[],owner_gate:[]
   };
   const brain=brainForManager(command.target_manager_id);
-  const permissions=permissionsFor(manager);
-  const ownerGate=requiresOwnerGate(command,manager);
+  const permissions=permissionsFor(manager,brain,ctx.controlPolicy||{});
+  const ownerGate=requiresOwnerGate(command,manager,ctx.controlPolicy||{});
   const evidence=evidenceSummary(command,ctx);
   const status=normalizeStatus(command.status);
   const run={
@@ -171,6 +181,7 @@ function compileRun(command={},ctx={}){
     status,
     priority:n(command.priority)||3,
     action_class:clean(command.action_class||"OBSERVE").toUpperCase(),
+    tool_class:clean(command.tool_class)||null,
     created_at:command.created_at||null,
     updated_at:command.updated_at||null,
     started_at:command.started_at||null,
@@ -186,8 +197,11 @@ function compileRun(command={},ctx={}){
     }),
     retry:retryPolicy(command),
     budget:Object.freeze({
-      status:"UNSPECIFIED",
-      api_usd:null,model_usd:null,browser_usd:null,generation_usd:null,
+      status:clean(ctx.controlPolicy?.budget_policy?.status)||"UNSPECIFIED",
+      external_spend_usd:ctx.controlPolicy?.budget_policy?.external_spend_usd??null,
+      paid_browser_usd:ctx.controlPolicy?.budget_policy?.paid_browser_usd??null,
+      paid_media_usd:ctx.controlPolicy?.budget_policy?.paid_media_usd??null,
+      paid_generation_usd:ctx.controlPolicy?.budget_policy?.paid_generation_usd??null,
       execution_enabled:false
     }),
     execution_mode:"SHADOW_ONLY",
@@ -200,8 +214,10 @@ function compileRun(command={},ctx={}){
 
 function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
   const commands=Array.isArray(runtime.commands)?runtime.commands:[];
+  const controlPolicy=arguments.length>3&&arguments[3]?arguments[3]:{};
   const ctx={
     managerRegistry,
+    controlPolicy,
     workerReports:Array.isArray(runtime.workerReports)?runtime.workerReports:[],
     reports:Array.isArray(runtime.reports)?runtime.reports:[]
   };
@@ -250,11 +266,18 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
     schedules:freezeArray(schedule),
     unmapped_managers:freezeArray(unmappedManagers),
     canonical_brains:freezeArray((fusionRegistry.brains||[]).map(x=>x.id)),
+    policy:Object.freeze({
+      schema:controlPolicy.schema||null,
+      tool_classes:Number((controlPolicy.tool_classes||[]).length),
+      budget_status:controlPolicy?.budget_policy?.status||"UNSPECIFIED",
+      external_spend_usd:controlPolicy?.budget_policy?.external_spend_usd??null,
+      execution_enabled:false
+    }),
     gaps:freezeArray([
       ...(unmappedManagers.length?["UNMAPPED_MANAGERS"] : []),
-      "TOOL_PERMISSION_MAP_NOT_CANONICAL",
+      ...((controlPolicy.tool_classes||[]).length?[]:["TOOL_PERMISSION_MAP_NOT_CANONICAL"]),
       "LEASE_DURATION_POLICY_NOT_CONFIGURED",
-      "MISSION_BUDGETS_NOT_WIRED",
+      ...(controlPolicy?.budget_policy?.status?[]:["MISSION_BUDGETS_NOT_WIRED"]),
       "RETRY_ENGINE_SHADOW_ONLY",
       "EVIDENCE_LEDGER_DERIVED_NOT_PERSISTED",
       "SCHEDULER_NOT_OWNED_BY_CONTROL_PLANE"
@@ -263,14 +286,14 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
       routing:unmappedManagers.length===0?"READY":"REVIEW",
       run_envelope:"READY",
       derived_queue:"READY",
-      permissions:"PARTIAL",
+      permissions:(controlPolicy.tool_classes||[]).length?"READY_SHADOW":"PARTIAL",
       leases:"PARTIAL",
       retry:"SHADOW",
       handoff:"READY",
       evidence:"PARTIAL",
       owner_gate:"READY",
-      scheduler:"PARTIAL",
-      budgets:"PREP",
+      scheduler:schedule.length?"INVENTORIED":"PARTIAL",
+      budgets:controlPolicy?.budget_policy?.status||"PREP",
       execution:"OFF"
     })
   });
@@ -278,18 +301,19 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
 }
 
 async function loadContracts(){
-  const [m,f]=await Promise.all([
+  const [m,f,p]=await Promise.all([
     fetch("boom-manager-registry.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("MANAGER_REGISTRY_HTTP_"+r.status);return r.json()}),
-    fetch("boom-dragon-fusion-registry.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("FUSION_REGISTRY_HTTP_"+r.status);return r.json()})
+    fetch("boom-dragon-fusion-registry.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("FUSION_REGISTRY_HTTP_"+r.status);return r.json()}),
+    fetch("boom-dragon-control-policy.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("CONTROL_POLICY_HTTP_"+r.status);return r.json()})
   ]);
-  return {managerRegistry:m,fusionRegistry:f};
+  return {managerRegistry:m,fusionRegistry:f,controlPolicy:p};
 }
 
 let contracts=null;
 async function evaluate(runtime=window.BOOM_STUDIO_RUNTIME_SNAPSHOT||{}){
   try{
     if(!contracts)contracts=await loadContracts();
-    const state=compileSnapshot(runtime,contracts.managerRegistry,contracts.fusionRegistry);
+    const state=compileSnapshot(runtime,contracts.managerRegistry,contracts.fusionRegistry,contracts.controlPolicy);
     window.DRAGON_CONTROL_PLANE_STATE=state;
     window.dispatchEvent(new CustomEvent("dragon:control-plane",{detail:state}));
     return state;
@@ -305,7 +329,7 @@ async function evaluate(runtime=window.BOOM_STUDIO_RUNTIME_SNAPSHOT||{}){
 }
 
 const api=Object.freeze({
-  brainForManager,normalizeStatus,permissionsFor,requiresOwnerGate,
+  brainForManager,normalizeStatus,toolClassPolicy,permissionsFor,requiresOwnerGate,
   evidenceSummary,leaseFor,retryPolicy,handoffFor,compileRun,compileSnapshot,
   loadContracts,evaluate,MATERIAL_CLASSES
 });
