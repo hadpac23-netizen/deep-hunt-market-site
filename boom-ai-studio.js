@@ -2739,7 +2739,7 @@
       commands:Object.freeze((state.commands||[]).map(x=>Object.freeze({
         id:x.id,mission_id:x.mission_id,parent_run_id:x.parent_run_id,
         title:x.title,target_manager_id:x.target_manager_id,worker_id:x.worker_id,
-        status:x.status,action_class:x.action_class,priority:x.priority,
+        status:x.status,action_class:x.action_class,tool_class:x.tool_class,priority:x.priority,
         owner_approval_required:x.owner_approval_required===true,
         retry_count:Number(x.retry_count||0),
         evidence_count:evidenceCount(x),
