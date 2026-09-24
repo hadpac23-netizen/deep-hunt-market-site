@@ -5,6 +5,7 @@
   const state=()=>window.DRAGON_PRODUCT_TRUTH_STATE||null;
 
   function label(t=state()){
+    if(window.DRAGON_PRODUCT_DETAIL_SHADOW_STATE?.status==="DETAIL_SAMPLE_VERIFIED"&&t?.stale)return "DETAIL SAMPLE VERIFIED · PORTFOLIO PREP";
     if(window.DRAGON_PRODUCT_LIVE_REFRESH_STATE?.status==="DISCOVERY_FRESH"&&t?.stale)return "DISCOVERY FRESH · DETAIL RECHECK";
     if(!t)return "TRUTH PREP";
     if(t.status==="BLOCKED")return "TRUTH BLOCKED";
@@ -96,6 +97,7 @@
 
   window.addEventListener("dragon:product-truth",()=>setTimeout(paint,0));
   window.addEventListener("dragon:product-live-refresh",()=>setTimeout(paint,0));
+  window.addEventListener("dragon:product-detail-shadow",()=>setTimeout(paint,0));
   document.addEventListener("click",event=>{
     if(event.target.closest('[data-dc-node="products"],[data-dc-nav-node="products"],[data-dc-right-node="products"]')){
       setTimeout(paint,0);
