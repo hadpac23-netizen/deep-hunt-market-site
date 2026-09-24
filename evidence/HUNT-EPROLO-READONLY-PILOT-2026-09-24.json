@@ -1,0 +1,189 @@
+{
+  "version": "HUNT-EPROLO-READONLY-PILOT-V1",
+  "date": "2026-09-24",
+  "provider": "EPROLO",
+  "mode": "SERVER_SIDE_READ_ONLY_SHADOW",
+  "production_effect": false,
+  "secrets": {
+    "storage": "SUPABASE_VAULT",
+    "exposed_in_repo": false,
+    "exposed_in_evidence": false
+  },
+  "live_verification": {
+    "catalog_endpoint": "eprolo_product_list.html",
+    "catalog_http": 200,
+    "supplier_code": "0",
+    "sample_products": 5,
+    "destinations": [
+      "IL",
+      "DE",
+      "US"
+    ],
+    "shipping_endpoint": "get_product_shiping_fees.html",
+    "shipping_quotes_expected": 15,
+    "shipping_quotes_verified": 15,
+    "exact_variant_images": 5,
+    "exact_variant_image_reachable": 4,
+    "image_http_review": 1,
+    "style_text_pass": 3,
+    "style_text_hold": 2,
+    "physical_quality_verified": 0,
+    "final_profit_verified": 0,
+    "fully_ready": 0
+  },
+  "products": [
+    {
+      "product_id": "24715362",
+      "supplier_cost_usd": 23.26,
+      "inventory_snapshot": 573,
+      "stocked_variant_count": 1,
+      "image_http": 200,
+      "style_text_gate": "PASS_TEXT_STYLE",
+      "markets": {
+        "IL": {
+          "shipping_usd": 18.82,
+          "landed_usd": 42.08,
+          "shadow_retail_usd": 75.99,
+          "projected_contribution_profit_usd": 27.07
+        },
+        "DE": {
+          "shipping_usd": 8.61,
+          "landed_usd": 31.87,
+          "shadow_retail_usd": 56.99,
+          "projected_contribution_profit_usd": 19.99
+        },
+        "US": {
+          "shipping_usd": 10.29,
+          "landed_usd": 33.55,
+          "shadow_retail_usd": 59.99,
+          "projected_contribution_profit_usd": 21.04
+        }
+      }
+    },
+    {
+      "product_id": "24715354",
+      "supplier_cost_usd": 24.91,
+      "inventory_snapshot": 733,
+      "stocked_variant_count": 6,
+      "image_http": 200,
+      "style_text_gate": "PASS_TEXT_STYLE",
+      "markets": {
+        "IL": {
+          "shipping_usd": 25.44,
+          "landed_usd": 50.35,
+          "shadow_retail_usd": 89.99,
+          "projected_contribution_profit_usd": 31.54
+        },
+        "DE": {
+          "shipping_usd": 10.83,
+          "landed_usd": 35.74,
+          "shadow_retail_usd": 63.99,
+          "projected_contribution_profit_usd": 22.49
+        },
+        "US": {
+          "shipping_usd": 12.26,
+          "landed_usd": 37.17,
+          "shadow_retail_usd": 66.99,
+          "projected_contribution_profit_usd": 23.79
+        }
+      }
+    },
+    {
+      "product_id": "24715350",
+      "supplier_cost_usd": 11.55,
+      "inventory_snapshot": 772,
+      "stocked_variant_count": 6,
+      "image_http": 200,
+      "style_text_gate": "PASS_TEXT_STYLE",
+      "markets": {
+        "IL": {
+          "shipping_usd": 10.58,
+          "landed_usd": 22.13,
+          "shadow_retail_usd": 39.99,
+          "projected_contribution_profit_usd": 14.26
+        },
+        "DE": {
+          "shipping_usd": 5.76,
+          "landed_usd": 17.31,
+          "shadow_retail_usd": 30.99,
+          "projected_contribution_profit_usd": 10.89
+        },
+        "US": {
+          "shipping_usd": 6.79,
+          "landed_usd": 18.34,
+          "shadow_retail_usd": 32.99,
+          "projected_contribution_profit_usd": 11.68
+        }
+      }
+    },
+    {
+      "product_id": "24715339",
+      "supplier_cost_usd": 30.03,
+      "inventory_snapshot": 747,
+      "stocked_variant_count": 4,
+      "image_http": 404,
+      "style_text_gate": "HOLD_SUPPLIER_MARKETING_TONE",
+      "markets": {
+        "IL": {
+          "shipping_usd": 16.18,
+          "landed_usd": 46.21,
+          "shadow_retail_usd": 82.99,
+          "projected_contribution_profit_usd": 29.31
+        },
+        "DE": {
+          "shipping_usd": 7.26,
+          "landed_usd": 37.29,
+          "shadow_retail_usd": 66.99,
+          "projected_contribution_profit_usd": 23.67
+        },
+        "US": {
+          "shipping_usd": 8.4,
+          "landed_usd": 38.43,
+          "shadow_retail_usd": 68.99,
+          "projected_contribution_profit_usd": 24.35
+        }
+      }
+    },
+    {
+      "product_id": "24715338",
+      "supplier_cost_usd": 24.58,
+      "inventory_snapshot": 747,
+      "stocked_variant_count": 8,
+      "image_http": 200,
+      "style_text_gate": "HOLD_SUPPLIER_MARKETING_TONE",
+      "markets": {
+        "IL": {
+          "shipping_usd": 14.78,
+          "landed_usd": 39.36,
+          "shadow_retail_usd": 70.99,
+          "projected_contribution_profit_usd": 25.24
+        },
+        "DE": {
+          "shipping_usd": 7,
+          "landed_usd": 31.58,
+          "shadow_retail_usd": 56.99,
+          "projected_contribution_profit_usd": 20.28
+        },
+        "US": {
+          "shipping_usd": 8,
+          "landed_usd": 32.58,
+          "shadow_retail_usd": 58.99,
+          "projected_contribution_profit_usd": 21.1
+        }
+      }
+    }
+  ],
+  "gates": {
+    "visual_quality": "REVIEW_REQUIRED",
+    "physical_quality": "REVIEW_REQUIRED",
+    "fresh_stock_before_activation": "REQUIRED",
+    "final_supplier_order_cost": "REQUIRED",
+    "owner_gate": "REQUIRED"
+  },
+  "hard_blocks": {
+    "payment": "OFF",
+    "supplier_live_order": "OFF",
+    "checkout_activation": "OFF",
+    "production_catalog_write": false
+  }
+}
