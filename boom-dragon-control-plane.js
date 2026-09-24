@@ -15,17 +15,20 @@ function brainForManager(id=""){
   id=clean(id);
   if(!id)return "UNMAPPED";
   if(id==="boom-executive"||id==="boom-super-agent"||id==="boom-meta-f35")return "boom_orchestrator";
-  if(id.startsWith("dept-")||[
+  if(id.startsWith("dept-")||id.startsWith("supplier-")||[
     "category-orchestrator","inventory-truth","sale-readiness","pricing-profit",
     "supplier-shipping","country-localization","supplier-hypersku"
   ].includes(id))return "commerce_truth_brain";
-  if(["decision-intelligence"].includes(id)||id.startsWith("f35-"))return "intelligence_brain";
+  if(["decision-intelligence","f35-research"].includes(id))return "intelligence_brain";
   if(["creative-brand-factory"].includes(id)||id.startsWith("f50"))return "innovation_brain";
   if([
     "feedback-intelligence","memory-continuity","hunt-worlds-flow",
-    "boom-stylist","boom-mirror","merchandising-ux"
+    "boom-stylist","boom-mirror","merchandising-ux","dynamic-merchandising"
   ].includes(id))return "experience_brain";
-  if(["marketing-growth","sales-conversion","share-referral"].includes(id)||id.startsWith("f60"))return "growth_brain";
+  if([
+    "marketing-growth","sales-conversion","share-referral","sales-director",
+    "daily-10k-mission","f35-acquisition"
+  ].includes(id)||id.startsWith("f60"))return "growth_brain";
   if([
     "checkout-payment","returns-care","integration-connections","site-reliability",
     "finance-reconciliation"
@@ -107,17 +110,27 @@ function evidenceSummary(command={},ctx={}){
   });
 }
 
-function leaseFor(command={},manager={},permissions={}){
+function leaseFor(command={},manager={},permissions={},now=Date.now()){
   const status=normalizeStatus(command.status);
-  const active=["QUEUED","ACCEPTED","RUNNING","WAITING_OWNER"].includes(status);
+  const activeStatus=["QUEUED","ACCEPTED","RUNNING","WAITING_OWNER"].includes(status);
+  const expiresAt=command.expires_at||null;
+  const expiresMs=expiresAt?Date.parse(String(expiresAt)):NaN;
+  const expiryKnown=Number.isFinite(expiresMs);
+  const expired=activeStatus&&expiryKnown&&expiresMs<=now;
+  const leaseState=!activeStatus?"INACTIVE":!expiryKnown?"MISSING_EXPIRY":expired?"EXPIRED":"VALID";
   return Object.freeze({
     lease_id:"shadow-lease:"+clean(command.id||"unknown"),
     holder:clean(command.target_manager_id)||"UNMAPPED",
     brain:brainForManager(command.target_manager_id),
-    active,
+    active:activeStatus&&!expired,
+    state:leaseState,
     started_at:command.started_at||command.created_at||null,
-    expires_at:null,
-    duration_policy:"NOT_CONFIGURED",
+    expires_at:expiresAt,
+    remaining_seconds:activeStatus&&expiryKnown?Math.max(0,Math.floor((expiresMs-now)/1000)):null,
+    duration_policy:"COMMAND_EXPIRES_AT_AUTHORITATIVE",
+    renewal_policy:"PROPOSE_ONLY_NO_AUTO_RENEWAL",
+    renewal_decision:expired?"RENEWAL_REVIEW_REQUIRED":leaseState==="VALID"?"NO_RENEWAL_NEEDED":"NO_RENEWAL",
+    recurrence_count:Number(command.repeat_count||0),
     allowed_action_classes:permissions.declared_action_classes,
     execution_enabled:false,
     mode:"SHADOW_LEASE"
@@ -126,12 +139,15 @@ function leaseFor(command={},manager={},permissions={}){
 
 function retryPolicy(command={}){
   const status=normalizeStatus(command.status);
-  const count=n(command.retry_count);
-  if(status==="WAITING_OWNER")return Object.freeze({decision:"NO_RETRY_OWNER_GATE",retry_count:count,max_retries:null,circuit_breaker:"HOLD"});
-  if(status==="BLOCKED")return Object.freeze({decision:"ESCALATE_BLOCKED",retry_count:count,max_retries:2,circuit_breaker:"HOLD"});
-  if(status==="FAILED"&&count<2)return Object.freeze({decision:"PROPOSE_RETRY",retry_count:count,max_retries:2,circuit_breaker:"CLOSED_SHADOW"});
-  if(status==="FAILED")return Object.freeze({decision:"ESCALATE_AFTER_RETRIES",retry_count:count,max_retries:2,circuit_breaker:"OPEN_SHADOW"});
-  return Object.freeze({decision:"NO_RETRY_NEEDED",retry_count:count,max_retries:2,circuit_breaker:"CLOSED_SHADOW"});
+  const retryKnown=Number.isFinite(Number(command.retry_attempts));
+  const retryAttempts=retryKnown?Number(command.retry_attempts):null;
+  const recurrenceCount=Number(command.repeat_count||0);
+  if(status==="WAITING_OWNER")return Object.freeze({decision:"NO_RETRY_OWNER_GATE",retry_attempts:retryAttempts,retry_attempts_known:retryKnown,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"HOLD"});
+  if(status==="BLOCKED")return Object.freeze({decision:"ESCALATE_BLOCKED",retry_attempts:retryAttempts,retry_attempts_known:retryKnown,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"HOLD"});
+  if(status==="FAILED"&&!retryKnown)return Object.freeze({decision:"RETRY_COUNT_UNKNOWN_REVIEW",retry_attempts:null,retry_attempts_known:false,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"HOLD_SHADOW"});
+  if(status==="FAILED"&&retryAttempts<2)return Object.freeze({decision:"PROPOSE_RETRY",retry_attempts:retryAttempts,retry_attempts_known:true,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"CLOSED_SHADOW"});
+  if(status==="FAILED")return Object.freeze({decision:"ESCALATE_AFTER_RETRIES",retry_attempts:retryAttempts,retry_attempts_known:true,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"OPEN_SHADOW"});
+  return Object.freeze({decision:"NO_RETRY_NEEDED",retry_attempts:retryAttempts,retry_attempts_known:retryKnown,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"CLOSED_SHADOW"});
 }
 
 function handoffFor(run){
@@ -176,7 +192,7 @@ function compileRun(command={},ctx={}){
     parent_run_id:clean(command.parent_run_id)||null,
     title:clean(command.title)||"BOOM Command",
     manager_id:clean(command.target_manager_id)||"UNMAPPED",
-    worker_id:clean(command.worker_id)||null,
+    worker_id:clean(command.target_worker_id||command.worker_id)||null,
     brain,
     status,
     priority:n(command.priority)||3,
@@ -195,6 +211,7 @@ function compileRun(command={},ctx={}){
       approved:false,
       execution_enabled:false
     }),
+    recurrence_count:Number(command.repeat_count||0),
     retry:retryPolicy(command),
     budget:Object.freeze({
       status:clean(ctx.controlPolicy?.budget_policy?.status)||"UNSPECIFIED",
@@ -207,7 +224,7 @@ function compileRun(command={},ctx={}){
     execution_mode:"SHADOW_ONLY",
     persisted_by_control_plane:false
   };
-  run.lease=leaseFor(command,manager,permissions);
+  run.lease=leaseFor(command,manager,permissions,Number(ctx.now||Date.now()));
   run.handoff=handoffFor(run);
   return Object.freeze(run);
 }
@@ -218,6 +235,7 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
   const ctx={
     managerRegistry,
     controlPolicy,
+    now:Number(runtime.now||Date.now()),
     workerReports:Array.isArray(runtime.workerReports)?runtime.workerReports:[],
     reports:Array.isArray(runtime.reports)?runtime.reports:[]
   };
@@ -276,7 +294,7 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
     gaps:freezeArray([
       ...(unmappedManagers.length?["UNMAPPED_MANAGERS"] : []),
       ...((controlPolicy.tool_classes||[]).length?[]:["TOOL_PERMISSION_MAP_NOT_CANONICAL"]),
-      "LEASE_DURATION_POLICY_NOT_CONFIGURED",
+      ...(runs.some(x=>x.lease.state==="MISSING_EXPIRY")?["LEASE_EXPIRY_MISSING"]:[]),
       ...(controlPolicy?.budget_policy?.status?[]:["MISSION_BUDGETS_NOT_WIRED"]),
       "RETRY_ENGINE_SHADOW_ONLY",
       "EVIDENCE_LEDGER_DERIVED_NOT_PERSISTED",
@@ -287,7 +305,7 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
       run_envelope:"READY",
       derived_queue:"READY",
       permissions:(controlPolicy.tool_classes||[]).length?"READY_SHADOW":"PARTIAL",
-      leases:"PARTIAL",
+      leases:runs.some(x=>x.lease.state==="MISSING_EXPIRY")?"PARTIAL":"READY_SHADOW",
       retry:"SHADOW",
       handoff:"READY",
       evidence:"PARTIAL",
