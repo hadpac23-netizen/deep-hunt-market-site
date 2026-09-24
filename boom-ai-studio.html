@@ -278,30 +278,63 @@
 
 
         <section class="view dragon-core-view" id="dragon-control-room">
-          <header class="dragon-core-head">
-            <div>
-              <small>BOOM STUDIO · UNIFIED CONTROL MAP · PROTOTYPE</small>
-              <h1>DRAGON CORE</h1>
-              <p>Business truth inside · BOOM Studio functions outside · details on demand.</p>
+          <header class="dc-app-header">
+            <div class="dc-brand-lockup">
+              <div class="dc-brand-mark" aria-hidden="true">D</div>
+              <div><small>BOOM Studio</small><strong>DRAGON CORE</strong></div>
             </div>
-            <div class="dragon-core-badges">
-              <span>DEMO DATA</span><span>SHADOW MODE</span><span>OWNER GATE</span>
+            <label class="dc-search">
+              <span>⌕</span>
+              <input id="dragon-core-search" type="search" autocomplete="off" placeholder="Search nodes, systems, Studio modules…">
+              <kbd>⌘ K</kbd>
+            </label>
+            <div class="dc-mode-badges" aria-label="DRAGON CORE operating state">
+              <span class="demo">DEMO DATA</span>
+              <span class="shadow">SHADOW MODE</span>
+              <span class="gate">OWNER GATE</span>
             </div>
           </header>
-          <div class="dragon-core-toolbar">
-            <div id="dragon-core-views"></div>
-            <div class="dragon-core-zoom">
-              <button type="button" data-core-zoom="out">−</button>
-              <button type="button" data-core-zoom="fit">FIT</button>
-              <button type="button" data-core-zoom="in">+</button>
-            </div>
-          </div>
-          <div class="dragon-core-viewport" id="dragon-core-viewport">
-            <div class="dragon-core-canvas" id="dragon-core-canvas">
-              <svg id="dragon-core-links" viewBox="0 0 2560 1440" aria-hidden="true"></svg>
-              <div id="dragon-core-nodes"></div>
-            </div>
-            <aside id="dragon-core-inspector" aria-live="polite"></aside>
+
+          <div class="dc-layout">
+            <aside class="dc-left-rail" aria-label="DRAGON CORE navigation">
+              <nav id="dragon-core-nav"></nav>
+              <footer>
+                <strong>BOOM Studio</strong>
+                <span>People · Products · Profit · Freedom</span>
+                <small>DRAGON CORE · Prototype</small>
+              </footer>
+            </aside>
+
+            <main class="dc-map-panel">
+              <div class="dc-map-toolbar">
+                <div id="dragon-core-views"></div>
+                <div class="dc-map-tools">
+                  <button type="button" data-core-zoom="out" aria-label="Zoom out">−</button>
+                  <button type="button" data-core-zoom="fit">FIT</button>
+                  <button type="button" data-core-zoom="in" aria-label="Zoom in">+</button>
+                </div>
+              </div>
+              <div class="dragon-core-viewport" id="dragon-core-viewport">
+                <div class="dragon-core-canvas" id="dragon-core-canvas">
+                  <svg id="dragon-core-links" viewBox="0 0 2560 1440" aria-hidden="true"></svg>
+                  <div id="dragon-core-nodes"></div>
+                </div>
+                <aside id="dragon-core-inspector" aria-live="polite"></aside>
+              </div>
+            </main>
+
+            <aside class="dc-right-rail">
+              <div class="dc-status-head">
+                <div class="dc-mini-mark">D</div>
+                <div><strong>DRAGON CORE</strong><span>The Brain of BOOM Studio</span></div>
+              </div>
+              <div class="dc-right-tabs" role="tablist">
+                <button type="button" class="active" data-dc-right-tab="overview">Overview</button>
+                <button type="button" data-dc-right-tab="metrics">Metrics</button>
+                <button type="button" data-dc-right-tab="activity">Activity</button>
+              </div>
+              <div id="dragon-core-right-panel"></div>
+            </aside>
           </div>
         </section>
 
