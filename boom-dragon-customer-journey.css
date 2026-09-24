@@ -1,0 +1,19 @@
+/* DRAGON CORE · Customer Journey Truth */
+.dc-customer-journey-badge{
+  position:absolute;left:50%;top:-20px;transform:translateX(-50%);
+  border:1px solid rgba(46,131,255,.22);border-radius:999px;
+  background:rgba(7,12,17,.94);padding:3px 6px;font-size:4.6px;
+  font-weight:950;letter-spacing:.055em;white-space:nowrap;z-index:8
+}
+.dc-customer-journey-badge.ready{color:#74aaff;border-color:#285fa8}
+.dc-customer-journey-badge.prep{color:#dbaa48;border-color:#60491c}
+.dc-journey-card{border-color:rgba(46,131,255,.28)!important;background:rgba(46,131,255,.025)}
+.dc-journey-card>p b{color:#7cb0ff}
+.dc-journey-flow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:9px 0}
+.dc-journey-flow span{min-width:45px;border:1px solid rgba(46,131,255,.15);border-radius:7px;padding:6px;color:#697785;font-size:5px;text-align:center}
+.dc-journey-flow span b{display:block;color:#93bdff;font-size:9px;margin-bottom:2px}
+.dc-journey-flow i{font-style:normal;color:#45678e;font-size:7px}
+.dc-journey-warning{color:#e5ad45!important;border:1px solid rgba(229,173,69,.18);border-radius:7px;padding:6px}
+.dc-journey-note{border-top:1px solid rgba(46,131,255,.09);padding-top:6px;margin-top:7px!important}
+.dc-journey-summary{border-color:rgba(46,131,255,.20)!important}
+.dc-journey-summary>.dc-chip{float:right}
