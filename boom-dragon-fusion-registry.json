@@ -187,7 +187,7 @@
       "name": "Mission / Run Engine",
       "owner": "boom_orchestrator",
       "source": "audit",
-      "status": "PLANNED_CONTROL_PLANE",
+      "status": "CONNECTED_SHADOW",
       "surface": "Executions",
       "aliases": [
         "Run Engine"
@@ -198,7 +198,7 @@
       "name": "Task Queue",
       "owner": "boom_orchestrator",
       "source": "audit",
-      "status": "PLANNED_CONTROL_PLANE",
+      "status": "CONNECTED_SHADOW",
       "surface": "Executions",
       "aliases": []
     },
@@ -207,7 +207,7 @@
       "name": "Agent Lease",
       "owner": "boom_orchestrator",
       "source": "audit",
-      "status": "PLANNED_CONTROL_PLANE",
+      "status": "CONNECTED_SHADOW",
       "surface": "Executions",
       "aliases": []
     },
@@ -216,7 +216,7 @@
       "name": "Tool Permission Layer",
       "owner": "boom_orchestrator",
       "source": "audit",
-      "status": "PLANNED_CONTROL_PLANE",
+      "status": "PARTIAL",
       "surface": "Connect",
       "aliases": []
     },
@@ -237,7 +237,7 @@
       "name": "Mission Budgets",
       "owner": "boom_orchestrator",
       "source": "archive",
-      "status": "PRESERVED_DOCUMENTED",
+      "status": "PREP",
       "surface": "Professional",
       "aliases": [
         "Cost Control"
@@ -912,6 +912,40 @@
       "aliases": [
         "Score+Confidence+Evidence+Risk+Next Action"
       ]
+    },
+    {
+      "id": "retry_circuit_breaker",
+      "name": "Retry / Circuit Breaker / Escalation",
+      "owner": "boom_orchestrator",
+      "source": "dragon-control-plane",
+      "status": "CONNECTED_SHADOW",
+      "surface": "Executions / Verifier",
+      "aliases": [
+        "Retry Policy",
+        "Escalation"
+      ]
+    },
+    {
+      "id": "handoff_contract",
+      "name": "Canonical Agent Handoff Contract",
+      "owner": "boom_orchestrator",
+      "source": "dragon-control-plane",
+      "status": "CONNECTED_SHADOW",
+      "surface": "Executions / Verifier",
+      "aliases": [
+        "Context+Goal+Evidence+Unknowns+Owner Constraints"
+      ]
+    },
+    {
+      "id": "evidence_ledger",
+      "name": "Derived Evidence Ledger",
+      "owner": "learning_governance_brain",
+      "source": "dragon-control-plane",
+      "status": "PARTIAL",
+      "surface": "Verifier / Decisions",
+      "aliases": [
+        "Evidence Summary"
+      ]
     }
   ],
   "views": [
@@ -985,5 +1019,30 @@
     "Strategy Memory",
     "Arena",
     "Compute Router"
-  ]
+  ],
+  "control_plane_v1": {
+    "status": "SHADOW_CONNECTED",
+    "execution_enabled": false,
+    "persistent_queue_created": false,
+    "second_runtime_client_created": false,
+    "source": "existing BOOM Studio commands/reports/workers/evals",
+    "implemented": [
+      "canonical run envelope",
+      "derived queue",
+      "shadow agent lease",
+      "manager action permissions",
+      "retry/escalation decision",
+      "handoff contract",
+      "owner gate derivation",
+      "derived evidence summary"
+    ],
+    "remaining": [
+      "canonical tool-level permission registry",
+      "persistent evidence ledger",
+      "lease duration/renewal policy",
+      "mission cost budgets",
+      "single scheduler ownership",
+      "activated executor after Owner approval"
+    ]
+  }
 }
