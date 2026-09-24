@@ -22,7 +22,8 @@ function card(){
       '<div><strong>'+esc(q.blocked??"—")+'</strong><span>Blocked</span></div>'+
     '</div>'+
     '<p>Routing '+esc(r.routing||"PREP")+' · Queue '+esc(r.derived_queue||"PREP")+
-      ' · Handoff '+esc(r.handoff||"PREP")+' · Tools '+esc(r.permissions||"PREP")+' · Execution '+esc(r.execution||"OFF")+'</p>'+
+      ' · Handoff '+esc(r.handoff||"PREP")+' · Tools '+esc(r.permissions||"PREP")+' · Internal '+esc(r.execution||"OFF")+'</p>'+
+    '<p><b>MATERIAL EXECUTION '+esc(r.material_execution||"OFF")+'</b> · Payment/Supplier/Publish remain gated.</p>'+
     '<p class="dc-control-rule">Uses existing BOOM runtime. No second client, queue or executor.</p>'+
   '</section>';
 }
