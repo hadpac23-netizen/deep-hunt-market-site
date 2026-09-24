@@ -225,7 +225,7 @@
       "name": "Canonical Scheduler",
       "owner": "boom_orchestrator",
       "source": "audit+repo",
-      "status": "INVENTORIED_SHADOW",
+      "status": "OWNER_ASSIGNED_SHADOW",
       "surface": "Executions",
       "aliases": [
         "cron",
@@ -918,7 +918,7 @@
       "name": "Retry / Circuit Breaker / Escalation",
       "owner": "boom_orchestrator",
       "source": "dragon-control-plane",
-      "status": "CONNECTED_SHADOW",
+      "status": "READY_SHADOW",
       "surface": "Executions / Verifier",
       "aliases": [
         "Retry Policy",
@@ -941,7 +941,7 @@
       "name": "Derived Evidence Ledger",
       "owner": "learning_governance_brain",
       "source": "dragon-control-plane",
-      "status": "PARTIAL",
+      "status": "WRITER_READY_BRANCH_PERSISTENCE_OFF",
       "surface": "Verifier / Decisions",
       "aliases": [
         "Evidence Summary"
@@ -1038,12 +1038,16 @@
       "owner gate derivation",
       "derived evidence summary",
       "expires_at-authoritative lease policy",
-      "runtime manager alias routing"
+      "runtime manager alias routing",
+      "lease-aware circuit breaker",
+      "canonical scheduler owner assignment",
+      "existing boom_evidence ledger reuse",
+      "admin-gated evidence writer prepared with persistence disabled"
     ],
     "remaining": [
-      "persistent evidence ledger",
-      "activated retry/circuit-breaker executor after Owner approval",
-      "single scheduler ownership/activation after Owner approval"
+      "deploy and explicitly enable persistent evidence writer after Owner approval",
+      "activate retry/circuit-breaker executor after Owner approval",
+      "migrate/activate schedules under canonical scheduler owner after Owner approval"
     ]
   },
   "runtime_aliases": {
