@@ -134,6 +134,13 @@
       owner_gate_required:false,
       execution:"PREPARE_ONLY"
     });
+    if(inputs.product?.stale===true&&inputs.product_live_refresh?.status==="DISCOVERY_FRESH")return Object.freeze({
+      action_class:"VERIFY_DETAIL_TRUTH",
+      target:"product_detail_truth",
+      text:"Discovery is fresh. Run fresh Variant + Stock + Destination Shipping + Landed Cost + Profit checks for priority products.",
+      owner_gate_required:false,
+      execution:"SHADOW_ONLY"
+    });
     if(inputs.product?.stale===true)return Object.freeze({
       action_class:"REFRESH_EVIDENCE",
       target:"product_truth",
@@ -178,6 +185,7 @@
       profit:raw.profit||null,
       content:raw.content||null,
       refresh:raw.refresh||null,
+      product_live_refresh:raw.product_live_refresh||null,
       launch_gates:Array.isArray(raw.launch_gates)?raw.launch_gates:[],
       f50_evidence:Array.isArray(raw.f50_evidence)?raw.f50_evidence:[]
     };
@@ -193,6 +201,16 @@
 
     const evidence=[
       evidenceEntry("product_truth","Product Truth",inputs.product,inputs.product?.status,inputs.product?.blockers?.join(" · ")),
+      Object.freeze({
+        key:"product_live_refresh",
+        label:"CJ Discovery Refresh",
+        status:inputs.product_live_refresh?.status||"NOT_RUN",
+        freshness:inputs.product_live_refresh?.status==="DISCOVERY_FRESH"?"FRESH":"UNKNOWN",
+        detail:inputs.product_live_refresh?.status==="DISCOVERY_FRESH"
+          ? "Discovery fresh · Detail Truth still RECHECK_REQUIRED"
+          : "CJ shadow refresh not completed",
+        source:inputs.product_live_refresh?.source||"CJ_OFFICIAL_PRODUCT_LIST_SHADOW"
+      }),
       evidenceEntry("customer_journey","Customer Journey",inputs.journey,inputs.journey?.status,inputs.journey?.mode),
       evidenceEntry("order_profit","Order → Profit",inputs.profit,inputs.profit?.status,inputs.profit?.issues?.join(" · ")),
       evidenceEntry("content_feedback","Content Feedback",inputs.content,inputs.content?.status,inputs.content?.blockers?.join(" · "))
@@ -231,7 +249,10 @@
     const hardGates=hardGateSummary(inputs.launch_gates);
     const unknowns=[];
     if(!inputs.product)unknowns.push("PRODUCT_TRUTH_NOT_LOADED");
-    else if(inputs.product.stale)unknowns.push("PRODUCT_TRUTH_STALE");
+    else if(inputs.product.stale){
+      if(inputs.product_live_refresh?.status==="DISCOVERY_FRESH")unknowns.push("PRODUCT_DETAIL_TRUTH_STALE");
+      else unknowns.push("PRODUCT_TRUTH_STALE");
+    }
     if(!inputs.journey)unknowns.push("CUSTOMER_JOURNEY_NOT_LOADED");
     else if(inputs.journey.stale)unknowns.push("CUSTOMER_JOURNEY_STALE");
     if(!inputs.profit)unknowns.push("ORDER_PROFIT_NOT_LOADED");
@@ -242,7 +263,7 @@
 
     const confidence=confidenceFor(inputs,evidence,inputs.refresh);
     let status="TEST";
-    if(hardGates.blocked||unknowns.includes("PRODUCT_TRUTH_STALE")||unknowns.includes("CUSTOMER_JOURNEY_STALE"))status="HOLD";
+    if(hardGates.blocked||unknowns.includes("PRODUCT_TRUTH_STALE")||unknowns.includes("PRODUCT_DETAIL_TRUTH_STALE")||unknowns.includes("CUSTOMER_JOURNEY_STALE"))status="HOLD";
     else if(score>=85&&confidence>=80&&unknowns.length===0)status="READY";
     else if(score<25&&confidence>=70)status="HOLD";
 
@@ -258,6 +279,14 @@
       score_kind:"DECISION_READINESS",
       confidence,
       confidence_label:confidenceLabel(confidence),
+      product_live_refresh:inputs.product_live_refresh?Object.freeze({
+        status:inputs.product_live_refresh.status||"UNKNOWN",
+        generated_at:inputs.product_live_refresh.generated_at||null,
+        discovery_fresh:inputs.product_live_refresh.discovery_fresh===true,
+        detail_truth_ready:inputs.product_live_refresh.detail_truth_ready===true,
+        products_seen:Number(inputs.product_live_refresh.products_seen||0),
+        decision_effect:inputs.product_live_refresh.decision_effect||"DISCOVERY_ONLY"
+      }):null,
       evidence_refresh:inputs.refresh?Object.freeze({
         observed_at:inputs.refresh.observed_at||null,
         observation_fresh:inputs.refresh.observation_fresh===true,
@@ -318,6 +347,7 @@
       profit:window.DragonOrderProfit?.readLastPreview?.()||null,
       content:window.DRAGON_CONTENT_FEEDBACK_STATE||null,
       refresh,
+      product_live_refresh:window.DRAGON_PRODUCT_LIVE_REFRESH_STATE||null,
       launch_gates:refresh?.launch_gates?.length?refresh.launch_gates:live.launch_gates,
       f50_evidence:live.f50_evidence
     });
@@ -341,7 +371,8 @@
         evidence:card.evidence,
         unknowns:card.unknowns,
         hard_gates:card.hard_gates,
-        evidence_refresh:card.evidence_refresh
+        evidence_refresh:card.evidence_refresh,
+        product_live_refresh:card.product_live_refresh
       },
       rationale:"Shadow-mode deterministic readiness assessment. No execution implied.",
       action_class:card.next_action?.action_class||"NO_ACTION",
@@ -359,7 +390,7 @@
   if(typeof window!=="undefined"){
     window.DragonDecisionEngine=api;
     const rerun=()=>setTimeout(evaluateBrowser,50);
-    ["dragon:product-truth","dragon:customer-journey","hunt:order-profit-preview","dragon:content-feedback","dragon:evidence-refresh"]
+    ["dragon:product-truth","dragon:product-live-refresh","dragon:customer-journey","hunt:order-profit-preview","dragon:content-feedback","dragon:evidence-refresh"]
       .forEach(name=>window.addEventListener(name,rerun));
     if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(evaluateBrowser,350));
     else setTimeout(evaluateBrowser,350);
