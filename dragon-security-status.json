@@ -1,44 +1,57 @@
 {
   "schema": "DRAGON_SECURITY_STATUS_V1",
-  "observed_at": "2026-09-24T13:05:03.750Z",
+  "observed_at": "2026-09-24T13:17:22.186Z",
   "production_effect": true,
   "migration": "harden_user_scoped_rpc_invoker",
   "security_definer": {
     "before_warn_count": 8,
-    "after_warn_count": 4,
+    "after_warn_count": 0,
     "moved_to_invoker": [
       "public.is_admin_user()",
       "public.create_post_draft(text,text,text,text[],jsonb,text,text,text,text)",
       "public.get_my_drafts()",
-      "public.get_my_recent_deleted()"
-    ],
-    "remaining_intentional_review": [
+      "public.get_my_recent_deleted()",
       "public.admin_set_user_ban(uuid,boolean)",
       "public.publish_draft(uuid)",
       "public.soft_delete_post(uuid)",
       "public.undo_delete_post(uuid)"
     ],
-    "rationale": "Remaining RPCs currently depend on privileged writes/state transitions. Do not broaden direct table UPDATE grants merely to silence the linter."
+    "remaining_intentional_review": [],
+    "rationale": "Remaining RPCs currently depend on privileged writes/state transitions. Do not broaden direct table UPDATE grants merely to silence the linter.",
+    "private_implementations": [
+      "private.admin_set_user_ban_impl(uuid,boolean)",
+      "private.publish_draft_impl(uuid)",
+      "private.soft_delete_post_impl(uuid)",
+      "private.undo_delete_post_impl(uuid)"
+    ],
+    "status": "PUBLIC_DEFINER_WARNINGS_CLOSED"
   },
   "rls_info": [
     {
       "table": "public.f60t_cron_auth",
-      "status": "RLS_ENABLED_NO_POLICY",
-      "posture": "DENY_BY_DEFAULT_SERVER_ONLY"
+      "status": "EXPLICIT_DENY_POLICY",
+      "posture": "SERVER_ONLY"
     },
     {
       "table": "public.f60t_oauth_states",
-      "status": "RLS_ENABLED_NO_POLICY",
-      "posture": "DENY_BY_DEFAULT_SERVER_ONLY"
+      "status": "EXPLICIT_DENY_POLICY",
+      "posture": "SERVER_ONLY"
     }
   ],
   "auth": {
     "leaked_password_protection": "DISABLED",
     "remediation": "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection",
-    "mutation_available_via_current_connector": false
+    "mutation_available_via_current_connector": false,
+    "status": "ONE_AUTH_LEVEL_BLOCKER_REMAINS"
   },
   "advisor_remediation": {
     "security_definer": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
     "rls_no_policy": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy"
+  },
+  "database_security": {
+    "status": "HARDENED",
+    "advisor_definer_warnings": 0,
+    "advisor_rls_info": 0,
+    "remaining_database_lints": 0
   }
 }
