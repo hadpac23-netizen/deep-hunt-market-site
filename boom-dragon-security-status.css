@@ -1,0 +1,10 @@
+/* DRAGON CORE · Security Status */
+.dc-security-card{border-color:rgba(39,212,238,.18)!important;background:rgba(39,212,238,.018)}
+.dc-security-card>.dc-chip{float:right}
+.dc-security-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:8px 0}
+.dc-security-grid span{border:1px solid rgba(39,212,238,.11);border-radius:7px;padding:6px;color:#6f7f88;font-size:4.8px}
+.dc-security-grid b{display:block;color:#88dce9;font-size:8px;margin-bottom:2px}
+.dc-security-blocker{border:1px solid rgba(255,173,23,.17);border-radius:7px;padding:6px!important;background:rgba(255,173,23,.025);color:#a8894e!important}
+.dc-security-blocker b{color:#e5b958!important}
+.dc-security-inspector{border-color:rgba(39,212,238,.18)!important;background:rgba(39,212,238,.014)}
+.dc-security-inspector p b{color:#84ddea}
