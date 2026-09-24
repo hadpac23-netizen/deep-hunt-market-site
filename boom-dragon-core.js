@@ -92,11 +92,15 @@ const STUDIO=[
 ];
 
 const CONNECTIONS=[
+["BOOM Studio Fusion","Legacy capabilities mapped to canonical brains","READY"],
+["A1–A12 Pipeline","Frozen Studio baseline preserved","READY"],
 ["Commerce Graph","Graph structure exists","READY"],
 ["Customer live events","Analytics/event feed","PREP"],
 ["Orders → Profit truth","Live order + cost evidence","PREP"],
 ["Content → Journey → Profit","Creative identity + attribution + profit evidence","PREP"],
 ["Supplier / Shipping truth","Fresh quote + SLA evidence","PREP"],
+["Control Plane","Run engine · permissions · scheduler · leases","PREP"],
+["Memory / Learning Archive","Preserved backlog · no silent deletion","READY"],
 ["Owner authority","Material actions remain gated","GATED"]
 ];
 
