@@ -821,12 +821,17 @@
       "name": "Security & Access",
       "owner": "learning_governance_brain",
       "source": "repo",
-      "status": "VERIFIED_REPO",
+      "status": "PARTIAL_HARDENED_4_DEFINER_WARNINGS",
       "surface": "Professional",
       "aliases": [
         "RLS",
         "Secrets",
         "Permissions"
+      ],
+      "notes": [
+        "4 of 8 public SECURITY DEFINER warnings moved safely to invoker/RLS.",
+        "4 privileged state-changing RPCs remain under review rather than broadening direct table grants.",
+        "Leaked-password protection remains disabled at Auth configuration level."
       ]
     },
     {
@@ -1067,5 +1072,12 @@
     "sales-director": "growth_brain",
     "daily-10k-mission": "growth_brain",
     "dynamic-merchandising": "experience_brain"
+  },
+  "security_status": {
+    "source": "dragon-security-status.json",
+    "definer_warnings_before": 8,
+    "definer_warnings_after": 4,
+    "leaked_password_protection": "DISABLED",
+    "control_plane_new_security_regression": false
   }
 }
