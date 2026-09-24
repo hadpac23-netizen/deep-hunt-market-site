@@ -115,30 +115,39 @@ Deno.serve(async(req:Request)=>{
     const ids=rankedVariantIds(detail);
     if(!ids.length) return json({item_id:itemId,status:"HOLD",reason:"NO_VARIANTS",production_effect:false});
 
+    const variantById=new Map(variants.map((v:any)=>[clean(v?.variant_id),v]));
+    const eligibleIds=ids.filter((vid)=>{
+      const v:any=variantById.get(vid);
+      const sale=Number(v?.retail_price_amount);
+      const cost=Number(v?.price_amount);
+      return v?.retail_price_verified===true
+        && clean(v?.profit_gate_status)==="PASS"
+        && Number.isFinite(sale)&&sale>0
+        && Number.isFinite(cost)&&cost>0;
+    });
+    if(!eligibleIds.length){
+      return json({
+        item_id:itemId,status:"HOLD",reason:"NO_PROFIT_READY_EXACT_VARIANT",
+        tested_variants:ids,production_effect:false
+      });
+    }
+
     let chosenVid="";
     let chosenQuote:any=null;
-    for(let i=0;i<ids.length;i++){
+    for(let i=0;i<eligibleIds.length;i++){
       if(i>0) await wait(1700);
-      const q=await quote(ids[i],"US");
+      const q=await quote(eligibleIds[i],"US");
       if(q?.stock_verified===true&&q?.stock_available===true&&q?.shipping_verified===true&&Array.isArray(q?.shipping_options)&&q.shipping_options.length){
-        chosenVid=ids[i]; chosenQuote=q; break;
+        chosenVid=eligibleIds[i]; chosenQuote=q; break;
       }
     }
-    if(!chosenVid) return json({item_id:itemId,status:"HOLD",reason:"NO_LIVE_VARIANT_US",tested_variants:ids,production_effect:false});
+    if(!chosenVid) return json({item_id:itemId,status:"HOLD",reason:"NO_LIVE_PROFIT_READY_VARIANT_US",tested_variants:eligibleIds,production_effect:false});
 
-    const sfVariant=variants.find((v:any)=>clean(v?.variant_id)===chosenVid)||null;
+    const sfVariant:any=variantById.get(chosenVid)||null;
     const exactRetailVerified=sfVariant?.retail_price_verified===true;
     const exactProfitProjected=clean(sfVariant?.profit_gate_status)==="PASS";
     const sale=Number(sfVariant?.retail_price_amount);
     const cost=Number(sfVariant?.price_amount);
-
-    if(!exactRetailVerified||!exactProfitProjected||!Number.isFinite(sale)||sale<=0||!Number.isFinite(cost)||cost<=0){
-      return json({
-        item_id:itemId,variant_id:chosenVid,status:"HOLD",reason:"EXACT_VARIANT_RETAIL_NOT_READY",
-        exact_retail_verified:exactRetailVerified,exact_projected_profit_gate:sfVariant?.profit_gate_status||null,
-        production_effect:false
-      });
-    }
 
     const quotes:any[]=[];
     quotes.push({country:"US",quote:chosenQuote});
