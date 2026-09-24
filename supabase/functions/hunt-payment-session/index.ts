@@ -214,6 +214,86 @@ async function maybeApplyCheckoutOffer(ctx:any,body:any,pricing:any,requestDiges
   };
 }
 
+async function buildProfitPreview(ctx:any,pricing:any){
+  const lines=Array.isArray(pricing?.line_items)?pricing.line_items:[];
+  const issues:string[]=[];
+  if(!lines.length)issues.push("LINE_ITEMS_MISSING");
+  if(lines.some((x:any)=>!Number.isFinite(Number(x?.supplier_cost_per_unit))))issues.push("SUPPLIER_PRODUCT_COST_UNKNOWN");
+  if(lines.some((x:any)=>!Number.isFinite(Number(x?.shipping_amount))))issues.push("SUPPLIER_SHIPPING_COST_UNKNOWN");
+
+  const {data:profile}=await ctx.supabaseAdmin
+    .from("hunt_profit_profiles")
+    .select("payment_rate,refund_reserve_rate,platform_variable_rate,platform_fixed_per_order,min_contribution_per_unit")
+    .eq("status","active")
+    .eq("owner_approved",true)
+    .order("updated_at",{ascending:false})
+    .limit(1)
+    .maybeSingle();
+
+  if(!profile)issues.push("PROFIT_PROFILE_NOT_ACTIVE");
+
+  const currency=clean(pricing?.currency||"USD").toUpperCase()||"USD";
+  const productRevenue=Number(pricing?.product_amount||0);
+  const shippingRevenue=Number(pricing?.shipping_amount||0);
+  const discount=Number(pricing?.discount_amount||0);
+  const revenue=Number(pricing?.total_amount||0);
+  const units=lines.reduce((sum:number,x:any)=>sum+Math.max(1,Number(x?.qty)||1),0);
+  const supplierProduct=lines.reduce((sum:number,x:any)=>
+    sum+(Number(x?.supplier_cost_per_unit)||0)*Math.max(1,Number(x?.qty)||1),0);
+  const supplierShipping=lines.reduce((sum:number,x:any)=>sum+(Number(x?.shipping_amount)||0),0);
+
+  if(issues.length){
+    return {
+      status:"PREP",
+      realized:false,
+      basis:"QUOTE",
+      currency,
+      revenue_amount:Number(revenue.toFixed(2)),
+      product_revenue_amount:Number(productRevenue.toFixed(2)),
+      shipping_revenue_amount:Number(shippingRevenue.toFixed(2)),
+      discount_amount:Number(discount.toFixed(2)),
+      supplier_product_cost:Number(supplierProduct.toFixed(2)),
+      supplier_shipping_cost:Number(supplierShipping.toFixed(2)),
+      contribution_amount:null,
+      contribution_margin_rate:null,
+      payment_fee_reserve:null,
+      refund_reserve:null,
+      platform_fee:null,
+      units,
+      issues
+    };
+  }
+
+  const payment= revenue*Number(profile.payment_rate||0);
+  const refund= revenue*Number(profile.refund_reserve_rate||0);
+  const platform= revenue*Number(profile.platform_variable_rate||0)+Number(profile.platform_fixed_per_order||0);
+  const contribution=revenue-supplierProduct-supplierShipping-payment-refund-platform;
+  const margin=revenue>0?contribution/revenue:null;
+  const minimum=Number(profile.min_contribution_per_unit||0)*units;
+
+  return {
+    status:contribution>=minimum?"QUOTE_PROFIT_PREVIEW":"QUOTE_PROFIT_HOLD",
+    realized:false,
+    basis:"QUOTE",
+    currency,
+    revenue_amount:Number(revenue.toFixed(2)),
+    product_revenue_amount:Number(productRevenue.toFixed(2)),
+    shipping_revenue_amount:Number(shippingRevenue.toFixed(2)),
+    discount_amount:Number(discount.toFixed(2)),
+    supplier_product_cost:Number(supplierProduct.toFixed(2)),
+    supplier_shipping_cost:Number(supplierShipping.toFixed(2)),
+    payment_fee_reserve:Number(payment.toFixed(2)),
+    refund_reserve:Number(refund.toFixed(2)),
+    platform_fee:Number(platform.toFixed(2)),
+    contribution_amount:Number(contribution.toFixed(2)),
+    contribution_margin_rate:margin===null?null:Number(margin.toFixed(4)),
+    minimum_contribution:Number(minimum.toFixed(2)),
+    units,
+    fees_are_reserves:true,
+    issues:[]
+  };
+}
+
 async function createPayPlusSession(sessionId:string,pricing:any){
   const apiKey=clean(Deno.env.get("PAYPLUS_API_KEY"));
   const secretKey=clean(Deno.env.get("PAYPLUS_SECRET_KEY"));
@@ -293,6 +373,7 @@ Deno.serve(async(req:Request)=>{
       checkout_offer_id:offerApplication.checkout_offer_id,
       total_amount:Number((pricing.total_amount-offerApplication.discount_amount).toFixed(2))
     };
+    const profitPreview=await buildProfitPreview(ctx,finalPricing);
     const requestedIdem=clean(body?.idempotency_key).slice(0,120);
     const idempotencyKey=requestedIdem||crypto.randomUUID();
     const normalized=JSON.stringify({
@@ -308,18 +389,20 @@ Deno.serve(async(req:Request)=>{
 
     const {data:existing}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
-      .select("id,status,mode,country_code,currency,product_amount,shipping_amount,pre_discount_total_amount,discount_amount,total_amount,checkout_offer_id,provider_hosted_fields_uid,provider_redirect_url,expires_at,cart_digest")
+      .select("id,status,mode,country_code,currency,product_amount,shipping_amount,pre_discount_total_amount,discount_amount,total_amount,checkout_offer_id,provider_hosted_fields_uid,provider_redirect_url,expires_at,cart_digest,line_items")
       .eq("idempotency_key",idempotencyKey)
       .maybeSingle();
     if(existing){
       if(clean(existing.cart_digest)!==cartDigest){
         return json(req,{ok:false,error:"IDEMPOTENCY_CONFLICT"},409);
       }
+      const profitPreview=await buildProfitPreview(ctx,existing);
       return json(req,{
         ok:true,reused:true,
         payment_ready:existing.status!=="prelaunch",
         idempotency_key:idempotencyKey,
-        session:existing
+        session:existing,
+        profit_preview:profitPreview
       });
     }
 
@@ -427,7 +510,8 @@ Deno.serve(async(req:Request)=>{
         shipping_ready:true,
         reason:"AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED",
         idempotency_key:idempotencyKey,
-        session:activeSession
+        session:activeSession,
+        profit_preview:profitPreview
       });
     }
 
@@ -473,7 +557,8 @@ Deno.serve(async(req:Request)=>{
       payment_ready:true,
       idempotency_key:idempotencyKey,
       integration:updated.provider_hosted_fields_uid?"hosted_fields":"hosted_page",
-      session:updated
+      session:updated,
+      profit_preview:profitPreview
     });
   }catch(error){
     return json(req,{
