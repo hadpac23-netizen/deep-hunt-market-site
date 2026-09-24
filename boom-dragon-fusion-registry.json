@@ -216,7 +216,7 @@
       "name": "Tool Permission Layer",
       "owner": "boom_orchestrator",
       "source": "audit",
-      "status": "PARTIAL",
+      "status": "CONNECTED_SHADOW",
       "surface": "Connect",
       "aliases": []
     },
@@ -225,7 +225,7 @@
       "name": "Canonical Scheduler",
       "owner": "boom_orchestrator",
       "source": "audit+repo",
-      "status": "PARTIAL",
+      "status": "INVENTORIED_SHADOW",
       "surface": "Executions",
       "aliases": [
         "cron",
@@ -237,7 +237,7 @@
       "name": "Mission Budgets",
       "owner": "boom_orchestrator",
       "source": "archive",
-      "status": "PREP",
+      "status": "CONNECTED_SHADOW",
       "surface": "Professional",
       "aliases": [
         "Cost Control"
@@ -1030,19 +1030,19 @@
       "canonical run envelope",
       "derived queue",
       "shadow agent lease",
-      "manager action permissions",
+      "canonical tool-class permission registry",
+      "zero-external-spend budget policy",
+      "scheduler inventory from existing manager registry",
       "retry/escalation decision",
       "handoff contract",
       "owner gate derivation",
       "derived evidence summary"
     ],
     "remaining": [
-      "canonical tool-level permission registry",
-      "persistent evidence ledger",
       "lease duration/renewal policy",
-      "mission cost budgets",
-      "single scheduler ownership",
-      "activated executor after Owner approval"
+      "persistent evidence ledger",
+      "activated retry/circuit-breaker executor after Owner approval",
+      "single scheduler ownership/activation after Owner approval"
     ]
   }
 }
