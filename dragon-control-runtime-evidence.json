@@ -1,6 +1,6 @@
 {
   "schema": "BOOM_CONTROL_RUNTIME_EVIDENCE_V1",
-  "observed_at": "2026-09-24T11:31:05.433851Z",
+  "observed_at": "2026-09-24T11:43:45.680305Z",
   "production_effect": false,
   "source_data_mutated": false,
   "execution_commands": {
@@ -8,8 +8,8 @@
     "lease_valid": 9,
     "lease_expired": 0,
     "lease_missing": 0,
-    "latest_expiry": "2026-09-24T17:30:00.137131Z",
-    "source": "hunt_boom_agent_commands"
+    "source": "hunt_boom_agent_commands",
+    "validation": "manual maintenance run PASS"
   },
   "planning_backlog": {
     "rows": 119,
@@ -22,24 +22,50 @@
   },
   "evidence_ledger": {
     "table": "boom_evidence",
-    "rows": 0,
-    "verified": 0,
+    "rows": 1,
+    "verified": 1,
     "schema_reuse_ready": true,
-    "writer_deployed": false,
-    "persistence_enabled": false
+    "writer_deployed": true,
+    "writer_version": 2,
+    "persistence_enabled": true,
+    "activation_audit_persisted": true
   },
   "scheduler": {
+    "canonical_engine": "pg_cron",
     "canonical_owner": "boom_orchestrator",
-    "f60t_hourly_auth_configured": true,
-    "secret_exported": false,
-    "activation_changed": false
+    "control_job_id": 26,
+    "control_job_name": "dragon-control-maintenance-5m",
+    "schedule": "*/5 * * * *",
+    "active": true,
+    "manual_validation_passed": true,
+    "automatic_run_observed": false,
+    "legacy_jobs_preserved": true,
+    "activation_changed": true
   },
   "rules": [
     "hunt_boom_agent_commands is execution-command truth.",
-    "hunt_boom_command_queue is not promoted to execution authority.",
+    "hunt_boom_command_queue remains planning backlog only.",
     "repeat_count is recurrence pressure, not retry attempts.",
     "expires_at is authoritative for command lease validity.",
-    "Evidence persistence remains OFF until an admin-authenticated writer is explicitly enabled.",
-    "No scheduler activation is changed by this snapshot."
-  ]
+    "Expired active commands are superseded by the circuit breaker.",
+    "Blind retry is disabled; fresh evidence may reissue a command through the existing Meta Pulse + dedup guard.",
+    "Evidence persistence is active through an admin-gated writer and boom_evidence.",
+    "pg_cron is the canonical scheduling engine; BOOM Orchestrator is the logical scheduler owner.",
+    "Material execution remains OFF: payment, supplier live ordering, external publishing and paid spend are not enabled."
+  ],
+  "circuit_breaker": {
+    "active": true,
+    "mode": "EXPIRE_TO_SUPERSEDED",
+    "blind_retry": false,
+    "retry_mode": "fresh-evidence-reissue-only",
+    "last_manual_validation": "2026-09-24T11:43:45.680305Z",
+    "expired_commands_on_validation": 0
+  },
+  "safety": {
+    "material_execution_enabled": false,
+    "payment_live": false,
+    "supplier_live_order": false,
+    "external_publish": false,
+    "external_spend_usd": 0
+  }
 }
