@@ -1,0 +1,56 @@
+{
+  "version": "HUNT-EPROLO-READONLY-25-V2",
+  "date": "2026-09-24",
+  "provider": "EPROLO",
+  "source_function_version": 4,
+  "mode": "READ_ONLY_SHADOW",
+  "production_effect": false,
+  "last_verified_live_scan": {
+    "checked": 25,
+    "live_shipping_quotes_verified": 75,
+    "destinations": [
+      "IL",
+      "DE",
+      "US"
+    ],
+    "exact_variant_images": 25,
+    "image_technical_pass": 22,
+    "initial_technical_shadow_pass": 14,
+    "additional_marketing_body_claim_holds": 5,
+    "refined_technical_shadow_pass": 9,
+    "physical_quality_verified": 0,
+    "visual_merchandising_verified": 0,
+    "final_profit_verified": 0,
+    "fully_ready": 0
+  },
+  "refined_candidate_ids": [
+    "24667565",
+    "24667581",
+    "24667608",
+    "24714485",
+    "24714490",
+    "24714491",
+    "24714492",
+    "24715331",
+    "24715362"
+  ],
+  "hard_gates": [
+    "physical quality review",
+    "visual merchandising review",
+    "fresh stock recheck",
+    "destination shipping recheck",
+    "final supplier order-cost truth",
+    "price gate",
+    "owner gate"
+  ],
+  "hard_blocks": {
+    "payment": "OFF",
+    "supplier_live_order": "OFF",
+    "checkout_activation": "OFF",
+    "production_catalog_write": false
+  },
+  "secrets": {
+    "storage": "SUPABASE_VAULT",
+    "values_in_git": false
+  }
+}
