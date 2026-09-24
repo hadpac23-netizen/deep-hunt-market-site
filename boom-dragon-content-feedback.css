@@ -1,0 +1,10 @@
+/* DRAGON CORE · Content Feedback Truth */
+.dc-content-feedback-card{border-color:rgba(255,86,186,.28)!important;background:rgba(255,86,186,.025)}
+.dc-content-feedback-card>p b{color:#ff8fd0}
+.dc-feedback-flow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:9px 0}
+.dc-feedback-flow span{min-width:47px;border:1px solid rgba(255,86,186,.14);border-radius:7px;padding:6px;color:#697785;font-size:5px;text-align:center}
+.dc-feedback-flow span b{display:block;color:#ff9bd4;font-size:9px;margin-bottom:2px}
+.dc-feedback-flow i{font-style:normal;color:#75425f;font-size:7px}
+.dc-feedback-note{border-top:1px solid rgba(255,86,186,.09);padding-top:6px;margin-top:7px!important}
+.dc-content-feedback-summary{border-color:rgba(255,86,186,.20)!important}
+.dc-content-feedback-summary>.dc-chip{float:right}
