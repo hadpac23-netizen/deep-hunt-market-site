@@ -1,0 +1,307 @@
+{
+  "schema": "DRAGON_EVIDENCE_REFRESH_V1",
+  "observed_at": "2026-09-24T10:58:31.162Z",
+  "production_effect": false,
+  "source_data_mutated": false,
+  "mode": "SHADOW_ONLY",
+  "product_catalog": {
+    "rows": 117,
+    "availability_verified": 117,
+    "in_stock": 76,
+    "market_eligible": 0,
+    "latest_updated": "2026-09-13 14:01:43.58834+00",
+    "latest_source_fresh": "2026-09-13 14:01:43.58834+00",
+    "latest_stock_check": "2026-09-13 14:01:43.58834+00",
+    "oldest_source_fresh": "2026-09-11 00:00:00+00"
+  },
+  "runtime_controls": [
+    {
+      "key": "hunt_bundle_discount_apply",
+      "enabled": false,
+      "owner_approved": false,
+      "updated_at": "2026-09-14 20:35:08.834298+00"
+    },
+    {
+      "key": "hunt_payment_live",
+      "enabled": false,
+      "owner_approved": false,
+      "updated_at": "2026-09-15 16:45:25.384442+00"
+    },
+    {
+      "key": "hunt_payplus_callback_accept_paid",
+      "enabled": false,
+      "owner_approved": false,
+      "updated_at": "2026-09-15 08:42:23.478304+00"
+    }
+  ],
+  "customer_journey_daily": [
+    {
+      "day": "2026-09-21",
+      "unique_sessions": 0,
+      "product_views": 0,
+      "likes": 0,
+      "saves": 0,
+      "add_to_cart": 0,
+      "checkout_starts": 0,
+      "orders": 0,
+      "gross_order_value": "0.00"
+    },
+    {
+      "day": "2026-09-20",
+      "unique_sessions": 9,
+      "product_views": 9,
+      "likes": 0,
+      "saves": 0,
+      "add_to_cart": 7,
+      "checkout_starts": 22,
+      "orders": 0,
+      "gross_order_value": "0.00"
+    },
+    {
+      "day": "2026-09-19",
+      "unique_sessions": 10,
+      "product_views": 4,
+      "likes": 0,
+      "saves": 0,
+      "add_to_cart": 0,
+      "checkout_starts": 1,
+      "orders": 0,
+      "gross_order_value": "0.00"
+    },
+    {
+      "day": "2026-09-18",
+      "unique_sessions": 22,
+      "product_views": 9,
+      "likes": 1,
+      "saves": 0,
+      "add_to_cart": 0,
+      "checkout_starts": 0,
+      "orders": 0,
+      "gross_order_value": "0.00"
+    },
+    {
+      "day": "2026-09-17",
+      "unique_sessions": 37,
+      "product_views": 5,
+      "likes": 0,
+      "saves": 0,
+      "add_to_cart": 1,
+      "checkout_starts": 1,
+      "orders": 0,
+      "gross_order_value": "0.00"
+    },
+    {
+      "day": "2026-09-16",
+      "unique_sessions": 29,
+      "product_views": 17,
+      "likes": 0,
+      "saves": 0,
+      "add_to_cart": 0,
+      "checkout_starts": 0,
+      "orders": 0,
+      "gross_order_value": "0.00"
+    },
+    {
+      "day": "2026-09-15",
+      "unique_sessions": 16,
+      "product_views": 11,
+      "likes": 0,
+      "saves": 0,
+      "add_to_cart": 1,
+      "checkout_starts": 3,
+      "orders": 8,
+      "gross_order_value": "81.20"
+    }
+  ],
+  "order_summary": [
+    {
+      "status": "exception",
+      "is_test": true,
+      "rows": 4,
+      "latest_updated": "2026-09-15 18:52:48.197+00"
+    },
+    {
+      "status": "processing",
+      "is_test": true,
+      "rows": 4,
+      "latest_updated": "2026-09-15 12:38:36.692782+00"
+    }
+  ],
+  "attribution_summary": {
+    "rows": 32,
+    "confirmed": 0,
+    "latest_updated": "2026-09-20 16:57:03.447191+00"
+  },
+  "finance_summary": {
+    "rows": 0,
+    "real_rows": 0,
+    "profit_rows": 0,
+    "latest_updated": null
+  },
+  "content_summary": {
+    "creative_drafts": 96,
+    "distribution_drafts": 96,
+    "published": 0,
+    "experiments": 4,
+    "latest_distribution_update": "2026-09-22 06:10:00.163619+00"
+  },
+  "launch_gates": [
+    {
+      "gate_key": "analytics_production",
+      "gate_group": "analytics",
+      "title": "Production first-party HUNT analytics",
+      "status": "PARTIAL",
+      "blocks_soft_launch": true,
+      "blocks_real_money": true,
+      "source": "GitHub analytics-config.js + analytics.js + Supabase analytics_events + deployment drift",
+      "next_action": "Deploy the exact tested candidate only after owner approval, then verify production page_view -> product_view -> add_to_cart -> begin_checkout events in both first-party HUNT analytics and GA4.",
+      "observed_at": "2026-09-14 21:33:20.24878+00",
+      "updated_at": "2026-09-14 21:33:20.24878+00"
+    },
+    {
+      "gate_key": "catalog_structure",
+      "gate_group": "catalog",
+      "title": "CJ catalog structure",
+      "status": "PASS",
+      "blocks_soft_launch": false,
+      "blocks_real_money": false,
+      "source": "GitHub feature branch catalog-index.json",
+      "next_action": "Keep detail-level variant/stock/shipping recheck authoritative.",
+      "observed_at": "2026-09-14 21:06:50.366113+00",
+      "updated_at": "2026-09-14 21:06:50.366113+00"
+    },
+    {
+      "gate_key": "checkout_shipping_chess",
+      "gate_group": "checkout",
+      "title": "Guest checkout quote + Shipping Chess",
+      "status": "PASS",
+      "blocks_soft_launch": false,
+      "blocks_real_money": false,
+      "source": "Local Chrome DevTools preview QA on 127.0.0.1:18977",
+      "next_action": "Keep payment live OFF. Re-run this same matrix on the owner-approved Netlify deploy before production promotion.",
+      "observed_at": "2026-09-15 18:08:53.201887+00",
+      "updated_at": "2026-09-15 18:08:53.201887+00"
+    },
+    {
+      "gate_key": "deployment_sync",
+      "gate_group": "deployment",
+      "title": "Production deployment synchronized",
+      "status": "FAIL",
+      "blocks_soft_launch": true,
+      "blocks_real_money": true,
+      "source": "GitHub PR #1 + Netlify production deploy",
+      "next_action": "Finish launch QA, then obtain owner approval to merge/deploy the tested branch. Do not treat current production as the latest HUNT build.",
+      "observed_at": "2026-09-14 21:06:50.366113+00",
+      "updated_at": "2026-09-14 21:06:50.366113+00"
+    },
+    {
+      "gate_key": "legal_policies",
+      "gate_group": "legal",
+      "title": "Customer legal/policy pages",
+      "status": "PARTIAL",
+      "blocks_soft_launch": true,
+      "blocks_real_money": true,
+      "source": "GitHub feature branch legal framework + legal-config.json",
+      "next_action": "Supply the real operating entity, registration number, business address, support email, privacy contact and returns address; then complete jurisdiction-specific legal review and remove noindex before public launch.",
+      "observed_at": "2026-09-14 21:25:06.971147+00",
+      "updated_at": "2026-09-14 21:25:06.971147+00"
+    },
+    {
+      "gate_key": "merchant_marketplace",
+      "gate_group": "merchant",
+      "title": "External merchant marketplace",
+      "status": "HOLD",
+      "blocks_soft_launch": false,
+      "blocks_real_money": false,
+      "source": "HUNT Merchant Program",
+      "next_action": "Keep external merchants off for CJ soft launch. Activate only after owner approves program terms and marketplace payout/KYC flow is ready.",
+      "observed_at": "2026-09-14 21:06:50.366113+00",
+      "updated_at": "2026-09-14 21:06:50.366113+00"
+    },
+    {
+      "gate_key": "order_tracking",
+      "gate_group": "orders",
+      "title": "Order creation, supplier handoff and tracking",
+      "status": "PARTIAL",
+      "blocks_soft_launch": false,
+      "blocks_real_money": true,
+      "source": "Supabase hunt-order-orchestrator v7 + prior CJ sandbox evidence",
+      "next_action": "Run one authenticated admin CJ sandbox order through v7. Keep live supplier order and real payment OFF until supplier order + sandbox tracking PASS.",
+      "observed_at": "2026-09-15 18:08:53.201887+00",
+      "updated_at": "2026-09-15 18:08:53.201887+00"
+    },
+    {
+      "gate_key": "payment_callback",
+      "gate_group": "payments",
+      "title": "PSP callback and real payment flow",
+      "status": "PARTIAL",
+      "blocks_soft_launch": false,
+      "blocks_real_money": true,
+      "source": "Current Supabase Edge Functions + runtime controls + Finance Ledger preview",
+      "next_action": "Prove PayPlus sandbox callback verification and idempotent paid transition before enabling hunt_payplus_callback_accept_paid. Keep hunt_payment_live OFF until explicit launch approval.",
+      "observed_at": "2026-09-15 17:04:20.158825+00",
+      "updated_at": "2026-09-15 17:04:20.158825+00"
+    },
+    {
+      "gate_key": "performance_validation",
+      "gate_group": "performance",
+      "title": "Performance validation",
+      "status": "PASS",
+      "blocks_soft_launch": false,
+      "blocks_real_money": true,
+      "source": "Local release-candidate browser QA + Core Web Vitals + Supabase advisor",
+      "next_action": "Re-run the same performance matrix on the owner-approved production deploy; candidate-level performance gate is passed.",
+      "observed_at": "2026-09-14 21:56:38.293872+00",
+      "updated_at": "2026-09-14 21:56:38.293872+00"
+    },
+    {
+      "gate_key": "security_hardening",
+      "gate_group": "security",
+      "title": "Database/Auth security hardening",
+      "status": "PARTIAL",
+      "blocks_soft_launch": false,
+      "blocks_real_money": true,
+      "source": "Supabase Security Advisor after launch security fixes",
+      "next_action": "Enable leaked-password protection and review/restrict legacy SECURITY DEFINER RPC execution before real-money launch.",
+      "observed_at": "2026-09-14 21:06:50.366113+00",
+      "updated_at": "2026-09-14 21:06:50.366113+00"
+    },
+    {
+      "gate_key": "search_prelaunch_indexing",
+      "gate_group": "seo",
+      "title": "Prelaunch crawl/index strategy",
+      "status": "PASS",
+      "blocks_soft_launch": false,
+      "blocks_real_money": false,
+      "source": "Git branch feature/hunt-sandbox-retry-qa + local SEO audit",
+      "next_action": "Add product URLs to sitemap only after product detail, retail price, stock and destination shipping gates are launch-ready.",
+      "observed_at": "2026-09-15 18:08:53.201887+00",
+      "updated_at": "2026-09-15 18:08:53.201887+00"
+    }
+  ],
+  "security_advisor": {
+    "observed_at": "2026-09-24T10:58:31.162Z",
+    "lints": [
+      {
+        "name": "rls_enabled_no_policy",
+        "title": "RLS Enabled No Policy",
+        "level": "INFO",
+        "count": 2
+      },
+      {
+        "name": "authenticated_security_definer_function_executable",
+        "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+        "level": "WARN",
+        "count": 8
+      },
+      {
+        "name": "auth_leaked_password_protection",
+        "title": "Leaked Password Protection Disabled",
+        "level": "WARN",
+        "count": 1
+      }
+    ],
+    "warn_findings": 9,
+    "info_findings": 2
+  }
+}
