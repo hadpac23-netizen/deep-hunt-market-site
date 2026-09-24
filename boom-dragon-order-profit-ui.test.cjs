@@ -1,0 +1,11 @@
+const fs=require("fs"),assert=require("assert");
+const html=fs.readFileSync("boom-ai-studio.html","utf8");
+const checkout=fs.readFileSync("checkout.html","utf8");
+const checkoutJs=fs.readFileSync("checkout.js","utf8");
+const ui=fs.readFileSync("boom-dragon-order-profit-ui.js","utf8");
+assert(html.includes("boom-dragon-order-profit.js"));
+assert(html.includes("boom-dragon-order-profit-ui.js"));
+assert(checkout.includes("boom-dragon-order-profit.js"));
+assert(checkoutJs.includes("hunt:order-profit-preview"));
+for(const x of ["NO VERIFIED QUOTE","QUOTE PREVIEW","QUOTE HOLD","REALIZED FINAL","Realized profit"])assert(ui.includes(x),x+" missing");
+console.log("DRAGON Order Profit UI contract: PASS");
