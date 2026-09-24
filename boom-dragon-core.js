@@ -56,7 +56,7 @@ f35:[{hub:"Research",leaves:["Market Intel","Competitive Edge","Trend Analysis",
 f50:[{hub:"Systems",leaves:["Automation","Efficiency","Systems","Scale"]}],
 f60t:[{hub:"Demand",leaves:["Platform","Timing","Campaigns","Attribution"]}],
 stylist:[{hub:"Creative",leaves:["Hooks","Scripts","Visuals","Creative ID","Learning"]}],
-verifier:[{hub:"Trust",leaves:["Evidence","Evals","Retry","Handoff","Audit"]}]
+verifier:[{hub:"Trust",leaves:["Evidence","Evals","Retry","Handoff","Security","Audit"]}]
 };
 
 const VIEWS={
@@ -101,6 +101,7 @@ const CONNECTIONS=[
 ["Supplier / Shipping truth","Fresh quote + SLA evidence","PREP"],
 ["Control Plane","Internal maintenance ON · material execution OFF","ACTIVE"],
 ["Evidence Ledger","boom_evidence persistence active","ACTIVE"],
+["Database Security","Public Definer 0 · RLS 0 · Auth blocker 1","ACTIVE"],
 ["Scheduler","pg_cron · BOOM Orchestrator owner","ACTIVE"],
 ["Memory / Learning Archive","Preserved backlog · no silent deletion","READY"],
 ["Owner authority","Material actions remain gated","GATED"]
@@ -233,6 +234,6 @@ function bind(){
  const tab=document.querySelector('[data-tab="dragon-control-room"]');if(tab)tab.addEventListener("click",()=>{setMode(true);history.replaceState(null,"","#dragon-control-room");setTimeout(()=>{renderGraph();renderNav();renderViews();renderRightPanel();focus("core");fit()},30)});
  window.addEventListener("hashchange",()=>{if(location.hash==="#dragon-control-room")tab?.click()});window.addEventListener("resize",()=>{if(document.body.classList.contains("dragon-core-mode"))fit()});
 }
-function init(){if(!$("#dragon-control-room"))return;renderGraph();renderNav();renderViews();renderRightPanel();bind();installReturnButtons();focus("core");setTimeout(()=>{if(location.hash==="#dragon-control-room")document.querySelector('[data-tab="dragon-control-room"]')?.click();else fit()},60);window.DRAGON_CORE={version:"6.1-control-live",core:CORE,specialists:SPECIAL,connections:CONNECTIONS,studio:STUDIO,fit,focus,authority:"SHADOW_ONLY",dataMode:"DEMO_ONLY"}}
+function init(){if(!$("#dragon-control-room"))return;renderGraph();renderNav();renderViews();renderRightPanel();bind();installReturnButtons();focus("core");setTimeout(()=>{if(location.hash==="#dragon-control-room")document.querySelector('[data-tab="dragon-control-room"]')?.click();else fit()},60);window.DRAGON_CORE={version:"6.2-security-live",core:CORE,specialists:SPECIAL,connections:CONNECTIONS,studio:STUDIO,fit,focus,authority:"SHADOW_ONLY",dataMode:"DEMO_ONLY"}}
 document.readyState==="loading"?document.addEventListener("DOMContentLoaded",init):init();
 })();
