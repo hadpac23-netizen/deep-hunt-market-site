@@ -134,3 +134,34 @@ Important boundaries:
 - no command text/body exported to the Control Plane snapshot,
 - material actions remain Owner-gated,
 - Control Plane V1 cannot publish, deploy, charge, spend or place supplier orders.
+
+
+## Control Plane V1.1 — policy-complete shadow
+
+Additional verified wiring:
+
+- `hunt_boom_agent_commands` is the execution-command truth.
+- `hunt_boom_command_queue` remains planning backlog only and is not promoted to execution authority.
+- `expires_at` is authoritative for lease validity.
+- `repeat_count` is recurrence pressure, not retry-attempt count.
+- Active runtime aliases such as supplier-cj, supplier-eprolo, f35-acquisition, sales-director, daily-10k-mission and dynamic-merchandising are mapped to canonical Brains.
+- Tool permissions are canonical at the Brain/tool-class level.
+- Default external-spend budget is zero.
+- Retry/Circuit Breaker is lease-aware and Owner-Gate-aware, but execution remains disabled.
+- Scheduler ownership is assigned to BOOM Orchestrator; schedules are inventoried only.
+- Existing `boom_evidence` is reused as the persistent evidence table. The branch contains an admin-gated writer, but persistence is disabled and the function is not deployed.
+
+Observed runtime evidence on 2026-09-24:
+- 9 open execution commands,
+- 9 valid command leases,
+- 0 expired leases,
+- 0 missing expiries,
+- planning backlog: 119 rows, stale and non-authoritative for execution,
+- `boom_evidence`: 0 persisted rows at observation time.
+
+Remaining activation steps are intentionally Owner-gated:
+1. deploy and explicitly enable evidence persistence,
+2. activate retry/circuit-breaker execution,
+3. migrate/activate schedules under the canonical scheduler owner.
+
+Until those approvals, the Control Plane remains `SHADOW_ONLY`.
