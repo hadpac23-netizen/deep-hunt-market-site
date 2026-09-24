@@ -2721,6 +2721,59 @@
     return state.professionalEvidence;
   }
 
+  function publishControlPlaneRuntimeSnapshot(){
+    const evidenceCount=row=>Array.isArray(row?.evidence)?row.evidence.length:Number(row?.evidence_count||0);
+    const snapshot=Object.freeze({
+      schema:"BOOM_STUDIO_RUNTIME_SNAPSHOT_V1",
+      generated_at:new Date().toISOString(),
+      source:"BOOM Studio existing runtime",
+      one_runtime_client:true,
+      read_only_preview:state.readOnlyPreview===true,
+      local_preview:state.localPreview===true,
+      managers:Object.freeze((state.managers||[]).map(x=>Object.freeze({
+        id:x.id,name:x.name,status:x.status,mode:x.mode,department:x.department,updated_at:x.updated_at
+      }))),
+      workers:Object.freeze((state.workers||[]).map(x=>Object.freeze({
+        id:x.id,manager_id:x.manager_id,name:x.name,role:x.role,status:x.status,updated_at:x.updated_at
+      }))),
+      commands:Object.freeze((state.commands||[]).map(x=>Object.freeze({
+        id:x.id,mission_id:x.mission_id,parent_run_id:x.parent_run_id,
+        title:x.title,target_manager_id:x.target_manager_id,worker_id:x.worker_id,
+        status:x.status,action_class:x.action_class,priority:x.priority,
+        owner_approval_required:x.owner_approval_required===true,
+        retry_count:Number(x.retry_count||0),
+        evidence_count:evidenceCount(x),
+        created_at:x.created_at,updated_at:x.updated_at,
+        started_at:x.started_at,completed_at:x.completed_at
+      }))),
+      workerReports:Object.freeze((state.workerReports||[]).map(x=>Object.freeze({
+        worker_id:x.worker_id,manager_id:x.manager_id,status:x.status,
+        action_class:x.action_class,owner_approval_required:x.owner_approval_required===true,
+        evidence_count:evidenceCount(x),created_at:x.created_at
+      }))),
+      reports:Object.freeze((state.reports||[]).map(x=>Object.freeze({
+        manager_id:x.manager_id,status:x.status,action_class:x.action_class,
+        owner_approval_required:x.owner_approval_required===true,
+        confidence:x.confidence,evidence_count:evidenceCount(x),created_at:x.created_at
+      }))),
+      events:Object.freeze((state.events||[]).map(x=>Object.freeze({
+        id:x.id,event_type:x.event_type,severity:x.severity,
+        source_manager_id:x.source_manager_id,entity_type:x.entity_type,created_at:x.created_at
+      }))),
+      evals:Object.freeze((state.evals||[]).map(x=>Object.freeze({
+        id:x.id,cycle_id:x.cycle_id,metric_name:x.metric_name,passed:x.passed,
+        subject_type:x.subject_type,subject_key:x.subject_key,created_at:x.created_at
+      }))),
+      cycles:Object.freeze((state.cycles||[]).map(x=>Object.freeze({
+        id:x.id,cycle_key:x.cycle_key,status:x.status,verdict:x.verdict,
+        started_by:x.started_by,started_at:x.started_at,evaluated_at:x.evaluated_at
+      })))
+    });
+    window.BOOM_STUDIO_RUNTIME_SNAPSHOT=snapshot;
+    window.dispatchEvent(new CustomEvent("boom:studio-runtime-snapshot",{detail:snapshot}));
+    return snapshot;
+  }
+
   async function loadAll(){
     const [managers,workers,workerReports,reports,events,decisions,commands,cycles,evals,learning]=await Promise.all([
       query("hunt_boom_managers","*","updated_at",200),
@@ -2740,6 +2793,7 @@
     state.reportMap=latest(reports,"manager_id");
     state.workerReportMap=latest(workerReports,"worker_id");
     renderAll();
+    publishControlPlaneRuntimeSnapshot();
   }
 
   function scheduleReload(){
