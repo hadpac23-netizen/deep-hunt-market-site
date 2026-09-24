@@ -137,17 +137,21 @@ function leaseFor(command={},manager={},permissions={},now=Date.now()){
   });
 }
 
-function retryPolicy(command={}){
+function retryPolicy(command={},lease={}){
   const status=normalizeStatus(command.status);
   const retryKnown=Number.isFinite(Number(command.retry_attempts));
   const retryAttempts=retryKnown?Number(command.retry_attempts):null;
   const recurrenceCount=Number(command.repeat_count||0);
-  if(status==="WAITING_OWNER")return Object.freeze({decision:"NO_RETRY_OWNER_GATE",retry_attempts:retryAttempts,retry_attempts_known:retryKnown,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"HOLD"});
-  if(status==="BLOCKED")return Object.freeze({decision:"ESCALATE_BLOCKED",retry_attempts:retryAttempts,retry_attempts_known:retryKnown,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"HOLD"});
-  if(status==="FAILED"&&!retryKnown)return Object.freeze({decision:"RETRY_COUNT_UNKNOWN_REVIEW",retry_attempts:null,retry_attempts_known:false,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"HOLD_SHADOW"});
-  if(status==="FAILED"&&retryAttempts<2)return Object.freeze({decision:"PROPOSE_RETRY",retry_attempts:retryAttempts,retry_attempts_known:true,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"CLOSED_SHADOW"});
-  if(status==="FAILED")return Object.freeze({decision:"ESCALATE_AFTER_RETRIES",retry_attempts:retryAttempts,retry_attempts_known:true,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"OPEN_SHADOW"});
-  return Object.freeze({decision:"NO_RETRY_NEEDED",retry_attempts:retryAttempts,retry_attempts_known:retryKnown,recurrence_count:recurrenceCount,max_retries:2,circuit_breaker:"CLOSED_SHADOW"});
+  const base={retry_attempts:retryAttempts,retry_attempts_known:retryKnown,recurrence_count:recurrenceCount,max_retries:2,execution_enabled:false};
+
+  if(lease?.state==="EXPIRED")return Object.freeze({...base,decision:"HOLD_LEASE_EXPIRED",circuit_breaker:"OPEN_SHADOW"});
+  if(lease?.state==="MISSING_EXPIRY")return Object.freeze({...base,decision:"HOLD_LEASE_UNKNOWN",circuit_breaker:"HOLD_SHADOW"});
+  if(status==="WAITING_OWNER")return Object.freeze({...base,decision:"NO_RETRY_OWNER_GATE",circuit_breaker:"HOLD"});
+  if(status==="BLOCKED")return Object.freeze({...base,decision:"ESCALATE_BLOCKED",circuit_breaker:"OPEN_SHADOW"});
+  if(status==="FAILED"&&!retryKnown)return Object.freeze({...base,decision:"RETRY_COUNT_UNKNOWN_REVIEW",circuit_breaker:"HOLD_SHADOW"});
+  if(status==="FAILED"&&retryAttempts<2)return Object.freeze({...base,decision:"PROPOSE_RETRY",circuit_breaker:"CLOSED_SHADOW"});
+  if(status==="FAILED")return Object.freeze({...base,decision:"ESCALATE_AFTER_RETRIES",circuit_breaker:"OPEN_SHADOW"});
+  return Object.freeze({...base,decision:"NO_RETRY_NEEDED",circuit_breaker:"CLOSED_SHADOW"});
 }
 
 function handoffFor(run){
@@ -185,6 +189,7 @@ function compileRun(command={},ctx={}){
   const ownerGate=requiresOwnerGate(command,manager,ctx.controlPolicy||{});
   const evidence=evidenceSummary(command,ctx);
   const status=normalizeStatus(command.status);
+  const lease=leaseFor(command,manager,permissions,Number(ctx.now||Date.now()));
   const run={
     schema:"BOOM_CONTROL_RUN_V1",
     run_id:clean(command.id)||("legacy:"+clean(command.created_at)||"unknown"),
@@ -212,7 +217,7 @@ function compileRun(command={},ctx={}){
       execution_enabled:false
     }),
     recurrence_count:Number(command.repeat_count||0),
-    retry:retryPolicy(command),
+    retry:retryPolicy(command,lease),
     budget:Object.freeze({
       status:clean(ctx.controlPolicy?.budget_policy?.status)||"UNSPECIFIED",
       external_spend_usd:ctx.controlPolicy?.budget_policy?.external_spend_usd??null,
@@ -224,14 +229,13 @@ function compileRun(command={},ctx={}){
     execution_mode:"SHADOW_ONLY",
     persisted_by_control_plane:false
   };
-  run.lease=leaseFor(command,manager,permissions,Number(ctx.now||Date.now()));
+  run.lease=lease;
   run.handoff=handoffFor(run);
   return Object.freeze(run);
 }
 
-function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
+function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={},controlPolicy={},schedulerPolicy={},runtimeEvidence={}){
   const commands=Array.isArray(runtime.commands)?runtime.commands:[];
-  const controlPolicy=arguments.length>3&&arguments[3]?arguments[3]:{};
   const ctx={
     managerRegistry,
     controlPolicy,
@@ -254,13 +258,28 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
   };
   const active=runs.filter(x=>["QUEUED","ACCEPTED","RUNNING","WAITING_OWNER"].includes(x.status));
   const evidenceRuns=runs.filter(x=>x.evidence.total>0).length;
-  const schedule=(managerRegistry.managers||[]).filter(x=>x.schedule).map(x=>Object.freeze({
-    manager_id:x.id,
-    brain:brainForManager(x.id),
-    schedule:x.schedule,
-    status:"DECLARED_NOT_ACTIVATED_BY_CONTROL_PLANE",
-    note:clean(x.schedule_note)
+  const declaredSchedules=(managerRegistry.managers||[])
+    .filter(x=>clean(x.schedule))
+    .map(x=>Object.freeze({
+      id:clean(x.id)+"-declared",
+      manager_id:clean(x.id),
+      brain:brainForManager(x.id),
+      schedule:clean(x.schedule),
+      cadence:null,
+      source:"boom-manager-registry",
+      canonical_owner:clean(schedulerPolicy.canonical_owner)||"boom_orchestrator",
+      activation_state:"DECLARED_NOT_CONTROLLED"
+    }));
+  const policySchedules=(schedulerPolicy.tasks||[]).map(x=>Object.freeze({
+    ...x,
+    brain:brainForManager(x.manager_id),
+    canonical_owner:clean(schedulerPolicy.canonical_owner)||"boom_orchestrator"
   }));
+  const scheduleMap=new Map();
+  for(const x of [...declaredSchedules,...policySchedules])if(x.id&&!scheduleMap.has(x.id))scheduleMap.set(x.id,x);
+  const schedule=[...scheduleMap.values()];
+  const evidencePrepared=runs.filter(x=>x.evidence.total>0).length;
+
   const state=Object.freeze({
     schema:"BOOM_CONTROL_PLANE_V1",
     generated_at:new Date().toISOString(),
@@ -282,6 +301,23 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
     queue:Object.freeze(queue),
     runs:freezeArray(runs),
     schedules:freezeArray(schedule),
+    runtime_evidence:Object.freeze({
+      observed_at:runtimeEvidence?.observed_at||null,
+      open_commands:Number(runtimeEvidence?.execution_commands?.open||0),
+      lease_valid:Number(runtimeEvidence?.execution_commands?.lease_valid||0),
+      lease_expired:Number(runtimeEvidence?.execution_commands?.lease_expired||0),
+      planning_backlog_rows:Number(runtimeEvidence?.planning_backlog?.rows||0),
+      planning_backlog_role:runtimeEvidence?.planning_backlog?.role||"UNKNOWN",
+      evidence_ledger_rows:Number(runtimeEvidence?.evidence_ledger?.rows||0),
+      evidence_writer_deployed:runtimeEvidence?.evidence_ledger?.writer_deployed===true
+    }),
+    evidence_ledger:Object.freeze({
+      table:"boom_evidence",
+      prepared_runs:evidencePrepared,
+      persistence_enabled:false,
+      writer_deployed:false,
+      mode:"PREPARED_NOT_PERSISTED"
+    }),
     unmapped_managers:freezeArray(unmappedManagers),
     canonical_brains:freezeArray((fusionRegistry.brains||[]).map(x=>x.id)),
     policy:Object.freeze({
@@ -297,8 +333,8 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
       ...(runs.some(x=>x.lease.state==="MISSING_EXPIRY")?["LEASE_EXPIRY_MISSING"]:[]),
       ...(controlPolicy?.budget_policy?.status?[]:["MISSION_BUDGETS_NOT_WIRED"]),
       "RETRY_ENGINE_SHADOW_ONLY",
-      "EVIDENCE_LEDGER_DERIVED_NOT_PERSISTED",
-      "SCHEDULER_NOT_OWNED_BY_CONTROL_PLANE"
+      ...((runtimeEvidence?.evidence_ledger?.writer_deployed===true)?[]:["EVIDENCE_WRITER_NOT_DEPLOYED"]),
+      ...((schedulerPolicy?.canonical_owner==="boom_orchestrator")?[]:["SCHEDULER_OWNER_NOT_CANONICAL"])
     ]),
     readiness:Object.freeze({
       routing:unmappedManagers.length===0?"READY":"REVIEW",
@@ -306,11 +342,11 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
       derived_queue:"READY",
       permissions:(controlPolicy.tool_classes||[]).length?"READY_SHADOW":"PARTIAL",
       leases:runs.some(x=>x.lease.state==="MISSING_EXPIRY")?"PARTIAL":"READY_SHADOW",
-      retry:"SHADOW",
+      retry:"READY_SHADOW",
       handoff:"READY",
-      evidence:"PARTIAL",
+      evidence:"PREPARED_PERSISTENCE_OFF",
       owner_gate:"READY",
-      scheduler:schedule.length?"INVENTORIED":"PARTIAL",
+      scheduler:(schedulerPolicy?.canonical_owner==="boom_orchestrator"&&schedule.length)?"OWNER_ASSIGNED_SHADOW":"PARTIAL",
       budgets:controlPolicy?.budget_policy?.status||"PREP",
       execution:"OFF"
     })
@@ -319,19 +355,21 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={}){
 }
 
 async function loadContracts(){
-  const [m,f,p]=await Promise.all([
-    fetch("boom-manager-registry.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("MANAGER_REGISTRY_HTTP_"+r.status);return r.json()}),
-    fetch("boom-dragon-fusion-registry.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("FUSION_REGISTRY_HTTP_"+r.status);return r.json()}),
-    fetch("boom-dragon-control-policy.json",{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("CONTROL_POLICY_HTTP_"+r.status);return r.json()})
+  const [m,f,p,s,r]=await Promise.all([
+    fetch("boom-manager-registry.json",{cache:"no-store"}).then(x=>{if(!x.ok)throw new Error("MANAGER_REGISTRY_HTTP_"+x.status);return x.json()}),
+    fetch("boom-dragon-fusion-registry.json",{cache:"no-store"}).then(x=>{if(!x.ok)throw new Error("FUSION_REGISTRY_HTTP_"+x.status);return x.json()}),
+    fetch("boom-dragon-control-policy.json",{cache:"no-store"}).then(x=>{if(!x.ok)throw new Error("CONTROL_POLICY_HTTP_"+x.status);return x.json()}),
+    fetch("boom-dragon-scheduler-policy.json",{cache:"no-store"}).then(x=>{if(!x.ok)throw new Error("SCHEDULER_POLICY_HTTP_"+x.status);return x.json()}),
+    fetch("dragon-control-runtime-evidence.json",{cache:"no-store"}).then(x=>{if(!x.ok)throw new Error("CONTROL_RUNTIME_EVIDENCE_HTTP_"+x.status);return x.json()})
   ]);
-  return {managerRegistry:m,fusionRegistry:f,controlPolicy:p};
+  return {managerRegistry:m,fusionRegistry:f,controlPolicy:p,schedulerPolicy:s,runtimeEvidence:r};
 }
 
 let contracts=null;
 async function evaluate(runtime=window.BOOM_STUDIO_RUNTIME_SNAPSHOT||{}){
   try{
     if(!contracts)contracts=await loadContracts();
-    const state=compileSnapshot(runtime,contracts.managerRegistry,contracts.fusionRegistry,contracts.controlPolicy);
+    const state=compileSnapshot(runtime,contracts.managerRegistry,contracts.fusionRegistry,contracts.controlPolicy,contracts.schedulerPolicy,contracts.runtimeEvidence);
     window.DRAGON_CONTROL_PLANE_STATE=state;
     window.dispatchEvent(new CustomEvent("dragon:control-plane",{detail:state}));
     return state;
