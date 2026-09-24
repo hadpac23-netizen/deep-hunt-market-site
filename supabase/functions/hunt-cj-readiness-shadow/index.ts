@@ -101,6 +101,7 @@ function calc(profile:any,sale:number,cost:number,ship:number){
 
 Deno.serve(async(req:Request)=>{
   if(req.method!=="GET") return json({error:"method not allowed"},405);
+  if((req.headers.get("apikey")||"")!==PUB) return json({error:"unauthorized"},401);
   if(!BASE_URL||!SERVICE||!PUB) return json({error:"server config missing"},500);
   try{
     const u=new URL(req.url);
