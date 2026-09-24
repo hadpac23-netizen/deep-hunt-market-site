@@ -1,0 +1,35 @@
+{
+  "version": "HUNT-EPROLO-VISUAL-2-V1",
+  "date": "2026-09-25",
+  "mode": "READ_ONLY_VISUAL_QA",
+  "products": [
+    {
+      "product_id": "24539908",
+      "variant_id": "629377685",
+      "variant_title": "grey-3XL",
+      "exact_variant_image_resolved": true,
+      "exact_variant_image_technical_status": "PASS",
+      "visual_merchandising_status": "PENDING_EXACT_IMAGE_VIEW",
+      "note": "Public same-title listings were found, but were not treated as proof of the exact supplier variant image."
+    },
+    {
+      "product_id": "25395988",
+      "variant_id": "639401972",
+      "variant_title": "army green-M",
+      "exact_variant_image_resolved": true,
+      "exact_variant_image_technical_status": "PASS",
+      "visual_merchandising_status": "PENDING_EXACT_IMAGE_VIEW",
+      "note": "Supplier CDN image resolves technically, but current vision path cannot render that CDN asset directly."
+    }
+  ],
+  "visual_pass_count": 0,
+  "physical_quality_verified": 0,
+  "fully_ready": 0,
+  "hard_blocks": {
+    "payment": "OFF",
+    "supplier_live_order": "OFF",
+    "checkout_activation": "OFF",
+    "production_catalog_write": false
+  },
+  "secrets_in_git": false
+}
