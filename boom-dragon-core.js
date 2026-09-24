@@ -99,7 +99,9 @@ const CONNECTIONS=[
 ["Orders → Profit truth","Live order + cost evidence","PREP"],
 ["Content → Journey → Profit","Creative identity + attribution + profit evidence","PREP"],
 ["Supplier / Shipping truth","Fresh quote + SLA evidence","PREP"],
-["Control Plane","Derived runs · routing · leases · handoff","SHADOW"],
+["Control Plane","Internal maintenance ON · material execution OFF","ACTIVE"],
+["Evidence Ledger","boom_evidence persistence active","ACTIVE"],
+["Scheduler","pg_cron · BOOM Orchestrator owner","ACTIVE"],
 ["Memory / Learning Archive","Preserved backlog · no silent deletion","READY"],
 ["Owner authority","Material actions remain gated","GATED"]
 ];
