@@ -29,6 +29,14 @@
     }
   }
 
+  function commerceEventId(eventType,itemId="") {
+    const sid=sessionId();
+    let nonce="";
+    try { nonce=crypto.randomUUID(); }
+    catch { nonce=Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,12); }
+    return clean([sid,eventType,clean(itemId,100),nonce].join(":"),160);
+  }
+
   function firstPartySignal(event, params = {}) {
     if (!consentGranted) return false;
     const map = {
@@ -51,6 +59,9 @@
     const payload = {
       event_type: eventType,
       session_id: sessionId(),
+      event_id: commerceEventId(eventType, firstItem.item_id || params.item_id || ""),
+      measurement_version:"2026-09-24-journey-v1",
+      timezone:Intl.DateTimeFormat().resolvedOptions().timeZone || "",
       page_path: safePath(),
       page_title: clean(document.title, 160),
       category: clean(params.item_list_id || params.item_category || firstItem.item_category || params.search_category || "", 60),
