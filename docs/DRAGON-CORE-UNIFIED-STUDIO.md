@@ -1,23 +1,27 @@
-# DRAGON CORE — Unified BOOM Studio
+# DRAGON CORE Command Center V5
 
-## Purpose
-DRAGON CORE becomes the visual home/orchestrator of BOOM Studio without deleting or duplicating the existing functional views.
+DRAGON CORE is the primary visual home for BOOM Studio.
 
-## Structure
-- Inner radial tree: business truth and decision context.
-- Center: DRAGON CORE.
-- Primary business hubs: Customers, Products, Orders, Profit, Decisions, Owner Gate.
-- Specialist nodes: F35, F50, F60T, BOOM Stylist, Verifier.
-- Nested branch hubs and fan leaves: customer journey, products, ads, orders, profit and supplier truth.
-- Outer ring: existing BOOM Studio functions.
+## Visual structure
+- Left rail: real BOOM Studio navigation and node focus.
+- Center: six business hubs around DRAGON CORE.
+- Each hub owns a clean outward fan of subsystems.
+- Bottom row: F35, F50, F60T, BOOM Stylist and Verifier.
+- Right rail: status, readiness, metrics and activity.
 
-## Real Studio modules
-Owner · Pro Studio · Brain · Professional · Brand Factory · Connect · Executions · Evaluations · Learning.
+## Truth boundary
+The visual graph may be structurally READY while a live data feed remains PREP. The UI must never label PREP data as connected/live.
 
-Clicking an outer module routes to the existing BOOM Studio view. Every legacy view gets a return control back to DRAGON CORE.
+## Six core hubs
+Customers · Products · Orders · Profit · Decisions · Owner Gate.
 
-## Governance
-This branch is prototype/shadow only. No live payments, supplier ordering, Production deployment, or material automated action is enabled by DRAGON CORE.
+## Specialist row
+F35 · F50 · F60T · BOOM Stylist · Verifier.
 
-## Visual doctrine
-Center hub → circular primary hubs → branch hubs → fan leaves. Thin gold/ivory hierarchy lines. Secondary detail appears in a side inspector only after selection.
+## Connection readiness
+Commerce Graph is structurally READY.
+Customer events, Order→Profit, Ads attribution, Supplier/Shipping truth remain PREP until verified.
+Owner authority remains GATED for material actions.
+
+## Existing Studio functions
+Owner Dashboard, Pro Studio, Brain, Professional, Brand Factory, Connect, Executions, Evaluations and Learning remain the existing functional views; DRAGON CORE routes to them instead of duplicating them.
