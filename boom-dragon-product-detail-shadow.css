@@ -1,0 +1,12 @@
+/* DRAGON CORE · Product Detail Shadow */
+.dc-detail-shadow-card{border-color:rgba(255,173,23,.18)!important;background:rgba(255,173,23,.018)}
+.dc-detail-shadow-card>p b{color:#f0c46b}
+.dc-detail-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin:8px 0}
+.dc-detail-grid span{border:1px solid rgba(255,173,23,.12);border-radius:7px;padding:6px;color:#6f7c88;font-size:5px}
+.dc-detail-grid b{display:block;color:#f2ca78;font-size:8px;margin-bottom:2px}
+.dc-detail-note{border-top:1px solid rgba(255,173,23,.09);padding-top:6px;margin-top:7px!important}
+.dc-detail-controls{display:grid;grid-template-columns:42px 1fr;gap:5px;margin-top:7px}
+.dc-detail-controls input,.dc-detail-controls button{border:1px solid rgba(255,173,23,.22);background:rgba(8,12,17,.92);color:#e9bd63;border-radius:7px;padding:7px;font-size:6px;font-weight:900}
+.dc-detail-controls input{text-transform:uppercase;text-align:center}
+.dc-detail-controls button{cursor:pointer;background:rgba(255,173,23,.06)}
+.dc-detail-controls button:disabled{opacity:.55;cursor:wait}
