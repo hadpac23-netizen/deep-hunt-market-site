@@ -821,7 +821,7 @@
       "name": "Security & Access",
       "owner": "learning_governance_brain",
       "source": "repo",
-      "status": "PARTIAL_HARDENED_4_DEFINER_WARNINGS",
+      "status": "DB_HARDENED_AUTH_BLOCKER_ONLY",
       "surface": "Professional",
       "aliases": [
         "RLS",
@@ -829,9 +829,10 @@
         "Permissions"
       ],
       "notes": [
-        "4 of 8 public SECURITY DEFINER warnings moved safely to invoker/RLS.",
-        "4 privileged state-changing RPCs remain under review rather than broadening direct table grants.",
-        "Leaked-password protection remains disabled at Auth configuration level."
+        "Public SECURITY DEFINER warnings reduced from 8 to 0.",
+        "Privileged implementations moved to private schema behind public SECURITY INVOKER wrappers.",
+        "F60T server-only tables now use explicit deny policies.",
+        "Only remaining Supabase Security Advisor warning is leaked-password protection at Auth configuration level."
       ]
     },
     {
@@ -1075,9 +1076,11 @@
   },
   "security_status": {
     "source": "dragon-security-status.json",
+    "database_status": "HARDENED",
     "definer_warnings_before": 8,
-    "definer_warnings_after": 4,
+    "definer_warnings_after": 0,
+    "rls_no_policy_after": 0,
     "leaked_password_protection": "DISABLED",
-    "control_plane_new_security_regression": false
+    "remaining_advisor_warnings": 1
   }
 }
