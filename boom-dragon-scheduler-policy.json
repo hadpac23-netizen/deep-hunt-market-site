@@ -1,0 +1,43 @@
+{
+  "schema": "BOOM_CANONICAL_SCHEDULER_V1",
+  "mode": "SHADOW_ONLY",
+  "canonical_owner": "boom_orchestrator",
+  "activation_enabled": false,
+  "production_effect": false,
+  "tasks": [
+    {
+      "id": "category-orchestrator-30m",
+      "manager_id": "category-orchestrator",
+      "source": "boom-manager-registry",
+      "schedule": "*/30 * * * *",
+      "cadence": "EVERY_30_MINUTES",
+      "activation_state": "DECLARED_NOT_CONTROLLED"
+    },
+    {
+      "id": "site-reliability-30m",
+      "manager_id": "site-reliability",
+      "source": "boom-manager-registry",
+      "schedule": "*/30 * * * *",
+      "cadence": "EVERY_30_MINUTES",
+      "activation_state": "DECLARED_NOT_CONTROLLED"
+    },
+    {
+      "id": "f60t-hourly",
+      "manager_id": "f60t",
+      "source": "f60t_cron_auth",
+      "schedule": null,
+      "cadence": "HOURLY",
+      "auth_configured": true,
+      "secret_exported": false,
+      "execution_verified": false,
+      "activation_state": "AUTH_CONFIGURED_EXECUTION_UNVERIFIED"
+    }
+  ],
+  "rules": [
+    "BOOM Orchestrator is the single canonical scheduler owner.",
+    "This registry inventories schedules; it does not activate or change cron.",
+    "Existing schedules are preserved until explicit migration and Owner approval.",
+    "Scheduler secrets are never exported into DRAGON.",
+    "Duplicate task IDs fail review."
+  ]
+}
