@@ -1,0 +1,989 @@
+{
+  "schema": "BOOM_DRAGON_FUSION_REGISTRY_V1",
+  "updated_at": "2026-09-24",
+  "mode": "SHADOW_ONLY",
+  "production_effect": false,
+  "doctrine": {
+    "formula": "OWNER → BOOM Orchestrator → Domain Brain → Agent/Worker → Skill → Tool → Verifier → Policy/Owner Gate → Evidence → Learning",
+    "rule": "Extract capabilities, not legacy runtime.",
+    "anti_duplication": [
+      "ONE_ORCHESTRATOR",
+      "ONE_RUNTIME_CLIENT",
+      "ONE_CANONICAL_OWNER_PER_CAPABILITY",
+      "NO_DUPLICATE_PRODUCT_TRUTH",
+      "NO_DUPLICATE_CHECKOUT_OWNER",
+      "NO_DUPLICATE_PAYMENT_OWNER",
+      "NO_DUPLICATE_ANALYTICS_OWNER",
+      "NO_DUPLICATE_MEMORY_LAYER",
+      "NO_DUPLICATE_LEARNING_LAYER"
+    ],
+    "migration_flow": [
+      "DISCOVER",
+      "CLASSIFY",
+      "MAP_OWNER",
+      "EXTRACT_CAPABILITY",
+      "REWIRE",
+      "TEST",
+      "OWNER_REVIEW"
+    ]
+  },
+  "brains": [
+    {
+      "id": "boom_orchestrator",
+      "name": "BOOM Orchestrator",
+      "role": "command/routing/control-plane",
+      "status": "CANONICAL"
+    },
+    {
+      "id": "intelligence_brain",
+      "name": "Intelligence Brain",
+      "role": "research/decision/context/confidence",
+      "status": "CANONICAL"
+    },
+    {
+      "id": "innovation_brain",
+      "name": "Innovation Brain",
+      "role": "creative/system invention/simulation",
+      "status": "CANONICAL"
+    },
+    {
+      "id": "commerce_truth_brain",
+      "name": "Commerce Truth Brain",
+      "role": "product/supplier/shipping/pricing/profit truth",
+      "status": "CANONICAL"
+    },
+    {
+      "id": "experience_brain",
+      "name": "Experience Brain",
+      "role": "journey/personalization/styling/worlds/UX",
+      "status": "CANONICAL"
+    },
+    {
+      "id": "growth_brain",
+      "name": "Growth Brain",
+      "role": "demand/marketing/content/creator/sales",
+      "status": "CANONICAL"
+    },
+    {
+      "id": "operations_brain",
+      "name": "Operations Brain",
+      "role": "checkout/payment/order/fulfillment/reliability",
+      "status": "CANONICAL"
+    },
+    {
+      "id": "learning_governance_brain",
+      "name": "Learning & Governance Brain",
+      "role": "evidence/evals/security/incidents/release/learning",
+      "status": "CANONICAL"
+    }
+  ],
+  "shared_kernels": [
+    {
+      "id": "action_state_kernel",
+      "owner": "boom_orchestrator",
+      "status": "PRESERVED_DOCUMENTED"
+    },
+    {
+      "id": "identity_session_kernel",
+      "owner": "operations_brain",
+      "status": "PRESERVED_DOCUMENTED"
+    },
+    {
+      "id": "navigation_flow_kernel",
+      "owner": "experience_brain",
+      "status": "PRESERVED_DOCUMENTED"
+    },
+    {
+      "id": "design_system_kernel",
+      "owner": "experience_brain",
+      "status": "PRESERVED_DOCUMENTED"
+    },
+    {
+      "id": "observability_kernel",
+      "owner": "learning_governance_brain",
+      "status": "PRESERVED_DOCUMENTED"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "owner_authority",
+      "name": "Owner Authority",
+      "owner": "boom_orchestrator",
+      "source": "archive+repo",
+      "status": "CONNECTED",
+      "surface": "Owner Dashboard / Owner Gate",
+      "aliases": [
+        "Owner",
+        "Human Gate"
+      ]
+    },
+    {
+      "id": "legacy_executive",
+      "name": "BOOM Executive",
+      "owner": "boom_orchestrator",
+      "source": "repo",
+      "status": "MERGE_AS_ALIAS",
+      "surface": "Pro Studio",
+      "aliases": [
+        "boom-executive"
+      ]
+    },
+    {
+      "id": "legacy_super_agent",
+      "name": "BOOM Super Agent",
+      "owner": "boom_orchestrator",
+      "source": "repo",
+      "status": "MERGE_AS_ALIAS",
+      "surface": "Pro Studio",
+      "aliases": [
+        "boom-super-agent"
+      ]
+    },
+    {
+      "id": "hunt_brain",
+      "name": "HUNT Brain",
+      "owner": "boom_orchestrator",
+      "source": "project-memory",
+      "status": "PRESERVED_NEEDS_VERIFICATION",
+      "surface": "Brain",
+      "aliases": [
+        "HUNT Intelligence"
+      ]
+    },
+    {
+      "id": "dragon_core",
+      "name": "DRAGON CORE",
+      "owner": "boom_orchestrator",
+      "source": "repo",
+      "status": "CONNECTED",
+      "surface": "DRAGON CORE",
+      "aliases": [
+        "Decision Kernel",
+        "Command Center"
+      ]
+    },
+    {
+      "id": "brain_registry",
+      "name": "Brain Registry",
+      "owner": "boom_orchestrator",
+      "source": "archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Control Plane",
+      "aliases": []
+    },
+    {
+      "id": "action_contract",
+      "name": "Action Contract",
+      "owner": "boom_orchestrator",
+      "source": "archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Control Plane",
+      "aliases": [
+        "Worker Contracts"
+      ]
+    },
+    {
+      "id": "run_engine",
+      "name": "Mission / Run Engine",
+      "owner": "boom_orchestrator",
+      "source": "audit",
+      "status": "PLANNED_CONTROL_PLANE",
+      "surface": "Executions",
+      "aliases": [
+        "Run Engine"
+      ]
+    },
+    {
+      "id": "task_queue",
+      "name": "Task Queue",
+      "owner": "boom_orchestrator",
+      "source": "audit",
+      "status": "PLANNED_CONTROL_PLANE",
+      "surface": "Executions",
+      "aliases": []
+    },
+    {
+      "id": "agent_lease",
+      "name": "Agent Lease",
+      "owner": "boom_orchestrator",
+      "source": "audit",
+      "status": "PLANNED_CONTROL_PLANE",
+      "surface": "Executions",
+      "aliases": []
+    },
+    {
+      "id": "tool_permissions",
+      "name": "Tool Permission Layer",
+      "owner": "boom_orchestrator",
+      "source": "audit",
+      "status": "PLANNED_CONTROL_PLANE",
+      "surface": "Connect",
+      "aliases": []
+    },
+    {
+      "id": "scheduler",
+      "name": "Canonical Scheduler",
+      "owner": "boom_orchestrator",
+      "source": "audit+repo",
+      "status": "PARTIAL",
+      "surface": "Executions",
+      "aliases": [
+        "cron",
+        "scheduled managers"
+      ]
+    },
+    {
+      "id": "mission_budgets",
+      "name": "Mission Budgets",
+      "owner": "boom_orchestrator",
+      "source": "archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Professional",
+      "aliases": [
+        "Cost Control"
+      ]
+    },
+    {
+      "id": "owner_approval_queue",
+      "name": "Owner Approval Queue",
+      "owner": "boom_orchestrator",
+      "source": "repo+audit",
+      "status": "CONNECTED",
+      "surface": "Owner / Brain",
+      "aliases": [
+        "Owner Gate"
+      ]
+    },
+    {
+      "id": "goal_engine",
+      "name": "Goal Engine",
+      "owner": "intelligence_brain",
+      "source": "brain-archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Brain",
+      "aliases": []
+    },
+    {
+      "id": "planning_engine",
+      "name": "Planning Engine",
+      "owner": "intelligence_brain",
+      "source": "brain-archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Brain",
+      "aliases": []
+    },
+    {
+      "id": "context_graph",
+      "name": "Context Graph",
+      "owner": "intelligence_brain",
+      "source": "brain-archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Brain",
+      "aliases": [
+        "Commerce Graph"
+      ]
+    },
+    {
+      "id": "confidence_engine",
+      "name": "Confidence Engine",
+      "owner": "intelligence_brain",
+      "source": "brain-archive+dragon",
+      "status": "CONNECTED",
+      "surface": "Decisions",
+      "aliases": [
+        "Evidence Confidence"
+      ]
+    },
+    {
+      "id": "risk_engine",
+      "name": "Risk Engine",
+      "owner": "intelligence_brain",
+      "source": "brain-archive+dragon",
+      "status": "CONNECTED",
+      "surface": "Decisions",
+      "aliases": []
+    },
+    {
+      "id": "decision_reason_codes",
+      "name": "Decision Reason Codes",
+      "owner": "intelligence_brain",
+      "source": "archive+repo",
+      "status": "CONNECTED",
+      "surface": "Decisions",
+      "aliases": []
+    },
+    {
+      "id": "f35",
+      "name": "F35 Research / Continuous Scout",
+      "owner": "intelligence_brain",
+      "source": "repo+brain-archive",
+      "status": "CONNECTED",
+      "surface": "F35 / Professional",
+      "aliases": [
+        "Research Radar",
+        "Trend/Foresight"
+      ]
+    },
+    {
+      "id": "king_arena",
+      "name": "King of the Arena",
+      "owner": "intelligence_brain",
+      "source": "brain-archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Professional",
+      "aliases": [
+        "Competitive Analysis"
+      ]
+    },
+    {
+      "id": "f50",
+      "name": "F50 Red Team / Hidden Failure Mining",
+      "owner": "innovation_brain",
+      "source": "project-memory",
+      "status": "PRESERVED_NEEDS_VERIFICATION",
+      "surface": "DRAGON F50",
+      "aliases": [
+        "Self-Challenge"
+      ]
+    },
+    {
+      "id": "future_simulation",
+      "name": "Future Simulation",
+      "owner": "innovation_brain",
+      "source": "brain-archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Professional",
+      "aliases": [
+        "What If"
+      ]
+    },
+    {
+      "id": "queen_move",
+      "name": "Queen Move",
+      "owner": "innovation_brain",
+      "source": "brain-archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Professional",
+      "aliases": [
+        "High-Leverage Move"
+      ]
+    },
+    {
+      "id": "secret_lab",
+      "name": "Secret Lab",
+      "owner": "innovation_brain",
+      "source": "brain-archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Professional",
+      "aliases": [
+        "Sandbox"
+      ]
+    },
+    {
+      "id": "creative_brand_factory",
+      "name": "Creative & Brand Factory",
+      "owner": "innovation_brain",
+      "source": "repo",
+      "status": "CONNECTED",
+      "surface": "Brand Factory",
+      "aliases": [
+        "A6 Creative Learning"
+      ]
+    },
+    {
+      "id": "a6_creative_learning",
+      "name": "A6 Creative Learning",
+      "owner": "innovation_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Pro Studio A6",
+      "aliases": [
+        "Hook Tournament",
+        "Concept Tournament",
+        "Script Tournament",
+        "Visual QA",
+        "Red Team"
+      ]
+    },
+    {
+      "id": "a1_product_truth",
+      "name": "A1 Product Truth",
+      "owner": "commerce_truth_brain",
+      "source": "repo+dragon",
+      "status": "CONNECTED",
+      "surface": "Products",
+      "aliases": [
+        "Inventory Truth",
+        "Product Truth"
+      ]
+    },
+    {
+      "id": "sale_readiness",
+      "name": "Sale Readiness",
+      "owner": "commerce_truth_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Commerce",
+      "aliases": [
+        "Product Quality"
+      ]
+    },
+    {
+      "id": "category_orchestrator",
+      "name": "Category Orchestrator",
+      "owner": "commerce_truth_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Commerce / Store",
+      "aliases": [
+        "Departments"
+      ]
+    },
+    {
+      "id": "pricing_profit",
+      "name": "Pricing & Profit",
+      "owner": "commerce_truth_brain",
+      "source": "repo+dragon",
+      "status": "CONNECTED",
+      "surface": "Products / Profit",
+      "aliases": [
+        "Profit Gate"
+      ]
+    },
+    {
+      "id": "supplier_shipping",
+      "name": "Supplier & Shipping Truth",
+      "owner": "commerce_truth_brain",
+      "source": "repo+dragon",
+      "status": "CONNECTED",
+      "surface": "Suppliers / Products",
+      "aliases": [
+        "CJ",
+        "EPROLO",
+        "HyperSKU"
+      ]
+    },
+    {
+      "id": "country_localization",
+      "name": "Country & Localization",
+      "owner": "commerce_truth_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Commerce",
+      "aliases": [
+        "Country Truth"
+      ]
+    },
+    {
+      "id": "product_live_refresh",
+      "name": "CJ Discovery Shadow Refresh",
+      "owner": "commerce_truth_brain",
+      "source": "dragon",
+      "status": "CONNECTED",
+      "surface": "Products",
+      "aliases": []
+    },
+    {
+      "id": "product_detail_shadow",
+      "name": "CJ Detail Truth Shadow",
+      "owner": "commerce_truth_brain",
+      "source": "dragon",
+      "status": "CONNECTED",
+      "surface": "Products",
+      "aliases": []
+    },
+    {
+      "id": "a2_taste_dna",
+      "name": "A2 Taste DNA",
+      "owner": "experience_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Pro Studio A2",
+      "aliases": [
+        "Feedback Intelligence"
+      ]
+    },
+    {
+      "id": "a3_memory_actions",
+      "name": "A3 Memory & Actions",
+      "owner": "experience_brain",
+      "source": "repo+brain-archive",
+      "status": "VERIFIED_REPO",
+      "surface": "Pro Studio A3",
+      "aliases": [
+        "Memory & Continuity"
+      ]
+    },
+    {
+      "id": "a4_dynamic_worlds",
+      "name": "A4 Dynamic Worlds",
+      "owner": "experience_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Pro Studio A4",
+      "aliases": [
+        "HUNT Worlds"
+      ]
+    },
+    {
+      "id": "a5_stylist",
+      "name": "A5 BOOM Stylist",
+      "owner": "experience_brain",
+      "source": "repo+dragon",
+      "status": "CONNECTED",
+      "surface": "BOOM Stylist",
+      "aliases": [
+        "Complete the Look",
+        "Look Locker"
+      ]
+    },
+    {
+      "id": "a5_mirror",
+      "name": "A5 Safe Mirror",
+      "owner": "experience_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Pro Studio A5",
+      "aliases": [
+        "BOOM Mirror"
+      ]
+    },
+    {
+      "id": "merchandising_ux",
+      "name": "Merchandising & UX",
+      "owner": "experience_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Commerce / RC Preview",
+      "aliases": [
+        "A10 RC Preview"
+      ]
+    },
+    {
+      "id": "customer_journey_truth",
+      "name": "Customer Journey Truth",
+      "owner": "experience_brain",
+      "source": "dragon",
+      "status": "CONNECTED",
+      "surface": "Customers",
+      "aliases": [
+        "Cold→Warm→Hot→Buyer→Repeat"
+      ]
+    },
+    {
+      "id": "f60t",
+      "name": "F60T Demand Radar",
+      "owner": "growth_brain",
+      "source": "project-memory+repo-history",
+      "status": "PRESERVED_NEEDS_VERIFICATION",
+      "surface": "DRAGON F60T",
+      "aliases": [
+        "Live World Radar",
+        "10K Mission"
+      ]
+    },
+    {
+      "id": "marketing_growth",
+      "name": "Marketing & Growth",
+      "owner": "growth_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Commerce / Growth",
+      "aliases": [
+        "SEO",
+        "Social",
+        "Campaigns"
+      ]
+    },
+    {
+      "id": "sales_conversion",
+      "name": "Sales & Conversion",
+      "owner": "growth_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Commerce",
+      "aliases": [
+        "AOV",
+        "Offer Fit"
+      ]
+    },
+    {
+      "id": "share_referral",
+      "name": "Share & Referral",
+      "owner": "growth_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Commerce",
+      "aliases": [
+        "Shop Together"
+      ]
+    },
+    {
+      "id": "creator_os",
+      "name": "Creator OS",
+      "owner": "growth_brain",
+      "source": "project-memory",
+      "status": "PRESERVED_NEEDS_VERIFICATION",
+      "surface": "Growth",
+      "aliases": [
+        "M07 Creator OS"
+      ]
+    },
+    {
+      "id": "lifecycle_brain",
+      "name": "Lifecycle Brain",
+      "owner": "growth_brain",
+      "source": "project-memory",
+      "status": "PRESERVED_NEEDS_VERIFICATION",
+      "surface": "Growth",
+      "aliases": [
+        "M06 Lifecycle Brain"
+      ]
+    },
+    {
+      "id": "content_feedback",
+      "name": "Content → Journey → Profit → Learning",
+      "owner": "growth_brain",
+      "source": "dragon",
+      "status": "CONNECTED",
+      "surface": "F60T / Stylist / Decisions",
+      "aliases": [
+        "Content Feedback Loop"
+      ]
+    },
+    {
+      "id": "checkout_payment",
+      "name": "Checkout & Payment",
+      "owner": "operations_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Commerce",
+      "aliases": [
+        "Checkout Manager"
+      ]
+    },
+    {
+      "id": "order_orchestration",
+      "name": "Order Orchestration",
+      "owner": "operations_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Orders",
+      "aliases": [
+        "Order Manager"
+      ]
+    },
+    {
+      "id": "returns_care",
+      "name": "Returns & Customer Care",
+      "owner": "operations_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Commerce",
+      "aliases": []
+    },
+    {
+      "id": "integration_connections",
+      "name": "Integration & Connection Manager",
+      "owner": "operations_brain",
+      "source": "repo",
+      "status": "CONNECTED",
+      "surface": "Connect",
+      "aliases": [
+        "BOOM CONNECT"
+      ]
+    },
+    {
+      "id": "site_reliability",
+      "name": "Site Reliability",
+      "owner": "operations_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "A11 / Professional",
+      "aliases": [
+        "Health Scan"
+      ]
+    },
+    {
+      "id": "finance_reconciliation",
+      "name": "Finance & Reconciliation",
+      "owner": "operations_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Profit",
+      "aliases": [
+        "Settlements",
+        "Profit Release"
+      ]
+    },
+    {
+      "id": "order_profit_truth",
+      "name": "Order → Profit Truth",
+      "owner": "operations_brain",
+      "source": "dragon",
+      "status": "CONNECTED",
+      "surface": "Orders / Profit",
+      "aliases": [
+        "Profit Preview",
+        "Finance Truth"
+      ]
+    },
+    {
+      "id": "a7_a8_harness",
+      "name": "A7–A8 Integration & Harness",
+      "owner": "learning_governance_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Release / QA",
+      "aliases": [
+        "Integration QA",
+        "Alpha Harness"
+      ]
+    },
+    {
+      "id": "a9_evidence_analytics",
+      "name": "A9 Evidence & Analytics",
+      "owner": "learning_governance_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Release / QA",
+      "aliases": [
+        "Evidence Pack"
+      ]
+    },
+    {
+      "id": "a11_full_rc_qa",
+      "name": "A11 Full RC QA",
+      "owner": "learning_governance_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Release / QA",
+      "aliases": [
+        "Regression"
+      ]
+    },
+    {
+      "id": "a12_final_gate",
+      "name": "A12 Final Owner Gate",
+      "owner": "learning_governance_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Release / QA",
+      "aliases": [
+        "Go/No-Go",
+        "Rollback"
+      ]
+    },
+    {
+      "id": "analytics_truth",
+      "name": "Analytics & Data Truth",
+      "owner": "learning_governance_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Evaluations",
+      "aliases": []
+    },
+    {
+      "id": "eval_guardian",
+      "name": "Eval Guardian",
+      "owner": "learning_governance_brain",
+      "source": "repo",
+      "status": "CONNECTED",
+      "surface": "Evaluations",
+      "aliases": [
+        "Evals"
+      ]
+    },
+    {
+      "id": "learning_loop",
+      "name": "Learning Loop",
+      "owner": "learning_governance_brain",
+      "source": "repo+brain-archive",
+      "status": "CONNECTED",
+      "surface": "Learning",
+      "aliases": [
+        "Experiment Governance"
+      ]
+    },
+    {
+      "id": "incident_repair",
+      "name": "Incident & Repair Team",
+      "owner": "learning_governance_brain",
+      "source": "project-memory+repo",
+      "status": "CONNECTED",
+      "surface": "Professional / Operations",
+      "aliases": [
+        "Detect→Reproduce→Root Cause→Patch→Tests→Review→Owner Gate→Verify→Rollback"
+      ]
+    },
+    {
+      "id": "security_access",
+      "name": "Security & Access",
+      "owner": "learning_governance_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Professional",
+      "aliases": [
+        "RLS",
+        "Secrets",
+        "Permissions"
+      ]
+    },
+    {
+      "id": "trust_compliance",
+      "name": "Trust & Compliance",
+      "owner": "learning_governance_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Release / QA",
+      "aliases": [
+        "Legal/Privacy/Claims"
+      ]
+    },
+    {
+      "id": "knowledge_freshness",
+      "name": "Knowledge Freshness",
+      "owner": "learning_governance_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "Professional",
+      "aliases": [
+        "Live Verification"
+      ]
+    },
+    {
+      "id": "release_control",
+      "name": "Release & Change Control",
+      "owner": "learning_governance_brain",
+      "source": "repo",
+      "status": "VERIFIED_REPO",
+      "surface": "A12",
+      "aliases": [
+        "Deploy/Rollback Gate"
+      ]
+    },
+    {
+      "id": "failure_library",
+      "name": "Failure Library",
+      "owner": "learning_governance_brain",
+      "source": "brain-archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Learning",
+      "aliases": []
+    },
+    {
+      "id": "university",
+      "name": "BOOM University / Academy",
+      "owner": "learning_governance_brain",
+      "source": "brain-archive+project-memory",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Learning",
+      "aliases": [
+        "Academy"
+      ]
+    },
+    {
+      "id": "arena",
+      "name": "Arena / Competitive Learning",
+      "owner": "learning_governance_brain",
+      "source": "brain-archive",
+      "status": "PRESERVED_DOCUMENTED",
+      "surface": "Learning / Professional",
+      "aliases": [
+        "King of the Arena"
+      ]
+    },
+    {
+      "id": "evidence_refresh",
+      "name": "Evidence Refresh",
+      "owner": "learning_governance_brain",
+      "source": "dragon",
+      "status": "CONNECTED",
+      "surface": "Decisions",
+      "aliases": []
+    },
+    {
+      "id": "decision_engine",
+      "name": "DRAGON Decision Engine",
+      "owner": "intelligence_brain",
+      "source": "dragon",
+      "status": "CONNECTED",
+      "surface": "Decisions",
+      "aliases": [
+        "Score+Confidence+Evidence+Risk+Next Action"
+      ]
+    }
+  ],
+  "views": [
+    {
+      "id": "owner-home",
+      "name": "Owner Dashboard",
+      "status": "KEEP"
+    },
+    {
+      "id": "studio",
+      "name": "Pro Studio",
+      "status": "KEEP_AS_CAPABILITY_MAP"
+    },
+    {
+      "id": "dragon-control-room",
+      "name": "DRAGON CORE",
+      "status": "PRIMARY_VISUAL_HOME"
+    },
+    {
+      "id": "hunt-intelligence",
+      "name": "Brain",
+      "status": "KEEP"
+    },
+    {
+      "id": "professional-workbench",
+      "name": "Professional",
+      "status": "KEEP"
+    },
+    {
+      "id": "brand-factory",
+      "name": "Brand Factory",
+      "status": "KEEP"
+    },
+    {
+      "id": "connect",
+      "name": "Connect",
+      "status": "KEEP"
+    },
+    {
+      "id": "executions",
+      "name": "Executions",
+      "status": "KEEP"
+    },
+    {
+      "id": "evaluations",
+      "name": "Evaluations",
+      "status": "KEEP"
+    },
+    {
+      "id": "learning",
+      "name": "Learning",
+      "status": "KEEP"
+    }
+  ],
+  "preserved_backlog": [
+    "Self-Model",
+    "Curiosity Engine",
+    "Watchtower",
+    "Global Eyes",
+    "Meaningful Change Engine",
+    "Source Trust",
+    "Story Clustering",
+    "Semantic Core/Ontology",
+    "World Memory",
+    "Digital Twin",
+    "Causal Brain",
+    "Portfolio Brain",
+    "Experiment Factory",
+    "Supplier Trust Graph",
+    "Customer Simulator",
+    "Strategy Memory",
+    "Arena",
+    "Compute Router"
+  ]
+}
