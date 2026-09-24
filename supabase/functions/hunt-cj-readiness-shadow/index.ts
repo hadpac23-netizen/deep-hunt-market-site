@@ -2,7 +2,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const BASE_URL=Deno.env.get("SUPABASE_URL")||"";
 const SERVICE=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";
-const PUB=(()=>{try{return JSON.parse(Deno.env.get("SUPABASE_PUBLISHABLE_KEYS")||"{}").default||Deno.env.get("SUPABASE_ANON_KEY")||""}catch{return Deno.env.get("SUPABASE_ANON_KEY")||""}})();
+const PUB="sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
 
 const COUNTRIES=["US","DE","GB","IL","AE"];
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
@@ -107,7 +107,9 @@ Deno.serve(async(req:Request)=>{
     const itemId=clean(u.searchParams.get("item_id"));
     if(!itemId) return json({error:"item_id required"},400);
 
-    const [profile,storefront,detail]=await Promise.all([getProfile(),getStorefront(itemId),getDetail(itemId)]);
+    const profile=await getProfile();
+    const storefront=await getStorefront(itemId);
+    const detail=await getDetail(itemId);
     const variants=Array.isArray(storefront?.variants)?storefront.variants:[];
     const ids=rankedVariantIds(detail);
     if(!ids.length) return json({item_id:itemId,status:"HOLD",reason:"NO_VARIANTS",production_effect:false});
