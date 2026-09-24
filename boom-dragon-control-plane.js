@@ -285,6 +285,8 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={},control
     generated_at:new Date().toISOString(),
     mode:"SHADOW_ONLY",
     execution_enabled:false,
+    internal_maintenance_enabled:runtimeEvidence?.circuit_breaker?.active===true&&runtimeEvidence?.scheduler?.active===true,
+    material_execution_enabled:false,
     source:"existing BOOM Studio runtime + manager registry + fusion registry",
     one_runtime_client:true,
     derived_queue:true,
@@ -309,14 +311,20 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={},control
       planning_backlog_rows:Number(runtimeEvidence?.planning_backlog?.rows||0),
       planning_backlog_role:runtimeEvidence?.planning_backlog?.role||"UNKNOWN",
       evidence_ledger_rows:Number(runtimeEvidence?.evidence_ledger?.rows||0),
-      evidence_writer_deployed:runtimeEvidence?.evidence_ledger?.writer_deployed===true
+      evidence_writer_deployed:runtimeEvidence?.evidence_ledger?.writer_deployed===true,
+      evidence_persistence_enabled:runtimeEvidence?.evidence_ledger?.persistence_enabled===true,
+      circuit_breaker_active:runtimeEvidence?.circuit_breaker?.active===true,
+      scheduler_active:runtimeEvidence?.scheduler?.active===true,
+      scheduler_job_id:runtimeEvidence?.scheduler?.control_job_id??null,
+      material_execution_enabled:runtimeEvidence?.safety?.material_execution_enabled===true
     }),
     evidence_ledger:Object.freeze({
       table:"boom_evidence",
       prepared_runs:evidencePrepared,
-      persistence_enabled:false,
-      writer_deployed:false,
-      mode:"PREPARED_NOT_PERSISTED"
+      persistence_enabled:runtimeEvidence?.evidence_ledger?.persistence_enabled===true,
+      writer_deployed:runtimeEvidence?.evidence_ledger?.writer_deployed===true,
+      mode:(runtimeEvidence?.evidence_ledger?.persistence_enabled===true&&runtimeEvidence?.evidence_ledger?.writer_deployed===true)
+        ?"ACTIVE_INTERNAL":"PREPARED_NOT_PERSISTED"
     }),
     unmapped_managers:freezeArray(unmappedManagers),
     canonical_brains:freezeArray((fusionRegistry.brains||[]).map(x=>x.id)),
@@ -332,8 +340,8 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={},control
       ...((controlPolicy.tool_classes||[]).length?[]:["TOOL_PERMISSION_MAP_NOT_CANONICAL"]),
       ...(runs.some(x=>x.lease.state==="MISSING_EXPIRY")?["LEASE_EXPIRY_MISSING"]:[]),
       ...(controlPolicy?.budget_policy?.status?[]:["MISSION_BUDGETS_NOT_WIRED"]),
-      "RETRY_ENGINE_SHADOW_ONLY",
-      ...((runtimeEvidence?.evidence_ledger?.writer_deployed===true)?[]:["EVIDENCE_WRITER_NOT_DEPLOYED"]),
+      ...((runtimeEvidence?.circuit_breaker?.active===true)?[]:["RETRY_ENGINE_SHADOW_ONLY"]),
+      ...((runtimeEvidence?.evidence_ledger?.writer_deployed===true&&runtimeEvidence?.evidence_ledger?.persistence_enabled===true)?[]:["EVIDENCE_WRITER_NOT_ACTIVE"]),
       ...((schedulerPolicy?.canonical_owner==="boom_orchestrator")?[]:["SCHEDULER_OWNER_NOT_CANONICAL"])
     ]),
     readiness:Object.freeze({
@@ -342,13 +350,16 @@ function compileSnapshot(runtime={},managerRegistry={},fusionRegistry={},control
       derived_queue:"READY",
       permissions:(controlPolicy.tool_classes||[]).length?"READY_SHADOW":"PARTIAL",
       leases:runs.some(x=>x.lease.state==="MISSING_EXPIRY")?"PARTIAL":"READY_SHADOW",
-      retry:"READY_SHADOW",
+      retry:runtimeEvidence?.circuit_breaker?.active===true?"ACTIVE_INTERNAL_SAFE":"READY_SHADOW",
       handoff:"READY",
-      evidence:"PREPARED_PERSISTENCE_OFF",
+      evidence:(runtimeEvidence?.evidence_ledger?.persistence_enabled===true&&runtimeEvidence?.evidence_ledger?.writer_deployed===true)
+        ?"ACTIVE_INTERNAL":"PREPARED_PERSISTENCE_OFF",
       owner_gate:"READY",
-      scheduler:(schedulerPolicy?.canonical_owner==="boom_orchestrator"&&schedule.length)?"OWNER_ASSIGNED_SHADOW":"PARTIAL",
+      scheduler:runtimeEvidence?.scheduler?.active===true?"ACTIVE_CANONICAL":
+        ((schedulerPolicy?.canonical_owner==="boom_orchestrator"&&schedule.length)?"OWNER_ASSIGNED_SHADOW":"PARTIAL"),
       budgets:controlPolicy?.budget_policy?.status||"PREP",
-      execution:"OFF"
+      execution:runtimeEvidence?.circuit_breaker?.active===true?"INTERNAL_MAINTENANCE_ONLY":"OFF",
+      material_execution:"OFF"
     })
   });
   return state;
