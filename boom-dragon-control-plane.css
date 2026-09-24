@@ -1,0 +1,9 @@
+/* DRAGON CORE · Control Plane V1 */
+.dc-control-plane-card{border-color:rgba(39,212,238,.22)!important;background:rgba(39,212,238,.022)}
+.dc-control-plane-card>.dc-chip{float:right}
+.dc-control-rule{border-top:1px solid rgba(39,212,238,.09);padding-top:7px!important;color:#7f9ba5!important}
+.dc-control-plane-inspector{border-color:rgba(39,212,238,.22)!important;background:rgba(39,212,238,.018)}
+.dc-control-plane-inspector p b{color:#7adcec}
+.dc-control-queue{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin:8px 0}
+.dc-control-queue span{border:1px solid rgba(39,212,238,.12);border-radius:7px;padding:6px;color:#72818a;font-size:5.5px}
+.dc-control-queue b{float:right;color:#82ddea}
