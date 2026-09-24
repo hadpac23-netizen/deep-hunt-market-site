@@ -1,0 +1,45 @@
+{
+  "schema": "BOOM_CONTROL_RUNTIME_EVIDENCE_V1",
+  "observed_at": "2026-09-24T11:31:05.433851Z",
+  "production_effect": false,
+  "source_data_mutated": false,
+  "execution_commands": {
+    "open": 9,
+    "lease_valid": 9,
+    "lease_expired": 0,
+    "lease_missing": 0,
+    "latest_expiry": "2026-09-24T17:30:00.137131Z",
+    "source": "hunt_boom_agent_commands"
+  },
+  "planning_backlog": {
+    "rows": 119,
+    "updated_24h": 0,
+    "updated_7d": 0,
+    "latest_updated": "2026-09-15T17:15:38.506086Z",
+    "role": "PLANNING_BACKLOG_ONLY",
+    "execution_authority": false,
+    "source": "hunt_boom_command_queue"
+  },
+  "evidence_ledger": {
+    "table": "boom_evidence",
+    "rows": 0,
+    "verified": 0,
+    "schema_reuse_ready": true,
+    "writer_deployed": false,
+    "persistence_enabled": false
+  },
+  "scheduler": {
+    "canonical_owner": "boom_orchestrator",
+    "f60t_hourly_auth_configured": true,
+    "secret_exported": false,
+    "activation_changed": false
+  },
+  "rules": [
+    "hunt_boom_agent_commands is execution-command truth.",
+    "hunt_boom_command_queue is not promoted to execution authority.",
+    "repeat_count is recurrence pressure, not retry attempts.",
+    "expires_at is authoritative for command lease validity.",
+    "Evidence persistence remains OFF until an admin-authenticated writer is explicitly enabled.",
+    "No scheduler activation is changed by this snapshot."
+  ]
+}
