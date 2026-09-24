@@ -1,0 +1,11 @@
+const fs=require("fs"),assert=require("assert");
+const html=fs.readFileSync("boom-ai-studio.html","utf8");
+const ui=fs.readFileSync("boom-dragon-product-truth-ui.js","utf8");
+const css=fs.readFileSync("boom-dragon-product-truth.css","utf8");
+assert(html.includes("boom-dragon-product-truth.js"));
+assert(html.includes("boom-dragon-product-truth-ui.js"));
+assert(html.includes("boom-dragon-product-truth.css"));
+for(const x of ["SNAPSHOT STALE","SNAPSHOT READY","TRUTH BLOCKED","Quote verified","Priority verified"])assert(ui.includes(x),x+" missing");
+assert(ui.includes("dragon:product-truth"));
+assert(css.includes(".dc-product-truth-badge"));
+console.log("DRAGON Product Truth UI contract: PASS");
