@@ -7,3 +7,5 @@
 .dc-control-queue{display:grid;grid-template-columns:repeat(2,1fr);gap:5px;margin:8px 0}
 .dc-control-queue span{border:1px solid rgba(39,212,238,.12);border-radius:7px;padding:6px;color:#72818a;font-size:5.5px}
 .dc-control-queue b{float:right;color:#82ddea}
+
+.dc-chip.shadow{color:#78ddea!important;border-color:#2b6670!important;background:rgba(39,212,238,.045)!important}
