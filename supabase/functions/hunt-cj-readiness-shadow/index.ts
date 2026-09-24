@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
-const URL=Deno.env.get("SUPABASE_URL")||"";
+const BASE_URL=Deno.env.get("SUPABASE_URL")||"";
 const SERVICE=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";
 const PUB=(()=>{try{return JSON.parse(Deno.env.get("SUPABASE_PUBLISHABLE_KEYS")||"{}").default||Deno.env.get("SUPABASE_ANON_KEY")||""}catch{return Deno.env.get("SUPABASE_ANON_KEY")||""}})();
 
@@ -11,7 +11,7 @@ const wait=(ms:number)=>new Promise(r=>setTimeout(r,ms));
 const json=(data:unknown,status=200)=>new Response(JSON.stringify(data),{status,headers:{"content-type":"application/json","cache-control":"no-store"}});
 
 async function rest(path:string){
-  const r=await fetch(URL+"/rest/v1/"+path,{headers:{apikey:SERVICE,Authorization:"Bearer "+SERVICE}});
+  const r=await fetch(BASE_URL+"/rest/v1/"+path,{headers:{apikey:SERVICE,Authorization:"Bearer "+SERVICE}});
   const t=await r.text(); const d=t?JSON.parse(t):null;
   if(!r.ok) throw new Error(d?.message||("REST_"+r.status));
   return d;
@@ -24,7 +24,7 @@ async function getProfile(){
 }
 
 async function getStorefront(itemId:string){
-  const u=new URL(URL+"/functions/v1/hunt-storefront");
+  const u=new URL(BASE_URL+"/functions/v1/hunt-storefront");
   u.searchParams.set("provider","CJdropshipping");
   u.searchParams.set("product_id",itemId);
   u.searchParams.set("country_code","US");
@@ -35,7 +35,7 @@ async function getStorefront(itemId:string){
 }
 
 async function getDetail(itemId:string){
-  const u=new URL(URL+"/functions/v1/hunt-cj-product-detail-shadow");
+  const u=new URL(BASE_URL+"/functions/v1/hunt-cj-product-detail-shadow");
   u.searchParams.set("id",itemId);
   const r=await fetch(u,{headers:{apikey:PUB},cache:"no-store"});
   const b=await r.json().catch(()=>({}));
@@ -44,7 +44,7 @@ async function getDetail(itemId:string){
 }
 
 async function quote(vid:string,country:string){
-  const u=new URL(URL+"/functions/v1/hunt-cj-quote");
+  const u=new URL(BASE_URL+"/functions/v1/hunt-cj-quote");
   u.searchParams.set("vid",vid);
   u.searchParams.set("country_code",country);
   u.searchParams.set("quantity","1");
@@ -101,7 +101,7 @@ function calc(profile:any,sale:number,cost:number,ship:number){
 
 Deno.serve(async(req:Request)=>{
   if(req.method!=="GET") return json({error:"method not allowed"},405);
-  if(!URL||!SERVICE||!PUB) return json({error:"server config missing"},500);
+  if(!BASE_URL||!SERVICE||!PUB) return json({error:"server config missing"},500);
   try{
     const u=new URL(req.url);
     const itemId=clean(u.searchParams.get("item_id"));
