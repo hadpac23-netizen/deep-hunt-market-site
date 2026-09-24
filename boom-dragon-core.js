@@ -43,9 +43,9 @@ profit:[
  {hub:"Growth",leaves:["AOV","CAC","LTV"]}
 ],
 decisions:[
- {hub:"Intelligence",leaves:["Data Intelligence","Reports","Forecasting"]},
- {hub:"Strategy",leaves:["Opportunities","Risk Analysis","What If"]},
- {hub:"Action",leaves:["AI Insights","Action Plan","Evidence"]}
+ {hub:"Decision",leaves:["Score","Confidence","Status"]},
+ {hub:"Evidence",leaves:["Evidence","Unknowns","Risk"]},
+ {hub:"Action",leaves:["Next Action","Owner Gate","Shadow Mode"]}
 ],
 owner:[
  {hub:"Vision",leaves:["Goals","Strategy","Personal KPI"]},
