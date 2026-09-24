@@ -6,6 +6,7 @@
   <meta name="robots" content="noindex,nofollow">
   <title>BOOM AI Engineering Studio</title>
   <link rel="stylesheet" href="boom-ai-studio.css?v=7">
+  <link rel="stylesheet" href="boom-dragon-core.css?v=1">
 </head>
 <body>
   <header class="topbar">
@@ -19,6 +20,7 @@
     <nav class="tabs" aria-label="BOOM views">
       <button class="tab active owner-tab" data-tab="owner-home" type="button">Owner</button>
       <button class="tab" data-tab="studio" type="button">Pro Studio</button>
+      <button class="tab dragon-core-tab" data-tab="dragon-control-room" type="button">DRAGON CORE</button>
       <button class="tab" data-tab="hunt-intelligence" type="button">Brain</button>
       <button class="tab" data-tab="professional-workbench" type="button">Professional</button>
       <button class="tab" data-tab="brand-factory" type="button">Brand Factory</button>
@@ -271,6 +273,35 @@
               <span><i class="legend-dot blocked-dot"></i>Blocked</span>
               <span>ירוק נע = Live · צהוב נע = Active Watch · אפור = Unverified</span>
             </div>
+          </div>
+        </section>
+
+
+        <section class="view dragon-core-view" id="dragon-control-room">
+          <header class="dragon-core-head">
+            <div>
+              <small>BOOM STUDIO · UNIFIED CONTROL MAP · PROTOTYPE</small>
+              <h1>DRAGON CORE</h1>
+              <p>Business truth inside · BOOM Studio functions outside · details on demand.</p>
+            </div>
+            <div class="dragon-core-badges">
+              <span>DEMO DATA</span><span>SHADOW MODE</span><span>OWNER GATE</span>
+            </div>
+          </header>
+          <div class="dragon-core-toolbar">
+            <div id="dragon-core-views"></div>
+            <div class="dragon-core-zoom">
+              <button type="button" data-core-zoom="out">−</button>
+              <button type="button" data-core-zoom="fit">FIT</button>
+              <button type="button" data-core-zoom="in">+</button>
+            </div>
+          </div>
+          <div class="dragon-core-viewport" id="dragon-core-viewport">
+            <div class="dragon-core-canvas" id="dragon-core-canvas">
+              <svg id="dragon-core-links" viewBox="0 0 2560 1440" aria-hidden="true"></svg>
+              <div id="dragon-core-nodes"></div>
+            </div>
+            <aside id="dragon-core-inspector" aria-live="polite"></aside>
           </div>
         </section>
 
@@ -816,5 +847,6 @@
   <script src="brand-video-dispatch.js?v=1"></script>
   <script src="boom-alpha-test-harness.js?v=alpha1"></script>\n  <script src="boom-alpha-evidence-pack.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-preview.js?v=alpha1"></script>\n  <script src="boom-alpha-rc-qa.js?v=alpha1"></script>\n  <script src="boom-alpha-final-gate.js?v=alpha1"></script>
   <script src="boom-professional-workbench.js?v=1"></script>\n  <script src="boom-b13-master-prompt.js?v=1"></script>\n  <script src="boom-ai-studio.js?v=5"></script>
+  <script src="boom-dragon-core.js?v=1"></script>
 </body>
 </html>
