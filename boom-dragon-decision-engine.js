@@ -134,6 +134,13 @@
       owner_gate_required:false,
       execution:"PREPARE_ONLY"
     });
+    if(inputs.product?.stale===true&&inputs.product_detail_shadow?.status==="DETAIL_SAMPLE_VERIFIED")return Object.freeze({
+      action_class:"EXPAND_DETAIL_COVERAGE",
+      target:"product_portfolio_truth",
+      text:"One product detail path is verified. Expand Variant + Stock + Shipping checks across priority products and target destinations.",
+      owner_gate_required:false,
+      execution:"SHADOW_ONLY"
+    });
     if(inputs.product?.stale===true&&inputs.product_live_refresh?.status==="DISCOVERY_FRESH")return Object.freeze({
       action_class:"VERIFY_DETAIL_TRUTH",
       target:"product_detail_truth",
@@ -186,6 +193,7 @@
       content:raw.content||null,
       refresh:raw.refresh||null,
       product_live_refresh:raw.product_live_refresh||null,
+      product_detail_shadow:raw.product_detail_shadow||null,
       launch_gates:Array.isArray(raw.launch_gates)?raw.launch_gates:[],
       f50_evidence:Array.isArray(raw.f50_evidence)?raw.f50_evidence:[]
     };
@@ -210,6 +218,16 @@
           ? "Discovery fresh · Detail Truth still RECHECK_REQUIRED"
           : "CJ shadow refresh not completed",
         source:inputs.product_live_refresh?.source||"CJ_OFFICIAL_PRODUCT_LIST_SHADOW"
+      }),
+      Object.freeze({
+        key:"product_detail_shadow",
+        label:"CJ Detail Shadow",
+        status:inputs.product_detail_shadow?.status||"NOT_RUN",
+        freshness:inputs.product_detail_shadow?.status==="DETAIL_SAMPLE_VERIFIED"?"FRESH":"UNKNOWN",
+        detail:inputs.product_detail_shadow?.status==="DETAIL_SAMPLE_VERIFIED"
+          ? "One verified variant × destination · portfolio coverage still PREP"
+          : "Variant + stock + shipping detail not yet verified",
+        source:inputs.product_detail_shadow?.source||"hunt-storefront + hunt-cj-quote"
       }),
       evidenceEntry("customer_journey","Customer Journey",inputs.journey,inputs.journey?.status,inputs.journey?.mode),
       evidenceEntry("order_profit","Order → Profit",inputs.profit,inputs.profit?.status,inputs.profit?.issues?.join(" · ")),
@@ -250,7 +268,8 @@
     const unknowns=[];
     if(!inputs.product)unknowns.push("PRODUCT_TRUTH_NOT_LOADED");
     else if(inputs.product.stale){
-      if(inputs.product_live_refresh?.status==="DISCOVERY_FRESH")unknowns.push("PRODUCT_DETAIL_TRUTH_STALE");
+      if(inputs.product_detail_shadow?.status==="DETAIL_SAMPLE_VERIFIED")unknowns.push("PRODUCT_PORTFOLIO_DETAIL_COVERAGE_LOW");
+      else if(inputs.product_live_refresh?.status==="DISCOVERY_FRESH")unknowns.push("PRODUCT_DETAIL_TRUTH_STALE");
       else unknowns.push("PRODUCT_TRUTH_STALE");
     }
     if(!inputs.journey)unknowns.push("CUSTOMER_JOURNEY_NOT_LOADED");
@@ -263,7 +282,7 @@
 
     const confidence=confidenceFor(inputs,evidence,inputs.refresh);
     let status="TEST";
-    if(hardGates.blocked||unknowns.includes("PRODUCT_TRUTH_STALE")||unknowns.includes("PRODUCT_DETAIL_TRUTH_STALE")||unknowns.includes("CUSTOMER_JOURNEY_STALE"))status="HOLD";
+    if(hardGates.blocked||unknowns.includes("PRODUCT_TRUTH_STALE")||unknowns.includes("PRODUCT_DETAIL_TRUTH_STALE")||unknowns.includes("PRODUCT_PORTFOLIO_DETAIL_COVERAGE_LOW")||unknowns.includes("CUSTOMER_JOURNEY_STALE"))status="HOLD";
     else if(score>=85&&confidence>=80&&unknowns.length===0)status="READY";
     else if(score<25&&confidence>=70)status="HOLD";
 
@@ -286,6 +305,18 @@
         detail_truth_ready:inputs.product_live_refresh.detail_truth_ready===true,
         products_seen:Number(inputs.product_live_refresh.products_seen||0),
         decision_effect:inputs.product_live_refresh.decision_effect||"DISCOVERY_ONLY"
+      }):null,
+      product_detail_shadow:inputs.product_detail_shadow?Object.freeze({
+        status:inputs.product_detail_shadow.status||"UNKNOWN",
+        generated_at:inputs.product_detail_shadow.generated_at||null,
+        detail_truth_ready:inputs.product_detail_shadow.detail_truth_ready===true,
+        portfolio_truth_ready:inputs.product_detail_shadow.portfolio_truth_ready===true,
+        item_id:inputs.product_detail_shadow.item_id||"",
+        variant_id:inputs.product_detail_shadow.variant_id||"",
+        country_code:inputs.product_detail_shadow.country_code||"",
+        stock_verified:inputs.product_detail_shadow.stock_verified===true,
+        shipping_verified:inputs.product_detail_shadow.shipping_verified===true,
+        profit_gate_status:inputs.product_detail_shadow.profit_gate_status||""
       }):null,
       evidence_refresh:inputs.refresh?Object.freeze({
         observed_at:inputs.refresh.observed_at||null,
@@ -348,6 +379,7 @@
       content:window.DRAGON_CONTENT_FEEDBACK_STATE||null,
       refresh,
       product_live_refresh:window.DRAGON_PRODUCT_LIVE_REFRESH_STATE||null,
+      product_detail_shadow:window.DRAGON_PRODUCT_DETAIL_SHADOW_STATE||null,
       launch_gates:refresh?.launch_gates?.length?refresh.launch_gates:live.launch_gates,
       f50_evidence:live.f50_evidence
     });
@@ -372,7 +404,8 @@
         unknowns:card.unknowns,
         hard_gates:card.hard_gates,
         evidence_refresh:card.evidence_refresh,
-        product_live_refresh:card.product_live_refresh
+        product_live_refresh:card.product_live_refresh,
+        product_detail_shadow:card.product_detail_shadow
       },
       rationale:"Shadow-mode deterministic readiness assessment. No execution implied.",
       action_class:card.next_action?.action_class||"NO_ACTION",
@@ -390,7 +423,7 @@
   if(typeof window!=="undefined"){
     window.DragonDecisionEngine=api;
     const rerun=()=>setTimeout(evaluateBrowser,50);
-    ["dragon:product-truth","dragon:product-live-refresh","dragon:customer-journey","hunt:order-profit-preview","dragon:content-feedback","dragon:evidence-refresh"]
+    ["dragon:product-truth","dragon:product-live-refresh","dragon:product-detail-shadow","dragon:customer-journey","hunt:order-profit-preview","dragon:content-feedback","dragon:evidence-refresh"]
       .forEach(name=>window.addEventListener(name,rerun));
     if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",()=>setTimeout(evaluateBrowser,350));
     else setTimeout(evaluateBrowser,350);
