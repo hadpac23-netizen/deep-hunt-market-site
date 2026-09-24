@@ -54,8 +54,8 @@ owner:[
 ],
 f35:[{hub:"Research",leaves:["Market Intel","Competitive Edge","Trend Analysis","Global View"]}],
 f50:[{hub:"Systems",leaves:["Automation","Efficiency","Systems","Scale"]}],
-f60t:[{hub:"Transformation",leaves:["Playbooks","Mentorship","Demand"]}],
-stylist:[{hub:"Creative",leaves:["Content","Creative AI","Visual Identity"]}],
+f60t:[{hub:"Demand",leaves:["Platform","Timing","Campaigns","Attribution"]}],
+stylist:[{hub:"Creative",leaves:["Hooks","Scripts","Visuals","Creative ID","Learning"]}],
 verifier:[{hub:"Trust",leaves:["Data Check","Quality Control","Trust & Audit"]}]
 };
 
@@ -95,7 +95,7 @@ const CONNECTIONS=[
 ["Commerce Graph","Graph structure exists","READY"],
 ["Customer live events","Analytics/event feed","PREP"],
 ["Orders → Profit truth","Live order + cost evidence","PREP"],
-["Ads → Journey attribution","Ads/creative identity feed","PREP"],
+["Content → Journey → Profit","Creative identity + attribution + profit evidence","PREP"],
 ["Supplier / Shipping truth","Fresh quote + SLA evidence","PREP"],
 ["Owner authority","Material actions remain gated","GATED"]
 ];
