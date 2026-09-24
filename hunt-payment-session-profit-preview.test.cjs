@@ -1,0 +1,12 @@
+const fs=require("fs"),assert=require("assert");
+const src=fs.readFileSync("supabase/functions/hunt-payment-session/index.ts","utf8");
+assert(src.includes("async function buildProfitPreview"));
+assert(src.includes("missingNumber"));
+assert(src.includes("SUPPLIER_PRODUCT_COST_UNKNOWN"));
+assert(src.includes("SUPPLIER_SHIPPING_COST_UNKNOWN"));
+assert(src.includes("QUOTE_PROFIT_PREVIEW"));
+assert(src.includes("QUOTE_PROFIT_HOLD"));
+assert.equal((src.match(/profit_preview:/g)||[]).length,3);
+assert(src.includes("cart_digest,line_items"));
+assert(!src.includes("realized:true"));
+console.log("HUNT payment-session profit-preview contract: PASS");
