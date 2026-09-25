@@ -1,0 +1,44 @@
+name: HUNT Free Visual QA Capture
+
+on:
+  push:
+    branches:
+      - hunt-visual-qa-free
+    paths:
+      - '.github/workflows/hunt-visual-qa.yml'
+      - 'scripts/hunt-visual-qa.mjs'
+      - 'visual-qa-manifest.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Playwright
+        run: |
+          npm init -y
+          npm install playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Capture exact variant images
+        run: node scripts/hunt-visual-qa.mjs
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: hunt-visual-qa
+          path: artifacts/hunt-visual-qa/
+          if-no-files-found: error
+          retention-days: 7
