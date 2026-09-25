@@ -1,0 +1,161 @@
+{
+  "version": "HUNT-EPROLO-ACCESSORIES-61-V3",
+  "date": "2026-09-25",
+  "provider": "EPROLO",
+  "mode": "READ_ONLY_SHADOW",
+  "production_effect": false,
+  "category_mapping": {
+    "verified_lane": {
+      "wareTypeTwoId": 61,
+      "label": "wallets_small_accessories"
+    },
+    "supporting_observation": "ID 61 returned wallet/card-holder/coin-purse/small-bag products in the live supplier API.",
+    "women_bags_exact_category_id": "STILL_UNRESOLVED",
+    "jewelry_category_id": "STILL_UNRESOLVED"
+  },
+  "summary": {
+    "checked": 10,
+    "technical_shadow_pass": 6,
+    "taxonomy_pass": 7,
+    "brand_review": 1,
+    "image_technical_pass": 10,
+    "all_3_markets_shipping_pass": 10,
+    "physical_quality_verified": 0,
+    "visual_merchandising_verified": 0,
+    "final_profit_verified": 0,
+    "fully_ready": 0
+  },
+  "technical_shadow_pass_products": [
+    {
+      "product_id": "30629383",
+      "supplier_cost_usd": 4.72,
+      "inventory_snapshot": 98971,
+      "variant_count": 4,
+      "IL": {
+        "shipping": 7,
+        "shadow_retail": 20.99
+      },
+      "DE": {
+        "shipping": 4.94,
+        "shadow_retail": 17.99
+      },
+      "US": {
+        "shipping": 5.73,
+        "shadow_retail": 18.99
+      }
+    },
+    {
+      "product_id": "31207040",
+      "supplier_cost_usd": 2.59,
+      "inventory_snapshot": 3000,
+      "variant_count": 1,
+      "IL": {
+        "shipping": 6.64,
+        "shadow_retail": 16.99
+      },
+      "DE": {
+        "shipping": 4.51,
+        "shadow_retail": 12.99
+      },
+      "US": {
+        "shipping": 4.88,
+        "shadow_retail": 13.99
+      }
+    },
+    {
+      "product_id": "31207041",
+      "supplier_cost_usd": 4.55,
+      "inventory_snapshot": 993,
+      "variant_count": 7,
+      "IL": {
+        "shipping": 6.21,
+        "shadow_retail": 19.99
+      },
+      "DE": {
+        "shipping": 4.38,
+        "shadow_retail": 15.99
+      },
+      "US": {
+        "shipping": 4.7,
+        "shadow_retail": 16.99
+      }
+    },
+    {
+      "product_id": "31411946",
+      "supplier_cost_usd": 7.53,
+      "inventory_snapshot": 63,
+      "variant_count": 1,
+      "IL": {
+        "shipping": 7.71,
+        "shadow_retail": 27.99
+      },
+      "DE": {
+        "shipping": 4.83,
+        "shadow_retail": 22.99
+      },
+      "US": {
+        "shipping": 5.34,
+        "shadow_retail": 22.99
+      }
+    },
+    {
+      "product_id": "31447692",
+      "supplier_cost_usd": 5.34,
+      "inventory_snapshot": 5755,
+      "variant_count": 5,
+      "IL": {
+        "shipping": 7.06,
+        "shadow_retail": 22.99
+      },
+      "DE": {
+        "shipping": 4.64,
+        "shadow_retail": 17.99
+      },
+      "US": {
+        "shipping": 5.06,
+        "shadow_retail": 18.99
+      }
+    },
+    {
+      "product_id": "31955070",
+      "supplier_cost_usd": 9.46,
+      "inventory_snapshot": 9998,
+      "variant_count": 1,
+      "IL": {
+        "shipping": 11.69,
+        "shadow_retail": 37.99
+      },
+      "DE": {
+        "shipping": 6.09,
+        "shadow_retail": 27.99
+      },
+      "US": {
+        "shipping": 7.29,
+        "shadow_retail": 29.99
+      }
+    }
+  ],
+  "unresolved_hard_gates": [
+    "visual merchandising review",
+    "physical/material quality review",
+    "fresh stock recheck before activation",
+    "final supplier order-cost endpoint verification",
+    "final profit truth",
+    "owner gate"
+  ],
+  "support": {
+    "final_cost_and_category_request_prepared": true,
+    "gmail_write_connector_failed": true,
+    "request_sent": false
+  },
+  "hard_blocks": {
+    "payment": "OFF",
+    "supplier_live_order": "OFF",
+    "checkout_activation": "OFF",
+    "production_catalog_write": false
+  },
+  "secrets": {
+    "stored_in": "SUPABASE_VAULT",
+    "values_in_git": false
+  }
+}
