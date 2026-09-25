@@ -1,0 +1,74 @@
+{
+  "version": "HUNT-EPROLO-ACCESSORIES-61-V7",
+  "date": "2026-09-25",
+  "provider": "EPROLO",
+  "source_mode": "OFFICIAL_SIGNED_READ_ONLY_API",
+  "category": {
+    "wareTypeTwoId": 61,
+    "label": "wallets_small_accessories",
+    "catalog_returned": 30
+  },
+  "scan": {
+    "checked": 30,
+    "technical_before_ip_visual_redteam": 22,
+    "strict_technical_shadow_candidates": 19,
+    "ip_visual_review": 3,
+    "image_technical_pass": 30,
+    "all_3_markets_shipping_pass": 30,
+    "physical_quality_verified": 0,
+    "visual_merchandising_verified": 0,
+    "final_profit_verified": 0,
+    "fully_ready": 0
+  },
+  "ip_visual_review_products": [
+    {
+      "product_id": "30557989",
+      "reason": "anime title requires exact-image/IP review"
+    },
+    {
+      "product_id": "31207040",
+      "reason": "game title requires exact-image/IP review"
+    },
+    {
+      "product_id": "31207041",
+      "reason": "cartoon title requires exact-image/IP review"
+    }
+  ],
+  "strict_candidate_ids": [
+    "30557980",
+    "30557981",
+    "30557991",
+    "30557992",
+    "30557993",
+    "30557997",
+    "30557998",
+    "30557999",
+    "30558001",
+    "30558002",
+    "30558021",
+    "30558025",
+    "30558066",
+    "30558067",
+    "30558070",
+    "30629383",
+    "31411946",
+    "31447692",
+    "31955070"
+  ],
+  "truth_status": {
+    "visual_style": "PENDING_EXACT_IMAGE_VIEW",
+    "physical_material_quality": "UNVERIFIED",
+    "fresh_stock": "RECHECK_AT_ACTIVATION",
+    "final_supplier_order_cost": "BLOCKED_GETCOSTBYPRODUCT_CONTRACT",
+    "final_profit": "UNVERIFIED",
+    "owner_gate": "REQUIRED"
+  },
+  "hard_blocks": {
+    "payment": "OFF",
+    "supplier_live_order": "OFF",
+    "checkout_activation": "OFF",
+    "production_catalog_write": false
+  },
+  "netlify_or_storefront_effect": false,
+  "secrets_in_git": false
+}
