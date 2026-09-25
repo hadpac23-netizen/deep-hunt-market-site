@@ -6,8 +6,11 @@ const BASE="https://openapi.eprolo.com/";
 const CATEGORY_ID=61;
 const LIMIT=10;
 const DEST=["IL","DE","US"] as const;
-const SAFE_ACCESSORY=/\b(wallet|purse|card holder|card case|coin pouch|coin purse|small bag|crossbody bag|phone pouch)\b/i;
-const BRAND_REVIEW=/\b(apple|iphone|samsung|gucci|louis vuitton|chanel|dior|prada|hermes|coach|batman|marvel|disney|pokemon|hello kitty|star wars|nike|adidas)\b/i;
+const SAFE_ACCESSORY=/\b(wallet|purse|card holder|card case|coin pouch|coin purse|small bag|crossbody bag|phone pouch|passport cover|passport holder|key holder|keychain|clutch)\b/i;
+const BRAND_REVIEW=/\b(apple|iphone|samsung|gucci|louis vuitton|chanel|dior|prada|hermes|coach|batman|marvel|disney|pokemon|hello kitty|star wars|nike|adidas|superhero)\b/i;
+const STYLE_HOLD=/\b(tactical|hunting|work shoe|safety shoe|protective gear|labor protection|welding)\b/i;
+const IP_VISUAL_HOLD=/\b(anime|game|cartoon|character)\b/i;
+const STYLE_SIGNAL=/\b(leather|handmade|textured|minimal|minimalist|compact|multi-slot|vintage|woven|plush|cute|lolita|quilted|zipper|x-pac|travel|creative|metallic|soft|mini)\b/ig;
 const H={"Content-Type":"application/json; charset=utf-8","Cache-Control":"no-store"};
 const reply=(x:unknown,s=200)=>new Response(JSON.stringify(x),{status:s,headers:H});
 const num=(v:unknown)=>{const n=Number(v);return Number.isFinite(n)?n:null};
@@ -21,7 +24,7 @@ async function get(k:string,s:string,path:string,params:Record<string,string|num
   const a=sig(k,s),u=new URL(path,BASE);
   for(const [x,v] of Object.entries(params))u.searchParams.set(x,String(v));
   u.searchParams.set("timestamp",a.timestamp);u.searchParams.set("sign",a.sign);
-  const r=await fetch(u,{headers:{"apiKey":k,"Accept":"application/json","User-Agent":"HUNT-EPROLO-ACCESSORIES-READONLY/3.0"},signal:AbortSignal.timeout(15000)});
+  const r=await fetch(u,{headers:{"apiKey":k,"Accept":"application/json","User-Agent":"HUNT-EPROLO-ACCESSORIES-READONLY/7.0"},signal:AbortSignal.timeout(15000)});
   return {http:r.status,body:await r.json().catch(()=>null)};
 }
 function pick(raw:any){
@@ -76,6 +79,9 @@ function price(landed:number){
 
 Deno.serve(async(req:Request)=>{
   if(req.method!=="POST")return reply({error:"POST required"},405);
+  const input=await req.json().catch(()=>({}));
+  const batch=Math.max(1,Math.min(3,Number(input?.batch)||1));
+  const offset=(batch-1)*10;
   const db=Deno.env.get("SUPABASE_DB_URL");if(!db)return reply({error:"server config"},500);
   const sql=postgres(db,{prepare:false,max:1});
   try{
@@ -84,14 +90,17 @@ Deno.serve(async(req:Request)=>{
     if(req.headers.get("x-hunt-internal-token")!==sec.hunt_eprolo_pilot_token)return reply({error:"unauthorized"},401);
     const k=String(sec.hunt_eprolo_api_key||""),s=String(sec.hunt_eprolo_api_secret||"");
 
-    const cat=await get(k,s,"eprolo_product_list.html",{page:1,page_size:LIMIT,wareTypeTwoId:CATEGORY_ID});
+    const cat=await get(k,s,"eprolo_product_list.html",{page:1,page_size:30,wareTypeTwoId:CATEGORY_ID});
     if(cat.http!==200||String(cat.body?.code)!=="0"||!Array.isArray(cat.body?.data))return reply({ok:false,error:"category_read_failed"},502);
 
     const products:any[]=[];
-    for(const raw of cat.body.data.slice(0,LIMIT)){
+    for(const raw of cat.body.data.slice(offset,offset+LIMIT)){
       const productId=String(raw?.product_id||raw?.id||""),title=String(raw?.title||"").trim();
       const taxonomy=SAFE_ACCESSORY.test(title);
       const brand=BRAND_REVIEW.test(title);
+      const styleHold=STYLE_HOLD.test(title);
+      const ipVisualHold=IP_VISUAL_HOLD.test(title);
+      const styleSignals=[...title.matchAll(STYLE_SIGNAL)].map(m=>m[0].toLowerCase());
       const v=pick(raw);
       if(!productId||!title||!v.picked){
         products.push({product_id:productId||null,title,status:"REVIEW_REQUIRED",technical_shadow_pass:false});
@@ -108,11 +117,15 @@ Deno.serve(async(req:Request)=>{
         }catch{return [cc,{shipping_verified:false}];}
       })));
       const shipping=DEST.every(cc=>markets[cc]?.shipping_verified===true);
-      const pass=taxonomy&&!brand&&ig.pass&&shipping;
+      const pass=taxonomy&&!brand&&!styleHold&&!ipVisualHold&&ig.pass&&shipping;
       products.push({
         product_id:productId,title,status:pass?"TECHNICAL_SHADOW_PASS":"REVIEW_REQUIRED",technical_shadow_pass:pass,
         taxonomy_gate:taxonomy?"PASS":"HOLD_CATEGORY_MISMATCH",
         brand_gate:brand?"BRAND_REVIEW_REQUIRED":"PASS",
+        style_title_gate:styleHold?"STYLE_HOLD":"PASS",
+        ip_visual_gate:ipVisualHold?"IP_VISUAL_REVIEW_REQUIRED":"PASS",
+        style_signals:[...new Set(styleSignals)],
+        visual_style_status:pass?"VISUAL_STYLE_PENDING":"NOT_READY",
         picked_variant:{id:v.picked.id,title:v.picked.title||null,supplier_cost_usd:money(v.picked.cost),inventory_snapshot:Math.max(0,Math.trunc(v.picked.stock||0)),weight_g:v.picked.weight},
         stocked_variant_count:v.count,image_scope:img.scope,image_technical_gate:ig,markets,
         physical_quality_verified:false,visual_merchandising_verified:false,final_profit_verified:false,
@@ -125,10 +138,13 @@ Deno.serve(async(req:Request)=>{
       technical_shadow_pass:products.filter(x=>x.technical_shadow_pass).length,
       taxonomy_pass:products.filter(x=>x.taxonomy_gate==="PASS").length,
       brand_review:products.filter(x=>x.brand_gate==="BRAND_REVIEW_REQUIRED").length,
+      style_hold:products.filter(x=>x.style_title_gate==="STYLE_HOLD").length,
+      ip_visual_review:products.filter(x=>x.ip_visual_gate==="IP_VISUAL_REVIEW_REQUIRED").length,
+      visual_style_pending:products.filter(x=>x.visual_style_status==="VISUAL_STYLE_PENDING").length,
       image_technical_pass:products.filter(x=>x.image_technical_gate?.pass===true).length,
       all_3_markets_shipping_pass:products.filter(x=>DEST.every(cc=>x.markets?.[cc]?.shipping_verified===true)).length,
       physical_quality_verified:0,visual_merchandising_verified:0,final_profit_verified:0,fully_ready:0
     };
-    return reply({ok:true,provider:"EPROLO",mode:"READ_ONLY_ACCESSORIES_61_V3",category_id:CATEGORY_ID,category_label:"wallets_small_accessories",destinations:DEST,summary,products,payment:"OFF",supplier_live_order:"OFF",production_catalog_write:false});
+    return reply({ok:true,provider:"EPROLO",mode:"READ_ONLY_ACCESSORIES_61_V7",batch,offset,catalog_returned:cat.body.data.length,category_id:CATEGORY_ID,category_label:"wallets_small_accessories",destinations:DEST,summary,products,payment:"OFF",supplier_live_order:"OFF",production_catalog_write:false});
   }finally{await sql.end({timeout:2}).catch(()=>{});}
 });
