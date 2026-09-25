@@ -24,7 +24,7 @@ async function get(k:string,s:string,path:string,params:Record<string,string|num
   const a=sig(k,s),u=new URL(path,BASE);
   for(const [x,v] of Object.entries(params))u.searchParams.set(x,String(v));
   u.searchParams.set("timestamp",a.timestamp);u.searchParams.set("sign",a.sign);
-  const r=await fetch(u,{headers:{"apiKey":k,"Accept":"application/json","User-Agent":"HUNT-EPROLO-ACCESSORIES-READONLY/7.0"},signal:AbortSignal.timeout(15000)});
+  const r=await fetch(u,{headers:{"apiKey":k,"Accept":"application/json","User-Agent":"HUNT-EPROLO-ACCESSORIES-READONLY/8.0"},signal:AbortSignal.timeout(15000)});
   return {http:r.status,body:await r.json().catch(()=>null)};
 }
 function pick(raw:any){
@@ -127,7 +127,7 @@ Deno.serve(async(req:Request)=>{
         style_signals:[...new Set(styleSignals)],
         visual_style_status:pass?"VISUAL_STYLE_PENDING":"NOT_READY",
         picked_variant:{id:v.picked.id,title:v.picked.title||null,supplier_cost_usd:money(v.picked.cost),inventory_snapshot:Math.max(0,Math.trunc(v.picked.stock||0)),weight_g:v.picked.weight},
-        stocked_variant_count:v.count,image_scope:img.scope,image_technical_gate:ig,markets,
+        stocked_variant_count:v.count,image_scope:img.scope,exact_variant_image_url:img.url,image_technical_gate:ig,markets,
         physical_quality_verified:false,visual_merchandising_verified:false,final_profit_verified:false,
         fresh_stock_recheck_required:true,production_exposure:false,checkout:"DISABLED",fulfillment:"DISABLED"
       });
@@ -145,6 +145,6 @@ Deno.serve(async(req:Request)=>{
       all_3_markets_shipping_pass:products.filter(x=>DEST.every(cc=>x.markets?.[cc]?.shipping_verified===true)).length,
       physical_quality_verified:0,visual_merchandising_verified:0,final_profit_verified:0,fully_ready:0
     };
-    return reply({ok:true,provider:"EPROLO",mode:"READ_ONLY_ACCESSORIES_61_V7",batch,offset,catalog_returned:cat.body.data.length,category_id:CATEGORY_ID,category_label:"wallets_small_accessories",destinations:DEST,summary,products,payment:"OFF",supplier_live_order:"OFF",production_catalog_write:false});
+    return reply({ok:true,provider:"EPROLO",mode:"READ_ONLY_ACCESSORIES_61_V8",batch,offset,catalog_returned:cat.body.data.length,category_id:CATEGORY_ID,category_label:"wallets_small_accessories",destinations:DEST,summary,products,payment:"OFF",supplier_live_order:"OFF",production_catalog_write:false});
   }finally{await sql.end({timeout:2}).catch(()=>{});}
 });
