@@ -1,5 +1,5 @@
 const ORDER_TRANSITIONS=Object.freeze({
-  placed:new Set(["confirmed","cancelled","exception"]),
+  placed:new Set(["confirmed","processing","cancelled","exception"]),
   confirmed:new Set(["processing","cancelled","exception"]),
   processing:new Set(["shipped","cancelled","exception"]),
   shipped:new Set(["out_for_delivery","returned","exception"]),
@@ -44,3 +44,24 @@ function assertTransition(kind,from,to){
   return true;
 }
 export {ORDER_TRANSITIONS,FULFILLMENT_TRANSITIONS,PAYMENT_TRANSITIONS,assertTransition};
+
+
+function refundEligibility({payment_status,order_status,total_amount,refund_amount,currency,refund_currency}={}){
+  const blockers=[];
+  const payment=String(payment_status||"").toLowerCase();
+  const order=String(order_status||"").toLowerCase();
+  const total=Number(total_amount);
+  const amount=Number(refund_amount);
+  if(payment!=="paid") blockers.push("PAYMENT_NOT_PAID");
+  if(!["processing","shipped","out_for_delivery","delivered","returned","exception"].includes(order)){
+    blockers.push("ORDER_STATUS_NOT_REFUNDABLE");
+  }
+  if(!Number.isFinite(total)||total<=0) blockers.push("TOTAL_AMOUNT_INVALID");
+  if(!Number.isFinite(amount)||amount<=0) blockers.push("REFUND_AMOUNT_INVALID");
+  else if(Number.isFinite(total)&&amount-total>0.01) blockers.push("REFUND_EXCEEDS_PAYMENT");
+  if(String(currency||"").toUpperCase()!==String(refund_currency||currency||"").toUpperCase()){
+    blockers.push("REFUND_CURRENCY_MISMATCH");
+  }
+  return Object.freeze({eligible:blockers.length===0,blockers});
+}
+export {refundEligibility};
