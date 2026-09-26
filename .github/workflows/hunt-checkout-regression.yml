@@ -1,0 +1,43 @@
+name: HUNT checkout regression
+
+on:
+  pull_request:
+    paths:
+      - "checkout.html"
+      - "checkout.js"
+      - "checkout-address.js"
+      - "hunt-shop.css"
+      - "supabase/functions/hunt-payment-session/**"
+      - "supabase/functions/hunt-order-preview/**"
+      - "tests/**"
+      - ".github/workflows/hunt-checkout-regression.yml"
+  push:
+    branches:
+      - "feature/hunt-shipping-address-e2e"
+    paths:
+      - "checkout.html"
+      - "checkout.js"
+      - "checkout-address.js"
+      - "hunt-shop.css"
+      - "supabase/functions/hunt-payment-session/**"
+      - "supabase/functions/hunt-order-preview/**"
+      - "tests/**"
+      - ".github/workflows/hunt-checkout-regression.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  checkout-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Run checkout tests
+        run: node --test tests/checkout-address.test.js tests/checkout-contract.test.js
+      - name: Parse browser scripts
+        run: |
+          node -e "new Function(require('fs').readFileSync('checkout-address.js','utf8')); new Function(require('fs').readFileSync('checkout.js','utf8')); console.log('browser-js-parse-pass')"
