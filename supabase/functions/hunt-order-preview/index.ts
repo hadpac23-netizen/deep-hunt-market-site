@@ -1,6 +1,18 @@
 import { createSupabaseContext } from "npm:@supabase/server";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
+function shippingAddressReady(snapshot:any,country:string){
+  if(!snapshot||typeof snapshot!=="object")return false;
+  const phoneDigits=clean(snapshot?.phone).replace(/\D/g,"");
+  return clean(snapshot?.customer_name).length>=2 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(snapshot?.email)) &&
+    clean(snapshot?.address1).length>=4 &&
+    clean(snapshot?.city).length>=2 &&
+    clean(snapshot?.province).length>=2 &&
+    clean(snapshot?.postal_code).length>=2 &&
+    phoneDigits.length>=7 && phoneDigits.length<=15 &&
+    clean(snapshot?.country_code).toUpperCase()===country;
+}
 const json=(req:Request,body:unknown,status=200)=>new Response(JSON.stringify(body),{
   status,
   headers:{
@@ -28,7 +40,7 @@ Deno.serve(async(req:Request)=>{
 
     const {data:session,error:sessionError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
-      .select("id,user_id,provider,mode,status,country_code,currency,product_amount,shipping_amount,total_amount,line_items,idempotency_key,provider_request_uid,expires_at,created_at")
+      .select("id,user_id,provider,mode,status,country_code,currency,product_amount,shipping_amount,total_amount,line_items,idempotency_key,provider_request_uid,expires_at,created_at,customer_email,shipping_snapshot")
       .eq("id",sessionId)
       .eq("idempotency_key",idempotencyKey)
       .maybeSingle();
@@ -67,6 +79,7 @@ Deno.serve(async(req:Request)=>{
       });
     }
 
+    const shippingReady=shippingAddressReady(session.shipping_snapshot,clean(session.country_code).toUpperCase());
     const blockers:string[]=[];
     if(session.mode==="prelaunch") blockers.push("PAYMENT_ACCOUNT_NOT_ACTIVE");
     if(!["paid","succeeded","completed"].includes(clean(session.status).toLowerCase())) blockers.push("PAYMENT_NOT_CONFIRMED");
@@ -74,7 +87,7 @@ Deno.serve(async(req:Request)=>{
     if(lines.some((x:any)=>!clean(x?.provider).toLowerCase().includes("cj"))) blockers.push("NON_CJ_FULFILLMENT_NOT_READY");
     if(lines.some((x:any)=>!clean(x?.origin_country_code))) blockers.push("ORIGIN_NOT_PERSISTED");
     if(lines.some((x:any)=>!clean(x?.shipping_method))) blockers.push("LOGISTICS_NOT_PERSISTED");
-    blockers.push("SHIPPING_ADDRESS_NOT_COLLECTED");
+    if(!shippingReady) blockers.push("SHIPPING_ADDRESS_NOT_COLLECTED");
     blockers.push("SUPPLIER_ORDER_CREATION_DISABLED");
 
     const fulfillmentPreview=Object.values(groups).map(group=>({
@@ -90,6 +103,12 @@ Deno.serve(async(req:Request)=>{
         logisticName:group.shipping_method||"<missing_logistics>",
         payType:3,
         isSandbox:1,
+        shippingCustomerName:shippingReady?"<collected>":"<missing>",
+        shippingAddress:shippingReady?"<collected>":"<missing>",
+        shippingCity:shippingReady?"<collected>":"<missing>",
+        shippingProvince:shippingReady?"<collected>":"<missing>",
+        shippingZip:shippingReady?"<collected>":"<missing>",
+        shippingPhone:shippingReady?"<collected>":"<missing>",
         products:group.line_items.map((line:any)=>({
           vid:line.variant_id,
           quantity:line.qty
@@ -120,6 +139,7 @@ Deno.serve(async(req:Request)=>{
         total_amount:session.total_amount
       },
       fulfillment_preview:fulfillmentPreview,
+      shipping_address_ready:shippingReady,
       ready_for_live_payment:session.mode==="live" && !blockers.includes("PAYMENT_ACCOUNT_NOT_ACTIVE"),
       ready_for_supplier_order:false,
       blockers
