@@ -43,3 +43,19 @@ test("sandbox evidence is sandbox-only and control-gated",()=>{
   assert.match(src,/supplier_order_live:false/);
   assert.doesNotMatch(src,/restapi\.payplus\.co\.il\/api\/v1\.0\/PaymentPages\/generateLink/);
 });
+
+
+test("sandbox evidence disables orphaned PayPlus links after persistence failure",()=>{
+  const src=read("supabase/functions/hunt-payplus-sandbox-evidence/index.ts");
+  assert.match(src,/PaymentPages\/Disable\//);
+  assert.match(src,/disableLink\(link\.requestUid\)/);
+  assert.match(src,/M31_SANDBOX_SESSION_UPDATE_FAILED_DISABLE_FAILED/);
+});
+
+test("sandbox evidence refuses success when evidence event storage fails",()=>{
+  const src=read("supabase/functions/hunt-payplus-sandbox-evidence/index.ts");
+  assert.match(src,/const \{error:eventError\}=await sb\.from\("hunt_payment_events"\)\.insert/);
+  assert.match(src,/if\(eventError\)/);
+  assert.match(src,/M31_SANDBOX_EVIDENCE_EVENT_STORE_FAILED/);
+  assert.match(src,/provider_redirect_url:null/);
+});
