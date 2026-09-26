@@ -529,6 +529,7 @@ Deno.serve(async(req:Request)=>{
           })
           .eq("id",fulfillment.id);
         requireWrite(submittedError,"FULFILLMENT_STORE_FAILED");
+        fulfillment={...fulfillment,status:"submitted",supplier_order_id:supplierId,supplier_order_code:supplierCode,supplier_status:"sandbox_created"};
       }
 
       const alreadyShipped=clean(fulfillment?.supplier_status)==="sandbox_shipped";
