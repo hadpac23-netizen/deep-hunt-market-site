@@ -86,13 +86,33 @@ h1{font:700 clamp(58px,8vw,126px)/.84 Georgia,"Times New Roman",serif;letter-spa
 </main>
 <div class="qa">CATALOG SHADOW · PRODUCTION OFF</div>
 <script>
-let data=null,active=0,visible={};
+let data=null,accessorySupplement={shelves:{}},active=0,visible={};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const qp=new URLSearchParams(location.search);
 function setTheme(t){document.documentElement.dataset.huntTheme=t;$("#theme").textContent=t==="dark"?"Light":"Dark";history.replaceState(null,"",withParam("theme",t))}
 function withParam(k,v){const q=new URLSearchParams(location.search);q.set(k,v);return location.pathname+"?"+q.toString()}
 $("#theme").addEventListener("click",()=>setTheme(document.documentElement.dataset.huntTheme==="dark"?"light":"dark"));
+const blockedPreview=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|steroid|diet pill|laxative)\b/i;
+const accessoryIdentity=/\b(necklace|pendant|choker|earring|bracelet|bangle|jewelry|jewellery|handbag|purse|tote|crossbody|backpack|wallet|belt|scarf|shawl|hat|cap|beanie|sock|hair clip|hairpin|headband|scrunchie|bag charm|bag strap|watch)\b/i;
+const accessoryCategory=/^(accessories|jewelry(?:-.+)?|bags|bag-accessories|hair-accessories|hats|gloves|socks|scarves|belts)$/i;
+function allowedForDepartment(deptSlug,p){
+  const text=String((p?.title||"")+" "+(p?.category||""));
+  if(blockedPreview.test(text))return false;
+  if(deptSlug==="gifts" && (accessoryCategory.test(String(p?.category||"")) || accessoryIdentity.test(text)))return false;
+  return true;
+}
+function categoryProducts(deptSlug,cat){
+  const base=(cat.products||[]);
+  const extra=deptSlug==="accessories"?(accessorySupplement.shelves?.[cat.slug]||[]):[];
+  const seen=new Set(),out=[];
+  for(const p of [...base,...extra]){
+    const key=String(p.provider||"UNKNOWN")+":"+String(p.item_id||"");
+    if(!p.item_id||seen.has(key)||!allowedForDepartment(deptSlug,p))continue;
+    seen.add(key);out.push(p);
+  }
+  return out;
+}
 function card(p){
   const cj=p.truth_state==="CJ_VERIFIED_4_MARKETS";
   const global=p.truth_state==="GLOBAL_PRODUCT_TRUTH";
@@ -115,27 +135,36 @@ function render(){
   [...$("#dept-nav").children].forEach((b,i)=>b.classList.toggle("active",i===active));
   $("#eyebrow").textContent="BOOM STYLIST · "+d.category_rails+" CATEGORY SHELVES";
   $("#title").textContent=d.title;
+  const cleanTotal=d.categories.reduce((s,c)=>s+categoryProducts(d.slug,c).length,0);
+  const nonEmptyRails=d.categories.filter(c=>categoryProducts(d.slug,c).length>0).length;
+  const initialTotal=d.categories.reduce((s,c)=>s+Math.min(24,categoryProducts(d.slug,c).length),0);
   $("#stats").innerHTML=[
-    d.clean_candidate_count+" clean candidates",
-    d.category_rails+" category rails",
-    d.initial_shown_products+" visible on first pass",
-    "no cross-department filler"
+    cleanTotal+" clean candidates",
+    nonEmptyRails+" non-empty category rails",
+    initialTotal+" visible on first pass",
+    "strict taxonomy · no cross-department filler"
   ].map(x=>'<span class="stat">'+esc(x)+'</span>').join("");
-  if(d.hero){
-    $("#hero").hidden=false;$("#hero-image").src=d.hero.image_url;$("#hero-title").textContent=d.hero.title;
-    $("#hero-kicker").textContent=(d.hero.truth_state==="GLOBAL_PRODUCT_TRUTH"?"GLOBAL TRUTH":"CATALOG SHADOW")+" · "+d.hero.category_title.toUpperCase();
-    $("#hero-status").textContent="Canonical "+d.slug+" / "+d.hero.category+" · Production off";
+  const heroPool=d.categories.flatMap(c=>categoryProducts(d.slug,c));
+  const hero=(d.hero&&allowedForDepartment(d.slug,d.hero))?d.hero:(heroPool[0]||null);
+  if(hero){
+    $("#hero").hidden=false;$("#hero-image").src=hero.image_url;$("#hero-title").textContent=hero.title;
+    $("#hero-kicker").textContent=(hero.truth_state==="GLOBAL_PRODUCT_TRUTH"?"GLOBAL TRUTH":"CATALOG SHADOW")+" · "+String(hero.category_title||hero.category||"").toUpperCase();
+    $("#hero-status").textContent="Canonical "+d.slug+" / "+String(hero.category||"")+" · Production off";
   }else $("#hero").hidden=true;
-  $("#category-index").innerHTML=d.categories.map(c=>'<button class="cat-chip" data-cat="'+esc(c.slug)+'">'+esc(c.title)+' · '+c.clean_candidate_count+'</button>').join("");
-  $("#shelves").innerHTML=d.categories.length?d.categories.map(renderCategory).join(""):'<div class="empty">No clean canonical candidates yet.</div>';
+  $("#category-index").innerHTML=d.categories.map(c=>'<button class="cat-chip" data-cat="'+esc(c.slug)+'">'+esc(c.title)+' · '+categoryProducts(d.slug,c).length+'</button>').join("");
+  $("#shelves").innerHTML=d.categories.length?d.categories.map(cat=>renderCategory(cat,d.slug)).join(""):'<div class="empty">No clean canonical candidates yet.</div>';
   const q=new URLSearchParams(location.search);q.set("dept",d.slug);history.replaceState(null,"",location.pathname+"?"+q.toString());
   window.scrollTo({top:0,behavior:"smooth"});
 }
 $("#dept-nav").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b)return;active=Number(b.dataset.i)||0;render()});
 $("#category-index").addEventListener("click",e=>{const b=e.target.closest("button[data-cat]");if(!b)return;document.getElementById("cat-"+b.dataset.cat)?.scrollIntoView({behavior:"smooth",block:"start"})});
-$("#shelves").addEventListener("click",e=>{const b=e.target.closest("button[data-more]");if(!b)return;const slug=b.dataset.more;const d=data.departments[active];const cat=d.categories.find(x=>x.slug===slug);visible[slug]=Math.min((visible[slug]||24)+24,cat.products.length);const node=document.getElementById("cat-"+slug);node.outerHTML=renderCategory(cat)});
-fetch("./evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json").then(r=>r.json()).then(j=>{
- data=j;$("#dept-nav").innerHTML=j.departments.map((d,i)=>'<button type="button" data-i="'+i+'">'+esc(d.title)+'</button>').join("");
+$("#shelves").addEventListener("click",e=>{const b=e.target.closest("button[data-more]");if(!b)return;const slug=b.dataset.more;const d=data.departments[active];const cat=d.categories.find(x=>x.slug===slug);const all=categoryProducts(d.slug,cat);visible[slug]=Math.min((visible[slug]||24)+24,all.length);const node=document.getElementById("cat-"+slug);node.outerHTML=renderCategory(cat,d.slug)});
+Promise.all([
+  fetch("./evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json").then(r=>r.json()),
+  fetch("./evidence/HUNT-ACCESSORIES-RECOVERY-SUPPLEMENT-2026-09-26.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}}))
+]).then(([j,supp])=>{
+ data=j;accessorySupplement=supp||{shelves:{}};
+ $("#dept-nav").innerHTML=j.departments.map((d,i)=>'<button type="button" data-i="'+i+'">'+esc(d.title)+'</button>').join("");
  const requested=qp.get("dept");const idx=j.departments.findIndex(x=>x.slug===requested);active=idx>=0?idx:0;
  setTheme(qp.get("theme")==="light"?"light":"dark");render();
 }).catch(err=>{$("#shelves").innerHTML='<div class="empty">Preview failed: '+esc(err.message)+'</div>'});
