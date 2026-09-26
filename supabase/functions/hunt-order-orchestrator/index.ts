@@ -6,6 +6,8 @@ const countryNames:Record<string,string>={
   IL:"Israel",US:"United States",GB:"United Kingdom",DE:"Germany",
   FR:"France",CA:"Canada",AU:"Australia",AE:"United Arab Emirates"
 };
+const CJ_FETCH_TIMEOUT_MS=12000;
+const SANDBOX_SUBMIT_STALE_MS=5*60*1000;
 let cjCache={token:"",expiresAt:0};
 
 function cors(req:Request){
@@ -57,7 +59,8 @@ async function cjToken(){
   if(cjCache.token&&cjCache.expiresAt>Date.now())return cjCache.token;
   const res=await fetch("https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken",{
     method:"POST",headers:{"content-type":"application/json","accept":"application/json"},
-    body:JSON.stringify({apiKey})
+    body:JSON.stringify({apiKey}),
+    signal:AbortSignal.timeout(CJ_FETCH_TIMEOUT_MS)
   });
   const body=await res.json().catch(()=>({}));
   const token=clean(body?.data?.accessToken);
@@ -89,7 +92,8 @@ async function cjGetOrderByStoreNumber(orderNumber:string){
   const res=await fetch("https://developers.cjdropshipping.com/api2.0/v1/shopping/order/getOrderDetailBatch",{
     method:"POST",
     headers:{"content-type":"application/json","accept":"application/json","CJ-Access-Token":token},
-    body:JSON.stringify({orderIds:[ref]})
+    body:JSON.stringify({orderIds:[ref]}),
+    signal:AbortSignal.timeout(CJ_FETCH_TIMEOUT_MS)
   });
   const out=await res.json().catch(()=>({}));
   if(!res.ok||out?.result!==true)return null;
@@ -98,7 +102,7 @@ async function cjGetOrderByStoreNumber(orderNumber:string){
     [row?.orderId,row?.orderNum,row?.cjOrderId,row?.cjOrderCode].some(value=>clean(value)===ref) ||
     (Array.isArray(row?.productList)&&row.productList.some((line:any)=>clean(line?.orderNumber)===ref))
   );
-  return exact||(list.length===1?list[0]:null);
+  return exact||null;
 }
 async function cjPost(path:string,body:any,options:{maxAttempts?:number,reconcileOrderNumber?:string}={}){
   const maxAttempts=Math.max(1,Math.min(5,Number(options.maxAttempts||1)));
@@ -110,7 +114,8 @@ async function cjPost(path:string,body:any,options:{maxAttempts?:number,reconcil
       res=await fetch("https://developers.cjdropshipping.com/api2.0/v1"+path,{
         method:"POST",
         headers:{"content-type":"application/json","accept":"application/json","CJ-Access-Token":token},
-        body:JSON.stringify(body)
+        body:JSON.stringify(body),
+        signal:AbortSignal.timeout(CJ_FETCH_TIMEOUT_MS)
       });
     }catch(error){
       lastError="CJ_NETWORK_"+clean(error instanceof Error?error.message:String(error)).slice(0,120);
@@ -201,6 +206,24 @@ async function addPipelineRun(ctx:any,payload:any){
 }
 function requireWrite(error:any,code:string){
   if(error)throw new Error(code);
+}
+function isStaleTimestamp(value:unknown,thresholdMs:number){
+  const ts=Date.parse(clean(value));
+  return Number.isFinite(ts)&&Date.now()-ts>=thresholdMs;
+}
+async function reopenOrderIfException(ctx:any,order:any){
+  if(clean(order?.status)!=="exception")return order;
+  assertTransition("order","exception","processing");
+  const {data,error}=await ctx.supabaseAdmin
+    .from("hunt_orders")
+    .update({status:"processing",updated_at:new Date().toISOString()})
+    .eq("id",order.id)
+    .eq("status","exception")
+    .select("id,is_test,status,external_order_id")
+    .maybeSingle();
+  requireWrite(error,"ORDER_REOPEN_FAILED");
+  if(!data)throw new Error("ORDER_REOPEN_RACE");
+  return data;
 }
 
 Deno.serve(async(req:Request)=>{
@@ -395,8 +418,8 @@ Deno.serve(async(req:Request)=>{
       }
 
       if(!supplierId){
-        let reopenedFailedSandbox=false;
-        if(clean(fulfillment?.supplier_status)==="sandbox_create_failed"){
+        const currentSupplierStatus=clean(fulfillment?.supplier_status);
+        if(currentSupplierStatus==="sandbox_create_failed"){
           if(Number(fulfillment?.attempt_count||0)>=5)throw new Error("SANDBOX_RETRY_LIMIT_REACHED");
           const {data:reopened,error:reopenError}=await ctx.supabaseAdmin
             .from("hunt_fulfillment_orders")
@@ -410,12 +433,56 @@ Deno.serve(async(req:Request)=>{
           requireWrite(reopenError,"FULFILLMENT_REOPEN_FAILED");
           if(!reopened)throw new Error("FULFILLMENT_REOPEN_RACE");
           fulfillment=reopened;
-          reopenedFailedSandbox=true;
+          order=await reopenOrderIfException(ctx,order);
+        }else if(currentSupplierStatus==="sandbox_submitting"){
+          if(!isStaleTimestamp(fulfillment?.last_attempt_at,SANDBOX_SUBMIT_STALE_MS)){
+            throw new Error("FULFILLMENT_ALREADY_PROCESSING");
+          }
+          const reconciled=await cjGetOrderByStoreNumber(supplierCode).catch(()=>null);
+          if(reconciled){
+            supplierId=clean(reconciled?.orderId||reconciled?.cjOrderId);
+            supplierCode=clean(reconciled?.orderNum||supplierCode);
+            if(!supplierId)throw new Error("CJ_RECONCILED_ORDER_ID_MISSING");
+            assertTransition("fulfillment",clean(fulfillment?.status)||"processing","submitted");
+            const {data:adopted,error:adoptError}=await ctx.supabaseAdmin
+              .from("hunt_fulfillment_orders")
+              .update({
+                status:"submitted",
+                supplier_order_id:supplierId,
+                supplier_order_code:supplierCode,
+                supplier_status:"sandbox_created",
+                last_error:null,
+                updated_at:new Date().toISOString()
+              })
+              .eq("id",fulfillment.id)
+              .eq("supplier_status","sandbox_submitting")
+              .select("*")
+              .maybeSingle();
+            requireWrite(adoptError,"FULFILLMENT_RECONCILE_STORE_FAILED");
+            if(!adopted)throw new Error("FULFILLMENT_RECONCILE_RACE");
+            fulfillment=adopted;
+            order=await reopenOrderIfException(ctx,order);
+          }else{
+            if(Number(fulfillment?.attempt_count||0)>=5)throw new Error("SANDBOX_RETRY_LIMIT_REACHED");
+            const {data:reopened,error:reopenError}=await ctx.supabaseAdmin
+              .from("hunt_fulfillment_orders")
+              .update({
+                status:"processing",
+                supplier_status:"sandbox_claimed",
+                last_error:"STALE_SANDBOX_SUBMIT_REOPENED",
+                updated_at:new Date().toISOString()
+              })
+              .eq("id",fulfillment.id)
+              .eq("supplier_status","sandbox_submitting")
+              .select("*")
+              .maybeSingle();
+            requireWrite(reopenError,"FULFILLMENT_STALE_REOPEN_FAILED");
+            if(!reopened)throw new Error("FULFILLMENT_STALE_REOPEN_RACE");
+            fulfillment=reopened;
+            order=await reopenOrderIfException(ctx,order);
+          }
         }
-        if(clean(fulfillment?.supplier_status)!=="sandbox_claimed"){
-          throw new Error("FULFILLMENT_ALREADY_PROCESSING");
-        }
-        if(Number(fulfillment?.attempt_count||0)>1&&!reopenedFailedSandbox){
+        if(!supplierId&&clean(fulfillment?.supplier_status)!=="sandbox_claimed"){
           throw new Error("FULFILLMENT_ALREADY_PROCESSING");
         }
 
@@ -485,6 +552,7 @@ Deno.serve(async(req:Request)=>{
             .update({status:"exception",updated_at:now})
             .eq("id",order.id);
           requireWrite(orderFailError,"ORDER_FAILURE_STORE_FAILED");
+          order={...order,status:"exception"};
 
           const {error:sessionFailError}=await ctx.supabaseAdmin
             .from("hunt_payment_sessions")
