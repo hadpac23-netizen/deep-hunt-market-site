@@ -6,6 +6,7 @@ const SERVICE=clean(Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"));
 const PAYPLUS_API_KEY=clean(Deno.env.get("PAYPLUS_API_KEY"));
 const PAYPLUS_SECRET_KEY=clean(Deno.env.get("PAYPLUS_SECRET_KEY"));
 const PAYPLUS_PAGE_UID=clean(Deno.env.get("PAYPLUS_PAYMENT_PAGE_UID"));
+const PAYPLUS_SANDBOX_BASE="https://restapidev.payplus.co.il/api/v1.0";
 const sb=createClient(BASE,SERVICE,{auth:{persistSession:false,autoRefreshToken:false}});
 
 function json(body:unknown,status=200){
@@ -51,7 +52,7 @@ async function createLink(sessionId:string,amount:number){
     allowed_charge_methods:["credit-card"],
     more_info:sessionId
   };
-  const res=await fetch("https://restapidev.payplus.co.il/api/v1.0/PaymentPages/generateLink",{
+  const res=await fetch(PAYPLUS_SANDBOX_BASE+"/PaymentPages/generateLink",{
     method:"POST",
     headers:{"content-type":"application/json","api-key":PAYPLUS_API_KEY,"secret-key":PAYPLUS_SECRET_KEY},
     body:JSON.stringify(payload),
@@ -65,6 +66,16 @@ async function createLink(sessionId:string,amount:number){
   const hostedFields=clean(data?.hosted_fields_uuid);
   if(!requestUid||!redirectUrl)throw new Error("PAYPLUS_SANDBOX_LINK_FIELDS_MISSING");
   return {requestUid,redirectUrl,hostedFields};
+}
+async function disableLink(requestUid:string){
+  const uid=encodeURIComponent(clean(requestUid));
+  if(!uid)return;
+  const res=await fetch(PAYPLUS_SANDBOX_BASE+"/PaymentPages/Disable/"+uid,{
+    method:"POST",
+    headers:{"accept":"application/json","api-key":PAYPLUS_API_KEY,"secret-key":PAYPLUS_SECRET_KEY},
+    signal:AbortSignal.timeout(10000)
+  });
+  if(!res.ok)throw new Error("PAYPLUS_SANDBOX_DISABLE_FAILED_"+res.status);
 }
 
 Deno.serve(async(req:Request)=>{
@@ -135,14 +146,33 @@ Deno.serve(async(req:Request)=>{
       expires_at:new Date(Date.now()+20*60*1000).toISOString(),
       updated_at:new Date().toISOString()
     }).eq("id",id);
-    if(updateError)throw new Error("M31_SANDBOX_SESSION_UPDATE_FAILED");
+    if(updateError){
+      let disableFailed=false;
+      try{ await disableLink(link.requestUid); }catch{ disableFailed=true; }
+      if(!disableFailed)await sb.from("hunt_payment_sessions").delete().eq("id",id);
+      throw new Error(disableFailed
+        ?"M31_SANDBOX_SESSION_UPDATE_FAILED_DISABLE_FAILED"
+        :"M31_SANDBOX_SESSION_UPDATE_FAILED");
+    }
 
-    await sb.from("hunt_payment_events").insert({
+    const {error:eventError}=await sb.from("hunt_payment_events").insert({
       payment_session_id:id,
       provider:"payplus",
       event_type:"m31_sandbox_evidence_session_created",
       payload_digest:digest
     });
+    if(eventError){
+      let disableFailed=false;
+      try{ await disableLink(link.requestUid); }catch{ disableFailed=true; }
+      await sb.from("hunt_payment_sessions").update({
+        status:"failed",
+        provider_redirect_url:null,
+        updated_at:new Date().toISOString()
+      }).eq("id",id);
+      throw new Error(disableFailed
+        ?"M31_SANDBOX_EVIDENCE_EVENT_STORE_FAILED_DISABLE_FAILED"
+        :"M31_SANDBOX_EVIDENCE_EVENT_STORE_FAILED");
+    }
 
     return json({
       ok:true,
