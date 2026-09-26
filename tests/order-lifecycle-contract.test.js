@@ -44,3 +44,30 @@ test("refund preview has no provider execution or state mutation",()=>{
   assert.doesNotMatch(src,/\.insert\(/);
   assert.doesNotMatch(src,/\.upsert\(/);
 });
+
+
+test("CJ reconciliation accepts only an exact HUNT order-number match",()=>{
+  const src=read("supabase/functions/hunt-order-orchestrator/index.ts");
+  assert.match(src,/return exact\|\|null;/);
+  assert.doesNotMatch(src,/list\.length===1\?list\[0\]:null/);
+});
+
+test("CJ calls have timeouts and stale sandbox submissions can recover",()=>{
+  const src=read("supabase/functions/hunt-order-orchestrator/index.ts");
+  assert.match(src,/CJ_FETCH_TIMEOUT_MS=12000/);
+  assert.match(src,/AbortSignal\.timeout\(CJ_FETCH_TIMEOUT_MS\)/);
+  assert.match(src,/SANDBOX_SUBMIT_STALE_MS/);
+  assert.match(src,/currentSupplierStatus==="sandbox_submitting"/);
+  assert.match(src,/cjGetOrderByStoreNumber\(supplierCode\)/);
+  assert.match(src,/STALE_SANDBOX_SUBMIT_REOPENED/);
+  assert.match(src,/FULFILLMENT_RECONCILE_STORE_FAILED/);
+});
+
+test("failed sandbox retry reopens exception order before shipping",()=>{
+  const src=read("supabase/functions/hunt-order-orchestrator/index.ts");
+  assert.match(src,/reopenOrderIfException/);
+  assert.match(src,/assertTransition\("order","exception","processing"\)/);
+  assert.match(src,/\.eq\("status","exception"\)/);
+  assert.match(src,/order=await reopenOrderIfException\(ctx,order\)/);
+  assert.match(src,/order=\{\.\.\.order,status:"exception"\}/);
+});
