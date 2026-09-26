@@ -33,3 +33,10 @@ test("order preview only blocks missing addresses conditionally",()=>{
   assert.doesNotMatch(src,/^\s*blockers\.push\("SHIPPING_ADDRESS_NOT_COLLECTED"\);/m);
   assert.match(src,/shipping_address_ready:shippingReady/);
 });
+
+
+test("address validation focuses the first invalid shipping field",()=>{
+  const js=read("checkout.js");
+  assert.match(js,/Object\.keys\(address\.errors\|\|\{\}\)\.find\(key=>addressFields\[key\]\)/);
+  assert.match(js,/\$\(addressFields\[firstField\]\)\?\.focus\(\)/);
+});
