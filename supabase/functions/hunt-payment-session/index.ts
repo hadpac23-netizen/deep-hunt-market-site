@@ -139,11 +139,19 @@ async function validateCart(base:string,key:string,body:any){
     line_items:lines
   };
 }
-async function createPayPlusSession(sessionId:string,pricing:any){
+async function runtimeControl(ctx:any,key:string){
+  const {data,error}=await ctx.supabaseAdmin
+    .from("hunt_runtime_controls")
+    .select("enabled,owner_approved")
+    .eq("key",key)
+    .maybeSingle();
+  if(error)throw new Error("RUNTIME_CONTROL_READ_FAILED");
+  return data?.enabled===true&&data?.owner_approved===true;
+}
+async function createPayPlusSession(sessionId:string,pricing:any,mode:string){
   const apiKey=clean(Deno.env.get("PAYPLUS_API_KEY"));
   const secretKey=clean(Deno.env.get("PAYPLUS_SECRET_KEY"));
   const pageUid=clean(Deno.env.get("PAYPLUS_PAYMENT_PAGE_UID"));
-  const mode=clean(Deno.env.get("HUNT_PAYMENT_MODE")).toLowerCase()||"prelaunch";
   if(!apiKey||!secretKey||!pageUid||!["sandbox","live"].includes(mode))return null;
 
   const base=mode==="live"
@@ -242,7 +250,17 @@ Deno.serve(async(req:Request)=>{
       clean(Deno.env.get("PAYPLUS_SECRET_KEY"))&&
       clean(Deno.env.get("PAYPLUS_PAYMENT_PAGE_UID"))
     );
-    const initialMode=configured&&["sandbox","live"].includes(requestedMode)?requestedMode:"prelaunch";
+    const liveApproved=requestedMode==="live"
+      ? await runtimeControl(ctx,"hunt_payment_live")
+      : false;
+    const initialMode=configured&&requestedMode==="sandbox"
+      ? "sandbox"
+      : configured&&requestedMode==="live"&&liveApproved
+        ? "live"
+        : "prelaunch";
+    const prelaunchReason=requestedMode==="live"&&configured&&!liveApproved
+      ? "PAYMENT_LIVE_KILL_SWITCH_OFF"
+      : "AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED";
     const {data:inserted,error:insertError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
       .insert({
@@ -269,13 +287,13 @@ Deno.serve(async(req:Request)=>{
       return json(req,{
         ok:true,
         payment_ready:false,
-        reason:"AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED",
+        reason:prelaunchReason,
         idempotency_key:idempotencyKey,
         session:inserted
       });
     }
 
-    const providerSession=await createPayPlusSession(inserted.id,pricing);
+    const providerSession=await createPayPlusSession(inserted.id,pricing,initialMode);
     if(!providerSession)throw new Error("PAYMENT_PROVIDER_NOT_CONFIGURED");
     const {data:updated,error:updateError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
