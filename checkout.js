@@ -145,6 +145,8 @@
     if (!address.ok) {
       const firstError=Object.values(address.errors||{})[0]||"Complete the shipping details before verification.";
       resetQuote(String(firstError));
+      const firstField=Object.keys(address.errors||{}).find(key=>addressFields[key]);
+      if (firstField) $(addressFields[firstField])?.focus();
       return;
     }
 
