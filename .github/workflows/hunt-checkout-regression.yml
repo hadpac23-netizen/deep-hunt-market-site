@@ -1,0 +1,55 @@
+name: HUNT checkout regression
+
+on:
+  pull_request:
+    paths:
+      - "checkout.html"
+      - "checkout.js"
+      - "checkout-address.js"
+      - "hunt-shop.css"
+      - "supabase/functions/hunt-payment-session/**"
+      - "supabase/functions/hunt-order-preview/**"
+      - "supabase/functions/hunt-payplus-callback/**"
+      - "supabase/functions/hunt-payplus-sandbox-evidence/**"
+      - "supabase/functions/hunt-order-orchestrator/**"
+      - "supabase/functions/hunt-refund-preview/**"
+      - "supabase/functions/_shared/order-lifecycle.mjs"
+      - "tests/**"
+      - ".github/workflows/hunt-checkout-regression.yml"
+  push:
+    branches:
+      - "feature/hunt-shipping-address-e2e"
+    paths:
+      - "checkout.html"
+      - "checkout.js"
+      - "checkout-address.js"
+      - "hunt-shop.css"
+      - "supabase/functions/hunt-payment-session/**"
+      - "supabase/functions/hunt-order-preview/**"
+      - "supabase/functions/hunt-payplus-callback/**"
+      - "supabase/functions/hunt-payplus-sandbox-evidence/**"
+      - "supabase/functions/hunt-order-orchestrator/**"
+      - "supabase/functions/hunt-refund-preview/**"
+      - "supabase/functions/_shared/order-lifecycle.mjs"
+      - "tests/**"
+      - ".github/workflows/hunt-checkout-regression.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  checkout-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Run checkout tests
+        run: node --test tests/checkout-address.test.js tests/checkout-contract.test.js tests/payplus-auth.test.js tests/payplus-status-map.test.js tests/payplus-callback-contract.test.js tests/order-lifecycle.test.js tests/order-lifecycle-contract.test.js tests/payment-live-kill-switch.test.js
+      - name: Parse browser scripts
+        run: |
+          node -e "new Function(require('fs').readFileSync('checkout-address.js','utf8')); new Function(require('fs').readFileSync('checkout.js','utf8')); console.log('browser-js-parse-pass')"

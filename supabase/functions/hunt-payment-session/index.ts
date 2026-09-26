@@ -9,6 +9,35 @@ const ALLOWED_ORIGINS=new Set([
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const num=(v:unknown)=>Number.isFinite(Number(v))?Number(v):null;
 
+function normalizeShipping(body:any,country:string){
+  const raw=body?.shipping_address&&typeof body.shipping_address==="object"?body.shipping_address:{};
+  const snapshot={
+    version:1,
+    customer_name:clean(raw?.customer_name).replace(/\s+/g," ").slice(0,120),
+    email:clean(raw?.email||body?.customer_email).toLowerCase().slice(0,180),
+    address1:clean(raw?.address1).replace(/\s+/g," ").slice(0,180),
+    address2:clean(raw?.address2).replace(/\s+/g," ").slice(0,180),
+    city:clean(raw?.city).replace(/\s+/g," ").slice(0,100),
+    province:clean(raw?.province).replace(/\s+/g," ").slice(0,100),
+    postal_code:clean(raw?.postal_code).replace(/\s+/g," ").slice(0,24),
+    phone:clean(raw?.phone).replace(/\s+/g," ").slice(0,30),
+    country_code:country
+  };
+  const suppliedCountry=clean(raw?.country_code).toUpperCase();
+  const phoneDigits=snapshot.phone.replace(/\D/g,"");
+  const valid=
+    snapshot.customer_name.length>=2 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(snapshot.email) &&
+    snapshot.address1.length>=4 &&
+    snapshot.city.length>=2 &&
+    snapshot.province.length>=2 &&
+    snapshot.postal_code.length>=2 &&
+    phoneDigits.length>=7 && phoneDigits.length<=15 &&
+    (!suppliedCountry||suppliedCountry===country);
+  if(!valid)throw new Error("SHIPPING_ADDRESS_INVALID");
+  return snapshot;
+}
+
 function cors(req:Request){
   const origin=req.headers.get("origin")||"";
   const preview=/^https:\/\/[a-z0-9-]+--deep-hunt-market\.netlify\.app$/i.test(origin);
@@ -110,11 +139,19 @@ async function validateCart(base:string,key:string,body:any){
     line_items:lines
   };
 }
-async function createPayPlusSession(sessionId:string,pricing:any){
+async function runtimeControl(ctx:any,key:string){
+  const {data,error}=await ctx.supabaseAdmin
+    .from("hunt_runtime_controls")
+    .select("enabled,owner_approved")
+    .eq("key",key)
+    .maybeSingle();
+  if(error)throw new Error("RUNTIME_CONTROL_READ_FAILED");
+  return data?.enabled===true&&data?.owner_approved===true;
+}
+async function createPayPlusSession(sessionId:string,pricing:any,mode:string){
   const apiKey=clean(Deno.env.get("PAYPLUS_API_KEY"));
   const secretKey=clean(Deno.env.get("PAYPLUS_SECRET_KEY"));
   const pageUid=clean(Deno.env.get("PAYPLUS_PAYMENT_PAGE_UID"));
-  const mode=clean(Deno.env.get("HUNT_PAYMENT_MODE")).toLowerCase()||"prelaunch";
   if(!apiKey||!secretKey||!pageUid||!["sandbox","live"].includes(mode))return null;
 
   const base=mode==="live"
@@ -168,10 +205,22 @@ Deno.serve(async(req:Request)=>{
     const key=publishableKey();
     if(!base||!key)throw new Error("SERVER_CONFIG_MISSING");
     const pricing=await validateCart(base,key,body);
+    const shippingSnapshot=normalizeShipping(body,pricing.country_code);
     const requestedIdem=clean(body?.idempotency_key).slice(0,120);
     const idempotencyKey=requestedIdem||crypto.randomUUID();
     const normalized=JSON.stringify({
       country:pricing.country_code,
+      shipping:{
+        customer_name:shippingSnapshot.customer_name,
+        email:shippingSnapshot.email,
+        address1:shippingSnapshot.address1,
+        address2:shippingSnapshot.address2,
+        city:shippingSnapshot.city,
+        province:shippingSnapshot.province,
+        postal_code:shippingSnapshot.postal_code,
+        phone:shippingSnapshot.phone,
+        country_code:shippingSnapshot.country_code
+      },
       items:pricing.line_items.map((x:any)=>[
         x.provider,x.item_id,x.variant_id,x.qty,x.origin_country_code,x.shipping_method
       ])
@@ -201,7 +250,17 @@ Deno.serve(async(req:Request)=>{
       clean(Deno.env.get("PAYPLUS_SECRET_KEY"))&&
       clean(Deno.env.get("PAYPLUS_PAYMENT_PAGE_UID"))
     );
-    const initialMode=configured&&["sandbox","live"].includes(requestedMode)?requestedMode:"prelaunch";
+    const liveApproved=requestedMode==="live"
+      ? await runtimeControl(ctx,"hunt_payment_live")
+      : false;
+    const initialMode=configured&&requestedMode==="sandbox"
+      ? "sandbox"
+      : configured&&requestedMode==="live"&&liveApproved
+        ? "live"
+        : "prelaunch";
+    const prelaunchReason=requestedMode==="live"&&configured&&!liveApproved
+      ? "PAYMENT_LIVE_KILL_SWITCH_OFF"
+      : "AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED";
     const {data:inserted,error:insertError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
       .insert({
@@ -215,6 +274,8 @@ Deno.serve(async(req:Request)=>{
         shipping_amount:pricing.shipping_amount,
         total_amount:pricing.total_amount,
         line_items:pricing.line_items,
+        customer_email:shippingSnapshot.email,
+        shipping_snapshot:shippingSnapshot,
         cart_digest:cartDigest,
         idempotency_key:idempotencyKey
       })
@@ -226,13 +287,13 @@ Deno.serve(async(req:Request)=>{
       return json(req,{
         ok:true,
         payment_ready:false,
-        reason:"AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED",
+        reason:prelaunchReason,
         idempotency_key:idempotencyKey,
         session:inserted
       });
     }
 
-    const providerSession=await createPayPlusSession(inserted.id,pricing);
+    const providerSession=await createPayPlusSession(inserted.id,pricing,initialMode);
     if(!providerSession)throw new Error("PAYMENT_PROVIDER_NOT_CONFIGURED");
     const {data:updated,error:updateError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")

@@ -51,7 +51,23 @@
             <option value="AE">United Arab Emirates</option>
           </select>
         </label>
+        <section class="hd-checkout-address" aria-labelledby="hd-shipping-title">
+          <div class="hd-kicker hd-kicker-small" id="hd-shipping-title">SHIPPING DETAILS</div>
+          <div class="hd-checkout-address-grid">
+            <label>Full name<input id="hd-ship-name" autocomplete="name" maxlength="120" required></label>
+            <label>Email<input id="hd-ship-email" type="email" autocomplete="email" maxlength="180" required></label>
+            <label class="wide">Address line 1<input id="hd-ship-address1" autocomplete="address-line1" maxlength="180" required></label>
+            <label class="wide">Address line 2 <small>Optional</small><input id="hd-ship-address2" autocomplete="address-line2" maxlength="180"></label>
+            <label>City<input id="hd-ship-city" autocomplete="address-level2" maxlength="100" required></label>
+            <label>State / province / region<input id="hd-ship-province" autocomplete="address-level1" maxlength="100" required></label>
+            <label>Postal code<input id="hd-ship-postal" autocomplete="postal-code" maxlength="24" required></label>
+            <label>Phone<input id="hd-ship-phone" type="tel" autocomplete="tel" maxlength="30" required></label>
+          </div>
+          <label class="hd-checkout-save"><input id="hd-ship-save" type="checkbox"> Save these details on this device</label>
+          <p class="hd-checkout-address-note">Shipping details are attached to the verified pre-launch payment session only after you run verification. No supplier order or payment is created.</p>
+        </section>
         <button id="hd-checkout-verify" class="hd-btn hd-btn-primary" type="button">Verify price & shipping</button>
+        <p id="hd-order-preview-status" class="hd-checkout-truth" aria-live="polite">Order readiness check has not run yet.</p>
         <button class="hd-btn hd-btn-primary hd-pay-disabled" type="button" disabled>Payment activation pending</button>
         <p id="hd-checkout-status" class="hd-checkout-truth" aria-live="polite">No card data is collected on this page. Verify price and shipping first; payment remains disabled until an authorized merchant account and fulfillment flow are active.</p>
       </aside>
@@ -75,7 +91,8 @@
   <script src="account-presence.js?v=profile2"></script>
   <script src="analytics-config.js?v=analytics1"></script>
   <script src="analytics.js?v=ladder1"></script>
-  <script src="checkout.js?v=photo6"></script>
+  <script src="checkout-address.js?v=address1"></script>
+  <script src="checkout.js?v=address1"></script>
   <script src="hunt-theme.js?v=shop4"></script>
   <script src="pwa.js?v=pwa1"></script>
 </body>
