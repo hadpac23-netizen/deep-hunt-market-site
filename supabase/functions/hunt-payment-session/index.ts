@@ -9,6 +9,35 @@ const ALLOWED_ORIGINS=new Set([
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const num=(v:unknown)=>Number.isFinite(Number(v))?Number(v):null;
 
+function normalizeShipping(body:any,country:string){
+  const raw=body?.shipping_address&&typeof body.shipping_address==="object"?body.shipping_address:{};
+  const snapshot={
+    version:1,
+    customer_name:clean(raw?.customer_name).replace(/\s+/g," ").slice(0,120),
+    email:clean(raw?.email||body?.customer_email).toLowerCase().slice(0,180),
+    address1:clean(raw?.address1).replace(/\s+/g," ").slice(0,180),
+    address2:clean(raw?.address2).replace(/\s+/g," ").slice(0,180),
+    city:clean(raw?.city).replace(/\s+/g," ").slice(0,100),
+    province:clean(raw?.province).replace(/\s+/g," ").slice(0,100),
+    postal_code:clean(raw?.postal_code).replace(/\s+/g," ").slice(0,24),
+    phone:clean(raw?.phone).replace(/\s+/g," ").slice(0,30),
+    country_code:country
+  };
+  const suppliedCountry=clean(raw?.country_code).toUpperCase();
+  const phoneDigits=snapshot.phone.replace(/\D/g,"");
+  const valid=
+    snapshot.customer_name.length>=2 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(snapshot.email) &&
+    snapshot.address1.length>=4 &&
+    snapshot.city.length>=2 &&
+    snapshot.province.length>=2 &&
+    snapshot.postal_code.length>=2 &&
+    phoneDigits.length>=7 && phoneDigits.length<=15 &&
+    (!suppliedCountry||suppliedCountry===country);
+  if(!valid)throw new Error("SHIPPING_ADDRESS_INVALID");
+  return snapshot;
+}
+
 function cors(req:Request){
   const origin=req.headers.get("origin")||"";
   const preview=/^https:\/\/[a-z0-9-]+--deep-hunt-market\.netlify\.app$/i.test(origin);
@@ -168,10 +197,22 @@ Deno.serve(async(req:Request)=>{
     const key=publishableKey();
     if(!base||!key)throw new Error("SERVER_CONFIG_MISSING");
     const pricing=await validateCart(base,key,body);
+    const shippingSnapshot=normalizeShipping(body,pricing.country_code);
     const requestedIdem=clean(body?.idempotency_key).slice(0,120);
     const idempotencyKey=requestedIdem||crypto.randomUUID();
     const normalized=JSON.stringify({
       country:pricing.country_code,
+      shipping:{
+        customer_name:shippingSnapshot.customer_name,
+        email:shippingSnapshot.email,
+        address1:shippingSnapshot.address1,
+        address2:shippingSnapshot.address2,
+        city:shippingSnapshot.city,
+        province:shippingSnapshot.province,
+        postal_code:shippingSnapshot.postal_code,
+        phone:shippingSnapshot.phone,
+        country_code:shippingSnapshot.country_code
+      },
       items:pricing.line_items.map((x:any)=>[
         x.provider,x.item_id,x.variant_id,x.qty,x.origin_country_code,x.shipping_method
       ])
@@ -215,6 +256,8 @@ Deno.serve(async(req:Request)=>{
         shipping_amount:pricing.shipping_amount,
         total_amount:pricing.total_amount,
         line_items:pricing.line_items,
+        customer_email:shippingSnapshot.email,
+        shipping_snapshot:shippingSnapshot,
         cart_digest:cartDigest,
         idempotency_key:idempotencyKey
       })
