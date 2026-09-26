@@ -28,14 +28,89 @@
     } catch { return []; }
   };
   const write = cart => localStorage.setItem(key, JSON.stringify(cart));
+  const addressKey = "hunt_checkout_address_v1";
+  const addressApi = window.HuntCheckoutAddress;
   let checkoutTracked = false;
   let quoteVerified = false;
+  let lastSessionId = "";
+  let lastIdempotencyKey = "";
 
   function resetQuote(message="Verify price and shipping before payment.") {
     quoteVerified = false;
+    lastSessionId = "";
+    lastIdempotencyKey = "";
     if ($("#hd-checkout-shipping")) $("#hd-checkout-shipping").textContent = "PENDING";
     if ($("#hd-checkout-total")) $("#hd-checkout-total").textContent = "PRE-LAUNCH";
     if ($("#hd-checkout-status")) $("#hd-checkout-status").textContent = message;
+    if ($("#hd-order-preview-status")) $("#hd-order-preview-status").textContent = "Order readiness check has not run yet.";
+  }
+
+  const addressFields = {
+    customer_name:"#hd-ship-name",
+    email:"#hd-ship-email",
+    address1:"#hd-ship-address1",
+    address2:"#hd-ship-address2",
+    city:"#hd-ship-city",
+    province:"#hd-ship-province",
+    postal_code:"#hd-ship-postal",
+    phone:"#hd-ship-phone"
+  };
+
+  function collectAddress() {
+    if (!addressApi?.validate) return {ok:false,errors:{form:"Shipping address validator is unavailable."},value:null};
+    const raw = Object.fromEntries(Object.entries(addressFields).map(([key,selector])=>[key,$(selector)?.value||""]));
+    const result = addressApi.validate(raw,$("#hd-checkout-market")?.value||"");
+    for (const [field,selector] of Object.entries(addressFields)) {
+      const el=$(selector);
+      if (el) el.setAttribute("aria-invalid",result.errors?.[field]?"true":"false");
+    }
+    return result;
+  }
+
+  function saveAddress(value) {
+    try {
+      if ($("#hd-ship-save")?.checked) localStorage.setItem(addressKey,JSON.stringify(value));
+      else localStorage.removeItem(addressKey);
+    } catch {}
+  }
+
+  function loadSavedAddress() {
+    try {
+      const saved=JSON.parse(localStorage.getItem(addressKey)||"null");
+      if (!saved || typeof saved!=="object") return;
+      for (const [field,selector] of Object.entries(addressFields)) {
+        if ($(selector) && saved[field]) $(selector).value=String(saved[field]);
+      }
+      if (saved.country_code && $("#hd-checkout-market")?.querySelector('option[value="'+String(saved.country_code)+'"]')) {
+        $("#hd-checkout-market").value=String(saved.country_code);
+      }
+      if ($("#hd-ship-save")) $("#hd-ship-save").checked=true;
+    } catch {}
+  }
+
+  async function runOrderPreview(sessionId,idempotencyKey) {
+    const host=$("#hd-order-preview-status");
+    if (!host || !sessionId || !idempotencyKey) return;
+    host.textContent="Checking address + fulfillment readiness…";
+    try {
+      const res=await fetch(functionsBase+"/hunt-order-preview",{
+        method:"POST",
+        headers:{apikey:publishableKey,"content-type":"application/json"},
+        body:JSON.stringify({payment_session_id:sessionId,idempotency_key:idempotencyKey}),
+        cache:"no-store"
+      });
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok||data?.ok!==true) throw new Error(String(data?.error||"ORDER_PREVIEW_FAILED"));
+      const blockers=Array.isArray(data.blockers)?data.blockers:[];
+      const addressReady=data.shipping_address_ready===true && !blockers.includes("SHIPPING_ADDRESS_NOT_COLLECTED");
+      host.textContent=addressReady
+        ? (blockers.length
+            ? "Shipping address accepted. Pre-launch blockers: "+blockers.join(", ")+"."
+            : "Shipping address and fulfillment preview passed.")
+        : "Shipping address is still incomplete. No supplier order was created.";
+    } catch {
+      host.textContent="Order readiness check could not run. No supplier order was created.";
+    }
   }
 
   function friendlyQuoteError(code) {
@@ -50,7 +125,8 @@
       CURRENCY_REVIEW_REQUIRED:"This item needs a currency review before checkout.",
       SHIPPING_RECHECK_FAILED:"Shipping could not be rechecked right now.",
       OUT_OF_STOCK:"One or more selected items are currently out of stock.",
-      SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination."
+      SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination.",
+      SHIPPING_ADDRESS_INVALID:"Complete the shipping details before verification."
     };
     return messages[code] || "We could not verify this cart right now. No payment was attempted.";
   }
@@ -60,11 +136,18 @@
     const status = $("#hd-checkout-status");
     const cart = read();
     const country = String($("#hd-checkout-market")?.value || "").toUpperCase();
+    const address = collectAddress();
 
     if (!cart.length) {
       resetQuote("Your cart is empty.");
       return;
     }
+    if (!address.ok) {
+      const firstError=Object.values(address.errors||{})[0]||"Complete the shipping details before verification.";
+      resetQuote(String(firstError));
+      return;
+    }
+
     const invalid = cart.find(item =>
       !item?.provider ||
       !item?.item_id ||
@@ -86,6 +169,8 @@
     try {
       const payload = {
         country_code: country,
+        customer_email: address.value.email,
+        shipping_address: address.value,
         idempotency_key: `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
         items: cart.map(item => ({
           provider:item.provider,
@@ -114,6 +199,9 @@
       $("#hd-checkout-shipping").textContent = money(session.shipping_amount,currency);
       $("#hd-checkout-total").textContent = money(session.total_amount,currency);
       quoteVerified = true;
+      lastSessionId = String(session.id || "");
+      lastIdempotencyKey = String(data.idempotency_key || "");
+      saveAddress(address.value);
 
       if (status) {
         status.textContent = data.payment_ready === true
@@ -127,6 +215,7 @@
         shippingAmount:Number(session.shipping_amount||0),
         totalAmount:Number(session.total_amount||0)
       });
+      await runOrderPreview(lastSessionId,lastIdempotencyKey);
     } catch (err) {
       resetQuote(friendlyQuoteError(String(err?.message || "QUOTE_FAILED")));
     } finally {
@@ -198,5 +287,11 @@
     window.HuntAnalytics?.checkoutMarket(event.currentTarget.value || "");
   });
   $("#hd-checkout-verify")?.addEventListener("click",verifyPriceAndShipping);
+  document.querySelectorAll(".hd-checkout-address input").forEach(input=>{
+    input.addEventListener("input",()=>{
+      if (quoteVerified) resetQuote("Shipping details changed. Recheck price and shipping.");
+    });
+  });
+  loadSavedAddress();
   render();
 })();
