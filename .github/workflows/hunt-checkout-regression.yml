@@ -11,6 +11,9 @@ on:
       - "supabase/functions/hunt-order-preview/**"
       - "supabase/functions/hunt-payplus-callback/**"
       - "supabase/functions/hunt-payplus-sandbox-evidence/**"
+      - "supabase/functions/hunt-order-orchestrator/**"
+      - "supabase/functions/hunt-refund-preview/**"
+      - "supabase/functions/_shared/order-lifecycle.mjs"
       - "tests/**"
       - ".github/workflows/hunt-checkout-regression.yml"
   push:
@@ -41,7 +44,7 @@ jobs:
         with:
           node-version: "24"
       - name: Run checkout tests
-        run: node --test tests/checkout-address.test.js tests/checkout-contract.test.js tests/payplus-auth.test.js tests/payplus-status-map.test.js tests/payplus-callback-contract.test.js
+        run: node --test tests/checkout-address.test.js tests/checkout-contract.test.js tests/payplus-auth.test.js tests/payplus-status-map.test.js tests/payplus-callback-contract.test.js tests/order-lifecycle.test.js tests/order-lifecycle-contract.test.js
       - name: Parse browser scripts
         run: |
           node -e "new Function(require('fs').readFileSync('checkout-address.js','utf8')); new Function(require('fs').readFileSync('checkout.js','utf8')); console.log('browser-js-parse-pass')"
