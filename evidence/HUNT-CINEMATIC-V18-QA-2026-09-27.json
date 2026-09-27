@@ -1,0 +1,54 @@
+{
+  "version": "HUNT-CINEMATIC-V18-QA",
+  "date": "2026-09-27",
+  "mode": "SHADOW_PREVIEW_ONLY",
+  "production_effect": false,
+  "departments": 17,
+  "exact_shelf_keys": 101,
+  "preview_products": 1234,
+  "unexposed_shelf_keys": 0,
+  "product_key_mismatches": 0,
+  "populated_category_buttons": 78,
+  "hidden_empty_categories": 48,
+  "guarantees": [
+    "Department click opens only that department.",
+    "Category click resolves only shelves explicitly mapped inside that department.",
+    "No cross-department fallback exists.",
+    "Empty categories stay hidden instead of borrowing products.",
+    "Rendering sanity filters block known false-positive shelf patterns.",
+    "BOOM personalization may reorder only inside the active exact scope.",
+    "Original HUNT light/dark theme, Hero4 foundation and brand motion are preserved."
+  ],
+  "verified_examples": [
+    {
+      "scope": "Women > Dresses",
+      "preview_rows": 15,
+      "cross_department_rows": 0
+    },
+    {
+      "scope": "Tech > Audio",
+      "preview_rows": 16,
+      "cross_department_rows": 0
+    },
+    {
+      "scope": "Pets > Grooming",
+      "preview_rows": 16,
+      "cross_department_rows": 0
+    },
+    {
+      "scope": "Kids > Kids Tech",
+      "preview_rows": 1,
+      "cross_department_rows": 0
+    },
+    {
+      "scope": "Home > Rugs & Windows",
+      "preview_rows": 13,
+      "cross_department_rows": 0
+    }
+  ],
+  "safety": {
+    "payment_live": false,
+    "supplier_live_order": false,
+    "production_publish": false
+  }
+}
