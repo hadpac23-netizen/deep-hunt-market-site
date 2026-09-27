@@ -107,7 +107,7 @@ function exactShelf(selection, products) {
   $('#exact-title').textContent = `${selection.department.title} / ${selection.shelf.label}`;
   $('#exact-meta').textContent = `${selection.route} · ${count} vetted Shadow candidate${count === 1 ? '' : 's'} · no final profit claim`;
   $('#density').textContent = count >= 24 ? 'FULL' : count >= 12 ? 'GOOD' : count ? 'THIN' : 'FILLING';
-  $('#density').className = `density ${count < 12 ? 'thin' : ''}`;
+  $('#density').className = `density ${count === 0 ? 'empty' : count < 12 ? 'thin' : ''}`;
   $('#exact-rail').innerHTML = products.slice(0, state.visible).map(product => card(product, true)).join('');
   $('#exact-rail').hidden = count === 0;
   $('#empty-state').hidden = count !== 0;
@@ -162,7 +162,9 @@ function render() {
   $('#flow').hidden = !selection.route || !index || !!sourceError;
   $('#selection-hint').hidden = !!selection.route && !!index;
   $('#selection-hint').textContent = sourceError ? 'Clean V2 source unavailable. No products are shown.'
-    : !index ? 'Checking the clean Taxonomy Gate V2 source.' : 'Select a category to open its exact shelf.';
+    : !index ? 'Checking the clean Taxonomy Gate V2 source.'
+    : selection.category && !selection.route ? `Select an exact subcategory / shelf in ${selection.department.title} / ${selection.category.title}.`
+    : 'Select a category to open its exact shelf.';
   if (selection.route && index && !sourceError) {
     exactShelf(selection, products);
     related(selection);
@@ -179,6 +181,19 @@ function selectDepartment(slug) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+function selectCategory(categoryId) {
+  const department = DEPARTMENTS.find(candidate => candidate.slug === state.department);
+  const category = department?.categories.find(candidate => candidate.id === categoryId);
+  if (!category) return;
+  if (category.shelves.length === 1) {
+    selectShelf(category.id, category.shelves[0].slug);
+    return;
+  }
+  Object.assign(state, { category: category.id, shelf: null, visible: 24, preference: '' });
+  render();
+  $('#shelf-drawer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 function selectShelf(categoryId, shelfSlug) {
   const selection = resolveSelection(state.department, categoryId, shelfSlug);
   if (!selection.category || !selection.shelf) return;
@@ -193,7 +208,7 @@ $('#dept-nav').addEventListener('click', event => {
 });
 $('#category-index').addEventListener('click', event => {
   const button = event.target.closest('button[data-category]');
-  if (button) selectShelf(button.dataset.category);
+  if (button) selectCategory(button.dataset.category);
 });
 $('#shelf-buttons').addEventListener('click', event => {
   const button = event.target.closest('button[data-shelf]');
