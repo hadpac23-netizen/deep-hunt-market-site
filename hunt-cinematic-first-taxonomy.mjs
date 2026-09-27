@@ -1582,6 +1582,7 @@ const identityPolicies = {
   'women/women-outerwear': [/\b(?:coat|jacket|trench|parka|outerwear|windbreaker|overcoat|blazer)\b/i],
   'women/women-underwear': [/\b(?:bra|bralette|briefs?|knickers?|panties|thongs?|shapewear|body shaper|bodysuit|body suit|lingerie|underwear)\b/i, /\b(?:pajamas?|pyjamas?|sleepwear|sleeping|nightgown|nightdress|sleep dress|home clothes|robe|bathrobe|girl|girls|baby|kids?|men|mens|boys?)\b/i],
   'women/women-swim': [/\b(?:swimsuit|swimwear|bikini|tankini|one-piece swimsuit|one piece swimsuit)\b/i, /\b(?:girl|girls|baby|kids?|boys?|men|mens)\b/i],
+  'women/women-suits': [/\b(?:blazer|suit jacket|pantsuit|skirt suit|business suit|office suit|two-piece suit|2-piece suit)\b/i, /\b(?:swimsuit|bathing suit|suit bag|luggage|travel bag|men|mens|boys?|girls?|kids?|baby)\b/i],
   'women/women-jeans': [/\b(?:jeans?|denim pants?|denim trousers?)\b/i, /\b(?:jacket|coat|shoes?|boots?|bag|belt|chain|girl|girls|baby|kids?|boys?|men|mens)\b/i],
   'women/women-bottoms': [/\b(?:pants|trousers|shorts)\b/i, /\b(?:set|jacket|coat|sleepwear|pajamas?|leggings|yoga|sports|active|girl|girls|baby|kids?|boys?|men|mens)\b/i],
   'women/women-shoes': [/\b(?:shoes?|sandals?|slippers?|boots?|heels?|sneakers?|trainers?|loafers?|pumps?)\b/i, /\b(?:insole|insert|pads?|sock|socks|stocking|shoelace|shoe lace|shoe horn|shoe helper|shoe rack|shoe cabinet|shoe protector|shoe cover|forefoot pad|heel grip|heel cushion|shoe cushion|girl|girls|baby|kids?|boys?|men|mens|dog|pet)\b/i],
