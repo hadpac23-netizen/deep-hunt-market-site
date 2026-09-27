@@ -1,10 +1,12 @@
 "use strict";
 
+const PROFILE_NAME="HUNT-CJ-2026-v1";
 const DEFAULTS=Object.freeze({
   min_profit_usd:4,
   payment_reserve_rate:0.04,
   refund_reserve_rate:0.05,
-  target_product_margin:0.35
+  target_product_margin:0.35,
+  min_margin_rate:0.20
 });
 
 const n=v=>{
@@ -19,6 +21,7 @@ function targetRetail(sourceCost,opts={}){
   const paymentReserve=Math.min(.15,Math.max(0,n(opts.payment_reserve_rate)??DEFAULTS.payment_reserve_rate));
   const refundReserve=Math.min(.20,Math.max(0,n(opts.refund_reserve_rate)??DEFAULTS.refund_reserve_rate));
   const targetMargin=Math.min(.75,Math.max(.10,n(opts.target_product_margin)??DEFAULTS.target_product_margin));
+  const minMargin=Math.min(targetMargin,Math.max(0,n(opts.min_margin_rate)??DEFAULTS.min_margin_rate));
   const reserve=Math.max(.50,1-paymentReserve-refundReserve);
   const contributionFloor=(cost+minProfit)/reserve;
   const marginFloor=cost/Math.max(.05,reserve-targetMargin);
@@ -35,7 +38,9 @@ function targetRetail(sourceCost,opts={}){
     refund_reserve_rate:refundReserve,
     reserve_rate_total:+(paymentReserve+refundReserve).toFixed(4),
     min_profit_usd:minProfit,
-    target_product_margin:targetMargin
+    target_product_margin:targetMargin,
+    min_margin_rate:minMargin,
+    profile_name:PROFILE_NAME
   };
 }
 
@@ -58,7 +63,8 @@ function evaluateProfit(input={},opts={}){
   const reserve=1-paymentReserve-refundReserve;
   const productContribution=retail*reserve-cost;
   const productMargin=retail>0?productContribution/retail:0;
-  const mathPass=productContribution>=target.min_profit_usd&&productMargin>=target.target_product_margin;
+  const minimumGatePass=productContribution>=target.min_profit_usd&&productMargin>=target.min_margin_rate;
+  const targetMarginMet=productMargin>=target.target_product_margin;
 
   const marketKnown=input.market_validation_pass===true||input.market5_all_pass===true
     ?"PASS"
@@ -78,9 +84,9 @@ function evaluateProfit(input={},opts={}){
   let status="PROFIT_REVIEW";
   let reason="MARKET_VALIDATION_UNKNOWN";
 
-  if(!mathPass){
+  if(!minimumGatePass){
     status="PROFIT_BLOCK";
-    reason="PRODUCT_MARGIN_OR_CONTRIBUTION_BELOW_FLOOR";
+    reason="PRODUCT_MINIMUM_MARGIN_OR_CONTRIBUTION_BELOW_FLOOR";
   }else if(marketKnown==="FAIL"){
     status="PROFIT_REVIEW";
     reason="MARKET_VALIDATION_FAILED";
@@ -104,9 +110,14 @@ function evaluateProfit(input={},opts={}){
     pricing_basis:providedRetail!==null&&providedRetail>0?"PROVIDED_RETAIL":"PRICE_GATE_V2_1_TARGET",
     retail_price_usd:+retail.toFixed(2),
     target_retail_usd:target.target_retail_usd,
+    profile_name:PROFILE_NAME,
     supplier_cost_usd:+cost.toFixed(2),
     projected_product_contribution_usd:+productContribution.toFixed(2),
     projected_product_margin:+productMargin.toFixed(4),
+    target_product_margin:target.target_product_margin,
+    min_margin_rate:target.min_margin_rate,
+    target_margin_met:targetMarginMet,
+    minimum_margin_met:productMargin>=target.min_margin_rate,
     market_validation_status:marketKnown,
     shipping_verified:shippingKnown,
     supplier_shipping_usd:shippingKnown?+supplierShipping.toFixed(2):null,
@@ -125,4 +136,4 @@ function evaluateProfit(input={},opts={}){
   };
 }
 
-module.exports={DEFAULTS,targetRetail,evaluateProfit};
+module.exports={PROFILE_NAME,DEFAULTS,targetRetail,evaluateProfit};
