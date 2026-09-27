@@ -143,3 +143,26 @@ test('Women commerce navigation exposes lingerie sleep and footwear groups witho
   assert.match(js, /productsForSegment/);
   assert.doesNotMatch(js, /canonical_route\s*=.*segment/);
 });
+
+
+test('Accessories Jewelry is the featured first navigation group', () => {
+  assert.match(js, /Jewelry & Watches/);
+  assert.match(js, /featured: true/);
+  assert.match(js, /jewelry-earrings','jewelry-necklaces','jewelry-rings','jewelry-bracelets','jewelry','watches/);
+  assert.match(css, /\.category-group-featured/);
+});
+
+test('Women exposes direct exact shortcuts into jewelry shelves', () => {
+  assert.match(js, /data-nav-exact="accessories\|jewelry-earrings\|jewelry-earrings"/);
+  assert.match(js, /data-nav-exact="accessories\|jewelry-necklaces\|jewelry-necklaces"/);
+  assert.match(js, /data-nav-exact="accessories\|jewelry-rings\|jewelry-rings"/);
+  assert.match(js, /navigateToExactRoute/);
+});
+
+test('Jewelry semantic policies block common non-jewelry false positives', () => {
+  assert.match(taxonomy, /smart ring/);
+  assert.match(taxonomy, /steel ring/);
+  assert.match(taxonomy, /ring detail/);
+  assert.match(taxonomy, /christmas tree pendant/);
+  assert.match(taxonomy, /smart bracelet/);
+});
