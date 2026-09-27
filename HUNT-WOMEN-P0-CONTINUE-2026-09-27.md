@@ -97,3 +97,57 @@ Sleepwear remains in Sleepwear and is not borrowed into Dresses.
 3. Bring Suits from 9 to 12+ only when 3 additional candidates pass Safety + Profit + Market5 + Image.
 4. Continue CJ only through storefront/readiness truth; do not bypass STOREFRONT_RECHECK_FAILED.
 5. Keep Quick Find and grouped commerce navigation as the access layer; canonical taxonomy remains unchanged.
+
+
+## Late checkpoint — continued Women depth
+
+### Added
+- Women Jeans +1 additional verified item:
+  - target retail $14.99
+  - projected contribution $5.34
+  - existing Market5 + Image PASS
+- Women Pants & Shorts +1:
+  - target retail $17.99
+  - projected contribution $6.79
+  - Market5 5/5
+  - Image PASS 1500×1500
+- Women Shoes +2:
+  - Mary Jane / sandals: target retail $47.99, projected contribution $16.94
+  - Women's boots: target retail $39.99, projected contribution $14.44
+  - both Market5 5/5 + Image PASS
+- Women Swim +1 cover-up set:
+  - target retail $15.99
+  - projected contribution $5.78
+  - Market5 5/5 + Image PASS
+
+### Rejected / held
+- Additional Women suit candidate: Market5 5/5 but Image HOLD (IMAGE_FILE_TOO_SMALL).
+- Two additional general dresses: Market5 5/5 but Image HOLD (small files).
+- One additional swim candidate: Market5 5/5 but Image HOLD (small file).
+- Fitness shorts remain outside Women Pants.
+- Evening dresses remain in Evening; they were not borrowed into general Dresses.
+
+### Current gated state
+- FULL: 1
+- GOOD: 5
+- THIN: 79
+- EMPTY: 56
+- Active routes: 85/141
+- Semantic accepted products: 303
+
+### Current Women
+- women/women-dresses: 3 (THIN)
+- women/women-evening: 6 (THIN)
+- women/women-suits: 9 (THIN)
+- women/women-tops: 1 (THIN)
+- women/women-jeans: 2 (THIN)
+- women/women-bottoms: 3 (THIN)
+- women/women-skirts: 2 (THIN)
+- women/women-knitwear: 2 (THIN)
+- women/women-outerwear: 1 (THIN)
+- women/women-underwear: 9 (THIN)
+- women/women-sleepwear: 16 (GOOD)
+- women/women-swim: 3 (THIN)
+- women/women-shoes: 3 (THIN)
+- women/women-socks: 2 (THIN)
+- women/women-hoodies: 1 (THIN)
