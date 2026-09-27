@@ -1574,7 +1574,7 @@ const identityPolicies = {
   'tech/phone-cases': [/\bphone case\b/i, /\b(?:bag pendant|key chain|case accessories)\b/i],
   'toys/educational-toys': [/\b(?:educational|montessori|learning)\b.*\btoys?\b|\btoys?\b.*\b(?:educational|montessori|learning)\b/i],
   'travel/luggage': [/\b(?:travel bag|luggage bag|suit bag|boarding.*bag|travel luggage)\b/i, /\b(?:wedding banquet|car roof|packing cubes|organizer set)\b/i],
-  'women/women-dresses': [/\b(?:dress|gown)\b/i, /\b(?:girl|girls|baby|kids?|boys?|men|mens|nightgown|nightdress|sleep dress|robe)\b/i],
+  'women/women-dresses': [/\b(?:dress|gown)\b/i, /\b(?:girl|girls|baby|kids?|boys?|men|mens|nightgown|nightdress|sleep dress|sleepwear|loungewear|home wear|homewear|robe|bathrobe)\b/i],
   'women/women-evening': [/\b(?:dress|gown)\b/i],
   'women/women-tops': [/\b(?:top|blouse|shirt|t-shirt|tee)\b/i, /\b(?:bodysuit|lingerie|swimsuit|bra)\b/i],
   'women/women-hoodies': [/\b(?:hoodie|sweatshirt)\b/i],
