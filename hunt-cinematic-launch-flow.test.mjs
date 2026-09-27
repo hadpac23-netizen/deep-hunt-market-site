@@ -61,3 +61,14 @@ test('shopper cards hide supplier identity and expose HUNT price presentation', 
   assert.doesNotMatch(js, /<span class="badge">\$\{esc\(product\.provider\)\}<\/span>/);
   assert.match(html, /href="auth\.html"/);
 });
+
+
+test('all-departments navigation remains keyboard accessible', () => {
+  assert.match(html, /id="all-departments-toggle"/);
+  assert.match(html, /aria-controls="all-departments-panel"/);
+  assert.match(html, /id="all-departments-grid"/);
+  assert.match(js, /setDepartmentPanel/);
+  assert.match(js, /data-dept-panel/);
+  assert.match(js, /event\.key === 'Escape'/);
+  assert.match(css, /\.all-departments-grid/);
+});
