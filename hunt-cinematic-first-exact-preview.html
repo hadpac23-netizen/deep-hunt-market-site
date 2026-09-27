@@ -18,7 +18,17 @@
       <a class="account-link" href="auth.html" aria-label="Open HUNT account and sign in">Account</a>
       <button type="button" class="theme" id="theme" aria-label="Switch to light mode">Light</button>
     </div>
-    <nav class="dept-nav" id="dept-nav" aria-label="Departments"></nav>
+    <div class="dept-row">
+      <nav class="dept-nav" id="dept-nav" aria-label="Departments"></nav>
+      <button type="button" class="all-departments-toggle" id="all-departments-toggle" aria-expanded="false" aria-controls="all-departments-panel">All Departments</button>
+    </div>
+    <section class="all-departments-panel" id="all-departments-panel" hidden aria-label="All HUNT departments">
+      <div class="all-departments-head">
+        <div><span>HUNT · BROWSE</span><strong>All Departments</strong></div>
+        <button type="button" id="all-departments-close" aria-label="Close all departments">Close</button>
+      </div>
+      <div class="all-departments-grid" id="all-departments-grid"></div>
+    </section>
   </header>
   <main>
     <section class="stage" id="stage">
