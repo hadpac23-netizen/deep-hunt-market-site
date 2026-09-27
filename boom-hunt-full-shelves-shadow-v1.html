@@ -86,7 +86,7 @@ h1{font:700 clamp(58px,8vw,126px)/.84 Georgia,"Times New Roman",serif;letter-spa
 </main>
 <div class="qa">CATALOG SHADOW · PRODUCTION OFF</div>
 <script>
-let data=null,accessorySupplement={shelves:{}},active=0,visible={};
+let data=null,taxonomySupplement={shelves:{}},active=0,visible={};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const qp=new URLSearchParams(location.search);
@@ -104,9 +104,9 @@ function allowedForDepartment(deptSlug,p){
 }
 function categoryProducts(deptSlug,cat){
   const base=(cat.products||[]);
-  const extra=deptSlug==="accessories"?(accessorySupplement.shelves?.[cat.slug]||[]):[];
+  const extra=taxonomySupplement.shelves?.[deptSlug+"/"+cat.slug]||[];
   const seen=new Set(),out=[];
-  for(const p of [...base,...extra]){
+  for(const p of [...extra,...base]){
     const key=String(p.provider||"UNKNOWN")+":"+String(p.item_id||"");
     if(!p.item_id||seen.has(key)||!allowedForDepartment(deptSlug,p))continue;
     seen.add(key);out.push(p);
@@ -116,12 +116,18 @@ function categoryProducts(deptSlug,cat){
 function card(p){
   const cj=p.truth_state==="CJ_VERIFIED_4_MARKETS";
   const global=p.truth_state==="GLOBAL_PRODUCT_TRUTH";
+  const taxV2=p.taxonomy_gate_v2==="REMAP";
   const truth=cj||global;
-  const label=cj?"CJ VERIFIED 4/4":global?"GLOBAL TRUTH":"CATALOG SHADOW";
-  const note=cj
-    ? "IL · DE · US · SG stock + shipping verified · final profit recheck"
-    : "destination recheck before commercial use";
-  return '<article class="card"><div class="media"><img loading="lazy" src="'+esc(p.image_url)+'" alt=""></div><div class="card-body"><div class="badges"><span class="badge '+(truth?'truth':'')+'">'+label+'</span><span class="badge">'+esc(p.provider)+'</span></div><h3>'+esc(p.title)+'</h3><p>'+esc(p.category_title)+' · '+esc(note)+'</p></div></article>';
+  const label=cj?"CJ VERIFIED 4/4":global?"GLOBAL TRUTH":taxV2?"TAXONOMY V2":"CATALOG SHADOW";
+  const profit=p.profit_truth||{};
+  const retail=Number(profit.target_retail_usd);
+  const contribution=Number(profit.projected_product_contribution_usd);
+  const margin=Number(profit.projected_product_margin);
+  const hasProfit=Number.isFinite(retail)&&Number.isFinite(contribution)&&Number.isFinite(margin);
+  const profitLine=hasProfit
+    ? "Target $"+retail.toFixed(2)+" · Projected +$"+contribution.toFixed(2)+" · "+Math.round(margin*100)+"% · PROFIT REVIEW"
+    : (cj?"Shipping verified · final profit recheck":"Destination/market profit recheck required");
+  return '<article class="card"><div class="media"><img loading="lazy" src="'+esc(p.image_url)+'" alt=""></div><div class="card-body"><div class="badges"><span class="badge '+(truth?'truth':'')+'">'+label+'</span><span class="badge">'+esc(p.provider)+'</span>'+(taxV2?'<span class="badge">PROFIT REVIEW</span>':'')+'</div><h3>'+esc(p.title)+'</h3><p>'+esc(p.category_title||p.category)+' · '+esc(profitLine)+'</p></div></article>';
 }
 function renderCategory(cat){
   const n=visible[cat.slug]||Math.min(24,cat.products.length);
@@ -161,9 +167,9 @@ $("#category-index").addEventListener("click",e=>{const b=e.target.closest("butt
 $("#shelves").addEventListener("click",e=>{const b=e.target.closest("button[data-more]");if(!b)return;const slug=b.dataset.more;const d=data.departments[active];const cat=d.categories.find(x=>x.slug===slug);const all=categoryProducts(d.slug,cat);visible[slug]=Math.min((visible[slug]||24)+24,all.length);const node=document.getElementById("cat-"+slug);node.outerHTML=renderCategory(cat,d.slug)});
 Promise.all([
   fetch("./evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json").then(r=>r.json()),
-  fetch("./evidence/HUNT-ACCESSORIES-RECOVERY-SUPPLEMENT-2026-09-26.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}}))
+  fetch("./evidence/HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}}))
 ]).then(([j,supp])=>{
- data=j;accessorySupplement=supp||{shelves:{}};
+ data=j;taxonomySupplement=supp||{shelves:{}};
  $("#dept-nav").innerHTML=j.departments.map((d,i)=>'<button type="button" data-i="'+i+'">'+esc(d.title)+'</button>').join("");
  const requested=qp.get("dept");const idx=j.departments.findIndex(x=>x.slug===requested);active=idx>=0?idx:0;
  setTheme(qp.get("theme")==="light"?"light":"dark");render();
