@@ -1,0 +1,497 @@
+{
+  "version": "HUNT-CINEMATIC-TAXONOMY-MAP-V18",
+  "departments": {
+    "women": {
+      "label": "Women",
+      "categories": {
+        "Dresses": [
+          "women-dresses"
+        ],
+        "Evening & Occasion": [
+          "women-evening",
+          "women-occasionwear"
+        ],
+        "Tops": [
+          "women-tops"
+        ],
+        "Bottoms": [
+          "women-bottoms",
+          "women-jeans",
+          "women-skirts",
+          "women-jumpsuits"
+        ],
+        "Outerwear": [
+          "women-outerwear",
+          "women-hoodies",
+          "women-knitwear"
+        ],
+        "Shoes": [
+          "women-shoes"
+        ],
+        "Underwear & Sleep": [
+          "women-underwear",
+          "women-sleepwear",
+          "women-nightwear",
+          "women-loungewear"
+        ],
+        "Swim": [
+          "swimwear"
+        ],
+        "Maternity & Tailoring": [
+          "women-maternity",
+          "women-tailoring"
+        ]
+      }
+    },
+    "men": {
+      "label": "Men",
+      "categories": {
+        "Shirts & Tops": [
+          "men-shirts",
+          "men-tops"
+        ],
+        "Bottoms": [
+          "men-bottoms",
+          "men-jeans",
+          "men-shorts"
+        ],
+        "Outerwear": [
+          "men-outerwear",
+          "men-hoodies",
+          "men-knitwear"
+        ],
+        "Shoes": [
+          "men-shoes"
+        ],
+        "Underwear & Sleep": [
+          "men-underwear",
+          "men-boxers",
+          "men-nightwear",
+          "men-socks"
+        ],
+        "Swim": [
+          "men-swimwear"
+        ],
+        "Tailoring": [
+          "men-tailoring"
+        ]
+      }
+    },
+    "kids": {
+      "label": "Kids",
+      "categories": {
+        "Baby": [
+          "baby",
+          "baby-clothing",
+          "baby-sets",
+          "baby-sleepsuits",
+          "baby-bedding"
+        ],
+        "Girls": [
+          "girls"
+        ],
+        "Boys": [
+          "boys"
+        ],
+        "Clothing": [
+          "kids-clothing"
+        ],
+        "Shoes": [
+          "kids-shoes"
+        ],
+        "School": [
+          "kids-schoolwear"
+        ],
+        "Sleep & Underwear": [
+          "kids-nightwear",
+          "kids-underwear"
+        ],
+        "Occasion & Swim": [
+          "kids-occasionwear",
+          "kids-swimwear"
+        ],
+        "Nursery": [
+          "nursery"
+        ]
+      }
+    },
+    "accessories": {
+      "label": "Accessories",
+      "categories": {
+        "Bags": [
+          "bags",
+          "bag-accessories"
+        ],
+        "Jewelry": [
+          "jewelry",
+          "jewelry-necklaces",
+          "jewelry-earrings",
+          "jewelry-bracelets",
+          "jewelry-rings"
+        ],
+        "Watches": [
+          "watches"
+        ],
+        "Sunglasses": [
+          "sunglasses"
+        ],
+        "Hats": [
+          "hats"
+        ],
+        "Belts & Scarves": [
+          "belts",
+          "scarves"
+        ],
+        "Hair Accessories": [
+          "hair-accessories"
+        ],
+        "Socks": [
+          "socks"
+        ],
+        "Small Accessories": [
+          "keychains"
+        ]
+      }
+    },
+    "beauty": {
+      "label": "Beauty",
+      "categories": {
+        "Makeup": [
+          "makeup"
+        ],
+        "Skincare": [
+          "skincare"
+        ],
+        "Hair": [
+          "hair"
+        ],
+        "Nails": [
+          "nails"
+        ],
+        "Body Care": [
+          "body-care"
+        ],
+        "Fragrance": [
+          "fragrance"
+        ],
+        "Beauty Tools": [
+          "beauty-tools"
+        ]
+      }
+    },
+    "home": {
+      "label": "Home",
+      "categories": {
+        "Furniture & Living": [
+          "furniture",
+          "entryway"
+        ],
+        "Bedroom & Bedding": [
+          "bedding",
+          "cushions-throws"
+        ],
+        "Bath": [
+          "bath"
+        ],
+        "Decor & Mirrors": [
+          "home-decor",
+          "mirrors",
+          "wall-art"
+        ],
+        "Storage & Organization": [
+          "storage"
+        ],
+        "Rugs & Windows": [
+          "rugs-runners",
+          "curtains-blinds"
+        ],
+        "Lighting": [
+          "lighting"
+        ],
+        "Laundry & Cleaning": [
+          "laundry",
+          "cleaning"
+        ]
+      }
+    },
+    "kitchen": {
+      "label": "Kitchen",
+      "categories": {
+        "Cookware": [
+          "cookware"
+        ],
+        "Tools & Utensils": [
+          "kitchen-tools"
+        ],
+        "Tableware": [
+          "tableware",
+          "dinnerware"
+        ],
+        "Drinkware": [
+          "drinkware",
+          "glassware"
+        ],
+        "Storage": [
+          "kitchen-storage"
+        ],
+        "Bakeware": [
+          "bakeware"
+        ]
+      }
+    },
+    "tech": {
+      "label": "Tech",
+      "categories": {
+        "Phones & Cases": [
+          "phone-cases"
+        ],
+        "Charging": [
+          "chargers-cables",
+          "power-banks"
+        ],
+        "Audio": [
+          "audio"
+        ],
+        "Wearables": [
+          "wearables",
+          "wearable-accessories"
+        ],
+        "Gaming": [
+          "gaming"
+        ],
+        "Cameras": [
+          "cameras"
+        ],
+        "Computing": [
+          "computers-tablets"
+        ],
+        "Stands & Holders": [
+          "stands-holders"
+        ],
+        "Smart Home": [
+          "smart-home"
+        ]
+      }
+    },
+    "electrical": {
+      "label": "Electrical",
+      "categories": {
+        "Small Appliances": [
+          "home-appliances"
+        ],
+        "Heating & Cooling": [
+          "heating-cooling"
+        ],
+        "Cleaning Appliances": [
+          "cleaning-appliances"
+        ],
+        "Personal Appliances": [
+          "personal-appliances"
+        ],
+        "Power & Electrical": [
+          "power-electrical"
+        ]
+      }
+    },
+    "sports": {
+      "label": "Sports",
+      "categories": {
+        "Activewear": [
+          "activewear",
+          "active-bottoms"
+        ],
+        "Fitness": [
+          "fitness-accessories"
+        ],
+        "Yoga": [
+          "yoga"
+        ],
+        "Running": [
+          "running"
+        ],
+        "Team Sports": [
+          "team-sports"
+        ],
+        "Sports Gear": [
+          "sports-gear"
+        ]
+      }
+    },
+    "camping": {
+      "label": "Camping",
+      "categories": {
+        "Tents & Shelter": [
+          "tents-shelter"
+        ],
+        "Sleep": [
+          "camping-sleep"
+        ],
+        "Lighting": [
+          "camping-lighting"
+        ],
+        "Camp Cooking": [
+          "camp-cooking"
+        ],
+        "Camp Furniture": [
+          "camp-furniture"
+        ],
+        "Outdoor Gear": [
+          "outdoors"
+        ]
+      }
+    },
+    "pets": {
+      "label": "Pets",
+      "categories": {
+        "Beds": [
+          "pet-beds"
+        ],
+        "Houses": [
+          "pet-houses"
+        ],
+        "Clothing": [
+          "pet-clothing"
+        ],
+        "Feeding": [
+          "pet-feeding"
+        ],
+        "Grooming": [
+          "pet-grooming"
+        ],
+        "Toys": [
+          "pet-toys"
+        ],
+        "Walking": [
+          "pet-walk"
+        ],
+        "Aquarium": [
+          "aquarium"
+        ],
+        "Accessories": [
+          "pet-accessories"
+        ]
+      }
+    },
+    "toys": {
+      "label": "Toys",
+      "categories": {
+        "Educational": [
+          "educational-toys"
+        ],
+        "Building": [
+          "building-toys"
+        ],
+        "Pretend Play": [
+          "pretend-play"
+        ],
+        "Dolls & Figures": [
+          "dolls-figures"
+        ],
+        "Vehicles & RC": [
+          "vehicles-rc"
+        ],
+        "Puzzles & Games": [
+          "puzzles-games"
+        ],
+        "Arts & Crafts": [
+          "arts-crafts"
+        ],
+        "Plush": [
+          "plush"
+        ],
+        "Outdoor Play": [
+          "outdoor-play"
+        ]
+      }
+    },
+    "garden": {
+      "label": "Garden",
+      "categories": {
+        "Planters": [
+          "planters"
+        ],
+        "Watering": [
+          "watering"
+        ],
+        "Garden Tools": [
+          "garden-tools"
+        ],
+        "Outdoor Living": [
+          "outdoor-living"
+        ],
+        "Garden Decor": [
+          "garden-decor"
+        ],
+        "Plant Care": [
+          "plant-care"
+        ]
+      }
+    },
+    "office": {
+      "label": "Office",
+      "categories": {
+        "Stationery": [
+          "stationery"
+        ],
+        "Writing": [
+          "writing"
+        ],
+        "Filing & Organization": [
+          "filing-organization"
+        ],
+        "Desk Accessories": [
+          "desk-accessories"
+        ],
+        "Office Furniture": [
+          "office-furniture"
+        ],
+        "Notebooks & Planners": [
+          "notebooks-planners"
+        ]
+      }
+    },
+    "travel": {
+      "label": "Travel",
+      "categories": {
+        "Luggage": [
+          "luggage"
+        ],
+        "Travel Bags": [
+          "travel-bags"
+        ],
+        "Organizers": [
+          "travel-organizers"
+        ],
+        "Travel Accessories": [
+          "travel-accessories"
+        ],
+        "Toiletry": [
+          "toiletry-bags"
+        ],
+        "Documents": [
+          "passport-document-holders"
+        ]
+      }
+    },
+    "gifts": {
+      "label": "Gifts",
+      "categories": {
+        "Gift Decor": [
+          "gift-decor"
+        ],
+        "Party": [
+          "party"
+        ],
+        "Gift Wrap": [
+          "gift-wrap"
+        ],
+        "Cards & Stationery": [
+          "cards-stationery"
+        ],
+        "Gift Bags & Boxes": [
+          "gift-bags-boxes"
+        ]
+      }
+    }
+  }
+}
