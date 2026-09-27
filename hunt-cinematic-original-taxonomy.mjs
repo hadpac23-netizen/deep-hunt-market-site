@@ -92,10 +92,52 @@ export const DEPARTMENTS = [
   ] }
 ];
 
-const restricted = /\b(?:weapon|firearm|ammunition|vape|nicotine|cannabis|marijuana|steroid|diet pill|pornography|sex toy)\b/i;
-const accessoryIdentity = /\b(?:necklace|pendant|choker|earring|bracelet|bangle|jewelry|jewellery|handbag|purse|tote|crossbody|backpack|wallet|belt|scarf|hat|beanie|hair clip|watch)\b/i;
-const alienInApparel = /\b(?:dog|cat|pet|aquarium|phone case|charger|laptop|necklace|bracelet|handbag|table lamp|dining chair|storage cabinet|garden tool)\b/i;
+const restricted = /\b(?:weapon|firearm|ammunition|vape|nicotine|tobacco|cannabis|marijuana|steroid|diet pill|pornography|sex toy)\b/i;
 const configuredRoutes = new Set(DEPARTMENTS.flatMap(d => d.categories.flatMap(c => c.shelves.map(s => `${d.slug}/${s.slug}`))));
+
+// V2 contains some title-level misroutes (for example, children's costumes in
+// Gifts/Party and human clothes in Pets). Hold those rows in this preview;
+// never silently move them to a different shelf. An unreviewed route fails closed.
+const identityPolicies = {
+  'accessories/bag-accessories': [/\bbag charm\b/i],
+  'accessories/bags': [/\b(?:bag|backpack|schoolbag|wallet|purse|passport (?:holder|case|book)|card holder)\b/i],
+  'accessories/jewelry': [/\b(?:brooch|jewelry|jewellery|pin)\b/i],
+  'accessories/jewelry-earrings': [/\bearrings?\b/i],
+  'accessories/jewelry-necklaces': [/\bnecklace\b/i, /\b(?:teether|teething|nursing|swimsuit|bikini|blind box|DIY|socks?|tapestry|curtain|shorts|skirt|pants)\b/i],
+  'accessories/socks': [/\bsocks?\b/i, /\b(?:Christmas|gift bag|candy bag|storage box|sorting box|sock pads|sock covers|baby|newborn|electric|heating)\b/i],
+  'beauty/beauty-tools': [/\b(?:shaver|trimmer|beauty tool)\b/i],
+  'beauty/makeup': [/\b(?:lip gloss|makeup|cleansing puff)\b/i],
+  'garden/outdoor-living': [/\b(?:outdoor furniture|camping chair|patio chair)\b/i],
+  'home/bath': [/\b(?:bathroom|bath rug|bath mat)\b/i],
+  'home/curtains': [/\bcurtains?\b/i, /\bblind box\b/i],
+  'home/rugs': [/\b(?:rug|floor mat)\b/i],
+  'kids/baby': [/\b(?:baby|newborn|infant|toddler|stroller|diaper|nappy)\b/i, /\b(?:pregnancy|postpartum|maternity|anti-reflux|pillow|carrier|wrap|teether|shoes|sandals|blanket)\b/i],
+  'kids/baby-bedding': [/\b(?:baby|children|newborn)\b.*\b(?:blanket|sleeping bag|swaddle)\b/i],
+  'kids/baby-clothing': [/\b(?:baby|newborn|infant|toddler|kids)\b.*\b(?:dress|romper|onesie|bodysuit|shirt|top|swimsuit|clothes|clothing|outfit|wear)\b/i, /\b(?:diaper|nail|hangers?|organizer|storage|maternity|pregnancy)\b/i],
+  'kids/kids-clothing': [/\b(?:children|kids|boy|girl)\b.*\b(?:sweater|dress|shirt|top|pants|clothing|pullover)\b/i],
+  'kitchen/kitchen-tools': [/\b(?:chopper|dicer|grater|shredder|cutter|stirrer|whisk|pot clamp|egg.*separator|slicer|peeler|presser)\b/i, /\b(?:cleaning brush|deodoriser|deodorant|mug|cup|frying pan|vacuum sealer)\b/i],
+  'men/men-bottoms': [/\b(?:shorts|pants|trousers|overalls|jeans)\b/i],
+  'men/men-shoes': [/\b(?:shoes|sandals|slippers)\b/i],
+  'men/men-socks': [/\bsocks?\b/i],
+  'men/men-tops': [/\b(?:shirt|t-shirt|polo|top)\b/i],
+  'pets/pet-accessories': [/\b(?:pet|dog|cat|puppy)\b.*\b(?:bib|scarf|collar|diaper|pee pad|saliva towel)\b|\b(?:bib|scarf|collar|diaper|pee pad|saliva towel)\b.*\b(?:pet|dog|cat|puppy)\b/i, /\b(?:baby|women|men|t-shirt|shirt|dress|outfit|romper)\b/i],
+  'pets/pet-feeding': [/\b(?:pet|cat|dog)\b.*\b(?:feeding|tableware|bowl)\b/i],
+  'pets/pet-grooming': [/\b(?:cat|dog|pet)\b.*\b(?:comb|brush|bath towel|bathrobe|groom)\b/i],
+  'sports/fitness-accessories': [/\b(?:fitness|sports)\b.*\b(?:shaking cup|mixing cup|shaker)\b/i],
+  'tech/cameras': [/\b(?:camera|webcam)\b/i],
+  'tech/phone-cases': [/\bphone case\b/i, /\b(?:bag pendant|key chain|case accessories)\b/i],
+  'toys/educational-toys': [/\b(?:educational|montessori|learning)\b.*\btoys?\b|\btoys?\b.*\b(?:educational|montessori|learning)\b/i],
+  'travel/luggage': [/\b(?:travel bag|luggage bag|suit bag|boarding.*bag|travel luggage)\b/i, /\b(?:wedding banquet|car roof|packing cubes|organizer set)\b/i],
+  'women/women-evening': [/\b(?:dress|gown)\b/i],
+  'women/women-skirts': [/\bskirt\b/i],
+  'women/women-sleepwear': [/\b(?:sleepwear|nightgown|nightdress|pajamas|loungewear|sleep dress|robe)\b/i],
+  'women/women-socks': [/\bsocks?\b/i]
+};
+
+function titleFitsRoute(route, title) {
+  const policy = identityPolicies[route];
+  return !!policy && policy[0].test(title) && (!policy[1] || !policy[1].test(title));
+}
 
 export function isEligible(route, p) {
   if (!configuredRoutes.has(route) || !p || `${p.department}/${p.category}` !== route) return false;
@@ -103,13 +145,11 @@ export function isEligible(route, p) {
   if (p.availability_verified !== true || !(Number(p.inventory_snapshot) > 0)) return false;
   if (p.production_exposure !== false || p.sell_state !== 'SHADOW_QA_PROFIT_REVIEW') return false;
   if (p.image_technical_status !== 'PASS' || !/^https:\/\//i.test(p.image_url || '')) return false;
-  if (/HOLD|BLOCK|REVIEW_REQUIRED/i.test(p.candidate_status || '')) return false;
+  if (p.market5_all_pass !== true || !/^MARKET5_READY_STYLE_(?:PHYSICAL_PENDING|PASS_PHYSICAL_METADATA_VERIFIED)$/.test(p.candidate_status || '')) return false;
   if (p.profit_truth?.status !== 'PROFIT_REVIEW' || p.profit_truth.final_profit_verified !== false) return false;
   if (!(Number(p.profit_truth.projected_product_contribution_usd) > 0)) return false;
   if (restricted.test(p.title)) return false;
-  if (route.startsWith('gifts/') && accessoryIdentity.test(p.title)) return false;
-  if (/^(women|men)\//.test(route) && alienInApparel.test(p.title)) return false;
-  if (route === 'beauty/nails' && /\b(?:chair|furniture|snail cream)\b/i.test(p.title)) return false;
+  if (!titleFitsRoute(route, p.title)) return false;
   return true;
 }
 
@@ -119,13 +159,16 @@ export function buildIndex(data) {
   }
   const byRoute = new Map();
   const seen = new Set();
+  const seenTitles = new Set();
   let accepted = 0, excluded = 0;
   for (const [route, products] of Object.entries(data.shelves)) {
     if (!Array.isArray(products)) throw new Error(`Invalid shelf: ${route}`);
     for (const p of products) {
       const key = `${p.provider}:${p.item_id}`;
-      if (!isEligible(route, p) || seen.has(key)) { excluded++; continue; }
+      const titleKey = `${route}:${String(p.title || '').toLowerCase().replace(/\s+/g, ' ').trim()}`;
+      if (!isEligible(route, p) || seen.has(key) || seenTitles.has(titleKey)) { excluded++; continue; }
       seen.add(key);
+      seenTitles.add(titleKey);
       if (!byRoute.has(route)) byRoute.set(route, []);
       byRoute.get(route).push(Object.freeze({ ...p, canonical_route: route }));
       accepted++;

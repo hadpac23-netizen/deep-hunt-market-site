@@ -27,6 +27,7 @@ test('only clean V2 image, inventory, safety and profit-review candidates enter 
       assert.equal(product.canonical_route, route);
       assert.equal(`${product.department}/${product.category}`, route);
       assert.equal(product.image_technical_status, 'PASS');
+      assert.equal(product.market5_all_pass, true);
       assert.equal(product.profit_truth.status, 'PROFIT_REVIEW');
       assert.equal(product.production_exposure, false);
       assert.ok(product.inventory_snapshot > 0);
@@ -35,6 +36,7 @@ test('only clean V2 image, inventory, safety and profit-review candidates enter 
   const original = fixture.shelves['women/women-evening'][0];
   assert.equal(isEligible('women/women-dresses', original), false);
   assert.equal(isEligible('women/women-evening', { ...original, image_technical_status: 'HOLD' }), false);
+  assert.equal(isEligible('women/women-evening', { ...original, market5_all_pass: false }), false);
   assert.equal(isEligible('women/women-evening', { ...original, inventory_snapshot: 0 }), false);
   assert.equal(isEligible('women/women-evening', { ...original, profit_truth: { status: 'PASS', final_profit_verified: true } }), false);
   assert.throws(() => buildIndex({ ...fixture, version: 'LEGACY_CATALOG_HOME' }));
@@ -42,8 +44,16 @@ test('only clean V2 image, inventory, safety and profit-review candidates enter 
 
 test('Gifts has no accessory products and BOOM can only reorder its input route', () => {
   assert.ok(!DEPARTMENTS.find(d => d.slug === 'gifts').categories.some(c => c.id === 'accessories'));
+  assert.equal(index.byRoute.get('gifts/party')?.length || 0, 0);
+  assert.equal(index.byRoute.get('home/curtains-blinds')?.length || 0, 0);
+  assert.equal(index.byRoute.get('pets/pet-clothing')?.length || 0, 0);
   const necklace = fixture.shelves['accessories/jewelry-necklaces'][0];
   assert.equal(isEligible('gifts/gift-decor', { ...necklace, department: 'gifts', category: 'gift-decor', image_technical_status: 'PASS' }), false);
+  const costume = fixture.shelves['gifts/party'][0];
+  assert.equal(isEligible('gifts/party', costume), false);
+  assert.ok((index.byRoute.get('men/men-bottoms') || []).length > 0);
+  const titles = [...index.byRoute.values()].flat().map(p => `${p.canonical_route}:${p.title.toLowerCase().replace(/\s+/g, ' ').trim()}`);
+  assert.equal(new Set(titles).size, titles.length);
   const route = 'women/women-evening';
   const products = index.byRoute.get(route) || [];
   const ranked = rankWithinRoute(products, ['black']);
