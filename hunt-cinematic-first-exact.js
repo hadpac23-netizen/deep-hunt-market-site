@@ -69,7 +69,9 @@ const SHELF_SEGMENTS = {
     { id:'thongs', label:'Thongs', include:/\bthongs?\b/i },
     { id:'sets', label:'Lingerie Sets', include:/\b(?:lingerie|underwear)\b.*\bset\b|\bset\b.*\b(?:lingerie|underwear)\b/i },
     { id:'shapewear', label:'Shapewear', include:/\b(?:shapewear|shaping|control brief|body shaper)\b/i },
-    { id:'bodysuits', label:'Bodysuits', include:/\b(?:bodysuit|body suit|body)\b/i }
+    { id:'bodysuits', label:'Bodysuits', include:/\b(?:bodysuit|body suit|body)\b/i },
+    { id:'sports-bras', label:'Sports Bras', include:/\b(?:sports bra|sport bra|fitness bra|yoga bra|running bra)\b/i },
+    { id:'maternity-nursing', label:'Maternity & Nursing', include:/\b(?:nursing|breastfeeding|maternity|pregnancy)\b.*\bbra\b|\bbra\b.*\b(?:nursing|breastfeeding|maternity|pregnancy)\b/i }
   ],
   'women/women-sleepwear': [
     { id:'pajamas', label:'Pajamas', include:/\b(?:pajamas?|pyjamas?|pjs?)\b/i },
