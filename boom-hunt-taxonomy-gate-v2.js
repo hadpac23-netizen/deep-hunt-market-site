@@ -128,6 +128,16 @@ const CROSS_DEPARTMENT_EXCLUSIONS=[
 
 function cleanText(v){return String(v||"").replace(MARKETING_TAGS," ").replace(/\s+/g," ").trim();}
 function identityText(p){return cleanText([p.title,p.source_category,p.category,p.description].filter(Boolean).join(" "));}
+function contextRuleAllowed(rule,proposedDepartment){
+  const dep=String(proposedDepartment||"");
+  if(rule.id==="JEWELRY_GENERIC"||rule.id==="WALLET"){
+    return ["","lifestyle","gifts","accessories"].includes(dep);
+  }
+  if(rule.id==="WEARABLE_ACCESSORY"){
+    return ["","lifestyle","gifts","accessories","tech"].includes(dep);
+  }
+  return true;
+}
 
 function classifyProduct(product={}){
   const raw=[product.title,product.source_category,product.category,product.description].filter(Boolean).join(" ");
@@ -137,7 +147,11 @@ function classifyProduct(product={}){
   const proposedDepartment=String(product.proposed_department||product.department||"").trim();
   const proposedCategory=String(product.proposed_category||product.category||"").trim();
 
-  const matches=RULES.filter(r=>r.rx.test(text)&&!(r.exclude&&r.exclude.test(text)));
+  const matches=RULES.filter(r=>
+    contextRuleAllowed(r,proposedDepartment) &&
+    r.rx.test(text) &&
+    !(r.exclude&&r.exclude.test(text))
+  );
   const high=matches[0]||null;
 
   if(matches.length>1){
