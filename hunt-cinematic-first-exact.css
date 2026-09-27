@@ -301,3 +301,27 @@ body.world-open{overflow:hidden}
   .hunt-find-results{grid-template-columns:1fr;max-height:60vh}
 }
 
+/* Accessories clarity: make Jewelry the first visual destination. */
+.category-group-featured{
+  grid-column:span 2;
+  border-color:color-mix(in srgb,var(--spark) 52%,var(--edge));
+  background:
+    radial-gradient(circle at 90% 10%,color-mix(in srgb,var(--spark) 12%,transparent),transparent 34%),
+    var(--panel);
+}
+.category-group-featured>strong{font-size:10px;letter-spacing:.17em}
+.category-group-featured .category-group-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.category-group-featured .cat-chip{
+  justify-content:space-between;min-height:44px;padding:11px 12px;border-radius:14px;
+  background:color-mix(in srgb,var(--panel2) 88%,transparent)
+}
+.category-group-featured .cat-chip span{float:right}
+@media(max-width:980px){
+  .category-group-featured{grid-column:1/-1}
+}
+@media(max-width:620px){
+  .category-group-featured{flex-basis:min(92vw,370px)}
+  .category-group-featured .category-group-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  .category-group-featured .cat-chip{min-height:42px}
+}
+
