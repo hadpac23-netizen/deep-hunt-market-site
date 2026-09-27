@@ -1,0 +1,518 @@
+{
+  "version": "HUNT-CATEGORY-ARCHITECTURE-V1",
+  "date": "2026-09-27",
+  "mode": "DESIGN_ONLY_OWNER_GATE_REQUIRED",
+  "production_effect": false,
+  "principles": [
+    "CATEGORY_TRUTH_BEFORE_SHELF_DENSITY",
+    "CANONICAL_TAXONOMY_IS_NOT_THE_SAME_AS SHOPPER_NAVIGATION",
+    "ONE_PRODUCT_ONE_CANONICAL_ROUTE",
+    "CROSS_SURFACE_DISCOVERY_USES_TAGS_AND_FILTERS_NOT_DUPLICATE_PRODUCTS",
+    "PROMOTIONS_ARE_MERCHANDISING_LAYERS_NOT CATEGORIES",
+    "NO_EMPTY_OR_MISLEADING BUTTONS",
+    "SUPPLIER TAXONOMY IS EVIDENCE ONLY"
+  ],
+  "department_order": [
+    "women",
+    "men",
+    "kids",
+    "accessories",
+    "beauty",
+    "home",
+    "kitchen",
+    "tech",
+    "electrical",
+    "sports",
+    "camping",
+    "pets",
+    "toys",
+    "garden",
+    "office",
+    "travel",
+    "gifts"
+  ],
+  "navigation_contract": {
+    "department_rail": {
+      "desktop": "All 17 departments in a single non-wrapping rail with horizontal overflow/arrow controls; active department pinned and visually distinct.",
+      "mobile": "Sticky horizontal chip rail; All first; active department centered when practical.",
+      "persistent_on": [
+        "home",
+        "department",
+        "category",
+        "search",
+        "product-list",
+        "product"
+      ]
+    },
+    "family_row": {
+      "max_equal_weight_buttons": 10,
+      "rule": "Show broad category families first. Use More/All when a department exceeds 10 peer options."
+    },
+    "leaf_exposure": {
+      "healthy_min_clean_products": 24,
+      "thin_min_clean_products": 12,
+      "rule": "Dedicated leaf button should normally require >=12 clean products. 0-11 products stay under the parent family or a More view until filled."
+    },
+    "view_all_rule": "Every family/subcategory level must expose an All/View All path."
+  },
+  "taxonomy_vs_navigation": {
+    "canonical_examples": [
+      "Kids nursery furniture => canonical Home, audience_tags=[kids,baby], discoverable from Kids > Nursery.",
+      "Kids tableware => canonical Kitchen, audience_tags=[kids,baby], discoverable from Kids > Dining.",
+      "Women's handbag => canonical Accessories > Bags, audience_tags=[women], discoverable from Women > Accessories.",
+      "Unisex shirt => one canonical apparel route plus audience_tags=[women,men,unisex].",
+      "Sports-specific performance apparel => canonical Sports; casual fashion apparel stays Women/Men/Kids.",
+      "Giftable necklace => canonical Accessories > Jewelry, giftability tag only; never Gifts."
+    ],
+    "merchandising_only": [
+      "new",
+      "trending",
+      "best-sellers",
+      "deals",
+      "for-you",
+      "seasonal",
+      "occasion",
+      "creator-picks",
+      "giftable",
+      "audience"
+    ]
+  },
+  "departments": {
+    "women": {
+      "shopper_buttons": [
+        "All Women",
+        "Clothing",
+        "Dresses",
+        "Tops",
+        "Bottoms",
+        "Outerwear",
+        "Shoes",
+        "Underwear & Sleep",
+        "Swim",
+        "Occasion & Maternity"
+      ],
+      "canonical_leaves": [
+        "women-dresses",
+        "women-tops",
+        "women-bottoms",
+        "women-jeans",
+        "women-skirts",
+        "women-jumpsuits",
+        "women-hoodies",
+        "women-knitwear",
+        "women-outerwear",
+        "women-shoes",
+        "women-underwear",
+        "women-sleepwear",
+        "women-nightwear",
+        "women-loungewear",
+        "swimwear",
+        "women-evening",
+        "women-occasionwear",
+        "women-maternity",
+        "women-tailoring"
+      ],
+      "cross_surface": [
+        "Accessories => accessories filtered audience=women",
+        "Activewear => sports filtered audience=women"
+      ]
+    },
+    "men": {
+      "shopper_buttons": [
+        "All Men",
+        "Clothing",
+        "Tops",
+        "Bottoms",
+        "Outerwear",
+        "Shoes",
+        "Underwear & Sleep",
+        "Swim",
+        "Tailoring",
+        "Active"
+      ],
+      "canonical_leaves": [
+        "men-shirts",
+        "men-tops",
+        "men-bottoms",
+        "men-jeans",
+        "men-shorts",
+        "men-hoodies",
+        "men-knitwear",
+        "men-outerwear",
+        "men-shoes",
+        "men-underwear",
+        "men-boxers",
+        "men-nightwear",
+        "men-swimwear",
+        "men-tailoring",
+        "men-socks"
+      ],
+      "cross_surface": [
+        "Accessories => accessories filtered audience=men",
+        "Activewear => sports filtered audience=men"
+      ]
+    },
+    "kids": {
+      "shopper_buttons": [
+        "All Kids",
+        "Baby",
+        "Girls",
+        "Boys",
+        "Clothing",
+        "Shoes",
+        "School",
+        "Sleep & Underwear",
+        "Occasion & Swim",
+        "Nursery & Kids Home"
+      ],
+      "canonical_leaves": [
+        "baby",
+        "baby-clothing",
+        "baby-sets",
+        "baby-sleepsuits",
+        "girls",
+        "boys",
+        "kids-clothing",
+        "kids-shoes",
+        "kids-schoolwear",
+        "kids-nightwear",
+        "kids-underwear",
+        "kids-occasionwear",
+        "kids-swimwear"
+      ],
+      "cross_surface": [
+        "Nursery/Kids Home => home filtered audience=kids,baby",
+        "Kids Dining => kitchen filtered audience=kids,baby",
+        "Toys => toys filtered audience=kids"
+      ]
+    },
+    "accessories": {
+      "shopper_buttons": [
+        "All Accessories",
+        "Bags",
+        "Jewelry",
+        "Watches",
+        "Sunglasses",
+        "Hats",
+        "Belts & Scarves",
+        "Hair Accessories",
+        "Socks",
+        "Small Accessories"
+      ],
+      "canonical_leaves": [
+        "bags",
+        "bag-accessories",
+        "jewelry",
+        "jewelry-necklaces",
+        "jewelry-earrings",
+        "jewelry-bracelets",
+        "jewelry-rings",
+        "watches",
+        "sunglasses",
+        "hats",
+        "belts",
+        "scarves",
+        "hair-accessories",
+        "socks",
+        "keychains"
+      ]
+    },
+    "beauty": {
+      "shopper_buttons": [
+        "All Beauty",
+        "Makeup",
+        "Skincare",
+        "Hair",
+        "Nails",
+        "Body Care",
+        "Fragrance",
+        "Beauty Tools"
+      ],
+      "canonical_leaves": [
+        "makeup",
+        "skincare",
+        "hair",
+        "nails",
+        "body-care",
+        "fragrance",
+        "beauty-tools"
+      ]
+    },
+    "home": {
+      "shopper_buttons": [
+        "All Home",
+        "Furniture & Living",
+        "Bedroom & Bedding",
+        "Bath",
+        "Decor & Mirrors",
+        "Storage & Organization",
+        "Rugs & Windows",
+        "Lighting",
+        "Laundry & Cleaning"
+      ],
+      "canonical_leaves": [
+        "furniture",
+        "bedding",
+        "bath",
+        "home-decor",
+        "mirrors",
+        "storage",
+        "rugs-runners",
+        "curtains-blinds",
+        "lighting",
+        "cushions-throws",
+        "entryway",
+        "laundry",
+        "cleaning",
+        "wall-art"
+      ],
+      "cross_surface": [
+        "Kitchen => kitchen",
+        "Garden => garden",
+        "Kids Home => filtered audience=kids,baby"
+      ]
+    },
+    "kitchen": {
+      "shopper_buttons": [
+        "All Kitchen",
+        "Cookware",
+        "Tools & Utensils",
+        "Tableware",
+        "Drinkware",
+        "Storage",
+        "Bakeware"
+      ],
+      "canonical_leaves": [
+        "cookware",
+        "kitchen-tools",
+        "tableware",
+        "dinnerware",
+        "drinkware",
+        "glassware",
+        "kitchen-storage",
+        "bakeware"
+      ],
+      "cross_surface": [
+        "Small Appliances => electrical filtered kitchen-use"
+      ]
+    },
+    "tech": {
+      "shopper_buttons": [
+        "All Tech",
+        "Phones & Accessories",
+        "Charging",
+        "Audio",
+        "Wearables",
+        "Gaming",
+        "Cameras",
+        "Computing",
+        "Stands & Holders",
+        "Smart Home"
+      ],
+      "canonical_leaves": [
+        "phone-cases",
+        "chargers-cables",
+        "power-banks",
+        "audio",
+        "wearables",
+        "wearable-accessories",
+        "gaming",
+        "cameras",
+        "computers-tablets",
+        "stands-holders",
+        "smart-home"
+      ]
+    },
+    "electrical": {
+      "shopper_buttons": [
+        "All Electrical",
+        "Small Appliances",
+        "Heating & Cooling",
+        "Cleaning Appliances",
+        "Personal Appliances",
+        "Power & Electrical"
+      ],
+      "canonical_leaves": [
+        "home-appliances",
+        "heating-cooling",
+        "cleaning-appliances",
+        "personal-appliances",
+        "power-electrical"
+      ]
+    },
+    "sports": {
+      "shopper_buttons": [
+        "All Sports",
+        "Activewear",
+        "Fitness",
+        "Yoga",
+        "Running",
+        "Team Sports",
+        "Sports Gear"
+      ],
+      "canonical_leaves": [
+        "activewear",
+        "active-bottoms",
+        "fitness-accessories",
+        "yoga",
+        "running",
+        "team-sports",
+        "sports-gear"
+      ],
+      "cross_surface": [
+        "Sports Shoes may surface audience-filtered footwear without duplicate taxonomy where appropriate"
+      ]
+    },
+    "camping": {
+      "shopper_buttons": [
+        "All Camping",
+        "Tents & Shelter",
+        "Sleep",
+        "Lighting",
+        "Camp Cooking",
+        "Camp Furniture",
+        "Outdoor Gear"
+      ],
+      "canonical_leaves": [
+        "tents-shelter",
+        "camping-sleep",
+        "camping-lighting",
+        "camp-cooking",
+        "camp-furniture",
+        "outdoors"
+      ]
+    },
+    "pets": {
+      "shopper_buttons": [
+        "All Pets",
+        "Beds & Houses",
+        "Clothing",
+        "Feeding",
+        "Grooming",
+        "Toys",
+        "Walking",
+        "Aquarium",
+        "Accessories"
+      ],
+      "canonical_leaves": [
+        "pet-beds",
+        "pet-houses",
+        "pet-clothing",
+        "pet-feeding",
+        "pet-grooming",
+        "pet-toys",
+        "pet-walk",
+        "aquarium",
+        "pet-accessories"
+      ]
+    },
+    "toys": {
+      "shopper_buttons": [
+        "All Toys",
+        "Educational",
+        "Building",
+        "Pretend Play",
+        "Dolls & Figures",
+        "Vehicles & RC",
+        "Puzzles & Games",
+        "Arts & Crafts",
+        "Plush",
+        "Outdoor Play"
+      ],
+      "canonical_leaves": [
+        "educational-toys",
+        "building-toys",
+        "pretend-play",
+        "dolls-figures",
+        "vehicles-rc",
+        "puzzles-games",
+        "arts-crafts",
+        "plush",
+        "outdoor-play"
+      ]
+    },
+    "garden": {
+      "shopper_buttons": [
+        "All Garden",
+        "Planters",
+        "Watering",
+        "Garden Tools",
+        "Outdoor Living",
+        "Garden Decor",
+        "Plant Care"
+      ],
+      "canonical_leaves": [
+        "planters",
+        "watering",
+        "garden-tools",
+        "outdoor-living",
+        "garden-decor",
+        "plant-care"
+      ]
+    },
+    "office": {
+      "shopper_buttons": [
+        "All Office",
+        "Stationery",
+        "Writing",
+        "Filing & Organization",
+        "Desk Accessories",
+        "Office Furniture",
+        "Notebooks & Planners"
+      ],
+      "canonical_leaves": [
+        "stationery",
+        "writing",
+        "filing-organization",
+        "desk-accessories",
+        "office-furniture",
+        "notebooks-planners"
+      ]
+    },
+    "travel": {
+      "shopper_buttons": [
+        "All Travel",
+        "Luggage",
+        "Travel Bags",
+        "Organizers",
+        "Travel Accessories",
+        "Toiletry",
+        "Documents"
+      ],
+      "canonical_leaves": [
+        "luggage",
+        "travel-bags",
+        "travel-organizers",
+        "travel-accessories",
+        "toiletry-bags",
+        "passport-document-holders"
+      ]
+    },
+    "gifts": {
+      "shopper_buttons": [
+        "All Gifts",
+        "Gift Decor",
+        "Party",
+        "Gift Wrap",
+        "Cards & Stationery",
+        "Gift Bags & Boxes"
+      ],
+      "canonical_leaves": [
+        "gift-decor",
+        "party",
+        "gift-wrap",
+        "cards-stationery",
+        "gift-bags-boxes"
+      ],
+      "cross_surface": [
+        "Gifts by recipient/occasion/price are merchandising filters, never canonical categories"
+      ]
+    }
+  },
+  "url_contract": {
+    "canonical_department": "/shop/{department}",
+    "canonical_family": "/shop/{department}/{family}",
+    "canonical_leaf": "/shop/{department}/{leaf}",
+    "cross_surface": "Use query/filter or curated landing route that canonicalizes to the product's true route."
+  }
+}
