@@ -156,6 +156,17 @@ function departmentProducts(department) {
   return department.categories.flatMap(category => category.shelves.flatMap(shelf => routeProducts(`${department.slug}/${shelf.slug}`)));
 }
 
+function routeSelection(route) {
+  const [departmentSlug, shelfSlug] = String(route || '').split('/');
+  const department = DEPARTMENTS.find(item => item.slug === departmentSlug);
+  if (!department) return null;
+  for (const category of department.categories) {
+    const shelf = category.shelves.find(item => item.slug === shelfSlug);
+    if (shelf) return { department, category, shelf };
+  }
+  return null;
+}
+
 function productKey(product) { return `${product.provider}:${product.item_id}`; }
 function huntPrice(product) {
   const value = Number(product?.profit_truth?.target_retail_usd);
@@ -374,6 +385,98 @@ function worlds(selection) {
   }).join('');
 }
 
+function finderResults(queryText) {
+  const q = String(queryText || '').trim().toLowerCase();
+  if (q.length < 2) return [];
+  const results = [];
+  for (const department of DEPARTMENTS) {
+    if (department.title.toLowerCase().includes(q) || department.slug.includes(q)) {
+      results.push({ type:'department', label:department.title, meta:`${department.categories.length} categories`, department:department.slug });
+    }
+    for (const category of department.categories) {
+      for (const shelf of category.shelves) {
+        const haystack = `${category.title} ${shelf.label} ${shelf.slug.replace(/-/g,' ')}`.toLowerCase();
+        if (haystack.includes(q)) {
+          results.push({
+            type:'shelf',
+            label:`${department.title} · ${shelf.label}`,
+            meta:`${routeProducts(`${department.slug}/${shelf.slug}`).length} gated`,
+            department:department.slug, category:category.id, shelf:shelf.slug
+          });
+        }
+      }
+    }
+  }
+  if (index) {
+    for (const product of allProducts()) {
+      if (results.filter(item => item.type === 'product').length >= 8) break;
+      const haystack = `${product.title} ${product.canonical_route}`.toLowerCase();
+      if (haystack.includes(q)) {
+        results.push({
+          type:'product',
+          label:product.title,
+          meta:product.canonical_route,
+          product:productKey(product)
+        });
+      }
+    }
+  }
+  const seen = new Set();
+  return results.filter(item => {
+    const key = `${item.type}:${item.department || ''}:${item.category || ''}:${item.shelf || ''}:${item.product || ''}:${item.label}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, 14);
+}
+
+function renderFinder(queryText) {
+  const q = String(queryText || '').trim();
+  const results = finderResults(q);
+  if (q.length < 2) {
+    $('#hunt-find-results').innerHTML = '<p class="find-empty">Type at least 2 letters. Search departments, exact shelves or gated products.</p>';
+    return;
+  }
+  if (!results.length) {
+    $('#hunt-find-results').innerHTML = '<p class="find-empty">No verified HUNT match yet. Try a broader category name.</p>';
+    return;
+  }
+  $('#hunt-find-results').innerHTML = results.map(item => {
+    const attrs = item.type === 'product'
+      ? `data-find-product="${esc(item.product)}"`
+      : item.type === 'department'
+        ? `data-find-department="${esc(item.department)}"`
+        : `data-find-department="${esc(item.department)}" data-find-category="${esc(item.category)}" data-find-shelf="${esc(item.shelf)}"`;
+    return `<button type="button" class="find-result" ${attrs}><span>${esc(item.label)}</span><small>${esc(item.type.toUpperCase())} · ${esc(item.meta)}</small></button>`;
+  }).join('');
+}
+
+function setFinder(open, { returnFocus = false } = {}) {
+  const panel = $('#hunt-find-panel');
+  const toggle = $('#find-toggle');
+  panel.hidden = !open;
+  toggle.setAttribute('aria-expanded', String(open));
+  if (open) {
+    renderFinder($('#hunt-find-input').value);
+    requestAnimationFrame(() => $('#hunt-find-input').focus());
+  } else if (returnFocus) {
+    requestAnimationFrame(() => toggle.focus());
+  }
+}
+
+function navigateToExactRoute(departmentSlug, categoryId, shelfSlug) {
+  if (!DEPARTMENTS.some(department => department.slug === departmentSlug)) return;
+  state.department = departmentSlug;
+  const selection = resolveSelection(departmentSlug, categoryId, shelfSlug);
+  if (!selection.category || !selection.shelf) return;
+  Object.assign(state, {
+    category: selection.category.id, shelf: selection.shelf.slug, segment: null,
+    visible: 24, preference: '', activeProductKey: null
+  });
+  render();
+  requestAnimationFrame(() => $('#exact-section').scrollIntoView({ behavior:'smooth', block:'start' }));
+}
+
 function render() {
   const selection = resolveSelection(state.department, state.category, state.shelf);
   state.department = selection.department.slug;
@@ -506,7 +609,46 @@ function focusTrapWorld(event) {
   else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
 }
 
+$('#find-toggle').addEventListener('click', () => setFinder($('#hunt-find-panel').hidden));
+$('#hunt-find-close').addEventListener('click', () => setFinder(false, { returnFocus:true }));
+$('#hunt-find-input').addEventListener('input', event => renderFinder(event.target.value));
+$('#hunt-find-results').addEventListener('click', event => {
+  const button = event.target.closest('button.find-result');
+  if (!button) return;
+  if (button.dataset.findProduct) {
+    const product = productByKey(button.dataset.findProduct);
+    if (!product) return;
+    const target = routeSelection(product.canonical_route);
+    if (target) navigateToExactRoute(target.department.slug, target.category.id, target.shelf.slug);
+    setFinder(false);
+    requestAnimationFrame(() => openProduct(product));
+    return;
+  }
+  if (button.dataset.findShelf) {
+    navigateToExactRoute(button.dataset.findDepartment, button.dataset.findCategory, button.dataset.findShelf);
+    setFinder(false);
+    return;
+  }
+  if (button.dataset.findDepartment) {
+    setFinder(false);
+    selectDepartment(button.dataset.findDepartment);
+  }
+});
+$('#hunt-find-input').addEventListener('keydown', event => {
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    setFinder(false, { returnFocus:true });
+  } else if (event.key === 'Enter') {
+    const first = $('#hunt-find-results button.find-result');
+    if (first) {
+      event.preventDefault();
+      first.click();
+    }
+  }
+});
+
 $('#all-departments-toggle').addEventListener('click', () => {
+  setFinder(false);
   setDepartmentPanel($('#all-departments-panel').hidden);
 });
 $('#all-departments-close').addEventListener('click', () => setDepartmentPanel(false, { focusToggle: true }));
@@ -515,6 +657,7 @@ $('#all-departments-grid').addEventListener('click', event => {
   if (button) selectDepartment(button.dataset.deptPanel);
 });
 document.addEventListener('click', event => {
+  if (!$('#hunt-find-panel').hidden && !event.target.closest('#hunt-find-panel') && !event.target.closest('#find-toggle')) setFinder(false);
   if ($('#all-departments-panel').hidden) return;
   if (event.target.closest('#all-departments-panel') || event.target.closest('#all-departments-toggle')) return;
   setDepartmentPanel(false);
