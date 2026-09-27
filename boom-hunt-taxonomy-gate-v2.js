@@ -14,7 +14,7 @@ const RULES=[
 
   {id:"PHONE_CASE",department:"tech",category:"phone-cases",rx:/\b(phone|iphone|galaxy|smartphone|mobile)\b.{0,30}\b(case|cover)\b|\b(case|cover)\b.{0,30}\b(phone|iphone|galaxy|smartphone|mobile)\b/i},
   {id:"GAMING",department:"tech",category:"gaming",rx:/\b(gamepad|game controller|gaming mouse|gaming keyboard|gaming controller)\b/i},
-  {id:"WEARABLE_ACCESSORY",department:"tech",category:"wearable-accessories",rx:/\b(smartwatch|smart watch|apple watch|iwatch)\b.{0,35}\b(band|strap|charger|stand|protector|case)\b/i},
+  {id:"WEARABLE_ACCESSORY",department:"tech",category:"wearable-accessories",rx:/\b(smartwatch|smart watch|apple watch|iwatch|watch)\b.{0,35}\b(band|strap|charger|stand|protector|case)\b|\b(band|strap)\b.{0,35}\b(smartwatch|smart watch|apple watch|iwatch|watch)\b/i},
 
   {id:"KITCHEN_TOOL",department:"kitchen",category:"kitchen-tools",rx:/\b(kitchen|cooking|cookware)\b.{0,50}\b(spoon|strainer|colander|utensil|whisk|spatula|peeler|tongs|grater|shovel|filter|tool)\b|\b(spoon|strainer|colander|whisk|spatula|peeler|tongs|grater)\b.{0,50}\b(kitchen|cooking)\b/i},
   {id:"BATH",department:"home",category:"bath",rx:/\b(bathroom|bath|shower|toilet)\b.{0,50}\b(brush|mat|curtain|rack|holder|caddy|towel|accessory|accessories)\b/i},
@@ -27,7 +27,7 @@ const RULES=[
   {id:"JEWELRY_EARRING",department:"accessories",category:"jewelry-earrings",rx:/\b(earring|earrings)\b/i},
   {id:"JEWELRY_BRACELET",department:"accessories",category:"jewelry-bracelets",rx:/\b(bracelet|bracelets|bangle|bangles)\b/i},
   {id:"HAIR_ACCESSORY",department:"accessories",category:"hair-accessories",rx:/\b(hair clip|hairpin|hair pin|hair claw|hair tie|scrunchie|headband|barrette|hair comb)\b/i},
-  {id:"HAT",department:"accessories",category:"hats",rx:/\b(bucket hat|baseball cap|beanie|beret|hat|caps?)\b/i},
+  {id:"HAT",department:"accessories",category:"hats",rx:/\b(bucket hat|baseball cap|beanie|beret|hat|caps?)\b/i,exclude:/\b(head lamp|headlamp|cap light|hat light|helmet light)\b/i},
   {id:"SOCKS",department:"accessories",category:"socks",rx:/\b(sock|socks|stocking|stockings|hosiery)\b/i},
   {id:"SCARF",department:"accessories",category:"scarves",rx:/\b(scarf|scarves|shawl)\b/i},
   {id:"BELT",department:"accessories",category:"belts",rx:/\b(belt|belts)\b/i},
@@ -135,7 +135,7 @@ function classifyProduct(product={}){
   const proposedDepartment=String(product.proposed_department||product.department||"").trim();
   const proposedCategory=String(product.proposed_category||product.category||"").trim();
 
-  const matches=RULES.filter(r=>r.rx.test(text));
+  const matches=RULES.filter(r=>r.rx.test(text)&&!(r.exclude&&r.exclude.test(text)));
   const high=matches[0]||null;
 
   if(matches.length>1){
