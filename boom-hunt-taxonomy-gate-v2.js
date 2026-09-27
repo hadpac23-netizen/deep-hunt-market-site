@@ -26,6 +26,8 @@ const RULES=[
   {id:"JEWELRY_NECKLACE",department:"accessories",category:"jewelry-necklaces",rx:/\b(necklace|necklaces|pendant|choker)\b/i},
   {id:"JEWELRY_EARRING",department:"accessories",category:"jewelry-earrings",rx:/\b(earring|earrings)\b/i},
   {id:"JEWELRY_BRACELET",department:"accessories",category:"jewelry-bracelets",rx:/\b(bracelet|bracelets|bangle|bangles)\b/i},
+  {id:"JEWELRY_GENERIC",department:"accessories",category:"jewelry",rx:/\b(ring|rings|anklet|anklets|brooch|brooches|lapel pin|enamel pin|badge)\b/i,exclude:/\b(key ring|keyring|storage ring|retaining ring|o-ring|ring light|phone ring|camera ring)\b/i},
+  {id:"WALLET",department:"accessories",category:"bags",rx:/\b(wallet|wallets|card holder|cardholder|coin purse)\b/i,exclude:/\b(water bottle|storage box|organizer|tray|car holder|phone holder)\b/i},
   {id:"HAIR_ACCESSORY",department:"accessories",category:"hair-accessories",rx:/\b(hair clip|hairpin|hair pin|hair claw|hair tie|scrunchie|headband|barrette|hair comb)\b/i},
   {id:"HAT",department:"accessories",category:"hats",rx:/\b(bucket hat|baseball cap|beanie|beret|hat|caps?)\b/i,exclude:/\b(head lamp|headlamp|cap light|hat light|helmet light)\b/i},
   {id:"SOCKS",department:"accessories",category:"socks",rx:/\b(sock|socks|stocking|stockings|hosiery)\b/i},
@@ -114,7 +116,7 @@ const PROPOSED_ROUTE_RULES={
   "garden/garden-tools":/\b(garden tool|gardening tool|planting shovel|garden rake|watering tool|plant tool)\b/i
 };
 
-const GENERIC_ACCESSORY_RULE_IDS=new Set(["SCARF","BELT","HAT","SOCKS","BAG","BAG_ACCESSORY","HAIR_ACCESSORY","JEWELRY_NECKLACE","JEWELRY_EARRING","JEWELRY_BRACELET"]);
+const GENERIC_ACCESSORY_RULE_IDS=new Set(["SCARF","BELT","HAT","SOCKS","BAG","BAG_ACCESSORY","HAIR_ACCESSORY","JEWELRY_NECKLACE","JEWELRY_EARRING","JEWELRY_BRACELET","JEWELRY_GENERIC","WALLET"]);
 const CONTEXT_DOMINANT_DEPARTMENTS=new Set(["pets","kids","women","men","kitchen","home","tech","beauty","office","garden","camping","toys"]);
 
 const CROSS_DEPARTMENT_EXCLUSIONS=[
