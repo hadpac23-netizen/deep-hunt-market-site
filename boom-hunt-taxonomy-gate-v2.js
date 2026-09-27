@@ -14,6 +14,7 @@ const RULES=[
 
   {id:"PHONE_CASE",department:"tech",category:"phone-cases",rx:/\b(phone|iphone|galaxy|smartphone|mobile)\b.{0,30}\b(case|cover)\b|\b(case|cover)\b.{0,30}\b(phone|iphone|galaxy|smartphone|mobile)\b/i},
   {id:"GAMING",department:"tech",category:"gaming",rx:/\b(gamepad|game controller|gaming mouse|gaming keyboard|gaming controller)\b/i},
+  {id:"WEARABLE_DEVICE",department:"tech",category:"wearable-accessories",rx:/\b(smartwatch|smart watch|bluetooth watch|ecg watch|gps watch)\b/i},
   {id:"WEARABLE_ACCESSORY",department:"tech",category:"wearable-accessories",rx:/\b(smartwatch|smart watch|apple watch|iwatch|watch)\b.{0,35}\b(band|strap|charger|stand|protector|case)\b|\b(band|strap)\b.{0,35}\b(smartwatch|smart watch|apple watch|iwatch|watch)\b/i},
 
   {id:"KITCHEN_TOOL",department:"kitchen",category:"kitchen-tools",rx:/\b(kitchen|cooking|cookware)\b.{0,50}\b(spoon|strainer|colander|utensil|whisk|spatula|peeler|tongs|grater|shovel|filter|tool)\b|\b(spoon|strainer|colander|whisk|spatula|peeler|tongs|grater)\b.{0,50}\b(kitchen|cooking)\b/i},
@@ -133,7 +134,7 @@ function contextRuleAllowed(rule,proposedDepartment){
   if(rule.id==="JEWELRY_GENERIC"||rule.id==="WALLET"){
     return ["","lifestyle","gifts","accessories"].includes(dep);
   }
-  if(rule.id==="WEARABLE_ACCESSORY"){
+  if(rule.id==="WEARABLE_DEVICE"||rule.id==="WEARABLE_ACCESSORY"){
     return ["","lifestyle","gifts","accessories","tech"].includes(dep);
   }
   return true;
