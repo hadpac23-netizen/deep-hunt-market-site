@@ -1,0 +1,86 @@
+{
+  "version": "HUNT-PAYPLUS-APPROVED-READINESS-V1",
+  "date": "2026-09-27",
+  "owner_reported_provider_approval": true,
+  "approval_terms_verified_from_connected_email": false,
+  "approval_note": "PayPlus approval was reported by the owner. No direct PayPlus approval email was found in the connected Gmail search performed on 2026-09-27.",
+  "production_effect": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "runtime_controls": {
+    "hunt_payment_live": {
+      "enabled": false,
+      "owner_approved": false
+    },
+    "hunt_payplus_callback_accept_paid": {
+      "enabled": false,
+      "owner_approved": false
+    },
+    "hunt_payplus_sandbox_evidence": {
+      "enabled": false,
+      "owner_approved": false
+    },
+    "hunt_bundle_discount_apply": {
+      "enabled": false,
+      "owner_approved": false
+    }
+  },
+  "deployed_functions": {
+    "hunt_payment_session": {
+      "status": "ACTIVE",
+      "version": 17
+    },
+    "hunt_payplus_callback": {
+      "status": "ACTIVE",
+      "version": 9
+    },
+    "hunt_payplus_sandbox_evidence": {
+      "status": "ACTIVE",
+      "version": 3
+    },
+    "hunt_payment_options": {
+      "status": "ACTIVE",
+      "version": 7
+    },
+    "hunt_payment_session_prelaunch": {
+      "status": "ACTIVE",
+      "version": 9
+    }
+  },
+  "callback_security": {
+    "user_agent_check": true,
+    "hash_signature_check": true,
+    "independent_ipn_full_verification": true,
+    "prelaunch_callback_block": true,
+    "paid_acceptance_kill_switch": true
+  },
+  "current_evidence": {
+    "payment_sessions": {
+      "prelaunch": 32,
+      "sandbox": 0,
+      "live": 0
+    },
+    "payplus_events": {
+      "prelaunch_session_created": 23
+    },
+    "sandbox_transaction_proof": false,
+    "live_transaction_proof": false
+  },
+  "credentials": {
+    "values_read": false,
+    "api_key_availability": "UNVERIFIED",
+    "secret_key_availability": "UNVERIFIED",
+    "payment_page_uid_availability": "UNVERIFIED"
+  },
+  "next_gate": [
+    "Confirm PayPlus account/terminal details supplied after provider approval.",
+    "Confirm PAYPLUS_API_KEY, PAYPLUS_SECRET_KEY and PAYPLUS_PAYMENT_PAGE_UID are configured in the Edge Function environment without exposing their values.",
+    "Keep HUNT_PAYMENT_MODE out of live mode.",
+    "Owner explicitly approves sandbox evidence gate only.",
+    "Run a PayPlus sandbox session through hunt-payplus-sandbox-evidence.",
+    "Verify callback signature + IPN FULL + amount/currency/session binding.",
+    "Map provider status only after sandbox proof.",
+    "Re-run checkout E2E with exact variant, fresh stock/shipping and profit gate.",
+    "Only after separate explicit owner approval may hunt_payment_live and paid callback acceptance be considered."
+  ]
+}
