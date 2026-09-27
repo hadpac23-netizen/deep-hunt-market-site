@@ -11,8 +11,14 @@
     try{return new URL(value).protocol==="https:";}catch{return false;}
   }
 
+  async function huntPublicRef(provider,itemId){
+    const raw=`${String(provider||"")}:${String(itemId||"")}:HUNT_SHADOW_V1`;
+    const digest=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(raw));
+    return [...new Uint8Array(digest)].map(x=>x.toString(16).padStart(2,"0")).join("").slice(0,24);
+  }
+
   function productHref(row){
-    return `product.html?provider=${encodeURIComponent(row.provider)}&id=${encodeURIComponent(row.item_id)}`;
+    return `hunt-cinematic-first-exact-preview.html?product=${encodeURIComponent("HUNT:"+row.public_ref)}`;
   }
 
   function productCard(row){
@@ -88,7 +94,8 @@
       .order("updated_at",{ascending:false})
       .limit(2000);
 
-    const rows=error?[]:(data||[]);
+    const rawRows=error?[]:(data||[]);
+    const rows=await Promise.all(rawRows.map(async row=>({...row,public_ref:await huntPublicRef(row.provider,row.item_id)})));
     const likes=rows.filter(row=>row.liked);
     const saves=rows.filter(row=>row.saved);
     $("#hd-like-count").textContent=String(likes.length);
