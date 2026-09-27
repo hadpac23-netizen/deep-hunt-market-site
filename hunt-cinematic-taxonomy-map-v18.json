@@ -40,6 +40,9 @@
         "Maternity & Tailoring": [
           "women-maternity",
           "women-tailoring"
+        ],
+        "Socks": [
+          "women-socks"
         ]
       }
     },
@@ -74,6 +77,9 @@
         ],
         "Tailoring": [
           "men-tailoring"
+        ],
+        "Clothing": [
+          "men-clothing"
         ]
       }
     },
@@ -112,6 +118,12 @@
         ],
         "Nursery": [
           "nursery"
+        ],
+        "Dining": [
+          "tableware"
+        ],
+        "Kids Tech": [
+          "tech"
         ]
       }
     },
@@ -191,7 +203,8 @@
           "cushions-throws"
         ],
         "Bath": [
-          "bath"
+          "bath",
+          "towels"
         ],
         "Decor & Mirrors": [
           "home-decor",
@@ -203,7 +216,9 @@
         ],
         "Rugs & Windows": [
           "rugs-runners",
-          "curtains-blinds"
+          "rugs",
+          "curtains-blinds",
+          "curtains"
         ],
         "Lighting": [
           "lighting"
@@ -211,6 +226,9 @@
         "Laundry & Cleaning": [
           "laundry",
           "cleaning"
+        ],
+        "Tools & DIY": [
+          "tools-diy"
         ]
       }
     },
