@@ -16,6 +16,15 @@ test('the original department and Women category sequence is preserved', () => {
   assert.equal(resolveSelection('men', 'women-dresses').route, null);
 });
 
+test('explicit invalid shelf values fail closed instead of falling back', () => {
+  const valid = resolveSelection('women', 'women-dresses');
+  assert.equal(valid.route, 'women/women-dresses');
+  const invalid = resolveSelection('women', 'women-dresses', 'not-a-real-shelf');
+  assert.equal(invalid.shelf, null);
+  assert.equal(invalid.route, null);
+  assert.equal(resolveSelection('men', 'women-dresses', 'women-dresses').route, null);
+});
+
 test('exact V2 routes admit no other department, and empty categories remain empty', () => {
   assert.equal(index.stats.accepted, 163);
   assert.equal(index.byRoute.get('women/women-dresses')?.length || 0, 0);
