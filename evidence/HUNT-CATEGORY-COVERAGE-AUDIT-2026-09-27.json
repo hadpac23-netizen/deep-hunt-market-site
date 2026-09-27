@@ -1,0 +1,227 @@
+{
+  "version": "HUNT-CATEGORY-COVERAGE-AUDIT-V1",
+  "date": "2026-09-27",
+  "basis": "Current Shadow catalog counts compared with Architecture V1 target leaves.",
+  "thresholds": {
+    "healthy": 24,
+    "thin": 12,
+    "very_thin": "1-11",
+    "missing": 0
+  },
+  "departments": {
+    "women": {
+      "healthy": 12,
+      "thin": 3,
+      "very_thin": [
+        "women-loungewear:4",
+        "women-occasionwear:11",
+        "women-maternity:5"
+      ],
+      "missing": 1,
+      "missing_leaves": [
+        "women-jeans"
+      ]
+    },
+    "men": {
+      "healthy": 10,
+      "thin": 1,
+      "very_thin": [
+        "men-nightwear:1",
+        "men-swimwear:2",
+        "men-tailoring:10",
+        "men-socks:7"
+      ],
+      "missing": 0
+    },
+    "kids": {
+      "healthy": 6,
+      "thin": 2,
+      "very_thin": [
+        "baby-sleepsuits:3",
+        "kids-schoolwear:8",
+        "kids-nightwear:5",
+        "kids-underwear:5",
+        "kids-swimwear:3"
+      ],
+      "missing": 0
+    },
+    "accessories": {
+      "healthy": 12,
+      "thin": 1,
+      "very_thin": [
+        "jewelry-rings:5",
+        "sunglasses:6"
+      ],
+      "missing": 0
+    },
+    "beauty": {
+      "healthy": 4,
+      "thin": 1,
+      "very_thin": [
+        "body-care:7",
+        "fragrance:3"
+      ],
+      "missing": 0
+    },
+    "home": {
+      "healthy": 8,
+      "thin": 1,
+      "very_thin": [
+        "rugs-runners:5",
+        "curtains-blinds:11",
+        "laundry:7",
+        "cleaning:1",
+        "wall-art:3"
+      ],
+      "missing": 0
+    },
+    "kitchen": {
+      "healthy": 1,
+      "thin": 0,
+      "very_thin": 0,
+      "missing": 7,
+      "missing_leaves": [
+        "cookware",
+        "tableware",
+        "dinnerware",
+        "drinkware",
+        "glassware",
+        "kitchen-storage",
+        "bakeware"
+      ]
+    },
+    "tech": {
+      "healthy": 7,
+      "thin": 1,
+      "very_thin": [
+        "power-banks:10"
+      ],
+      "missing": 2,
+      "missing_leaves": [
+        "computers-tablets",
+        "smart-home"
+      ]
+    },
+    "electrical": {
+      "healthy": 0,
+      "thin": 0,
+      "very_thin": [
+        "home-appliances:4"
+      ],
+      "missing": 4,
+      "missing_leaves": [
+        "heating-cooling",
+        "cleaning-appliances",
+        "personal-appliances",
+        "power-electrical"
+      ]
+    },
+    "sports": {
+      "healthy": 2,
+      "thin": 1,
+      "very_thin": [
+        "sports-gear:1"
+      ],
+      "missing": 3,
+      "missing_leaves": [
+        "yoga",
+        "running",
+        "team-sports"
+      ]
+    },
+    "camping": {
+      "healthy": 1,
+      "thin": 0,
+      "very_thin": [
+        "camping-sleep:7",
+        "camping-lighting:1"
+      ],
+      "missing": 3,
+      "missing_leaves": [
+        "tents-shelter",
+        "camp-cooking",
+        "camp-furniture"
+      ]
+    },
+    "pets": {
+      "healthy": 7,
+      "thin": 1,
+      "very_thin": [
+        "aquarium:4"
+      ],
+      "missing": 0
+    },
+    "toys": {
+      "healthy": 0,
+      "thin": 1,
+      "very_thin": [
+        "building-toys:6"
+      ],
+      "missing": 7,
+      "missing_leaves": [
+        "pretend-play",
+        "dolls-figures",
+        "vehicles-rc",
+        "puzzles-games",
+        "arts-crafts",
+        "plush",
+        "outdoor-play"
+      ]
+    },
+    "garden": {
+      "healthy": 0,
+      "thin": 2,
+      "very_thin": [
+        "watering:4",
+        "garden-tools:2"
+      ],
+      "missing": 2,
+      "missing_leaves": [
+        "garden-decor",
+        "plant-care"
+      ]
+    },
+    "office": {
+      "healthy": 2,
+      "thin": 0,
+      "very_thin": 0,
+      "missing": 4,
+      "missing_leaves": [
+        "writing",
+        "filing-organization",
+        "desk-accessories",
+        "notebooks-planners"
+      ]
+    },
+    "travel": {
+      "healthy": 1,
+      "thin": 0,
+      "very_thin": 0,
+      "missing": 5,
+      "missing_leaves": [
+        "travel-bags",
+        "travel-organizers",
+        "travel-accessories",
+        "toiletry-bags",
+        "passport-document-holders"
+      ]
+    },
+    "gifts": {
+      "healthy": 0,
+      "thin": 2,
+      "very_thin": 0,
+      "missing": 3,
+      "missing_leaves": [
+        "gift-wrap",
+        "cards-stationery",
+        "gift-bags-boxes"
+      ]
+    }
+  },
+  "legacy_cleanup_required": [
+    "Home shelves named kitchen/garden/tech/women-maternity must not survive as canonical leaves without reclassification.",
+    "Kids shelves for bath/curtains/cushions/dinnerware/garden/tech/towels should become cross-surface filters to canonical Home/Kitchen/Tech routes where the core product type belongs there.",
+    "Women/Men cross-department leftovers and legacy generic shelves must remain behind Taxonomy Gate V2 until resolved.",
+    "Lifestyle, Baby-as-department and empty department values remain non-shopper-facing."
+  ]
+}
