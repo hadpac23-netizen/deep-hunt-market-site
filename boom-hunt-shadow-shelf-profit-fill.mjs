@@ -1,5 +1,8 @@
 import fs from "fs";
 import path from "path";
+import {createRequire} from "module";
+const require=createRequire(import.meta.url);
+const {classifyProduct}=require("./boom-hunt-taxonomy-gate-v2.js");
 
 const ROOT=process.cwd();
 const STAGING="/Users/adichehade/.hunt-final-candidate-v1/catalog-staging";
@@ -146,6 +149,13 @@ for(const [rail,rx] of Object.entries(RULES)){
     const exactCategory=String(row.category||"")===category;
     const semanticMatch=rx.test(title);
     if(!exactCategory&&!semanticMatch)continue;
+    const taxonomyGate=classifyProduct({
+      title,
+      source_category:String(row.category||""),
+      proposed_department:department,
+      proposed_category:category
+    });
+    if(taxonomyGate.status!=="PASS")continue;
     const pg=priceGate(row.supplier_cost_min??row.price_amount);
     if(!pg)continue;
     candidates.push({
@@ -210,6 +220,7 @@ const output={
     "Primary department must already equal the target HUNT department.",
     "Product must have verified catalog availability, image and positive supplier cost.",
     "Target category requires exact source category or strict title semantic match.",
+    "Taxonomy Gate V2 must return PASS before a new auto-fill candidate can enter a shelf.",
     "Blocked/dangerous/adult/nicotine/drug/weapon terms are excluded.",
     "Price Gate V2 projection uses supplier cost plus 9% payment/refund reserve and $4 minimum contribution; shipping remains separate.",
     "Projected product contribution is not final net profit.",
