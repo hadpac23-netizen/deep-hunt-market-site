@@ -30,6 +30,35 @@ const DEPARTMENT_NAV_GROUPS = {
     { title: 'Kids', categories: ['kids-clothing','kids-shoes','kids-accessories'] },
     { title: 'Baby Clothing', categories: ['baby-clothing','baby-sets','baby-sleepsuits'] },
     { title: 'Baby Essentials', categories: ['baby','baby-bedding'] }
+  ],
+  accessories: [
+    { title: 'Jewelry', categories: ['jewelry-necklaces','jewelry-rings','jewelry-earrings','jewelry-bracelets','jewelry'] },
+    { title: 'Bags & Small Accessories', categories: ['bags','bag-accessories','keychains'] },
+    { title: 'Wear', categories: ['watches','sunglasses','belts','hats','scarves','gloves'] },
+    { title: 'Hair & Basics', categories: ['hair-accessories','socks'] }
+  ],
+  tech: [
+    { title: 'Phone Essentials', categories: ['phone-cases','chargers-cables','power-banks','stands-holders'] },
+    { title: 'Audio & Wearables', categories: ['audio','wearables','wearable-accessories'] },
+    { title: 'Devices & Home', categories: ['cameras','smart-home','electronics'] },
+    { title: 'Computer & Gaming', categories: ['computer-accessories','gaming'] }
+  ],
+  home: [
+    { title: 'Decor', categories: ['home-decor','wall-decor','mirrors','rugs','cushions-throws'] },
+    { title: 'Textiles & Windows', categories: ['bedding','home-textiles','towels','curtains','curtains-blinds'] },
+    { title: 'Storage & Furniture', categories: ['home-storage','storage','furniture','entryway'] },
+    { title: 'Care & Utility', categories: ['bath','cleaning','laundry','tools-diy','lighting'] }
+  ],
+  pets: [
+    { title: 'Everyday', categories: ['pet-accessories','pet-feeding','pet-walk'] },
+    { title: 'Play & Care', categories: ['pet-toys','pet-grooming'] },
+    { title: 'Comfort', categories: ['pet-clothing','pet-beds','pet-houses'] },
+    { title: 'Aquarium', categories: ['aquarium'] }
+  ],
+  sports: [
+    { title: 'Training', categories: ['fitness','fitness-accessories','activewear','active-bottoms'] },
+    { title: 'Outdoor & Cycling', categories: ['outdoors','cycling'] },
+    { title: 'Gear & Bags', categories: ['sports-gear','sports-bags'] }
   ]
 };
 
