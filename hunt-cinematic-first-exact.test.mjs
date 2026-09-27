@@ -122,3 +122,19 @@ test('actual boots remain eligible for Women Shoes', () => {
   };
   assert.equal(isEligible('women/women-shoes', product), true);
 });
+
+
+test('camping chair remains in Camping Outdoors', () => {
+  const product = {
+    department:'camping', category:'outdoors',
+    taxonomy_gate_v2:'REMAP',
+    provider:'HUNT', item_id:'test-camping-chair',
+    title:'Travel Ultralight Folding Chair Outdoor Camping Hiking Picnic Seat',
+    availability_verified:true, inventory_snapshot:20,
+    production_exposure:false, sell_state:'SHADOW_QA_PROFIT_REVIEW',
+    image_technical_status:'PASS', image_url:'https://example.com/chair.jpg',
+    market5_all_pass:true, candidate_status:'MARKET5_READY_STYLE_PHYSICAL_PENDING',
+    profit_truth:{status:'PROFIT_REVIEW',final_profit_verified:false,projected_product_contribution_usd:3}
+  };
+  assert.equal(isEligible('camping/outdoors', product), true);
+});
