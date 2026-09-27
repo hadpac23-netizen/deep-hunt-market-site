@@ -39,3 +39,15 @@ Department → only that department's category buttons → exact shelf → gated
 The browser fetches only the already checked-in V2 supplement. `catalog-home.json`, the older Full Shelves product JSON and the read-only database rows are not fetched. Safety and semantic title holds, positive verified stock, image technical PASS with HTTPS, Market5 readiness, Shadow mode and projected positive Profit REVIEW are checked again by the client before display. This is QA, not a final physical image, destination shipping, variant, or final net-profit approval.
 
 Payment Live, Supplier Live Order and Production taxonomy publication remain OFF. No checkout or supplier order action is present. Existing current preview, main storefront and Production settings are untouched.
+
+## Continuation repair · semantic gate and canonical route alignment
+
+A structural preview bug was found in the exact-shelf semantic gate: the static UI defines 141 configured routes, while only 33 routes had explicit `identityPolicies`. The previous `titleFitsRoute()` implementation returned `false` whenever a route lacked a manual policy, so otherwise-gated Taxonomy V2 products could be rejected solely because the preview had no hand-written regex for that shelf.
+
+The isolated preview branch now keeps the explicit policies for known-risk routes, and adds a conservative fallback for uncovered configured routes. The fallback derives normalized semantic terms only from the configured category/shelf label and slug, then requires the product title to match at least one meaningful shelf term. Cross-department identity remains blocked by the existing exact `department/category === route` check, and all existing V2, stock, image, Market5, Shadow and projected-contribution gates remain mandatory. This is not an allow-all fallback.
+
+A second taxonomy drift was confirmed from the live read-only Taxonomy Gate V2 data: Camping Kitchen is canonicalized as `camping/camp-cooking`, while the isolated UI still used `camping/camping-cook`. The isolated taxonomy and category reference now use `camping/camp-cooking` while preserving the visible label **Camping Kitchen**.
+
+The live V2 data also contains `kids/tableware`. The original approved category reference does not currently contain a Kids/Baby tableware UI category, so this route remains intentionally undisplayed rather than being renamed, borrowed, or injected into another shelf. It requires an explicit taxonomy/UI reconciliation before display.
+
+No new live product rows were exported to the repository during this repair. Payment Live, Supplier Live Order and Production taxonomy publication remain OFF, and Production storefront files were not modified.
