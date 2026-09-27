@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" data-hunt-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>HUNT · Cinematic · Exact Shelves</title>
+  <link rel="stylesheet" href="hunt-cinematic-first-exact.css">
+  <link rel="stylesheet" href="hunt-cinematic-first-brand-motion.css">
+  <script src="hunt-cinematic-first-brand-motion.js" defer></script>
+  <script type="module" src="hunt-cinematic-first-exact.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topline">
+      <a class="brand hd-brand" href="hunt-cinematic-first-exact-preview.html" aria-label="HUNT">HUNT</a>
+      <div class="shadow-note">CINEMATIC · EXACT SHELVES · SHADOW ONLY</div>
+      <button type="button" class="theme" id="theme" aria-label="Switch to light mode">Light</button>
+    </div>
+    <nav class="dept-nav" id="dept-nav" aria-label="Departments"></nav>
+  </header>
+  <main>
+    <section class="stage" id="stage">
+      <div class="stage-copy">
+        <div class="eyebrow" id="eyebrow">HUNT · CINEMATIC</div>
+        <h1 id="title">Women</h1>
+        <p class="lede" id="lede">Explore this world through its exact categories.</p>
+        <div class="stats" id="stats"></div>
+        <div class="breadcrumb" id="breadcrumb" aria-label="Selected department, category and shelf"></div>
+      </div>
+      <article class="hero" id="hero">
+        <div class="hero-media" id="hero-media"><img id="hero-image" alt=""></div>
+        <div class="hero-meta"><small id="hero-kicker">HUNT · SHADOW</small><strong id="hero-title">Choose an exact shelf</strong><span id="hero-status"></span></div>
+      </article>
+    </section>
+    <nav class="category-index" id="category-index" aria-label="Categories in selected department"></nav>
+    <section class="shelf-drawer" id="shelf-drawer" hidden aria-label="Exact shelves">
+      <div class="drawer-caption"><span>EXACT SUBCATEGORY / SHELF</span><strong id="drawer-title"></strong></div>
+      <div class="shelf-buttons" id="shelf-buttons"></div>
+    </section>
+    <div class="selection-hint" id="selection-hint">Select a category to open its exact shelf.</div>
+    <div class="flow" id="flow" hidden>
+      <section class="shelf" id="exact-section">
+        <div class="shelf-head"><div class="copy"><p>EXACT CATEGORY PRODUCTS</p><h2 id="exact-title"></h2><div class="meta" id="exact-meta"></div></div><span class="density" id="density"></span></div>
+        <div class="rail" id="exact-rail"></div>
+        <div class="empty" id="empty-state" hidden>This exact shelf is still being filled with verified products.</div>
+        <button class="more" id="load-more" type="button" hidden>More from this exact category</button>
+      </section>
+      <section class="shelf" id="related-section">
+        <div class="shelf-head"><div class="copy"><p>SAME DEPARTMENT · SEPARATE SHELVES</p><h2 id="related-title"></h2><div class="meta">Open a different exact shelf within this department.</div></div></div>
+        <div class="related-list" id="related-list"></div>
+      </section>
+      <section class="shelf" id="boom-section">
+        <div class="shelf-head"><div class="copy"><p>BOOM · PERSONALIZED ORDER</p><h2 id="boom-title"></h2><div class="meta" id="boom-meta"></div></div></div>
+        <div class="rail" id="boom-rail"></div>
+      </section>
+      <section class="shelf related-worlds" id="worlds-section">
+        <div class="shelf-head"><div class="copy"><p>OPTIONAL · OTHER DEPARTMENTS</p><h2>Related worlds</h2><div class="meta">Separate discovery. These products never enter the selected category.</div></div></div>
+        <div class="related-list" id="worlds-list"></div>
+      </section>
+    </div>
+  </main>
+  <div class="qa">PAYMENT OFF · SUPPLIER ORDER OFF · TAXONOMY PUBLISH OFF</div>
+</body>
+</html>
