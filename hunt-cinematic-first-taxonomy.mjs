@@ -1603,7 +1603,12 @@ export function buildIndex(data) {
 export function resolveSelection(departmentSlug, categoryId, shelfSlug) {
   const department = DEPARTMENTS.find(d => d.slug === departmentSlug) || DEPARTMENTS[0];
   const selectedCategory = department.categories.find(c => c.id === categoryId) || null;
-  const selectedShelf = selectedCategory?.shelves.find(s => s.slug === shelfSlug) || selectedCategory?.shelves[0] || null;
+  let selectedShelf = null;
+  if (selectedCategory) {
+    selectedShelf = shelfSlug
+      ? selectedCategory.shelves.find(s => s.slug === shelfSlug) || null
+      : selectedCategory.shelves.length === 1 ? selectedCategory.shelves[0] : null;
+  }
   return { department, category: selectedCategory, shelf: selectedShelf, route: selectedShelf ? `${department.slug}/${selectedShelf.slug}` : null };
 }
 
