@@ -1,8 +1,38 @@
 {
-  "version": "HUNT-TAXONOMY-PROFIT-PIPELINE-V2",
+  "version": "HUNT-TAXONOMY-PROFIT-PIPELINE-V2.1",
   "date": "2026-09-27",
   "mode": "SHADOW_ONLY",
   "production_effect": false,
+  "canonical_departments": 17,
+  "canonical_category_rails": 133,
+  "taxonomy": {
+    "principle": "CATEGORY_TRUTH_BEFORE_SHELF_DENSITY",
+    "states": [
+      "PASS",
+      "REMAP",
+      "TAXONOMY_REVIEW",
+      "BLOCK"
+    ],
+    "rules": [
+      "Use product-type identity plus contextual gender/age/domain signals; never first-match alone.",
+      "Marketing words such as gift, trending, summer and Christmas are tags, not product identity.",
+      "Word boundaries are required for ambiguous short tokens such as men, cap and ring.",
+      "Specific canonical shelf identity outranks generic accessory terms.",
+      "Ambiguous rows are excluded from autofill until reviewed."
+    ]
+  },
+  "profit_profile": {
+    "name": "HUNT-CJ-2026-v1",
+    "status": "active",
+    "owner_approved": true,
+    "currency": "USD",
+    "payment_reserve_rate": 0.04,
+    "refund_reserve_rate": 0.05,
+    "min_contribution_per_unit_usd": 4,
+    "target_margin_rate": 0.35,
+    "min_margin_rate": 0.2,
+    "distinction": "35% is the pricing target; 20% is the minimum profitability gate. A destination may pass above 20% while remaining below the 35% target."
+  },
   "pipeline": [
     "SUPPLIER_RAW_INPUT",
     "NORMALIZE",
@@ -16,8 +46,18 @@
     "BOOM_STYLIST_RANKING",
     "SHELF"
   ],
-  "shelf_rule": "A product can appear in Shadow QA after taxonomy/safety eligibility, but it cannot become sell-ready until Profit Gate passes for the destination.",
-  "profit_rule": "Never treat generated retail or projected contribution as final realized net profit.",
+  "destination_profit": {
+    "rule": "PROFIT_PASS is destination-specific and requires fresh stock, exact variant, fresh shipping and economics PASS.",
+    "global_rule": "Global PROFIT_PASS is not set until every required launch market has fresh destination truth.",
+    "required_launch_markets": [
+      "IL",
+      "DE",
+      "US",
+      "SG"
+    ],
+    "final_profit_verified": false
+  },
+  "shelf_rule": "Shadow QA may display taxonomy-safe PROFIT_REVIEW products; SELL_READY requires destination PROFIT_PASS.",
   "owner_gate": [
     "PRODUCTION_PUBLISH",
     "LIVE_REPRICE",
