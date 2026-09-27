@@ -32,9 +32,9 @@ const DEPARTMENT_NAV_GROUPS = {
     { title: 'Baby Essentials', categories: ['baby','baby-bedding'] }
   ],
   accessories: [
-    { title: 'Jewelry', categories: ['jewelry-necklaces','jewelry-rings','jewelry-earrings','jewelry-bracelets','jewelry'] },
+    { title: 'Jewelry & Watches', featured: true, categories: ['jewelry-earrings','jewelry-necklaces','jewelry-rings','jewelry-bracelets','jewelry','watches'] },
     { title: 'Bags & Small Accessories', categories: ['bags','bag-accessories','keychains'] },
-    { title: 'Wear', categories: ['watches','sunglasses','belts','hats','scarves','gloves'] },
+    { title: 'Wear', categories: ['sunglasses','belts','hats','scarves','gloves'] },
     { title: 'Hair & Basics', categories: ['hair-accessories','socks'] }
   ],
   tech: [
@@ -262,8 +262,8 @@ function navigation(selection) {
         const count = category.shelves.reduce((total, shelf) => total + routeProducts(`${d.slug}/${shelf.slug}`).length, 0);
         return `<button type="button" class="cat-chip ${category === selection.category ? 'active' : ''}" data-category="${category.id}" aria-pressed="${category === selection.category}" ${category === selection.category ? 'aria-current="true"' : ''}>${esc(category.title)}<span>${count}</span></button>`;
       }).join('');
-      return `<section class="category-group" aria-label="${esc(group.title)}"><strong>${esc(group.title)}</strong><div class="category-group-buttons">${buttons}</div></section>`;
-    }).join('') + (d.slug === 'women' ? `<section class="category-group category-group-related" aria-label="Complete the look"><strong>Complete the look</strong><div class="category-group-buttons"><button type="button" class="cat-chip world-chip" data-nav-world="accessories">Accessories & Jewelry</button><button type="button" class="cat-chip world-chip" data-nav-world="beauty">Beauty</button></div></section>` : '');
+      return `<section class="category-group ${group.featured ? 'category-group-featured' : ''}" aria-label="${esc(group.title)}"><strong>${esc(group.title)}</strong><div class="category-group-buttons">${buttons}</div></section>`;
+    }).join('') + (d.slug === 'women' ? `<section class="category-group category-group-related" aria-label="Complete the look"><strong>Complete the look</strong><div class="category-group-buttons"><button type="button" class="cat-chip world-chip" data-nav-exact="accessories|jewelry-earrings|jewelry-earrings">Earrings</button><button type="button" class="cat-chip world-chip" data-nav-exact="accessories|jewelry-necklaces|jewelry-necklaces">Necklaces</button><button type="button" class="cat-chip world-chip" data-nav-exact="accessories|jewelry-rings|jewelry-rings">Rings</button><button type="button" class="cat-chip world-chip" data-nav-exact="accessories|bags|bags">Bags</button><button type="button" class="cat-chip world-chip" data-nav-world="beauty">Beauty</button></div></section>` : '');
   } else {
     $('#category-index').innerHTML = d.categories.map(category => {
       const count = category.shelves.reduce((total, shelf) => total + routeProducts(`${d.slug}/${shelf.slug}`).length, 0);
@@ -674,6 +674,12 @@ $('#dept-nav').addEventListener('click', event => {
   if (button) selectDepartment(button.dataset.dept);
 });
 $('#category-index').addEventListener('click', event => {
+  const exactButton = event.target.closest('button[data-nav-exact]');
+  if (exactButton) {
+    const [department, category, shelf] = exactButton.dataset.navExact.split('|');
+    navigateToExactRoute(department, category, shelf);
+    return;
+  }
   const worldButton = event.target.closest('button[data-nav-world]');
   if (worldButton) {
     selectDepartment(worldButton.dataset.navWorld);
