@@ -1,0 +1,73 @@
+{
+  "version": "HUNT-TAXONOMY-GATE-V2-AUDIT-1",
+  "date": "2026-09-27",
+  "mode": "READ_ONLY_SHADOW_AUDIT",
+  "production_effect": false,
+  "principle": "CATEGORY_TRUTH_BEFORE_SHELF_DENSITY",
+  "dataset": {
+    "table": "public.hunt_shelf_candidates",
+    "filter": "sellable=false AND production_effect=false",
+    "total_shadow_candidates": 26347
+  },
+  "findings": {
+    "high_confidence_conflict_candidates": 3719,
+    "share_of_shadow_candidates": 0.1412,
+    "note": "These are high-confidence legacy routing conflict candidates, not a claim that every row is currently visible in the wrong storefront shelf.",
+    "by_issue": {
+      "ACCESSORY_IN_GIFTS_OR_LIFESTYLE": 3193,
+      "PET_IN_ACCESSORIES_OR_LIFESTYLE": 324,
+      "PHONE_CASE_WRONG_DEPT": 145,
+      "KITCHEN_TOOL_WRONG_DEPT": 43,
+      "BABY_IN_ACCESSORIES_OR_LIFESTYLE": 14
+    },
+    "by_provider": {
+      "EPROLO": 2722,
+      "CJdropshipping": 922,
+      "Printful": 51,
+      "Gooten": 14,
+      "Syncee": 10
+    }
+  },
+  "observed_examples": [
+    {
+      "pattern": "necklace + gift wording",
+      "expected_route": "accessories/jewelry-necklaces"
+    },
+    {
+      "pattern": "dog bandana + scarf wording",
+      "expected_route": "pets/pet-accessories"
+    },
+    {
+      "pattern": "kitchen colander routed outside kitchen",
+      "expected_route": "kitchen/kitchen-tools"
+    },
+    {
+      "pattern": "phone case routed outside tech",
+      "expected_route": "tech/phone-cases"
+    },
+    {
+      "pattern": "baby romper + scarf wording",
+      "expected_route": "kids/baby-clothing"
+    }
+  ],
+  "gate_validation": {
+    "cases": 9,
+    "passed": 9,
+    "failed": 0,
+    "states": [
+      "PASS",
+      "REMAP",
+      "TAXONOMY_REVIEW",
+      "BLOCK"
+    ]
+  },
+  "rollout": {
+    "existing_known_conflict": "block from rebuilt shelf",
+    "existing_ambiguous": "keep Shadow-only and mark TAXONOMY_REVIEW until resolved",
+    "new_autofill": "requires Taxonomy Gate V2 PASS",
+    "stylist": "may rank only after taxonomy; may not reclassify",
+    "payments": "OFF",
+    "supplier_live_order": "OFF",
+    "production_publish": "NOT_AUTHORIZED"
+  }
+}
