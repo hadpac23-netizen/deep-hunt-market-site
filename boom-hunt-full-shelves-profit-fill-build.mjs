@@ -4,6 +4,7 @@ import vm from "vm";
 import {createRequire} from "module";
 const require=createRequire(import.meta.url);
 const {classifyProduct}=require("./boom-hunt-taxonomy-gate-v2.js");
+const {evaluateProfit}=require("./boom-hunt-profit-gate-v2.js");
 
 const ROOT=process.cwd();
 const SOURCE="/Users/adichehade/.hunt-final-candidate-v1";
@@ -47,25 +48,6 @@ const specialCategories={
 };
 
 function catsFor(dep){ return specialCategories[dep]||H.departments[dep]||[]; }
-function priceGate(cost){
-  cost=Number(cost);
-  if(!Number.isFinite(cost)||cost<=0)return null;
-  const reserve=.91,minProfit=4,targetMargin=.35;
-  const raw=Math.max((cost+minProfit)/reserve,cost/(reserve-targetMargin));
-  const retail=Math.max(.99,Math.ceil(raw+.01)-.01);
-  const contribution=retail*reserve-cost;
-  return {
-    state:"PROJECTED_PRODUCT_CONTRIBUTION_ONLY",
-    supplier_cost_usd:+cost.toFixed(2),
-    target_retail_shadow_usd:+retail.toFixed(2),
-    projected_product_contribution_usd:+contribution.toFixed(2),
-    projected_product_margin:+(contribution/retail).toFixed(4),
-    payment_refund_reserve_rate:.09,
-    shipping_priced_separately:true,
-    final_profit_verified:false,
-    final_profit_blockers:["DESTINATION_SHIPPING_OR_ORDER_COST_RECHECK","TAX_IMPORT_RECHECK","FX_RECHECK","REALIZED_RETURN_COST_UNKNOWN","MARKETING_COST_UNKNOWN"]
-  };
-}
 function cleanProduct(p,sourceLabel,routeStrength=150,strictTaxonomy=false){
   const cost=Number(p.supplier_cost_min??p.price_amount??p.profit_truth?.supplier_cost_usd);
   const id=String(p.item_id||p.product_id||p.id||"");
@@ -81,8 +63,7 @@ function cleanProduct(p,sourceLabel,routeStrength=150,strictTaxonomy=false){
   });
   if(taxonomyGate.status==="BLOCK"||taxonomyGate.status==="REMAP")return null;
   if(strictTaxonomy&&taxonomyGate.status!=="PASS")return null;
-  const pg=priceGate(cost);
-  if(!pg)return null;
+  if(!Number.isFinite(cost)||cost<=0)return null;
   const catalogPriceProvisional=
     p.catalog_price_provisional===true ||
     p.profit_truth?.state==="PROVISIONAL_CATALOG_PRICE_PROJECTION" ||
@@ -111,6 +92,43 @@ function cleanProduct(p,sourceLabel,routeStrength=150,strictTaxonomy=false){
     const count=["IL","DE","US","SG"].filter(cc=>ep.market_truth?.[cc]?.shipping?.cost_usd!=null).length;
     if(count){shippingTruth="PROVISIONAL";marketCoverage=["IL","DE","US","SG"].filter(cc=>ep.market_truth?.[cc]?.shipping?.cost_usd!=null);}
   }
+
+  const explicitMarketPass =
+    p.latest_market5_all_pass===true || p.market5_all_pass===true || p.retail_truth_status==="MARKET5_PROFIT_PASS"
+      ? true
+      : (p.latest_market5_all_pass===false || p.market5_all_pass===false ? false : undefined);
+  const baseProfit=evaluateProfit({
+    supplier_cost_usd:cost,
+    retail_price_usd:p.retail_price_usd??p.target_retail_shadow_usd??p.profit_truth?.retail_price_usd??p.profit_truth?.target_retail_shadow_usd,
+    market_validation_pass:cj?true:explicitMarketPass
+  });
+
+  const destinationProfit={};
+  const profitMarketsSource=cj?.markets||thinShip?.markets||inlineShip||null;
+  if(profitMarketsSource){
+    for(const cc of ["IL","DE","US","SG"]){
+      const m=profitMarketsSource?.[cc];
+      if(!m||m.state!=="STOCK_SHIPPING_VERIFIED")continue;
+      const dp=evaluateProfit({
+        supplier_cost_usd:m.supplier_cost_usd??cost,
+        retail_price_usd:m.retail_shadow_usd??m.retail_price_usd??baseProfit.retail_price_usd,
+        market_validation_pass:cj?true:explicitMarketPass,
+        supplier_shipping_usd:m.supplier_shipping_usd??m.shipping_cost_usd,
+        customer_shipping_grossup_usd:m.customer_shipping_grossup_shadow_usd??m.customer_shipping_usd
+      });
+      destinationProfit[cc]=dp;
+    }
+  }
+  const profitPassMarkets=Object.entries(destinationProfit).filter(([,v])=>v.status==="PROFIT_PASS").map(([cc])=>cc);
+  const profitTruth={
+    ...baseProfit,
+    state:catalogPriceProvisional?"PROVISIONAL_CATALOG_PRICE_PROJECTION":"PROJECTED_PRODUCT_CONTRIBUTION_ONLY",
+    target_retail_shadow_usd:baseProfit.target_retail_usd,
+    destination_profit:destinationProfit,
+    profit_pass_markets:profitPassMarkets,
+    pricing_input_quality:catalogPriceProvisional?"PROVISIONAL_CATALOG_PRODUCT_PRICE":"VERIFIED_SUPPLIER_COST_INPUT"
+  };
+
   return {
     provider,id,item_id:id,
     department:String(p.department||""),
@@ -129,18 +147,12 @@ function cleanProduct(p,sourceLabel,routeStrength=150,strictTaxonomy=false){
     checkout_status:"DISABLED_PROFIT_TRUTH_RECHECK_REQUIRED",
     production_exposure:false,
     shelf_state:"SHELF_SHADOW_READY",
-    sell_state:(shippingTruth==="VERIFIED"&&exactVariantTruth==="VERIFIED")?"GATE_READY_FINAL_PROFIT_RECHECK":"DESTINATION_VARIANT_SHIPPING_RECHECK_REQUIRED",
+    sell_state:(exactVariantTruth==="VERIFIED"&&profitPassMarkets.length>0)?"GATE_READY_DESTINATION_PROFIT_PASS":"DESTINATION_VARIANT_SHIPPING_PROFIT_RECHECK_REQUIRED",
     exact_variant:thinVariant||thinShip?.exact_variant||null,
-    market_truth_summary:{shipping_truth:shippingTruth,exact_variant_truth:exactVariantTruth,markets_with_shipping:marketCoverage},
+    market_truth_summary:{shipping_truth:shippingTruth,exact_variant_truth:exactVariantTruth,markets_with_shipping:marketCoverage,profit_pass_markets:profitPassMarkets},
     destination_shipping:thinShip?thinShip.markets:(inlineShip||null),
     supplier_cost_truth:catalogPriceProvisional?"PROVISIONAL_CATALOG_PRODUCT_PRICE":"VERIFIED_SUPPLIER_COST_INPUT",
-    profit_truth:{
-      ...pg,
-      state:catalogPriceProvisional?"PROVISIONAL_CATALOG_PRICE_PROJECTION":pg.state,
-      final_profit_blockers:shippingTruth==="VERIFIED"
-        ? pg.final_profit_blockers.filter(x=>x!=="DESTINATION_SHIPPING_OR_ORDER_COST_RECHECK").concat(["SUPPLIER_FINAL_ORDER_COST_RECHECK"])
-        : pg.final_profit_blockers
-    },
+    profit_truth:profitTruth,
     source_evidence:String(p.source_evidence||sourceLabel),
     taxonomy_gate_v2:{
       status:taxonomyGate.status,
@@ -304,10 +316,10 @@ for(const d of deptContract.departments){
     rails++;
     if(list.length>=24)full24++; else if(list.length>=12)good12++; else if(list.length===0)zero++; else thin++;
     totalProducts+=list.length;
-    projected+=list.filter(p=>p.profit_truth?.state==="PROJECTED_PRODUCT_CONTRIBUTION_ONLY").length;
+    projected+=list.filter(p=>p.profit_truth?.projected_product_contribution_usd!=null).length;
     provisionalPrice+=list.filter(p=>p.profit_truth?.state==="PROVISIONAL_CATALOG_PRICE_PROJECTION").length;
     finalProfitVerified+=list.filter(p=>p.profit_truth?.final_profit_verified===true).length;
-    gateReady+=list.filter(p=>p.sell_state==="GATE_READY_FINAL_PROFIT_RECHECK").length;
+    gateReady+=list.filter(p=>p.sell_state==="GATE_READY_DESTINATION_PROFIT_PASS").length;
     categories.push({
       slug:c,
       title:(defs[c]&&defs[c].title)||c,
@@ -380,7 +392,9 @@ const out={
     "Taxonomy Gate V2 blocks known cross-department conflicts and requires PASS for every new auto-fill candidate.",
     "Existing ambiguous baseline products may remain Shadow-only as TAXONOMY_REVIEW until the cleanup pass resolves them.",
     "Target shelf density is 24 products per canonical rail where real matching supply exists.",
-    "Unknown exact variant or destination shipping blocks SELL_READY but does not block Shadow shelf display.",
+    "Unknown exact variant, market validation or destination shipping blocks SELL_READY but does not block Shadow shelf QA display.",
+    "Profit Gate V2 requires corrected Price Gate V2.1 math plus market validation plus destination shipping truth for PROFIT_PASS.",
+    "Generated retail price alone never proves profitability or market acceptance.",
     "No Production shelf mutation, checkout activation, payment activation, supplier order or fulfillment."
   ],
   departments
