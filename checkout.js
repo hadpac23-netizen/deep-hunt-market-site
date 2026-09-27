@@ -39,7 +39,7 @@
         ? "Delivery details are complete and will be attached only when checkout is verified."
         : state.hasAny
           ? state.missing.length+" required delivery field"+(state.missing.length===1?"":"s")+" still need attention."
-          : "Add delivery details before an order can be handed to a supplier.";
+          : "Add delivery details before an order can be submitted for fulfillment.";
     }
     if(emit)runtime?.emit?.("checkout.shipping.update",{complete:state.complete,missing_count:state.missing.length,country:state.country},{broadcast:false});
     return state;
@@ -94,7 +94,7 @@
       return;
     }
 
-    if (status) status.textContent = "Rechecking HUNT retail price, supplier stock and shipping…";
+    if (status) status.textContent = "Rechecking HUNT retail price, live stock and shipping…";
     if (button) button.textContent = "Verifying…";
     const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
 
