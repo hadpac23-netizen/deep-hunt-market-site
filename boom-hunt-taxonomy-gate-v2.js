@@ -15,14 +15,14 @@ const RULES=[
   {id:"PHONE_CASE",department:"tech",category:"phone-cases",rx:/\b(phone|iphone|galaxy|smartphone|mobile)\b.{0,30}\b(case|cover)\b|\b(case|cover)\b.{0,30}\b(phone|iphone|galaxy|smartphone|mobile)\b/i},
   {id:"GAMING",department:"tech",category:"gaming",rx:/\b(gamepad|game controller|gaming mouse|gaming keyboard|gaming controller)\b/i},
   {id:"WEARABLE_DEVICE",department:"tech",category:"wearables",rx:/\b(smartwatch|smart watch|bluetooth watch|ecg watch|gps watch)\b/i},
-  {id:"WEARABLE_ACCESSORY",department:"tech",category:"wearable-accessories",rx:/\b(smartwatch|smart watch|apple watch|iwatch|watch)\b.{0,35}\b(band|strap|charger|stand|protector|case)\b|\b(band|strap)\b.{0,35}\b(smartwatch|smart watch|apple watch|iwatch|watch)\b/i},
+  {id:"WEARABLE_ACCESSORY",department:"tech",category:"wearable-accessories",rx:/\b(smartwatch|smart watch|apple watch|iwatch|watch)\b.{0,35}\b(band|strap|charger|stand|protector|case|screen protector)\b|\b(band|strap|charger|stand|protector|case|screen protector)\b.{0,35}\b(smartwatch|smart watch|apple watch|iwatch|galaxy watch|watch)\b/i},
 
   {id:"KITCHEN_TOOL",department:"kitchen",category:"kitchen-tools",rx:/\b(kitchen|cooking|cookware)\b.{0,50}\b(spoon|strainer|colander|utensil|whisk|spatula|peeler|tongs|grater|shovel|filter|tool)\b|\b(spoon|strainer|colander|whisk|spatula|peeler|tongs|grater)\b.{0,50}\b(kitchen|cooking)\b/i},
   {id:"BATH",department:"home",category:"bath",rx:/\b(bathroom|bath|shower|toilet)\b.{0,50}\b(brush|mat|curtain|rack|holder|caddy|towel|accessory|accessories)\b/i},
 
   {id:"WOMEN_KNITWEAR",department:"women",category:"women-knitwear",rx:/\b(women|woman|female)\b.{0,50}\b(sweater|cardigan|knitwear|knit|pullover)\b|\b(sweater|cardigan|knitwear|pullover)\b.{0,50}\b(women|woman|female)\b/i},
   {id:"WOMEN_DRESS",department:"women",category:"women-dresses",rx:/\b(women|woman|female)\b.{0,50}\b(dress|dresses)\b|\b(dress|dresses)\b.{0,50}\b(women|woman|female)\b/i},
-  {id:"MEN_TOP",department:"men",category:"men-tops",rx:/\b(men|mens|men's|male)\b.{0,40}\b(t-shirt|shirt|polo|tank top)\b/i},
+  {id:"MEN_TOP",department:"men",category:"men-tops",rx:/\b(men|mens|men's|male)\b.{0,40}\b(t-shirt|shirt|polo|tank top)\b|\b(t-shirt|shirt|polo|tank top)\b.{0,40}\b(men|mens|men's|male)\b/i},
 
   {id:"JEWELRY_NECKLACE",department:"accessories",category:"jewelry-necklaces",rx:/\b(necklace|necklaces|pendant|choker)\b/i},
   {id:"JEWELRY_EARRING",department:"accessories",category:"jewelry-earrings",rx:/\b(earring|earrings)\b/i},
