@@ -10,6 +10,7 @@
   <script type="module" src="hunt-cinematic-first-exact.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#category-index">Skip to shopping categories</a>
   <header class="topbar">
     <div class="topline">
       <a class="brand hd-brand" href="hunt-cinematic-first-exact-preview.html" aria-label="HUNT">HUNT</a>
@@ -37,7 +38,7 @@
       <div class="drawer-caption"><span>EXACT SUBCATEGORY / SHELF</span><strong id="drawer-title"></strong></div>
       <div class="shelf-buttons" id="shelf-buttons"></div>
     </section>
-    <div class="selection-hint" id="selection-hint">Select a category to open its exact shelf.</div>
+    <div class="selection-hint" id="selection-hint" aria-live="polite">Select a category to open its exact shelf.</div>
     <div class="flow" id="flow" hidden>
       <section class="shelf" id="exact-section">
         <div class="shelf-head"><div class="copy"><p>EXACT CATEGORY PRODUCTS</p><h2 id="exact-title"></h2><div class="meta" id="exact-meta"></div></div><span class="density" id="density"></span></div>
@@ -59,6 +60,56 @@
       </section>
     </div>
   </main>
+
+  <div class="product-world" id="product-world" hidden>
+    <div class="product-world-backdrop" data-close-world></div>
+    <section class="product-world-shell" id="product-world-shell" role="dialog" aria-modal="true" aria-labelledby="product-world-title">
+      <header class="product-world-bar">
+        <div>
+          <span class="product-world-kicker">HUNT · PRODUCT WORLD</span>
+          <strong id="product-world-path">Exact shelf</strong>
+        </div>
+        <button class="world-close" id="world-close" type="button" aria-label="Close product world">Close</button>
+      </header>
+      <div class="product-world-scroll" id="product-world-scroll">
+        <section class="product-focus" aria-label="Selected product">
+          <div class="product-focus-media"><img id="product-world-image" alt=""></div>
+          <div class="product-focus-copy">
+            <div class="badges" id="product-world-badges"></div>
+            <p class="product-focus-path" id="product-world-route"></p>
+            <h2 id="product-world-title">Product</h2>
+            <p class="product-focus-status" id="product-world-status"></p>
+            <div class="product-focus-actions">
+              <button type="button" class="prefer world-prefer" id="world-prefer">Use as my style preference</button>
+              <button type="button" class="back-to-shelf" id="world-back-shelf">Back to exact shelf</button>
+            </div>
+            <p class="truth-note">Variants, destination shipping and final net profit stay supplier-truth gated. This preview never invents options or availability.</p>
+          </div>
+        </section>
+
+        <section class="world-layer" id="world-similar-section">
+          <div class="world-layer-head"><div><p>01 · SAME EXACT SHELF</p><h3>More like this</h3></div><span id="world-similar-meta"></span></div>
+          <div class="world-grid" id="world-similar-grid"></div>
+        </section>
+
+        <section class="world-layer" id="world-nearby-section">
+          <div class="world-layer-head"><div><p>02 · SAME DEPARTMENT</p><h3>Nearby categories</h3></div><span id="world-nearby-meta"></span></div>
+          <div class="world-grid" id="world-nearby-grid"></div>
+        </section>
+
+        <section class="world-layer boom-world-layer" id="world-for-you-section">
+          <div class="world-layer-head"><div><p>03 · BOOM PERSONALIZATION</p><h3>For you</h3></div><span id="world-personal-meta">Session-only preview ranking</span></div>
+          <div class="world-grid" id="world-for-you-grid"></div>
+        </section>
+
+        <section class="world-layer cross-world-layer" id="world-cross-section">
+          <div class="world-layer-head"><div><p>04 · CLEARLY SEPARATE WORLDS</p><h3>Touches from other categories</h3></div><span>Discovery only · taxonomy never changes</span></div>
+          <div class="world-grid" id="world-cross-grid"></div>
+        </section>
+      </div>
+    </section>
+  </div>
+
   <div class="qa">PAYMENT OFF · SUPPLIER ORDER OFF · TAXONOMY PUBLISH OFF</div>
 </body>
 </html>
