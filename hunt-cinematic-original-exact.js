@@ -12,6 +12,7 @@ const relatedWorlds = {
 };
 
 let index = null;
+let sourceError = null;
 let state = { department: 'women', category: null, shelf: null, visible: 8, preference: '' };
 let cityFrame = 0;
 let cityName = 'paris';
@@ -60,17 +61,13 @@ function startCityReel() {
   document.addEventListener('visibilitychange', () => document.hidden ? clearInterval(timer) : start());
 }
 
-function departmentCount(department) {
-  return department.categories.reduce((sum, category) => sum + category.shelves.reduce((n, shelf) => n + (index?.byRoute.get(`${department.slug}/${shelf.slug}`)?.length || 0), 0), 0);
-}
-
 function card(product, allowPreference = false) {
   const route = product.canonical_route;
   return `<article class="card" data-route="${esc(route)}" data-product="${esc(product.item_id)}">
     <div class="card-media"><img src="${esc(product.image_url)}" loading="lazy" alt="${esc(product.title)}"></div>
     <div class="card-body"><div class="route-tag">${esc(route.toUpperCase())}</div>
       <h3>${esc(product.title)}</h3>
-      <p>${esc(product.provider)} · Image QA PASS · Stock snapshot ${esc(product.inventory_snapshot)}</p>
+      <p>${esc(product.provider)} · Image technical PASS · Stock snapshot ${esc(product.inventory_snapshot)}</p>
       <p class="gate-line">Taxonomy REMAP · Profit REVIEW · Checkout OFF</p>
       ${allowPreference ? `<button class="prefer" type="button" data-prefer="${esc(product.item_id)}">Use as style preference</button>` : ''}
     </div>
@@ -78,11 +75,22 @@ function card(product, allowPreference = false) {
 }
 
 function renderNavigation(selection) {
-  $('#department-nav').innerHTML = DEPARTMENTS.map(d =>
+  const nav = $('#department-nav');
+  nav.innerHTML = DEPARTMENTS.map(d =>
     `<button type="button" data-dept="${d.slug}" class="${d === selection.department ? 'active' : ''}" aria-pressed="${d === selection.department}">${esc(d.title)}</button>`
   ).join('');
+  const active = nav.querySelector('.active');
+  const navBox = nav.getBoundingClientRect();
+  const activeBox = active.getBoundingClientRect();
+  nav.scrollLeft += activeBox.left - navBox.left - (navBox.width - activeBox.width) / 2;
   $('#drawer-department').textContent = selection.department.title;
-  $('#drawer-count').textContent = `${selection.department.categories.length} categories`;
+  $('#drawer-count').textContent = sourceError ? 'Data unavailable' : `${selection.department.categories.length} categories`;
+  if (sourceError) {
+    $('#category-buttons').innerHTML = '';
+    $('#shelf-drawer').hidden = true;
+    $('#shelf-buttons').innerHTML = '';
+    return;
+  }
   $('#category-buttons').innerHTML = selection.department.categories.map(c => {
     const count = c.shelves.reduce((sum, s) => sum + (index?.byRoute.get(`${selection.department.slug}/${s.slug}`)?.length || 0), 0);
     return `<button type="button" data-category="${c.id}" class="${c === selection.category ? 'active' : ''}" aria-pressed="${c === selection.category}">${esc(c.title)}<span>${count}</span></button>`;
@@ -109,8 +117,17 @@ function renderHero(selection, products) {
   $('#hero-kicker').textContent = hero ? selection.route.toUpperCase() : `HUNT WORLD · ${worldNames[d.city]}`;
   $('#hero-title').textContent = hero?.title || (selection.shelf ? 'This shelf is being filled' : 'Choose an exact shelf');
   $('#hero-status').textContent = hero
-    ? 'Taxonomy V2 · Image QA PASS · Inventory snapshot · Profit REVIEW · Shadow only'
-    : (selection.shelf ? 'No clean image QA PASS candidates in this exact route.' : `${d.title} categories only · Shadow preview`);
+    ? 'Taxonomy V2 · Image technical PASS · Inventory snapshot · Profit REVIEW · Shadow only'
+    : (selection.shelf ? 'No candidates pass the exact route and preview gates.' : `${d.title} categories only · Shadow preview`);
+  if (!index && !sourceError && selection.shelf) {
+    $('#hero-title').textContent = 'Checking this exact shelf';
+    $('#hero-status').textContent = 'Loading the clean Taxonomy Gate V2 Shadow source.';
+  }
+  if (sourceError) {
+    $('#scene-lede').textContent = 'The clean Taxonomy Gate V2 dataset could not be loaded. Shelves are closed until it is available.';
+    $('#hero-title').textContent = 'Shelves unavailable';
+    $('#hero-status').textContent = sourceError;
+  }
 }
 
 function renderExact(selection, products) {
@@ -167,7 +184,7 @@ function render() {
   const products = selection.route ? index?.byRoute.get(selection.route) || [] : [];
   renderNavigation(selection);
   renderHero(selection, products);
-  for (const id of ['exact-section', 'related-section', 'boom-section', 'worlds-section']) $("#" + id).hidden = !selection.route;
+  for (const id of ['exact-section', 'related-section', 'boom-section', 'worlds-section']) $("#" + id).hidden = !selection.route || !index;
   if (selection.route && index) {
     renderExact(selection, products);
     renderRelated(selection);
@@ -246,9 +263,6 @@ fetch(SOURCE, { credentials: 'omit', cache: 'no-store' }).then(response => {
   index = buildIndex(data);
   render();
 }).catch(error => {
-  $('#drawer-count').textContent = 'Data unavailable';
-  $('#category-buttons').innerHTML = '';
-  $('#scene-lede').textContent = 'The clean Taxonomy Gate V2 dataset could not be loaded. Shelves are closed until it is available.';
-  $('#hero-status').textContent = error.message;
-  for (const id of ['exact-section', 'related-section', 'boom-section', 'worlds-section']) $('#' + id).hidden = true;
+  sourceError = error.message;
+  render();
 });
