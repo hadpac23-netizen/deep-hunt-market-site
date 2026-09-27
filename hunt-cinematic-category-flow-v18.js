@@ -104,12 +104,18 @@
     const entries=[[all,[...new Set(Object.values(d.categories).flat())]],...Object.entries(d.categories)];
     $("#hcv18-drawer-kicker").textContent=d.label.toUpperCase()+" · EXACT DEPARTMENT";
     $("#hcv18-drawer-title").textContent=d.label;
-    $("#hcv18-drawer-copy").textContent="Only "+d.label+" categories are shown here. Nothing from another department can enter this drawer.";
+    const counted=entries.map(([name,shelves])=>({
+      name,
+      shelves,
+      count:shelves.reduce((n,s)=>n+shelfProducts(s).length,0)
+    }));
+    const visible=counted.filter(x=>x.name===all || x.count>0);
+    const hidden=counted.filter(x=>x.name!==all && x.count===0).length;
+    $("#hcv18-drawer-copy").textContent="Only "+d.label+" categories with clean products are shown. "+hidden+" additional categor"+(hidden===1?"y is":"ies are")+" still being filled.";
     $("#hcv18-lock-copy").textContent=d.label+" only";
-    $("#hcv18-category-grid").innerHTML=entries.map(([name,shelves])=>{
-      const count=shelves.reduce((n,s)=>n+shelfProducts(s).length,0);
+    $("#hcv18-category-grid").innerHTML=visible.map(({name,shelves,count})=>{
       const active=name===state.category;
-      return '<button type="button" class="hcv18-category-btn '+(active?"active ":"")+(count===0?"is-empty":"")+'" data-category="'+esc(name)+'" aria-pressed="'+active+'"><strong>'+esc(name)+'</strong><small>'+count+' clean preview products · '+shelves.length+' shelf'+(shelves.length===1?"":"s")+'</small></button>';
+      return '<button type="button" class="hcv18-category-btn '+(active?"active":"")+'" data-category="'+esc(name)+'" aria-pressed="'+active+'"><strong>'+esc(name)+'</strong><small>'+count+' clean preview products · '+shelves.length+' shelf'+(shelves.length===1?"":"s")+'</small></button>';
     }).join("");
   }
   function renderScope(){
@@ -161,7 +167,7 @@
   }
   function renderNext(){
     const d=depDef(),all=allCategoryName();
-    const names=Object.keys(d.categories).filter(n=>n!==state.category);
+    const names=Object.keys(d.categories).filter(n=>n!==state.category && categoryCount(n)>0);
     $("#hcv18-next-title").textContent="More inside "+d.label;
     $("#hcv18-next-grid").innerHTML=names.map(name=>'<button type="button" data-category="'+esc(name)+'">'+esc(name)+'<br><small>'+categoryCount(name)+' clean preview products</small></button>').join("");
   }
