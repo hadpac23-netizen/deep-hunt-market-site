@@ -1,6 +1,9 @@
 import fs from "fs";
 import path from "path";
 import vm from "vm";
+import {createRequire} from "module";
+const require=createRequire(import.meta.url);
+const {classifyProduct}=require("./boom-hunt-taxonomy-gate-v2.js");
 
 const ROOT=process.cwd();
 const SOURCE="/Users/adichehade/.hunt-final-candidate-v1";
@@ -63,13 +66,21 @@ function priceGate(cost){
     final_profit_blockers:["DESTINATION_SHIPPING_OR_ORDER_COST_RECHECK","TAX_IMPORT_RECHECK","FX_RECHECK","REALIZED_RETURN_COST_UNKNOWN","MARKETING_COST_UNKNOWN"]
   };
 }
-function cleanProduct(p,sourceLabel,routeStrength=150){
+function cleanProduct(p,sourceLabel,routeStrength=150,strictTaxonomy=false){
   const cost=Number(p.supplier_cost_min??p.price_amount??p.profit_truth?.supplier_cost_usd);
   const id=String(p.item_id||p.product_id||p.id||"");
   const provider=String(p.provider||"EPROLO");
   const title=String(p.title||"").trim();
   if(!id||!title||!p.image_url||BLOCKED.test(title+" "+String(p.category||"")))return null;
   if(p.availability_verified!==true && provider!=="CJdropshipping")return null;
+  const taxonomyGate=classifyProduct({
+    title,
+    source_category:String(p.source_category||p.category||""),
+    proposed_department:String(p.department||""),
+    proposed_category:String(p.category||"")
+  });
+  if(taxonomyGate.status==="BLOCK"||taxonomyGate.status==="REMAP")return null;
+  if(strictTaxonomy&&taxonomyGate.status!=="PASS")return null;
   const pg=priceGate(cost);
   if(!pg)return null;
   const catalogPriceProvisional=
@@ -131,6 +142,11 @@ function cleanProduct(p,sourceLabel,routeStrength=150){
         : pg.final_profit_blockers
     },
     source_evidence:String(p.source_evidence||sourceLabel),
+    taxonomy_gate_v2:{
+      status:taxonomyGate.status,
+      reason:taxonomyGate.reason||null,
+      matched_rule:taxonomyGate.matched_rule||null
+    },
     _routeStrength:routeStrength,
     _score:(Number(p.curation_score)||Number(p.selection_score)||Number(p.preview_score)||0)*100+(Number(p.image_count)||0)
   };
@@ -250,7 +266,7 @@ for(const raw of sourceCandidates){
   if(!cat)continue;
   const key=String(raw.provider||"EPROLO")+":"+String(raw.item_id||raw.product_id||raw.id||"");
   if(used.has(key))continue;
-  const p=cleanProduct({...raw,department:dep,category:cat},raw._source,raw._route);
+  const p=cleanProduct({...raw,department:dep,category:cat},raw._source,raw._route,true);
   if(!p)continue;
   p.department_title=departmentMeta.get(dep).title;
   p.category_title=(defs[cat]&&defs[cat].title)||cat;
@@ -361,6 +377,8 @@ const out={
     "Every product keeps one canonical department and one canonical category.",
     "Restricted/dangerous/adult/nicotine/drug/weapon products are excluded.",
     "Fresh supplier pulls may fill thin shelves only when canonical routing succeeds.",
+    "Taxonomy Gate V2 blocks known cross-department conflicts and requires PASS for every new auto-fill candidate.",
+    "Existing ambiguous baseline products may remain Shadow-only as TAXONOMY_REVIEW until the cleanup pass resolves them.",
     "Target shelf density is 24 products per canonical rail where real matching supply exists.",
     "Unknown exact variant or destination shipping blocks SELL_READY but does not block Shadow shelf display.",
     "No Production shelf mutation, checkout activation, payment activation, supplier order or fulfillment."
