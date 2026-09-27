@@ -11,10 +11,67 @@ const relatedWorlds = {
   gifts: ['accessories', 'home'], accessories: ['women', 'men'], home: ['kitchen', 'garden'],
   tech: ['electrical', 'office'], pets: ['home'], travel: ['accessories']
 };
+
+const DEPARTMENT_NAV_GROUPS = {
+  women: [
+    { title: 'Clothing', categories: ['women-dresses','women-tops','women-jeans','women-bottoms','women-skirts','women-knitwear','women-hoodies','women-outerwear','women-suits'] },
+    { title: 'Lingerie & Sleep', categories: ['women-underwear','women-sleepwear','women-socks'] },
+    { title: 'Shoes', categories: ['women-shoes'] },
+    { title: 'Swim', categories: ['women-swim'] },
+    { title: 'Occasion', categories: ['women-evening'] }
+  ],
+  men: [
+    { title: 'Clothing', categories: ['men-tops','men-shirts','men-jeans','men-bottoms','men-knitwear','men-hoodies','men-outerwear','men-suits'] },
+    { title: 'Underwear & Basics', categories: ['men-boxers','men-underwear','men-socks'] },
+    { title: 'Shoes & Bags', categories: ['men-shoes','men-bags'] },
+    { title: 'Accessories', categories: ['men-accessories'] }
+  ],
+  kids: [
+    { title: 'Kids', categories: ['kids-clothing','kids-shoes','kids-accessories'] },
+    { title: 'Baby Clothing', categories: ['baby-clothing','baby-sets','baby-sleepsuits'] },
+    { title: 'Baby Essentials', categories: ['baby','baby-bedding'] }
+  ]
+};
+
+const SHELF_SEGMENTS = {
+  'women/women-underwear': [
+    { id:'bras', label:'Bras', include:/\b(?:bra|bralette)\b/i },
+    { id:'briefs', label:'Briefs & Knickers', include:/\b(?:briefs?|knickers?|panties|brazilian)\b/i },
+    { id:'thongs', label:'Thongs', include:/\bthongs?\b/i },
+    { id:'sets', label:'Lingerie Sets', include:/\b(?:lingerie|underwear)\b.*\bset\b|\bset\b.*\b(?:lingerie|underwear)\b/i },
+    { id:'shapewear', label:'Shapewear', include:/\b(?:shapewear|shaping|control brief|body shaper)\b/i },
+    { id:'bodysuits', label:'Bodysuits', include:/\b(?:bodysuit|body suit|body)\b/i }
+  ],
+  'women/women-sleepwear': [
+    { id:'pajamas', label:'Pajamas', include:/\b(?:pajamas?|pyjamas?|pjs?)\b/i },
+    { id:'nightwear', label:'Nightwear', include:/\b(?:nightdress|nightgown|night gown|nightwear|chemise)\b/i },
+    { id:'robes', label:'Robes & Dressing Gowns', include:/\b(?:robe|robes|dressing gown|bathrobe)\b/i },
+    { id:'sleep-sets', label:'Sleep Sets', include:/\b(?:sleepwear|pajama|pyjama)\b.*\bset\b|\bset\b.*\b(?:sleepwear|pajama|pyjama)\b/i }
+  ],
+  'women/women-shoes': [
+    { id:'trainers', label:'Sneakers & Trainers', include:/\b(?:sneakers?|trainers?|running shoes?)\b/i },
+    { id:'heels', label:'Heels', include:/\b(?:heels?|stiletto|pumps?)\b/i },
+    { id:'sandals', label:'Sandals', include:/\bsandals?\b/i },
+    { id:'boots', label:'Boots', include:/\bboots?\b/i },
+    { id:'flats', label:'Flats & Loafers', include:/\b(?:flats?|loafers?|ballet|mary jane)\b/i },
+    { id:'slippers', label:'Slippers', include:/\bslippers?\b/i }
+  ],
+  'women/women-swim': [
+    { id:'bikinis', label:'Bikinis', include:/\b(?:bikini|two-piece swimsuit|two piece swimsuit)\b/i },
+    { id:'one-piece', label:'One-Piece', include:/\b(?:one-piece|one piece|swimsuit)\b/i },
+    { id:'cover-ups', label:'Cover-Ups', include:/\b(?:cover-up|cover up|beach dress|sarong)\b/i }
+  ],
+  'women/women-dresses': [
+    { id:'mini', label:'Mini', include:/\bmini\b/i },
+    { id:'midi', label:'Midi', include:/\bmidi\b/i },
+    { id:'maxi', label:'Maxi', include:/\bmaxi\b/i }
+  ]
+};
 const query = new URLSearchParams(location.search);
 const starting = resolveSelection(query.get('dept'), query.get('category'), query.get('shelf'));
 const state = { department: starting.department.slug, category: starting.category?.id || null,
-  shelf: starting.shelf?.slug || null, visible: 24, preference: '', activeProductKey: query.get('product') || null };
+  shelf: starting.shelf?.slug || null, segment: query.get('segment') || null,
+  visible: 24, preference: '', activeProductKey: query.get('product') || null };
 let index = null;
 let sourceError = null;
 let lastWorldFocus = null;
@@ -42,16 +99,28 @@ function theme(next) {
 
 function updateUrl() {
   const url = new URL(location.href);
-  ['dept', 'category', 'shelf', 'theme', 'product'].forEach(key => url.searchParams.delete(key));
+  ['dept', 'category', 'shelf', 'segment', 'theme', 'product'].forEach(key => url.searchParams.delete(key));
   url.searchParams.set('dept', state.department);
   if (state.category) url.searchParams.set('category', state.category);
   if (state.shelf) url.searchParams.set('shelf', state.shelf);
+  if (state.segment) url.searchParams.set('segment', state.segment);
   url.searchParams.set('theme', document.documentElement.dataset.huntTheme);
   if (state.activeProductKey) url.searchParams.set('product', state.activeProductKey);
   history.replaceState(null, '', url.pathname + url.search);
 }
 
 function routeProducts(route) { return index?.byRoute.get(route) || []; }
+function segmentDefinition(route, segmentId) {
+  return (SHELF_SEGMENTS[route] || []).find(segment => segment.id === segmentId) || null;
+}
+function productsForSegment(route, products, segmentId) {
+  const segment = segmentDefinition(route, segmentId);
+  if (!segment) return products;
+  return products.filter(product => segment.include.test(String(product.title || '')));
+}
+function validSegmentForRoute(route, segmentId) {
+  return !!segmentDefinition(route, segmentId);
+}
 function departmentProducts(department) {
   return department.categories.flatMap(category => category.shelves.flatMap(shelf => routeProducts(`${department.slug}/${shelf.slug}`)));
 }
@@ -142,10 +211,23 @@ function navigation(selection) {
     const count = departmentProducts(dept).length;
     return `<button type="button" data-dept-panel="${dept.slug}" class="${dept === d ? 'active' : ''}" ${dept === d ? 'aria-current="true"' : ''}>${esc(dept.title)}<small>${dept.categories.length} categories · ${count} gated</small></button>`;
   }).join('');
-  $('#category-index').innerHTML = d.categories.map(category => {
-    const count = category.shelves.reduce((total, shelf) => total + routeProducts(`${d.slug}/${shelf.slug}`).length, 0);
-    return `<button type="button" class="cat-chip ${category === selection.category ? 'active' : ''}" data-category="${category.id}" aria-pressed="${category === selection.category}" ${category === selection.category ? 'aria-current="true"' : ''}>${esc(category.title)} · ${count}</button>`;
-  }).join('');
+  const grouped = DEPARTMENT_NAV_GROUPS[d.slug];
+  $('#category-index').classList.toggle('grouped', !!grouped);
+  if (grouped) {
+    const byId = new Map(d.categories.map(category => [category.id, category]));
+    $('#category-index').innerHTML = grouped.map(group => {
+      const buttons = group.categories.map(id => byId.get(id)).filter(Boolean).map(category => {
+        const count = category.shelves.reduce((total, shelf) => total + routeProducts(`${d.slug}/${shelf.slug}`).length, 0);
+        return `<button type="button" class="cat-chip ${category === selection.category ? 'active' : ''}" data-category="${category.id}" aria-pressed="${category === selection.category}" ${category === selection.category ? 'aria-current="true"' : ''}>${esc(category.title)}<span>${count}</span></button>`;
+      }).join('');
+      return `<section class="category-group" aria-label="${esc(group.title)}"><strong>${esc(group.title)}</strong><div class="category-group-buttons">${buttons}</div></section>`;
+    }).join('') + (d.slug === 'women' ? `<section class="category-group category-group-related" aria-label="Complete the look"><strong>Complete the look</strong><div class="category-group-buttons"><button type="button" class="cat-chip world-chip" data-nav-world="accessories">Accessories & Jewelry</button><button type="button" class="cat-chip world-chip" data-nav-world="beauty">Beauty</button></div></section>` : '');
+  } else {
+    $('#category-index').innerHTML = d.categories.map(category => {
+      const count = category.shelves.reduce((total, shelf) => total + routeProducts(`${d.slug}/${shelf.slug}`).length, 0);
+      return `<button type="button" class="cat-chip ${category === selection.category ? 'active' : ''}" data-category="${category.id}" aria-pressed="${category === selection.category}" ${category === selection.category ? 'aria-current="true"' : ''}>${esc(category.title)} · ${count}</button>`;
+    }).join('');
+  }
   $('#shelf-drawer').hidden = !selection.category;
   if (selection.category) {
     $('#drawer-title').textContent = `${d.title} / ${selection.category.title}`;
@@ -153,6 +235,24 @@ function navigation(selection) {
       const count = routeProducts(`${d.slug}/${shelf.slug}`).length;
       return `<button type="button" data-shelf="${shelf.slug}" class="${shelf === selection.shelf ? 'active' : ''}" aria-pressed="${shelf === selection.shelf}" ${shelf === selection.shelf ? 'aria-current="true"' : ''}>${esc(shelf.label)}<span>${count}</span></button>`;
     }).join('');
+    const segments = selection.route ? (SHELF_SEGMENTS[selection.route] || []) : [];
+    const segmentWrap = $('#segment-wrap');
+    segmentWrap.hidden = segments.length === 0;
+    if (segments.length) {
+      const routeItems = routeProducts(selection.route);
+      if (state.segment && !validSegmentForRoute(selection.route, state.segment)) state.segment = null;
+      $('#segment-buttons').innerHTML = [
+        `<button type="button" data-segment="" class="${!state.segment ? 'active' : ''}" aria-pressed="${!state.segment}">All <span>${routeItems.length}</span></button>`,
+        ...segments.map(segment => {
+          const count = productsForSegment(selection.route, routeItems, segment.id).length;
+          const active = state.segment === segment.id;
+          return `<button type="button" data-segment="${segment.id}" class="${active ? 'active' : ''}" aria-pressed="${active}" ${count === 0 ? 'disabled aria-disabled="true"' : ''}>${esc(segment.label)} <span>${count}</span></button>`;
+        })
+      ].join('');
+    }
+  } else {
+    $('#segment-wrap').hidden = true;
+    state.segment = null;
   }
   const active = $('#dept-nav .active');
   active?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
@@ -194,16 +294,18 @@ function hero(selection, products) {
 }
 
 function exactShelf(selection, products) {
-  const count = products.length;
+  const segment = state.segment ? segmentDefinition(selection.route, state.segment) : null;
+  const visibleProducts = productsForSegment(selection.route, products, state.segment);
+  const count = visibleProducts.length;
   $('#exact-title').textContent = `${selection.department.title} / ${selection.shelf.label}`;
-  $('#exact-meta').textContent = `${selection.route} · ${count} vetted Shadow candidate${count === 1 ? '' : 's'} · no final profit claim`;
+  $('#exact-meta').textContent = `${selection.route}${segment ? ` · ${segment.label}` : ''} · ${count} vetted Shadow candidate${count === 1 ? '' : 's'} · no final profit claim`;
   $('#density').textContent = count >= 24 ? 'FULL' : count >= 12 ? 'GOOD' : count ? 'THIN' : 'FILLING';
   $('#density').className = `density ${count < 12 ? 'thin' : ''}`;
-  $('#exact-rail').innerHTML = products.slice(0, state.visible).map(product => card(product, true)).join('');
+  $('#exact-rail').innerHTML = visibleProducts.slice(0, state.visible).map(product => card(product, true)).join('');
   $('#exact-rail').hidden = count === 0;
   $('#empty-state').hidden = count !== 0;
   $('#load-more').hidden = state.visible >= count;
-  $('#load-more').textContent = `More from ${selection.department.title} / ${selection.shelf.label}`;
+  $('#load-more').textContent = segment ? `More ${segment.label}` : `More from ${selection.department.title} / ${selection.shelf.label}`;
 }
 
 function related(selection) {
@@ -274,7 +376,7 @@ function setDepartmentPanel(open, { focusToggle = false } = {}) {
 
 function selectDepartment(slug) {
   if (!DEPARTMENTS.some(department => department.slug === slug)) return;
-  Object.assign(state, { department: slug, category: null, shelf: null, visible: 24, preference: '', activeProductKey: null });
+  Object.assign(state, { department: slug, category: null, shelf: null, segment: null, visible: 24, preference: '', activeProductKey: null });
   setDepartmentPanel(false);
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -283,7 +385,7 @@ function selectDepartment(slug) {
 function selectShelf(categoryId, shelfSlug) {
   const selection = resolveSelection(state.department, categoryId, shelfSlug);
   if (!selection.category || !selection.shelf) return;
-  Object.assign(state, { category: selection.category.id, shelf: selection.shelf.slug, visible: 24, preference: '', activeProductKey: null });
+  Object.assign(state, { category: selection.category.id, shelf: selection.shelf.slug, segment: null, visible: 24, preference: '', activeProductKey: null });
   render();
   $('#exact-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -398,12 +500,25 @@ $('#dept-nav').addEventListener('click', event => {
   if (button) selectDepartment(button.dataset.dept);
 });
 $('#category-index').addEventListener('click', event => {
+  const worldButton = event.target.closest('button[data-nav-world]');
+  if (worldButton) {
+    selectDepartment(worldButton.dataset.navWorld);
+    return;
+  }
   const button = event.target.closest('button[data-category]');
   if (button) selectShelf(button.dataset.category);
 });
 $('#shelf-buttons').addEventListener('click', event => {
   const button = event.target.closest('button[data-shelf]');
   if (button) selectShelf(state.category, button.dataset.shelf);
+});
+$('#segment-buttons').addEventListener('click', event => {
+  const button = event.target.closest('button[data-segment]');
+  if (!button || button.disabled) return;
+  state.segment = button.dataset.segment || null;
+  state.visible = 24;
+  render();
+  $('#exact-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 $('#related-list').addEventListener('click', event => {
   const button = event.target.closest('button[data-related-shelf]');
