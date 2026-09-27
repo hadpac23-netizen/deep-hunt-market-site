@@ -1531,7 +1531,7 @@ const identityPolicies = {
   'accessories/jewelry': [/\b(?:brooch|jewelry set|jewellery set|jewelry|jewellery|lapel pin|jewelry pin|jewellery pin)\b/i, /\b(?:chair|safe box|storage|office|shoe|boot|smart ring|watch band|watch strap|pet|dog|cat|motorcycle|coat|jacket)\b/i],
   'accessories/jewelry-bracelets': [/\b(?:bracelets?|bangles?)\b/i, /\b(?:smart bracelet|fitness bracelet|health monitoring|watch band|watch strap|compatible with rolex|smart band)\b/i],
   'accessories/jewelry-earrings': [/\b(?:earrings?|ear studs?|stud earrings?|hoop earrings?)\b/i, /\b(?:earphone|earbud|headset|ear cleaner|ear cleaning|pet|dog|cat)\b/i],
-  'accessories/jewelry-rings': [/\b(?:ring|rings)\b/i, /\b(?:smart ring|pedometer|heart rate|blood oxygen|sleep monitoring|phone ring|ring holder|ring light|curtain ring|key ring|napkin ring|towel ring|office chair|foot ring)\b/i],
+  'accessories/jewelry-rings': [/\b(?:ring|rings)\b/i, /\b(?:smart ring|pedometer|heart rate|blood oxygen|sleep monitoring|phone ring|ring holder|ring light|curtain ring|key ring|napkin ring|towel ring|office chair|foot ring|steel ring|no steel ring|ring detail|hair ring|swimsuit|bikini|bra|underwear|tank top|spinner|fidget toy|segment ring)\b/i],
   'accessories/keychains': [/\b(?:keychain|key chain|keyring|key ring)\b/i],
   'accessories/jewelry-necklaces': [/\b(?:necklace|choker|chain necklace|pendant necklace)\b/i, /\b(?:teether|teething|nursing|swimsuit|bikini|blind box|diy|socks?|tapestry|curtain|shorts|skirt|pants|christmas tree pendant|tree pendant|wall pendant|home decoration|gift bag|candy bag|toy|children|kids?|baby|pet|dog|cat)\b/i],
   'accessories/watches': [/\b(?:watch|wristwatch|quartz watch|automatic watch)\b/i, /\b(?:watch box|watch case|watch storage)\b/i],
