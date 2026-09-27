@@ -166,3 +166,21 @@ test('Jewelry semantic policies block common non-jewelry false positives', () =>
   assert.match(taxonomy, /christmas tree pendant/);
   assert.match(taxonomy, /smart bracelet/);
 });
+
+
+test('BOOM Stylist ranking stays inside the exact route', () => {
+  assert.match(js, /function stylistScore/);
+  assert.match(js, /function contributionScore/);
+  assert.match(js, /function curateWithinRoute/);
+  assert.match(js, /stylistScore\(b\) - stylistScore\(a\)/);
+  assert.match(js, /contributionScore\(b\) - contributionScore\(a\)/);
+  assert.match(js, /function routeProducts\(route\) \{ return curateWithinRoute\(index\?\.byRoute\.get\(route\) \|\| \[\]\); \}/);
+  assert.doesNotMatch(js, /canonical_route\s*=.*stylist/i);
+});
+
+test('Jewelry exact identity blocks clothing display storage and holiday false positives', () => {
+  assert.match(taxonomy, /jumpsuit/);
+  assert.match(taxonomy, /display stand/);
+  assert.match(taxonomy, /watch storage/);
+  assert.match(taxonomy, /christmas tree pendant/);
+});
