@@ -152,6 +152,37 @@ function contextRuleAllowed(rule,proposedDepartment,proposedCategory){
   return true;
 }
 
+function semanticPrefixRoute(product,text){
+  const dep=String(product.proposed_department||product.department||"");
+  const shelf=String(product.proposed_category||product.category||"");
+  if(/^men-/.test(shelf) && dep!=="men" &&
+     /\b(men|mens|men's|male|boy|boys)\b/i.test(text) &&
+     !/\b(women|woman|female|girl|girls|baby|newborn|infant|toddler)\b/i.test(text)){
+    return {department:"men",category:shelf,rule:"SEMANTIC_PREFIX_MEN"};
+  }
+  if((/^baby-/.test(shelf)||/^kids-/.test(shelf)||["girls","boys"].includes(shelf)) && dep!=="kids" &&
+     /\b(baby|newborn|infant|toddler|kid|kids|child|children|girl|girls|boy|boys)\b/i.test(text) &&
+     !/\b(adult|women|woman|men's|men|male|female)\b/i.test(text)){
+    return {department:"kids",category:shelf,rule:"SEMANTIC_PREFIX_KIDS"};
+  }
+  if(/^women-/.test(shelf) && dep!=="women" &&
+     /\b(women|woman|female|ladies|lady)\b/i.test(text) &&
+     !/\b(men's|men|male|baby|newborn|infant|toddler|girl|girls)\b/i.test(text)){
+    return {department:"women",category:shelf,rule:"SEMANTIC_PREFIX_WOMEN"};
+  }
+  if(/^pet-/.test(shelf) && dep!=="pets" &&
+     /\b(dog|cat|pet|puppy|kitten|bird|hamster|rabbit)\b/i.test(text) &&
+     !/\b(pet hair vacuum|pet hair cleaner|pet hair robot)\b/i.test(text)){
+    return {department:"pets",category:shelf,rule:"SEMANTIC_PREFIX_PETS"};
+  }
+  if(/^jewelry-/.test(shelf) && dep!=="accessories" &&
+     /\b(necklace|earring|bracelet|bangle|pendant|ring|jewelry|jewellery|anklet|brooch)\b/i.test(text) &&
+     !/\b(box|storage|display|packaging|holder|stand|tool|decor)\b/i.test(text)){
+    return {department:"accessories",category:shelf,rule:"SEMANTIC_PREFIX_JEWELRY"};
+  }
+  return null;
+}
+
 function classifyProduct(product={}){
   const raw=[product.title,product.source_category,product.category,product.description].filter(Boolean).join(" ");
   if(BLOCKED.test(raw)) return {status:"BLOCK",reason:"POLICY_BLOCKED_TERM",production_exposure:false};
@@ -159,6 +190,19 @@ function classifyProduct(product={}){
   const text=identityText(product);
   const proposedDepartment=String(product.proposed_department||product.department||"").trim();
   const proposedCategory=String(product.proposed_category||product.category||"").trim();
+
+  const prefixRoute=semanticPrefixRoute(product,text);
+  if(prefixRoute){
+    return {
+      status:"REMAP",
+      reason:"SEMANTIC_PREFIX_MATCH",
+      canonical_department:prefixRoute.department,
+      canonical_category:prefixRoute.category,
+      matched_rule:prefixRoute.rule,
+      source_route:{department:proposedDepartment||null,category:proposedCategory||null},
+      production_exposure:false
+    };
+  }
 
   const matches=RULES.filter(r=>
     contextRuleAllowed(r,proposedDepartment,proposedCategory) &&
