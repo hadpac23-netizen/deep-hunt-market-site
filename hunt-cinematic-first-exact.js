@@ -139,6 +139,10 @@ function card(product, preferenceButton = false) {
 function navigation(selection) {
   const d = selection.department;
   $('#dept-nav').innerHTML = DEPARTMENTS.map(dept => `<button type="button" data-dept="${dept.slug}" class="${dept === d ? 'active' : ''}" aria-pressed="${dept === d}" ${dept === d ? 'aria-current="true"' : ''}>${esc(dept.title)}</button>`).join('');
+  $('#all-departments-grid').innerHTML = DEPARTMENTS.map(dept => {
+    const count = departmentProducts(dept).length;
+    return `<button type="button" data-dept-panel="${dept.slug}" class="${dept === d ? 'active' : ''}" ${dept === d ? 'aria-current="true"' : ''}>${esc(dept.title)}<small>${dept.categories.length} categories · ${count} gated</small></button>`;
+  }).join('');
   $('#category-index').innerHTML = d.categories.map(category => {
     const count = category.shelves.reduce((total, shelf) => total + routeProducts(`${d.slug}/${shelf.slug}`).length, 0);
     return `<button type="button" class="cat-chip ${category === selection.category ? 'active' : ''}" data-category="${category.id}" aria-pressed="${category === selection.category}" ${category === selection.category ? 'aria-current="true"' : ''}>${esc(category.title)} · ${count}</button>`;
@@ -260,9 +264,19 @@ function render() {
   updateUrl();
 }
 
+function setDepartmentPanel(open, { focusToggle = false } = {}) {
+  const panel = $('#all-departments-panel');
+  const toggle = $('#all-departments-toggle');
+  panel.hidden = !open;
+  toggle.setAttribute('aria-expanded', String(open));
+  if (open) requestAnimationFrame(() => panel.querySelector('button.active')?.focus() || panel.querySelector('button')?.focus());
+  else if (focusToggle) requestAnimationFrame(() => toggle.focus());
+}
+
 function selectDepartment(slug) {
   if (!DEPARTMENTS.some(department => department.slug === slug)) return;
   Object.assign(state, { department: slug, category: null, shelf: null, visible: 24, preference: '', activeProductKey: null });
+  setDepartmentPanel(false);
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -359,6 +373,26 @@ function focusTrapWorld(event) {
   if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
   else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
 }
+
+$('#all-departments-toggle').addEventListener('click', () => {
+  setDepartmentPanel($('#all-departments-panel').hidden);
+});
+$('#all-departments-close').addEventListener('click', () => setDepartmentPanel(false, { focusToggle: true }));
+$('#all-departments-grid').addEventListener('click', event => {
+  const button = event.target.closest('button[data-dept-panel]');
+  if (button) selectDepartment(button.dataset.deptPanel);
+});
+document.addEventListener('click', event => {
+  if ($('#all-departments-panel').hidden) return;
+  if (event.target.closest('#all-departments-panel') || event.target.closest('#all-departments-toggle')) return;
+  setDepartmentPanel(false);
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && !$('#all-departments-panel').hidden && $('#product-world').hidden) {
+    event.preventDefault();
+    setDepartmentPanel(false, { focusToggle: true });
+  }
+});
 
 $('#dept-nav').addEventListener('click', event => {
   const button = event.target.closest('button[data-dept]');
