@@ -128,7 +128,7 @@ function card(product, preferenceButton = false) {
 
 function navigation(selection) {
   const d = selection.department;
-  $('#dept-nav').innerHTML = DEPARTMENTS.map(dept => `<button type="button" data-dept="${dept.slug}" class="${dept === d ? 'active' : ''}" aria-pressed="${dept === d}">${esc(dept.title)}</button>`).join('');
+  $('#dept-nav').innerHTML = DEPARTMENTS.map(dept => `<button type="button" data-dept="${dept.slug}" class="${dept === d ? 'active' : ''}" aria-pressed="${dept === d}" ${dept === d ? 'aria-current="true"' : ''}>${esc(dept.title)}</button>`).join('');
   $('#category-index').innerHTML = d.categories.map(category => {
     const count = category.shelves.reduce((total, shelf) => total + routeProducts(`${d.slug}/${shelf.slug}`).length, 0);
     return `<button type="button" class="cat-chip ${category === selection.category ? 'active' : ''}" data-category="${category.id}" aria-pressed="${category === selection.category}" ${category === selection.category ? 'aria-current="true"' : ''}>${esc(category.title)} · ${count}</button>`;
@@ -314,7 +314,7 @@ function renderProductWorld(product) {
 }
 function openProduct(product) {
   if (!product || !index) return;
-  lastWorldFocus = document.activeElement;
+  if ($('#product-world').hidden) lastWorldFocus = document.activeElement;
   state.activeProductKey = productKey(product);
   recordInterest(product);
   renderProductWorld(product);
