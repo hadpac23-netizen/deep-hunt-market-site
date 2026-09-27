@@ -1,0 +1,74 @@
+{
+  "version": "HUNT-TAXONOMY-PROFIT-GATE-V2-AUDIT-3",
+  "date": "2026-09-27",
+  "mode": "SHADOW_ONLY",
+  "production_effect": false,
+  "dataset": {
+    "shadow_candidates": 26347
+  },
+  "taxonomy": {
+    "active_remap": 9373,
+    "taxonomy_review": 267,
+    "rollback_marked": 853,
+    "blocked": 4,
+    "legacy_remaining": {
+      "lifestyle": 3669,
+      "baby": 6,
+      "empty_department": 141
+    },
+    "principle": "CATEGORY_TRUTH_BEFORE_SHELF_DENSITY",
+    "legacy_router": "boom-hunt-legacy-lifestyle-router-v2.js",
+    "router_regression": {
+      "passed": 14,
+      "failed": 0
+    },
+    "pass4_qa_guards": [
+      "automotive_no_canonical_department_to_review",
+      "human_apparel_false_pet_to_review",
+      "animal_theme_not_pet_product",
+      "shoe_storage_not_footwear",
+      "cosmetic_bag_not_makeup",
+      "cosmetic_storage_not_makeup",
+      "small_appliance_not_charger",
+      "activewear_not_fitness_accessory",
+      "sunglasses_not_home_mirror",
+      "tech_holder_not_jewelry",
+      "storage_furniture_not_cushion",
+      "car_blind_spot_mirror_not_curtain"
+    ]
+  },
+  "profit": {
+    "profit_review": 8884,
+    "profit_block": 1418,
+    "profit_pass_in_profit_gate_v2": 0,
+    "rule": "Generated target price is not profit proof. PROFIT_PASS requires destination shipping and market validation.",
+    "final_profit_verified": 0
+  },
+  "preview": {
+    "supplement": "evidence/HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27.json",
+    "preview_products": 1678,
+    "canonical_shelves": 102,
+    "represented_departments": 17,
+    "dynamic_supplement_shelves": true,
+    "card_fields": [
+      "target_retail_usd",
+      "projected_product_contribution_usd",
+      "projected_product_margin",
+      "PROFIT_REVIEW"
+    ],
+    "production_off": true
+  },
+  "safety": {
+    "payment_live": false,
+    "supplier_live_order": false,
+    "production_publish": false,
+    "automatic_repricing": false
+  },
+  "next": [
+    "Continue conservative evacuation of remaining lifestyle rows.",
+    "Canonicalize the remaining baby and empty-department rows or quarantine them.",
+    "Run fresh Market5 plus destination shipping only on taxonomy-clean candidates.",
+    "Generate destination-specific PROFIT_PASS only from verified market/shipping evidence.",
+    "Keep TAXONOMY_REVIEW excluded from autofill."
+  ]
+}
