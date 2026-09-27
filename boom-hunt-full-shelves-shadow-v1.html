@@ -93,7 +93,7 @@ const qp=new URLSearchParams(location.search);
 function setTheme(t){document.documentElement.dataset.huntTheme=t;$("#theme").textContent=t==="dark"?"Light":"Dark";history.replaceState(null,"",withParam("theme",t))}
 function withParam(k,v){const q=new URLSearchParams(location.search);q.set(k,v);return location.pathname+"?"+q.toString()}
 $("#theme").addEventListener("click",()=>setTheme(document.documentElement.dataset.huntTheme==="dark"?"light":"dark"));
-const blockedPreview=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|steroid|diet pill|laxative)\b/i;
+const blockedPreview=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|steroid|diet pill|laxative|sex toy|vibrator|dildo|clitoral|strapon)\b/i;
 const accessoryIdentity=/\b(necklace|pendant|choker|earring|bracelet|bangle|jewelry|jewellery|handbag|purse|tote|crossbody|backpack|wallet|belt|scarf|shawl|hat|cap|beanie|sock|hair clip|hairpin|headband|scrunchie|bag charm|bag strap|watch)\b/i;
 const accessoryCategory=/^(accessories|jewelry(?:-.+)?|bags|bag-accessories|hair-accessories|hats|gloves|socks|scarves|belts)$/i;
 function allowedForDepartment(deptSlug,p){
@@ -129,10 +129,12 @@ function card(p){
     : (cj?"Shipping verified · final profit recheck":"Destination/market profit recheck required");
   return '<article class="card"><div class="media"><img loading="lazy" src="'+esc(p.image_url)+'" alt=""></div><div class="card-body"><div class="badges"><span class="badge '+(truth?'truth':'')+'">'+label+'</span><span class="badge">'+esc(p.provider)+'</span>'+(taxV2?'<span class="badge">PROFIT REVIEW</span>':'')+'</div><h3>'+esc(p.title)+'</h3><p>'+esc(p.category_title||p.category)+' · '+esc(profitLine)+'</p></div></article>';
 }
-function renderCategory(cat){
-  const n=visible[cat.slug]||Math.min(24,cat.products.length);
-  const products=cat.products.slice(0,n).map(card).join("");
-  return '<section class="shelf" id="cat-'+esc(cat.slug)+'"><div class="shelf-head"><div class="copy"><p>CANONICAL CATEGORY</p><h2>'+esc(cat.title)+'</h2><div class="meta">'+cat.clean_candidate_count+' clean candidates · '+Math.min(n,cat.products.length)+' shown</div></div><span class="density '+(cat.density_state==="THIN"?'thin':'')+'">'+esc(cat.density_state)+'</span></div><div class="rail">'+products+'</div><button class="more" data-more="'+esc(cat.slug)+'" '+(n>=cat.products.length?'hidden':'')+'>Load 24 more</button></section>';
+function renderCategory(cat,deptSlug){
+  const all=categoryProducts(deptSlug,cat);
+  const n=visible[cat.slug]||Math.min(24,all.length);
+  const products=all.slice(0,n).map(card).join("");
+  const density=all.length>=24?"FULL":all.length>=12?"GOOD":all.length>0?"THIN":"EMPTY";
+  return '<section class="shelf" id="cat-'+esc(cat.slug)+'"><div class="shelf-head"><div class="copy"><p>CANONICAL CATEGORY</p><h2>'+esc(cat.title)+'</h2><div class="meta">'+all.length+' clean candidates · '+Math.min(n,all.length)+' shown</div></div><span class="density '+((density==="THIN"||density==="EMPTY")?'thin':'')+'">'+esc(density)+'</span></div><div class="rail">'+products+'</div><button class="more" data-more="'+esc(cat.slug)+'" '+(n>=all.length?'hidden':'')+'>Load 24 more</button></section>';
 }
 function render(){
   const d=data.departments[active];
