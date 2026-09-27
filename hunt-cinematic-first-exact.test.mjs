@@ -75,3 +75,19 @@ test('the preview uses the linked original Full Shelves CSS and only the existin
   assert.doesNotMatch(script, /READONLY-SNAPSHOT/);
   assert.doesNotMatch(script, /catalog-home|FULL-SHELVES-STYLIST-SHADOW|city-frame|city-hero/i);
 });
+
+
+test('canonical eyeliner remains in Beauty / Makeup', () => {
+  const product = {
+    department:'beauty', category:'makeup',
+    taxonomy_gate_v2:'REMAP',
+    provider:'HUNT', item_id:'test-eyeliner',
+    title:'Double Head Seal Liquid Eyeliner',
+    availability_verified:true, inventory_snapshot:10,
+    production_exposure:false, sell_state:'SHADOW_QA_PROFIT_REVIEW',
+    image_technical_status:'PASS', image_url:'https://example.com/eyeliner.jpg',
+    market5_all_pass:true, candidate_status:'MARKET5_READY_STYLE_PHYSICAL_PENDING',
+    profit_truth:{status:'PROFIT_REVIEW',final_profit_verified:false,projected_product_contribution_usd:2}
+  };
+  assert.equal(isEligible('beauty/makeup', product), true);
+});
