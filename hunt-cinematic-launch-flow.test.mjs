@@ -72,3 +72,18 @@ test('all-departments navigation remains keyboard accessible', () => {
   assert.match(js, /event\.key === 'Escape'/);
   assert.match(css, /\.all-departments-grid/);
 });
+
+
+test('live shadow catalog is preferred with a checked-in fallback', () => {
+  assert.match(js, /hunt-cinematic-shadow-catalog/);
+  assert.match(js, /headers:\s*\{ apikey: LIVE_SHADOW_KEY \}/);
+  assert.match(js, /sourceMode = 'live-shadow'/);
+  assert.match(js, /sourceMode = 'checked-in-fallback'/);
+  assert.match(js, /HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27\.json/);
+});
+
+test('shadow eligibility accepts evidence-pending without treating it as final profit', () => {
+  const taxonomy = readFileSync(new URL('./hunt-cinematic-first-taxonomy.mjs', import.meta.url), 'utf8');
+  assert.match(taxonomy, /PASS_PHYSICAL_EVIDENCE_PENDING/);
+  assert.match(taxonomy, /final_profit_verified !== false/);
+});
