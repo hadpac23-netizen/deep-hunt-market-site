@@ -23,7 +23,7 @@
       <a class="hd-profile-product-media" href="${H.esc(productHref(row))}">${image}</a>
       <div class="hd-profile-product-body">
         <a href="${H.esc(productHref(row))}">${H.esc(row.title||"Product")}</a>
-        <small>${H.esc(row.provider||"")}</small>
+        <small>HUNT product</small>
         <div class="hd-profile-product-flags">
           ${row.liked?'<span>♥ Liked</span>':""}
           ${row.saved?'<span>🔖 Saved</span>':""}
@@ -51,7 +51,7 @@
     </li>`).join("");
     return `<article class="hd-order-card glass">
       <div class="hd-order-head">
-        <div><small>${H.esc(order.provider)}</small><h3>${H.esc(statusLabel(order.status))}</h3></div>
+        <div><small>HUNT order</small><h3>${H.esc(statusLabel(order.status))}</h3></div>
         <div><strong>${H.esc(total)}</strong><span>#${H.esc(order.external_order_id)}</span></div>
       </div>
       <div class="hd-order-meta">
