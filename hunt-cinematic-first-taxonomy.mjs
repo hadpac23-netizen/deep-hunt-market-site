@@ -1584,7 +1584,7 @@ const identityPolicies = {
   'women/women-swim': [/\b(?:swimsuit|swimwear|bikini|tankini|one-piece swimsuit|one piece swimsuit)\b/i, /\b(?:girl|girls|baby|kids?|boys?|men|mens)\b/i],
   'women/women-jeans': [/\b(?:jeans?|denim pants?|denim trousers?)\b/i, /\b(?:jacket|coat|shoes?|boots?|bag|belt|chain|girl|girls|baby|kids?|boys?|men|mens)\b/i],
   'women/women-bottoms': [/\b(?:pants|trousers|shorts)\b/i, /\b(?:set|jacket|coat|sleepwear|pajamas?|leggings|yoga|sports|active|girl|girls|baby|kids?|boys?|men|mens)\b/i],
-  'women/women-shoes': [/\b(?:shoes?|sandals?|slippers?|boots?|heels?|sneakers?|trainers?|loafers?|pumps?)\b/i, /\b(?:insole|insert|pad|pads|sock|socks|stocking|shoelace|shoe lace|shoe horn|shoe helper|shoe rack|shoe cabinet|protector|cover|forefoot|heel grip|cushion|girl|girls|baby|kids?|boys?|men|mens|dog|pet)\b/i],
+  'women/women-shoes': [/\b(?:shoes?|sandals?|slippers?|boots?|heels?|sneakers?|trainers?|loafers?|pumps?)\b/i, /\b(?:insole|insert|pads?|sock|socks|stocking|shoelace|shoe lace|shoe horn|shoe helper|shoe rack|shoe cabinet|shoe protector|shoe cover|forefoot pad|heel grip|heel cushion|shoe cushion|girl|girls|baby|kids?|boys?|men|mens|dog|pet)\b/i],
   'women/women-skirts': [/\bskirt\b/i],
   'women/women-sleepwear': [/\b(?:sleepwear|nightgown|nightdress|pajamas|loungewear|sleep dress|robe)\b/i],
   'women/women-socks': [/\bsocks?\b/i]
