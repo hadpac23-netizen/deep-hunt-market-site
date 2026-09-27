@@ -1521,7 +1521,7 @@ const configuredRoutes = new Set(DEPARTMENTS.flatMap(d => d.categories.flatMap(c
 // Gifts/Party and human clothes in Pets). Hold those rows in this preview;
 // never silently move them to a different shelf. An unreviewed route fails closed.
 const identityPolicies = {
-  'accessories/bag-accessories': [/\bbag charm\b/i],
+  'accessories/bag-accessories': [/\b(?:bag charm|bag pendant|handbag charm|purse charm)\b/i, /\b(?:weapon|gun|pistol|knife|blade|pet|dog|cat|baby)\b/i],
   'accessories/bags': [/\b(?:bag|backpack|schoolbag|wallet|purse|passport (?:holder|case|book)|card holder)\b/i],
   'accessories/hats': [/\b(?:hat|cap|beanie|bucket hat|fisherman hat|sun hat|straw hat|fedora|beret|panama hat|baseball cap|duckbill hat)\b/i, /\b(?:hat rack|hat holder|display stand|mannequin|helmet|bath cap|shower cap|therapy cap|hair care cap|lamp|pendant light|shirt|blouse|dress|ring|pin|brooch|car ornament|dog|cat|pet|baby|newborn|costume)\b/i],
   'accessories/belts': [/\b(?:fashion belt|leather belt|waist belt|dress belt|jeans belt|trouser belt|pants belt|buckle belt)\b/i, /\b(?:support belt|fitness belt|weightlifting|running belt|waist pack|fanny|carrier|safety belt|garter|harness|bag strap|watch band|dog|pet|baby|shoe|boot)\b/i],
@@ -1532,7 +1532,7 @@ const identityPolicies = {
   'accessories/jewelry-bracelets': [/\b(?:bracelets?|bangles?)\b/i, /\b(?:smart bracelet|fitness bracelet|health monitoring|watch band|watch strap|compatible with rolex|smart band|watch storage|storage box|display box|phone case)\b/i],
   'accessories/jewelry-earrings': [/\b(?:earrings?|ear studs?|stud earrings?|hoop earrings?)\b/i, /\b(?:earphone|earbud|headset|ear cleaner|ear cleaning|pet collar|dog collar|cat collar|pet accessory)\b/i],
   'accessories/jewelry-rings': [/\b(?:ring|rings)\b/i, /\b(?:smart ring|pedometer|heart rate|blood oxygen|sleep monitoring|phone ring|ring holder|ring light|curtain ring|key ring|napkin ring|towel ring|office chair|foot ring|steel ring|no steel ring|ring detail|hair ring|swimsuit|bikini|bra|underwear|tank top|spinner|fidget toy|segment ring|jumpsuit|romper|boots?|shoes?)\b/i],
-  'accessories/keychains': [/\b(?:keychain|key chain|keyring|key ring)\b/i, /\b(?:gun|pistol|rifle|knife|blade|weapon|lighter|vape)\b/i],
+  'accessories/keychains': [/\b(?:keychain|key chain|keyring|key ring)\b/i, /\b(?:gun|pistol|rifle|knife|blade|weapon|lighter|vape|self defense|self-defense|kubaton|tactical impact)\b/i],
   'accessories/jewelry-necklaces': [/\b(?:necklace|choker|chain necklace|pendant necklace)\b/i, /\b(?:teether|teething|nursing|swimsuit|bikini|blind box|diy|socks?|tapestry|curtain|shorts|skirt|pants|christmas tree pendant|tree pendant|wall pendant|home decoration|gift bag|candy bag|toy|children|kids?|baby|pet|for dogs?|for cats?|dog chain|pet collar|display stand|display rack|jewelry display|stand rack)\b/i],
   'accessories/watches': [/\b(?:wristwatch|wrist watch|quartz watch|automatic watch|mechanical watch|dress watch|sports watch|bracelet watch|leather watch)\b/i, /\b(?:smart ?watch|smartwatch|watch box|watch case|watch storage|watch winder|watch band|watch strap|display stand|display rack|ring watch|watch ring|wireless charger|charging dock|power bank|headphones?|bluetooth speaker)\b/i],
   'accessories/scarves': [/\b(?:scarf|shawl|headscarf|neck scarf|stole|pashmina)\b/i, /\b(?:dental|disposable|protective pad|bib|chest scarf|table runner|gift wrap|food wrap|bandage|medical)\b/i],
