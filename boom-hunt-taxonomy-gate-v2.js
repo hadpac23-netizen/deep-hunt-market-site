@@ -37,6 +37,83 @@ const RULES=[
   {id:"PARTY",department:"gifts",category:null,rx:/\b(party decoration|party supplies|balloon|gift wrap|wrapping paper|gift box|greeting card|party favor)\b/i,review:true}
 ];
 
+const PROPOSED_ROUTE_RULES={
+  "accessories/bag-accessories":/\b(bag strap|bag charm|bag chain|bag organizer|purse strap|handbag strap|bag accessory)\b/i,
+  "accessories/gloves":/\b(glove|gloves|mitten|mittens)\b/i,
+  "accessories/hair-accessories":/\b(hair clip|hair band|hair pin|hair claw|hair tie|scrunchie|headband|barrette)\b/i,
+  "accessories/hats":/\b(hat|cap|beanie|beret|bucket hat|baseball cap)\b/i,
+  "accessories/jewelry":/\b(jewelry set|jewellery set|necklace.+earring|earring.+necklace|bracelet.+necklace)\b/i,
+  "accessories/jewelry-earrings":/\b(earring|earrings)\b/i,
+  "accessories/jewelry-necklaces":/\b(necklace|necklaces|pendant necklace)\b/i,
+  "accessories/socks":/\b(sock|socks|stocking|stockings)\b/i,
+  "accessories/bags":/\b(handbag|shoulder bag|crossbody bag|backpack|tote bag|purse)\b/i,
+  "accessories/scarves":/\b(scarf|scarves|shawl|wrap)\b/i,
+  "accessories/belts":/\b(belt|belts)\b/i,
+  "accessories/jewelry-bracelets":/\b(bracelet|bracelets|bangle|bangles)\b/i,
+
+  "beauty/nails":/\b(nail art|nail polish|nail tips|nail sticker|manicure|press[- ]?on nails|fake nails)\b/i,
+
+  "home/bath":/\b(bath mat|bathroom|shower curtain|soap dish|towel rack|bath caddy|bath towel)\b/i,
+  "home/bedding":/\b(bed sheet|duvet|quilt|pillow|bedding|mattress cover|bed cover)\b/i,
+  "home/cleaning":/\b(cleaning|mop|duster|scrubber|dustpan|broom|squeegee)\b/i,
+  "home/curtains":/\b(curtain|curtains|window blind|drape|drapes)\b/i,
+  "home/home-storage":/\b(storage box|storage basket|storage bag|storage rack|organizer|drawer organizer)\b/i,
+  "home/laundry":/\b(laundry|hamper|clothes drying|drying rack|ironing|clothes hanger)\b/i,
+  "home/lighting":/\b(lamp|lighting|night light|led light|table light|wall light|ceiling light)\b/i,
+  "home/mirrors":/\b(mirror|mirrors)\b/i,
+  "home/rugs":/\b(rug|rugs|carpet|floor mat|doormat)\b/i,
+  "home/wall-decor":/\b(wall art|wall decor|wall clock|wall sticker|wall shelf|poster)\b/i,
+
+  "kids/baby-clothing":/\b(baby|newborn|infant).{0,30}\b(romper|onesie|bodysuit|clothes|clothing|outfit|pants|shirt|dress|jumpsuit)\b/i,
+
+  "men/men-boxers":/\b(boxer|boxers|boxer briefs)\b/i,
+  "men/men-clothing":/\b(men's clothing|mens clothing|men clothing|men outfit|men casual set)\b/i,
+  "men/men-hoodies":/\b(hoodie|hoodies|sweatshirt|sweatshirts)\b/i,
+  "men/men-jeans":/\b(jean|jeans|denim pants|denim trousers)\b/i,
+  "men/men-knitwear":/\b(sweater|sweaters|knitwear|knitted cardigan|pullover)\b/i,
+  "men/men-socks":/\b(sock|socks|stocking|stockings)\b/i,
+  "men/men-suits":/\b(suit|suits|blazer|blazers|tuxedo)\b/i,
+  "men/men-underwear":/\b(underwear|brief|briefs|underpants)\b/i,
+  "men/men-bottoms":/\b(pants|trousers|shorts|cargo pants|joggers)\b/i,
+  "men/men-outerwear":/\b(jacket|jackets|coat|coats|parka|windbreaker)\b/i,
+  "men/men-tops":/\b(t[- ]?shirt|shirt|shirts|polo|tank top)\b/i,
+
+  "office/crafts":/\b(craft|crafts|diy|embroidery|knitting|crochet|beading|scrapbook|sewing|stamp punch|wooden chips)\b/i,
+  "office/stickers":/\b(sticker|stickers|decal|decals)\b/i,
+  "office/office-storage":/\b(desk organizer|file organizer|document holder|pen holder|office storage|desktop storage)\b/i,
+  "office/stationery":/\b(notebook|pen|pencil|marker|eraser|stationery|sticky note|paper clip|sketch book)\b/i,
+
+  "pets/aquarium":/\b(aquarium|fish tank|aquatic|fish filter|fish feeder)\b/i,
+  "pets/pet-clothing":/\b(pet clothes|pet clothing|dog clothes|dog coat|dog shirt|cat clothes|cat clothing|pet hoodie|dog hoodie)\b/i,
+  "pets/pet-houses":/\b(pet house|dog house|cat house|pet bed|dog bed|cat bed|pet condo|cat condo)\b/i,
+  "pets/pet-grooming":/\b(pet grooming|dog grooming|cat grooming|pet brush|dog brush|cat brush|deshedding|pet nail clipper)\b/i,
+
+  "sports/outdoors":/\b(hiking|trekking|outdoor training|outdoor sport|climbing accessory)\b/i,
+  "sports/sports-gear":/\b(basketball|football|soccer|tennis|badminton|volleyball|sports gear|training gear)\b/i,
+  "sports/fitness-accessories":/\b(resistance band|yoga mat|fitness band|workout band|gym accessory|fitness accessory|exercise band)\b/i,
+  "sports/active-bottoms":/\b(yoga pants|sports shorts|gym shorts|running pants|training pants|workout leggings)\b/i,
+
+  "tech/gaming":/\b(gaming|gamepad|game controller|gaming mouse|gaming keyboard|controller)\b/i,
+  "tech/phone-cases":/\b(phone case|iphone case|galaxy case|smartphone case|mobile phone case)\b/i,
+  "tech/wearable-accessories":/\b(watch band|watch strap|smartwatch band|smart watch band|wearable strap)\b/i,
+
+  "women/women-bottoms":/\b(women.{0,20}(pants|trousers|shorts)|wide leg pants|women cargo pants)\b/i,
+  "women/women-hoodies":/\b(hoodie|hoodies|sweatshirt|sweatshirts)\b/i,
+  "women/women-knitwear":/\b(sweater|sweaters|cardigan|knitwear|knitted top|knitted pullover)\b/i,
+  "women/women-sleepwear":/\b(pajama|pajamas|pyjama|pyjamas|nightgown|sleepwear|nightwear|robe)\b/i,
+  "women/women-socks":/\b(sock|socks|stocking|stockings|pantyhose)\b/i,
+  "women/women-skirts":/\b(skirt|skirts)\b/i,
+  "women/women-outerwear":/\b(jacket|jackets|coat|coats|parka|windbreaker)\b/i,
+  "women/women-evening":/\b(evening dress|prom dress|party dress|cocktail dress|formal dress|occasion dress)\b/i,
+
+  "camping/camping-cook":/\b(camping (cookware|pot|kettle|utensil|tableware)|picnic cookware|camping kitchen)\b/i,
+  "camping/camping-sleep":/\b(sleeping bag|camping pillow|camping mat|camping mattress|air mattress)\b/i,
+
+  "toys/building-toys":/\b(building blocks|construction blocks|brick set|building toy|construction toy)\b/i,
+  "garden/garden-lighting":/\b(garden light|solar garden light|outdoor garden light|landscape light)\b/i,
+  "garden/garden-tools":/\b(garden tool|gardening tool|planting shovel|garden rake|watering tool|plant tool)\b/i
+};
+
 const CROSS_DEPARTMENT_EXCLUSIONS=[
   {department:"gifts",rx:/\b(necklace|pendant|choker|earring|bracelet|bangle|jewelry|jewellery|handbag|purse|tote|crossbody|backpack|wallet|belt|scarf|shawl|hat|cap|beanie|sock|hair clip|hairpin|headband|scrunchie|watch)\b/i,reason:"CORE_PRODUCT_IS_NOT_GIFT"},
   {department:"accessories",rx:/\b(dog|cat|pet|puppy|kitten)\b.{0,50}\b(bandana|scarf|collar|leash|harness|bed|house|coat|shirt|hoodie)\b/i,reason:"PET_PRODUCT_NOT_FASHION_ACCESSORY"},
@@ -71,6 +148,17 @@ function classifyProduct(product={}){
   }
 
   if(!high){
+    const routeKey=proposedDepartment+"/"+proposedCategory;
+    const proposedRule=PROPOSED_ROUTE_RULES[routeKey];
+    if(proposedRule && proposedRule.test(text)){
+      return {
+        status:"PASS",
+        canonical_department:proposedDepartment,
+        canonical_category:proposedCategory,
+        matched_rule:"PROPOSED_ROUTE_SEMANTIC_PASS",
+        production_exposure:false
+      };
+    }
     return {
       status:"TAXONOMY_REVIEW",
       reason:"NO_HIGH_CONFIDENCE_CORE_IDENTITY",
@@ -112,4 +200,4 @@ function classifyProduct(product={}){
   };
 }
 
-module.exports={classifyProduct,cleanText,RULES,CROSS_DEPARTMENT_EXCLUSIONS};
+module.exports={classifyProduct,cleanText,RULES,PROPOSED_ROUTE_RULES,CROSS_DEPARTMENT_EXCLUSIONS};
