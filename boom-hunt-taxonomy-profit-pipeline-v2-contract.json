@@ -1,0 +1,27 @@
+{
+  "version": "HUNT-TAXONOMY-PROFIT-PIPELINE-V2",
+  "date": "2026-09-27",
+  "mode": "SHADOW_ONLY",
+  "production_effect": false,
+  "pipeline": [
+    "SUPPLIER_RAW_INPUT",
+    "NORMALIZE",
+    "TAXONOMY_GATE_V2",
+    "SAFETY",
+    "EXACT_VARIANT_AND_STOCK",
+    "PRICE_GATE_V2_1_MATH",
+    "MARKET_VALIDATION",
+    "DESTINATION_SHIPPING",
+    "PROFIT_GATE_V2",
+    "BOOM_STYLIST_RANKING",
+    "SHELF"
+  ],
+  "shelf_rule": "A product can appear in Shadow QA after taxonomy/safety eligibility, but it cannot become sell-ready until Profit Gate passes for the destination.",
+  "profit_rule": "Never treat generated retail or projected contribution as final realized net profit.",
+  "owner_gate": [
+    "PRODUCTION_PUBLISH",
+    "LIVE_REPRICE",
+    "PAYMENT",
+    "SUPPLIER_ORDER"
+  ]
+}
