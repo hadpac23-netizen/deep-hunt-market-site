@@ -1601,7 +1601,7 @@ export function isEligible(route, p) {
   if (p.availability_verified !== true || !(Number(p.inventory_snapshot) > 0)) return false;
   if (p.production_exposure !== false || p.sell_state !== 'SHADOW_QA_PROFIT_REVIEW') return false;
   if (p.image_technical_status !== 'PASS' || !/^https:\/\//i.test(p.image_url || '')) return false;
-  if (p.market5_all_pass !== true || !/^MARKET5_READY_STYLE_(?:PHYSICAL_PENDING|PASS_PHYSICAL_METADATA_VERIFIED)$/.test(p.candidate_status || '')) return false;
+  if (p.market5_all_pass !== true || !/^MARKET5_READY_STYLE_(?:PHYSICAL_PENDING|PASS_PHYSICAL_EVIDENCE_PENDING|PASS_PHYSICAL_METADATA_VERIFIED)$/.test(p.candidate_status || '')) return false;
   if (p.profit_truth?.status !== 'PROFIT_REVIEW' || p.profit_truth.final_profit_verified !== false) return false;
   if (!(Number(p.profit_truth.projected_product_contribution_usd) > 0)) return false;
   if (restricted.test(p.title)) return false;
