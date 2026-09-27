@@ -1523,6 +1523,11 @@ const configuredRoutes = new Set(DEPARTMENTS.flatMap(d => d.categories.flatMap(c
 const identityPolicies = {
   'accessories/bag-accessories': [/\bbag charm\b/i],
   'accessories/bags': [/\b(?:bag|backpack|schoolbag|wallet|purse|passport (?:holder|case|book)|card holder)\b/i],
+  'accessories/hats': [/\b(?:hat|cap|beanie|bucket hat|fedora|beret)\b/i, /\b(?:hat rack|hat holder|display stand|mannequin|helmet|ring|pin|brooch|car ornament|dog|cat|pet|baby|newborn|coat|jacket)\b/i],
+  'accessories/belts': [/\b(?:fashion belt|leather belt|waist belt|dress belt|jeans belt|trouser belt|pants belt|buckle belt)\b/i, /\b(?:support belt|fitness belt|weightlifting|running belt|waist pack|fanny|carrier|safety belt|garter|harness|bag strap|watch band|dog|pet|baby|shoe|boot)\b/i],
+  'accessories/gloves': [/\b(?:winter gloves?|knitted gloves?|leather gloves?|fashion gloves?|fingerless gloves?|mittens?)\b/i, /\b(?:pet|dog|cat|oven|kitchen|cleaning|gardening|work gloves?|welding|boxing|goalkeeper|motorcycle|cycling|fitness|weightlifting|medical|rehabilitation|heat press|tool|costume|mask)\b/i],
+  'accessories/hair-accessories': [/\b(?:hair clips?|hair claws?|scrunchies?|headbands?|hair bands?|hair ties?|barrettes?|hairpins?|head rope|hair rope)\b/i, /\b(?:extension|wig|dryer|brush|shampoo|pet|dog|cat|baby|phone|case)\b/i],
+  'accessories/sunglasses': [/\b(?:sunglasses?|sun glasses)\b/i, /\b(?:case|holder|strap|organizer|repair|protective goggles?|safety glasses?|kids?|children|baby|dog|pet)\b/i],
   'accessories/jewelry': [/\b(?:brooch|jewelry|jewellery|pin)\b/i],
   'accessories/jewelry-bracelets': [/\bbracelets?\b/i],
   'accessories/jewelry-earrings': [/\bearrings?\b/i],
