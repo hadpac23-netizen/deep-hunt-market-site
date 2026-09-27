@@ -188,3 +188,33 @@ body.world-open{overflow:hidden}
 .hunt-price-badge{color:var(--ink);border-color:color-mix(in srgb,var(--spark) 45%,var(--edge))}
 @media(max-width:620px){.account-link{padding:7px 10px;font-size:10px}.hunt-price{font-size:17px}}
 
+/* Accessible all-departments navigation. */
+.dept-row{display:flex;align-items:center;gap:10px;margin-top:10px}
+.dept-row .dept-nav{margin-top:0;flex:1;min-width:0}
+.all-departments-toggle{flex:0 0 auto;border:1px solid var(--edge);background:var(--panel2);color:var(--ink);
+  border-radius:999px;padding:8px 12px;font-size:10px;font-weight:900;cursor:pointer;white-space:nowrap}
+.all-departments-toggle[aria-expanded="true"]{border-color:var(--accent);box-shadow:0 0 18px var(--glow)}
+.all-departments-panel{position:absolute;left:clamp(16px,3vw,42px);right:clamp(16px,3vw,42px);top:100%;
+  border:1px solid var(--edge);border-top:0;border-radius:0 0 26px 26px;background:color-mix(in srgb,var(--panel2) 96%,var(--bg));
+  box-shadow:0 34px 80px rgba(0,0,0,.36);padding:18px;backdrop-filter:blur(22px)}
+.all-departments-panel[hidden]{display:none}
+.all-departments-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+.all-departments-head span{display:block;color:var(--spark);font-size:8px;letter-spacing:.16em;font-weight:900}
+.all-departments-head strong{display:block;font:700 22px/1.1 Georgia,serif;margin-top:4px}
+.all-departments-head button{border:1px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:999px;
+  padding:8px 11px;font-size:9px;font-weight:850;cursor:pointer}
+.all-departments-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.all-departments-grid button{border:1px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:16px;
+  min-height:54px;padding:10px 12px;text-align:left;font-size:11px;font-weight:850;cursor:pointer}
+.all-departments-grid button small{display:block;margin-top:4px;color:var(--muted);font-size:8px;font-weight:750}
+.all-departments-grid button.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--panel))}
+.all-departments-toggle:focus-visible,.all-departments-head button:focus-visible,.all-departments-grid button:focus-visible{
+  outline:3px solid color-mix(in srgb,var(--spark) 80%,white);outline-offset:3px
+}
+@media(max-width:860px){.all-departments-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:620px){
+  .dept-row{gap:7px}.all-departments-toggle{padding:8px 10px;font-size:9px}
+  .all-departments-panel{left:0;right:0;padding:14px;border-radius:0 0 22px 22px}
+  .all-departments-grid{grid-template-columns:repeat(2,minmax(0,1fr));max-height:58vh;overflow:auto}
+}
+
