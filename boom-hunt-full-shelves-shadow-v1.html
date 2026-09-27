@@ -125,6 +125,28 @@ const aggregateRails={
   "men/men-clothing":["men-tops","men-suits","men-jeans","men-bottoms","men-outerwear","men-knitwear","men-hoodies"],
   "women/women-clothing":["women-dresses","women-evening","women-suits","women-tops","women-jeans","women-bottoms","women-skirts","women-knitwear","women-outerwear","women-hoodies"]
 };
+function titleFromSlug(slug){
+  return String(slug||"").split("-").map(x=>x?x[0].toUpperCase()+x.slice(1):"").join(" ");
+}
+function mergeSupplementCategories(){
+  if(!data||!taxonomySupplement?.shelves)return;
+  for(const key of Object.keys(taxonomySupplement.shelves)){
+    const slash=key.indexOf("/");
+    if(slash<1)continue;
+    const deptSlug=key.slice(0,slash),catSlug=key.slice(slash+1);
+    const d=data.departments.find(x=>x.slug===deptSlug);
+    if(!d)continue;
+    if(!d.categories.some(x=>x.slug===catSlug)){
+      d.categories.push({
+        slug:catSlug,
+        title:titleFromSlug(catSlug),
+        clean_candidate_count:taxonomySupplement.shelves[key].length,
+        density_state:taxonomySupplement.shelves[key].length>=24?"FULL":taxonomySupplement.shelves[key].length>=12?"GOOD":"THIN",
+        products:[]
+      });
+    }
+  }
+}
 function categoryProducts(deptSlug,cat){
   const route=deptSlug+"/"+cat.slug;
   const sources=aggregateRails[route];
