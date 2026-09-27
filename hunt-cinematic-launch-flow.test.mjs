@@ -87,3 +87,33 @@ test('shadow eligibility accepts evidence-pending without treating it as final p
   assert.match(taxonomy, /PASS_PHYSICAL_EVIDENCE_PENDING/);
   assert.match(taxonomy, /final_profit_verified !== false/);
 });
+
+
+test('Women navigation is grouped without changing canonical routes', () => {
+  assert.match(js, /DEPARTMENT_NAV_GROUPS/);
+  assert.match(js, /Lingerie & Sleep/);
+  assert.match(js, /data-category/);
+  assert.match(js, /Complete the look/);
+  assert.match(css, /\.category-index\.grouped/);
+  assert.match(css, /\.category-group/);
+});
+
+test('Women underwear sleepwear and shoes expose safe type filters inside the same canonical shelf', () => {
+  assert.match(js, /women\/women-underwear/);
+  assert.match(js, /Bras/);
+  assert.match(js, /Thongs/);
+  assert.match(js, /Shapewear/);
+  assert.match(js, /Bodysuits/);
+  assert.match(js, /Robes & Dressing Gowns/);
+  assert.match(js, /Sneakers & Trainers/);
+  assert.match(js, /Heels/);
+  assert.match(js, /Boots/);
+  assert.match(js, /segmentDefinition/);
+  assert.match(js, /productsForSegment/);
+  assert.doesNotMatch(js, /canonical_route\s*=.*segment/);
+});
+
+test('empty type filters are disabled instead of borrowing products', () => {
+  assert.match(js, /count === 0 \? 'disabled aria-disabled="true"'/);
+  assert.match(html, /id="segment-buttons"/);
+});
