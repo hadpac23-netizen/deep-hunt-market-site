@@ -25,12 +25,11 @@ const profile = (() => {
     const saved = JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}');
     return {
       terms: Array.isArray(saved.terms) ? saved.terms.slice(-40) : [],
-      providers: saved.providers && typeof saved.providers === 'object' ? saved.providers : {},
       departments: saved.departments && typeof saved.departments === 'object' ? saved.departments : {},
       routes: saved.routes && typeof saved.routes === 'object' ? saved.routes : {}
     };
   } catch {
-    return { terms: [], providers: {}, departments: {}, routes: {} };
+    return { terms: [], departments: {}, routes: {} };
   }
 })();
 
@@ -86,7 +85,6 @@ function recordInterest(product) {
   const route = product.canonical_route;
   profile.terms.push(...semanticWords(product.title).slice(0, 6));
   profile.terms = profile.terms.slice(-40);
-  profile.providers[product.provider] = (profile.providers[product.provider] || 0) + 1;
   profile.departments[dept] = (profile.departments[dept] || 0) + 1;
   profile.routes[route] = (profile.routes[route] || 0) + 1;
   persistProfile();
@@ -96,7 +94,6 @@ function similarityScore(product, anchor) {
   const words = new Set(semanticWords(product.title));
   const anchorWords = semanticWords(anchor.title);
   let score = anchorWords.reduce((sum, word) => sum + (words.has(word) ? 4 : 0), 0);
-  if (product.provider === anchor.provider) score += 2;
   if (productDepartment(product) === productDepartment(anchor)) score += 3;
   if (product.canonical_route === anchor.canonical_route) score += 7;
   return score;
@@ -105,7 +102,6 @@ function personalizationScore(product, anchor) {
   const words = new Set(semanticWords(product.title));
   let score = similarityScore(product, anchor);
   profile.terms.forEach((word, i) => { if (words.has(word)) score += 1 + i / Math.max(1, profile.terms.length); });
-  score += (profile.providers[product.provider] || 0) * 1.4;
   score += (profile.departments[productDepartment(product)] || 0) * 1.2;
   score += (profile.routes[product.canonical_route] || 0) * 2.2;
   return score;
