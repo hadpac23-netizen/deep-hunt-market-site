@@ -1536,6 +1536,8 @@ const identityPolicies = {
   'accessories/watches': [/\b(?:watch|wristwatch|quartz watch|automatic watch)\b/i, /\b(?:watch box|watch case|watch storage)\b/i],
   'accessories/scarves': [/\b(?:scarf|shawl|wrap|headscarf|neck scarf)\b/i, /\b(?:dental|disposable|protective pad|bib|chest scarf)\b/i],
   'accessories/socks': [/\bsocks?\b/i, /\b(?:Christmas|gift bag|candy bag|storage box|sorting box|sock pads|sock covers|baby|newborn|electric|heating)\b/i],
+  'beauty/body-care': [/\b(?:body lotion|body cream|body wash|body scrub|body oil|body butter|hand cream|foot cream|moisturizing body cream|moisturising body cream)\b/i, /\b(?:weight loss|slimming|enhancement|enlargement|intimate|whitening|bleaching|eczema|psoriasis|pain relief|baby|pet|dog|cat)\b/i],
+  'beauty/fragrance': [/\b(?:perfume|eau de parfum|eau de toilette|cologne)\b/i, /\b(?:empty bottle|bottle only|pendant|keychain|key chain|car perfume|air freshener|candle|essential oil|diffuser|deodorant|shower gel|hair spray)\b/i],
   'beauty/beauty-tools': [/\b(?:shaver|trimmer|beauty tool|shampoo brush|scalp brush|hair brush|head massager|scalp massager)\b/i],
   'beauty/nails': [/\b(?:nail polish|nail art|manicure|pedicure|gel polish|nail lamp|nail drill|nail file|nail tips|press on nails)\b/i, /\b(?:glasses|eyeglass|frame|blue light|myopia)\b/i],
   'beauty/makeup': [/\b(?:makeup|lip gloss|lipstick|lip tint|eyeliner|mascara|eyeshadow|eye shadow|foundation|concealer|blush|brow|eyebrow|contour|primer|setting powder|face powder|cleansing puff)\b/i],
