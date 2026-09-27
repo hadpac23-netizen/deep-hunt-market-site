@@ -55,6 +55,14 @@ function departmentProducts(department) {
 }
 
 function productKey(product) { return `${product.provider}:${product.item_id}`; }
+function huntPrice(product) {
+  const value = Number(product?.profit_truth?.target_retail_usd);
+  return Number.isFinite(value) && value > 0 ? value : null;
+}
+function huntMoney(product) {
+  const value = huntPrice(product);
+  return value == null ? '' : new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(value);
+}
 function productDepartment(product) { return String(product.canonical_route || '').split('/')[0] || product.department || ''; }
 function semanticWords(value) {
   const stop = new Set(['with','from','this','that','your','women','woman','mens','men','kids','baby','the','and','for','set','new']);
@@ -115,8 +123,10 @@ function card(product, preferenceButton = false) {
   const key = productKey(product);
   return `<article class="card ${state.activeProductKey === key ? 'is-selected' : ''}" data-route="${esc(product.canonical_route)}" data-product-key="${esc(key)}">
     <div class="media"><img src="${esc(product.image_url)}" alt="${esc(product.title)}" loading="lazy"></div>
-    <div class="card-body"><div class="badges"><span class="badge truth">TAXONOMY V2</span><span class="badge">${esc(product.provider)}</span></div>
-      <h3>${esc(product.title)}</h3><p>${esc(product.canonical_route)} · verified stock snapshot</p>
+    <div class="card-body"><div class="badges"><span class="badge truth">HUNT VERIFIED</span></div>
+      <h3>${esc(product.title)}</h3>
+      <div class="hunt-price">${huntMoney(product) || 'Price finalizing'}</div>
+      <p>${esc(product.canonical_route)} · verified stock snapshot</p>
       <p class="gate-line">Image PASS · Profit REVIEW · checkout OFF</p>
       <div class="card-actions">
         <button type="button" class="open-product" data-open-product="${esc(key)}" aria-label="Open ${esc(product.title)}">Open product</button>
@@ -297,7 +307,7 @@ function renderProductWorld(product) {
   $('#product-world-title').textContent = product.title;
   $('#product-world-path').textContent = product.canonical_route;
   $('#product-world-route').textContent = product.canonical_route;
-  $('#product-world-badges').innerHTML = `<span class="badge truth">TAXONOMY V2</span><span class="badge">${esc(product.provider)}</span>`;
+  $('#product-world-badges').innerHTML = `<span class="badge truth">HUNT VERIFIED</span>${huntMoney(product) ? `<span class="badge hunt-price-badge">${esc(huntMoney(product))}</span>` : ''}`;
   const stock = Number(product.inventory_snapshot);
   $('#product-world-status').textContent = [
     Number.isFinite(stock) && stock > 0 ? `Verified stock snapshot: ${stock}` : 'Verified stock snapshot',
