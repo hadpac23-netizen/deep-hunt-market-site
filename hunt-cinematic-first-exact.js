@@ -1,6 +1,9 @@
 import { DEPARTMENTS, buildIndex, resolveSelection, rankWithinRoute } from './hunt-cinematic-first-taxonomy.mjs';
 
+const LIVE_SHADOW_SOURCE = 'https://zszlnahjqmwozwubetkm.supabase.co/functions/v1/hunt-cinematic-shadow-catalog';
+const LIVE_SHADOW_KEY = 'sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X';
 const V2_SOURCE = './evidence/HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27.json';
+let sourceMode = 'loading';
 const $ = selector => document.querySelector(selector);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const relatedWorlds = {
@@ -458,15 +461,33 @@ $('#theme').addEventListener('click', () => theme(document.documentElement.datas
 theme(query.get('theme') === 'light' ? 'light' : 'dark');
 render();
 
-fetch(V2_SOURCE, { credentials: 'omit', cache: 'no-store' }).then(response => {
-  if (!response.ok) throw new Error(`V2 source returned ${response.status}`);
-  return response.json();
-}).then(supplement => {
+async function fetchCatalogSource() {
+  try {
+    const live = await fetch(LIVE_SHADOW_SOURCE, {
+      credentials: 'omit',
+      cache: 'no-store',
+      headers: { apikey: LIVE_SHADOW_KEY }
+    });
+    if (!live.ok) throw new Error(`Live shadow source returned ${live.status}`);
+    const data = await live.json();
+    sourceMode = 'live-shadow';
+    return data;
+  } catch (liveError) {
+    const fallback = await fetch(V2_SOURCE, { credentials: 'omit', cache: 'no-store' });
+    if (!fallback.ok) throw new Error(`V2 fallback returned ${fallback.status}`);
+    sourceMode = 'checked-in-fallback';
+    return fallback.json();
+  }
+}
+
+fetchCatalogSource().then(supplement => {
   index = buildIndex(supplement);
+  sourceError = null;
   render();
   const requested = state.activeProductKey ? productByKey(state.activeProductKey) : null;
   if (requested) requestAnimationFrame(() => openProduct(requested));
 }).catch(() => {
+  sourceMode = 'unavailable';
   sourceError = 'UNAVAILABLE';
   render();
 });
