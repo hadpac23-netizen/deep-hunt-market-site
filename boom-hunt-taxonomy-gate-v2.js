@@ -27,7 +27,7 @@ const RULES=[
   {id:"JEWELRY_NECKLACE",department:"accessories",category:"jewelry-necklaces",rx:/\b(necklace|necklaces|pendant|choker)\b/i},
   {id:"JEWELRY_EARRING",department:"accessories",category:"jewelry-earrings",rx:/\b(earring|earrings)\b/i},
   {id:"JEWELRY_BRACELET",department:"accessories",category:"jewelry-bracelets",rx:/\b(bracelet|bracelets|bangle|bangles)\b/i},
-  {id:"JEWELRY_GENERIC",department:"accessories",category:"jewelry",rx:/\b(ring|rings|anklet|anklets|brooch|brooches|lapel pin|enamel pin|badge)\b/i,exclude:/\b(key ring|keyring|storage ring|retaining ring|o-ring|ring light|phone ring|camera ring)\b/i},
+  {id:"JEWELRY_GENERIC",department:"accessories",category:"jewelry",rx:/\b(ring|rings|anklet|anklets|brooch|brooches|lapel pin|enamel pin|badge)\b/i,exclude:/\b(key ring|keyring|storage ring|retaining ring|o-ring|ring light|phone ring|camera ring|storage|packaging|display|organizer|holder|stand|tool|toy|automotive|decor|wreath|lamp|light|jig|drill|air freshener|perfume diffuser|underwear|bra|dress|shirt|swim|bikini|jumpsuit|pants|leggings)\b/i},
   {id:"WALLET",department:"accessories",category:"bags",rx:/\b(wallet|wallets|card holder|cardholder|coin purse)\b/i,exclude:/\b(water bottle|storage box|organizer|tray|car holder|phone holder)\b/i},
   {id:"HAIR_ACCESSORY",department:"accessories",category:"hair-accessories",rx:/\b(hair clip|hairpin|hair pin|hair claw|hair tie|scrunchie|headband|barrette|hair comb)\b/i},
   {id:"HAT",department:"accessories",category:"hats",rx:/\b(bucket hat|baseball cap|beanie|beret|hat|caps?)\b/i,exclude:/\b(head lamp|headlamp|cap light|hat light|helmet light)\b/i},
@@ -129,9 +129,14 @@ const CROSS_DEPARTMENT_EXCLUSIONS=[
 
 function cleanText(v){return String(v||"").replace(MARKETING_TAGS," ").replace(/\s+/g," ").trim();}
 function identityText(p){return cleanText([p.title,p.source_category,p.category,p.description].filter(Boolean).join(" "));}
-function contextRuleAllowed(rule,proposedDepartment){
+function contextRuleAllowed(rule,proposedDepartment,proposedCategory){
   const dep=String(proposedDepartment||"");
-  if(rule.id==="JEWELRY_GENERIC"||rule.id==="WALLET"){
+  const cat=String(proposedCategory||"");
+  if(rule.id==="JEWELRY_GENERIC"){
+    if(dep==="accessories" && /^jewelry-(necklaces|earrings|bracelets)$/.test(cat)) return false;
+    return ["","lifestyle","gifts","accessories"].includes(dep);
+  }
+  if(rule.id==="WALLET"){
     return ["","lifestyle","gifts","accessories"].includes(dep);
   }
   if(rule.id==="WEARABLE_DEVICE"||rule.id==="WEARABLE_ACCESSORY"){
@@ -149,7 +154,7 @@ function classifyProduct(product={}){
   const proposedCategory=String(product.proposed_category||product.category||"").trim();
 
   const matches=RULES.filter(r=>
-    contextRuleAllowed(r,proposedDepartment) &&
+    contextRuleAllowed(r,proposedDepartment,proposedCategory) &&
     r.rx.test(text) &&
     !(r.exclude&&r.exclude.test(text))
   );
