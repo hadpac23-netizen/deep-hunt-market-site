@@ -1,6 +1,6 @@
 "use strict";
 
-const BLOCKED=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|firework|explosive|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|steroid|diet pill|laxative)\b/i;
+const BLOCKED=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|firework|explosive|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|steroid|diet pill|laxative|sex toy|vibrator|dildo|strapon|clitoral)\b/i;
 
 const MARKETING_TAGS=/\b(gift|gifts|gift for her|gift for him|birthday gift|christmas gift|summer|winter|trending|viral|new arrival|hot sale|best seller|for her|for him)\b/ig;
 
@@ -14,7 +14,7 @@ const RULES=[
 
   {id:"PHONE_CASE",department:"tech",category:"phone-cases",rx:/\b(phone|iphone|galaxy|smartphone|mobile)\b.{0,30}\b(case|cover)\b|\b(case|cover)\b.{0,30}\b(phone|iphone|galaxy|smartphone|mobile)\b/i},
   {id:"GAMING",department:"tech",category:"gaming",rx:/\b(gamepad|game controller|gaming mouse|gaming keyboard|gaming controller)\b/i},
-  {id:"WEARABLE_DEVICE",department:"tech",category:"wearable-accessories",rx:/\b(smartwatch|smart watch|bluetooth watch|ecg watch|gps watch)\b/i},
+  {id:"WEARABLE_DEVICE",department:"tech",category:"wearables",rx:/\b(smartwatch|smart watch|bluetooth watch|ecg watch|gps watch)\b/i},
   {id:"WEARABLE_ACCESSORY",department:"tech",category:"wearable-accessories",rx:/\b(smartwatch|smart watch|apple watch|iwatch|watch)\b.{0,35}\b(band|strap|charger|stand|protector|case)\b|\b(band|strap)\b.{0,35}\b(smartwatch|smart watch|apple watch|iwatch|watch)\b/i},
 
   {id:"KITCHEN_TOOL",department:"kitchen",category:"kitchen-tools",rx:/\b(kitchen|cooking|cookware)\b.{0,50}\b(spoon|strainer|colander|utensil|whisk|spatula|peeler|tongs|grater|shovel|filter|tool)\b|\b(spoon|strainer|colander|whisk|spatula|peeler|tongs|grater)\b.{0,50}\b(kitchen|cooking)\b/i},
@@ -27,10 +27,13 @@ const RULES=[
   {id:"JEWELRY_NECKLACE",department:"accessories",category:"jewelry-necklaces",rx:/\b(necklace|necklaces|pendant|choker)\b/i},
   {id:"JEWELRY_EARRING",department:"accessories",category:"jewelry-earrings",rx:/\b(earring|earrings)\b/i},
   {id:"JEWELRY_BRACELET",department:"accessories",category:"jewelry-bracelets",rx:/\b(bracelet|bracelets|bangle|bangles)\b/i},
-  {id:"JEWELRY_GENERIC",department:"accessories",category:"jewelry",rx:/\b(ring|rings|anklet|anklets|brooch|brooches|lapel pin|enamel pin|badge)\b/i,exclude:/\b(key ring|keyring|storage ring|retaining ring|o-ring|ring light|phone ring|camera ring|storage|packaging|display|organizer|holder|stand|tool|toy|automotive|decor|wreath|lamp|light|jig|drill|air freshener|perfume diffuser|underwear|bra|dress|shirt|swim|bikini|jumpsuit|pants|leggings)\b/i},
+  {id:"JEWELRY_RING",department:"accessories",category:"jewelry-rings",rx:/\b(ring|rings)\b/i,exclude:/\b(key ring|keyring|storage ring|retaining ring|o-ring|ring light|phone ring|camera ring|storage|packaging|display|organizer|holder|stand|tool|toy|automotive|decor|wreath|lamp|light|jig|drill|air freshener|perfume diffuser|underwear|bra|dress|shirt|swim|bikini|jumpsuit|pants|leggings|steel ring)\b/i},
+  {id:"WATCH",department:"accessories",category:"watches",rx:/\b(watch|watches|wristwatch)\b/i,exclude:/\b(smartwatch|smart watch|bluetooth watch|ecg watch|gps watch|watch band|watch strap|watch charger|watch stand|watch protector|screen protector)\b/i},
+  {id:"KEYCHAIN",department:"accessories",category:"keychains",rx:/\b(keychain|key chain|keyring|key ring)\b/i,exclude:/\b(self defense|self-defense|kubaton|shock absorber|coilover|storage box|organizer|weapon)\b/i},
+  {id:"JEWELRY_GENERIC",department:"accessories",category:"jewelry",rx:/\b(anklet|anklets|brooch|brooches|lapel pin|enamel pin|badge)\b/i,exclude:/\b(storage|packaging|display|organizer|holder|stand|tool|toy|automotive|decor|wreath|lamp|light|jig|drill|air freshener|perfume diffuser|underwear|bra|dress|shirt|swim|bikini|jumpsuit|pants|leggings)\b/i},
   {id:"WALLET",department:"accessories",category:"bags",rx:/\b(wallet|wallets|card holder|cardholder|coin purse)\b/i,exclude:/\b(water bottle|storage box|organizer|tray|car holder|phone holder)\b/i},
   {id:"HAIR_ACCESSORY",department:"accessories",category:"hair-accessories",rx:/\b(hair clip|hairpin|hair pin|hair claw|hair tie|scrunchie|headband|barrette|hair comb)\b/i},
-  {id:"HAT",department:"accessories",category:"hats",rx:/\b(bucket hat|baseball cap|beanie|beret|hat|caps?)\b/i,exclude:/\b(head lamp|headlamp|cap light|hat light|helmet light)\b/i},
+  {id:"HAT",department:"accessories",category:"hats",rx:/\b(bucket hat|baseball cap|beanie|beret|nightcap|hat)\b/i,exclude:/\b(head lamp|headlamp|cap light|hat light|helmet light|tool|teapot|humidifier|cleaning pen)\b/i},
   {id:"SOCKS",department:"accessories",category:"socks",rx:/\b(sock|socks|stocking|stockings|hosiery)\b/i},
   {id:"SCARF",department:"accessories",category:"scarves",rx:/\b(scarf|scarves|shawl)\b/i},
   {id:"BELT",department:"accessories",category:"belts",rx:/\b(belt|belts)\b/i},
@@ -46,6 +49,9 @@ const PROPOSED_ROUTE_RULES={
   "accessories/hair-accessories":/\b(hair clip|hair band|hair pin|hair claw|hair tie|scrunchie|headband|barrette)\b/i,
   "accessories/hats":/\b(hat|cap|beanie|beret|bucket hat|baseball cap)\b/i,
   "accessories/jewelry":/\b(jewelry set|jewellery set|necklace.+earring|earring.+necklace|bracelet.+necklace)\b/i,
+  "accessories/jewelry-rings":/\b(ring|rings)\b/i,
+  "accessories/watches":/\b(watch|watches|wristwatch)\b/i,
+  "accessories/keychains":/\b(keychain|key chain|keyring|key ring)\b/i,
   "accessories/jewelry-earrings":/\b(earring|earrings)\b/i,
   "accessories/jewelry-necklaces":/\b(necklace|necklaces|pendant necklace)\b/i,
   "accessories/socks":/\b(sock|socks|stocking|stockings)\b/i,
@@ -98,7 +104,8 @@ const PROPOSED_ROUTE_RULES={
 
   "tech/gaming":/\b(gaming|gamepad|game controller|gaming mouse|gaming keyboard|controller)\b/i,
   "tech/phone-cases":/\b(phone case|iphone case|galaxy case|smartphone case|mobile phone case)\b/i,
-  "tech/wearable-accessories":/\b(watch band|watch strap|smartwatch band|smart watch band|wearable strap)\b/i,
+  "tech/wearables":/\b(smartwatch|smart watch|bluetooth watch|ecg watch|gps watch)\b/i,
+  "tech/wearable-accessories":/\b(watch band|watch strap|watch charger|watch stand|watch protector|smartwatch band|smart watch band|wearable strap)\b/i,
 
   "women/women-bottoms":/\b(women.{0,20}(pants|trousers|shorts)|wide leg pants|women cargo pants)\b/i,
   "women/women-hoodies":/\b(hoodie|hoodies|sweatshirt|sweatshirts)\b/i,
@@ -117,7 +124,7 @@ const PROPOSED_ROUTE_RULES={
   "garden/garden-tools":/\b(garden tool|gardening tool|planting shovel|garden rake|watering tool|plant tool)\b/i
 };
 
-const GENERIC_ACCESSORY_RULE_IDS=new Set(["SCARF","BELT","HAT","SOCKS","BAG","BAG_ACCESSORY","HAIR_ACCESSORY","JEWELRY_NECKLACE","JEWELRY_EARRING","JEWELRY_BRACELET","JEWELRY_GENERIC","WALLET"]);
+const GENERIC_ACCESSORY_RULE_IDS=new Set(["SCARF","BELT","HAT","SOCKS","BAG","BAG_ACCESSORY","HAIR_ACCESSORY","JEWELRY_NECKLACE","JEWELRY_EARRING","JEWELRY_BRACELET","JEWELRY_RING","WATCH","KEYCHAIN","JEWELRY_GENERIC","WALLET"]);
 const CONTEXT_DOMINANT_DEPARTMENTS=new Set(["pets","kids","women","men","kitchen","home","tech","beauty","office","garden","camping","toys"]);
 
 const CROSS_DEPARTMENT_EXCLUSIONS=[
@@ -132,7 +139,7 @@ function identityText(p){return cleanText([p.title,p.source_category,p.category,
 function contextRuleAllowed(rule,proposedDepartment,proposedCategory){
   const dep=String(proposedDepartment||"");
   const cat=String(proposedCategory||"");
-  if(rule.id==="JEWELRY_GENERIC"){
+  if(rule.id==="JEWELRY_GENERIC"||rule.id==="JEWELRY_RING"||rule.id==="WATCH"||rule.id==="KEYCHAIN"){
     if(dep==="accessories" && /^jewelry-(necklaces|earrings|bracelets)$/.test(cat)) return false;
     return ["","lifestyle","gifts","accessories"].includes(dep);
   }
