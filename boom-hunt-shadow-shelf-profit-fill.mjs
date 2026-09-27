@@ -3,6 +3,7 @@ import path from "path";
 import {createRequire} from "module";
 const require=createRequire(import.meta.url);
 const {classifyProduct}=require("./boom-hunt-taxonomy-gate-v2.js");
+const {evaluateProfit}=require("./boom-hunt-profit-gate-v2.js");
 
 const ROOT=process.cwd();
 const STAGING="/Users/adichehade/.hunt-final-candidate-v1/catalog-staging";
@@ -87,23 +88,6 @@ const RULES={
   "garden/garden-tools":/\b(garden tool|gardening tool|planting shovel|garden rake|watering tool|plant tool)\b/i
 };
 
-function priceGate(cost){
-  cost=Number(cost);
-  if(!Number.isFinite(cost)||cost<=0)return null;
-  const reserve=.91,minProfit=4,targetMargin=.35;
-  const raw=Math.max((cost+minProfit)/reserve,cost/(reserve-targetMargin));
-  const retail=Math.max(.99,Math.ceil(raw+.01)-.01);
-  const contribution=retail*reserve-cost;
-  return {
-    supplier_cost_usd:+cost.toFixed(2),
-    target_retail_shadow_usd:+retail.toFixed(2),
-    projected_product_contribution_usd:+contribution.toFixed(2),
-    projected_product_margin:+(contribution/retail).toFixed(4),
-    reserve_rate:.09,
-    shipping_priced_separately:true,
-    final_profit_verified:false
-  };
-}
 function primaryDept(row){
   return String(row.primary_department||row.department||"");
 }
@@ -156,8 +140,15 @@ for(const [rail,rx] of Object.entries(RULES)){
       proposed_category:category
     });
     if(taxonomyGate.status!=="PASS")continue;
-    const pg=priceGate(row.supplier_cost_min??row.price_amount);
-    if(!pg)continue;
+    const marketFlag =
+      row.latest_market5_all_pass===true || row.market5_all_pass===true || row.retail_truth_status==="MARKET5_PROFIT_PASS"
+        ? true
+        : (row.latest_market5_all_pass===false || row.market5_all_pass===false ? false : undefined);
+    const pg=evaluateProfit({
+      supplier_cost_usd:row.supplier_cost_min??row.price_amount,
+      market_validation_pass:marketFlag
+    });
+    if(pg.status==="PROFIT_BLOCK")continue;
     candidates.push({
       provider:String(row.provider||"UNKNOWN"),
       item_id:id,
@@ -174,12 +165,8 @@ for(const [rail,rx] of Object.entries(RULES)){
       image_count:Number(row.image_count||0)||null,
       route_basis:exactCategory?"EXACT_SOURCE_CATEGORY":"STRICT_TITLE_SEMANTIC_MATCH",
       shelf_state:"SHELF_SHADOW_READY",
-      sell_state:"DESTINATION_VARIANT_SHIPPING_RECHECK_REQUIRED",
-      profit_truth:{
-        state:"PROJECTED_PRODUCT_CONTRIBUTION_ONLY",
-        ...pg,
-        blockers:["EXACT_VARIANT_RECHECK","DESTINATION_SHIPPING_RECHECK","TAX_IMPORT_RECHECK","FX_RECHECK","REALIZED_RETURN_COST_UNKNOWN"]
-      },
+      sell_state:"DESTINATION_VARIANT_SHIPPING_PROFIT_RECHECK_REQUIRED",
+      profit_truth:pg,
       production_exposure:false,
       _score:score(row)
     });
@@ -211,6 +198,9 @@ const output={
     rails_target_met:railSummary.filter(x=>x.after>=TARGET).length,
     rails_still_below_target:railSummary.filter(x=>x.after<TARGET).length,
     projected_contribution_positive:overlay.filter(x=>x.profit_truth?.projected_product_contribution_usd>0).length,
+    profit_pass:overlay.filter(x=>x.profit_truth?.status==="PROFIT_PASS").length,
+    profit_review:overlay.filter(x=>x.profit_truth?.status==="PROFIT_REVIEW").length,
+    profit_block:overlay.filter(x=>x.profit_truth?.status==="PROFIT_BLOCK").length,
     final_profit_verified:0,
     sell_ready:0
   },
@@ -222,8 +212,9 @@ const output={
     "Target category requires exact source category or strict title semantic match.",
     "Taxonomy Gate V2 must return PASS before a new auto-fill candidate can enter a shelf.",
     "Blocked/dangerous/adult/nicotine/drug/weapon terms are excluded.",
-    "Price Gate V2 projection uses supplier cost plus 9% payment/refund reserve and $4 minimum contribution; shipping remains separate.",
-    "Projected product contribution is not final net profit.",
+    "Profit Gate V2 uses corrected Price Gate V2.1 math: 9% payment/refund reserve, $4 minimum contribution and 35% target product margin.",
+    "A generated price is not enough for PROFIT_PASS; market validation and destination shipping truth are required.",
+    "Projected product/order contribution is not final net profit.",
     "No product becomes SELL_READY until exact variant, fresh stock and destination shipping are verified.",
     "No Production shelf mutation, checkout activation, supplier order or fulfillment."
   ]
