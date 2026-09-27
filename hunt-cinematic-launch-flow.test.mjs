@@ -52,3 +52,12 @@ test('keyboard and reduced-motion accessibility hooks stay present', () => {
   assert.match(css, /prefers-reduced-motion/);
   assert.match(css, /focus-visible/);
 });
+
+
+test('shopper cards hide supplier identity and expose HUNT price presentation', () => {
+  assert.match(js, /HUNT VERIFIED/);
+  assert.match(js, /function huntPrice/);
+  assert.match(js, /target_retail_usd/);
+  assert.doesNotMatch(js, /<span class="badge">\$\{esc\(product\.provider\)\}<\/span>/);
+  assert.match(html, /href="auth\.html"/);
+});
