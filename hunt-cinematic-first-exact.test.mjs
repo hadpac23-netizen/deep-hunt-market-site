@@ -91,3 +91,34 @@ test('canonical eyeliner remains in Beauty / Makeup', () => {
   };
   assert.equal(isEligible('beauty/makeup', product), true);
 });
+
+
+test('forefoot pads do not enter Women Shoes', () => {
+  const product = {
+    department:'women', category:'women-shoes',
+    taxonomy_gate_v2:'REMAP',
+    provider:'HUNT', item_id:'test-forefoot-pad',
+    title:'High Heel Shoe Half Sole Sock Forefoot Pad Invisible Sock',
+    availability_verified:true, inventory_snapshot:20,
+    production_exposure:false, sell_state:'SHADOW_QA_PROFIT_REVIEW',
+    image_technical_status:'PASS', image_url:'https://example.com/pad.jpg',
+    market5_all_pass:true, candidate_status:'MARKET5_READY_STYLE_PHYSICAL_PENDING',
+    profit_truth:{status:'PROFIT_REVIEW',final_profit_verified:false,projected_product_contribution_usd:3}
+  };
+  assert.equal(isEligible('women/women-shoes', product), false);
+});
+
+test('actual boots remain eligible for Women Shoes', () => {
+  const product = {
+    department:'women', category:'women-shoes',
+    taxonomy_gate_v2:'REMAP',
+    provider:'HUNT', item_id:'test-boots',
+    title:'Women Leather Ankle Boots',
+    availability_verified:true, inventory_snapshot:20,
+    production_exposure:false, sell_state:'SHADOW_QA_PROFIT_REVIEW',
+    image_technical_status:'PASS', image_url:'https://example.com/boots.jpg',
+    market5_all_pass:true, candidate_status:'MARKET5_READY_STYLE_PHYSICAL_PENDING',
+    profit_truth:{status:'PROFIT_REVIEW',final_profit_verified:false,projected_product_contribution_usd:3}
+  };
+  assert.equal(isEligible('women/women-shoes', product), true);
+});
