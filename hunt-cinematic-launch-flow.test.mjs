@@ -117,3 +117,29 @@ test('empty type filters are disabled instead of borrowing products', () => {
   assert.match(js, /count === 0 \? 'disabled aria-disabled="true"'/);
   assert.match(html, /id="segment-buttons"/);
 });
+
+
+test('Quick Find searches only the gated in-memory catalog and canonical routes', () => {
+  assert.match(html, /id="hunt-find-input"/);
+  assert.match(js, /function finderResults/);
+  assert.match(js, /for \(const product of allProducts\(\)\)/);
+  assert.match(js, /product\.canonical_route/);
+  assert.match(js, /navigateToExactRoute/);
+  assert.doesNotMatch(js, /hunt-cj-product-detail-shadow/);
+});
+
+test('Quick Find supports keyboard close and first-result activation', () => {
+  assert.match(js, /event\.key === 'Escape'/);
+  assert.match(js, /event\.key === 'Enter'/);
+  assert.match(js, /first\.click\(\)/);
+});
+
+test('Women commerce navigation exposes lingerie sleep and footwear groups without route mutation', () => {
+  assert.match(js, /Lingerie & Sleep/);
+  assert.match(js, /Robes & Dressing Gowns/);
+  assert.match(js, /Sports Bras/);
+  assert.match(js, /Maternity & Nursing/);
+  assert.match(js, /Sneakers & Trainers/);
+  assert.match(js, /productsForSegment/);
+  assert.doesNotMatch(js, /canonical_route\s*=.*segment/);
+});
