@@ -11,9 +11,25 @@ const relatedWorlds = {
 const query = new URLSearchParams(location.search);
 const starting = resolveSelection(query.get('dept'), query.get('category'), query.get('shelf'));
 const state = { department: starting.department.slug, category: starting.category?.id || null,
-  shelf: starting.shelf?.slug || null, visible: 24, preference: '' };
+  shelf: starting.shelf?.slug || null, visible: 24, preference: '', activeProductKey: query.get('product') || null };
 let index = null;
 let sourceError = null;
+let lastWorldFocus = null;
+
+const PROFILE_KEY = 'hunt_cinematic_preview_profile_v1';
+const profile = (() => {
+  try {
+    const saved = JSON.parse(localStorage.getItem(PROFILE_KEY) || '{}');
+    return {
+      terms: Array.isArray(saved.terms) ? saved.terms.slice(-40) : [],
+      providers: saved.providers && typeof saved.providers === 'object' ? saved.providers : {},
+      departments: saved.departments && typeof saved.departments === 'object' ? saved.departments : {},
+      routes: saved.routes && typeof saved.routes === 'object' ? saved.routes : {}
+    };
+  } catch {
+    return { terms: [], providers: {}, departments: {}, routes: {} };
+  }
+})();
 
 function theme(next) {
   document.documentElement.dataset.huntTheme = next;
@@ -24,11 +40,12 @@ function theme(next) {
 
 function updateUrl() {
   const url = new URL(location.href);
-  ['dept', 'category', 'shelf', 'theme'].forEach(key => url.searchParams.delete(key));
+  ['dept', 'category', 'shelf', 'theme', 'product'].forEach(key => url.searchParams.delete(key));
   url.searchParams.set('dept', state.department);
   if (state.category) url.searchParams.set('category', state.category);
   if (state.shelf) url.searchParams.set('shelf', state.shelf);
   url.searchParams.set('theme', document.documentElement.dataset.huntTheme);
+  if (state.activeProductKey) url.searchParams.set('product', state.activeProductKey);
   history.replaceState(null, '', url.pathname + url.search);
 }
 
@@ -37,13 +54,74 @@ function departmentProducts(department) {
   return department.categories.flatMap(category => category.shelves.flatMap(shelf => routeProducts(`${department.slug}/${shelf.slug}`)));
 }
 
+function productKey(product) { return `${product.provider}:${product.item_id}`; }
+function productDepartment(product) { return String(product.canonical_route || '').split('/')[0] || product.department || ''; }
+function semanticWords(value) {
+  const stop = new Set(['with','from','this','that','your','women','woman','mens','men','kids','baby','the','and','for','set','new']);
+  return [...new Set(String(value || '').toLowerCase().split(/[^a-z0-9]+/).filter(word => word.length > 3 && !stop.has(word)))];
+}
+function allProducts() {
+  return index ? [...index.byRoute.values()].flat() : [];
+}
+function productByKey(key) {
+  return allProducts().find(product => productKey(product) === key) || null;
+}
+function persistProfile() {
+  try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); } catch {}
+}
+function recordInterest(product) {
+  if (!product) return;
+  const dept = productDepartment(product);
+  const route = product.canonical_route;
+  profile.terms.push(...semanticWords(product.title).slice(0, 6));
+  profile.terms = profile.terms.slice(-40);
+  profile.providers[product.provider] = (profile.providers[product.provider] || 0) + 1;
+  profile.departments[dept] = (profile.departments[dept] || 0) + 1;
+  profile.routes[route] = (profile.routes[route] || 0) + 1;
+  persistProfile();
+}
+function similarityScore(product, anchor) {
+  if (!product || !anchor) return 0;
+  const words = new Set(semanticWords(product.title));
+  const anchorWords = semanticWords(anchor.title);
+  let score = anchorWords.reduce((sum, word) => sum + (words.has(word) ? 4 : 0), 0);
+  if (product.provider === anchor.provider) score += 2;
+  if (productDepartment(product) === productDepartment(anchor)) score += 3;
+  if (product.canonical_route === anchor.canonical_route) score += 7;
+  return score;
+}
+function personalizationScore(product, anchor) {
+  const words = new Set(semanticWords(product.title));
+  let score = similarityScore(product, anchor);
+  profile.terms.forEach((word, i) => { if (words.has(word)) score += 1 + i / Math.max(1, profile.terms.length); });
+  score += (profile.providers[product.provider] || 0) * 1.4;
+  score += (profile.departments[productDepartment(product)] || 0) * 1.2;
+  score += (profile.routes[product.canonical_route] || 0) * 2.2;
+  return score;
+}
+function uniqueRanked(products, scoreFn, limit = 24, excluded = new Set()) {
+  const seen = new Set(excluded);
+  return products.map((product, position) => ({ product, position, score: scoreFn(product) }))
+    .sort((a, b) => b.score - a.score || a.position - b.position)
+    .filter(({ product }) => {
+      const key = productKey(product);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    }).slice(0, limit).map(({ product }) => product);
+}
+
 function card(product, preferenceButton = false) {
-  return `<article class="card" data-route="${esc(product.canonical_route)}" data-product="${esc(product.item_id)}">
+  const key = productKey(product);
+  return `<article class="card ${state.activeProductKey === key ? 'is-selected' : ''}" data-route="${esc(product.canonical_route)}" data-product-key="${esc(key)}">
     <div class="media"><img src="${esc(product.image_url)}" alt="${esc(product.title)}" loading="lazy"></div>
     <div class="card-body"><div class="badges"><span class="badge truth">TAXONOMY V2</span><span class="badge">${esc(product.provider)}</span></div>
       <h3>${esc(product.title)}</h3><p>${esc(product.canonical_route)} · verified stock snapshot</p>
       <p class="gate-line">Image PASS · Profit REVIEW · checkout OFF</p>
-      ${preferenceButton ? `<button type="button" class="prefer" data-prefer="${esc(product.provider)}:${esc(product.item_id)}">Use as style preference</button>` : ''}
+      <div class="card-actions">
+        <button type="button" class="open-product" data-open-product="${esc(key)}" aria-label="Open ${esc(product.title)}">Open product</button>
+        ${preferenceButton ? `<button type="button" class="prefer" data-prefer="${esc(key)}">Use as style preference</button>` : ''}
+      </div>
     </div>
   </article>`;
 }
@@ -53,14 +131,14 @@ function navigation(selection) {
   $('#dept-nav').innerHTML = DEPARTMENTS.map(dept => `<button type="button" data-dept="${dept.slug}" class="${dept === d ? 'active' : ''}" aria-pressed="${dept === d}">${esc(dept.title)}</button>`).join('');
   $('#category-index').innerHTML = d.categories.map(category => {
     const count = category.shelves.reduce((total, shelf) => total + routeProducts(`${d.slug}/${shelf.slug}`).length, 0);
-    return `<button type="button" class="cat-chip ${category === selection.category ? 'active' : ''}" data-category="${category.id}" aria-pressed="${category === selection.category}">${esc(category.title)} · ${count}</button>`;
+    return `<button type="button" class="cat-chip ${category === selection.category ? 'active' : ''}" data-category="${category.id}" aria-pressed="${category === selection.category}" ${category === selection.category ? 'aria-current="true"' : ''}>${esc(category.title)} · ${count}</button>`;
   }).join('');
   $('#shelf-drawer').hidden = !selection.category;
   if (selection.category) {
     $('#drawer-title').textContent = `${d.title} / ${selection.category.title}`;
     $('#shelf-buttons').innerHTML = selection.category.shelves.map(shelf => {
       const count = routeProducts(`${d.slug}/${shelf.slug}`).length;
-      return `<button type="button" data-shelf="${shelf.slug}" class="${shelf === selection.shelf ? 'active' : ''}" aria-pressed="${shelf === selection.shelf}">${esc(shelf.label)}<span>${count}</span></button>`;
+      return `<button type="button" data-shelf="${shelf.slug}" class="${shelf === selection.shelf ? 'active' : ''}" aria-pressed="${shelf === selection.shelf}" ${shelf === selection.shelf ? 'aria-current="true"' : ''}>${esc(shelf.label)}<span>${count}</span></button>`;
     }).join('');
   }
   const active = $('#dept-nav .active');
@@ -174,7 +252,7 @@ function render() {
 
 function selectDepartment(slug) {
   if (!DEPARTMENTS.some(department => department.slug === slug)) return;
-  Object.assign(state, { department: slug, category: null, shelf: null, visible: 24, preference: '' });
+  Object.assign(state, { department: slug, category: null, shelf: null, visible: 24, preference: '', activeProductKey: null });
   render();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -182,9 +260,94 @@ function selectDepartment(slug) {
 function selectShelf(categoryId, shelfSlug) {
   const selection = resolveSelection(state.department, categoryId, shelfSlug);
   if (!selection.category || !selection.shelf) return;
-  Object.assign(state, { category: selection.category.id, shelf: selection.shelf.slug, visible: 24, preference: '' });
+  Object.assign(state, { category: selection.category.id, shelf: selection.shelf.slug, visible: 24, preference: '', activeProductKey: null });
   render();
   $('#exact-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setWorldBackgroundInert(value) {
+  [document.querySelector('body > header'), document.querySelector('body > main'), document.querySelector('body > .qa')]
+    .filter(Boolean).forEach(element => { element.inert = value; });
+}
+function renderWorldGrid(selector, products) {
+  $(selector).innerHTML = products.map(product => card(product, false)).join('');
+}
+function renderProductWorld(product) {
+  if (!product || !index) return;
+  const key = productKey(product);
+  const deptSlug = productDepartment(product);
+  const department = DEPARTMENTS.find(candidate => candidate.slug === deptSlug);
+  const exact = routeProducts(product.canonical_route).filter(candidate => productKey(candidate) !== key);
+  const sameDepartmentPool = department ? department.categories.flatMap(category =>
+    category.shelves.flatMap(shelf => routeProducts(`${department.slug}/${shelf.slug}`))
+  ).filter(candidate => candidate.canonical_route !== product.canonical_route && productKey(candidate) !== key) : [];
+  const exactLayer = uniqueRanked(exact, candidate => similarityScore(candidate, product), 24);
+  const used = new Set([key, ...exactLayer.map(productKey)]);
+  const nearbyLayer = uniqueRanked(sameDepartmentPool, candidate => similarityScore(candidate, product), 24, used);
+  nearbyLayer.forEach(candidate => used.add(productKey(candidate)));
+  const forYouLayer = uniqueRanked(allProducts().filter(candidate => productKey(candidate) !== key),
+    candidate => personalizationScore(candidate, product), 24, used);
+  forYouLayer.forEach(candidate => used.add(productKey(candidate)));
+  const crossDepartments = new Set(relatedWorlds[deptSlug] || []);
+  const crossPool = allProducts().filter(candidate => crossDepartments.has(productDepartment(candidate)));
+  const crossLayer = uniqueRanked(crossPool, candidate => personalizationScore(candidate, product), 18, used);
+
+  $('#product-world-image').src = product.image_url;
+  $('#product-world-image').alt = product.title;
+  $('#product-world-title').textContent = product.title;
+  $('#product-world-path').textContent = product.canonical_route;
+  $('#product-world-route').textContent = product.canonical_route;
+  $('#product-world-badges').innerHTML = `<span class="badge truth">TAXONOMY V2</span><span class="badge">${esc(product.provider)}</span>`;
+  const stock = Number(product.inventory_snapshot);
+  $('#product-world-status').textContent = [
+    Number.isFinite(stock) && stock > 0 ? `Verified stock snapshot: ${stock}` : 'Verified stock snapshot',
+    'Image technical PASS',
+    'Profit REVIEW',
+    'Checkout OFF'
+  ].join(' · ');
+  $('#world-similar-meta').textContent = `${exactLayer.length} from ${product.canonical_route}`;
+  $('#world-nearby-meta').textContent = `${nearbyLayer.length} from ${department?.title || deptSlug}, kept in their own shelves`;
+  renderWorldGrid('#world-similar-grid', exactLayer);
+  renderWorldGrid('#world-nearby-grid', nearbyLayer);
+  renderWorldGrid('#world-for-you-grid', forYouLayer);
+  renderWorldGrid('#world-cross-grid', crossLayer);
+}
+function openProduct(product) {
+  if (!product || !index) return;
+  lastWorldFocus = document.activeElement;
+  state.activeProductKey = productKey(product);
+  recordInterest(product);
+  renderProductWorld(product);
+  updateUrl();
+  $('#product-world').hidden = false;
+  document.body.classList.add('world-open');
+  setWorldBackgroundInert(true);
+  $('#product-world-scroll').scrollTop = 0;
+  requestAnimationFrame(() => $('#world-close').focus());
+}
+function closeProduct({ returnFocus = true } = {}) {
+  if ($('#product-world').hidden) return;
+  $('#product-world').hidden = true;
+  document.body.classList.remove('world-open');
+  setWorldBackgroundInert(false);
+  state.activeProductKey = null;
+  updateUrl();
+  if (returnFocus && lastWorldFocus?.focus) requestAnimationFrame(() => lastWorldFocus.focus());
+}
+function focusTrapWorld(event) {
+  if ($('#product-world').hidden) return;
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    closeProduct();
+    return;
+  }
+  if (event.key !== 'Tab') return;
+  const focusable = [...$('#product-world-shell').querySelectorAll('button,[href],[tabindex]:not([tabindex="-1"])')]
+    .filter(element => !element.disabled && !element.hidden);
+  if (!focusable.length) return;
+  const first = focusable[0], last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
 }
 
 $('#dept-nav').addEventListener('click', event => {
@@ -208,16 +371,45 @@ $('#worlds-list').addEventListener('click', event => {
   if (button) selectDepartment(button.dataset.world);
 });
 $('#load-more').addEventListener('click', () => { state.visible += 24; render(); });
-$('#exact-rail').addEventListener('click', event => {
-  const button = event.target.closest('button[data-prefer]');
-  if (!button) return;
-  const selection = resolveSelection(state.department, state.category, state.shelf);
-  const product = routeProducts(selection.route).find(candidate => `${candidate.provider}:${candidate.item_id}` === button.dataset.prefer);
+document.addEventListener('click', event => {
+  const openButton = event.target.closest('button[data-open-product]');
+  if (openButton) {
+    const product = productByKey(openButton.dataset.openProduct);
+    if (product) openProduct(product);
+    return;
+  }
+  const cardElement = event.target.closest('.card[data-product-key]');
+  if (cardElement && !event.target.closest('button')) {
+    const product = productByKey(cardElement.dataset.productKey);
+    if (product) openProduct(product);
+    return;
+  }
+  const preferButton = event.target.closest('button[data-prefer]');
+  if (preferButton) {
+    const product = productByKey(preferButton.dataset.prefer);
+    if (!product) return;
+    state.preference = product.title;
+    recordInterest(product);
+    const selection = resolveSelection(state.department, state.category, state.shelf);
+    if (selection.route) boom(selection, routeProducts(selection.route));
+    if (!$('#product-world').hidden && state.activeProductKey) renderProductWorld(productByKey(state.activeProductKey));
+  }
+});
+$('#world-close').addEventListener('click', () => closeProduct());
+$('#product-world').addEventListener('click', event => { if (event.target.closest('[data-close-world]')) closeProduct(); });
+$('#world-back-shelf').addEventListener('click', () => {
+  closeProduct({ returnFocus: false });
+  $('#exact-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+$('#world-prefer').addEventListener('click', () => {
+  const product = productByKey(state.activeProductKey);
   if (!product) return;
   state.preference = product.title;
-  boom(selection, routeProducts(selection.route));
-  $('#boom-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  recordInterest(product);
+  renderProductWorld(product);
+  $('#world-personal-meta').textContent = 'Updated for this browser profile · preview only';
 });
+document.addEventListener('keydown', focusTrapWorld);
 $('#theme').addEventListener('click', () => theme(document.documentElement.dataset.huntTheme === 'dark' ? 'light' : 'dark'));
 theme(query.get('theme') === 'light' ? 'light' : 'dark');
 render();
@@ -228,6 +420,8 @@ fetch(V2_SOURCE, { credentials: 'omit', cache: 'no-store' }).then(response => {
 }).then(supplement => {
   index = buildIndex(supplement);
   render();
+  const requested = state.activeProductKey ? productByKey(state.activeProductKey) : null;
+  if (requested) requestAnimationFrame(() => openProduct(requested));
 }).catch(() => {
   sourceError = 'UNAVAILABLE';
   render();
