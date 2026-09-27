@@ -86,7 +86,7 @@ h1{font:700 clamp(58px,8vw,126px)/.84 Georgia,"Times New Roman",serif;letter-spa
 </main>
 <div class="qa">CATALOG SHADOW · PRODUCTION OFF</div>
 <script>
-let data=null,taxonomySupplement={shelves:{}},active=0,visible={};
+let data=null,taxonomySupplement={shelves:{}},canonicalOverrides=new Map(),active=0,visible={};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const qp=new URLSearchParams(location.search);
@@ -104,11 +104,19 @@ function allowedForDepartment(deptSlug,p){
 }
 function categoryProducts(deptSlug,cat){
   const base=(cat.products||[]);
-  const extra=taxonomySupplement.shelves?.[deptSlug+"/"+cat.slug]||[];
+  const route=deptSlug+"/"+cat.slug;
+  const extra=taxonomySupplement.shelves?.[route]||[];
   const seen=new Set(),out=[];
-  for(const p of [...extra,...base]){
+  for(const p of extra){
     const key=String(p.provider||"UNKNOWN")+":"+String(p.item_id||"");
     if(!p.item_id||seen.has(key)||!allowedForDepartment(deptSlug,p))continue;
+    seen.add(key);out.push(p);
+  }
+  for(const p of base){
+    const key=String(p.provider||"UNKNOWN")+":"+String(p.item_id||"");
+    if(!p.item_id||seen.has(key)||!allowedForDepartment(deptSlug,p))continue;
+    const canonical=canonicalOverrides.get(key);
+    if(canonical && canonical!==route)continue;
     seen.add(key);out.push(p);
   }
   return out;
@@ -172,6 +180,13 @@ Promise.all([
   fetch("./evidence/HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}}))
 ]).then(([j,supp])=>{
  data=j;taxonomySupplement=supp||{shelves:{}};
+ canonicalOverrides=new Map();
+ for(const [route,products] of Object.entries(taxonomySupplement.shelves||{})){
+   for(const p of products||[]){
+     if(!p?.item_id)continue;
+     canonicalOverrides.set(String(p.provider||"UNKNOWN")+":"+String(p.item_id),route);
+   }
+ }
  $("#dept-nav").innerHTML=j.departments.map((d,i)=>'<button type="button" data-i="'+i+'">'+esc(d.title)+'</button>').join("");
  const requested=qp.get("dept");const idx=j.departments.findIndex(x=>x.slug===requested);active=idx>=0?idx:0;
  setTheme(qp.get("theme")==="light"?"light":"dark");render();
