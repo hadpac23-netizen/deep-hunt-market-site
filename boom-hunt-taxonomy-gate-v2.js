@@ -114,6 +114,9 @@ const PROPOSED_ROUTE_RULES={
   "garden/garden-tools":/\b(garden tool|gardening tool|planting shovel|garden rake|watering tool|plant tool)\b/i
 };
 
+const GENERIC_ACCESSORY_RULE_IDS=new Set(["SCARF","BELT","HAT","SOCKS","BAG","BAG_ACCESSORY","HAIR_ACCESSORY","JEWELRY_NECKLACE","JEWELRY_EARRING","JEWELRY_BRACELET"]);
+const CONTEXT_DOMINANT_DEPARTMENTS=new Set(["pets","kids","women","men","kitchen","home","tech","beauty","office","garden","camping","toys"]);
+
 const CROSS_DEPARTMENT_EXCLUSIONS=[
   {department:"gifts",rx:/\b(necklace|pendant|choker|earring|bracelet|bangle|jewelry|jewellery|handbag|purse|tote|crossbody|backpack|wallet|belt|scarf|shawl|hat|cap|beanie|sock|hair clip|hairpin|headband|scrunchie|watch)\b/i,reason:"CORE_PRODUCT_IS_NOT_GIFT"},
   {department:"accessories",rx:/\b(dog|cat|pet|puppy|kitten)\b.{0,50}\b(bandana|scarf|collar|leash|harness|bed|house|coat|shirt|hoodie)\b/i,reason:"PET_PRODUCT_NOT_FASHION_ACCESSORY"},
@@ -138,12 +141,20 @@ function classifyProduct(product={}){
   if(matches.length>1){
     const unique=new Set(matches.map(x=>x.department+"/"+String(x.category)));
     if(unique.size>1){
-      return {
-        status:"TAXONOMY_REVIEW",
-        reason:"MULTIPLE_CORE_IDENTITIES",
-        candidates:matches.slice(0,6).map(x=>({rule:x.id,department:x.department,category:x.category})),
-        production_exposure:false
-      };
+      const dominant=matches[0];
+      const secondary=matches.slice(1).filter(x=>x.department!==dominant.department||x.category!==dominant.category);
+      const onlyGenericAccessoryNoise=
+        CONTEXT_DOMINANT_DEPARTMENTS.has(dominant.department) &&
+        secondary.length>0 &&
+        secondary.every(x=>x.department==="accessories"&&GENERIC_ACCESSORY_RULE_IDS.has(x.id));
+      if(!onlyGenericAccessoryNoise){
+        return {
+          status:"TAXONOMY_REVIEW",
+          reason:"MULTIPLE_CORE_IDENTITIES",
+          candidates:matches.slice(0,6).map(x=>({rule:x.id,department:x.department,category:x.category})),
+          production_exposure:false
+        };
+      }
     }
   }
 
