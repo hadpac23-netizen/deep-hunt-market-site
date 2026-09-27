@@ -5,9 +5,7 @@
       "label": "Women",
       "categories": {
         "Dresses": [
-          "women-dresses"
-        ],
-        "Evening & Occasion": [
+          "women-dresses",
           "women-evening",
           "women-occasionwear"
         ],
