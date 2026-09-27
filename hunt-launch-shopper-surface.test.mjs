@@ -28,3 +28,16 @@ test('unconfigured login providers are hidden from shoppers', () => {
   assert.match(authJs, /button\.hidden=!enabled/);
   assert.match(authJs, /external\[provider\]===true/);
 });
+
+
+test('profile links use HUNT public refs and host-safe auth redirects', () => {
+  assert.match(profileJs, /HUNT_SHADOW_V1/);
+  assert.match(profileJs, /hunt-cinematic-first-exact-preview\.html\?product=/);
+  assert.doesNotMatch(profileJs, /product\.html\?provider=/);
+  assert.match(profileJs, /location\.pathname\+location\.search\+location\.hash/);
+});
+
+test('checkout shopper copy never renders the provider label', () => {
+  assert.match(checkoutJs, /HUNT VERIFIED/);
+  assert.doesNotMatch(checkoutJs, /<small>\$\{esc\(item\.provider\)\}/);
+});
