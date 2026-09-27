@@ -1528,7 +1528,7 @@ const identityPolicies = {
   'accessories/jewelry-necklaces': [/\bnecklace\b/i, /\b(?:teether|teething|nursing|swimsuit|bikini|blind box|DIY|socks?|tapestry|curtain|shorts|skirt|pants)\b/i],
   'accessories/socks': [/\bsocks?\b/i, /\b(?:Christmas|gift bag|candy bag|storage box|sorting box|sock pads|sock covers|baby|newborn|electric|heating)\b/i],
   'beauty/beauty-tools': [/\b(?:shaver|trimmer|beauty tool)\b/i],
-  'beauty/makeup': [/\b(?:lip gloss|makeup|cleansing puff)\b/i],
+  'beauty/makeup': [/\b(?:makeup|lip gloss|lipstick|lip tint|eyeliner|mascara|eyeshadow|eye shadow|foundation|concealer|blush|brow|eyebrow|contour|primer|setting powder|face powder|cleansing puff)\b/i],
   'garden/outdoor-living': [/\b(?:outdoor furniture|camping chair|patio chair)\b/i],
   'home/bath': [/\b(?:bathroom|bath rug|bath mat)\b/i],
   'home/curtains': [/\bcurtains?\b/i, /\bblind box\b/i],
