@@ -78,6 +78,7 @@ Deno.serve(async (req: Request) => {
       order by
         source_payload->'taxonomy_gate_v2'->>'canonical_department',
         source_payload->'taxonomy_gate_v2'->>'canonical_shelf',
+        coalesce((source_payload->'stylist_precheck'->>'score')::numeric,0) desc,
         coalesce((source_payload->'profit_gate_v2'->>'projected_product_contribution_usd')::numeric,0) desc,
         verified_inventory desc
       limit 2500
@@ -109,6 +110,7 @@ Deno.serve(async (req: Request) => {
         image_technical_status: "PASS",
         market5_all_pass: true,
         candidate_status: String(row.candidate_status || ""),
+        stylist_score: numberOrNull(payload.stylist_precheck?.score),
         profit_truth: {
           status: "PROFIT_REVIEW",
           final_profit_verified: false,
