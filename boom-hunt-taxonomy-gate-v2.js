@@ -1,5 +1,7 @@
 "use strict";
 
+const {legacyRoute}=require("./boom-hunt-legacy-lifestyle-router-v2.js");
+
 const BLOCKED=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|firework|explosive|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|steroid|diet pill|laxative|sex toy|vibrator|dildo|strapon|clitoral)\b/i;
 
 const MARKETING_TAGS=/\b(gift|gifts|gift for her|gift for him|birthday gift|christmas gift|summer|winter|trending|viral|new arrival|hot sale|best seller|for her|for him)\b/ig;
@@ -190,6 +192,20 @@ function classifyProduct(product={}){
   const text=identityText(product);
   const proposedDepartment=String(product.proposed_department||product.department||"").trim();
   const proposedCategory=String(product.proposed_category||product.category||"").trim();
+
+  const legacy=legacyRoute({
+    ...product,
+    proposed_department:proposedDepartment,
+    proposed_category:proposedCategory
+  },text);
+  if(legacy){
+    return {
+      ...legacy,
+      matched_rule:legacy.reason||"LEGACY_ROUTE_V2",
+      source_route:{department:proposedDepartment||null,category:proposedCategory||null},
+      production_exposure:false
+    };
+  }
 
   const prefixRoute=semanticPrefixRoute(product,text);
   if(prefixRoute){
