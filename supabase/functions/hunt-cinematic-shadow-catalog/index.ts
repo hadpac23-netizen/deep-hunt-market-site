@@ -64,6 +64,7 @@ Deno.serve(async (req: Request) => {
         and coalesce((source_payload->'profit_gate_v2'->>'projected_product_contribution_usd')::numeric,0)>0
         and coalesce((source_payload->'profit_gate_v2'->>'final_profit_verified')::boolean,false)=false
         and candidate_status in (
+          'MARKET5_READY_STYLE_PHYSICAL_PENDING',
           'MARKET5_READY_STYLE_PASS_PHYSICAL_EVIDENCE_PENDING',
           'MARKET5_READY_STYLE_PASS_PHYSICAL_METADATA_VERIFIED'
         )
