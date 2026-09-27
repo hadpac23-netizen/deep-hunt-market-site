@@ -132,7 +132,8 @@
     session=nextSession||null;
     if(!session){
       loadedUserId="";
-      location.replace("auth.html?next="+encodeURIComponent("/deep-hunt-market-site/profile.html"));
+      const next=location.pathname+location.search+location.hash;
+      location.replace("auth.html?next="+encodeURIComponent(next));
       return;
     }
     const userId=String(session.user?.id||"");
