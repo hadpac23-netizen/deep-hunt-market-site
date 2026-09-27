@@ -1,0 +1,41 @@
+{
+  "version": "HUNT-PROFIT-GATE-V2",
+  "date": "2026-09-27",
+  "mode": "SHADOW_ONLY",
+  "production_effect": false,
+  "authority": "NONE",
+  "defaults": {
+    "min_profit_usd": 4,
+    "payment_reserve_rate": 0.04,
+    "refund_reserve_rate": 0.05,
+    "target_product_margin": 0.35
+  },
+  "states": [
+    "PROFIT_PASS",
+    "PROFIT_REVIEW",
+    "PROFIT_BLOCK"
+  ],
+  "pipeline": [
+    "supplier_cost_truth",
+    "price_gate_v2_1_math",
+    "market_price_validation",
+    "destination_shipping_truth",
+    "projected_order_contribution",
+    "final_profit_truth"
+  ],
+  "rules": [
+    "A generated retail price is not proof that the market will accept the price.",
+    "Market validation is required before PROFIT_PASS.",
+    "Destination supplier shipping and customer shipping recovery must be known before PROFIT_PASS.",
+    "Projected product contribution is not final net profit.",
+    "Projected order contribution is not final net profit.",
+    "Final profit stays unverified until tax/import, FX, actual payment fees, marketing and realized returns/refunds are attributable.",
+    "No automatic Production repricing, publishing, payment activation or supplier order."
+  ],
+  "integration": {
+    "taxonomy_first": true,
+    "sequence": "TAXONOMY -> SAFETY -> STOCK/VARIANT -> MARKET PRICE -> SHIPPING -> PROFIT -> STYLE -> SHELF",
+    "shadow_display_can_use_profit_review": true,
+    "sell_ready_requires_profit_pass": true
+  }
+}
