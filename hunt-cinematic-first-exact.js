@@ -140,7 +140,22 @@ function updateUrl() {
   history.replaceState(null, '', url.pathname + url.search);
 }
 
-function routeProducts(route) { return index?.byRoute.get(route) || []; }
+function stylistScore(product) {
+  const value = Number(product?.stylist_score);
+  return Number.isFinite(value) ? value : 0;
+}
+function contributionScore(product) {
+  const value = Number(product?.profit_truth?.projected_product_contribution_usd);
+  return Number.isFinite(value) ? value : 0;
+}
+function curateWithinRoute(products) {
+  return [...(products || [])].sort((a, b) =>
+    stylistScore(b) - stylistScore(a)
+    || contributionScore(b) - contributionScore(a)
+    || Number(b?.inventory_snapshot || 0) - Number(a?.inventory_snapshot || 0)
+  );
+}
+function routeProducts(route) { return curateWithinRoute(index?.byRoute.get(route) || []); }
 function segmentDefinition(route, segmentId) {
   return (SHELF_SEGMENTS[route] || []).find(segment => segment.id === segmentId) || null;
 }
