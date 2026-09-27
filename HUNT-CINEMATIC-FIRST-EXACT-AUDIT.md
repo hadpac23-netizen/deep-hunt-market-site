@@ -39,3 +39,7 @@ Department → only that department's category buttons → exact shelf → gated
 The browser fetches only the already checked-in V2 supplement. `catalog-home.json`, the older Full Shelves product JSON and the read-only database rows are not fetched. Safety and semantic title holds, positive verified stock, image technical PASS with HTTPS, Market5 readiness, Shadow mode and projected positive Profit REVIEW are checked again by the client before display. This is QA, not a final physical image, destination shipping, variant, or final net-profit approval.
 
 Payment Live, Supplier Live Order and Production taxonomy publication remain OFF. No checkout or supplier order action is present. Existing current preview, main storefront and Production settings are untouched.
+## V3 navigation hardening
+
+The isolated V3 preview keeps the V2 visual base and product source unchanged. It only hardens routing: an explicit invalid shelf no longer falls back to the first shelf; a category with multiple shelves requires an exact shelf choice; single-shelf categories such as Women → Dresses still open directly; empty shelves are labeled FILLING. No product is moved between routes and no Production, payment or supplier-order setting is changed.
+
