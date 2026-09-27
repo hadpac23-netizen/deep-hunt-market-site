@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HUNT Category Architecture V1 Preview</title>
+<style>
+:root{
+  --bg:#07101c;--panel:#0d1827;--panel2:#111f32;--text:#f6f8fb;--muted:#98a6b8;
+  --line:rgba(255,255,255,.10);--gold:#e8c96a;--blue:#8ab4ff;--green:#72d6a3;--warn:#f1c56b;--red:#ff8e8e;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+ radial-gradient(circle at top left,rgba(63,106,173,.20),transparent 38%),
+ radial-gradient(circle at top right,rgba(232,201,106,.10),transparent 28%),var(--bg);
+ color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{position:sticky;top:0;z-index:20;background:rgba(7,16,28,.90);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.wrap{max-width:1500px;margin:0 auto;padding:18px 22px}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.logo{font:800 27px Georgia,serif;letter-spacing:.08em}.logo b{color:var(--gold)}
+.sub{color:var(--muted);font-size:12px}
+.badge{border:1px solid var(--line);padding:6px 10px;border-radius:999px;color:var(--muted);font-size:10px;font-weight:800}
+.dept-rail{display:flex;gap:8px;overflow-x:auto;padding:13px 0 3px;scrollbar-width:none}
+.dept-rail::-webkit-scrollbar{display:none}
+.dept-btn{white-space:nowrap;border:1px solid var(--line);background:var(--panel);color:var(--text);padding:10px 13px;border-radius:999px;font-weight:800;cursor:pointer}
+.dept-btn.active{border-color:var(--gold);box-shadow:inset 0 0 0 1px rgba(232,201,106,.25);color:var(--gold)}
+.hero{max-width:1500px;margin:0 auto;padding:24px 22px 14px}
+.hero-card{border:1px solid var(--line);background:linear-gradient(145deg,rgba(17,31,50,.95),rgba(9,18,31,.88));border-radius:24px;padding:24px}
+.kicker{font-size:10px;font-weight:900;letter-spacing:.16em;color:var(--gold)}
+h1{margin:8px 0 10px;font-size:clamp(34px,5vw,70px);line-height:.95}
+.hero p{margin:0;max-width:850px;color:var(--muted);line-height:1.55}
+.grid{display:grid;grid-template-columns:1fr 320px;gap:16px;max-width:1500px;margin:0 auto;padding:0 22px 40px}
+.main,.side{min-width:0}
+.section{border:1px solid var(--line);background:rgba(13,24,39,.78);border-radius:20px;padding:18px;margin-bottom:16px}
+.section h2{margin:0 0 6px;font-size:24px}
+.meta{color:var(--muted);font-size:11px;margin-bottom:14px}
+.family-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}
+.family-row::-webkit-scrollbar{display:none}
+.family{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:14px;padding:12px 14px;font-size:12px;font-weight:800;white-space:nowrap}
+.family:first-child{border-color:rgba(138,180,255,.45)}
+.leaf-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.leaf{border:1px solid var(--line);background:rgba(10,21,36,.88);border-radius:14px;padding:12px;min-height:86px}
+.leaf strong{display:block;font-size:13px;margin-bottom:7px}
+.leaf .count{font-size:22px;font-weight:900}
+.state{display:inline-block;margin-top:8px;font-size:9px;font-weight:900;letter-spacing:.08em;border-radius:999px;padding:5px 7px;border:1px solid var(--line)}
+.healthy{color:var(--green)}.thin{color:var(--warn)}.very_thin,.missing{color:var(--red)}
+.rule{border-left:3px solid var(--gold);padding:10px 12px;background:rgba(232,201,106,.06);border-radius:8px;color:#dfe6ef;font-size:12px;line-height:1.5}
+.side .section{position:sticky;top:118px}
+.legend div{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:11px}
+.legend div:last-child{border-bottom:0}
+.cross{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.cross h3{margin:0 0 8px;font-size:12px}
+.cross p{margin:5px 0;color:var(--muted);font-size:11px;line-height:1.45}
+.footer-note{color:var(--muted);font-size:10px;text-align:center;padding:0 22px 30px}
+@media(max-width:980px){.grid{grid-template-columns:1fr}.side .section{position:static}.leaf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.wrap,.hero,.grid{padding-left:14px;padding-right:14px}.leaf-grid{grid-template-columns:1fr}.hero-card{padding:18px}.dept-btn{padding:9px 11px;font-size:12px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <div>
+        <div class="logo">HUNT<b>✦</b></div>
+        <div class="sub">Category Architecture V1 · Design Preview Only</div>
+      </div>
+      <span class="badge">NO PRODUCTION CHANGE</span>
+    </div>
+    <div class="dept-rail" id="deptRail"></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-card">
+    <div class="kicker">DEPARTMENT → FAMILY → LEAF CATEGORY</div>
+    <h1 id="heroTitle">Women</h1>
+    <p id="heroCopy">Clean, shopper-first navigation with one canonical product route and cross-surface discovery handled by tags instead of duplicate taxonomy.</p>
+  </div>
+</section>
+
+<div class="grid">
+  <main class="main">
+    <section class="section">
+      <h2>Family buttons</h2>
+      <div class="meta">These are the shopper-facing buttons directly under the active department.</div>
+      <div class="family-row" id="familyRow"></div>
+    </section>
+
+    <section class="section">
+      <h2>Leaf categories</h2>
+      <div class="meta">Public leaf buttons depend on clean product density. Thin/Missing leaves should stay under a parent family until filled.</div>
+      <div class="leaf-grid" id="leafGrid"></div>
+    </section>
+
+    <section class="section" id="crossSection">
+      <h2>Cross-surface discovery</h2>
+      <div class="meta">These are not duplicate taxonomy routes. They are filters/curated entry points into another canonical department.</div>
+      <div class="cross" id="crossList"></div>
+    </section>
+  </main>
+
+  <aside class="side">
+    <section class="section">
+      <h2>Coverage</h2>
+      <div class="legend" id="coverageStats"></div>
+      <div class="rule" style="margin-top:14px">
+        ≥24 = direct public leaf is healthy<br>
+        12–23 = usable but thin<br>
+        1–11 = parent/More only<br>
+        0 = hidden until filled
+      </div>
+      <div class="rule" style="margin-top:12px">
+        Canonical taxonomy ≠ shopper navigation.<br>
+        BOOM Stylist can surface products across audiences, but never reclassify them.
+      </div>
+    </section>
+  </aside>
+</div>
+
+<div class="footer-note">Shadow / design preview only · Payment Live OFF · Supplier Live Order OFF · No Production taxonomy publish</div>
+
+<script>
+const DATA={"arch":{"version":"HUNT-CATEGORY-ARCHITECTURE-V1","date":"2026-09-27","mode":"DESIGN_ONLY_OWNER_GATE_REQUIRED","production_effect":false,"principles":["CATEGORY_TRUTH_BEFORE_SHELF_DENSITY","CANONICAL_TAXONOMY_IS_NOT_THE_SAME_AS SHOPPER_NAVIGATION","ONE_PRODUCT_ONE_CANONICAL_ROUTE","CROSS_SURFACE_DISCOVERY_USES_TAGS_AND_FILTERS_NOT_DUPLICATE_PRODUCTS","PROMOTIONS_ARE_MERCHANDISING_LAYERS_NOT CATEGORIES","NO_EMPTY_OR_MISLEADING BUTTONS","SUPPLIER TAXONOMY IS EVIDENCE ONLY"],"department_order":["women","men","kids","accessories","beauty","home","kitchen","tech","electrical","sports","camping","pets","toys","garden","office","travel","gifts"],"navigation_contract":{"department_rail":{"desktop":"All 17 departments in a single non-wrapping rail with horizontal overflow/arrow controls; active department pinned and visually distinct.","mobile":"Sticky horizontal chip rail; All first; active department centered when practical.","persistent_on":["home","department","category","search","product-list","product"]},"family_row":{"max_equal_weight_buttons":10,"rule":"Show broad category families first. Use More/All when a department exceeds 10 peer options."},"leaf_exposure":{"healthy_min_clean_products":24,"thin_min_clean_products":12,"rule":"Dedicated leaf button should normally require >=12 clean products. 0-11 products stay under the parent family or a More view until filled."},"view_all_rule":"Every family/subcategory level must expose an All/View All path."},"taxonomy_vs_navigation":{"canonical_examples":["Kids nursery furniture => canonical Home, audience_tags=[kids,baby], discoverable from Kids > Nursery.","Kids tableware => canonical Kitchen, audience_tags=[kids,baby], discoverable from Kids > Dining.","Women's handbag => canonical Accessories > Bags, audience_tags=[women], discoverable from Women > Accessories.","Unisex shirt => one canonical apparel route plus audience_tags=[women,men,unisex].","Sports-specific performance apparel => canonical Sports; casual fashion apparel stays Women/Men/Kids.","Giftable necklace => canonical Accessories > Jewelry, giftability tag only; never Gifts."],"merchandising_only":["new","trending","best-sellers","deals","for-you","seasonal","occasion","creator-picks","giftable","audience"]},"departments":{"women":{"shopper_buttons":["All Women","Clothing","Dresses","Tops","Bottoms","Outerwear","Shoes","Underwear & Sleep","Swim","Occasion & Maternity"],"canonical_leaves":["women-dresses","women-tops","women-bottoms","women-jeans","women-skirts","women-jumpsuits","women-hoodies","women-knitwear","women-outerwear","women-shoes","women-underwear","women-sleepwear","women-nightwear","women-loungewear","swimwear","women-evening","women-occasionwear","women-maternity","women-tailoring"],"cross_surface":["Accessories => accessories filtered audience=women","Activewear => sports filtered audience=women"]},"men":{"shopper_buttons":["All Men","Clothing","Tops","Bottoms","Outerwear","Shoes","Underwear & Sleep","Swim","Tailoring","Active"],"canonical_leaves":["men-shirts","men-tops","men-bottoms","men-jeans","men-shorts","men-hoodies","men-knitwear","men-outerwear","men-shoes","men-underwear","men-boxers","men-nightwear","men-swimwear","men-tailoring","men-socks"],"cross_surface":["Accessories => accessories filtered audience=men","Activewear => sports filtered audience=men"]},"kids":{"shopper_buttons":["All Kids","Baby","Girls","Boys","Clothing","Shoes","School","Sleep & Underwear","Occasion & Swim","Nursery & Kids Home"],"canonical_leaves":["baby","baby-clothing","baby-sets","baby-sleepsuits","girls","boys","kids-clothing","kids-shoes","kids-schoolwear","kids-nightwear","kids-underwear","kids-occasionwear","kids-swimwear"],"cross_surface":["Nursery/Kids Home => home filtered audience=kids,baby","Kids Dining => kitchen filtered audience=kids,baby","Toys => toys filtered audience=kids"]},"accessories":{"shopper_buttons":["All Accessories","Bags","Jewelry","Watches","Sunglasses","Hats","Belts & Scarves","Hair Accessories","Socks","Small Accessories"],"canonical_leaves":["bags","bag-accessories","jewelry","jewelry-necklaces","jewelry-earrings","jewelry-bracelets","jewelry-rings","watches","sunglasses","hats","belts","scarves","hair-accessories","socks","keychains"]},"beauty":{"shopper_buttons":["All Beauty","Makeup","Skincare","Hair","Nails","Body Care","Fragrance","Beauty Tools"],"canonical_leaves":["makeup","skincare","hair","nails","body-care","fragrance","beauty-tools"]},"home":{"shopper_buttons":["All Home","Furniture & Living","Bedroom & Bedding","Bath","Decor & Mirrors","Storage & Organization","Rugs & Windows","Lighting","Laundry & Cleaning"],"canonical_leaves":["furniture","bedding","bath","home-decor","mirrors","storage","rugs-runners","curtains-blinds","lighting","cushions-throws","entryway","laundry","cleaning","wall-art"],"cross_surface":["Kitchen => kitchen","Garden => garden","Kids Home => filtered audience=kids,baby"]},"kitchen":{"shopper_buttons":["All Kitchen","Cookware","Tools & Utensils","Tableware","Drinkware","Storage","Bakeware"],"canonical_leaves":["cookware","kitchen-tools","tableware","dinnerware","drinkware","glassware","kitchen-storage","bakeware"],"cross_surface":["Small Appliances => electrical filtered kitchen-use"]},"tech":{"shopper_buttons":["All Tech","Phones & Accessories","Charging","Audio","Wearables","Gaming","Cameras","Computing","Stands & Holders","Smart Home"],"canonical_leaves":["phone-cases","chargers-cables","power-banks","audio","wearables","wearable-accessories","gaming","cameras","computers-tablets","stands-holders","smart-home"]},"electrical":{"shopper_buttons":["All Electrical","Small Appliances","Heating & Cooling","Cleaning Appliances","Personal Appliances","Power & Electrical"],"canonical_leaves":["home-appliances","heating-cooling","cleaning-appliances","personal-appliances","power-electrical"]},"sports":{"shopper_buttons":["All Sports","Activewear","Fitness","Yoga","Running","Team Sports","Sports Gear"],"canonical_leaves":["activewear","active-bottoms","fitness-accessories","yoga","running","team-sports","sports-gear"],"cross_surface":["Sports Shoes may surface audience-filtered footwear without duplicate taxonomy where appropriate"]},"camping":{"shopper_buttons":["All Camping","Tents & Shelter","Sleep","Lighting","Camp Cooking","Camp Furniture","Outdoor Gear"],"canonical_leaves":["tents-shelter","camping-sleep","camping-lighting","camp-cooking","camp-furniture","outdoors"]},"pets":{"shopper_buttons":["All Pets","Beds & Houses","Clothing","Feeding","Grooming","Toys","Walking","Aquarium","Accessories"],"canonical_leaves":["pet-beds","pet-houses","pet-clothing","pet-feeding","pet-grooming","pet-toys","pet-walk","aquarium","pet-accessories"]},"toys":{"shopper_buttons":["All Toys","Educational","Building","Pretend Play","Dolls & Figures","Vehicles & RC","Puzzles & Games","Arts & Crafts","Plush","Outdoor Play"],"canonical_leaves":["educational-toys","building-toys","pretend-play","dolls-figures","vehicles-rc","puzzles-games","arts-crafts","plush","outdoor-play"]},"garden":{"shopper_buttons":["All Garden","Planters","Watering","Garden Tools","Outdoor Living","Garden Decor","Plant Care"],"canonical_leaves":["planters","watering","garden-tools","outdoor-living","garden-decor","plant-care"]},"office":{"shopper_buttons":["All Office","Stationery","Writing","Filing & Organization","Desk Accessories","Office Furniture","Notebooks & Planners"],"canonical_leaves":["stationery","writing","filing-organization","desk-accessories","office-furniture","notebooks-planners"]},"travel":{"shopper_buttons":["All Travel","Luggage","Travel Bags","Organizers","Travel Accessories","Toiletry","Documents"],"canonical_leaves":["luggage","travel-bags","travel-organizers","travel-accessories","toiletry-bags","passport-document-holders"]},"gifts":{"shopper_buttons":["All Gifts","Gift Decor","Party","Gift Wrap","Cards & Stationery","Gift Bags & Boxes"],"canonical_leaves":["gift-decor","party","gift-wrap","cards-stationery","gift-bags-boxes"],"cross_surface":["Gifts by recipient/occasion/price are merchandising filters, never canonical categories"]}},"url_contract":{"canonical_department":"/shop/{department}","canonical_family":"/shop/{department}/{family}","canonical_leaf":"/shop/{department}/{leaf}","cross_surface":"Use query/filter or curated landing route that canonicalizes to the product's true route."}},"cov":{"version":"HUNT-CATEGORY-COVERAGE-AUDIT-V1","date":"2026-09-27","basis":"Current Shadow catalog counts compared with Architecture V1 target leaves.","thresholds":{"healthy":24,"thin":12,"very_thin":"1-11","missing":0},"departments":{"women":{"healthy":12,"thin":3,"very_thin":["women-loungewear:4","women-occasionwear:11","women-maternity:5"],"missing":1,"missing_leaves":["women-jeans"]},"men":{"healthy":10,"thin":1,"very_thin":["men-nightwear:1","men-swimwear:2","men-tailoring:10","men-socks:7"],"missing":0},"kids":{"healthy":6,"thin":2,"very_thin":["baby-sleepsuits:3","kids-schoolwear:8","kids-nightwear:5","kids-underwear:5","kids-swimwear:3"],"missing":0},"accessories":{"healthy":12,"thin":1,"very_thin":["jewelry-rings:5","sunglasses:6"],"missing":0},"beauty":{"healthy":4,"thin":1,"very_thin":["body-care:7","fragrance:3"],"missing":0},"home":{"healthy":8,"thin":1,"very_thin":["rugs-runners:5","curtains-blinds:11","laundry:7","cleaning:1","wall-art:3"],"missing":0},"kitchen":{"healthy":1,"thin":0,"very_thin":0,"missing":7,"missing_leaves":["cookware","tableware","dinnerware","drinkware","glassware","kitchen-storage","bakeware"]},"tech":{"healthy":7,"thin":1,"very_thin":["power-banks:10"],"missing":2,"missing_leaves":["computers-tablets","smart-home"]},"electrical":{"healthy":0,"thin":0,"very_thin":["home-appliances:4"],"missing":4,"missing_leaves":["heating-cooling","cleaning-appliances","personal-appliances","power-electrical"]},"sports":{"healthy":2,"thin":1,"very_thin":["sports-gear:1"],"missing":3,"missing_leaves":["yoga","running","team-sports"]},"camping":{"healthy":1,"thin":0,"very_thin":["camping-sleep:7","camping-lighting:1"],"missing":3,"missing_leaves":["tents-shelter","camp-cooking","camp-furniture"]},"pets":{"healthy":7,"thin":1,"very_thin":["aquarium:4"],"missing":0},"toys":{"healthy":0,"thin":1,"very_thin":["building-toys:6"],"missing":7,"missing_leaves":["pretend-play","dolls-figures","vehicles-rc","puzzles-games","arts-crafts","plush","outdoor-play"]},"garden":{"healthy":0,"thin":2,"very_thin":["watering:4","garden-tools:2"],"missing":2,"missing_leaves":["garden-decor","plant-care"]},"office":{"healthy":2,"thin":0,"very_thin":0,"missing":4,"missing_leaves":["writing","filing-organization","desk-accessories","notebooks-planners"]},"travel":{"healthy":1,"thin":0,"very_thin":0,"missing":5,"missing_leaves":["travel-bags","travel-organizers","travel-accessories","toiletry-bags","passport-document-holders"]},"gifts":{"healthy":0,"thin":2,"very_thin":0,"missing":3,"missing_leaves":["gift-wrap","cards-stationery","gift-bags-boxes"]}},"legacy_cleanup_required":["Home shelves named kitchen/garden/tech/women-maternity must not survive as canonical leaves without reclassification.","Kids shelves for bath/curtains/cushions/dinnerware/garden/tech/towels should become cross-surface filters to canonical Home/Kitchen/Tech routes where the core product type belongs there.","Women/Men cross-department leftovers and legacy generic shelves must remain behind Taxonomy Gate V2 until resolved.","Lifestyle, Baby-as-department and empty department values remain non-shopper-facing."]}};
+const nice=s=>String(s||"").replace(/-/g," ").replace(/\b\w/g,m=>m.toUpperCase());
+const order=DATA.arch.department_order;
+const deps=DATA.arch.departments;
+const cov=DATA.cov.departments;
+let active=order[0];
+
+function stateFor(dept,shelf){
+  const c=cov[dept]||{};
+  if((c.missing_leaves||[]).includes(shelf))return ["MISSING",0];
+  const very=(c.very_thin||[]).find(x=>String(x).startsWith(shelf+":"));
+  if(very)return ["VERY_THIN",Number(String(very).split(":").pop())||0];
+  const thinList=c.thin_leaves||[];
+  if(thinList.includes(shelf))return ["THIN",12];
+  // coverage audit only carries aggregates for healthy leaves, so mark non-listed defined leaves as HEALTHY
+  return ["HEALTHY",24];
+}
+
+function render(){
+  const d=deps[active];
+  document.getElementById("heroTitle").textContent=nice(active);
+  document.getElementById("deptRail").innerHTML=order.map(x=>'<button class="dept-btn '+(x===active?'active':'')+'" data-dept="'+x+'">'+nice(x)+'</button>').join("");
+  document.getElementById("familyRow").innerHTML=(d.shopper_buttons||[]).map((x,i)=>'<span class="family">'+x+'</span>').join("");
+  document.getElementById("leafGrid").innerHTML=(d.canonical_leaves||[]).map(shelf=>{
+    const [st,count]=stateFor(active,shelf);
+    return '<article class="leaf"><strong>'+nice(shelf)+'</strong><div class="count">'+(st==="HEALTHY"?"24+":count)+'</div><span class="state '+st.toLowerCase()+'">'+st.replace("_"," ")+'</span></article>';
+  }).join("");
+  const c=cov[active]||{};
+  const total=(d.canonical_leaves||[]).length;
+  document.getElementById("coverageStats").innerHTML=[
+    ["Target leaves",total],
+    ["Healthy",c.healthy||0],
+    ["Thin",c.thin||0],
+    ["Very thin",c.very_thin||0],
+    ["Missing",c.missing||0]
+  ].map(x=>'<div><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>').join("");
+  const cross=d.cross_surface||[];
+  const cs=document.getElementById("crossSection");
+  cs.style.display=cross.length?"block":"none";
+  document.getElementById("crossList").innerHTML=cross.map(x=>'<p>• '+x+'</p>').join("");
+}
+document.getElementById("deptRail").addEventListener("click",e=>{
+  const b=e.target.closest("[data-dept]");if(!b)return;active=b.dataset.dept;render();
+});
+render();
+</script>
+</body>
+</html>
