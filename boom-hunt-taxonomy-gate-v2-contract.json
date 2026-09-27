@@ -1,0 +1,45 @@
+{
+  "version": "HUNT-TAXONOMY-GATE-V2",
+  "date": "2026-09-27",
+  "mode": "SHADOW_ONLY",
+  "production_effect": false,
+  "principle": "CATEGORY_TRUTH_BEFORE_SHELF_DENSITY",
+  "pipeline": [
+    "supplier_raw_input",
+    "normalize_marketing_terms_to_tags",
+    "core_product_identity",
+    "canonical_department",
+    "canonical_category",
+    "conflict_check",
+    "taxonomy_review_if_uncertain",
+    "safety",
+    "variant_and_stock",
+    "shipping",
+    "profit",
+    "stylist_ranking",
+    "shelf"
+  ],
+  "states": [
+    "PASS",
+    "REMAP",
+    "TAXONOMY_REVIEW",
+    "BLOCK"
+  ],
+  "invariants": [
+    "A product may have exactly one canonical department.",
+    "A product may have exactly one canonical category when status is PASS or REMAP.",
+    "Marketing words such as gift, trending, summer and Christmas never override core product identity.",
+    "Shelf density can never change product classification.",
+    "BOOM Stylist may rank within an eligible shelf but may not change taxonomy.",
+    "Ambiguous or conflicting identities go to TAXONOMY_REVIEW rather than first-match routing.",
+    "Restricted or unsafe product classes are blocked before merchandising.",
+    "No Taxonomy Gate V2 decision enables sellable, checkout, payment, supplier ordering or Production exposure."
+  ],
+  "examples": {
+    "necklace + gift wording": "accessories/jewelry-necklaces",
+    "dog bandana + scarf wording": "pets/pet-accessories",
+    "phone case": "tech/phone-cases",
+    "baby romper + scarf wording": "kids/baby-clothing",
+    "ambiguous product": "TAXONOMY_REVIEW"
+  }
+}
