@@ -145,13 +145,14 @@
       providerButtons.forEach(button=>{
         const provider=button.dataset.oauth;
         const enabled=external[provider]===true;
+        button.hidden=!enabled;
         button.disabled=!enabled;
         button.dataset.enabled=String(enabled);
-        button.querySelector("small").textContent=enabled?"CONNECTED":"SETUP REQUIRED";
+        button.querySelector("small").textContent=enabled?"CONNECTED":"";
       });
       await initGoogle(external.google===true);
     } catch {
-      providerButtons.forEach(button=>{button.disabled=true;button.querySelector("small").textContent="STATUS UNAVAILABLE";});
+      providerButtons.forEach(button=>{button.hidden=true;button.disabled=true;button.querySelector("small").textContent="";});
       if(googleStatus)googleStatus.textContent="STATUS UNAVAILABLE";
     }
   }
