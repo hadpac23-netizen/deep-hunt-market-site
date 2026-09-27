@@ -102,7 +102,7 @@ function allowedForDepartment(deptSlug,p){
   if(deptSlug==="gifts" && (accessoryCategory.test(String(p?.category||"")) || accessoryIdentity.test(text)))return false;
   return true;
 }
-function categoryProducts(deptSlug,cat){
+function directCategoryProducts(deptSlug,cat){
   const base=(cat.products||[]);
   const route=deptSlug+"/"+cat.slug;
   const extra=taxonomySupplement.shelves?.[route]||[];
@@ -118,6 +118,27 @@ function categoryProducts(deptSlug,cat){
     const canonical=canonicalOverrides.get(key);
     if(canonical && canonical!==route)continue;
     seen.add(key);out.push(p);
+  }
+  return out;
+}
+const aggregateRails={
+  "men/men-clothing":["men-tops","men-suits","men-jeans","men-bottoms","men-outerwear","men-knitwear","men-hoodies"],
+  "women/women-clothing":["women-dresses","women-evening","women-suits","women-tops","women-jeans","women-bottoms","women-skirts","women-knitwear","women-outerwear","women-hoodies"]
+};
+function categoryProducts(deptSlug,cat){
+  const route=deptSlug+"/"+cat.slug;
+  const sources=aggregateRails[route];
+  if(!sources)return directCategoryProducts(deptSlug,cat);
+  const dep=data?.departments?.find(x=>x.slug===deptSlug);
+  const seen=new Set(),out=[];
+  for(const slug of sources){
+    const sourceCat=dep?.categories?.find(x=>x.slug===slug);
+    if(!sourceCat)continue;
+    for(const p of directCategoryProducts(deptSlug,sourceCat)){
+      const key=String(p.provider||"UNKNOWN")+":"+String(p.item_id||"");
+      if(seen.has(key))continue;
+      seen.add(key);out.push({...p,aggregate_source:slug});
+    }
   }
   return out;
 }
