@@ -1556,9 +1556,43 @@ const identityPolicies = {
   'women/women-socks': [/\bsocks?\b/i]
 };
 
+const semanticStopWords = new Set([
+  'and', 'more', 'useful', 'women', 'woman', 'men', 'man', 'kids', 'kid', 'baby',
+  'home', 'living', 'pet', 'pets', 'garden', 'office', 'beauty', 'kitchen',
+  'electrical', 'camping', 'sports', 'outdoor', 'accessories', 'accessory',
+  'essentials'
+]);
+
+function normalizeSemanticWord(word) {
+  let token = String(word || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+  if (!token || token.length < 3) return '';
+  if (/ies$/.test(token) && token.length > 4) token = token.slice(0, -3) + 'y';
+  else if (/(?:sses|ches|shes|xes|zes)$/.test(token) && token.length > 5) token = token.slice(0, -2);
+  else if (/s$/.test(token) && !/ss$/.test(token) && token.length > 4) token = token.slice(0, -1);
+  return token;
+}
+
+const routeIdentityTerms = new Map(DEPARTMENTS.flatMap(department =>
+  department.categories.flatMap(category => category.shelves.map(shelf => {
+    const words = `${category.title} ${shelf.label} ${shelf.slug.replace(/-/g, ' ')}`
+      .split(/[^A-Za-z0-9]+/)
+      .map(normalizeSemanticWord)
+      .filter(word => word && !semanticStopWords.has(word));
+    return [`${department.slug}/${shelf.slug}`, [...new Set(words)]];
+  }))
+));
+
+function genericTitleFitsRoute(route, title) {
+  const terms = routeIdentityTerms.get(route) || [];
+  if (!terms.length) return false;
+  const titleWords = new Set(String(title || '').split(/[^A-Za-z0-9]+/).map(normalizeSemanticWord).filter(Boolean));
+  return terms.some(term => titleWords.has(term));
+}
+
 function titleFitsRoute(route, title) {
   const policy = identityPolicies[route];
-  return !!policy && policy[0].test(title) && (!policy[1] || !policy[1].test(title));
+  if (policy) return policy[0].test(title) && (!policy[1] || !policy[1].test(title));
+  return genericTitleFitsRoute(route, title);
 }
 
 export function isEligible(route, p) {
