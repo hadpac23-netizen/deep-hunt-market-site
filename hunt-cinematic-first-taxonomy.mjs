@@ -1099,11 +1099,11 @@ export const DEPARTMENTS = [
         ]
       },
       {
-        "id": "camping-cook",
+        "id": "camp-cooking",
         "title": "Camping Kitchen",
         "shelves": [
           {
-            "slug": "camping-cook",
+            "slug": "camp-cooking",
             "label": "Camping Kitchen"
           }
         ]
