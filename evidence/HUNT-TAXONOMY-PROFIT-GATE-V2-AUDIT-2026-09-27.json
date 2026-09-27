@@ -1,0 +1,81 @@
+{
+  "version": "HUNT-TAXONOMY-PROFIT-GATE-V2-AUDIT-1",
+  "date": "2026-09-27",
+  "mode": "READ_ONLY_SHADOW_AUDIT",
+  "production_effect": false,
+  "dataset": {
+    "table": "public.hunt_shelf_candidates",
+    "shadow_candidates": 26347,
+    "usd_supplier_cost_available": 23447,
+    "supplier_cost_missing_or_unusable": 2900
+  },
+  "taxonomy": {
+    "high_confidence_legacy_conflict_candidates": 3719,
+    "rule": "CATEGORY_TRUTH_BEFORE_SHELF_DENSITY",
+    "cleanup_state": "PENDING_SHADOW_REMAP_AND_REVIEW"
+  },
+  "profit": {
+    "corrected_price_gate": "HUNT-CJ-RETAIL-PRICE-GATE-V2.1",
+    "min_projected_product_contribution_usd": 4,
+    "target_product_margin": 0.35,
+    "payment_refund_reserve_rate": 0.09,
+    "product_math_candidates": 23447,
+    "product_math_pass_at_generated_target_price": 23447,
+    "warning": "Generated target price is a mathematical floor, not proof of market acceptance.",
+    "market5_all_pass_with_cost": 980,
+    "market5_checked_not_all_pass_with_cost": 541,
+    "market5_not_checked_with_cost": 21926,
+    "destination_quote_evidence": {
+      "source": "evidence/HUNT-CJ-GAP-FILL-VERIFIED-2026-09-23.json",
+      "cj_products_verified_4_of_4": 39,
+      "verified_market_pairs": 156,
+      "projected_product_contribution_min_usd": 4.01,
+      "projected_product_contribution_max_usd": 11.7,
+      "final_profit_verified_products": 0
+    },
+    "generated_target_price_distribution": {
+      "EPROLO": {
+        "products": 19690,
+        "retail_median_usd": 15.99,
+        "contribution_median_usd": 5.82,
+        "contribution_p90_usd": 14.82
+      },
+      "CJdropshipping": {
+        "products": 3574,
+        "retail_median_usd": 15.99,
+        "contribution_median_usd": 5.86,
+        "contribution_p90_usd": 116.13
+      },
+      "Gooten": {
+        "products": 183,
+        "retail_median_usd": 29.99,
+        "contribution_median_usd": 10.89,
+        "contribution_p90_usd": 24.71
+      }
+    }
+  },
+  "sell_readiness": {
+    "shadow_display": "TAXONOMY_PASS may display for QA even when PROFIT_REVIEW.",
+    "sell_ready": "Requires taxonomy pass, safety, exact variant/stock, market validation, destination shipping truth, and PROFIT_PASS.",
+    "final_net_profit": "UNKNOWN until realized/attributed tax-import, FX, actual payment fees, marketing, returns/refunds and other variable costs are complete."
+  },
+  "gates": {
+    "taxonomy": [
+      "PASS",
+      "REMAP",
+      "TAXONOMY_REVIEW",
+      "BLOCK"
+    ],
+    "profit": [
+      "PROFIT_PASS",
+      "PROFIT_REVIEW",
+      "PROFIT_BLOCK"
+    ]
+  },
+  "safety": {
+    "payment_live": false,
+    "supplier_live_order": false,
+    "production_publish": false,
+    "automatic_repricing": false
+  }
+}
