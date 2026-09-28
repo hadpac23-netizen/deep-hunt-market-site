@@ -1,4 +1,4 @@
-# HUNT DEAL — Claude Code Project Instructions
+# HUNT — Claude Code Project Instructions
 
 Before any HUNT task, read:
 1. `.claude/skills/hunt-router/SKILL.md`
@@ -7,6 +7,7 @@ Before any HUNT task, read:
 The router decides which HUNT skills are mandatory for the task.
 
 Core invariants:
+- HUNT is the public storefront identity. Do not rename normal storefront work to HUNT DEAL.
 - Approved baselines are immutable. Build experiments in new files/branches.
 - Preserve Original Cinematic / Living Campaign architecture unless Owner explicitly changes it.
 - Main Category -> Departments underneath -> Exact Shelf -> Product -> Variant.
