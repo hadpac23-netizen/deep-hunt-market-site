@@ -17,6 +17,14 @@ Taxonomy may feel alive like a cinematic control surface:
 - Effects must not change layout dimensions, introduce horizontal motion/scroll, or reduce legibility.
 - Honor prefers-reduced-motion and provide a static equivalent.
 
+#### OFF-WHITE + LIVING PRODUCT TAXONOMY
+Light mode uses a warm premium off-white foundation, never clinical white.
+- Main Category and Department rows inside product pages carry the same living cinematic motion language as the storefront.
+- Light mode retains shimmer, slow light sweeps, glow and active-state pulse with lower contrast intensity.
+- Category effects remain stronger than Department effects.
+- Product surfaces use warm paper/off-white tones with readable dark text.
+- Reviews and empty/loading states must size to content; never reserve a large empty panel when there is no review content.
+
 #### PRODUCT HEADER TAXONOMY + LIGHT MODE
 Product detail pages must carry the same browsing context as the storefront:
 - HUNT brand remains clearly visible in both Light and Dark modes;
