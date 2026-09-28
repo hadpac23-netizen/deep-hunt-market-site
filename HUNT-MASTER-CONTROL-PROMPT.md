@@ -109,3 +109,17 @@ If Owner says “not what I meant”:
 5. Do not alter the baseline.
 
 If Owner says “this is it”, that version becomes the new protected baseline.
+
+
+### Experiment navigation integrity
+Every experimental storefront family must be route-closed:
+- HUNT brand/home link -> current experiment home.
+- Women/Men/Jewelry links -> current experiment category state.
+- Product breadcrumb/back link -> current experiment category/department.
+- Recommendation product links -> current experiment product page.
+- Mobile Home/Categories links -> current experiment family.
+Never point an experiment to the generic old index or legacy category page unless explicitly requested.
+
+### Public storefront brand
+In the current Cinematic storefront family, the visible brand is **HUNT**.
+Do not render **HUNT DEAL** in the primary brand lockup unless Owner explicitly asks to restore it.
