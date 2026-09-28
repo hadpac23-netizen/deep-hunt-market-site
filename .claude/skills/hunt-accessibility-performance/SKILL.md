@@ -30,3 +30,14 @@ Performance:
 - Prefer progressive disclosure and incremental loading.
 
 Performance improvements must not weaken Product Truth or taxonomy checks.
+
+
+## Simple First navigation QA
+For normal HUNT storefront navigation verify:
+- Main Categories remain immediately reachable.
+- Active category Departments remain immediately reachable in the second compact row.
+- Horizontal overflow is contained inside the navigation strips only.
+- Category/Department activation never forces document scroll.
+- selected state is communicated visually and semantically.
+- no department thumbnail downloads are required for the navigation layer.
+- filters are downstream of the shelf and only expose verified attributes.
