@@ -1496,6 +1496,37 @@ body.hunt-force-light #hd-discover-block{
 }
 </style>
 
+
+<style id="hunt-review-void-removal-final">
+/* HUNT V10 REVIEW VOID REMOVAL FINAL */
+.hd-review-inline-status{
+  align-self:start;
+  width:max-content;
+  max-width:100%;
+  padding:9px 11px;
+  border:1px solid rgba(128,174,231,.14);
+  border-radius:10px;
+  color:var(--shop-muted);
+  background:rgba(13,22,49,.36);
+  font-size:10px;
+  line-height:1.35;
+}
+.hd-review-list[hidden]{display:none!important}
+.hd-review-list{
+  min-height:0!important;
+  height:auto!important;
+  align-self:start!important;
+}
+.hd-review-list:empty{display:none!important}
+.hd-review-empty{display:none!important}
+html[data-hunt-theme="light"] .hd-review-inline-status,
+body.hunt-force-light .hd-review-inline-status{
+  background:rgba(251,248,242,.94)!important;
+  color:#697386!important;
+  border-color:rgba(55,50,42,.10)!important;
+}
+</style>
+
 </head>
 <body class="hd-page hd-market-v2 hd-product-cinematic-v2">
   <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
@@ -1602,7 +1633,7 @@ body.hunt-force-light #hd-discover-block{
           <p class="hd-review-status" id="hd-review-status" aria-live="polite"></p>
           <small class="hd-review-photo-note">Reviews with photos are held for moderation before the photos become public.</small>
         </aside>
-        <div class="hd-review-list" id="hd-review-list"><div class="hd-review-empty">Loading reviews…</div></div>
+        <div class="hd-review-inline-status" id="hd-review-inline-status" aria-live="polite">Checking reviews…</div><div class="hd-review-list" id="hd-review-list" hidden></div>
       </div>
     </section>
 
@@ -1700,6 +1731,46 @@ body.hunt-force-light #hd-discover-block{
   </script>
   <script src="product-flow.js?v=ladder1"></script>
   <script src="reviews.js?v=reviews1"></script>
+
+<script>
+/* HUNT_REVIEW_VOID_RUNTIME_FINAL */
+(()=>{
+  const list=document.getElementById("hd-review-list");
+  const status=document.getElementById("hd-review-inline-status");
+  if(!list||!status)return;
+
+  function sync(){
+    const cards=list.querySelectorAll(".hd-review-card");
+    const empty=list.querySelector(".hd-review-empty");
+    const txt=(empty?.textContent||list.textContent||"").trim();
+
+    if(cards.length){
+      list.hidden=false;
+      status.hidden=true;
+      return;
+    }
+
+    list.hidden=true;
+    status.hidden=false;
+
+    if(/no reviews yet/i.test(txt)){
+      status.textContent="No reviews yet.";
+    }else if(/temporarily unavailable/i.test(txt)){
+      status.textContent="Reviews are temporarily unavailable.";
+    }else{
+      status.textContent="Checking reviews…";
+    }
+  }
+
+  new MutationObserver(sync).observe(list,{childList:true,subtree:true,characterData:true});
+  sync();
+
+  // Reviews script updates the numeric count; once it reaches 0, collapse the list completely.
+  const count=document.getElementById("hd-review-count");
+  if(count)new MutationObserver(sync).observe(count,{childList:true,subtree:true,characterData:true});
+})();
+</script>
+
   <script src="shopping-actions.js?v=brain2"></script>
   <script src="hunt-theme.js?v=shop5"></script>
   <script src="pwa.js?v=pwa1"></script>
