@@ -8,6 +8,14 @@ Create a new version/file/branch and preserve a rollback path.
 
 ### Storefront default: SIMPLE FIRST
 
+#### ROW-LEVEL TAXONOMY HIERARCHY
+The navigation must read instantly as two separate levels:
+- top row = Main Categories, stronger sapphire/gold cinematic rail;
+- second row = Departments/Shelves, slightly different luminous hue;
+- both rails may have subtle ambient gleam;
+- category rail remains visually stronger;
+- user should know where to click before reading every label.
+
 #### CINEMATIC TAXONOMY COLOR HIERARCHY
 Keep taxonomy structurally simple but visually alive:
 - Main Categories use the stronger HUNT cinematic sapphire/gold treatment.
