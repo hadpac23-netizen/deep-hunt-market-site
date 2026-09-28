@@ -44,6 +44,14 @@ Mobile:
 - no drawer required for normal browsing;
 - no forced scroll after category or department selection.
 
+Overflow affordance:
+- Never require mouse-dragging to discover hidden navigation items.
+- When a navigation row overflows, show small previous/next arrows at the row edges.
+- Keep native swipe/trackpad scrolling as an additional input, not the only input.
+- Hide arrows when the row fits.
+- Disable the relevant arrow at the start/end.
+- The selected item may be revealed within its own navigation strip without scrolling the document.
+
 ## Explicitly rejected by default
 - fullscreen navigation;
 - modal navigation;
