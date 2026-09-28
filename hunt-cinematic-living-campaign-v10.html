@@ -336,6 +336,128 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
   .cat-chip:hover::before,.cat-chip.active::before{transform:none!important}
 }
 
+
+/* V10 TAXONOMY ROW SEPARATION */
+/* Make the two taxonomy levels instantly distinguishable. */
+.taxonomy-zone{
+  display:grid;
+  gap:8px;
+}
+
+/* Row 1 — Main Categories: stronger cinematic rail */
+#dept-nav{
+  position:relative;
+  padding:8px!important;
+  border:1px solid color-mix(in srgb,var(--spark) 22%,var(--edge))!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb,var(--panel2) 82%,#0c2348 18%),
+      color-mix(in srgb,var(--panel) 76%,#07162f 24%)
+    )!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 10px 26px rgba(2,9,24,.18),
+    0 0 18px color-mix(in srgb,var(--spark) 6%,transparent)!important;
+  overflow:hidden!important;
+}
+#dept-nav::before{
+  content:"";
+  position:absolute;
+  inset:-60% -20%;
+  pointer-events:none;
+  background:
+    linear-gradient(115deg,
+      transparent 30%,
+      rgba(255,255,255,.02) 40%,
+      rgba(255,255,255,.10) 49%,
+      rgba(242,211,107,.10) 52%,
+      rgba(255,255,255,.02) 60%,
+      transparent 70%);
+  transform:translateX(-34%);
+  animation:huntCategoryRailGleam 6.8s ease-in-out infinite;
+  opacity:.58;
+}
+
+/* Row 2 — Departments: clearly different luminous rail */
+#category-drawer-shell{
+  position:relative;
+  margin-top:0!important;
+  padding:8px!important;
+  border:1px solid color-mix(in srgb,var(--accent) 20%,var(--edge))!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb,var(--panel2) 78%,#123848 22%),
+      color-mix(in srgb,var(--panel) 72%,#0a2935 28%)
+    )!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 8px 22px rgba(3,12,24,.14),
+    0 0 16px color-mix(in srgb,var(--accent) 6%,transparent)!important;
+  overflow:hidden;
+}
+#category-drawer-shell::before{
+  content:"";
+  position:absolute;
+  inset:-65% -22%;
+  pointer-events:none;
+  background:
+    linear-gradient(118deg,
+      transparent 28%,
+      rgba(255,255,255,.02) 39%,
+      rgba(255,255,255,.085) 48%,
+      color-mix(in srgb,var(--accent) 13%,transparent) 52%,
+      rgba(255,255,255,.02) 61%,
+      transparent 72%);
+  transform:translateX(36%);
+  animation:huntDepartmentRailGleam 7.6s ease-in-out infinite;
+  opacity:.52;
+}
+#category-index{position:relative;z-index:1}
+#dept-nav button{z-index:1}
+
+/* Keep hierarchy obvious even at a glance. */
+#dept-nav button{
+  font-weight:850!important;
+  letter-spacing:.025em!important;
+}
+#category-index .cat-chip{
+  font-weight:760!important;
+  opacity:.96;
+}
+
+/* Active states get clearer directional emphasis. */
+#dept-nav button.active{
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.09),
+    0 10px 24px rgba(8,22,52,.24),
+    0 0 0 1px color-mix(in srgb,var(--spark) 22%,transparent),
+    0 0 18px color-mix(in srgb,var(--spark) 14%,transparent)!important;
+}
+#category-index .cat-chip.active{
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.08),
+    0 9px 20px rgba(5,18,32,.18),
+    0 0 0 1px color-mix(in srgb,var(--accent) 18%,transparent),
+    0 0 14px color-mix(in srgb,var(--accent) 12%,transparent)!important;
+}
+
+@keyframes huntCategoryRailGleam{
+  0%,18%{transform:translateX(-38%)}
+  48%,58%{transform:translateX(18%)}
+  100%{transform:translateX(38%)}
+}
+@keyframes huntDepartmentRailGleam{
+  0%,16%{transform:translateX(38%)}
+  50%,62%{transform:translateX(-12%)}
+  100%{transform:translateX(-38%)}
+}
+
+@media(prefers-reduced-motion:reduce){
+  #dept-nav::before,#category-drawer-shell::before{animation:none!important}
+}
+
 </style>
 <style>
 .brand{transition:transform .2s ease,text-shadow .2s ease}.brand:hover{transform:translateY(-1px);text-shadow:0 0 24px rgba(109,140,255,.28)}
