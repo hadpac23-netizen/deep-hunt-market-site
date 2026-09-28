@@ -310,7 +310,7 @@
   }
 
   document.addEventListener("click",event=>{
-    const link=event.target.closest?.("#hd-endless-grid a[href*=\'product.html\']");
+    const link=event.target.closest?.(".hd-recommendation-grid a[href*=\'product.html\']");
     if(link){
       const cardEl=link.closest("[data-endless-key]");
       const k=cardEl?.dataset.endlessKey||"";
