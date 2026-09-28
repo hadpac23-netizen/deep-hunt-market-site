@@ -214,13 +214,20 @@
 .hd-product-cinematic-v2 .hd-product-truth-ribbon{box-shadow:0 18px 44px rgba(0,0,0,.12)}
 @media(max-width:760px){.hd-product-cinematic-v2 .hd-branch{display:none}.hd-product-cinematic-v2 .hd-nav{gap:12px}.hd-product-cinematic-v2 .hd-nav a{font-size:10px}}
 </style>
+<style>
+.hd-product-cinematic-v2 #hd-explore-hunt{
+  display:inline-flex;align-items:center;min-height:34px;padding:7px 12px;border:1px solid rgba(255,255,255,.10);
+  border-radius:999px;background:rgba(11,18,38,.58);color:#f7f8fb!important;font-size:10px;font-weight:780;letter-spacing:.02em;
+}
+.hd-product-cinematic-v2 #hd-explore-hunt:hover{border-color:rgba(242,211,107,.34);color:#f2d36b!important}
+</style>
 </head>
 <body class="hd-page hd-market-v2 hd-product-cinematic-v2">
   <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
   <div class="hd-space"></div>
   <header class="hd-topbar">
     <div class="hd-brand-wrap"><a class="hd-brand hd-hunt-only" href="hunt-cinematic-living-campaign-v7.html" aria-label="HUNT home">HUNT<span>✦</span></a><div class="hd-branch">CINEMATIC PRODUCT</div></div>
-    <nav class="hd-nav" aria-label="Primary"><a href="hunt-cinematic-living-campaign-v7.html">Shop</a><a href="hunt-cinematic-living-campaign-v7.html?dept=women">Women</a><a href="hunt-cinematic-living-campaign-v7.html?dept=men">Men</a><a href="hunt-cinematic-living-campaign-v7.html?dept=jewelry">Jewelry</a></nav>
+    <nav class="hd-nav" aria-label="Primary"><a id="hd-explore-hunt" href="hunt-cinematic-living-campaign-v7.html?explore=1">Explore HUNT ↗</a></nav>
     <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a></div>
   </header>
 
@@ -377,6 +384,12 @@
     const p=event.detail?.product||{};
     const dept=p.hunt_department||p.canonical_department||"";
     const shelf=p.hunt_shelf||p.canonical_shelf||"";
+    const explore=document.getElementById("hd-explore-hunt");
+    if(explore){
+      const eq=new URLSearchParams({explore:"1"});
+      if(dept)eq.set("dept",dept);
+      explore.href="hunt-cinematic-living-campaign-v7.html?"+eq.toString();
+    }
     const link=document.getElementById("hd-product-category-link");
     if(link&&dept){
       const q=new URLSearchParams({dept});
