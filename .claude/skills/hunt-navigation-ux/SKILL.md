@@ -71,3 +71,12 @@ For HUNT product pages:
 - mobile should use a compact image stage, compact title/price/options, and existing one-hand CTA;
 - keep truth/evidence UI secondary rather than above-the-fold dominant;
 - description, details, reviews, and recommendations belong below the main purchase block.
+
+
+## Product taxonomy header
+Inside product detail:
+- show HUNT plus Main Categories plus the active category's Departments/Shelves;
+- hide/show the whole header as a single unit based on scroll direction;
+- preserve exact route links back to Category/Shelf;
+- Light and Dark must both keep the brand and taxonomy readable;
+- Light mode must not contain isolated hard-coded dark panels.
