@@ -1127,7 +1127,7 @@ function syncUrl(d){
 }
 function render(){
   const d=data.departments[active];if(!d)return;
-  document.title="HUNT · "+d.title+" · Original Cinematic Preview";
+  document.title="HUNT · "+d.title+" · Product Stage";
   [...$("#dept-nav").children].forEach((b,i)=>{const on=i===active;b.classList.toggle("active",on);b.setAttribute("aria-pressed",String(on));b.setAttribute("aria-current",on?"page":"false")});
   if(campaignTimer){clearInterval(campaignTimer);campaignTimer=null}
   const cats=categoriesFor(d);
