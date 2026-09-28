@@ -198,7 +198,9 @@
   function renderBuybox() {
     chooseVariant();
     $("#hd-product-title").textContent = product.title || "Product";
-    $("#hd-product-breadcrumb").textContent = product.title || "Product";
+    const routeDept=product.hunt_department||product.canonical_department||"";
+    const routeShelf=product.hunt_shelf||product.canonical_shelf||product.category||"";
+    $("#hd-product-breadcrumb").textContent = [routeDept,routeShelf,product.title||"Product"].filter(Boolean).map(humanLabel).join(" / ");
     $("#hd-product-provider").textContent = "HUNT VERIFIED";
     const providerName = String(product.provider || provider || "").toLowerCase();
     const podCatalog = providerName.includes("printful") || providerName.includes("gooten");
