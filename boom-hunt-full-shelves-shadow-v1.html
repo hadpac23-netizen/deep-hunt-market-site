@@ -184,6 +184,37 @@ function ensureJewelryDepartment(){
     hero:categories[0]?.products?.[0]||null
   });
 }
+function rebuildGlobalRouteOwners(){
+  if(!data)return;
+  const candidates=new Map();
+  for(const d of data.departments||[]){
+    for(const cat of d.categories||[]){
+      const route=d.slug+"/"+cat.slug;
+      const rows=[...(cat.products||[]),...(taxonomySupplement.shelves?.[route]||[])];
+      for(const p of rows){
+        if(!p?.item_id)continue;
+        const key=String(p.provider||"UNKNOWN")+":"+String(p.item_id);
+        if(canonicalOverrides.has(key))continue;
+        let score=0;
+        const explicitDept=String(p.storefront_department||p.canonical_department||p.department||"");
+        const explicitShelf=String(p.storefront_shelf||p.canonical_shelf||p.category||"");
+        if(explicitDept===d.slug)score+=200;
+        if(explicitShelf===cat.slug)score+=300;
+        if(String(p.category||"")===cat.slug)score+=180;
+        if(String(p.category_title||"").toLowerCase()===String(cat.title||"").toLowerCase())score+=80;
+        if(String(p.taxonomy_exact_lock||"").toUpperCase()==="LOCKED")score+=500;
+        const arr=candidates.get(key)||[];
+        arr.push({route,score});
+        candidates.set(key,arr);
+      }
+    }
+  }
+  for(const [key,arr] of candidates){
+    if(arr.length<2)continue;
+    arr.sort((a,b)=>(b.score-a.score)||a.route.localeCompare(b.route));
+    canonicalOverrides.set(key,arr[0].route);
+  }
+}
 function mergeSupplementCategories(){
   if(!data||!taxonomySupplement?.shelves)return;
   for(const key of Object.keys(taxonomySupplement.shelves)){
@@ -306,6 +337,7 @@ Promise.all([
    }
  }
  mergeSupplementCategories();
+ rebuildGlobalRouteOwners();
  ensureJewelryDepartment();
  $("#dept-nav").innerHTML=j.departments.map((d,i)=>'<button type="button" data-i="'+i+'">'+esc(d.title)+'</button>').join("");
  const requested=qp.get("dept");const idx=j.departments.findIndex(x=>x.slug===requested);active=idx>=0?idx:0;
