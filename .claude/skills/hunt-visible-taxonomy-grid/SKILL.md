@@ -38,6 +38,14 @@ Every choice is a real button/link with visible focus and selected state.
 Selection changes scope only.
 Do not change the underlying exact-routing/no-mixing rules.
 
+## Row-level hierarchy
+The shopper must recognize the two taxonomy levels before reading labels:
+- Main Categories live on the stronger cinematic rail.
+- Departments/Shelves live immediately below on a distinct secondary rail.
+- Each rail may have restrained ambient gleam.
+- The category rail must be visually stronger than the department rail.
+- Do not rely on horizontal position alone to express hierarchy.
+
 ## Cinematic color hierarchy
 - Main Categories: stronger HUNT sapphire/gold cinematic treatment.
 - Departments/Shelves: related but slightly different secondary hue.
