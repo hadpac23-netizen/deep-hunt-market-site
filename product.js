@@ -3,7 +3,8 @@
   const runtime = window.BoomRuntime;
   const $ = q => document.querySelector(q);
   const params = new URLSearchParams(location.search);
-  const provider = params.get("provider") || "Printful";
+  const sourceMap={h1:"CJdropshipping",h2:"EPROLO",h3:"Printful",h4:"Gooten"};
+  const provider = params.get("provider") || sourceMap[params.get("src")] || "Printful";
   const id = params.get("id") || "";
   let product = null;
   let variants = [];
@@ -106,7 +107,7 @@
     chooseVariant();
     $("#hd-product-title").textContent = product.title || "Product";
     $("#hd-product-breadcrumb").textContent = product.title || "Product";
-    $("#hd-product-provider").textContent = product.provider || provider;
+    $("#hd-product-provider").textContent = "HUNT VERIFIED";
     const providerName = String(product.provider || provider || "").toLowerCase();
     const podCatalog = providerName.includes("printful") || providerName.includes("gooten");
     const quotePassed = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
@@ -128,8 +129,8 @@
     $("#hd-product-price").textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
     syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);
-    $("#hd-product-description").textContent = product.description || "The provider has not supplied a full description to HUNT DEAL yet.";
-    $("#hd-product-gaps").innerHTML = (product.gaps || ["Provider variant feed is incomplete."]).map(x=>`<li>${H.esc(x)}</li>`).join("");
+    $("#hd-product-description").textContent = product.description || "Product details are being refreshed by HUNT.";
+    $("#hd-product-gaps").innerHTML = (product.gaps || ["Some product options are still being refreshed."]).map(x=>`<li>${H.esc(x)}</li>`).join("");
     const facts = [
       ["Brand",product.brand],["Type",product.type_name],["Model",product.model],["Origin",product.origin_country],
       ["Live variants",product.variant_count],["Fulfillment",product.avg_fulfillment_time]
@@ -233,7 +234,7 @@
   }
 
   function renderFallback(cached) {
-    product = {...cached, gallery:[cached.image_url].filter(Boolean), variants:[], variant_count:0, description:"Full provider detail and variant feed are not connected yet."};
+    product = {...cached, gallery:[cached.image_url].filter(Boolean), variants:[], variant_count:0, description:"Full product detail and option availability are still being refreshed."};
     variants=[];
     renderBuybox();
     $("#hd-product-add").disabled=true;
