@@ -156,6 +156,31 @@ Deno.serve(async(req:Request)=>{
     const taxExclusive=Number(out?.tax_amount_exclusive||0)/100;
     const taxInclusive=Number(out?.tax_amount_inclusive||0)/100;
     const taxUsd=Number((taxExclusive+taxInclusive).toFixed(2));
+    const breakdown=Array.isArray(out?.tax_breakdown)?out.tax_breakdown:[];
+    const reasons=[...new Set(breakdown.map((x:any)=>clean(x?.taxability_reason)).filter(Boolean))];
+    const explicitZeroReasons=new Set([
+      "product_exempt","reverse_charge","customer_exempt","not_subject_to_tax",
+      "product_exempt_holiday","portion_product_exempt","zero_rated"
+    ]);
+    const zeroTaxExplained=taxUsd>0 || reasons.some((r:string)=>explicitZeroReasons.has(r));
+    if(taxUsd===0&&!zeroTaxExplained){
+      return json({
+        status:"HOLD",
+        reason:"ZERO_TAX_REASON_UNVERIFIED",
+        provider:"STRIPE_TAX",
+        mode:"test",
+        tax_calculation_id:out?.id||null,
+        tax_usd:0,
+        taxability_reasons:reasons,
+        tax_verified:false,
+        final_profit_eligible:false,
+        expires_at:out?.expires_at||null,
+        customer_country:country,
+        checked_at:new Date().toISOString(),
+        production_effect:false,
+        sellable:false
+      },409);
+    }
 
     return json({
       status:"VERIFIED",
@@ -167,6 +192,7 @@ Deno.serve(async(req:Request)=>{
       tax_amount_exclusive_usd:Number(taxExclusive.toFixed(2)),
       tax_amount_inclusive_usd:Number(taxInclusive.toFixed(2)),
       tax_usd:taxUsd,
+      taxability_reasons:reasons,
       expires_at:out?.expires_at||null,
       customer_country:country,
       tax_verified:true,
