@@ -201,15 +201,44 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
 @media(prefers-reduced-motion:reduce){
   .dept-nav button::after,.cat-chip{transition:none!important}
 }
+
+/* Overflow navigation affordance: never require mouse-dragging to discover hidden items. */
+.nav-strip{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;min-width:0}
+.nav-arrow{
+  width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--edge);
+  border-radius:999px;background:color-mix(in srgb,var(--panel) 92%,transparent);
+  color:var(--ink);cursor:pointer;font-size:19px;line-height:1;z-index:2;
+  transition:opacity .18s ease,border-color .18s ease,background .18s ease
+}
+.nav-arrow:hover{border-color:color-mix(in srgb,var(--spark) 48%,var(--edge))}
+.nav-arrow[hidden]{display:none}
+.nav-arrow:disabled{opacity:.28;cursor:default}
+.nav-strip .dept-nav,.nav-strip .category-index{min-width:0}
+.main-nav-strip .dept-nav{border-top:1px solid var(--edge);border-bottom:1px solid var(--edge)}
+.main-nav-strip .nav-arrow{margin:0 5px}
+.department-nav-strip .nav-arrow{margin:0 5px}
+@media(max-width:620px){
+  .nav-arrow{width:30px;height:30px;font-size:18px}
+  .main-nav-strip .nav-arrow,.department-nav-strip .nav-arrow{margin:0 3px}
+}
+
 </style>
 </head>
 <body>
 <header class="topbar">
   <div class="topline"><a class="brand" href="hunt-cinematic-living-campaign-v9.html" style="color:inherit;text-decoration:none">HUNT<span>✦</span></a><div class="shadow-note">CINEMATIC WORLD · SIMPLE FIRST V9 · SHADOW ONLY</div><button class="theme" id="theme">Light</button></div>
-  <nav class="dept-nav" id="dept-nav" aria-label="Main categories"></nav>
+  <div class="nav-strip main-nav-strip" data-nav-strip>
+    <button type="button" class="nav-arrow" data-scroll-nav="dept-nav" data-dir="-1" aria-label="Previous categories" hidden>‹</button>
+    <nav class="dept-nav" id="dept-nav" aria-label="Main categories" tabindex="0"></nav>
+    <button type="button" class="nav-arrow" data-scroll-nav="dept-nav" data-dir="1" aria-label="More categories" hidden>›</button>
+  </div>
   <div class="category-drawer-shell" id="category-drawer-shell">
     <div class="category-drawer-label" id="category-drawer-label">Choose a category to see its departments</div>
-    <nav class="category-index" id="category-index" aria-label="Departments"></nav>
+    <div class="nav-strip department-nav-strip" data-nav-strip>
+      <button type="button" class="nav-arrow" data-scroll-nav="category-index" data-dir="-1" aria-label="Previous departments" hidden>‹</button>
+      <nav class="category-index" id="category-index" aria-label="Departments" tabindex="0"></nav>
+      <button type="button" class="nav-arrow" data-scroll-nav="category-index" data-dir="1" aria-label="More departments" hidden>›</button>
+    </div>
   </div>
 </header>
 <main>
@@ -233,6 +262,38 @@ let data=null,taxonomySupplement={shelves:{}},launchSupplement={shelves:{}},cano
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const qp=new URLSearchParams(location.search);
+
+function updateNavArrows(nav){
+  if(!nav)return;
+  const strip=nav.closest("[data-nav-strip]");if(!strip)return;
+  const prev=strip.querySelector('[data-dir="-1"]'),next=strip.querySelector('[data-dir="1"]');
+  const max=Math.max(0,nav.scrollWidth-nav.clientWidth),overflow=max>3;
+  if(prev){prev.hidden=!overflow;prev.disabled=!overflow||nav.scrollLeft<=2}
+  if(next){next.hidden=!overflow;next.disabled=!overflow||nav.scrollLeft>=max-2}
+}
+function syncAllNavArrows(){
+  updateNavArrows($("#dept-nav"));updateNavArrows($("#category-index"));
+}
+function revealSelectedInNav(nav,selector){
+  if(!nav)return;
+  const el=nav.querySelector(selector);if(!el)return;
+  const left=el.offsetLeft,right=left+el.offsetWidth,viewLeft=nav.scrollLeft,viewRight=viewLeft+nav.clientWidth;
+  if(left<viewLeft)nav.scrollLeft=Math.max(0,left-14);
+  else if(right>viewRight)nav.scrollLeft=Math.max(0,right-nav.clientWidth+14);
+}
+document.addEventListener("click",e=>{
+  const arrow=e.target.closest("button[data-scroll-nav]");if(!arrow)return;
+  const nav=document.getElementById(arrow.dataset.scrollNav);if(!nav)return;
+  const dir=Number(arrow.dataset.dir)||1;
+  const step=Math.max(180,Math.round(nav.clientWidth*.68));
+  nav.scrollBy({left:dir*step,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+});
+["dept-nav","category-index"].forEach(id=>{
+  const nav=document.getElementById(id);
+  nav?.addEventListener("scroll",()=>updateNavArrows(nav),{passive:true});
+});
+window.addEventListener("resize",syncAllNavArrows,{passive:true});
+
 function setTheme(t){document.documentElement.dataset.huntTheme=t;$("#theme").textContent=t==="dark"?"Light":"Dark";const q=new URLSearchParams(location.search);q.set("theme",t);history.replaceState(null,"",location.pathname+"?"+q.toString())}
 $("#theme").addEventListener("click",()=>setTheme(document.documentElement.dataset.huntTheme==="dark"?"light":"dark"));
 
@@ -443,7 +504,12 @@ function render(){
   }).join("");
   const selected=cats.find(x=>x.slug===selectedShelf);
   $("#shelves").innerHTML=selected?renderCategory(selected,d):'<div class="empty">Choose a '+esc(d.title)+' department above. Products will appear below the promotions floor.</div>';
-  syncUrl(d)
+  syncUrl(d);
+  requestAnimationFrame(()=>{
+    revealSelectedInNav($("#dept-nav"),"button.active");
+    revealSelectedInNav($("#category-index"),"button.active");
+    syncAllNavArrows();
+  })
 }
 $("#dept-nav").addEventListener("click",e=>{
   const b=e.target.closest("button[data-i]");if(!b)return;
