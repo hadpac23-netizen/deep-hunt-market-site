@@ -17,6 +17,16 @@ Taxonomy may feel alive like a cinematic control surface:
 - Effects must not change layout dimensions, introduce horizontal motion/scroll, or reduce legibility.
 - Honor prefers-reduced-motion and provide a static equivalent.
 
+#### COMPACT COMMERCE PRODUCT DETAIL
+Default product detail must be compact and commerce-first:
+- no oversized editorial intro above the product;
+- product image/gallery should fit comfortably within the first viewport rather than dominating it;
+- title, price, color/size options, stock state, and primary CTA should appear as early as possible;
+- truth/evidence UI remains available but visually secondary and compact;
+- mobile should use a compact image stage and one-hand CTA behavior;
+- long Description, Product Details, Reviews, and recommendations follow below;
+- preserve HUNT cinematic depth through color, light, transitions, and material treatment rather than oversized typography or empty space.
+
 #### PRODUCT DETAIL SCROLL HEADER
 Use the same commerce scroll behavior inside product detail pages:
 - product header hides on downward scroll;
