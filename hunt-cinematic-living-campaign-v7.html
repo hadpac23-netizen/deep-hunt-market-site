@@ -112,14 +112,40 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="topline"><a class="brand" href="hunt-cinematic-living-campaign-v7.html" style="color:inherit;text-decoration:none">HUNT<span>✦</span></a><div class="shadow-note">CINEMATIC WORLD · CHAPTERS V7 · SHADOW ONLY</div><button class="theme" id="theme">Light</button></div>
-  <nav class="dept-nav" id="dept-nav" aria-label="Main categories"></nav>
-  <div class="category-drawer-shell" id="category-drawer-shell">
-    <div class="category-drawer-label" id="category-drawer-label">Choose a category to see its departments</div>
-    <nav class="category-index" id="category-index" aria-label="Departments"></nav>
+<header class="topbar hunt-v7-topbar">
+  <div class="topline">
+    <a class="brand" href="hunt-cinematic-living-campaign-v7.html" style="color:inherit;text-decoration:none">HUNT<span>✦</span></a>
+    <button class="explore-trigger" id="explore-trigger" type="button" aria-haspopup="dialog" aria-controls="hunt-explorer">
+      <span class="explore-kicker">Explore HUNT</span><strong id="explore-path">Choose a world</strong><span aria-hidden="true">↗</span>
+    </button>
+    <div class="shadow-note">CINEMATIC WORLD · CHAPTERS V7 · SHADOW ONLY</div>
+    <button class="theme" id="theme">Light</button>
   </div>
 </header>
+<dialog class="hunt-explorer" id="hunt-explorer" aria-labelledby="explorer-title">
+  <div class="explorer-shell">
+    <div class="explorer-topline">
+      <a class="brand explorer-brand" href="hunt-cinematic-living-campaign-v7.html">HUNT<span>✦</span></a>
+      <div class="explorer-mode"><span id="explorer-mode-label">CHAPTERS</span><strong id="explorer-current">Explore HUNT</strong></div>
+      <button type="button" class="explorer-close" id="explorer-close" aria-label="Close Explore HUNT">×</button>
+    </div>
+    <div class="explorer-body">
+      <section class="explorer-copy">
+        <button type="button" class="explorer-back" id="explorer-back" hidden>← All chapters</button>
+        <h2 id="explorer-title" tabindex="-1">Choose your world</h2>
+        <p id="explorer-subtitle">Move through HUNT as chapters, then enter the exact scene you want.</p>
+        <nav class="explorer-list" id="explorer-list" aria-label="HUNT chapters"></nav>
+      </section>
+      <aside class="explorer-preview" aria-label="Live HUNT preview">
+        <div class="explorer-preview-word" id="explorer-preview-word">HUNT</div>
+        <div class="explorer-images" id="explorer-images">
+          <figure><img alt=""></figure><figure><img alt=""></figure><figure><img alt=""></figure>
+        </div>
+        <div class="explorer-preview-meta"><small id="explorer-preview-kicker">WORLD PREVIEW</small><strong id="explorer-preview-title">HUNT</strong><span id="explorer-preview-copy">Choose a chapter to reveal its world.</span></div>
+      </aside>
+    </div>
+  </div>
+</dialog>
 <main>
   <section class="stage" id="stage">
     <div>
