@@ -1181,6 +1181,321 @@ body.hunt-force-light .hd-product-thumbs button{
 }
 </style>
 
+
+<style id="hunt-product-polish7">
+/* HUNT V10 PRODUCT POLISH7 */
+
+/* ---------- OFF-WHITE FOUNDATION ---------- */
+html[data-hunt-theme="light"],
+body.hunt-force-light{
+  --hunt-off:#f4f0e8;
+  --hunt-off-2:#eee8de;
+  --hunt-paper:#fbf8f2;
+  --hunt-paper-2:#f7f3ec;
+  --hunt-ink:#172033;
+  --hunt-muted:#697386;
+  --hunt-gold:#9a7228;
+  --hunt-sapphire:#315c9a;
+  --hunt-teal:#3f8790;
+}
+html[data-hunt-theme="light"] body.hd-product-cinematic-v2,
+body.hunt-force-light.hd-product-cinematic-v2{
+  background:
+    radial-gradient(54% 36% at 10% 0%,rgba(49,92,154,.08),transparent 72%),
+    radial-gradient(48% 32% at 92% 6%,rgba(63,135,144,.06),transparent 72%),
+    linear-gradient(180deg,var(--hunt-off),#f1ece4 68%,#eee8df)!important;
+  color:var(--hunt-ink)!important;
+}
+html[data-hunt-theme="light"] .hd-space,
+body.hunt-force-light .hd-space{
+  background:
+    radial-gradient(circle at 18% 8%,rgba(49,92,154,.07),transparent 29rem),
+    radial-gradient(circle at 85% 12%,rgba(63,135,144,.05),transparent 26rem),
+    linear-gradient(180deg,var(--hunt-off),#efe9df)!important;
+  filter:none!important;
+}
+
+/* ---------- PRODUCT HEADER: CINEMATIC LIVING TAXONOMY ---------- */
+.hunt-product-taxonomy{
+  position:relative!important;
+  isolation:isolate;
+  overflow:hidden!important;
+}
+.hunt-product-taxonomy::before{
+  content:"";
+  position:absolute;
+  inset:-80% -25%;
+  pointer-events:none;
+  z-index:0;
+  background:
+    linear-gradient(115deg,
+      transparent 28%,
+      rgba(255,255,255,.015) 38%,
+      rgba(255,255,255,.14) 48%,
+      rgba(242,211,107,.12) 52%,
+      rgba(255,255,255,.025) 60%,
+      transparent 71%);
+  transform:translateX(-38%);
+  animation:huntProductTaxonomySweep 7.6s ease-in-out infinite;
+  opacity:.72;
+}
+.hunt-product-taxonomy::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background:
+    radial-gradient(circle at 12% 30%,rgba(109,140,255,.12),transparent 24%),
+    radial-gradient(circle at 82% 65%,rgba(79,205,203,.10),transparent 28%);
+  animation:huntProductTaxonomyBreath 6.4s ease-in-out infinite;
+}
+.hunt-product-main-categories,
+.hunt-product-departments{
+  position:relative;
+  z-index:1;
+}
+.hunt-product-main-categories a,
+.hunt-product-departments a{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease,
+    background .2s ease!important;
+}
+.hunt-product-main-categories a::before,
+.hunt-product-departments a::before{
+  content:"";
+  position:absolute;
+  top:-120%;
+  left:-58%;
+  width:42%;
+  height:340%;
+  z-index:-1;
+  pointer-events:none;
+  transform:rotate(24deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.17),transparent);
+  opacity:.30;
+  transition:left .55s cubic-bezier(.18,.8,.2,1),opacity .2s ease;
+}
+.hunt-product-main-categories a::after,
+.hunt-product-departments a::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  border-radius:inherit;
+  opacity:.48;
+  animation:huntProductChipSpark 4.8s ease-in-out infinite;
+}
+.hunt-product-main-categories a::after{
+  background:
+    radial-gradient(circle at 18% 22%,rgba(255,255,255,.08),transparent 18%),
+    radial-gradient(circle at 80% 78%,rgba(242,211,107,.09),transparent 25%);
+}
+.hunt-product-departments a::after{
+  background:
+    radial-gradient(circle at 20% 24%,rgba(255,255,255,.075),transparent 18%),
+    radial-gradient(circle at 78% 78%,rgba(79,205,203,.10),transparent 24%);
+}
+.hunt-product-main-categories a:hover,
+.hunt-product-departments a:hover{
+  transform:translateY(-1px) scale(1.008);
+}
+.hunt-product-main-categories a:hover::before,
+.hunt-product-departments a:hover::before,
+.hunt-product-main-categories a.active::before,
+.hunt-product-departments a.active::before{
+  left:112%;
+  opacity:.55;
+}
+.hunt-product-main-categories a.active{
+  animation:huntProductCategoryPulse 3.8s ease-in-out infinite;
+}
+.hunt-product-departments a.active{
+  animation:huntProductDepartmentPulse 4.2s ease-in-out infinite;
+}
+
+/* Off-white version keeps life without losing contrast. */
+html[data-hunt-theme="light"] .hunt-product-nav-shell,
+body.hunt-force-light .hunt-product-nav-shell{
+  background:rgba(250,247,241,.975)!important;
+  border-bottom-color:rgba(43,49,61,.10)!important;
+  box-shadow:0 10px 28px rgba(46,42,35,.09)!important;
+}
+html[data-hunt-theme="light"] .hunt-product-taxonomy,
+body.hunt-force-light .hunt-product-taxonomy{
+  background:
+    linear-gradient(180deg,rgba(251,248,242,.98),rgba(240,235,226,.98))!important;
+  border-top-color:rgba(49,92,154,.10)!important;
+}
+html[data-hunt-theme="light"] .hunt-product-taxonomy::before,
+body.hunt-force-light .hunt-product-taxonomy::before{
+  background:
+    linear-gradient(115deg,
+      transparent 28%,
+      rgba(255,255,255,.03) 38%,
+      rgba(255,255,255,.72) 47%,
+      rgba(154,114,40,.16) 52%,
+      rgba(255,255,255,.08) 60%,
+      transparent 71%)!important;
+  opacity:.72!important;
+}
+html[data-hunt-theme="light"] .hunt-product-taxonomy::after,
+body.hunt-force-light .hunt-product-taxonomy::after{
+  background:
+    radial-gradient(circle at 12% 28%,rgba(49,92,154,.10),transparent 25%),
+    radial-gradient(circle at 84% 66%,rgba(63,135,144,.09),transparent 29%)!important;
+}
+html[data-hunt-theme="light"] .hunt-product-main-categories a,
+body.hunt-force-light .hunt-product-main-categories a{
+  color:#172033!important;
+  background:
+    linear-gradient(180deg,rgba(255,253,249,.98),rgba(234,239,247,.98))!important;
+  border-color:rgba(49,92,154,.18)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    0 4px 12px rgba(49,92,154,.055)!important;
+}
+html[data-hunt-theme="light"] .hunt-product-departments a,
+body.hunt-force-light .hunt-product-departments a{
+  color:#15313b!important;
+  background:
+    linear-gradient(180deg,rgba(255,253,249,.98),rgba(230,240,238,.98))!important;
+  border-color:rgba(63,135,144,.19)!important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    0 4px 12px rgba(63,135,144,.05)!important;
+}
+html[data-hunt-theme="light"] .hunt-product-main-categories a.active,
+body.hunt-force-light .hunt-product-main-categories a.active{
+  background:linear-gradient(180deg,#eef3fb,#e1e8f4)!important;
+  border-color:rgba(49,92,154,.38)!important;
+  box-shadow:0 0 0 1px rgba(49,92,154,.08),0 0 18px rgba(49,92,154,.12)!important;
+}
+html[data-hunt-theme="light"] .hunt-product-departments a.active,
+body.hunt-force-light .hunt-product-departments a.active{
+  background:linear-gradient(180deg,#edf6f4,#dfece9)!important;
+  border-color:rgba(63,135,144,.38)!important;
+  box-shadow:0 0 0 1px rgba(63,135,144,.08),0 0 16px rgba(63,135,144,.11)!important;
+}
+
+/* Off-white content surfaces instead of clinical white. */
+html[data-hunt-theme="light"] .hd-product-layout,
+html[data-hunt-theme="light"] .hd-product-buybox,
+html[data-hunt-theme="light"] .hd-boom-product,
+html[data-hunt-theme="light"] .hd-product-info-grid article,
+html[data-hunt-theme="light"] .hd-product-spec-section,
+html[data-hunt-theme="light"] .hd-reviews,
+html[data-hunt-theme="light"] .hd-review-form,
+html[data-hunt-theme="light"] .hd-review-summary,
+html[data-hunt-theme="light"] .hd-review-list,
+html[data-hunt-theme="light"] .hd-review-empty,
+html[data-hunt-theme="light"] .hd-review-signin-note,
+html[data-hunt-theme="light"] .hd-recommendation-block,
+html[data-hunt-theme="light"] .hd-endless-discovery,
+html[data-hunt-theme="light"] #hd-complementary-block,
+html[data-hunt-theme="light"] #hd-discover-block,
+body.hunt-force-light .hd-product-layout,
+body.hunt-force-light .hd-product-buybox,
+body.hunt-force-light .hd-boom-product,
+body.hunt-force-light .hd-product-info-grid article,
+body.hunt-force-light .hd-product-spec-section,
+body.hunt-force-light .hd-reviews,
+body.hunt-force-light .hd-review-form,
+body.hunt-force-light .hd-review-summary,
+body.hunt-force-light .hd-review-list,
+body.hunt-force-light .hd-review-empty,
+body.hunt-force-light .hd-review-signin-note,
+body.hunt-force-light .hd-recommendation-block,
+body.hunt-force-light .hd-endless-discovery,
+body.hunt-force-light #hd-complementary-block,
+body.hunt-force-light #hd-discover-block{
+  background:rgba(251,248,242,.98)!important;
+  color:var(--hunt-ink)!important;
+  border-color:rgba(55,50,42,.10)!important;
+  box-shadow:0 10px 26px rgba(55,50,42,.055)!important;
+}
+
+/* ---------- REVIEWS: REMOVE THE EMPTY VOID ---------- */
+.hd-review-layout{
+  align-items:start!important;
+  grid-template-columns:minmax(260px,330px) minmax(0,1fr)!important;
+  gap:16px!important;
+}
+.hd-review-form{
+  position:static!important;
+  top:auto!important;
+  padding:14px!important;
+  border-radius:16px!important;
+}
+.hd-review-list{
+  align-self:start!important;
+  min-height:0!important;
+  height:auto!important;
+  max-height:none!important;
+  border-radius:16px!important;
+  overflow:hidden!important;
+}
+.hd-review-empty{
+  min-height:0!important;
+  height:auto!important;
+  padding:18px!important;
+  display:block!important;
+  text-align:left!important;
+  line-height:1.45!important;
+}
+.hd-review-list:has(.hd-review-empty:only-child){
+  min-height:0!important;
+}
+.hd-reviews{
+  padding-bottom:0!important;
+}
+.hd-reviews-head{
+  margin-bottom:12px!important;
+}
+@media(max-width:760px){
+  .hd-review-layout{grid-template-columns:1fr!important;gap:10px!important}
+}
+
+/* Motion */
+@keyframes huntProductTaxonomySweep{
+  0%,16%{transform:translateX(-40%)}
+  48%,60%{transform:translateX(8%)}
+  100%{transform:translateX(40%)}
+}
+@keyframes huntProductTaxonomyBreath{
+  0%,100%{opacity:.46;filter:brightness(1)}
+  50%{opacity:.82;filter:brightness(1.07)}
+}
+@keyframes huntProductChipSpark{
+  0%,100%{opacity:.26}
+  50%{opacity:.64}
+}
+@keyframes huntProductCategoryPulse{
+  0%,100%{filter:brightness(1)}
+  50%{filter:brightness(1.08)}
+}
+@keyframes huntProductDepartmentPulse{
+  0%,100%{filter:brightness(1)}
+  50%{filter:brightness(1.06)}
+}
+@media(prefers-reduced-motion:reduce){
+  .hunt-product-taxonomy::before,
+  .hunt-product-taxonomy::after,
+  .hunt-product-main-categories a::after,
+  .hunt-product-departments a::after,
+  .hunt-product-main-categories a.active,
+  .hunt-product-departments a.active{
+    animation:none!important;
+  }
+}
+</style>
+
 </head>
 <body class="hd-page hd-market-v2 hd-product-cinematic-v2">
   <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
