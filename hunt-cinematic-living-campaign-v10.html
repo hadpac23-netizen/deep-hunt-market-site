@@ -81,7 +81,7 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
 .rail{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;padding:16px 0 28px;overflow:visible}.rail::-webkit-scrollbar{display:none}
 .card{height:420px;position:relative;border:1px solid var(--edge);border-radius:26px;overflow:hidden;background:linear-gradient(155deg,var(--panel2),var(--panel));box-shadow:0 20px 54px rgba(0,0,0,.18);transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}.card:hover{transform:translateY(-5px);border-color:color-mix(in srgb,var(--accent) 36%,var(--edge));box-shadow:0 28px 68px rgba(0,0,0,.27)}
 .media{position:absolute;inset:0 0 38%;background:linear-gradient(160deg,var(--media2),var(--media));display:grid;place-items:center;overflow:hidden}
-.media img{width:100%;height:100%;object-fit:contain;padding:18px;filter:drop-shadow(0 20px 26px rgba(15,23,42,.18));transition:transform .5s cubic-bezier(.16,.8,.2,1)}.card:hover img{transform:scale(1.035)}
+.media-fallback{font:800 34px/1 Georgia,serif;letter-spacing:.08em;color:var(--muted);opacity:.55}.media img{width:100%;height:100%;object-fit:contain;padding:18px;filter:drop-shadow(0 20px 26px rgba(15,23,42,.18));transition:transform .5s cubic-bezier(.16,.8,.2,1)}.card:hover img{transform:scale(1.035)}
 .card-body{position:absolute;left:0;right:0;bottom:0;min-height:39%;padding:18px;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--panel2) 97%,transparent) 20%)}
 .badges{display:flex;gap:6px;flex-wrap:wrap}.badge{font-size:8px;letter-spacing:.09em;font-weight:900;border:1px solid var(--edge);border-radius:999px;padding:5px 7px;color:var(--muted)}.badge.truth{color:var(--spark)}
 .card h3{font:700 18px/1.16 Georgia,serif;margin:10px 0 7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.card p{font-size:10px;color:var(--muted);margin:0}
@@ -699,6 +699,52 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
   line-height:1.45;
 }
 
+
+/* V10 PRODUCT-FIRST STAGE */
+main{min-height:70vh}
+.stage,.hero,.eyebrow,.lede,.stats{display:none!important}
+.shelves{
+  padding:8px 0 110px!important;
+  min-height:68vh;
+}
+.shelf{
+  padding:24px clamp(14px,3.2vw,48px) 42px!important;
+  border-bottom:1px solid var(--edge);
+}
+.shelf-head{
+  margin-bottom:14px!important;
+  align-items:center!important;
+}
+.shelf-head .copy p{
+  margin-bottom:6px!important;
+}
+.shelf-head h2{
+  font-size:clamp(28px,3.2vw,46px)!important;
+}
+.discovery-note{
+  margin:0 0 14px!important;
+}
+.rail{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr))!important;
+  gap:14px!important;
+  padding:8px 0 20px!important;
+}
+.card{
+  min-height:390px;
+  height:clamp(390px,38vw,440px);
+}
+@media(max-width:900px){
+  .rail{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:620px){
+  .shelves{padding-top:6px!important}
+  .shelf{padding:18px 12px 34px!important}
+  .rail{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+  .card{height:330px;min-height:330px;border-radius:18px}
+  .shelf-head h2{font-size:30px!important}
+}
+
 </style>
 <style>
 .brand{transition:transform .2s ease,text-shadow .2s ease}.brand:hover{transform:translateY(-1px);text-shadow:0 0 24px rgba(109,140,255,.28)}
@@ -826,18 +872,6 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
   </div>
 </header>
 <main>
-  <section class="stage" id="stage">
-    <div>
-      <div class="eyebrow" id="eyebrow"></div>
-      <h1 id="title"></h1>
-      <p class="lede" id="lede">Original HUNT Cinematic. Choose a department above; the large screen remains reserved for HUNT campaigns, promotions and advertising.</p>
-      <div class="stats" id="stats"></div>
-    </div>
-    <article class="hero" id="hero">
-      <div class="hero-media promo-floor"><img id="hero-image" alt=""><div class="promo-scene" id="promo-scene"><div class="promo-object"><img alt=""></div><div class="promo-object"><img alt=""></div><div class="promo-object"><img alt=""></div></div><div class="promo-mark" id="promo-mark">HUNT<span>Advertising · Promotions</span><div class="campaign-dots" id="campaign-dots"><i class="active"></i><i></i><i></i></div></div></div>
-      <div class="hero-meta"><small id="hero-kicker"></small><strong id="hero-title"></strong><span id="hero-status"></span></div>
-    </article>
-  </section>
   <section class="shelves" id="shelves"></section>
 </main>
 <div class="qa">CATALOG SHADOW · PRODUCTION OFF</div>
@@ -962,7 +996,7 @@ function categoriesFor(d){
 }
 function card(p,d,cat){
   const href="product-cinematic-v10.html?src="+encodeURIComponent(sourceAlias(p.provider))+"&id="+encodeURIComponent(String(p.item_id||""));
-  return '<a class="card product-card" href="'+href+'" data-product-provider="'+esc(p.provider)+'" data-product-id="'+esc(p.item_id)+'" data-product-dept="'+esc(d.slug)+'" data-product-shelf="'+esc(cat.slug)+'"><div class="media"><img loading="lazy" src="'+esc(p.image_url)+'" alt="'+esc(p.title||"Product")+'"></div><div class="card-body"><div class="badges"><span class="badge truth">'+esc(d.title+" / "+cat.title)+'</span><span class="badge">'+esc(p.provider||"HUNT")+'</span></div><h3>'+esc(p.title||"Product")+'</h3><p>Exact shelf · Production off</p></div></a>';
+  return '<a class="card product-card" href="'+href+'" data-product-provider="'+esc(p.provider)+'" data-product-id="'+esc(p.item_id)+'" data-product-dept="'+esc(d.slug)+'" data-product-shelf="'+esc(cat.slug)+'"><div class="media">'+(p.image_url?'<img loading="lazy" src="'+esc(p.image_url)+'" alt="'+esc(p.title||"Product")+'">':'<div class="media-fallback">HUNT</div>')+'</div><div class="card-body"><div class="badges"><span class="badge truth">'+esc(d.title+" / "+cat.title)+'</span><span class="badge">'+esc(p.provider||"HUNT")+'</span></div><h3>'+esc(p.title||"Product")+'</h3><p>Exact shelf · Production off</p></div></a>';
 }
 function rowsForView(d,cat){
   const base=directCategoryProducts(d.slug,cat);
@@ -986,7 +1020,7 @@ function buildCategoryDiscoveryMix(d){
   const cats=categoriesFor(d);
   const buckets=cats.map(cat=>({
     cat,
-    rows:shuffleRows(directCategoryProducts(d.slug,cat).filter(p=>p?.image_url))
+    rows:shuffleRows(directCategoryProducts(d.slug,cat))
   })).filter(x=>x.rows.length);
   const mix=[],seen=new Set();
   let cursor=0,guard=0;
@@ -1006,7 +1040,8 @@ function buildCategoryDiscoveryMix(d){
 }
 function renderCategoryDiscovery(d){
   const mix=buildCategoryDiscoveryMix(d);
-  const shown=mix.slice(0,32);
+  const usable=mix.filter(x=>x.p?.image_url);
+  const shown=(usable.length?usable:mix).slice(0,32);
   const products=shown.map(({p,cat})=>card(p,d,cat)).join("");
   const deptCount=new Set(shown.map(x=>x.cat.slug)).size;
   return '<section class="shelf discovery-shelf" id="category-discovery">'+
@@ -1016,7 +1051,7 @@ function renderCategoryDiscovery(d){
       '<div class="meta">Random mix from '+deptCount+' departments · '+shown.length+' products shown · '+esc(d.title)+' only</div>'+
     '</div><span class="density">DISCOVER</span></div>'+
     '<div class="discovery-note">Explore a live mix from this category. Choose a department above anytime to switch to an exact department view.</div>'+
-    '<div class="rail">'+products+'</div>'+
+    (products?'<div class="rail">'+products+'</div>':'<div class="empty">No display-ready products are available in this category yet.</div>')+
   '</section>';
 }
 function renderCategory(cat,d){
@@ -1094,7 +1129,7 @@ function render(){
   const d=data.departments[active];if(!d)return;
   document.title="HUNT · "+d.title+" · Original Cinematic Preview";
   [...$("#dept-nav").children].forEach((b,i)=>{const on=i===active;b.classList.toggle("active",on);b.setAttribute("aria-pressed",String(on));b.setAttribute("aria-current",on?"page":"false")});
-  renderPromo(d);
+  if(campaignTimer){clearInterval(campaignTimer);campaignTimer=null}
   const cats=categoriesFor(d);
   $("#category-drawer-label").textContent=d.title+" · departments";
   $("#category-index").innerHTML=cats.map(cat=>{
