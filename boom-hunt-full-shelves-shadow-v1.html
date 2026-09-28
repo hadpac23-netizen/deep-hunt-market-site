@@ -82,7 +82,7 @@ h1{font:700 clamp(58px,8vw,126px)/.84 Georgia,"Times New Roman",serif;letter-spa
 <body>
 <header class="topbar">
   <div class="topline"><div class="brand">HUNT<span>✦</span></div><div class="shadow-note">FULL SHELVES · BOOM STYLIST · SHADOW ONLY</div><button class="theme" id="theme">Light</button></div>
-  <nav class="dept-nav" id="dept-nav" aria-label="Departments"></nav>
+  <nav class="dept-nav" id="dept-nav" aria-label="Main categories"></nav>
 </header>
 <main>
   <section class="stage" id="stage">
@@ -97,7 +97,7 @@ h1{font:700 clamp(58px,8vw,126px)/.84 Georgia,"Times New Roman",serif;letter-spa
       <div class="hero-meta"><small id="hero-kicker"></small><strong id="hero-title"></strong><span id="hero-status"></span></div>
     </article>
   </section>
-  <nav class="category-index" id="category-index" aria-label="Categories"></nav>
+  <nav class="category-index" id="category-index" aria-label="Departments"></nav>
   <section class="shelves" id="shelves"></section>
 </main>
 <div class="qa">CATALOG SHADOW · PRODUCTION OFF</div>
@@ -339,7 +339,7 @@ function render(){
   const displayedCategories=d.categories;
   document.title="HUNT · "+d.title+" · Full Shelves Shadow";
   [...$("#dept-nav").children].forEach((b,i)=>b.classList.toggle("active",i===active));
-  $("#eyebrow").textContent="BOOM STYLIST · "+d.category_rails+" CATEGORY SHELVES";
+  $("#eyebrow").textContent="BOOM STYLIST · "+d.category_rails+" DEPARTMENTS";
   $("#title").textContent=d.title;
   const cleanTotal=displayedCategories.reduce((s,c)=>s+categoryProducts(d.slug,c).length,0);
   const nonEmptyRails=displayedCategories.filter(c=>categoryProducts(d.slug,c).length>0).length;
