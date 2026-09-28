@@ -1049,7 +1049,7 @@ function categoriesFor(d){
   })
 }
 function card(p,d,cat){
-  const href="product-cinematic-v10.html?src="+encodeURIComponent(sourceAlias(p.provider))+"&id="+encodeURIComponent(String(p.item_id||""))+"&ui=compact3";
+  const href="product-cinematic-v10-compact.html?src="+encodeURIComponent(sourceAlias(p.provider))+"&id="+encodeURIComponent(String(p.item_id||""))+"&ui=compact3";
   return '<a class="card product-card" href="'+href+'" data-product-provider="'+esc(p.provider)+'" data-product-id="'+esc(p.item_id)+'" data-product-dept="'+esc(d.slug)+'" data-product-shelf="'+esc(cat.slug)+'"><div class="media">'+(p.image_url?'<img loading="lazy" src="'+esc(p.image_url)+'" alt="'+esc(p.title||"Product")+'">':'<div class="media-fallback">HUNT</div>')+'</div><div class="card-body"><div class="badges"><span class="badge truth">'+esc(d.title+" / "+cat.title)+'</span><span class="badge">'+esc(p.provider||"HUNT")+'</span></div><h3>'+esc(p.title||"Product")+'</h3><p>Exact shelf · Production off</p></div></a>';
 }
 function rowsForView(d,cat){
