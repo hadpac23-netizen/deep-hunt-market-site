@@ -152,3 +152,25 @@ For Departments, filters, specs and other secondary layers:
 Main Categories remain immediately visible.
 Departments may be collapsed by default and revealed on demand.
 Critical commerce information and safety/error states must not be hidden behind optional disclosure.
+
+
+### Cinematic navigation grammar
+For the HUNT Cinematic storefront, conventional menu UI is not the target aesthetic.
+
+Preferred grammar:
+- Main Category = Chapter
+- Department = Scene
+- Product shelf = Product world
+
+A single **Explore HUNT** control may hide persistent category/department chrome.
+When opened, categories and departments may appear in an immersive cinematic overlay/dialog.
+When closed, the Original Cinematic must return unchanged with no permanent navigation slab consuming screen space.
+
+The cinematic navigator must:
+- preserve every category and department;
+- show selected route visibly;
+- use exact-route imagery only;
+- remain keyboard/mobile accessible;
+- close without clearing selection;
+- never force scroll;
+- never alter taxonomy or Product Truth.
