@@ -40,6 +40,8 @@ No page-wide horizontal overflow.
 
 Horizontal taxonomy scrolling is prohibited for normal storefront navigation.
 
+Category landing is never empty. Selecting a Main Category opens an immediate randomized discovery mix from that Main Category's own Departments/Shelves. Selecting a child Department/Shelf replaces the mix with an exact filtered view. Cross-category mixing is prohibited.
+
 Main Categories and the current scope's Departments/Shelves must reflow into compact rows/columns that fit the viewport. All choices remain visible in document flow. On narrow screens the matrix becomes fewer columns and grows vertically. No drag, swipe-only discovery, carousel, arrows, clipping, or hidden "More" path is allowed for normal taxonomy.
 Opening a Main Category such as Women, Men, Home, Tech or Jewelry updates one compact Department row directly beneath the Main Categories.
 
