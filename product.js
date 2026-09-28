@@ -62,6 +62,98 @@
     $("#hd-selected-size").textContent = selectedSize || "—";
   }
 
+  function humanLabel(key) {
+    return String(key||"").replace(/[_-]+/g," ").replace(/\b\w/g,m=>m.toUpperCase());
+  }
+
+  function simpleValue(value) {
+    return typeof value==="string" || typeof value==="number" || typeof value==="boolean";
+  }
+
+  function verifiedMeasurementRows() {
+    const rows=[];
+    const pushObject=(obj,source="Verified")=>{
+      if(!obj||typeof obj!=="object"||Array.isArray(obj))return;
+      for(const [key,value] of Object.entries(obj)){
+        if(value===null||value===undefined||value===""||typeof value==="object")continue;
+        const raw=String(value);
+        const cmKey=/_cm$/i.test(key);
+        const numeric=Number(value);
+        let display=raw;
+        if(cmKey&&Number.isFinite(numeric)){
+          display=numeric+" cm · "+(numeric/2.54).toFixed(2)+" in";
+        }
+        rows.push({label:humanLabel(key.replace(/_cm$/i,"")),value:display,source});
+      }
+    };
+    pushObject(selectedVariant?.measurements,"Exact variant");
+    pushObject(selectedVariant?.size_measurements,"Exact variant");
+    pushObject(product?.measurements,"Product");
+    pushObject(product?.size_measurements,"Product");
+    pushObject(product?.dimensions,"Product");
+    return rows.filter((row,index,array)=>array.findIndex(x=>x.label===row.label&&x.value===row.value)===index).slice(0,40);
+  }
+
+  function renderVerifiedSpecs() {
+    const section=$("#hd-size-measurement-section");
+    const equivalents=$("#hd-size-equivalents");
+    const tableWrap=$("#hd-measurement-table-wrap");
+    const exact=selectedVariant||{};
+    const sizePairs=[
+      ["Supplier size",exact.size||product?.size],
+      ["US",exact.size_us||exact.us_size||product?.size_us||product?.us_size],
+      ["UK",exact.size_uk||exact.uk_size||product?.size_uk||product?.uk_size],
+      ["EU",exact.size_eu||exact.eu_size||product?.size_eu||product?.eu_size]
+    ].filter(([,v])=>v!==null&&v!==undefined&&v!=="");
+    const rows=verifiedMeasurementRows();
+    if(section){
+      section.hidden=!sizePairs.length&&!rows.length;
+      if(equivalents)equivalents.innerHTML=sizePairs.map(([k,v])=>`<div class="hd-size-equivalent"><span>${H.esc(k)}</span><strong>${H.esc(v)}</strong></div>`).join("");
+      if(tableWrap){
+        tableWrap.innerHTML=rows.length
+          ? `<div class="hd-measurement-table">${rows.map(row=>`<div><span>${H.esc(row.label)}</span><strong>${H.esc(row.value)}</strong><small>${H.esc(row.source)}</small></div>`).join("")}</div>`
+          : "";
+      }
+    }
+
+    const attributeSection=$("#hd-attribute-section");
+    const grid=$("#hd-product-attribute-grid");
+    const attrs=[];
+    const add=(label,value)=>{
+      if(value===null||value===undefined||value===""||typeof value==="object")return;
+      const key=String(label).toLowerCase();
+      if(attrs.some(x=>x.key===key))return;
+      attrs.push({key,label,value});
+    };
+    const known=[
+      ["Material",exact.material||product?.material],
+      ["Fit",exact.fit||product?.fit],
+      ["Pattern",exact.pattern||product?.pattern],
+      ["Color",exact.color||selectedColor||product?.color],
+      ["Capacity",exact.capacity||product?.capacity],
+      ["Storage",exact.storage||product?.storage],
+      ["Memory",exact.memory||product?.memory],
+      ["Voltage",exact.voltage||product?.voltage],
+      ["Plug",exact.plug||product?.plug],
+      ["Weight",exact.weight||product?.weight],
+      ["Length",exact.length||product?.length],
+      ["Width",exact.width||product?.width],
+      ["Height",exact.height||product?.height],
+      ["Model",exact.model||product?.model],
+      ["Finish",exact.finish||product?.finish],
+      ["Movement",exact.movement||product?.movement],
+      ["Compatibility",exact.compatibility||product?.compatibility],
+      ["Care",exact.care||product?.care]
+    ];
+    known.forEach(([k,v])=>add(k,v));
+    for(const source of [product?.attributes,product?.specifications,exact?.attributes,exact?.specifications]){
+      if(!source||typeof source!=="object"||Array.isArray(source))continue;
+      for(const [k,v] of Object.entries(source))if(simpleValue(v))add(humanLabel(k),v);
+    }
+    if(attributeSection)attributeSection.hidden=!attrs.length;
+    if(grid)grid.innerHTML=attrs.slice(0,30).map(x=>`<div><span>${H.esc(x.label)}</span><strong>${H.esc(x.value)}</strong></div>`).join("");
+  }
+
   function renderProductStructuredData() {
     if (!product) return;
     let script=document.querySelector("#hd-product-jsonld");
@@ -139,7 +231,7 @@
     const cat=H.inferCategory(product); const def=H.categoryDefs[cat] || H.categoryDefs.women;
     $("#hd-product-category-link").href=H.categoryUrl(cat); $("#hd-product-category-link").textContent=def.title;
     document.title=`${product.title || "Product"} — HUNT DEAL`;
-    renderOptions(); renderGallery(); renderProductStructuredData();
+    renderOptions(); renderGallery(); renderVerifiedSpecs(); renderProductStructuredData();
     const externalVisit = typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
     const cjCheckoutReady = String(product.provider || provider || "").toLowerCase().includes("cj");
     const readyForCart = variants.length > 0 && retail.ready && cjCheckoutReady;
