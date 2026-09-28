@@ -5,8 +5,13 @@ Scope: HUNT storefront, category pages, product pages, recommendations, BOOM per
 Owner override: only the Owner may explicitly change these rules.
 
 ## 1. Canonical hierarchy
-Every sellable product must resolve to exactly one canonical route:
-Department -> Category -> Exact Shelf -> Product -> Variant
+User-facing hierarchy:
+Main Category -> Department -> Exact Shelf -> Product -> Variant
+
+Examples of Main Categories:
+Women, Men, Kids, Jewelry, Home, Tech, Beauty, Sports, Travel.
+
+Internal data names may differ, but the storefront must present this user-facing hierarchy consistently.
 
 No product may appear in two sellable shelves at the same time.
 No cross-category filler is allowed to make a shelf look full.
@@ -31,12 +36,18 @@ Desktop grids: responsive multi-column.
 Mobile grids: one or two columns.
 No page-wide horizontal overflow.
 
-## 4. Department isolation
-Opening Women shows Women only.
-Opening Men shows Men only.
-Opening Home shows Home only.
-Opening Tech shows Tech only.
-Opening Jewelry shows Jewelry only.
+## 4. Main Category isolation and department window
+Opening a Main Category such as Women, Men, Home, Tech or Jewelry first opens a clean vertical Department window beneath it.
+
+Departments are listed one below another.
+Opening one Department expands only that Department directly below its row.
+Product browsing continues downward. It never becomes a horizontal product rail.
+
+Opening Women shows Women departments only.
+Opening Men shows Men departments only.
+Opening Home shows Home departments only.
+Opening Tech shows Tech departments only.
+Opening Jewelry shows Jewelry departments only.
 
 Non-fashion catalog departments remain first-class parts of HUNT and must not be forced into fashion schemas.
 
@@ -168,3 +179,20 @@ The following require explicit Owner approval:
 - Production / Payment / Supplier Live activation
 
 When in doubt, preserve this Constitution and HOLD the uncertain change.
+
+
+## 15. Explicit no-mixing examples
+- Socks belong only in Socks. Socks must never render inside generic Accessories.
+- Earrings belong only in Earrings.
+- Necklaces belong only in Necklaces.
+- Bracelets belong only in Bracelets.
+- Rings belong only in Rings.
+- Hair clips/headbands/scrunchies belong only in Hair Accessories.
+- Bags/backpacks/totes/crossbody bags belong only in Bags.
+- Hats/caps/beanies belong only in Hats/Headwear.
+- Watches belong only in Watches.
+- Sunglasses belong only in Sunglasses.
+- Shoes belong only in Shoes.
+- Swimwear belongs only in Swimwear.
+- Lighting, Kitchen, Tech, Home and other non-fashion identities must never be used as fashion filler.
+- When exact identity conflicts with a generic Accessories label, exact identity wins and the generic placement is rejected.
