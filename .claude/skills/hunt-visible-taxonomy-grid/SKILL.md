@@ -38,9 +38,17 @@ Every choice is a real button/link with visible focus and selected state.
 Selection changes scope only.
 Do not change the underlying exact-routing/no-mixing rules.
 
+## Cinematic color hierarchy
+- Main Categories: stronger HUNT sapphire/gold cinematic treatment.
+- Departments/Shelves: related but slightly different secondary hue.
+- Use restrained live gleam on hover/active only.
+- Active category should read stronger than active department.
+- Preserve WCAG contrast and text clarity in light and dark modes.
+- Effects must not change layout dimensions or introduce motion that blocks navigation.
+
 ## Visual rule
 Keep taxonomy text-first and compact.
-Spend cinematic depth on Living Campaign and product media, not on navigation chrome.
+Spend most cinematic depth on Living Campaign and product media; taxonomy may carry a restrained signature glow without becoming heavy navigation chrome.
 
 ## QA gate
 Fail the change if any category/shelf becomes reachable only through horizontal movement at desktop, tablet, 320px mobile width, or browser zoom/reflow.
