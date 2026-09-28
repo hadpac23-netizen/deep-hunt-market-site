@@ -23,17 +23,27 @@ This is the normal storefront default.
 - Only filters backed by verified attributes may appear.
 - Exact route isolation and no-mixing outrank visual completeness.
 
-## Overflow navigation
-Never require mouse-dragging to reach hidden items.
-If a row overflows, provide small previous/next arrow controls.
-Keep swipe/trackpad support as an additional input.
-Hide arrows when unnecessary and disable them at the limits.
-Revealing the selected item inside the strip must not scroll the document.
+## Zero-horizontal taxonomy
+Normal taxonomy navigation must never be a horizontal strip.
+
+MUST:
+- render Main Categories as a wrapping responsive grid;
+- render the selected category's Departments/Shelves as a second wrapping responsive grid;
+- keep every item visible in document flow;
+- use CSS Grid/Flex reflow rather than overflow-x;
+- use compact text-first controls;
+- highlight current scope clearly;
+- allow vertical page growth instead of hiding taxonomy choices.
+
+MUST NOT:
+- require mouse dragging;
+- require swipe to discover hidden taxonomy choices;
+- use horizontal carousel, scroll-snap, arrows, "More", or clipped overflow;
+- auto-scroll the document when scope changes.
 
 ## Mobile
-Use the same two-row model.
-Each nav row may horizontally scroll inside itself.
-Do not create page-wide horizontal overflow.
+Use the same hierarchy with reflow.
+Prefer 2 columns at narrow widths, 3 columns when space allows, and vertical page scrolling only.
 Do not require a fullscreen category takeover.
 
 ## Accessibility
