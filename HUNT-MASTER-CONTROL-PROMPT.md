@@ -7,6 +7,18 @@ Never edit an approved baseline directly for an experiment.
 Create a new version/file/branch and preserve a rollback path.
 
 ### Storefront default: SIMPLE FIRST
+
+#### ZERO HORIZONTAL TAXONOMY
+For normal HUNT browsing, Main Categories and the active category's Departments/Shelves MUST NOT require horizontal dragging, swipe-only discovery, arrows, carousels, scroll-snap, or hidden overflow.
+Use a responsive reflowing matrix/grid:
+- desktop: auto-fit as many compact text choices per row as fit;
+- tablet: 3+ columns when readable;
+- mobile: 2 columns minimum, vertical document flow;
+- render every taxonomy choice visibly;
+- prefer extra vertical height over hiding, clipping, or horizontal scrolling;
+- selecting an item changes scope only; never force-scroll the document;
+- Living Campaign remains cinematic below the taxonomy, not inside it.
+WCAG reflow is the baseline: taxonomy must remain usable without two-dimensional scrolling.
 For normal HUNT shopping navigation, **Simple First is the default and wins over decorative navigation ideas**.
 
 Default sequence:
