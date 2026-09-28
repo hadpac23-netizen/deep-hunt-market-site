@@ -17,16 +17,15 @@ Taxonomy may feel alive like a cinematic control surface:
 - Effects must not change layout dimensions, introduce horizontal motion/scroll, or reduce legibility.
 - Honor prefers-reduced-motion and provide a static equivalent.
 
-#### SMART AUTO-HIDING TAXONOMY HEADER
+#### SCROLL-DIRECTION TAXONOMY HEADER
 To maximize product visibility:
-- the category + department header may auto-hide when the shopper scrolls down past the navigation area;
-- it must return immediately on upward scroll;
-- on pointer devices, moving the pointer near the top edge must reveal it;
-- on touch devices, upward scroll is the primary reveal behavior;
+- category + department navigation hides cleanly when the shopper scrolls down past it;
+- the full navigation returns immediately when the shopper starts scrolling up;
+- the same rule applies on desktop and mobile;
+- do not use pointer-hover edge reveals, hidden top-edge zones, arrows, or reveal-light cues;
 - keyboard focus inside the header must force it visible;
-- a subtle cinematic edge-light may remain as a reveal cue while hidden;
-- never hide it at the top of the page;
-- do not require a hidden gesture that users cannot discover.
+- navigation is always visible near the top of the page;
+- the behavior should feel like a standard commerce “hide on scroll down / show on scroll up” header.
 
 #### PRODUCT-FIRST STAGE
 For normal storefront browsing, products are the visual stage.
