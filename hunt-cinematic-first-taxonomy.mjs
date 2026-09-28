@@ -1525,6 +1525,38 @@ const identityPolicies = {
   'kids/kids-clothing': [/\b(?:children|kids|boy|girl)\b.*\b(?:sweater|dress|shirt|top|pants|clothing|pullover)\b/i],
   'kitchen/kitchen-tools': [/\b(?:chopper|dicer|grater|shredder|cutter|stirrer|whisk|pot clamp|egg.*separator|slicer|peeler|presser)\b/i, /\b(?:cleaning brush|deodoriser|deodorant|mug|cup|frying pan|vacuum sealer)\b/i],
   'men/men-bottoms': [/\b(?:shorts|pants|trousers|overalls|jeans)\b/i],
+  'men/men-outerwear': [
+    /\b(?:jacket|jackets|coat|coats|parka|parkas|windbreaker|windbreakers|bomber|bombers|overcoat|overcoats|trench)\b/i,
+    /\b(?:kimono|robe|hanfu|hoodie|sweatshirt|sweater|cardigan|pullover|shirt|blazer|suit|women|woman|female|ladies|girl|girls|kids|child|children|baby|cosplay|costume|anime|tactical|combat|military|safety)\b/i
+  ],
+  'men/men-knitwear': [
+    /\b(?:knit|knitwear|sweater|sweaters|cardigan|cardigans|pullover|pullovers)\b/i,
+    /\b(?:hoodie|sweatshirt|jacket|coat|shirt|blazer|suit|women|woman|female|ladies|girl|kids|child|baby|cosplay|costume)\b/i
+  ],
+  'men/men-hoodies': [
+    /\b(?:hoodie|hoodies|sweatshirt|sweatshirts)\b/i,
+    /\b(?:jacket|coat|sweater|cardigan|shirt|blazer|suit|women|woman|female|ladies|girl|kids|child|baby|cosplay|costume)\b/i
+  ],
+  'men/men-nightwear': [
+    /\b(?:nightwear|pyjama|pyjamas|pajama|pajamas|sleepwear|sleep set|sleep shirt)\b/i,
+    /\b(?:women|woman|female|ladies|girl|kids|child|baby|lingerie)\b/i
+  ],
+  'men/men-loungewear': [
+    /\b(?:loungewear|lounge set|homewear|home wear)\b/i,
+    /\b(?:women|woman|female|ladies|girl|kids|child|baby|lingerie)\b/i
+  ],
+  'men/men-swimwear': [
+    /\b(?:swimwear|swimsuit|swim shorts|swim trunks|boardshorts|board shorts)\b/i,
+    /\b(?:women|woman|female|ladies|girl|kids|child|baby|bikini)\b/i
+  ],
+  'men/men-bags': [
+    /\b(?:bag|backpack|messenger bag|crossbody|briefcase|duffel|satchel)\b/i,
+    /\b(?:women|woman|female|ladies|girl|kids|child|baby|diaper|nappy|schoolbag|pencil case|tool bag)\b/i
+  ],
+  'men/men-accessories': [
+    /\b(?:belt|wallet|tie|necktie|cufflink|bracelet|necklace|ring|watch|sunglasses|cap|hat|scarf|gloves)\b/i,
+    /\b(?:women|woman|female|ladies|girl|kids|child|baby|weapon|tactical|combat|vape|nicotine)\b/i
+  ],
   'men/men-shoes': [/\b(?:shoes|sandals|slippers)\b/i],
   'men/men-socks': [/\bsocks?\b/i],
   'men/men-tops': [/\b(?:shirt|t-shirt|polo|top)\b/i],
