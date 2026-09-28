@@ -131,3 +131,24 @@ Do not render **HUNT DEAL** in the primary brand lockup unless Owner explicitly 
 - Department navigation should prefer concise text controls over large image cards/count metadata.
 - Preserve all department choices; do not hide them behind a default "More" control.
 - The Cinematic campaign remains the dominant visual surface after navigation.
+
+
+### Smart disclosure / progressive reveal
+HUNT may hide secondary UI to protect clarity and Cinematic screen space.
+
+Rule: **Hide visually, never lose functionally.**
+
+For Departments, filters, specs and other secondary layers:
+- keep a clear open/change control;
+- preserve current selection visibly;
+- keep every option reachable;
+- use semantic disclosure state (`aria-expanded` / `aria-controls`);
+- Enter/Space opens or closes; Escape closes where appropriate;
+- selecting an item may auto-close the disclosure;
+- closing never clears the user's selection;
+- opening/closing never causes forced page scroll;
+- the Cinematic campaign remains visually dominant.
+
+Main Categories remain immediately visible.
+Departments may be collapsed by default and revealed on demand.
+Critical commerce information and safety/error states must not be hidden behind optional disclosure.
