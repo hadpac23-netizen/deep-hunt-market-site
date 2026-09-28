@@ -33,6 +33,17 @@ A shopper must never have to drag horizontally to discover a category or shelf.
 - fullscreen taxonomy takeover
 - forced document scroll on selection
 
+## Smart auto-hide header
+For long product browsing, the taxonomy header may collapse vertically after downward scroll.
+Required reveal paths:
+- upward scroll;
+- pointer near the top edge on mouse/trackpad devices;
+- keyboard focus entering the header;
+- always visible near document top.
+
+While hidden, a subtle top-edge light cue is allowed.
+Do not use horizontal movement, off-canvas drawers, or undiscoverable gestures.
+
 ## Product-first stage
 After taxonomy, product content must begin immediately.
 Do not insert a tall cinematic hero or side-by-side editorial copy before products in the default storefront.
