@@ -31,7 +31,7 @@
     tech: {title:"Phone & Tech", query:"tech", icon:"P", description:"Phones, electronics and connected accessories from approved catalog sources."},
     phonecases: {title:"Premium Phone Cases", query:"phone cases", icon:"C", description:"Curated phone cases with product-detail recheck before checkout."},
     phoneaccessories: {title:"Phone Accessories", query:"phone accessories", icon:"A", description:"Cases, stands, charging cables and phone accessories."},
-    gaming: {title:"Gaming Accessories", query:"gaming accessories", icon:"G", description:"Gaming accessories and desk-ready gear from connected supplier feeds."},
+    gaming: {title:"Gaming Accessories", query:"gaming accessories", icon:"G", description:"Gaming accessories and desk-ready gear from HUNT's connected catalog."},
     hairaccessories: {title:"Hair Accessories", query:"hair accessories", icon:"H", description:"Hair clips, headbands, barrettes and everyday hair accessories."},
     sets: {title:"Matching Sets", query:"matching sets", icon:"2", description:"Two-piece and coordinated apparel sets from approved catalog sources."},
     plussize: {title:"Plus Size", query:"plus size fashion", icon:"+", description:"Extended-size apparel with product-detail recheck before checkout."},
@@ -60,9 +60,9 @@
     office: {title:"Office & Desk", query:"office", icon:"D", description:"Desk mats, calendars, mouse pads and notebooks."},
     pillows: {title:"Pillows", query:"pillows", icon:"P", description:"Decorative pillows and pillow products."},
     ornaments: {title:"Ornaments", query:"ornaments", icon:"R", description:"Seasonal and decorative ornaments."},
-    perfume: {title:"Perfume & Fragrance", query:"women perfume fragrance", icon:"F", description:"Live when matched from connected approved supplier feeds."},
-    beauty: {title:"Beauty & Skincare", query:"beauty skincare makeup", icon:"Y", description:"Beauty and skincare products matched from connected approved supplier feeds."},
-    jewelry: {title:"Jewelry", query:"women jewelry necklace bracelet earrings", icon:"Q", description:"Jewelry and accessories matched from connected approved supplier feeds."}
+    perfume: {title:"Perfume & Fragrance", query:"women perfume fragrance", icon:"F", description:"Live when matched from HUNT's approved catalog sources."},
+    beauty: {title:"Beauty & Skincare", query:"beauty skincare makeup", icon:"Y", description:"Beauty and skincare products matched from HUNT's approved catalog sources."},
+    jewelry: {title:"Jewelry", query:"women jewelry necklace bracelet earrings", icon:"Q", description:"Jewelry and accessories matched from HUNT's approved catalog sources."}
   };
 
   const categoryGroups = [
