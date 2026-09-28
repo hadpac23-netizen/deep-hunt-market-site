@@ -685,6 +685,20 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
   }
 }
 
+
+/* CATEGORY DISCOVERY MODE */
+.discovery-shelf .shelf-head{margin-bottom:12px}
+.discovery-note{
+  margin:0 clamp(20px,5vw,74px) 8px;
+  padding:10px 12px;
+  border:1px solid color-mix(in srgb,var(--accent) 18%,var(--edge));
+  border-radius:12px;
+  background:color-mix(in srgb,var(--panel) 82%,transparent);
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.45;
+}
+
 </style>
 <style>
 .brand{transition:transform .2s ease,text-shadow .2s ease}.brand:hover{transform:translateY(-1px);text-shadow:0 0 24px rgba(109,140,255,.28)}
@@ -828,7 +842,7 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
 </main>
 <div class="qa">CATALOG SHADOW · PRODUCTION OFF</div>
 <script>
-let data=null,taxonomySupplement={shelves:{}},launchSupplement={shelves:{}},canonicalOverrides=new Map(),active=0,selectedShelf="",visible={},campaignIndex=0,campaignTimer=null,sortMode="featured",stockOnly=false,filterOpen=false;
+let data=null,taxonomySupplement={shelves:{}},launchSupplement={shelves:{}},canonicalOverrides=new Map(),active=0,selectedShelf="",visible={},campaignIndex=0,campaignTimer=null,sortMode="featured",stockOnly=false,filterOpen=false,categoryMixCache=new Map();
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const qp=new URLSearchParams(location.search);
@@ -957,6 +971,54 @@ function rowsForView(d,cat){
   if(sortMode==="az")rows.sort((a,b)=>String(a?.title||"").localeCompare(String(b?.title||""),undefined,{sensitivity:"base"}));
   return {base,rows};
 }
+
+function shuffleRows(rows){
+  const out=[...rows];
+  for(let i=out.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [out[i],out[j]]=[out[j],out[i]];
+  }
+  return out;
+}
+function buildCategoryDiscoveryMix(d){
+  const cached=categoryMixCache.get(d.slug);
+  if(cached)return cached;
+  const cats=categoriesFor(d);
+  const buckets=cats.map(cat=>({
+    cat,
+    rows:shuffleRows(directCategoryProducts(d.slug,cat).filter(p=>p?.image_url))
+  })).filter(x=>x.rows.length);
+  const mix=[],seen=new Set();
+  let cursor=0,guard=0;
+  while(buckets.length&&mix.length<48&&guard<500){
+    const b=buckets[cursor%buckets.length],p=b.rows.shift();
+    if(p){
+      const k=key(p);
+      if(!seen.has(k)){seen.add(k);mix.push({p,cat:b.cat})}
+    }
+    if(!b.rows.length)buckets.splice(cursor%buckets.length,1);
+    else cursor++;
+    guard++;
+  }
+  const finalMix=shuffleRows(mix);
+  categoryMixCache.set(d.slug,finalMix);
+  return finalMix;
+}
+function renderCategoryDiscovery(d){
+  const mix=buildCategoryDiscoveryMix(d);
+  const shown=mix.slice(0,32);
+  const products=shown.map(({p,cat})=>card(p,d,cat)).join("");
+  const deptCount=new Set(shown.map(x=>x.cat.slug)).size;
+  return '<section class="shelf discovery-shelf" id="category-discovery">'+
+    '<div class="shelf-head"><div class="copy">'+
+      '<p>CATEGORY DISCOVERY</p>'+
+      '<h2>'+esc(d.title)+'</h2>'+
+      '<div class="meta">Random mix from '+deptCount+' departments · '+shown.length+' products shown · '+esc(d.title)+' only</div>'+
+    '</div><span class="density">DISCOVER</span></div>'+
+    '<div class="discovery-note">Explore a live mix from this category. Choose a department above anytime to switch to an exact department view.</div>'+
+    '<div class="rail">'+products+'</div>'+
+  '</section>';
+}
 function renderCategory(cat,d){
   const view=rowsForView(d,cat),all=view.rows,base=view.base,n=visible[cat.slug]||Math.min(24,all.length);
   const products=all.slice(0,n).map(p=>card(p,d,cat)).join("");
@@ -1003,7 +1065,7 @@ function paintCampaign(d){
   });
   $("#hero-kicker").textContent="HUNT PROMOTIONS · "+String(campaignIndex%3+1).padStart(2,"0");
   $("#hero-title").textContent=mode.title;
-  $("#hero-status").textContent="Living campaign · "+d.title+" · advertising / editorial floor · products below remain exact-shelf only";
+  $("#hero-status").textContent=selectedShelf?"Living campaign · "+d.title+" · exact department view active":"Living campaign · "+d.title+" · category discovery mix active until a department is selected";
 }
 function startCampaign(d){
   if(campaignTimer)clearInterval(campaignTimer);
@@ -1013,7 +1075,7 @@ function startCampaign(d){
 function renderPromo(d){
   $("#eyebrow").textContent="HUNT CINEMATIC · "+String(d.title||"").toUpperCase();
   $("#title").textContent=d.title;
-  $("#lede").textContent="Choose a department above. This main cinematic screen stays reserved for HUNT advertising, promotions and campaign storytelling.";
+  $("#lede").textContent=selectedShelf?"Exact department selected. Products below now show only that department.":"Explore the live category mix below, or choose a department above for an exact filtered view.";
   $("#stats").innerHTML=[
     "Original Cinematic preserved",
     categoriesFor(d).length+" departments available",
@@ -1042,12 +1104,12 @@ function render(){
     '</button>'
   }).join("");
   const selected=cats.find(x=>x.slug===selectedShelf);
-  $("#shelves").innerHTML=selected?renderCategory(selected,d):'<div class="empty">Choose a '+esc(d.title)+' department above. Products will appear below the promotions floor.</div>';
+  $("#shelves").innerHTML=selected?renderCategory(selected,d):renderCategoryDiscovery(d);
   syncUrl(d)
 }
 $("#dept-nav").addEventListener("click",e=>{
   const b=e.target.closest("button[data-i]");if(!b)return;
-  active=Number(b.dataset.i)||0;selectedShelf="";visible={};sortMode="featured";stockOnly=false;filterOpen=false;campaignIndex=0;render()
+  active=Number(b.dataset.i)||0;selectedShelf="";visible={};sortMode="featured";stockOnly=false;filterOpen=false;campaignIndex=0;categoryMixCache.delete(data.departments[active]?.slug);render()
 });
 $("#category-index").addEventListener("click",e=>{
   const b=e.target.closest("button[data-cat]");if(!b)return;
@@ -1059,7 +1121,9 @@ $("#shelves").addEventListener("click",e=>{
   const more=e.target.closest("button[data-more]");
   if(more){const d=data.departments[active],cat=categoriesFor(d).find(x=>x.slug===more.dataset.more);if(!cat)return;const total=rowsForView(d,cat).rows.length;visible[cat.slug]=Math.min((visible[cat.slug]||24)+24,total);render();return}
   const a=e.target.closest("a.product-card");if(!a)return;
-  const d=data.departments[active],cat=categoriesFor(d).find(x=>x.slug===selectedShelf);if(!cat)return;
+  const d=data.departments[active];
+  const shelfSlug=String(a.dataset.productShelf||selectedShelf||"");
+  const cat=categoriesFor(d).find(x=>x.slug===shelfSlug);if(!cat)return;
   const p=directCategoryProducts(d.slug,cat).find(x=>String(x.provider||"")===String(a.dataset.productProvider||"")&&String(x.item_id||"")===String(a.dataset.productId||""));
   if(p){const routed={...p,hunt_department:d.slug,hunt_shelf:cat.slug,canonical_department:d.slug,canonical_shelf:cat.slug};try{sessionStorage.setItem("hunt_product_"+p.provider+":"+p.item_id,JSON.stringify(routed))}catch{}}
 });
