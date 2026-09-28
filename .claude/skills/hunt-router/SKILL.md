@@ -12,6 +12,7 @@ Then load skills by task:
 - UI, styling, navigation, animations, category layout:
   - hunt-control
   - hunt-simple-first-navigation
+- `hunt-visible-taxonomy-grid` — mandatory whenever categories, departments, shelves, or storefront taxonomy navigation are touched; prohibits horizontal taxonomy scrolling.
   - hunt-cinematic-ui
   - hunt-navigation-ux
   - hunt-taxonomy-guard
