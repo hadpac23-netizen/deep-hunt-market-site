@@ -306,7 +306,7 @@ function categoryProducts(deptSlug,cat){
   }
   return out;
 }
-function card(p){
+function card(p,deptSlug,shelfSlug){
   const launch=p.launch_verified===true||p.truth_state==="HUNT_LAUNCH_ROUTE_LOCKED";
   const cj=p.truth_state==="CJ_VERIFIED_4_MARKETS";
   const global=p.truth_state==="GLOBAL_PRODUCT_TRUTH";
@@ -324,12 +324,12 @@ function card(p){
       ? "HUNT price review · "+Math.round(margin*100)+"% reserve margin"
       : (truth?"Market checks available · checkout recheck":"Destination/market recheck required");
   const href="product.html?src="+encodeURIComponent(sourceAlias(p.provider))+"&id="+encodeURIComponent(String(p.item_id||""));
-  return '<a class="card product-card" href="'+href+'" data-product-provider="'+esc(p.provider)+'" data-product-id="'+esc(p.item_id)+'"><div class="media"><img loading="lazy" src="'+esc(p.image_url)+'" alt="'+esc(p.title||"Product")+'"></div><div class="card-body"><div class="badges"><span class="badge '+(truth?'truth':'')+'">'+label+'</span>'+(taxV2&&!launch?'<span class="badge">PROFIT REVIEW</span>':'')+'</div><h3>'+esc(p.title)+'</h3><p>'+esc(p.category_title||p.category)+' · '+esc(profitLine)+'</p></div></a>';
+  return '<a class="card product-card" href="'+href+'" data-product-provider="'+esc(p.provider)+'" data-product-id="'+esc(p.item_id)+'" data-product-department="'+esc(deptSlug)+'" data-product-shelf="'+esc(shelfSlug)+'"><div class="media"><img loading="lazy" src="'+esc(p.image_url)+'" alt="'+esc(p.title||"Product")+'"></div><div class="card-body"><div class="badges"><span class="badge '+(truth?'truth':'')+'">'+label+'</span>'+(taxV2&&!launch?'<span class="badge">PROFIT REVIEW</span>':'')+'</div><h3>'+esc(p.title)+'</h3><p>'+esc(p.category_title||p.category)+' · '+esc(profitLine)+'</p></div></a>';
 }
 function renderCategory(cat,deptSlug){
   const all=categoryProducts(deptSlug,cat);
   const n=visible[cat.slug]||Math.min(24,all.length);
-  const products=all.slice(0,n).map(card).join("");
+  const products=all.slice(0,n).map(p=>card(p,deptSlug,cat.slug)).join("");
   const density=all.length>=24?"FULL":all.length>=12?"GOOD":all.length>0?"THIN":"EMPTY";
   return '<section class="shelf" id="cat-'+esc(cat.slug)+'"><div class="shelf-head"><div class="copy"><p>CANONICAL CATEGORY</p><h2>'+esc(cat.title)+'</h2><div class="meta">'+all.length+' clean candidates · '+Math.min(n,all.length)+' shown</div></div><span class="density '+((density==="THIN"||density==="EMPTY")?'thin':'')+'">'+esc(density)+'</span></div><div class="rail">'+products+'</div><button class="more" data-more="'+esc(cat.slug)+'" '+(n>=all.length?'hidden':'')+'>Load 24 more</button></section>';
 }
@@ -370,7 +370,6 @@ function render(){
   $("#category-index").innerHTML='<section class="department-window"><div class="department-window-head"><small>'+esc(d.title.toUpperCase())+' · DEPARTMENTS</small><strong>Choose a department. Its products open directly below and continue downward.</strong></div>'+departmentRows+'</section>';
   $("#shelves").innerHTML=selectedShelf?'':'<div class="empty">Choose a department above. HUNT will open only that exact department below it.</div>';
   const q=new URLSearchParams(location.search);q.set("dept",d.slug);if(selectedShelf)q.set("shelf",selectedShelf);else q.delete("shelf");history.replaceState(null,"",location.pathname+"?"+q.toString());
-  window.scrollTo({top:0,behavior:"smooth"});
 }
 $("#dept-nav").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b)return;active=Number(b.dataset.i)||0;selectedShelf="";render()});
 $("#category-index").addEventListener("click",e=>{
@@ -378,8 +377,9 @@ $("#category-index").addEventListener("click",e=>{
   if(!b)return;
   const next=String(b.dataset.cat||"");
   selectedShelf=selectedShelf===next?"":next;
+  const y=window.scrollY;
   render();
-  if(selectedShelf)requestAnimationFrame(()=>document.getElementById("dept-row-"+selectedShelf)?.scrollIntoView({behavior:"smooth",block:"start"}));
+  requestAnimationFrame(()=>window.scrollTo({top:y,left:0,behavior:"auto"}));
 });
 function handleCatalogClick(e){
   const card=e.target.closest("a[data-product-provider][data-product-id]");
@@ -387,7 +387,15 @@ function handleCatalogClick(e){
     const d=data.departments[active];
     const products=d.categories.flatMap(cat=>categoryProducts(d.slug,cat));
     const p=products.find(x=>String(x.provider||"")===String(card.dataset.productProvider||"")&&String(x.item_id||"")===String(card.dataset.productId||""));
-    if(p){try{sessionStorage.setItem("hunt_product_"+p.provider+":"+p.item_id,JSON.stringify(p))}catch{}}
+    if(p){
+      const routed={...p,
+        hunt_department:String(card.dataset.productDepartment||d.slug||""),
+        hunt_shelf:String(card.dataset.productShelf||p.storefront_shelf||p.canonical_shelf||p.category||""),
+        canonical_department:String(card.dataset.productDepartment||d.slug||""),
+        canonical_shelf:String(card.dataset.productShelf||p.storefront_shelf||p.canonical_shelf||p.category||"")
+      };
+      try{sessionStorage.setItem("hunt_product_"+p.provider+":"+p.item_id,JSON.stringify(routed))}catch{}
+    }
     return;
   }
   const b=e.target.closest("button[data-more]");if(!b)return;
