@@ -162,6 +162,8 @@ function allowedForShelf(deptSlug,catSlug,p){
   }
   if(/accessor/i.test(slug)){
     if(/\b(sock|socks|earring|necklace|pendant|bracelet|bangle|ring|anklet|brooch|handbag|purse|tote|crossbody|backpack|hat|cap|beanie|watch|sunglass|shoe|sneaker|swimwear|swimsuit)\b/i.test(text))return false;
+    if(/\b(laptop|cooling pad|conference chair|office chair|tent|gazebo|brake|hitch|winch|engine|exhaust|pulley|cleaner|steam mop|kitchen|lamp|lighting|storage rack|shelf|gaming|controller|phone case)\b/i.test(text))return false;
+    return /\b(belt|wallet|card holder|scarf|shawl|glove|gloves|tie|bow tie|keychain|key chain|key ring|cufflink|cufflinks|suspender|suspenders|lapel accessory|pocket square)\b/i.test(text);
   }
   return true;
 }
@@ -377,9 +379,7 @@ $("#category-index").addEventListener("click",e=>{
   if(!b)return;
   const next=String(b.dataset.cat||"");
   selectedShelf=selectedShelf===next?"":next;
-  const y=window.scrollY;
   render();
-  requestAnimationFrame(()=>window.scrollTo({top:y,left:0,behavior:"auto"}));
 });
 function handleCatalogClick(e){
   const card=e.target.closest("a[data-product-provider][data-product-id]");
