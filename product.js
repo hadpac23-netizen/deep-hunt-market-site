@@ -232,7 +232,7 @@
     $("#hd-product-facts").innerHTML = facts.map(([k,v])=>`<div><span>${H.esc(k)}</span><strong>${H.esc(v)}</strong></div>`).join("");
     const cat=H.inferCategory(product); const def=H.categoryDefs[cat] || H.categoryDefs.women;
     $("#hd-product-category-link").href=H.categoryUrl(cat); $("#hd-product-category-link").textContent=def.title;
-    document.title=`${product.title || "Product"} — HUNT DEAL`;
+    document.title=`${product.title || "Product"} — HUNT`;
     renderOptions(); renderGallery(); renderVerifiedSpecs(); renderProductStructuredData();
     const externalVisit = typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
     const cjCheckoutReady = String(product.provider || provider || "").toLowerCase().includes("cj");
