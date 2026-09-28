@@ -194,20 +194,22 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
 @media(prefers-reduced-motion:reduce){.brand,.dept-nav button,.more{transition:none!important}}
 </style>
 
-<style id="hunt-simple-first-v9">
-/* Simple First V9: SHEIN-inspired information architecture, original HUNT visual language. */
+<style id="hunt-visible-grid-v10-final">
+/* Visible Grid V10: all taxonomy choices reflow in place; zero horizontal taxonomy scrolling. */
 .topbar{padding:10px clamp(16px,3vw,42px) 8px}
 .topline{min-height:34px}
 .dept-nav{
-  margin-top:6px;padding:0;gap:22px;align-items:center;
-  overflow-x:auto;overflow-y:hidden;scrollbar-width:none;
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(92px,1fr))!important;
+  margin-top:6px;padding:0;gap:5px 8px;align-items:stretch;
+  overflow:visible!important;white-space:normal!important;
   border-top:1px solid var(--edge);border-bottom:1px solid var(--edge)
 }
 .dept-nav::-webkit-scrollbar,.category-index::-webkit-scrollbar{display:none}
 .dept-nav button{
-  flex:0 0 auto;position:relative;border:0!important;border-radius:0!important;
+  width:100%;min-width:0;position:relative;border:0!important;border-radius:0!important;
   background:transparent!important;box-shadow:none!important;
-  color:var(--muted);padding:11px 1px 9px!important;
+  color:var(--muted);padding:11px 4px 9px!important;white-space:normal!important;
   min-height:40px;font-size:12px;font-weight:820;letter-spacing:.015em
 }
 .dept-nav button::after{
@@ -223,21 +225,22 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
 }
 .category-drawer-label{display:none!important}
 .category-index{
-  display:flex!important;grid-template-columns:none!important;gap:18px!important;
-  align-items:center;overflow-x:auto!important;overflow-y:hidden!important;
-  padding:0!important;min-height:39px;white-space:nowrap
+  display:grid!important;grid-template-columns:repeat(auto-fit,minmax(118px,1fr))!important;gap:5px 8px!important;
+  align-items:stretch;overflow:visible!important;
+  padding:0!important;min-height:39px;white-space:normal!important
 }
 .cat-chip{
-  flex:0 0 auto!important;display:inline-flex!important;grid-template-columns:none!important;
-  align-items:center!important;min-height:38px!important;border:0!important;border-radius:0!important;
-  border-bottom:2px solid transparent!important;background:transparent!important;
+  width:100%!important;min-width:0!important;display:flex!important;grid-template-columns:none!important;
+  align-items:center!important;justify-content:center!important;min-height:38px!important;border:0!important;border-radius:0!important;
+  border-bottom:1px solid var(--edge)!important;background:transparent!important;
   box-shadow:none!important;backdrop-filter:none!important;color:var(--muted)!important;
-  padding:8px 0 7px!important;font-size:11px!important;font-weight:760!important;
+  padding:8px 4px 7px!important;font-size:11px!important;font-weight:760!important;
+  white-space:normal!important;text-align:center!important;
   transition:color .18s ease,border-color .18s ease!important
 }
 .cat-chip:hover{transform:none!important;color:var(--ink)!important;box-shadow:none!important}
 .cat-chip.active{
-  color:var(--ink)!important;border-bottom-color:var(--spark)!important;
+  color:var(--ink)!important;border-bottom:2px solid var(--spark)!important;
   box-shadow:none!important
 }
 .cat-chip .chip-media,.cat-chip .chip-copy small{display:none!important}
@@ -272,11 +275,11 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
 .filter-note{color:var(--muted)}
 .route-note{margin-right:auto;color:var(--muted);font-size:10px;font-weight:760}
 @media(max-width:620px){
-  .topbar{padding-left:14px;padding-right:14px}
-  .dept-nav{gap:5px 8px}
+  .topbar{position:relative!important;padding-left:14px;padding-right:14px}
+  .dept-nav{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:4px 6px!important}
   .dept-nav button{font-size:11px!important;padding-top:10px!important;padding-bottom:8px!important}
-  .category-index{gap:5px 8px!important}
-  .cat-chip{font-size:10.5px!important;min-height:36px!important;padding:7px 0 6px!important}
+  .category-index{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px 6px!important}
+  .cat-chip{font-size:10.5px!important;min-height:36px!important;padding:7px 4px 6px!important}
   .stage{padding-top:42px}
   .shop-tools{gap:7px}
   .route-note{flex-basis:100%;order:-1}
