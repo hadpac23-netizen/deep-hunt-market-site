@@ -164,176 +164,126 @@ export const DEPARTMENTS = [
         "id": "men-tops",
         "title": "Shirts & T-Shirts",
         "shelves": [
-          {
-            "slug": "men-tops",
-            "label": "Shirts & T-Shirts"
-          }
-        ]
-      },
-      {
-        "id": "men-suits",
-        "title": "Suits & Blazers",
-        "shelves": [
-          {
-            "slug": "men-suits",
-            "label": "Suits & Blazers"
-          }
-        ]
-      },
-      {
-        "id": "men-jeans",
-        "title": "Jeans & Denim",
-        "shelves": [
-          {
-            "slug": "men-jeans",
-            "label": "Jeans & Denim"
-          }
-        ]
-      },
-      {
-        "id": "men-bottoms",
-        "title": "Pants & Shorts",
-        "shelves": [
-          {
-            "slug": "men-bottoms",
-            "label": "Pants & Shorts"
-          }
-        ]
-      },,
-      {
-        "id": "men-shorts",
-        "title": "Shorts",
-        "shelves": [
-          {
-            "slug": "men-shorts",
-            "label": "Shorts"
-          }
-        ]
-      }      {
-        "id": "men-outerwear",
-        "title": "Jackets & Coats",
-        "shelves": [
-          {
-            "slug": "men-outerwear",
-            "label": "Jackets & Coats"
-          }
-        ]
-      },
-      {
-        "id": "men-knitwear",
-        "title": "Knitwear & Sweaters",
-        "shelves": [
-          {
-            "slug": "men-knitwear",
-            "label": "Knitwear & Sweaters"
-          }
-        ]
-      },
-      {
-        "id": "men-boxers",
-        "title": "Boxers",
-        "shelves": [
-          {
-            "slug": "men-boxers",
-            "label": "Boxers"
-          }
-        ]
-      },
-      {
-        "id": "men-underwear",
-        "title": "Underwear & Briefs",
-        "shelves": [
-          {
-            "slug": "men-underwear",
-            "label": "Underwear & Briefs"
-          }
-        ]
-      },,
-      {
-        "id": "men-nightwear",
-        "title": "Nightwear & Pyjamas",
-        "shelves": [
-          {
-            "slug": "men-nightwear",
-            "label": "Nightwear & Pyjamas"
-          }
-        ]
-      }      {
-        "id": "men-shoes",
-        "title": "Shoes",
-        "shelves": [
-          {
-            "slug": "men-shoes",
-            "label": "Shoes"
-          }
-        ]
-      },,
-      {
-        "id": "men-loungewear",
-        "title": "Loungewear",
-        "shelves": [
-          {
-            "slug": "men-loungewear",
-            "label": "Loungewear"
-          }
-        ]
-      }      {
-        "id": "men-bags",
-        "title": "Bags",
-        "shelves": [
-          {
-            "slug": "men-bags",
-            "label": "Bags"
-          }
-        ]
-      },,
-      {
-        "id": "men-swimwear",
-        "title": "Swimwear",
-        "shelves": [
-          {
-            "slug": "men-swimwear",
-            "label": "Swimwear"
-          }
-        ]
-      }      {
-        "id": "men-socks",
-        "title": "Socks",
-        "shelves": [
-          {
-            "slug": "men-socks",
-            "label": "Socks"
-          }
-        ]
-      },
-      {
-        "id": "men-hoodies",
-        "title": "Hoodies & Sweatshirts",
-        "shelves": [
-          {
-            "slug": "men-hoodies",
-            "label": "Hoodies & Sweatshirts"
-          }
-        ]
-      },
-      {
-        "id": "men-accessories",
-        "title": "Men Accessories",
-        "shelves": [
-          {
-            "slug": "men-accessories",
-            "label": "Men Accessories"
-          }
+          { "slug": "men-tops", "label": "Shirts & T-Shirts" }
         ]
       },
       {
         "id": "men-shirts",
         "title": "Shirts",
         "shelves": [
-          {
-            "slug": "men-shirts",
-            "label": "Shirts"
-          }
+          { "slug": "men-shirts", "label": "Shirts" }
+        ]
+      },
+      {
+        "id": "men-suits",
+        "title": "Suits & Blazers",
+        "shelves": [
+          { "slug": "men-suits", "label": "Suits & Blazers" }
+        ]
+      },
+      {
+        "id": "men-jeans",
+        "title": "Jeans & Denim",
+        "shelves": [
+          { "slug": "men-jeans", "label": "Jeans & Denim" }
+        ]
+      },
+      {
+        "id": "men-bottoms",
+        "title": "Pants & Shorts",
+        "shelves": [
+          { "slug": "men-bottoms", "label": "Pants & Shorts" }
+        ]
+      },
+      {
+        "id": "men-shorts",
+        "title": "Shorts",
+        "shelves": [
+          { "slug": "men-shorts", "label": "Shorts" }
+        ]
+      },
+      {
+        "id": "men-outerwear",
+        "title": "Jackets & Coats",
+        "shelves": [
+          { "slug": "men-outerwear", "label": "Jackets & Coats" }
+        ]
+      },
+      {
+        "id": "men-knitwear",
+        "title": "Knitwear & Sweaters",
+        "shelves": [
+          { "slug": "men-knitwear", "label": "Knitwear & Sweaters" }
+        ]
+      },
+      {
+        "id": "men-hoodies",
+        "title": "Hoodies & Sweatshirts",
+        "shelves": [
+          { "slug": "men-hoodies", "label": "Hoodies & Sweatshirts" }
+        ]
+      },
+      {
+        "id": "men-shoes",
+        "title": "Shoes",
+        "shelves": [
+          { "slug": "men-shoes", "label": "Shoes" }
+        ]
+      },
+      {
+        "id": "men-boxers",
+        "title": "Boxers",
+        "shelves": [
+          { "slug": "men-boxers", "label": "Boxers" }
+        ]
+      },
+      {
+        "id": "men-underwear",
+        "title": "Underwear & Briefs",
+        "shelves": [
+          { "slug": "men-underwear", "label": "Underwear & Briefs" }
+        ]
+      },
+      {
+        "id": "men-nightwear",
+        "title": "Nightwear & Pyjamas",
+        "shelves": [
+          { "slug": "men-nightwear", "label": "Nightwear & Pyjamas" }
+        ]
+      },
+      {
+        "id": "men-loungewear",
+        "title": "Loungewear",
+        "shelves": [
+          { "slug": "men-loungewear", "label": "Loungewear" }
+        ]
+      },
+      {
+        "id": "men-swimwear",
+        "title": "Swimwear",
+        "shelves": [
+          { "slug": "men-swimwear", "label": "Swimwear" }
+        ]
+      },
+      {
+        "id": "men-bags",
+        "title": "Bags",
+        "shelves": [
+          { "slug": "men-bags", "label": "Bags" }
+        ]
+      },
+      {
+        "id": "men-socks",
+        "title": "Socks",
+        "shelves": [
+          { "slug": "men-socks", "label": "Socks" }
+        ]
+      },
+      {
+        "id": "men-accessories",
+        "title": "Men Accessories",
+        "shelves": [
+          { "slug": "men-accessories", "label": "Men Accessories" }
         ]
       }
     ]
@@ -1683,3 +1633,21 @@ export function rankWithinRoute(products, terms = []) {
   return products.map((p, position) => ({ p, position, score: words.reduce((sum, word) => sum + (p.title.toLowerCase().includes(word) ? 1 : 0), 0) }))
     .sort((a, b) => b.score - a.score || a.position - b.position).map(x => x.p);
 }
+
+
+export const MEN_COMPLETION_SEQUENCE = Object.freeze([
+  "men-outerwear",
+  "men-knitwear",
+  "men-hoodies",
+  "men-nightwear",
+  "men-loungewear",
+  "men-swimwear",
+  "men-bags",
+  "men-socks",
+  "men-accessories",
+  "men-tops",
+  "men-shirts",
+  "men-suits",
+  "men-underwear",
+  "men-boxers"
+]);
