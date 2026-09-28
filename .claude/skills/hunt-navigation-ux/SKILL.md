@@ -61,3 +61,13 @@ Product detail pages use the same scroll-direction commerce header:
 - keep keyboard focus reveal;
 - no pointer-edge reveal gimmick;
 - keep sticky buy controls clear of the header in both states.
+
+
+## Compact product detail
+For HUNT product pages:
+- remove oversized editorial intros from the default shopping path;
+- keep image/gallery compact enough that price, variants, and CTA appear quickly;
+- desktop should use a balanced gallery + buy box, not a giant image stage;
+- mobile should use a compact image stage, compact title/price/options, and existing one-hand CTA;
+- keep truth/evidence UI secondary rather than above-the-fold dominant;
+- description, details, reviews, and recommendations belong below the main purchase block.
