@@ -317,9 +317,19 @@
   <script src="analytics.js?v=ladder1"></script>
   <script src="product.js?v=seo1"></script>
   <script>
-  window.addEventListener("hunt:product-loaded",()=>{
-    if(window.HuntCore){
-      window.HuntCore.productUrl = product => "product-cinematic-v2.html?src="+encodeURIComponent(window.HuntCore.sourceAlias(product?.provider))+"&id="+encodeURIComponent(product?.item_id||"");
+  if(window.HuntCore){
+    window.HuntCore.productUrl = product => "product-cinematic-v2.html?src="+encodeURIComponent(window.HuntCore.sourceAlias(product?.provider))+"&id="+encodeURIComponent(product?.item_id||"");
+  }
+  window.addEventListener("hunt:product-loaded",event=>{
+    const p=event.detail?.product||{};
+    const dept=p.hunt_department||p.canonical_department||"";
+    const shelf=p.hunt_shelf||p.canonical_shelf||"";
+    const link=document.getElementById("hd-product-category-link");
+    if(link&&dept){
+      const q=new URLSearchParams({dept});
+      if(shelf)q.set("shelf",shelf);
+      link.href="hunt-cinematic-living-campaign-v2.html?"+q.toString();
+      link.textContent=[dept,shelf].filter(Boolean).map(x=>String(x).replace(/^(women|men)-/,"").replace(/-/g," ")).join(" / ");
     }
   },{once:true});
   </script>
