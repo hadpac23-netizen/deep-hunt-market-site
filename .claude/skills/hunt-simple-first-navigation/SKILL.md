@@ -23,6 +23,13 @@ This is the normal storefront default.
 - Only filters backed by verified attributes may appear.
 - Exact route isolation and no-mixing outrank visual completeness.
 
+## Overflow navigation
+Never require mouse-dragging to reach hidden items.
+If a row overflows, provide small previous/next arrow controls.
+Keep swipe/trackpad support as an additional input.
+Hide arrows when unnecessary and disable them at the limits.
+Revealing the selected item inside the strip must not scroll the document.
+
 ## Mobile
 Use the same two-row model.
 Each nav row may horizontally scroll inside itself.
