@@ -52,3 +52,12 @@ Use HUNT typography, Sapphire/Gold accents, subtle depth and restrained motion.
 The cinematic identity belongs primarily in the Living Campaign and product world, not in a complicated menu.
 
 After changes run hunt-visual-qa at desktop, tablet, mobile, dark and light modes.
+
+
+## Product detail header behavior
+Product detail pages use the same scroll-direction commerce header:
+- scroll down -> hide header;
+- scroll up -> reveal header immediately;
+- keep keyboard focus reveal;
+- no pointer-edge reveal gimmick;
+- keep sticky buy controls clear of the header in both states.
