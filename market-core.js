@@ -345,12 +345,20 @@
     return engine.evaluate({type,observed_at:observed,base_confidence:baseConfidence});
   }
 
-  const productUrl = product => `product.html?provider=${encodeURIComponent(product?.provider || "Printful")}&id=${encodeURIComponent(product?.item_id || "")}`;
+  const sourceAlias = provider => {
+    const p=String(provider||"").toLowerCase();
+    if(p.includes("cj"))return "h1";
+    if(p.includes("eprolo"))return "h2";
+    if(p.includes("printful"))return "h3";
+    if(p.includes("gooten"))return "h4";
+    return "h0";
+  };
+  const productUrl = product => `product.html?src=${encodeURIComponent(sourceAlias(product?.provider))}&id=${encodeURIComponent(product?.item_id || "")}`;
   const categoryUrl = slug => `category.html?c=${encodeURIComponent(categoryDefs[slug] ? slug : "women")}`;
 
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
     inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
-    cart,saveCart,addCart,removeCart,setCartQuantity,clearCart,cartCount,updateCartBadges,storefront,search,evidenceState,productUrl,categoryUrl
+    cart,saveCart,addCart,removeCart,setCartQuantity,clearCart,cartCount,updateCartBadges,storefront,search,evidenceState,sourceAlias,productUrl,categoryUrl
   };
 })();
