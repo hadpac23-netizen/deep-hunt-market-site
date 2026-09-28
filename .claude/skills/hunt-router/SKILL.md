@@ -13,6 +13,7 @@ Then load skills by task:
   - hunt-control
   - hunt-cinematic-ui
   - hunt-navigation-ux
+  - hunt-adaptive-disclosure
   - hunt-taxonomy-guard
   - hunt-visual-qa
   - hunt-accessibility-performance
