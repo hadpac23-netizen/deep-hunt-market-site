@@ -612,7 +612,7 @@ body.hunt-product-nav-hidden .hd-product-cinematic-v2 .hd-product-buybox{
   <script src="product.js?v=seo1"></script>
   <script>
   if(window.HuntCore){
-    window.HuntCore.productUrl = product => "product-cinematic-v10.html?src="+encodeURIComponent(window.HuntCore.sourceAlias(product?.provider))+"&id="+encodeURIComponent(product?.item_id||"");
+    window.HuntCore.productUrl = product => "product-cinematic-v10.html?src="+encodeURIComponent(window.HuntCore.sourceAlias(product?.provider))+"&id="+encodeURIComponent(product?.item_id||"")+"&ui=compact3";
   }
   window.addEventListener("hunt:product-loaded",event=>{
     const p=event.detail?.product||{};
