@@ -1,6 +1,6 @@
 ---
 name: hunt-router
-description: This skill should be used before any task that changes, audits, tests, deploys, queries, or reasons about the HUNT DEAL project. It selects the mandatory HUNT skills and enforces approved baselines, truth gates, no-mixing taxonomy, and production safety.
+description: Use before any task that changes, audits, tests, deploys, queries, or reasons about HUNT. It selects mandatory HUNT skills and enforces approved baselines, Simple First navigation, truth gates, no-mixing taxonomy, and production safety.
 ---
 
 # HUNT Skill Router
@@ -11,6 +11,7 @@ Then load skills by task:
 
 - UI, styling, navigation, animations, category layout:
   - hunt-control
+  - hunt-simple-first-navigation
   - hunt-cinematic-ui
   - hunt-navigation-ux
   - hunt-taxonomy-guard
@@ -20,8 +21,9 @@ Then load skills by task:
 - Only when the Owner explicitly asks for immersive/full-screen/spatial navigation:
   - hunt-cinematic-scene-navigation
 
-- Only when the Owner explicitly asks to hide/collapse/reveal dense secondary UI:
+- Only when the Owner explicitly asks to hide/collapse/reveal tertiary or optional UI:
   - hunt-adaptive-disclosure
+  - Do not use this skill to hide normal Main Categories or the active category's Departments by default.
 
 - Product page, variants, sizes, attributes, recommendations:
   - hunt-control
@@ -52,4 +54,5 @@ Then load skills by task:
   - hunt-product-truth
 
 Never skip hunt-control when an approved UI or workflow can be changed.
+Never skip hunt-simple-first-navigation for normal storefront navigation.
 Never skip hunt-taxonomy-guard when product placement can change.
