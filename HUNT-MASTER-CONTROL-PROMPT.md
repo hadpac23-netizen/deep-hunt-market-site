@@ -123,3 +123,11 @@ Never point an experiment to the generic old index or legacy category page unles
 ### Public storefront brand
 In the current Cinematic storefront family, the visible brand is **HUNT**.
 Do not render **HUNT DEAL** in the primary brand lockup unless Owner explicitly asks to restore it.
+
+
+### Navigation visual hierarchy
+- Main Categories are primary and must be visually stronger than Departments.
+- Departments are secondary and compact; they must never consume more visual weight or vertical space than Main Categories.
+- Department navigation should prefer concise text controls over large image cards/count metadata.
+- Preserve all department choices; do not hide them behind a default "More" control.
+- The Cinematic campaign remains the dominant visual surface after navigation.
