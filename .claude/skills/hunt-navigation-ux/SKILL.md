@@ -80,3 +80,11 @@ Inside product detail:
 - preserve exact route links back to Category/Shelf;
 - Light and Dark must both keep the brand and taxonomy readable;
 - Light mode must not contain isolated hard-coded dark panels.
+
+
+## Off-white living product navigation
+On product pages:
+- Light mode is warm off-white, not pure white.
+- Category and Department rows retain the same living shimmer/sweep/glow behavior used on the storefront.
+- Light effects must be visible but restrained and readable.
+- Empty/loading review panels size to their message/content and must not stretch to the review form height.
