@@ -62,12 +62,19 @@
     ornaments: {title:"Ornaments", query:"ornaments", icon:"R", description:"Seasonal and decorative ornaments."},
     perfume: {title:"Perfume & Fragrance", query:"women perfume fragrance", icon:"F", description:"Live when matched from HUNT's approved catalog sources."},
     beauty: {title:"Beauty & Skincare", query:"beauty skincare makeup", icon:"Y", description:"Beauty and skincare products matched from HUNT's approved catalog sources."},
-    jewelry: {title:"Jewelry", query:"women jewelry necklace bracelet earrings", icon:"Q", description:"Jewelry and accessories matched from HUNT's approved catalog sources."}
+    jewelry: {title:"Jewelry", query:"jewelry", icon:"Q", description:"Jewelry hub. Products must resolve to one exact jewelry shelf before display."},
+    earrings: {title:"Earrings", query:"earrings studs hoops", icon:"E", description:"Earrings only: studs, hoops and verified earring styles."},
+    necklaces: {title:"Necklaces", query:"necklaces pendants chokers", icon:"N", description:"Necklaces only: necklaces, pendants and chokers."},
+    bracelets: {title:"Bracelets", query:"bracelets bangles", icon:"B", description:"Bracelets only: bracelets, bangles and wrist jewelry."},
+    rings: {title:"Rings", query:"rings signet bands", icon:"R", description:"Rings only: verified ring styles and bands."},
+    anklets: {title:"Anklets", query:"anklets ankle chains", icon:"A", description:"Anklets and ankle-chain jewelry only."},
+    brooches: {title:"Brooches & Pins", query:"brooches jewelry pins", icon:"P", description:"Brooches and jewelry pins only."},
+    jewelrysets: {title:"Jewelry Sets", query:"jewelry sets", icon:"J", description:"Verified coordinated jewelry sets only."}
   };
 
   const categoryGroups = [
     {title:"Women & Men", items:["women","men","dresses","tops","bottoms","sets","plussize","sleepwear","suits","hoodies","jackets","knitwear","activewear","swimwear","socks"]},
-    {title:"Beauty & Style", items:["bags","shoes","hats","accessories","hairaccessories","jewelry","beauty","perfume"]},
+    {title:"Beauty & Style", items:["bags","shoes","hats","accessories","hairaccessories","jewelry","earrings","necklaces","bracelets","rings","anklets","brooches","jewelrysets","beauty","perfume"]},
     {title:"Home & Living", items:["home","kitchen","storage","bedding","bath","lighting","cleaning","pillows","blankets","wallart","drinkware"]},
     {title:"Tech & Gaming", items:["tech","phonecases","phoneaccessories","gaming"]},
     {title:"Sports & Outdoors", items:["sports","outdoors","travel"]},
@@ -96,7 +103,14 @@
     if (/\b(kids?|youth|toddler|baby|newborn)\b/.test(t)) return "kids";
     if (/(perfume|fragrance)/.test(t)) return "perfume";
     if (/(beauty|skincare|makeup|cosmetic|serum|cream)/.test(t)) return "beauty";
-    if (/(jewelry|jewellery|necklace|bracelet|earring|ring)/.test(t)) return "jewelry";
+    if (/\b(earring|earrings|stud earrings?|hoop earrings?)\b/.test(t)) return "earrings";
+    if (/\b(necklace|necklaces|pendant|pendants|choker|chokers)\b/.test(t)) return "necklaces";
+    if (/\b(bracelet|bracelets|bangle|bangles)\b/.test(t)) return "bracelets";
+    if (/\b(anklet|anklets|ankle chain)\b/.test(t)) return "anklets";
+    if (/\b(brooch|brooches|lapel pin|jewelry pin)\b/.test(t)) return "brooches";
+    if (/\b(jewelry set|jewellery set)\b/.test(t)) return "jewelrysets";
+    if (/\b(ring|rings|signet ring|band ring)\b/.test(t)) return "rings";
+    if (/\b(jewelry|jewellery)\b/.test(t)) return "jewelry";
     if (/\b(swim|swimsuit|bikini|swim trunks)\b/.test(t)) return "swimwear";
     if (/\b(sock|socks)\b/.test(t)) return "socks";
     if (/\b(sticker|stickers)\b/.test(t)) return "stickers";
@@ -139,7 +153,14 @@
   function slugFromQuery(query) {
     const q = String(query || "").toLowerCase();
     if (/perfume|fragrance/.test(q)) return "perfume";
-    if (/jewel|necklace|bracelet|earring|ring/.test(q)) return "jewelry";
+    if (/\b(earring|earrings|stud|hoops?)\b/.test(q)) return "earrings";
+    if (/\b(necklace|necklaces|pendant|pendants|choker|chokers)\b/.test(q)) return "necklaces";
+    if (/\b(bracelet|bracelets|bangle|bangles)\b/.test(q)) return "bracelets";
+    if (/\b(anklet|anklets|ankle chain)\b/.test(q)) return "anklets";
+    if (/\b(brooch|brooches|jewelry pin)\b/.test(q)) return "brooches";
+    if (/\b(jewelry set|jewellery set)\b/.test(q)) return "jewelrysets";
+    if (/\b(ring|rings|signet ring|band ring)\b/.test(q)) return "rings";
+    if (/\b(jewelry|jewellery|jewel)\b/.test(q)) return "jewelry";
     if (/beauty|skincare|makeup/.test(q)) return "beauty";
     if (/kids?|youth|toddler|baby/.test(q)) return "kids";
     if (/swimwear|swimsuit|bikini|swim trunks/.test(q)) return "swimwear";
