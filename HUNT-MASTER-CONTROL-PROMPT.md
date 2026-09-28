@@ -17,6 +17,17 @@ Taxonomy may feel alive like a cinematic control surface:
 - Effects must not change layout dimensions, introduce horizontal motion/scroll, or reduce legibility.
 - Honor prefers-reduced-motion and provide a static equivalent.
 
+#### CATEGORY DISCOVERY BEFORE EXACT DEPARTMENT
+When a shopper selects a Main Category and has not yet selected a Department/Shelf:
+- never leave the product area empty;
+- immediately render a randomized discovery mix drawn only from Departments/Shelves that belong to the selected Main Category;
+- balance the mix across multiple child Departments where possible;
+- every product card must preserve its exact source Department/Shelf route;
+- never mix products from another Main Category;
+- when the shopper selects a Department/Shelf, replace the discovery mix immediately with that exact Department/Shelf view only;
+- changing back to a Main Category may generate a fresh in-category discovery mix;
+- discovery mode is browsing convenience, not taxonomy reassignment.
+
 #### ROW-LEVEL TAXONOMY HIERARCHY
 The navigation must read instantly as two separate levels:
 - top row = Main Categories, stronger sapphire/gold cinematic rail;
