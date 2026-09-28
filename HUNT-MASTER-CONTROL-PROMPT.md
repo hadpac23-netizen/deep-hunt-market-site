@@ -17,6 +17,15 @@ Taxonomy may feel alive like a cinematic control surface:
 - Effects must not change layout dimensions, introduce horizontal motion/scroll, or reduce legibility.
 - Honor prefers-reduced-motion and provide a static equivalent.
 
+#### PRODUCT HEADER TAXONOMY + LIGHT MODE
+Product detail pages must carry the same browsing context as the storefront:
+- HUNT brand remains clearly visible in both Light and Dark modes;
+- Main Categories and the current category's Departments/Shelves are visible inside the product header;
+- the entire product header hides on downward scroll and returns on upward scroll as one unit;
+- Light mode must not leave hard-coded black/dark panels behind;
+- Light surfaces use strong text contrast, subtle borders, and pale blue/teal hierarchy;
+- returning navigation from a product must preserve the exact Category/Shelf route.
+
 #### COMPACT COMMERCE PRODUCT DETAIL
 Default product detail must be compact and commerce-first:
 - no oversized editorial intro above the product;
