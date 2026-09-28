@@ -8,6 +8,15 @@ Create a new version/file/branch and preserve a rollback path.
 
 ### Storefront default: SIMPLE FIRST
 
+#### CINEMATIC TAXONOMY COLOR HIERARCHY
+Keep taxonomy structurally simple but visually alive:
+- Main Categories use the stronger HUNT cinematic sapphire/gold treatment.
+- Departments/Shelves use a related but distinguishable secondary hue.
+- Both layers may use subtle moving gleam/highlight on hover/active.
+- Category emphasis must remain stronger than department emphasis.
+- Decorative light must never reduce label contrast or readability.
+- Do not turn taxonomy back into heavy cards or immersive scenes.
+
 #### ZERO HORIZONTAL TAXONOMY
 For normal HUNT browsing, Main Categories and the active category's Departments/Shelves MUST NOT require horizontal dragging, swipe-only discovery, arrows, carousels, scroll-snap, or hidden overflow.
 Use a responsive reflowing matrix/grid:
