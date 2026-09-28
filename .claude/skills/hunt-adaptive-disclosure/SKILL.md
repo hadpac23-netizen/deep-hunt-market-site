@@ -5,6 +5,10 @@ description: Use whenever HUNT needs to hide/show secondary UI intelligently: de
 
 # HUNT Adaptive Disclosure
 
+## Primary-navigation exception
+Simple First is the default. Do **not** use adaptive disclosure to hide normal Main Categories or the active category's Department row.
+Use this skill for tertiary/optional UI such as filters, specs, secondary account tools or explicitly requested experiments.
+
 ## Core principle
 Hide visually, never lose functionally.
 
