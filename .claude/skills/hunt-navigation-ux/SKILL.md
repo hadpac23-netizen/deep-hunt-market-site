@@ -1,39 +1,54 @@
 ---
 name: hunt-navigation-ux
-description: Use for HUNT main-category navigation, department navigation, menu hierarchy, compact navigation, mobile reflow, or any change that affects how much screen space navigation consumes. It keeps main categories visually primary and departments secondary without hiding options or shrinking accessibility.
+description: Use for HUNT main-category navigation, department navigation, menu hierarchy, compact navigation, mobile reflow, or any change that affects how much screen space navigation consumes. Simple First is the default.
 ---
 
 # HUNT Navigation UX
 
+Read `hunt-simple-first-navigation` first for normal storefront navigation.
+
+## Default hierarchy
+Main Categories -> Departments -> Living Campaign -> Exact Products -> Sort / Filters.
+
+- Main Categories are primary and stay immediately visible.
+- The active Main Category's Departments appear directly underneath in one compact text-first row.
+- Selecting a Main Category swaps only the Department row.
+- Selecting a Department updates the exact route and product shelf without forcing page scroll.
+- Sort / Filter controls live with the product list, not inside category navigation.
+
 ## Visual hierarchy
-- Main Categories are primary navigation and must be visually stronger than Departments.
-- Departments are secondary navigation: compact, scannable, plain-language text.
-- Never make department cards visually heavier or taller than main-category controls.
-- Do not use decorative thumbnails in department navigation unless they materially improve identification and the Owner asks for them.
-- Counts are not required in navigation and should be omitted if they create visual noise.
+- Main Categories are visually stronger than Departments.
+- Departments are secondary, compact, scannable, plain-language text.
+- No thumbnails, image tiles, product counts, oversized pills or decorative cards by default.
+- Navigation must not visually overpower the Living Campaign.
 
 ## Screen-space budget
-- Preserve the Cinematic campaign as the dominant visual surface.
-- On desktop, aim for one compact main-category row and one compact department row/wrap.
-- Departments may wrap to additional lines when necessary, but do not hide items behind "More" by default.
-- Avoid tall cards, large thumbnails, or repeated metadata in the navigation layer.
+Desktop:
+- one compact Main Category row;
+- one compact Department row;
+- campaign begins immediately after.
+
+Mobile:
+- same two-row mental model;
+- each row may scroll horizontally inside itself;
+- no page-wide horizontal overflow;
+- no fullscreen/drawer/modal required for normal category browsing.
 
 ## Accessibility
-- Maintain readable text and minimum practical target size without making controls visually heavy.
-- Keyboard reachable, visible focus state, semantic buttons/links.
-- Reflow at 320 CSS px without page-wide two-dimensional scrolling.
-- On narrow mobile, a horizontal navigation strip is acceptable for navigation when it is clearly scrollable and all items remain reachable.
-- Preserve RTL/LTR compatibility.
+- semantic buttons/links;
+- visible focus;
+- selected state exposed semantically;
+- touch targets remain practical without inflating the visual layer;
+- reflow at 320 CSS px;
+- keyboard reachable;
+- RTL/LTR compatible;
+- prefers-reduced-motion respected.
 
-## Interaction
-- Selecting a Main Category updates Departments directly underneath.
-- Selecting a Department does not jump the page.
-- Campaign/Advertising floor remains visible and unchanged.
-- Products remain below the campaign floor and browse vertically.
-- No accordion, side drawer, or legacy page unless explicitly requested.
+## Explicit opt-in only
+Do not introduce fullscreen, overlay, modal, drawer, spatial or card-based primary navigation unless the Owner explicitly asks for that exact experiment.
 
 ## HUNT aesthetic
-Use typography, spacing, border, glow and active-state treatment to express hierarchy.
-Do not add generic dashboard cards or oversized pills.
+Use HUNT typography, Sapphire/Gold accents, subtle depth and restrained motion.
+The cinematic identity belongs primarily in the Living Campaign and product world, not in a complicated menu.
 
-After changes, run hunt-visual-qa and verify navigation hierarchy at desktop, tablet, mobile, dark and light modes.
+After changes run hunt-visual-qa at desktop, tablet, mobile, dark and light modes.
