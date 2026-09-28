@@ -343,7 +343,13 @@
     try {
       const cached=cachedProduct();
       const data = await H.storefront({provider,product_id:id});
-      product={...(cached || {}),...(data.product || {})};
+      const routeIdentity={
+        hunt_department:cached?.hunt_department||cached?.canonical_department||"",
+        hunt_shelf:cached?.hunt_shelf||cached?.canonical_shelf||"",
+        canonical_department:cached?.canonical_department||cached?.hunt_department||"",
+        canonical_shelf:cached?.canonical_shelf||cached?.hunt_shelf||""
+      };
+      product={...(cached || {}),...(data.product || {}),...routeIdentity};
       variants=Array.isArray(product?.variants)?product.variants:[];
       selectedVariant=variants[0]||null;
       selectedColor=selectedVariant?.color||null;
