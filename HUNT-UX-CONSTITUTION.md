@@ -36,7 +36,11 @@ Desktop grids: responsive multi-column.
 Mobile grids: one or two columns.
 No page-wide horizontal overflow.
 
-## 4. Main Category isolation and Simple First department row
+## 4. Main Category isolation and Visible Taxonomy Matrix
+
+Horizontal taxonomy scrolling is prohibited for normal storefront navigation.
+
+Main Categories and the current scope's Departments/Shelves must reflow into compact rows/columns that fit the viewport. All choices remain visible in document flow. On narrow screens the matrix becomes fewer columns and grows vertically. No drag, swipe-only discovery, carousel, arrows, clipping, or hidden "More" path is allowed for normal taxonomy.
 Opening a Main Category such as Women, Men, Home, Tech or Jewelry updates one compact Department row directly beneath the Main Categories.
 
 Departments are text-first and immediately scannable.
