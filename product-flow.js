@@ -12,6 +12,63 @@
   const seen=new Set();
 
   function key(item){return String(item?.provider||"")+":"+String(item?.item_id||"")}
+  const categoryAliases={
+    "women-dresses":"dresses","men-dresses":"dresses",
+    "women-tops":"tops","men-tops":"tops",
+    "women-shirts":"tops","men-shirts":"tops",
+    "women-bottoms":"bottoms","men-bottoms":"bottoms",
+    "women-jeans":"bottoms","men-jeans":"bottoms",
+    "women-skirts":"dresses",
+    "women-knitwear":"knitwear","men-knitwear":"knitwear",
+    "women-hoodies":"hoodies","men-hoodies":"hoodies",
+    "women-outerwear":"jackets","men-outerwear":"jackets","men-jackets":"jackets","women-jackets":"jackets",
+    "women-swimwear":"swimwear","men-swimwear":"swimwear",
+    "women-socks":"socks","men-socks":"socks",
+    "women-shoes":"shoes","men-shoes":"shoes",
+    "women-bags":"bags","men-bags":"bags",
+    "women-accessories":"accessories","men-accessories":"accessories",
+    "men-boxers":"underwear","men-underwear":"underwear","women-underwear":"underwear",
+    "hair-accessories":"hairaccessories",
+    "phone-accessories":"phoneaccessories",
+    "jewelry-sets":"jewelrysets"
+  };
+  function normalizeSlug(value){
+    const raw=String(value||"").trim().toLowerCase().replace(/\s+/g,"-");
+    return categoryAliases[raw]||raw.replace(/^(women|men)-/,"");
+  }
+  function categoryOf(item){
+    const explicit=normalizeSlug(item?.hunt_shelf||item?.storefront_shelf||item?.canonical_shelf||item?.category||"");
+    const inferred=normalizeSlug(H.inferCategory(item)||"");
+    if(!explicit)return inferred;
+    if(explicit==="accessories"&&inferred&&inferred!=="accessories")return inferred;
+    return explicit;
+  }
+  function exactIdentity(item,slug){
+    const s=normalizeSlug(slug),t=String(item?.title||"").toLowerCase();
+    const inferred=normalizeSlug(H.inferCategory(item)||"");
+    const exact={
+      dresses:()=>/\b(dress|dresses|gown|gowns)\b/.test(t)&&!/\b(tree skirt|christmas tree skirt)\b/.test(t),
+      socks:()=>/\b(sock|socks)\b/.test(t),
+      swimwear:()=>/\b(swimwear|swimsuit|swim shorts|swimming trunks|board shorts|boardshorts|bikini)\b/.test(t),
+      shoes:()=>/\b(shoe|shoes|sneaker|sneakers|loafer|loafers|boots?|sandals?|slides?|heels?)\b/.test(t),
+      bags:()=>/\b(handbag|purse|tote|crossbody|backpack|duffel|duffle|shoulder bag|messenger bag|chest bag|\bbag\b)\b/.test(t),
+      earrings:()=>/\b(earring|earrings|stud earrings?|hoop earrings?)\b/.test(t),
+      necklaces:()=>/\b(necklace|necklaces|pendant|pendants|choker|chokers)\b/.test(t),
+      bracelets:()=>/\b(bracelet|bracelets|bangle|bangles)\b/.test(t),
+      rings:()=>/\b(ring|rings|signet ring|band ring)\b/.test(t),
+      hoodies:()=>/\b(hoodie|hoodies|sweatshirt|sweatshirts)\b/.test(t),
+      knitwear:()=>/\b(sweater|sweaters|cardigan|cardigans|knitwear|pullover)\b/.test(t),
+      jackets:()=>/\b(jacket|jackets|coat|coats|parka|windbreaker|bomber|trench)\b/.test(t),
+      underwear:()=>/\b(boxer|boxers|brief|briefs|underwear|underpants|trunks)\b/.test(t),
+      hats:()=>/\b(hat|hats|cap|caps|beanie|bucket hat)\b/.test(t),
+      hairaccessories:()=>/\b(hair clip|hairpin|headband|scrunchie|barrette|hair accessory)\b/.test(t),
+      lighting:()=>/\b(lamp|lamps|lighting|night light|desk light|ceiling light|led light)\b/.test(t),
+      kitchen:()=>/\b(kitchen|cookware|utensil|bakeware|lunch box|food storage)\b/.test(t),
+      storage:()=>/\b(storage|organizer|closet|rack|shelf|shelving)\b/.test(t)
+    };
+    if(exact[s])return exact[s]();
+    return inferred===s || categoryOf(item)===s;
+  }
   function safeHttps(value){try{return new URL(value).protocol==="https:"}catch{return false}}
   function price(item){
     const n=Number(item?.price_amount);
@@ -76,7 +133,7 @@
   function complementarySlugs(slug){return complementaryMap[slug]||[]}
 
   function relationScore(item,currentCategory,currentPrice,currentGender){
-    const slug=String(item?.category||H.inferCategory(item)||"");
+    const slug=categoryOf(item);
     let score=0;
     if(slug===currentCategory)score+=100;
     if(siblingSlugs(currentCategory).includes(slug))score+=55;
@@ -103,12 +160,14 @@
   }
 
   async function buildPool(product){
-    const currentCategory=String(product?.category||H.inferCategory(product)||"");
+    const currentCategory=normalizeSlug(product?.hunt_shelf||product?.storefront_shelf||product?.canonical_shelf||product?.category||H.inferCategory(product)||"");
     const prefs=H.shoppingPreferences?.()||{};
-    const requested=[currentCategory,...siblingSlugs(currentCategory),...complementarySlugs(currentCategory),...(prefs.categories||[]).slice(0,4)]
+    const discoverySeeds=["beauty","home","tech","travel","bags","jewelry","lighting","kitchen"];
+    const requested=[currentCategory,...complementarySlugs(currentCategory),...(prefs.categories||[]).map(normalizeSlug).slice(0,3),...discoverySeeds]
+      .map(normalizeSlug)
       .filter(Boolean)
       .filter((slug,index,array)=>array.indexOf(slug)===index)
-      .slice(0,8);
+      .slice(0,10);
 
     const shardResults=await Promise.all(requested.map(async slug=>{
       try{
@@ -146,12 +205,16 @@
 
     const currentPrice=Number(product?.price_amount);
     const title=String(product?.title||"").toLowerCase();
-    const currentGender=isWomen(product)?"women":isMen(product)?"men":/\b(dress|skirt|blouse|handbag|purse)\b/.test(title)?"women":"general";
+    const routeDepartment=String(product?.hunt_department||product?.storefront_department||product?.canonical_department||"").toLowerCase();
+    const currentGender=routeDepartment==="women"?"women":routeDepartment==="men"?"men":isWomen(product)?"women":isMen(product)?"men":/\b(dress|skirt|blouse|handbag|purse)\b/.test(title)?"women":"general";
 
     pool=deduped
       .filter(item=>{
-        if(currentGender==="women"&&["men"].includes(String(item.category)))return false;
-        if(currentGender==="men"&&["women","dresses"].includes(String(item.category)))return false;
+        const slug=categoryOf(item);
+        if(!slug)return false;
+        if(currentGender==="women"&&isMen(item))return false;
+        if(currentGender==="men"&&isWomen(item))return false;
+        if(["dresses","socks","swimwear","shoes","bags","earrings","necklaces","bracelets","rings","hoodies","knitwear","jackets","underwear","hats","hairaccessories","lighting","kitchen","storage"].includes(slug)&&!exactIdentity(item,slug))return false;
         return true;
       })
       .map(item=>({item,score:relationScore(item,currentCategory,currentPrice,currentGender),tie:stableTie(item)}))
@@ -172,26 +235,23 @@
     const siblings=new Set(siblingSlugs(currentCategory));
     const complements=new Set(complementarySlugs(currentCategory));
     recommendations.similar=take(item=>{
-      const slug=String(item?.category||H.inferCategory(item)||"");
-      return slug===currentCategory;
+      const slug=categoryOf(item);
+      return slug===currentCategory&&exactIdentity(item,currentCategory);
     },12);
-    if(recommendations.similar.length<8){
-      recommendations.similar.push(...take(item=>{
-        const slug=String(item?.category||H.inferCategory(item)||"");
-        return siblings.has(slug)&&!complements.has(slug);
-      },12-recommendations.similar.length));
-    }
     recommendations.complementary=take(item=>{
-      const slug=String(item?.category||H.inferCategory(item)||"");
-      return complements.has(slug);
+      const slug=categoryOf(item);
+      return complements.has(slug)&&exactIdentity(item,slug);
     },12);
+    const discoverCounts=new Map();
     recommendations.discover=take(item=>{
-      const slug=String(item?.category||H.inferCategory(item)||"");
-      return slug!==currentCategory&&!siblings.has(slug)&&!complements.has(slug);
+      const slug=categoryOf(item);
+      if(slug===currentCategory||complements.has(slug))return false;
+      const limit=slug==="socks"?1:2;
+      const n=discoverCounts.get(slug)||0;
+      if(n>=limit)return false;
+      discoverCounts.set(slug,n+1);
+      return true;
     },12);
-    if(recommendations.discover.length<8){
-      recommendations.discover.push(...take(()=>true,12-recommendations.discover.length));
-    }
     cursor=0;
   }
 
@@ -200,7 +260,7 @@
     const img=safeHttps(item.image_url)
       ? '<img src="'+H.esc(item.image_url)+'" alt="'+H.esc(item.title||"Product")+'" loading="lazy">'
       : '<div class="hd-profile-product-placeholder">H</div>';
-    const slug=String(item.category||H.inferCategory(item)||"");
+    const slug=categoryOf(item);
     return '<article class="hd-shelf-card" role="listitem" data-category="'+H.esc(slug)+'" data-endless-key="'+H.esc(key(item))+'">'+
       '<a class="hd-shelf-media" href="'+H.esc(href)+'">'+img+'</a>'+
       '<div class="hd-shelf-body">'+
