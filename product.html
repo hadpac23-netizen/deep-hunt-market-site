@@ -52,6 +52,21 @@
       <article class="glass"><div class="hd-kicker hd-kicker-small">SHOPPING NOTES</div><h2>Things to know</h2><ul id="hd-product-gaps"><li>Checking fulfillment and retail readiness.</li></ul></article>
     </section>
 
+    <section class="hd-product-spec-section glass" id="hd-size-measurement-section" hidden>
+      <div class="hd-product-section-head">
+        <div><div class="hd-kicker hd-kicker-small">SIZE & MEASUREMENTS</div><h2>Verified fit and measurements</h2><p>Supplier size is always shown. US / UK / EU equivalents appear only when HUNT has verified them. Measurements are shown in cm and inches when a verified metric value exists.</p></div>
+      </div>
+      <div class="hd-size-equivalents" id="hd-size-equivalents"></div>
+      <div class="hd-measurement-table-wrap" id="hd-measurement-table-wrap"></div>
+    </section>
+
+    <section class="hd-product-spec-section glass" id="hd-attribute-section" hidden>
+      <div class="hd-product-section-head">
+        <div><div class="hd-kicker hd-kicker-small">PRODUCT ATTRIBUTES</div><h2>Specifications for this exact product</h2><p>HUNT shows only attributes supplied or verified for this product type. Missing values stay unknown.</p></div>
+      </div>
+      <div class="hd-product-attribute-grid" id="hd-product-attribute-grid"></div>
+    </section>
+
     <section class="hd-reviews" id="reviews" aria-labelledby="hd-reviews-title">
       <div class="hd-reviews-head">
         <div><div class="hd-kicker hd-kicker-small">SHOPPER REVIEWS</div><h2 id="hd-reviews-title">Ratings & reviews</h2></div>
@@ -84,12 +99,25 @@
       <div class="hd-product-video-grid" id="hd-product-video-grid"></div>
     </section>
 
-    <section class="hd-endless-discovery" id="hd-endless-discovery" aria-labelledby="hd-endless-title">
-      <div class="hd-product-section-head">
-        <div><div class="hd-kicker hd-kicker-small">BOOM ENDLESS DISCOVERY</div><h2 id="hd-endless-title">Keep discovering</h2><p id="hd-endless-copy">BOOM opens more relevant products as you scroll.</p></div>
+    <section class="hd-endless-discovery" id="hd-product-recommendations" aria-labelledby="hd-similar-title">
+      <div class="hd-recommendation-block" id="hd-similar-block">
+        <div class="hd-product-section-head">
+          <div><div class="hd-kicker hd-kicker-small">SIMILAR PRODUCTS</div><h2 id="hd-similar-title">More like this</h2><p>Same exact shopping intent first. No cross-shelf filler.</p></div>
+        </div>
+        <div class="hd-recommendation-grid" id="hd-similar-grid"></div>
       </div>
-      <div class="hd-endless-grid" id="hd-endless-grid"></div>
-      <div class="hd-endless-sentinel" id="hd-endless-sentinel" aria-live="polite"><span></span><strong>Loading more for you…</strong></div>
+      <div class="hd-recommendation-block" id="hd-complementary-block">
+        <div class="hd-product-section-head">
+          <div><div class="hd-kicker hd-kicker-small">PAIRS WELL WITH</div><h2>Useful with this product</h2><p>Controlled complementary products that make sense with the current item.</p></div>
+        </div>
+        <div class="hd-recommendation-grid" id="hd-complementary-grid"></div>
+      </div>
+      <div class="hd-recommendation-block" id="hd-discover-block">
+        <div class="hd-product-section-head">
+          <div><div class="hd-kicker hd-kicker-small">DISCOVER SOMETHING DIFFERENT</div><h2>Something else you may like</h2><p>Deliberately different products, still filtered by HUNT truth, availability and your shopping context.</p></div>
+        </div>
+        <div class="hd-recommendation-grid" id="hd-discover-grid"></div>
+      </div>
     </section>
 
     <section class="hd-product-loading glass" id="hd-product-loading"><span>◉</span><strong>Loading live product detail…</strong></section>
