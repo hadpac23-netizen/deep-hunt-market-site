@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import postgres from "npm:postgres@3.4.5";
 
 // HUNT Stripe Tax Calculate Preview
 // Shadow/Test only. No payment collection, no supplier order, no Production effect.
@@ -30,13 +31,31 @@ type Line={
 Deno.serve(async(req:Request)=>{
   if(req.method!=="POST")return json({error:"POST required"},405);
 
-  const expected=clean(Deno.env.get("HUNT_INTERNAL_TAX_TOKEN"));
-  if(!expected||req.headers.get("x-hunt-internal-token")!==expected){
-    return json({error:"unauthorized"},401);
+  const db=Deno.env.get("SUPABASE_DB_URL");
+  if(!db)return json({
+    status:"HOLD",reason:"SERVER_DB_CONFIG_MISSING",
+    tax_verified:false,final_profit_eligible:false,
+    production_effect:false,sellable:false
+  },503);
+  const sql=postgres(db,{prepare:false,max:1,connect_timeout:15,idle_timeout:3,max_lifetime:60});
+  let key="";
+  try{
+    const rows=await sql`
+      select name,decrypted_secret
+      from vault.decrypted_secrets
+      where name in ('hunt_underwear_catalog_token','hunt_stripe_tax_test_secret_key')
+    `;
+    const sec=Object.fromEntries(rows.map((r:any)=>[r.name,r.decrypted_secret]));
+    const expected=clean(sec.hunt_underwear_catalog_token);
+    if(!expected||req.headers.get("x-hunt-internal-token")!==expected){
+      return json({error:"unauthorized"},401);
+    }
+    key=clean(sec.hunt_stripe_tax_test_secret_key);
+  } finally {
+    await sql.end({timeout:1}).catch(()=>{});
   }
 
-  const mode=clean(Deno.env.get("HUNT_STRIPE_TAX_MODE")).toLowerCase()||"test";
-  const key=clean(Deno.env.get("HUNT_STRIPE_TAX_SECRET_KEY")||Deno.env.get("STRIPE_SECRET_KEY"));
+  const mode="test";
   if(mode!=="test"){
     return json({
       status:"HOLD",
