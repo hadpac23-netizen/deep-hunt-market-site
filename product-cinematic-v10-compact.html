@@ -937,19 +937,278 @@ html[data-hunt-theme="light"] textarea::placeholder{
 }
 </style>
 
+
+<style id="hunt-product-nav-shell-final">
+/* HUNT PRODUCT NAV SHELL FINAL */
+:root{--hunt-product-nav-h:132px}
+
+/* Kill the legacy product header completely if any old copy remains. */
+body.hd-product-cinematic-v2 > .hd-topbar{display:none!important}
+
+/* New independent header. */
+.hunt-product-nav-shell{
+  position:fixed!important;
+  top:0;left:0;right:0;
+  z-index:1200;
+  display:block!important;
+  transform:translate3d(0,0,0);
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  background:rgba(5,9,20,.97);
+  color:#f7f8fb;
+  border-bottom:1px solid rgba(255,255,255,.10);
+  box-shadow:0 12px 34px rgba(0,0,0,.22);
+  backdrop-filter:blur(20px) saturate(140%);
+  transition:transform .26s cubic-bezier(.2,.8,.2,1),opacity .18s ease;
+  will-change:transform;
+}
+.hunt-product-nav-shell.is-hidden{
+  transform:translate3d(0,-110%,0)!important;
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+.hunt-product-nav-main{
+  min-height:54px;
+  display:grid;
+  grid-template-columns:minmax(150px,.75fr) 1fr minmax(210px,.75fr);
+  align-items:center;
+  gap:12px;
+  padding:0 18px;
+}
+.hunt-product-brand{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  text-decoration:none;
+  font:1000 28px/1 Georgia,"Times New Roman",serif;
+  letter-spacing:.04em;
+  color:#ffffff!important;
+  text-shadow:0 0 22px rgba(109,140,255,.22);
+}
+.hunt-product-brand span{color:#f2d36b!important;margin-left:2px}
+.hunt-product-quick{display:flex;justify-content:center;gap:20px}
+.hunt-product-quick a{
+  color:#d8e3f2!important;
+  text-decoration:none;
+  font-size:10px;
+  font-weight:850;
+}
+.hunt-product-tools{
+  display:flex!important;
+  justify-content:flex-end;
+  align-items:center;
+  gap:8px;
+}
+.hunt-product-taxonomy{
+  display:grid!important;
+  gap:5px;
+  padding:5px 12px 8px;
+  border-top:1px solid rgba(255,255,255,.08);
+  background:rgba(8,14,29,.96);
+}
+.hunt-product-main-categories,
+.hunt-product-departments{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(82px,1fr));
+  gap:5px;
+}
+.hunt-product-departments{
+  grid-template-columns:repeat(auto-fit,minmax(100px,1fr));
+}
+.hunt-product-main-categories a,
+.hunt-product-departments a{
+  min-width:0;
+  min-height:29px;
+  display:grid;
+  place-items:center;
+  padding:4px 6px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.10);
+  text-decoration:none;
+  text-align:center;
+  font-size:9px;
+  line-height:1.05;
+  font-weight:850;
+  color:#eef4fb!important;
+  background:linear-gradient(180deg,rgba(22,42,77,.92),rgba(10,24,48,.94));
+}
+.hunt-product-departments a{
+  color:#dff6f6!important;
+  border-color:rgba(79,205,203,.17);
+  background:linear-gradient(180deg,rgba(19,62,77,.88),rgba(10,39,51,.94));
+}
+.hunt-product-main-categories a.active{
+  border-color:rgba(242,211,107,.52);
+  box-shadow:0 0 14px rgba(242,211,107,.12);
+}
+.hunt-product-departments a.active{
+  border-color:rgba(79,205,203,.45);
+  box-shadow:0 0 14px rgba(79,205,203,.10);
+}
+
+/* Main content offset always follows actual header height. */
+body.hd-product-cinematic-v2{padding-top:var(--hunt-product-nav-h)!important}
+.hd-product-cinematic-v2 .hd-product-buybox{top:calc(var(--hunt-product-nav-h) + 8px)!important}
+body.hunt-product-nav-hidden .hd-product-cinematic-v2 .hd-product-buybox{top:10px!important}
+
+/* Definitive Light mode. This does not depend on the old dark component theme. */
+html[data-hunt-theme="light"] .hunt-product-nav-shell,
+body.hunt-force-light .hunt-product-nav-shell{
+  background:rgba(255,255,255,.985)!important;
+  color:#111827!important;
+  border-bottom-color:rgba(15,23,42,.10)!important;
+  box-shadow:0 10px 30px rgba(15,23,42,.08)!important;
+}
+html[data-hunt-theme="light"] .hunt-product-brand,
+body.hunt-force-light .hunt-product-brand{
+  color:#0f172a!important;
+  text-shadow:none!important;
+}
+html[data-hunt-theme="light"] .hunt-product-brand span,
+body.hunt-force-light .hunt-product-brand span{color:#315c9a!important}
+html[data-hunt-theme="light"] .hunt-product-quick a,
+body.hunt-force-light .hunt-product-quick a{color:#344154!important}
+html[data-hunt-theme="light"] .hunt-product-taxonomy,
+body.hunt-force-light .hunt-product-taxonomy{
+  background:#f6f8fb!important;
+  border-top-color:rgba(15,23,42,.08)!important;
+}
+html[data-hunt-theme="light"] .hunt-product-main-categories a,
+body.hunt-force-light .hunt-product-main-categories a{
+  color:#172033!important;
+  background:linear-gradient(180deg,#ffffff,#edf3fb)!important;
+  border-color:rgba(49,92,154,.17)!important;
+}
+html[data-hunt-theme="light"] .hunt-product-departments a,
+body.hunt-force-light .hunt-product-departments a{
+  color:#15313b!important;
+  background:linear-gradient(180deg,#ffffff,#e9f4f5)!important;
+  border-color:rgba(50,128,145,.18)!important;
+}
+html[data-hunt-theme="light"] .hunt-product-tools .hd-account-link,
+html[data-hunt-theme="light"] .hunt-product-tools .hd-cart-link,
+html[data-hunt-theme="light"] .hunt-product-tools .hd-theme-toggle,
+body.hunt-force-light .hunt-product-tools .hd-account-link,
+body.hunt-force-light .hunt-product-tools .hd-cart-link,
+body.hunt-force-light .hunt-product-tools .hd-theme-toggle{
+  color:#172033!important;
+  background:#f3f6fb!important;
+  border-color:rgba(15,23,42,.10)!important;
+}
+
+/* Force all purchase and detail surfaces to Light when theme is Light. */
+html[data-hunt-theme="light"] .hd-product-layout,
+html[data-hunt-theme="light"] .hd-product-buybox,
+html[data-hunt-theme="light"] .hd-boom-product,
+html[data-hunt-theme="light"] .hd-product-info-grid article,
+html[data-hunt-theme="light"] .hd-product-spec-section,
+html[data-hunt-theme="light"] .hd-reviews,
+html[data-hunt-theme="light"] .hd-review-form,
+html[data-hunt-theme="light"] .hd-review-summary,
+html[data-hunt-theme="light"] .hd-review-list,
+html[data-hunt-theme="light"] .hd-review-empty,
+html[data-hunt-theme="light"] .hd-review-signin-note,
+html[data-hunt-theme="light"] .hd-recommendation-block,
+html[data-hunt-theme="light"] .hd-endless-discovery,
+html[data-hunt-theme="light"] #hd-complementary-block,
+html[data-hunt-theme="light"] #hd-discover-block,
+body.hunt-force-light .hd-product-layout,
+body.hunt-force-light .hd-product-buybox,
+body.hunt-force-light .hd-boom-product,
+body.hunt-force-light .hd-product-info-grid article,
+body.hunt-force-light .hd-product-spec-section,
+body.hunt-force-light .hd-reviews,
+body.hunt-force-light .hd-review-form,
+body.hunt-force-light .hd-review-summary,
+body.hunt-force-light .hd-review-list,
+body.hunt-force-light .hd-review-empty,
+body.hunt-force-light .hd-review-signin-note,
+body.hunt-force-light .hd-recommendation-block,
+body.hunt-force-light .hd-endless-discovery,
+body.hunt-force-light #hd-complementary-block,
+body.hunt-force-light #hd-discover-block{
+  background:#ffffff!important;
+  color:#111827!important;
+  border-color:rgba(15,23,42,.09)!important;
+  box-shadow:0 10px 26px rgba(15,23,42,.055)!important;
+}
+html[data-hunt-theme="light"] .hd-product-buybox *,
+body.hunt-force-light .hd-product-buybox *{color:inherit}
+html[data-hunt-theme="light"] .hd-product-buybox h1,
+html[data-hunt-theme="light"] .hd-product-price strong,
+html[data-hunt-theme="light"] .hd-product-section-head h2,
+html[data-hunt-theme="light"] .hd-reviews-head h2,
+body.hunt-force-light .hd-product-buybox h1,
+body.hunt-force-light .hd-product-price strong,
+body.hunt-force-light .hd-product-section-head h2,
+body.hunt-force-light .hd-reviews-head h2{color:#111827!important}
+html[data-hunt-theme="light"] .hd-product-truth,
+html[data-hunt-theme="light"] .hd-product-price span,
+body.hunt-force-light .hd-product-truth,
+body.hunt-force-light .hd-product-price span{color:#5d6878!important}
+html[data-hunt-theme="light"] .hd-color-choice,
+html[data-hunt-theme="light"] .hd-size-options button,
+html[data-hunt-theme="light"] .hd-product-facts>div,
+body.hunt-force-light .hd-color-choice,
+body.hunt-force-light .hd-size-options button,
+body.hunt-force-light .hd-product-facts>div{
+  background:#f3f6fb!important;
+  color:#172033!important;
+  border-color:rgba(15,23,42,.10)!important;
+}
+html[data-hunt-theme="light"] .hd-product-main-media,
+html[data-hunt-theme="light"] .hd-product-thumbs button,
+body.hunt-force-light .hd-product-main-media,
+body.hunt-force-light .hd-product-thumbs button{
+  background:radial-gradient(circle at 50% 42%,#f5f6f7 0%,#e7eaed 70%,#d8dde1 100%)!important;
+}
+
+@media(max-width:760px){
+  .hunt-product-nav-main{
+    min-height:52px;
+    padding:0 9px;
+    grid-template-columns:1fr auto;
+  }
+  .hunt-product-brand{font-size:23px!important}
+  .hunt-product-quick{display:none!important}
+  .hunt-product-taxonomy{padding:4px 7px 6px}
+  .hunt-product-main-categories{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  .hunt-product-departments{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+  .hunt-product-main-categories a,
+  .hunt-product-departments a{min-height:24px;font-size:8px;padding:3px}
+}
+</style>
+
 </head>
 <body class="hd-page hd-market-v2 hd-product-cinematic-v2">
   <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
   <div class="hd-space"></div>
-  <header class="hd-topbar" id="hd-product-smart-header">
-    <div class="hd-product-header-main">
-      <div class="hd-brand-wrap"><a class="hd-brand hd-hunt-only" href="hunt-cinematic-living-campaign-v10.html" aria-label="HUNT home">HUNT<span>✦</span></a><div class="hd-branch">PRODUCT</div></div>
-      <nav class="hd-nav" aria-label="Primary"><a href="hunt-cinematic-living-campaign-v10.html">Shop</a><a href="hunt-cinematic-living-campaign-v10.html?dept=women">Women</a><a href="hunt-cinematic-living-campaign-v10.html?dept=men">Men</a><a href="hunt-cinematic-living-campaign-v10.html?dept=jewelry">Jewelry</a></nav>
-      <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a></div>
+  <header id="hunt-product-nav-shell" class="hunt-product-nav-shell" aria-label="HUNT product navigation">
+    <div class="hunt-product-nav-main">
+      <a class="hunt-product-brand" href="hunt-cinematic-living-campaign-v10.html" aria-label="HUNT home">HUNT<span>✦</span></a>
+      <nav class="hunt-product-quick" aria-label="Quick navigation">
+        <a href="hunt-cinematic-living-campaign-v10.html">Shop</a>
+        <a href="hunt-cinematic-living-campaign-v10.html?dept=women">Women</a>
+        <a href="hunt-cinematic-living-campaign-v10.html?dept=men">Men</a>
+      </nav>
+      <div class="hd-tools hunt-product-tools">
+        <a class="hd-account-link" href="auth.html">Sign in</a>
+        <a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a>
+      </div>
     </div>
-    <div class="hd-product-taxonomy" id="hd-product-taxonomy">
-      <nav class="hd-product-main-categories" id="hd-product-main-categories" aria-label="Main categories"></nav>
-      <nav class="hd-product-departments" id="hd-product-departments" aria-label="Departments"></nav>
+    <div class="hunt-product-taxonomy">
+      <nav id="hd-product-main-categories" class="hunt-product-main-categories" aria-label="Main categories">
+        <a href="hunt-cinematic-living-campaign-v10.html?dept=women">Women</a>
+        <a href="hunt-cinematic-living-campaign-v10.html?dept=men">Men</a>
+        <a href="hunt-cinematic-living-campaign-v10.html?dept=kids">Kids</a>
+        <a href="hunt-cinematic-living-campaign-v10.html?dept=jewelry">Jewelry</a>
+        <a href="hunt-cinematic-living-campaign-v10.html?dept=home">Home</a>
+      </nav>
+      <nav id="hd-product-departments" class="hunt-product-departments" aria-label="Departments">
+        <a href="hunt-cinematic-living-campaign-v10.html">All departments</a>
+      </nav>
     </div>
   </header>
 
@@ -1142,7 +1401,7 @@ html[data-hunt-theme="light"] textarea::placeholder{
 (()=>{
   const mainHost=document.getElementById("hd-product-main-categories");
   const deptHost=document.getElementById("hd-product-departments");
-  const header=document.getElementById("hd-product-smart-header");
+  const header=document.getElementById("hunt-product-nav-shell");
   if(!mainHost||!deptHost||!header)return;
 
   let taxonomyData=null;
@@ -1215,70 +1474,75 @@ html[data-hunt-theme="light"] textarea::placeholder{
 })();
 </script>
 
+
+
+
 <script>
-/* HUNT_V10_PRODUCT_HEADER_SCROLL_COMPACT4 */
+/* HUNT_PRODUCT_NAV_RUNTIME_FINAL */
 (()=>{
-  const header=document.querySelector(".hd-topbar");
+  const root=document.documentElement;
+  const body=document.body;
+  const header=document.getElementById("hunt-product-nav-shell");
   if(!header)return;
 
-  let lastY=Math.max(window.scrollY,document.documentElement.scrollTop||0);
-  let lastTouchY=null;
+  function syncThemeClass(){
+    body.classList.toggle("hunt-force-light",root.dataset.huntTheme!=="dark");
+  }
+  syncThemeClass();
+  new MutationObserver(syncThemeClass).observe(root,{attributes:true,attributeFilter:["data-hunt-theme"]});
+
+  function syncHeight(){
+    const h=Math.ceil(header.getBoundingClientRect().height||0);
+    if(h>0)root.style.setProperty("--hunt-product-nav-h",h+"px");
+  }
+  syncHeight();
+  if("ResizeObserver" in window)new ResizeObserver(syncHeight).observe(header);
+  window.addEventListener("resize",()=>requestAnimationFrame(syncHeight),{passive:true});
+
+  let lastY=Math.max(window.scrollY||0,document.documentElement.scrollTop||0);
+  let touchY=null;
   let ticking=false;
-  let hidden=false;
+  const yNow=()=>Math.max(window.scrollY||0,document.documentElement.scrollTop||0,document.body.scrollTop||0);
 
-  const currentY=()=>Math.max(window.scrollY||0,document.documentElement.scrollTop||0,document.body.scrollTop||0);
-
-  function apply(next){
-    if(currentY()<58)next=false;
-    hidden=Boolean(next);
-    header.classList.toggle("hunt-product-header-hidden",hidden);
-    document.body.classList.toggle("hunt-product-nav-hidden",hidden);
-    header.style.setProperty("transform",hidden?"translate3d(0,-110%,0)":"translate3d(0,0,0)","important");
-    header.style.setProperty("pointer-events",hidden?"none":"auto","important");
+  function show(){
+    header.classList.remove("is-hidden");
+    body.classList.remove("hunt-product-nav-hidden");
   }
-
-  function evaluate(){
-    const y=currentY();
-    const delta=y-lastY;
-    if(y<58)apply(false);
-    else if(delta>3 && y>100)apply(true);
-    else if(delta<-2)apply(false);
-    lastY=y;
-    ticking=false;
+  function hide(){
+    header.classList.add("is-hidden");
+    body.classList.add("hunt-product-nav-hidden");
   }
-
+  function evalScroll(){
+    const y=yNow(),d=y-lastY;
+    if(y<50)show();
+    else if(d>3&&y>95)hide();
+    else if(d<-2)show();
+    lastY=y;ticking=false;
+  }
   function queue(){
     if(ticking)return;
     ticking=true;
-    requestAnimationFrame(evaluate);
+    requestAnimationFrame(evalScroll);
   }
-
   window.addEventListener("scroll",queue,{passive:true});
   document.addEventListener("scroll",queue,{passive:true,capture:true});
-
   window.addEventListener("wheel",e=>{
-    const y=currentY();
-    if(y<58){apply(false);return}
-    if(e.deltaY>4&&y>100)apply(true);
-    else if(e.deltaY<-3)apply(false);
+    if(yNow()<50){show();return}
+    if(e.deltaY>4&&yNow()>95)hide();
+    else if(e.deltaY<-3)show();
   },{passive:true});
-
-  window.addEventListener("touchstart",e=>{
-    lastTouchY=e.touches?.[0]?.clientY??null;
-  },{passive:true});
+  window.addEventListener("touchstart",e=>{touchY=e.touches?.[0]?.clientY??null},{passive:true});
   window.addEventListener("touchmove",e=>{
     const y=e.touches?.[0]?.clientY;
-    if(y==null||lastTouchY==null)return;
-    const delta=lastTouchY-y;
-    if(currentY()<58)apply(false);
-    else if(delta>4&&currentY()>100)apply(true);
-    else if(delta<-4)apply(false);
-    lastTouchY=y;
+    if(y==null||touchY==null)return;
+    const d=touchY-y;
+    if(yNow()<50)show();
+    else if(d>4&&yNow()>95)hide();
+    else if(d<-4)show();
+    touchY=y;
   },{passive:true});
-
-  header.addEventListener("focusin",()=>apply(false));
-  window.addEventListener("pageshow",()=>apply(false));
-  apply(false);
+  header.addEventListener("focusin",show);
+  window.addEventListener("pageshow",()=>{show();syncHeight();syncThemeClass()});
 })();
 </script>
 
