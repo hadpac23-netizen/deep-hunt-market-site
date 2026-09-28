@@ -36,12 +36,16 @@ Desktop grids: responsive multi-column.
 Mobile grids: one or two columns.
 No page-wide horizontal overflow.
 
-## 4. Main Category isolation and department window
-Opening a Main Category such as Women, Men, Home, Tech or Jewelry first opens a clean vertical Department window beneath it.
+## 4. Main Category isolation and Simple First department row
+Opening a Main Category such as Women, Men, Home, Tech or Jewelry updates one compact Department row directly beneath the Main Categories.
 
-Departments are listed one below another.
-Opening one Department expands only that Department directly below its row.
-Product browsing continues downward. It never becomes a horizontal product rail.
+Departments are text-first and immediately scannable.
+They must not become large cards, thumbnail grids, fullscreen navigation, modal navigation or a tall multi-row takeover by default.
+On narrow screens the Department row may scroll horizontally inside itself while the page remains free of horizontal overflow.
+
+Selecting one Department changes only the exact active shelf route.
+It does not force-scroll the document and it does not merge sibling inventories.
+Product browsing continues downward below the Living Campaign. It never becomes a horizontal product rail.
 
 Opening Women shows Women departments only.
 Opening Men shows Men departments only.
