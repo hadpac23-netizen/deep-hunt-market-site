@@ -759,38 +759,11 @@ body.hunt-nav-hidden .topbar{
   transform:translateY(calc(-100% - 3px));
   pointer-events:none;
 }
-.nav-reveal-edge{
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  height:4px;
-  z-index:79;
-  pointer-events:none;
-  opacity:0;
-  background:
-    linear-gradient(90deg,
-      transparent 0%,
-      color-mix(in srgb,var(--accent) 42%,transparent) 18%,
-      color-mix(in srgb,var(--spark) 72%,transparent) 50%,
-      color-mix(in srgb,var(--accent) 42%,transparent) 82%,
-      transparent 100%);
-  box-shadow:0 0 14px color-mix(in srgb,var(--spark) 18%,transparent);
-  transition:opacity .22s ease;
-}
-body.hunt-nav-hidden .nav-reveal-edge{
-  opacity:.72;
-  animation:huntRevealEdgeBreath 2.8s ease-in-out infinite;
-}
-body.hunt-nav-hidden.hunt-nav-near-top .nav-reveal-edge{opacity:1}
-@keyframes huntRevealEdgeBreath{
-  0%,100%{filter:brightness(.9);opacity:.45}
   50%{filter:brightness(1.25);opacity:.9}
 }
 @media(prefers-reduced-motion:reduce){
   .topbar{transition:none!important}
-  body.hunt-nav-hidden .nav-reveal-edge{animation:none!important}
-}
+  }
 
 </style>
 <style>
@@ -918,7 +891,6 @@ body.hunt-nav-hidden.hunt-nav-near-top .nav-reveal-edge{opacity:1}
     </div>
   </div>
 </header>
-<div class="nav-reveal-edge" aria-hidden="true"></div>
 <main>
   <section class="shelves" id="shelves"></section>
 </main>
@@ -934,17 +906,24 @@ let huntLastScrollY=window.scrollY,huntScrollTick=false,huntNavHidden=false;
 const huntTopbar=document.querySelector(".topbar");
 function setHuntNavHidden(hidden){
   if(!huntTopbar)return;
-  if(window.scrollY<120)hidden=false;
+  const y=window.scrollY;
+  if(y<80)hidden=false;
   huntNavHidden=Boolean(hidden);
   document.body.classList.toggle("hunt-nav-hidden",huntNavHidden);
-  if(!huntNavHidden)document.body.classList.remove("hunt-nav-near-top");
 }
 function evaluateHuntNav(){
-  const y=window.scrollY,delta=y-huntLastScrollY;
-  const hideAfter=Math.max(170,(huntTopbar?.offsetHeight||0)+70);
-  if(y<100)setHuntNavHidden(false);
-  else if(delta>8&&y>hideAfter)setHuntNavHidden(true);
-  else if(delta<-6)setHuntNavHidden(false);
+  const y=window.scrollY;
+  const delta=y-huntLastScrollY;
+  const hideAfter=Math.max(140,(huntTopbar?.offsetHeight||0)+32);
+
+  if(y<80){
+    setHuntNavHidden(false);
+  }else if(delta>5 && y>hideAfter){
+    setHuntNavHidden(true);
+  }else if(delta<-3){
+    setHuntNavHidden(false);
+  }
+
   huntLastScrollY=y;
   huntScrollTick=false;
 }
@@ -953,14 +932,7 @@ window.addEventListener("scroll",()=>{
   huntScrollTick=true;
   requestAnimationFrame(evaluateHuntNav);
 },{passive:true});
-document.addEventListener("pointermove",e=>{
-  if(e.pointerType&&e.pointerType!=="mouse")return;
-  const near=e.clientY<=52;
-  document.body.classList.toggle("hunt-nav-near-top",huntNavHidden&&near);
-  if(huntNavHidden&&near)setHuntNavHidden(false);
-},{passive:true});
 huntTopbar?.addEventListener("focusin",()=>setHuntNavHidden(false));
-huntTopbar?.addEventListener("pointerenter",()=>setHuntNavHidden(false));
 window.addEventListener("pageshow",()=>setHuntNavHidden(false));
 
 function setTheme(t){document.documentElement.dataset.huntTheme=t;$("#theme").textContent=t==="dark"?"Light":"Dark";const q=new URLSearchParams(location.search);q.set("theme",t);history.replaceState(null,"",location.pathname+"?"+q.toString())}
