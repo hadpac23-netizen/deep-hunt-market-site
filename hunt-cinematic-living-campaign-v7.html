@@ -293,7 +293,7 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
 </main>
 <div class="qa">CATALOG SHADOW · PRODUCTION OFF</div>
 <script>
-let data=null,taxonomySupplement={shelves:{}},launchSupplement={shelves:{}},canonicalOverrides=new Map(),active=0,selectedShelf="",visible={},campaignIndex=0,campaignTimer=null;
+let data=null,taxonomySupplement={shelves:{}},launchSupplement={shelves:{}},canonicalOverrides=new Map(),active=0,selectedShelf="",visible={},campaignIndex=0,campaignTimer=null,explorerMode="chapters",explorerIndex=0;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const qp=new URLSearchParams(location.search);
@@ -468,6 +468,69 @@ function renderPromo(d){
   $("#hero").hidden=false;
   startCampaign(d);
 }
+function chapterProducts(d){
+  const rows=[],seen=new Set();
+  for(const cat of categoriesFor(d)){
+    for(const p of directCategoryProducts(d.slug,cat)){
+      const k=key(p);if(seen.has(k)||!p.image_url)continue;
+      seen.add(k);rows.push(p);
+      if(rows.length>=12)return rows;
+    }
+  }
+  return rows;
+}
+function paintExplorerPreview(title,rows,copy){
+  $("#explorer-preview-word").textContent=String(title||"HUNT").toUpperCase();
+  $("#explorer-preview-title").textContent=title||"HUNT";
+  $("#explorer-preview-copy").textContent=copy||"";
+  const figs=[...document.querySelectorAll("#explorer-images figure")];
+  figs.forEach((fig,i)=>{
+    const p=rows[i]||rows[(i+3)%Math.max(1,rows.length)];
+    const img=fig.querySelector("img");
+    if(p?.image_url){
+      img.src=p.image_url;img.alt=p.title||title||"HUNT";
+      fig.classList.remove("show");requestAnimationFrame(()=>fig.classList.add("show"));
+    }else{img.removeAttribute("src");img.alt="";fig.classList.remove("show")}
+  });
+}
+function renderExplorer(){
+  const shell=$("#hunt-explorer .explorer-shell");
+  if(explorerMode==="chapters"){
+    shell.classList.remove("scene-mode");
+    $("#explorer-mode-label").textContent="CHAPTERS";
+    $("#explorer-current").textContent="Explore HUNT";
+    $("#explorer-back").hidden=true;
+    $("#explorer-title").textContent="Choose your world";
+    $("#explorer-subtitle").textContent="Each HUNT category is a chapter. Choose one, then enter its exact scene.";
+    $("#explorer-list").setAttribute("aria-label","HUNT chapters");
+    $("#explorer-list").innerHTML=data.departments.map((d,i)=>'<button type="button" class="explorer-item '+(i===active?"active":"")+'" data-chapter="'+i+'"><strong>'+esc(d.title)+'</strong><small>Open chapter</small></button>').join("");
+    const d=data.departments[explorerIndex]||data.departments[active]||data.departments[0];
+    paintExplorerPreview(d?.title,chapterProducts(d),categoriesFor(d).length+" scenes available · exact HUNT routes");
+  }else{
+    const d=data.departments[explorerIndex]||data.departments[active];
+    shell.classList.add("scene-mode");
+    $("#explorer-mode-label").textContent="SCENES";
+    $("#explorer-current").textContent=d.title;
+    $("#explorer-back").hidden=false;
+    $("#explorer-title").textContent=d.title;
+    $("#explorer-subtitle").textContent="Choose the exact scene you want to enter. HUNT will return to the Cinematic world with only that shelf below.";
+    $("#explorer-list").setAttribute("aria-label",d.title+" departments");
+    const cats=categoriesFor(d);
+    $("#explorer-list").innerHTML=cats.map(cat=>'<button type="button" class="explorer-item '+(explorerIndex===active&&selectedShelf===cat.slug?"active":"")+'" data-scene="'+esc(cat.slug)+'"><strong>'+esc(cat.title)+'</strong><small>Enter scene</small></button>').join("");
+    const current=cats.find(x=>x.slug===selectedShelf)||cats[0];
+    paintExplorerPreview(current?.title||d.title,current?directCategoryProducts(d.slug,current):chapterProducts(d),d.title+" · exact department preview");
+  }
+}
+function openExplorer(mode="chapters"){
+  explorerMode=mode;explorerIndex=active;renderExplorer();
+  const dialog=$("#hunt-explorer");
+  if(!dialog.open)dialog.showModal();
+  requestAnimationFrame(()=>$("#explorer-title").focus());
+}
+function updateExplorePath(d){
+  const cat=categoriesFor(d).find(x=>x.slug===selectedShelf);
+  $("#explore-path").textContent=cat?d.title+" / "+cat.title:d.title+" / Choose a scene";
+}
 function syncUrl(d){
   const q=new URLSearchParams(location.search);q.set("dept",d.slug);
   if(selectedShelf)q.set("shelf",selectedShelf);else q.delete("shelf");
@@ -475,29 +538,45 @@ function syncUrl(d){
 }
 function render(){
   const d=data.departments[active];if(!d)return;
-  document.title="HUNT · "+d.title+" · Original Cinematic Preview";
-  [...$("#dept-nav").children].forEach((b,i)=>b.classList.toggle("active",i===active));
+  document.title="HUNT · "+d.title+" · Cinematic Chapters";
   renderPromo(d);
-  const cats=categoriesFor(d);
-  $("#category-drawer-label").textContent=d.title+" · departments";
-  $("#category-index").innerHTML=cats.map(cat=>{
-    const rows=directCategoryProducts(d.slug,cat),n=rows.length,thumb=rows.find(p=>p.image_url)?.image_url||"";
-    return '<button class="cat-chip '+(selectedShelf===cat.slug?"active":"")+'" data-cat="'+esc(cat.slug)+'">'+
-      '<span class="chip-media">'+(thumb?'<img loading="lazy" src="'+esc(thumb)+'" alt="">':'')+'</span>'+
-      '<span class="chip-copy"><strong>'+esc(cat.title)+'</strong><small>'+n+' exact products</small></span>'+
-    '</button>'
-  }).join("");
-  const selected=cats.find(x=>x.slug===selectedShelf);
-  $("#shelves").innerHTML=selected?renderCategory(selected,d):'<div class="empty">Choose a '+esc(d.title)+' department above. Products will appear below the promotions floor.</div>';
+  const cats=categoriesFor(d),selected=cats.find(x=>x.slug===selectedShelf);
+  $("#shelves").innerHTML=selected?renderCategory(selected,d):'<div class="empty">Open Explore HUNT to choose a '+esc(d.title)+' scene. Products will appear below the promotions floor.</div>';
+  updateExplorePath(d);
   syncUrl(d)
 }
-$("#dept-nav").addEventListener("click",e=>{
-  const b=e.target.closest("button[data-i]");if(!b)return;
-  active=Number(b.dataset.i)||0;selectedShelf="";visible={};campaignIndex=0;render()
+$("#explore-trigger").addEventListener("click",()=>openExplorer("chapters"));
+$("#explorer-close").addEventListener("click",()=>$("#hunt-explorer").close());
+$("#explorer-back").addEventListener("click",()=>{explorerMode="chapters";renderExplorer();$("#explorer-title").focus()});
+$("#hunt-explorer").addEventListener("click",e=>{if(e.target===$("#hunt-explorer"))$("#hunt-explorer").close()});
+$("#explorer-list").addEventListener("pointerover",e=>{
+  const chapter=e.target.closest("[data-chapter]"),scene=e.target.closest("[data-scene]");
+  if(chapter){
+    const d=data.departments[Number(chapter.dataset.chapter)||0];
+    if(d)paintExplorerPreview(d.title,chapterProducts(d),categoriesFor(d).length+" scenes available · exact HUNT routes");
+  }else if(scene){
+    const d=data.departments[explorerIndex],cat=categoriesFor(d).find(x=>x.slug===scene.dataset.scene);
+    if(cat)paintExplorerPreview(cat.title,directCategoryProducts(d.slug,cat),d.title+" · exact department preview");
+  }
 });
-$("#category-index").addEventListener("click",e=>{
-  const b=e.target.closest("button[data-cat]");if(!b)return;
-  selectedShelf=String(b.dataset.cat||"");visible={};render()
+$("#explorer-list").addEventListener("focusin",e=>{
+  const chapter=e.target.closest("[data-chapter]"),scene=e.target.closest("[data-scene]");
+  if(chapter){
+    const d=data.departments[Number(chapter.dataset.chapter)||0];
+    if(d)paintExplorerPreview(d.title,chapterProducts(d),categoriesFor(d).length+" scenes available · exact HUNT routes");
+  }else if(scene){
+    const d=data.departments[explorerIndex],cat=categoriesFor(d).find(x=>x.slug===scene.dataset.scene);
+    if(cat)paintExplorerPreview(cat.title,directCategoryProducts(d.slug,cat),d.title+" · exact department preview");
+  }
+});
+$("#explorer-list").addEventListener("click",e=>{
+  const chapter=e.target.closest("[data-chapter]"),scene=e.target.closest("[data-scene]");
+  if(chapter){
+    explorerIndex=Number(chapter.dataset.chapter)||0;explorerMode="scenes";renderExplorer();$("#explorer-title").focus();return;
+  }
+  if(scene){
+    active=explorerIndex;selectedShelf=String(scene.dataset.scene||"");visible={};campaignIndex=0;render();$("#hunt-explorer").close();
+  }
 });
 $("#shelves").addEventListener("click",e=>{
   const more=e.target.closest("button[data-more]");
@@ -514,10 +593,10 @@ Promise.all([
 ]).then(([j,s1,s2])=>{
   data=j;taxonomySupplement=s1||{shelves:{}};launchSupplement=s2||{shelves:{}};
   mergeSupplementCategories();buildRouteOwners();ensureJewelryDepartment();
-  $("#dept-nav").innerHTML=data.departments.map((d,i)=>'<button type="button" data-i="'+i+'">'+esc(d.title)+'</button>').join("");
   const requested=qp.get("dept"),idx=data.departments.findIndex(x=>x.slug===requested);active=idx>=0?idx:0;
   const requestedShelf=qp.get("shelf");selectedShelf=requestedShelf||"";
-  setTheme(qp.get("theme")==="light"?"light":"dark");render()
+  setTheme(qp.get("theme")==="light"?"light":"dark");render();
+  if(qp.get("explore")==="1")openExplorer(requested?"scenes":"chapters")
 }).catch(err=>{$("#shelves").innerHTML='<div class="empty">Preview failed: '+esc(err.message)+'</div>'});
 </script>
 </body>
