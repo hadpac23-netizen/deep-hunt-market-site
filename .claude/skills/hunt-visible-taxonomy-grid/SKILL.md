@@ -33,6 +33,18 @@ A shopper must never have to drag horizontally to discover a category or shelf.
 - fullscreen taxonomy takeover
 - forced document scroll on selection
 
+## Category discovery mode
+After selecting a Main Category, if no Department/Shelf is selected:
+- immediately show a randomized discovery mix from that Main Category only;
+- sample across its valid Departments/Shelves where possible;
+- keep every product's exact Department/Shelf identity attached to the card;
+- do not cross Main Category boundaries;
+- do not rewrite canonical taxonomy just to create the mix.
+
+When a Department/Shelf is selected:
+- replace discovery mode with the exact Department/Shelf product view;
+- only exact products for that Department/Shelf may remain visible.
+
 ## Interaction
 Every choice is a real button/link with visible focus and selected state.
 Selection changes scope only.
