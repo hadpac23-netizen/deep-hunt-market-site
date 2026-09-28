@@ -64,7 +64,7 @@
       CURRENCY_REVIEW_REQUIRED:"This item needs a currency review before checkout.",
       SHIPPING_RECHECK_FAILED:"Shipping could not be rechecked right now.",
       INVALID_CUSTOMER_EMAIL:"Enter a valid email address for delivery updates.",
-      SUPPLIER_COST_NOT_READY:"A product needs a fresh supplier-price check before checkout.",
+      SUPPLIER_COST_NOT_READY:"A product needs a fresh cost check before checkout.",
       PROFIT_RECHECK_FAILED:"A product needs a fresh HUNT price check before checkout.",
       PROFIT_PROFILE_NOT_ACTIVE:"Checkout pricing is temporarily unavailable.",
       ECONOMICS_EVIDENCE_STORE_FAILED:"Checkout verification could not be recorded safely. No payment was attempted.",
@@ -152,7 +152,7 @@
       if (status) {
         const deliveryCopy=data.shipping_attached===true
           ? " Delivery details are attached to this checkout session."
-          : " Add complete delivery details before supplier handoff.";
+          : " Add complete delivery details before fulfillment handoff.";
         status.textContent = data.payment_ready === true
           ? "Price, stock, shipping and checkout economics verified."+deliveryCopy+" Payment account status is controlled separately."
           : "Price, stock, shipping and checkout economics verified."+deliveryCopy+" Payment is still disabled during pre-launch.";
