@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Explore product images, verified options, availability and HUNT pricing.">
-  <title>HUNT · Product Cinematic V9</title>
+  <title>HUNT · Product Cinematic V10</title>
   <link rel="stylesheet" href="hunt-deal.css?v=photo6">
   <link rel="stylesheet" href="hunt-wow.css?v=market2">
   <link rel="stylesheet" href="hunt-shop.css?v=platform1">
@@ -213,6 +213,33 @@
 .hd-product-cinematic-v2 .hd-product-add{background:linear-gradient(105deg,#5373ff 0%,#725fff 55%,#a779db 100%)}
 .hd-product-cinematic-v2 .hd-product-truth-ribbon{box-shadow:0 18px 44px rgba(0,0,0,.12)}
 @media(max-width:760px){.hd-product-cinematic-v2 .hd-branch{display:none}.hd-product-cinematic-v2 .hd-nav{gap:12px}.hd-product-cinematic-v2 .hd-nav a{font-size:10px}}
+
+/* HUNT V10 PRODUCT SCROLL-DIRECTION HEADER */
+.hd-topbar{
+  transform:translateY(0);
+  transition:transform .32s cubic-bezier(.2,.8,.2,1),box-shadow .24s ease,background .24s ease!important;
+  will-change:transform;
+}
+body.hunt-product-nav-hidden .hd-topbar{
+  transform:translateY(calc(-100% - 2px));
+  pointer-events:none;
+}
+.hd-product-cinematic-v2 .hd-product-buybox{
+  top:96px!important;
+  transition:top .28s cubic-bezier(.2,.8,.2,1);
+}
+body.hunt-product-nav-hidden .hd-product-cinematic-v2 .hd-product-buybox{
+  top:22px!important;
+}
+@media(max-width:760px){
+  .hd-product-cinematic-v2 .hd-product-buybox{
+    top:auto!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  .hd-topbar,.hd-product-cinematic-v2 .hd-product-buybox{transition:none!important}
+}
+
 </style>
 </head>
 <body class="hd-page hd-market-v2 hd-product-cinematic-v2">
@@ -226,7 +253,7 @@
 
   <main class="hd-product-shell" id="main-content">
     <section class="hd-product-cinematic-intro" aria-label="HUNT product experience">
-      <div><small>HUNT PRODUCT EDIT · CINEMATIC V4</small><strong>See the product. Understand the truth. Keep discovering.</strong></div>
+      <div><small>HUNT PRODUCT EDIT · CINEMATIC V10</small><strong>See the product. Understand the truth. Keep discovering.</strong></div>
       <span>Exact route · Verified variants · Production OFF</span>
     </section>
     <section class="hd-product-truth-ribbon" id="hd-product-truth-ribbon" aria-label="HUNT product truth status">
@@ -400,5 +427,47 @@
   <script src="shopping-actions.js?v=brain2"></script>
   <script src="hunt-theme.js?v=shop5"></script>
   <script src="pwa.js?v=pwa1"></script>
+
+<script>
+/* HUNT_V10_PRODUCT_HEADER_SCROLL */
+(()=>{
+  const header=document.querySelector(".hd-topbar");
+  if(!header)return;
+  let lastY=window.scrollY,ticking=false,hidden=false;
+
+  function setHidden(next){
+    if(window.scrollY<72)next=false;
+    hidden=Boolean(next);
+    document.body.classList.toggle("hunt-product-nav-hidden",hidden);
+  }
+
+  function evaluate(){
+    const y=window.scrollY;
+    const delta=y-lastY;
+    const hideAfter=Math.max(132,header.offsetHeight+52);
+
+    if(y<72){
+      setHidden(false);
+    }else if(delta>5 && y>hideAfter){
+      setHidden(true);
+    }else if(delta<-3){
+      setHidden(false);
+    }
+
+    lastY=y;
+    ticking=false;
+  }
+
+  window.addEventListener("scroll",()=>{
+    if(ticking)return;
+    ticking=true;
+    requestAnimationFrame(evaluate);
+  },{passive:true});
+
+  header.addEventListener("focusin",()=>setHidden(false));
+  window.addEventListener("pageshow",()=>setHidden(false));
+})();
+</script>
+
 </body>
 </html>
