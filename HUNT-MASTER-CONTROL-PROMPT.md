@@ -17,6 +17,15 @@ Taxonomy may feel alive like a cinematic control surface:
 - Effects must not change layout dimensions, introduce horizontal motion/scroll, or reduce legibility.
 - Honor prefers-reduced-motion and provide a static equivalent.
 
+#### PRODUCT-FIRST STAGE
+For normal storefront browsing, products are the visual stage.
+- After taxonomy, products must appear immediately.
+- Do not place a large cinematic hero, oversized editorial screen, or adjacent explanatory copy between taxonomy and products.
+- Keep HUNT cinematic identity in lighting, motion, color, card treatment, and transitions.
+- Category landing uses a full-width discovery product grid.
+- Exact Department/Shelf selection replaces that grid with the exact product view.
+- Prefer more product visibility over decorative dead space.
+
 #### CATEGORY DISCOVERY BEFORE EXACT DEPARTMENT
 When a shopper selects a Main Category and has not yet selected a Department/Shelf:
 - never leave the product area empty;
