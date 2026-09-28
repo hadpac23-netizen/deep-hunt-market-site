@@ -140,7 +140,7 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
 </main>
 <div class="qa">CATALOG SHADOW · PRODUCTION OFF</div>
 <script>
-let data=null,taxonomySupplement={shelves:{}},launchSupplement={shelves:{}},canonicalOverrides=new Map(),active=0,selectedShelf="",visible={},campaignIndex=0,campaignTimer=null;
+let data=null,taxonomySupplement={shelves:{}},launchSupplement={shelves:{}},canonicalOverrides=new Map(),active=0,selectedShelf="",visible={},campaignIndex=0,campaignTimer=null,drawerOpen=false,lastDisclosureTrigger=null;
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const qp=new URLSearchParams(location.search);
@@ -315,6 +315,10 @@ function renderPromo(d){
   $("#hero").hidden=false;
   startCampaign(d);
 }
+function selectionText(d){const cat=categoriesFor(d).find(x=>x.slug===selectedShelf);return cat?d.title+" / "+cat.title:d.title+" / Choose department"}
+function updateDisclosureState(){const panel=$("#category-drawer-shell");panel.hidden=!drawerOpen;[...$("#dept-nav").children].forEach((b,i)=>b.setAttribute("aria-expanded",String(drawerOpen&&i===active)));$("#selection-change").setAttribute("aria-expanded",String(drawerOpen));$("#selection-label").textContent=selectionText(data.departments[active]);$("#selection-strip").classList.toggle("has-selection",Boolean(selectedShelf))}
+function openDrawer(trigger){drawerOpen=true;lastDisclosureTrigger=trigger||lastDisclosureTrigger||[...$("#dept-nav").children][active]||$("#selection-change");updateDisclosureState()}
+function closeDrawer(restoreFocus=false){drawerOpen=false;updateDisclosureState();if(restoreFocus&&lastDisclosureTrigger?.focus)lastDisclosureTrigger.focus()}
 function syncUrl(d){
   const q=new URLSearchParams(location.search);q.set("dept",d.slug);
   if(selectedShelf)q.set("shelf",selectedShelf);else q.delete("shelf");
@@ -326,26 +330,25 @@ function render(){
   [...$("#dept-nav").children].forEach((b,i)=>b.classList.toggle("active",i===active));
   renderPromo(d);
   const cats=categoriesFor(d);
-  $("#category-drawer-label").textContent=d.title+" · departments";
-  $("#category-index").innerHTML=cats.map(cat=>{
-    const rows=directCategoryProducts(d.slug,cat),n=rows.length,thumb=rows.find(p=>p.image_url)?.image_url||"";
-    return '<button class="cat-chip '+(selectedShelf===cat.slug?"active":"")+'" data-cat="'+esc(cat.slug)+'">'+
-      '<span class="chip-media">'+(thumb?'<img loading="lazy" src="'+esc(thumb)+'" alt="">':'')+'</span>'+
-      '<span class="chip-copy"><strong>'+esc(cat.title)+'</strong><small>'+n+' exact products</small></span>'+
-    '</button>'
-  }).join("");
+  $("#category-drawer-label").textContent=d.title+" · Departments";
+  $("#category-index").innerHTML=cats.map(cat=>'<button class="cat-chip '+(selectedShelf===cat.slug?"active":"")+'" data-cat="'+esc(cat.slug)+'">'+esc(cat.title)+'</button>').join("");
   const selected=cats.find(x=>x.slug===selectedShelf);
   $("#shelves").innerHTML=selected?renderCategory(selected,d):'<div class="empty">Choose a '+esc(d.title)+' department above. Products will appear below the promotions floor.</div>';
+  updateDisclosureState();
   syncUrl(d)
 }
 $("#dept-nav").addEventListener("click",e=>{
-  const b=e.target.closest("button[data-i]");if(!b)return;
-  active=Number(b.dataset.i)||0;selectedShelf="";visible={};campaignIndex=0;render()
+  const b=e.target.closest("button[data-i]");if(!b)return;const next=Number(b.dataset.i)||0;
+  if(next===active){if(drawerOpen)closeDrawer();else openDrawer(b);return}
+  active=next;selectedShelf="";visible={};campaignIndex=0;render();openDrawer(b)
 });
 $("#category-index").addEventListener("click",e=>{
-  const b=e.target.closest("button[data-cat]");if(!b)return;
-  selectedShelf=String(b.dataset.cat||"");visible={};render()
+  const b=e.target.closest("button[data-cat]");if(!b)return;selectedShelf=String(b.dataset.cat||"");visible={};render();closeDrawer()
 });
+$("#selection-change").addEventListener("click",e=>{if(drawerOpen)closeDrawer();else openDrawer(e.currentTarget)});
+$("#drawer-close").addEventListener("click",()=>closeDrawer(true));
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&drawerOpen){e.preventDefault();closeDrawer(true)}});
+document.addEventListener("pointerdown",e=>{if(!drawerOpen)return;if(e.target.closest("#category-drawer-shell")||e.target.closest("#dept-nav")||e.target.closest("#selection-change"))return;closeDrawer()});
 $("#shelves").addEventListener("click",e=>{
   const more=e.target.closest("button[data-more]");
   if(more){const d=data.departments[active],cat=categoriesFor(d).find(x=>x.slug===more.dataset.more);if(!cat)return;visible[cat.slug]=Math.min((visible[cat.slug]||24)+24,directCategoryProducts(d.slug,cat).length);render();return}
@@ -361,10 +364,10 @@ Promise.all([
 ]).then(([j,s1,s2])=>{
   data=j;taxonomySupplement=s1||{shelves:{}};launchSupplement=s2||{shelves:{}};
   mergeSupplementCategories();buildRouteOwners();ensureJewelryDepartment();
-  $("#dept-nav").innerHTML=data.departments.map((d,i)=>'<button type="button" data-i="'+i+'">'+esc(d.title)+'</button>').join("");
+  $("#dept-nav").innerHTML=data.departments.map((d,i)=>'<button type="button" data-i="'+i+'" aria-expanded="false" aria-controls="category-drawer-shell">'+esc(d.title)+'</button>').join("");
   const requested=qp.get("dept"),idx=data.departments.findIndex(x=>x.slug===requested);active=idx>=0?idx:0;
   const requestedShelf=qp.get("shelf");selectedShelf=requestedShelf||"";
-  setTheme(qp.get("theme")==="light"?"light":"dark");render()
+  drawerOpen=false;setTheme(qp.get("theme")==="light"?"light":"dark");render()
 }).catch(err=>{$("#shelves").innerHTML='<div class="empty">Preview failed: '+esc(err.message)+'</div>'});
 </script>
 </body>
