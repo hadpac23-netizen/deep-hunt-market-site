@@ -29,7 +29,7 @@ button{font:inherit}
 .theme{margin-left:auto;border:1px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 12px;cursor:pointer}
 .dept-nav{display:flex;gap:7px;overflow:auto;scrollbar-width:none;margin-top:10px;padding-bottom:1px}.dept-nav::-webkit-scrollbar{display:none}
 .dept-nav button,.cat-chip{border:1px solid var(--edge);background:var(--panel);color:var(--muted);border-radius:999px;padding:8px 11px;font-weight:780;font-size:11px;cursor:pointer;white-space:nowrap}
-.dept-nav button.active{color:var(--ink);border-color:color-mix(in srgb,var(--accent) 60%,var(--edge));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 18%,transparent)}
+.dept-nav button.active,.cat-chip.active{color:var(--ink);border-color:color-mix(in srgb,var(--accent) 60%,var(--edge));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 18%,transparent)}
 .stage{min-height:72vh;padding:86px clamp(20px,5vw,74px) 64px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(330px,.66fr);gap:6vw;align-items:center;border-bottom:1px solid var(--edge)}
 .eyebrow{font-size:11px;letter-spacing:.22em;color:var(--spark);font-weight:900;margin-bottom:16px}
 h1{font:700 clamp(58px,8vw,126px)/.84 Georgia,"Times New Roman",serif;letter-spacing:-.055em;margin:0}
@@ -48,7 +48,7 @@ h1{font:700 clamp(58px,8vw,126px)/.84 Georgia,"Times New Roman",serif;letter-spa
 .density{border:1px solid var(--edge);border-radius:999px;padding:8px 11px;color:var(--muted);font-size:9px;font-weight:900;letter-spacing:.10em}
 .density.thin{color:#d6a24d}
 .rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(245px,22vw);gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:16px 3vw 28px 1px;scrollbar-width:none}.rail::-webkit-scrollbar{display:none}
-.card{height:420px;position:relative;border:1px solid var(--edge);border-radius:26px;overflow:hidden;background:linear-gradient(155deg,var(--panel2),var(--panel));scroll-snap-align:center;box-shadow:0 20px 54px rgba(0,0,0,.18)}
+.card{height:420px;position:relative;border:1px solid var(--edge);border-radius:26px;overflow:hidden;background:linear-gradient(155deg,var(--panel2),var(--panel));scroll-snap-align:center;box-shadow:0 20px 54px rgba(0,0,0,.18)}.product-card{display:block;color:inherit;text-decoration:none;cursor:pointer}.product-card:focus-visible{outline:2px solid var(--spark);outline-offset:3px}
 .media{position:absolute;inset:0 0 38%;background:linear-gradient(160deg,var(--media2),var(--media));display:grid;place-items:center;overflow:hidden}
 .media img{width:100%;height:100%;object-fit:contain;padding:18px;filter:drop-shadow(0 20px 26px rgba(15,23,42,.18));transition:transform .5s cubic-bezier(.16,.8,.2,1)}.card:hover img{transform:scale(1.035)}
 .card-body{position:absolute;left:0;right:0;bottom:0;min-height:39%;padding:18px;background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--panel2) 97%,transparent) 20%)}
@@ -86,7 +86,7 @@ h1{font:700 clamp(58px,8vw,126px)/.84 Georgia,"Times New Roman",serif;letter-spa
 </main>
 <div class="qa">CATALOG SHADOW · PRODUCTION OFF</div>
 <script>
-let data=null,taxonomySupplement={shelves:{}},canonicalOverrides=new Map(),active=0,visible={};
+let data=null,taxonomySupplement={shelves:{}},launchSupplement={shelves:{}},canonicalOverrides=new Map(),active=0,visible={},selectedShelf="";
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const qp=new URLSearchParams(location.search);
@@ -96,6 +96,14 @@ $("#theme").addEventListener("click",()=>setTheme(document.documentElement.datas
 const blockedPreview=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|steroid|diet pill|laxative|sex toy|vibrator|dildo|clitoral|strapon)\b/i;
 const accessoryIdentity=/\b(necklace|pendant|choker|earring|bracelet|bangle|jewelry|jewellery|handbag|purse|tote|crossbody|backpack|wallet|belt|scarf|shawl|hat|cap|beanie|sock|hair clip|hairpin|headband|scrunchie|bag charm|bag strap|watch)\b/i;
 const accessoryCategory=/^(accessories|jewelry(?:-.+)?|bags|bag-accessories|hair-accessories|hats|gloves|socks|scarves|belts)$/i;
+function sourceAlias(provider){
+  const p=String(provider||"").toLowerCase();
+  if(p.includes("cj"))return "h1";
+  if(p.includes("eprolo"))return "h2";
+  if(p.includes("printful"))return "h3";
+  if(p.includes("gooten"))return "h4";
+  return "h0";
+}
 function allowedForDepartment(deptSlug,p){
   const text=String((p?.title||"")+" "+(p?.category||""));
   if(blockedPreview.test(text))return false;
@@ -105,13 +113,15 @@ function allowedForDepartment(deptSlug,p){
 function directCategoryProducts(deptSlug,cat){
   const base=(cat.products||[]);
   const route=deptSlug+"/"+cat.slug;
-  const extra=taxonomySupplement.shelves?.[route]||[];
+  const launch=launchSupplement.shelves?.[route];
+  const extra=Array.isArray(launch)?launch:(taxonomySupplement.shelves?.[route]||[]);
   const seen=new Set(),out=[];
   for(const p of extra){
     const key=String(p.provider||"UNKNOWN")+":"+String(p.item_id||"");
     if(!p.item_id||seen.has(key)||!allowedForDepartment(deptSlug,p))continue;
     seen.add(key);out.push(p);
   }
+  if(Array.isArray(launch))return out;
   for(const p of base){
     const key=String(p.provider||"UNKNOWN")+":"+String(p.item_id||"");
     if(!p.item_id||seen.has(key)||!allowedForDepartment(deptSlug,p))continue;
@@ -165,20 +175,24 @@ function categoryProducts(deptSlug,cat){
   return out;
 }
 function card(p){
+  const launch=p.launch_verified===true||p.truth_state==="HUNT_LAUNCH_ROUTE_LOCKED";
   const cj=p.truth_state==="CJ_VERIFIED_4_MARKETS";
   const global=p.truth_state==="GLOBAL_PRODUCT_TRUTH";
   const taxV2=p.taxonomy_gate_v2==="REMAP";
-  const truth=cj||global;
-  const label=cj?"CJ VERIFIED 4/4":global?"GLOBAL TRUTH":taxV2?"TAXONOMY V2":"CATALOG SHADOW";
+  const truth=launch||cj||global;
+  const label=launch?"MARKET VERIFIED":cj?"MARKET VERIFIED":global?"HUNT VERIFIED":taxV2?"TAXONOMY V2":"CATALOG SHADOW";
   const profit=p.profit_truth||{};
   const retail=Number(profit.target_retail_usd);
   const contribution=Number(profit.projected_product_contribution_usd);
   const margin=Number(profit.projected_product_margin);
   const hasProfit=Number.isFinite(retail)&&Number.isFinite(contribution)&&Number.isFinite(margin);
-  const profitLine=hasProfit
-    ? "Target $"+retail.toFixed(2)+" · Projected +$"+contribution.toFixed(2)+" · "+Math.round(margin*100)+"% · PROFIT REVIEW"
-    : (cj?"Shipping verified · final profit recheck":"Destination/market profit recheck required");
-  return '<article class="card"><div class="media"><img loading="lazy" src="'+esc(p.image_url)+'" alt=""></div><div class="card-body"><div class="badges"><span class="badge '+(truth?'truth':'')+'">'+label+'</span><span class="badge">'+esc(p.provider)+'</span>'+(taxV2?'<span class="badge">PROFIT REVIEW</span>':'')+'</div><h3>'+esc(p.title)+'</h3><p>'+esc(p.category_title||p.category)+' · '+esc(profitLine)+'</p></div></article>';
+  const profitLine=launch
+    ? "Stock · shipping · reserve margin verified · checkout recheck"
+    : hasProfit
+      ? "HUNT price review · "+Math.round(margin*100)+"% reserve margin"
+      : (truth?"Market checks available · checkout recheck":"Destination/market recheck required");
+  const href="product.html?src="+encodeURIComponent(sourceAlias(p.provider))+"&id="+encodeURIComponent(String(p.item_id||""));
+  return '<a class="card product-card" href="'+href+'" data-product-provider="'+esc(p.provider)+'" data-product-id="'+esc(p.item_id)+'"><div class="media"><img loading="lazy" src="'+esc(p.image_url)+'" alt="'+esc(p.title||"Product")+'"></div><div class="card-body"><div class="badges"><span class="badge '+(truth?'truth':'')+'">'+label+'</span>'+(taxV2&&!launch?'<span class="badge">PROFIT REVIEW</span>':'')+'</div><h3>'+esc(p.title)+'</h3><p>'+esc(p.category_title||p.category)+' · '+esc(profitLine)+'</p></div></a>';
 }
 function renderCategory(cat,deptSlug){
   const all=categoryProducts(deptSlug,cat);
@@ -190,39 +204,54 @@ function renderCategory(cat,deptSlug){
 function render(){
   const d=data.departments[active];
   visible={};
+  const displayedCategories=selectedShelf?d.categories.filter(c=>c.slug===selectedShelf):d.categories;
   document.title="HUNT · "+d.title+" · Full Shelves Shadow";
   [...$("#dept-nav").children].forEach((b,i)=>b.classList.toggle("active",i===active));
   $("#eyebrow").textContent="BOOM STYLIST · "+d.category_rails+" CATEGORY SHELVES";
   $("#title").textContent=d.title;
-  const cleanTotal=d.categories.reduce((s,c)=>s+categoryProducts(d.slug,c).length,0);
-  const nonEmptyRails=d.categories.filter(c=>categoryProducts(d.slug,c).length>0).length;
-  const initialTotal=d.categories.reduce((s,c)=>s+Math.min(24,categoryProducts(d.slug,c).length),0);
+  const cleanTotal=displayedCategories.reduce((s,c)=>s+categoryProducts(d.slug,c).length,0);
+  const nonEmptyRails=displayedCategories.filter(c=>categoryProducts(d.slug,c).length>0).length;
+  const initialTotal=displayedCategories.reduce((s,c)=>s+Math.min(24,categoryProducts(d.slug,c).length),0);
   $("#stats").innerHTML=[
     cleanTotal+" clean candidates",
     nonEmptyRails+" non-empty category rails",
     initialTotal+" visible on first pass",
     "strict taxonomy · no cross-department filler"
   ].map(x=>'<span class="stat">'+esc(x)+'</span>').join("");
-  const heroPool=d.categories.flatMap(c=>categoryProducts(d.slug,c));
+  const heroPool=displayedCategories.flatMap(c=>categoryProducts(d.slug,c));
   const hero=(d.hero&&allowedForDepartment(d.slug,d.hero))?d.hero:(heroPool[0]||null);
   if(hero){
     $("#hero").hidden=false;$("#hero-image").src=hero.image_url;$("#hero-title").textContent=hero.title;
     $("#hero-kicker").textContent=(hero.truth_state==="GLOBAL_PRODUCT_TRUTH"?"GLOBAL TRUTH":"CATALOG SHADOW")+" · "+String(hero.category_title||hero.category||"").toUpperCase();
     $("#hero-status").textContent="Canonical "+d.slug+" / "+String(hero.category||"")+" · Production off";
   }else $("#hero").hidden=true;
-  $("#category-index").innerHTML=d.categories.map(c=>'<button class="cat-chip" data-cat="'+esc(c.slug)+'">'+esc(c.title)+' · '+categoryProducts(d.slug,c).length+'</button>').join("");
-  $("#shelves").innerHTML=d.categories.length?d.categories.map(cat=>renderCategory(cat,d.slug)).join(""):'<div class="empty">No clean canonical candidates yet.</div>';
-  const q=new URLSearchParams(location.search);q.set("dept",d.slug);history.replaceState(null,"",location.pathname+"?"+q.toString());
+  $("#category-index").innerHTML='<button class="cat-chip '+(!selectedShelf?'active':'')+'" data-cat="">All</button>'+d.categories.map(c=>'<button class="cat-chip '+(selectedShelf===c.slug?'active':'')+'" data-cat="'+esc(c.slug)+'">'+esc(c.title)+' · '+categoryProducts(d.slug,c).length+'</button>').join("");
+  $("#shelves").innerHTML=displayedCategories.length?displayedCategories.map(cat=>renderCategory(cat,d.slug)).join(""):'<div class="empty">No clean canonical candidates yet.</div>';
+  const q=new URLSearchParams(location.search);q.set("dept",d.slug);if(selectedShelf)q.set("shelf",selectedShelf);else q.delete("shelf");history.replaceState(null,"",location.pathname+"?"+q.toString());
   window.scrollTo({top:0,behavior:"smooth"});
 }
-$("#dept-nav").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b)return;active=Number(b.dataset.i)||0;render()});
-$("#category-index").addEventListener("click",e=>{const b=e.target.closest("button[data-cat]");if(!b)return;document.getElementById("cat-"+b.dataset.cat)?.scrollIntoView({behavior:"smooth",block:"start"})});
-$("#shelves").addEventListener("click",e=>{const b=e.target.closest("button[data-more]");if(!b)return;const slug=b.dataset.more;const d=data.departments[active];const cat=d.categories.find(x=>x.slug===slug);const all=categoryProducts(d.slug,cat);visible[slug]=Math.min((visible[slug]||24)+24,all.length);const node=document.getElementById("cat-"+slug);node.outerHTML=renderCategory(cat,d.slug)});
+$("#dept-nav").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b)return;active=Number(b.dataset.i)||0;selectedShelf="";render()});
+$("#category-index").addEventListener("click",e=>{const b=e.target.closest("button[data-cat]");if(!b)return;selectedShelf=String(b.dataset.cat||"");render()});
+$("#shelves").addEventListener("click",e=>{
+  const card=e.target.closest("a[data-product-provider][data-product-id]");
+  if(card){
+    const d=data.departments[active];
+    const products=d.categories.flatMap(cat=>categoryProducts(d.slug,cat));
+    const p=products.find(x=>String(x.provider||"")===String(card.dataset.productProvider||"")&&String(x.item_id||"")===String(card.dataset.productId||""));
+    if(p){try{sessionStorage.setItem("hunt_product_"+p.provider+":"+p.item_id,JSON.stringify(p))}catch{}}
+    return;
+  }
+  const b=e.target.closest("button[data-more]");if(!b)return;
+  const slug=b.dataset.more;const d=data.departments[active];const cat=d.categories.find(x=>x.slug===slug);
+  const all=categoryProducts(d.slug,cat);visible[slug]=Math.min((visible[slug]||24)+24,all.length);
+  const node=document.getElementById("cat-"+slug);node.outerHTML=renderCategory(cat,d.slug)
+});
 Promise.all([
   fetch("./evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json").then(r=>r.json()),
-  fetch("./evidence/HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}}))
-]).then(([j,supp])=>{
- data=j;taxonomySupplement=supp||{shelves:{}};
+  fetch("./evidence/HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}})),
+  fetch("./evidence/HUNT-MEN-LAUNCH-LOCKED-SUPPLEMENT-2026-09-28.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}}))
+]).then(([j,supp,launch])=>{
+ data=j;launchSupplement=launch||{shelves:{}};taxonomySupplement={shelves:{...(supp?.shelves||{}),...(launchSupplement?.shelves||{})}};
  canonicalOverrides=new Map();
  for(const [route,products] of Object.entries(taxonomySupplement.shelves||{})){
    for(const p of products||[]){
@@ -232,6 +261,7 @@ Promise.all([
  }
  $("#dept-nav").innerHTML=j.departments.map((d,i)=>'<button type="button" data-i="'+i+'">'+esc(d.title)+'</button>').join("");
  const requested=qp.get("dept");const idx=j.departments.findIndex(x=>x.slug===requested);active=idx>=0?idx:0;
+ const requestedShelf=qp.get("shelf");const dep=j.departments[active];selectedShelf=requestedShelf&&dep?.categories?.some(x=>x.slug===requestedShelf)?requestedShelf:"";
  setTheme(qp.get("theme")==="light"?"light":"dark");render();
 }).catch(err=>{$("#shelves").innerHTML='<div class="empty">Preview failed: '+esc(err.message)+'</div>'});
 </script>
