@@ -33,6 +33,19 @@ A shopper must never have to drag horizontally to discover a category or shelf.
 - fullscreen taxonomy takeover
 - forced document scroll on selection
 
+## Product-first stage
+After taxonomy, product content must begin immediately.
+Do not insert a tall cinematic hero or side-by-side editorial copy before products in the default storefront.
+Preserve HUNT cinematic character through:
+- rail light;
+- subtle motion;
+- product-card depth;
+- glow;
+- transitions;
+- active states.
+
+The product grid is the main stage.
+
 ## Category discovery mode
 After selecting a Main Category, if no Department/Shelf is selected:
 - immediately show a randomized discovery mix from that Main Category only;
