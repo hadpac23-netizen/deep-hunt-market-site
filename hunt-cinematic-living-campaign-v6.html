@@ -115,8 +115,11 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
 <header class="topbar">
   <div class="topline"><a class="brand" href="hunt-cinematic-living-campaign-v6.html" style="color:inherit;text-decoration:none">HUNT<span>✦</span></a><div class="shadow-note">CINEMATIC WORLD · SMART DISCLOSURE V6 · SHADOW ONLY</div><button class="theme" id="theme">Light</button></div>
   <nav class="dept-nav" id="dept-nav" aria-label="Main categories"></nav>
-  <div class="category-drawer-shell" id="category-drawer-shell">
-    <div class="category-drawer-label" id="category-drawer-label">Choose a category to see its departments</div>
+  <div class="selection-strip" id="selection-strip">
+    <button type="button" id="selection-change" aria-expanded="false" aria-controls="category-drawer-shell"><span id="selection-label">Choose department</span><span class="selection-action">Change</span><span class="selection-chevron" aria-hidden="true">⌄</span></button>
+  </div>
+  <div class="category-drawer-shell" id="category-drawer-shell" hidden>
+    <div class="category-drawer-head"><div class="category-drawer-label" id="category-drawer-label">Choose department</div><button type="button" class="drawer-close" id="drawer-close" aria-label="Close departments">×</button></div>
     <nav class="category-index" id="category-index" aria-label="Departments"></nav>
   </div>
 </header>
