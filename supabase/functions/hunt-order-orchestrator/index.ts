@@ -154,6 +154,80 @@ async function cjPost(path:string,body:any,options:{maxAttempts?:number,reconcil
   }
   throw new Error(lastError);
 }
+
+async function cjPreSubmitVariantRecheck(line:any,country:string,origin:string,shippingMethod:string){
+  const token=await cjToken();
+  const itemId=clean(line?.item_id),variantId=clean(line?.variant_id);
+  const qty=Math.max(1,Math.min(5,Number(line?.qty||1)||1));
+  if(!itemId||!variantId)throw new Error("SUPPLIER_PRECHECK_VARIANT_REQUIRED");
+
+  const detailRes=await fetch("https://developers.cjdropshipping.com/api2.0/v1/product/productDetail/query",{
+    method:"POST",
+    headers:{"CJ-Access-Token":token,"content-type":"application/json","accept":"application/json"},
+    body:JSON.stringify({id:itemId})
+  });
+  const detailBody=await detailRes.json().catch(()=>({}));
+  if(!detailRes.ok)throw new Error("SUPPLIER_PRECHECK_PRODUCT_DETAIL_FAILED");
+  const d=detailBody?.data||{};
+  const variants=Array.isArray(d?.variants)?d.variants:Array.isArray(d?.stanProducts)?d.stanProducts:Array.isArray(d?.stanproducts)?d.stanproducts:[];
+  const variant=variants.find((v:any)=>[v?.vid,v?.variantid,v?.variantId,v?.id].map((x:any)=>clean(String(x??""))).includes(variantId));
+  if(!variant)throw new Error("SUPPLIER_PRECHECK_VARIANT_NOT_FOUND");
+  const freshCost=Number(variant?.variantsellprice??variant?.variantSellPrice??variant?.sellprice??variant?.sellPrice);
+  if(!Number.isFinite(freshCost)||freshCost<=0)throw new Error("SUPPLIER_PRECHECK_COST_UNVERIFIED");
+
+  const stockUrl=new URL("https://developers.cjdropshipping.com/api2.0/v1/product/stock/queryByVid");
+  stockUrl.searchParams.set("vid",variantId);
+  const stockRes=await fetch(stockUrl,{headers:{"CJ-Access-Token":token,"accept":"application/json"}});
+  const stockBody=await stockRes.json().catch(()=>({}));
+  if(!stockRes.ok||Number(stockBody?.code||200)!==200)throw new Error("SUPPLIER_PRECHECK_STOCK_UNVERIFIED");
+  const rows=Array.isArray(stockBody?.data)?stockBody.data:[];
+  const originRow=rows.find((x:any)=>clean(x?.countryCode).toUpperCase()===origin);
+  const inventory=Math.max(0,Number(originRow?.totalInventoryNum||0));
+  if(inventory<qty)throw new Error("SUPPLIER_PRECHECK_OUT_OF_STOCK");
+
+  const freightRes=await fetch("https://developers.cjdropshipping.com/api2.0/v1/logistic/freightCalculate",{
+    method:"POST",
+    headers:{"CJ-Access-Token":token,"content-type":"application/json","accept":"application/json"},
+    body:JSON.stringify({startCountryCode:origin,endCountryCode:country,products:[{quantity:qty,vid:variantId}]})
+  });
+  const freightBody=await freightRes.json().catch(()=>({}));
+  if(!freightRes.ok||Number(freightBody?.code||200)!==200)throw new Error("SUPPLIER_PRECHECK_SHIPPING_UNVERIFIED");
+  const methods=Array.isArray(freightBody?.data)?freightBody.data:[];
+  const method=methods.find((m:any)=>clean(m?.logisticName)===shippingMethod);
+  if(!method)throw new Error("SUPPLIER_PRECHECK_SHIPPING_METHOD_CHANGED");
+  const freshShipping=Number.isFinite(Number(method?.totalPostageFee))?Number(method.totalPostageFee):Number(method?.logisticPrice);
+  if(!Number.isFinite(freshShipping)||freshShipping<0)throw new Error("SUPPLIER_PRECHECK_SHIPPING_PRICE_UNVERIFIED");
+
+  const expectedCost=Number(line?.supplier_cost_per_unit);
+  const expectedShipping=Number(line?.shipping_amount);
+  const costIncrease=Number.isFinite(expectedCost)?freshCost-expectedCost:Infinity;
+  const shippingIncrease=Number.isFinite(expectedShipping)?freshShipping-expectedShipping:Infinity;
+  if(costIncrease>0.01)throw new Error("SUPPLIER_PRECHECK_COST_INCREASED");
+  if(shippingIncrease>0.01)throw new Error("SUPPLIER_PRECHECK_SHIPPING_INCREASED");
+
+  return {
+    item_id:itemId,variant_id:variantId,qty,
+    origin_country_code:origin,destination_country_code:country,
+    shipping_method:shippingMethod,
+    inventory_quantity:inventory,
+    expected_supplier_cost_usd:Number.isFinite(expectedCost)?expectedCost:null,
+    fresh_supplier_cost_usd:Number(freshCost.toFixed(2)),
+    expected_shipping_usd:Number.isFinite(expectedShipping)?expectedShipping:null,
+    fresh_shipping_usd:Number(freshShipping.toFixed(2)),
+    checked_at:new Date().toISOString()
+  };
+}
+
+async function cjPreSubmitGroupRecheck(group:any,country:string){
+  const evidence:any[]=[];
+  for(const line of group.line_items){
+    evidence.push(await cjPreSubmitVariantRecheck(
+      line,country,clean(group.origin_country_code).toUpperCase(),clean(group.shipping_method)
+    ));
+  }
+  return evidence;
+}
+
 function groupsFromLines(lines:any[]){
   const groups:Record<string,any>={};
   for(const raw of lines){
@@ -169,7 +243,11 @@ function groupsFromLines(lines:any[]){
       item_id:clean(raw?.item_id),
       variant_id:clean(raw?.variant_id),
       qty:Math.max(1,Math.min(5,Number(raw?.qty||1)||1)),
-      title:clean(raw?.title).slice(0,180)
+      title:clean(raw?.title).slice(0,180),
+      supplier_cost_per_unit:Number(raw?.supplier_cost_per_unit),
+      shipping_amount:Number(raw?.shipping_amount),
+      quote_checked_at:clean(raw?.quote_checked_at)||null,
+      checkout_profit_gate_status:clean(raw?.checkout_profit_gate_status)||null
     });
   }
   return Object.values(groups);
@@ -435,6 +513,35 @@ Deno.serve(async(req:Request)=>{
         }
         if(Number(fulfillment?.attempt_count||0)>1&&!reopenedFailedSandbox){
           throw new Error("FULFILLMENT_ALREADY_PROCESSING");
+        }
+
+        let supplierPrecheck:any[]=[];
+        try{
+          supplierPrecheck=await cjPreSubmitGroupRecheck(group,country);
+          await addPipelineRun(ctx,{
+            payment_session_id:session.id,
+            order_id:order.id,
+            run_mode:"sandbox",
+            stage:"supplier_precheck",
+            status:"pass",
+            provider:"CJdropshipping",
+            evidence:{supplier_precheck_passed:true,lines:supplierPrecheck},
+            created_by:uid
+          });
+        }catch(precheckError){
+          const failure=clean((precheckError as Error)?.message)||"SUPPLIER_PRECHECK_FAILED";
+          await addPipelineRun(ctx,{
+            payment_session_id:session.id,
+            order_id:order.id,
+            run_mode:"sandbox",
+            stage:"supplier_precheck",
+            status:"hold",
+            provider:"CJdropshipping",
+            evidence:{supplier_precheck_passed:false,error:failure,group_key:group.group_key},
+            last_error:failure,
+            created_by:uid
+          });
+          throw precheckError;
         }
 
         const cjPayload={
