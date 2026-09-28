@@ -12,6 +12,7 @@ Then load skills by task:
 - UI, styling, navigation, animations, category layout:
   - hunt-control
   - hunt-cinematic-ui
+  - hunt-cinematic-scene-navigation
   - hunt-navigation-ux
   - hunt-adaptive-disclosure
   - hunt-taxonomy-guard
