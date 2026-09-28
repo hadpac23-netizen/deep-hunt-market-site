@@ -38,6 +38,21 @@ Every choice is a real button/link with visible focus and selected state.
 Selection changes scope only.
 Do not change the underlying exact-routing/no-mixing rules.
 
+## Living cinematic motion
+Allowed:
+- slow ambient light sweep across the whole category rail;
+- a distinct slower sweep across the department rail;
+- restrained shimmer/sparkle inside controls;
+- breathing ambient glow;
+- stronger active pulse for Main Categories and softer active pulse for Departments.
+
+Required:
+- premium film-like timing;
+- no layout shift;
+- no horizontal navigation movement;
+- readable labels at all times;
+- reduced-motion fallback.
+
 ## Row-level hierarchy
 The shopper must recognize the two taxonomy levels before reading labels:
 - Main Categories live on the stronger cinematic rail.
