@@ -136,7 +136,7 @@ const aggregateRails={
   "women/women-clothing":["women-dresses","women-evening","women-suits","women-tops","women-jeans","women-bottoms","women-skirts","women-knitwear","women-outerwear","women-hoodies"]
 };
 function titleFromSlug(slug){
-  return String(slug||"").split("-").map(x=>x?x[0].toUpperCase()+x.slice(1):"").join(" ");
+  return String(slug||"").replace(/^(men|women)-/,"").split("-").map(x=>x?x[0].toUpperCase()+x.slice(1):"").join(" ");
 }
 function mergeSupplementCategories(){
   if(!data||!taxonomySupplement?.shelves)return;
@@ -259,6 +259,7 @@ Promise.all([
      canonicalOverrides.set(String(p.provider||"UNKNOWN")+":"+String(p.item_id),route);
    }
  }
+ mergeSupplementCategories();
  $("#dept-nav").innerHTML=j.departments.map((d,i)=>'<button type="button" data-i="'+i+'">'+esc(d.title)+'</button>').join("");
  const requested=qp.get("dept");const idx=j.departments.findIndex(x=>x.slug===requested);active=idx>=0?idx:0;
  const requestedShelf=qp.get("shelf");const dep=j.departments[active];selectedShelf=requestedShelf&&dep?.categories?.some(x=>x.slug===requestedShelf)?requestedShelf:"";
