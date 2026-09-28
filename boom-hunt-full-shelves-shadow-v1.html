@@ -27,7 +27,7 @@ button{font:inherit}
 .brand{font:800 24px/1 Georgia,serif;letter-spacing:.04em;white-space:nowrap}.brand span{color:var(--spark)}
 .shadow-note{font-size:10px;letter-spacing:.12em;color:var(--muted);font-weight:850;white-space:nowrap}
 .theme{margin-left:auto;border:1px solid var(--edge);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 12px;cursor:pointer}
-.dept-nav{display:flex;gap:7px;overflow:auto;scrollbar-width:none;margin-top:10px;padding-bottom:1px}.dept-nav::-webkit-scrollbar{display:none}
+.dept-nav{display:flex;gap:7px;flex-wrap:wrap;overflow:visible;margin-top:10px;padding-bottom:1px}.dept-nav::-webkit-scrollbar{display:none}
 .dept-nav button,.cat-chip{border:1px solid var(--edge);background:var(--panel);color:var(--muted);border-radius:999px;padding:8px 11px;font-weight:780;font-size:11px;cursor:pointer;white-space:nowrap}
 .dept-nav button.active,.cat-chip.active{color:var(--ink);border-color:color-mix(in srgb,var(--accent) 60%,var(--edge));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 18%,transparent)}
 .stage{min-height:72vh;padding:86px clamp(20px,5vw,74px) 64px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(330px,.66fr);gap:6vw;align-items:center;border-bottom:1px solid var(--edge)}
@@ -40,7 +40,23 @@ h1{font:700 clamp(58px,8vw,126px)/.84 Georgia,"Times New Roman",serif;letter-spa
 .hero-media img{width:100%;height:100%;object-fit:contain;padding:24px;filter:drop-shadow(0 25px 34px rgba(16,25,43,.22))}
 .hero-meta{position:absolute;left:18px;right:18px;bottom:16px;padding:16px;border:1px solid var(--edge);border-radius:20px;background:color-mix(in srgb,var(--panel2) 88%,transparent);backdrop-filter:blur(18px)}
 .hero-meta small{display:block;color:var(--spark);font-size:9px;letter-spacing:.14em;font-weight:900;margin-bottom:6px}.hero-meta strong{display:block;font:700 21px/1.16 Georgia,serif}.hero-meta span{display:block;color:var(--muted);font-size:10px;margin-top:7px}
-.category-index{padding:26px clamp(20px,5vw,74px);border-bottom:1px solid var(--edge);display:flex;gap:8px;flex-wrap:wrap;overflow:visible}.category-index::-webkit-scrollbar{display:none}
+.category-index{padding:24px clamp(20px,5vw,74px) 36px;border-bottom:1px solid var(--edge);display:block;overflow:visible}.category-index::-webkit-scrollbar{display:none}
+.department-window{max-width:1180px;margin:0 auto;border:1px solid var(--edge);border-radius:28px;overflow:hidden;background:var(--panel)}
+.department-window-head{padding:18px 20px;border-bottom:1px solid var(--edge)}
+.department-window-head small{display:block;color:var(--spark);font-size:9px;font-weight:900;letter-spacing:.15em;margin-bottom:5px}
+.department-window-head strong{font:700 22px/1.1 Georgia,serif}
+.department-row{border-bottom:1px solid var(--edge)}
+.department-row:last-child{border-bottom:0}
+.department-toggle{width:100%;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;text-align:left;border:0;background:transparent;color:var(--ink);padding:17px 20px;cursor:pointer}
+.department-toggle:hover,.department-toggle.active{background:color-mix(in srgb,var(--panel2) 88%,transparent)}
+.department-toggle strong{font-size:14px}
+.department-toggle span{color:var(--muted);font-size:10px}
+.department-toggle b{font-size:18px;color:var(--spark);transition:transform .2s ease}
+.department-toggle.active b{transform:rotate(45deg)}
+.department-inline{padding:0 20px 28px;background:color-mix(in srgb,var(--panel2) 72%,transparent)}
+.department-inline .shelf{padding:28px 0 4px;border-bottom:0}
+.department-inline .shelf-head h2{font-size:clamp(30px,4vw,50px)}
+.department-inline .rail{padding-bottom:16px}
 .shelves{padding:10px 0 110px}
 .shelf{padding:66px clamp(20px,5vw,74px) 44px;border-bottom:1px solid var(--edge)}
 .shelf-head{display:flex;gap:18px;align-items:flex-end;justify-content:space-between;margin-bottom:24px}
@@ -94,8 +110,8 @@ function setTheme(t){document.documentElement.dataset.huntTheme=t;$("#theme").te
 function withParam(k,v){const q=new URLSearchParams(location.search);q.set(k,v);return location.pathname+"?"+q.toString()}
 $("#theme").addEventListener("click",()=>setTheme(document.documentElement.dataset.huntTheme==="dark"?"light":"dark"));
 const blockedPreview=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|steroid|diet pill|laxative|sex toy|vibrator|dildo|clitoral|strapon)\b/i;
-const accessoryIdentity=/\b(necklace|pendant|choker|earring|bracelet|bangle|jewelry|jewellery|handbag|purse|tote|crossbody|backpack|wallet|belt|scarf|shawl|hat|cap|beanie|sock|hair clip|hairpin|headband|scrunchie|bag charm|bag strap|watch)\b/i;
-const accessoryCategory=/^(accessories|jewelry(?:-.+)?|bags|bag-accessories|hair-accessories|hats|gloves|socks|scarves|belts)$/i;
+const accessoryIdentity=/\b(necklace|pendant|choker|earring|bracelet|bangle|jewelry|jewellery|handbag|purse|tote|crossbody|backpack|wallet|belt|scarf|shawl|hat|cap|beanie|hair clip|hairpin|headband|scrunchie|bag charm|bag strap|watch|sunglasses?)\b/i;
+const accessoryCategory=/^(accessories|jewelry(?:-.+)?|bags|bag-accessories|hair-accessories|hats|gloves|scarves|belts)$/i;
 function sourceAlias(provider){
   const p=String(provider||"").toLowerCase();
   if(p.includes("cj"))return "h1";
@@ -110,6 +126,45 @@ function allowedForDepartment(deptSlug,p){
   if(deptSlug==="gifts" && (accessoryCategory.test(String(p?.category||"")) || accessoryIdentity.test(text)))return false;
   return true;
 }
+const exactIdentityRules=[
+  {id:"socks",re:/\b(sock|socks)\b/i,accept:/\bsocks?\b/i},
+  {id:"earrings",re:/\b(earring|earrings|stud earrings?|hoop earrings?)\b/i,accept:/\bearrings?\b/i},
+  {id:"necklaces",re:/\b(necklace|necklaces|pendant|pendants|choker|chokers)\b/i,accept:/\b(necklaces?|pendants?|chokers?)\b/i},
+  {id:"bracelets",re:/\b(bracelet|bracelets|bangle|bangles)\b/i,accept:/\b(bracelets?|bangles?)\b/i},
+  {id:"rings",re:/\b(ring|rings|signet ring|band ring)\b/i,accept:/\brings?\b/i},
+  {id:"anklets",re:/\b(anklet|anklets|ankle chain)\b/i,accept:/\banklets?\b/i},
+  {id:"brooches",re:/\b(brooch|brooches|jewelry pin|lapel pin)\b/i,accept:/\bbrooch|pins?\b/i},
+  {id:"hair-accessories",re:/\b(hair clip|hairpin|headband|scrunchie|barrette|hair accessory)\b/i,accept:/hair[- ]?accessor/i},
+  {id:"bags",re:/\b(handbag|purse|tote|crossbody|backpack|duffel|duffle|shoulder bag|messenger bag|chest bag)\b/i,accept:/\bbags?\b/i},
+  {id:"hats",re:/\b(hat|cap|beanie|bucket hat)\b/i,accept:/\b(hats?|caps?|headwear)\b/i},
+  {id:"watches",re:/\b(watch|watches|wristwatch)\b/i,accept:/\bwatches?\b/i},
+  {id:"sunglasses",re:/\b(sunglass|sunglasses|sun glasses)\b/i,accept:/\bsunglasses?\b/i},
+  {id:"shoes",re:/\b(shoe|shoes|sneaker|sneakers|loafer|loafers|boots?|sandals?|slides?)\b/i,accept:/\b(shoes?|footwear|sneakers?|boots?|sandals?)\b/i},
+  {id:"swimwear",re:/\b(swimwear|swimsuit|swim shorts|swimming trunks|board shorts|boardshorts)\b/i,accept:/\bswim|swimwear\b/i},
+  {id:"underwear",re:/\b(boxer|boxers|brief|briefs|underwear|underpants|trunks)\b/i,accept:/\b(underwear|boxers?|briefs?|trunks)\b/i},
+  {id:"hoodies",re:/\b(hoodie|hoodies|sweatshirt|sweatshirts)\b/i,accept:/\bhoodies?|sweatshirts?\b/i},
+  {id:"knitwear",re:/\b(sweater|sweaters|cardigan|cardigans|knitwear|pullover)\b/i,accept:/\b(knitwear|sweaters?|cardigans?)\b/i},
+  {id:"jackets",re:/\b(jacket|jackets|coat|coats|parka|windbreaker|bomber|trench)\b/i,accept:/\b(jackets?|outerwear|coats?)\b/i},
+  {id:"dresses",re:/\b(dress|dresses|gown|gowns)\b/i,accept:/\b(dresses?|evening)\b/i},
+  {id:"skirts",re:/\b(skirt|skirts)\b/i,accept:/\bskirts?\b/i},
+  {id:"lighting",re:/\b(lamp|lamps|lighting|night light|desk light|ceiling light|led light)\b/i,accept:/\blighting\b/i},
+  {id:"phone-accessories",re:/\b(phone case|iphone case|screen protector|phone stand|charging cable|magsafe)\b/i,accept:/phone[- ]?accessor|phonecases?|tech/i},
+  {id:"kitchen",re:/\b(kitchen|cookware|utensil|bakeware|food storage|lunch box)\b/i,accept:/\bkitchen\b/i},
+  {id:"storage",re:/\b(storage|organizer|closet organizer|rack|shelving)\b/i,accept:/\bstorage|organization\b/i}
+];
+function productText(p){return String((p?.title||"")+" "+(p?.category_title||"")+" "+(p?.category||"")).toLowerCase()}
+function allowedForShelf(deptSlug,catSlug,p){
+  if(!allowedForDepartment(deptSlug,p))return false;
+  const text=productText(p),slug=String(catSlug||"").toLowerCase();
+  for(const rule of exactIdentityRules){
+    if(!rule.re.test(text))continue;
+    return rule.accept.test(slug);
+  }
+  if(/accessor/i.test(slug)){
+    if(/\b(sock|socks|earring|necklace|pendant|bracelet|bangle|ring|anklet|brooch|handbag|purse|tote|crossbody|backpack|hat|cap|beanie|watch|sunglass|shoe|sneaker|swimwear|swimsuit)\b/i.test(text))return false;
+  }
+  return true;
+}
 function directCategoryProducts(deptSlug,cat){
   const base=(cat.products||[]);
   const route=deptSlug+"/"+cat.slug;
@@ -118,13 +173,13 @@ function directCategoryProducts(deptSlug,cat){
   const seen=new Set(),out=[];
   for(const p of extra){
     const key=String(p.provider||"UNKNOWN")+":"+String(p.item_id||"");
-    if(!p.item_id||seen.has(key)||!allowedForDepartment(deptSlug,p))continue;
+    if(!p.item_id||seen.has(key)||!allowedForShelf(deptSlug,cat.slug,p))continue;
     seen.add(key);out.push(p);
   }
   if(Array.isArray(launch))return out;
   for(const p of base){
     const key=String(p.provider||"UNKNOWN")+":"+String(p.item_id||"");
-    if(!p.item_id||seen.has(key)||!allowedForDepartment(deptSlug,p))continue;
+    if(!p.item_id||seen.has(key)||!allowedForShelf(deptSlug,cat.slug,p))continue;
     const canonical=canonicalOverrides.get(key);
     if(canonical && canonical!==route)continue;
     seen.add(key);out.push(p);
@@ -281,7 +336,7 @@ function renderCategory(cat,deptSlug){
 function render(){
   const d=data.departments[active];
   visible={};
-  const displayedCategories=selectedShelf?d.categories.filter(c=>c.slug===selectedShelf):d.categories;
+  const displayedCategories=d.categories;
   document.title="HUNT · "+d.title+" · Full Shelves Shadow";
   [...$("#dept-nav").children].forEach((b,i)=>b.classList.toggle("active",i===active));
   $("#eyebrow").textContent="BOOM STYLIST · "+d.category_rails+" CATEGORY SHELVES";
@@ -302,14 +357,31 @@ function render(){
     $("#hero-kicker").textContent=(hero.truth_state==="GLOBAL_PRODUCT_TRUTH"?"GLOBAL TRUTH":"CATALOG SHADOW")+" · "+String(hero.category_title||hero.category||"").toUpperCase();
     $("#hero-status").textContent="Canonical "+d.slug+" / "+String(hero.category||"")+" · Production off";
   }else $("#hero").hidden=true;
-  $("#category-index").innerHTML='<button class="cat-chip '+(!selectedShelf?'active':'')+'" data-cat="">All</button>'+d.categories.map(c=>'<button class="cat-chip '+(selectedShelf===c.slug?'active':'')+'" data-cat="'+esc(c.slug)+'">'+esc(c.title)+' · '+categoryProducts(d.slug,c).length+'</button>').join("");
-  $("#shelves").innerHTML=displayedCategories.length?displayedCategories.map(cat=>renderCategory(cat,d.slug)).join(""):'<div class="empty">No clean canonical candidates yet.</div>';
+  const departmentRows=d.categories.map(c=>{
+    const count=categoryProducts(d.slug,c).length;
+    const isOpen=selectedShelf===c.slug;
+    return '<div class="department-row" id="dept-row-'+esc(c.slug)+'">'+
+      '<button class="department-toggle '+(isOpen?'active':'')+'" type="button" data-cat="'+esc(c.slug)+'" aria-expanded="'+(isOpen?'true':'false')+'">'+
+        '<span><strong>'+esc(c.title)+'</strong><span>'+count+' clean products</span></span><b>+</b>'+
+      '</button>'+
+      (isOpen?'<div class="department-inline">'+renderCategory(c,d.slug)+'</div>':'')+
+    '</div>';
+  }).join("");
+  $("#category-index").innerHTML='<section class="department-window"><div class="department-window-head"><small>'+esc(d.title.toUpperCase())+' · DEPARTMENTS</small><strong>Choose a department. Its products open directly below and continue downward.</strong></div>'+departmentRows+'</section>';
+  $("#shelves").innerHTML=selectedShelf?'':'<div class="empty">Choose a department above. HUNT will open only that exact department below it.</div>';
   const q=new URLSearchParams(location.search);q.set("dept",d.slug);if(selectedShelf)q.set("shelf",selectedShelf);else q.delete("shelf");history.replaceState(null,"",location.pathname+"?"+q.toString());
   window.scrollTo({top:0,behavior:"smooth"});
 }
 $("#dept-nav").addEventListener("click",e=>{const b=e.target.closest("button[data-i]");if(!b)return;active=Number(b.dataset.i)||0;selectedShelf="";render()});
-$("#category-index").addEventListener("click",e=>{const b=e.target.closest("button[data-cat]");if(!b)return;selectedShelf=String(b.dataset.cat||"");render()});
-$("#shelves").addEventListener("click",e=>{
+$("#category-index").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-cat]");
+  if(!b)return;
+  const next=String(b.dataset.cat||"");
+  selectedShelf=selectedShelf===next?"":next;
+  render();
+  if(selectedShelf)requestAnimationFrame(()=>document.getElementById("dept-row-"+selectedShelf)?.scrollIntoView({behavior:"smooth",block:"start"}));
+});
+function handleCatalogClick(e){
   const card=e.target.closest("a[data-product-provider][data-product-id]");
   if(card){
     const d=data.departments[active];
@@ -322,7 +394,9 @@ $("#shelves").addEventListener("click",e=>{
   const slug=b.dataset.more;const d=data.departments[active];const cat=d.categories.find(x=>x.slug===slug);
   const all=categoryProducts(d.slug,cat);visible[slug]=Math.min((visible[slug]||24)+24,all.length);
   const node=document.getElementById("cat-"+slug);node.outerHTML=renderCategory(cat,d.slug)
-});
+}
+$("#shelves").addEventListener("click",handleCatalogClick);
+$("#category-index").addEventListener("click",e=>{if(e.target.closest("a[data-product-provider][data-product-id],button[data-more]"))handleCatalogClick(e)});
 Promise.all([
   fetch("./evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json").then(r=>r.json()),
   fetch("./evidence/HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}})),
