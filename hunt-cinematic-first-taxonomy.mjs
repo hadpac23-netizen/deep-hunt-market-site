@@ -199,8 +199,17 @@ export const DEPARTMENTS = [
             "label": "Pants & Shorts"
           }
         ]
-      },
+      },,
       {
+        "id": "men-shorts",
+        "title": "Shorts",
+        "shelves": [
+          {
+            "slug": "men-shorts",
+            "label": "Shorts"
+          }
+        ]
+      }      {
         "id": "men-outerwear",
         "title": "Jackets & Coats",
         "shelves": [
@@ -239,8 +248,17 @@ export const DEPARTMENTS = [
             "label": "Underwear & Briefs"
           }
         ]
-      },
+      },,
       {
+        "id": "men-nightwear",
+        "title": "Nightwear & Pyjamas",
+        "shelves": [
+          {
+            "slug": "men-nightwear",
+            "label": "Nightwear & Pyjamas"
+          }
+        ]
+      }      {
         "id": "men-shoes",
         "title": "Shoes",
         "shelves": [
@@ -249,8 +267,17 @@ export const DEPARTMENTS = [
             "label": "Shoes"
           }
         ]
-      },
+      },,
       {
+        "id": "men-loungewear",
+        "title": "Loungewear",
+        "shelves": [
+          {
+            "slug": "men-loungewear",
+            "label": "Loungewear"
+          }
+        ]
+      }      {
         "id": "men-bags",
         "title": "Bags",
         "shelves": [
@@ -259,8 +286,17 @@ export const DEPARTMENTS = [
             "label": "Bags"
           }
         ]
-      },
+      },,
       {
+        "id": "men-swimwear",
+        "title": "Swimwear",
+        "shelves": [
+          {
+            "slug": "men-swimwear",
+            "label": "Swimwear"
+          }
+        ]
+      }      {
         "id": "men-socks",
         "title": "Socks",
         "shelves": [
