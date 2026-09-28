@@ -110,6 +110,32 @@ linear-gradient(155deg,var(--panel2),var(--panel));overflow:hidden}
 .more{transition:transform .2s ease,border-color .2s ease}.more:hover{transform:translateY(-2px);border-color:rgba(242,211,107,.34)}
 @media(prefers-reduced-motion:reduce){.brand,.dept-nav button,.more{transition:none!important}}
 </style>
+<style>
+/* HUNT V6 Smart Disclosure — compact, reversible, accessible */
+.topbar{position:sticky;overflow:visible}
+.dept-nav{gap:7px;margin-top:9px}
+.dept-nav button{min-height:36px;padding:8px 13px;border-radius:12px;font-size:12px;font-weight:820}
+.selection-strip{display:flex;align-items:center;margin-top:7px;min-height:28px}
+#selection-change{display:inline-flex;align-items:center;gap:7px;max-width:100%;min-height:28px;padding:4px 9px;border:1px solid var(--edge);border-radius:9px;background:color-mix(in srgb,var(--panel) 72%,transparent);color:var(--muted);cursor:pointer;font-size:9.5px;font-weight:760}
+.selection-strip.has-selection #selection-change{color:var(--ink);border-color:color-mix(in srgb,var(--spark) 30%,var(--edge))}
+.selection-action{color:var(--spark);font-size:8px;letter-spacing:.08em;text-transform:uppercase}
+.selection-chevron{transition:transform .18s ease}
+#selection-change[aria-expanded="true"] .selection-chevron{transform:rotate(180deg)}
+.category-drawer-shell{position:absolute;z-index:90;left:clamp(12px,3vw,42px);right:clamp(12px,3vw,42px);top:100%;margin:6px 0 0;padding:12px;border:1px solid var(--edge);border-radius:18px;background:color-mix(in srgb,var(--panel2) 96%,transparent);box-shadow:0 28px 70px rgba(0,0,0,.34);backdrop-filter:blur(22px);max-height:min(44vh,390px);overflow:auto}
+.category-drawer-shell[hidden]{display:none}
+.category-drawer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.category-drawer-label{margin:0;color:var(--spark);font-size:8px;letter-spacing:.14em}
+.drawer-close{width:30px;height:30px;border:1px solid var(--edge);border-radius:9px;background:var(--panel);color:var(--muted);cursor:pointer;font-size:18px;line-height:1}
+.category-index{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:6px}
+.cat-chip{display:flex;align-items:center;justify-content:flex-start;min-height:34px;padding:7px 9px;border-radius:10px;font-size:10px;font-weight:730;text-align:left;color:var(--muted);background:color-mix(in srgb,var(--panel) 74%,transparent);box-shadow:none;backdrop-filter:none}
+.cat-chip:hover,.cat-chip:focus-visible{transform:none;color:var(--ink);border-color:color-mix(in srgb,var(--accent) 42%,var(--edge));box-shadow:none}
+.cat-chip.active{color:var(--ink);border-color:color-mix(in srgb,var(--spark) 52%,var(--edge));background:color-mix(in srgb,var(--spark) 7%,var(--panel));box-shadow:inset 2px 0 0 var(--spark)}
+.cat-chip.active::after{display:none}
+.chip-media,.chip-copy{display:none!important}
+#selection-change:focus-visible,.drawer-close:focus-visible,.cat-chip:focus-visible,.dept-nav button:focus-visible{outline:2px solid var(--spark);outline-offset:2px}
+@media(max-width:620px){.selection-strip{margin-top:6px}.category-drawer-shell{left:8px;right:8px;border-radius:16px;max-height:52vh;padding:10px}.category-index{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.cat-chip{min-height:38px;font-size:10px}}
+@media(prefers-reduced-motion:reduce){.selection-chevron{transition:none!important}}
+</style>
 </head>
 <body>
 <header class="topbar">
