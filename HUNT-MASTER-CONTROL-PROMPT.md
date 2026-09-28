@@ -8,6 +8,15 @@ Create a new version/file/branch and preserve a rollback path.
 
 ### Storefront default: SIMPLE FIRST
 
+#### LIVING CINEMATIC TAXONOMY MOTION
+Taxonomy may feel alive like a cinematic control surface:
+- Main Category rail can use slow film-light sweeps, breathing sapphire/gold ambience, restrained sparkle, and an active pulse.
+- Department/Shelf rail can use slower teal/blue shimmer, secondary breathing light, and softer active glow.
+- Motion must feel premium and film-like, never arcade-like.
+- Main Categories remain visually stronger than Departments.
+- Effects must not change layout dimensions, introduce horizontal motion/scroll, or reduce legibility.
+- Honor prefers-reduced-motion and provide a static equivalent.
+
 #### ROW-LEVEL TAXONOMY HIERARCHY
 The navigation must read instantly as two separate levels:
 - top row = Main Categories, stronger sapphire/gold cinematic rail;
