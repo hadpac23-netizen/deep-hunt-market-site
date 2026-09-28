@@ -14,6 +14,10 @@ description: This skill should be used whenever changing an approved HUNT view, 
 7. Preserve Production OFF, Payment Live OFF, Supplier Live Order OFF unless Owner explicitly authorizes a change.
 8. Never equate Preview PASS with Production approval.
 9. If Owner rejects an interpretation, return to the approved baseline before trying a new direction.
+
+11. Verify route closure for every experiment: brand/home/category/product/recommendation/mobile links must stay inside the same experiment family unless explicitly requested.
+12. Current Cinematic public brand lockup is HUNT only; do not regress to HUNT DEAL in the primary header.
+
 10. Before handoff, report:
    - baseline preserved?
    - experiment file/branch
