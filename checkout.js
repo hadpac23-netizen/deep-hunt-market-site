@@ -39,7 +39,7 @@
         ? "Delivery details are complete and will be attached only when checkout is verified."
         : state.hasAny
           ? state.missing.length+" required delivery field"+(state.missing.length===1?"":"s")+" still need attention."
-          : "Add delivery details before an order can be handed to a supplier.";
+          : "Add delivery details before an order can be submitted for fulfillment.";
     }
     if(emit)runtime?.emit?.("checkout.shipping.update",{complete:state.complete,missing_count:state.missing.length,country:state.country},{broadcast:false});
     return state;
@@ -57,8 +57,8 @@
       COUNTRY_REQUIRED:"Choose a destination country.",
       INVALID_CART:"Your cart needs to be refreshed.",
       INVALID_LINE_ITEM:"Open the product and choose an available option before checkout.",
-      PROVIDER_PAYMENT_NOT_READY:"One or more products are catalog-only and cannot be quoted for HUNT checkout yet.",
-      PRODUCT_RECHECK_FAILED:"A product could not be rechecked at the supplier. Please open it again before checkout.",
+      PROVIDER_PAYMENT_NOT_READY:"One or more items are not ready for HUNT checkout yet.",
+      PRODUCT_RECHECK_FAILED:"A product could not be rechecked right now. Please open it again before checkout.",
       VARIANT_RECHECK_FAILED:"The selected option is no longer available. Please choose another option.",
       RETAIL_PRICE_NOT_READY:"HUNT retail pricing is not verified for one or more items.",
       CURRENCY_REVIEW_REQUIRED:"This item needs a currency review before checkout.",
@@ -94,7 +94,7 @@
       return;
     }
 
-    if (status) status.textContent = "Rechecking HUNT retail price, supplier stock and shipping…";
+    if (status) status.textContent = "Rechecking HUNT price, stock and shipping…";
     if (button) button.textContent = "Verifying…";
     const run=runtime?.runAction ? runtime.runAction.bind(runtime) : async (_id,opts)=>opts.execute({});
 
@@ -182,7 +182,7 @@
       return `
       <article class="hd-checkout-item" data-key="${esc(item.key)}">
         ${item.image_url ? `<img src="${esc(item.image_url)}" alt="${esc(item.title)}">` : `<div class="hd-checkout-thumb">◇</div>`}
-        <div class="hd-checkout-item-copy"><small>${esc(item.provider)} · ${ready ? "HUNT RETAIL" : "PRICE PENDING"}</small><h3>${esc(item.title)}</h3><p>${item.variant_label ? `Selected: ${esc(item.variant_label)} · ` : ""}${priceCopy}</p></div>
+        <div class="hd-checkout-item-copy"><small>HUNT VERIFIED · ${ready ? "HUNT RETAIL" : "PRICE PENDING"}</small><h3>${esc(item.title)}</h3><p>${item.variant_label ? `Selected: ${esc(item.variant_label)} · ` : ""}${priceCopy}</p></div>
         <div class="hd-qty"><button type="button" data-delta="-1">−</button><span>${Math.max(1,Number(item.qty)||1)}</span><button type="button" data-delta="1">+</button></div>
         <button class="hd-remove" type="button" aria-label="Remove item">×</button>
       </article>`;
