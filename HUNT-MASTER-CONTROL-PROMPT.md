@@ -6,6 +6,27 @@ When an HUNT view, flow, taxonomy, or behavior is approved, mark it BASELINE LOC
 Never edit an approved baseline directly for an experiment.
 Create a new version/file/branch and preserve a rollback path.
 
+### Storefront default: SIMPLE FIRST
+For normal HUNT shopping navigation, **Simple First is the default and wins over decorative navigation ideas**.
+
+Default sequence:
+Main Categories -> Departments -> Living Campaign -> Exact Products -> Sort / Filters.
+
+Required behavior:
+- Main Categories stay immediately visible.
+- Selecting Women / Men / Home / Tech / Beauty / Sports / Travel / Jewelry swaps only that category's Departments directly underneath.
+- Departments are compact, text-first, fast-scanning controls.
+- The Living Campaign remains the dominant visual surface.
+- Selecting a Department never causes a forced scroll jump.
+- Product browsing stays vertical and exact-route only.
+- Sort / Filter controls belong with the product list, not inside category navigation.
+- Desktop and mobile use the same mental model; narrow screens may horizontally scroll the two compact navigation rows.
+- No full-screen navigator, modal navigator, popup maze, large department cards, thumbnail department grid, counts, or explanatory chrome by default.
+- An immersive/overlay navigation experiment is allowed only when the Owner explicitly asks for that specific pattern.
+- SHEIN or any external reference may inform information architecture, but HUNT must keep its own brand, visual language and taxonomy.
+
+Decision rule: if normal shopping navigation needs explanation, simplify it.
+
 ### Required HUNT hierarchy
 Main Category -> Department -> Exact Shelf -> Product -> Variant.
 
@@ -134,43 +155,37 @@ Do not render **HUNT DEAL** in the primary brand lockup unless Owner explicitly 
 
 
 ### Smart disclosure / progressive reveal
-HUNT may hide secondary UI to protect clarity and Cinematic screen space.
+HUNT may hide **tertiary or optional** UI to protect clarity and Cinematic screen space.
 
 Rule: **Hide visually, never lose functionally.**
 
-For Departments, filters, specs and other secondary layers:
+Simple First exception:
+- Main Categories stay visible.
+- The selected Main Category's Departments stay immediately available in the compact second row.
+- Do not collapse normal Departments behind a generic menu, "Explore", modal, drawer, fullscreen layer or "More" control by default.
+
+Disclosure is appropriate for filters, specs and other secondary layers when needed:
 - keep a clear open/change control;
 - preserve current selection visibly;
 - keep every option reachable;
 - use semantic disclosure state (`aria-expanded` / `aria-controls`);
 - Enter/Space opens or closes; Escape closes where appropriate;
-- selecting an item may auto-close the disclosure;
 - closing never clears the user's selection;
 - opening/closing never causes forced page scroll;
 - the Cinematic campaign remains visually dominant.
 
-Main Categories remain immediately visible.
-Departments may be collapsed by default and revealed on demand.
 Critical commerce information and safety/error states must not be hidden behind optional disclosure.
 
 
 ### Cinematic navigation grammar
-For the HUNT Cinematic storefront, conventional menu UI is not the target aesthetic.
+The cinematic grammar belongs in the **Living Campaign and product world**, not in a complicated primary menu.
 
-Preferred grammar:
-- Main Category = Chapter
-- Department = Scene
-- Product shelf = Product world
+Default:
+- Main Category = visible primary text navigation.
+- Department = compact secondary text navigation.
+- Product shelf = exact vertical product world.
+- Living Campaign = the cinematic hero and storytelling surface.
 
-A single **Explore HUNT** control may hide persistent category/department chrome.
-When opened, categories and departments may appear in an immersive cinematic overlay/dialog.
-When closed, the Original Cinematic must return unchanged with no permanent navigation slab consuming screen space.
+Do not use an **Explore HUNT** fullscreen/overlay navigator as the normal storefront path.
 
-The cinematic navigator must:
-- preserve every category and department;
-- show selected route visibly;
-- use exact-route imagery only;
-- remain keyboard/mobile accessible;
-- close without clearing selection;
-- never force scroll;
-- never alter taxonomy or Product Truth.
+Immersive, spatial or overlay navigation is an opt-in experiment only when the Owner explicitly requests it. Any such experiment must live in a separate version and may not replace the Simple First default or the protected rollback baseline.
