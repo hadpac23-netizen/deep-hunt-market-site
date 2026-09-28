@@ -17,6 +17,15 @@ Taxonomy may feel alive like a cinematic control surface:
 - Effects must not change layout dimensions, introduce horizontal motion/scroll, or reduce legibility.
 - Honor prefers-reduced-motion and provide a static equivalent.
 
+#### PRODUCT DETAIL SCROLL HEADER
+Use the same commerce scroll behavior inside product detail pages:
+- product header hides on downward scroll;
+- product header returns immediately on upward scroll;
+- desktop and mobile use the same direction rule;
+- keyboard focus forces the header visible;
+- no pointer-edge reveal zones or decorative reveal cues;
+- sticky product controls may move upward when the header is hidden, but must not jump or overlap content.
+
 #### SCROLL-DIRECTION TAXONOMY HEADER
 To maximize product visibility:
 - category + department navigation hides cleanly when the shopper scrolls down past it;
