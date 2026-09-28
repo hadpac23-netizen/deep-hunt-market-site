@@ -633,14 +633,266 @@ body.hunt-product-nav-hidden .hd-product-cinematic-v2 .hd-product-buybox{
 }
 </style>
 
+
+<style id="hunt-v10-product-white-taxonomy-final">
+/* HUNT V10 PRODUCT WHITE + TAXONOMY FINAL */
+:root{--product-header-height:138px}
+
+/* Header is one fixed unit: brand + categories + departments. */
+.hd-topbar{
+  height:auto!important;
+  min-height:0!important;
+  padding:0!important;
+  display:block!important;
+  overflow:visible!important;
+}
+.hd-product-header-main{
+  min-height:58px;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns:minmax(220px,.8fr) 1fr minmax(250px,.8fr);
+  align-items:center;
+  gap:16px;
+}
+.hd-product-taxonomy{
+  display:grid;
+  gap:5px;
+  padding:5px 20px 8px;
+  border-top:1px solid rgba(128,174,231,.12);
+  background:rgba(5,9,20,.72);
+  backdrop-filter:blur(22px) saturate(140%);
+}
+.hd-product-main-categories,
+.hd-product-departments{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(86px,1fr));
+  gap:5px;
+}
+.hd-product-departments{
+  grid-template-columns:repeat(auto-fit,minmax(104px,1fr));
+}
+.hd-product-main-categories a,
+.hd-product-departments a{
+  min-width:0;
+  min-height:30px;
+  display:grid;
+  place-items:center;
+  padding:5px 7px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:9px;
+  text-decoration:none;
+  color:#dbe5f2;
+  background:linear-gradient(180deg,rgba(20,37,70,.74),rgba(9,22,45,.82));
+  font-size:9px;
+  line-height:1.05;
+  font-weight:850;
+  text-align:center;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+.hd-product-departments a{
+  color:#d4edf0;
+  background:linear-gradient(180deg,rgba(18,57,72,.70),rgba(9,38,51,.82));
+  border-color:rgba(79,205,203,.15);
+}
+.hd-product-main-categories a:hover,
+.hd-product-departments a:hover{transform:translateY(-1px)}
+.hd-product-main-categories a.active{
+  color:#fff;
+  border-color:rgba(242,211,107,.50);
+  box-shadow:0 0 16px rgba(242,211,107,.11);
+}
+.hd-product-departments a.active{
+  color:#fff;
+  border-color:rgba(79,205,203,.44);
+  box-shadow:0 0 14px rgba(79,205,203,.10);
+}
+
+body.hd-product-cinematic-v2{
+  padding-top:var(--product-header-height)!important;
+}
+.hd-product-cinematic-v2 .hd-product-buybox{
+  top:calc(var(--product-header-height) + 10px)!important;
+}
+body.hunt-product-nav-hidden .hd-product-cinematic-v2 .hd-product-buybox{
+  top:10px!important;
+}
+
+/* Strong, coherent Light mode — no black islands. */
+html[data-hunt-theme="light"]{
+  --hd-bg:#f6f8fb;
+  --hd-text:#111827;
+  --hd-muted:#5d6878;
+  --hd-line:rgba(15,23,42,.10);
+  --hd-line-strong:rgba(49,92,154,.28);
+}
+html[data-hunt-theme="light"] body.hd-product-cinematic-v2{
+  background:#f6f8fb!important;
+  color:#111827!important;
+}
+html[data-hunt-theme="light"] .hd-space{
+  background:
+    radial-gradient(circle at 18% 8%,rgba(79,142,203,.10),transparent 30rem),
+    linear-gradient(180deg,#f8fafc,#eef3f8)!important;
+  filter:none!important;
+}
+html[data-hunt-theme="light"] .hd-space::before,
+html[data-hunt-theme="light"] .hd-space::after{opacity:.18!important}
+html[data-hunt-theme="light"] .hd-topbar{
+  background:rgba(255,255,255,.96)!important;
+  border-bottom:1px solid rgba(15,23,42,.10)!important;
+  box-shadow:0 10px 28px rgba(15,23,42,.08)!important;
+}
+html[data-hunt-theme="light"] .hd-product-header-main{
+  background:rgba(255,255,255,.97)!important;
+}
+html[data-hunt-theme="light"] .hd-brand{
+  color:#0f172a!important;
+  font-weight:1000!important;
+  text-shadow:none!important;
+}
+html[data-hunt-theme="light"] .hd-brand span{
+  color:#315c9a!important;
+  background:none!important;
+  -webkit-text-fill-color:#315c9a!important;
+}
+html[data-hunt-theme="light"] .hd-branch{
+  color:#536174!important;
+  border-inline-start-color:rgba(15,23,42,.12)!important;
+}
+html[data-hunt-theme="light"] .hd-nav a,
+html[data-hunt-theme="light"] .hd-account-link,
+html[data-hunt-theme="light"] .hd-cart-link,
+html[data-hunt-theme="light"] .hd-theme-toggle{
+  color:#1f2937!important;
+}
+html[data-hunt-theme="light"] .hd-cart-link,
+html[data-hunt-theme="light"] .hd-theme-toggle{
+  background:#f3f6fb!important;
+  border-color:rgba(15,23,42,.10)!important;
+}
+html[data-hunt-theme="light"] .hd-product-taxonomy{
+  background:rgba(246,248,251,.98)!important;
+  border-top-color:rgba(15,23,42,.08)!important;
+}
+html[data-hunt-theme="light"] .hd-product-main-categories a{
+  color:#172033!important;
+  background:linear-gradient(180deg,#ffffff,#edf3fb)!important;
+  border-color:rgba(49,92,154,.16)!important;
+  box-shadow:0 3px 10px rgba(15,23,42,.035)!important;
+}
+html[data-hunt-theme="light"] .hd-product-departments a{
+  color:#15313b!important;
+  background:linear-gradient(180deg,#ffffff,#e9f4f5)!important;
+  border-color:rgba(50,128,145,.17)!important;
+}
+html[data-hunt-theme="light"] .hd-product-main-categories a.active{
+  background:linear-gradient(180deg,#e8f0fb,#dce9fb)!important;
+  color:#0f172a!important;
+  border-color:rgba(49,92,154,.36)!important;
+}
+html[data-hunt-theme="light"] .hd-product-departments a.active{
+  background:linear-gradient(180deg,#e9f6f7,#dceff2)!important;
+  color:#102a33!important;
+  border-color:rgba(50,128,145,.34)!important;
+}
+
+/* Convert hard-coded dark product surfaces to real light surfaces. */
+html[data-hunt-theme="light"] .glass,
+html[data-hunt-theme="light"] .hd-product-layout,
+html[data-hunt-theme="light"] .hd-product-buybox,
+html[data-hunt-theme="light"] .hd-boom-product,
+html[data-hunt-theme="light"] .hd-product-info-grid article,
+html[data-hunt-theme="light"] .hd-product-spec-section,
+html[data-hunt-theme="light"] .hd-review-form,
+html[data-hunt-theme="light"] .hd-reviews,
+html[data-hunt-theme="light"] .hd-product-media-section,
+html[data-hunt-theme="light"] .hd-endless-discovery{
+  background:#ffffff!important;
+  color:#111827!important;
+  border-color:rgba(15,23,42,.10)!important;
+  box-shadow:0 12px 30px rgba(15,23,42,.07)!important;
+}
+html[data-hunt-theme="light"] .hd-product-buybox{
+  background:
+    radial-gradient(circle at 90% 0%,rgba(49,92,154,.06),transparent 28%),
+    #ffffff!important;
+}
+html[data-hunt-theme="light"] .hd-product-buybox h1,
+html[data-hunt-theme="light"] .hd-product-price strong,
+html[data-hunt-theme="light"] .hd-product-section-head h2,
+html[data-hunt-theme="light"] .hd-reviews-head h2{
+  color:#111827!important;
+}
+html[data-hunt-theme="light"] .hd-product-price span,
+html[data-hunt-theme="light"] .hd-product-truth,
+html[data-hunt-theme="light"] .hd-product-breadcrumb,
+html[data-hunt-theme="light"] .hd-product-breadcrumb a{
+  color:#5d6878!important;
+}
+html[data-hunt-theme="light"] .hd-color-choice,
+html[data-hunt-theme="light"] .hd-size-options button,
+html[data-hunt-theme="light"] .hd-product-facts>div,
+html[data-hunt-theme="light"] .hd-size-equivalent,
+html[data-hunt-theme="light"] .hd-measurement-table>div,
+html[data-hunt-theme="light"] .hd-product-attribute-grid>div{
+  background:#f3f6fb!important;
+  color:#172033!important;
+  border-color:rgba(15,23,42,.10)!important;
+}
+html[data-hunt-theme="light"] .hd-color-choice.active,
+html[data-hunt-theme="light"] .hd-size-options button.active{
+  background:#e7eefb!important;
+  color:#0f172a!important;
+  border-color:rgba(49,92,154,.34)!important;
+}
+html[data-hunt-theme="light"] .hd-source-badge,
+html[data-hunt-theme="light"] .hd-status{
+  background:#eef4fb!important;
+  color:#315c9a!important;
+  border-color:rgba(49,92,154,.18)!important;
+}
+
+/* Product media stays neutral, not black. */
+html[data-hunt-theme="light"] .hd-product-main-media,
+html[data-hunt-theme="light"] .hd-product-thumbs button{
+  background:radial-gradient(circle at 50% 42%,#f4f5f6 0%,#e3e7ea 72%,#d6dce1 100%)!important;
+  border-color:rgba(15,23,42,.08)!important;
+}
+
+@media(max-width:760px){
+  :root{--product-header-height:112px}
+  .hd-product-header-main{
+    min-height:56px;
+    padding:0 10px;
+    grid-template-columns:1fr auto;
+  }
+  .hd-product-header-main .hd-nav{display:none!important}
+  .hd-product-taxonomy{padding:4px 8px 6px;gap:4px}
+  .hd-product-main-categories{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .hd-product-departments{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .hd-product-main-categories a,
+  .hd-product-departments a{
+    min-height:25px;
+    padding:4px;
+    font-size:8px;
+  }
+}
+</style>
+
 </head>
 <body class="hd-page hd-market-v2 hd-product-cinematic-v2">
   <a class="hd-skip-link" href="#main-content">Skip to shopping content</a>
   <div class="hd-space"></div>
-  <header class="hd-topbar">
-    <div class="hd-brand-wrap"><a class="hd-brand hd-hunt-only" href="hunt-cinematic-living-campaign-v10.html" aria-label="HUNT home">HUNT<span>✦</span></a><div class="hd-branch">CINEMATIC PRODUCT</div></div>
-    <nav class="hd-nav" aria-label="Primary"><a href="hunt-cinematic-living-campaign-v10.html">Shop</a><a href="hunt-cinematic-living-campaign-v10.html?dept=women">Women</a><a href="hunt-cinematic-living-campaign-v10.html?dept=men">Men</a><a href="hunt-cinematic-living-campaign-v10.html?dept=jewelry">Jewelry</a></nav>
-    <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a></div>
+  <header class="hd-topbar" id="hd-product-smart-header">
+    <div class="hd-product-header-main">
+      <div class="hd-brand-wrap"><a class="hd-brand hd-hunt-only" href="hunt-cinematic-living-campaign-v10.html" aria-label="HUNT home">HUNT<span>✦</span></a><div class="hd-branch">PRODUCT</div></div>
+      <nav class="hd-nav" aria-label="Primary"><a href="hunt-cinematic-living-campaign-v10.html">Shop</a><a href="hunt-cinematic-living-campaign-v10.html?dept=women">Women</a><a href="hunt-cinematic-living-campaign-v10.html?dept=men">Men</a><a href="hunt-cinematic-living-campaign-v10.html?dept=jewelry">Jewelry</a></nav>
+      <div class="hd-tools"><a class="hd-account-link" href="auth.html">Sign in</a><a class="hd-cart-link" href="checkout.html">Cart <span data-cart-count>0</span></a></div>
+    </div>
+    <div class="hd-product-taxonomy" id="hd-product-taxonomy">
+      <nav class="hd-product-main-categories" id="hd-product-main-categories" aria-label="Main categories"></nav>
+      <nav class="hd-product-departments" id="hd-product-departments" aria-label="Departments"></nav>
+    </div>
   </header>
 
   <main class="hd-product-shell" id="main-content">
@@ -825,6 +1077,85 @@ body.hunt-product-nav-hidden .hd-product-cinematic-v2 .hd-product-buybox{
 
 
 
+
+
+<script>
+/* HUNT_V10_PRODUCT_TAXONOMY */
+(()=>{
+  const mainHost=document.getElementById("hd-product-main-categories");
+  const deptHost=document.getElementById("hd-product-departments");
+  const header=document.getElementById("hd-product-smart-header");
+  if(!mainHost||!deptHost||!header)return;
+
+  let taxonomyData=null;
+  let supplements=[];
+  let activeDept="";
+  let activeShelf="";
+
+  const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const titleFromSlug=slug=>String(slug||"").replace(/^(women|men)-/,"").split("-").filter(Boolean).map(x=>x[0].toUpperCase()+x.slice(1)).join(" ");
+
+  function syncHeaderHeight(){
+    const h=Math.ceil(header.getBoundingClientRect().height||0);
+    if(h>0)document.documentElement.style.setProperty("--product-header-height",h+"px");
+  }
+
+  function childCategories(d){
+    const map=new Map();
+    for(const cat of d?.categories||[]){
+      if(!cat?.slug||String(cat.slug).toLowerCase()==="clothing")continue;
+      map.set(cat.slug,{slug:cat.slug,title:cat.title||titleFromSlug(cat.slug)});
+    }
+    for(const source of supplements){
+      for(const route of Object.keys(source?.shelves||{})){
+        if(!route.startsWith(d.slug+"/"))continue;
+        const slug=route.slice(d.slug.length+1);
+        if(!slug||slug==="clothing")continue;
+        if(!map.has(slug))map.set(slug,{slug,title:titleFromSlug(slug)});
+      }
+    }
+    return [...map.values()];
+  }
+
+  function render(){
+    if(!taxonomyData?.departments?.length)return;
+    const current=taxonomyData.departments.find(d=>d.slug===activeDept)||taxonomyData.departments[0];
+    if(!activeDept)activeDept=current.slug;
+
+    mainHost.innerHTML=taxonomyData.departments.map(d=>
+      '<a class="'+(d.slug===activeDept?'active':'')+'" href="hunt-cinematic-living-campaign-v10.html?dept='+encodeURIComponent(d.slug)+'">'+esc(d.title||titleFromSlug(d.slug))+'</a>'
+    ).join("");
+
+    const cats=childCategories(current);
+    deptHost.innerHTML=cats.map(cat=>
+      '<a class="'+(cat.slug===activeShelf?'active':'')+'" href="hunt-cinematic-living-campaign-v10.html?dept='+encodeURIComponent(current.slug)+'&shelf='+encodeURIComponent(cat.slug)+'">'+esc(cat.title)+'</a>'
+    ).join("");
+
+    requestAnimationFrame(syncHeaderHeight);
+  }
+
+  Promise.all([
+    fetch("./evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json").then(r=>r.json()),
+    fetch("./evidence/HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}})),
+    fetch("./evidence/HUNT-MEN-LAUNCH-LOCKED-SUPPLEMENT-2026-09-28.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}}))
+  ]).then(([data,s1,s2])=>{
+    taxonomyData=data;
+    supplements=[s1||{shelves:{}},s2||{shelves:{}}];
+    render();
+  }).catch(()=>{});
+
+  window.addEventListener("hunt:product-loaded",event=>{
+    const p=event.detail?.product||{};
+    activeDept=String(p.hunt_department||p.canonical_department||activeDept||"");
+    activeShelf=String(p.hunt_shelf||p.canonical_shelf||activeShelf||"");
+    render();
+  });
+
+  window.addEventListener("resize",()=>requestAnimationFrame(syncHeaderHeight),{passive:true});
+  window.addEventListener("pageshow",()=>requestAnimationFrame(syncHeaderHeight));
+  if("ResizeObserver" in window)new ResizeObserver(syncHeaderHeight).observe(header);
+})();
+</script>
 
 <script>
 /* HUNT_V10_PRODUCT_HEADER_SCROLL_COMPACT4 */
