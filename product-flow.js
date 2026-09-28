@@ -5,6 +5,7 @@
   const $=q=>document.querySelector(q);
   let current=null;
   let pool=[];
+  let recommendations={similar:[],complementary:[],discover:[]};
   let cursor=0;
   let loading=false;
   let observer=null;
@@ -37,11 +38,42 @@
   }
 
   function siblingSlugs(slug){
-    for(const slugs of Object.values(H.categoryGroups||{})){
-      if(Array.isArray(slugs)&&slugs.includes(slug))return slugs;
+    for(const group of H.categoryGroups||[]){
+      const items=Array.isArray(group?.items)?group.items:[];
+      if(items.includes(slug))return items.filter(x=>x!==slug);
     }
     return [];
   }
+
+  const complementaryMap={
+    dresses:["bags","shoes","earrings","necklaces","bracelets"],
+    tops:["bottoms","bags","accessories","necklaces"],
+    hoodies:["bottoms","shoes","bags","accessories"],
+    knitwear:["bottoms","bags","accessories"],
+    jackets:["tops","bottoms","bags","accessories"],
+    swimwear:["bags","hats","accessories"],
+    socks:["shoes","bottoms"],
+    shoes:["socks","bags","accessories"],
+    bags:["accessories","wallets-small-accessories","earrings","necklaces"],
+    earrings:["necklaces","bracelets","rings","dresses"],
+    necklaces:["earrings","bracelets","rings","dresses"],
+    bracelets:["rings","necklaces","bags"],
+    rings:["bracelets","necklaces","bags"],
+    jewelry:["earrings","necklaces","bracelets","rings"],
+    beauty:["perfume","accessories","bags"],
+    perfume:["beauty","accessories"],
+    home:["storage","lighting","kitchen","bath"],
+    kitchen:["storage","home"],
+    storage:["home","kitchen","office"],
+    tech:["phoneaccessories","gaming","office"],
+    phoneaccessories:["tech","gaming"],
+    gaming:["tech","office"],
+    travel:["bags","accessories","outdoors"],
+    outdoors:["travel","sports"],
+    kids:["toys","bags"],
+    pets:["home","travel"]
+  };
+  function complementarySlugs(slug){return complementaryMap[slug]||[]}
 
   function relationScore(item,currentCategory,currentPrice,currentGender){
     const slug=String(item?.category||H.inferCategory(item)||"");
@@ -73,7 +105,7 @@
   async function buildPool(product){
     const currentCategory=String(product?.category||H.inferCategory(product)||"");
     const prefs=H.shoppingPreferences?.()||{};
-    const requested=[currentCategory,...siblingSlugs(currentCategory),...(prefs.categories||[]).slice(0,3)]
+    const requested=[currentCategory,...siblingSlugs(currentCategory),...complementarySlugs(currentCategory),...(prefs.categories||[]).slice(0,4)]
       .filter(Boolean)
       .filter((slug,index,array)=>array.indexOf(slug)===index)
       .slice(0,8);
@@ -125,6 +157,41 @@
       .map(item=>({item,score:relationScore(item,currentCategory,currentPrice,currentGender),tie:stableTie(item)}))
       .sort((a,b)=>(b.score-a.score)||(a.tie-b.tie))
       .map(x=>x.item);
+
+    const used=new Set();
+    const take=(predicate,limit)=>{
+      const out=[];
+      for(const item of pool){
+        const k=key(item);
+        if(used.has(k)||!predicate(item))continue;
+        used.add(k);out.push(item);
+        if(out.length>=limit)break;
+      }
+      return out;
+    };
+    const siblings=new Set(siblingSlugs(currentCategory));
+    const complements=new Set(complementarySlugs(currentCategory));
+    recommendations.similar=take(item=>{
+      const slug=String(item?.category||H.inferCategory(item)||"");
+      return slug===currentCategory;
+    },12);
+    if(recommendations.similar.length<8){
+      recommendations.similar.push(...take(item=>{
+        const slug=String(item?.category||H.inferCategory(item)||"");
+        return siblings.has(slug)&&!complements.has(slug);
+      },12-recommendations.similar.length));
+    }
+    recommendations.complementary=take(item=>{
+      const slug=String(item?.category||H.inferCategory(item)||"");
+      return complements.has(slug);
+    },12);
+    recommendations.discover=take(item=>{
+      const slug=String(item?.category||H.inferCategory(item)||"");
+      return slug!==currentCategory&&!siblings.has(slug)&&!complements.has(slug);
+    },12);
+    if(recommendations.discover.length<8){
+      recommendations.discover.push(...take(()=>true,12-recommendations.discover.length));
+    }
     cursor=0;
   }
 
@@ -142,6 +209,21 @@
         '<div class="hd-shelf-meta"><span>'+H.esc(categoryTitle(slug))+'</span><span>'+H.esc(item.provider||"HUNT")+'</span></div>'+
       '</div>'+
     '</article>';
+  }
+
+  function renderRecommendationSections(){
+    const sections=[
+      ["similar","#hd-similar-grid","#hd-similar-block","similar_products"],
+      ["complementary","#hd-complementary-grid","#hd-complementary-block","complementary_products"],
+      ["discover","#hd-discover-grid","#hd-discover-block","controlled_discovery"]
+    ];
+    for(const [name,gridSel,blockSel,placement] of sections){
+      const items=recommendations[name]||[];
+      const grid=$(gridSel),block=$(blockSel);
+      if(block)block.hidden=!items.length;
+      if(grid)grid.innerHTML=items.map(card).join("");
+      if(items.length)window.HuntAnalytics?.recommendationImpression?.({placement,items});
+    }
   }
 
   function appendNext(){
@@ -233,7 +315,7 @@
       const cardEl=link.closest("[data-endless-key]");
       const k=cardEl?.dataset.endlessKey||"";
       const product=pool.find(x=>key(x)===k);
-      if(product)window.HuntAnalytics?.relatedProductClick?.(product,"endless_discovery");
+      if(product)window.HuntAnalytics?.relatedProductClick?.(product,"product_recommendations");
     }
   },true);
 
@@ -257,8 +339,7 @@
     current=product;
     seen.add(key(product));
     await Promise.allSettled([loadVerifiedMedia(product),buildPool(product)]);
-    appendNext();
-    setupObserver();
+    renderRecommendationSections();
   }
 
   window.addEventListener("hunt:product-loaded",event=>init(event.detail?.product));
