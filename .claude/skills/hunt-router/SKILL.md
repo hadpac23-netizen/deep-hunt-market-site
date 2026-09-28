@@ -12,12 +12,16 @@ Then load skills by task:
 - UI, styling, navigation, animations, category layout:
   - hunt-control
   - hunt-cinematic-ui
-  - hunt-cinematic-scene-navigation
   - hunt-navigation-ux
-  - hunt-adaptive-disclosure
   - hunt-taxonomy-guard
   - hunt-visual-qa
   - hunt-accessibility-performance
+
+- Only when the Owner explicitly asks for immersive/full-screen/spatial navigation:
+  - hunt-cinematic-scene-navigation
+
+- Only when the Owner explicitly asks to hide/collapse/reveal dense secondary UI:
+  - hunt-adaptive-disclosure
 
 - Product page, variants, sizes, attributes, recommendations:
   - hunt-control
