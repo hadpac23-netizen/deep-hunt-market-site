@@ -1,0 +1,1065 @@
+{
+  "schema": "HUNT_LAUNCH_ROUTE_SUPPLEMENT_V1",
+  "generated_at": "2026-09-28T20:21:00+03:00",
+  "production_effect": false,
+  "sellable": false,
+  "department": "men",
+  "locked_product_count": 54,
+  "note": "Shadow launch QA supplement. Reserve-safe market truth for DE/GB/IL/AE; US HOLD. Final tax/profit truth is not asserted.",
+  "shelves": {
+    "men/men-accessories": [
+      {
+        "provider": "EPROLO",
+        "item_id": "13732472",
+        "title": "Business Men Credit Card Wallet Aluminum Cash ID Card Holder  Case Blocking Slim Metal Wallet Coin Purse Black",
+        "category": "men-accessories",
+        "category_title": "Accessories",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202106/C322C21609ACB9127394FE1C656C4A2A.jpg",
+        "verified_inventory": 9999,
+        "variant_count": 6,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 13.99,
+          "reserve_floor_max_usd": 16.99,
+          "minimum_projected_margin": 0.260742,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "18984067",
+        "title": "Men's Wallet Short College Student Wallet With Zipper Wallet Simple Niche Soft Leather Wallet",
+        "category": "men-accessories",
+        "category_title": "Accessories",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202203/DF177234CC686C20132D791820F29234.jpg",
+        "verified_inventory": 3000,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 13.99,
+          "reserve_floor_max_usd": 17.99,
+          "minimum_projected_margin": 0.262924,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "19034207",
+        "title": "Leather Men's Card Holder Card Case European and American Leather Coin Purse Card Holder",
+        "category": "men-accessories",
+        "category_title": "Accessories",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202204/4D03DB7FF086E9C69B54747BA37D5941.jpg",
+        "verified_inventory": 3000,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 24.99,
+          "reserve_floor_max_usd": 33.99,
+          "minimum_projected_margin": 0.203001,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "28086613",
+        "title": "Men's wallet short wallet leather wallet multiple card slots can hold driver's license retro",
+        "category": "men-accessories",
+        "category_title": "Accessories",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202412/0C02396F8E73FE5264157927C2ED2D8B.jpg",
+        "verified_inventory": 46404,
+        "variant_count": 2,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 13.99,
+          "reserve_floor_max_usd": 18.99,
+          "minimum_projected_margin": 0.236967,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-bags": [
+      {
+        "provider": "EPROLO",
+        "item_id": "19547865",
+        "title": "Casual Simple Dumpling Bag Trendy New Fashion Nylon Two-In-One Shoulder Messenger Bag For Men",
+        "category": "men-bags",
+        "category_title": "Bags",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202207/00148F653B5FB68218BDB29E1DCB1ED8.jpg",
+        "verified_inventory": 3000,
+        "variant_count": 1,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 19.99,
+          "reserve_floor_max_usd": 30.99,
+          "minimum_projected_margin": 0.213734,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "28515385",
+        "title": "Men's sports chest bag shoulder bag simple men's crossbody bag fashionable small shoulder bag",
+        "category": "men-bags",
+        "category_title": "Bags",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202502/00789D10DC5CB1C1F9E00FEE54ED4903.jpg",
+        "verified_inventory": 19934,
+        "variant_count": 2,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 20.99,
+          "reserve_floor_max_usd": 38.99,
+          "minimum_projected_margin": 0.210567,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "31416137",
+        "title": "Chest Pack Outdoor Hiking Cycling Single Shoulder Crossbody Canvas Chest Bag Outdoor Sports Bag Street Fashion Men's Backpack",
+        "category": "men-bags",
+        "category_title": "Bags",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/CCCD7165E7F3607C709DECC1AE9A2435.jpg",
+        "verified_inventory": 81316,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 11.99,
+          "reserve_floor_max_usd": 16.99,
+          "minimum_projected_margin": 0.270159,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "31453966",
+        "title": "Men's Wax Canvas Backpack, Outdoor Hiking Large Capacity Waterproof Casual Travel Bag",
+        "category": "men-bags",
+        "category_title": "Bags",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/6F22B581249A7924CBBBA99F371D905A.jpg",
+        "verified_inventory": 9013,
+        "variant_count": 4,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 52.99,
+          "reserve_floor_max_usd": 103.99,
+          "minimum_projected_margin": 0.200031,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-hoodies": [
+      {
+        "provider": "CJdropshipping",
+        "item_id": "2406150750401606900",
+        "title": "Drop Shoulder Hooded Pullover Men's Autumn And Winter Hoodie",
+        "category": "men-hoodies",
+        "category_title": "Hoodies",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/2602de66-135f-495e-8d82-4a9c3e2d0f01.jpg",
+        "verified_inventory": 10409,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 27.99,
+          "reserve_floor_max_usd": 39.99,
+          "minimum_projected_margin": 0.200564,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "26727190",
+        "title": "Hoodie men's fashion trend printed hoodie",
+        "category": "men-hoodies",
+        "category_title": "Hoodies",
+        "image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202407/740CA8CA1F78DB2F05F67B2C0534B3AE.JPEG",
+        "verified_inventory": 788,
+        "variant_count": 8,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 22.99,
+          "reserve_floor_max_usd": 43.99,
+          "minimum_projected_margin": 0.20088,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "29973354",
+        "title": "Versatile round neck men's hoodie",
+        "category": "men-hoodies",
+        "category_title": "Hoodies",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/BACC3404B66E5EEAE219B2F3A390516C.jpg",
+        "verified_inventory": 3000,
+        "variant_count": 10,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 34.99,
+          "reserve_floor_max_usd": 59.99,
+          "minimum_projected_margin": 0.200324,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "30723523",
+        "title": "Vintage Open Front Hoodie Men's Autumn Winter Chenille Tweed Coat Heavyweight Stiff Couple Hoodie",
+        "category": "men-hoodies",
+        "category_title": "Hoodies",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202512/635C4BA2DEF2F3AF6093033A2D17D884.jpg",
+        "verified_inventory": 9999,
+        "variant_count": 15,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 30.99,
+          "reserve_floor_max_usd": 52.99,
+          "minimum_projected_margin": 0.204567,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "30728808",
+        "title": "Grey Retro Hooded Knit Sweater Men's Winter Thickened Lazy Style Heavyweight Inner Layer Hoodie Outerwear",
+        "category": "men-hoodies",
+        "category_title": "Hoodies",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202512/77556B0CB69C76CEA65FB0B12A9541C0.jpg",
+        "verified_inventory": 9999,
+        "variant_count": 12,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 34.99,
+          "reserve_floor_max_usd": 52.99,
+          "minimum_projected_margin": 0.203946,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "30774202",
+        "title": "Hip hop men's hoodie",
+        "category": "men-hoodies",
+        "category_title": "Hoodies",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202512/07BEBB456C9D9A9DE74415AA4EF89C3A.jpg",
+        "verified_inventory": 992,
+        "variant_count": 5,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 34.99,
+          "reserve_floor_max_usd": 58.99,
+          "minimum_projected_margin": 0.205461,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "32451883",
+        "title": "Printed Letter Hoodie for Men, Cool and Trendy Fleece Hoodie",
+        "category": "men-hoodies",
+        "category_title": "Hoodies",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202608/A816B6D14F040893C493C740457A13C7.jpg",
+        "verified_inventory": 9999,
+        "variant_count": 84,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 20.99,
+          "reserve_floor_max_usd": 40.99,
+          "minimum_projected_margin": 0.202481,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-jackets": [
+      {
+        "provider": "EPROLO",
+        "item_id": "29949926",
+        "title": "Vintage stand up collar vintage couple denim jacket for men",
+        "category": "men-jackets",
+        "category_title": "Jackets",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/4F56C6F76FB4F477624540960E0591C5.jpg",
+        "verified_inventory": 10000,
+        "variant_count": 8,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 44.99,
+          "reserve_floor_max_usd": 68.99,
+          "minimum_projected_margin": 0.202506,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "30723547",
+        "title": "Edgy Black Baseball Collar Leather Jacket for Men Short Crop Moto Style  Fashion Windproof and Waterproof Outerwear",
+        "category": "men-jackets",
+        "category_title": "Jackets",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202512/1400E045F3B49765BC20869A98729D4B.jpg",
+        "verified_inventory": 9999,
+        "variant_count": 10,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 39.99,
+          "reserve_floor_max_usd": 62.99,
+          "minimum_projected_margin": 0.204301,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "30728538",
+        "title": "Street Style Baseball Collar PU Leather Jacket for Men, Casual Color-Blocked Inner Lining, Trendy Short Biker Coat",
+        "category": "men-jackets",
+        "category_title": "Jackets",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202512/699F097CD979BE703E1514DA39506FC5.jpg",
+        "verified_inventory": 9999,
+        "variant_count": 8,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 42.99,
+          "reserve_floor_max_usd": 68.99,
+          "minimum_projected_margin": 0.201189,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "30728553",
+        "title": "Barn Style Brown Cargo Jacket Men Autumn Vintage Distressed Baseball Jacket Design Sense Cool Outerwear Trendy",
+        "category": "men-jackets",
+        "category_title": "Jackets",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202512/78FE91E7DA81EE785F01C26E67907600.jpg",
+        "verified_inventory": 9999,
+        "variant_count": 10,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 39.99,
+          "reserve_floor_max_usd": 62.99,
+          "minimum_projected_margin": 0.203708,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "30728612",
+        "title": "Stylish White Short Shoulder Pad Jacket for Men, High-End Streetwear Look, Oversized Biker PU Leather Jacket, Trendy Male Model Outfit",
+        "category": "men-jackets",
+        "category_title": "Jackets",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202512/F98DF45F083DEE22E7642D28355C4070.jpg",
+        "verified_inventory": 9999,
+        "variant_count": 10,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 36.99,
+          "reserve_floor_max_usd": 59.99,
+          "minimum_projected_margin": 0.200579,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "30728767",
+        "title": "Washed Distressed Patchwork Leather Collar Denim Jacket Men Heavyweight Loose Outerwear Shoulder Pad Jacket  Youth Style",
+        "category": "men-jackets",
+        "category_title": "Jackets",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202512/A02F97FA98DBED07979C6265C66D4C6A.jpg",
+        "verified_inventory": 9999,
+        "variant_count": 5,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 46.99,
+          "reserve_floor_max_usd": 72.99,
+          "minimum_projected_margin": 0.203873,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "32590502",
+        "title": "Men's Premium Casual Minimalist Lapel Jacket",
+        "category": "men-jackets",
+        "category_title": "Jackets",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202609/564F0BDFCFCDB014D66A59D652043918.jpg",
+        "verified_inventory": 500,
+        "variant_count": 12,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 53.99,
+          "reserve_floor_max_usd": 102.99,
+          "minimum_projected_margin": 0.204499,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "32590510",
+        "title": "Men's  Vintage Maillard Leather Lapel Loose Jacket",
+        "category": "men-jackets",
+        "category_title": "Jackets",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202609/AEED06867FBD9EF27EAB9CF02DC83EC7.jpg",
+        "verified_inventory": 500,
+        "variant_count": 15,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 61.99,
+          "reserve_floor_max_usd": 113.99,
+          "minimum_projected_margin": 0.201,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "32677402",
+        "title": "Men's Vintage Oil-Waxed Leather Biker Jacket, Zipper Closure Lapel Turn-Down Collar Slim Fit Outerwear",
+        "category": "men-jackets",
+        "category_title": "Jackets",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202609/A8D483FEA1E712857ECDD68187ACE303.jpg",
+        "verified_inventory": 500,
+        "variant_count": 15,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 53.99,
+          "reserve_floor_max_usd": 94.99,
+          "minimum_projected_margin": 0.20361,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "32679860",
+        "title": "Vintage  Star Velvet PU Leather Zipper Stand Collar Regular Fit Men's Baseball Jacket",
+        "category": "men-jackets",
+        "category_title": "Jackets",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202609/CC7E455B0376367867EE8D884355220A.jpg",
+        "verified_inventory": 500,
+        "variant_count": 24,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 60.99,
+          "reserve_floor_max_usd": 108.99,
+          "minimum_projected_margin": 0.202954,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "32695977",
+        "title": "Men's PU Leather Jacket, Casual Biker Motorcycle Stand Collar Coat",
+        "category": "men-jackets",
+        "category_title": "Jackets",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202609/DD7A5350D61985C969C708D1218ADFC4.jpg",
+        "verified_inventory": 10400,
+        "variant_count": 15,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 38.99,
+          "reserve_floor_max_usd": 75.99,
+          "minimum_projected_margin": 0.200553,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-knitwear": [
+      {
+        "provider": "CJdropshipping",
+        "item_id": "2411290723241618100",
+        "title": "American-style Half Zipper High-necked Knitwear For Men",
+        "category": "men-knitwear",
+        "category_title": "Knitwear",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/c23ce2e9-6608-48c7-a4f7-98b0e19c6c24.jpg",
+        "verified_inventory": 10759,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 19.99,
+          "reserve_floor_max_usd": 34.99,
+          "minimum_projected_margin": 0.20277,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "CJdropshipping",
+        "item_id": "2412061444391607600",
+        "title": "Simple Niche Sweater Cardigan For Men",
+        "category": "men-knitwear",
+        "category_title": "Knitwear",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/eaabaab0-321d-4f93-8ad0-0fb5329fc349.jpg",
+        "verified_inventory": 11477,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 23.99,
+          "reserve_floor_max_usd": 34.99,
+          "minimum_projected_margin": 0.202215,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "CJdropshipping",
+        "item_id": "2502241146511626900",
+        "title": "Knitwear Polo Collar Solid Color Long Sleeve Men's Sweater",
+        "category": "men-knitwear",
+        "category_title": "Knitwear",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/8041c45b-9abd-4f4e-8659-c4c6a9001347.jpg",
+        "verified_inventory": 5555,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 21.99,
+          "reserve_floor_max_usd": 31.99,
+          "minimum_projected_margin": 0.201033,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "CJdropshipping",
+        "item_id": "2505060846341611200",
+        "title": "Creamy-white Breasted Knitted Cardigan For Men",
+        "category": "men-knitwear",
+        "category_title": "Knitwear",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/d470a658-c8d4-4b0a-888f-6cbd77b1ed55.jpg",
+        "verified_inventory": 7019,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 25.99,
+          "reserve_floor_max_usd": 36.99,
+          "minimum_projected_margin": 0.200915,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "CJdropshipping",
+        "item_id": "2508240921441603000",
+        "title": "Autumn And Winter Sweater Knitwear Men's Cardigan Lapel",
+        "category": "men-knitwear",
+        "category_title": "Knitwear",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/07aa9441-d519-4966-ac16-727fcc1354cf.jpg",
+        "verified_inventory": 6297,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 40.99,
+          "reserve_floor_max_usd": 57.99,
+          "minimum_projected_margin": 0.200036,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "CJdropshipping",
+        "item_id": "2509110537231629700",
+        "title": "Knitwear Autumn And Winter Round Neck Casual Trend Men's Sweater",
+        "category": "men-knitwear",
+        "category_title": "Knitwear",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/53a37f98-d179-4d97-b81b-1609accf897a.jpg",
+        "verified_inventory": 7548,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 23.99,
+          "reserve_floor_max_usd": 35.99,
+          "minimum_projected_margin": 0.204607,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "30723602",
+        "title": "Retro Double-Zip Stand Collar Cardigan Sweater Men Winter Cleanfit Lazy Soft Knitwear Coat",
+        "category": "men-knitwear",
+        "category_title": "Knitwear",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202512/A08F7A2E6A6E13142C664E7656336D2E.jpg",
+        "verified_inventory": 9999,
+        "variant_count": 4,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 34.99,
+          "reserve_floor_max_usd": 56.99,
+          "minimum_projected_margin": 0.200629,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "30923638",
+        "title": "Starry Sky Stand-up Collar Knitted Sweater Men's Lazy Elegant Cardigan Outerwear",
+        "category": "men-knitwear",
+        "category_title": "Knitwear",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202601/1FCF760944168430FAC9EEC726DFD7EA.jpg",
+        "verified_inventory": 9999,
+        "variant_count": 10,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 30.99,
+          "reserve_floor_max_usd": 55.99,
+          "minimum_projected_margin": 0.201626,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "31459542",
+        "title": "Jacquard collar button knit short sleeved cardigan for men",
+        "category": "men-knitwear",
+        "category_title": "Knitwear",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/10CFE249EB7D825B78D6E582A9948F48.jpg",
+        "verified_inventory": 500,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 49.99,
+          "reserve_floor_max_usd": 69.99,
+          "minimum_projected_margin": 0.20084,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "32872079",
+        "title": "Men's Casual Color Block Zipper Stand Collar Knit Cardigan",
+        "category": "men-knitwear",
+        "category_title": "Knitwear",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202609/FFDBD69233062049ADC82DE4D1AABF14.jpg",
+        "verified_inventory": 345,
+        "variant_count": 15,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 47.99,
+          "reserve_floor_max_usd": 78.99,
+          "minimum_projected_margin": 0.202899,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-loungewear": [
+      {
+        "provider": "CJdropshipping",
+        "item_id": "2408180305501614500",
+        "title": "Men's Ice Silk Modal Short Sleeved Pants Set",
+        "category": "men-loungewear",
+        "category_title": "Loungewear",
+        "image_url": "https://oss-cf.cjdropshipping.com/product/2024/08/18/03/17999380-56dd-4f88-acf2-27fb553dfe96_trans.jpeg",
+        "verified_inventory": 36001,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 18.99,
+          "reserve_floor_max_usd": 26.99,
+          "minimum_projected_margin": 0.200074,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-boxers": [
+      {
+        "provider": "EPROLO",
+        "item_id": "29077395",
+        "title": "Cool Knitted Fabric Mesh Shorts Adult Men'S Boxers Knitted Fabric Boxers Men's Comfortable Boxer Underwear",
+        "category": "men-boxers",
+        "category_title": "Boxers",
+        "image_url": "https://shopifyfile.oss-us-west-1.aliyuncs.com/attached/image/202504/69381585B5C1D12EE62473CC514EB9CC.PNG",
+        "verified_inventory": 684,
+        "variant_count": 6,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 14.99,
+          "reserve_floor_max_usd": 23.99,
+          "minimum_projected_margin": 0.20842,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-shirts": [
+      {
+        "provider": "EPROLO",
+        "item_id": "29949857",
+        "title": "Green polo shirt men's ice silk striped knit shirt",
+        "category": "men-shirts",
+        "category_title": "Shirts",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/514BBB3954C839DEE24BE4F824B6B1BF.jpg",
+        "verified_inventory": 10000,
+        "variant_count": 20,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 25.99,
+          "reserve_floor_max_usd": 40.99,
+          "minimum_projected_margin": 0.202215,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "29949865",
+        "title": "Color blocking striped short sleeved polo shirt for men's summer slim fit lapel top",
+        "category": "men-shirts",
+        "category_title": "Shirts",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/516F79500EE02DC35FD589321EDB8D9D.jpg",
+        "verified_inventory": 10000,
+        "variant_count": 10,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 26.99,
+          "reserve_floor_max_usd": 41.99,
+          "minimum_projected_margin": 0.202297,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "29949930",
+        "title": "Retro denim shirt men's spring long sleeved shirt",
+        "category": "men-shirts",
+        "category_title": "Shirts",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/A75B4976073DCEC4C3BF45612A2AE83D.jpg",
+        "verified_inventory": 10000,
+        "variant_count": 10,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 32.99,
+          "reserve_floor_max_usd": 57.99,
+          "minimum_projected_margin": 0.201236,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "29949937",
+        "title": "Color blocking checkered shirt men's long sleeved shirt",
+        "category": "men-shirts",
+        "category_title": "Shirts",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/16E55D89A1AD721A7CFF4C1A6D51EA75.jpg",
+        "verified_inventory": 10000,
+        "variant_count": 15,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 23.99,
+          "reserve_floor_max_usd": 38.99,
+          "minimum_projected_margin": 0.200462,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-tops": [
+      {
+        "provider": "EPROLO",
+        "item_id": "29610510",
+        "title": "Solid color lapel hollow breathable men's short sleeved top",
+        "category": "men-tops",
+        "category_title": "Tops",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202507/325F5EB064532484D19AE93C4B5EFFEB.jpg",
+        "verified_inventory": 50000,
+        "variant_count": 35,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 25.99,
+          "reserve_floor_max_usd": 41.99,
+          "minimum_projected_margin": 0.200429,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "29748792",
+        "title": "Fake two short sleeved T-shirts men's loose fitting patchwork V-neck half sleeved top",
+        "category": "men-tops",
+        "category_title": "Tops",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202507/DC972CBF2D2E41F22A4DA699ED6914F8.jpg",
+        "verified_inventory": 10000,
+        "variant_count": 8,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 20.99,
+          "reserve_floor_max_usd": 34.99,
+          "minimum_projected_margin": 0.201334,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "29929689",
+        "title": "Men's casual business lapel half zip top",
+        "category": "men-tops",
+        "category_title": "Tops",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202508/EFC3174E86A91B76D9DDCD0B6A5832B8.jpg",
+        "verified_inventory": 10000,
+        "variant_count": 28,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 19.99,
+          "reserve_floor_max_usd": 30.99,
+          "minimum_projected_margin": 0.207486,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-nightwear": [
+      {
+        "provider": "CJdropshipping",
+        "item_id": "2506110754311601900",
+        "title": "Ice Silk Pajamas Men Spring Summer Lightweight Breathable",
+        "category": "men-nightwear",
+        "category_title": "Nightwear",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/3df45b62-ec9d-4145-a450-6ab7fda1063e.jpg",
+        "verified_inventory": 23464,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 17.99,
+          "reserve_floor_max_usd": 25.99,
+          "minimum_projected_margin": 0.203155,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-shoes": [
+      {
+        "provider": "EPROLO",
+        "item_id": "12515068",
+        "title": "Flying woven air cushion men's shoes trend sports shoes Korean breathable running shoes men's casual shoes",
+        "category": "men-shoes",
+        "category_title": "Shoes",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202104/1142AA5851FDA3D1F16BFE2BF621B5B3.jpg",
+        "verified_inventory": 977,
+        "variant_count": 33,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 26.99,
+          "reserve_floor_max_usd": 50.99,
+          "minimum_projected_margin": 0.201037,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "31411072",
+        "title": "Men's Shoes Breathable Casual Running Height-Increasing Air Cushion Shock-Absorbing Leather Dad Sneakers",
+        "category": "men-shoes",
+        "category_title": "Shoes",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202604/AC7B58571812ECE76005ACF7436A8690.jpg",
+        "verified_inventory": 1109,
+        "variant_count": 36,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 27.99,
+          "reserve_floor_max_usd": 57.99,
+          "minimum_projected_margin": 0.203154,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "31998888",
+        "title": "EVA Slip-On Sandals for Couples, Breathable Summer Men's Indoor and Outdoor Slippers, Non-Slip Massage Toe Separated Design, Casual Home Wear",
+        "category": "men-shoes",
+        "category_title": "Shoes",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202607/8B928D33777F29FE4C67CD9600034628.jpg",
+        "verified_inventory": 99998,
+        "variant_count": 14,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 15.99,
+          "reserve_floor_max_usd": 25.99,
+          "minimum_projected_margin": 0.201651,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-socks": [
+      {
+        "provider": "EPROLO",
+        "item_id": "28291202",
+        "title": "Bamboo fiber cotton socks mid tube men's socks double needle dark flower square grid socks",
+        "category": "men-socks",
+        "category_title": "Socks",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/image/202501/DA9B64F9E5A7D6E67BB85320F15D8FC5.jpg",
+        "verified_inventory": 9985828,
+        "variant_count": 5,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 11.99,
+          "reserve_floor_max_usd": 14.99,
+          "minimum_projected_margin": 0.268179,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "29610935",
+        "title": "Men's thin breathable mesh boat socks short socks shallow mouth ice silk invisible socks",
+        "category": "men-socks",
+        "category_title": "Socks",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202507/F24BD48772B7D7B31342E67DE4CAF010.jpg",
+        "verified_inventory": 99992,
+        "variant_count": 8,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 12.99,
+          "reserve_floor_max_usd": 15.99,
+          "minimum_projected_margin": 0.252033,
+          "final_profit_verified": false
+        }
+      },
+      {
+        "provider": "EPROLO",
+        "item_id": "31639420",
+        "title": "Loose thin style wide mouth thin cotton spring and summer men's cotton socks",
+        "category": "men-socks",
+        "category_title": "Socks",
+        "image_url": "https://shopifyfile.oss-accelerate.aliyuncs.com/attached/pingtai/202605/977471BABF320F7857D59569ADB22F95.jpg",
+        "verified_inventory": 99881,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 10.99,
+          "reserve_floor_max_usd": 14.99,
+          "minimum_projected_margin": 0.286191,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-suits": [
+      {
+        "provider": "CJdropshipping",
+        "item_id": "2508260426221605800",
+        "title": "Men's Slim Three-piece Suit - Khaki",
+        "category": "men-suits",
+        "category_title": "Suits",
+        "image_url": "https://oss-cf.cjdropshipping.com/product/2025/08/26/04/3c6e2a67-3054-4e27-80c7-ea209f8146b1_fine.jpeg",
+        "verified_inventory": 23930,
+        "variant_count": 3,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 82.99,
+          "reserve_floor_max_usd": 111.99,
+          "minimum_projected_margin": 0.200206,
+          "final_profit_verified": false
+        }
+      }
+    ],
+    "men/men-swimwear": [
+      {
+        "provider": "CJdropshipping",
+        "item_id": "2506050801591602700",
+        "title": "Men's Quick-drying Sports Casual Beach Shorts",
+        "category": "men-swimwear",
+        "category_title": "Swimwear",
+        "image_url": "https://cf.cjdropshipping.com/quick/product/00cdddef-340b-40cd-9f3c-4d965caae04e.jpg",
+        "verified_inventory": 34039,
+        "variant_count": 4,
+        "truth_state": "HUNT_LAUNCH_ROUTE_LOCKED",
+        "launch_verified": true,
+        "image_technical_status": "PASS",
+        "profit_truth": {
+          "reserve_floor_min_usd": 22.99,
+          "reserve_floor_max_usd": 32.99,
+          "minimum_projected_margin": 0.200759,
+          "final_profit_verified": false
+        }
+      }
+    ]
+  }
+}
