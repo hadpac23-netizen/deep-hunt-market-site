@@ -110,11 +110,18 @@
       if(!res.ok||data?.ok!==true) throw new Error(String(data?.error||"ORDER_PREVIEW_FAILED"));
       const blockers=Array.isArray(data.blockers)?data.blockers:[];
       const addressReady=data.shipping_address_ready===true && !blockers.includes("SHIPPING_ADDRESS_NOT_COLLECTED");
-      host.textContent=addressReady
-        ? (blockers.length
-            ? "Shipping address accepted. Pre-launch blockers: "+blockers.join(", ")+"."
-            : "Shipping address and fulfillment preview passed.")
-        : "Shipping address is still incomplete. No supplier order was created.";
+      const expectedPrelaunch=new Set([
+        "PAYMENT_ACCOUNT_NOT_ACTIVE",
+        "PAYMENT_NOT_CONFIRMED",
+        "EPROLO_ORDER_ENDPOINT_NOT_VERIFIED",
+        "SUPPLIER_ORDER_CREATION_DISABLED"
+      ]);
+      const materialBlockers=blockers.filter(code=>!expectedPrelaunch.has(String(code)));
+      host.textContent=!addressReady
+        ? "Shipping address is still incomplete. No supplier order was created."
+        : materialBlockers.length
+          ? "Shipping address accepted, but one or more fulfillment checks still need review. No payment or supplier order was attempted."
+          : "Shipping address, product and shipping checks passed. Payment and order submission remain disabled during pre-launch.";
     } catch {
       host.textContent="Order readiness check could not run. No supplier order was created.";
     }
