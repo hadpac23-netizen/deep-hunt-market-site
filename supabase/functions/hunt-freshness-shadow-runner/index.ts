@@ -257,30 +257,21 @@ async function syncException(provider:string,result:any){
   if(!reason)return;
   const severity=result.classification==="RETRY"?"warning":(reason==="OUT_OF_STOCK"||reason==="NO_SHIPPING"?"warning":"critical");
   const ownerRole=result.classification==="RETRY"?"developer":"operations";
-  const existing=await sql()`
-    select id from private.hunt_ops_exceptions
-    where entity_type='variant' and entity_id=${entityId}
-      and coalesce(provider,'')=${provider}
-      and coalesce(destination_country,'')=${result.country}
-      and reason_code=${reason} and status<>'resolved'
-    limit 1
+  await sql()`
+    insert into private.hunt_ops_exceptions
+      (entity_type,entity_id,provider,destination_country,reason_code,severity,owner_role,status,
+       opened_at,last_checked_at,evidence,created_at,updated_at)
+    values ('variant',${entityId},${provider},${result.country},${reason},${severity},${ownerRole},'open',
+            now(),now(),${sql().json({...result,production_effect:false})},now(),now())
+    on conflict (entity_type,entity_id,coalesce(provider,''),coalesce(destination_country,''),reason_code)
+    where status <> 'resolved'
+    do update set
+      severity=excluded.severity,
+      owner_role=excluded.owner_role,
+      last_checked_at=now(),
+      evidence=excluded.evidence,
+      updated_at=now()
   `;
-  if(existing?.[0]?.id){
-    await sql()`
-      update private.hunt_ops_exceptions
-      set severity=${severity},owner_role=${ownerRole},last_checked_at=now(),
-          evidence=${sql().json({...result,production_effect:false})},updated_at=now()
-      where id=${existing[0].id}
-    `;
-  }else{
-    await sql()`
-      insert into private.hunt_ops_exceptions
-        (entity_type,entity_id,provider,destination_country,reason_code,severity,owner_role,status,
-         opened_at,last_checked_at,evidence,created_at,updated_at)
-      values ('variant',${entityId},${provider},${result.country},${reason},${severity},${ownerRole},'open',
-              now(),now(),${sql().json({...result,production_effect:false})},now(),now())
-    `;
-  }
 }
 
 Deno.serve(async(req:Request)=>{
