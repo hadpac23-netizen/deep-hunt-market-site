@@ -40,3 +40,11 @@ test("EPROLO PDP reuses one DB client and prefers the transaction pooler",()=>{
   assert.doesNotMatch(src,/await sql\.end\(/);
   assert.doesNotMatch(src,/connect_timeout:20,idle_timeout:3,max_lifetime:60/);
 });
+
+
+test("EPROLO PDP never promotes PROFIT_REVIEW to PASS or purchasable",()=>{
+  assert.match(src,/profit_gate_status:exact\?\(cleanText\(source\?\.profit_gate_v2\?\.status\)\|\|"REVIEW"\):"REVIEW"/);
+  assert.match(src,/retail_price_verified:false/);
+  assert.match(src,/purchasable:false/);
+  assert.doesNotMatch(src,/profit_gate_status:exact\?"PASS":"REVIEW"/);
+});
