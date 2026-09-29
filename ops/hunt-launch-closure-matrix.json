@@ -39,7 +39,10 @@
     "eprolo_live_fresh_truth_status": "BLOCKED_UNTIL_PATCH_DEPLOYED",
     "blocks_real_money": true,
     "eprolo_destination_tax_patch_in_pr26": true,
-    "eprolo_final_profit_requires_provider_tax_truth": true
+    "eprolo_final_profit_requires_provider_tax_truth": true,
+    "eprolo_internal_country_truth_token_required": true,
+    "eprolo_internal_token_secret_present": false,
+    "eprolo_internal_token_note": "HUNT_EPROLO_INTERNAL_TOKEN must be configured before deploying patched country-shadow/payment/freshness callers."
   },
   "pdp_readiness": {
     "status": "PASS_CANONICALIZED",
@@ -148,5 +151,13 @@
     "ci_guard_present": true,
     "blocks_real_money": false
   },
-  "launch_rule": "No Payment Live, Supplier Live Order, merge, deploy, or customer availability promise until all real-money blockers PASS and Owner Gate approves."
+  "launch_rule": "No Payment Live, Supplier Live Order, merge, deploy, or customer availability promise until all real-money blockers PASS and Owner Gate approves.",
+  "red_team_review": {
+    "coderabbit_findings_total": 13,
+    "coderabbit_major_findings_fixed_in_pr26": 13,
+    "closure_contract_test": "tests/red-team-closure-contract.test.js",
+    "latest_checkout_regression": "PASS",
+    "latest_catalog_integrity": "PASS",
+    "final_re_review_required": true
+  }
 }
