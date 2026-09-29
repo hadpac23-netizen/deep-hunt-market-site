@@ -126,6 +126,17 @@
             country_code: country,
             idempotency_key: correlationId || `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
             customer_email:shipping.email||null,
+            shipping_address:shipping.hasAny?{
+              customer_name:shipping.snapshot.shippingCustomerName,
+              email:shipping.email||null,
+              address1:shipping.snapshot.shippingAddress,
+              address2:shipping.snapshot.shippingAddress2,
+              city:shipping.snapshot.shippingCity,
+              province:shipping.snapshot.shippingProvince,
+              postal_code:shipping.snapshot.shippingZip,
+              phone:shipping.snapshot.shippingPhone,
+              country_code:shipping.snapshot.shippingCountryCode
+            }:{},
             shipping_snapshot:shipping.hasAny?shipping.snapshot:{},
             items: cart.map(item => ({
               provider:item.provider, item_id:item.item_id, variant_id:item.variant_id,
