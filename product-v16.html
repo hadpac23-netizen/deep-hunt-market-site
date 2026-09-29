@@ -134,6 +134,11 @@
 <div class="mobile-buybar"><div><small>HUNT price</small><strong id="hd-mobile-price">—</strong></div><button id="hd-mobile-add" type="button" disabled>Options pending</button></div>
 
 <script src="market-core.js"></script>
+<script>
+if(window.HuntCore){
+  window.HuntCore.productUrl=p=>"product-v16.html?provider="+encodeURIComponent(String(p?.provider||""))+"&id="+encodeURIComponent(String(p?.item_id||""));
+}
+</script>
 <script src="boom-runtime.js"></script>
 <script>(()=>{
   const q=new URLSearchParams(location.search);
@@ -181,6 +186,15 @@
     }
     const delivery=$("#pdp-delivery");
     if(delivery)delivery.textContent=p.avg_fulfillment_time?String(p.avg_fulfillment_time):"Delivery estimate shown at checkout when verified";
+    const dept=String(p.hunt_department||p.canonical_department||"");
+    const shelf=String(p.hunt_shelf||p.canonical_shelf||"");
+    const categoryLink=$("#hd-product-category-link");
+    if(categoryLink&&dept){
+      const qp=new URLSearchParams({dept});
+      if(shelf)qp.set("shelf",dept+"/"+shelf.replace(/^.*\//,""));
+      categoryLink.href="hunt-v16.html?"+qp.toString();
+      categoryLink.textContent=[dept,shelf].filter(Boolean).map(x=>String(x).replace(/^(women|men)-/,"").replace(/-/g," ")).join(" / ");
+    }
     document.body.classList.add("product-ready");
     $("#hd-product-layout").hidden=false;
     $("#hd-product-loading").hidden=true;
