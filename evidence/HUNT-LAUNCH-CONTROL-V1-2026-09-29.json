@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-LAUNCH-CONTROL-V5",
+  "version": "HUNT-LAUNCH-CONTROL-V6",
   "updated_at": "2026-09-29",
   "mode": "PRE_PAYMENT_FINISH_MODE",
   "payment_live": false,
@@ -18,7 +18,7 @@
     {
       "id": "product_detail_truth",
       "status": "DO_NOW",
-      "note": "175 PDP Ready verified; 636 Strict candidates remain to be live-checked. Active requires live variants + availability + verified HUNT retail price."
+      "note": "266 PDP Ready verified; zero eligible shelves remain at 0 coverage. 30 shelves remain below 3 PDP-ready products; 543 Strict candidates still unchecked."
     },
     {
       "id": "checkout_v16",
@@ -87,13 +87,15 @@
     "supplier_live_order": false
   },
   "pdp_truth": {
-    "strict_catalog": 811,
-    "pdp_ready_verified": 175,
-    "pdp_not_yet_checked": 636,
-    "pdp_with_sizes": 99,
-    "pdp_with_colors": 175,
-    "pdp_with_multi_gallery": 45,
-    "eprolo_strategy": "15-product live-PDP waves plus balanced shelf fill",
+    "strict_catalog": 809,
+    "pdp_ready_verified": 266,
+    "pdp_not_yet_checked": 543,
+    "pdp_with_sizes": 150,
+    "pdp_with_colors": 264,
+    "pdp_with_multi_gallery": 65,
+    "zero_coverage_shelves": 0,
+    "shelves_below_3": 30,
+    "eprolo_strategy": "15-product live-PDP waves; zero coverage first, then depth-to-3",
     "cj_live_detail_issue": "62 stale CJ Strict products remain demoted"
   }
 }
