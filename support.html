@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Support — HUNT</title><link rel="stylesheet" href="customer-service-v16.css"></head>
+<body>
+<header class="service-header"><a class="service-brand" href="hunt-v16.html"><strong>HUNT</strong><small>GLOBAL SHOPPING MARKETPLACE</small></a><nav class="service-nav"><a href="profile.html">My HUNT</a><a href="returns.html">Returns</a><a href="checkout.html">Bag</a></nav></header>
+<main class="service-shell">
+<section class="service-hero"><small>CUSTOMER CARE</small><h1>How can we help?</h1><p>Send HUNT a support request linked to your account or an order. Supplier details stay internal.</p></section>
+<div class="service-grid">
+<section class="service-card"><div class="card-head"><small>NEW REQUEST</small><h2>Contact support</h2></div>
+<form id="support-form" class="field-grid">
+<label>Category<select id="support-category"><option value="order">Order</option><option value="shipping">Shipping</option><option value="product">Product</option><option value="account">Account</option><option value="return">Return</option><option value="general">General</option></select></label>
+<label>Order<select id="support-order"><option value="">No specific order</option></select></label>
+<label class="wide">Subject<input id="support-subject" maxlength="140" required></label>
+<label class="wide">Message<textarea id="support-message" maxlength="4000" required></textarea></label>
+</form><button id="support-submit" class="primary" type="button">Send request</button><p id="support-status" class="status">Sign in to send a support request.</p></section>
+<aside class="service-card"><div class="card-head"><small>YOUR REQUESTS</small><h2>Support history</h2></div><div id="support-list" class="service-list"><span class="status">Loading…</span></div></aside>
+</div></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script><script src="market-core.js"></script><script src="boom-runtime.js"></script><script src="support-v16.js"></script>
+</body></html>
