@@ -50,6 +50,10 @@
 
   function renderOptions() {
     const evidenceOnly = variants.length===0;
+    const colorLabel=$("#hd-color-label");
+    const sizeLabel=$("#hd-size-label");
+    if(colorLabel) colorLabel.textContent=product?.color_label||"Color";
+    if(sizeLabel) sizeLabel.textContent=product?.size_label||"Size";
     const colors = evidenceOnly
       ? (Array.isArray(product?.colors)?product.colors:[]).filter(Boolean).map(color=>({color:String(color),color_code:""}))
       : uniqueBy(variants,"color");
