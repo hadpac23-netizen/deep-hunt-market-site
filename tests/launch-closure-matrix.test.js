@@ -17,5 +17,8 @@ test("CJ and EPROLO readiness are never conflated",()=>{
   assert.equal(m.catalog.cj_exact_variant_refresh_pool,63);
   assert.equal(m.catalog.eprolo_canonical_pdp_ready,261);
   assert.equal(m.catalog.cj_live_il_audit.fresh_pretax_pass,30);
-  assert.equal(m.catalog.eprolo_live_fresh_truth_status,"BLOCKED_UNTIL_PATCH_DEPLOYED");
+  assert.equal(m.catalog.eprolo_live_fresh_truth_status,"LIVE_STOCK_COST_SHIPPING_VERIFIED_TAX_MISSING");
+  assert.equal(m.catalog.eprolo_live_runtime_proof.canonical_core_audited,261);
+  assert.equal(m.catalog.eprolo_live_runtime_proof.tax_unverified,261);
+  assert.equal(m.catalog.eprolo_live_runtime_proof.final_profit_verified,0);
 });
