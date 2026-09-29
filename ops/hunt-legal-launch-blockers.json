@@ -1,0 +1,27 @@
+{
+  "schema_version": "HUNT_LEGAL_LAUNCH_BLOCKERS_V1",
+  "status": "BLOCKED_REVIEW_REQUIRED",
+  "real_money_launch_allowed": false,
+  "reason": "Customer-facing legal pages cannot be finalized without verified HUNT operating-entity and contact information plus jurisdiction-specific review.",
+  "required_verified_fields": [
+    "legal_entity_name",
+    "registration_number",
+    "business_address",
+    "support_email",
+    "privacy_contact_email",
+    "returns_address"
+  ],
+  "required_pages": [
+    "terms",
+    "privacy",
+    "returns_refunds",
+    "shipping_delivery",
+    "cookie_consent_where_required"
+  ],
+  "rules": {
+    "invent_business_identity": false,
+    "publish_placeholder_legal_text": false,
+    "remove_noindex_before_public_launch_only_after_review": true
+  },
+  "owner_gate_required": true
+}
