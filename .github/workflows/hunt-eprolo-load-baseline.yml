@@ -1,0 +1,27 @@
+name: HUNT EPROLO load baseline
+
+on:
+  push:
+    branches:
+      - "launch/hunt-candidate-2026-09-29-v1"
+    paths:
+      - "scripts/hunt-eprolo-load-baseline.mjs"
+      - ".github/workflows/hunt-eprolo-load-baseline.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  load-baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Read-only EPROLO storefront load baseline
+        run: node scripts/hunt-eprolo-load-baseline.mjs
