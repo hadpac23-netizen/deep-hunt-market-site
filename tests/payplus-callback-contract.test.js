@@ -8,7 +8,10 @@ const read=file=>fs.readFileSync(path.join(root,file),"utf8");
 test("callback verifies signature and re-queries PayPlus before accepting evidence",()=>{
   const src=read("supabase/functions/hunt-payplus-callback/index.ts");
   assert.match(src,/verifyPayPlusCallbackHeaders/);
-  assert.match(src,/verifyWithPayPlus\(session,payload\)/);
+  assert.match(src,/const callbackTx=verifiedTransaction\(parsed\.signatureBody\)/);
+  assert.match(src,/verifyWithPayPlus\(session,callbackTx\)/);
+  assert.match(src,/if\(req\.method!=="POST"\)/);
+  assert.doesNotMatch(src,/verifyWithPayPlus\(session,payload\)/);
   assert.match(src,/PaymentPages\/ipn-full/);
   assert.match(src,/PAYPLUS_MORE_INFO_MISMATCH/);
   assert.match(src,/PAYPLUS_AMOUNT_MISMATCH/);
