@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-V16-LIVE-CATALOG-QA-V5",
+  "version": "HUNT-V16-LIVE-CATALOG-QA-V6",
   "generated_at": "2026-09-29",
   "mode": "SHADOW_ONLY",
   "production_effect": false,
@@ -16,10 +16,12 @@
     "products_with_cached_color_evidence": 13,
     "exact_duplicates_removed": 1,
     "strict_after_reconcile": 952,
-    "effective_products_after_shop_filter": 943,
-    "products_with_image_pass": 2315,
-    "products_with_market5_pass": 2628,
-    "duplicate_rows_after_shop_filter": 1
+    "effective_products_after_shop_filter": 941,
+    "products_with_image_pass": 2412,
+    "products_with_market5_pass": 2629,
+    "duplicate_rows_after_shop_filter": 1,
+    "strict_after_truth_consistency_audit": 948,
+    "teen_safe_blocks": 144
   },
   "largest_departments": {
     "accessories": 239,
@@ -45,10 +47,27 @@
     "product_detail_hidden_source_alias": true
   },
   "product_detail": {
-    "live_variant_source": "HuntCore.storefront",
-    "fallback": "sessionStorage clicked product cache",
-    "cached_options_are_read_only": true,
-    "fake_variant_combinations": false
+    "storefront_version": 108,
+    "eprolo_live_detail": true,
+    "eprolo_strict": 885,
+    "eprolo_exact_variant_ready": 885,
+    "eprolo_rich_catalog_locator_ready": 630,
+    "eprolo_main_image_variant_price_stock_ready": 885,
+    "cj_strict": 63,
+    "cj_exact_variant_ready": 63,
+    "sample_e2e": {
+      "status": "PASS",
+      "gallery_count": 18,
+      "description_length": 952,
+      "variant_count": 384,
+      "distinct_variant_images": 12,
+      "option_labels": [
+        "Color / Style",
+        "Model"
+      ],
+      "retail_price_verified": true,
+      "profit_gate_status": "PASS"
+    }
   },
   "blockers": {
     "final_profit_verified": false,
@@ -101,8 +120,15 @@
   },
   "notes": [
     "Bulk mode remains active.",
-    "Taxonomy recovery only remaps deterministic exact identities into existing HUNT shelves.",
-    "Ambiguous and sensitive HOLD/ROLLBACK products remain excluded.",
+    "HUNT storefront server-side safety filter updated in hunt-storefront v108.",
+    "All current Strict EPROLO and CJ products have exact variant IDs after quarantine of one contradictory CJ candidate.",
+    "630 EPROLO Strict products have rich catalog locators; the remaining 255 still have exact variant, stock, HUNT price and main image but rich gallery/description coverage is partial.",
     "Payment and supplier live ordering remain off."
-  ]
+  ],
+  "truth_consistency": {
+    "stale_launch_holds_cleared_by_fresh_exact_market5": 19,
+    "cj_conflicts_quarantined": 1,
+    "explicit_or_minor_ambiguous_candidates_blocked": 144,
+    "note": "Only fresh exact-variant 5/5 evidence may override an older launch HOLD."
+  }
 }
