@@ -8,6 +8,7 @@ const json=(body:unknown,status=200)=>new Response(JSON.stringify(body),{
 const BASE=clean(Deno.env.get("SUPABASE_URL"));
 const PUBLIC_KEY=clean(Deno.env.get("SUPABASE_PUBLISHABLE_KEY")||Deno.env.get("SUPABASE_ANON_KEY"))||
   "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
+const EPROLO_INTERNAL_TOKEN=clean(Deno.env.get("HUNT_EPROLO_INTERNAL_TOKEN"));
 
 let sqlClient:ReturnType<typeof postgres>|null=null;
 function sql(){
@@ -131,10 +132,10 @@ async function eproloCandidates(limit:number,offset:number){
   `;
   return rows.filter((r:any)=>!taxonomyConflict(clean(r.title),clean(r.shelf))).slice(0,limit);
 }
-async function edgeGet(path:string,params:Record<string,string>){
+async function edgeGet(path:string,params:Record<string,string>,extraHeaders:Record<string,string>={}){
   const u=new URL(BASE+"/functions/v1/"+path);
   for(const [k,v] of Object.entries(params))u.searchParams.set(k,v);
-  const res=await fetch(u,{headers:{apikey:PUBLIC_KEY,accept:"application/json"},signal:AbortSignal.timeout(25000)});
+  const res=await fetch(u,{headers:{apikey:PUBLIC_KEY,accept:"application/json",...extraHeaders},signal:AbortSignal.timeout(25000)});
   return {http:res.status,body:await res.json().catch(()=>({}))};
 }
 async function cjRefresh(row:any,country:string,p:any){
@@ -175,7 +176,8 @@ async function cjRefresh(row:any,country:string,p:any){
 }
 async function eproloRefresh(row:any,country:string,p:any){
   const itemId=clean(row.item_id),variantId=clean(row.variant_id);
-  const res=await edgeGet("hunt-eprolo-country-shadow",{item_id:itemId,variant_id:variantId,country});
+  if(!EPROLO_INTERNAL_TOKEN)throw new Error("EPROLO_INTERNAL_TOKEN_MISSING");
+  const res=await edgeGet("hunt-eprolo-country-shadow",{item_id:itemId,variant_id:variantId,country},{"x-hunt-internal-token":EPROLO_INTERNAL_TOKEN});
   const b=res.body||{};
   const cost=num(b.supplier_cost_usd),shipping=num(b.shipping_usd),retail=num(row.retail_usd);
   let classification="RETRY",reason=clean(b.reason)||"EPROLO_FRESH_TRUTH_UNVERIFIED";
