@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-V16-LIVE-CATALOG-QA-V12",
+  "version": "HUNT-V16-LIVE-CATALOG-QA-V13",
   "generated_at": "2026-09-29",
   "mode": "SHADOW_ONLY",
   "production_effect": false,
@@ -22,12 +22,12 @@
     "duplicate_rows_after_shop_filter": 1,
     "strict_after_truth_consistency_audit": 948,
     "teen_safe_blocks": 144,
-    "strict_catalog_current": 806,
-    "pdp_ready_verified": 464,
-    "pdp_not_yet_checked": 342,
-    "pdp_with_sizes": 258,
-    "pdp_with_colors": 460,
-    "pdp_with_multi_gallery": 117,
+    "strict_catalog_current": 804,
+    "pdp_ready_verified": 502,
+    "pdp_not_yet_checked": 302,
+    "pdp_with_sizes": 279,
+    "pdp_with_colors": 497,
+    "pdp_with_multi_gallery": 124,
     "pdp_zero_coverage_shelves": 0,
     "pdp_shelves_below_3": 0,
     "pdp_shelves_below_8": 0,
@@ -129,9 +129,10 @@
     "taxonomy_recovery_v3": 9
   },
   "notes": [
-    "Depth-8 coverage is complete across all eligible shelves with available unchecked candidates.",
-    "Next phase is Depth-12 for core commercial shelves, not forced expansion on every shelf.",
-    "PDP HOLD products remain excluded from Strict.",
+    "502 PDP Ready verified.",
+    "Depth-8 is complete across all shelves with available Strict candidates.",
+    "Core Depth-12 is complete where additional Strict candidates exist.",
+    "Remaining thin core shelves require new candidate supply, not more PDP checks.",
     "Payment and supplier live ordering remain off."
   ],
   "truth_consistency": {
@@ -155,8 +156,8 @@
     "eprolo_b6_pass": 7,
     "eprolo_b6_hold": 8,
     "note": "A product is not considered PDP-ready until hunt-storefront returns live variants, availability and verified HUNT retail price.",
-    "latest_completed_batch": "PDP-DEPTH8-FINAL",
-    "latest_batch_result": "final shelf PASS; zero eligible shelves below 8",
+    "latest_completed_batch": "CORE-DEPTH12-FINAL",
+    "latest_batch_result": "10/10 PASS",
     "strategy": "small 15-product waves; balanced shelf coverage after high-inventory waves",
     "active_definition": "PDP Ready requires live variants, availability and verified HUNT retail price",
     "balanced_shelf_fill": true,
@@ -168,6 +169,20 @@
     "latest_depth8_progress": "400 PDP Ready; 32 shelves below 8",
     "depth5_complete": true,
     "depth8_complete": true,
-    "next_target": "DEPTH_12_CORE_SHELVES"
+    "next_target": "TARGETED_CAPACITY_GAP_FILL",
+    "core_depth12_attainable_complete": true,
+    "capacity_limited_shelves": [
+      "storage",
+      "chargers-cables",
+      "men-shoes",
+      "women-dresses",
+      "skincare",
+      "makeup",
+      "men-shirts",
+      "hair",
+      "phone-cases",
+      "men-outerwear",
+      "women-tops"
+    ]
   }
 }
