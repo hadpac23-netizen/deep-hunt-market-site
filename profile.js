@@ -12,7 +12,7 @@
   }
 
   function productHref(row){
-    return `product.html?provider=${encodeURIComponent(row.provider)}&id=${encodeURIComponent(row.item_id)}`;
+    return H.productUrl ? H.productUrl(row) : `product-v16.html?id=${encodeURIComponent(row.item_id)}`;
   }
 
   function productCard(row){
@@ -23,7 +23,7 @@
       <a class="hd-profile-product-media" href="${H.esc(productHref(row))}">${image}</a>
       <div class="hd-profile-product-body">
         <a href="${H.esc(productHref(row))}">${H.esc(row.title||"Product")}</a>
-        <small>${H.esc(row.provider||"")}</small>
+        <small>HUNT</small>
         <div class="hd-profile-product-flags">
           ${row.liked?'<span>♥ Liked</span>':""}
           ${row.saved?'<span>🔖 Saved</span>':""}
