@@ -20,7 +20,29 @@ function cors(req:Request){
 }
 let tokenCache={token:"",expiresAt:0};
 const quoteCache=new Map<string,{expiresAt:number,value:any}>();
-const rate=new Map<string,number>();
+const rate=new Map<string,{windowStart:number,count:number}>();
+const QUOTE_CACHE_MAX=2000;
+const RATE_MAX_ENTRIES=2000;
+const RATE_WINDOW_MS=10000;
+const RATE_MAX_REQUESTS=30;
+function pruneState(now:number){
+  for(const [key,row] of quoteCache){
+    if(row.expiresAt<=now)quoteCache.delete(key);
+  }
+  while(quoteCache.size>QUOTE_CACHE_MAX){
+    const key=quoteCache.keys().next().value;
+    if(key===undefined)break;
+    quoteCache.delete(key);
+  }
+  for(const [key,row] of rate){
+    if(now-row.windowStart>=RATE_WINDOW_MS)rate.delete(key);
+  }
+  while(rate.size>RATE_MAX_ENTRIES){
+    const key=rate.keys().next().value;
+    if(key===undefined)break;
+    rate.delete(key);
+  }
+}
 async function cjToken(){
   const direct=Deno.env.get("CJ_ACCESS_TOKEN")||"";
   if(direct)return direct;
@@ -51,14 +73,17 @@ Deno.serve(async(req:Request)=>{
   if(!/^[A-Za-z0-9-]{8,200}$/.test(vid))return json({error:"invalid variant"},400,headers);
   if(country&&!/^[A-Z]{2}$/.test(country))return json({error:"invalid country code"},400,headers);
   if(originRequested&&!/^[A-Z]{2}$/.test(originRequested))return json({error:"invalid origin code"},400,headers);
+  const now=Date.now();
+  pruneState(now);
   const cacheKey=[vid,country,originRequested,quantity].join("|");
   const cached=quoteCache.get(cacheKey);
-  if(cached&&cached.expiresAt>Date.now())return json({...cached.value,cached:true},200,headers);
+  if(cached&&cached.expiresAt>now)return json({...cached.value,cached:true},200,headers);
   const ip=(req.headers.get("x-forwarded-for")||"").split(",")[0].trim()||"unknown";
-  const rateKey=ip+"|"+vid;
-  const last=rate.get(rateKey)||0;
-  if(Date.now()-last<1500)return json({error:"rate limited"},429,headers);
-  rate.set(rateKey,Date.now());
+  const current=rate.get(ip);
+  const bucket=!current||now-current.windowStart>=RATE_WINDOW_MS?{windowStart:now,count:0}:current;
+  if(bucket.count>=RATE_MAX_REQUESTS)return json({error:"rate limited"},429,headers);
+  bucket.count++;
+  rate.set(ip,bucket);
   const token=await cjToken();
   if(!token)return json({error:"CJ unavailable"},503,headers);
   const stockUrl=new URL("https://developers.cjdropshipping.com/api2.0/v1/product/stock/queryByVid");
@@ -111,6 +136,11 @@ Deno.serve(async(req:Request)=>{
     })).filter((m:any)=>m.name&&m.price_usd!==null)
       .sort((a:any,b:any)=>a.price_usd-b.price_usd).slice(0,12);
   }
-  quoteCache.set(cacheKey,{expiresAt:Date.now()+5*60*1000,value:result});
+  const cacheVerified=result.stock_verified===true &&
+    (!country || result.stock_available!==true || result.shipping_verified===true);
+  if(cacheVerified){
+    quoteCache.set(cacheKey,{expiresAt:Date.now()+5*60*1000,value:result});
+    pruneState(Date.now());
+  }
   return json(result,200,headers);
 });
