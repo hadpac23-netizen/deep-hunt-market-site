@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-V16-LIVE-CATALOG-QA-V6",
+  "version": "HUNT-V16-LIVE-CATALOG-QA-V7",
   "generated_at": "2026-09-29",
   "mode": "SHADOW_ONLY",
   "production_effect": false,
@@ -22,9 +22,12 @@
     "duplicate_rows_after_shop_filter": 1,
     "strict_after_truth_consistency_audit": 948,
     "teen_safe_blocks": 144,
-    "strict_catalog_current": 812,
-    "pdp_ready_verified": 56,
-    "pdp_not_yet_checked": 756
+    "strict_catalog_current": 811,
+    "pdp_ready_verified": 160,
+    "pdp_not_yet_checked": 651,
+    "pdp_with_sizes": 95,
+    "pdp_with_colors": 160,
+    "pdp_with_multi_gallery": 41
   },
   "largest_departments": {
     "accessories": 239,
@@ -147,6 +150,10 @@
     "eprolo_b5_hold": 1,
     "eprolo_b6_pass": 7,
     "eprolo_b6_hold": 8,
-    "note": "A product is not considered PDP-ready until hunt-storefront returns live variants, availability and verified HUNT retail price."
+    "note": "A product is not considered PDP-ready until hunt-storefront returns live variants, availability and verified HUNT retail price.",
+    "latest_completed_batch": "EPROLO-PDP-QA-B14-BALANCED",
+    "latest_batch_result": "15/15 PASS",
+    "strategy": "small 15-product waves; balanced shelf coverage after high-inventory waves",
+    "active_definition": "PDP Ready requires live variants, availability and verified HUNT retail price"
   }
 }
