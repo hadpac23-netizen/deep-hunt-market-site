@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-V16-LIVE-CATALOG-QA-V13",
+  "version": "HUNT-V16-LIVE-CATALOG-QA-V12",
   "generated_at": "2026-09-29",
   "mode": "SHADOW_ONLY",
   "production_effect": false,
@@ -22,9 +22,9 @@
     "duplicate_rows_after_shop_filter": 1,
     "strict_after_truth_consistency_audit": 948,
     "teen_safe_blocks": 144,
-    "strict_catalog_current": 804,
-    "pdp_ready_verified": 502,
-    "pdp_not_yet_checked": 302,
+    "strict_catalog_current": 826,
+    "pdp_ready_verified": 517,
+    "pdp_not_yet_checked": 309,
     "pdp_with_sizes": 279,
     "pdp_with_colors": 497,
     "pdp_with_multi_gallery": 124,
@@ -129,10 +129,8 @@
     "taxonomy_recovery_v3": 9
   },
   "notes": [
-    "502 PDP Ready verified.",
-    "Depth-8 is complete across all shelves with available Strict candidates.",
-    "Core Depth-12 is complete where additional Strict candidates exist.",
-    "Remaining thin core shelves require new candidate supply, not more PDP checks.",
+    "General catalog coverage is sufficient to move into cart and checkout QA.",
+    "PDP Ready remains the active-product definition.",
     "Payment and supplier live ordering remain off."
   ],
   "truth_consistency": {
@@ -183,6 +181,8 @@
       "phone-cases",
       "men-outerwear",
       "women-tops"
-    ]
+    ],
+    "depth8_general_complete": true,
+    "next_phase": "CART_CHECKOUT_QA"
   }
 }
