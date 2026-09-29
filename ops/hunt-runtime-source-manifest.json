@@ -1,37 +1,70 @@
 {
-  "generated_at": "2026-09-29T17:02:53.766Z",
+  "generated_at": "2026-09-29T17:44:49.416Z",
   "project_ref": "zszlnahjqmwozwubetkm",
-  "note": "Runtime source snapshot for CJ + EPROLO launch-critical Edge Functions. Secrets are referenced by environment/vault only and are not stored here.",
+  "note": "CJ + EPROLO launch-critical runtime/source parity. PATCHED_AHEAD_OF_RUNTIME means PR26 contains intentional fixes not yet deployed. No secrets stored.",
   "functions": [
     {
+      "slug": "hunt-payment-session",
+      "live_version": 19,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-payment-session/index.ts",
+      "relationship": "PATCHED_AHEAD_OF_RUNTIME"
+    },
+    {
+      "slug": "hunt-order-orchestrator",
+      "live_version": 17,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-order-orchestrator/index.ts",
+      "relationship": "PATCHED_AHEAD_OF_RUNTIME"
+    },
+    {
+      "slug": "hunt-storefront",
+      "live_version": 109,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-storefront/index.ts",
+      "relationship": "PATCHED_AHEAD_OF_RUNTIME"
+    },
+    {
       "slug": "hunt-cj-quote",
-      "version": 9,
-      "status": "ACTIVE",
-      "git_path": "supabase/functions/hunt-cj-quote/index.ts"
+      "live_version": 9,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-cj-quote/index.ts",
+      "relationship": "EXACT_MATCH"
     },
     {
       "slug": "hunt-cj-live-check",
-      "version": 6,
-      "status": "ACTIVE",
-      "git_path": "supabase/functions/hunt-cj-live-check/index.ts"
+      "live_version": 6,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-cj-live-check/index.ts",
+      "relationship": "EXACT_MATCH"
+    },
+    {
+      "slug": "hunt-eprolo-country-shadow",
+      "live_version": 5,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-eprolo-country-shadow/index.ts",
+      "relationship": "PATCHED_AHEAD_OF_RUNTIME"
     },
     {
       "slug": "hunt-eprolo-readonly-pilot",
-      "version": 4,
-      "status": "ACTIVE",
-      "git_path": "supabase/functions/hunt-eprolo-readonly-pilot/index.ts"
+      "live_version": 4,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-eprolo-readonly-pilot/index.ts",
+      "relationship": "EXACT_MATCH"
     },
     {
       "slug": "hunt-eprolo-variant-country-audit-shadow",
-      "version": 1,
-      "status": "ACTIVE",
-      "git_path": "supabase/functions/hunt-eprolo-variant-country-audit-shadow/index.ts"
+      "live_version": 1,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-eprolo-variant-country-audit-shadow/index.ts",
+      "relationship": "EXACT_MATCH"
     },
     {
       "slug": "hunt-eprolo-product-country-variants-audit-shadow",
-      "version": 1,
-      "status": "ACTIVE",
-      "git_path": "supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/index.ts"
+      "live_version": 1,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/index.ts",
+      "relationship": "EXACT_MATCH"
     }
   ]
 }
