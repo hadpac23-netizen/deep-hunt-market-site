@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-LAUNCH-CONTROL-V9",
+  "version": "HUNT-LAUNCH-CONTROL-V10",
   "updated_at": "2026-09-29",
   "mode": "PRE_PAYMENT_FINISH_MODE",
   "payment_live": false,
@@ -13,12 +13,12 @@
     {
       "id": "catalog_bulk_fill",
       "status": "DO_NOW",
-      "note": "812 current Strict Catalog after removing stale PDP-broken products; continue bulk fill only with live product-detail truth."
+      "note": "Run targeted fill only for capacity-limited core shelves before moving to full customer-flow QA."
     },
     {
       "id": "product_detail_truth",
-      "status": "DO_NOW",
-      "note": "464 PDP Ready verified. Depth-8 complete across eligible shelves. Next: Depth-12 on core commercial shelves, then checkout/customer-flow QA."
+      "status": "PARTIAL_DONE",
+      "note": "502 PDP Ready verified. Depth-8 complete and attainable core Depth-12 complete. Remaining thin core shelves need fresh candidate supply."
     },
     {
       "id": "checkout_v16",
@@ -87,16 +87,17 @@
     "supplier_live_order": false
   },
   "pdp_truth": {
-    "strict_catalog": 806,
-    "pdp_ready_verified": 464,
-    "pdp_not_yet_checked": 342,
-    "pdp_with_sizes": 258,
-    "pdp_with_colors": 460,
-    "pdp_with_multi_gallery": 117,
+    "strict_catalog": 804,
+    "pdp_ready_verified": 502,
+    "pdp_not_yet_checked": 302,
+    "pdp_with_sizes": 279,
+    "pdp_with_colors": 497,
+    "pdp_with_multi_gallery": 124,
     "zero_coverage_shelves": 0,
     "shelves_below_3": 0,
     "shelves_below_5": 0,
     "shelves_below_8": 0,
-    "strategy": "Depth-8 complete; start Depth-12 on core commercial shelves"
+    "core_depth12_attainable_complete": true,
+    "strategy": "Targeted capacity gap fill on thin core shelves; then customer-flow QA"
   }
 }
