@@ -6,6 +6,7 @@ const API="https://openapi.eprolo.com/";
 const BASE=Deno.env.get("SUPABASE_URL")||"";
 const PUB="sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
 const SERVICE=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";
+const INTERNAL_TOKEN=clean(Deno.env.get("HUNT_EPROLO_INTERNAL_TOKEN")||"");
 const reply=(x:any,s=200)=>new Response(JSON.stringify(x),{status:s,headers:{"content-type":"application/json","cache-control":"no-store"}});
 const clean=(v:any)=>typeof v==="string"?v.trim():"";
 const num=(v:any)=>{const n=Number(v);return Number.isFinite(n)?n:null};
@@ -114,6 +115,8 @@ function price(p:any,c:number,s:number,tax:number){
 Deno.serve(async(req:Request)=>{
   if(req.method!=="GET")return reply({error:"method not allowed"},405);
   if((req.headers.get("apikey")||"")!==PUB)return reply({error:"unauthorized"},401);
+  if(!INTERNAL_TOKEN)return reply({error:"server config missing"},503);
+  if(clean(req.headers.get("x-hunt-internal-token"))!==INTERNAL_TOKEN)return reply({error:"unauthorized"},401);
 
   const u=new URL(req.url);
   const itemId=clean(u.searchParams.get("item_id"));
