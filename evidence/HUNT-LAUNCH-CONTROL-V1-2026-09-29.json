@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-LAUNCH-CONTROL-V3",
+  "version": "HUNT-LAUNCH-CONTROL-V4",
   "updated_at": "2026-09-29",
   "mode": "PRE_PAYMENT_FINISH_MODE",
   "payment_live": false,
@@ -18,7 +18,7 @@
     {
       "id": "product_detail_truth",
       "status": "DO_NOW",
-      "note": "56 PDP Ready verified; 756 Strict candidates remain to be live-checked. PDP Ready now requires live variants + availability + verified HUNT retail price."
+      "note": "160 PDP Ready verified; 651 Strict candidates remain to be live-checked. Active requires live variants + availability + verified HUNT retail price."
     },
     {
       "id": "checkout_v16",
@@ -87,10 +87,13 @@
     "supplier_live_order": false
   },
   "pdp_truth": {
-    "strict_catalog": 812,
-    "pdp_ready_verified": 56,
-    "pdp_not_yet_checked": 756,
-    "cj_live_detail_issue": "62 stale CJ Strict products demoted after 404 verification",
-    "eprolo_strategy": "verify in small waves to avoid upstream overload"
+    "strict_catalog": 811,
+    "pdp_ready_verified": 160,
+    "pdp_not_yet_checked": 651,
+    "pdp_with_sizes": 95,
+    "pdp_with_colors": 160,
+    "pdp_with_multi_gallery": 41,
+    "eprolo_strategy": "15-product live-PDP waves with balanced shelf fill",
+    "cj_live_detail_issue": "62 stale CJ Strict products remain demoted"
   }
 }
