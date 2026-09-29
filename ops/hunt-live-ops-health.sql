@@ -2,11 +2,14 @@
 -- READ-ONLY. Source of truth for CJ + EPROLO launch operations.
 -- No product visibility, payment, supplier order or production state is changed.
 
-with policies as (
-  select provider,mode,stock_refresh_minutes,price_refresh_minutes,shipping_refresh_minutes,
-         stale_after_minutes,prepayment_live_recheck,presupplier_live_recheck,failure_action,updated_at
-  from private.hunt_supplier_refresh_policy
-  where provider in ('CJdropshipping','EPROLO')
+with providers(provider) as (
+  values ('CJdropshipping'::text),('EPROLO'::text)
+),
+policies as (
+  select p.provider,r.mode,r.stock_refresh_minutes,r.price_refresh_minutes,r.shipping_refresh_minutes,
+         r.stale_after_minutes,r.prepayment_live_recheck,r.presupplier_live_recheck,r.failure_action,r.updated_at
+  from providers p
+  left join private.hunt_supplier_refresh_policy r using(provider)
 ),
 latest_observation as (
   select distinct on (provider,item_id,coalesce(payload->>'variant_id',''),coalesce(destination_country,''))
@@ -26,6 +29,7 @@ obs_health as (
          max(o.observed_at) as latest_observed_at
   from latest_observation o
   join policies p using(provider)
+  where p.stale_after_minutes is not null
   group by o.provider
 ),
 econ as (
@@ -55,7 +59,9 @@ fulfillment as (
   where provider in ('CJdropshipping','EPROLO')
   group by provider
 )
-select p.provider,p.mode,p.stock_refresh_minutes,p.price_refresh_minutes,p.shipping_refresh_minutes,p.stale_after_minutes,
+select p.provider,
+       case when p.stale_after_minutes is null then 'MISSING' else 'PRESENT' end as refresh_policy_status,
+       p.mode,p.stock_refresh_minutes,p.price_refresh_minutes,p.shipping_refresh_minutes,p.stale_after_minutes,
        p.prepayment_live_recheck,p.presupplier_live_recheck,p.failure_action,
        coalesce(h.observed_variant_markets,0) as observed_variant_markets,
        coalesce(h.fresh,0) as fresh_variant_markets,
