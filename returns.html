@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Returns — HUNT</title><link rel="stylesheet" href="customer-service-v16.css"></head>
+<body>
+<header class="service-header"><a class="service-brand" href="hunt-v16.html"><strong>HUNT</strong><small>GLOBAL SHOPPING MARKETPLACE</small></a><nav class="service-nav"><a href="profile.html">My HUNT</a><a href="support.html">Support</a><a href="checkout.html">Bag</a></nav></header>
+<main class="service-shell">
+<section class="service-hero"><small>RETURNS</small><h1>Start a return request</h1><p>Choose an order and tell HUNT what happened. Approval, return routing and refunds are handled as separate verified steps.</p></section>
+<div class="service-grid">
+<section class="service-card"><div class="card-head"><small>NEW RETURN</small><h2>Return details</h2></div>
+<form id="return-form" class="field-grid">
+<label class="wide">Order<select id="return-order" required><option value="">Choose an order</option></select></label>
+<label>Reason<select id="return-reason"><option value="wrong_item">Wrong item</option><option value="damaged">Damaged</option><option value="not_as_described">Not as described</option><option value="size_fit">Size / fit</option><option value="changed_mind">Changed mind</option><option value="other">Other</option></select></label>
+<label>Preferred resolution<select id="return-resolution"><option value="refund">Refund</option><option value="replacement">Replacement</option><option value="store_credit">Store credit</option></select></label>
+<label class="wide">Details<textarea id="return-detail" maxlength="3000" required></textarea></label>
+</form><button id="return-submit" class="primary" type="button">Submit return request</button><p id="return-status" class="status">Sign in to request a return.</p></section>
+<aside class="service-card"><div class="card-head"><small>RETURN HISTORY</small><h2>Your returns</h2></div><div id="return-list" class="service-list"><span class="status">Loading…</span></div></aside>
+</div></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script><script src="market-core.js"></script><script src="boom-runtime.js"></script><script src="returns-v16.js"></script>
+</body></html>
