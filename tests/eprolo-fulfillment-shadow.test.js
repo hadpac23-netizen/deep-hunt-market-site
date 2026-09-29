@@ -90,3 +90,12 @@ test("checkout keeps supplier identity private and clamps EPROLO to verified qua
   assert.doesNotMatch(src,/esc\(item\.provider\)/);
   assert.match(src,/Quantity 1 required for verified shipping/);
 });
+
+
+test("checkout does not expose raw fulfillment blocker codes to customers",()=>{
+  const src=read("checkout.js");
+  assert.match(src,/expectedPrelaunch=new Set/);
+  assert.match(src,/materialBlockers=blockers\.filter/);
+  assert.doesNotMatch(src,/blockers\.join\(/);
+  assert.match(src,/Payment and order submission remain disabled during pre-launch/);
+});
