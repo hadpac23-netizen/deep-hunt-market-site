@@ -134,7 +134,7 @@ Deno.serve(async(req:Request)=>{
         where status <> 'resolved'
         do update set last_checked_at=now(),evidence=excluded.evidence,updated_at=now()
       `;
-    } else {
+    } else if(rows.some(x=>x.taxes_verified===true)) {
       await sql`
         update private.hunt_ops_exceptions
         set status='resolved',resolved_at=now(),resolution='Destination tax/economics verified for all audited variants',
