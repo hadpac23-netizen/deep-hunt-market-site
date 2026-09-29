@@ -1,0 +1,54 @@
+{
+  "version": "HUNT-V16-LIVE-CATALOG-QA-V1",
+  "generated_at": "2026-09-29",
+  "mode": "SHADOW_ONLY",
+  "production_effect": false,
+  "catalog_edge_function": {
+    "slug": "hunt-cinematic-shadow-catalog",
+    "version": 4
+  },
+  "counts": {
+    "strict_before_v16_qa": 675,
+    "effective_products": 663,
+    "effective_routes": 90,
+    "products_with_target_price": 663,
+    "products_with_cached_size_evidence": 10,
+    "products_with_cached_color_evidence": 13,
+    "exact_duplicates_removed": 1
+  },
+  "largest_departments": {
+    "accessories": 239,
+    "women": 114,
+    "kids": 86,
+    "men": 60,
+    "pets": 51,
+    "beauty": 28,
+    "home": 25,
+    "travel": 17,
+    "tech": 14,
+    "kitchen": 13,
+    "sports": 9
+  },
+  "qa": {
+    "route_title_fit_filter": true,
+    "shopper_title_filter": true,
+    "https_image_required": true,
+    "image_technical_pass_required": true,
+    "market5_pass_required": true,
+    "target_price_required": true,
+    "supplier_names_hidden": true,
+    "product_detail_hidden_source_alias": true
+  },
+  "product_detail": {
+    "live_variant_source": "HuntCore.storefront",
+    "fallback": "sessionStorage clicked product cache",
+    "cached_options_are_read_only": true,
+    "fake_variant_combinations": false
+  },
+  "blockers": {
+    "final_profit_verified": false,
+    "production": false,
+    "payments": false,
+    "supplier_live_order": false
+  }
+}
