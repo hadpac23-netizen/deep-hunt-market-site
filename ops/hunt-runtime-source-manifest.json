@@ -1,0 +1,37 @@
+{
+  "generated_at": "2026-09-29T17:02:53.766Z",
+  "project_ref": "zszlnahjqmwozwubetkm",
+  "note": "Runtime source snapshot for CJ + EPROLO launch-critical Edge Functions. Secrets are referenced by environment/vault only and are not stored here.",
+  "functions": [
+    {
+      "slug": "hunt-cj-quote",
+      "version": 9,
+      "status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-cj-quote/index.ts"
+    },
+    {
+      "slug": "hunt-cj-live-check",
+      "version": 6,
+      "status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-cj-live-check/index.ts"
+    },
+    {
+      "slug": "hunt-eprolo-readonly-pilot",
+      "version": 4,
+      "status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-eprolo-readonly-pilot/index.ts"
+    },
+    {
+      "slug": "hunt-eprolo-variant-country-audit-shadow",
+      "version": 1,
+      "status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-eprolo-variant-country-audit-shadow/index.ts"
+    },
+    {
+      "slug": "hunt-eprolo-product-country-variants-audit-shadow",
+      "version": 1,
+      "status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/index.ts"
+    }
+  ]
+}
