@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HUNT · Reference V15</title>
+<style>
+:root{
+  --page:#f8f5ee;
+  --paper:#fbf8f2;
+  --ink:#111214;
+  --muted:#6f6d68;
+  --line:#e4ded3;
+  --gold:#a97930;
+  --tile:#eee8df;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--page);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+body{min-width:320px}
+button,input{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+img{display:block}
+header{background:var(--page)}
+.top{
+  height:84px;
+  padding:14px 4.2vw 10px;
+  display:grid;
+  grid-template-columns:250px minmax(360px,610px) 1fr;
+  gap:30px;
+  align-items:center;
+}
+.logo{display:flex;flex-direction:column;line-height:1}
+.logo strong{font:650 46px/.9 Georgia,"Times New Roman",serif;letter-spacing:.14em}
+.logo small{margin-top:6px;font-size:7px;font-weight:800;letter-spacing:.18em;color:var(--muted)}
+.search{
+  height:44px;
+  border:1px solid #d8d2c7;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 15px;
+}
+.search .icon{font-size:19px;line-height:1}
+.search input{width:100%;border:0;outline:0;background:transparent;color:var(--ink);font-size:13px}
+.actions{display:flex;justify-content:flex-end;align-items:center;gap:18px;white-space:nowrap}
+.actions button{border:0;background:transparent;color:var(--ink);padding:5px 3px;font-size:10.5px}
+.cart-count{display:inline-grid;place-items:center;min-width:17px;height:17px;border-radius:999px;background:var(--gold);color:#fff;font-size:8px;margin-left:4px}
+
+.main-nav{
+  min-height:44px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+  gap:52px;
+  overflow:auto;
+  scrollbar-width:none;
+}
+.main-nav::-webkit-scrollbar,.sub-nav::-webkit-scrollbar{display:none}
+.main-nav button{
+  position:relative;
+  border:0;background:transparent;
+  padding:12px 0 10px;
+  color:var(--ink);
+  font-size:12.5px;
+  font-weight:700;
+  white-space:nowrap;
+}
+.main-nav button.active::after{
+  content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--gold);
+}
+.sub-nav{
+  height:44px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:30px;
+  overflow:auto;
+  scrollbar-width:none;
+}
+.sub-nav button{
+  border:0;background:transparent;
+  color:var(--muted);
+  font-size:10.5px;
+  padding:9px 0;
+  white-space:nowrap;
+}
+.sub-nav button.active{color:var(--ink);font-weight:800}
+.sub-nav button.sale{color:var(--gold)}
+.divider{width:1px;height:18px;background:var(--line);flex:0 0 auto}
+
+main{padding:10px 0 70px}
+.hero{
+  width:calc(100% - 28px);
+  margin:0 14px;
+  display:grid;
+  grid-template-columns:minmax(0,3.15fr) minmax(300px,1.05fr);
+  gap:8px;
+  height:350px;
+}
+.hero-main{
+  display:grid;
+  grid-template-columns:34% 66%;
+  overflow:hidden;
+  background:#f2ece2;
+}
+.hero-copy{
+  padding:40px 22px 30px 54px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.hero-copy small,
+.side-copy small{
+  color:var(--gold);
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.27em;
+}
+.hero-copy h1{
+  margin:14px 0 10px;
+  font:600 clamp(38px,4vw,62px)/.94 Georgia,"Times New Roman",serif;
+  letter-spacing:-.035em;
+}
+.hero-copy p{margin:0 0 18px;color:var(--muted);font-size:11.5px;line-height:1.4;max-width:250px}
+.hero-copy button{
+  width:max-content;
+  border:0;border-radius:999px;
+  background:var(--gold);color:white;
+  padding:11px 19px;
+  font-size:10px;font-weight:800;
+}
+.hero-photo{overflow:hidden;background:#ddd6ca}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center}
+.hero-side{
+  display:grid;
+  grid-template-columns:48% 52%;
+  overflow:hidden;
+  background:#f2ece2;
+}
+.side-copy{
+  padding:42px 20px 24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.side-copy strong{
+  display:block;
+  margin:14px 0 14px;
+  font:600 30px/.98 Georgia,"Times New Roman",serif;
+}
+.side-copy p{margin:0 0 14px;color:var(--muted);font-size:10.5px;line-height:1.45}
+.side-copy a{font-size:10px;font-weight:800;color:var(--gold)}
+.side-photo{overflow:hidden;background:#ddd6ca}
+.side-photo img{width:100%;height:100%;object-fit:cover;object-position:center}
+
+.shortcuts{
+  margin:17px 3.1vw 0;
+  display:grid;
+  grid-template-columns:repeat(8,minmax(0,1fr));
+  gap:14px;
+}
+.shortcut{
+  border:0;background:#f0ebe3;
+  padding:0;
+  overflow:hidden;
+  text-align:left;
+  min-width:0;
+}
+.shortcut-image{height:104px;background:var(--tile);overflow:hidden}
+.shortcut-image img{width:100%;height:100%;object-fit:cover}
+.shortcut-label{
+  height:35px;background:#f5f1ea;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:7px;padding:0 10px;
+  font-size:10px;font-weight:700;
+}
+.shortcut.special{
+  height:139px;
+  background:#b7863d;color:#fff;
+  padding:19px 18px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.special-title{font:500 25px/1 Georgia,"Times New Roman",serif}
+.special-link{font-size:10px;font-weight:800}
+
+.trending{padding:25px 3.1vw 0}
+.trending-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:16px}
+.trending-head h2{margin:0 0 3px;font:600 35px/1 Georgia,"Times New Roman",serif}
+.trending-head p{margin:0;color:var(--muted);font-size:10.5px}
+.trending-head button{border:0;background:transparent;color:var(--ink);font-size:10.5px;font-weight:750}
+.grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:14px}
+.card{min-width:0}
+.card-img{height:175px;background:var(--tile);overflow:hidden;position:relative}
+.card-img img{width:100%;height:100%;object-fit:cover}
+.heart{
+  position:absolute;right:7px;top:7px;
+  width:23px;height:23px;border-radius:50%;
+  background:#fff;display:grid;place-items:center;
+  font-size:13px;
+}
+.card h3{
+  margin:8px 0 5px;
+  font-size:10.5px;line-height:1.25;font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.price{font-size:11.5px;font-weight:800;min-height:14px}
+.swatches{display:flex;gap:5px;margin-top:8px}
+.swatches i{width:11px;height:11px;border-radius:50%;border:1px solid rgba(0,0,0,.15);background:#d8c5aa}
+.swatches i:nth-child(2){background:#e9e3d8}
+.swatches i:nth-child(3){background:#232323}
+.swatches i:nth-child(4){background:#b08a6d}
+.empty{grid-column:1/-1;padding:35px 0;color:var(--muted);font-size:12px}
+
+@media(max-width:1280px){
+  .top{grid-template-columns:210px minmax(300px,1fr) auto}
+  .main-nav{gap:34px}.sub-nav{gap:22px}
+  .shortcuts{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .grid{grid-template-columns:repeat(6,minmax(0,1fr))}
+}
+@media(max-width:920px){
+  .top{height:auto;grid-template-columns:1fr auto;padding:12px 16px}
+  .search{grid-column:1/-1}
+  .actions .optional{display:none}
+  .main-nav,.sub-nav{justify-content:flex-start;padding:0 14px}
+  .hero{height:auto;grid-template-columns:1fr}
+  .hero-main{height:340px}
+  .hero-side{display:none}
+  .shortcuts{grid-template-columns:repeat(4,minmax(0,1fr));margin-left:14px;margin-right:14px}
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:620px){
+  .logo strong{font-size:34px}
+  .hero-main{grid-template-columns:47% 53%;height:315px}
+  .hero-copy{padding:24px 10px 22px 18px}
+  .hero-copy h1{font-size:38px}
+  .shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .trending{padding-left:14px;padding-right:14px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <a class="logo" href="hunt-cinematic-living-campaign-v15.html">
+      <strong>HUNT</strong>
+      <small>GLOBAL SHOPPING MARKETPLACE</small>
+    </a>
+    <form class="search" id="search-form">
+      <span class="icon">⌕</span>
+      <input id="search-input" type="search" autocomplete="off" placeholder="Search for products, categories, or inspiration…">
+    </form>
+    <div class="actions">
+      <button class="optional">◎ EN</button>
+      <button>Sign In</button>
+      <button class="optional">♡ Wishlist</button>
+      <button>Bag <span class="cart-count">0</span></button>
+    </div>
+  </div>
+  <nav class="main-nav" id="main-nav"></nav>
+  <nav class="sub-nav" id="sub-nav"></nav>
+</header>
+
+<main>
+  <section class="hero">
+    <article class="hero-main">
+      <div class="hero-copy">
+        <small>THE NEW COLLECTION</small>
+        <h1>Modern Essentials<br>For a Brighter You</h1>
+        <p>Timeless pieces, made for wherever life takes you.</p>
+        <button id="hero-shop">Shop New Arrivals →</button>
+      </div>
+      <div class="hero-photo">
+        <img src="https://images.pexels.com/photos/20350854/pexels-photo-20350854.jpeg?cs=srgb&dl=pexels-artur-stec-26039050-20350854.jpg&fm=jpg" alt="Fashion editorial by the sea">
+      </div>
+    </article>
+    <article class="hero-side">
+      <div class="side-copy">
+        <small>FOR A MORE</small>
+        <strong>Beautiful Spaces<br>Everyday</strong>
+        <p>Curated home pieces to inspire a calmer, warmer you.</p>
+        <a href="#" id="home-link">Shop Home →</a>
+      </div>
+      <div class="side-photo">
+        <img src="https://images.pexels.com/photos/28321103/pexels-photo-28321103.jpeg?cs=srgb&dl=pexels-raymond-petrik-1448389535-28321103.jpg&fm=jpg" alt="Mediterranean home interior">
+      </div>
+    </article>
+  </section>
+
+  <nav class="shortcuts" id="shortcuts"></nav>
+
+  <section class="trending">
+    <div class="trending-head">
+      <div><h2>Trending Now</h2><p>Fresh finds. Timeless favorites. Something for everyone.</p></div>
+      <button id="view-all">View All →</button>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+</main>
+
+<script>
+const LIVE_URL="https://zszlnahjqmwozwubetkm.supabase.co/functions/v1/hunt-cinematic-shadow-catalog";
+const PUBLIC_KEY="sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
+const STATIC_URL="./evidence/HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27.json";
+const blocked=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|erotic|fetish|sexy lingerie|sexy underwear|sex toy|vibrator|dildo|steroid|diet pill|laxative)\b/i;
+
+let shelves={},mode="women",sub="",query="";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+const mainNav=[
+  ["Women","women"],["Men","men"],["Shoes","shoes"],["Beauty","beauty"],
+  ["Accessories","accessories"],["Home","home"],["Kids","kids"],["Deals","deals"]
+];
+const subNav=[
+  ["New In","new"],["Dresses","dress"],["Tops","top"],["Bottoms","bottom"],
+  ["Activewear","active"],["Swimwear","swim"],["Sleepwear","sleep"],
+  ["Outerwear","outerwear"],["Matching Sets","set"],["Workwear","work"],
+  ["Brands","brand"],["Shop All","all"],["Sale","sale"]
+];
+
+function safe(p){
+  if(!p?.item_id||blocked.test(String(p.title||"")))return false;
+  return true;
+}
+function allRows(){
+  const out=[];
+  for(const [route,rows] of Object.entries(shelves||{})){
+    for(const p of rows||[])if(safe(p))out.push({route,p});
+  }
+  return out;
+}
+function searchableText(route,p){
+  return (route+" "+String(p.title||"")+" "+String(p.category||"")+" "+String(p.category_title||"")+" "+String(p.brand||"")).toLowerCase();
+}
+function modeMatch(route,p){
+  const t=searchableText(route,p);
+  if(query)return t.includes(query.toLowerCase());
+  if(["women","men","home","kids","accessories"].includes(mode))return route.startsWith(mode+"/");
+  if(mode==="shoes")return /shoe|sneaker|boot|sandal|loafer|heel/.test(t);
+  if(mode==="beauty")return /beauty|fragrance|perfume|cosmetic|skin|serum|cream/.test(t);
+  if(mode==="deals")return true;
+  return true;
+}
+function subMatch(route,p){
+  if(!sub||sub==="all"||sub==="new"||sub==="sale")return true;
+  const t=searchableText(route,p);
+  if(sub==="dress")return /dress|gown/.test(t);
+  if(sub==="top")return /top|shirt|blouse|tee|t-shirt/.test(t);
+  if(sub==="bottom")return /bottom|pant|trouser|jean|skirt|short/.test(t);
+  if(sub==="active")return /active|sport|yoga|fitness/.test(t);
+  if(sub==="swim")return /swim/.test(t);
+  if(sub==="sleep")return /sleepwear|pajama|robe|nightgown/.test(t);
+  if(sub==="outerwear")return /outerwear|coat|jacket|trench/.test(t);
+  if(sub==="set")return /matching|set|two-piece|2 piece/.test(t);
+  if(sub==="work")return /work|office|blazer|suit/.test(t);
+  if(sub==="brand")return Boolean(p.brand);
+  return true;
+}
+function rows(){
+  const seen=new Set();
+  return allRows().filter(({route,p})=>modeMatch(route,p)&&subMatch(route,p)).filter(({p})=>{
+    const k=String(p.provider||"")+":"+String(p.item_id);
+    if(seen.has(k))return false;seen.add(k);return true;
+  });
+}
+function price(p){
+  const n=Number(p.target_retail_usd ?? p.retail_price_usd ?? p.price_amount ?? p.price);
+  return Number.isFinite(n)&&n>0?"$"+n.toFixed(n>=100?0:2):"";
+}
+function srcAlias(provider){
+  const v=String(provider||"").toLowerCase();
+  if(v.includes("cj"))return"h1";
+  if(v.includes("eprolo"))return"h2";
+  if(v.includes("printful"))return"h3";
+  if(v.includes("gooten"))return"h4";
+  return"";
+}
+function href(p){
+  return "product-cinematic-v14.html?src="+encodeURIComponent(srcAlias(p.provider))+"&id="+encodeURIComponent(String(p.item_id||""))+"&ui=compact3";
+}
+function firstImage(key){
+  const k=key.toLowerCase();
+  return allRows().find(({route,p})=>{
+    if(!p.image_url)return false;
+    const t=searchableText(route,p);
+    if(["women","men","home","kids","accessories"].includes(k))return route.startsWith(k+"/");
+    if(k==="shoes")return /shoe|sneaker|boot|sandal|loafer|heel/.test(t);
+    if(k==="beauty")return /beauty|fragrance|perfume|cosmetic|skin|serum|cream/.test(t);
+    return false;
+  })?.p?.image_url||"";
+}
+function renderMainNav(){
+  $("#main-nav").innerHTML=mainNav.map(([label,key])=>
+    '<button data-mode="'+key+'" class="'+(mode===key&&!query?"active":"")+'">'+label+'</button>'
+  ).join("");
+}
+function renderSubNav(){
+  $("#sub-nav").innerHTML=subNav.map(([label,key],i)=>
+    '<button data-sub="'+key+'" class="'+(sub===key?"active ":"")+(key==="sale"?"sale":"")+'">'+label+'</button>'+
+    (i===11?'<span class="divider"></span>':"")
+  ).join("");
+}
+function renderShortcuts(){
+  const labels=["Women","Men","Shoes","Beauty","Accessories","Home","Kids"];
+  $("#shortcuts").innerHTML=labels.map(label=>{
+    const img=firstImage(label);
+    return '<button class="shortcut" data-shortcut="'+label.toLowerCase()+'">'+
+      '<span class="shortcut-image">'+(img?'<img loading="lazy" src="'+esc(img)+'" alt="">':"")+'</span>'+
+      '<span class="shortcut-label"><b>'+label+'</b><span>→</span></span></button>';
+  }).join("")+
+  '<button class="shortcut special" data-special="new"><span class="special-title">New<br>Arrivals</span><span class="special-link">Shop Now →</span></button>';
+}
+function renderGrid(){
+  const items=rows().filter(({p})=>p.image_url).slice(0,8);
+  $("#grid").innerHTML=items.length?items.map(({p})=>
+    '<a class="card" href="'+href(p)+'">'+
+      '<div class="card-img"><img loading="lazy" src="'+esc(p.image_url)+'" alt="'+esc(p.title||"Product")+'"><span class="heart">♡</span></div>'+
+      '<h3>'+esc(p.title||"Product")+'</h3><div class="price">'+esc(price(p))+'</div>'+
+      '<div class="swatches"><i></i><i></i><i></i><i></i></div></a>'
+  ).join(""):'<div class="empty">No products available in this view yet.</div>';
+}
+function render(){
+  renderMainNav();renderSubNav();renderShortcuts();renderGrid();
+}
+async function load(){
+  let live={shelves:{}},fallback={shelves:{}};
+  try{
+    const r=await fetch(LIVE_URL,{headers:{apikey:PUBLIC_KEY,accept:"application/json"},cache:"no-store"});
+    if(r.ok)live=await r.json();
+  }catch{}
+  try{
+    const r=await fetch(STATIC_URL,{cache:"no-store"});
+    if(r.ok)fallback=await r.json();
+  }catch{}
+  shelves={...(fallback.shelves||{}),...(live.shelves||{})};
+  render();
+}
+$("#main-nav").addEventListener("click",e=>{
+  const b=e.target.closest("[data-mode]");if(!b)return;
+  mode=b.dataset.mode;sub="";query="";$("#search-input").value="";render();
+});
+$("#sub-nav").addEventListener("click",e=>{
+  const b=e.target.closest("[data-sub]");if(!b)return;
+  sub=b.dataset.sub;query="";$("#search-input").value="";render();
+});
+$("#shortcuts").addEventListener("click",e=>{
+  const s=e.target.closest("[data-shortcut]");
+  if(s){mode=s.dataset.shortcut;sub="";query="";render();return}
+  if(e.target.closest("[data-special]")){sub="new";query="";render()}
+});
+$("#search-form").addEventListener("submit",e=>{
+  e.preventDefault();query=String($("#search-input").value||"").trim();sub="";render();
+});
+$("#hero-shop").addEventListener("click",()=>{mode="women";sub="new";query="";render();document.querySelector(".trending").scrollIntoView()});
+$("#home-link").addEventListener("click",e=>{e.preventDefault();mode="home";sub="";query="";render();document.querySelector(".trending").scrollIntoView()});
+$("#view-all").addEventListener("click",()=>{sub="all";query="";render()});
+load();
+</script>
+</body>
+</html>
