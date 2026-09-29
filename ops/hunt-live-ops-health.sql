@@ -22,7 +22,7 @@ obs_health as (
          count(*) filter (where o.observed_at >= now() - make_interval(mins=>p.stale_after_minutes)) as fresh,
          count(*) filter (where o.observed_at < now() - make_interval(mins=>p.stale_after_minutes)) as stale,
          count(*) filter (where coalesce(o.availability_verified,false)=false) as availability_unverified,
-         count(*) filter (where coalesce((o.payload->>'shipping_verified')::boolean,false)=false and coalesce(o.destination_country,'')<>'') as shipping_unverified,
+         count(*) filter (where coalesce(lower(o.payload->>'shipping_verified'),'false') <> 'true' and coalesce(o.destination_country,'')<>'') as shipping_unverified,
          max(o.observed_at) as latest_observed_at
   from latest_observation o
   join policies p using(provider)
