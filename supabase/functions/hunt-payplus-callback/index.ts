@@ -72,12 +72,12 @@ function verifiedTransaction(body:any){
   ).toUpperCase();
   return {requestUid,transactionUid,moreInfo,amount,currency};
 }
-async function verifyWithPayPlus(session:any,payload:any){
+async function verifyWithPayPlus(session:any,callbackTx:any){
   const apiKey=clean(Deno.env.get("PAYPLUS_API_KEY"));
   const secretKey=clean(Deno.env.get("PAYPLUS_SECRET_KEY"));
   if(!apiKey||!secretKey)throw new Error("PAYPLUS_CREDENTIALS_MISSING");
-  const transactionUid=clean(payload?.transaction_uid||payload?.transactionUid);
-  const requestUid=clean(payload?.payment_request_uid||payload?.paymentRequestUid);
+  const transactionUid=clean(callbackTx?.transactionUid);
+  const requestUid=clean(callbackTx?.requestUid);
   if(!requestUid)throw new Error("PAYMENT_REQUEST_UID_REQUIRED");
   if(clean(session?.provider_request_uid)!==requestUid)throw new Error("PAYMENT_REQUEST_UID_MISMATCH");
   const base=session?.mode==="sandbox"
@@ -122,11 +122,10 @@ async function runtimeControl(key:string){
 }
 
 Deno.serve(async(req:Request)=>{
-  if(!["GET","POST"].includes(req.method))return json({error:"method not allowed"},405);
+  if(req.method!=="POST")return json({error:"method not allowed"},405);
   if(!BASE||!SERVICE)return json({error:"server config missing"},500);
   try{
     const parsed:any=await requestPayload(req);
-    const payload:any=parsed.payload||{};
     const signature=await verifyPayPlusCallbackHeaders({
       userAgent:req.headers.get("user-agent"),
       hash:req.headers.get("hash"),
@@ -136,8 +135,9 @@ Deno.serve(async(req:Request)=>{
     if(signature.valid!==true){
       return json({ok:false,error:signature.reason||"PAYPLUS_CALLBACK_SIGNATURE_INVALID"},401);
     }
-    const sessionHint=clean(payload?.more_info||payload?.moreInfo);
-    const requestUid=clean(payload?.payment_request_uid||payload?.paymentRequestUid);
+    const callbackTx=verifiedTransaction(parsed.signatureBody);
+    const sessionHint=clean(callbackTx.moreInfo);
+    const requestUid=clean(callbackTx.requestUid);
     if(!requestUid)return json({ok:false,error:"PAYMENT_REQUEST_UID_REQUIRED"},400);
     const {data:session,error}=await supabase.from("hunt_payment_sessions")
       .select("id,user_id,order_id,mode,status,total_amount,currency,provider_request_uid,provider_transaction_uid")
@@ -155,7 +155,7 @@ Deno.serve(async(req:Request)=>{
       },409);
     }
 
-    const verified=await verifyWithPayPlus(session,payload);
+    const verified=await verifyWithPayPlus(session,callbackTx);
     const mapping=classifyPayPlusStatus(verified.body);
     const providerEventId=verified.transactionUid||verified.requestUid;
 
