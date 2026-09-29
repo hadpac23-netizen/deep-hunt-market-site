@@ -80,3 +80,13 @@ test("order preview accepts EPROLO shadow routing without CJ-only origin require
   assert.match(src,/buildEproloShadowOrderContract/);
   assert.doesNotMatch(src,/NON_CJ_FULFILLMENT_NOT_READY/);
 });
+
+
+test("checkout keeps supplier identity private and clamps EPROLO to verified quantity 1",()=>{
+  const src=read("checkout.js");
+  assert.match(src,/maxQtyFor = item => providerKind\(item\?\.provider\)==="eprolo" \? 1 : 5/);
+  assert.match(src,/Math\.min\(maxQtyFor\(item\),Number\(item\.qty\)\|\|1\)/);
+  assert.match(src,/Math\.min\(maxQtyFor\(cart\[index\]\)/);
+  assert.doesNotMatch(src,/esc\(item\.provider\)/);
+  assert.match(src,/Quantity 1 required for verified shipping/);
+});
