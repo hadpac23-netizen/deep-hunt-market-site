@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-V16-LIVE-CATALOG-QA-V1",
+  "version": "HUNT-V16-LIVE-CATALOG-QA-V2",
   "generated_at": "2026-09-29",
   "mode": "SHADOW_ONLY",
   "production_effect": false,
@@ -10,11 +10,15 @@
   "counts": {
     "strict_before_v16_qa": 675,
     "effective_products": 663,
-    "effective_routes": 90,
+    "effective_routes": 96,
     "products_with_target_price": 663,
     "products_with_cached_size_evidence": 10,
     "products_with_cached_color_evidence": 13,
-    "exact_duplicates_removed": 1
+    "exact_duplicates_removed": 1,
+    "strict_after_reconcile": 758,
+    "effective_products_after_shop_filter": 749,
+    "products_with_image_pass": 1743,
+    "products_with_market5_pass": 2558
   },
   "largest_departments": {
     "accessories": 239,
@@ -50,5 +54,15 @@
     "production": false,
     "payments": false,
     "supplier_live_order": false
+  },
+  "updated_at": "2026-09-29",
+  "repairs": {
+    "eprolo_country_shadow_version": 5,
+    "image_technical_qa_version": 4,
+    "eprolo_db_input_read_failed_fixed": true,
+    "image_webp_and_octet_stream_sniffing_added": true,
+    "image_recovered_to_pass": 17,
+    "eprolo_market5_new_all_pass": 22,
+    "profit_gates_materialized_from_verified_market5_economics": 5
   }
 }
