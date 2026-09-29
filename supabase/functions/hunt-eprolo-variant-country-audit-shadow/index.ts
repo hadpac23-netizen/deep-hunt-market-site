@@ -45,7 +45,8 @@ function economics(p:any,sale:number,cost:number,ship:number,tax:number){
   const minC=Math.max(0,Number(p?.min_contribution_per_unit||4));
   const minM=Math.max(0,Number(p?.min_margin_rate||0.20));
   const r=payment+refund+variable;
-  const contribution=(1-r)*sale-cost-ship-tax-fixed;
+  const gross=sale+ship;
+  const contribution=gross-cost-ship-tax-(gross*r)-fixed;
   const margin=sale>0?contribution/sale:0;
   return {
     payment_reserve_rate:payment,
@@ -67,7 +68,7 @@ function retailFloor(p:any,cost:number,ship:number,tax:number){
   const minC=Math.max(0,Number(p?.min_contribution_per_unit||4));
   const minM=Math.max(0,Number(p?.min_margin_rate||0.20));
   const r=payment+refund+variable;
-  const c=cost+ship+tax+fixed;
+  const c=cost+tax+fixed+r*ship;
   const contributionFloor=(minC+c)/(1-r);
   const marginDenom=1-r-minM;
   const marginFloor=marginDenom>0?c/marginDenom:Infinity;
