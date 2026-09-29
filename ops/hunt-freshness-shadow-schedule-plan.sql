@@ -11,13 +11,13 @@
 --   stock refresh 30m, price 60m, shipping 60m, stale 90m.
 --
 -- Proposed conservative initial cadence (IL only):
---   CJ:     batch 10 every 3 minutes, 7 rotating offsets -> full 63 pool <= 21m.
---   EPROLO: batch 10 every 3 minutes, 27 rotating offsets -> full 261 core <= 81m.
---   Stagger CJ and EPROLO by 90 seconds / separate cron slots to avoid concurrent bursts.
+--   CJ:     batch 10 every 2 minutes, 7 rotating offsets -> full 63 pool <= 14m.
+--   EPROLO: batch 25 every 2 minutes, 11 rotating offsets -> full 261 core <= 22m.
+--   Stagger CJ and EPROLO on alternate minute slots to avoid concurrent bursts.
 --
 -- Rotation concept (not scheduled here):
 --   CJ offset      = ((run_index % 7)  * 10)
---   EPROLO offset  = ((run_index % 27) * 10)
+--   EPROLO offset  = ((run_index % 11) * 25)
 --
 -- Safety:
 --   persist=false during smoke/load testing.
@@ -34,8 +34,9 @@ select
   'PLANNED_DISABLED' as state,
   false as cron_enabled,
   'IL' as initial_country,
-  10 as batch_size,
-  3 as interval_minutes,
+  2 as interval_minutes,
+  10 as cj_batch_size,
+  25 as eprolo_batch_size,
   7 as cj_rotation_slots,
-  27 as eprolo_rotation_slots,
+  11 as eprolo_rotation_slots,
   false as production_effect;
