@@ -324,8 +324,12 @@ Deno.serve(async(req:Request)=>{
     }
     results.push({provider:task.provider,...result});
     if(persist){
-      await persistObservation(task.provider,result);
-      await syncException(task.provider,result);
+      try{
+        await persistObservation(task.provider,result);
+        await syncException(task.provider,result);
+      }catch(e){
+        results[results.length-1].persist_error=clean(e instanceof Error?e.message:String(e));
+      }
     }
   }
 
