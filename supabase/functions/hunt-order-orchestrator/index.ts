@@ -352,8 +352,11 @@ Deno.serve(async(req:Request)=>{
     if(sessionError||!session)return json(req,{ok:false,error:"SESSION_NOT_FOUND"},404);
 
     const uid=clean(ctx.userClaims?.id||ctx.userClaims?.sub);
-    if(session.user_id&&uid&&session.user_id!==uid&&!(await isAdmin(ctx))){
-      return json(req,{ok:false,error:"SESSION_OWNER_MISMATCH"},403);
+    if(session.user_id){
+      if(!uid)return json(req,{ok:false,error:"SIGNED_IN_SESSION_AUTH_REQUIRED"},403);
+      if(session.user_id!==uid&&!(await isAdmin(ctx))){
+        return json(req,{ok:false,error:"SESSION_OWNER_MISMATCH"},403);
+      }
     }
 
     const lines=Array.isArray(session.line_items)?session.line_items:[];
