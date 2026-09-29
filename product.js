@@ -49,17 +49,22 @@
   }
 
   function renderOptions() {
-    const colors = uniqueBy(variants,"color");
+    const evidenceOnly = variants.length===0;
+    const colors = evidenceOnly
+      ? (Array.isArray(product?.colors)?product.colors:[]).filter(Boolean).map(color=>({color:String(color),color_code:""}))
+      : uniqueBy(variants,"color");
     const colorBlock=$("#hd-color-block");
     colorBlock.hidden = colors.length===0;
-    $("#hd-color-options").innerHTML = colors.map(v=>`<button type="button" class="hd-color-choice ${v.color===selectedColor?"active":""}" data-color="${H.esc(v.color)}" title="${H.esc(v.color)}"><i style="background:${/^#[0-9a-f]{6}$/i.test(v.color_code||"")?v.color_code:"#8aa1bd"}"></i><span>${H.esc(v.color)}</span></button>`).join("");
-    $("#hd-selected-color").textContent = selectedColor || "—";
+    $("#hd-color-options").innerHTML = colors.map(v=>`<button type="button" class="hd-color-choice ${v.color===selectedColor?"active":""} ${evidenceOnly?"evidence-only":""}" ${evidenceOnly?"disabled":`data-color="${H.esc(v.color)}"`} title="${H.esc(v.color)}"><i style="background:${/^#[0-9a-f]{6}$/i.test(v.color_code||"")?v.color_code:"#d8d2c7"}"></i><span>${H.esc(v.color)}</span></button>`).join("");
+    $("#hd-selected-color").textContent = selectedColor || (colors.length&&evidenceOnly?"Last verified":"—");
 
-    const sizes = uniqueBy(variantsForColor(selectedColor),"size");
+    const sizes = evidenceOnly
+      ? (Array.isArray(product?.sizes)?product.sizes:[]).filter(Boolean).map(size=>({size:String(size)}))
+      : uniqueBy(variantsForColor(selectedColor),"size");
     const sizeBlock=$("#hd-size-block");
     sizeBlock.hidden = sizes.length===0;
-    $("#hd-size-options").innerHTML = sizes.map(v=>`<button type="button" class="${v.size===selectedSize?"active":""}" data-size="${H.esc(v.size)}">${H.esc(v.size)}</button>`).join("");
-    $("#hd-selected-size").textContent = selectedSize || "—";
+    $("#hd-size-options").innerHTML = sizes.map(v=>`<button type="button" class="${v.size===selectedSize?"active":""} ${evidenceOnly?"evidence-only":""}" ${evidenceOnly?"disabled":`data-size="${H.esc(v.size)}"`}>${H.esc(v.size)}</button>`).join("");
+    $("#hd-selected-size").textContent = selectedSize || (sizes.length&&evidenceOnly?"Last verified":"—");
   }
 
   function humanLabel(key) {
@@ -173,7 +178,7 @@
     if(images.length)payload.image=images;
     if(product.description)payload.description=String(product.description).slice(0,4000);
     if(product.sku)payload.sku=String(product.sku);
-    if(product.brand)payload.brand={"@type":"Brand","name":String(product.brand)};
+    // Supplier/brand names are intentionally not exposed from HUNT Shadow product pages.
     script.textContent=JSON.stringify(payload);
 
     let canonical=document.querySelector('link[rel="canonical"]');
@@ -220,13 +225,17 @@
             ? "QUOTE AT CHECKOUT"
             : "DISCOVERY";
     $("#hd-product-stock").className = `hd-status ${quoteFresh?"green":"blue"}`;
-    $("#hd-product-price").textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
+    const targetRaw = product?.target_retail_usd ?? product?.profit_truth?.target_retail_usd ?? null;
+    const targetAmount = Number(targetRaw);
+    $("#hd-product-price").textContent = retail.ready
+      ? H.money(retail.amount, retail.currency)
+      : (Number.isFinite(targetAmount)&&targetAmount>0 ? H.money(targetAmount, product?.retail_currency||"USD") : "Price being confirmed");
     syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);
     $("#hd-product-description").textContent = product.description || "Product details are being refreshed by HUNT.";
     $("#hd-product-gaps").innerHTML = (product.gaps || ["Some product options are still being refreshed."]).map(x=>`<li>${H.esc(x)}</li>`).join("");
     const facts = [
-      ["Brand",product.brand],["Type",product.type_name],["Model",product.model],["Origin",product.origin_country],
+      ["Type",product.type_name],["Model",product.model],["Origin",product.origin_country],
       ["Live variants",product.variant_count],["Fulfillment",product.avg_fulfillment_time]
     ].filter(([,v])=>v!==null&&v!==undefined&&v!=="");
     $("#hd-product-facts").innerHTML = facts.map(([k,v])=>`<div><span>${H.esc(k)}</span><strong>${H.esc(v)}</strong></div>`).join("");
@@ -272,7 +281,11 @@
     const mobile = $("#hd-mobile-price");
     if (!mobile || !product) return;
     const retail = currentRetailState();
-    mobile.textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
+    const targetRaw = product?.target_retail_usd ?? product?.profit_truth?.target_retail_usd ?? null;
+    const targetAmount = Number(targetRaw);
+    mobile.textContent = retail.ready
+      ? H.money(retail.amount, retail.currency)
+      : (Number.isFinite(targetAmount)&&targetAmount>0 ? H.money(targetAmount, product?.retail_currency||"USD") : "Price being confirmed");
   }
 
   function setZoom(scale) {
@@ -328,7 +341,7 @@
   }
 
   function renderFallback(cached) {
-    product = {...cached, gallery:[cached.image_url].filter(Boolean), variants:[], variant_count:0, description:"Full product detail and option availability are still being refreshed."};
+    product = {...cached, gallery:[cached.image_url].filter(Boolean), variants:[], variant_count:0, description:cached.description||"Full product detail and option availability are still being refreshed."};
     variants=[];
     renderBuybox();
     $("#hd-product-add").disabled=true;
