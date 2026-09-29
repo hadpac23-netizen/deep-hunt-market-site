@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-LAUNCH-CONTROL-V2",
+  "version": "HUNT-LAUNCH-CONTROL-V3",
   "updated_at": "2026-09-29",
   "mode": "PRE_PAYMENT_FINISH_MODE",
   "payment_live": false,
@@ -13,12 +13,12 @@
     {
       "id": "catalog_bulk_fill",
       "status": "DO_NOW",
-      "note": "861 strict / 852 effective / 97 routes. Continue bulk shelf fill."
+      "note": "948 Strict / 941 effective / 98 routes after truth-consistency and teen-safe storefront audit. Continue verified bulk fill; do not lower Market5/Image/Profit gates."
     },
     {
       "id": "product_detail_truth",
-      "status": "DO_NOW",
-      "note": "Variants/sizes/colors loaded only from verified detail; continue coverage."
+      "status": "PARTIAL_DONE",
+      "note": "EPROLO PDP connected server-side in hunt-storefront v108: exact variants, verified HUNT price, stock, dynamic Color/Size/Model, and rich gallery/description where legacy catalog locator exists. 885/885 EPROLO and 63/63 CJ Strict have exact variant IDs; 630/885 EPROLO have rich catalog locator."
     },
     {
       "id": "checkout_v16",
@@ -76,5 +76,14 @@
     "support": "V16",
     "returns": "V16",
     "profile_supplier_names_hidden": true
+  },
+  "truth_consistency": {
+    "strict": 948,
+    "effective": 941,
+    "routes": 98,
+    "storefront_version": 108,
+    "safety_blocks": 144,
+    "payments": false,
+    "supplier_live_order": false
   }
 }
