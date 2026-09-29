@@ -1,5 +1,6 @@
 import { createSupabaseContext } from "npm:@supabase/server";
 import { assertTransition } from "../_shared/order-lifecycle.mjs";
+import { classifyProvider, normalizedSupplierProvider, buildEproloShadowOrderContract } from "../_shared/hunt-fulfillment-provider.mjs";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const countryNames:Record<string,string>={
@@ -163,12 +164,14 @@ function groupsFromLines(lines:any[]){
   const groups:Record<string,any>={};
   for(const raw of lines){
     const provider=clean(raw?.provider);
+    const providerKind=classifyProvider(provider);
     const origin=clean(raw?.origin_country_code).toUpperCase();
     const logistics=clean(raw?.shipping_method);
-    const key=[provider,origin,logistics].join("|");
+    const key=[providerKind,origin,logistics].join("|");
     if(!groups[key])groups[key]={
-      group_key:key,provider,origin_country_code:origin,
-      shipping_method:logistics,line_items:[]
+      group_key:key,provider,provider_kind:providerKind,
+      supplier_provider:normalizedSupplierProvider(provider),
+      origin_country_code:origin,shipping_method:logistics,line_items:[]
     };
     groups[key].line_items.push({
       item_id:clean(raw?.item_id),
@@ -257,9 +260,14 @@ Deno.serve(async(req:Request)=>{
     const shipping=normalizeShippingSnapshot(session.shipping_snapshot,session.country_code);
     const groups=groupsFromLines(lines);
     const blockers:string[]=[];
+    const providerKinds=[...new Set((groups as any[]).map((g:any)=>clean(g?.provider_kind)))];
+    const hasEprolo=providerKinds.includes("eprolo");
+    const hasCj=providerKinds.includes("cj");
+    const hasUnsupported=providerKinds.includes("unsupported");
     if(!lines.length)blockers.push("EMPTY_LINE_ITEMS");
-    if(lines.some((x:any)=>!clean(x?.provider).toLowerCase().includes("cj")))blockers.push("NON_CJ_FULFILLMENT_NOT_READY");
-    if(lines.some((x:any)=>!clean(x?.origin_country_code)))blockers.push("ORIGIN_NOT_PERSISTED");
+    if(hasUnsupported)blockers.push("UNSUPPORTED_FULFILLMENT_PROVIDER");
+    if(lines.some((x:any)=>classifyProvider(x?.provider)==="cj"&&!clean(x?.origin_country_code)))blockers.push("ORIGIN_NOT_PERSISTED");
+    if(lines.some((x:any)=>classifyProvider(x?.provider)==="eprolo"&&(Number(x?.qty||1)||1)!==1))blockers.push("EPROLO_MULTI_QTY_RECHECK_REQUIRED");
     if(lines.some((x:any)=>!clean(x?.shipping_method)))blockers.push("LOGISTICS_NOT_PERSISTED");
     if(shippingMissing(shipping).length)blockers.push("SHIPPING_ADDRESS_INCOMPLETE");
     if(clean(shipping?.shippingCountryCode).toUpperCase()!==clean(session.country_code).toUpperCase())blockers.push("SHIPPING_COUNTRY_MISMATCH");
@@ -267,32 +275,51 @@ Deno.serve(async(req:Request)=>{
 
     if(runMode==="dry_run"){
       const pass=blockers.length===0;
+      const eproloShadowContracts:any[]=[];
+      for(const group of (groups as any[]).filter((g:any)=>g.provider_kind==="eprolo")){
+        const contract=buildEproloShadowOrderContract({
+          sessionId:session.id,idempotencyKey:idem,countryCode:session.country_code,
+          shipping,group
+        });
+        eproloShadowContracts.push({
+          ...contract,
+          request_digest:await sha256(JSON.stringify(contract))
+        });
+      }
+      const evidenceProvider=hasEprolo&&hasCj?"MULTI":hasEprolo?"EPROLO":"CJdropshipping";
       const evidence=await addPipelineRun(ctx,{
         payment_session_id:session.id,
         order_id:session.order_id||null,
         run_mode:"dry_run",
         stage:"validated",
         status:pass?"pass":"hold",
-        provider:"CJdropshipping",
+        provider:evidenceProvider,
         evidence:{
           line_count:lines.length,
           group_count:groups.length,
+          provider_kinds:providerKinds,
           shipping_snapshot_present:shippingMissing(shipping).length===0,
           payment_mode:session.mode,
           payment_status:session.status,
+          eprolo_shadow_contracts:eproloShadowContracts,
+          supplier_submission_performed:false,
           blockers
         },
         created_by:uid||null
       });
       return json(req,{
         ok:true,dry_run:true,
-        ready_for_supplier_sandbox:pass&&Boolean(session.user_id),
+        ready_for_supplier_sandbox:pass&&Boolean(session.user_id)&&!hasEprolo,
+        ready_for_eprolo_shadow:pass&&hasEprolo,
+        eprolo_supplier_submission_status:hasEprolo?"BLOCKED_UNTIL_OFFICIAL_ORDER_ENDPOINT_VERIFIED":null,
         requires_signed_in_test_session:!session.user_id,
         blockers,
         groups:groups.map((g:any)=>({
-          provider:g.provider,origin_country_code:g.origin_country_code,
+          provider:g.provider,provider_kind:g.provider_kind,
+          origin_country_code:g.origin_country_code,
           shipping_method:g.shipping_method,line_count:g.line_items.length
         })),
+        eprolo_shadow_contracts:eproloShadowContracts,
         evidence
       });
     }
@@ -305,7 +332,23 @@ Deno.serve(async(req:Request)=>{
       if(!(live.enabled&&live.owner_approved)){
         return json(req,{ok:false,error:"LIVE_SUPPLIER_ORDER_DISABLED"},409);
       }
+      if(hasEprolo){
+        return json(req,{
+          ok:false,error:"EPROLO_LIVE_ENDPOINT_NOT_VERIFIED",
+          supplier_submission_performed:false
+        },409);
+      }
       return json(req,{ok:false,error:"LIVE_PATH_NOT_IMPLEMENTED_BEFORE_LAUNCH"},409);
+    }
+
+    if(hasEprolo){
+      return json(req,{
+        ok:false,
+        error:"EPROLO_SUPPLIER_SANDBOX_UNAVAILABLE",
+        shadow_validation_ready:true,
+        supplier_submission_performed:false,
+        next_required_gate:"OFFICIAL_EPROLO_ORDER_ENDPOINT_AND_TRACKING_CONTRACT_VERIFICATION"
+      },409);
     }
 
     const sandbox=await control(ctx,"hunt_supplier_order_sandbox");
