@@ -1,0 +1,19 @@
+{
+  "evidence_version": "HUNT_EPROLO_STOREFRONT_LOAD_BASELINE_V1",
+  "observed_at": "2026-09-29T17:32:36Z",
+  "target": "live hunt-storefront EPROLO PDP path",
+  "mode": "READ_ONLY",
+  "sample_products": 15,
+  "rounds": 2,
+  "concurrency": 3,
+  "total_requests": 30,
+  "ok_200_product": 30,
+  "non_200": 0,
+  "client_timeout_or_error": 0,
+  "p50_ms": 2316,
+  "p95_ms": 3762,
+  "max_ms": 3915,
+  "workflow_run": "https://github.com/hadpac23-netizen/deep-hunt-market-site/actions/runs/36605607792",
+  "interpretation": "Current live runtime passed a modest concurrency baseline. This does not validate the PR26 pooler/reuse patch because that patch has not been deployed.",
+  "production_effect": false
+}
