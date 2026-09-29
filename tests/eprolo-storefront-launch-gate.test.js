@@ -27,3 +27,16 @@ test("phone-case guard excludes keychains and passport/document covers",()=>{
   assert.match(src,/key\\s\?chain\|keychain\|bag pendant\|passport\|document case\|card holder/);
   assert.doesNotMatch(src,/mobile case\|protective cover/);
 });
+
+
+test("EPROLO PDP reuses one DB client and prefers the transaction pooler",()=>{
+  assert.match(src,/SUPABASE_DB_POOLER_URL/);
+  assert.match(src,/let eproloSqlClientInstance/);
+  assert.match(src,/if \(eproloSqlClientInstance\) return eproloSqlClientInstance/);
+  assert.match(src,/prepare:false/);
+  assert.match(src,/max:1/);
+  assert.match(src,/connect_timeout:10/);
+  assert.match(src,/max_lifetime:600/);
+  assert.doesNotMatch(src,/await sql\.end\(/);
+  assert.doesNotMatch(src,/connect_timeout:20,idle_timeout:3,max_lifetime:60/);
+});
