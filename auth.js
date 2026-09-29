@@ -78,9 +78,11 @@
   async function initGoogle(enabled) {
     if(!googleContainer||!googleStatus)return;
     if(!enabled){
-      googleStatus.textContent="SETUP REQUIRED";
+      googleStatus.textContent="";
+      googleContainer.closest("[data-google-auth]")?.setAttribute("hidden","");
       return;
     }
+    googleContainer.closest("[data-google-auth]")?.removeAttribute("hidden");
     googleStatus.textContent="LOADING…";
     try{
       await loadGoogleIdentity();
@@ -146,13 +148,15 @@
         const provider=button.dataset.oauth;
         const enabled=external[provider]===true;
         button.disabled=!enabled;
+        button.hidden=!enabled;
         button.dataset.enabled=String(enabled);
-        button.querySelector("small").textContent=enabled?"CONNECTED":"SETUP REQUIRED";
+        button.querySelector("small").textContent=enabled?"CONNECTED":"";
       });
       await initGoogle(external.google===true);
     } catch {
-      providerButtons.forEach(button=>{button.disabled=true;button.querySelector("small").textContent="STATUS UNAVAILABLE";});
-      if(googleStatus)googleStatus.textContent="STATUS UNAVAILABLE";
+      providerButtons.forEach(button=>{button.disabled=true;button.hidden=true;button.querySelector("small").textContent="";});
+      if(googleContainer)googleContainer.closest("[data-google-auth]")?.setAttribute("hidden","");
+      if(googleStatus)googleStatus.textContent="";
     }
   }
 
