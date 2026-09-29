@@ -18,6 +18,8 @@ on:
       - "supabase/functions/_shared/hunt-fulfillment-provider.mjs"
       - "tests/**"
       - "ops/**"
+      - "catalog-index.json"
+      - "catalog-readiness.json"
       - ".github/workflows/hunt-checkout-regression.yml"
   push:
     branches:
@@ -52,7 +54,7 @@ jobs:
         with:
           node-version: "24"
       - name: Run checkout tests
-        run: node --test tests/checkout-address.test.js tests/checkout-contract.test.js tests/payplus-auth.test.js tests/payplus-status-map.test.js tests/payplus-callback-contract.test.js tests/order-lifecycle.test.js tests/order-lifecycle-contract.test.js tests/payment-live-kill-switch.test.js tests/eprolo-fulfillment-shadow.test.js tests/eprolo-storefront-launch-gate.test.js tests/canonical-pdp-readiness-contract.test.js
+        run: node --test tests/checkout-address.test.js tests/checkout-contract.test.js tests/payplus-auth.test.js tests/payplus-status-map.test.js tests/payplus-callback-contract.test.js tests/order-lifecycle.test.js tests/order-lifecycle-contract.test.js tests/payment-live-kill-switch.test.js tests/eprolo-fulfillment-shadow.test.js tests/eprolo-storefront-launch-gate.test.js tests/canonical-pdp-readiness-contract.test.js tests/no-legacy-catalog-launch-path.test.js
       - name: Parse browser scripts
         run: |
           node -e "new Function(require('fs').readFileSync('checkout-address.js','utf8')); new Function(require('fs').readFileSync('checkout.js','utf8')); console.log('browser-js-parse-pass')"
