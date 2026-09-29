@@ -1684,7 +1684,7 @@ function checkoutMap() {
     },
     Gelato: {
       mode: "APPROVAL_REQUIRED",
-      note: "Public catalog is live in HUNT. Variants, shipping quotes and order fulfillment still require verified Gooten API credentials."
+      note: "Connector is staged; live catalog, shipping quotes and fulfillment wait for verified Gelato API credentials."
     },
     Prodigi: {
       mode: "APPROVAL_REQUIRED",
@@ -1692,7 +1692,7 @@ function checkoutMap() {
     },
     Gooten: {
       mode: "APPROVAL_REQUIRED",
-      note: "Connector is staged; live catalog and fulfillment activation wait for verified API credentials."
+      note: "Public catalog is live in HUNT. Private store/recipe credentials, shipping proof and fulfillment activation remain approval-required."
     },
     "Matterhorn Wholesale": {
       mode: "APPROVAL_REQUIRED",
@@ -1764,7 +1764,7 @@ Deno.serve(async (req: Request) => {
     ]);
     const matterhornShelves = matterhornMarketShelves();
     const surveyShelves = surveyMarketShelves();
-    const mergedShelves = mergeMarketShelves(surveyShelves, matterhornShelves, merchantShelves, printfulShelves, gootenShelves, cjShelves, persistedShelves, priorityCjShelves);
+    const mergedShelves = mergeMarketShelves(priorityCjShelves, cjShelves, persistedShelves, merchantShelves, printfulShelves, gootenShelves, matterhornShelves, surveyShelves);
     const shelves = focusShelf ? { [focusShelf]: mergedShelves[focusShelf] || [] } : mergedShelves;
     const visibleEntries = Object.values(shelves).reduce(
       (sum: number, items: any) => sum + (Array.isArray(items) ? items.length : 0),
