@@ -1401,9 +1401,23 @@ $("#shelves").addEventListener("change",e=>{
   if(e.target.matches("select[data-sort]")){sortMode=String(e.target.value||"featured");visible={};render();return}
   if(e.target.matches("input[data-stock-only]")){stockOnly=Boolean(e.target.checked);visible={};render()}
 });
+const HUNT_SHADOW_CATALOG_URL="https://zszlnahjqmwozwubetkm.supabase.co/functions/v1/hunt-cinematic-shadow-catalog";
+const HUNT_SHADOW_PUBLIC_KEY="sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
+async function loadTaxonomySupplement(){
+  try{
+    const live=await fetch(HUNT_SHADOW_CATALOG_URL,{headers:{apikey:HUNT_SHADOW_PUBLIC_KEY,accept:"application/json"},cache:"no-store"});
+    if(live.ok){
+      const body=await live.json();
+      if(body&&body.shelves&&typeof body.shelves==="object")return body;
+    }
+  }catch{}
+  return fetch("./evidence/HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27.json")
+    .then(r=>r.ok?r.json():({shelves:{}}))
+    .catch(()=>({shelves:{}}));
+}
 Promise.all([
   fetch("./evidence/HUNT-FULL-SHELVES-STYLIST-SHADOW-2026-09-23.json").then(r=>r.json()),
-  fetch("./evidence/HUNT-TAXONOMY-PROFIT-V2-PREVIEW-SUPPLEMENT-2026-09-27.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}})),
+  loadTaxonomySupplement(),
   fetch("./evidence/HUNT-MEN-LAUNCH-LOCKED-SUPPLEMENT-2026-09-28.json").then(r=>r.ok?r.json():({shelves:{}})).catch(()=>({shelves:{}}))
 ]).then(([j,s1,s2])=>{
   data=j;taxonomySupplement=s1||{shelves:{}};launchSupplement=s2||{shelves:{}};
