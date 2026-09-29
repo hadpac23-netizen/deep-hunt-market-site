@@ -1181,10 +1181,13 @@ async function eproloStrictProductDetail(productId:string){
       target_retail_usd:targetRetail,projected_product_profit:Number(gate?.projected_product_contribution_usd)||null,
       projected_product_margin:Number(gate?.projected_product_margin)||null,final_profit_verified:false,
       quote_verification_status:"PASS",quote_verified_at:cleanText(source?.latest_market5_observed_at)||null,
-      size_data_source:"PROVIDER_VARIANTS",price_truth_mode:"PREPAYMENT_VERIFIED_TARGET",production_effect:false,
-      runtime_db_connection_mode:eproloDbConnectionMode()
+      size_data_source:"PROVIDER_VARIANTS",price_truth_mode:"PREPAYMENT_VERIFIED_TARGET",production_effect:false
     };
-  }catch{
+  }catch(error){
+    console.error("EPROLO_PDP_DB_OR_PROVIDER_ERROR", {
+      mode:eproloDbConnectionMode(),
+      name:error instanceof Error?error.name:"unknown"
+    });
     return null;
   }
 }
