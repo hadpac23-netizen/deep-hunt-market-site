@@ -1,0 +1,95 @@
+{
+  "schema_version": "HUNT_LAUNCH_CLOSURE_MATRIX_V1",
+  "observed_at": "2026-09-29",
+  "source_of_truth": {
+    "status": "PARTIAL",
+    "evidence": "PR26 is the single launch candidate; PR23/24/25 closed as superseded; runtime still not reconciled to main and no deploy performed.",
+    "blocks_real_money": true
+  },
+  "catalog": {
+    "status": "PARTIAL",
+    "cj_exact_variant_refresh_pool": 63,
+    "cj_live_il_audit": {
+      "total": 63,
+      "fresh_pretax_pass": 30,
+      "profit_review": 32,
+      "profit_block": 1,
+      "out_of_stock": 0,
+      "no_shipping": 0,
+      "retry": 0
+    },
+    "eprolo_canonical_pdp_ready": 261,
+    "eprolo_live_fresh_truth_status": "BLOCKED_UNTIL_PATCH_DEPLOYED",
+    "blocks_real_money": true
+  },
+  "pdp_readiness": {
+    "status": "PASS_CANONICALIZED",
+    "strict_eprolo": 826,
+    "pdp_detail_pass": 517,
+    "latest_private_qa_pass": 266,
+    "canonical_pdp_ready": 261,
+    "blocks_real_money": false
+  },
+  "freshness_automation": {
+    "status": "BLOCKED",
+    "runner_in_pr26": true,
+    "schedule_plan_in_pr26": true,
+    "live_cron_enabled": false,
+    "supabase_db_pooler_secret_present": false,
+    "freshness_runner_secret_present": false,
+    "reason": "Runner/patched EPROLO truth not deployed; no pooler/runner secret; scheduled shadow writes not approved.",
+    "blocks_real_money": true
+  },
+  "fulfillment": {
+    "status": "PARTIAL",
+    "cj_presupplier_recheck_in_pr26": true,
+    "cj_full_sandbox_e2e_proven": false,
+    "eprolo_order_tracking_contract_verified": false,
+    "blocks_real_money": true
+  },
+  "payment": {
+    "status": "BLOCKED",
+    "payment_live": false,
+    "payplus_callback_accept_paid": false,
+    "payplus_sandbox_evidence_enabled": false,
+    "payplus_sandbox_credentials_present": false,
+    "blocks_real_money": true
+  },
+  "reliability": {
+    "status": "PARTIAL",
+    "eprolo_connection_reuse_patch_in_pr26": true,
+    "transaction_pooler_required": true,
+    "transaction_pooler_secret_present": false,
+    "live_load_retest_required": true,
+    "blocks_real_money": true
+  },
+  "security": {
+    "status": "PARTIAL",
+    "leaked_password_protection": false,
+    "private_shadow_pricing_rls_no_policy": true,
+    "private_rls_hardening_plan_in_pr26": true,
+    "blocks_real_money": true
+  },
+  "legal": {
+    "status": "BLOCKED",
+    "verified_operating_entity_fields_complete": false,
+    "customer_policy_pages_verified": false,
+    "blocks_real_money": true
+  },
+  "git_governance": {
+    "status": "PARTIAL",
+    "pr26_draft": true,
+    "ci_catalog_integrity": "PASS",
+    "ci_checkout_regression": "PASS",
+    "coderabbit_full_review_completed": false,
+    "branch_protection_verified": false,
+    "blocks_real_money": true
+  },
+  "legacy_snapshots": {
+    "status": "PASS",
+    "marked_non_authoritative": true,
+    "ci_guard_present": true,
+    "blocks_real_money": false
+  },
+  "launch_rule": "No Payment Live, Supplier Live Order, merge, deploy, or customer availability promise until all real-money blockers PASS and Owner Gate approves."
+}
