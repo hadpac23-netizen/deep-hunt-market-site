@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="HUNT product details, verified options and availability.">
+<title>HUNT · Product</title>
+<link rel="stylesheet" href="product-v16.css">
+</head>
+<body>
+<header class="product-header">
+  <div class="product-header-main">
+    <a class="product-wordmark" href="hunt-v16.html"><strong>HUNT</strong><small>GLOBAL SHOPPING MARKETPLACE</small></a>
+    <nav class="product-nav" aria-label="Quick shop">
+      <a href="hunt-v16.html">Shop</a><a href="hunt-v16.html?dept=women">Women</a><a href="hunt-v16.html?dept=men">Men</a>
+    </nav>
+    <nav class="product-actions" aria-label="Account actions"><a href="auth.html">Sign In</a><a href="profile.html#saved">Wishlist</a><a href="checkout.html">Bag <span data-cart-count>0</span></a></nav>
+  </div>
+  <nav class="product-taxonomy" id="product-taxonomy">
+    <a href="hunt-v16.html?dept=women">Women</a><a href="hunt-v16.html?dept=men">Men</a><a href="hunt-v16.html?dept=shoes">Shoes</a>
+    <a href="hunt-v16.html?dept=beauty">Beauty</a><a href="hunt-v16.html?dept=accessories">Accessories</a><a href="hunt-v16.html?dept=home">Home</a><a href="hunt-v16.html?dept=kids">Kids</a>
+  </nav>
+</header>
+
+<main class="product-shell">
+  <div class="product-breadcrumb"><a href="hunt-v16.html">HUNT</a><span>/</span><a id="hd-product-category-link" href="hunt-v16.html">Category</a><span>/</span><strong id="hd-product-breadcrumb">Product</strong></div>
+
+  <section class="product-loading" id="hd-product-loading" aria-label="Loading product">
+    <div class="skeleton-media"></div>
+    <div class="skeleton-copy"><div class="skeleton-line short"></div><div class="skeleton-line big"></div><div class="skeleton-line price"></div><div class="skeleton-line"></div><div class="skeleton-line"></div></div>
+  </section>
+
+  <section class="product-layout" id="hd-product-layout" hidden>
+    <div class="product-gallery">
+      <div class="main-media"><img id="hd-product-main-image" alt="Product image"><button class="zoom-button" id="hd-zoom-open" type="button" aria-label="Zoom product image">+</button></div>
+      <div class="thumbs" id="hd-product-thumbs" aria-label="Product images"></div>
+    </div>
+
+    <aside class="buybox">
+      <div class="buy-status"><span class="status-pill" id="hd-product-stock">Availability</span><span id="hd-product-provider" hidden>HUNT</span></div>
+      <h1 id="hd-product-title">Product</h1>
+      <div class="rating-line"><span id="pdp-rating-stars">☆☆☆☆☆</span><span id="pdp-rating-copy">Reviews appear when verified</span></div>
+      <div class="price-row"><strong id="hd-product-price">Price being confirmed</strong><span>Final retail total is rechecked before checkout.</span></div>
+
+      <section class="option-block" id="hd-color-block" hidden>
+        <div class="option-head"><strong>Color</strong><span id="hd-selected-color">—</span></div>
+        <div class="hd-color-options" id="hd-color-options"></div>
+      </section>
+
+      <section class="option-block" id="hd-size-block" hidden>
+        <div class="option-head"><strong>Size</strong><span id="hd-selected-size">—</span></div>
+        <div class="hd-size-options" id="hd-size-options"></div>
+      </section>
+
+      <div class="purchase-row hd-product-quantity"><strong>Quantity</strong><div class="hd-product-qty"><button id="hd-qty-minus" type="button" aria-label="Decrease quantity">−</button><span id="hd-qty-value">1</span><button id="hd-qty-plus" type="button" aria-label="Increase quantity">+</button></div></div>
+      <button class="primary-cta" id="hd-product-add" type="button" disabled>Options being confirmed</button>
+      <p class="purchase-note">Purchase controls activate only when HUNT has the required product, variant and retail-price truth.</p>
+
+      <div class="product-facts" id="hd-product-facts"></div>
+      <div class="product-facts">
+        <div><span>Availability</span><strong id="pdp-availability">Checking</strong></div>
+        <div><span>Delivery</span><strong id="pdp-delivery">Checking</strong></div>
+      </div>
+      <span id="hd-product-boom" hidden></span>
+    </aside>
+  </section>
+
+  <section class="content-section details-grid">
+    <article><div class="section-kicker">PRODUCT DETAILS</div><h3>About this product</h3><p id="hd-product-description">Product details are being refreshed.</p></article>
+    <article><div class="section-kicker">SHOPPING NOTES</div><h3>What to know</h3><ul id="hd-product-gaps"><li>Availability and options are checked against current product data.</li></ul></article>
+  </section>
+
+  <section class="content-section" id="hd-size-measurement-section" hidden>
+    <div class="section-head"><div class="section-kicker">SIZE & FIT</div><h2>Measurements</h2><p>Only verified supplier sizes and measurements are shown.</p></div>
+    <div class="hd-size-equivalents" id="hd-size-equivalents"></div><div id="hd-measurement-table-wrap"></div>
+  </section>
+
+  <section class="content-section" id="hd-attribute-section" hidden>
+    <div class="section-head"><div class="section-kicker">SPECIFICATIONS</div><h2>Product specifications</h2><p>Attributes shown here come from the exact product or selected variant.</p></div>
+    <div class="hd-product-attribute-grid" id="hd-product-attribute-grid"></div>
+  </section>
+
+  <section class="content-section" id="reviews">
+    <div class="reviews-head">
+      <div><div class="section-kicker">REVIEWS</div><h2>Ratings & reviews</h2></div>
+      <div class="review-summary"><strong id="hd-review-average">—</strong><span id="hd-review-summary-stars">☆☆☆☆☆</span><small id="hd-review-count">0 reviews</small></div>
+    </div>
+    <div class="review-layout">
+      <aside class="review-form">
+        <h3>Rate this product</h3>
+        <div class="hd-review-star-input" id="hd-review-star-input"></div>
+        <label for="hd-review-comment">Your review</label><textarea id="hd-review-comment" maxlength="2000"></textarea>
+        <label for="hd-review-images">Add photos</label><input id="hd-review-images" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+        <div id="hd-review-file-preview"></div><p id="hd-review-signin-note">Sign in to publish a review.</p>
+        <button class="hd-btn-primary" id="hd-review-submit" type="button">Publish review</button><p id="hd-review-status"></p>
+      </aside>
+      <div><div class="hd-review-inline-status" id="hd-review-inline-status">Checking reviews…</div><div class="hd-review-list" id="hd-review-list" hidden></div></div>
+    </div>
+  </section>
+
+  <section class="content-section" id="hd-product-media-section" hidden>
+    <div class="section-head"><div class="section-kicker">PRODUCT VIDEO</div><h2>See it in motion</h2></div><div id="hd-product-video-grid"></div>
+  </section>
+
+  <section class="content-section" id="hd-product-recommendations">
+    <div class="section-head"><div class="section-kicker">YOU MAY ALSO LIKE</div><h2>Similar products</h2></div>
+    <div class="recommendation-grid" id="hd-similar-grid"></div>
+    <div id="hd-similar-block"></div>
+  </section>
+
+  <section class="content-section" id="hd-complementary-block">
+    <div class="section-head"><div class="section-kicker">PAIRS WELL WITH</div><h2>Useful with this product</h2></div>
+    <div class="recommendation-grid" id="hd-complementary-grid"></div>
+  </section>
+
+  <section class="content-section" id="hd-discover-block">
+    <div class="section-head"><div class="section-kicker">DISCOVER</div><h2>Something else you may like</h2></div>
+    <div class="recommendation-grid" id="hd-discover-grid"></div>
+  </section>
+
+  <div id="hd-endless-copy" hidden></div><div id="hd-endless-grid" hidden></div><div id="hd-endless-sentinel" hidden></div>
+
+  <section class="product-error" id="hd-product-error" hidden><h2>We couldn't load this product.</h2><p id="hd-product-error-copy">Try returning to HUNT and opening the product again.</p><a href="hunt-v16.html">Back to HUNT</a></section>
+</main>
+
+<div class="zoom-modal" id="hd-image-zoom" hidden>
+  <div class="zoom-panel">
+    <button class="zoom-close" id="hd-zoom-close" type="button" aria-label="Close zoom">×</button>
+    <div class="zoom-stage"><img id="hd-zoom-image" alt="Zoomed product image"></div>
+    <div class="zoom-controls"><button id="hd-zoom-out" type="button">−</button><span id="hd-zoom-level">100%</span><button id="hd-zoom-in" type="button">+</button><button id="hd-zoom-reset" type="button">Reset</button></div>
+  </div>
+</div>
+
+<div class="mobile-buybar"><div><small>HUNT price</small><strong id="hd-mobile-price">—</strong></div><button id="hd-mobile-add" type="button" disabled>Options pending</button></div>
+
+<script src="market-core.js"></script>
+<script src="boom-runtime.js"></script>
+<script>(()=>{
+  const q=new URLSearchParams(location.search);
+  const provider=q.get("provider")||({h1:"CJdropshipping",h2:"EPROLO",h3:"Printful",h4:"Gooten"}[q.get("src")]||"");
+  const id=q.get("id")||"";
+  const key="hunt_product_"+provider+":"+id;
+  let p=null;
+  try{p=JSON.parse(sessionStorage.getItem(key)||"null")}catch{}
+  const $=s=>document.querySelector(s);
+  if(!id){
+    $("#hd-product-loading").hidden=true;
+    $("#hd-product-layout").hidden=true;
+    $("#hd-product-error").hidden=false;
+    $("#hd-product-error-copy").textContent="This product link is missing its product id.";
+    return;
+  }
+  if(!p)return;
+  const n=Number(p.target_retail_usd ?? p.retail_price_usd ?? p.price_amount ?? p.price);
+  $("#hd-product-title").textContent=p.title||"Product";
+  $("#hd-product-breadcrumb").textContent=p.title||"Product";
+  $("#hd-product-main-image").src=p.image_url||"";
+  $("#hd-product-main-image").alt=p.title||"Product";
+  if(Number.isFinite(n)&&n>0)$("#hd-product-price").textContent=new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:n>=100?0:2}).format(n);
+  else $("#hd-product-price").textContent="Price being confirmed";
+  $("#hd-product-stock").textContent="Product loaded";
+  $("#hd-product-description").textContent=p.description||"Full product details are being refreshed.";
+  $("#hd-product-loading").hidden=true;
+  $("#hd-product-layout").hidden=false;
+})();</script>
+<script src="product.js"></script>
+<script src="product-flow.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script src="reviews.js"></script>
+<script>(()=>{
+  const $=s=>document.querySelector(s);
+  window.addEventListener("hunt:product-loaded",e=>{
+    const p=e.detail?.product||{};
+    const variants=Array.isArray(e.detail?.variants)?e.detail.variants:[];
+    const rating=$("#hd-review-average");
+    if(rating&&rating.textContent==="—")rating.closest(".review-summary")?.setAttribute("aria-label","Reviews");
+    const availability=$("#pdp-availability");
+    if(availability){
+      const stock=Number(p.stock_quantity ?? p.verified_inventory ?? 0);
+      availability.textContent=stock>0?"Available":"Availability being confirmed";
+    }
+    const delivery=$("#pdp-delivery");
+    if(delivery)delivery.textContent=p.avg_fulfillment_time?String(p.avg_fulfillment_time):"Delivery estimate shown at checkout when verified";
+    document.body.classList.add("product-ready");
+    $("#hd-product-layout").hidden=false;
+    $("#hd-product-loading").hidden=true;
+  });
+})();</script>
+</body>
+</html>
