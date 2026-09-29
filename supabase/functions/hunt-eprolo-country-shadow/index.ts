@@ -159,7 +159,7 @@ Deno.serve(async(req:Request)=>{
     const exact=variantList.find((v:any)=>
       [v?.id,v?.variantsid,v?.variantId,v?.variant_id,v?.variants_id,v?.sku]
         .map((x:any)=>String(x??"")).includes(variantId)
-    ) || (variantList.length===1?variantList[0]:null);
+    );
     if(!exact){
       return reply({
         provider:"EPROLO",item_id:itemId,country,variant_id:variantId,status:"HOLD",
