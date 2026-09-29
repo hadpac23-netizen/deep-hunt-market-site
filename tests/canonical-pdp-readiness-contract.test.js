@@ -16,7 +16,7 @@ test("launch readiness uses one canonical PDP metric",()=>{
 
 test("historical QA audit counts are not relabeled PDP Ready",()=>{
   assert.match(sql,/PDP_QA_LATEST_PASS/);
-  assert.match(sql,/latest private QA ledger/);
+  assert.match(sql,/latest private\.hunt_pdp_qa_runs record is PASS/);
 });
 
 
