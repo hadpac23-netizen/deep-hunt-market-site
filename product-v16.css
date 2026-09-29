@@ -162,3 +162,6 @@ img{display:block;max-width:100%}
   .mobile-buybar button{min-width:150px;min-height:44px;border:0;border-radius:999px;background:var(--ink);color:white;font-size:10px;font-weight:800}
   .mobile-buybar button:disabled{background:#aaa59d}
 }
+
+.evidence-only{opacity:.68!important;cursor:default!important;background:#f2eee7!important;color:#6f6c66!important}
+.evidence-only:disabled{opacity:.68!important}
