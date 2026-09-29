@@ -4,7 +4,24 @@
   "source_of_truth": {
     "status": "PARTIAL",
     "evidence": "PR26 is the single launch candidate; PR23/24/25 closed as superseded; runtime still not reconciled to main and no deploy performed.",
-    "blocks_real_money": true
+    "blocks_real_money": true,
+    "storefront_source_layout_fixed": true,
+    "storefront_sidecars_separate": true,
+    "runtime_git_comparison": {
+      "exact_match": [
+        "hunt-cj-quote",
+        "hunt-cj-live-check",
+        "hunt-eprolo-readonly-pilot",
+        "hunt-eprolo-variant-country-audit-shadow",
+        "hunt-eprolo-product-country-variants-audit-shadow"
+      ],
+      "pr26_patched_ahead_of_runtime": [
+        "hunt-payment-session",
+        "hunt-order-orchestrator",
+        "hunt-storefront",
+        "hunt-eprolo-country-shadow"
+      ]
+    }
   },
   "catalog": {
     "status": "PARTIAL",
@@ -20,7 +37,9 @@
     },
     "eprolo_canonical_pdp_ready": 261,
     "eprolo_live_fresh_truth_status": "BLOCKED_UNTIL_PATCH_DEPLOYED",
-    "blocks_real_money": true
+    "blocks_real_money": true,
+    "eprolo_destination_tax_patch_in_pr26": true,
+    "eprolo_final_profit_requires_provider_tax_truth": true
   },
   "pdp_readiness": {
     "status": "PASS_CANONICALIZED",
@@ -45,7 +64,14 @@
     "cj_presupplier_recheck_in_pr26": true,
     "cj_full_sandbox_e2e_proven": false,
     "eprolo_order_tracking_contract_verified": false,
-    "blocks_real_money": true
+    "blocks_real_money": true,
+    "live_evidence": {
+      "cj_records_total": 8,
+      "failed": 5,
+      "processing_stale": 3,
+      "full_tracking_shipped_e2e_proven": false,
+      "last_observed_failures": "2026-09-15"
+    }
   },
   "payment": {
     "status": "BLOCKED",
@@ -53,7 +79,14 @@
     "payplus_callback_accept_paid": false,
     "payplus_sandbox_evidence_enabled": false,
     "payplus_sandbox_credentials_present": false,
-    "blocks_real_money": true
+    "blocks_real_money": true,
+    "live_evidence": {
+      "prelaunch_session_event_count": 23,
+      "payplus_status_observation_count": 0,
+      "callback_status_mapping_proven": false,
+      "signed_callback_evidence_proven": false,
+      "accepted_paid_evidence_proven": false
+    }
   },
   "reliability": {
     "status": "PARTIAL",
@@ -71,7 +104,13 @@
       "timeouts": 0
     },
     "current_live_baseline_passed": true,
-    "pr26_pooler_patch_validated_in_runtime": false
+    "pr26_pooler_patch_validated_in_runtime": false,
+    "storefront_source_layout_regression_fixed": true,
+    "storefront_index_size_bytes": 93667,
+    "storefront_sidecars": [
+      "matterhorn_snapshot.json",
+      "survey_snapshot.json"
+    ]
   },
   "security": {
     "status": "PARTIAL",
