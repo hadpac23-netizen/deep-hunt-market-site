@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-V16-LIVE-CATALOG-QA-V2",
+  "version": "HUNT-V16-LIVE-CATALOG-QA-V3",
   "generated_at": "2026-09-29",
   "mode": "SHADOW_ONLY",
   "production_effect": false,
@@ -15,10 +15,10 @@
     "products_with_cached_size_evidence": 10,
     "products_with_cached_color_evidence": 13,
     "exact_duplicates_removed": 1,
-    "strict_after_reconcile": 758,
-    "effective_products_after_shop_filter": 749,
-    "products_with_image_pass": 1743,
-    "products_with_market5_pass": 2558
+    "strict_after_reconcile": 818,
+    "effective_products_after_shop_filter": 809,
+    "products_with_image_pass": 1816,
+    "products_with_market5_pass": 2614
   },
   "largest_departments": {
     "accessories": 239,
@@ -58,11 +58,32 @@
   "updated_at": "2026-09-29",
   "repairs": {
     "eprolo_country_shadow_version": 5,
-    "image_technical_qa_version": 4,
+    "image_technical_qa_version": 5,
     "eprolo_db_input_read_failed_fixed": true,
     "image_webp_and_octet_stream_sniffing_added": true,
     "image_recovered_to_pass": 17,
     "eprolo_market5_new_all_pass": 22,
-    "profit_gates_materialized_from_verified_market5_economics": 5
+    "profit_gates_materialized_from_verified_market5_economics": 5,
+    "cj_product_detail_shadow_version": 9,
+    "cj_product_detail_id_alias_and_normalized_variants_fixed": true,
+    "image_webp_avif_and_octet_stream_support_added": true,
+    "image_reconcile_state_machine_fixed": true
+  },
+  "shelf_milestones": {
+    "activewear": 8,
+    "chargers_cables": 9,
+    "hair": 8,
+    "skincare": 9,
+    "women_tops": 8,
+    "men_knitwear": 8,
+    "men_outerwear": 8,
+    "men_shirts": 8,
+    "men_shoes": 8,
+    "women_skirts": 8,
+    "entryway": 2
+  },
+  "cj_latest": {
+    "note": "CJ Product Detail normalization fixed. Two Entryway candidates resolved canonical variants but did not pass all 5 markets; they remain excluded.",
+    "entryway_strict": 2
   }
 }
