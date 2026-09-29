@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-V16-LIVE-CATALOG-QA-V10",
+  "version": "HUNT-V16-LIVE-CATALOG-QA-V11",
   "generated_at": "2026-09-29",
   "mode": "SHADOW_ONLY",
   "production_effect": false,
@@ -22,15 +22,16 @@
     "duplicate_rows_after_shop_filter": 1,
     "strict_after_truth_consistency_audit": 948,
     "teen_safe_blocks": 144,
-    "strict_catalog_current": 808,
-    "pdp_ready_verified": 311,
-    "pdp_not_yet_checked": 497,
+    "strict_catalog_current": 807,
+    "pdp_ready_verified": 400,
+    "pdp_not_yet_checked": 407,
     "pdp_with_sizes": 150,
     "pdp_with_colors": 264,
     "pdp_with_multi_gallery": 65,
     "pdp_zero_coverage_shelves": 0,
     "pdp_shelves_below_3": 0,
-    "pdp_shelves_below_8": 43
+    "pdp_shelves_below_8": 32,
+    "pdp_shelves_below_5": 2
   },
   "largest_departments": {
     "accessories": 239,
@@ -162,6 +163,8 @@
     "zero_coverage_completed": true,
     "depth_target": 8,
     "depth3_complete": true,
-    "depth8_started": true
+    "depth8_started": true,
+    "depth5_almost_complete": true,
+    "latest_depth8_progress": "400 PDP Ready; 32 shelves below 8"
   }
 }
