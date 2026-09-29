@@ -1,4 +1,5 @@
 import { createSupabaseContext } from "npm:@supabase/server";
+import { classifyProvider, buildEproloShadowOrderContract } from "../_shared/hunt-fulfillment-provider.mjs";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 function shippingAddressReady(snapshot:any,country:string){
@@ -53,16 +54,18 @@ Deno.serve(async(req:Request)=>{
     }
 
     const lines=Array.isArray(session.line_items)?session.line_items:[];
-    const groups:Record<string,{provider:string,origin_country_code:string,shipping_method:string,line_items:any[]}>= {};
+    const groups:Record<string,{provider:string,provider_kind:string,origin_country_code:string,shipping_method:string,line_items:any[]}>= {};
 
     for(const line of lines){
       const provider=clean(line?.provider)||"unknown";
+      const providerKind=classifyProvider(provider);
       const origin=clean(line?.origin_country_code).toUpperCase();
       const shippingMethod=clean(line?.shipping_method);
-      const groupKey=[provider,origin||"missing-origin",shippingMethod||"missing-logistics"].join("|");
+      const groupKey=[providerKind,origin||"missing-origin",shippingMethod||"missing-logistics"].join("|");
       if(!groups[groupKey]){
         groups[groupKey]={
           provider,
+          provider_kind:providerKind,
           origin_country_code:origin,
           shipping_method:shippingMethod,
           line_items:[]
@@ -80,23 +83,42 @@ Deno.serve(async(req:Request)=>{
     }
 
     const shippingReady=shippingAddressReady(session.shipping_snapshot,clean(session.country_code).toUpperCase());
+    const providerKinds=[...new Set(lines.map((x:any)=>classifyProvider(x?.provider)))];
+    const hasEprolo=providerKinds.includes("eprolo");
     const blockers:string[]=[];
     if(session.mode==="prelaunch") blockers.push("PAYMENT_ACCOUNT_NOT_ACTIVE");
     if(!["paid","succeeded","completed"].includes(clean(session.status).toLowerCase())) blockers.push("PAYMENT_NOT_CONFIRMED");
     if(!lines.length) blockers.push("EMPTY_LINE_ITEMS");
-    if(lines.some((x:any)=>!clean(x?.provider).toLowerCase().includes("cj"))) blockers.push("NON_CJ_FULFILLMENT_NOT_READY");
-    if(lines.some((x:any)=>!clean(x?.origin_country_code))) blockers.push("ORIGIN_NOT_PERSISTED");
+    if(providerKinds.includes("unsupported")) blockers.push("UNSUPPORTED_FULFILLMENT_PROVIDER");
+    if(lines.some((x:any)=>classifyProvider(x?.provider)==="cj"&&!clean(x?.origin_country_code))) blockers.push("ORIGIN_NOT_PERSISTED");
+    if(lines.some((x:any)=>classifyProvider(x?.provider)==="eprolo"&&(Number(x?.qty||1)||1)!==1)) blockers.push("EPROLO_MULTI_QTY_RECHECK_REQUIRED");
     if(lines.some((x:any)=>!clean(x?.shipping_method))) blockers.push("LOGISTICS_NOT_PERSISTED");
     if(!shippingReady) blockers.push("SHIPPING_ADDRESS_NOT_COLLECTED");
+    if(hasEprolo) blockers.push("EPROLO_ORDER_ENDPOINT_NOT_VERIFIED");
     blockers.push("SUPPLIER_ORDER_CREATION_DISABLED");
 
+    const normalizedShipping={
+      shippingCustomerName:clean(session.shipping_snapshot?.customer_name),
+      shippingAddress:clean(session.shipping_snapshot?.address1),
+      shippingCity:clean(session.shipping_snapshot?.city),
+      shippingProvince:clean(session.shipping_snapshot?.province),
+      shippingZip:clean(session.shipping_snapshot?.postal_code),
+      shippingPhone:clean(session.shipping_snapshot?.phone)
+    };
     const fulfillmentPreview=Object.values(groups).map(group=>({
       provider:group.provider,
+      provider_kind:group.provider_kind,
       origin_country_code:group.origin_country_code||null,
       shipping_method:group.shipping_method||null,
       line_count:group.line_items.length,
       line_items:group.line_items,
-      cj_create_order_v2_payload_preview:group.provider.toLowerCase().includes("cj") ? {
+      eprolo_order_shadow_contract_preview:group.provider_kind==="eprolo"
+        ? buildEproloShadowOrderContract({
+            sessionId:session.id,idempotencyKey,countryCode:session.country_code,
+            shipping:normalizedShipping,group
+          })
+        : null,
+      cj_create_order_v2_payload_preview:group.provider_kind==="cj" ? {
         orderNumber:"<generated_at_live_checkout>",
         shippingCountryCode:session.country_code,
         fromCountryCode:group.origin_country_code||"<missing_origin>",
