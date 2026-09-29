@@ -110,7 +110,13 @@
     "storefront_sidecars": [
       "matterhorn_snapshot.json",
       "survey_snapshot.json"
-    ]
+    ],
+    "eprolo_country_connection_reuse_patch_in_pr26": true,
+    "eprolo_country_transaction_pooler_preferred": true,
+    "payment_session_direct_postgres": false,
+    "order_orchestrator_direct_postgres": false,
+    "freshness_runner_pooler_reuse": true,
+    "runtime_validation_still_required": true
   },
   "security": {
     "status": "PARTIAL",
