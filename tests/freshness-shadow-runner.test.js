@@ -46,3 +46,11 @@ test("runner classifies failures into the exception ledger",()=>{
   assert.match(src,/SUPPLIER_API_RETRY/);
   assert.match(src,/hunt_ops_exceptions/);
 });
+
+
+test("runner contains per-item persistence failures and uses internal EPROLO auth",()=>{
+  assert.match(src,/persist_error=clean/);
+  assert.match(src,/HUNT_EPROLO_INTERNAL_TOKEN/);
+  assert.match(src,/x-hunt-internal-token/);
+  assert.match(src,/try\{[\s\S]*persistObservation[\s\S]*syncException[\s\S]*\}catch/);
+});
