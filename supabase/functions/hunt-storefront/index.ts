@@ -1159,7 +1159,9 @@ async function eproloStrictProductDetail(productId:string){
         weight_g:Number.isFinite(Number(v?.weight))?Number(v.weight):null,
         image_url:imageMap.get(cleanText(v?.imagesid))||mainImage||null,
         retail_price_amount:exact?targetRetail:null,retail_currency:"USD",
-        retail_price_verified:exact,profit_gate_status:exact?"PASS":"REVIEW",exact_verified_variant:exact
+        retail_price_verified:false,
+        profit_gate_status:exact?(cleanText(source?.profit_gate_v2?.status)||"REVIEW"):"REVIEW",
+        purchasable:false,exact_verified_variant:exact
       };
     };
     let variants=raw.slice(0,500).map(mapVariant);
@@ -1179,7 +1181,8 @@ async function eproloStrictProductDetail(productId:string){
         ...(variants.length>80?["LARGE_VARIANT_SET"]:[])
       ],
       color_label:labels.color_label||"Option",size_label:labels.size_label||"Option",
-      retail_price_amount:targetRetail,retail_currency:"USD",retail_price_verified:true,profit_gate_status:"PASS",
+      retail_price_amount:targetRetail,retail_currency:"USD",retail_price_verified:false,
+      profit_gate_status:cleanText(gate?.status)||"REVIEW",purchasable:false,
       target_retail_usd:targetRetail,projected_product_profit:Number(gate?.projected_product_contribution_usd)||null,
       projected_product_margin:Number(gate?.projected_product_margin)||null,final_profit_verified:false,
       quote_verification_status:"PASS",quote_verified_at:cleanText(source?.latest_market5_observed_at)||null,
