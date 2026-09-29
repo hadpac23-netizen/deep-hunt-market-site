@@ -106,7 +106,7 @@ Deno.serve(async(req:Request)=>{
     }
 
     const list=Array.isArray(q.body?.data?.variantlist)?q.body.data.variantlist:[];
-    const v=list.find((x:any)=>variantIdOf(x)===variantId) || (list.length===1?list[0]:null);
+    const v=list.find((x:any)=>variantIdOf(x)===variantId);
     if(!v)return reply({provider:"EPROLO",item_id:itemId,variant_id:variantId,country,status:"HOLD",reason:"EXACT_VARIANT_NOT_RETURNED",production_effect:false});
 
     const inventory=Math.max(0,Number(v?.inventory_quantity||0));
