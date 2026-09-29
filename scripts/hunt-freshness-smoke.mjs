@@ -17,7 +17,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function get(path,params){
   const u=new URL(BASE+"/"+path);
   for(const [k,v] of Object.entries(params))u.searchParams.set(k,String(v));
-  const res=await fetch(u,{headers:{apikey:APIKEY,accept:"application/json"}});
+  const res=await fetch(u,{headers:{apikey:APIKEY,accept:"application/json"},signal:AbortSignal.timeout(25000)});
   return {http:res.status,body:await res.json().catch(()=>({}))};
 }
 const results=[];
