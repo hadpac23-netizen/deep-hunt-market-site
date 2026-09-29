@@ -21,7 +21,9 @@
         "hunt-storefront",
         "hunt-eprolo-country-shadow"
       ]
-    }
+    },
+    "canonical_pdp_predicate_drift_guard": true,
+    "stale_snapshot_precedence_fixed_in_pr26": true
   },
   "catalog": {
     "status": "PARTIAL",
@@ -60,7 +62,18 @@
     "supabase_db_pooler_secret_present": false,
     "freshness_runner_secret_present": false,
     "reason": "Runner/patched EPROLO truth not deployed; no pooler/runner secret; scheduled shadow writes not approved.",
-    "blocks_real_money": true
+    "blocks_real_money": true,
+    "initial_plan": {
+      "enabled": false,
+      "destination": "IL",
+      "cj_batch": 10,
+      "cj_interval_minutes": 2,
+      "cj_full_rotation_minutes_max": 14,
+      "eprolo_batch": 25,
+      "eprolo_interval_minutes": 2,
+      "eprolo_full_rotation_minutes_max": 22,
+      "stale_after_minutes": 90
+    }
   },
   "fulfillment": {
     "status": "PARTIAL",
@@ -119,14 +132,32 @@
     "payment_session_direct_postgres": false,
     "order_orchestrator_direct_postgres": false,
     "freshness_runner_pooler_reuse": true,
-    "runtime_validation_still_required": true
+    "runtime_validation_still_required": true,
+    "github_actions": {
+      "immutable_action_pins": true,
+      "checkout_v5_sha": "fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
+      "setup_node_v5_sha": "a0853c24544627f65ddf259abe73b1d18a591444",
+      "workflow_node_version": "24"
+    }
   },
   "security": {
     "status": "PARTIAL",
     "leaked_password_protection": false,
     "private_shadow_pricing_rls_no_policy": true,
     "private_rls_hardening_plan_in_pr26": true,
-    "blocks_real_money": true
+    "blocks_real_money": true,
+    "internal_supplier_truth": {
+      "eprolo_country_shadow_internal_only": true,
+      "required_secret": "HUNT_EPROLO_INTERNAL_TOKEN",
+      "secret_verified_present_in_live_runtime": false
+    },
+    "cj_quote_abuse_controls_in_pr26": {
+      "verified_only_cache": true,
+      "bounded_quote_cache": true,
+      "bounded_per_ip_rate_state": true,
+      "global_rate_budget": true,
+      "upstream_timeouts": true
+    }
   },
   "legal": {
     "status": "BLOCKED",
@@ -151,13 +182,30 @@
     "ci_guard_present": true,
     "blocks_real_money": false
   },
-  "launch_rule": "No Payment Live, Supplier Live Order, merge, deploy, or customer availability promise until all real-money blockers PASS and Owner Gate approves.",
+  "launch_rule": "No real-money launch. Payment Live OFF and Supplier Live Order OFF until all blockers are proven and Owner Gate approves.",
   "red_team_review": {
-    "coderabbit_findings_total": 13,
+    "coderabbit_major_findings_total": 13,
     "coderabbit_major_findings_fixed_in_pr26": 13,
-    "closure_contract_test": "tests/red-team-closure-contract.test.js",
-    "latest_checkout_regression": "PASS",
-    "latest_catalog_integrity": "PASS",
-    "final_re_review_required": true
-  }
+    "coderabbit_minor_findings_total": 12,
+    "coderabbit_minor_findings_fixed_in_pr26": 12,
+    "canonical_predicate_drift_guard_added": true,
+    "major_contract_test": "tests/red-team-closure-contract.test.js",
+    "minor_contract_test": "tests/red-team-minor-closure.test.js",
+    "canonical_drift_test": "tests/canonical-pdp-predicate-drift.test.js",
+    "checkout_regression": "PASS",
+    "catalog_integrity": "PASS",
+    "final_coderabbit_re_review_required": true
+  },
+  "remaining_external_or_runtime_blockers": [
+    "Configure HUNT_EPROLO_INTERNAL_TOKEN before deploying EPROLO country truth and its callers.",
+    "Configure SUPABASE_DB_POOLER_URL and validate patched runtime under load.",
+    "Deploy Shadow freshness functions only after Owner Gate, then audit EPROLO canonical core live.",
+    "Complete CJ sandbox E2E through tracking/shipped evidence.",
+    "Verify official EPROLO Create Order / Order Query / Tracking contract; do not guess endpoints.",
+    "Configure PayPlus sandbox credentials and prove signed callback/status/idempotency/refund path.",
+    "Enable/review security hardening including leaked-password protection and private-table policy posture.",
+    "Finalize verified legal/business identity fields and customer policies.",
+    "Verify Git branch protection/required checks with an account that has permission.",
+    "Owner Gate before merge/deploy/Payment Live/Supplier Live."
+  ]
 }
