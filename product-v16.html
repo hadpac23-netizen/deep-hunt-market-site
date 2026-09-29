@@ -134,43 +134,11 @@
 <div class="mobile-buybar"><div><small>HUNT price</small><strong id="hd-mobile-price">—</strong></div><button id="hd-mobile-add" type="button" disabled>Options pending</button></div>
 
 <script src="market-core.js"></script>
-<script>
-if(window.HuntCore){
-  window.HuntCore.productUrl=p=>"product-v16.html?provider="+encodeURIComponent(String(p?.provider||""))+"&id="+encodeURIComponent(String(p?.item_id||""));
-}
-</script>
 <script src="boom-runtime.js"></script>
-<script>(()=>{
-  const q=new URLSearchParams(location.search);
-  const provider=q.get("provider")||({h1:"CJdropshipping",h2:"EPROLO",h3:"Printful",h4:"Gooten"}[q.get("src")]||"");
-  const id=q.get("id")||"";
-  const key="hunt_product_"+provider+":"+id;
-  let p=null;
-  try{p=JSON.parse(sessionStorage.getItem(key)||"null")}catch{}
-  const $=s=>document.querySelector(s);
-  if(!id){
-    $("#hd-product-loading").hidden=true;
-    $("#hd-product-layout").hidden=true;
-    $("#hd-product-error").hidden=false;
-    $("#hd-product-error-copy").textContent="This product link is missing its product id.";
-    return;
-  }
-  if(!p)return;
-  const n=Number(p.target_retail_usd ?? p.retail_price_usd ?? p.price_amount ?? p.price);
-  $("#hd-product-title").textContent=p.title||"Product";
-  $("#hd-product-breadcrumb").textContent=p.title||"Product";
-  $("#hd-product-main-image").src=p.image_url||"";
-  $("#hd-product-main-image").alt=p.title||"Product";
-  if(Number.isFinite(n)&&n>0)$("#hd-product-price").textContent=new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:n>=100?0:2}).format(n);
-  else $("#hd-product-price").textContent="Price being confirmed";
-  $("#hd-product-stock").textContent="Product loaded";
-  $("#hd-product-description").textContent=p.description||"Full product details are being refreshed.";
-  $("#hd-product-loading").hidden=true;
-  $("#hd-product-layout").hidden=false;
-})();</script>
+<script src="product-v16-prefill.js"></script>
 <script src="product.js"></script>
 <script src="product-flow.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
 <script src="reviews.js"></script>
 <script>(()=>{
   const $=s=>document.querySelector(s);
@@ -200,9 +168,6 @@ if(window.HuntCore){
     $("#hd-product-loading").hidden=true;
   });
 })();</script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
-<script src="market-core.js"></script>
-<script src="boom-runtime.js"></script>
 <script src="account-presence.js"></script>
 </body>
 </html>
