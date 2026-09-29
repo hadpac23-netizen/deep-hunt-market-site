@@ -124,8 +124,10 @@ async function validateCart(base:string,key:string,body:any){
     const retailVerified=(variant?.retail_price_verified??product?.retail_price_verified)===true;
     const profitPass=clean(variant?.profit_gate_status||product?.profit_gate_status)==="PASS";
     const retailAmount=num(variant?.retail_price_amount??product?.retail_price_amount);
+    const supplierCost=providerLower.includes("cj")?num(variant?.price_amount??product?.price_amount):null;
     const retailCurrency=clean(variant?.retail_currency||product?.retail_currency||"").toUpperCase();
     if(!retailVerified||!profitPass||!(retailAmount&&retailAmount>0))throw new Error("RETAIL_PRICE_NOT_READY");
+    if(providerLower.includes("cj")&&!(supplierCost&&supplierCost>0))throw new Error("SUPPLIER_COST_RECHECK_FAILED");
     if(retailCurrency!=="USD")throw new Error("CURRENCY_REVIEW_REQUIRED");
 
     let lineShipping=0;
@@ -152,6 +154,7 @@ async function validateCart(base:string,key:string,body:any){
       provider,item_id:itemId,variant_id:variantId,qty,
       title:clean(product?.title).slice(0,180),
       unit_retail_amount:Number(retailAmount.toFixed(2)),
+      supplier_cost_amount:supplierCost===null?null:Number(supplierCost.toFixed(2)),
       currency:"USD",
       shipping_amount:Number(lineShipping.toFixed(2)),
       shipping_method:shippingMethod,
