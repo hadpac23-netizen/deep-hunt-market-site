@@ -42,6 +42,32 @@ function enabled(name: string): boolean {
   return ["1", "true", "yes", "on"].includes(env(name).toLowerCase());
 }
 
+let eproloSqlClientInstance: ReturnType<typeof postgres> | null = null;
+
+function eproloDbUrl(): string {
+  return env("SUPABASE_DB_POOLER_URL") || env("SUPABASE_DB_URL");
+}
+
+function eproloDbConnectionMode(): "transaction_pooler" | "fallback_direct_or_session" | "missing" {
+  if (env("SUPABASE_DB_POOLER_URL")) return "transaction_pooler";
+  if (env("SUPABASE_DB_URL")) return "fallback_direct_or_session";
+  return "missing";
+}
+
+function eproloSqlClient(): ReturnType<typeof postgres> | null {
+  if (eproloSqlClientInstance) return eproloSqlClientInstance;
+  const dbUrl=eproloDbUrl();
+  if (!dbUrl) return null;
+  eproloSqlClientInstance=postgres(dbUrl,{
+    prepare:false,
+    max:1,
+    connect_timeout:10,
+    idle_timeout:20,
+    max_lifetime:600
+  });
+  return eproloSqlClientInstance;
+}
+
 const BLOCKED_TERMS = [
   "gun", "firearm", "ammunition", "ammo", "weapon", "switchblade", "taser",
   "knife", "dagger", "sword", "machete", "pepper spray", "mace", "brass knuckle",
@@ -1046,9 +1072,8 @@ function eproloObviousTaxonomyConflict(title:string,shelf:string){
   return false;
 }
 async function eproloStrictProductDetail(productId:string){
-  const dbUrl=Deno.env.get("SUPABASE_DB_URL")||"";
-  if(!dbUrl)return null;
-  const sql=postgres(dbUrl,{prepare:false,max:1,connect_timeout:20,idle_timeout:3,max_lifetime:60});
+  const sql=eproloSqlClient();
+  if(!sql)return null;
   try{
     const rows=await sql`
       select item_id,title,image_url,verified_inventory,source_payload
@@ -1156,9 +1181,12 @@ async function eproloStrictProductDetail(productId:string){
       target_retail_usd:targetRetail,projected_product_profit:Number(gate?.projected_product_contribution_usd)||null,
       projected_product_margin:Number(gate?.projected_product_margin)||null,final_profit_verified:false,
       quote_verification_status:"PASS",quote_verified_at:cleanText(source?.latest_market5_observed_at)||null,
-      size_data_source:"PROVIDER_VARIANTS",price_truth_mode:"PREPAYMENT_VERIFIED_TARGET",production_effect:false
+      size_data_source:"PROVIDER_VARIANTS",price_truth_mode:"PREPAYMENT_VERIFIED_TARGET",production_effect:false,
+      runtime_db_connection_mode:eproloDbConnectionMode()
     };
-  }finally{await sql.end({timeout:1}).catch(()=>{});}
+  }catch{
+    return null;
+  }
 }
 
 async function withProviderTimeout<T>(promise: Promise<T>, fallback: T, ms = 9000): Promise<T> {
