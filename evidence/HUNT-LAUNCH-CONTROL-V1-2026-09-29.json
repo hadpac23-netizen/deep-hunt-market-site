@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-LAUNCH-CONTROL-V10",
+  "version": "HUNT-LAUNCH-CONTROL-V9",
   "updated_at": "2026-09-29",
   "mode": "PRE_PAYMENT_FINISH_MODE",
   "payment_live": false,
@@ -23,12 +23,12 @@
     {
       "id": "checkout_v16",
       "status": "PARTIAL_DONE",
-      "note": "Checkout rebuilt in V16 visual system; quote flow preserved; payment remains disabled."
+      "note": "Checkout V16 uses hunt-payment-session v19. CJ quote path preserved. EPROLO qty=1 now rechecks live product detail, country stock, shipping and profit. Payment remains disabled."
     },
     {
       "id": "fulfillment_sandbox",
-      "status": "PARTIAL_DONE",
-      "note": "Order orchestrator v17 already includes +972 normalization, retries/backoff and reconciliation; historical failed sandbox rows still require fresh proof."
+      "status": "BLOCKED",
+      "note": "CJ sandbox orchestration exists. EPROLO fulfillment remains blocked because hunt-order-orchestrator v17 is CJ-only and no verified EPROLO create-order endpoint is available in project code."
     },
     {
       "id": "returns_refunds_support",
@@ -99,5 +99,13 @@
     "shelves_below_8": 0,
     "core_depth12_attainable_complete": true,
     "strategy": "Targeted capacity gap fill on thin core shelves; then customer-flow QA"
+  },
+  "checkout_truth": {
+    "payment_session_version": 19,
+    "eprolo_quote_qty1": true,
+    "eprolo_multi_qty": "RECHECK_REQUIRED",
+    "payment_live": false,
+    "payment_owner_approved": false,
+    "eprolo_fulfillment_order_api": "BLOCKED_PENDING_VERIFIED_ENDPOINT"
   }
 }
