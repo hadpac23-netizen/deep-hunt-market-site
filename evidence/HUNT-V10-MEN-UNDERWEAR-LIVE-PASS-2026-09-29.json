@@ -1,0 +1,73 @@
+{
+  "version": "HUNT-V10-MEN-UNDERWEAR-LIVE-PASS-V1",
+  "date": "2026-09-29",
+  "mode": "SHADOW_ONLY",
+  "production_effect": false,
+  "payments_live": false,
+  "supplier_live_order": false,
+  "findings": {
+    "eprolo_men_boxers": {
+      "item_id": "29077395",
+      "status": "NEAR_SHADOW_READY_FINAL_PROFIT_PENDING",
+      "exact_variant_id": "681965296",
+      "variant_audit": "EPROLO_V5",
+      "variant_status": "PASS",
+      "exact_variant_inventory": 684,
+      "sizes": [
+        "L (35-50KG)",
+        "XL (50-60KG)",
+        "2XL（60-70KG)",
+        "3XL（70-80KG)",
+        "4XL（80-90KG)",
+        "5XL（90-110KG)"
+      ],
+      "color_axis_required": false,
+      "image_technical_status": "PASS",
+      "market5_all_pass": true,
+      "market5_verified_countries": [
+        "US",
+        "DE",
+        "GB",
+        "IL",
+        "AE"
+      ],
+      "projected_product_contribution_usd": 4.68,
+      "final_profit_verified": false
+    },
+    "cj_legacy_candidate": {
+      "item_id": "BDC41A99-704F-47DD-98BE-92D0CC9366F8",
+      "catalog_inventory_snapshot": 172,
+      "detail_recheck": "FAILED_INVALID_PID",
+      "decision": "HOLD_NOT_PROMOTED"
+    },
+    "cj_fresh_targeted_candidate": {
+      "item_id": "2406180350261627700",
+      "subtype": "men-boxers",
+      "listv2_warehouse_inventory": 200371,
+      "supplier_cost_usd": 2.42,
+      "detail_recheck": "FAILED_INVALID_PID",
+      "decision": "HOLD_NOT_PROMOTED"
+    },
+    "taxonomy_fix": {
+      "function": "hunt-cj-underwear-targeted-batch",
+      "deployed_version": 19,
+      "rule": "Men trunks containing swim/swimming/swimwear/swimsuit no longer classify as underwear trunks."
+    },
+    "eprolo_variant_parser_fix": {
+      "function": "hunt-eprolo-underwear-variant-audit",
+      "deployed_version": 5,
+      "fixes": [
+        "Recognize size values that include parenthetical weight ranges.",
+        "Do not require a color axis when supplier variants expose pack plus size only.",
+        "Avoid splitting weight ranges into broken size fragments."
+      ]
+    }
+  },
+  "rule": "Only exact supplier detail/variant evidence can promote a candidate; list-level warehouse inventory alone is insufficient.",
+  "next": [
+    "Find additional fresh CJ product IDs whose detail endpoint resolves successfully.",
+    "Run exact variant and Market5 on those products.",
+    "Keep low-stock CJ products out of launch candidates.",
+    "Final profit remains pending until destination-attributed costs are verified."
+  ]
+}
