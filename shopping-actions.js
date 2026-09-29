@@ -33,7 +33,8 @@
     try{
       const u=new URL(href,location.href);
       if(!u.pathname.endsWith("/product-v16.html")&&!u.pathname.endsWith("product-v16.html"))return null;
-      const provider=(u.searchParams.get("provider")||"").trim();
+      const aliasMap={h1:"CJdropshipping",h2:"EPROLO",h3:"Printful",h4:"Gooten"};
+      const provider=(u.searchParams.get("provider")||aliasMap[u.searchParams.get("src")]||"").trim();
       const itemId=(u.searchParams.get("id")||u.searchParams.get("product_id")||"").trim();
       if(!provider||!itemId)return null;
       return {provider,itemId};
