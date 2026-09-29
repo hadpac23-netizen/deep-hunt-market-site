@@ -37,6 +37,7 @@ for(const itemId of PRODUCTS){
     for(const v of p.variants){
       const q=await quote(v.variant_id);
       const b=q.body||{};
+      const shippingOptions=Array.isArray(b.shipping_options)?b.shipping_options.slice(0,3):[];
       row.variants.push({
         variant_id:v.variant_id,sku:v.sku||null,color:v.color||null,size:v.size||null,
         supplier_price_usd:v.price_amount??null,
@@ -46,9 +47,9 @@ for(const itemId of PRODUCTS){
         stock_available:b.stock_available===true,
         selected_origin:b.selected_origin||null,
         shipping_verified:b.shipping_verified===true,
-        shipping_options:Array.isArray(b.shipping_options)?b.shipping_options.slice(0,3):[],
+        shipping_options:shippingOptions,
         live_status:q.http===200&&b.stock_verified===true
-          ?(b.stock_available===true?(b.shipping_verified===true?"AVAILABLE_SHIPPABLE":"AVAILABLE_NO_SHIPPING"):"OUT_OF_STOCK")
+          ?(b.stock_available===true?(b.shipping_verified===true&&shippingOptions.length>0?"AVAILABLE_SHIPPABLE":"AVAILABLE_NO_SHIPPING"):"OUT_OF_STOCK")
           :"UNVERIFIED"
       });
       await sleep(140);
