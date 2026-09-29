@@ -157,7 +157,7 @@ async function cjRefresh(row:any,country:string,p:any){
     else if(!(retail&&retail>0)){classification="HOLD";reason="RETAIL_PRICE_UNVERIFIED";}
     else{
       const econ=economics(p,retail,cost,shipping);
-      classification=econ.gate==="PASS"?"FRESH_PASS":"HOLD";
+      classification=econ.gate==="PASS"?"FRESH_PRETAX_PASS":"HOLD";
       reason=econ.gate==="PASS"?"OK":econ.gate==="REVIEW"?"PROFIT_REVIEW":"PROFIT_BLOCK";
       return {classification,reason,item_id:itemId,variant_id:variantId,country,
         retail_usd:retail,supplier_cost_usd:cost,shipping_usd:shipping,
@@ -186,7 +186,7 @@ async function eproloRefresh(row:any,country:string,p:any){
     else if(!(retail&&retail>0)){classification="HOLD";reason="RETAIL_PRICE_UNVERIFIED";}
     else{
       const econ=economics(p,retail,cost,shipping);
-      classification=econ.gate==="PASS"?"FRESH_PASS":"HOLD";
+      classification=econ.gate==="PASS"?"FRESH_PRETAX_PASS":"HOLD";
       reason=econ.gate==="PASS"?"OK":econ.gate==="REVIEW"?"PROFIT_REVIEW":"PROFIT_BLOCK";
       return {classification,reason,item_id:itemId,variant_id:variantId,country,
         retail_usd:retail,supplier_cost_usd:cost,shipping_usd:shipping,
@@ -238,7 +238,7 @@ async function syncException(provider:string,result:any){
   const retryReason=result.classification==="RETRY"?"SUPPLIER_API_RETRY":null;
   const reason=retryReason||(activeReasons.includes(result.reason)?result.reason:null);
   const entityId=clean(result.variant_id)||clean(result.item_id);
-  if(result.classification==="FRESH_PASS"){
+  if(result.classification==="FRESH_PRETAX_PASS"){
     await sql()`
       update private.hunt_ops_exceptions
       set status='resolved',resolved_at=now(),resolution='Freshness runner PASS',
@@ -330,7 +330,7 @@ Deno.serve(async(req:Request)=>{
   }
 
   const counts={
-    fresh_pass:results.filter(x=>x.classification==="FRESH_PASS").length,
+    fresh_pass:results.filter(x=>x.classification==="FRESH_PRETAX_PASS").length,
     hold:results.filter(x=>x.classification==="HOLD").length,
     retry:results.filter(x=>x.classification==="RETRY").length
   };
