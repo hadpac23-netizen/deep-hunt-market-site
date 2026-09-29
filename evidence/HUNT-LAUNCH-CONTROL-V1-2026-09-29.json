@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-LAUNCH-CONTROL-V8",
+  "version": "HUNT-LAUNCH-CONTROL-V9",
   "updated_at": "2026-09-29",
   "mode": "PRE_PAYMENT_FINISH_MODE",
   "payment_live": false,
@@ -18,7 +18,7 @@
     {
       "id": "product_detail_truth",
       "status": "DO_NOW",
-      "note": "311 PDP Ready verified; Depth-3 complete; continue Depth-8."
+      "note": "464 PDP Ready verified. Depth-8 complete across eligible shelves. Next: Depth-12 on core commercial shelves, then checkout/customer-flow QA."
     },
     {
       "id": "checkout_v16",
@@ -87,12 +87,16 @@
     "supplier_live_order": false
   },
   "pdp_truth": {
-    "strict_catalog": 808,
-    "pdp_ready_verified": 311,
-    "pdp_not_yet_checked": 497,
+    "strict_catalog": 806,
+    "pdp_ready_verified": 464,
+    "pdp_not_yet_checked": 342,
+    "pdp_with_sizes": 258,
+    "pdp_with_colors": 460,
+    "pdp_with_multi_gallery": 117,
     "zero_coverage_shelves": 0,
     "shelves_below_3": 0,
-    "shelves_below_8": 43,
-    "strategy": "DEPTH_8"
+    "shelves_below_5": 0,
+    "shelves_below_8": 0,
+    "strategy": "Depth-8 complete; start Depth-12 on core commercial shelves"
   }
 }
