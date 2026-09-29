@@ -324,6 +324,7 @@ async function cjProductDetail(productId: string) {
     const price = Number(v?.variantSellPrice);
     const retail = cjRetailPrice(price);
     const inventories = Array.isArray(v?.inventories) ? v.inventories : [];
+    const hasInventoryEvidence = inventories.length > 0;
     const stockTotal = inventories.reduce(
       (sum: number, inv: any) => sum + Math.max(0, Number(inv?.totalInventory || 0)),
       0
@@ -336,13 +337,14 @@ async function cjProductDetail(productId: string) {
       size: options.size,
       size_source: "PROVIDER",
       size_system: options.size ? inferSizeSystem(options.size) : "NONE",
-      stock_check_required: stockTotal <= 0,
+      stock_check_required: !hasInventoryEvidence || stockTotal <= 0,
+      stock_truth: hasInventoryEvidence ? "PRODUCT_DETAIL_INVENTORY" : "EXACT_VARIANT_QUOTE_REQUIRED",
       image_url: cleanText(v?.variantImage) || gallery[0] || "",
       price_amount: Number.isFinite(price) && price > 0 ? price : null,
       currency: "USD",
       ...(retail || {}),
-      stock_quantity: stockTotal,
-      availability_verified: stockTotal > 0
+      stock_quantity: hasInventoryEvidence ? stockTotal : null,
+      availability_verified: hasInventoryEvidence ? stockTotal > 0 : false
     };
   }).filter((v: any) => v.variant_id);
 
