@@ -31,3 +31,11 @@ test("EPROLO country truth reuses DB client and prefers transaction pooler",()=>
   assert.doesNotMatch(src,/await sql\.end\(/);
   assert.doesNotMatch(src,/connect_timeout:8,idle_timeout:2,max_lifetime:30/);
 });
+
+
+test("EPROLO country truth is internal-only and never accepts a nonmatching single variant",()=>{
+  assert.match(src,/HUNT_EPROLO_INTERNAL_TOKEN/);
+  assert.match(src,/x-hunt-internal-token/);
+  assert.doesNotMatch(src,/variantList\.length===1\?variantList\[0\]:null/);
+  assert.match(src,/EXACT_VARIANT_NOT_RETURNED/);
+});
