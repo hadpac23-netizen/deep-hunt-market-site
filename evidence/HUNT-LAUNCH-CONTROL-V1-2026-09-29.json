@@ -1,0 +1,69 @@
+{
+  "version": "HUNT-LAUNCH-CONTROL-V1",
+  "updated_at": "2026-09-29",
+  "mode": "PRE_PAYMENT_FINISH_MODE",
+  "payment_live": false,
+  "supplier_live_order": false,
+  "tracks": [
+    {
+      "id": "storefront_v16",
+      "status": "DO_NOW",
+      "note": "Home/PDP V16 exist; checkout/profile/legal still carry old visual system."
+    },
+    {
+      "id": "catalog_bulk_fill",
+      "status": "DO_NOW",
+      "note": "861 strict / 852 effective / 97 routes. Continue bulk shelf fill."
+    },
+    {
+      "id": "product_detail_truth",
+      "status": "DO_NOW",
+      "note": "Variants/sizes/colors loaded only from verified detail; continue coverage."
+    },
+    {
+      "id": "checkout_v16",
+      "status": "DO_NOW",
+      "note": "Current checkout remains PRE-LAUNCH old UI; rebuild in V16 system."
+    },
+    {
+      "id": "fulfillment_sandbox",
+      "status": "DO_NOW",
+      "note": "Sandbox lifecycle exists; failed/processing cases require retry/backoff + phone normalization."
+    },
+    {
+      "id": "returns_refunds_support",
+      "status": "DO_NOW",
+      "note": "Dedicated registries currently missing."
+    },
+    {
+      "id": "legal_registry",
+      "status": "DO_NOW",
+      "note": "legal.html exists but hunt_legal_document_versions registry missing."
+    },
+    {
+      "id": "seo_v16",
+      "status": "DO_NOW",
+      "note": "robots/sitemap still point to legacy GitHub Pages/category/product URLs and expose provider names."
+    },
+    {
+      "id": "analytics_privacy",
+      "status": "PARTIAL_DONE",
+      "note": "GA4/PostHog consent architecture exists; needs V16 end-to-end verification."
+    },
+    {
+      "id": "monitoring_ops",
+      "status": "DO_NOW",
+      "note": "Need unified exception dashboard/alerts for catalog, checkout, fulfillment, tracking, returns/support."
+    },
+    {
+      "id": "payment_routes",
+      "status": "PAYMENT_LAST",
+      "note": "All routes remain planned; activate only after offer/approval and E2E sandbox proof."
+    },
+    {
+      "id": "supplier_live_order",
+      "status": "OWNER_GATE",
+      "note": "Remain OFF until explicit owner approval and controlled real-order proof."
+    }
+  ]
+}
