@@ -14,7 +14,7 @@
     <nav class="product-nav" aria-label="Quick shop">
       <a href="hunt-v16.html">Shop</a><a href="hunt-v16.html?dept=women">Women</a><a href="hunt-v16.html?dept=men">Men</a>
     </nav>
-    <nav class="product-actions" aria-label="Account actions"><a href="auth.html">Sign In</a><a href="profile.html#saved">Wishlist</a><a href="checkout.html">Bag <span data-cart-count>0</span></a></nav>
+    <nav class="product-actions" aria-label="Account actions"><a href="auth.html" class="hd-account-link">Sign In</a><a href="profile.html#saved">Wishlist</a><a href="checkout.html">Bag <span data-cart-count>0</span></a></nav>
   </div>
   <nav class="product-taxonomy" id="product-taxonomy">
     <a href="hunt-v16.html?dept=women">Women</a><a href="hunt-v16.html?dept=men">Men</a><a href="hunt-v16.html?dept=shoes">Shoes</a>
@@ -200,5 +200,9 @@ if(window.HuntCore){
     $("#hd-product-loading").hidden=true;
   });
 })();</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.min.js" integrity="sha384-JBR+x8blGwjDRO63aHCGiZMD4VNiTR4ZUGA+N6ZKLf3zNt1fK8IBpcgPaMrxqWBp" crossorigin="anonymous"></script>
+<script src="market-core.js"></script>
+<script src="boom-runtime.js"></script>
+<script src="account-presence.js"></script>
 </body>
 </html>
