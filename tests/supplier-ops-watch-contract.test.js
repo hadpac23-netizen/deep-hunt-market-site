@@ -30,3 +30,11 @@ test("canonical ops health measures freshness profit exceptions and stuck fulfil
   assert.match(sql,/stuck_fulfillment_over_30m/);
   assert.match(sql,/CJdropshipping','EPROLO/);
 });
+
+
+test("watcher resolves only stale-data exceptions and never unrelated tax or profit exceptions",()=>{
+  assert.match(src,/eq\("reason_code","SUPPLIER_DATA_STALE"\)/);
+  assert.doesNotMatch(src,/\.upsert\(/);
+  assert.match(src,/EXCEPTION_INSERT_FAILED/);
+  assert.match(src,/EXCEPTION_UPDATE_FAILED/);
+});
