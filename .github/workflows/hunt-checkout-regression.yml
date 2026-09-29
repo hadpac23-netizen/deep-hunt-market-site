@@ -14,6 +14,7 @@ on:
       - "supabase/functions/hunt-order-orchestrator/**"
       - "supabase/functions/hunt-storefront/**"
       - "supabase/functions/hunt-eprolo-country-shadow/**"
+      - "supabase/functions/hunt-supplier-ops-watch-shadow/**"
       - "supabase/functions/hunt-refund-preview/**"
       - "supabase/functions/_shared/order-lifecycle.mjs"
       - "supabase/functions/_shared/hunt-fulfillment-provider.mjs"
@@ -55,7 +56,7 @@ jobs:
         with:
           node-version: "24"
       - name: Run checkout tests
-        run: node --test tests/checkout-address.test.js tests/checkout-contract.test.js tests/payplus-auth.test.js tests/payplus-status-map.test.js tests/payplus-callback-contract.test.js tests/order-lifecycle.test.js tests/order-lifecycle-contract.test.js tests/payment-live-kill-switch.test.js tests/eprolo-fulfillment-shadow.test.js tests/eprolo-storefront-launch-gate.test.js tests/canonical-pdp-readiness-contract.test.js tests/no-legacy-catalog-launch-path.test.js tests/cj-sandbox-resilience-contract.test.js tests/presupplier-recheck-contract.test.js tests/cj-pdp-stock-truth-contract.test.js tests/eprolo-country-fresh-truth.test.js
+        run: node --test tests/checkout-address.test.js tests/checkout-contract.test.js tests/payplus-auth.test.js tests/payplus-status-map.test.js tests/payplus-callback-contract.test.js tests/order-lifecycle.test.js tests/order-lifecycle-contract.test.js tests/payment-live-kill-switch.test.js tests/eprolo-fulfillment-shadow.test.js tests/eprolo-storefront-launch-gate.test.js tests/canonical-pdp-readiness-contract.test.js tests/no-legacy-catalog-launch-path.test.js tests/cj-sandbox-resilience-contract.test.js tests/presupplier-recheck-contract.test.js tests/cj-pdp-stock-truth-contract.test.js tests/eprolo-country-fresh-truth.test.js tests/supplier-ops-watch-contract.test.js
       - name: Parse browser scripts
         run: |
           node -e "new Function(require('fs').readFileSync('checkout-address.js','utf8')); new Function(require('fs').readFileSync('checkout.js','utf8')); console.log('browser-js-parse-pass')"
