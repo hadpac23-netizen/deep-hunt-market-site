@@ -24,4 +24,6 @@ jobs:
         with:
           node-version: "24"
       - name: Read-only freshness smoke
+        env:
+          HUNT_EPROLO_INTERNAL_TOKEN: ${{ secrets.HUNT_EPROLO_INTERNAL_TOKEN }}
         run: node scripts/hunt-freshness-smoke.mjs
