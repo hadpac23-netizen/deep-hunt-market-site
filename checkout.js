@@ -69,7 +69,8 @@
       PROFIT_PROFILE_NOT_ACTIVE:"Checkout pricing is temporarily unavailable.",
       ECONOMICS_EVIDENCE_STORE_FAILED:"Checkout verification could not be recorded safely. No payment was attempted.",
       OUT_OF_STOCK:"One or more selected items are currently out of stock.",
-      SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination."
+      SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination.",
+      EPROLO_MULTI_QTY_RECHECK_REQUIRED:"This item needs a separate multi-quantity shipping check. Reduce its quantity to 1 for now, then verify again."
     };
     return messages[code] || "We could not verify this cart right now. No payment was attempted.";
   }
