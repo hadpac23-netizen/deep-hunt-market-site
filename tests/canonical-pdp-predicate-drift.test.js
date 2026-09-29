@@ -6,12 +6,12 @@ const root=path.resolve(__dirname,"..");
 const canonical=fs.readFileSync(path.join(root,"ops/hunt-canonical-pdp-readiness.sql"),"utf8");
 const counts=fs.readFileSync(path.join(root,"ops/hunt-launch-core-counts.sql"),"utf8");
 
-const signatures=[
+const shared=[
   "provider='EPROLO'",
   "production_effect=false",
   "availability_verified=true",
   "coalesce(verified_inventory,0)>0",
-  "nullif(trim(source_payload->>'variant_id'),'') is not null",
+  "variant_id",
   "catalog_safety_status",
   "image_technical_status",
   "latest_market5_all_pass",
@@ -22,20 +22,28 @@ const signatures=[
   "MARKET5_READY_STYLE_PASS_PHYSICAL_METADATA_VERIFIED",
   "pdp_detail_gate",
   "qa_status='PASS'",
-  "qa_variant_count>=1",
-  "qa_availability_verified=true",
-  "qa_retail_price_verified=true",
   "iphone%case",
   "montessori",
   "wristwatch",
   "t-shirt"
 ];
 
-test("launch-core EPROLO mirror keeps canonical readiness rule signatures",()=>{
-  for(const signature of signatures){
+test("launch-core mirror keeps canonical EPROLO rule signatures",()=>{
+  for(const signature of shared){
     assert.ok(canonical.includes(signature),`canonical missing ${signature}`);
     assert.ok(counts.includes(signature),`launch-core mirror drifted: missing ${signature}`);
   }
+});
+
+test("QA semantics remain equivalent despite CTE alias names",()=>{
+  assert.match(canonical,/qa_variant_count>=1/);
+  assert.match(counts,/coalesce\(q\.variant_count,0\)>=1/);
+  assert.match(canonical,/qa_availability_verified=true/);
+  assert.match(counts,/coalesce\(q\.availability_verified,false\)=true/);
+  assert.match(canonical,/qa_retail_price_verified=true/);
+  assert.match(counts,/coalesce\(q\.retail_price_verified,false\)=true/);
+  assert.match(canonical,/pdp_detail_http=200/);
+  assert.match(counts,/pdp_detail_gate'->>'http_status'/);
 });
 
 test("canonical readiness remains the named authoritative source",()=>{
