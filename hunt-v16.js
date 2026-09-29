@@ -13,6 +13,13 @@
   let query="";
   let sort="featured";
   let sourceMode="loading";
+  const initialParams=new URLSearchParams(location.search);
+  const requestedDept=String(initialParams.get("dept")||"").trim().toLowerCase();
+  const requestedShelf=String(initialParams.get("shelf")||"").trim();
+  const requestedQuery=String(initialParams.get("q")||"").trim();
+  if(requestedDept)mode=requestedDept;
+  if(requestedShelf)shelf=requestedShelf;
+  if(requestedQuery)query=requestedQuery;
 
   const primary=[
     ["Women","women"],["Men","men"],["Shoes","shoes"],["Beauty","beauty"],
@@ -175,6 +182,7 @@
   $("#hero-home").addEventListener("click",()=>{mode="home";shelf="";query="";render();document.querySelector(".catalog-section").scrollIntoView()});
   $("#view-all").addEventListener("click",()=>{shelf="";query="";render()});
 
+  if(query)$("#search-input").value=query;
   renderCartCount();
   loadCatalog();
 })();
