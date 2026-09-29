@@ -79,3 +79,13 @@ test("launch workflows pin checkout and setup-node to immutable SHAs",()=>{
     if(s.includes("actions/setup-node@"))assert.doesNotMatch(s,/actions\/setup-node@v\d/);
   }
 });
+
+
+test("freshness smoke honors EPROLO internal auth and fails visibly when missing",()=>{
+  const script=read("scripts/hunt-freshness-smoke.mjs");
+  const workflow=read(".github/workflows/hunt-freshness-smoke.yml");
+  assert.match(script,/HUNT_EPROLO_INTERNAL_TOKEN/);
+  assert.match(script,/x-hunt-internal-token/);
+  assert.match(script,/RETRY_INTERNAL_TOKEN_MISSING/);
+  assert.match(workflow,/secrets\.HUNT_EPROLO_INTERNAL_TOKEN/);
+});
