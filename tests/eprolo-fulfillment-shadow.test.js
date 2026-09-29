@@ -69,3 +69,14 @@ test("payment session v19 path accepts EPROLO only after fresh country quote gat
   assert.match(src,/economics\?\.gate\)!=="PASS"/);
   assert.match(src,/!providerLower\.includes\("cj"\)&&!providerLower\.includes\("eprolo"\)/);
 });
+
+
+test("order preview accepts EPROLO shadow routing without CJ-only origin requirement",()=>{
+  const src=read("supabase/functions/hunt-order-preview/index.ts");
+  assert.match(src,/providerKinds\.includes\("unsupported"\)/);
+  assert.match(src,/classifyProvider\(x\?\.provider\)==="cj"&&!clean\(x\?\.origin_country_code\)/);
+  assert.match(src,/EPROLO_ORDER_ENDPOINT_NOT_VERIFIED/);
+  assert.match(src,/eprolo_order_shadow_contract_preview/);
+  assert.match(src,/buildEproloShadowOrderContract/);
+  assert.doesNotMatch(src,/NON_CJ_FULFILLMENT_NOT_READY/);
+});
