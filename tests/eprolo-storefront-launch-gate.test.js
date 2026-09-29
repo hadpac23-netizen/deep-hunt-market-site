@@ -21,3 +21,9 @@ test("EPROLO PDP surfaces media and variant-load quality flags without faking re
   assert.match(src,/final_profit_verified:false/);
   assert.match(src,/production_effect:false/);
 });
+
+
+test("phone-case guard excludes keychains and passport/document covers",()=>{
+  assert.match(src,/key\\s\?chain\|keychain\|bag pendant\|passport\|document case\|card holder/);
+  assert.doesNotMatch(src,/mobile case\|protective cover/);
+});
