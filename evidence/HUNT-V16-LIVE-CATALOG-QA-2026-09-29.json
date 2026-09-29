@@ -21,7 +21,10 @@
     "products_with_market5_pass": 2629,
     "duplicate_rows_after_shop_filter": 1,
     "strict_after_truth_consistency_audit": 948,
-    "teen_safe_blocks": 144
+    "teen_safe_blocks": 144,
+    "strict_catalog_current": 812,
+    "pdp_ready_verified": 56,
+    "pdp_not_yet_checked": 756
   },
   "largest_departments": {
     "accessories": 239,
@@ -119,10 +122,9 @@
     "taxonomy_recovery_v3": 9
   },
   "notes": [
-    "Bulk mode remains active.",
-    "HUNT storefront server-side safety filter updated in hunt-storefront v108.",
-    "All current Strict EPROLO and CJ products have exact variant IDs after quarantine of one contradictory CJ candidate.",
-    "630 EPROLO Strict products have rich catalog locators; the remaining 255 still have exact variant, stock, HUNT price and main image but rich gallery/description coverage is partial.",
+    "Strict Catalog and PDP Ready are now tracked separately.",
+    "CJ candidates with stale live detail were demoted without deleting prior Market5/Profit evidence.",
+    "EPROLO PDP QA runs in small waves to avoid upstream overload.",
     "Payment and supplier live ordering remain off."
   ],
   "truth_consistency": {
@@ -130,5 +132,21 @@
     "cj_conflicts_quarantined": 1,
     "explicit_or_minor_ambiguous_candidates_blocked": 144,
     "note": "Only fresh exact-variant 5/5 evidence may override an older launch HOLD."
+  },
+  "pdp_qa": {
+    "runner": "HUNT-PDP-LIVE-QA-V1",
+    "cj_strict_checked": 63,
+    "cj_live_detail_pass": 1,
+    "cj_demoted_for_live_detail_404": 62,
+    "eprolo_initial_batch": 100,
+    "eprolo_initial_pass": 35,
+    "eprolo_initial_hold": 3,
+    "eprolo_initial_retryable": 62,
+    "eprolo_retry_rechecks_confirmed_404": 62,
+    "eprolo_b5_pass": 14,
+    "eprolo_b5_hold": 1,
+    "eprolo_b6_pass": 7,
+    "eprolo_b6_hold": 8,
+    "note": "A product is not considered PDP-ready until hunt-storefront returns live variants, availability and verified HUNT retail price."
   }
 }
