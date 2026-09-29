@@ -35,7 +35,7 @@ for(const row of POOL){
       else if(!Number.isFinite(cost)||cost<=0){classification="RETRY";reason="SUPPLIER_COST_UNVERIFIED";}
       else{
         econ=economics(row.retail_usd,cost,shipping);
-        classification=econ.gate==="PASS"?"FRESH_PASS":"HOLD";
+        classification=econ.gate==="PASS"?"FRESH_PRETAX_PASS":"HOLD";
         reason=econ.gate==="PASS"?"OK":econ.gate==="REVIEW"?"PROFIT_REVIEW":"PROFIT_BLOCK";
       }
     }
@@ -52,7 +52,7 @@ for(const row of POOL){
 }
 const counts={
   total:results.length,
-  fresh_pass:results.filter(x=>x.classification==="FRESH_PASS").length,
+  fresh_pass:results.filter(x=>x.classification==="FRESH_PRETAX_PASS").length,
   hold:results.filter(x=>x.classification==="HOLD").length,
   retry:results.filter(x=>x.classification==="RETRY").length,
   out_of_stock:results.filter(x=>x.reason==="OUT_OF_STOCK").length,
@@ -61,4 +61,4 @@ const counts={
   profit_block:results.filter(x=>x.reason==="PROFIT_BLOCK").length
 };
 console.log("HUNT_CJ_CORE_AUDIT_SUMMARY="+JSON.stringify(counts));
-console.log("HUNT_CJ_CORE_AUDIT_EXCEPTIONS="+JSON.stringify(results.filter(x=>x.classification!=="FRESH_PASS")));
+console.log("HUNT_CJ_CORE_AUDIT_EXCEPTIONS="+JSON.stringify(results.filter(x=>x.classification!=="FRESH_PRETAX_PASS")));
