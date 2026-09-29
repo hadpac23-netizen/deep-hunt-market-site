@@ -14,7 +14,7 @@ const THIN_SHIPPING="evidence/HUNT-EPROLO-THIN-RAIL-SHIPPING-VERIFY-2026-09-23.j
 const EPROLO_DEEP_VERIFY="evidence/HUNT-EPROLO-MEN-WOMEN-DEEP-SHIPPING-VERIFY-2026-09-23.json";
 const CJ_THIN_SELECTION="evidence/HUNT-CJ-THIN-RAIL-SELECTION-2026-09-23.json";
 const TARGET=24;
-const BLOCKED=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|firework|explosives|explosive device|explosive material|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|steroid|diet pill|laxative|slimming|weight[- ]?loss|camp stove|gas stove|fuel canister|lighter|torch burner)\b/i;
+const BLOCKED=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|firework|explosives|explosive device|explosive material|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|erotic|fetish|sex toy|steroid|diet pill|laxative|slimming|weight[- ]?loss|camp stove|gas stove|fuel canister|lighter|torch burner)\b/i;
 
 const baseline=JSON.parse(fs.readFileSync(BASELINE,"utf8"));
 const deptContract=JSON.parse(fs.readFileSync("boom-shelf-department-contract.json","utf8"));
