@@ -13,12 +13,12 @@
     {
       "id": "catalog_bulk_fill",
       "status": "DO_NOW",
-      "note": "948 Strict / 941 effective / 98 routes after truth-consistency and teen-safe storefront audit. Continue verified bulk fill; do not lower Market5/Image/Profit gates."
+      "note": "812 current Strict Catalog after removing stale PDP-broken products; continue bulk fill only with live product-detail truth."
     },
     {
       "id": "product_detail_truth",
-      "status": "PARTIAL_DONE",
-      "note": "EPROLO PDP connected server-side in hunt-storefront v108: exact variants, verified HUNT price, stock, dynamic Color/Size/Model, and rich gallery/description where legacy catalog locator exists. 885/885 EPROLO and 63/63 CJ Strict have exact variant IDs; 630/885 EPROLO have rich catalog locator."
+      "status": "DO_NOW",
+      "note": "56 PDP Ready verified; 756 Strict candidates remain to be live-checked. PDP Ready now requires live variants + availability + verified HUNT retail price."
     },
     {
       "id": "checkout_v16",
@@ -85,5 +85,12 @@
     "safety_blocks": 144,
     "payments": false,
     "supplier_live_order": false
+  },
+  "pdp_truth": {
+    "strict_catalog": 812,
+    "pdp_ready_verified": 56,
+    "pdp_not_yet_checked": 756,
+    "cj_live_detail_issue": "62 stale CJ Strict products demoted after 404 verification",
+    "eprolo_strategy": "verify in small waves to avoid upstream overload"
   }
 }
