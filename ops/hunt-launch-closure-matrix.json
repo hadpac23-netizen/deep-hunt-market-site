@@ -38,13 +38,29 @@
       "retry": 0
     },
     "eprolo_canonical_pdp_ready": 261,
-    "eprolo_live_fresh_truth_status": "BLOCKED_UNTIL_PATCH_DEPLOYED",
+    "eprolo_live_fresh_truth_status": "LIVE_STOCK_COST_SHIPPING_VERIFIED_TAX_MISSING",
     "blocks_real_money": true,
     "eprolo_destination_tax_patch_in_pr26": true,
     "eprolo_final_profit_requires_provider_tax_truth": true,
     "eprolo_internal_country_truth_token_required": true,
     "eprolo_internal_token_secret_present": false,
-    "eprolo_internal_token_note": "HUNT_EPROLO_INTERNAL_TOKEN must be configured before deploying patched country-shadow/payment/freshness callers."
+    "eprolo_internal_token_note": "HUNT_EPROLO_INTERNAL_TOKEN must be configured before deploying patched country-shadow/payment/freshness callers.",
+    "eprolo_live_runtime_proof": {
+      "status": "PASS_WITH_TAX_BLOCKER",
+      "runtime_function": "hunt-eprolo-variant-country-audit-shadow",
+      "runtime_version": 2,
+      "canonical_core_audited": 261,
+      "exact_variant_missing": 0,
+      "api_retry": 0,
+      "out_of_stock": 0,
+      "no_shipping": 0,
+      "tax_unverified": 261,
+      "pretax_profit_pass": 132,
+      "pretax_profit_review": 129,
+      "pretax_profit_block": 0,
+      "final_profit_verified": 0
+    },
+    "eprolo_destination_tax_blocker": "EPROLO get_product_shiping_fees.html did not return provider tax truth for IL on any of 261 canonical variants."
   },
   "pdp_readiness": {
     "status": "PASS_CANONICALIZED",
@@ -197,9 +213,9 @@
     "final_coderabbit_re_review_required": true
   },
   "remaining_external_or_runtime_blockers": [
+    "Resolve destination tax truth for EPROLO/IL before any EPROLO item can be Final Profit Verified.",
     "Configure HUNT_EPROLO_INTERNAL_TOKEN before deploying EPROLO country truth and its callers.",
     "Configure SUPABASE_DB_POOLER_URL and validate patched runtime under load.",
-    "Deploy Shadow freshness functions only after Owner Gate, then audit EPROLO canonical core live.",
     "Complete CJ sandbox E2E through tracking/shipped evidence.",
     "Verify official EPROLO Create Order / Order Query / Tracking contract; do not guess endpoints.",
     "Configure PayPlus sandbox credentials and prove signed callback/status/idempotency/refund path.",
