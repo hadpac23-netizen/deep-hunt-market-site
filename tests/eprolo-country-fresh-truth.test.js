@@ -20,3 +20,14 @@ test("EPROLO fresh truth fails closed on API, stock, cost and shipping failures"
   assert.match(src,/NO_VERIFIED_SHIPPING/);
   assert.match(src,/production_effect:false/);
 });
+
+
+test("EPROLO country truth reuses DB client and prefers transaction pooler",()=>{
+  assert.match(src,/SUPABASE_DB_POOLER_URL/);
+  assert.match(src,/let sqlClientInstance/);
+  assert.match(src,/if\(sqlClientInstance\)return sqlClientInstance/);
+  assert.match(src,/connect_timeout:10/);
+  assert.match(src,/max_lifetime:600/);
+  assert.doesNotMatch(src,/await sql\.end\(/);
+  assert.doesNotMatch(src,/connect_timeout:8,idle_timeout:2,max_lifetime:30/);
+});
