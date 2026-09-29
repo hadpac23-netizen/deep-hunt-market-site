@@ -374,8 +374,8 @@
     if(p.includes("gooten"))return "h4";
     return "h0";
   };
-  const productUrl = product => `product.html?src=${encodeURIComponent(sourceAlias(product?.provider))}&id=${encodeURIComponent(product?.item_id || "")}`;
-  const categoryUrl = slug => `category.html?c=${encodeURIComponent(categoryDefs[slug] ? slug : "women")}`;
+  const productUrl = product => `product-v16.html?provider=${encodeURIComponent(String(product?.provider||""))}&id=${encodeURIComponent(product?.item_id || "")}`;
+  const categoryUrl = slug => `hunt-v16.html?dept=${encodeURIComponent(categoryDefs[slug] ? slug : "women")}`;
 
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
