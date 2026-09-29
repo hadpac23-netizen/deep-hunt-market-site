@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-V16-LIVE-CATALOG-QA-V3",
+  "version": "HUNT-V16-LIVE-CATALOG-QA-V4",
   "generated_at": "2026-09-29",
   "mode": "SHADOW_ONLY",
   "production_effect": false,
@@ -10,14 +10,14 @@
   "counts": {
     "strict_before_v16_qa": 675,
     "effective_products": 663,
-    "effective_routes": 96,
+    "effective_routes": 97,
     "products_with_target_price": 663,
     "products_with_cached_size_evidence": 10,
     "products_with_cached_color_evidence": 13,
     "exact_duplicates_removed": 1,
-    "strict_after_reconcile": 818,
-    "effective_products_after_shop_filter": 809,
-    "products_with_image_pass": 1816,
+    "strict_after_reconcile": 861,
+    "effective_products_after_shop_filter": 852,
+    "products_with_image_pass": 2005,
     "products_with_market5_pass": 2614
   },
   "largest_departments": {
@@ -85,5 +85,17 @@
   "cj_latest": {
     "note": "CJ Product Detail normalization fixed. Two Entryway candidates resolved canonical variants but did not pass all 5 markets; they remain excluded.",
     "entryway_strict": 2
-  }
+  },
+  "bulk_fill": {
+    "image_batch_dispatched": 176,
+    "image_batch_passed": 149,
+    "market5_batch_dispatched": 149,
+    "prevalidated_market5_profit_image_only_batch": 87,
+    "exact_variant_country_observation_reconciled": 5
+  },
+  "notes": [
+    "Bulk mode enabled: process shelves in batches rather than one-by-one.",
+    "Products remain excluded when Market5 5/5, image, or exact-variant truth fails.",
+    "Production, payments, and supplier live ordering remain off."
+  ]
 }
