@@ -15,6 +15,16 @@ test("launch readiness uses one canonical PDP metric",()=>{
 });
 
 test("historical QA audit counts are not relabeled PDP Ready",()=>{
-  assert.match(sql,/PDP_QA_AUDIT_PASS/);
-  assert.match(sql,/separate audit metric/);
+  assert.match(sql,/PDP_QA_LATEST_PASS/);
+  assert.match(sql,/latest private QA ledger/);
+});
+
+
+test("canonical PDP readiness intersects the private QA ledger",()=>{
+  assert.match(sql,/private\.hunt_pdp_qa_runs/);
+  assert.match(sql,/latest_qa/);
+  assert.match(sql,/qa_status='PASS'/);
+  assert.match(sql,/qa_availability_verified=true/);
+  assert.match(sql,/qa_retail_price_verified=true/);
+  assert.match(sql,/CANONICAL_PDP_READY=261/);
 });
