@@ -177,10 +177,26 @@ Deno.serve(async(req:Request)=>{
                 then public.hunt_shelf_candidates.image_url
               else coalesce(excluded.image_url,public.hunt_shelf_candidates.image_url)
             end,
-            supplier_cost=coalesce(excluded.supplier_cost,public.hunt_shelf_candidates.supplier_cost),
-            verified_inventory=greatest(coalesce(public.hunt_shelf_candidates.verified_inventory,0),coalesce(excluded.verified_inventory,0)),
-            warehouse_inventory=greatest(coalesce(public.hunt_shelf_candidates.warehouse_inventory,0),coalesce(excluded.warehouse_inventory,0)),
-            availability_verified=(coalesce(public.hunt_shelf_candidates.availability_verified,false) or excluded.availability_verified),
+            supplier_cost=case
+              when nullif(public.hunt_shelf_candidates.source_payload->>'variant_id','') is not null
+                then public.hunt_shelf_candidates.supplier_cost
+              else coalesce(excluded.supplier_cost,public.hunt_shelf_candidates.supplier_cost)
+            end,
+            verified_inventory=case
+              when nullif(public.hunt_shelf_candidates.source_payload->>'variant_id','') is not null
+                then public.hunt_shelf_candidates.verified_inventory
+              else excluded.verified_inventory
+            end,
+            warehouse_inventory=case
+              when nullif(public.hunt_shelf_candidates.source_payload->>'variant_id','') is not null
+                then public.hunt_shelf_candidates.warehouse_inventory
+              else excluded.warehouse_inventory
+            end,
+            availability_verified=case
+              when nullif(public.hunt_shelf_candidates.source_payload->>'variant_id','') is not null
+                then public.hunt_shelf_candidates.availability_verified
+              else excluded.availability_verified
+            end,
             retail_truth_status=case
               when public.hunt_shelf_candidates.retail_truth_status in ('VERIFIED','MARKET5_PROFIT_PASS','PARTIAL_MARKET_PASS','MARKET_HOLD')
                 then public.hunt_shelf_candidates.retail_truth_status
@@ -210,31 +226,13 @@ Deno.serve(async(req:Request)=>{
             production_effect=false,
             source=coalesce(public.hunt_shelf_candidates.source,excluded.source),
             source_payload=case
-              when (
-                public.hunt_shelf_candidates.candidate_status in (
-                  'FULLY_READY',
-                  'MARKET5_READY_STYLE_PHYSICAL_PENDING',
-                  'MARKET5_READY_IMAGE_TECH_REVIEW',
-                  'MARKET5_READY_STYLE_PASS_PHYSICAL_METADATA_VERIFIED',
-                  'MARKET5_READY_STYLE_PASS_PHYSICAL_EVIDENCE_PENDING',
-                  'PARTIAL_MARKET_READY',
-                  'HOLD_MARKET_READINESS',
-                  'BLOCKED_CATEGORY_REVIEW',
-                  'CATEGORY_REVIEW_REQUIRED',
-                  'RECHECK_REQUIRED'
+              when nullif(public.hunt_shelf_candidates.source_payload->>'variant_id','') is not null
+                then jsonb_set(
+                  coalesce(public.hunt_shelf_candidates.source_payload,'{}'::jsonb),
+                  '{last_refill}',
+                  excluded.source_payload,
+                  true
                 )
-                or public.hunt_shelf_candidates.retail_truth_status in (
-                  'VERIFIED','MARKET5_PROFIT_PASS','PARTIAL_MARKET_PASS','MARKET_HOLD'
-                )
-                or public.hunt_shelf_candidates.product_truth_status in (
-                  'FULLY_READY','CJ_SAFE_EXPORT_PASS','TECHNICAL_SHADOW_PASS','RECHECK_REQUIRED'
-                )
-              ) then jsonb_set(
-                coalesce(public.hunt_shelf_candidates.source_payload,'{}'::jsonb),
-                '{last_refill}',
-                excluded.source_payload,
-                true
-              )
               else coalesce(public.hunt_shelf_candidates.source_payload,'{}'::jsonb)||excluded.source_payload
             end,
             updated_at=now()
