@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-LAUNCH-CONTROL-V1",
+  "version": "HUNT-LAUNCH-CONTROL-V2",
   "updated_at": "2026-09-29",
   "mode": "PRE_PAYMENT_FINISH_MODE",
   "payment_live": false,
@@ -22,28 +22,28 @@
     },
     {
       "id": "checkout_v16",
-      "status": "DO_NOW",
-      "note": "Current checkout remains PRE-LAUNCH old UI; rebuild in V16 system."
+      "status": "PARTIAL_DONE",
+      "note": "Checkout rebuilt in V16 visual system; quote flow preserved; payment remains disabled."
     },
     {
       "id": "fulfillment_sandbox",
-      "status": "DO_NOW",
-      "note": "Sandbox lifecycle exists; failed/processing cases require retry/backoff + phone normalization."
+      "status": "PARTIAL_DONE",
+      "note": "Order orchestrator v17 already includes +972 normalization, retries/backoff and reconciliation; historical failed sandbox rows still require fresh proof."
     },
     {
       "id": "returns_refunds_support",
-      "status": "DO_NOW",
-      "note": "Dedicated registries currently missing."
+      "status": "PARTIAL_DONE",
+      "note": "RLS-backed return requests, refunds registry and support tickets created; customer Support/Returns pages added."
     },
     {
       "id": "legal_registry",
-      "status": "DO_NOW",
-      "note": "legal.html exists but hunt_legal_document_versions registry missing."
+      "status": "PARTIAL_DONE",
+      "note": "Versioned legal registry created with four draft-only documents; publication requires owner/legal review."
     },
     {
       "id": "seo_v16",
-      "status": "DO_NOW",
-      "note": "robots/sitemap still point to legacy GitHub Pages/category/product URLs and expose provider names."
+      "status": "PARTIAL_DONE",
+      "note": "Legacy supplier/provider sitemap entries removed on V16 branch; sitemap now uses HUNT-facing routes only."
     },
     {
       "id": "analytics_privacy",
@@ -65,5 +65,16 @@
       "status": "OWNER_GATE",
       "note": "Remain OFF until explicit owner approval and controlled real-order proof."
     }
-  ]
+  ],
+  "security": {
+    "rls_new_tables": true,
+    "leaked_password_protection": "OFF_ADMIN_SETTING_REQUIRED",
+    "advisor_note": "No new-table RLS vulnerability reported; supporting FK indexes added."
+  },
+  "customer_surfaces": {
+    "checkout": "V16",
+    "support": "V16",
+    "returns": "V16",
+    "profile_supplier_names_hidden": true
+  }
 }
