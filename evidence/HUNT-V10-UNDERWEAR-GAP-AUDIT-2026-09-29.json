@@ -1,0 +1,102 @@
+{
+  "version": "HUNT-V10-UNDERWEAR-GAP-AUDIT-V1",
+  "date": "2026-09-29",
+  "mode": "READ_ONLY_SHADOW",
+  "production_effect": false,
+  "source_branch": "preview/hunt-visible-grid-v10",
+  "target_products_per_rail": 24,
+  "current_v10": {
+    "women/women-underwear": {
+      "count": 3,
+      "launchable_now": 0,
+      "adult_oriented_title_flags": [
+        "27708303",
+        "27708326",
+        "31240276"
+      ]
+    },
+    "men/men-underwear": {
+      "count": 3,
+      "launchable_now": 0,
+      "adult_oriented_title_flags": [
+        "2406150513341613500"
+      ]
+    },
+    "men/men-boxers": {
+      "count": 0,
+      "launchable_now": 0,
+      "adult_oriented_title_flags": []
+    }
+  },
+  "repo_verified_candidates": {
+    "eprolo": {
+      "evidence_date": "2026-09-23",
+      "freshness_state": "STALE_REFRESH_REQUIRED",
+      "verified_4_of_4": [
+        {
+          "item_id": "24529934",
+          "rail": "women/women-underwear",
+          "verified_markets": 4,
+          "inventory_snapshot": 1379,
+          "exact_variant_id": "629239366"
+        },
+        {
+          "item_id": "25395990",
+          "rail": "women/women-underwear",
+          "verified_markets": 4,
+          "inventory_snapshot": 13545,
+          "exact_variant_id": "639401995"
+        }
+      ]
+    },
+    "cj": {
+      "evidence_date": "2026-09-23",
+      "freshness_state": "STALE_REFRESH_REQUIRED",
+      "selected_candidates": 38,
+      "by_rail": {
+        "men/men-underwear": 22,
+        "men/men-boxers": 16
+      },
+      "verification_outcome": {
+        "product_detail_failed": 33,
+        "no_single_variant_4_of_4": 5,
+        "verified_4_of_4": 0
+      }
+    }
+  },
+  "live_catalog_read_only_check": {
+    "checked_at": "2026-09-29",
+    "matching_rows": 2,
+    "availability_verified": 2,
+    "positive_stock": 2,
+    "unique_items": 2,
+    "newest_source_fresh_at": "2026-09-24T17:23:17.578718Z",
+    "newest_stock_check_at": "2026-09-24T17:23:17.578718Z",
+    "state": "INSUFFICIENT_FOR_CURRENT_LAUNCH_TRUTH"
+  },
+  "decision": {
+    "promote_to_launch": false,
+    "reason": [
+      "No current final-profit-verified underwear products.",
+      "Current V10 underwear rails are thin or empty.",
+      "EPROLO 4-of-4 candidates require a fresh official-API refresh before promotion.",
+      "CJ candidates require fresh product-detail plus exact-variant 4-market verification.",
+      "Adult-oriented listings are excluded from the general-audience Shadow rebuild."
+    ]
+  },
+  "next_gate": [
+    "Fresh official supplier availability and stock",
+    "Exact variant",
+    "IL/DE/US/SG shipping pass",
+    "Image technical pass",
+    "General-audience style/content pass",
+    "Destination-aware profit recheck",
+    "Final profit remains false until all attributed costs are verified"
+  ],
+  "safety": {
+    "payments_live": false,
+    "supplier_live_order": false,
+    "checkout_live": false,
+    "fulfillment_live": false
+  }
+}
