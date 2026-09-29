@@ -98,7 +98,7 @@
 
   function scan(){
     scanQueued=false;
-    document.querySelectorAll("a[href*='product.html?']").forEach(a=>{
+    document.querySelectorAll("a[href*='product-v16.html?']").forEach(a=>{
       const info=productInfoFromUrl(a.href);
       if(!info)return;
       const card=a.closest(cardSelectors);
