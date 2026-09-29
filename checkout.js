@@ -9,6 +9,13 @@
     try { return new Intl.NumberFormat("en", {style:"currency",currency}).format(Number(value)); }
     catch { return String(value); }
   };
+  const providerKind = value => {
+    const provider=String(value||"").trim().toLowerCase();
+    if (provider.includes("eprolo")) return "eprolo";
+    if (provider.includes("cj")) return "cj";
+    return "other";
+  };
+  const maxQtyFor = item => providerKind(item?.provider)==="eprolo" ? 1 : 5;
   const read = () => {
     try {
       const raw=JSON.parse(localStorage.getItem(key)||"[]");
@@ -22,7 +29,7 @@
           price_amount:amount,
           price_basis:amount!==null?"HUNT_RETAIL_PROFIT_GATE":"PRICE_PENDING",
           retail_price_verified:amount!==null,
-          qty:Math.max(1,Math.min(5,Number(item?.qty)||1))
+          qty:Math.max(1,Math.min(maxQtyFor(item),Number(item?.qty)||1))
         };
       });
     } catch { return []; }
@@ -126,7 +133,8 @@
       SHIPPING_RECHECK_FAILED:"Shipping could not be rechecked right now.",
       OUT_OF_STOCK:"One or more selected items are currently out of stock.",
       SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination.",
-      SHIPPING_ADDRESS_INVALID:"Complete the shipping details before verification."
+      SHIPPING_ADDRESS_INVALID:"Complete the shipping details before verification.",
+      EPROLO_MULTI_QTY_RECHECK_REQUIRED:"This item currently requires quantity 1 so shipping can be verified. Adjust the quantity and retry."
     };
     return messages[code] || "We could not verify this cart right now. No payment was attempted.";
   }
@@ -178,7 +186,7 @@
           provider:item.provider,
           item_id:item.item_id,
           variant_id:item.variant_id,
-          qty:Math.max(1,Math.min(5,Number(item.qty)||1))
+          qty:Math.max(1,Math.min(maxQtyFor(item),Number(item.qty)||1))
         }))
       };
       const res = await fetch(functionsBase + "/hunt-payment-session", {
@@ -240,11 +248,14 @@
       const priceCopy = ready
         ? `HUNT retail ${money(item.price_amount,item.currency||"USD")}`
         : "Price verification pending";
+      const maxQty=maxQtyFor(item);
+      const qty=Math.max(1,Math.min(maxQty,Number(item.qty)||1));
+      const plusDisabled=maxQty===1 ? ' disabled aria-label="Quantity 1 required for verified shipping" title="Quantity 1 required for verified shipping"' : "";
       return `
       <article class="hd-checkout-item" data-key="${esc(item.key)}">
         ${item.image_url ? `<img src="${esc(item.image_url)}" alt="${esc(item.title)}">` : `<div class="hd-checkout-thumb">◇</div>`}
-        <div class="hd-checkout-item-copy"><small>${esc(item.provider)} · ${ready ? "HUNT RETAIL" : "PRICE PENDING"}</small><h3>${esc(item.title)}</h3><p>${item.variant_label ? `Selected: ${esc(item.variant_label)} · ` : ""}${priceCopy}</p></div>
-        <div class="hd-qty"><button type="button" data-delta="-1">−</button><span>${Math.max(1,Number(item.qty)||1)}</span><button type="button" data-delta="1">+</button></div>
+        <div class="hd-checkout-item-copy"><small>${ready ? "HUNT RETAIL" : "PRICE PENDING"}</small><h3>${esc(item.title)}</h3><p>${item.variant_label ? `Selected: ${esc(item.variant_label)} · ` : ""}${priceCopy}</p></div>
+        <div class="hd-qty"><button type="button" data-delta="-1">−</button><span>${qty}</span><button type="button" data-delta="1"${plusDisabled}>+</button></div>
         <button class="hd-remove" type="button" aria-label="Remove item">×</button>
       </article>`;
     }).join("");
@@ -273,7 +284,7 @@
     if (index < 0) return;
     if (event.target.matches(".hd-remove")) cart.splice(index,1);
     else if (event.target.matches("[data-delta]")) {
-      cart[index].qty = Math.max(1,Math.min(5,(Number(cart[index].qty)||1)+Number(event.target.dataset.delta||0)));
+      cart[index].qty = Math.max(1,Math.min(maxQtyFor(cart[index]),(Number(cart[index].qty)||1)+Number(event.target.dataset.delta||0)));
     } else return;
     write(cart);
     resetQuote("Cart changed. Recheck price and shipping.");
