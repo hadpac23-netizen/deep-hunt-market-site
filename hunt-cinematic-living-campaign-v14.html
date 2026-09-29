@@ -243,7 +243,7 @@ function priceOf(p){
 function productHref(p){
   const v=String(p.provider||"").toLowerCase();
   const src=v.includes("cj")?"h1":v.includes("eprolo")?"h2":v.includes("printful")?"h3":v.includes("gooten")?"h4":"";
-  return "product-cinematic-v10-final.html?src="+encodeURIComponent(src)+"&id="+encodeURIComponent(String(p.item_id||""))+"&ui=compact3";
+  return "product-cinematic-v14.html?src="+encodeURIComponent(src)+"&id="+encodeURIComponent(String(p.item_id||""))+"&ui=compact3";
 }
 function renderCards(){
   const rows=filteredRows().filter(x=>x.p.image_url).slice(0,8);
