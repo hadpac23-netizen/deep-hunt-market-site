@@ -32,7 +32,7 @@
   function productInfoFromUrl(href){
     try{
       const u=new URL(href,location.href);
-      if(!u.pathname.endsWith("/product.html")&&!u.pathname.endsWith("product.html"))return null;
+      if(!u.pathname.endsWith("/product-v16.html")&&!u.pathname.endsWith("product-v16.html")&&!u.pathname.endsWith("/product.html")&&!u.pathname.endsWith("product.html"))return null;
       const provider=(u.searchParams.get("provider")||"").trim();
       const itemId=(u.searchParams.get("id")||u.searchParams.get("product_id")||"").trim();
       if(!provider||!itemId)return null;
@@ -69,7 +69,7 @@
   }
   function decorateCard(card,info){
     if(!card||card.querySelector(".hd-shop-actions"))return;
-    const media=card.querySelector(".hd-shelf-media,.hd-market-card-media,.hd-wow-product-media,.hd-shop-card-media,.hd-profile-product-media,.hd-promo-product-media,a[href*='product.html']");
+    const media=card.querySelector(".hd-shelf-media,.hd-market-card-media,.hd-wow-product-media,.hd-shop-card-media,.hd-profile-product-media,.hd-promo-product-media,a[href*='product-v16.html'],a[href*='product.html']");
     if(!media)return;
     const host=document.createElement("div");
     host.className="hd-shop-actions";
