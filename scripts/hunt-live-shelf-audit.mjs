@@ -8,7 +8,7 @@ const PRODUCTS=[
 ];
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function getJson(url){
-  const res=await fetch(url,{headers:{apikey:APIKEY,accept:"application/json"}});
+  const res=await fetch(url,{headers:{apikey:APIKEY,accept:"application/json"},signal:AbortSignal.timeout(25000)});
   const body=await res.json().catch(()=>({}));
   return {http:res.status,body};
 }
