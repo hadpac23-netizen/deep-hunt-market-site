@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="HUNT global shopping marketplace.">
+<title>HUNT</title>
+<link rel="stylesheet" href="hunt-v16.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-main">
+    <a class="wordmark" href="hunt-v16.html" aria-label="HUNT home"><strong>HUNT</strong><small>GLOBAL SHOPPING MARKETPLACE</small></a>
+    <form class="global-search" id="search-form" role="search">
+      <span aria-hidden="true">⌕</span>
+      <input id="search-input" type="search" autocomplete="off" placeholder="Search for products, categories, or inspiration…" aria-label="Search HUNT">
+    </form>
+    <nav class="header-actions" aria-label="Account actions">
+      <button type="button" class="optional">◎ EN</button>
+      <a href="auth.html">Sign In</a>
+      <a href="profile.html#saved" class="optional">♡ Wishlist</a>
+      <a href="checkout.html">Bag <span class="cart-count" data-cart-count>0</span></a>
+    </nav>
+  </div>
+  <nav class="primary-nav" id="primary-nav" aria-label="Primary departments"></nav>
+  <nav class="secondary-nav" id="secondary-nav" aria-label="Department categories"></nav>
+</header>
+
+<main>
+  <section class="hero" aria-label="Featured HUNT edit">
+    <article class="hero-main">
+      <div class="hero-copy">
+        <small>THE NEW COLLECTION</small>
+        <h1>Modern Essentials<br>For a Brighter You</h1>
+        <p>Timeless pieces, selected to make everyday shopping feel simpler.</p>
+        <button id="hero-shop" type="button">Shop New Arrivals →</button>
+      </div>
+      <div class="hero-photo"><img src="https://images.pexels.com/photos/20350854/pexels-photo-20350854.jpeg?cs=srgb&dl=pexels-artur-stec-26039050-20350854.jpg&fm=jpg" alt="Fashion editorial by the sea"></div>
+    </article>
+    <article class="hero-side">
+      <div class="side-copy">
+        <small>FOR A MORE</small>
+        <strong>Beautiful Spaces<br>Everyday</strong>
+        <p>Curated home pieces for a calmer, warmer everyday.</p>
+        <button id="hero-home" type="button">Shop Home →</button>
+      </div>
+      <div class="side-photo"><img src="https://images.pexels.com/photos/28321103/pexels-photo-28321103.jpeg?cs=srgb&dl=pexels-raymond-petrik-1448389535-28321103.jpg&fm=jpg" alt="Warm Mediterranean interior"></div>
+    </article>
+  </section>
+
+  <nav class="department-shortcuts" id="department-shortcuts" aria-label="Shop departments"></nav>
+
+  <section class="catalog-section">
+    <div class="catalog-head">
+      <div><h2 id="catalog-title">Trending Now</h2><p id="catalog-subtitle">Loading HUNT catalog…</p></div>
+      <div class="catalog-tools">
+        <select id="sort-select" aria-label="Sort products">
+          <option value="featured">Featured</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+        </select>
+        <button id="view-all" type="button">View All →</button>
+      </div>
+    </div>
+    <div class="product-grid" id="product-grid" aria-live="polite">
+      <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+      <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+    </div>
+  </section>
+</main>
+<script src="hunt-v16.js"></script>
+</body>
+</html>
