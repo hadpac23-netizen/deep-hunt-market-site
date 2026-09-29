@@ -61,7 +61,17 @@
     "transaction_pooler_required": true,
     "transaction_pooler_secret_present": false,
     "live_load_retest_required": true,
-    "blocks_real_money": true
+    "blocks_real_money": true,
+    "current_live_baseline": {
+      "total_requests": 30,
+      "ok_200_product": 30,
+      "p95_ms": 3762,
+      "max_ms": 3915,
+      "concurrency": 3,
+      "timeouts": 0
+    },
+    "current_live_baseline_passed": true,
+    "pr26_pooler_patch_validated_in_runtime": false
   },
   "security": {
     "status": "PARTIAL",
@@ -83,7 +93,9 @@
     "ci_checkout_regression": "PASS",
     "coderabbit_full_review_completed": false,
     "branch_protection_verified": false,
-    "blocks_real_money": true
+    "blocks_real_money": true,
+    "head_commit_signed": false,
+    "branch_protection_check_note": "GitHub integration lacks permission to read branch protection; treat as unverified."
   },
   "legacy_snapshots": {
     "status": "PASS",
