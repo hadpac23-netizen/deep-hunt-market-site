@@ -33,11 +33,11 @@ function options(v:any){
 }
 function econ(p:any,sale:number,cost:number,ship:number,tax:number){
   const pay=Math.max(0,Number(p?.payment_rate||0.04)),ref=Math.max(0,Number(p?.refund_reserve_rate||0.05)),vr=Math.max(0,Number(p?.platform_variable_rate||0)),fixed=Math.max(0,Number(p?.platform_fixed_per_order||0)),minC=Math.max(0,Number(p?.min_contribution_per_unit||4)),minM=Math.max(0,Number(p?.min_margin_rate||0.20)),r=pay+ref+vr;
-  const contribution=(1-r)*sale-cost-ship-tax-fixed,margin=sale>0?contribution/sale:0;
+  const gross=sale+ship,contribution=gross-cost-ship-tax-(gross*r)-fixed,margin=sale>0?contribution/sale:0;
   return {contribution:Number(contribution.toFixed(2)),margin:Number(margin.toFixed(4)),gate:contribution>=minC&&margin>=minM?"PASS":contribution>0?"REVIEW":"BLOCK"};
 }
 function floorPrice(p:any,cost:number,ship:number,tax:number){
-  const pay=Math.max(0,Number(p?.payment_rate||0.04)),ref=Math.max(0,Number(p?.refund_reserve_rate||0.05)),vr=Math.max(0,Number(p?.platform_variable_rate||0)),fixed=Math.max(0,Number(p?.platform_fixed_per_order||0)),minC=Math.max(0,Number(p?.min_contribution_per_unit||4)),minM=Math.max(0,Number(p?.min_margin_rate||0.20)),r=pay+ref+vr,c=cost+ship+tax+fixed;
+  const pay=Math.max(0,Number(p?.payment_rate||0.04)),ref=Math.max(0,Number(p?.refund_reserve_rate||0.05)),vr=Math.max(0,Number(p?.platform_variable_rate||0)),fixed=Math.max(0,Number(p?.platform_fixed_per_order||0)),minC=Math.max(0,Number(p?.min_contribution_per_unit||4)),minM=Math.max(0,Number(p?.min_margin_rate||0.20)),r=pay+ref+vr,c=cost+tax+fixed+r*ship;
   const cf=(minC+c)/(1-r),md=1-r-minM,mf=md>0?c/md:Infinity,f=Math.max(cf,mf),w=Math.ceil(f+0.01),charm=Number((w-0.01).toFixed(2));
   return charm+1e-9>=f?charm:Number((w+0.99).toFixed(2));
 }
