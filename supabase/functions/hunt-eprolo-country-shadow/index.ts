@@ -6,9 +6,9 @@ const API="https://openapi.eprolo.com/";
 const BASE=Deno.env.get("SUPABASE_URL")||"";
 const PUB="sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
 const SERVICE=Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")||"";
-const INTERNAL_TOKEN=clean(Deno.env.get("HUNT_EPROLO_INTERNAL_TOKEN")||"");
 const reply=(x:any,s=200)=>new Response(JSON.stringify(x),{status:s,headers:{"content-type":"application/json","cache-control":"no-store"}});
 const clean=(v:any)=>typeof v==="string"?v.trim():"";
+const INTERNAL_TOKEN=clean(Deno.env.get("HUNT_EPROLO_INTERNAL_TOKEN")||"");
 const num=(v:any)=>{const n=Number(v);return Number.isFinite(n)?n:null};
 
 let sqlClientInstance:ReturnType<typeof postgres>|null=null;
