@@ -70,8 +70,7 @@ async function getProduct(base:string,key:string,provider:string,itemId:string,c
   url.searchParams.set("provider",provider);
   url.searchParams.set("product_id",itemId);
   url.searchParams.set("country_code",country);
-  if(!internalToken)throw new Error("EPROLO_INTERNAL_TOKEN_MISSING");
-  const res=await fetch(url,{headers:{apikey:key,"x-hunt-internal-token":internalToken},cache:"no-store"});
+  const res=await fetch(url,{headers:{apikey:key},cache:"no-store"});
   const body=await res.json().catch(()=>({}));
   if(!res.ok||!body?.product)throw new Error("PRODUCT_RECHECK_FAILED");
   return body.product;
