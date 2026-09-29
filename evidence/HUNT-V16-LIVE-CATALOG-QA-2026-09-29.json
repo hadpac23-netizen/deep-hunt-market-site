@@ -1,5 +1,5 @@
 {
-  "version": "HUNT-V16-LIVE-CATALOG-QA-V4",
+  "version": "HUNT-V16-LIVE-CATALOG-QA-V5",
   "generated_at": "2026-09-29",
   "mode": "SHADOW_ONLY",
   "production_effect": false,
@@ -10,15 +10,16 @@
   "counts": {
     "strict_before_v16_qa": 675,
     "effective_products": 663,
-    "effective_routes": 97,
+    "effective_routes": 98,
     "products_with_target_price": 663,
     "products_with_cached_size_evidence": 10,
     "products_with_cached_color_evidence": 13,
     "exact_duplicates_removed": 1,
-    "strict_after_reconcile": 861,
-    "effective_products_after_shop_filter": 852,
-    "products_with_image_pass": 2005,
-    "products_with_market5_pass": 2614
+    "strict_after_reconcile": 952,
+    "effective_products_after_shop_filter": 943,
+    "products_with_image_pass": 2315,
+    "products_with_market5_pass": 2628,
+    "duplicate_rows_after_shop_filter": 1
   },
   "largest_departments": {
     "accessories": 239,
@@ -91,11 +92,17 @@
     "image_batch_passed": 149,
     "market5_batch_dispatched": 149,
     "prevalidated_market5_profit_image_only_batch": 87,
-    "exact_variant_country_observation_reconciled": 5
+    "exact_variant_country_observation_reconciled": 5,
+    "latest_image_batch_1": 180,
+    "latest_image_batch_2": 161,
+    "taxonomy_recovery_v1": 52,
+    "taxonomy_recovery_v2": 21,
+    "taxonomy_recovery_v3": 9
   },
   "notes": [
-    "Bulk mode enabled: process shelves in batches rather than one-by-one.",
-    "Products remain excluded when Market5 5/5, image, or exact-variant truth fails.",
-    "Production, payments, and supplier live ordering remain off."
+    "Bulk mode remains active.",
+    "Taxonomy recovery only remaps deterministic exact identities into existing HUNT shelves.",
+    "Ambiguous and sensitive HOLD/ROLLBACK products remain excluded.",
+    "Payment and supplier live ordering remain off."
   ]
 }
