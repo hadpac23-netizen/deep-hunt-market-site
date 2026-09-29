@@ -1119,7 +1119,7 @@ window.addEventListener("pageshow",()=>setHuntNavHidden(false));
 function setTheme(t){document.documentElement.dataset.huntTheme=t;$("#theme").textContent=t==="dark"?"Light":"Dark";const q=new URLSearchParams(location.search);q.set("theme",t);history.replaceState(null,"",location.pathname+"?"+q.toString())}
 $("#theme").addEventListener("click",()=>setTheme(document.documentElement.dataset.huntTheme==="dark"?"light":"dark"));
 
-const blockedPreview=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|steroid|diet pill|laxative|sex toy|vibrator|dildo|clitoral|strapon)\b/i;
+const blockedPreview=/\b(weapon|gun|firearm|ammo|ammunition|knife|blade|dagger|sword|machete|taser|pepper spray|mace|vape|cigarette|nicotine|cbd|thc|cannabis|marijuana|adult|porn|erotic|fetish|sexy lingerie|sexy underwear|steroid|diet pill|laxative|sex toy|vibrator|dildo|clitoral|strapon)\b/i;
 const jewelryRules=[
   ["earrings","Earrings",/\b(earring|earrings|stud earrings?|hoop earrings?)\b/i],
   ["necklaces","Necklaces",/\b(necklace|necklaces|pendant|pendants|choker|chokers)\b/i],
