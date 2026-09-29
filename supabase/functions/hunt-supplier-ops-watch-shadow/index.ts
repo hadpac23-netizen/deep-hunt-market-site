@@ -5,17 +5,30 @@ const json=(x:unknown,s=200)=>new Response(JSON.stringify(x),{status:s,headers:{
 
 async function upsertException(db:any,row:any){
   const now=new Date().toISOString();
-  const payload={...row,status:"open",last_checked_at:now,updated_at:now};
-  const {error}=await db.from("hunt_ops_exceptions").upsert(payload,{
-    onConflict:"entity_type,entity_id,provider,destination_country,reason_code",
-    ignoreDuplicates:false
+  let q=db.from("hunt_ops_exceptions")
+    .select("id").eq("entity_type",row.entity_type).eq("entity_id",row.entity_id)
+    .eq("reason_code",row.reason_code).neq("status","resolved");
+  q=row.provider? q.eq("provider",row.provider):q.is("provider",null);
+  q=row.destination_country? q.eq("destination_country",row.destination_country):q.is("destination_country",null);
+  const {data:existing,error:readError}=await q.limit(1).maybeSingle();
+  if(readError)throw new Error("EXCEPTION_READ_FAILED");
+  if(existing?.id){
+    const {error}=await db.from("hunt_ops_exceptions").update({
+      severity:row.severity,owner_role:row.owner_role,last_checked_at:now,
+      evidence:row.evidence,updated_at:now
+    }).eq("id",existing.id);
+    if(error)throw new Error("EXCEPTION_UPDATE_FAILED");
+    return;
+  }
+  const {error}=await db.from("hunt_ops_exceptions").insert({
+    ...row,status:"open",opened_at:now,last_checked_at:now,updated_at:now
   });
-  if(error)throw new Error("EXCEPTION_UPSERT_FAILED");
+  if(error)throw new Error("EXCEPTION_INSERT_FAILED");
 }
 async function resolveException(db:any,filters:any,resolution:string){
   let q=db.from("hunt_ops_exceptions").update({
     status:"resolved",resolved_at:new Date().toISOString(),resolution,updated_at:new Date().toISOString()
-  }).neq("status","resolved");
+  }).neq("status","resolved").eq("reason_code","SUPPLIER_DATA_STALE");
   for(const [k,v] of Object.entries(filters)) q=q.eq(k,v);
   const {error}=await q;
   if(error)throw new Error("EXCEPTION_RESOLVE_FAILED");
