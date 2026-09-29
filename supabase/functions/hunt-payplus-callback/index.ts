@@ -211,6 +211,10 @@ Deno.serve(async(req:Request)=>{
       payment_session_id:session.id
     });
   }catch(e){
-    return json({ok:false,error:clean((e as Error)?.message)||"PAYPLUS_CALLBACK_FAILED"},400);
+    const message=clean((e as Error)?.message)||"PAYPLUS_CALLBACK_FAILED";
+    const name=clean((e as Error)?.name);
+    const transient=/STORE_FAILED|PAYPLUS_IPN_VERIFY_FAILED_5|PAYPLUS_CREDENTIALS_MISSING|TimeoutError|AbortError|aborted/i.test(message)
+      || name==="TimeoutError" || name==="AbortError";
+    return json({ok:false,error:message},transient?503:400);
   }
 });
