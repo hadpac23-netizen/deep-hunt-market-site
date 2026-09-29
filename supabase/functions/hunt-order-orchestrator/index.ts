@@ -827,6 +827,8 @@ Deno.serve(async(req:Request)=>{
       evidence:{
         is_test:true,isSandbox:1,
         groups:supplierResults,
+        presupplier_recheck:presupplierEvidence,
+        destination_tax_verified:false,
         no_real_supplier_charge:true,
         no_real_logistics:true
       },
