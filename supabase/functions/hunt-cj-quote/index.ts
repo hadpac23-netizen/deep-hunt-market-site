@@ -25,6 +25,8 @@ const QUOTE_CACHE_MAX=2000;
 const RATE_MAX_ENTRIES=2000;
 const RATE_WINDOW_MS=10000;
 const RATE_MAX_REQUESTS=30;
+const GLOBAL_RATE_MAX_REQUESTS=120;
+let globalBucket={windowStart:0,count:0};
 function pruneState(now:number){
   for(const [key,row] of quoteCache){
     if(row.expiresAt<=now)quoteCache.delete(key);
@@ -78,6 +80,11 @@ Deno.serve(async(req:Request)=>{
   const cacheKey=[vid,country,originRequested,quantity].join("|");
   const cached=quoteCache.get(cacheKey);
   if(cached&&cached.expiresAt>now)return json({...cached.value,cached:true},200,headers);
+  if(!globalBucket.windowStart||now-globalBucket.windowStart>=RATE_WINDOW_MS){
+    globalBucket={windowStart:now,count:0};
+  }
+  if(globalBucket.count>=GLOBAL_RATE_MAX_REQUESTS)return json({error:"rate limited"},429,headers);
+  globalBucket.count++;
   const ip=(req.headers.get("x-forwarded-for")||"").split(",")[0].trim()||"unknown";
   const current=rate.get(ip);
   const bucket=!current||now-current.windowStart>=RATE_WINDOW_MS?{windowStart:now,count:0}:current;
@@ -88,7 +95,7 @@ Deno.serve(async(req:Request)=>{
   if(!token)return json({error:"CJ unavailable"},503,headers);
   const stockUrl=new URL("https://developers.cjdropshipping.com/api2.0/v1/product/stock/queryByVid");
   stockUrl.searchParams.set("vid",vid);
-  const stockRes=await fetch(stockUrl,{headers:{"CJ-Access-Token":token,"accept":"application/json"}});
+  const stockRes=await fetch(stockUrl,{headers:{"CJ-Access-Token":token,"accept":"application/json"},signal:AbortSignal.timeout(20000)});
   const stockBody=await stockRes.json().catch(()=>({}));
   const rawStock=Array.isArray(stockBody?.data)?stockBody.data:[];
   const origins=rawStock.map((row:any)=>({
@@ -119,7 +126,8 @@ Deno.serve(async(req:Request)=>{
         startCountryCode:chosen.country_code,
         endCountryCode:country,
         products:[{quantity,vid}]
-      })
+      }),
+      signal:AbortSignal.timeout(20000)
     });
     const freightBody=await freightRes.json().catch(()=>({}));
     const methods=Array.isArray(freightBody?.data)?freightBody.data:[];
