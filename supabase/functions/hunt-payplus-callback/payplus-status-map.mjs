@@ -13,6 +13,8 @@ const scalar=(v)=>{
   return null;
 };
 const int=(v)=>{
+  if(typeof v==="number")return Number.isInteger(v)?v:null;
+  if(typeof v!=="string"||!/^\s*-?\d+\s*$/.test(v))return null;
   const n=Number(v);
   return Number.isInteger(n)?n:null;
 };
