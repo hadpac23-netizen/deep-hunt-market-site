@@ -76,15 +76,16 @@
     return n===null?"":new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:n>=100?0:2}).format(n);
   }
   function departmentRoutes(key){
-    const set=new Map();
+    const rows=[];
     for(const route of Object.keys(shelves||{})){
       const [dept,cat]=route.split("/");
       if(!cat)continue;
-      const sample=(shelves[route]||[]).find(safeProduct);
+      const products=(shelves[route]||[]).filter(safeProduct);
+      const sample=products[0];
       if(!sample)continue;
-      if(routeMatches(route,sample,key))set.set(route,titleFromSlug(cat));
+      if(routeMatches(route,sample,key))rows.push([route,titleFromSlug(cat),products.length]);
     }
-    return [...set.entries()].slice(0,11);
+    return rows.sort((a,b)=>b[2]-a[2]||a[1].localeCompare(b[1])).slice(0,11).map(([route,label])=>[route,label]);
   }
   function firstImage(key){
     return allRows().find(({route,p})=>routeMatches(route,p,key))?.p?.image_url||"";
