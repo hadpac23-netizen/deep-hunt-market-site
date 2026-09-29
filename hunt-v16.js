@@ -23,8 +23,9 @@
 
   const primary=[
     ["Women","women"],["Men","men"],["Shoes","shoes"],["Beauty","beauty"],
-    ["Accessories","accessories"],["Home","home"],["Kids","kids"],["Deals","deals"]
+    ["Accessories","accessories"],["Home","home"],["Kids","kids"],["More","more"]
   ];
+  const sourceProviders={h1:"CJdropshipping",h2:"EPROLO",h3:"Printful",h4:"Gooten"};
 
   function safeProduct(p){
     return p&&p.item_id&&p.image_url&&!blocked.test(String(p.title||""));
@@ -44,7 +45,11 @@
     if(key==="women"||key==="men"||key==="home"||key==="kids"||key==="accessories")return route.startsWith(key+"/");
     if(key==="shoes")return /shoe|sneaker|boot|sandal|loafer|heel/.test(t);
     if(key==="beauty")return /beauty|fragrance|perfume|cosmetic|skin|serum|cream|makeup/.test(t);
-    if(key==="deals")return true;
+    if(key==="more"){
+      const dept=String(route||"").split("/")[0];
+      return !["women","men","home","kids","accessories"].includes(dept)
+        && !/shoe|sneaker|boot|sandal|loafer|heel|beauty|fragrance|perfume|cosmetic|skin|serum|cream|makeup/.test(t);
+    }
     return true;
   }
   function visibleRows(){
@@ -55,7 +60,7 @@
     });
     const seen=new Set();
     rows=rows.filter(({p})=>{
-      const k=String(p.provider||"")+":"+String(p.item_id);
+      const d=detailIdentity(p);const k=d.src+":"+d.id;
       if(seen.has(k))return false;seen.add(k);return true;
     });
     if(sort==="price-low")rows.sort((a,b)=>(priceNumber(a.p)??1e9)-(priceNumber(b.p)??1e9));
@@ -63,7 +68,7 @@
     return rows;
   }
   function priceNumber(p){
-    const n=Number(p.target_retail_usd ?? p.retail_price_usd ?? p.price_amount ?? p.price);
+    const n=Number(p.target_retail_usd ?? p.profit_truth?.target_retail_usd ?? p.retail_price_usd ?? p.price_amount ?? p.price);
     return Number.isFinite(n)&&n>0?n:null;
   }
   function priceLabel(p){
@@ -84,13 +89,41 @@
   function firstImage(key){
     return allRows().find(({route,p})=>routeMatches(route,p,key))?.p?.image_url||"";
   }
+  function sourceAlias(provider){
+    const v=String(provider||"").toLowerCase();
+    if(v.includes("cj"))return"h1";
+    if(v.includes("eprolo"))return"h2";
+    if(v.includes("printful"))return"h3";
+    if(v.includes("gooten"))return"h4";
+    return"h0";
+  }
+  function detailIdentity(p){
+    const src=String(p.detail_src||sourceAlias(p.provider)||"h0");
+    const id=String(p.detail_id||p.item_id||"");
+    const provider=sourceProviders[src]||String(p.provider||"");
+    return {src,id,provider};
+  }
   function cardHref(p){
-    return "product-v16.html?provider="+encodeURIComponent(String(p.provider||""))+"&id="+encodeURIComponent(String(p.item_id||""));
+    const d=detailIdentity(p);
+    return "product-v16.html?src="+encodeURIComponent(d.src)+"&id="+encodeURIComponent(d.id);
   }
   function cacheProduct(route,p){
     const [dept,cat]=String(route||"").split("/");
-    const cached={...p,hunt_department:dept||p.hunt_department||"",hunt_shelf:cat||p.hunt_shelf||"",canonical_department:dept||p.canonical_department||"",canonical_shelf:cat||p.canonical_shelf||""};
-    try{sessionStorage.setItem("hunt_product_"+String(p.provider||"")+":"+String(p.item_id||""),JSON.stringify(cached))}catch{}
+    const d=detailIdentity(p);
+    const target=priceNumber(p);
+    const cached={...p,
+      provider:d.provider,
+      item_id:d.id,
+      target_retail_usd:target,
+      retail_currency:String(p.retail_currency||"USD"),
+      sizes:Array.isArray(p.sizes)?p.sizes:[],
+      colors:Array.isArray(p.colors)?p.colors:[],
+      hunt_department:dept||p.hunt_department||"",
+      hunt_shelf:cat||p.hunt_shelf||"",
+      canonical_department:dept||p.canonical_department||"",
+      canonical_shelf:cat||p.canonical_shelf||""
+    };
+    try{sessionStorage.setItem("hunt_product_"+d.provider+":"+d.id,JSON.stringify(cached))}catch{}
   }
   function renderCartCount(){
     try{
@@ -107,7 +140,7 @@
     $("#primary-nav").innerHTML=primary.map(([label,key])=>'<button type="button" data-mode="'+key+'" class="'+(mode===key&&!query&&!shelf?"active":"")+'">'+label+'</button>').join("");
     const rows=departmentRoutes(mode);
     $("#secondary-nav").innerHTML=rows.map(([route,label])=>'<button type="button" data-shelf="'+esc(route)+'" class="'+(shelf===route?"active":"")+'">'+esc(label)+'</button>').join("")+
-      '<button type="button" data-all>Shop All</button><span class="secondary-divider"></span><button type="button" class="sale" data-mode="deals">Sale</button>';
+      '<button type="button" data-all>Shop All</button>';
   }
   function renderShortcuts(){
     const labels=["Women","Men","Shoes","Beauty","Accessories","Home","Kids"];
@@ -126,7 +159,7 @@
         '<div class="product-media"><img loading="lazy" src="'+esc(p.image_url)+'" alt="'+esc(p.title||"Product")+'"><span class="save-dot" aria-hidden="true">♡</span></div>'+
         '<h3>'+esc(p.title||"Product")+'</h3>'+
         '<div class="product-price">'+esc(priceLabel(p))+'</div>'+
-        '<div class="product-meta">'+esc(titleFromSlug(route.split("/")[1]||""))+'</div>'+
+        '<div class="product-meta">'+esc((Array.isArray(p.colors)&&p.colors.length? p.colors.length+" colors · ":"")+(Array.isArray(p.sizes)&&p.sizes.length? p.sizes.length+" sizes · ":"")+titleFromSlug(route.split("/")[1]||""))+'</div>'+
       '</a>'
     ).join("") || '<div class="empty-state">No products are available in this view yet.</div>';
     $("#product-grid").querySelectorAll(".product-card").forEach((el,i)=>{
