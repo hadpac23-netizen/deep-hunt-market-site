@@ -1,0 +1,41 @@
+{
+  "schema_version": "HUNT_EPROLO_ORDER_CONTRACT_V1",
+  "provider": "EPROLO",
+  "state": "BLOCKED_UNTIL_OFFICIAL_ORDER_AND_TRACKING_CONTRACT_VERIFIED",
+  "verified_readonly_api": {
+    "base_url": "https://openapi.eprolo.com/",
+    "auth": "apiKey header + timestamp/sign signature pattern from deployed integration",
+    "endpoints": [
+      {
+        "name": "product_list",
+        "path": "eprolo_product_list.html",
+        "verified_in_runtime": true
+      },
+      {
+        "name": "exact_variant_shipping_cost_stock",
+        "path": "get_product_shiping_fees.html",
+        "verified_in_runtime": true
+      }
+    ]
+  },
+  "required_before_supplier_order_enable": [
+    "official_create_order_endpoint",
+    "official_create_order_http_method",
+    "required_order_fields_and_variant_identifier",
+    "official_order_query_or_detail_endpoint",
+    "official_tracking_endpoint_or_tracking_fields",
+    "official_webhook_or_callback_contract_if_supported",
+    "sandbox_or_non-billable_test_mode_if_supported",
+    "idempotency_or_merchant_order_reference_behavior",
+    "cancellation_and_error_status_mapping"
+  ],
+  "rules": {
+    "guess_endpoint": false,
+    "supplier_submission_allowed": false,
+    "supplier_live_order_allowed": false,
+    "dry_run_shadow_contract_allowed": true,
+    "prepayment_fresh_variant_recheck_required": true,
+    "presupplier_fresh_variant_recheck_required": true,
+    "owner_gate_required": true
+  }
+}
