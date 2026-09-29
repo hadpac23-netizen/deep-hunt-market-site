@@ -92,8 +92,7 @@ async function cjProductState(itemId: string, token: string) {
   return {
     availability_verified: variants.length > 0 && stock > 0,
     stock_quantity: Math.min(2_147_483_647, Math.floor(stock)),
-    price_amount: Number.isFinite(price) && price > 0 ? price : null,
-    currency: "USD",
+    ...(Number.isFinite(price) && price > 0 ? {price_amount:price,price_basis:"SUPPLIER_BASE",currency:"USD"} : {}),
   };
 }
 
