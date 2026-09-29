@@ -1027,7 +1027,8 @@ function eproloObviousTaxonomyConflict(title:string,shelf:string){
   const s=cleanText(shelf).toLowerCase();
   if(!t||!s)return false;
 
-  const isPhoneCase=/\b(phone case|iphone case|mobile case|protective cover|samsung.{0,20}case|galaxy.{0,20}case)\b/i.test(t);
+  const isPhoneCase=/\b(iphone.{0,24}case|phone case|samsung.{0,24}case|galaxy.{0,24}case)\b/i.test(t)
+    && !/\b(key\s?chain|keychain|bag pendant|passport|document case|card holder)\b/i.test(t);
   if(isPhoneCase&&!/phone[- ]?(cases|accessories)|mobile[- ]?accessories/i.test(s))return true;
 
   const isFootwear=/\b(shoe|shoes|sandal|sandals|loafer|loafers|slipper|slippers|boot|boots|sneaker|sneakers)\b/i.test(t);
