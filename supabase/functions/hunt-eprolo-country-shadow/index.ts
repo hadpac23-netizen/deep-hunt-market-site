@@ -10,6 +10,23 @@ const reply=(x:any,s=200)=>new Response(JSON.stringify(x),{status:s,headers:{"co
 const clean=(v:any)=>typeof v==="string"?v.trim():"";
 const num=(v:any)=>{const n=Number(v);return Number.isFinite(n)?n:null};
 
+let sqlClientInstance:ReturnType<typeof postgres>|null=null;
+function dbUrl(){
+  return clean(Deno.env.get("SUPABASE_DB_POOLER_URL")||Deno.env.get("SUPABASE_DB_URL")||"");
+}
+function dbConnectionMode(){
+  if(clean(Deno.env.get("SUPABASE_DB_POOLER_URL")||""))return "transaction_pooler";
+  if(clean(Deno.env.get("SUPABASE_DB_URL")||""))return "fallback_direct_or_session";
+  return "missing";
+}
+function sqlClient(){
+  if(sqlClientInstance)return sqlClientInstance;
+  const url=dbUrl();
+  if(!url)throw new Error("SERVER_CONFIG_DB_URL");
+  sqlClientInstance=postgres(url,{prepare:false,max:1,connect_timeout:10,idle_timeout:20,max_lifetime:600});
+  return sqlClientInstance;
+}
+
 function sig(k:string,s:string){
   const timestamp=String(Date.now());
   return {timestamp,sign:createHash("md5").update(k+timestamp+s).digest("hex")};
@@ -44,11 +61,8 @@ function cheapest(body:any){
   return a[0]||null;
 }
 async function loadInputs(itemId:string){
-  const db=Deno.env.get("SUPABASE_DB_URL")||"";
-  if(!db)throw new Error("SERVER_CONFIG_DB_URL");
-  const sql=postgres(db,{prepare:false,max:1,connect_timeout:8,idle_timeout:2,max_lifetime:30});
-  try{
-    const cand=await sql`
+  const sql=sqlClient();
+  const cand=await sql`
       select item_id,supplier_cost,verified_inventory,source_payload
       from public.hunt_shelf_candidates
       where provider='EPROLO' and item_id=${itemId}
@@ -82,9 +96,6 @@ async function loadInputs(itemId:string){
       eprolo_api_key:sec.hunt_eprolo_api_key||"",
       eprolo_api_secret:sec.hunt_eprolo_api_secret||""
     };
-  } finally {
-    await sql.end({timeout:1}).catch(()=>{});
-  }
 }
 function price(p:any,c:number,s:number,tax:number){
   const pay=Math.max(0,Number(p?.payment_rate||0.04));
@@ -115,7 +126,11 @@ Deno.serve(async(req:Request)=>{
   try{
     inputs=await loadInputs(itemId);
   }catch(e){
-    return reply({error:"DB_INPUT_READ_FAILED",detail:e instanceof Error?e.message:"input read failed",production_effect:false},503);
+    console.error("EPROLO_COUNTRY_DB_INPUT_READ_FAILED",{
+      mode:dbConnectionMode(),
+      name:e instanceof Error?e.name:"unknown"
+    });
+    return reply({error:"DB_INPUT_READ_FAILED",production_effect:false},503);
   }
 
   try{
