@@ -70,7 +70,8 @@ async function getProduct(base:string,key:string,provider:string,itemId:string,c
   url.searchParams.set("provider",provider);
   url.searchParams.set("product_id",itemId);
   url.searchParams.set("country_code",country);
-  const res=await fetch(url,{headers:{apikey:key},cache:"no-store"});
+  if(!internalToken)throw new Error("EPROLO_INTERNAL_TOKEN_MISSING");
+  const res=await fetch(url,{headers:{apikey:key,"x-hunt-internal-token":internalToken},cache:"no-store"});
   const body=await res.json().catch(()=>({}));
   if(!res.ok||!body?.product)throw new Error("PRODUCT_RECHECK_FAILED");
   return body.product;
@@ -85,13 +86,14 @@ async function getCjQuote(base:string,key:string,vid:string,country:string,qty:n
   if(!res.ok)throw new Error("SHIPPING_RECHECK_FAILED");
   return body;
 }
-async function getEproloQuote(base:string,key:string,itemId:string,variantId:string,country:string,qty:number){
+async function getEproloQuote(base:string,key:string,internalToken:string,itemId:string,variantId:string,country:string,qty:number){
   if(qty!==1)throw new Error("EPROLO_MULTI_QTY_RECHECK_REQUIRED");
   const url=new URL(base+"/functions/v1/hunt-eprolo-country-shadow");
   url.searchParams.set("item_id",itemId);
   url.searchParams.set("variant_id",variantId);
   url.searchParams.set("country",country);
-  const res=await fetch(url,{headers:{apikey:key},cache:"no-store"});
+  if(!internalToken)throw new Error("EPROLO_INTERNAL_TOKEN_MISSING");
+  const res=await fetch(url,{headers:{apikey:key,"x-hunt-internal-token":internalToken},cache:"no-store"});
   const body=await res.json().catch(()=>({}));
   if(!res.ok)throw new Error(clean(body?.reason||body?.error)||"SHIPPING_RECHECK_FAILED");
   if(body?.stock_verified!==true||body?.stock_available!==true)throw new Error("OUT_OF_STOCK");
@@ -100,7 +102,7 @@ async function getEproloQuote(base:string,key:string,itemId:string,variantId:str
   if(clean(body?.readiness_status)!=="COUNTRY_PASS"||clean(body?.economics?.gate)!=="PASS")throw new Error("PROFIT_RECHECK_FAILED");
   return {...body,shipping_usd:shippingUsd};
 }
-async function validateCart(base:string,key:string,body:any){
+async function validateCart(base:string,key:string,eproloInternalToken:string,body:any){
   const country=clean(body?.country_code).toUpperCase();
   if(!/^[A-Z]{2}$/.test(country))throw new Error("COUNTRY_REQUIRED");
   const items=Array.isArray(body?.items)?body.items:[];
@@ -144,7 +146,7 @@ async function validateCart(base:string,key:string,body:any){
       shippingMethod=clean(shipping?.name).slice(0,120);
       originCountry=clean(quote?.selected_origin?.country_code).toUpperCase()||null;
     }else{
-      const quote=await getEproloQuote(base,key,itemId,variantId,country,qty);
+      const quote=await getEproloQuote(base,key,eproloInternalToken,itemId,variantId,country,qty);
       lineShipping=Number(quote.shipping_usd);
       shippingMethod=clean(quote?.shipping_method).slice(0,120);
     }
@@ -237,7 +239,8 @@ Deno.serve(async(req:Request)=>{
     const base=clean(Deno.env.get("SUPABASE_URL"));
     const key=publishableKey();
     if(!base||!key)throw new Error("SERVER_CONFIG_MISSING");
-    const pricing=await validateCart(base,key,body);
+    const eproloInternalToken=clean(Deno.env.get("HUNT_EPROLO_INTERNAL_TOKEN"));
+    const pricing=await validateCart(base,key,eproloInternalToken,body);
     const shippingSnapshot=normalizeShipping(body,pricing.country_code);
     const requestedIdem=clean(body?.idempotency_key).slice(0,120);
     const idempotencyKey=requestedIdem||crypto.randomUUID();
