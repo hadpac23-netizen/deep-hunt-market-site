@@ -38,3 +38,23 @@ test("watcher resolves only stale-data exceptions and never unrelated tax or pro
   assert.match(src,/EXCEPTION_INSERT_FAILED/);
   assert.match(src,/EXCEPTION_UPDATE_FAILED/);
 });
+
+
+test("watcher paginates complete observations and fails closed on read errors",()=>{
+  assert.match(src,/\.range\(from,from\+pageSize-1\)/);
+  assert.match(src,/OBSERVATION_SCAN_LIMIT/);
+  assert.match(src,/EXCEPTION_COUNT_READ_FAILED/);
+  assert.match(src,/STUCK_ORDER_READ_FAILED/);
+  assert.match(src,/complete=results\.every/);
+});
+
+test("watcher resolves stale exceptions only for the exact destination including null",()=>{
+  assert.match(src,/k==="destination_country"&&v===null/);
+  assert.match(src,/destination_country:country\|\|null/);
+});
+
+test("ops health begins from fixed provider list so a missing policy remains visible",()=>{
+  assert.match(sql,/values \('CJdropshipping'::text\),\('EPROLO'::text\)/);
+  assert.match(sql,/refresh_policy_status/);
+  assert.match(sql,/left join private\.hunt_supplier_refresh_policy/);
+});
