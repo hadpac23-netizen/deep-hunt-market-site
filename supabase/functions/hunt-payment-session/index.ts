@@ -95,9 +95,10 @@ async function getEproloQuote(base:string,key:string,itemId:string,variantId:str
   const body=await res.json().catch(()=>({}));
   if(!res.ok)throw new Error(clean(body?.reason||body?.error)||"SHIPPING_RECHECK_FAILED");
   if(body?.stock_verified!==true||body?.stock_available!==true)throw new Error("OUT_OF_STOCK");
-  if(body?.shipping_verified!==true||!(num(body?.shipping_usd)>=0))throw new Error("SHIPPING_UNAVAILABLE");
+  const shippingUsd=typeof body?.shipping_usd==="number"?body.shipping_usd:null;
+  if(body?.shipping_verified!==true||shippingUsd===null||!Number.isFinite(shippingUsd)||shippingUsd<0)throw new Error("SHIPPING_UNAVAILABLE");
   if(clean(body?.readiness_status)!=="COUNTRY_PASS"||clean(body?.economics?.gate)!=="PASS")throw new Error("PROFIT_RECHECK_FAILED");
-  return body;
+  return {...body,shipping_usd:shippingUsd};
 }
 async function validateCart(base:string,key:string,body:any){
   const country=clean(body?.country_code).toUpperCase();
@@ -137,8 +138,9 @@ async function validateCart(base:string,key:string,body:any){
       const quote=await getCjQuote(base,key,variantId,country,qty);
       const shipping=Array.isArray(quote?.shipping_options)?quote.shipping_options[0]:null;
       if(quote?.stock_verified!==true||quote?.stock_available!==true)throw new Error("OUT_OF_STOCK");
-      if(quote?.shipping_verified!==true||!shipping||!(num(shipping?.price_usd)>=0))throw new Error("SHIPPING_UNAVAILABLE");
-      lineShipping=Number(shipping.price_usd);
+      const priceUsd=typeof shipping?.price_usd==="number"?shipping.price_usd:null;
+      if(quote?.shipping_verified!==true||!shipping||priceUsd===null||!Number.isFinite(priceUsd)||priceUsd<0)throw new Error("SHIPPING_UNAVAILABLE");
+      lineShipping=priceUsd;
       shippingMethod=clean(shipping?.name).slice(0,120);
       originCountry=clean(quote?.selected_origin?.country_code).toUpperCase()||null;
     }else{
