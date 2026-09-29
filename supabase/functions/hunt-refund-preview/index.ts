@@ -22,7 +22,8 @@ Deno.serve(async(req:Request)=>{
   try{
     const body=await req.json().catch(()=>({}));
     const paymentSessionId=clean(body?.payment_session_id);
-    const requestedAmount=Number(body?.refund_amount);
+    const rawRequestedAmount=Number(body?.refund_amount);
+    const requestedAmount=Number.isFinite(rawRequestedAmount)?Math.round(rawRequestedAmount*100)/100:NaN;
     if(!paymentSessionId||!Number.isFinite(requestedAmount)||requestedAmount<=0){
       return json({ok:false,error:"PAYMENT_SESSION_AND_REFUND_AMOUNT_REQUIRED"},400);
     }
@@ -45,13 +46,14 @@ Deno.serve(async(req:Request)=>{
       order=data;
     }
 
+    const requestedCurrency=(clean(body?.currency)||clean(session.currency)).toUpperCase();
     const eligibility=refundEligibility({
       payment_status:session.status,
       order_status:order?.status||"",
       total_amount:Number(session.total_amount),
       refund_amount:requestedAmount,
       currency:session.currency,
-      refund_currency:clean(body?.currency)||session.currency
+      refund_currency:requestedCurrency
     });
     const blockers=[...eligibility.blockers];
     if(session.mode==="prelaunch")blockers.push("PRELAUNCH_PAYMENT_NOT_REFUNDABLE");
@@ -65,8 +67,8 @@ Deno.serve(async(req:Request)=>{
       refund_live:false,
       payment_session_id:session.id,
       order_id:order?.id||null,
-      requested_amount:Number(requestedAmount.toFixed(2)),
-      currency:clean(body?.currency||session.currency).toUpperCase(),
+      requested_amount:requestedAmount,
+      currency:requestedCurrency,
       eligible_for_provider_refund:eligibility.eligible && !blockers.includes("PRELAUNCH_PAYMENT_NOT_REFUNDABLE") && !blockers.includes("PROVIDER_TRANSACTION_UID_MISSING") && Boolean(order),
       ready_for_live_refund:false,
       blockers:[...new Set(blockers)]
