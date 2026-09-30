@@ -1,0 +1,36 @@
+{
+  "evidence_id": "HUNT-TAXONOMY-BACKFILL-2026-10-01-V2",
+  "scope": "SHADOW_ONLY",
+  "merge": false,
+  "production_deploy": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "catalog_truth": {
+    "total_candidates": 26375,
+    "taxonomy_mapped": 21707,
+    "taxonomy_unmapped": 4668,
+    "sellable_true": 0,
+    "production_effect_true": 0
+  },
+  "repairs": {
+    "taxonomy_hold_resolution_v1": 28,
+    "canonical50_exact_route_backfill_v1": 7305,
+    "canonical50_lifestyle_parent_backfill_v1": 687,
+    "shadow_sellable_residue_reset": 1
+  },
+  "intentional_holds": {
+    "count": 3,
+    "policy": "HOLD_NO_GUESS",
+    "reason": "No clean canonical shelf for one automotive cover and two portable coffee makers"
+  },
+  "safety_controls_verified": {
+    "hunt_payment_live": false,
+    "hunt_payplus_callback_accept_paid": false,
+    "hunt_supplier_order_live": false
+  },
+  "notes": [
+    "34.9K product observations are observations, not unique products.",
+    "Current shelf candidate pool is 26,375 rows.",
+    "Next taxonomy work is limited to the 4,668 rows that require semantic/title QA or explicit alias resolution."
+  ]
+}
