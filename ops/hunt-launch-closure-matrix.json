@@ -1,26 +1,16 @@
 {
   "schema_version": "HUNT_LAUNCH_CLOSURE_MATRIX_V1",
-  "observed_at": "2026-09-29",
+  "observed_at": "2026-09-30T16:25:00Z",
   "source_of_truth": {
     "status": "PARTIAL",
-    "evidence": "PR26 is the single launch candidate; PR23/24/25 closed as superseded; runtime still not reconciled to main and no deploy performed.",
+    "evidence": "PR26 remains the single Draft launch candidate. Live hunt-storefront v135 imports the PR26 storefront source at commit ab804aa53cb56bf0fb2d4b1097a872dab15a32ce. Documentation/evidence HEAD is newer; no merge to main has occurred.",
     "blocks_real_money": true,
     "storefront_source_layout_fixed": true,
     "storefront_sidecars_separate": true,
     "runtime_git_comparison": {
-      "exact_match": [
-        "hunt-cj-quote",
-        "hunt-cj-live-check",
-        "hunt-eprolo-readonly-pilot",
-        "hunt-eprolo-variant-country-audit-shadow",
-        "hunt-eprolo-product-country-variants-audit-shadow"
-      ],
-      "pr26_patched_ahead_of_runtime": [
-        "hunt-payment-session",
-        "hunt-order-orchestrator",
-        "hunt-storefront",
-        "hunt-eprolo-country-shadow"
-      ]
+      "storefront_runtime": "PR26_SOURCE_IMPORT_AT_ab804aa",
+      "order_orchestrator_runtime": "BEHIND_PR26_PRESUPPLIER_RECHECK",
+      "runtime_reconciliation_complete": false
     },
     "canonical_pdp_predicate_drift_guard": true,
     "stale_snapshot_precedence_fixed_in_pr26": true
@@ -37,18 +27,25 @@
       "no_shipping": 0,
       "retry": 0
     },
+    "cj_exact_variant_spot_recheck_2026_09_30": {
+      "variant_id": "2411070956331619201",
+      "destination": "IL",
+      "origin": "CN",
+      "stock_verified": true,
+      "stock_available": true,
+      "inventory": 10168,
+      "shipping_verified": true,
+      "selected_logistics": "CJPacket Liquid Line",
+      "shipping_usd": 4.2,
+      "aging": "9-23"
+    },
     "eprolo_canonical_pdp_ready": 261,
     "eprolo_live_fresh_truth_status": "LIVE_STOCK_COST_SHIPPING_VERIFIED_TAX_MISSING",
     "blocks_real_money": true,
     "eprolo_destination_tax_patch_in_pr26": true,
     "eprolo_final_profit_requires_provider_tax_truth": true,
-    "eprolo_internal_country_truth_token_required": true,
-    "eprolo_internal_token_secret_present": false,
-    "eprolo_internal_token_note": "HUNT_EPROLO_INTERNAL_TOKEN must be configured before deploying patched country-shadow/payment/freshness callers.",
     "eprolo_live_runtime_proof": {
       "status": "PASS_WITH_TAX_BLOCKER",
-      "runtime_function": "hunt-eprolo-variant-country-audit-shadow",
-      "runtime_version": 2,
       "canonical_core_audited": 261,
       "exact_variant_missing": 0,
       "api_retry": 0,
@@ -60,7 +57,7 @@
       "pretax_profit_block": 0,
       "final_profit_verified": 0
     },
-    "eprolo_destination_tax_blocker": "EPROLO get_product_shiping_fees.html did not return provider tax truth for IL on any of 261 canonical variants."
+    "eprolo_destination_tax_blocker": "No verified destination-tax/DDP value exists for the 261-product IL canonical core. Do not infer customs duty or apply a flat percentage."
   },
   "pdp_readiness": {
     "status": "PASS_CANONICALIZED",
@@ -75,9 +72,10 @@
     "runner_in_pr26": true,
     "schedule_plan_in_pr26": true,
     "live_cron_enabled": false,
-    "supabase_db_pooler_secret_present": false,
+    "supabase_db_pooler_secret_present": true,
+    "transaction_pooler_auth_valid": false,
     "freshness_runner_secret_present": false,
-    "reason": "Runner/patched EPROLO truth not deployed; no pooler/runner secret; scheduled shadow writes not approved.",
+    "reason": "HUNT_DB_POOLER_URL is present but transaction-pooler authentication is still failing; live storefront v135 falls back to direct/session DB access. Scheduled shadow writes remain unapproved.",
     "blocks_real_money": true,
     "initial_plan": {
       "enabled": false,
@@ -94,6 +92,7 @@
   "fulfillment": {
     "status": "PARTIAL",
     "cj_presupplier_recheck_in_pr26": true,
+    "cj_presupplier_recheck_in_live_runtime": false,
     "cj_full_sandbox_e2e_proven": false,
     "eprolo_order_tracking_contract_verified": false,
     "blocks_real_money": true,
@@ -101,17 +100,27 @@
       "cj_records_total": 8,
       "failed": 5,
       "processing_stale": 3,
+      "tracking": 0,
+      "shipped": 0,
       "full_tracking_shipped_e2e_proven": false,
       "last_observed_failures": "2026-09-15"
     },
     "cj_sandbox_e2e_runtime_blocker": {
-      "status": "BLOCKED_AUTH_CONTEXT",
-      "orchestrator_runtime_version": 17,
+      "status": "BLOCKED_RUNTIME_DRIFT_AND_AUTHENTICATED_INVOCATION",
+      "orchestrator_runtime_version": 23,
       "signed_in_admin_test_user_exists": true,
-      "active_admin_auth_session": false,
-      "blocker": "ADMIN_AUTH_SESSION_REQUIRED",
-      "ownership_gap_fixed_in_pr26": true,
+      "active_admin_auth_session": true,
+      "active_admin_auth_session_count_observed": 10,
+      "admin_auth_session_required_blocker_closed": true,
+      "pr26_presupplier_recheck_not_live": true,
+      "blocker": "Deploying the PR26 order-orchestrator hardening requires explicit Owner Gate; after that, run CJ sandbox through an authenticated Admin session and require tracking/shipped evidence.",
       "full_tracking_shipped_e2e_proven": false
+    },
+    "eprolo_contract_blocker": {
+      "official_public_create_order_endpoint_verified": false,
+      "official_public_order_query_endpoint_verified": false,
+      "official_public_tracking_webhook_verified": false,
+      "endpoint_guessing_allowed": false
     }
   },
   "payment": {
@@ -120,10 +129,17 @@
     "payplus_callback_accept_paid": false,
     "payplus_sandbox_evidence_enabled": false,
     "payplus_sandbox_credentials_present": false,
+    "payplus_sandbox_missing": [
+      "PAYPLUS_API_KEY",
+      "PAYPLUS_SECRET_KEY",
+      "PAYPLUS_PAYMENT_PAGE_UID"
+    ],
     "blocks_real_money": true,
     "live_evidence": {
-      "prelaunch_session_event_count": 23,
+      "prelaunch_session_count": 32,
+      "payplus_payment_event_count": 23,
       "payplus_status_observation_count": 0,
+      "paid_session_count": 0,
       "callback_status_mapping_proven": false,
       "signed_callback_evidence_proven": false,
       "accepted_paid_evidence_proven": false
@@ -131,11 +147,24 @@
   },
   "reliability": {
     "status": "PARTIAL",
+    "storefront_runtime_version": 135,
+    "storefront_latest_observed_http_status": 200,
     "eprolo_connection_reuse_patch_in_pr26": true,
     "transaction_pooler_required": true,
-    "transaction_pooler_secret_present": false,
-    "live_load_retest_required": true,
+    "transaction_pooler_secret_present": true,
+    "transaction_pooler_auth_valid": false,
+    "current_db_connection_mode": "fallback_direct_or_session",
+    "pooler_latest_error": "password authentication failed for user postgres",
+    "live_load_retest_required_after_pooler_fix": true,
     "blocks_real_money": true,
+    "current_live_canonical_snapshot": {
+      "canonical_count": 261,
+      "display_eligible_count": 250,
+      "quarantined_count": 11,
+      "final_profit_verified": 0,
+      "purchasable": false,
+      "production_effect": false
+    },
     "current_live_baseline": {
       "total_requests": 30,
       "ok_200_product": 30,
@@ -146,60 +175,66 @@
     },
     "current_live_baseline_passed": true,
     "pr26_pooler_patch_validated_in_runtime": false,
-    "storefront_source_layout_regression_fixed": true,
-    "storefront_index_size_bytes": 93667,
-    "storefront_sidecars": [
-      "matterhorn_snapshot.json",
-      "survey_snapshot.json"
-    ],
-    "eprolo_country_connection_reuse_patch_in_pr26": true,
-    "eprolo_country_transaction_pooler_preferred": true,
-    "payment_session_direct_postgres": false,
-    "order_orchestrator_direct_postgres": false,
-    "freshness_runner_pooler_reuse": true,
     "runtime_validation_still_required": true,
     "github_actions": {
       "immutable_action_pins": true,
-      "checkout_v5_sha": "fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09",
-      "setup_node_v5_sha": "a0853c24544627f65ddf259abe73b1d18a591444",
       "workflow_node_version": "24"
     }
   },
   "security": {
     "status": "PARTIAL",
+    "critical_profile_privilege_escalation_fixed": true,
+    "profile_privileged_insert_fields_locked": true,
+    "profile_update_policies_hardened": true,
+    "private_shadow_pricing_rls_no_policy": false,
+    "private_shadow_pricing_explicit_deny_policy": true,
+    "hunt_public_tables_without_rls": 0,
+    "hunt_policies_using_user_metadata_for_authorization": 0,
+    "eprolo_security_definer_client_execute": false,
+    "security_advisor_info_count": 0,
+    "security_advisor_warn_count": 1,
     "leaked_password_protection": false,
-    "private_shadow_pricing_rls_no_policy": true,
-    "private_rls_hardening_plan_in_pr26": true,
+    "leaked_password_protection_note": "Supabase project is on Free; current Supabase documentation states leaked-password protection is available on Pro and above.",
     "blocks_real_money": true,
-    "internal_supplier_truth": {
-      "eprolo_country_shadow_internal_only": true,
-      "required_secret": "HUNT_EPROLO_INTERNAL_TOKEN",
-      "secret_verified_present_in_live_runtime": false
-    },
-    "cj_quote_abuse_controls_in_pr26": {
-      "verified_only_cache": true,
-      "bounded_quote_cache": true,
-      "bounded_per_ip_rate_state": true,
-      "global_rate_budget": true,
-      "upstream_timeouts": true
-    }
+    "applied_migrations": [
+      "20260930160010_lock_profile_privileged_insert_fields",
+      "20260930160053_deny_client_access_shadow_pricing",
+      "20260930160138_harden_profile_update_policies"
+    ]
   },
   "legal": {
     "status": "BLOCKED",
-    "verified_operating_entity_fields_complete": false,
+    "verified_operating_entity_fields_complete": true,
+    "verified_fields": {
+      "legal_entity_name": true,
+      "registration_number": true,
+      "registered_country": true,
+      "business_address": true
+    },
+    "customer_contact_fields_complete": false,
+    "missing_verified_fields": [
+      "support_email",
+      "privacy_contact_email",
+      "returns_address"
+    ],
     "customer_policy_pages_verified": false,
+    "secure_runtime_identity_status": "draft",
+    "owner_approved": false,
     "blocks_real_money": true
   },
   "git_governance": {
     "status": "PARTIAL",
     "pr26_draft": true,
+    "pr26_merged": false,
     "ci_catalog_integrity": "PASS",
+    "ci_catalog_integrity_run": 204,
     "ci_checkout_regression": "PASS",
-    "coderabbit_full_review_completed": false,
+    "ci_checkout_regression_run": 229,
+    "coderabbit_status": "success",
     "branch_protection_verified": false,
+    "rulesets_count": 0,
     "blocks_real_money": true,
-    "head_commit_signed": false,
-    "branch_protection_check_note": "GitHub integration lacks permission to read branch protection; treat as unverified."
+    "branch_protection_check_note": "GitHub integration receives 403 for classic branch-protection read; treat protection as unverified, not absent."
   },
   "legacy_snapshots": {
     "status": "PASS",
@@ -207,7 +242,7 @@
     "ci_guard_present": true,
     "blocks_real_money": false
   },
-  "launch_rule": "No real-money launch. Payment Live OFF and Supplier Live Order OFF until all blockers are proven and Owner Gate approves.",
+  "launch_rule": "No real-money launch. Payment Live OFF and Supplier Live Order OFF until all blockers are proven and explicit Owner Gate approves.",
   "red_team_review": {
     "coderabbit_major_findings_total": 13,
     "coderabbit_major_findings_fixed_in_pr26": 13,
@@ -219,18 +254,17 @@
     "canonical_drift_test": "tests/canonical-pdp-predicate-drift.test.js",
     "checkout_regression": "PASS",
     "catalog_integrity": "PASS",
-    "final_coderabbit_re_review_required": true
+    "final_coderabbit_re_review_required": false
   },
   "remaining_external_or_runtime_blockers": [
-    "Create a fresh authenticated Admin test session, then complete CJ sandbox E2E through tracking/shipped evidence.",
-    "Resolve destination tax truth for EPROLO/IL before any EPROLO item can be Final Profit Verified.",
-    "Configure HUNT_EPROLO_INTERNAL_TOKEN before deploying EPROLO country truth and its callers.",
-    "Configure HUNT_DB_POOLER_URL and validate patched runtime under load.",
-    "Verify official EPROLO Create Order / Order Query / Tracking contract; do not guess endpoints.",
-    "Configure PayPlus sandbox credentials and prove signed callback/status/idempotency/refund path.",
-    "Enable/review security hardening including leaked-password protection and private-table policy posture.",
-    "Finalize verified legal/business identity fields and customer policies.",
+    "Resolve EPROLO destination-tax/DDP truth for the 261-product IL canonical core; Final Profit Verified remains 0.",
+    "Fix HUNT_DB_POOLER_URL database-password authentication and re-run storefront load validation with db_connection_mode=transaction_pooler.",
+    "After explicit Owner Gate, deploy PR26 order-orchestrator hardening and complete CJ authenticated Admin sandbox E2E through supplier order, tracking and shipped evidence.",
+    "Obtain the official EPROLO Create Order / Order Query / Tracking or webhook contract from EPROLO Account Support; do not guess endpoints.",
+    "Obtain/configure PayPlus sandbox API key, secret and payment page UID, then prove signed callback/status/idempotent paid transition while Payment Live remains OFF.",
+    "Finalize verified HUNT support, privacy and returns contacts and review customer-facing legal/policy pages.",
     "Verify Git branch protection/required checks with an account that has permission.",
-    "Owner Gate before merge/deploy/Payment Live/Supplier Live."
+    "Complete final security review, including acknowledgement of the Supabase Free-plan leaked-password-protection limitation.",
+    "Owner Gate before merge, production deploy, Payment Live or Supplier Live."
   ]
 }
