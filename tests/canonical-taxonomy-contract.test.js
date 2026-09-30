@@ -83,22 +83,33 @@ function loadCanonicalTaxonomy() {
   return HuntCore;
 }
 
-test('canonical taxonomy contains exactly the approved 50 shelves', () => {
-  assert.equal(Object.keys(EXPECTED_CANONICAL_SHELVES).length, 50, 'test contract must contain exactly 50 canonical shelves');
+function declaredCanonicalSlugs() {
+  const block = taxonomySource.match(/const\s+canonicalDefs\s*=\s*\{([\s\S]*?)\n\s*\};/);
+  assert.ok(block, 'canonicalDefs source block must exist');
+  return [...block[1].matchAll(/^\s*"([^"]+)"\s*:\s*def\(/gm)].map(match => match[1]);
+}
 
+test('canonical taxonomy declares exactly the approved 50 shelves with no duplicate slugs', () => {
+  const expected = Object.keys(EXPECTED_CANONICAL_SHELVES).sort();
+  const declared = declaredCanonicalSlugs();
+
+  assert.equal(expected.length, 50, 'test contract must contain exactly 50 canonical shelves');
+  assert.equal(declared.length, 50, `expected exactly 50 canonical declarations, found ${declared.length}`);
+  assert.equal(new Set(declared).size, declared.length, 'canonical shelf declarations must not contain duplicate slugs');
+  assert.deepEqual([...declared].sort(), expected, 'canonical declarations drifted from the approved 50-shelf contract');
+});
+
+test('runtime canonical taxonomy contains exactly the approved 50 shelves', () => {
   const { categoryDefs } = loadCanonicalTaxonomy();
   const actual = Object.keys(categoryDefs).sort();
   const expected = Object.keys(EXPECTED_CANONICAL_SHELVES).sort();
 
-  assert.equal(actual.length, 50, `expected exactly 50 canonical shelves, found ${actual.length}`);
-  assert.deepEqual(actual, expected, 'canonical shelf set drifted from the approved 50-shelf contract');
+  assert.equal(actual.length, 50, `expected exactly 50 runtime canonical shelves, found ${actual.length}`);
+  assert.deepEqual(actual, expected, 'runtime canonical shelf set drifted from the approved 50-shelf contract');
 });
 
-test('every canonical shelf is unique and mapped to the approved department', () => {
+test('every canonical shelf is mapped to the approved department', () => {
   const { categoryDefs } = loadCanonicalTaxonomy();
-  const keys = Object.keys(categoryDefs);
-
-  assert.equal(new Set(keys).size, keys.length, 'canonical shelf slugs must be unique');
 
   for (const [shelf, parent] of Object.entries(EXPECTED_CANONICAL_SHELVES)) {
     const entry = categoryDefs[shelf];
