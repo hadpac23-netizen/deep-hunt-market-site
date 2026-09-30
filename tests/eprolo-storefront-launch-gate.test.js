@@ -32,9 +32,10 @@ test("phone-case guard excludes keychains and passport/document covers",()=>{
 
 
 test("EPROLO PDP reuses one DB client and prefers the configured transaction pooler",()=>{
-  assert.match(entry,/HUNT_DB_POOLER_URL/);
-  assert.match(entry,/Deno\.env\.set\("SUPABASE_DB_POOLER_URL", huntDbPoolerUrl\)/);
-  assert.match(runtime,/SUPABASE_DB_POOLER_URL/);
+  assert.doesNotMatch(entry,/Deno\.env\.set/);
+  assert.match(runtime,/HUNT_DB_POOLER_URL/);
+  assert.match(runtime,/return env\("HUNT_DB_POOLER_URL"\) \|\| env\("SUPABASE_DB_POOLER_URL"\) \|\| env\("SUPABASE_DB_URL"\)/);
+  assert.match(runtime,/if \(env\("HUNT_DB_POOLER_URL"\) \|\| env\("SUPABASE_DB_POOLER_URL"\)\) return "transaction_pooler"/);
   assert.match(runtime,/let eproloSqlClientInstance/);
   assert.match(runtime,/if \(eproloSqlClientInstance\) return eproloSqlClientInstance/);
   assert.match(runtime,/prepare:false/);
