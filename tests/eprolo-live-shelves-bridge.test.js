@@ -102,6 +102,25 @@ test("verified EPROLO aliases feed the matching canonical shelves without broad 
   assert.match(moduleSrc,/"stands-holders":\["phoneaccessories","tech"\]/);
 });
 
+test("targeted fill is title-gated for empty canonical shelves",()=>{
+  assert.match(moduleSrc,/function aliases\(department:string,shelf:string,title=""\)/);
+  assert.match(moduleSrc,/out\.add\("baby-bodysuits"\)/);
+  assert.match(moduleSrc,/out\.add\("newborn"\)/);
+  assert.match(moduleSrc,/out\.add\("nursery"\)/);
+  assert.match(moduleSrc,/out\.add\("boys"\)/);
+  assert.match(moduleSrc,/out\.add\("kids-nightwear"\)/);
+  assert.match(moduleSrc,/out\.add\("kids-occasionwear"\)/);
+  assert.match(moduleSrc,/out\.add\("kids-swimwear"\)/);
+  assert.match(moduleSrc,/out\.add\("men-shorts"\)/);
+  assert.match(moduleSrc,/out\.add\("women-loungewear"\)/);
+  assert.match(moduleSrc,/out\.add\("women-maternity"\)/);
+  assert.match(moduleSrc,/!\/\\b\(swimsuit\|swimwear\)\\b\//);
+  assert.match(moduleSrc,/!\/\\b\(halloween\|cosplay\|costume\)\\b\//);
+  assert.match(moduleSrc,/aliases\(department,shelf,title\)/);
+  assert.doesNotMatch(moduleSrc,/"baby-clothing":\[[^\]]*"baby-bodysuits"/);
+  assert.doesNotMatch(moduleSrc,/"men-bottoms":\[[^\]]*"men-shorts"/);
+});
+
 test("integrated module uses service-role RPC instead of opening another DB connection",()=>{
   assert.match(moduleSrc,/hunt_eprolo_canonical_shelves_rows/);
   assert.match(moduleSrc,/SUPABASE_SERVICE_ROLE_KEY/);
