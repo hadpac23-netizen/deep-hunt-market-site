@@ -3,6 +3,7 @@ import postgres from "npm:postgres@3.4.5";
 import { createHash } from "node:crypto";
 import matterhornSnapshot from "./matterhorn_snapshot.json" with { type: "json" };
 import surveySnapshot from "./survey_snapshot.json" with { type: "json" };
+import { eproloCanonicalMarketShelves } from "./eprolo-shelves.ts";
 
 const PUBLIC_KEY = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
 
@@ -1754,17 +1755,22 @@ Deno.serve(async (req: Request) => {
           withProviderTimeout(cjMarketShelves("hairaccessories"), {}, 14000)
         ]).then(parts => mergeMarketShelves(...parts));
 
-    const [merchantShelves, printfulShelves, cjShelves, gootenShelves, persistedShelves, priorityCjShelves] = await Promise.all([
+    const [merchantShelves, printfulShelves, cjShelves, gootenShelves, persistedShelves, eproloCanonical, priorityCjShelves] = await Promise.all([
       withProviderTimeout(merchantMarketShelves(), {}, 3500),
       withProviderTimeout(printfulMarketShelves(), {}, 8000),
       withProviderTimeout(cjMarketShelves(focusShelf), {}, focusShelf ? 14000 : 10000),
       withProviderTimeout(gootenMarketShelves(), {}, 8000),
       withProviderTimeout(persistedCatalogShelves(), {}, 3500),
+      withProviderTimeout(
+        eproloCanonicalMarketShelves(eproloSqlClient(), eproloDbConnectionMode()),
+        { shelves:{}, meta:{ source:"CANONICAL_PDP_READY", canonical_count:0, display_eligible_count:0, quarantined_count:0, quarantine_reasons:{}, final_profit_verified:0, purchasable:false, production_effect:false, db_connection_mode:eproloDbConnectionMode() } },
+        5500
+      ),
       priorityCjPromise
     ]);
     const matterhornShelves = matterhornMarketShelves();
     const surveyShelves = surveyMarketShelves();
-    const mergedShelves = mergeMarketShelves(priorityCjShelves, cjShelves, persistedShelves, merchantShelves, printfulShelves, gootenShelves, matterhornShelves, surveyShelves);
+    const mergedShelves = mergeMarketShelves(priorityCjShelves, eproloCanonical.shelves, cjShelves, persistedShelves, merchantShelves, printfulShelves, gootenShelves, matterhornShelves, surveyShelves);
     const shelves = focusShelf ? { [focusShelf]: mergedShelves[focusShelf] || [] } : mergedShelves;
     const visibleEntries = Object.values(shelves).reduce(
       (sum: number, items: any) => sum + (Array.isArray(items) ? items.length : 0),
@@ -1779,6 +1785,7 @@ Deno.serve(async (req: Request) => {
     const uniqueProducts = uniqueKeys.size;
     return new Response(JSON.stringify({
       shelves,
+      eprolo_canonical_shelves: eproloCanonical.meta,
       visible_product_count: uniqueProducts,
       shelf_entry_count: visibleEntries,
       provider_entry_counts: Object.fromEntries(
@@ -1799,6 +1806,7 @@ Deno.serve(async (req: Request) => {
         env("CJ_API_KEY") || env("CJ_ACCESS_TOKEN") ? "CJdropshipping API" : null,
         "Gooten public catalog",
         "HUNT persisted verified catalog",
+        eproloCanonical.meta.display_eligible_count > 0 ? "EPROLO Canonical PDP Ready (display-only)" : null,
       ].filter(Boolean).join(" + "),
       price_note:
         "Shelf cards intentionally defer price to the product detail view so the homepage stays fast and never invents a price.",
