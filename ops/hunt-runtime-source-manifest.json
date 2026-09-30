@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-09-29T17:44:49.416Z",
+  "generated_at": "2026-09-30T12:19:51Z",
   "project_ref": "zszlnahjqmwozwubetkm",
-  "note": "CJ + EPROLO launch-critical runtime/source parity. PATCHED_AHEAD_OF_RUNTIME means PR26 contains intentional fixes not yet deployed. No secrets stored.",
+  "note": "CJ + EPROLO launch-critical runtime/source parity. PATCHED_AHEAD_OF_RUNTIME means PR26 contains intentional fixes not yet deployed. PR26_BRANCH_ONLY means source exists only in PR26 and has not been deployed. No secrets stored.",
   "functions": [
     {
       "slug": "hunt-payment-session",
@@ -65,6 +65,13 @@
       "live_status": "ACTIVE",
       "git_path": "supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/index.ts",
       "relationship": "EXACT_MATCH"
+    },
+    {
+      "slug": "hunt-eprolo-shelves-readonly",
+      "live_version": null,
+      "live_status": "NOT_DEPLOYED",
+      "git_path": "supabase/functions/hunt-eprolo-shelves-readonly/index.ts",
+      "relationship": "PR26_BRANCH_ONLY"
     }
   ]
 }
