@@ -1770,7 +1770,7 @@ Deno.serve(async (req: Request) => {
     ]);
     const matterhornShelves = matterhornMarketShelves();
     const surveyShelves = surveyMarketShelves();
-    const mergedShelves = mergeMarketShelves(priorityCjShelves, eproloCanonical.shelves, cjShelves, persistedShelves, merchantShelves, printfulShelves, gootenShelves, matterhornShelves, surveyShelves);
+    const mergedShelves = mergeMarketShelves(priorityCjShelves, cjShelves, persistedShelves, eproloCanonical.shelves, merchantShelves, printfulShelves, gootenShelves, matterhornShelves, surveyShelves);
     const shelves = focusShelf ? { [focusShelf]: mergedShelves[focusShelf] || [] } : mergedShelves;
     const visibleEntries = Object.values(shelves).reduce(
       (sum: number, items: any) => sum + (Array.isArray(items) ? items.length : 0),
