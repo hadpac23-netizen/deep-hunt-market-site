@@ -1,0 +1,117 @@
+{
+  "schema_version": "HUNT_SHADOW_FILL_296_V1",
+  "observed_at": "2026-09-30T21:08:00Z",
+  "mode": "SUPPLIER_DIRECT_AND_MARKET5_SHADOW_EVIDENCE",
+  "production_effect": false,
+  "sellable_changes": 0,
+  "canonical_readiness_promotions": 0,
+  "source_payload_readiness_writes": 0,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "summary": {
+    "supplier_verified_total": 296,
+    "eprolo_supplier_verified": 295,
+    "cj_live_verified_pass": 1,
+    "direct_pretax_pass": 151,
+    "direct_pretax_review": 141,
+    "direct_pretax_block": 0,
+    "retail_price_unverified": 4,
+    "destination_tax_verified": 0,
+    "final_profit_verified": 0
+  },
+  "eprolo_direct_il": {
+    "verified": 295,
+    "pretax_pass": 150,
+    "pretax_review": 141,
+    "pretax_block": 0,
+    "retail_price_unverified": 4,
+    "tax_ddp_status": "DESTINATION_TAX_NOT_VERIFIED"
+  },
+  "cj_live_recheck": {
+    "tested": 4,
+    "pass": 1,
+    "hold": 2,
+    "unverified_error": 1,
+    "accepted": [
+      {
+        "item_id": "2406260909541609100",
+        "variant_id": "2406260909541609300",
+        "shelf": "men-shoes",
+        "stock_verified": true,
+        "stock_available": true,
+        "shipping_verified": true,
+        "shipping_usd": 15.70,
+        "pretax_gate": "PASS"
+      }
+    ],
+    "rejected_or_unverified": [
+      {"item_id":"1846808671704469504","reason":"NO_LIVE_COSTED_VARIANT_WITH_SHIPPING"},
+      {"item_id":"2507040832171609800","reason":"NO_LIVE_COSTED_VARIANT_WITH_SHIPPING"},
+      {"item_id":"2408220800151617100","reason":"CJ unavailable","status":"UNVERIFIED"}
+    ]
+  },
+  "fresh_image_qa": {
+    "tested": 7,
+    "pass": 7,
+    "items": ["30517338","30524269","31031987","31342706","27758463","10333946","18802907"]
+  },
+  "fresh_market5": {
+    "markets": ["US","DE","GB","IL","AE"],
+    "products_tested": 10,
+    "products_all_5_pass": 10,
+    "evidence_write_ok": 10,
+    "production_effect": false,
+    "items": [
+      "30524269","31031987","31342706",
+      "28695278","27974847",
+      "30517338","32540011",
+      "27758463","10333946","18802907"
+    ],
+    "note": "Market5 uses shadow retail floors for economics. This does not replace source retail verification, destination-tax truth, or Final Profit verification."
+  },
+  "taxonomy_remap_required_before_counting_as_current_depth": [
+    {"item_id":"30524269","proposed_department":"women","proposed_shelf":"women-tops"},
+    {"item_id":"31031987","proposed_department":"women","proposed_shelf":"women-tops"},
+    {"item_id":"31342706","proposed_department":"women","proposed_shelf":"women-tops"},
+    {"item_id":"26940279","proposed_department":"tech","proposed_shelf":"cameras"},
+    {"item_id":"32540011","current_shelf":"pet-accessories","proposed_department":"pets","proposed_shelf":"pet-clothing"}
+  ],
+  "shelf_depth": {
+    "current_evidence_at_260_checkpoint": {
+      "covered_shelves": 53,
+      "shelves_ge_5": 38,
+      "shelves_eq_1": 13,
+      "thin_shelves": [
+        {"department":"tech","shelf":"cameras","verified_items":4},
+        {"department":"women","shelf":"women-tops","verified_items":2}
+      ]
+    },
+    "projected_after_correct_branch_remap_and_shadow_evidence_integration": {
+      "covered_shelves": 53,
+      "shelves_ge_5": 43,
+      "shelves_2_to_4": 9,
+      "shelves_eq_1": 1,
+      "single_item_gap": {"department":"home","shelf":"entryway"},
+      "status": "PROJECTED_NOT_CURRENT"
+    }
+  },
+  "red_team": {
+    "women_tops": "Only women-specific items are proposed. Men+Women, unisex and couple titles remain excluded from the women-only shelf.",
+    "pet_clothing": "Seasonal costumes, human dresses/tops, grooming tools and false pet mappings remain excluded. Three additional true pet clothing items passed supplier, image and Market5 evidence.",
+    "cameras": "True camera products were accepted; accessories/detectors are not used as camera depth unless independently mapped and verified.",
+    "cj": "Only one of four strict target candidates passed the fresh live exact-variant stock/shipping check. Holds/errors are not counted."
+  },
+  "holds": [
+    "No live taxonomy/source_payload readiness write without Owner Gate impact review.",
+    "Destination tax/DDP is unverified; Final Profit Verified remains 0.",
+    "Four EPROLO items remain RETAIL_PRICE_UNVERIFIED in the direct IL batch even where shadow Market5 can compute a retail floor.",
+    "Do not claim projected shelf depth as current storefront or canonical readiness."
+  ],
+  "do_not_claim": [
+    "Do not claim 296 products are Canonical PDP Ready.",
+    "Do not claim 296 products are live or sellable.",
+    "Do not claim destination tax or DDP is verified.",
+    "Do not claim Final Profit Verified.",
+    "Do not claim 43 shelves have 5+ current live products until branch remaps/evidence integration are implemented and revalidated."
+  ]
+}
