@@ -65,7 +65,7 @@ test("CJ quote caches only verified truth and has bounded global plus per-IP bud
 });
 
 test("storefront prefers live and persisted shelves over snapshots",()=>{
-  const s=read("supabase/functions/hunt-storefront/index.ts");
+  const s=read("supabase/functions/hunt-storefront/runtime.ts");
   assert.match(s,/mergeMarketShelves\(priorityCjShelves, cjShelves, persistedShelves,[\s\S]*matterhornShelves, surveyShelves\)/);
   assert.match(s,/verified Gelato API credentials/);
   assert.match(s,/Public catalog is live in HUNT\. Private store\/recipe credentials/);
