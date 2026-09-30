@@ -1,0 +1,48 @@
+{
+  "evidence_id": "HUNT-TAXONOMY-SHADOW-REPAIR-2026-10-01-V1",
+  "scope": "SHADOW_ONLY",
+  "owner_gate": "APPROVED_FOR_TAXONOMY_SHADOW_FIX",
+  "production_deploy": false,
+  "merge": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "writer_fix": {
+    "function": "private.hunt_cj_mass_fill_tick",
+    "before": "source_payload=excluded.source_payload",
+    "after": "source_payload=coalesce(public.hunt_shelf_candidates.source_payload,'{}'::jsonb)||excluded.source_payload",
+    "mass_fill_lanes_enabled": false
+  },
+  "taxonomy_guard": {
+    "function": "public.hunt_preserve_shadow_taxonomy_gate_v2",
+    "behavior": "preserve existing taxonomy_gate_v2 on any attempted mutation for production_effect=false rows"
+  },
+  "canary": {
+    "mode": "TRANSACTION_ROLLBACK",
+    "result": "PASS",
+    "persisted_probe_rows": 0
+  },
+  "repair": {
+    "mapped_shadow_rows": 13715,
+    "resolvable_rows": 13684,
+    "rows_repaired": 11295,
+    "remaining_resolvable_mismatch": 0,
+    "unresolved_rows": 31,
+    "unresolved_shelves": {
+      "outdoor": 29,
+      "kids-baby": 2
+    },
+    "unresolved_policy": "HOLD_NO_GUESS",
+    "unresolved_sellable_true": 0,
+    "unresolved_production_effect_true": 0
+  },
+  "safety_controls_verified": {
+    "hunt_payment_live": false,
+    "hunt_payplus_callback_accept_paid": false,
+    "hunt_supplier_order_live": false,
+    "cj_mass_fill_lane_1": false,
+    "cj_mass_fill_lane_2": false,
+    "cj_mass_fill_lane_3": false,
+    "cj_mass_fill_lane_4": false
+  },
+  "next_gate": "resolve 31 HOLD mappings using verified taxonomy evidence before any catalog expansion writer is re-enabled"
+}
