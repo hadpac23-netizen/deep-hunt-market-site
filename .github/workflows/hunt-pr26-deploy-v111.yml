@@ -1,0 +1,57 @@
+name: HUNT PR26 deploy v111 one-time
+
+on:
+  push:
+    branches:
+      - launch/hunt-candidate-2026-09-29-v1
+    paths:
+      - .github/workflows/hunt-pr26-deploy-v111.yml
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-hunt-storefront-v111:
+    if: contains(github.event.head_commit.message, '[deploy-v111]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact tested PR26 HEAD
+        uses: actions/checkout@v4
+        with:
+          ref: 753595ddf1a2a331f92fde2a4a31813bf80221d4
+          fetch-depth: 1
+
+      - name: Verify exact source commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "753595ddf1a2a331f92fde2a4a31813bf80221d4"
+          test -f supabase/functions/hunt-storefront/index.ts
+          test -f supabase/functions/hunt-storefront/runtime.ts
+          test -f supabase/functions/hunt-storefront/eprolo-shelves.ts
+          test -f supabase/functions/hunt-storefront/matterhorn_snapshot.json
+          test -f supabase/functions/hunt-storefront/survey_snapshot.json
+
+      - name: Require pre-existing Supabase access secret
+        shell: bash
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "$SUPABASE_ACCESS_TOKEN"
+
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Deploy existing hunt-storefront only
+        shell: bash
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: |
+          set -euo pipefail
+          supabase functions deploy hunt-storefront \
+            --project-ref zszlnahjqmwozwubetkm \
+            --no-verify-jwt
