@@ -1,0 +1,21 @@
+{
+  "evidence_version": "HUNT_CJ_SANDBOX_E2E_BLOCKER_V1",
+  "observed_at": "2026-09-30",
+  "orchestrator_runtime_version": 17,
+  "supplier_live_order": false,
+  "supplier_sandbox_enabled": true,
+  "signed_in_test_user_exists": true,
+  "test_user_is_admin": true,
+  "active_admin_auth_session": false,
+  "blocker": "ADMIN_AUTH_SESSION_REQUIRED",
+  "prior_fulfillment_records": {
+    "total": 8,
+    "failed": 5,
+    "processing_stale": 3
+  },
+  "security_action_taken": "PR26 now requires authenticated ownership for user-bound payment sessions and will not exploit missing uid.",
+  "next_safe_action": "Create a fresh authenticated Admin test session, then run dry_run -> sandbox -> tracking/shipped evidence.",
+  "payment_live_changed": false,
+  "supplier_live_changed": false,
+  "production_effect": false
+}
