@@ -1,4 +1,4 @@
-const CACHE="hunt-shell-pwa1";
+const CACHE="hunt-shell-pwa2";
 const CORE=[
   "./",
   "./index.html",
@@ -7,6 +7,7 @@ const CORE=[
   "./hunt-shop.css",
   "./hunt-deal.css",
   "./market-core.js",
+  "./storefront-privacy.js?v=source-privacy2",
   "./hunt-icon.svg",
   "./manifest.webmanifest"
 ];
@@ -49,7 +50,7 @@ self.addEventListener("fetch",event=>{
   if(request.method!=="GET")return;
   const url=new URL(request.url);
   if(url.origin!==self.location.origin)return;
-  if(request.mode==="navigate"){
+  if(request.mode==="navigate" || /\/storefront-privacy\.js$/i.test(url.pathname)){
     event.respondWith(networkFirst(request));
     return;
   }
