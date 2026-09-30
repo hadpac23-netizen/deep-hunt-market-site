@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-09-30T00:00:00Z",
+  "mode": "SHADOW_BRANCH_EVIDENCE_ONLY",
+  "production_effect": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "summary": {
+    "target_shelves": 4,
+    "shelves_with_verified_catalog_path": 4,
+    "launch_ready_shelves": 0,
+    "note": "Catalog-fill evidence only. No item in this file is authorized for purchase or production activation."
+  },
+  "shelves": {
+    "kids-underwear": {
+      "status": "CATALOG_PATH_VERIFIED_PROFIT_SHADOW_PASS",
+      "preferred_provider": "EPROLO",
+      "verified_candidates": [
+        {"item_id":"32109473","variant_id":"722768666","shipping_country":"IL","supplier_cost_usd":3.92,"shipping_usd":10.10,"shadow_retail_floor_usd":9.99,"contribution_usd":4.26,"margin":0.4266,"profit_gate":"PASS","production_effect":false},
+        {"item_id":"32109418","variant_id":"722767255","shipping_country":"IL","supplier_cost_usd":3.48,"shipping_usd":14.31,"shadow_retail_floor_usd":9.99,"contribution_usd":4.32,"margin":0.4327,"profit_gate":"PASS","production_effect":false},
+        {"item_id":"31955905","variant_id":"719662010","shipping_country":"IL","supplier_cost_usd":4.36,"shipping_usd":9.82,"shadow_retail_floor_usd":10.99,"contribution_usd":4.76,"margin":0.4329,"profit_gate":"PASS","production_effect":false},
+        {"item_id":"31297977","variant_id":"711076956","shipping_country":"IL","supplier_cost_usd":3.62,"shipping_usd":13.08,"shadow_retail_floor_usd":9.99,"contribution_usd":4.29,"margin":0.4298,"profit_gate":"PASS","production_effect":false}
+      ],
+      "runtime_existing_legacy_slug": {
+        "slug":"kidsunderwear",
+        "provider":"CJdropshipping",
+        "item_id":"1373822396523483136",
+        "availability_verified":true,
+        "profit_gate_status":"PASS",
+        "canonical_bridge_required":true,
+        "metadata_review_required":true
+      },
+      "purchasable": false,
+      "blockers": ["CANONICAL_BRIDGE_NOT_DEPLOYED","FINAL_TAX_NOT_VERIFIED","PREPAYMENT_RECHECK_REQUIRED"]
+    },
+    "men-loungewear": {
+      "status": "CATALOG_PATH_VERIFIED_PROFIT_SHADOW_PASS",
+      "preferred_provider": "EPROLO",
+      "verified_candidates": [
+        {"item_id":"32874587","variant_id":"733734453","shipping_country":"IL","supplier_cost_usd":8.33,"shipping_usd":28.45,"shadow_retail_floor_usd":16.99,"contribution_usd":4.57,"margin":0.2690,"profit_gate":"PASS","production_effect":false},
+        {"item_id":"29652092","variant_id":"688987954","shipping_country":"IL","supplier_cost_usd":14.27,"shipping_usd":17.99,"shadow_retail_floor_usd":22.99,"contribution_usd":5.03,"margin":0.2189,"profit_gate":"PASS","production_effect":false}
+      ],
+      "purchasable": false,
+      "blockers": ["CANONICAL_BRIDGE_NOT_DEPLOYED","FINAL_TAX_NOT_VERIFIED","PREPAYMENT_RECHECK_REQUIRED"]
+    },
+    "men-nightwear": {
+      "status": "CATALOG_PATH_VERIFIED_COMMERCIAL_HOLD",
+      "preferred_provider": "Matterhorn Wholesale",
+      "verified_candidates": [
+        {"item_id":"219796","subcategory":"men_sleepwear","gender":"men","stock_quantity":23,"variant_count":5,"availability_verified":true,"retail_price_verified":false,"checkout_status":"MATTERHORN_ACCOUNT_TERMS_PENDING","production_effect":false},
+        {"item_id":"225025","subcategory":"men_sleepwear","gender":"men","stock_quantity":6,"variant_count":5,"availability_verified":true,"retail_price_verified":false,"checkout_status":"MATTERHORN_ACCOUNT_TERMS_PENDING","production_effect":false}
+      ],
+      "purchasable": false,
+      "blockers": ["CANONICAL_BRIDGE_NOT_DEPLOYED","MATTERHORN_ACCOUNT_TERMS_PENDING","RETAIL_PRICE_NOT_VERIFIED","SHIPPING_RETURNS_TERMS_PENDING"]
+    },
+    "men-swimwear": {
+      "status": "CATALOG_PATH_VERIFIED_FULFILLMENT_HOLD",
+      "preferred_provider": "Printful",
+      "verified_candidates": [
+        {"item_id":"571","title":"All-Over Print Recycled Swim Trunks","variant_count":11,"availability_verified":true,"supplier_base_price_from_usd":47.25,"retail_price_verified":false,"checkout_status":"PRINTFUL_APPROVAL_REQUIRED","production_effect":false}
+      ],
+      "purchasable": false,
+      "blockers": ["CANONICAL_BRIDGE_NOT_DEPLOYED","PRINTFUL_STORE_API_TOKEN_REQUIRED_FOR_FULFILLMENT","RETAIL_MARGIN_NOT_CONFIGURED","PREPAYMENT_SHIPPING_RECHECK_REQUIRED"]
+    }
+  },
+  "red_team_rejections": [
+    {"provider":"CJdropshipping","item_id":"2506110754311601900","target_shelf":"men-nightwear","reason":"LIVE_PRODUCT_DETAIL_ZERO_STOCKED_VARIANTS","action":"REJECT"},
+    {"provider":"CJdropshipping","item_id":"2506050801591602700","target_shelf":"men-swimwear","reason":"LIVE_PRODUCT_DETAIL_ZERO_STOCKED_VARIANTS","action":"REJECT"}
+  ],
+  "owner_gate": {
+    "merge": false,
+    "production_deploy": false,
+    "payment_live": false,
+    "supplier_live_order": false
+  }
+}
