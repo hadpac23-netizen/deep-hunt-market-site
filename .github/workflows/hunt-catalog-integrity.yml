@@ -5,6 +5,8 @@ on:
     paths:
       - 'supabase/functions/hunt-eprolo-catalog-fill-readonly/**'
       - 'supabase/functions/hunt-eprolo-shelves-readonly/**'
+      - 'supabase/functions/hunt-storefront/runtime.ts'
+      - 'supabase/functions/hunt-storefront/eprolo-shelves.ts'
       - 'eprolo-shelves-bridge.js'
       - 'category.html'
       - 'tests/eprolo-catalog-fill-integrity.test.js'
@@ -14,6 +16,8 @@ on:
     paths:
       - 'supabase/functions/hunt-eprolo-catalog-fill-readonly/**'
       - 'supabase/functions/hunt-eprolo-shelves-readonly/**'
+      - 'supabase/functions/hunt-storefront/runtime.ts'
+      - 'supabase/functions/hunt-storefront/eprolo-shelves.ts'
       - 'eprolo-shelves-bridge.js'
       - 'category.html'
       - 'tests/eprolo-catalog-fill-integrity.test.js'
