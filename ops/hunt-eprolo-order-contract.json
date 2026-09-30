@@ -18,6 +18,19 @@
       }
     ]
   },
+  "official_public_evidence_2026_09_30": {
+    "api_document_delivery": "EPROLO official API page says the API document is supplied by the Account Support Rep through the dashboard message box",
+    "public_create_order_endpoint_verified": false,
+    "public_order_query_endpoint_verified": false,
+    "public_tracking_webhook_contract_verified": false,
+    "public_israel_ddp_or_destination_tax_contract_verified": false,
+    "official_pages": [
+      "https://eprolo.com/eprolo-api/",
+      "https://eprolo.com/project/order-fulfillment",
+      "https://eprolo.com/project/tracking-number-synchronization-setting-guide"
+    ],
+    "decision": "KEEP_BLOCKED_DO_NOT_GUESS_ENDPOINTS_OR_TAX"
+  },
   "required_before_supplier_order_enable": [
     "official_create_order_endpoint",
     "official_create_order_http_method",
