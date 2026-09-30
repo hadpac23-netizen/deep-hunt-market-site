@@ -26,6 +26,16 @@ test("payment session persists shipping snapshot",()=>{
   assert.match(src,/customer_email:shippingSnapshot\.email/);
 });
 
+test("EPROLO quote is bounded and fails closed on timeout",()=>{
+  const src=read("supabase/functions/hunt-payment-session/index.ts");
+  assert.match(src,/const EPROLO_QUOTE_TIMEOUT_MS=8_000/);
+  assert.match(src,/const controller=new AbortController\(\)/);
+  assert.match(src,/signal:controller\.signal/);
+  assert.match(src,/const body=await res\.json\(\)\.catch/);
+  assert.match(src,/if\(controller\.signal\.aborted\)throw new Error\("EPROLO_QUOTE_TIMEOUT"\)/);
+  assert.match(src,/finally\{\s*clearTimeout\(timeout\);\s*\}/s);
+});
+
 test("order preview only blocks missing addresses conditionally",()=>{
   const src=read("supabase/functions/hunt-order-preview/index.ts");
   assert.match(src,/shippingAddressReady/);
