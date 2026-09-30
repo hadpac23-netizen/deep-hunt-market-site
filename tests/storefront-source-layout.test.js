@@ -5,17 +5,23 @@ const path=require("node:path");
 const root=path.resolve(__dirname,"..");
 const dir=path.join(root,"supabase/functions/hunt-storefront");
 const index=fs.readFileSync(path.join(dir,"index.ts"),"utf8");
+const runtime=fs.readFileSync(path.join(dir,"runtime.ts"),"utf8");
+const combined=index+"\n"+runtime;
 
 test("storefront source keeps JSON sidecars separate",()=>{
-  assert.ok(index.length < 150000, "index.ts unexpectedly contains embedded snapshots");
-  assert.equal((index.match(/Deno\.serve/g)||[]).length,1);
+  assert.ok(runtime.length < 150000, "runtime.ts unexpectedly contains embedded snapshots");
+  assert.equal((runtime.match(/Deno\.serve/g)||[]).length,1);
+  assert.match(index,/await import\("\.\/runtime\.ts"\)/);
   assert.ok(fs.existsSync(path.join(dir,"matterhorn_snapshot.json")));
   assert.ok(fs.existsSync(path.join(dir,"survey_snapshot.json")));
-  assert.doesNotMatch(index,/\{"generated_at":"2026-09-11T18:00:00\+03:00","source":"Matterhorn/);
+  assert.doesNotMatch(combined,/\{"generated_at":"2026-09-11T18:00:00\+03:00","source":"Matterhorn/);
 });
 
 test("storefront keeps launch reliability patches after source split",()=>{
-  assert.match(index,/SUPABASE_DB_POOLER_URL/);
-  assert.match(index,/EXACT_VARIANT_QUOTE_REQUIRED/);
-  assert.doesNotMatch(index,/await sql\.end\(\{timeout:1\}\)/);
+  assert.match(index,/HUNT_DB_POOLER_URL/);
+  assert.match(index,/Deno\.env\.set\("SUPABASE_DB_POOLER_URL", huntDbPoolerUrl\)/);
+  assert.ok(index.indexOf("Deno.env.set") < index.indexOf('await import("./runtime.ts")'));
+  assert.match(runtime,/SUPABASE_DB_POOLER_URL/);
+  assert.match(runtime,/EXACT_VARIANT_QUOTE_REQUIRED/);
+  assert.doesNotMatch(runtime,/await sql\.end\(\{timeout:1\}\)/);
 });
