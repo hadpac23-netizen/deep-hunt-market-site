@@ -7,6 +7,7 @@ const ALLOWED_ORIGINS=new Set([
   "http://127.0.0.1:8767",
   "http://localhost:8767"
 ]);
+const EPROLO_QUOTE_TIMEOUT_MS=8_000;
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const num=(v:unknown)=>Number.isFinite(Number(v))?Number(v):null;
 
@@ -92,14 +93,26 @@ async function getEproloQuote(base:string,key:string,internalToken:string,itemId
   url.searchParams.set("variant_id",variantId);
   url.searchParams.set("country",country);
   if(!internalToken)throw new Error("EPROLO_INTERNAL_TOKEN_MISSING");
-  const res=await fetch(url,{headers:{apikey:key,"x-hunt-internal-token":internalToken},cache:"no-store"});
-  const body=await res.json().catch(()=>({}));
-  if(!res.ok)throw new Error(clean(body?.reason||body?.error)||"SHIPPING_RECHECK_FAILED");
-  if(body?.stock_verified!==true||body?.stock_available!==true)throw new Error("OUT_OF_STOCK");
-  const shippingUsd=typeof body?.shipping_usd==="number"?body.shipping_usd:null;
-  if(body?.shipping_verified!==true||shippingUsd===null||!Number.isFinite(shippingUsd)||shippingUsd<0)throw new Error("SHIPPING_UNAVAILABLE");
-  if(clean(body?.readiness_status)!=="COUNTRY_PASS"||clean(body?.economics?.gate)!=="PASS")throw new Error("PROFIT_RECHECK_FAILED");
-  return {...body,shipping_usd:shippingUsd};
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),EPROLO_QUOTE_TIMEOUT_MS);
+  try{
+    const res=await fetch(url,{headers:{apikey:key,"x-hunt-internal-token":internalToken},cache:"no-store",signal:controller.signal});
+    const body=await res.json().catch((error)=>{
+      if(controller.signal.aborted)throw error;
+      return {};
+    });
+    if(!res.ok)throw new Error(clean(body?.reason||body?.error)||"SHIPPING_RECHECK_FAILED");
+    if(body?.stock_verified!==true||body?.stock_available!==true)throw new Error("OUT_OF_STOCK");
+    const shippingUsd=typeof body?.shipping_usd==="number"?body.shipping_usd:null;
+    if(body?.shipping_verified!==true||shippingUsd===null||!Number.isFinite(shippingUsd)||shippingUsd<0)throw new Error("SHIPPING_UNAVAILABLE");
+    if(clean(body?.readiness_status)!=="COUNTRY_PASS"||clean(body?.economics?.gate)!=="PASS")throw new Error("PROFIT_RECHECK_FAILED");
+    return {...body,shipping_usd:shippingUsd};
+  }catch(error){
+    if(controller.signal.aborted)throw new Error("EPROLO_QUOTE_TIMEOUT");
+    throw error;
+  }finally{
+    clearTimeout(timeout);
+  }
 }
 async function validateCart(base:string,key:string,eproloInternalToken:string,body:any){
   const country=clean(body?.country_code).toUpperCase();
