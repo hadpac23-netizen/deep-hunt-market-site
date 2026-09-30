@@ -1,2 +1,2 @@
-// Runtime reads HUNT_DB_POOLER_URL directly; Supabase Edge Runtime does not support Deno.env.set().
+// Runtime reads HUNT_DB_POOLER_URL directly; no runtime environment mutation is performed.
 await import("./runtime.ts");
