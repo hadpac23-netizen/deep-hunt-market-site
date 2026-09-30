@@ -4,12 +4,20 @@ on:
   push:
     paths:
       - 'supabase/functions/hunt-eprolo-catalog-fill-readonly/**'
+      - 'supabase/functions/hunt-eprolo-shelves-readonly/**'
+      - 'eprolo-shelves-bridge.js'
+      - 'category.html'
       - 'tests/eprolo-catalog-fill-integrity.test.js'
+      - 'tests/eprolo-live-shelves-bridge.test.js'
       - '.github/workflows/hunt-catalog-integrity.yml'
   pull_request:
     paths:
       - 'supabase/functions/hunt-eprolo-catalog-fill-readonly/**'
+      - 'supabase/functions/hunt-eprolo-shelves-readonly/**'
+      - 'eprolo-shelves-bridge.js'
+      - 'category.html'
       - 'tests/eprolo-catalog-fill-integrity.test.js'
+      - 'tests/eprolo-live-shelves-bridge.test.js'
       - '.github/workflows/hunt-catalog-integrity.yml'
 
 permissions:
@@ -25,4 +33,4 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: "24"
-      - run: node --test tests/eprolo-catalog-fill-integrity.test.js
+      - run: node --test tests/eprolo-catalog-fill-integrity.test.js tests/eprolo-live-shelves-bridge.test.js
