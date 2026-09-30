@@ -1,0 +1,76 @@
+name: HUNT PR26 Integrate EPROLO Shelves Once
+
+on:
+  push:
+    branches:
+      - launch/hunt-candidate-2026-09-29-v1
+    paths:
+      - '.github/workflows/hunt-pr26-integrate-eprolo-shelves-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: launch/hunt-candidate-2026-09-29-v1
+          fetch-depth: 0
+      - name: Patch storefront runtime with canonical EPROLO shelves
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('supabase/functions/hunt-storefront/runtime.ts')
+          s=p.read_text()
+          replacements=[
+            (
+              'import surveySnapshot from "./survey_snapshot.json" with { type: "json" };\n',
+              'import surveySnapshot from "./survey_snapshot.json" with { type: "json" };\nimport { eproloCanonicalMarketShelves } from "./eprolo-shelves.ts";\n'
+            ),
+            (
+              'const [merchantShelves, printfulShelves, cjShelves, gootenShelves, persistedShelves, priorityCjShelves] = await Promise.all([',
+              'const [merchantShelves, printfulShelves, cjShelves, gootenShelves, persistedShelves, eproloCanonical, priorityCjShelves] = await Promise.all(['
+            ),
+            (
+              '      withProviderTimeout(persistedCatalogShelves(), {}, 3500),\n      priorityCjPromise',
+              '      withProviderTimeout(persistedCatalogShelves(), {}, 3500),\n      withProviderTimeout(\n        eproloCanonicalMarketShelves(eproloSqlClient(), eproloDbConnectionMode()),\n        { shelves:{}, meta:{ source:"CANONICAL_PDP_READY", canonical_count:0, display_eligible_count:0, quarantined_count:0, quarantine_reasons:{}, final_profit_verified:0, purchasable:false, production_effect:false, db_connection_mode:eproloDbConnectionMode() } },\n        5500\n      ),\n      priorityCjPromise'
+            ),
+            (
+              'const mergedShelves = mergeMarketShelves(priorityCjShelves, cjShelves, persistedShelves, merchantShelves, printfulShelves, gootenShelves, matterhornShelves, surveyShelves);',
+              'const mergedShelves = mergeMarketShelves(priorityCjShelves, eproloCanonical.shelves, cjShelves, persistedShelves, merchantShelves, printfulShelves, gootenShelves, matterhornShelves, surveyShelves);'
+            ),
+            (
+              '      shelves,\n      visible_product_count: uniqueProducts,',
+              '      shelves,\n      eprolo_canonical_shelves: eproloCanonical.meta,\n      visible_product_count: uniqueProducts,'
+            ),
+            (
+              '        "HUNT persisted verified catalog",\n',
+              '        "HUNT persisted verified catalog",\n        eproloCanonical.meta.display_eligible_count > 0 ? "EPROLO Canonical PDP Ready (display-only)" : null,\n'
+            )
+          ]
+          for old,new in replacements:
+            count=s.count(old)
+            if count != 1:
+              raise SystemExit(f'anchor mismatch: expected 1, got {count}: {old[:100]!r}')
+            s=s.replace(old,new,1)
+          p.write_text(s)
+          PY
+      - name: Verify patch markers
+        run: |
+          grep -F 'import { eproloCanonicalMarketShelves } from "./eprolo-shelves.ts";' supabase/functions/hunt-storefront/runtime.ts
+          grep -F 'eprolo_canonical_shelves: eproloCanonical.meta' supabase/functions/hunt-storefront/runtime.ts
+          grep -F 'mergeMarketShelves(priorityCjShelves, eproloCanonical.shelves' supabase/functions/hunt-storefront/runtime.ts
+          git diff --check
+      - name: Commit PR26-only patch
+        run: |
+          if git diff --quiet; then
+            echo 'No runtime diff produced' >&2
+            exit 1
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add supabase/functions/hunt-storefront/runtime.ts
+          git commit -m 'feat(catalog): integrate canonical EPROLO shelves into storefront'
+          git push origin HEAD:launch/hunt-candidate-2026-09-29-v1
