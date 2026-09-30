@@ -1,0 +1,63 @@
+{
+  "schema_version": "HUNT_CANONICAL_50_TARGETED_FILL_V1",
+  "observed_date": "2026-09-30",
+  "scope": "PR26 branch-only canonical shelf coverage; no production effect",
+  "canonical_shelves_total": 50,
+  "live_pre_branch_observation": {
+    "shelves_with_products": 22,
+    "empty_shelves": 28
+  },
+  "static_safe_alias_simulation": {
+    "shelves_with_products": 32,
+    "empty_shelves": 18,
+    "status": "BRANCH_ONLY_SIMULATION"
+  },
+  "title_gated_targeted_fill": {
+    "head_before_evidence_commit": "19b756cdbb05396e9ef478622e77eeab00a94ff1",
+    "strict_source": "public.hunt_eprolo_canonical_shelves_rows()",
+    "strict_source_product_count": 261,
+    "newly_covered_shelves": {
+      "baby-bodysuits": 3,
+      "newborn": 3,
+      "nursery": 2,
+      "boys": 2,
+      "kids-nightwear": 2,
+      "kids-occasionwear": 3,
+      "men-shorts": 2
+    },
+    "projected_combined_shelves_with_products": 39,
+    "projected_combined_empty_shelves": 11,
+    "status": "BRANCH_ONLY_SIMULATION"
+  },
+  "remaining_empty_shelves": [
+    "dinnerware",
+    "glassware",
+    "wall-art",
+    "kids-schoolwear",
+    "kids-swimwear",
+    "kids-underwear",
+    "men-loungewear",
+    "men-nightwear",
+    "men-swimwear",
+    "women-loungewear",
+    "women-maternity"
+  ],
+  "remaining_shelf_candidate_truth": {
+    "cj_strict_safe_candidates_found": 0,
+    "eprolo_strict_source_generated_new_coverage_for_remaining_11": 0,
+    "rule": "Do not fill an empty shelf with ambiguous, wrong-demographic, wrong-product-type, non-strict, or unverified candidates."
+  },
+  "ci": {
+    "catalog_integrity_run": 232,
+    "catalog_integrity": "PASS",
+    "checkout_regression_run": 247,
+    "checkout_regression": "PASS"
+  },
+  "safety": {
+    "merge": false,
+    "production_deploy": false,
+    "payment_live": false,
+    "supplier_live_order": false,
+    "production_effect": false
+  }
+}
