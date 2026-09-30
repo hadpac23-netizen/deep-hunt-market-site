@@ -103,6 +103,15 @@
       "processing_stale": 3,
       "full_tracking_shipped_e2e_proven": false,
       "last_observed_failures": "2026-09-15"
+    },
+    "cj_sandbox_e2e_runtime_blocker": {
+      "status": "BLOCKED_AUTH_CONTEXT",
+      "orchestrator_runtime_version": 17,
+      "signed_in_admin_test_user_exists": true,
+      "active_admin_auth_session": false,
+      "blocker": "ADMIN_AUTH_SESSION_REQUIRED",
+      "ownership_gap_fixed_in_pr26": true,
+      "full_tracking_shipped_e2e_proven": false
     }
   },
   "payment": {
@@ -213,10 +222,10 @@
     "final_coderabbit_re_review_required": true
   },
   "remaining_external_or_runtime_blockers": [
+    "Create a fresh authenticated Admin test session, then complete CJ sandbox E2E through tracking/shipped evidence.",
     "Resolve destination tax truth for EPROLO/IL before any EPROLO item can be Final Profit Verified.",
     "Configure HUNT_EPROLO_INTERNAL_TOKEN before deploying EPROLO country truth and its callers.",
     "Configure SUPABASE_DB_POOLER_URL and validate patched runtime under load.",
-    "Complete CJ sandbox E2E through tracking/shipped evidence.",
     "Verify official EPROLO Create Order / Order Query / Tracking contract; do not guess endpoints.",
     "Configure PayPlus sandbox credentials and prove signed callback/status/idempotency/refund path.",
     "Enable/review security hardening including leaked-password protection and private-table policy posture.",
