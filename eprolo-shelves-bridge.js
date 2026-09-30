@@ -38,10 +38,12 @@
 
   H.storefront=async params=>{
     if(String(params?.shelves||"")!=="1")return original(params);
-    const [baseResult,eproloResult]=await Promise.allSettled([original(params),eproloShelves()]);
-    if(baseResult.status!=="fulfilled")throw baseResult.reason;
-    const base=baseResult.value||{};
-    const extra=eproloResult.status==="fulfilled"?eproloResult.value:null;
+    const base=await original(params)||{};
+    const integrated=base?.eprolo_canonical_shelves;
+    if(integrated?.source==="CANONICAL_PDP_READY"&&integrated?.purchasable===false&&integrated?.production_effect===false){
+      return base;
+    }
+    const extra=await eproloShelves();
     if(!extra?.shelves)return base;
     return {
       ...base,
