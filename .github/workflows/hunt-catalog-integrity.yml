@@ -20,6 +20,7 @@ on:
       - 'tests/storefront-provider-privacy.test.js'
       - 'tests/storefront-shell-readiness.test.js'
       - 'tests/canonical-taxonomy-ui.test.js'
+      - 'tests/canonical-taxonomy-contract.test.js'
       - '.github/workflows/hunt-catalog-integrity.yml'
   pull_request:
     paths:
@@ -40,6 +41,7 @@ on:
       - 'tests/storefront-provider-privacy.test.js'
       - 'tests/storefront-shell-readiness.test.js'
       - 'tests/canonical-taxonomy-ui.test.js'
+      - 'tests/canonical-taxonomy-contract.test.js'
       - '.github/workflows/hunt-catalog-integrity.yml'
 
 permissions:
@@ -56,4 +58,4 @@ jobs:
         with:
           node-version: "24"
       - run: node --check auth.js && node --check pwa.js && node --check service-worker.js && node --check storefront-privacy.js && node --check canonical-taxonomy.js
-      - run: node --test tests/eprolo-catalog-fill-integrity.test.js tests/eprolo-live-shelves-bridge.test.js tests/storefront-provider-privacy.test.js tests/storefront-shell-readiness.test.js tests/canonical-taxonomy-ui.test.js
+      - run: node --test tests/eprolo-catalog-fill-integrity.test.js tests/eprolo-live-shelves-bridge.test.js tests/storefront-provider-privacy.test.js tests/storefront-shell-readiness.test.js tests/canonical-taxonomy-ui.test.js tests/canonical-taxonomy-contract.test.js
