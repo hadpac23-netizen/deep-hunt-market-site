@@ -1,14 +1,14 @@
 {
   "schema_version": "HUNT_LAUNCH_CLOSURE_MATRIX_V1",
-  "observed_at": "2026-09-30T16:27:00Z",
+  "observed_at": "2026-09-30T17:08:00Z",
   "source_of_truth": {
     "status": "PARTIAL",
-    "evidence": "PR26 remains the single Draft launch candidate. Live hunt-storefront v137 imports the PR26 storefront source at commit ab804aa53cb56bf0fb2d4b1097a872dab15a32ce. Documentation/evidence HEAD is newer; no merge to main has occurred.",
+    "evidence": "PR26 remains the single Draft launch candidate. Live hunt-storefront v140 imports PR26 commit c91924cfce1e16b3944a40363223d378664e98a1. EPROLO canonical storefront shelves now use a service-role-only Supabase RPC instead of raw Postgres/Pooler access. No merge to main has occurred.",
     "blocks_real_money": true,
     "storefront_source_layout_fixed": true,
     "storefront_sidecars_separate": true,
     "runtime_git_comparison": {
-      "storefront_runtime": "PR26_SOURCE_IMPORT_AT_ab804aa",
+      "storefront_runtime": "PR26_SOURCE_IMPORT_AT_c91924cf",
       "order_orchestrator_runtime": "BEHIND_PR26_PRESUPPLIER_RECHECK",
       "runtime_reconciliation_complete": false
     },
@@ -57,6 +57,16 @@
       "pretax_profit_block": 0,
       "final_profit_verified": 0
     },
+    "eprolo_storefront_rpc_runtime": {
+      "runtime_version": 140,
+      "db_connection_mode": "supabase_rpc",
+      "canonical_count": 261,
+      "display_eligible_count": 250,
+      "quarantined_count": 11,
+      "final_profit_verified": 0,
+      "purchasable": false,
+      "production_effect": false
+    },
     "eprolo_destination_tax_blocker": "No verified destination-tax/DDP value exists for the 261-product IL canonical core. Do not infer customs duty or apply a flat percentage."
   },
   "pdp_readiness": {
@@ -72,10 +82,9 @@
     "runner_in_pr26": true,
     "schedule_plan_in_pr26": true,
     "live_cron_enabled": false,
-    "supabase_db_pooler_secret_present": false,
-    "transaction_pooler_auth_valid": false,
     "freshness_runner_secret_present": false,
-    "reason": "Live non-secret shape diagnostic on 2026-09-30 confirmed HUNT_DB_POOLER_URL is not present in the Edge runtime. hunt-storefront v137 therefore uses fallback_direct_or_session. Scheduled shadow writes remain unapproved.",
+    "storefront_pooler_dependency_removed": true,
+    "reason": "EPROLO canonical storefront shelves no longer depend on HUNT_DB_POOLER_URL or raw Postgres. Freshness automation remains separately disabled because the shadow scheduler/runner has not been approved and validated for launch.",
     "blocks_real_money": true,
     "initial_plan": {
       "enabled": false,
@@ -146,18 +155,15 @@
     }
   },
   "reliability": {
-    "status": "PARTIAL",
-    "storefront_runtime_version": 137,
+    "status": "PASS_STOREFRONT_RPC",
+    "storefront_runtime_version": 140,
     "storefront_latest_observed_http_status": 200,
-    "eprolo_connection_reuse_patch_in_pr26": true,
-    "transaction_pooler_required": true,
-    "transaction_pooler_secret_present": false,
-    "transaction_pooler_auth_valid": false,
-    "current_db_connection_mode": "fallback_direct_or_session",
-    "pooler_latest_state": "HUNT_DB_POOLER_URL_MISSING",
-    "historical_pooler_error_when_configured": "password authentication failed for user postgres",
-    "live_load_retest_required_after_pooler_fix": true,
-    "blocks_real_money": true,
+    "eprolo_storefront_raw_postgres_required": false,
+    "eprolo_storefront_transaction_pooler_required": false,
+    "current_db_connection_mode": "supabase_rpc",
+    "legacy_custom_pooler_on_critical_path": false,
+    "pooler_auth_failures_observed_after_v140": 0,
+    "blocks_real_money": false,
     "current_live_canonical_snapshot": {
       "canonical_count": 261,
       "display_eligible_count": 250,
@@ -166,7 +172,21 @@
       "purchasable": false,
       "production_effect": false
     },
-    "current_live_baseline": {
+    "post_rpc_live_baseline": {
+      "total_requests": 30,
+      "ok_200_product": 30,
+      "concurrency": 3,
+      "timeouts": 0,
+      "errors": 0,
+      "edge_log_latency_sample": {
+        "ingested_at_measurement": 19,
+        "p50_ms": 1204,
+        "p95_ms": 5944,
+        "max_ms": 5944,
+        "note": "Latency quantiles are provisional because only 19 of 30 edge log rows had ingested at measurement time; HTTP correctness sample is complete at 30/30."
+      }
+    },
+    "previous_live_baseline": {
       "total_requests": 30,
       "ok_200_product": 30,
       "p95_ms": 3762,
@@ -174,9 +194,7 @@
       "concurrency": 3,
       "timeouts": 0
     },
-    "current_live_baseline_passed": true,
-    "pr26_pooler_patch_validated_in_runtime": false,
-    "runtime_validation_still_required": true,
+    "runtime_validation_still_required": false,
     "github_actions": {
       "immutable_action_pins": true,
       "workflow_node_version": "24"
@@ -191,7 +209,11 @@
     "private_shadow_pricing_explicit_deny_policy": true,
     "hunt_public_tables_without_rls": 0,
     "hunt_policies_using_user_metadata_for_authorization": 0,
-    "eprolo_security_definer_client_execute": false,
+    "eprolo_rpc_security_definer": true,
+    "eprolo_rpc_search_path_locked": true,
+    "eprolo_rpc_anon_execute": false,
+    "eprolo_rpc_authenticated_execute": false,
+    "eprolo_rpc_service_role_execute": true,
     "security_advisor_info_count": 0,
     "security_advisor_warn_count": 1,
     "leaked_password_protection": false,
@@ -200,7 +222,8 @@
     "applied_migrations": [
       "20260930160010_lock_profile_privileged_insert_fields",
       "20260930160053_deny_client_access_shadow_pricing",
-      "20260930160138_harden_profile_update_policies"
+      "20260930160138_harden_profile_update_policies",
+      "20260930165643_hunt_eprolo_canonical_shelves_rpc_v1"
     ]
   },
   "legal": {
@@ -228,9 +251,9 @@
     "pr26_draft": true,
     "pr26_merged": false,
     "ci_catalog_integrity": "PASS",
-    "ci_catalog_integrity_run": 205,
+    "ci_catalog_integrity_run": 211,
     "ci_checkout_regression": "PASS",
-    "ci_checkout_regression_run": 230,
+    "ci_checkout_regression_run": 234,
     "coderabbit_status": "success",
     "branch_protection_verified": false,
     "rulesets_count": 0,
@@ -259,7 +282,7 @@
   },
   "remaining_external_or_runtime_blockers": [
     "Resolve EPROLO destination-tax/DDP truth for the 261-product IL canonical core; Final Profit Verified remains 0.",
-    "Configure HUNT_DB_POOLER_URL with a valid transaction-pooler connection string and database password, then re-run storefront load validation with db_connection_mode=transaction_pooler.",
+    "Complete and validate the separately disabled stock/price/shipping freshness automation before real-money launch; the storefront itself no longer depends on a Pooler password.",
     "After explicit Owner Gate, deploy PR26 order-orchestrator hardening and complete CJ authenticated Admin sandbox E2E through supplier order, tracking and shipped evidence.",
     "Obtain the official EPROLO Create Order / Order Query / Tracking or webhook contract from EPROLO Account Support; do not guess endpoints.",
     "Obtain/configure PayPlus sandbox API key, secret and payment page UID, then prove signed callback/status/idempotent paid transition while Payment Live remains OFF.",
