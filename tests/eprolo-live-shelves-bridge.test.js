@@ -35,10 +35,10 @@ test("legacy fallback endpoint requires the same public storefront key contract"
   assert.match(edge,/if\(!authorized\(req\)\)return new Response\(JSON\.stringify\(\{error:"unauthorized"\}\),\{status:401,headers\}\)/);
 });
 
-test("storefront integrates canonical EPROLO shelves through its existing DB client",()=>{
+test("storefront integrates canonical EPROLO shelves through its existing DB client without outranking live verified sources",()=>{
   assert.match(runtime,/import \{ eproloCanonicalMarketShelves \} from "\.\/eprolo-shelves\.ts"/);
   assert.match(runtime,/eproloCanonicalMarketShelves\(eproloSqlClient\(\), eproloDbConnectionMode\(\)\)/);
-  assert.match(runtime,/mergeMarketShelves\(priorityCjShelves, eproloCanonical\.shelves/);
+  assert.match(runtime,/mergeMarketShelves\(priorityCjShelves, cjShelves, persistedShelves, eproloCanonical\.shelves/);
   assert.match(runtime,/eprolo_canonical_shelves: eproloCanonical\.meta/);
 });
 
