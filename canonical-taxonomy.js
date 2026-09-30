@@ -73,7 +73,11 @@
 
   const page = new URL(location.href);
   const requested = String(page.searchParams.get("c") || "women").toLowerCase();
-  const parent = H.categoryDefs[requested]?.parent || requested;
+  const requestedSub = String(page.searchParams.get("sub") || "").toLowerCase();
+  const requestedDef = H.categoryDefs[requested];
+  const requestedSubDef = H.categoryDefs[requestedSub];
+  const parent = requestedSubDef?.parent === requested ? requested : (requestedDef?.parent || requested);
+
   const groupFor = {
     women: ["women-dresses","women-tops","women-bottoms","women-jumpsuits","women-loungewear","women-nightwear","women-occasionwear","women-tailoring","women-maternity","women-underwear","hoodies","jackets","knitwear","swimwear","shoes","accessories"],
     men: ["men-tops","men-shirts","men-bottoms","men-jeans","men-shorts","men-loungewear","men-nightwear","men-tailoring","men-swimwear","men-underwear","hoodies","jackets","knitwear","shoes","accessories"],
@@ -93,11 +97,27 @@
   H.categoryUrl = slug => {
     const entry = H.categoryDefs[slug];
     if (!entry) return originalCategoryUrl(slug);
-    if (entry.canonical && ["women","men"].includes(entry.parent)) {
+    if (entry.canonical && entry.parent && entry.parent !== slug) {
       return `category.html?c=${encodeURIComponent(entry.parent)}&sub=${encodeURIComponent(slug)}`;
     }
     return `category.html?c=${encodeURIComponent(slug)}`;
   };
+
+  // category.js natively understands nested exact shelves only for women/men.
+  // For other departments, temporarily normalize the runtime URL to the exact shelf
+  // before category.js reads location.search, then restore the customer-facing hierarchy.
+  if (requestedSub && requestedSubDef?.canonical && requestedSubDef.parent === requested && !["women","men"].includes(requested)) {
+    const runtimeUrl = new URL(page.href);
+    runtimeUrl.searchParams.set("c", requestedSub);
+    runtimeUrl.searchParams.delete("sub");
+    history.replaceState(history.state, "", runtimeUrl.href);
+    setTimeout(() => history.replaceState(history.state, "", page.href), 0);
+  } else if (requestedDef?.canonical && requestedDef.parent && requestedDef.parent !== requested) {
+    const publicUrl = new URL(page.href);
+    publicUrl.searchParams.set("c", requestedDef.parent);
+    publicUrl.searchParams.set("sub", requested);
+    setTimeout(() => history.replaceState(history.state, "", publicUrl.href), 0);
+  }
 
   const originalStorefront = H.storefront.bind(H);
   H.storefront = async params => {
