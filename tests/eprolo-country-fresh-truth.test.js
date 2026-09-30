@@ -23,7 +23,8 @@ test("EPROLO fresh truth fails closed on API, stock, cost and shipping failures"
 
 
 test("EPROLO country truth reuses DB client and prefers transaction pooler",()=>{
-  assert.match(src,/SUPABASE_DB_POOLER_URL/);
+  assert.match(src,/HUNT_DB_POOLER_URL/);
+  assert.doesNotMatch(src,/SUPABASE_DB_POOLER_URL/);
   assert.match(src,/let sqlClientInstance/);
   assert.match(src,/if\(sqlClientInstance\)return sqlClientInstance/);
   assert.match(src,/connect_timeout:10/);
