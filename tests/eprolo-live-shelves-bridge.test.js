@@ -84,6 +84,24 @@ test("obvious cross-shelf and IP mismatches are quarantined before display",()=>
   }
 });
 
+test("verified EPROLO aliases feed the matching canonical shelves without broad unsafe remaps",()=>{
+  assert.match(moduleSrc,/"women-evening":\["dresses","women-occasionwear"\]/);
+  assert.match(moduleSrc,/"women-suits":\["suits","women-tailoring"\]/);
+  assert.match(moduleSrc,/"women-sleepwear":\["sleepwear","women-nightwear"\]/);
+  assert.match(moduleSrc,/"men-suits":\["suits","men-tailoring"\]/);
+  assert.match(moduleSrc,/"keychains":\["wallets-small-accessories","accessories"\]/);
+  assert.match(moduleSrc,/"phone-cases":\["phonecases","phoneaccessories","tech","tech-accessories"\]/);
+  assert.match(moduleSrc,/"chargers-cables":\["phoneaccessories","tech","tech-accessories"\]/);
+  assert.match(moduleSrc,/"computer-accessories":\["tech","tech-accessories"\]/);
+  assert.match(moduleSrc,/"activewear":\["sports","sports-outdoor"\]/);
+  assert.match(moduleSrc,/"active-bottoms":\["activewear","sports","sports-outdoor"\]/);
+  assert.match(moduleSrc,/"fitness-accessories":\["sports","sports-outdoor"\]/);
+  assert.match(moduleSrc,/"curtains":\["curtains-blinds","home"\]/);
+  assert.match(moduleSrc,/"rugs":\["home","rugs-runners"\]/);
+  assert.match(moduleSrc,/"baby-clothing":\["kids"\]/);
+  assert.match(moduleSrc,/"stands-holders":\["phoneaccessories","tech"\]/);
+});
+
 test("integrated module uses service-role RPC instead of opening another DB connection",()=>{
   assert.match(moduleSrc,/hunt_eprolo_canonical_shelves_rows/);
   assert.match(moduleSrc,/SUPABASE_SERVICE_ROLE_KEY/);
