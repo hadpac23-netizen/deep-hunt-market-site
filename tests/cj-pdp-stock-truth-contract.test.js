@@ -2,7 +2,7 @@ const test=require("node:test");
 const assert=require("node:assert/strict");
 const fs=require("node:fs");
 const path=require("node:path");
-const src=fs.readFileSync(path.resolve(__dirname,"../supabase/functions/hunt-storefront/index.ts"),"utf8");
+const src=fs.readFileSync(path.resolve(__dirname,"../supabase/functions/hunt-storefront/runtime.ts"),"utf8");
 
 test("CJ PDP distinguishes missing inventory evidence from zero stock",()=>{
   assert.match(src,/const hasInventoryEvidence = inventories\.length > 0/);
