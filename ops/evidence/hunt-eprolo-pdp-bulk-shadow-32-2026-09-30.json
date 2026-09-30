@@ -1,0 +1,64 @@
+{
+  "schema_version": "HUNT_EPROLO_PDP_BULK_SHADOW_V1",
+  "observed_at": "2026-09-30T20:20:25Z",
+  "provider": "EPROLO",
+  "destination": "IL",
+  "mode": "SUPPLIER_DIRECT_SHADOW_EVIDENCE",
+  "scope": ["baby", "bags", "hats", "keychains"],
+  "production_effect": false,
+  "sellable": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "database_activation_writes": 0,
+  "source_payload_updates": 0,
+  "private_pdp_qa_rows_written": 0,
+  "summary": {
+    "targets": 32,
+    "supplier_http_200": 32,
+    "exact_variant_found": 32,
+    "positive_inventory": 32,
+    "positive_supplier_cost": 32,
+    "shipping_to_il_verified": 32,
+    "pretax_profit_pass": 12,
+    "pretax_profit_review": 20,
+    "pretax_profit_block": 0,
+    "destination_tax_verified": 0,
+    "final_profit_verified": 0,
+    "existing_pdp_detail_pass": 7,
+    "existing_private_pdp_qa_pass": 0,
+    "canonical_readiness_promotions": 0
+  },
+  "safety_gate": {
+    "status": "HOLD",
+    "reason": "Seven audited rows already have PDP detail PASS. Writing private PDP QA PASS for those rows could satisfy the live canonical RPC readiness intersection and change storefront display eligibility. No private QA rows were written without Owner Gate.",
+    "owner_gate_required_before_live_readiness_write": true
+  },
+  "economics": {
+    "profit_basis": "PRE_TAX_SHADOW",
+    "tax_ddp_status": "DESTINATION_TAX_NOT_VERIFIED",
+    "note": "Pre-tax PASS/REVIEW is evidence only. It does not change Final Profit Verified and does not make any item purchasable."
+  },
+  "pretax_pass_item_ids": [
+    "19075077", "31453966", "19202437", "19255536", "19277091", "19277162",
+    "19075100", "19075065", "19075119", "19075040", "19034207", "19277158"
+  ],
+  "pretax_review_item_ids": [
+    "18650988", "18646578", "18646493", "31285162", "29357074", "31025681",
+    "18964997", "19187254", "19202435", "19277028",
+    "31536216", "31488006", "31559125", "21271557", "19202460", "19202461",
+    "22123305", "19277092", "19285494", "19277108"
+  ],
+  "existing_detail_pass_item_ids": [
+    "18646493", "18646578", "18650988", "18964997", "19187254", "19255536", "19277028"
+  ],
+  "request_ids": {
+    "batch_1": [18006,18007,18008,18009,18010,18011,18012,18013,18014,18015,18016,18017,18018,18019,18020,18021],
+    "batch_2": [18022,18023,18024,18025,18026,18027,18028,18029,18030,18031,18032,18033,18034,18035,18036,18037]
+  },
+  "do_not_claim": [
+    "Do not claim these 32 are Canonical PDP Ready.",
+    "Do not claim destination tax or DDP is verified.",
+    "Do not claim Final Profit Verified.",
+    "Do not write private PDP QA PASS or source_payload PDP readiness fields without checking live eligibility impact and Owner Gate."
+  ]
+}
