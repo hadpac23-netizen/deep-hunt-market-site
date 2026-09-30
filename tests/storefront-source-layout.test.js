@@ -18,9 +18,9 @@ test("storefront source keeps JSON sidecars separate",()=>{
 });
 
 test("storefront keeps launch reliability patches after source split",()=>{
-  assert.match(index,/HUNT_DB_POOLER_URL/);
-  assert.match(index,/Deno\.env\.set\("SUPABASE_DB_POOLER_URL", huntDbPoolerUrl\)/);
-  assert.ok(index.indexOf("Deno.env.set") < index.indexOf('await import("./runtime.ts")'));
+  assert.doesNotMatch(index,/Deno\.env\.set/);
+  assert.match(index,/await import\("\.\/runtime\.ts"\)/);
+  assert.match(runtime,/HUNT_DB_POOLER_URL/);
   assert.match(runtime,/SUPABASE_DB_POOLER_URL/);
   assert.match(runtime,/EXACT_VARIANT_QUOTE_REQUIRED/);
   assert.doesNotMatch(runtime,/await sql\.end\(\{timeout:1\}\)/);
