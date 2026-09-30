@@ -1,0 +1,64 @@
+{
+  "schema_version": "HUNT_EPROLO_PDP_BULK_SHADOW_V9",
+  "observed_at": "2026-09-30T20:55:00Z",
+  "provider": "EPROLO",
+  "destination": "IL",
+  "mode": "SUPPLIER_DIRECT_SHADOW_EVIDENCE",
+  "production_effect": false,
+  "sellable": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "database_activation_writes": 0,
+  "source_payload_updates": 0,
+  "private_pdp_qa_rows_written": 0,
+  "summary": {
+    "targets": 260,
+    "supplier_http_200": 260,
+    "exact_variant_found": 260,
+    "positive_inventory": 260,
+    "positive_supplier_cost": 260,
+    "shipping_to_il_verified": 260,
+    "pretax_profit_pass": 139,
+    "pretax_profit_review": 121,
+    "pretax_profit_block": 0,
+    "destination_tax_verified": 0,
+    "final_profit_verified": 0,
+    "canonical_readiness_promotions": 0
+  },
+  "latest_batch": {
+    "targets": 4,
+    "pretax_pass": 3,
+    "pretax_review": 1,
+    "request_id_range": [18262,18265],
+    "shelves": ["jewelry","cameras"]
+  },
+  "shelf_depth_status": {
+    "covered_shelves": 53,
+    "shelves_ge_5": 38,
+    "thin_shelves_2_to_4": [
+      {"department":"tech","shelf":"cameras","verified_items":4,"status":"SOURCING_GAP"},
+      {"department":"women","shelf":"women-tops","verified_items":2,"status":"SOURCING_GAP"}
+    ],
+    "thin_shelves_reason": {
+      "cameras": "Only one additional clean EPROLO camera candidate was available in the current strict pool; it was verified, bringing depth from 3 to 4.",
+      "women-tops": "Remaining EPROLO candidates are Men+Women/Unisex/Couple titles; held to prevent demographic cross-mix."
+    }
+  },
+  "red_team": {
+    "jewelry": "Three true jewelry ring items accepted; gift box and hair accessories remain excluded from jewelry fill.",
+    "women_tops": "No forced promotion of unisex/couple titles into a women-only shelf.",
+    "cameras": "No fabricated fifth product; current strict pool supports only four verified products."
+  },
+  "safety_gate": {
+    "status": "HOLD",
+    "owner_gate_required_before_live_readiness_write": true,
+    "reason": "Shadow verification only. No live readiness, product visibility, sellable, payment, or supplier-order changes were made."
+  },
+  "tax_ddp_status": "DESTINATION_TAX_NOT_VERIFIED",
+  "do_not_claim": [
+    "Do not claim the 260 products are Canonical PDP Ready.",
+    "Do not claim destination tax or DDP is verified.",
+    "Do not claim Final Profit Verified.",
+    "Do not claim Cameras or Women Tops have 5+ verified products."
+  ]
+}
