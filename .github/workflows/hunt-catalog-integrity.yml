@@ -10,11 +10,14 @@ on:
       - 'eprolo-shelves-bridge.js'
       - 'category.html'
       - 'product.html'
+      - 'auth.js'
       - 'pwa.js'
+      - 'service-worker.js'
       - 'storefront-privacy.js'
       - 'tests/eprolo-catalog-fill-integrity.test.js'
       - 'tests/eprolo-live-shelves-bridge.test.js'
       - 'tests/storefront-provider-privacy.test.js'
+      - 'tests/storefront-shell-readiness.test.js'
       - '.github/workflows/hunt-catalog-integrity.yml'
   pull_request:
     paths:
@@ -25,11 +28,14 @@ on:
       - 'eprolo-shelves-bridge.js'
       - 'category.html'
       - 'product.html'
+      - 'auth.js'
       - 'pwa.js'
+      - 'service-worker.js'
       - 'storefront-privacy.js'
       - 'tests/eprolo-catalog-fill-integrity.test.js'
       - 'tests/eprolo-live-shelves-bridge.test.js'
       - 'tests/storefront-provider-privacy.test.js'
+      - 'tests/storefront-shell-readiness.test.js'
       - '.github/workflows/hunt-catalog-integrity.yml'
 
 permissions:
@@ -45,4 +51,5 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: "24"
-      - run: node --test tests/eprolo-catalog-fill-integrity.test.js tests/eprolo-live-shelves-bridge.test.js tests/storefront-provider-privacy.test.js
+      - run: node --check auth.js && node --check pwa.js && node --check service-worker.js && node --check storefront-privacy.js
+      - run: node --test tests/eprolo-catalog-fill-integrity.test.js tests/eprolo-live-shelves-bridge.test.js tests/storefront-provider-privacy.test.js tests/storefront-shell-readiness.test.js
