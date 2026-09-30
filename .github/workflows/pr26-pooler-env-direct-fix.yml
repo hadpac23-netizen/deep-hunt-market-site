@@ -1,0 +1,78 @@
+name: PR26 Pooler env direct fix
+
+on:
+  push:
+    branches:
+      - launch/hunt-candidate-2026-09-29-v1
+    paths:
+      - .github/workflows/pr26-pooler-env-direct-fix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: launch/hunt-candidate-2026-09-29-v1
+          fetch-depth: 0
+      - name: Patch pooler env handling
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          runtime = Path('supabase/functions/hunt-storefront/runtime.ts')
+          text = runtime.read_text()
+          old_url = '''function eproloDbUrl(): string {
+            return env("SUPABASE_DB_POOLER_URL") || env("SUPABASE_DB_URL");
+          }'''
+          new_url = '''function eproloDbUrl(): string {
+            return env("HUNT_DB_POOLER_URL") || env("SUPABASE_DB_POOLER_URL") || env("SUPABASE_DB_URL");
+          }'''
+          old_mode = '''function eproloDbConnectionMode(): "transaction_pooler" | "fallback_direct_or_session" | "missing" {
+            if (env("SUPABASE_DB_POOLER_URL")) return "transaction_pooler";
+            if (env("SUPABASE_DB_URL")) return "fallback_direct_or_session";
+            return "missing";
+          }'''
+          new_mode = '''function eproloDbConnectionMode(): "transaction_pooler" | "fallback_direct_or_session" | "missing" {
+            if (env("HUNT_DB_POOLER_URL") || env("SUPABASE_DB_POOLER_URL")) return "transaction_pooler";
+            if (env("SUPABASE_DB_URL")) return "fallback_direct_or_session";
+            return "missing";
+          }'''
+          if text.count(old_url) != 1 or text.count(old_mode) != 1:
+              raise SystemExit('runtime anchors did not match exactly once')
+          text = text.replace(old_url, new_url).replace(old_mode, new_mode)
+          runtime.write_text(text)
+
+          index = Path('supabase/functions/hunt-storefront/index.ts')
+          idx = index.read_text()
+          old_idx = '''const huntDbPoolerUrl = (Deno.env.get("HUNT_DB_POOLER_URL") || "").trim();
+
+// Supabase reserves the SUPABASE_ prefix for user-managed Edge Function secrets.
+// Map the allowed HUNT_DB_POOLER_URL secret to the legacy runtime variable before
+// loading the existing storefront implementation. This remains branch-only until
+// an explicit Owner Gate permits deployment.
+if (huntDbPoolerUrl && !(Deno.env.get("SUPABASE_DB_POOLER_URL") || "").trim()) {
+  Deno.env.set("SUPABASE_DB_POOLER_URL", huntDbPoolerUrl);
+}
+
+await import("./runtime.ts");
+'''
+          new_idx = '''// Runtime reads HUNT_DB_POOLER_URL directly. Supabase Edge Runtime does not support Deno.env.set().
+await import("./runtime.ts");
+'''
+          if idx != old_idx:
+              raise SystemExit('index.ts did not match expected PR26 source exactly')
+          index.write_text(new_idx)
+          PY
+
+          git diff --check
+          git diff -- supabase/functions/hunt-storefront/index.ts supabase/functions/hunt-storefront/runtime.ts
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add supabase/functions/hunt-storefront/index.ts supabase/functions/hunt-storefront/runtime.ts
+          git commit -m "fix(hunt): read pooler secret directly in edge runtime"
+          git push origin HEAD:launch/hunt-candidate-2026-09-29-v1
