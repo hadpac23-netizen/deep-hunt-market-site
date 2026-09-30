@@ -1,6 +1,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import postgres from "npm:postgres@3.4.5";
 
+const PUBLIC_KEY="sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
 const JSON_HEADERS={"content-type":"application/json; charset=utf-8","cache-control":"no-store"};
 const ALLOWED_ORIGINS=new Set([
   "https://hadpac23-netizen.github.io",
@@ -22,6 +23,7 @@ function cors(req:Request){
   };
 }
 
+function authorized(req:Request){return (req.headers.get("apikey")||"")===PUBLIC_KEY;}
 function clean(v:unknown){return typeof v==="string"?v.trim():"";}
 
 let sqlClientInstance:ReturnType<typeof postgres>|null=null;
@@ -86,6 +88,7 @@ Deno.serve(async(req:Request)=>{
   const headers=cors(req);
   if(req.method==="OPTIONS")return new Response(null,{status:204,headers});
   if(req.method!=="GET")return new Response(JSON.stringify({error:"GET required"}),{status:405,headers});
+  if(!authorized(req))return new Response(JSON.stringify({error:"unauthorized"}),{status:401,headers});
 
   const sql=sqlClient();
   if(!sql)return new Response(JSON.stringify({error:"server config"}),{status:503,headers});
