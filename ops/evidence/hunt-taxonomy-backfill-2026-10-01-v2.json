@@ -7,10 +7,10 @@
   "supplier_live_order": false,
   "catalog_truth": {
     "total_candidates": 26375,
-    "taxonomy_mapped": 21921,
-    "raw_unmapped": 4454,
-    "base_valid_noncanonical": 4221,
-    "true_semantic_qa": 233,
+    "taxonomy_mapped": 21946,
+    "raw_unmapped": 4429,
+    "base_valid_noncanonical": 4209,
+    "true_semantic_qa": 220,
     "sellable_true": 0,
     "production_effect_true": 0,
     "safety_blocked_total": 162,
@@ -27,16 +27,19 @@
     "fashion_pattern_manual_title_qa_v1": 12,
     "singleton_manual_title_qa_v2": 12,
     "beauty_aroma_safe_split_v1": 19,
+    "semantic_title_qa_v4": 12,
+    "blocked_false_positive_taxonomy_v1": 5,
+    "semantic_title_qa_v5": 8,
     "shadow_sellable_residue_reset": 1
   },
   "safety_normalization": {
     "safety_block_updates": 3,
     "regulated_review_updates": 49,
-    "policy": "Restricted, dangerous, medical, health, or regulated-looking rows remain non-sellable and do not auto-map into storefront shelves."
+    "policy": "Restricted, dangerous, medical, health, surveillance, weapon-adjacent, or regulated-looking rows remain non-sellable and do not auto-release into storefront shelves."
   },
   "intentional_holds": {
     "previous_no_guess_holds": 3,
-    "remaining_true_semantic_qa": 233,
+    "remaining_true_semantic_qa": 220,
     "policy": "HOLD_NO_GUESS"
   },
   "safety_controls_verified": {
@@ -47,8 +50,9 @@
   "notes": [
     "34.9K product observations are observations, not unique products.",
     "Current shelf candidate pool is 26,375 rows.",
-    "4,221 raw-unmapped rows already use valid HUNT base-taxonomy shelves and should not be forced into canonical-50.",
-    "Only 233 rows remain for true semantic/title QA or explicit alias resolution.",
+    "4,209 raw-unmapped rows already use valid HUNT base-taxonomy shelves and should not be forced into canonical-50.",
+    "Only 220 rows remain for true semantic/title QA or explicit alias resolution under the current base-taxonomy classifier.",
+    "Five harmless title false-positives were taxonomy-mapped while retaining BLOCKED_CATEGORY_REVIEW status; no safety release occurred.",
     "Beauty/aroma rows with therapeutic, growth, sleep, mosquito, body-shaping, or other health-style claims remain HOLD/REVIEW.",
     "No readiness score was increased by these taxonomy-only repairs."
   ]
