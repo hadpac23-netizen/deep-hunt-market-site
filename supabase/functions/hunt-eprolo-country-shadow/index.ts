@@ -13,10 +13,10 @@ const num=(v:any)=>{const n=Number(v);return Number.isFinite(n)?n:null};
 
 let sqlClientInstance:ReturnType<typeof postgres>|null=null;
 function dbUrl(){
-  return clean(Deno.env.get("SUPABASE_DB_POOLER_URL")||Deno.env.get("SUPABASE_DB_URL")||"");
+  return clean(Deno.env.get("HUNT_DB_POOLER_URL")||Deno.env.get("SUPABASE_DB_URL")||"");
 }
 function dbConnectionMode(){
-  if(clean(Deno.env.get("SUPABASE_DB_POOLER_URL")||""))return "transaction_pooler";
+  if(clean(Deno.env.get("HUNT_DB_POOLER_URL")||""))return "transaction_pooler";
   if(clean(Deno.env.get("SUPABASE_DB_URL")||""))return "fallback_direct_or_session";
   return "missing";
 }
