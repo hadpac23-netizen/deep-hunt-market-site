@@ -1,0 +1,72 @@
+{
+  "schema_version": "HUNT_EPROLO_PDP_BULK_SHADOW_V2",
+  "observed_at": "2026-09-30T20:22:29Z",
+  "provider": "EPROLO",
+  "destination": "IL",
+  "mode": "SUPPLIER_DIRECT_SHADOW_EVIDENCE",
+  "production_effect": false,
+  "sellable": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "database_activation_writes": 0,
+  "source_payload_updates": 0,
+  "private_pdp_qa_rows_written": 0,
+  "summary": {
+    "targets": 48,
+    "supplier_http_200": 48,
+    "exact_variant_found": 48,
+    "positive_inventory": 48,
+    "positive_supplier_cost": 48,
+    "shipping_to_il_verified": 48,
+    "pretax_profit_pass": 23,
+    "pretax_profit_review": 25,
+    "pretax_profit_block": 0,
+    "destination_tax_verified": 0,
+    "final_profit_verified": 0,
+    "existing_pdp_detail_pass": 23,
+    "canonical_readiness_promotions": 0
+  },
+  "batches": [
+    {
+      "name": "BATCH_1_2",
+      "targets": 32,
+      "shelves": ["baby", "bags", "hats", "keychains"],
+      "pretax_pass": 12,
+      "pretax_review": 20,
+      "existing_pdp_detail_pass": 7,
+      "request_id_range": [18006, 18037]
+    },
+    {
+      "name": "BATCH_3_NEAR_READY",
+      "targets": 16,
+      "shelves": ["baby-clothing", "hair-accessories", "men-bottoms", "women-shoes"],
+      "pretax_pass": 11,
+      "pretax_review": 5,
+      "existing_pdp_detail_pass": 16,
+      "request_id_range": [18038, 18053]
+    }
+  ],
+  "batch_3_pretax_pass_item_ids": [
+    "32184118", "11595886", "11595698", "31387083", "28549589", "32183970", "29617448",
+    "23148826", "23147433", "31937951", "32070291"
+  ],
+  "batch_3_pretax_review_item_ids": [
+    "19427734", "19427731", "31762712", "11596145", "1070989"
+  ],
+  "red_team_rejections_before_batch_3": [
+    {"item_id":"10710026","reason":"MATERNITY_SHIRT_MISCLASSIFIED_AS_BABY_CLOTHING"},
+    {"item_id":"555663","reason":"NAIL_CARE_SET_NOT_BABY_CLOTHING"}
+  ],
+  "safety_gate": {
+    "status": "HOLD",
+    "reason": "Twenty-three audited rows already have PDP detail PASS. Writing private PDP QA PASS could satisfy the live canonical readiness intersection and alter storefront display eligibility. No readiness DB writes were made.",
+    "owner_gate_required_before_live_readiness_write": true
+  },
+  "tax_ddp_status": "DESTINATION_TAX_NOT_VERIFIED",
+  "do_not_claim": [
+    "Do not claim the 48 products are Canonical PDP Ready.",
+    "Do not claim destination tax or DDP is verified.",
+    "Do not claim Final Profit Verified.",
+    "Do not make private PDP QA or source-payload readiness writes without evaluating live RPC impact and Owner Gate."
+  ]
+}
