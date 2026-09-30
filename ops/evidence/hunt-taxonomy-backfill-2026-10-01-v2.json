@@ -7,14 +7,14 @@
   "supplier_live_order": false,
   "catalog_truth": {
     "total_candidates": 26375,
-    "taxonomy_mapped": 21946,
-    "raw_unmapped": 4429,
-    "base_valid_noncanonical": 4209,
-    "true_semantic_qa": 220,
+    "taxonomy_mapped": 21973,
+    "raw_unmapped": 4402,
+    "base_valid_noncanonical": 4210,
+    "true_semantic_qa": 192,
+    "qa_hold_review": 192,
+    "qa_needing_active_decision": 0,
     "sellable_true": 0,
-    "production_effect_true": 0,
-    "safety_blocked_total": 162,
-    "regulated_review_total": 50
+    "production_effect_true": 0
   },
   "repairs": {
     "taxonomy_hold_resolution_v1": 28,
@@ -30,17 +30,25 @@
     "semantic_title_qa_v4": 12,
     "blocked_false_positive_taxonomy_v1": 5,
     "semantic_title_qa_v5": 8,
+    "semantic_title_qa_v6": 9,
+    "semantic_title_qa_v7": 4,
+    "semantic_title_qa_v8": 5,
+    "semantic_title_qa_v9": 9,
     "shadow_sellable_residue_reset": 1
   },
-  "safety_normalization": {
-    "safety_block_updates": 3,
-    "regulated_review_updates": 49,
-    "policy": "Restricted, dangerous, medical, health, surveillance, weapon-adjacent, or regulated-looking rows remain non-sellable and do not auto-release into storefront shelves."
-  },
-  "intentional_holds": {
-    "previous_no_guess_holds": 3,
-    "remaining_true_semantic_qa": 220,
+  "taxonomy_triage": {
+    "newly_triaged_rows": 49,
+    "new_blocked_rows": 2,
+    "new_review_rows": 9,
+    "new_hold_rows": 38,
+    "remaining_unresolved_rows": 192,
+    "remaining_active_decisions": 0,
     "policy": "HOLD_NO_GUESS"
+  },
+  "global_status_snapshot": {
+    "blocked_category_review": 450,
+    "category_review_required": 162,
+    "hold_market_readiness": 584
   },
   "safety_controls_verified": {
     "hunt_payment_live": false,
@@ -50,10 +58,9 @@
   "notes": [
     "34.9K product observations are observations, not unique products.",
     "Current shelf candidate pool is 26,375 rows.",
-    "4,209 raw-unmapped rows already use valid HUNT base-taxonomy shelves and should not be forced into canonical-50.",
-    "Only 220 rows remain for true semantic/title QA or explicit alias resolution under the current base-taxonomy classifier.",
-    "Five harmless title false-positives were taxonomy-mapped while retaining BLOCKED_CATEGORY_REVIEW status; no safety release occurred.",
-    "Beauty/aroma rows with therapeutic, growth, sleep, mosquito, body-shaping, or other health-style claims remain HOLD/REVIEW.",
-    "No readiness score was increased by these taxonomy-only repairs."
+    "4,210 raw-unmapped rows already use valid HUNT base-taxonomy shelves and should not be forced into canonical-50.",
+    "All 192 remaining true semantic QA rows are explicitly HOLD, REVIEW, or BLOCK; zero unresolved rows remain in an active undecided state.",
+    "Restricted, dangerous, medical, health, surveillance, weapon-adjacent, chemical/tool-heavy, or otherwise ambiguous rows are not auto-mapped into storefront shelves.",
+    "No readiness score, sellable flag, production effect, payment control, or supplier live-order control was enabled by these taxonomy repairs."
   ]
 }
