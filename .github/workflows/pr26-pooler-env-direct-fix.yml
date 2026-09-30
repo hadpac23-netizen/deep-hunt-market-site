@@ -24,49 +24,23 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
 
-          runtime = Path('supabase/functions/hunt-storefront/runtime.ts')
+          runtime = Path("supabase/functions/hunt-storefront/runtime.ts")
           text = runtime.read_text()
-          old_url = '''function eproloDbUrl(): string {
-            return env("SUPABASE_DB_POOLER_URL") || env("SUPABASE_DB_URL");
-          }'''
-          new_url = '''function eproloDbUrl(): string {
-            return env("HUNT_DB_POOLER_URL") || env("SUPABASE_DB_POOLER_URL") || env("SUPABASE_DB_URL");
-          }'''
-          old_mode = '''function eproloDbConnectionMode(): "transaction_pooler" | "fallback_direct_or_session" | "missing" {
-            if (env("SUPABASE_DB_POOLER_URL")) return "transaction_pooler";
-            if (env("SUPABASE_DB_URL")) return "fallback_direct_or_session";
-            return "missing";
-          }'''
-          new_mode = '''function eproloDbConnectionMode(): "transaction_pooler" | "fallback_direct_or_session" | "missing" {
-            if (env("HUNT_DB_POOLER_URL") || env("SUPABASE_DB_POOLER_URL")) return "transaction_pooler";
-            if (env("SUPABASE_DB_URL")) return "fallback_direct_or_session";
-            return "missing";
-          }'''
+          old_url = 'return env("SUPABASE_DB_POOLER_URL") || env("SUPABASE_DB_URL");'
+          new_url = 'return env("HUNT_DB_POOLER_URL") || env("SUPABASE_DB_POOLER_URL") || env("SUPABASE_DB_URL");'
+          old_mode = 'if (env("SUPABASE_DB_POOLER_URL")) return "transaction_pooler";'
+          new_mode = 'if (env("HUNT_DB_POOLER_URL") || env("SUPABASE_DB_POOLER_URL")) return "transaction_pooler";'
           if text.count(old_url) != 1 or text.count(old_mode) != 1:
-              raise SystemExit('runtime anchors did not match exactly once')
-          text = text.replace(old_url, new_url).replace(old_mode, new_mode)
-          runtime.write_text(text)
+              raise SystemExit("runtime anchors did not match exactly once")
+          runtime.write_text(text.replace(old_url, new_url).replace(old_mode, new_mode))
 
-          index = Path('supabase/functions/hunt-storefront/index.ts')
+          index = Path("supabase/functions/hunt-storefront/index.ts")
           idx = index.read_text()
-          old_idx = '''const huntDbPoolerUrl = (Deno.env.get("HUNT_DB_POOLER_URL") || "").trim();
-
-// Supabase reserves the SUPABASE_ prefix for user-managed Edge Function secrets.
-// Map the allowed HUNT_DB_POOLER_URL secret to the legacy runtime variable before
-// loading the existing storefront implementation. This remains branch-only until
-// an explicit Owner Gate permits deployment.
-if (huntDbPoolerUrl && !(Deno.env.get("SUPABASE_DB_POOLER_URL") || "").trim()) {
-  Deno.env.set("SUPABASE_DB_POOLER_URL", huntDbPoolerUrl);
-}
-
-await import("./runtime.ts");
-'''
-          new_idx = '''// Runtime reads HUNT_DB_POOLER_URL directly. Supabase Edge Runtime does not support Deno.env.set().
-await import("./runtime.ts");
-'''
-          if idx != old_idx:
-              raise SystemExit('index.ts did not match expected PR26 source exactly')
-          index.write_text(new_idx)
+          if idx.count('Deno.env.set("SUPABASE_DB_POOLER_URL", huntDbPoolerUrl);') != 1:
+              raise SystemExit("index Deno.env.set anchor did not match exactly once")
+          if idx.count('await import("./runtime.ts");') != 1:
+              raise SystemExit("index runtime import anchor did not match exactly once")
+          index.write_text('// Runtime reads HUNT_DB_POOLER_URL directly; Supabase Edge Runtime does not support Deno.env.set().\nawait import("./runtime.ts");\n')
           PY
 
           git diff --check
