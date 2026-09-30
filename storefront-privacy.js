@@ -105,9 +105,22 @@
 
   const hunt = window.HuntCore;
   if (hunt) {
+    const originalSearch = typeof hunt.search === "function" ? hunt.search.bind(hunt) : null;
     hunt.productUrl = aliasProductUrl;
     hunt.providerAlias = providerAlias;
     hunt.providerFromAlias = providerFromAlias;
+    if (originalSearch) {
+      hunt.search = (query, limit) => {
+        const page = new URL(location.href);
+        const parent = String(page.searchParams.get("c") || "").toLowerCase();
+        const sub = String(page.searchParams.get("sub") || "").toLowerCase();
+        const exact = hunt.categoryDefs?.[sub]?.query;
+        if (/category\.html$/i.test(page.pathname) && (parent === "women" || parent === "men") && sub && exact) {
+          return originalSearch(exact, limit);
+        }
+        return originalSearch(query, limit);
+      };
+    }
   }
 
   const pageUrl = new URL(location.href);
