@@ -46,11 +46,11 @@ function enabled(name: string): boolean {
 let eproloSqlClientInstance: ReturnType<typeof postgres> | null = null;
 
 function eproloDbUrl(): string {
-  return env("SUPABASE_DB_POOLER_URL") || env("SUPABASE_DB_URL");
+  return env("HUNT_DB_POOLER_URL") || env("SUPABASE_DB_POOLER_URL") || env("SUPABASE_DB_URL");
 }
 
 function eproloDbConnectionMode(): "transaction_pooler" | "fallback_direct_or_session" | "missing" {
-  if (env("SUPABASE_DB_POOLER_URL")) return "transaction_pooler";
+  if (env("HUNT_DB_POOLER_URL") || env("SUPABASE_DB_POOLER_URL")) return "transaction_pooler";
   if (env("SUPABASE_DB_URL")) return "fallback_direct_or_session";
   return "missing";
 }
