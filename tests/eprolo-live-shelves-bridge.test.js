@@ -21,6 +21,14 @@ test("EPROLO shelf bridge merges only shelves=1 and fails open to the existing c
   assert.match(bridge,/mergeShelves\(base\.shelves,extra\.shelves\)/);
 });
 
+test("EPROLO shelves require the same public storefront key contract",()=>{
+  assert.match(bridge,/headers:\{apikey:publishableKey,accept:"application\/json"\}/);
+  assert.match(edge,/const PUBLIC_KEY="sb_publishable_/);
+  assert.match(edge,/function authorized\(req:Request\)/);
+  assert.match(edge,/req\.headers\.get\("apikey"\)/);
+  assert.match(edge,/if\(!authorized\(req\)\)return new Response\(JSON\.stringify\(\{error:"unauthorized"\}\),\{status:401,headers\}\)/);
+});
+
 test("EPROLO shelf cards remain display-only and never claim final profit",()=>{
   for(const src of [bridge,edge]){
     assert.match(src,/purchasable:false/);
