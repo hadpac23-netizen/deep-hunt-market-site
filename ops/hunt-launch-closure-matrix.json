@@ -225,7 +225,7 @@
     "Create a fresh authenticated Admin test session, then complete CJ sandbox E2E through tracking/shipped evidence.",
     "Resolve destination tax truth for EPROLO/IL before any EPROLO item can be Final Profit Verified.",
     "Configure HUNT_EPROLO_INTERNAL_TOKEN before deploying EPROLO country truth and its callers.",
-    "Configure SUPABASE_DB_POOLER_URL and validate patched runtime under load.",
+    "Configure HUNT_DB_POOLER_URL and validate patched runtime under load.",
     "Verify official EPROLO Create Order / Order Query / Tracking contract; do not guess endpoints.",
     "Configure PayPlus sandbox credentials and prove signed callback/status/idempotency/refund path.",
     "Enable/review security hardening including leaked-password protection and private-table policy posture.",
