@@ -14,8 +14,8 @@ function displayHoldReason(title:string,department:string,shelf:string):string|n
   return null;
 }
 
-function aliases(department:string,shelf:string):string[]{
-  const d=department.toLowerCase(),s=shelf.toLowerCase();
+function aliases(department:string,shelf:string,title=""):string[]{
+  const d=department.toLowerCase(),s=shelf.toLowerCase(),t=title.toLowerCase();
   const out=new Set<string>([d,s]);
   const map:Record<string,string[]>={
     "women-dresses":["dresses"],"women-evening":["dresses","women-occasionwear"],"women-skirts":["dresses"],
@@ -45,6 +45,24 @@ function aliases(department:string,shelf:string):string[]{
     "pet-grooming":["pets"],"pet-houses":["pets"],"pet-walk":["pets"]
   };
   for(const a of map[s]||[])out.add(a);
+
+  // Targeted canonical fill: every supplemental alias is constrained by both
+  // the existing canonical department/shelf and customer-facing product title.
+  // This deliberately leaves ambiguous empty shelves empty instead of filling by keyword alone.
+  if((s==="baby-clothing"||s==="baby")&&/\b(bodysuit|onesie|romper)\b/.test(t)&&!/\b(swimsuit|swimwear)\b/.test(t))out.add("baby-bodysuits");
+  if(["baby","baby-clothing","baby-bedding"].includes(s)&&/\bnewborn\b/.test(t))out.add("newborn");
+  if(["baby","baby-clothing"].includes(s)&&(
+    /\b(stroller organizer|crib storage|changing pad|diaper pad|nursery closet)\b/.test(t)||
+    (/\bdiaper\b/.test(t)&&/\borganizer\b/.test(t))
+  ))out.add("nursery");
+  if(d==="kids"&&["kids-clothing","baby-clothing","baby-sets"].includes(s)&&/\bboy(?:s|'s)?\b/.test(t)&&!/\b(shoe|shoes|boot|boots|sandal|sandals|slipper|slippers)\b/.test(t))out.add("boys");
+  if(d==="kids"&&["baby-sleepsuits","baby-clothing","kids-clothing"].includes(s)&&/\b(pajama|pajamas|pyjama|pyjamas|sleepwear|nightwear|home wear)\b/.test(t))out.add("kids-nightwear");
+  if(d==="kids"&&["baby-clothing","kids-clothing","party","baby-sets"].includes(s)&&/\b(formal|christening|party|birthday|princess)\b/.test(t)&&!/\b(halloween|cosplay|costume)\b/.test(t))out.add("kids-occasionwear");
+  if(d==="kids"&&["baby-clothing","kids-clothing"].includes(s)&&/\b(swimsuit|swimwear|bathing suit)\b/.test(t))out.add("kids-swimwear");
+  if(d==="men"&&s==="men-bottoms"&&/\bshorts\b/.test(t))out.add("men-shorts");
+  if(d==="women"&&s==="women-sleepwear"&&/\b(loungewear|lounge wear|home wear)\b/.test(t))out.add("women-loungewear");
+  if(d==="women"&&["women-underwear","women-tops","women-dresses"].includes(s)&&/\b(maternity|pregnan(?:t|cy)?|breastfeeding|nursing)\b/.test(t))out.add("women-maternity");
+
   return [...out].filter(Boolean);
 }
 
@@ -103,7 +121,7 @@ export async function eproloCanonicalMarketShelves(_sql:any,_dbConnectionMode:st
       market_eligibility_status:"CANONICAL_PDP_READY_DISPLAY_HOLD",
       purchasable:false,production_effect:false
     };
-    for(const key of aliases(department,shelf)){
+    for(const key of aliases(department,shelf,title)){
       const list=shelves[key]||(shelves[key]=[]);
       if(!list.some(x=>x.provider===product.provider&&x.item_id===product.item_id))list.push(product);
     }
