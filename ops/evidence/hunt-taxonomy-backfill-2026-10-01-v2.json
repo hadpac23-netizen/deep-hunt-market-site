@@ -7,8 +7,10 @@
   "supplier_live_order": false,
   "catalog_truth": {
     "total_candidates": 26375,
-    "taxonomy_mapped": 21707,
-    "taxonomy_unmapped": 4668,
+    "taxonomy_mapped": 21807,
+    "raw_unmapped": 4568,
+    "base_valid_noncanonical": 4209,
+    "true_semantic_qa": 359,
     "sellable_true": 0,
     "production_effect_true": 0
   },
@@ -16,6 +18,7 @@
     "taxonomy_hold_resolution_v1": 28,
     "canonical50_exact_route_backfill_v1": 7305,
     "canonical50_lifestyle_parent_backfill_v1": 687,
+    "canonical_alias_backfill_v1": 100,
     "shadow_sellable_residue_reset": 1
   },
   "intentional_holds": {
@@ -31,6 +34,7 @@
   "notes": [
     "34.9K product observations are observations, not unique products.",
     "Current shelf candidate pool is 26,375 rows.",
-    "Next taxonomy work is limited to the 4,668 rows that require semantic/title QA or explicit alias resolution."
+    "4,209 raw-unmapped rows already use valid HUNT base-taxonomy shelves and should not be forced into canonical-50.",
+    "Only 359 rows remain for true semantic/title QA or explicit alias resolution."
   ]
 }
