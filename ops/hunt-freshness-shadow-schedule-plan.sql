@@ -2,7 +2,7 @@
 -- PLANNED ONLY. DO NOT APPLY.
 -- Preconditions before activation:
 --   1) deploy hunt-freshness-shadow-runner + patched hunt-eprolo-country-shadow together
---   2) configure HUNT_FRESHNESS_SHADOW_SECRET and SUPABASE_DB_POOLER_URL
+--   2) configure HUNT_FRESHNESS_SHADOW_SECRET and HUNT_DB_POOLER_URL
 --   3) verify load test / no CONNECT_TIMEOUT regression
 --   4) confirm provider/API rate limits
 --   5) Owner Gate for scheduled shadow writes
