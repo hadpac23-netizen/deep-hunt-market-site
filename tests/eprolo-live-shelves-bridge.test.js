@@ -8,6 +8,7 @@ const bridge=fs.readFileSync(path.join(root,"eprolo-shelves-bridge.js"),"utf8");
 const edge=fs.readFileSync(path.join(root,"supabase/functions/hunt-eprolo-shelves-readonly/index.ts"),"utf8");
 const runtime=fs.readFileSync(path.join(root,"supabase/functions/hunt-storefront/runtime.ts"),"utf8");
 const moduleSrc=fs.readFileSync(path.join(root,"supabase/functions/hunt-storefront/eprolo-shelves.ts"),"utf8");
+const rpcMigration=fs.readFileSync(path.join(root,"supabase/migrations/20260930165643_hunt_eprolo_canonical_shelves_rpc_v1.sql"),"utf8");
 
 test("category loads the EPROLO shelf bridge before category logic",()=>{
   const bridgePos=html.indexOf("eprolo-shelves-bridge.js");
@@ -35,7 +36,7 @@ test("legacy fallback endpoint requires the same public storefront key contract"
   assert.match(edge,/if\(!authorized\(req\)\)return new Response\(JSON\.stringify\(\{error:"unauthorized"\}\),\{status:401,headers\}\)/);
 });
 
-test("storefront integrates canonical EPROLO shelves through its existing DB client without outranking live verified sources",()=>{
+test("storefront integrates canonical EPROLO shelves without outranking live verified sources",()=>{
   assert.match(runtime,/import \{ eproloCanonicalMarketShelves \} from "\.\/eprolo-shelves\.ts"/);
   assert.match(runtime,/eproloCanonicalMarketShelves\(eproloSqlClient\(\), eproloDbConnectionMode\(\)\)/);
   assert.match(runtime,/mergeMarketShelves\(priorityCjShelves, cjShelves, persistedShelves, eproloCanonical\.shelves/);
@@ -57,7 +58,7 @@ test("EPROLO shelf cards remain display-only and never claim final profit",()=>{
 });
 
 test("canonical source preserves both readiness gates and the taxonomy conflict gate",()=>{
-  for(const src of [edge,moduleSrc]){
+  for(const src of [edge,rpcMigration]){
     assert.match(src,/catalog_safety_status/);
     assert.match(src,/image_technical_status/);
     assert.match(src,/latest_market5_all_pass/);
@@ -83,11 +84,16 @@ test("obvious cross-shelf and IP mismatches are quarantined before display",()=>
   }
 });
 
-test("integrated module accepts the storefront client instead of opening another DB connection",()=>{
-  assert.match(moduleSrc,/eproloCanonicalMarketShelves\(sql:any,dbConnectionMode:string\)/);
+test("integrated module uses service-role RPC instead of opening another DB connection",()=>{
+  assert.match(moduleSrc,/hunt_eprolo_canonical_shelves_rows/);
+  assert.match(moduleSrc,/SUPABASE_SERVICE_ROLE_KEY/);
+  assert.match(moduleSrc,/dbConnectionMode="supabase_rpc"/);
   assert.doesNotMatch(moduleSrc,/postgres\(/);
   assert.doesNotMatch(moduleSrc,/sql\.end\(/);
-  assert.match(runtime,/let eproloSqlClientInstance/);
-  assert.match(runtime,/if \(eproloSqlClientInstance\) return eproloSqlClientInstance/);
-  assert.match(runtime,/eproloDbUrl\(\)/);
+  assert.match(rpcMigration,/security definer/i);
+  assert.match(rpcMigration,/set search_path = ''/i);
+  assert.match(rpcMigration,/revoke all on function public\.hunt_eprolo_canonical_shelves_rows\(\) from public/i);
+  assert.match(rpcMigration,/revoke all on function public\.hunt_eprolo_canonical_shelves_rows\(\) from anon/i);
+  assert.match(rpcMigration,/revoke all on function public\.hunt_eprolo_canonical_shelves_rows\(\) from authenticated/i);
+  assert.match(rpcMigration,/grant execute on function public\.hunt_eprolo_canonical_shelves_rows\(\) to service_role/i);
 });
