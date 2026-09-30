@@ -1,12 +1,21 @@
 {
   "schema_version": "HUNT_LEGAL_LAUNCH_BLOCKERS_V1",
-  "status": "BLOCKED_REVIEW_REQUIRED",
+  "status": "PARTIAL_VERIFIED_REVIEW_REQUIRED",
   "real_money_launch_allowed": false,
-  "reason": "Customer-facing legal pages cannot be finalized without verified HUNT operating-entity and contact information plus jurisdiction-specific review.",
-  "required_verified_fields": [
-    "legal_entity_name",
-    "registration_number",
-    "business_address",
+  "reason": "Operating entity identity is verified in secure runtime data, but customer support/privacy/returns contacts and jurisdiction-specific customer-policy review are still incomplete.",
+  "verified_fields": {
+    "legal_entity_name": true,
+    "registration_number": true,
+    "registered_country": true,
+    "business_address": true
+  },
+  "verified_values_storage": "SECURE_RUNTIME_ONLY_DO_NOT_COMMIT_PUBLIC_PII",
+  "verification_evidence": {
+    "current_business_document_2026_09": true,
+    "independent_historical_business_document": true,
+    "payplus_business_onboarding_context": true
+  },
+  "remaining_required_fields": [
     "support_email",
     "privacy_contact_email",
     "returns_address"
@@ -20,6 +29,7 @@
   ],
   "rules": {
     "invent_business_identity": false,
+    "commit_private_business_contact_values_to_public_repo": false,
     "publish_placeholder_legal_text": false,
     "remove_noindex_before_public_launch_only_after_review": true
   },
