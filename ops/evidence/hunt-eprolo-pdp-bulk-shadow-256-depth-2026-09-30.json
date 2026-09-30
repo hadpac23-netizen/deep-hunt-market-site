@@ -1,0 +1,75 @@
+{
+  "schema_version": "HUNT_EPROLO_PDP_BULK_SHADOW_V8",
+  "observed_at": "2026-09-30T20:52:00Z",
+  "provider": "EPROLO",
+  "destination": "IL",
+  "mode": "SUPPLIER_DIRECT_SHADOW_EVIDENCE",
+  "production_effect": false,
+  "sellable": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "database_activation_writes": 0,
+  "source_payload_updates": 0,
+  "private_pdp_qa_rows_written": 0,
+  "summary": {
+    "targets": 256,
+    "supplier_http_200": 256,
+    "exact_variant_found": 256,
+    "positive_inventory": 256,
+    "positive_supplier_cost": 256,
+    "shipping_to_il_verified": 256,
+    "pretax_profit_pass": 136,
+    "pretax_profit_review": 120,
+    "pretax_profit_block": 0,
+    "destination_tax_verified": 0,
+    "final_profit_verified": 0,
+    "canonical_readiness_promotions": 0
+  },
+  "thin_shelf_reinforcement": {
+    "batch_13_targets": 20,
+    "batch_13_pretax_pass": 6,
+    "batch_13_pretax_review": 14,
+    "batch_13_request_id_range": [18218,18237],
+    "batch_14_targets": 24,
+    "batch_14_pretax_pass": 16,
+    "batch_14_pretax_review": 8,
+    "batch_14_request_id_range": [18238,18261]
+  },
+  "verified_shelf_depth_after_reinforcement": {
+    "covered_shelves": 53,
+    "shelves_ge_8": 8,
+    "shelves_ge_5": 37,
+    "shelves_2_to_4": 3,
+    "shelves_eq_1": 13
+  },
+  "notable_depth": [
+    {"department":"women","shelf":"women-shoes","verified_items":10},
+    {"department":"accessories","shelf":"keychains","verified_items":9},
+    {"department":"kids","shelf":"baby","verified_items":9},
+    {"department":"men","shelf":"men-jeans","verified_items":8},
+    {"department":"accessories","shelf":"sunglasses","verified_items":7},
+    {"department":"home","shelf":"bath","verified_items":7},
+    {"department":"kids","shelf":"baby-clothing","verified_items":7},
+    {"department":"men","shelf":"men-hoodies","verified_items":7},
+    {"department":"men","shelf":"men-outerwear","verified_items":7},
+    {"department":"men","shelf":"men-tops","verified_items":7}
+  ],
+  "red_team_policy": [
+    "Do not fill shelves with seasonal/IP/taxonomy false positives just to increase depth.",
+    "Hold cosmetic ingredient/material/authenticity claims unless source truth exists.",
+    "Hold demographic cross-mix and ambiguous titles.",
+    "Supplier-direct verification does not equal live readiness."
+  ],
+  "safety_gate": {
+    "status": "HOLD",
+    "owner_gate_required_before_live_readiness_write": true,
+    "reason": "Shadow verification only. No live readiness or sellable changes."
+  },
+  "tax_ddp_status": "DESTINATION_TAX_NOT_VERIFIED",
+  "do_not_claim": [
+    "Do not claim the 256 products are Canonical PDP Ready.",
+    "Do not claim destination tax or DDP is verified.",
+    "Do not claim Final Profit Verified.",
+    "Do not promote readiness or sellable state without Owner Gate and live-impact review."
+  ]
+}
