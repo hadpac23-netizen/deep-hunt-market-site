@@ -8,7 +8,9 @@
   "supplier_live_order": false,
   "catalog_snapshot": {
     "total_candidates": 26375,
-    "taxonomy_gate_rows": 22385,
+    "taxonomy_gate_key_rows": 22386,
+    "taxonomy_canonical_shelf_rows": 21978,
+    "taxonomy_gate_key_without_canonical_shelf": 408,
     "sellable_true": 0,
     "production_effect_true": 0
   },
@@ -40,6 +42,8 @@
     "GB": {"mode": "RESERVE_ONLY", "standard_rate": 0.20, "tax_verified": false},
     "AE": {"mode": "RESERVE_ONLY", "standard_rate": 0.05, "tax_verified": false},
     "US": {"mode": "HOLD", "reason": "ADDRESS_LEVEL_STATE_LOCAL_TAX_AND_NEXUS_REQUIRED", "tax_verified": false},
+    "stripe_tax_test_key_ready": false,
+    "stripe_tax_calculation_executed": false,
     "final_profit_eligible_from_reserve_only": false
   },
   "reserve_safe_launch_shadow": {
@@ -48,8 +52,12 @@
     "safe_markets": ["IL", "DE", "GB", "AE"],
     "hold_markets": ["US"],
     "market5_pass_products": 35,
-    "image_technical_pass_products": 50,
-    "final_visual_pass_products": 0,
+    "image_technical_pass_products": 54,
+    "final_visual_pass_products": 27,
+    "final_visual_review_products": 17,
+    "final_visual_hold_products": 8,
+    "final_visual_unreviewed_products": 2,
+    "sensitive_manual_review_required_products": 2,
     "physical_metadata_verified_products_within_reserve_safe_set": 4,
     "physical_quality_pass_products": 0,
     "final_profit_verified_products": 0,
@@ -87,23 +95,32 @@
     "kids_underwear_target": "kids -> kids-underwear",
     "kids_underwear_physical_metadata_verified_after_fix": 4,
     "dispatcher_excluded_ambiguous_rows_moved_to_hold": 4,
-    "dispatcher_excluded_reason": "CANONICAL_ROUTE_REVIEW_REQUIRED_BEFORE_PHYSICAL_DISPATCH"
+    "dispatcher_excluded_reason": "CANONICAL_ROUTE_REVIEW_REQUIRED_BEFORE_PHYSICAL_DISPATCH",
+    "men_swimwear_title_pixel_taxonomy_fix": 1,
+    "men_swimwear_fixed_item_id": "2506050801591602700",
+    "reserve_safe_missing_image_technical_qa_backfilled": 4
   },
   "visual_truth": {
     "technical_image_pass_is_not_pixel_pass": true,
-    "semantic_pixel_review_available": false,
-    "cdn_pixel_review_completed": false,
-    "browser_pixel_review_attempted": true,
-    "browser_pixel_review_result": "EXTERNAL_BROWSER_WALLET_INSUFFICIENT",
-    "final_visual_pass_products": 0,
+    "semantic_pixel_review_available": true,
+    "pixel_review_runner": "HUNT_MANUAL_PIXEL_QA_V1",
+    "exact_cdn_images_reviewed": 52,
+    "pixel_pass": 27,
+    "pixel_review": 17,
+    "pixel_hold": 8,
+    "pixel_unreviewed": 2,
+    "sensitive_apparel_manual_review_required": 2,
+    "external_browser_attempted": true,
+    "external_browser_result": "WALLET_INSUFFICIENT_NO_RUN",
+    "local_authorized_device_exact_cdn_review": "SUCCESS",
     "policy": "DO_NOT_MARK_FINAL_VISUAL_PASS_WITHOUT_TRUE_PIXEL_CONTENT_REVIEW"
   },
   "next_gates": [
-    "True visual pixel/content review for reserve-safe shortlist",
+    "Manual sensitive-apparel visual review remains for two reserve-safe rows; no automatic pixel pass was assigned",
     "Physical quality/sample or review evidence beyond supplier metadata",
-    "Transaction-level tax truth; US requires address-level state/local tax and nexus determination",
+    "Transaction-level tax truth; Stripe Tax test secret is not configured and US requires address-level state/local tax plus nexus determination",
     "Fresh retry of EPROLO item 21544182 only after cooldown or explicit targeted recheck",
-    "No readiness score increase until these gates have evidence"
+    "No readiness score increase until remaining gates have evidence"
   ],
   "safety_controls_verified": {
     "hunt_payment_live": {"enabled": false, "owner_approved": false},
