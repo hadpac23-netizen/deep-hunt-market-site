@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-10-01T09:19:51Z",
+  "generated_at": "2026-10-01T09:22:51Z",
   "project_ref": "zszlnahjqmwozwubetkm",
-  "note": "Live versions re-read after Pre-Launch backend hardening on 2026-10-01. EXACT_MATCH means deployed source matches PR26 working source; PATCHED_AHEAD_OF_RUNTIME means local PR26 has a newer patch not yet deployed. No secrets stored.",
+  "note": "Pre-Launch backend runtime reconciled on 2026-10-01. Launch-critical payment, preview, orchestrator, storefront and EPROLO quarantine sources are deployed from PR26 source. No secrets stored.",
   "functions": [
     {
       "slug": "hunt-payment-session",
@@ -26,10 +26,11 @@
     },
     {
       "slug": "hunt-storefront",
-      "live_version": 141,
+      "live_version": 142,
       "live_status": "ACTIVE",
       "git_path": "supabase/functions/hunt-storefront/index.ts",
-      "relationship": "PATCHED_AHEAD_OF_RUNTIME"
+      "relationship": "EXACT_MATCH",
+      "note": "v142 imports immutable PR26 commit 60df8153d4414aa95f6536c69ca9ecc76c630757; EPROLO canonical data remains audit-only and public display is held."
     },
     {
       "slug": "hunt-cj-quote",

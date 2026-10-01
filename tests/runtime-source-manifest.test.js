@@ -30,10 +30,9 @@ test("CJ and EPROLO launch-critical runtime sources are committed to Git",()=>{
 
 test("runtime manifest makes undeployed launch patches explicit",()=>{
   const bySlug=new Map(manifest.functions.map(x=>[x.slug,x]));
-  for(const slug of ["hunt-payment-session","hunt-order-preview","hunt-order-orchestrator","hunt-eprolo-country-shadow"]){
+  for(const slug of ["hunt-payment-session","hunt-order-preview","hunt-order-orchestrator","hunt-storefront","hunt-eprolo-country-shadow"]){
     assert.equal(bySlug.get(slug)?.relationship,"EXACT_MATCH");
   }
-  assert.equal(bySlug.get("hunt-storefront")?.relationship,"PATCHED_AHEAD_OF_RUNTIME");
 });
 
 test("runtime manifest never stores credentials",()=>{
@@ -56,6 +55,6 @@ test("manifest records the audited live versions instead of stale launch notes",
   assert.equal(bySlug.get("hunt-payment-session")?.live_version,27);
   assert.equal(bySlug.get("hunt-order-preview")?.live_version,16);
   assert.equal(bySlug.get("hunt-order-orchestrator")?.live_version,26);
-  assert.equal(bySlug.get("hunt-storefront")?.live_version,141);
+  assert.equal(bySlug.get("hunt-storefront")?.live_version,142);
   assert.equal(bySlug.get("hunt-eprolo-country-shadow")?.live_version,13);
 });

@@ -1,7 +1,7 @@
 {
   "schema_version": "HUNT_RED_TEAM_REMEDIATION_V1",
-  "observed_at": "2026-10-01T09:19:51Z",
-  "scope": "PRELAUNCH_BACKEND_HARDENING_APPLIED_PUBLIC_SITE_PENDING",
+  "observed_at": "2026-10-01T09:22:51Z",
+  "scope": "PRELAUNCH_BACKEND_RUNTIME_RECONCILED_PUBLIC_NETLIFY_PENDING",
   "pr26_core_fix_commit": "de6e1b361f5e419b58a9f747c58622156c32b158",
   "tests": {
     "local_checkout_red_team": {
@@ -19,7 +19,7 @@
     }
   },
   "findings": {
-    "status": "BACKEND_HARDENING_LIVE_FRONTEND_PENDING",
+    "status": "BACKEND_RUNTIME_RECONCILED_NETLIFY_PENDING",
     "source_report": "user-provided HUNT DEAL red team 2026-10-01",
     "rt01": "LIVE_V27_REPLAY_EXPIRY_PRICE_KILLSWITCH_HARDENED",
     "rt02": "LIVE_V27_V16_OWNER_PROOF_HARDENED",
@@ -30,7 +30,7 @@
     "rt07": "BLOCKED_PAYPLUS_SANDBOX_E2E",
     "rt08": "LIVE_MIGRATION_APPLIED_PRIVILEGES_HARDENED",
     "rt09": "LIVE_V27_INTEGER_QTY_ENFORCED",
-    "rt10": "SOURCE_FIXED_PENDING_NETLIFY_BROWSER_QA",
+    "rt10": "SOURCE_AND_STOREFRONT_RUNTIME_FIXED_PENDING_NETLIFY_BROWSER_QA",
     "rt11": "BLOCKED_EXTERNAL_VERIFIED_CONTACTS_AND_POLICY_REVIEW",
     "rt12": "SOURCE_OF_TRUTH_REFRESHED_MAIN_VERIFIED_UNPROTECTED",
     "local_tests": {
@@ -53,7 +53,7 @@
     "payment_session_version": 27,
     "order_preview_version": 16,
     "order_orchestrator_version": 26,
-    "storefront_version": 141,
+    "storefront_version": 142,
     "eprolo_country_shadow_version": 13,
     "supplier_freshness_cron_jobs": 0,
     "cron_jobs_total": 22,
@@ -77,7 +77,7 @@
     "merge": false,
     "production_deploy": false
   },
-  "note": "Pre-Launch backend hardening is live. No real payment, supplier live order, merge to main, or public Netlify candidate deployment was activated. EPROLO country economics are quarantined fail-closed pending safe runtime credentials.",
+  "note": "Pre-Launch backend runtime is reconciled through storefront v142 with commerce controls OFF. EPROLO is quarantined from public shelves until PDP runtime credentials are available. Public Netlify candidate and browser QA remain pending.",
   "runtime_history_note": {
     "no_op_migrations_recorded_live": [
       "20261001083757 __noop_probe_should_not_run__",
@@ -115,9 +115,31 @@
       "eprolo_db_connection_mode": "supabase_rpc"
     },
     "eprolo_pdp_canary": {
+      "item_id": "28086613",
       "http_status": 404,
       "public_display_enabled": false,
       "blocker": "PDP_RUNTIME_CREDENTIALS_NOT_READY"
+    },
+    "storefront_v142_shelf_probe": {
+      "http_status": 200,
+      "shelf": "dresses",
+      "visible_product_count": 47,
+      "shelf_entry_count": 47,
+      "provider_counts": {
+        "CJdropshipping": 37,
+        "Printful": 10
+      },
+      "eprolo_public_rows": 0,
+      "eprolo_canonical_count": 258,
+      "eprolo_display_eligible_audit_count": 247,
+      "eprolo_public_display_enabled": false,
+      "eprolo_public_hold_reason": "PDP_RUNTIME_CREDENTIALS_NOT_READY"
+    },
+    "cj_pdp_canary": {
+      "item_id": "2406260407531609000",
+      "http_status": 200,
+      "variant_count": 3,
+      "public_checkout_enabled": false
     }
   }
 }

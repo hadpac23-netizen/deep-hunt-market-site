@@ -1,19 +1,19 @@
 {
   "schema_version": "HUNT_LAUNCH_CLOSURE_MATRIX_V1",
-  "observed_at": "2026-10-01T09:19:51Z",
+  "observed_at": "2026-10-01T09:22:51Z",
   "source_of_truth": {
-    "status": "PRELAUNCH_BACKEND_HARDENING_LIVE_FRONTEND_PATCH_PENDING",
-    "evidence": "RT01/RT02/RT03/RT08/RT09 backend hardening is now live with commerce controls OFF. Payment session v27, order preview v16, orchestrator v26, storefront v141 and EPROLO country-shadow v13 quarantine are active. Current frontend/privacy/EPROLO-public-hold patch is pending commit/deploy.",
+    "status": "PRELAUNCH_BACKEND_RUNTIME_RECONCILED_FRONTEND_DEPLOY_PENDING",
+    "evidence": "Backend runtime is reconciled: payment v27, order preview v16, orchestrator v26, storefront v142, EPROLO country-shadow v13 quarantine. Storefront v142 publicly holds EPROLO cards while retaining canonical audit metadata. Netlify Pre-Launch deploy and browser QA remain pending.",
     "blocks_real_money": true,
     "storefront_source_layout_fixed": true,
     "storefront_sidecars_separate": true,
     "runtime_git_comparison": {
-      "storefront_runtime": "LIVE_V141_NEW_FRONTEND_AND_PUBLIC_HOLD_PATCH_PENDING",
+      "storefront_runtime": "LIVE_V142_EXACT_PR26_SOURCE",
       "payment_session_runtime": "LIVE_V27_EXACT_PR26",
       "order_preview_runtime": "LIVE_V16_EXACT_PR26",
       "order_orchestrator_runtime": "LIVE_V26_EXACT_PR26",
       "eprolo_country_shadow_runtime": "LIVE_V13_QUARANTINED_EXACT_SOURCE",
-      "runtime_reconciliation_complete": false
+      "runtime_reconciliation_complete": true
     },
     "canonical_pdp_predicate_drift_guard": true,
     "stale_snapshot_precedence_fixed_in_pr26": true,
@@ -141,7 +141,16 @@
     "eprolo_public_display_enabled": false,
     "live_runtime_fix_applied": true,
     "owner_gate_required_for_apply_and_deploy": false,
-    "current_public_hold_reason": "PDP_RUNTIME_CREDENTIALS_NOT_READY"
+    "current_public_hold_reason": "PDP_RUNTIME_CREDENTIALS_NOT_READY",
+    "storefront_runtime_version": 142,
+    "public_shelf_canary": {
+      "shelf": "dresses",
+      "http_status": 200,
+      "rows": 47,
+      "eprolo_rows": 0,
+      "cj_rows": 37,
+      "printful_rows": 10
+    }
   },
   "freshness_automation": {
     "status": "BLOCKED_NO_LIVE_SCHEDULE_OR_ROTATION_PROOF",
@@ -479,7 +488,7 @@
     "Owner Gate before merge, public pre-launch deploy, Payment Live or Supplier Live."
   ],
   "red_team_2026_10_01": {
-    "status": "BACKEND_HARDENING_LIVE_FRONTEND_PENDING",
+    "status": "BACKEND_RUNTIME_RECONCILED_NETLIFY_PENDING",
     "source_report": "user-provided HUNT DEAL red team 2026-10-01",
     "rt01": "LIVE_V27_REPLAY_EXPIRY_PRICE_KILLSWITCH_HARDENED",
     "rt02": "LIVE_V27_V16_OWNER_PROOF_HARDENED",
@@ -490,7 +499,7 @@
     "rt07": "BLOCKED_PAYPLUS_SANDBOX_E2E",
     "rt08": "LIVE_MIGRATION_APPLIED_PRIVILEGES_HARDENED",
     "rt09": "LIVE_V27_INTEGER_QTY_ENFORCED",
-    "rt10": "SOURCE_FIXED_PENDING_NETLIFY_BROWSER_QA",
+    "rt10": "SOURCE_AND_STOREFRONT_RUNTIME_FIXED_PENDING_NETLIFY_BROWSER_QA",
     "rt11": "BLOCKED_EXTERNAL_VERIFIED_CONTACTS_AND_POLICY_REVIEW",
     "rt12": "SOURCE_OF_TRUTH_REFRESHED_MAIN_VERIFIED_UNPROTECTED",
     "local_tests": {
