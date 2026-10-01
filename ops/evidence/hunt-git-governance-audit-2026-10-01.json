@@ -1,0 +1,29 @@
+{
+  "evidence_id": "HUNT-GIT-GOVERNANCE-AUDIT-2026-10-01-V1",
+  "observed_at": "2026-10-01T08:08:06Z",
+  "scope": "READ_ONLY_GITHUB_GOVERNANCE_AUDIT",
+  "repository": "hadpac23-netizen/deep-hunt-market-site",
+  "default_branch": "main",
+  "branch_protection": {
+    "verified": true,
+    "enabled": false,
+    "read_result": "HTTP_404_BRANCH_NOT_PROTECTED"
+  },
+  "repository_rulesets": {
+    "count": 0,
+    "alternative_protection_present": false
+  },
+  "required_status_checks_enforced_by_github": false,
+  "pr26": {
+    "draft": true,
+    "merged": false,
+    "head_before_this_evidence_commit": "c2e60de8f0de2d6627239f04ef06530bf3e92e47",
+    "catalog_integrity_run": 283,
+    "catalog_integrity": "PASS",
+    "checkout_regression_run": 294,
+    "checkout_regression": "PASS"
+  },
+  "decision": "KEEP_GIT_GOVERNANCE_BLOCKER_OPEN_UNTIL_OWNER_APPROVES_BRANCH_PROTECTION_AND_REQUIRED_CHECKS",
+  "mutation_performed": false,
+  "readiness_change": false
+}

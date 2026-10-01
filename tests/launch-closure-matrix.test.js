@@ -28,6 +28,10 @@ test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.deepEqual(m.legal.missing_verified_fields,["support_email","privacy_contact_email","returns_address"]);
   assert.equal(m.legal.standalone_policy_page_files_found_in_pr26,false);
   assert.equal(m.security.status,"PARTIAL");
+  assert.equal(m.git_governance.branch_protection_verified,true);
+  assert.equal(m.git_governance.branch_protection_enabled,false);
+  assert.equal(m.git_governance.rulesets_count,0);
+  assert.equal(m.git_governance.required_status_checks_enforced,false);
 });
 
 test("CJ and EPROLO readiness are never conflated",()=>{

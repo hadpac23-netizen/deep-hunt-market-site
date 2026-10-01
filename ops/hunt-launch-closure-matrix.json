@@ -1,6 +1,6 @@
 {
   "schema_version": "HUNT_LAUNCH_CLOSURE_MATRIX_V1",
-  "observed_at": "2026-10-01T08:02:21Z",
+  "observed_at": "2026-10-01T08:08:06Z",
   "source_of_truth": {
     "status": "PARTIAL",
     "evidence": "PR26 remains the single Draft launch candidate. PR26 strict EPROLO PDP has been refactored to a service-role-only Supabase RPC and passed Catalog Integrity #278 plus Checkout Regression #289. Live hunt-storefront remains unchanged and the prior live strict-PDP canary still returned HTTP 404 for 8/8 candidates; applying the RPC migration, Edge secrets and storefront deploy still requires Owner Gate.",
@@ -377,18 +377,23 @@
     "observed_at": "2026-10-01T08:02:21Z"
   },
   "git_governance": {
-    "status": "PARTIAL",
+    "status": "BLOCKED_MAIN_UNPROTECTED",
     "pr26_draft": true,
     "pr26_merged": false,
     "ci_catalog_integrity": "PASS",
-    "ci_catalog_integrity_run": 267,
+    "ci_catalog_integrity_run": 283,
     "ci_checkout_regression": "PASS",
-    "ci_checkout_regression_run": 281,
+    "ci_checkout_regression_run": 294,
     "coderabbit_status": "success",
-    "branch_protection_verified": false,
+    "branch_protection_verified": true,
     "rulesets_count": 0,
     "blocks_real_money": true,
-    "branch_protection_check_note": "GitHub integration receives 403 for classic branch-protection read; treat protection as unverified, not absent."
+    "branch_protection_check_note": "Authenticated read-only GitHub CLI request returned HTTP 404 Branch not protected for main, and repository rulesets count is 0. Do not enable protection without Owner Gate.",
+    "branch_protection_enabled": false,
+    "default_branch": "main",
+    "required_status_checks_enforced": false,
+    "verification_source": "LOCAL_GH_CLI_READ_ONLY_REPO_SCOPE",
+    "observed_at": "2026-10-01T08:08:06Z"
   },
   "legacy_snapshots": {
     "status": "PASS",
@@ -423,7 +428,7 @@
     "EPROLO order/query/tracking/webhook contract is officially documented; still verify a sandbox or explicitly non-billable execution mode and complete approved E2E proof before supplier submission can be enabled.",
     "PayPlus account/onboarding exists and they requested the site URL. A Sandbox/Test credentials request is prepared as an unsent draft. Obtain/configure sandbox API key, secret and payment page UID, then prove signed callback/status/idempotent paid transition while Payment Live remains OFF.",
     "Finalize verified HUNT support email, privacy contact email and returns address; then prepare and review customer-facing Terms, Privacy, Returns/Refunds, Shipping/Delivery and applicable cookie-consent policy pages. No standalone policy files were found in the PR26 filename scan.",
-    "Verify Git branch protection/required checks with an account that has permission.",
+    "Git governance is now verified: default branch main is not protected and repository rulesets count is 0. Enable branch protection/required checks only after Owner Gate; until then this remains a launch blocker.",
     "Complete final security review, including acknowledgement of the Supabase Free-plan leaked-password-protection limitation.",
     "Owner Gate before merge, production deploy, Payment Live or Supplier Live."
   ]
