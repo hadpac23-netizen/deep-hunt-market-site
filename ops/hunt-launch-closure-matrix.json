@@ -168,7 +168,7 @@
       "full_tracking_shipped_e2e_proven": false
     },
     "eprolo_contract_blocker": {
-      "status": "OFFICIAL_CONTRACT_DOCUMENTED_EXECUTION_BLOCKED",
+      "status": "OFFICIAL_CONTRACT_DOCUMENTED_RUNTIME_COST_VARIANT_MISMATCH_EXECUTION_BLOCKED",
       "official_account_rep_showdoc_verified": true,
       "create_order": {
         "method": "POST",
@@ -182,10 +182,13 @@
         "tracking_fields_documented": true
       },
       "order_price_quote": {
-        "method": "GET",
         "path": "getCostByProduct.html",
-        "executed": false,
-        "tax_cost_documented": true
+        "documented_method": "GET",
+        "runtime_supported_method": "POST",
+        "method_contract_mismatch": true,
+        "canonical_variant_lookup_verified": false,
+        "tax_cost_field_documented": true,
+        "tax_truth_verified": false
       },
       "cancel_order": {
         "method": "POST",
@@ -199,7 +202,7 @@
       },
       "endpoint_guessing_allowed": false,
       "supplier_submission_allowed": false,
-      "remaining": "Sandbox/non-billable execution mode and E2E order/tracking proof remain unverified; Owner Gate required before any mutating call."
+      "remaining": "Resolve pricing/order variant runtime mapping and sandbox/non-billable execution mode; Owner Gate required before any mutating call."
     }
   },
   "payment": {
@@ -371,7 +374,7 @@
   },
   "remaining_external_or_runtime_blockers": [
     "After explicit Owner Gate: apply the PR26 strict-PDP RPC migration, configure HUNT_EPROLO_API_KEY/HUNT_EPROLO_API_SECRET as Edge Function secrets, deploy the PR26 storefront runtime, then rerun the strict EPROLO PDP canary. Live runtime remains unchanged and still has the prior 8/8 HTTP 404 evidence.",
-    "Resolve EPROLO destination-tax/DDP truth for the audited launch cohort; Final Profit Verified remains 0.",
+    "Resolve EPROLO getCostByProduct runtime mismatch before destination-tax truth can close: official doc says GET, live endpoint requires POST, and probed canonical variants were rejected by pricing lookup. Final Profit Verified remains 0.",
     "Complete and validate the separately disabled stock/price/shipping freshness automation before real-money launch.",
     "After explicit Owner Gate, deploy PR26 order-orchestrator hardening and complete CJ authenticated Admin sandbox E2E through supplier order, tracking and shipped evidence.",
     "EPROLO order/query/tracking/webhook contract is officially documented; still verify a sandbox or explicitly non-billable execution mode and complete approved E2E proof before supplier submission can be enabled.",

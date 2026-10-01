@@ -17,6 +17,10 @@ test("EPROLO official order/query/tracking contract is documented but execution 
   assert.ok(contract.official_order_contract.order_query.tracking_fields.includes("tracking_number"));
   assert.equal(contract.official_order_contract.order_price_quote.path,"getCostByProduct.html");
   assert.ok(contract.official_order_contract.order_price_quote.returns.includes("logistics_cost_list[].tax_cost"));
+  assert.equal(contract.official_order_contract.order_price_quote.documented_method,"GET");
+  assert.equal(contract.official_order_contract.order_price_quote.runtime_observed_supported_method,"POST");
+  assert.equal(contract.official_order_contract.order_price_quote.method_contract_mismatch,true);
+  assert.equal(contract.execution_proof.get_cost_by_product_tax_truth_verified,false);
   assert.equal(contract.official_order_contract.cancel_order.path,"cancel_orders.html");
   assert.equal(contract.official_order_contract.webhook_setup.path,"add_shop_webhook.html");
   assert.equal(contract.execution_proof.supplier_submission_performed,false);

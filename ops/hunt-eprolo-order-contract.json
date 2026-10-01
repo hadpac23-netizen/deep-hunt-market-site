@@ -137,7 +137,42 @@
         "logistics_cost_list[].shiptime"
       ],
       "tax_semantics": "tax_cost documented as tax fee, e.g. IOSS in EU",
-      "executed_by_hunt": false
+      "executed_by_hunt": false,
+      "documented_method": "GET",
+      "runtime_observed_supported_method": "POST",
+      "method_contract_mismatch": true,
+      "runtime_probe_2026_10_01": {
+        "get_request": "HTTP_405_SUPPORTED_METHOD_POST",
+        "post_empty_body": "HTTP_200_API_CODE_-1_PARAMETER_IS_EMPTY",
+        "post_exact_variant_without_productid": "API_CODE_-1_VARIANTS_NOT_FOUND",
+        "post_exact_variant_with_productid": "API_CODE_-1_VARIANTS_NOT_FOUND",
+        "canonical_variants_probed": [
+          "561267768",
+          "670476207",
+          "701619308",
+          "733697951"
+        ],
+        "supplier_mutation_performed": false,
+        "tax_truth_verified": false
+      },
+      "product_list_crosscheck": {
+        "19034207": {
+          "variant_id": "561267768",
+          "product_list_match": true
+        },
+        "28086613": {
+          "variant_id": "670476207",
+          "product_list_match": true
+        },
+        "30723602": {
+          "variant_id": "701619308",
+          "product_list_match": "NOT_RECONFIRMED_PAGE_MOVED_NO_DATA"
+        },
+        "32872079": {
+          "variant_id": "733697951",
+          "product_list_match": "NOT_FOUND_ON_REPROBED_PAGE"
+        }
+      }
     },
     "cancel_order": {
       "page_id": "6042192295381694",
@@ -198,12 +233,15 @@
     "cancel_order_called": false,
     "webhook_configured": false,
     "order_list_called_by_hunt": false,
-    "get_cost_by_product_called_by_hunt": false,
+    "get_cost_by_product_called_by_hunt": true,
     "supplier_submission_performed": false,
     "sandbox_or_non_billable_mode_verified": false,
-    "tracking_e2e_verified": false
+    "tracking_e2e_verified": false,
+    "get_cost_by_product_readonly_probe_only": true,
+    "get_cost_by_product_tax_truth_verified": false
   },
   "remaining_before_supplier_order_enable": [
+    "resolve getCostByProduct runtime contract mismatch: docs say GET, live API requires POST, and current canonical variants are rejected by pricing lookup",
     "verify whether EPROLO offers a sandbox or explicitly non-billable order mode",
     "implement and review fail-closed request/response mapping in PR26 without enabling submission",
     "prove read-only order_list/getCostByProduct behavior before any mutating supplier call",

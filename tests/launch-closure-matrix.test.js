@@ -8,7 +8,9 @@ test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(m.payment.payment_live,false);
   assert.equal(m.payment.payplus_callback_accept_paid,false);
   assert.equal(m.fulfillment.eprolo_order_tracking_contract_verified,true);
-  assert.equal(m.fulfillment.eprolo_contract_blocker.status,"OFFICIAL_CONTRACT_DOCUMENTED_EXECUTION_BLOCKED");
+  assert.equal(m.fulfillment.eprolo_contract_blocker.status,"OFFICIAL_CONTRACT_DOCUMENTED_RUNTIME_COST_VARIANT_MISMATCH_EXECUTION_BLOCKED");
+  assert.equal(m.fulfillment.eprolo_contract_blocker.order_price_quote.method_contract_mismatch,true);
+  assert.equal(m.fulfillment.eprolo_contract_blocker.order_price_quote.tax_truth_verified,false);
   assert.equal(m.fulfillment.eprolo_contract_blocker.supplier_submission_allowed,false);
   assert.equal(m.freshness_automation.live_cron_enabled,false);
   assert.equal(m.legal.status,"BLOCKED");
