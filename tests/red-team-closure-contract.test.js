@@ -49,3 +49,8 @@ test("freshness plan fits the 30 minute stock policy for both providers",()=>{
   assert.match(src,/EPROLO: batch 25 every 2 minutes[\s\S]*<= 22m/);
   assert.match(src,/11 as eprolo_rotation_slots/);
 });
+
+// Keep adversarial remediation tests inside the workflow-enforced red-team suite.
+require("./red-team-session-hardening.test.js");
+require("./red-team-support-permissions.test.js");
+require("./red-team-storefront-context.test.js");

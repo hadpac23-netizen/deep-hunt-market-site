@@ -43,3 +43,18 @@ test("CJ and EPROLO readiness are never conflated",()=>{
   assert.equal(m.catalog.eprolo_live_runtime_proof.tax_unverified,261);
   assert.equal(m.catalog.eprolo_live_runtime_proof.final_profit_verified,0);
 });
+
+
+test("2026-10-01 red-team closure distinguishes staged fixes from live proof",()=>{
+  assert.equal(m.red_team_2026_10_01.status,"PARTIAL_STAGED_NOT_LIVE");
+  assert.equal(m.red_team_2026_10_01.rt01,"PR26_FIXED_NOT_LIVE");
+  assert.equal(m.red_team_2026_10_01.rt02,"PR26_FIXED_NOT_LIVE");
+  assert.equal(m.red_team_2026_10_01.rt08,"PR26_MIGRATION_STAGED_NOT_LIVE");
+  assert.equal(m.red_team_2026_10_01.rt09,"PR26_FIXED_NOT_LIVE");
+  assert.equal(m.freshness_automation.live_cron_enabled,false);
+  assert.equal(m.freshness_automation.runner_live_deployed,false);
+  assert.equal(m.freshness_automation.watcher_live_deployed,false);
+  assert.equal(m.fulfillment.live_evidence.cj_records_total,10);
+  assert.equal(m.fulfillment.live_evidence.tracking,0);
+  assert.equal(m.fulfillment.live_evidence.shipped,0);
+});

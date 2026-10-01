@@ -198,3 +198,11 @@ begin
   end loop;
 end;
 $function$;
+
+-- Reconcile the live persistence trigger into Git source-of-truth.
+-- The trigger already exists in the audited live database; this is idempotent forward-source parity.
+drop trigger if exists hunt_shadow_taxonomy_persistence_guard on public.hunt_shelf_candidates;
+create trigger hunt_shadow_taxonomy_persistence_guard
+before update of source_payload on public.hunt_shelf_candidates
+for each row
+execute function public.hunt_preserve_shadow_taxonomy_gate_v2();

@@ -25,3 +25,13 @@ test("RT10 Dresses rejects mens dress-pants false positives",()=>{
   assert.match(category,/dress pants\?/);
   assert.match(category,/men\(\?:'s\|s\)\?/);
 });
+
+
+test("RT10 customer-facing category and fresh-arrival copy never renders supplier names",()=>{
+  const category=read("category.js");
+  const wow=read("hunt-wow.js");
+  assert.doesNotMatch(category,/providers\.join\(/);
+  assert.match(category,/HUNT source/);
+  assert.doesNotMatch(wow,/New from CJdropshipping|CJ LIVE/);
+  assert.match(wow,/Fresh arrivals from the HUNT network/);
+});

@@ -1,0 +1,77 @@
+{
+  "schema_version": "HUNT_RED_TEAM_REMEDIATION_V1",
+  "observed_at": "2026-10-01T08:30:00Z",
+  "scope": "PR26_STAGED_ONLY",
+  "pr26_core_fix_commit": "de6e1b361f5e419b58a9f747c58622156c32b158",
+  "tests": {
+    "local_checkout_red_team": {
+      "passed": 125,
+      "failed": 0
+    },
+    "local_catalog": {
+      "passed": 34,
+      "failed": 0
+    },
+    "github": {
+      "checkout_run": 296,
+      "catalog_run": 286,
+      "conclusion": "PASS"
+    }
+  },
+  "findings": {
+    "status": "PARTIAL_STAGED_NOT_LIVE",
+    "source_report": "user-provided HUNT DEAL red team 2026-10-01",
+    "rt01": "PR26_FIXED_NOT_LIVE",
+    "rt02": "PR26_FIXED_NOT_LIVE",
+    "rt03": "PR26_ALREADY_FIXED_LIVE_V12_STALE",
+    "rt04": "BLOCKED_NO_LIVE_SCHEDULE_OR_ROTATION_PROOF",
+    "rt05": "BLOCKED_FINAL_PROFIT_VERIFIED_0",
+    "rt06": "BLOCKED_NO_TRACKING_SHIPPED_E2E",
+    "rt07": "BLOCKED_PAYPLUS_SANDBOX_E2E",
+    "rt08": "PR26_MIGRATION_STAGED_NOT_LIVE",
+    "rt09": "PR26_FIXED_NOT_LIVE",
+    "rt10": "PR26_SOURCE_FIXED_NEEDS_PRELAUNCH_BROWSER_QA",
+    "rt11": "BLOCKED_EXTERNAL_VERIFIED_CONTACTS_AND_POLICY_REVIEW",
+    "rt12": "SOURCE_OF_TRUTH_REFRESHED_MAIN_VERIFIED_UNPROTECTED",
+    "local_tests": {
+      "checkout_red_team": "125/125 PASS",
+      "catalog": "34/34 PASS"
+    },
+    "github_ci_on_core_fix": {
+      "checkout_run": 296,
+      "catalog_run": 286,
+      "status": "PASS"
+    },
+    "payment_live": false,
+    "supplier_live_order": false,
+    "merge": false,
+    "production_deploy": false
+  },
+  "live_runtime": {
+    "payment_session_version": 26,
+    "order_preview_version": 15,
+    "order_orchestrator_version": 25,
+    "storefront_version": 140,
+    "eprolo_country_shadow_version": 12,
+    "supplier_freshness_cron_jobs": 0,
+    "cron_jobs_total": 22,
+    "cron_jobs_active": 2,
+    "freshness_runner_deployed": false,
+    "ops_watcher_deployed": false,
+    "freshness_secret_present": false,
+    "ops_watch_secret_present": false,
+    "cj_fulfillment": {
+      "failed": 7,
+      "processing": 3,
+      "tracking": 0,
+      "shipped": 0
+    }
+  },
+  "safety": {
+    "payment_live": false,
+    "supplier_live_order": false,
+    "merge": false,
+    "production_deploy": false
+  },
+  "note": "No production deployment, live permission mutation, payment, supplier order or secret value was performed or stored in this remediation."
+}

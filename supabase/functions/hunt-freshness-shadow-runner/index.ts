@@ -13,7 +13,7 @@ const EPROLO_INTERNAL_TOKEN=clean(Deno.env.get("HUNT_EPROLO_INTERNAL_TOKEN"));
 let sqlClient:ReturnType<typeof postgres>|null=null;
 function sql(){
   if(sqlClient)return sqlClient;
-  const db=clean(Deno.env.get("SUPABASE_DB_POOLER_URL")||Deno.env.get("SUPABASE_DB_URL"));
+  const db=clean(Deno.env.get("HUNT_DB_POOLER_URL")||Deno.env.get("SUPABASE_DB_URL"));
   if(!db)throw new Error("DB_URL_MISSING");
   sqlClient=postgres(db,{prepare:false,max:1,connect_timeout:10,idle_timeout:20,max_lifetime:600});
   return sqlClient;

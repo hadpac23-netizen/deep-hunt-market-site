@@ -2,19 +2,22 @@
   "schema_version": "HUNT_LAUNCH_CLOSURE_MATRIX_V1",
   "observed_at": "2026-10-01T08:08:06Z",
   "source_of_truth": {
-    "status": "PARTIAL",
-    "evidence": "PR26 remains the single Draft launch candidate. PR26 strict EPROLO PDP has been refactored to a service-role-only Supabase RPC and passed Catalog Integrity #278 plus Checkout Regression #289. Live hunt-storefront remains unchanged and the prior live strict-PDP canary still returned HTTP 404 for 8/8 candidates; applying the RPC migration, Edge secrets and storefront deploy still requires Owner Gate.",
+    "status": "PARTIAL_RED_TEAM_REMEDIATION_STAGED_NOT_LIVE",
+    "evidence": "PR26 remains Draft and unmerged. RT01/RT02/RT08/RT09 and customer-facing RT10 fixes are staged in PR26 commit de6e1b3 and passed local 125/125 checkout/red-team plus 34/34 catalog tests; GitHub Catalog #286 and Checkout #296 passed. Live payment-session v26, order-preview v15 and EPROLO country-shadow v12 remain unchanged until Owner Gate.",
     "blocks_real_money": true,
     "storefront_source_layout_fixed": true,
     "storefront_sidecars_separate": true,
     "runtime_git_comparison": {
-      "storefront_runtime": "PR26_SOURCE_IMPORT_AT_c91924cf",
-      "order_orchestrator_runtime": "BEHIND_PR26_PRESUPPLIER_RECHECK",
+      "storefront_runtime": "LIVE_V140_PR26_PATCHED_AHEAD",
+      "payment_session_runtime": "LIVE_V26_PR26_PATCHED_AHEAD",
+      "order_preview_runtime": "LIVE_V15_PR26_PATCHED_AHEAD",
+      "order_orchestrator_runtime": "LIVE_V25_PR26_PATCHED_AHEAD_AFTER_RT09",
+      "eprolo_country_shadow_runtime": "LIVE_V12_PR26_PATCHED_AHEAD",
       "runtime_reconciliation_complete": false
     },
     "canonical_pdp_predicate_drift_guard": true,
     "stale_snapshot_precedence_fixed_in_pr26": true,
-    "latest_runtime_evidence": "ops/evidence/hunt-eprolo-pdp-rpc-fix-staged-2026-10-01.json"
+    "latest_runtime_evidence": "ops/evidence/hunt-red-team-remediation-2026-10-01-v1.json"
   },
   "catalog": {
     "status": "PARTIAL",
@@ -118,15 +121,15 @@
     "live_runtime_still_returns_404": true
   },
   "freshness_automation": {
-    "status": "BLOCKED",
+    "status": "BLOCKED_NO_LIVE_SCHEDULE_OR_ROTATION_PROOF",
     "runner_in_pr26": true,
     "schedule_plan_in_pr26": true,
     "live_cron_enabled": false,
     "freshness_runner_secret_present": false,
-    "storefront_pooler_dependency_removed": false,
+    "storefront_pooler_dependency_removed": true,
     "canonical_shelves_pooler_dependency_removed": true,
-    "strict_pdp_db_client_dependency_remaining": true,
-    "reason": "EPROLO canonical storefront shelves no longer depend on HUNT_DB_POOLER_URL or raw Postgres because they use Supabase RPC. Strict EPROLO PDP still uses eproloSqlClient(), and the live 8/8 canary currently returns 404. Freshness automation also remains separately disabled because the shadow scheduler/runner has not been approved and validated for launch.",
+    "strict_pdp_db_client_dependency_remaining": false,
+    "reason": "PR26 contains a shadow-only runner, watcher and disabled schedule plan. Live has 22 cron jobs / 2 active but 0 supplier freshness jobs; both freshness/watch secrets are absent and neither new function is deployed. Closure requires Owner-Gated deployment plus two measured rotations and a failure/recovery test.",
     "blocks_real_money": true,
     "initial_plan": {
       "enabled": false,
@@ -138,7 +141,11 @@
       "eprolo_interval_minutes": 2,
       "eprolo_full_rotation_minutes_max": 22,
       "stale_after_minutes": 90
-    }
+    },
+    "ops_watch_secret_present": false,
+    "runner_live_deployed": false,
+    "watcher_live_deployed": false,
+    "runner_preferred_db_secret": "HUNT_DB_POOLER_URL"
   },
   "fulfillment": {
     "status": "PARTIAL",
@@ -148,8 +155,8 @@
     "eprolo_order_tracking_contract_verified": true,
     "blocks_real_money": true,
     "live_evidence": {
-      "cj_records_total": 8,
-      "failed": 5,
+      "cj_records_total": 10,
+      "failed": 7,
       "processing_stale": 3,
       "tracking": 0,
       "shipped": 0,
@@ -157,14 +164,14 @@
       "last_observed_failures": "2026-09-15"
     },
     "cj_sandbox_e2e_runtime_blocker": {
-      "status": "BLOCKED_PR26_NOT_LIVE_AND_ADMIN_SESSION_REQUIRED",
-      "orchestrator_runtime_version": 23,
+      "status": "BLOCKED_NO_AUTH_SESSION_AND_NO_TRACKING_SHIPPED_PROOF",
+      "orchestrator_runtime_version": 25,
       "signed_in_admin_test_user_exists": true,
       "active_admin_auth_session": false,
       "active_admin_auth_session_count_observed": 0,
       "admin_auth_session_required_blocker_closed": false,
-      "pr26_presupplier_recheck_not_live": true,
-      "blocker": "PR26 order-orchestrator hardening is not live and there is currently no active authenticated Admin session. Do not run CJ sandbox E2E until Owner Gate deploys PR26 and a fresh Admin session is active.",
+      "pr26_presupplier_recheck_not_live": false,
+      "blocker": "Live orchestrator is v25 and includes the hardened source baseline, but there is no active authenticated Admin session and live evidence is 7 failed + 3 stale processing, 0 tracking, 0 shipped. Do not submit a supplier order without Owner Gate and sandbox confirmation.",
       "full_tracking_shipped_e2e_proven": false,
       "admin_authorization_source": "public.profiles.is_admin",
       "supplier_sandbox_control_enabled_owner_approved": true,
@@ -381,9 +388,9 @@
     "pr26_draft": true,
     "pr26_merged": false,
     "ci_catalog_integrity": "PASS",
-    "ci_catalog_integrity_run": 283,
+    "ci_catalog_integrity_run": 286,
     "ci_checkout_regression": "PASS",
-    "ci_checkout_regression_run": 294,
+    "ci_checkout_regression_run": 296,
     "coderabbit_status": "success",
     "branch_protection_verified": true,
     "rulesets_count": 0,
@@ -393,7 +400,8 @@
     "default_branch": "main",
     "required_status_checks_enforced": false,
     "verification_source": "LOCAL_GH_CLI_READ_ONLY_REPO_SCOPE",
-    "observed_at": "2026-10-01T08:08:06Z"
+    "observed_at": "2026-10-01T08:08:06Z",
+    "pr26_head_before_current_docs_commit": "de6e1b361f5e419b58a9f747c58622156c32b158"
   },
   "legacy_snapshots": {
     "status": "PASS",
@@ -421,15 +429,43 @@
     "strict_pdp_rpc_local_checkout_regression_tests": "113/113 PASS"
   },
   "remaining_external_or_runtime_blockers": [
-    "After explicit Owner Gate: apply the PR26 strict-PDP RPC migration, configure HUNT_EPROLO_API_KEY/HUNT_EPROLO_API_SECRET as Edge Function secrets, deploy the PR26 storefront runtime, then rerun the strict EPROLO PDP canary. Live runtime remains unchanged and still has the prior 8/8 HTTP 404 evidence.",
-    "Resolve EPROLO getCostByProduct runtime mismatch before destination-tax truth can close: official doc says GET, live endpoint requires POST, and probed canonical variants were rejected by pricing lookup. Final Profit Verified remains 0. Official docs also expose POST add_product.html for Store import; it was NOT called and may only be tested after Owner Gate in a non-live mode.",
-    "Complete and validate the separately disabled stock/price/shipping freshness automation before real-money launch.",
-    "After explicit Owner Gate, deploy PR26 order-orchestrator hardening; then establish a fresh authenticated Admin session and complete CJ sandbox E2E through supplier order, tracking and shipped evidence. Current active Admin session count is 0.",
-    "EPROLO order/query/tracking/webhook contract is officially documented; still verify a sandbox or explicitly non-billable execution mode and complete approved E2E proof before supplier submission can be enabled.",
-    "PayPlus account/onboarding exists and they requested the site URL. A Sandbox/Test credentials request is prepared as an unsent draft. Obtain/configure sandbox API key, secret and payment page UID, then prove signed callback/status/idempotent paid transition while Payment Live remains OFF.",
-    "Finalize verified HUNT support email, privacy contact email and returns address; then prepare and review customer-facing Terms, Privacy, Returns/Refunds, Shipping/Delivery and applicable cookie-consent policy pages. No standalone policy files were found in the PR26 filename scan.",
-    "Git governance is now verified: default branch main is not protected and repository rulesets count is 0. Enable branch protection/required checks only after Owner Gate; until then this remains a launch blocker.",
-    "Complete final security review, including acknowledgement of the Supabase Free-plan leaked-password-protection limitation.",
-    "Owner Gate before merge, production deploy, Payment Live or Supplier Live."
-  ]
+    "Owner Gate: apply staged guest-session/support-return migration and deploy PR26 payment-session/order-preview/EPROLO country-shadow/storefront sources, then rerun adversarial tests against live runtime.",
+    "Freshness: configure HUNT_FRESHNESS_SHADOW_SECRET/HUNT_OPS_WATCH_SECRET and DB path, deploy runner/watcher, enable only the approved shadow cron plan, prove two rotations plus failure/recovery; live currently has 0 supplier freshness jobs.",
+    "EPROLO: resolve getCostByProduct/store-import variant namespace in an approved non-live path; Final Profit Verified remains 0 until destination tax truth is proven.",
+    "CJ: establish an authenticated Admin sandbox session and prove supplier order -> tracking -> shipped; current evidence is 7 failed + 3 stale processing, 0 tracking, 0 shipped.",
+    "PayPlus: obtain Sandbox/Test credentials and prove signed callback/status/idempotent paid transition while Payment Live remains OFF.",
+    "Legal: provide verified support email, privacy contact email and returns address; review Terms, Privacy, Returns/Refunds and Shipping/Delivery pages.",
+    "Git governance: main is verified unprotected with 0 rulesets; enable required checks only after Owner Gate.",
+    "Security: complete final review and account for leaked-password protection limitation.",
+    "Owner Gate before merge, public pre-launch deploy, Payment Live or Supplier Live."
+  ],
+  "red_team_2026_10_01": {
+    "status": "PARTIAL_STAGED_NOT_LIVE",
+    "source_report": "user-provided HUNT DEAL red team 2026-10-01",
+    "rt01": "PR26_FIXED_NOT_LIVE",
+    "rt02": "PR26_FIXED_NOT_LIVE",
+    "rt03": "PR26_ALREADY_FIXED_LIVE_V12_STALE",
+    "rt04": "BLOCKED_NO_LIVE_SCHEDULE_OR_ROTATION_PROOF",
+    "rt05": "BLOCKED_FINAL_PROFIT_VERIFIED_0",
+    "rt06": "BLOCKED_NO_TRACKING_SHIPPED_E2E",
+    "rt07": "BLOCKED_PAYPLUS_SANDBOX_E2E",
+    "rt08": "PR26_MIGRATION_STAGED_NOT_LIVE",
+    "rt09": "PR26_FIXED_NOT_LIVE",
+    "rt10": "PR26_SOURCE_FIXED_NEEDS_PRELAUNCH_BROWSER_QA",
+    "rt11": "BLOCKED_EXTERNAL_VERIFIED_CONTACTS_AND_POLICY_REVIEW",
+    "rt12": "SOURCE_OF_TRUTH_REFRESHED_MAIN_VERIFIED_UNPROTECTED",
+    "local_tests": {
+      "checkout_red_team": "125/125 PASS",
+      "catalog": "34/34 PASS"
+    },
+    "github_ci_on_core_fix": {
+      "checkout_run": 296,
+      "catalog_run": 286,
+      "status": "PASS"
+    },
+    "payment_live": false,
+    "supplier_live_order": false,
+    "merge": false,
+    "production_deploy": false
+  }
 }

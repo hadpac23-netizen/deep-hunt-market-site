@@ -1,0 +1,63 @@
+{
+  "schema_version": "HUNT_FRESHNESS_SCHEDULE_PLAN_V1",
+  "enabled": false,
+  "scope": "SHADOW_ONLY",
+  "owner_gate_required": true,
+  "runtime_functions": {
+    "runner": "hunt-freshness-shadow-runner",
+    "watcher": "hunt-supplier-ops-watch-shadow"
+  },
+  "required_secrets": [
+    "HUNT_FRESHNESS_SHADOW_SECRET",
+    "HUNT_OPS_WATCH_SECRET"
+  ],
+  "database_connection": {
+    "preferred": "HUNT_DB_POOLER_URL",
+    "fallback": "SUPABASE_DB_URL",
+    "runtime_verified": false
+  },
+  "schedule_after_owner_gate": [
+    {
+      "job": "hunt-cj-freshness-shadow",
+      "provider": "CJdropshipping",
+      "interval_minutes": 2,
+      "batch_size": 10,
+      "persist": true
+    },
+    {
+      "job": "hunt-eprolo-freshness-shadow",
+      "provider": "EPROLO",
+      "interval_minutes": 2,
+      "batch_size": 25,
+      "persist": true
+    },
+    {
+      "job": "hunt-supplier-ops-watch-shadow",
+      "interval_minutes": 5
+    }
+  ],
+  "freshness_policy": {
+    "stale_after_minutes": 90,
+    "failure_action": "HOLD_VARIANT_AND_ALERT"
+  },
+  "closure_tests": [
+    "Functions deployed from the same PR26 commit",
+    "Secrets configured without committing values",
+    "Cron jobs active and observable",
+    "Two complete supplier rotations recorded",
+    "Injected/upstream failure creates HOLD/exception",
+    "Recovery resolves only the matching stale exception",
+    "Payment Live remains OFF",
+    "Supplier Live Order remains OFF",
+    "sellable and production_effect remain unchanged"
+  ],
+  "current_live_truth": {
+    "total_cron_jobs": 22,
+    "active_cron_jobs": 2,
+    "supplier_freshness_cron_jobs": 0,
+    "freshness_secret_present": false,
+    "ops_watch_secret_present": false,
+    "runner_deployed": false,
+    "watcher_deployed": false
+  }
+}

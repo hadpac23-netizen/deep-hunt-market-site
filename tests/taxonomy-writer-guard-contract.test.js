@@ -42,3 +42,9 @@ test('taxonomy writer patch stays shadow-only and does not activate commerce pat
   assert.doesNotMatch(migration, /sellable\s*=\s*true/i);
   assert.doesNotMatch(migration, /production_effect\s*=\s*true/i);
 });
+
+
+test('taxonomy persistence trigger is committed to Git source-of-truth', () => {
+  assert.match(migration, /drop\s+trigger\s+if\s+exists\s+hunt_shadow_taxonomy_persistence_guard/i);
+  assert.match(migration, /create\s+trigger\s+hunt_shadow_taxonomy_persistence_guard[\s\S]*?before\s+update\s+of\s+source_payload[\s\S]*?hunt_shelf_candidates[\s\S]*?hunt_preserve_shadow_taxonomy_gate_v2/i);
+});

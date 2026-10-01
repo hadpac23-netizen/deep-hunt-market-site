@@ -272,10 +272,10 @@
       } else {
         rawResults = [...incoming].sort((a,b)=>listingReadiness(b)-listingReadiness(a));
       }
-      const providers = [...new Set(rawResults.map(p=>p.provider).filter(Boolean))];
+      const sourceCount = new Set(rawResults.map(p=>p.provider).filter(Boolean)).size;
       $("#hd-cat-provider-state").textContent = rawResults.length
-        ? `${rawResults.length} catalog products ready · ${providers.join(" + ")}${label==="live"?" · live refresh merged":""}`
-        : "No connected provider returned a product for this category yet.";
+        ? `${rawResults.length} catalog products ready · ${sourceCount || 1} HUNT source${sourceCount===1?"":"s"}${label==="live"?" · live refresh merged":""}`
+        : "No HUNT catalog source returned a product for this category yet.";
       resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
       window.HuntAnalytics?.category(slug, rawResults.length);
       renderGrid();
