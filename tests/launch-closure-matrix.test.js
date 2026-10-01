@@ -46,11 +46,15 @@ test("CJ and EPROLO readiness are never conflated",()=>{
 
 
 test("2026-10-01 red-team closure distinguishes staged fixes from live proof",()=>{
-  assert.equal(m.red_team_2026_10_01.status,"BACKEND_RUNTIME_RECONCILED_NETLIFY_PENDING");
+  assert.equal(m.red_team_2026_10_01.status,"PRELAUNCH_BROWSER_QA_PASS_EXTERNAL_BLOCKERS_REMAIN");
   assert.equal(m.red_team_2026_10_01.rt01,"LIVE_V27_REPLAY_EXPIRY_PRICE_KILLSWITCH_HARDENED");
   assert.equal(m.red_team_2026_10_01.rt02,"LIVE_V27_V16_OWNER_PROOF_HARDENED");
   assert.equal(m.red_team_2026_10_01.rt08,"LIVE_MIGRATION_APPLIED_PRIVILEGES_HARDENED");
   assert.equal(m.red_team_2026_10_01.rt09,"LIVE_V27_INTEGER_QTY_ENFORCED");
+  assert.equal(m.red_team_2026_10_01.rt10,"PRELAUNCH_BROWSER_PASS_PRIVACY_CONTEXT_MOBILE_390");
+  assert.equal(m.red_team_2026_10_01.prelaunch_netlify.browser_qa,"PASS");
+  assert.equal(m.red_team_2026_10_01.prelaunch_netlify.mobile_390,"PASS");
+  assert.equal(m.red_team_2026_10_01.prelaunch_netlify.production_promoted,false);
   assert.equal(m.freshness_automation.live_cron_enabled,false);
   assert.equal(m.freshness_automation.runner_live_deployed,false);
   assert.equal(m.freshness_automation.watcher_live_deployed,false);

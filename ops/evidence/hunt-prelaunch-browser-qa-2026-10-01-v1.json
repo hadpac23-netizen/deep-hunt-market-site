@@ -1,0 +1,66 @@
+{
+  "schema_version": "HUNT_PRELAUNCH_BROWSER_QA_V1",
+  "observed_at": "2026-10-01T09:49:05Z",
+  "scope": "NETLIFY_DRAFT_ALIAS_ONLY_NO_PRODUCTION_PROMOTION",
+  "pr26_commit": "d0d6772a6804070707a3481f6a861c1f74d34118",
+  "netlify": {
+    "site_name": "deep-hunt-market",
+    "deploy_id": "6abe2997049669300a82f997",
+    "deploy_alias": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
+    "production_promoted": false,
+    "primary_site_changed": false,
+    "bundle_whitelist_only": true,
+    "internal_paths_http_status": {
+      "/ops/hunt-launch-closure-matrix.json": 404,
+      "/supabase/functions/hunt-payment-session/index.ts": 404,
+      "/tests/red-team-closure-contract.test.js": 404,
+      "/.git/config": 404,
+      "/catalog-readiness.json": 404,
+      "/catalog-index.json": 404
+    }
+  },
+  "desktop_runtime": {
+    "category_product_links": 144,
+    "provider_query_param_links": 0,
+    "opaque_source_links": 144,
+    "context_preserved_links": 144,
+    "visible_supplier_labels": 0,
+    "business_metadata_supplier_labels": 0,
+    "pdp_category_link": "Women's Fashion \u00b7 Dresses & Skirts",
+    "pdp_related_categories": [
+      "dresses"
+    ],
+    "pdp_related_source_label": "HUNT SOURCE",
+    "checkout_real_payment_redirects": 0,
+    "checkout_status": "PRELAUNCH_PAYMENT_DISABLED"
+  },
+  "mobile_390x844": {
+    "category": {
+      "client_width": 390,
+      "scroll_width": 390,
+      "page_horizontal_overflow": false
+    },
+    "pdp": {
+      "client_width": 390,
+      "scroll_width": 390,
+      "page_horizontal_overflow": false,
+      "thumbnail_strip_horizontal_scroll_expected": true,
+      "visible_supplier_labels": 0,
+      "category_link": "Women's Fashion \u00b7 Dresses & Skirts"
+    },
+    "checkout": {
+      "client_width": 390,
+      "scroll_width": 390,
+      "page_horizontal_overflow": false,
+      "visible_supplier_labels": 0,
+      "payment_button": "Payment activation pending"
+    }
+  },
+  "privacy_note": "Supplier CDN hostnames may remain in image URLs because the browser must fetch approved product media; they are not rendered as supplier UI labels or HUNT business metadata.",
+  "safety": {
+    "payment_live": false,
+    "supplier_live_order": false,
+    "merge": false,
+    "production_deploy": false
+  }
+}

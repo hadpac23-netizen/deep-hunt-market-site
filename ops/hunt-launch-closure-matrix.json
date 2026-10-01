@@ -488,7 +488,7 @@
     "Owner Gate before merge, public pre-launch deploy, Payment Live or Supplier Live."
   ],
   "red_team_2026_10_01": {
-    "status": "BACKEND_RUNTIME_RECONCILED_NETLIFY_PENDING",
+    "status": "PRELAUNCH_BROWSER_QA_PASS_EXTERNAL_BLOCKERS_REMAIN",
     "source_report": "user-provided HUNT DEAL red team 2026-10-01",
     "rt01": "LIVE_V27_REPLAY_EXPIRY_PRICE_KILLSWITCH_HARDENED",
     "rt02": "LIVE_V27_V16_OWNER_PROOF_HARDENED",
@@ -499,12 +499,12 @@
     "rt07": "BLOCKED_PAYPLUS_SANDBOX_E2E",
     "rt08": "LIVE_MIGRATION_APPLIED_PRIVILEGES_HARDENED",
     "rt09": "LIVE_V27_INTEGER_QTY_ENFORCED",
-    "rt10": "SOURCE_AND_STOREFRONT_RUNTIME_FIXED_PENDING_NETLIFY_BROWSER_QA",
+    "rt10": "PRELAUNCH_BROWSER_PASS_PRIVACY_CONTEXT_MOBILE_390",
     "rt11": "BLOCKED_EXTERNAL_VERIFIED_CONTACTS_AND_POLICY_REVIEW",
     "rt12": "SOURCE_OF_TRUTH_REFRESHED_MAIN_VERIFIED_UNPROTECTED",
     "local_tests": {
-      "checkout_red_team": "125/125 PASS",
-      "catalog": "34/34 PASS"
+      "checkout_red_team": "137/137 PASS",
+      "catalog": "35/35 PASS"
     },
     "github_ci_on_core_fix": {
       "checkout_run": 296,
@@ -514,7 +514,20 @@
     "payment_live": false,
     "supplier_live_order": false,
     "merge": false,
-    "production_deploy": false
+    "production_deploy": false,
+    "github_ci_on_browser_fix": {
+      "commit": "d0d6772a6804070707a3481f6a861c1f74d34118",
+      "checkout_run": 302,
+      "catalog_run": 297,
+      "status": "PASS"
+    },
+    "prelaunch_netlify": {
+      "deploy_id": "6abe2997049669300a82f997",
+      "alias": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
+      "browser_qa": "PASS",
+      "mobile_390": "PASS",
+      "production_promoted": false
+    }
   },
   "payplus_prelaunch_url_gate": {
     "status": "BLOCKED_NOT_DEPLOYED_AND_LEGAL_CONTACTS_INCOMPLETE",
