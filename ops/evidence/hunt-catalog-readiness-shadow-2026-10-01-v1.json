@@ -58,7 +58,8 @@
     "final_visual_hold_products": 8,
     "final_visual_unreviewed_products": 2,
     "sensitive_manual_review_required_products": 2,
-    "physical_metadata_verified_products_within_reserve_safe_set": 4,
+    "physical_metadata_verified_products_within_reserve_safe_set": 15,
+    "market5_visual_pass_physical_metadata_overlap": 11,
     "physical_quality_pass_products": 0,
     "final_profit_verified_products": 0,
     "metadata_status": "RESERVE_SAFE_4_MARKETS_US_HOLD",
@@ -66,14 +67,23 @@
     "final_profit_verified": false
   },
   "physical_evidence_session": {
-    "dispatch_attempts": 51,
-    "fresh_verified_metadata": 50,
+    "dispatch_attempts": 62,
+    "fresh_verified_metadata": 61,
     "fresh_timeout_count": 1,
-    "eprolo_physical_metadata_verified_status_total": 275,
+    "eprolo_physical_metadata_verified_status_total": 286,
     "eprolo_physical_evidence_pending_total": 1,
-    "reserve_safe_style_reconcile_to_physical_evidence": 2,
-    "reserve_safe_targeted_metadata_verified": 2,
+    "reserve_safe_preexisting_style_gate_reconciled": 2,
+    "reserve_safe_manual_pixel_pass_reconciled": 11,
+    "reserve_safe_targeted_metadata_verified_total": 13,
     "physical_quality_policy": "UNVERIFIED_UNTIL_SAMPLE_OR_REVIEW_EVIDENCE",
+    "quality_signal_snapshot": {
+      "EPROLO_reserve_safe_products": 43,
+      "EPROLO_with_review_or_rating_signal": 0,
+      "CJ_reserve_safe_products": 11,
+      "CJ_with_existing_review_observation": 0,
+      "CJ_official_reviews_api_exists": true,
+      "CJ_reviews_connector_path_available_without_code_change": false
+    },
     "timeout_item": {
       "provider": "EPROLO",
       "item_id": "21544182",
@@ -117,8 +127,9 @@
   },
   "next_gates": [
     "Manual sensitive-apparel visual review remains for two reserve-safe rows; no automatic pixel pass was assigned",
-    "Physical quality/sample or review evidence beyond supplier metadata",
+    "Physical quality/sample or official review evidence beyond supplier metadata; current reserve-safe quality PASS remains zero",
     "Transaction-level tax truth; Stripe Tax test secret is not configured and US requires address-level state/local tax plus nexus determination",
+    "CJ official Product Reviews API can provide review evidence, but no existing HUNT read-only connector exposes it and no new Production function was deployed",
     "Fresh retry of EPROLO item 21544182 only after cooldown or explicit targeted recheck",
     "No readiness score increase until remaining gates have evidence"
   ],
