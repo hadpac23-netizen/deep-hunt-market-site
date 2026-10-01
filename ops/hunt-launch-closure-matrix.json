@@ -202,7 +202,15 @@
       },
       "endpoint_guessing_allowed": false,
       "supplier_submission_allowed": false,
-      "remaining": "Resolve pricing/order variant runtime mapping and sandbox/non-billable execution mode; Owner Gate required before any mutating call."
+      "remaining": "Resolve pricing/order variant runtime mapping. Official docs expose a mutating Store-import API that returns store-side variant IDs, but HUNT has not called it; verify the namespace bridge only in an Owner-approved non-live mode. Sandbox/non-billable execution proof remains required.",
+      "store_import_context": {
+        "path": "add_product.html",
+        "method": "POST",
+        "mutating": true,
+        "executed": false,
+        "possible_namespace_bridge": "UNVERIFIED_HYPOTHESIS",
+        "owner_gate_required": true
+      }
     }
   },
   "payment": {
@@ -374,7 +382,7 @@
   },
   "remaining_external_or_runtime_blockers": [
     "After explicit Owner Gate: apply the PR26 strict-PDP RPC migration, configure HUNT_EPROLO_API_KEY/HUNT_EPROLO_API_SECRET as Edge Function secrets, deploy the PR26 storefront runtime, then rerun the strict EPROLO PDP canary. Live runtime remains unchanged and still has the prior 8/8 HTTP 404 evidence.",
-    "Resolve EPROLO getCostByProduct runtime mismatch before destination-tax truth can close: official doc says GET, live endpoint requires POST, and probed canonical variants were rejected by pricing lookup. Final Profit Verified remains 0.",
+    "Resolve EPROLO getCostByProduct runtime mismatch before destination-tax truth can close: official doc says GET, live endpoint requires POST, and probed canonical variants were rejected by pricing lookup. Final Profit Verified remains 0. Official docs also expose POST add_product.html for Store import; it was NOT called and may only be tested after Owner Gate in a non-live mode.",
     "Complete and validate the separately disabled stock/price/shipping freshness automation before real-money launch.",
     "After explicit Owner Gate, deploy PR26 order-orchestrator hardening and complete CJ authenticated Admin sandbox E2E through supplier order, tracking and shipped evidence.",
     "EPROLO order/query/tracking/webhook contract is officially documented; still verify a sandbox or explicitly non-billable execution mode and complete approved E2E proof before supplier submission can be enabled.",

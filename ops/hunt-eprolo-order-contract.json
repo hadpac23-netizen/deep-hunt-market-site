@@ -226,6 +226,15 @@
         "-1": "Fail",
         "-10000": "(Add/Edit) failed"
       }
+    },
+    "store_import_context": {
+      "path": "add_product.html",
+      "method": "POST",
+      "mutating": true,
+      "request": "ids[] of EPROLO platform product ids",
+      "returns_store_product_and_variant_ids": true,
+      "executed_by_hunt": false,
+      "possible_order_namespace_prerequisite": "UNVERIFIED_HYPOTHESIS"
     }
   },
   "execution_proof": {
@@ -242,6 +251,7 @@
   },
   "remaining_before_supplier_order_enable": [
     "resolve getCostByProduct runtime contract mismatch: docs say GET, live API requires POST, and current canonical variants are rejected by pricing lookup",
+    "verify whether Store import via add_product.html is the required namespace bridge for getCostByProduct/order variants, using only an Owner-approved non-live path",
     "verify whether EPROLO offers a sandbox or explicitly non-billable order mode",
     "implement and review fail-closed request/response mapping in PR26 without enabling submission",
     "prove read-only order_list/getCostByProduct behavior before any mutating supplier call",

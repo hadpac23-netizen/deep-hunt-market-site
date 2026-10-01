@@ -52,12 +52,25 @@
       }
     ]
   },
-  "decision": "KEEP_DESTINATION_TAX_AND_FINAL_PROFIT_UNVERIFIED_DO_NOT_GUESS_MORE_REQUEST_FORMATS",
+  "decision": "KEEP_DESTINATION_TAX_AND_FINAL_PROFIT_UNVERIFIED; DO_NOT_GUESS MORE FORMATS; VERIFY STORE-IMPORT NAMESPACE ONLY IN OWNER-APPROVED NON-LIVE MODE",
   "safety": {
     "supplier_order_created": false,
     "supplier_state_mutated": false,
     "supplier_live_order": false,
     "payment_live": false,
     "production_effect": false
+  },
+  "store_import_contract_context": {
+    "official_page_title": "Import Products from platform to Store API",
+    "page_id": "7664581926527720",
+    "path": "add_product.html",
+    "method": "POST",
+    "request_shape": {
+      "ids": "array of EPROLO platform product ids"
+    },
+    "returns": "store-side product objects with variantlist ids",
+    "executed_by_hunt": false,
+    "reason_not_executed": "MUTATING_SUPPLIER_STATE_REQUIRES_OWNER_GATE",
+    "hypothesis_only": "Order/pricing endpoints may require Store-imported product/variant namespace; this is not yet proven."
   }
 }
