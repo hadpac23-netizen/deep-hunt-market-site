@@ -4,6 +4,7 @@
 create or replace function public.hunt_preserve_shadow_taxonomy_gate_v2()
 returns trigger
 language plpgsql
+set search_path = ''
 as $function$
 declare
   old_gate jsonb;
