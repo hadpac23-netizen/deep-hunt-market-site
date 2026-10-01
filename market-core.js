@@ -304,12 +304,34 @@
     return data;
   }
 
-  const productUrl = product => `product.html?provider=${encodeURIComponent(product?.provider || "Printful")}&id=${encodeURIComponent(product?.item_id || "")}`;
+  const providerSourceCodes = Object.freeze({
+    "cjdropshipping":"s1",
+    "eprolo":"s2",
+    "printful":"s3",
+    "gooten":"s4",
+    "matterhorn wholesale":"s5",
+    "matterhorn":"s5",
+    "hunt merchant":"s6",
+    "merchant":"s6"
+  });
+  const sourceCodeProviders = Object.freeze({
+    s1:"CJdropshipping",s2:"EPROLO",s3:"Printful",s4:"Gooten",s5:"Matterhorn Wholesale",s6:"HUNT Merchant"
+  });
+  const sourceCodeForProvider = value => providerSourceCodes[String(value || "").trim().toLowerCase()] || "s0";
+  const providerForSourceCode = value => sourceCodeProviders[String(value || "").trim().toLowerCase()] || "";
+  const productUrl = (product, context={}) => {
+    const q = new URLSearchParams();
+    q.set("src", sourceCodeForProvider(product?.provider));
+    q.set("id", String(product?.item_id || ""));
+    if (context?.c) q.set("c", String(context.c));
+    if (context?.sub) q.set("sub", String(context.sub));
+    return `product.html?${q.toString()}`;
+  };
   const categoryUrl = slug => `category.html?c=${encodeURIComponent(categoryDefs[slug] ? slug : "women")}`;
 
   window.HuntCore = {
     functionsBase,publishableKey,cartKey,signalKey,preferenceKey,categoryDefs,categoryGroups,esc,money,safeQuery,
     inferCategory,slugFromQuery,recordSignal,personalScore,personalReason,signals,shoppingPreferences,saveShoppingPreferences,
-    cart,saveCart,addCart,cartCount,updateCartBadges,storefront,search,productUrl,categoryUrl
+    cart,saveCart,addCart,cartCount,updateCartBadges,storefront,search,sourceCodeForProvider,providerForSourceCode,productUrl,categoryUrl
   };
 })();

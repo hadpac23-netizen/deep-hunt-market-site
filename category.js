@@ -32,7 +32,7 @@
     const image = product.image_url?.startsWith("https://")
       ? `<img src="${H.esc(product.image_url)}" alt="${H.esc(product.title || "Product")}" loading="lazy">`
       : `<div class="hd-market-card-placeholder">◇</div>`;
-    const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">${H.esc(product.provider || "CATALOG")}</span>`;
+    const badge = score > 0 ? `<span class="hd-market-for-you">FOR YOU</span>` : `<span class="hd-market-source">HUNT PICK</span>`;
     const retail = retailState(product);
     const price = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
     const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
@@ -41,11 +41,11 @@
       : retail.ready
         ? "HUNT RETAIL · QUOTE REQUIRED"
         : (product.availability_verified === true ? "CATALOG" : "DISCOVERY");
-    const productUrl = H.productUrl(product);
+    const productUrl = H.productUrl(product,{c:slug,sub});
     return `<article class="hd-market-product-card" data-category="${H.esc(product.category || slug)}" data-key="${H.esc(productKey(product))}" data-price="${retail.amount || 0}" data-score="${score}">
       <a class="hd-market-card-media" href="${H.esc(productUrl)}" data-product-view="${H.esc(productKey(product))}">${image}${badge}</a>
       <div class="hd-market-card-body">
-        <small>${H.esc(product.provider || "Provider")} · ${H.esc(stateLabel)}</small>
+        <small>HUNT CATALOG · ${H.esc(stateLabel)}</small>
         <a href="${H.esc(productUrl)}" class="hd-market-card-title" data-product-view="${H.esc(productKey(product))}">${H.esc(product.title || "Product")}</a>
         <div class="hd-market-card-price"><strong>${price}</strong><span>${retail.ready ? "HUNT RETAIL" : "PRICE PENDING"}</span></div>
         <p>${H.esc(score > 0 ? H.personalReason(product) : "Open the product to inspect images, variants and availability.")}</p>

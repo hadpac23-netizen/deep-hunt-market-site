@@ -1,18 +1,18 @@
 {
   "schema_version": "HUNT_LAUNCH_CLOSURE_MATRIX_V1",
-  "observed_at": "2026-10-01T08:08:06Z",
+  "observed_at": "2026-10-01T09:19:51Z",
   "source_of_truth": {
-    "status": "PARTIAL_RED_TEAM_REMEDIATION_STAGED_NOT_LIVE",
-    "evidence": "PR26 remains Draft and unmerged. RT01/RT02/RT08/RT09 and customer-facing RT10 fixes are staged in PR26 commit de6e1b3 and passed local 125/125 checkout/red-team plus 34/34 catalog tests; GitHub Catalog #286 and Checkout #296 passed. Live payment-session v26, order-preview v15 and EPROLO country-shadow v12 remain unchanged until Owner Gate.",
+    "status": "PRELAUNCH_BACKEND_HARDENING_LIVE_FRONTEND_PATCH_PENDING",
+    "evidence": "RT01/RT02/RT03/RT08/RT09 backend hardening is now live with commerce controls OFF. Payment session v27, order preview v16, orchestrator v26, storefront v141 and EPROLO country-shadow v13 quarantine are active. Current frontend/privacy/EPROLO-public-hold patch is pending commit/deploy.",
     "blocks_real_money": true,
     "storefront_source_layout_fixed": true,
     "storefront_sidecars_separate": true,
     "runtime_git_comparison": {
-      "storefront_runtime": "LIVE_V140_PR26_PATCHED_AHEAD",
-      "payment_session_runtime": "LIVE_V26_PR26_PATCHED_AHEAD",
-      "order_preview_runtime": "LIVE_V15_PR26_PATCHED_AHEAD",
-      "order_orchestrator_runtime": "LIVE_V25_PR26_PATCHED_AHEAD_AFTER_RT09",
-      "eprolo_country_shadow_runtime": "LIVE_V12_PR26_PATCHED_AHEAD",
+      "storefront_runtime": "LIVE_V141_NEW_FRONTEND_AND_PUBLIC_HOLD_PATCH_PENDING",
+      "payment_session_runtime": "LIVE_V27_EXACT_PR26",
+      "order_preview_runtime": "LIVE_V16_EXACT_PR26",
+      "order_orchestrator_runtime": "LIVE_V26_EXACT_PR26",
+      "eprolo_country_shadow_runtime": "LIVE_V13_QUARANTINED_EXACT_SOURCE",
       "runtime_reconciliation_complete": false
     },
     "canonical_pdp_predicate_drift_guard": true,
@@ -61,7 +61,7 @@
       "aging": "9-23"
     },
     "eprolo_canonical_pdp_ready": 261,
-    "eprolo_live_fresh_truth_status": "LIVE_STOCK_COST_SHIPPING_VERIFIED_TAX_MISSING",
+    "eprolo_live_fresh_truth_status": "QUARANTINED_SAFE_RUNTIME_PENDING_TAX_AND_PDP_CREDENTIALS",
     "blocks_real_money": true,
     "eprolo_destination_tax_patch_in_pr26": true,
     "eprolo_final_profit_requires_provider_tax_truth": true,
@@ -89,10 +89,12 @@
       "production_effect": false,
       "observed_at": "2026-10-01T00:36:49Z"
     },
-    "eprolo_destination_tax_blocker": "No verified transaction-level destination-tax/DDP value exists for the audited EPROLO launch cohort. Do not infer customs duty or convert reserve-only tax assumptions into Final Profit Verified."
+    "eprolo_destination_tax_blocker": "No verified transaction-level destination-tax/DDP value exists for the audited EPROLO launch cohort. Do not infer customs duty or convert reserve-only tax assumptions into Final Profit Verified.",
+    "eprolo_public_display_enabled": false,
+    "eprolo_country_shadow_runtime_version": 13
   },
   "pdp_readiness": {
-    "status": "BLOCKED_LIVE_RUNTIME_PR26_RPC_FIX_STAGED",
+    "status": "BLOCKED_EPROLO_PDP_EDGE_CREDENTIALS_MISSING_PUBLIC_HOLD",
     "strict_eprolo": 826,
     "pdp_detail_pass": 517,
     "latest_private_qa_pass": 266,
@@ -110,7 +112,7 @@
       "evidence": "ops/evidence/hunt-eprolo-pdp-runtime-blocker-2026-10-01.json"
     },
     "runtime_db_path": {
-      "strict_pdp_uses_eproloSqlClient": true,
+      "strict_pdp_uses_eproloSqlClient": false,
       "db_url_precedence": [
         "HUNT_DB_POOLER_URL",
         "SUPABASE_DB_POOLER_URL",
@@ -123,10 +125,10 @@
       "pr26_rpc_function": "hunt_eprolo_strict_pdp_candidate_v1",
       "pr26_rpc_service_role_only": true,
       "pr26_rpc_search_path_locked": true,
-      "live_runtime_fix_applied": false,
-      "owner_gate_required_for_apply_and_deploy": true
+      "live_runtime_fix_applied": true,
+      "owner_gate_required_for_apply_and_deploy": false
     },
-    "pr26_rpc_fix_staged": true,
+    "pr26_rpc_fix_staged": false,
     "pr26_rpc_migration": "supabase/migrations/20261001034500_hunt_eprolo_strict_pdp_rpc_v1.sql",
     "pr26_strict_pdp_db_connection_mode": "supabase_rpc",
     "pr26_raw_postgres_dependency_removed": true,
@@ -134,8 +136,12 @@
       "HUNT_EPROLO_API_KEY",
       "HUNT_EPROLO_API_SECRET"
     ],
-    "live_runtime_unchanged": true,
-    "live_runtime_still_returns_404": true
+    "live_runtime_unchanged": false,
+    "live_runtime_still_returns_404": true,
+    "eprolo_public_display_enabled": false,
+    "live_runtime_fix_applied": true,
+    "owner_gate_required_for_apply_and_deploy": false,
+    "current_public_hold_reason": "PDP_RUNTIME_CREDENTIALS_NOT_READY"
   },
   "freshness_automation": {
     "status": "BLOCKED_NO_LIVE_SCHEDULE_OR_ROTATION_PROOF",
@@ -167,7 +173,7 @@
   "fulfillment": {
     "status": "PARTIAL",
     "cj_presupplier_recheck_in_pr26": true,
-    "cj_presupplier_recheck_in_live_runtime": false,
+    "cj_presupplier_recheck_in_live_runtime": true,
     "cj_full_sandbox_e2e_proven": false,
     "eprolo_order_tracking_contract_verified": true,
     "blocks_real_money": true,
@@ -182,7 +188,7 @@
     },
     "cj_sandbox_e2e_runtime_blocker": {
       "status": "BLOCKED_NO_AUTH_SESSION_AND_NO_TRACKING_SHIPPED_PROOF",
-      "orchestrator_runtime_version": 25,
+      "orchestrator_runtime_version": 26,
       "signed_in_admin_test_user_exists": true,
       "active_admin_auth_session": false,
       "active_admin_auth_session_count_observed": 0,
@@ -374,7 +380,10 @@
       "20260930160010_lock_profile_privileged_insert_fields",
       "20260930160053_deny_client_access_shadow_pricing",
       "20260930160138_harden_profile_update_policies",
-      "20260930165643_hunt_eprolo_canonical_shelves_rpc_v1"
+      "20260930165643_hunt_eprolo_canonical_shelves_rpc_v1",
+      "20261001013000_hunt_taxonomy_writer_guard_v3",
+      "20261001034500_hunt_eprolo_strict_pdp_rpc_v1",
+      "20261001082701_harden_customer_case_permissions_rt08"
     ],
     "customer_ui_password_auth_present": false,
     "customer_ui_auth_modes": [
@@ -382,7 +391,8 @@
       "OAUTH",
       "GOOGLE_ID_TOKEN"
     ],
-    "leaked_password_risk_ui_mitigation": "HUNT customer UI exposes no password-auth path; project-level leaked-password protection remains disabled and is not claimed fixed."
+    "leaked_password_risk_ui_mitigation": "HUNT customer UI exposes no password-auth path; project-level leaked-password protection remains disabled and is not claimed fixed.",
+    "rt08_customer_case_privileges_hardened": true
   },
   "legal": {
     "status": "BLOCKED_CUSTOMER_CONTACTS_AND_POLICY_REVIEW",
@@ -469,18 +479,18 @@
     "Owner Gate before merge, public pre-launch deploy, Payment Live or Supplier Live."
   ],
   "red_team_2026_10_01": {
-    "status": "PARTIAL_STAGED_NOT_LIVE",
+    "status": "BACKEND_HARDENING_LIVE_FRONTEND_PENDING",
     "source_report": "user-provided HUNT DEAL red team 2026-10-01",
-    "rt01": "PR26_FIXED_NOT_LIVE",
-    "rt02": "PR26_FIXED_NOT_LIVE",
-    "rt03": "PR26_ALREADY_FIXED_LIVE_V12_STALE",
+    "rt01": "LIVE_V27_REPLAY_EXPIRY_PRICE_KILLSWITCH_HARDENED",
+    "rt02": "LIVE_V27_V16_OWNER_PROOF_HARDENED",
+    "rt03": "LIVE_V13_QUARANTINED_NO_PUBLIC_ECONOMICS",
     "rt04": "BLOCKED_NO_LIVE_SCHEDULE_OR_ROTATION_PROOF",
     "rt05": "BLOCKED_FINAL_PROFIT_VERIFIED_0",
     "rt06": "BLOCKED_NO_TRACKING_SHIPPED_E2E",
     "rt07": "BLOCKED_PAYPLUS_SANDBOX_E2E",
-    "rt08": "PR26_MIGRATION_STAGED_NOT_LIVE",
-    "rt09": "PR26_FIXED_NOT_LIVE",
-    "rt10": "PR26_SOURCE_FIXED_NEEDS_PRELAUNCH_BROWSER_QA",
+    "rt08": "LIVE_MIGRATION_APPLIED_PRIVILEGES_HARDENED",
+    "rt09": "LIVE_V27_INTEGER_QTY_ENFORCED",
+    "rt10": "SOURCE_FIXED_PENDING_NETLIFY_BROWSER_QA",
     "rt11": "BLOCKED_EXTERNAL_VERIFIED_CONTACTS_AND_POLICY_REVIEW",
     "rt12": "SOURCE_OF_TRUTH_REFRESHED_MAIN_VERIFIED_UNPROTECTED",
     "local_tests": {

@@ -1,7 +1,7 @@
 {
   "schema_version": "HUNT_RED_TEAM_REMEDIATION_V1",
-  "observed_at": "2026-10-01T08:30:00Z",
-  "scope": "PR26_STAGED_ONLY",
+  "observed_at": "2026-10-01T09:19:51Z",
+  "scope": "PRELAUNCH_BACKEND_HARDENING_APPLIED_PUBLIC_SITE_PENDING",
   "pr26_core_fix_commit": "de6e1b361f5e419b58a9f747c58622156c32b158",
   "tests": {
     "local_checkout_red_team": {
@@ -19,18 +19,18 @@
     }
   },
   "findings": {
-    "status": "PARTIAL_STAGED_NOT_LIVE",
+    "status": "BACKEND_HARDENING_LIVE_FRONTEND_PENDING",
     "source_report": "user-provided HUNT DEAL red team 2026-10-01",
-    "rt01": "PR26_FIXED_NOT_LIVE",
-    "rt02": "PR26_FIXED_NOT_LIVE",
-    "rt03": "PR26_ALREADY_FIXED_LIVE_V12_STALE",
+    "rt01": "LIVE_V27_REPLAY_EXPIRY_PRICE_KILLSWITCH_HARDENED",
+    "rt02": "LIVE_V27_V16_OWNER_PROOF_HARDENED",
+    "rt03": "LIVE_V13_QUARANTINED_NO_PUBLIC_ECONOMICS",
     "rt04": "BLOCKED_NO_LIVE_SCHEDULE_OR_ROTATION_PROOF",
     "rt05": "BLOCKED_FINAL_PROFIT_VERIFIED_0",
     "rt06": "BLOCKED_NO_TRACKING_SHIPPED_E2E",
     "rt07": "BLOCKED_PAYPLUS_SANDBOX_E2E",
-    "rt08": "PR26_MIGRATION_STAGED_NOT_LIVE",
-    "rt09": "PR26_FIXED_NOT_LIVE",
-    "rt10": "PR26_SOURCE_FIXED_NEEDS_PRELAUNCH_BROWSER_QA",
+    "rt08": "LIVE_MIGRATION_APPLIED_PRIVILEGES_HARDENED",
+    "rt09": "LIVE_V27_INTEGER_QTY_ENFORCED",
+    "rt10": "SOURCE_FIXED_PENDING_NETLIFY_BROWSER_QA",
     "rt11": "BLOCKED_EXTERNAL_VERIFIED_CONTACTS_AND_POLICY_REVIEW",
     "rt12": "SOURCE_OF_TRUTH_REFRESHED_MAIN_VERIFIED_UNPROTECTED",
     "local_tests": {
@@ -45,14 +45,16 @@
     "payment_live": false,
     "supplier_live_order": false,
     "merge": false,
-    "production_deploy": false
+    "production_deploy": false,
+    "edge_runtime_hardening_deployed": true,
+    "public_site_deployed": false
   },
   "live_runtime": {
-    "payment_session_version": 26,
-    "order_preview_version": 15,
-    "order_orchestrator_version": 25,
-    "storefront_version": 140,
-    "eprolo_country_shadow_version": 12,
+    "payment_session_version": 27,
+    "order_preview_version": 16,
+    "order_orchestrator_version": 26,
+    "storefront_version": 141,
+    "eprolo_country_shadow_version": 13,
     "supplier_freshness_cron_jobs": 0,
     "cron_jobs_total": 22,
     "cron_jobs_active": 2,
@@ -65,7 +67,9 @@
       "processing": 3,
       "tracking": 0,
       "shipped": 0
-    }
+    },
+    "eprolo_internal_token_present": false,
+    "public_eprolo_economics_blocked": true
   },
   "safety": {
     "payment_live": false,
@@ -73,7 +77,7 @@
     "merge": false,
     "production_deploy": false
   },
-  "note": "No production deployment, live permission mutation, payment, supplier order or secret value was performed or stored in this remediation.",
+  "note": "Pre-Launch backend hardening is live. No real payment, supplier live order, merge to main, or public Netlify candidate deployment was activated. EPROLO country economics are quarantined fail-closed pending safe runtime credentials.",
   "runtime_history_note": {
     "no_op_migrations_recorded_live": [
       "20261001083757 __noop_probe_should_not_run__",
@@ -86,5 +90,34 @@
     "data_changed": false,
     "permissions_changed": false,
     "git_parity_files_added": true
+  },
+  "applied_prelaunch_migrations": [
+    "hunt_taxonomy_writer_guard_v3",
+    "hunt_eprolo_strict_pdp_rpc_v1",
+    "harden_customer_case_permissions_rt08"
+  ],
+  "runtime_probes": {
+    "rt03_public_probe": {
+      "http_status": 503,
+      "status": "HOLD",
+      "supplier_economics_exposed": false,
+      "final_profit_verified": false
+    },
+    "rt09_fractional_quantity_probe": {
+      "input_qty": 1.7,
+      "http_status": 400,
+      "error": "INVALID_QUANTITY"
+    },
+    "storefront_v141_shelf_probe": {
+      "http_status": 200,
+      "shelf": "dresses",
+      "visible_product_count": 56,
+      "eprolo_db_connection_mode": "supabase_rpc"
+    },
+    "eprolo_pdp_canary": {
+      "http_status": 404,
+      "public_display_enabled": false,
+      "blocker": "PDP_RUNTIME_CREDENTIALS_NOT_READY"
+    }
   }
 }

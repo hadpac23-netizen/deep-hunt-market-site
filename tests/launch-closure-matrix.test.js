@@ -38,7 +38,7 @@ test("CJ and EPROLO readiness are never conflated",()=>{
   assert.equal(m.catalog.cj_exact_variant_refresh_pool,63);
   assert.equal(m.catalog.eprolo_canonical_pdp_ready,261);
   assert.equal(m.catalog.cj_live_il_audit.fresh_pretax_pass,30);
-  assert.equal(m.catalog.eprolo_live_fresh_truth_status,"LIVE_STOCK_COST_SHIPPING_VERIFIED_TAX_MISSING");
+  assert.equal(m.catalog.eprolo_live_fresh_truth_status,"QUARANTINED_SAFE_RUNTIME_PENDING_TAX_AND_PDP_CREDENTIALS");
   assert.equal(m.catalog.eprolo_live_runtime_proof.canonical_core_audited,261);
   assert.equal(m.catalog.eprolo_live_runtime_proof.tax_unverified,261);
   assert.equal(m.catalog.eprolo_live_runtime_proof.final_profit_verified,0);
@@ -46,11 +46,11 @@ test("CJ and EPROLO readiness are never conflated",()=>{
 
 
 test("2026-10-01 red-team closure distinguishes staged fixes from live proof",()=>{
-  assert.equal(m.red_team_2026_10_01.status,"PARTIAL_STAGED_NOT_LIVE");
-  assert.equal(m.red_team_2026_10_01.rt01,"PR26_FIXED_NOT_LIVE");
-  assert.equal(m.red_team_2026_10_01.rt02,"PR26_FIXED_NOT_LIVE");
-  assert.equal(m.red_team_2026_10_01.rt08,"PR26_MIGRATION_STAGED_NOT_LIVE");
-  assert.equal(m.red_team_2026_10_01.rt09,"PR26_FIXED_NOT_LIVE");
+  assert.equal(m.red_team_2026_10_01.status,"BACKEND_HARDENING_LIVE_FRONTEND_PENDING");
+  assert.equal(m.red_team_2026_10_01.rt01,"LIVE_V27_REPLAY_EXPIRY_PRICE_KILLSWITCH_HARDENED");
+  assert.equal(m.red_team_2026_10_01.rt02,"LIVE_V27_V16_OWNER_PROOF_HARDENED");
+  assert.equal(m.red_team_2026_10_01.rt08,"LIVE_MIGRATION_APPLIED_PRIVILEGES_HARDENED");
+  assert.equal(m.red_team_2026_10_01.rt09,"LIVE_V27_INTEGER_QTY_ENFORCED");
   assert.equal(m.freshness_automation.live_cron_enabled,false);
   assert.equal(m.freshness_automation.runner_live_deployed,false);
   assert.equal(m.freshness_automation.watcher_live_deployed,false);

@@ -36,33 +36,31 @@
     if (node && node.textContent !== value) node.textContent = value;
   }
 
-  function aliasProductUrl(product) {
+  function aliasProductUrl(product, context={}) {
     const provider = String(product?.provider || "");
-    const alias = providerAlias(provider);
-    const source = alias || provider;
+    const alias = providerAlias(provider) || window.HuntCore?.sourceCodeForProvider?.(provider) || "s0";
     const url=new URL("product.html",location.href);
-    url.searchParams.set("provider",source);
+    url.searchParams.set("src",alias);
     url.searchParams.set("id",String(product?.item_id||""));
     const page=new URL(location.href);
-    if(/category\.html$/i.test(page.pathname)){
-      const parent=String(page.searchParams.get("c")||"").toLowerCase();
-      const sub=String(page.searchParams.get("sub")||"").toLowerCase();
-      if(parent)url.searchParams.set("c",parent);
-      if(sub)url.searchParams.set("sub",sub);
-    }
+    const parent=String(context?.c||page.searchParams.get("c")||"").toLowerCase();
+    const sub=String(context?.sub||page.searchParams.get("sub")||"").toLowerCase();
+    if(parent)url.searchParams.set("c",parent);
+    if(sub)url.searchParams.set("sub",sub);
     return `${url.pathname.split("/").pop()}?${url.searchParams.toString()}`;
   }
 
   function rewriteProductLink(link) {
     const href = link?.getAttribute?.("href") || "";
-    if (!href || !href.includes("product.html") || !href.includes("provider=")) return;
+    if (!href || !href.includes("product.html")) return;
     let url;
     try { url = new URL(href, location.href); } catch { return; }
+    if (url.searchParams.get("src")) return;
     const provider = url.searchParams.get("provider") || "";
-    if (providers.has(provider.toLowerCase())) return;
     const alias = providerAlias(provider);
     if (!alias) return;
-    url.searchParams.set("provider", alias);
+    url.searchParams.delete("provider");
+    url.searchParams.set("src", alias);
     const next = `${url.pathname.split("/").pop()}?${url.searchParams.toString()}${url.hash}`;
     if (href !== next) link.setAttribute("href", next);
   }
@@ -75,7 +73,7 @@
   }
 
   function scrub() {
-    document.querySelectorAll('a[href*="product.html"][href*="provider="]').forEach(rewriteProductLink);
+    document.querySelectorAll('a[href*="product.html"]').forEach(rewriteProductLink);
 
     document.querySelectorAll(".hd-market-source").forEach(node => setTextIfChanged(node, "HUNT"));
     document.querySelectorAll(".hd-market-product-card .hd-market-card-body > small").forEach(node => {
@@ -134,19 +132,14 @@
   }
 
   const pageUrl = new URL(location.href);
-  const token = pageUrl.searchParams.get("provider") || "";
-  const decodedProvider = providerFromAlias(token);
-  if (decodedProvider && /product\.html$/i.test(pageUrl.pathname)) {
-    const runtimeUrl = new URL(pageUrl.href);
-    runtimeUrl.searchParams.set("provider", decodedProvider);
-    history.replaceState(history.state, "", runtimeUrl.href);
-    setTimeout(() => {
-      const visibleUrl = new URL(location.href);
-      if (/product\.html$/i.test(visibleUrl.pathname)) {
-        visibleUrl.searchParams.set("provider", token);
-        history.replaceState(history.state, "", visibleUrl.href);
-      }
-    }, 0);
+  const legacyProvider = pageUrl.searchParams.get("provider") || "";
+  if (legacyProvider && /product\.html$/i.test(pageUrl.pathname)) {
+    const alias = providerAlias(legacyProvider) || (providers.has(legacyProvider.toLowerCase()) ? legacyProvider.toLowerCase() : "");
+    if (alias) {
+      pageUrl.searchParams.delete("provider");
+      pageUrl.searchParams.set("src", alias);
+      history.replaceState(history.state, "", pageUrl.pathname+pageUrl.search+pageUrl.hash);
+    }
   }
 
   let queued = false;

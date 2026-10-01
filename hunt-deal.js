@@ -182,7 +182,7 @@
       const retail = retailState(item);
       const priceLabel = retail.ready ? money(retail.amount, retail.currency) : "Price pending";
       const gaps = (item.gaps || []).slice(0,2).map(x => `<li>${esc(x)}</li>`).join("");
-      const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : `product.html?provider=${encodeURIComponent(item.provider || "Printful")}&id=${encodeURIComponent(item.item_id || "")}`;
+      const detailUrl = window.HuntCore ? window.HuntCore.productUrl(item) : `product.html?id=${encodeURIComponent(item.item_id || "")}`;
       return `
         <article class="hd-catalog-card glass">
           <div class="hd-catalog-media">${image}<span class="hd-catalog-badge">${esc(item.verdict || "CATALOG")}</span></div>
@@ -298,7 +298,7 @@
   function shelfCard(item) {
     const detailUrl = window.HuntCore
       ? window.HuntCore.productUrl(item)
-      : `product.html?provider=${encodeURIComponent(item.provider || "Printful")}&id=${encodeURIComponent(item.item_id || "")}`;
+      : `product.html?id=${encodeURIComponent(item.item_id || "")}`;
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';

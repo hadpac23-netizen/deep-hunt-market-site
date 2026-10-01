@@ -1,25 +1,32 @@
 {
-  "generated_at": "2026-10-01T08:30:00Z",
+  "generated_at": "2026-10-01T09:19:51Z",
   "project_ref": "zszlnahjqmwozwubetkm",
-  "note": "Live versions re-read on 2026-10-01. PATCHED_AHEAD_OF_RUNTIME means PR26 contains fixes not yet deployed. PR26_BRANCH_ONLY means not deployed. No secrets stored.",
+  "note": "Live versions re-read after Pre-Launch backend hardening on 2026-10-01. EXACT_MATCH means deployed source matches PR26 working source; PATCHED_AHEAD_OF_RUNTIME means local PR26 has a newer patch not yet deployed. No secrets stored.",
   "functions": [
     {
       "slug": "hunt-payment-session",
-      "live_version": 26,
+      "live_version": 27,
       "live_status": "ACTIVE",
       "git_path": "supabase/functions/hunt-payment-session/index.ts",
-      "relationship": "PATCHED_AHEAD_OF_RUNTIME"
+      "relationship": "EXACT_MATCH"
+    },
+    {
+      "slug": "hunt-order-preview",
+      "live_version": 16,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-order-preview/index.ts",
+      "relationship": "EXACT_MATCH"
     },
     {
       "slug": "hunt-order-orchestrator",
-      "live_version": 25,
+      "live_version": 26,
       "live_status": "ACTIVE",
       "git_path": "supabase/functions/hunt-order-orchestrator/index.ts",
-      "relationship": "PATCHED_AHEAD_OF_RUNTIME"
+      "relationship": "EXACT_MATCH"
     },
     {
       "slug": "hunt-storefront",
-      "live_version": 140,
+      "live_version": 141,
       "live_status": "ACTIVE",
       "git_path": "supabase/functions/hunt-storefront/index.ts",
       "relationship": "PATCHED_AHEAD_OF_RUNTIME"
@@ -40,10 +47,11 @@
     },
     {
       "slug": "hunt-eprolo-country-shadow",
-      "live_version": 12,
+      "live_version": 13,
       "live_status": "ACTIVE",
       "git_path": "supabase/functions/hunt-eprolo-country-shadow/index.ts",
-      "relationship": "PATCHED_AHEAD_OF_RUNTIME"
+      "relationship": "EXACT_MATCH",
+      "note": "Live v13 is fail-closed quarantine: internal-only, no supplier economics, destination tax and final profit remain unverified."
     },
     {
       "slug": "hunt-eprolo-readonly-pilot",

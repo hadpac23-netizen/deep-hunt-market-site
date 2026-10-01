@@ -1743,7 +1743,7 @@ Deno.serve(async (req: Request) => {
     ]);
     const matterhornShelves = matterhornMarketShelves();
     const surveyShelves = surveyMarketShelves();
-    const mergedShelves = mergeMarketShelves(priorityCjShelves, cjShelves, persistedShelves, eproloCanonical.shelves, merchantShelves, printfulShelves, gootenShelves, matterhornShelves, surveyShelves);
+    const mergedShelves = mergeMarketShelves(priorityCjShelves, cjShelves, persistedShelves, merchantShelves, printfulShelves, gootenShelves, matterhornShelves, surveyShelves);
     const shelves = focusShelf ? { [focusShelf]: mergedShelves[focusShelf] || [] } : mergedShelves;
     const visibleEntries = Object.values(shelves).reduce(
       (sum: number, items: any) => sum + (Array.isArray(items) ? items.length : 0),
@@ -1758,7 +1758,7 @@ Deno.serve(async (req: Request) => {
     const uniqueProducts = uniqueKeys.size;
     return new Response(JSON.stringify({
       shelves,
-      eprolo_canonical_shelves: eproloCanonical.meta,
+      eprolo_canonical_shelves: {...eproloCanonical.meta, public_display_enabled:false, public_hold_reason:"PDP_RUNTIME_CREDENTIALS_NOT_READY"},
       visible_product_count: uniqueProducts,
       shelf_entry_count: visibleEntries,
       provider_entry_counts: Object.fromEntries(
@@ -1779,7 +1779,6 @@ Deno.serve(async (req: Request) => {
         env("CJ_API_KEY") || env("CJ_ACCESS_TOKEN") ? "CJdropshipping API" : null,
         "Gooten public catalog",
         "HUNT persisted verified catalog",
-        eproloCanonical.meta.display_eligible_count > 0 ? "EPROLO Canonical PDP Ready (display-only)" : null,
       ].filter(Boolean).join(" + "),
       price_note:
         "Shelf cards intentionally defer price to the product detail view so the homepage stays fast and never invents a price.",

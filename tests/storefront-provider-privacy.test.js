@@ -23,7 +23,8 @@ test("product page does not expose supplier wording in static customer copy", ()
 test("privacy guard aliases known fulfillment sources in product links", () => {
   assert.match(privacy, /providerAlias/);
   assert.match(privacy, /providerFromAlias/);
-  assert.match(privacy, /url\.searchParams\.set\("provider",source\)/);
+  assert.match(privacy, /url\.searchParams\.set\("src",alias\)/);
+  assert.match(privacy, /url\.searchParams\.delete\("provider"\)/);
   assert.match(privacy, /HUNT Network/);
   assert.match(privacy, /MutationObserver/);
 });
@@ -32,8 +33,20 @@ test("privacy guard aliases known fulfillment sources in product links", () => {
 test("PWA cache cannot pin pre-red-team customer scripts", () => {
   const sw=fs.readFileSync("service-worker.js","utf8");
   const pwaSrc=fs.readFileSync("pwa.js","utf8");
-  assert.match(sw,/hunt-shell-pwa3/);
-  assert.match(pwaSrc,/service-worker\.js\?v=pwa3/);
-  assert.match(sw,/storefront-privacy\|product\|category\|hunt-wow/);
-  assert.doesNotMatch(sw,/hunt-shell-pwa2/);
+  assert.match(sw,/hunt-shell-pwa4/);
+  assert.match(pwaSrc,/service-worker\.js\?v=pwa4/);
+  assert.match(sw,/storefront-privacy\|market-core\|product\|category\|hunt-wow/);
+  assert.doesNotMatch(sw,/hunt-shell-pwa3/);
+});
+
+test("product navigation uses opaque source codes and preserves category context", () => {
+  const core=fs.readFileSync("market-core.js","utf8");
+  const category=fs.readFileSync("category.js","utf8");
+  const productJs=fs.readFileSync("product.js","utf8");
+  assert.match(core,/q\.set\("src", sourceCodeForProvider/);
+  assert.doesNotMatch(core,/product\.html\?provider=/);
+  assert.match(category,/H\.productUrl\(product,\{c:slug,sub\}\)/);
+  assert.doesNotMatch(category,/H\.esc\(product\.provider \|\| "Provider"\)/);
+  assert.match(productJs,/H\.providerForSourceCode\(params\.get\("src"\)\)/);
+  assert.match(productJs,/cleanUrl\.searchParams\.delete\("provider"\)/);
 });

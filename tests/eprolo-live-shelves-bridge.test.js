@@ -11,38 +11,32 @@ const moduleSrc=fs.readFileSync(path.join(root,"supabase/functions/hunt-storefro
 const rpcMigration=fs.readFileSync(path.join(root,"supabase/migrations/20260930165643_hunt_eprolo_canonical_shelves_rpc_v1.sql"),"utf8");
 const pdpRpcMigration=fs.readFileSync(path.join(root,"supabase/migrations/20261001034500_hunt_eprolo_strict_pdp_rpc_v1.sql"),"utf8");
 
-test("category loads the EPROLO shelf bridge before category logic",()=>{
-  const bridgePos=html.indexOf("eprolo-shelves-bridge.js");
-  const categoryPos=html.indexOf("category.js");
-  assert.ok(bridgePos>0);
-  assert.ok(categoryPos>bridgePos);
+test("category keeps EPROLO public bridge disabled while PDP runtime is held",()=>{
+  assert.equal(html.includes("eprolo-shelves-bridge.js"),false);
 });
 
-test("bridge prefers integrated storefront shelves and uses legacy endpoint only as fallback",()=>{
-  assert.match(bridge,/String\(params\?\.shelves\|\|""\)!=="1"/);
-  assert.match(bridge,/const base=await original\(params\)\|\|\{\}/);
-  assert.match(bridge,/integrated\?\.source==="CANONICAL_PDP_READY"/);
-  assert.match(bridge,/integrated\?\.purchasable===false/);
-  assert.match(bridge,/integrated\?\.production_effect===false/);
-  assert.match(bridge,/const extra=await eproloShelves\(\)/);
-  assert.match(bridge,/if\(!extra\?\.shelves\)return base/);
-  assert.match(bridge,/mergeShelves\(base\.shelves,extra\.shelves\)/);
+test("legacy bridge is fail-closed and never fetches or merges EPROLO shelves",()=>{
+  assert.match(bridge,/const original=H\.storefront\.bind\(H\)/);
+  assert.match(bridge,/public_display_enabled:false/);
+  assert.match(bridge,/PDP_RUNTIME_CREDENTIALS_NOT_READY/);
+  assert.doesNotMatch(bridge,/fetch\(/);
+  assert.doesNotMatch(bridge,/mergeShelves|mergeRows/);
 });
 
-test("legacy fallback endpoint requires the same public storefront key contract",()=>{
-  assert.match(bridge,/headers:\{apikey:publishableKey,accept:"application\/json"\}/);
+test("legacy EPROLO shelf endpoint remains authenticated source-only and is not loaded by category",()=>{
+  assert.equal(html.includes("eprolo-shelves-bridge.js"),false);
   assert.match(edge,/const PUBLIC_KEY="sb_publishable_/);
   assert.match(edge,/function authorized\(req:Request\)/);
   assert.match(edge,/req\.headers\.get\("apikey"\)/);
-  assert.match(edge,/if\(!authorized\(req\)\)return new Response\(JSON\.stringify\(\{error:"unauthorized"\}\),\{status:401,headers\}\)/);
 });
 
-test("storefront integrates canonical EPROLO shelves without outranking live verified sources",()=>{
+test("storefront audits canonical EPROLO shelves but does not publish them until PDP runtime is ready",()=>{
   assert.match(runtime,/import \{ eproloCanonicalMarketShelves \} from "\.\/eprolo-shelves\.ts"/);
   assert.match(runtime,/eproloCanonicalMarketShelves\(null, "supabase_rpc"\)/);
   assert.doesNotMatch(runtime,/eproloSqlClient|HUNT_DB_POOLER_URL|SUPABASE_DB_POOLER_URL/);
-  assert.match(runtime,/mergeMarketShelves\(priorityCjShelves, cjShelves, persistedShelves, eproloCanonical\.shelves/);
-  assert.match(runtime,/eprolo_canonical_shelves: eproloCanonical\.meta/);
+  assert.doesNotMatch(runtime,/persistedShelves,\s*eproloCanonical\.shelves/);
+  assert.match(runtime,/public_display_enabled:false/);
+  assert.match(runtime,/PDP_RUNTIME_CREDENTIALS_NOT_READY/);
 });
 
 test("strict EPROLO PDP is RPC-only and service-role protected",()=>{
@@ -64,7 +58,7 @@ test("strict EPROLO PDP is RPC-only and service-role protected",()=>{
 });
 
 test("EPROLO shelf cards remain display-only and never claim final profit",()=>{
-  for(const src of [bridge,edge,moduleSrc]){
+  for(const src of [edge,moduleSrc]){
     assert.match(src,/purchasable:false/);
     assert.match(src,/production_effect:false/);
     assert.match(src,/final_profit_verified:0/);
@@ -153,4 +147,12 @@ test("integrated module uses service-role RPC instead of opening another DB conn
   assert.match(rpcMigration,/revoke all on function public\.hunt_eprolo_canonical_shelves_rows\(\) from anon/i);
   assert.match(rpcMigration,/revoke all on function public\.hunt_eprolo_canonical_shelves_rows\(\) from authenticated/i);
   assert.match(rpcMigration,/grant execute on function public\.hunt_eprolo_canonical_shelves_rows\(\) to service_role/i);
+});
+
+test("EPROLO remains shadow-only in public shelves until PDP runtime credentials are ready", () => {
+  const runtime=fs.readFileSync("supabase/functions/hunt-storefront/runtime.ts","utf8");
+  assert.doesNotMatch(runtime,/persistedShelves,\s*eproloCanonical\.shelves/);
+  assert.match(runtime,/public_display_enabled:false/);
+  assert.match(runtime,/PDP_RUNTIME_CREDENTIALS_NOT_READY/);
+  assert.doesNotMatch(runtime,/EPROLO Canonical PDP Ready \(display-only\)/);
 });

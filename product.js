@@ -2,8 +2,15 @@
   const H = window.HuntCore;
   const $ = q => document.querySelector(q);
   const params = new URLSearchParams(location.search);
-  const provider = params.get("provider") || "Printful";
+  const legacyProvider = params.get("provider") || "";
+  const provider = H.providerForSourceCode(params.get("src")) || legacyProvider || "Printful";
   const id = params.get("id") || "";
+  if (legacyProvider && !params.get("src")) {
+    const cleanUrl = new URL(location.href);
+    cleanUrl.searchParams.delete("provider");
+    cleanUrl.searchParams.set("src", H.sourceCodeForProvider(provider));
+    history.replaceState(null,"",cleanUrl.pathname+cleanUrl.search+cleanUrl.hash);
+  }
   let product = null;
   let variants = [];
   let selectedColor = null;
