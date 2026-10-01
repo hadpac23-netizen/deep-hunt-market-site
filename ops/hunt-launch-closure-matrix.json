@@ -219,7 +219,7 @@
     }
   },
   "payment": {
-    "status": "BLOCKED_EXTERNAL_SANDBOX_CREDENTIALS_AND_EVIDENCE",
+    "status": "BLOCKED_EXTERNAL_SANDBOX_CREDENTIALS_AND_E2E_PROOF",
     "payment_live": false,
     "payplus_callback_accept_paid": false,
     "payplus_sandbox_evidence_enabled": false,
@@ -245,7 +245,27 @@
     "payplus_sandbox_request_draft_prepared": true,
     "payplus_sandbox_request_sent": false,
     "payplus_sandbox_request_requires_owner_send_approval": true,
-    "observed_at": "2026-10-01T08:02:21Z"
+    "observed_at": "2026-10-01T08:02:21Z",
+    "official_api_contract_verified": true,
+    "official_api_contract_checked_at": "2026-10-01T08:06:16Z",
+    "official_staging_base_verified": "https://restapidev.payplus.co.il/api/v1.0/",
+    "generate_link_contract_verified": true,
+    "generate_link_method": "POST",
+    "generate_link_path": "/PaymentPages/generateLink",
+    "generate_link_required_contract": [
+      "payment_page_uid",
+      "api-key",
+      "secret-key"
+    ],
+    "server_side_only_required": true,
+    "callback_auth_contract_verified": true,
+    "callback_auth_user_agent": "PayPlus",
+    "callback_auth_hmac": "HMAC-SHA256(secret-key, JSON.stringify(body)) -> base64",
+    "ipn_full_contract_verified": true,
+    "ipn_full_method": "POST",
+    "ipn_full_path": "/PaymentPages/ipn-full",
+    "pr26_code_matches_official_contract": true,
+    "sandbox_e2e_proven": false
   },
   "reliability": {
     "status": "PARTIAL_CANONICAL_RPC_PASS_PDP_RPC_FIX_STAGED_NOT_LIVE",

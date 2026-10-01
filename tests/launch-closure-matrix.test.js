@@ -8,6 +8,11 @@ test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(m.payment.payment_live,false);
   assert.equal(m.payment.payplus_callback_accept_paid,false);
   assert.equal(m.payment.payplus_sandbox_evidence_enabled,false);
+  assert.equal(m.payment.official_api_contract_verified,true);
+  assert.equal(m.payment.pr26_code_matches_official_contract,true);
+  assert.equal(m.payment.callback_auth_contract_verified,true);
+  assert.equal(m.payment.ipn_full_contract_verified,true);
+  assert.equal(m.payment.sandbox_e2e_proven,false);
   assert.equal(m.payment.payplus_sandbox_request_sent,false);
   assert.equal(m.payment.payplus_sandbox_credentials_scope,"NOT_PRESENT_IN_SUPABASE_VAULT_CURRENT_EVIDENCE");
   assert.equal(m.fulfillment.cj_sandbox_e2e_runtime_blocker.active_admin_auth_session,false);
