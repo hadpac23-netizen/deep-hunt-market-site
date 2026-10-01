@@ -1,21 +1,21 @@
 {
   "schema_version": "HUNT_LEGAL_READINESS_V1",
-  "status": "BLOCKED_OWNER_VERIFIED_CONTACTS_AND_POLICY_REVIEW",
+  "status": "BLOCKED_RETURNS_AND_POLICY_REVIEW",
   "owner_approved": false,
   "verified_operating_entity_fields_complete": true,
   "public_contacts": {
-    "support_email": null,
-    "privacy_contact_email": null,
+    "support_email": "hacoachle@gmail.com",
+    "privacy_contact_email": "hacoachle@gmail.com",
     "returns_address": null
   },
   "company_mailbox_candidate_exists": true,
-  "company_mailbox_candidate_designated_for_customer_support": false,
+  "company_mailbox_candidate_designated_for_customer_support": true,
   "policies": {
     "terms": "DRAFT_NOT_PUBLISHED",
     "privacy": "DRAFT_NOT_PUBLISHED",
     "returns_refunds": "DRAFT_NOT_PUBLISHED",
     "shipping_delivery": "DRAFT_NOT_PUBLISHED"
   },
-  "publication_gate": "ALL_CONTACTS_VERIFIED_AND_OWNER_APPROVED",
-  "note": "Do not infer that the business address is the returns address. Do not publish templates until owner approval and market-specific review."
+  "publication_gate": "RETURNS_VERIFIED_AND_OWNER_APPROVED",
+  "note": "Support and privacy contacts are verified to the company mailbox. Do not infer that the business address is the returns address. Keep publication blocked until a verified returns address or approved returns workflow and Owner review are complete."
 }
