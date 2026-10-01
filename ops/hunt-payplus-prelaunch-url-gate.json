@@ -1,6 +1,6 @@
 {
   "schema_version": "HUNT_PAYPLUS_PRELAUNCH_URL_GATE_V1",
-  "status": "BLOCKED_RETURNS_APPROVAL_AND_LEGAL_PAGES",
+  "status": "BLOCKED_LEGAL_PAGES_REVIEW",
   "candidate_url": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
   "candidate_url_current_deploy_accepted": false,
   "payment_live_required": false,
@@ -18,7 +18,7 @@
     "RT08 support/return customer permissions are hardened",
     "RT09 fractional quantity is rejected server-side",
     "RT10 supplier names are absent and Women->Dresses->PDP context is preserved",
-    "Verified support email, privacy email and returns workflow/address are approved",
+    "Verified support email, privacy email and Owner-approved returns workflow are in place",
     "Terms, Privacy, Returns/Refunds and Shipping/Delivery pages are reviewed and public",
     "Desktop and mobile browser QA passes on the exact deploy",
     "Checkout clearly remains pre-launch and does not create a real payment or supplier order"
@@ -29,6 +29,6 @@
     "browser_qa": "PASS_DESKTOP_AND_390PX_MOBILE",
     "public_economics_probe": "PASS_BLOCKED_NO_SUPPLIER_ECONOMICS",
     "session_adversarial_runtime": "PARTIAL_RT03_RT09_LIVE_RT01_RT02_CODE_CI_PASS",
-    "legal_pages": "PENDING_RETURNS_APPROVAL_AND_POLICY_REVIEW"
+    "legal_pages": "PENDING_POLICY_TEXT_REVIEW_AND_PUBLICATION"
   }
 }

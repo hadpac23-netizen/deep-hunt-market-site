@@ -1,8 +1,8 @@
 {
-  "schema_version": "HUNT_RETURNS_WORKFLOW_DRAFT_V1",
-  "status": "DRAFT_OWNER_REVIEW_REQUIRED",
+  "schema_version": "HUNT_RETURNS_WORKFLOW_V2",
+  "status": "OWNER_APPROVED_OPERATIONAL_WORKFLOW",
   "customer_facing": false,
-  "owner_approved": false,
+  "owner_approved": true,
   "support_channel": "hacoachle@gmail.com",
   "public_returns_address": null,
   "do_not_assume_business_address_is_returns_address": true,
@@ -15,17 +15,26 @@
   ],
   "workflow": [
     "customer_opens_return_request_with_support",
-    "hunt_validates_order_and_applicable_policy",
+    "hunt_validates_order_and_applicable_mandatory_consumer_rights",
     "hunt_assigns_return_authorization_reference",
-    "hunt_supplies_the_verified_return_destination_for_that_item_and_market",
-    "customer_does_not_self_ship_before_authorization",
-    "hunt_records_carrier_or_receipt_evidence",
-    "refund_or_replacement_is_processed_under_the_applicable_published_policy"
+    "hunt_supplies_a_verified_return_or_collection_instruction_that_does_not_reduce_mandatory_rights",
+    "customer_does_not_self_ship_before_authorization_unless_mandatory_law_allows_or_requires_otherwise",
+    "hunt_records_carrier_collection_or_receipt_evidence",
+    "refund_or_replacement_is_processed_under_the_applicable_published_policy_and_mandatory_law"
   ],
   "safety": {
     "supplier_identity_customer_visible": false,
     "payment_live_required": false,
     "supplier_live_order_required": false
   },
-  "publication_blocker": "TARGET_MARKET_REVIEW_AND_OWNER_APPROVAL"
+  "publication_blocker": "POLICY_TEXT_REVIEW_AND_PUBLICATION",
+  "approved_at": "2026-10-01",
+  "israel_baseline": {
+    "distance_sale_cancellation_window_general": "14_days_subject_to_applicable_law_and_exceptions",
+    "refund_timing_general": "within_14_days_of_cancellation_notice_subject_to_applicable_law",
+    "ordinary_cancellation_return": "customer_return_route_must_follow_applicable_law",
+    "defect_nonconformity_or_late_delivery": "no_standard_return_burden_or_cancellation_fee_where_law_prohibits_it; collection_or_equivalent handling where required",
+    "mandatory_rights_override_policy": true,
+    "source_note": "Israel Consumer Protection and Fair Trade Authority guidance; policy remains subject to market-specific legal review."
+  }
 }

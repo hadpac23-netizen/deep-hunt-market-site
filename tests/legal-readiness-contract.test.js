@@ -11,7 +11,7 @@ test("RT11 legal publication stays fail-closed until verified contacts and Owner
   assert.equal(profile.public_contacts.support_email,"hacoachle@gmail.com");
   assert.equal(profile.public_contacts.privacy_contact_email,"hacoachle@gmail.com");
   assert.equal(profile.public_contacts.returns_address,null);
-  assert.equal(profile.publication_gate,"RETURNS_VERIFIED_AND_OWNER_APPROVED");
+  assert.equal(profile.publication_gate,"POLICY_TEXT_REVIEW_AND_PUBLICATION");
 });
 
 test("company mailbox is explicitly designated for support/privacy while returns stays blocked",()=>{
@@ -22,7 +22,8 @@ test("company mailbox is explicitly designated for support/privacy while returns
 
 test("legal page builder refuses publication while contacts or approval are missing",()=>{
   assert.match(build,/LEGAL_PUBLICATION_BLOCKED/);
-  assert.match(build,/owner_approved!==true\|\|missing\.length/);
+  assert.match(build,/profile\?\.owner_approved!==true\|\|missing\.length/);
+  assert.match(build,/returns_workflow_owner_approved===true/);
   assert.match(build,/LEGAL_BUILD_REQUIRES_REVIEWED_FINAL_COPY/);
 });
 
@@ -36,9 +37,10 @@ test("all four policy templates exist only under ops legal drafts",()=>{
 });
 
 
-test("returns workflow is drafted but cannot replace Owner approval yet",()=>{
+test("returns workflow is Owner-approved operationally without inventing a physical returns address",()=>{
   assert.equal(profile.returns_workflow_draft_ready,true);
-  assert.equal(profile.returns_workflow_owner_approved,false);
+  assert.equal(profile.returns_workflow_owner_approved,true);
+  assert.equal(profile.returns_workflow_status,"OWNER_APPROVED_OPERATIONAL_WORKFLOW");
   assert.equal(profile.public_contacts.returns_address,null);
   assert.ok(fs.existsSync(path.join(root,profile.returns_workflow_file)));
 });

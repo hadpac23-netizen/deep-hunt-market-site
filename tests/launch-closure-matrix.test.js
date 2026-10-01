@@ -24,8 +24,10 @@ test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(m.fulfillment.eprolo_contract_blocker.order_price_quote.tax_truth_verified,false);
   assert.equal(m.fulfillment.eprolo_contract_blocker.supplier_submission_allowed,false);
   assert.equal(m.freshness_automation.live_cron_enabled,false);
-  assert.equal(m.legal.status,"BLOCKED_RETURNS_AND_POLICY_REVIEW");
-  assert.deepEqual(m.legal.missing_verified_fields,["returns_address"]);
+  assert.equal(m.legal.status,"BLOCKED_POLICY_REVIEW_AND_PUBLICATION");
+  assert.deepEqual(m.legal.missing_verified_fields,[]);
+  assert.equal(m.legal.returns_solution_complete,true);
+  assert.equal(m.legal.returns_workflow_owner_approved,true);
   assert.equal(m.legal.company_mailbox_designated_as_support_privacy,true);
   assert.equal(m.legal.standalone_policy_page_files_found_in_pr26,false);
   assert.equal(m.security.status,"PARTIAL");

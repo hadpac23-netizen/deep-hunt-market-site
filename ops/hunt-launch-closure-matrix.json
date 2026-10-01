@@ -404,7 +404,7 @@
     "rt08_customer_case_privileges_hardened": true
   },
   "legal": {
-    "status": "BLOCKED_RETURNS_AND_POLICY_REVIEW",
+    "status": "BLOCKED_POLICY_REVIEW_AND_PUBLICATION",
     "verified_operating_entity_fields_complete": true,
     "verified_fields": {
       "legal_entity_name": true,
@@ -412,22 +412,24 @@
       "registered_country": true,
       "business_address": true
     },
-    "customer_contact_fields_complete": false,
-    "missing_verified_fields": [
-      "returns_address"
-    ],
+    "customer_contact_fields_complete": true,
+    "missing_verified_fields": [],
     "customer_policy_pages_verified": false,
     "secure_runtime_identity_status": "verified_identity_private_values_not_committed",
     "owner_approved": false,
     "blocks_real_money": true,
     "standalone_policy_page_files_found_in_pr26": false,
     "policy_filename_scan_scope": "repo_depth_2_privacy_terms_returns_refund_shipping_cookie",
-    "observed_at": "2026-10-01T09:50:00Z",
+    "observed_at": "2026-10-01T10:15:00Z",
     "draft_policy_templates_in_pr26": true,
     "draft_policy_templates_customer_visible": false,
-    "legal_publication_gate": "RETURNS_VERIFIED_AND_OWNER_APPROVED",
+    "legal_publication_gate": "POLICY_TEXT_REVIEW_AND_PUBLICATION",
     "company_mailbox_candidate_exists": true,
-    "company_mailbox_designated_as_support_privacy": true
+    "company_mailbox_designated_as_support_privacy": true,
+    "returns_solution_complete": true,
+    "returns_address": null,
+    "returns_workflow_owner_approved": true,
+    "returns_workflow_status": "OWNER_APPROVED_OPERATIONAL_WORKFLOW"
   },
   "git_governance": {
     "status": "BLOCKED_MAIN_UNPROTECTED",

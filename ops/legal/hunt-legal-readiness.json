@@ -1,6 +1,6 @@
 {
   "schema_version": "HUNT_LEGAL_READINESS_V1",
-  "status": "BLOCKED_RETURNS_AND_POLICY_REVIEW",
+  "status": "BLOCKED_POLICY_REVIEW_AND_PUBLICATION",
   "owner_approved": false,
   "verified_operating_entity_fields_complete": true,
   "public_contacts": {
@@ -16,9 +16,10 @@
     "returns_refunds": "DRAFT_NOT_PUBLISHED",
     "shipping_delivery": "DRAFT_NOT_PUBLISHED"
   },
-  "publication_gate": "RETURNS_VERIFIED_AND_OWNER_APPROVED",
-  "note": "Support and privacy contacts are verified to the company mailbox. Do not infer that the business address is the returns address. Keep publication blocked until a verified returns address or approved returns workflow and Owner review are complete.",
+  "publication_gate": "POLICY_TEXT_REVIEW_AND_PUBLICATION",
+  "note": "Support/privacy contacts are verified and the Return Authorization workflow is Owner-approved. No physical returns address is inferred. Publish only after policy text review; mandatory consumer rights override workflow instructions.",
   "returns_workflow_draft_ready": true,
-  "returns_workflow_owner_approved": false,
-  "returns_workflow_file": "ops/legal/hunt-returns-workflow-draft.json"
+  "returns_workflow_owner_approved": true,
+  "returns_workflow_file": "ops/legal/hunt-returns-workflow-draft.json",
+  "returns_workflow_status": "OWNER_APPROVED_OPERATIONAL_WORKFLOW"
 }
