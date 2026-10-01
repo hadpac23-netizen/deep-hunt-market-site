@@ -23,7 +23,7 @@ test("product page does not expose supplier wording in static customer copy", ()
 test("privacy guard aliases known fulfillment sources in product links", () => {
   assert.match(privacy, /providerAlias/);
   assert.match(privacy, /providerFromAlias/);
-  assert.match(privacy, /product\.html\?provider=/);
+  assert.match(privacy, /url\.searchParams\.set\("provider",source\)/);
   assert.match(privacy, /HUNT Network/);
   assert.match(privacy, /MutationObserver/);
 });

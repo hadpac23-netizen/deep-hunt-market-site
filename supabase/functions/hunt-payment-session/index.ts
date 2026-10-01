@@ -1,4 +1,5 @@
 import { createSupabaseContext } from "npm:@supabase/server";
+import { requireIntegerQuantity, pricingSnapshotMatches, sessionReuseState, sha256Hex, guestOwnerProofMatches } from "../_shared/hunt-session-security.mjs";
 
 const ALLOWED_ORIGINS=new Set([
   "https://deep-hunt-market.netlify.app",
@@ -127,7 +128,7 @@ async function validateCart(base:string,key:string,eproloInternalToken:string,bo
     const provider=clean(raw?.provider);
     const itemId=clean(raw?.item_id);
     const variantId=clean(raw?.variant_id);
-    const qty=Math.max(1,Math.min(5,Number(raw?.qty||1)||1));
+    const qty=requireIntegerQuantity(raw?.qty,{min:1,max:5});
     if(!provider||!itemId||!variantId)throw new Error("INVALID_LINE_ITEM");
     const providerLower=provider.toLowerCase();
     if(!providerLower.includes("cj")&&!providerLower.includes("eprolo"))throw new Error("PROVIDER_PAYMENT_NOT_READY");
@@ -270,28 +271,11 @@ Deno.serve(async(req:Request)=>{
         country_code:shippingSnapshot.country_code
       },
       items:pricing.line_items.map((x:any)=>[
-        x.provider,x.item_id,x.variant_id,x.qty,x.origin_country_code,x.shipping_method
+        x.provider,x.item_id,x.variant_id,x.qty,x.origin_country_code,x.shipping_method,
+        x.unit_retail_amount,x.shipping_amount,x.currency
       ])
     });
     const cartDigest=await sha256(normalized);
-
-    const {data:existing}=await ctx.supabaseAdmin
-      .from("hunt_payment_sessions")
-      .select("id,status,mode,country_code,currency,product_amount,shipping_amount,total_amount,provider_hosted_fields_uid,provider_redirect_url,expires_at,cart_digest")
-      .eq("idempotency_key",idempotencyKey)
-      .maybeSingle();
-    if(existing){
-      if(clean(existing.cart_digest)!==cartDigest){
-        return json(req,{ok:false,error:"IDEMPOTENCY_CONFLICT"},409);
-      }
-      return json(req,{
-        ok:true,reused:true,
-        payment_ready:existing.status!=="prelaunch",
-        idempotency_key:idempotencyKey,
-        session:existing
-      });
-    }
-
     const requestedMode=clean(Deno.env.get("HUNT_PAYMENT_MODE")).toLowerCase();
     const configured=Boolean(
       clean(Deno.env.get("PAYPLUS_API_KEY"))&&
@@ -306,13 +290,44 @@ Deno.serve(async(req:Request)=>{
       : configured&&requestedMode==="live"&&liveApproved
         ? "live"
         : "prelaunch";
+
+    const callerUserId=clean(ctx.userClaims?.sub||ctx.userClaims?.id);
+    const guestOwnerToken=callerUserId?"":clean(body?.session_owner_token);
+    const {data:existing}=await ctx.supabaseAdmin
+      .from("hunt_payment_sessions")
+      .select("id,user_id,guest_owner_token_hash,status,mode,country_code,currency,product_amount,shipping_amount,total_amount,provider_hosted_fields_uid,provider_redirect_url,expires_at,cart_digest")
+      .eq("idempotency_key",idempotencyKey)
+      .maybeSingle();
+    if(existing){
+      if(existing.user_id){
+        if(!callerUserId)return json(req,{ok:false,error:"SIGNED_IN_SESSION_AUTH_REQUIRED"},403);
+        if(clean(existing.user_id)!==callerUserId)return json(req,{ok:false,error:"SESSION_OWNER_MISMATCH"},403);
+      }else if(!(await guestOwnerProofMatches(guestOwnerToken,existing.guest_owner_token_hash))){
+        return json(req,{ok:false,error:"SESSION_OWNER_PROOF_REQUIRED"},403);
+      }
+      if(clean(existing.cart_digest)!==cartDigest||!pricingSnapshotMatches(existing,pricing)){
+        return json(req,{ok:false,error:"PRICE_OR_CART_SNAPSHOT_CHANGED"},409);
+      }
+      const reuse=sessionReuseState(existing,{expectedMode:initialMode,liveApproved});
+      if(!reuse.ok)return json(req,{ok:false,error:reuse.reason},409);
+      return json(req,{
+        ok:true,reused:true,
+        payment_ready:reuse.paymentReady===true,
+        idempotency_key:idempotencyKey,
+        session:existing
+      });
+    }
+
+    const newGuestOwnerToken=callerUserId?"":crypto.randomUUID()+crypto.randomUUID();
+    const newGuestOwnerTokenHash=newGuestOwnerToken?await sha256Hex(newGuestOwnerToken):null;
     const prelaunchReason=requestedMode==="live"&&configured&&!liveApproved
       ? "PAYMENT_LIVE_KILL_SWITCH_OFF"
       : "AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED";
     const {data:inserted,error:insertError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
       .insert({
-        user_id:ctx.userClaims?.sub||null,
+        user_id:callerUserId||null,
+        guest_owner_token_hash:newGuestOwnerTokenHash,
         provider:"payplus",
         mode:initialMode,
         status:initialMode==="prelaunch"?"prelaunch":"created",
@@ -337,6 +352,7 @@ Deno.serve(async(req:Request)=>{
         payment_ready:false,
         reason:prelaunchReason,
         idempotency_key:idempotencyKey,
+        session_owner_token:newGuestOwnerToken||undefined,
         session:inserted
       });
     }
@@ -368,6 +384,7 @@ Deno.serve(async(req:Request)=>{
       ok:true,
       payment_ready:true,
       idempotency_key:idempotencyKey,
+      session_owner_token:newGuestOwnerToken||undefined,
       integration:updated.provider_hosted_fields_uid?"hosted_fields":"hosted_page",
       session:updated
     });

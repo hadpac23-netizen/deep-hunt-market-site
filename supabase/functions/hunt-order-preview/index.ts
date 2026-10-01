@@ -1,5 +1,6 @@
 import { createSupabaseContext } from "npm:@supabase/server";
 import { classifyProvider, buildEproloShadowOrderContract } from "../_shared/hunt-fulfillment-provider.mjs";
+import { requireIntegerQuantity, guestOwnerProofMatches } from "../_shared/hunt-session-security.mjs";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 function shippingAddressReady(snapshot:any,country:string){
@@ -41,16 +42,19 @@ Deno.serve(async(req:Request)=>{
 
     const {data:session,error:sessionError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
-      .select("id,user_id,provider,mode,status,country_code,currency,product_amount,shipping_amount,total_amount,line_items,idempotency_key,provider_request_uid,expires_at,created_at,customer_email,shipping_snapshot")
+      .select("id,user_id,guest_owner_token_hash,provider,mode,status,country_code,currency,product_amount,shipping_amount,total_amount,line_items,idempotency_key,provider_request_uid,expires_at,created_at,customer_email,shipping_snapshot")
       .eq("id",sessionId)
       .eq("idempotency_key",idempotencyKey)
       .maybeSingle();
 
     if(sessionError||!session) return json(req,{ok:false,error:"SESSION_NOT_FOUND"},404);
 
-    const userSub=clean(ctx.userClaims?.sub);
-    if(session.user_id && userSub && session.user_id!==userSub) {
-      return json(req,{ok:false,error:"SESSION_OWNER_MISMATCH"},403);
+    const userSub=clean(ctx.userClaims?.sub||ctx.userClaims?.id);
+    if(session.user_id){
+      if(!userSub)return json(req,{ok:false,error:"SIGNED_IN_SESSION_AUTH_REQUIRED"},403);
+      if(session.user_id!==userSub)return json(req,{ok:false,error:"SESSION_OWNER_MISMATCH"},403);
+    }else if(!(await guestOwnerProofMatches(body?.session_owner_token,session.guest_owner_token_hash))){
+      return json(req,{ok:false,error:"SESSION_OWNER_PROOF_REQUIRED"},403);
     }
 
     const lines=Array.isArray(session.line_items)?session.line_items:[];
@@ -74,7 +78,7 @@ Deno.serve(async(req:Request)=>{
       groups[groupKey].line_items.push({
         item_id:clean(line?.item_id),
         variant_id:clean(line?.variant_id),
-        qty:Math.max(1,Math.min(5,Number(line?.qty||1)||1)),
+        qty:requireIntegerQuantity(line?.qty,{min:1,max:5}),
         unit_retail_amount:Number(line?.unit_retail_amount||0),
         currency:clean(line?.currency)||session.currency,
         shipping_amount:Number(line?.shipping_amount||0),

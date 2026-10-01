@@ -135,6 +135,11 @@
     if (slug === "men" && /\b(women|woman|female|ladies|girls?)\b/.test(title)) return false;
     if (slug === "beauty" && /\b(pet|dog|cat|toy|slime|foam beads|puzzle|hallway|hall tree|entryway|wardrobe|shoe cabinet|shoe storage|coat rack|furniture|mudroom)\b/.test(title)) return false;
     if (slug === "jewelry" && /\b(parrot|bird toy|pet toy|toy set|handbag belt|bag belt|strap buckle|key findings)\b/.test(title)) return false;
+    const exactShelf=(sub||slug).toLowerCase();
+    if (["dresses","women-dresses"].includes(exactShelf)) {
+      if (/\b(dress pants?|dress trousers?|trousers?|pants?)\b/.test(title) && !/\b(dress|dresses|skirt|skirts)\b/.test(title.replace(/dress pants?|dress trousers?/g,""))) return false;
+      if (/\bmen(?:'s|s)?|male|gentlemen\b/.test(title)) return false;
+    }
     return true;
   }
 

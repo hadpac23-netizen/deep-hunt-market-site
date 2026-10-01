@@ -1,6 +1,7 @@
 import { createSupabaseContext } from "npm:@supabase/server";
 import { assertTransition } from "../_shared/order-lifecycle.mjs";
 import { classifyProvider, normalizedSupplierProvider, buildEproloShadowOrderContract } from "../_shared/hunt-fulfillment-provider.mjs";
+import { requireIntegerQuantity } from "../_shared/hunt-session-security.mjs";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const countryNames:Record<string,string>={
@@ -272,7 +273,7 @@ function groupsFromLines(lines:any[]){
     groups[key].line_items.push({
       item_id:clean(raw?.item_id),
       variant_id:clean(raw?.variant_id),
-      qty:Math.max(1,Math.min(5,Number(raw?.qty||1)||1)),
+      qty:requireIntegerQuantity(raw?.qty,{min:1,max:5}),
       title:clean(raw?.title).slice(0,180),
       unit_retail_amount:Number(raw?.unit_retail_amount),
       supplier_cost_amount:Number(raw?.supplier_cost_amount),

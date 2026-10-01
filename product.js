@@ -105,7 +105,7 @@
     chooseVariant();
     $("#hd-product-title").textContent = product.title || "Product";
     $("#hd-product-breadcrumb").textContent = product.title || "Product";
-    $("#hd-product-provider").textContent = product.provider || provider;
+    $("#hd-product-provider").textContent = "HUNT SOURCE";
     const providerName = String(product.provider || provider || "").toLowerCase();
     const podCatalog = providerName.includes("printful") || providerName.includes("gooten");
     const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
@@ -122,15 +122,22 @@
     $("#hd-product-price").textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
     syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);
-    $("#hd-product-description").textContent = product.description || "The provider has not supplied a full description to HUNT DEAL yet.";
-    $("#hd-product-gaps").innerHTML = (product.gaps || ["Provider variant feed is incomplete."]).map(x=>`<li>${H.esc(x)}</li>`).join("");
+    $("#hd-product-description").textContent = product.description || "Full product detail is still being verified by HUNT DEAL.";
+    $("#hd-product-gaps").innerHTML = (product.gaps || ["Product variant detail is still being verified."]).map(x=>`<li>${H.esc(x)}</li>`).join("");
     const facts = [
       ["Brand",product.brand],["Type",product.type_name],["Model",product.model],["Origin",product.origin_country],
       ["Live variants",product.variant_count],["Fulfillment",product.avg_fulfillment_time]
     ].filter(([,v])=>v!==null&&v!==undefined&&v!=="");
     $("#hd-product-facts").innerHTML = facts.map(([k,v])=>`<div><span>${H.esc(k)}</span><strong>${H.esc(v)}</strong></div>`).join("");
-    const cat=H.inferCategory(product); const def=H.categoryDefs[cat] || H.categoryDefs.women;
-    $("#hd-product-category-link").href=H.categoryUrl(cat); $("#hd-product-category-link").textContent=def.title;
+    const contextParent=String(params.get("c")||"").toLowerCase();
+    const contextSub=String(params.get("sub")||"").toLowerCase();
+    const contextDef=contextSub&&H.categoryDefs[contextSub]?.parent===contextParent?H.categoryDefs[contextSub]:null;
+    const cat=contextDef?contextSub:H.inferCategory(product);
+    const def=contextDef||H.categoryDefs[cat]||H.categoryDefs.women;
+    $("#hd-product-category-link").href=contextDef
+      ? `category.html?c=${encodeURIComponent(contextParent)}&sub=${encodeURIComponent(contextSub)}`
+      : H.categoryUrl(cat);
+    $("#hd-product-category-link").textContent=contextDef?`${H.categoryDefs[contextParent]?.title||contextParent} · ${def.title}`:def.title;
     document.title=`${product.title || "Product"} — HUNT DEAL`;
     renderOptions(); renderGallery(); renderProductStructuredData();
     const externalVisit = typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");

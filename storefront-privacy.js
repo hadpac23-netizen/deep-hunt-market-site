@@ -40,7 +40,17 @@
     const provider = String(product?.provider || "");
     const alias = providerAlias(provider);
     const source = alias || provider;
-    return `product.html?provider=${encodeURIComponent(source)}&id=${encodeURIComponent(product?.item_id || "")}`;
+    const url=new URL("product.html",location.href);
+    url.searchParams.set("provider",source);
+    url.searchParams.set("id",String(product?.item_id||""));
+    const page=new URL(location.href);
+    if(/category\.html$/i.test(page.pathname)){
+      const parent=String(page.searchParams.get("c")||"").toLowerCase();
+      const sub=String(page.searchParams.get("sub")||"").toLowerCase();
+      if(parent)url.searchParams.set("c",parent);
+      if(sub)url.searchParams.set("sub",sub);
+    }
+    return `${url.pathname.split("/").pop()}?${url.searchParams.toString()}`;
   }
 
   function rewriteProductLink(link) {

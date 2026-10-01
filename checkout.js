@@ -29,7 +29,7 @@
           price_amount:amount,
           price_basis:amount!==null?"HUNT_RETAIL_PROFIT_GATE":"PRICE_PENDING",
           retail_price_verified:amount!==null,
-          qty:Math.max(1,Math.min(maxQtyFor(item),Number(item?.qty)||1))
+          qty:Math.max(1,Math.min(maxQtyFor(item),Math.trunc(Number(item?.qty)||1)))
         };
       });
     } catch { return []; }
@@ -41,11 +41,13 @@
   let quoteVerified = false;
   let lastSessionId = "";
   let lastIdempotencyKey = "";
+  let lastSessionOwnerToken = "";
 
   function resetQuote(message="Verify price and shipping before payment.") {
     quoteVerified = false;
     lastSessionId = "";
     lastIdempotencyKey = "";
+    lastSessionOwnerToken = "";
     if ($("#hd-checkout-shipping")) $("#hd-checkout-shipping").textContent = "PENDING";
     if ($("#hd-checkout-total")) $("#hd-checkout-total").textContent = "PRE-LAUNCH";
     if ($("#hd-checkout-status")) $("#hd-checkout-status").textContent = message;
@@ -95,7 +97,7 @@
     } catch {}
   }
 
-  async function runOrderPreview(sessionId,idempotencyKey) {
+  async function runOrderPreview(sessionId,idempotencyKey,sessionOwnerToken) {
     const host=$("#hd-order-preview-status");
     if (!host || !sessionId || !idempotencyKey) return;
     host.textContent="Checking address + fulfillment readiness…";
@@ -103,7 +105,7 @@
       const res=await fetch(functionsBase+"/hunt-order-preview",{
         method:"POST",
         headers:{apikey:publishableKey,"content-type":"application/json"},
-        body:JSON.stringify({payment_session_id:sessionId,idempotency_key:idempotencyKey}),
+        body:JSON.stringify({payment_session_id:sessionId,idempotency_key:idempotencyKey,session_owner_token:sessionOwnerToken||undefined}),
         cache:"no-store"
       });
       const data=await res.json().catch(()=>({}));
@@ -193,7 +195,7 @@
           provider:item.provider,
           item_id:item.item_id,
           variant_id:item.variant_id,
-          qty:Math.max(1,Math.min(maxQtyFor(item),Number(item.qty)||1))
+          qty:Math.max(1,Math.min(maxQtyFor(item),Math.trunc(Number(item.qty)||1)))
         }))
       };
       const res = await fetch(functionsBase + "/hunt-payment-session", {
@@ -218,6 +220,7 @@
       quoteVerified = true;
       lastSessionId = String(session.id || "");
       lastIdempotencyKey = String(data.idempotency_key || "");
+      lastSessionOwnerToken = String(data.session_owner_token || "");
       saveAddress(address.value);
 
       if (status) {
@@ -232,7 +235,7 @@
         shippingAmount:Number(session.shipping_amount||0),
         totalAmount:Number(session.total_amount||0)
       });
-      await runOrderPreview(lastSessionId,lastIdempotencyKey);
+      await runOrderPreview(lastSessionId,lastIdempotencyKey,lastSessionOwnerToken);
     } catch (err) {
       resetQuote(friendlyQuoteError(String(err?.message || "QUOTE_FAILED")));
     } finally {
