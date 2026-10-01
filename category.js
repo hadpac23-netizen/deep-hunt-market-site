@@ -15,7 +15,7 @@
   let gridObserver = null;
 
   const $ = q => document.querySelector(q);
-  const productKey = p => `${p.provider || ""}:${p.item_id || ""}`;
+  const productKey = p => `${H.sourceCodeForProvider(p?.provider)}:${p?.item_id || ""}`;
 
   function retailState(product) {
     const amount = Number(product?.retail_price_amount);

@@ -20,7 +20,7 @@
   let zoomScale = 1;
 
   function cachedProduct() {
-    try { return JSON.parse(sessionStorage.getItem(`hunt_product_${provider}:${id}`) || "null"); }
+    try { return JSON.parse(sessionStorage.getItem(`hunt_product_${H.sourceCodeForProvider(provider)}:${id}`) || "null"); }
     catch { return null; }
   }
 

@@ -46,7 +46,10 @@ test("product navigation uses opaque source codes and preserves category context
   assert.match(core,/q\.set\("src", sourceCodeForProvider/);
   assert.doesNotMatch(core,/product\.html\?provider=/);
   assert.match(category,/H\.productUrl\(product,\{c:slug,sub\}\)/);
+  assert.match(category,/H\.sourceCodeForProvider\(p\?\.provider\)/);
+  assert.doesNotMatch(category,/`\$\{p\.provider \|\| ""\}:\$\{p\.item_id/);
   assert.doesNotMatch(category,/H\.esc\(product\.provider \|\| "Provider"\)/);
   assert.match(productJs,/H\.providerForSourceCode\(params\.get\("src"\)\)/);
+  assert.match(productJs,/hunt_product_\$\{H\.sourceCodeForProvider\(provider\)\}:\$\{id\}/);
   assert.match(productJs,/cleanUrl\.searchParams\.delete\("provider"\)/);
 });
