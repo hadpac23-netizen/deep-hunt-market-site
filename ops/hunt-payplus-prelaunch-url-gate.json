@@ -1,6 +1,6 @@
 {
   "schema_version": "HUNT_PAYPLUS_PRELAUNCH_URL_GATE_V1",
-  "status": "BLOCKED_LEGAL_PAGES_REVIEW",
+  "status": "PENDING_LEGAL_DEPLOY_QA",
   "candidate_url": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
   "candidate_url_current_deploy_accepted": false,
   "payment_live_required": false,
@@ -29,6 +29,6 @@
     "browser_qa": "PASS_DESKTOP_AND_390PX_MOBILE",
     "public_economics_probe": "PASS_BLOCKED_NO_SUPPLIER_ECONOMICS",
     "session_adversarial_runtime": "PARTIAL_RT03_RT09_LIVE_RT01_RT02_CODE_CI_PASS",
-    "legal_pages": "PENDING_POLICY_TEXT_REVIEW_AND_PUBLICATION"
+    "legal_pages": "READY_IN_PR26_PENDING_EXACT_DEPLOY_QA"
   }
 }

@@ -404,7 +404,7 @@
     "rt08_customer_case_privileges_hardened": true
   },
   "legal": {
-    "status": "BLOCKED_POLICY_REVIEW_AND_PUBLICATION",
+    "status": "PRELAUNCH_POLICY_PAGES_READY_REAL_MONEY_DISCLOSURES_PENDING",
     "verified_operating_entity_fields_complete": true,
     "verified_fields": {
       "legal_entity_name": true,
@@ -414,22 +414,24 @@
     },
     "customer_contact_fields_complete": true,
     "missing_verified_fields": [],
-    "customer_policy_pages_verified": false,
+    "customer_policy_pages_verified": true,
     "secure_runtime_identity_status": "verified_identity_private_values_not_committed",
     "owner_approved": false,
     "blocks_real_money": true,
-    "standalone_policy_page_files_found_in_pr26": false,
+    "standalone_policy_page_files_found_in_pr26": true,
     "policy_filename_scan_scope": "repo_depth_2_privacy_terms_returns_refund_shipping_cookie",
     "observed_at": "2026-10-01T10:15:00Z",
-    "draft_policy_templates_in_pr26": true,
+    "draft_policy_templates_in_pr26": false,
     "draft_policy_templates_customer_visible": false,
-    "legal_publication_gate": "POLICY_TEXT_REVIEW_AND_PUBLICATION",
+    "legal_publication_gate": "PRELAUNCH_POLICY_PUBLICATION_APPROVED",
     "company_mailbox_candidate_exists": true,
     "company_mailbox_designated_as_support_privacy": true,
     "returns_solution_complete": true,
     "returns_address": null,
     "returns_workflow_owner_approved": true,
-    "returns_workflow_status": "OWNER_APPROVED_OPERATIONAL_WORKFLOW"
+    "returns_workflow_status": "OWNER_APPROVED_OPERATIONAL_WORKFLOW",
+    "policy_publication_owner_approved": true,
+    "real_money_business_address_disclosure_pending": true
   },
   "git_governance": {
     "status": "BLOCKED_MAIN_UNPROTECTED",
@@ -482,10 +484,10 @@
     "EPROLO: resolve getCostByProduct/store-import variant namespace in an approved non-live path; Final Profit Verified remains 0 until destination tax truth is proven.",
     "CJ: establish an authenticated Admin sandbox session and prove supplier order -> tracking -> shipped; current evidence is 7 failed + 3 stale processing, 0 tracking, 0 shipped.",
     "PayPlus: obtain Sandbox/Test credentials and prove signed callback/status/idempotent paid transition while Payment Live remains OFF.",
-    "Legal: provide verified support email, privacy contact email and returns address; review Terms, Privacy, Returns/Refunds and Shipping/Delivery pages.",
     "Git governance: main is verified unprotected with 0 rulesets; enable required checks only after Owner Gate.",
     "Security: complete final review and account for leaked-password protection limitation.",
-    "Owner Gate before merge, public pre-launch deploy, Payment Live or Supplier Live."
+    "Owner Gate before merge, public pre-launch deploy, Payment Live or Supplier Live.",
+    "Legal real-money gate: publish the registered business address and any market-specific transaction disclosures before enabling paid checkout; pre-launch policy pages are ready for provider review."
   ],
   "red_team_2026_10_01": {
     "status": "PRELAUNCH_BROWSER_QA_PASS_EXTERNAL_BLOCKERS_REMAIN",
@@ -500,7 +502,7 @@
     "rt08": "LIVE_MIGRATION_APPLIED_PRIVILEGES_HARDENED",
     "rt09": "LIVE_V27_INTEGER_QTY_ENFORCED",
     "rt10": "PRELAUNCH_BROWSER_PASS_PRIVACY_CONTEXT_MOBILE_390",
-    "rt11": "BLOCKED_EXTERNAL_VERIFIED_CONTACTS_AND_POLICY_REVIEW",
+    "rt11": "PRELAUNCH_POLICY_PAGES_READY_REAL_MONEY_DISCLOSURES_PENDING",
     "rt12": "SOURCE_OF_TRUTH_REFRESHED_MAIN_VERIFIED_UNPROTECTED",
     "local_tests": {
       "checkout_red_team": "137/137 PASS",
@@ -530,8 +532,8 @@
     }
   },
   "payplus_prelaunch_url_gate": {
-    "status": "BLOCKED_NOT_DEPLOYED_AND_LEGAL_CONTACTS_INCOMPLETE",
-    "candidate_url": "https://deep-hunt-market.netlify.app",
+    "status": "PENDING_LEGAL_DEPLOY_QA",
+    "candidate_url": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
     "current_deploy_accepted": false,
     "payment_live_required": false,
     "supplier_live_required": false,

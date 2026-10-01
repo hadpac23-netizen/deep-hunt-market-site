@@ -1,9 +1,14 @@
-const CACHE="hunt-shell-pwa5";
+const CACHE="hunt-shell-pwa6";
 const CORE=[
   "./",
   "./index.html",
   "./category.html",
   "./product.html",
+  "./terms.html",
+  "./privacy.html",
+  "./returns.html",
+  "./shipping.html",
+  "./legal.css",
   "./hunt-shop.css",
   "./hunt-deal.css",
   "./market-core.js",

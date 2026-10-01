@@ -1,16 +1,5 @@
-# HUNT DEAL — Privacy Notice (DRAFT)
+# HUNT DEAL — Privacy Notice
 
-Status: DRAFT — NOT CUSTOMER-FACING.
+Status: PRELAUNCH PUBLIC COPY APPROVED.
 
-## Required sections before publication
-- Verified privacy contact.
-- Data controller/operator identity.
-- Data collected: account, checkout, shipping, support, analytics and security events.
-- Purposes and legal bases appropriate to each launch market.
-- Service-provider categories and international transfers.
-- Retention periods or retention criteria.
-- Cookies/analytics and consent controls where required.
-- User rights and request process.
-- Security and incident-contact process.
-- Children/minor handling appropriate to the actual service eligibility rules.
-- Effective date and change-notice process.
+Customer-facing source: `/privacy.html`. Support/privacy contact is the verified company mailbox.

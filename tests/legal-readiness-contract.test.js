@@ -6,41 +6,35 @@ const root=path.resolve(__dirname,"..");
 const profile=JSON.parse(fs.readFileSync(path.join(root,"ops/legal/hunt-legal-readiness.json"),"utf8"));
 const build=fs.readFileSync(path.join(root,"scripts/build-legal-pages.mjs"),"utf8");
 
-test("RT11 legal publication stays fail-closed until verified contacts and Owner approval",()=>{
-  assert.equal(profile.owner_approved,false);
+test("RT11 prelaunch legal pages are approved without claiming real-money disclosure closure",()=>{
+  assert.equal(profile.policy_publication_owner_approved,true);
   assert.equal(profile.public_contacts.support_email,"hacoachle@gmail.com");
   assert.equal(profile.public_contacts.privacy_contact_email,"hacoachle@gmail.com");
   assert.equal(profile.public_contacts.returns_address,null);
-  assert.equal(profile.publication_gate,"POLICY_TEXT_REVIEW_AND_PUBLICATION");
-});
-
-test("company mailbox is explicitly designated for support/privacy while returns stays blocked",()=>{
-  assert.equal(profile.company_mailbox_candidate_exists,true);
-  assert.equal(profile.company_mailbox_candidate_designated_for_customer_support,true);
-  assert.equal(profile.public_contacts.returns_address,null);
-});
-
-test("legal page builder refuses publication while contacts or approval are missing",()=>{
-  assert.match(build,/LEGAL_PUBLICATION_BLOCKED/);
-  assert.match(build,/profile\?\.owner_approved!==true\|\|missing\.length/);
-  assert.match(build,/returns_workflow_owner_approved===true/);
-  assert.match(build,/LEGAL_BUILD_REQUIRES_REVIEWED_FINAL_COPY/);
-});
-
-test("all four policy templates exist only under ops legal drafts",()=>{
-  for(const name of ["terms.md","privacy.md","returns-refunds.md","shipping-delivery.md"]){
-    assert.ok(fs.existsSync(path.join(root,"ops/legal/templates",name)),name);
-  }
-  for(const name of ["terms.html","privacy.html","returns.html","shipping.html"]){
-    assert.equal(fs.existsSync(path.join(root,name)),false,name+" must not be published yet");
-  }
-});
-
-
-test("returns workflow is Owner-approved operationally without inventing a physical returns address",()=>{
-  assert.equal(profile.returns_workflow_draft_ready,true);
   assert.equal(profile.returns_workflow_owner_approved,true);
-  assert.equal(profile.returns_workflow_status,"OWNER_APPROVED_OPERATIONAL_WORKFLOW");
+  assert.equal(profile.customer_policy_pages_verified,true);
+  assert.equal(profile.real_money_business_address_disclosure_pending,true);
+  assert.equal(profile.publication_gate,"PRELAUNCH_POLICY_PUBLICATION_APPROVED");
+});
+
+test("all four reviewed public policy pages exist and stay prelaunch-safe",()=>{
+  for(const name of ["terms.html","privacy.html","returns.html","shipping.html"]){
+    const raw=fs.readFileSync(path.join(root,name),"utf8");
+    assert.match(raw,/PRE-LAUNCH/i,name);
+    assert.match(raw,/hacoachle@gmail\.com/i,name);
+    assert.doesNotMatch(raw,/DRAFT\s*[—-]\s*NOT CUSTOMER-FACING/i,name);
+  }
+  assert.match(fs.readFileSync(path.join(root,"returns.html"),"utf8"),/5%.*NIS 100|NIS 100.*5%/s);
+});
+
+test("legal builder requires approved policy publication and an approved returns solution",()=>{
+  assert.match(build,/policy_publication_owner_approved/);
+  assert.match(build,/returns_workflow_owner_approved===true/);
+  assert.match(build,/LEGAL_PRELAUNCH_PUBLICATION_READY/);
+});
+
+test("returns workflow is Owner-approved without inventing a universal physical returns address",()=>{
+  assert.equal(profile.returns_workflow_owner_approved,true);
   assert.equal(profile.public_contacts.returns_address,null);
   assert.ok(fs.existsSync(path.join(root,profile.returns_workflow_file)));
 });

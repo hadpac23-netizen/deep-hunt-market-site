@@ -33,8 +33,8 @@ test("privacy guard aliases known fulfillment sources in product links", () => {
 test("PWA cache cannot pin pre-red-team customer scripts", () => {
   const sw=fs.readFileSync("service-worker.js","utf8");
   const pwaSrc=fs.readFileSync("pwa.js","utf8");
-  assert.match(sw,/hunt-shell-pwa5/);
-  assert.match(pwaSrc,/service-worker\.js\?v=pwa5/);
+  assert.match(sw,/hunt-shell-pwa6/);
+  assert.match(pwaSrc,/service-worker\.js\?v=pwa6/);
   assert.match(sw,/storefront-privacy\|market-core\|product\|product-flow\|category\|hunt-wow/);
   assert.doesNotMatch(sw,/hunt-shell-pwa3/);
 });

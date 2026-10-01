@@ -24,12 +24,15 @@ test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(m.fulfillment.eprolo_contract_blocker.order_price_quote.tax_truth_verified,false);
   assert.equal(m.fulfillment.eprolo_contract_blocker.supplier_submission_allowed,false);
   assert.equal(m.freshness_automation.live_cron_enabled,false);
-  assert.equal(m.legal.status,"BLOCKED_POLICY_REVIEW_AND_PUBLICATION");
+  assert.equal(m.legal.status,"PRELAUNCH_POLICY_PAGES_READY_REAL_MONEY_DISCLOSURES_PENDING");
   assert.deepEqual(m.legal.missing_verified_fields,[]);
   assert.equal(m.legal.returns_solution_complete,true);
   assert.equal(m.legal.returns_workflow_owner_approved,true);
   assert.equal(m.legal.company_mailbox_designated_as_support_privacy,true);
-  assert.equal(m.legal.standalone_policy_page_files_found_in_pr26,false);
+  assert.equal(m.legal.standalone_policy_page_files_found_in_pr26,true);
+  assert.equal(m.legal.customer_policy_pages_verified,true);
+  assert.equal(m.legal.policy_publication_owner_approved,true);
+  assert.equal(m.legal.real_money_business_address_disclosure_pending,true);
   assert.equal(m.security.status,"PARTIAL");
   assert.equal(m.git_governance.branch_protection_verified,true);
   assert.equal(m.git_governance.branch_protection_enabled,false);
