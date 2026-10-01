@@ -1,0 +1,31 @@
+{
+  "schema_version": "HUNT_RETURNS_WORKFLOW_DRAFT_V1",
+  "status": "DRAFT_OWNER_REVIEW_REQUIRED",
+  "customer_facing": false,
+  "owner_approved": false,
+  "support_channel": "hacoachle@gmail.com",
+  "public_returns_address": null,
+  "do_not_assume_business_address_is_returns_address": true,
+  "request_requirements": [
+    "order_reference",
+    "customer_contact",
+    "return_reason",
+    "item_reference",
+    "evidence_when_relevant_for_damaged_wrong_or_defective_item"
+  ],
+  "workflow": [
+    "customer_opens_return_request_with_support",
+    "hunt_validates_order_and_applicable_policy",
+    "hunt_assigns_return_authorization_reference",
+    "hunt_supplies_the_verified_return_destination_for_that_item_and_market",
+    "customer_does_not_self_ship_before_authorization",
+    "hunt_records_carrier_or_receipt_evidence",
+    "refund_or_replacement_is_processed_under_the_applicable_published_policy"
+  ],
+  "safety": {
+    "supplier_identity_customer_visible": false,
+    "payment_live_required": false,
+    "supplier_live_order_required": false
+  },
+  "publication_blocker": "TARGET_MARKET_REVIEW_AND_OWNER_APPROVAL"
+}

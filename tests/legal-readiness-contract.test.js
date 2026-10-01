@@ -34,3 +34,11 @@ test("all four policy templates exist only under ops legal drafts",()=>{
     assert.equal(fs.existsSync(path.join(root,name)),false,name+" must not be published yet");
   }
 });
+
+
+test("returns workflow is drafted but cannot replace Owner approval yet",()=>{
+  assert.equal(profile.returns_workflow_draft_ready,true);
+  assert.equal(profile.returns_workflow_owner_approved,false);
+  assert.equal(profile.public_contacts.returns_address,null);
+  assert.ok(fs.existsSync(path.join(root,profile.returns_workflow_file)));
+});

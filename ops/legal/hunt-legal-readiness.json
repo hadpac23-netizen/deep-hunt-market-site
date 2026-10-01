@@ -17,5 +17,8 @@
     "shipping_delivery": "DRAFT_NOT_PUBLISHED"
   },
   "publication_gate": "RETURNS_VERIFIED_AND_OWNER_APPROVED",
-  "note": "Support and privacy contacts are verified to the company mailbox. Do not infer that the business address is the returns address. Keep publication blocked until a verified returns address or approved returns workflow and Owner review are complete."
+  "note": "Support and privacy contacts are verified to the company mailbox. Do not infer that the business address is the returns address. Keep publication blocked until a verified returns address or approved returns workflow and Owner review are complete.",
+  "returns_workflow_draft_ready": true,
+  "returns_workflow_owner_approved": false,
+  "returns_workflow_file": "ops/legal/hunt-returns-workflow-draft.json"
 }
