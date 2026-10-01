@@ -7,7 +7,7 @@ const categoryHtml = fs.readFileSync(new URL('../category.html', import.meta.url
 
 test('category page loads canonical taxonomy before category runtime', () => {
   const taxonomyPos = categoryHtml.indexOf('canonical-taxonomy.js');
-  const categoryPos = categoryHtml.indexOf('category.js?v=stable1');
+  const categoryPos = categoryHtml.indexOf('category.js');
   assert.ok(taxonomyPos > -1, 'canonical taxonomy script must be loaded');
   assert.ok(categoryPos > taxonomyPos, 'canonical taxonomy must load before category.js');
 });

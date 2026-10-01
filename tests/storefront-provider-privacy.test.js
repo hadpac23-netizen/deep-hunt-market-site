@@ -27,3 +27,13 @@ test("privacy guard aliases known fulfillment sources in product links", () => {
   assert.match(privacy, /HUNT Network/);
   assert.match(privacy, /MutationObserver/);
 });
+
+
+test("PWA cache cannot pin pre-red-team customer scripts", () => {
+  const sw=fs.readFileSync("service-worker.js","utf8");
+  const pwaSrc=fs.readFileSync("pwa.js","utf8");
+  assert.match(sw,/hunt-shell-pwa3/);
+  assert.match(pwaSrc,/service-worker\.js\?v=pwa3/);
+  assert.match(sw,/storefront-privacy\|product\|category\|hunt-wow/);
+  assert.doesNotMatch(sw,/hunt-shell-pwa2/);
+});

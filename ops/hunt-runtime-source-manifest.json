@@ -86,6 +86,15 @@
       "live_status": "NOT_DEPLOYED",
       "git_path": "supabase/functions/hunt-supplier-ops-watch-shadow/index.ts",
       "relationship": "PR26_BRANCH_ONLY"
+    },
+    {
+      "slug": "hunt-business-identity",
+      "live_version": 13,
+      "live_status": "ACTIVE",
+      "git_path": null,
+      "relationship": "LIVE_SOURCE_NOT_IN_GIT",
+      "launch_critical": false,
+      "note": "Live function exists, but no caller or source file exists in PR26. Do not claim source parity; recover/rewrite contract before any future deployment of this slug."
     }
   ]
 }

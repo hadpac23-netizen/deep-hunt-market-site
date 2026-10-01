@@ -17,7 +17,24 @@
     },
     "canonical_pdp_predicate_drift_guard": true,
     "stale_snapshot_precedence_fixed_in_pr26": true,
-    "latest_runtime_evidence": "ops/evidence/hunt-red-team-remediation-2026-10-01-v1.json"
+    "latest_runtime_evidence": "ops/evidence/hunt-red-team-remediation-2026-10-01-v1.json",
+    "no_op_migration_history_parity": {
+      "versions": [
+        "20261001083757",
+        "20261001083817",
+        "20261001083835",
+        "20261001084154"
+      ],
+      "effect": "SELECT 1 only; no schema/data/permission change",
+      "git_parity_files_added": true
+    },
+    "non_launch_critical_runtime_source_gap": {
+      "slug": "hunt-business-identity",
+      "live_version": 13,
+      "relationship": "LIVE_SOURCE_NOT_IN_GIT",
+      "current_pr26_callers": 0,
+      "action": "Do not deploy/replace this function until source contract is recovered or explicitly redesigned."
+    }
   },
   "catalog": {
     "status": "PARTIAL",
@@ -358,7 +375,14 @@
       "20260930160053_deny_client_access_shadow_pricing",
       "20260930160138_harden_profile_update_policies",
       "20260930165643_hunt_eprolo_canonical_shelves_rpc_v1"
-    ]
+    ],
+    "customer_ui_password_auth_present": false,
+    "customer_ui_auth_modes": [
+      "MAGIC_LINK",
+      "OAUTH",
+      "GOOGLE_ID_TOKEN"
+    ],
+    "leaked_password_risk_ui_mitigation": "HUNT customer UI exposes no password-auth path; project-level leaked-password protection remains disabled and is not claimed fixed."
   },
   "legal": {
     "status": "BLOCKED_CUSTOMER_CONTACTS_AND_POLICY_REVIEW",
@@ -381,7 +405,12 @@
     "blocks_real_money": true,
     "standalone_policy_page_files_found_in_pr26": false,
     "policy_filename_scan_scope": "repo_depth_2_privacy_terms_returns_refund_shipping_cookie",
-    "observed_at": "2026-10-01T08:02:21Z"
+    "observed_at": "2026-10-01T08:02:21Z",
+    "draft_policy_templates_in_pr26": true,
+    "draft_policy_templates_customer_visible": false,
+    "legal_publication_gate": "ALL_CONTACTS_VERIFIED_AND_OWNER_APPROVED",
+    "company_mailbox_candidate_exists": true,
+    "company_mailbox_designated_as_support_privacy": false
   },
   "git_governance": {
     "status": "BLOCKED_MAIN_UNPROTECTED",
@@ -467,5 +496,13 @@
     "supplier_live_order": false,
     "merge": false,
     "production_deploy": false
+  },
+  "payplus_prelaunch_url_gate": {
+    "status": "BLOCKED_NOT_DEPLOYED_AND_LEGAL_CONTACTS_INCOMPLETE",
+    "candidate_url": "https://deep-hunt-market.netlify.app",
+    "current_deploy_accepted": false,
+    "payment_live_required": false,
+    "supplier_live_required": false,
+    "source": "ops/hunt-payplus-prelaunch-url-gate.json"
   }
 }

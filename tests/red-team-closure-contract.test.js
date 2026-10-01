@@ -54,3 +54,6 @@ test("freshness plan fits the 30 minute stock policy for both providers",()=>{
 require("./red-team-session-hardening.test.js");
 require("./red-team-support-permissions.test.js");
 require("./red-team-storefront-context.test.js");
+require("./legal-readiness-contract.test.js");
+require("./security-governance-readiness.test.js");
+require("./payplus-prelaunch-url-gate.test.js");

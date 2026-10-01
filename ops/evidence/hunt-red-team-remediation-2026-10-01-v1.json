@@ -73,5 +73,18 @@
     "merge": false,
     "production_deploy": false
   },
-  "note": "No production deployment, live permission mutation, payment, supplier order or secret value was performed or stored in this remediation."
+  "note": "No production deployment, live permission mutation, payment, supplier order or secret value was performed or stored in this remediation.",
+  "runtime_history_note": {
+    "no_op_migrations_recorded_live": [
+      "20261001083757 __noop_probe_should_not_run__",
+      "20261001083817 x",
+      "20261001083835 stop",
+      "20261001084154 do_not_apply"
+    ],
+    "sql_effect": "SELECT 1 only",
+    "schema_changed": false,
+    "data_changed": false,
+    "permissions_changed": false,
+    "git_parity_files_added": true
+  }
 }
