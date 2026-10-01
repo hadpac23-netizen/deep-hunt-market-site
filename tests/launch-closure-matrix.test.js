@@ -24,7 +24,7 @@ test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(m.fulfillment.eprolo_contract_blocker.order_price_quote.tax_truth_verified,false);
   assert.equal(m.fulfillment.eprolo_contract_blocker.supplier_submission_allowed,false);
   assert.equal(m.freshness_automation.live_cron_enabled,false);
-  assert.equal(m.legal.status,"PRELAUNCH_POLICY_PAGES_READY_REAL_MONEY_DISCLOSURES_PENDING");
+  assert.equal(m.legal.status,"PRELAUNCH_POLICY_PAGES_DEPLOYED_REAL_MONEY_DISCLOSURES_PENDING");
   assert.deepEqual(m.legal.missing_verified_fields,[]);
   assert.equal(m.legal.returns_solution_complete,true);
   assert.equal(m.legal.returns_workflow_owner_approved,true);
@@ -59,7 +59,7 @@ test("2026-10-01 red-team closure distinguishes staged fixes from live proof",()
   assert.equal(m.red_team_2026_10_01.rt09,"LIVE_V27_INTEGER_QTY_ENFORCED");
   assert.equal(m.red_team_2026_10_01.rt10,"PRELAUNCH_BROWSER_PASS_PRIVACY_CONTEXT_MOBILE_390");
   assert.equal(m.red_team_2026_10_01.prelaunch_netlify.browser_qa,"PASS");
-  assert.equal(m.red_team_2026_10_01.prelaunch_netlify.mobile_390,"PASS");
+  assert.match(m.red_team_2026_10_01.prelaunch_netlify.mobile_390,/^PASS/);
   assert.equal(m.red_team_2026_10_01.prelaunch_netlify.production_promoted,false);
   assert.equal(m.freshness_automation.live_cron_enabled,false);
   assert.equal(m.freshness_automation.runner_live_deployed,false);

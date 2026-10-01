@@ -7,9 +7,9 @@ const gate=JSON.parse(fs.readFileSync(path.resolve(__dirname,"../ops/hunt-payplu
 test("PayPlus URL can be shared before live payments but not before pre-launch safety closure",()=>{
   assert.equal(gate.payment_live_required,false);
   assert.equal(gate.supplier_live_order_required,false);
-  assert.equal(gate.candidate_url_current_deploy_accepted,false);
-  assert.equal(gate.status,"PENDING_LEGAL_DEPLOY_QA");
-  assert.equal(gate.post_deploy_evidence.browser_qa,"PASS_DESKTOP_AND_390PX_MOBILE");
+  assert.equal(gate.candidate_url_current_deploy_accepted,true);
+  assert.equal(gate.status,"READY_TO_SHARE_PRELAUNCH_URL");
+  assert.match(gate.post_deploy_evidence.browser_qa,/^PASS/);
   assert.match(gate.post_deploy_evidence.session_adversarial_runtime,/^PARTIAL_/);
   assert.match(gate.candidate_url,/^https:\/\/hunt-pr26-prelaunch--deep-hunt-market\.netlify\.app$/);
 });

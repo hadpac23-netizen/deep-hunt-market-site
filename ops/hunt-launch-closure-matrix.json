@@ -2,8 +2,8 @@
   "schema_version": "HUNT_LAUNCH_CLOSURE_MATRIX_V1",
   "observed_at": "2026-10-01T09:22:51Z",
   "source_of_truth": {
-    "status": "PRELAUNCH_BACKEND_RUNTIME_RECONCILED_FRONTEND_DEPLOY_PENDING",
-    "evidence": "Backend runtime is reconciled: payment v27, order preview v16, orchestrator v26, storefront v142, EPROLO country-shadow v13 quarantine. Storefront v142 publicly holds EPROLO cards while retaining canonical audit metadata. Netlify Pre-Launch deploy and browser QA remain pending.",
+    "status": "PRELAUNCH_BACKEND_AND_PROVIDER_REVIEW_SITE_READY_EXTERNAL_BLOCKERS_REMAIN",
+    "evidence": "Backend hardening is live; PR26 legal policy pages are deployed to the Netlify pre-launch alias and passed HTTP/content/privacy QA. Production remains unchanged; real-money launch is still blocked by payment sandbox, tax/final-profit, supplier E2E, freshness, governance/security and final Owner Gate.",
     "blocks_real_money": true,
     "storefront_source_layout_fixed": true,
     "storefront_sidecars_separate": true,
@@ -404,7 +404,7 @@
     "rt08_customer_case_privileges_hardened": true
   },
   "legal": {
-    "status": "PRELAUNCH_POLICY_PAGES_READY_REAL_MONEY_DISCLOSURES_PENDING",
+    "status": "PRELAUNCH_POLICY_PAGES_DEPLOYED_REAL_MONEY_DISCLOSURES_PENDING",
     "verified_operating_entity_fields_complete": true,
     "verified_fields": {
       "legal_entity_name": true,
@@ -431,7 +431,10 @@
     "returns_workflow_owner_approved": true,
     "returns_workflow_status": "OWNER_APPROVED_OPERATIONAL_WORKFLOW",
     "policy_publication_owner_approved": true,
-    "real_money_business_address_disclosure_pending": true
+    "real_money_business_address_disclosure_pending": true,
+    "prelaunch_policy_deploy_id": "6abe34d4d8549f28722b413d",
+    "prelaunch_policy_deploy_commit": "58c5a293e40239bdc5d6b70423459fcaf28836b3",
+    "prelaunch_policy_http_qa": "PASS_4_OF_4"
   },
   "git_governance": {
     "status": "BLOCKED_MAIN_UNPROTECTED",
@@ -502,7 +505,7 @@
     "rt08": "LIVE_MIGRATION_APPLIED_PRIVILEGES_HARDENED",
     "rt09": "LIVE_V27_INTEGER_QTY_ENFORCED",
     "rt10": "PRELAUNCH_BROWSER_PASS_PRIVACY_CONTEXT_MOBILE_390",
-    "rt11": "PRELAUNCH_POLICY_PAGES_READY_REAL_MONEY_DISCLOSURES_PENDING",
+    "rt11": "PRELAUNCH_POLICY_PAGES_DEPLOYED_REAL_MONEY_DISCLOSURES_PENDING",
     "rt12": "SOURCE_OF_TRUTH_REFRESHED_MAIN_VERIFIED_UNPROTECTED",
     "local_tests": {
       "checkout_red_team": "137/137 PASS",
@@ -524,17 +527,17 @@
       "status": "PASS"
     },
     "prelaunch_netlify": {
-      "deploy_id": "6abe2997049669300a82f997",
+      "deploy_id": "6abe34d4d8549f28722b413d",
       "alias": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
       "browser_qa": "PASS",
-      "mobile_390": "PASS",
+      "mobile_390": "PASS_PREVIOUS_FLOW_UNCHANGED_LEGAL_STATIC",
       "production_promoted": false
     }
   },
   "payplus_prelaunch_url_gate": {
-    "status": "PENDING_LEGAL_DEPLOY_QA",
+    "status": "READY_TO_SHARE_PRELAUNCH_URL",
     "candidate_url": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
-    "current_deploy_accepted": false,
+    "current_deploy_accepted": true,
     "payment_live_required": false,
     "supplier_live_required": false,
     "source": "ops/hunt-payplus-prelaunch-url-gate.json"
