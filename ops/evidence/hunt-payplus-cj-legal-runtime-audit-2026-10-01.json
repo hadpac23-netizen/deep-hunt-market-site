@@ -1,0 +1,56 @@
+{
+  "evidence_id": "HUNT-PAYPLUS-CJ-LEGAL-RUNTIME-AUDIT-2026-10-01-V1",
+  "observed_at": "2026-10-01T08:02:21Z",
+  "scope": "READ_ONLY_RUNTIME_AND_REPO_AUDIT_NO_PROVIDER_MUTATION",
+  "safety": {
+    "payment_live": false,
+    "payplus_accept_paid": false,
+    "supplier_live_order": false,
+    "supplier_order_created": false,
+    "production_deploy": false,
+    "merge": false
+  },
+  "payplus": {
+    "account_onboarding_evidence_present": true,
+    "provider_requested_site_url": true,
+    "sandbox_request_draft_prepared": true,
+    "sandbox_request_sent": false,
+    "sandbox_request_send_requires_owner_approval": true,
+    "supabase_vault": {
+      "PAYPLUS_API_KEY_present": false,
+      "PAYPLUS_SECRET_KEY_present": false,
+      "PAYPLUS_PAYMENT_PAGE_UID_present": false,
+      "scope_note": "This is Supabase Vault evidence only; it does not claim absence from every possible external runtime environment."
+    },
+    "sandbox_evidence_control_enabled_owner_approved": false,
+    "blocker": "SANDBOX_CREDENTIALS_NOT_CONFIGURED_AND_PROVIDER_REQUEST_DRAFT_UNSENT"
+  },
+  "cj": {
+    "supplier_sandbox_control_enabled_owner_approved": true,
+    "admin_authorization_source": "public.profiles.is_admin",
+    "active_admin_auth_sessions": 0,
+    "supabase_vault_cj_auth_secret_present": false,
+    "pr26_presupplier_recheck_in_live_runtime": false,
+    "full_sandbox_e2e_proven": false,
+    "blocker": "PR26_NOT_LIVE_AND_ACTIVE_ADMIN_SESSION_REQUIRED"
+  },
+  "legal": {
+    "operating_entity_identity_verified": true,
+    "private_identity_values_committed_to_public_repo": false,
+    "missing_verified_customer_fields": [
+      "support_email",
+      "privacy_contact_email",
+      "returns_address"
+    ],
+    "standalone_policy_page_files_found_in_pr26": false,
+    "required_review": [
+      "terms",
+      "privacy",
+      "returns_refunds",
+      "shipping_delivery",
+      "cookie_consent_where_required"
+    ],
+    "blocker": "CUSTOMER_CONTACTS_AND_POLICY_REVIEW_INCOMPLETE"
+  },
+  "readiness_change": false
+}

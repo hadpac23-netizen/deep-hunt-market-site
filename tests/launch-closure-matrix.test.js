@@ -7,13 +7,21 @@ const m=JSON.parse(fs.readFileSync(path.resolve(__dirname,"../ops/hunt-launch-cl
 test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(m.payment.payment_live,false);
   assert.equal(m.payment.payplus_callback_accept_paid,false);
+  assert.equal(m.payment.payplus_sandbox_evidence_enabled,false);
+  assert.equal(m.payment.payplus_sandbox_request_sent,false);
+  assert.equal(m.payment.payplus_sandbox_credentials_scope,"NOT_PRESENT_IN_SUPABASE_VAULT_CURRENT_EVIDENCE");
+  assert.equal(m.fulfillment.cj_sandbox_e2e_runtime_blocker.active_admin_auth_session,false);
+  assert.equal(m.fulfillment.cj_sandbox_e2e_runtime_blocker.active_admin_auth_session_count_observed,0);
+  assert.equal(m.fulfillment.cj_sandbox_e2e_runtime_blocker.admin_auth_session_required_blocker_closed,false);
   assert.equal(m.fulfillment.eprolo_order_tracking_contract_verified,true);
   assert.equal(m.fulfillment.eprolo_contract_blocker.status,"OFFICIAL_CONTRACT_DOCUMENTED_RUNTIME_COST_VARIANT_MISMATCH_EXECUTION_BLOCKED");
   assert.equal(m.fulfillment.eprolo_contract_blocker.order_price_quote.method_contract_mismatch,true);
   assert.equal(m.fulfillment.eprolo_contract_blocker.order_price_quote.tax_truth_verified,false);
   assert.equal(m.fulfillment.eprolo_contract_blocker.supplier_submission_allowed,false);
   assert.equal(m.freshness_automation.live_cron_enabled,false);
-  assert.equal(m.legal.status,"BLOCKED");
+  assert.equal(m.legal.status,"BLOCKED_CUSTOMER_CONTACTS_AND_POLICY_REVIEW");
+  assert.deepEqual(m.legal.missing_verified_fields,["support_email","privacy_contact_email","returns_address"]);
+  assert.equal(m.legal.standalone_policy_page_files_found_in_pr26,false);
   assert.equal(m.security.status,"PARTIAL");
 });
 

@@ -1,6 +1,6 @@
 {
   "schema_version": "HUNT_LAUNCH_CLOSURE_MATRIX_V1",
-  "observed_at": "2026-10-01T00:38:00Z",
+  "observed_at": "2026-10-01T08:02:21Z",
   "source_of_truth": {
     "status": "PARTIAL",
     "evidence": "PR26 remains the single Draft launch candidate. PR26 strict EPROLO PDP has been refactored to a service-role-only Supabase RPC and passed Catalog Integrity #278 plus Checkout Regression #289. Live hunt-storefront remains unchanged and the prior live strict-PDP canary still returned HTTP 404 for 8/8 candidates; applying the RPC migration, Edge secrets and storefront deploy still requires Owner Gate.",
@@ -157,15 +157,20 @@
       "last_observed_failures": "2026-09-15"
     },
     "cj_sandbox_e2e_runtime_blocker": {
-      "status": "BLOCKED_RUNTIME_DRIFT_AND_AUTHENTICATED_INVOCATION",
+      "status": "BLOCKED_PR26_NOT_LIVE_AND_ADMIN_SESSION_REQUIRED",
       "orchestrator_runtime_version": 23,
       "signed_in_admin_test_user_exists": true,
-      "active_admin_auth_session": true,
-      "active_admin_auth_session_count_observed": 10,
-      "admin_auth_session_required_blocker_closed": true,
+      "active_admin_auth_session": false,
+      "active_admin_auth_session_count_observed": 0,
+      "admin_auth_session_required_blocker_closed": false,
       "pr26_presupplier_recheck_not_live": true,
-      "blocker": "Deploying the PR26 order-orchestrator hardening requires explicit Owner Gate; after that, run CJ sandbox through an authenticated Admin session and require tracking/shipped evidence.",
-      "full_tracking_shipped_e2e_proven": false
+      "blocker": "PR26 order-orchestrator hardening is not live and there is currently no active authenticated Admin session. Do not run CJ sandbox E2E until Owner Gate deploys PR26 and a fresh Admin session is active.",
+      "full_tracking_shipped_e2e_proven": false,
+      "admin_authorization_source": "public.profiles.is_admin",
+      "supplier_sandbox_control_enabled_owner_approved": true,
+      "supabase_vault_cj_auth_secret_present": false,
+      "supabase_vault_scope_note": "Vault absence does not prove that no runtime environment credential exists elsewhere.",
+      "observed_at": "2026-10-01T08:02:21Z"
     },
     "eprolo_contract_blocker": {
       "status": "OFFICIAL_CONTRACT_DOCUMENTED_RUNTIME_COST_VARIANT_MISMATCH_EXECUTION_BLOCKED",
@@ -214,7 +219,7 @@
     }
   },
   "payment": {
-    "status": "BLOCKED",
+    "status": "BLOCKED_EXTERNAL_SANDBOX_CREDENTIALS_AND_EVIDENCE",
     "payment_live": false,
     "payplus_callback_accept_paid": false,
     "payplus_sandbox_evidence_enabled": false,
@@ -233,7 +238,14 @@
       "callback_status_mapping_proven": false,
       "signed_callback_evidence_proven": false,
       "accepted_paid_evidence_proven": false
-    }
+    },
+    "payplus_sandbox_credentials_scope": "NOT_PRESENT_IN_SUPABASE_VAULT_CURRENT_EVIDENCE",
+    "payplus_account_onboarding_exists": true,
+    "payplus_provider_requested_site_url": true,
+    "payplus_sandbox_request_draft_prepared": true,
+    "payplus_sandbox_request_sent": false,
+    "payplus_sandbox_request_requires_owner_send_approval": true,
+    "observed_at": "2026-10-01T08:02:21Z"
   },
   "reliability": {
     "status": "PARTIAL_CANONICAL_RPC_PASS_PDP_RPC_FIX_STAGED_NOT_LIVE",
@@ -322,7 +334,7 @@
     ]
   },
   "legal": {
-    "status": "BLOCKED",
+    "status": "BLOCKED_CUSTOMER_CONTACTS_AND_POLICY_REVIEW",
     "verified_operating_entity_fields_complete": true,
     "verified_fields": {
       "legal_entity_name": true,
@@ -337,9 +349,12 @@
       "returns_address"
     ],
     "customer_policy_pages_verified": false,
-    "secure_runtime_identity_status": "draft",
+    "secure_runtime_identity_status": "verified_identity_private_values_not_committed",
     "owner_approved": false,
-    "blocks_real_money": true
+    "blocks_real_money": true,
+    "standalone_policy_page_files_found_in_pr26": false,
+    "policy_filename_scan_scope": "repo_depth_2_privacy_terms_returns_refund_shipping_cookie",
+    "observed_at": "2026-10-01T08:02:21Z"
   },
   "git_governance": {
     "status": "PARTIAL",
@@ -384,10 +399,10 @@
     "After explicit Owner Gate: apply the PR26 strict-PDP RPC migration, configure HUNT_EPROLO_API_KEY/HUNT_EPROLO_API_SECRET as Edge Function secrets, deploy the PR26 storefront runtime, then rerun the strict EPROLO PDP canary. Live runtime remains unchanged and still has the prior 8/8 HTTP 404 evidence.",
     "Resolve EPROLO getCostByProduct runtime mismatch before destination-tax truth can close: official doc says GET, live endpoint requires POST, and probed canonical variants were rejected by pricing lookup. Final Profit Verified remains 0. Official docs also expose POST add_product.html for Store import; it was NOT called and may only be tested after Owner Gate in a non-live mode.",
     "Complete and validate the separately disabled stock/price/shipping freshness automation before real-money launch.",
-    "After explicit Owner Gate, deploy PR26 order-orchestrator hardening and complete CJ authenticated Admin sandbox E2E through supplier order, tracking and shipped evidence.",
+    "After explicit Owner Gate, deploy PR26 order-orchestrator hardening; then establish a fresh authenticated Admin session and complete CJ sandbox E2E through supplier order, tracking and shipped evidence. Current active Admin session count is 0.",
     "EPROLO order/query/tracking/webhook contract is officially documented; still verify a sandbox or explicitly non-billable execution mode and complete approved E2E proof before supplier submission can be enabled.",
-    "Obtain/configure PayPlus sandbox API key, secret and payment page UID, then prove signed callback/status/idempotent paid transition while Payment Live remains OFF.",
-    "Finalize verified HUNT support, privacy and returns contacts and review customer-facing legal/policy pages.",
+    "PayPlus account/onboarding exists and they requested the site URL. A Sandbox/Test credentials request is prepared as an unsent draft. Obtain/configure sandbox API key, secret and payment page UID, then prove signed callback/status/idempotent paid transition while Payment Live remains OFF.",
+    "Finalize verified HUNT support email, privacy contact email and returns address; then prepare and review customer-facing Terms, Privacy, Returns/Refunds, Shipping/Delivery and applicable cookie-consent policy pages. No standalone policy files were found in the PR26 filename scan.",
     "Verify Git branch protection/required checks with an account that has permission.",
     "Complete final security review, including acknowledgement of the Supabase Free-plan leaked-password-protection limitation.",
     "Owner Gate before merge, production deploy, Payment Live or Supplier Live."
