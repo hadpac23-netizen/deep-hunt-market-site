@@ -337,7 +337,9 @@
     "final_coderabbit_re_review_required": false,
     "strict_pdp_pooler_dependency_removed_in_pr26": true,
     "strict_pdp_rpc_contract_test": "tests/eprolo-storefront-launch-gate.test.js",
-    "strict_pdp_rpc_local_contract_tests": "39/39 PASS"
+    "strict_pdp_rpc_local_contract_tests": "39/39 PASS",
+    "strict_pdp_rpc_local_catalog_integrity_tests": "31/31 PASS",
+    "strict_pdp_rpc_local_checkout_regression_tests": "113/113 PASS"
   },
   "remaining_external_or_runtime_blockers": [
     "After explicit Owner Gate: apply the PR26 strict-PDP RPC migration, configure HUNT_EPROLO_API_KEY/HUNT_EPROLO_API_SECRET as Edge Function secrets, deploy the PR26 storefront runtime, then rerun the strict EPROLO PDP canary. Live runtime remains unchanged and still has the prior 8/8 HTTP 404 evidence.",

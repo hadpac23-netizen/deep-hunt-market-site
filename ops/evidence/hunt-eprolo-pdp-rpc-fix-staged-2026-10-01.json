@@ -17,7 +17,10 @@
   },
   "local_validation": {
     "catalog_integrity_contract_tests": "39/39 PASS",
-    "deno_check": "NOT_AVAILABLE_ON_LOCAL_MAC"
+    "deno_check": "NOT_AVAILABLE_ON_LOCAL_MAC",
+    "catalog_integrity_current_workflow_tests": "31/31 PASS",
+    "checkout_regression_tests": "113/113 PASS",
+    "combined_rpc_specific_tests": "20/20 PASS"
   },
   "live_state": {
     "migration_applied": false,

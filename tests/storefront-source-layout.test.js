@@ -20,8 +20,9 @@ test("storefront source keeps JSON sidecars separate",()=>{
 test("storefront keeps launch reliability patches after source split",()=>{
   assert.doesNotMatch(index,/Deno\.env\.set/);
   assert.match(index,/await import\("\.\/runtime\.ts"\)/);
-  assert.match(runtime,/HUNT_DB_POOLER_URL/);
-  assert.match(runtime,/SUPABASE_DB_POOLER_URL/);
+  assert.match(runtime,/hunt_eprolo_strict_pdp_candidate_v1/);
+  assert.match(runtime,/HUNT_EPROLO_API_KEY/);
+  assert.match(runtime,/HUNT_EPROLO_API_SECRET/);
+  assert.doesNotMatch(runtime,/HUNT_DB_POOLER_URL|SUPABASE_DB_POOLER_URL|eproloSqlClient|npm:postgres/);
   assert.match(runtime,/EXACT_VARIANT_QUOTE_REQUIRED/);
-  assert.doesNotMatch(runtime,/await sql\.end\(\{timeout:1\}\)/);
 });
