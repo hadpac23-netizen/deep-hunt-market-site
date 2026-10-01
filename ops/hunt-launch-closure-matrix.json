@@ -3,7 +3,7 @@
   "observed_at": "2026-10-01T00:38:00Z",
   "source_of_truth": {
     "status": "PARTIAL",
-    "evidence": "PR26 remains the single Draft launch candidate. Live hunt-storefront v140 serves canonical EPROLO shelves through a service-role-only Supabase RPC, while the strict EPROLO product-detail path still calls eproloSqlClient() and is currently blocked at runtime. Live canary evidence on 2026-10-01 returned HTTP 404 for 8/8 rows that satisfy the PR26 strict PDP SQL predicate. No merge to main or Production deploy has occurred.",
+    "evidence": "PR26 remains the single Draft launch candidate. PR26 strict EPROLO PDP has been refactored to a service-role-only Supabase RPC and passed Catalog Integrity #278 plus Checkout Regression #289. Live hunt-storefront remains unchanged and the prior live strict-PDP canary still returned HTTP 404 for 8/8 candidates; applying the RPC migration, Edge secrets and storefront deploy still requires Owner Gate.",
     "blocks_real_money": true,
     "storefront_source_layout_fixed": true,
     "storefront_sidecars_separate": true,
@@ -14,7 +14,7 @@
     },
     "canonical_pdp_predicate_drift_guard": true,
     "stale_snapshot_precedence_fixed_in_pr26": true,
-    "latest_runtime_evidence": "ops/evidence/hunt-eprolo-pdp-runtime-blocker-2026-10-01.json"
+    "latest_runtime_evidence": "ops/evidence/hunt-eprolo-pdp-rpc-fix-staged-2026-10-01.json"
   },
   "catalog": {
     "status": "PARTIAL",
@@ -145,7 +145,7 @@
     "cj_presupplier_recheck_in_pr26": true,
     "cj_presupplier_recheck_in_live_runtime": false,
     "cj_full_sandbox_e2e_proven": false,
-    "eprolo_order_tracking_contract_verified": false,
+    "eprolo_order_tracking_contract_verified": true,
     "blocks_real_money": true,
     "live_evidence": {
       "cj_records_total": 8,
@@ -168,10 +168,38 @@
       "full_tracking_shipped_e2e_proven": false
     },
     "eprolo_contract_blocker": {
-      "official_public_create_order_endpoint_verified": false,
-      "official_public_order_query_endpoint_verified": false,
-      "official_public_tracking_webhook_verified": false,
-      "endpoint_guessing_allowed": false
+      "status": "OFFICIAL_CONTRACT_DOCUMENTED_EXECUTION_BLOCKED",
+      "official_account_rep_showdoc_verified": true,
+      "create_order": {
+        "method": "POST",
+        "path": "add_order.html",
+        "executed": false
+      },
+      "order_query": {
+        "method": "GET",
+        "path": "order_list.html",
+        "executed": false,
+        "tracking_fields_documented": true
+      },
+      "order_price_quote": {
+        "method": "GET",
+        "path": "getCostByProduct.html",
+        "executed": false,
+        "tax_cost_documented": true
+      },
+      "cancel_order": {
+        "method": "POST",
+        "path": "cancel_orders.html",
+        "executed": false
+      },
+      "webhook": {
+        "setup_path": "add_shop_webhook.html",
+        "tracking_push_documented": true,
+        "configured": false
+      },
+      "endpoint_guessing_allowed": false,
+      "supplier_submission_allowed": false,
+      "remaining": "Sandbox/non-billable execution mode and E2E order/tracking proof remain unverified; Owner Gate required before any mutating call."
     }
   },
   "payment": {
@@ -346,7 +374,7 @@
     "Resolve EPROLO destination-tax/DDP truth for the audited launch cohort; Final Profit Verified remains 0.",
     "Complete and validate the separately disabled stock/price/shipping freshness automation before real-money launch.",
     "After explicit Owner Gate, deploy PR26 order-orchestrator hardening and complete CJ authenticated Admin sandbox E2E through supplier order, tracking and shipped evidence.",
-    "Obtain the official EPROLO Create Order / Order Query / Tracking or webhook contract from EPROLO Account Support; do not guess endpoints.",
+    "EPROLO order/query/tracking/webhook contract is officially documented; still verify a sandbox or explicitly non-billable execution mode and complete approved E2E proof before supplier submission can be enabled.",
     "Obtain/configure PayPlus sandbox API key, secret and payment page UID, then prove signed callback/status/idempotent paid transition while Payment Live remains OFF.",
     "Finalize verified HUNT support, privacy and returns contacts and review customer-facing legal/policy pages.",
     "Verify Git branch protection/required checks with an account that has permission.",

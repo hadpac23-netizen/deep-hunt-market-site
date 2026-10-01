@@ -6,12 +6,23 @@ const root=path.resolve(__dirname,"..");
 const contract=JSON.parse(fs.readFileSync(path.join(root,"ops/hunt-eprolo-order-contract.json"),"utf8"));
 const orchestrator=fs.readFileSync(path.join(root,"supabase/functions/hunt-order-orchestrator/index.ts"),"utf8");
 
-test("EPROLO order contract only records verified read-only endpoints",()=>{
-  assert.equal(contract.state,"BLOCKED_UNTIL_OFFICIAL_ORDER_AND_TRACKING_CONTRACT_VERIFIED");
-  assert.deepEqual(contract.verified_readonly_api.endpoints.map(x=>x.path).sort(),[
-    "eprolo_product_list.html","get_product_shiping_fees.html"
-  ].sort());
+test("EPROLO official order/query/tracking contract is documented but execution remains blocked",()=>{
+  assert.equal(contract.state,"OFFICIAL_ORDER_AND_TRACKING_CONTRACT_DOCUMENTED_EXECUTION_BLOCKED");
+  assert.equal(contract.official_source.source_type,"ACCOUNT_SUPPORT_REP_SUPPLIED_SHOWDOC");
+  assert.equal(contract.authentication_contract.base_url,"https://openapi.eprolo.com/");
+  assert.equal(contract.official_order_contract.new_order.path,"add_order.html");
+  assert.equal(contract.official_order_contract.new_order.method,"POST");
+  assert.equal(contract.official_order_contract.order_query.path,"order_list.html");
+  assert.equal(contract.official_order_contract.order_query.method,"GET");
+  assert.ok(contract.official_order_contract.order_query.tracking_fields.includes("tracking_number"));
+  assert.equal(contract.official_order_contract.order_price_quote.path,"getCostByProduct.html");
+  assert.ok(contract.official_order_contract.order_price_quote.returns.includes("logistics_cost_list[].tax_cost"));
+  assert.equal(contract.official_order_contract.cancel_order.path,"cancel_orders.html");
+  assert.equal(contract.official_order_contract.webhook_setup.path,"add_shop_webhook.html");
+  assert.equal(contract.execution_proof.supplier_submission_performed,false);
+  assert.equal(contract.execution_proof.sandbox_or_non_billable_mode_verified,false);
   assert.equal(contract.rules.guess_endpoint,false);
+  assert.equal(contract.rules.mutating_supplier_api_calls_allowed,false);
   assert.equal(contract.rules.supplier_submission_allowed,false);
 });
 

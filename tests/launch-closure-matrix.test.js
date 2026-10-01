@@ -7,7 +7,9 @@ const m=JSON.parse(fs.readFileSync(path.resolve(__dirname,"../ops/hunt-launch-cl
 test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(m.payment.payment_live,false);
   assert.equal(m.payment.payplus_callback_accept_paid,false);
-  assert.equal(m.fulfillment.eprolo_order_tracking_contract_verified,false);
+  assert.equal(m.fulfillment.eprolo_order_tracking_contract_verified,true);
+  assert.equal(m.fulfillment.eprolo_contract_blocker.status,"OFFICIAL_CONTRACT_DOCUMENTED_EXECUTION_BLOCKED");
+  assert.equal(m.fulfillment.eprolo_contract_blocker.supplier_submission_allowed,false);
   assert.equal(m.freshness_automation.live_cron_enabled,false);
   assert.equal(m.legal.status,"BLOCKED");
   assert.equal(m.security.status,"PARTIAL");
