@@ -44,6 +44,9 @@
   "physical_truth": {
     "reserve_safe_physical_metadata_verified": 15,
     "physical_quality_pass": 0,
+    "priority_queue_ready_for_sample_or_review_evidence": 4,
+    "priority_queue_item_ids": ["28086613", "30723602", "19034207", "32872079"],
+    "priority_queue_gate": "RESERVE_SAFE_PLUS_MANUAL_PIXEL_PASS_PLUS_EXACT_VARIANT_METADATA",
     "policy": "SUPPLIER_METADATA_IS_NOT_PHYSICAL_QUALITY_PROOF"
   },
   "safety_controls_verified": {
@@ -54,6 +57,7 @@
   "notes": [
     "Legacy visual PASS rows retain prior CLEAN_PRODUCT_IMAGE_MATCH/CLEAN_LIFESTYLE_IMAGE_MATCH evidence and BOOM stylist curation, but lack the new manual pixel-review version.",
     "Manual pixel review was performed only on images directly rendered and observed.",
+    "Four products reached the physical-quality evidence queue but are not Physical PASS.",
     "No readiness score was increased from legacy visual evidence alone.",
     "Payment Live, PayPlus paid callback, Supplier Live Order, merge and production deploy remain OFF."
   ]
