@@ -14,10 +14,10 @@ test("auth hides providers that are not enabled by Supabase", () => {
 });
 
 test("PWA rotates cache and protects storefront privacy script from stale cache", () => {
-  assert.match(pwa, /service-worker\.js\?v=pwa4/);
+  assert.match(pwa, /service-worker\.js\?v=pwa5/);
   assert.match(pwa, /storefront-privacy\.js\?v=source-privacy4/);
-  assert.match(sw, /hunt-shell-pwa4/);
+  assert.match(sw, /hunt-shell-pwa5/);
   assert.match(sw, /storefront-privacy\.js\?v=source-privacy4/);
-  assert.match(sw, /storefront-privacy\|market-core\|product\|category\|hunt-wow/);
+  assert.match(sw, /storefront-privacy\|market-core\|product\|product-flow\|category\|hunt-wow/);
   assert.match(sw, /networkFirst\(request\)/);
 });

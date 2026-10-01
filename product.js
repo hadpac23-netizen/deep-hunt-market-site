@@ -138,7 +138,12 @@
     $("#hd-product-facts").innerHTML = facts.map(([k,v])=>`<div><span>${H.esc(k)}</span><strong>${H.esc(v)}</strong></div>`).join("");
     const contextParent=String(params.get("c")||"").toLowerCase();
     const contextSub=String(params.get("sub")||"").toLowerCase();
-    const contextDef=contextSub&&H.categoryDefs[contextSub]?.parent===contextParent?H.categoryDefs[contextSub]:null;
+    const genderContextSubs=new Set(["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats"]);
+    const contextAllowed=Boolean(contextSub&&H.categoryDefs[contextSub]&&(
+      H.categoryDefs[contextSub]?.parent===contextParent ||
+      (["women","men"].includes(contextParent)&&genderContextSubs.has(contextSub))
+    ));
+    const contextDef=contextAllowed?H.categoryDefs[contextSub]:null;
     const cat=contextDef?contextSub:H.inferCategory(product);
     const def=contextDef||H.categoryDefs[cat]||H.categoryDefs.women;
     $("#hd-product-category-link").href=contextDef
