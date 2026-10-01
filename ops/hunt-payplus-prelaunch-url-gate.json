@@ -1,7 +1,7 @@
 {
   "schema_version": "HUNT_PAYPLUS_PRELAUNCH_URL_GATE_V1",
-  "status": "BLOCKED_NOT_DEPLOYED_AND_LEGAL_CONTACTS_INCOMPLETE",
-  "candidate_url": "https://deep-hunt-market.netlify.app",
+  "status": "BLOCKED_RETURNS_APPROVAL_AND_LEGAL_PAGES",
+  "candidate_url": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
   "candidate_url_current_deploy_accepted": false,
   "payment_live_required": false,
   "supplier_live_order_required": false,
@@ -24,11 +24,11 @@
     "Checkout clearly remains pre-launch and does not create a real payment or supplier order"
   ],
   "post_deploy_evidence": {
-    "deploy_commit": null,
-    "deploy_id": null,
-    "browser_qa": "PENDING",
-    "public_economics_probe": "PENDING",
-    "session_adversarial_runtime": "PENDING",
-    "legal_pages": "PENDING"
+    "deploy_commit": "d0d6772a6804070707a3481f6a861c1f74d34118",
+    "deploy_id": "6abe2997049669300a82f997",
+    "browser_qa": "PASS_DESKTOP_AND_390PX_MOBILE",
+    "public_economics_probe": "PASS_BLOCKED_NO_SUPPLIER_ECONOMICS",
+    "session_adversarial_runtime": "PARTIAL_RT03_RT09_LIVE_RT01_RT02_CODE_CI_PASS",
+    "legal_pages": "PENDING_RETURNS_APPROVAL_AND_POLICY_REVIEW"
   }
 }

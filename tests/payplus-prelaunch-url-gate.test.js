@@ -9,8 +9,9 @@ test("PayPlus URL can be shared before live payments but not before pre-launch s
   assert.equal(gate.supplier_live_order_required,false);
   assert.equal(gate.candidate_url_current_deploy_accepted,false);
   assert.match(gate.status,/^BLOCKED_/);
-  assert.equal(gate.post_deploy_evidence.browser_qa,"PENDING");
-  assert.equal(gate.post_deploy_evidence.session_adversarial_runtime,"PENDING");
+  assert.equal(gate.post_deploy_evidence.browser_qa,"PASS_DESKTOP_AND_390PX_MOBILE");
+  assert.match(gate.post_deploy_evidence.session_adversarial_runtime,/^PARTIAL_/);
+  assert.match(gate.candidate_url,/^https:\/\/hunt-pr26-prelaunch--deep-hunt-market\.netlify\.app$/);
 });
 
 test("PayPlus URL gate explicitly requires red-team, legal and no-real-money controls",()=>{
