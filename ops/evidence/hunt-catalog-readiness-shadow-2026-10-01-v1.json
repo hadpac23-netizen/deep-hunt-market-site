@@ -50,7 +50,7 @@
     "market5_pass_products": 35,
     "image_technical_pass_products": 50,
     "final_visual_pass_products": 0,
-    "physical_metadata_verified_products_within_reserve_safe_set": 2,
+    "physical_metadata_verified_products_within_reserve_safe_set": 4,
     "physical_quality_pass_products": 0,
     "final_profit_verified_products": 0,
     "metadata_status": "RESERVE_SAFE_4_MARKETS_US_HOLD",
@@ -58,11 +58,13 @@
     "final_profit_verified": false
   },
   "physical_evidence_session": {
-    "dispatch_attempts": 49,
-    "fresh_verified_metadata": 48,
+    "dispatch_attempts": 51,
+    "fresh_verified_metadata": 50,
     "fresh_timeout_count": 1,
-    "eprolo_physical_metadata_verified_status_total": 273,
+    "eprolo_physical_metadata_verified_status_total": 275,
     "eprolo_physical_evidence_pending_total": 1,
+    "reserve_safe_style_reconcile_to_physical_evidence": 2,
+    "reserve_safe_targeted_metadata_verified": 2,
     "physical_quality_policy": "UNVERIFIED_UNTIL_SAMPLE_OR_REVIEW_EVIDENCE",
     "timeout_item": {
       "provider": "EPROLO",
@@ -91,6 +93,8 @@
     "technical_image_pass_is_not_pixel_pass": true,
     "semantic_pixel_review_available": false,
     "cdn_pixel_review_completed": false,
+    "browser_pixel_review_attempted": true,
+    "browser_pixel_review_result": "EXTERNAL_BROWSER_WALLET_INSUFFICIENT",
     "final_visual_pass_products": 0,
     "policy": "DO_NOT_MARK_FINAL_VISUAL_PASS_WITHOUT_TRUE_PIXEL_CONTENT_REVIEW"
   },
@@ -104,7 +108,7 @@
   "safety_controls_verified": {
     "hunt_payment_live": false,
     "hunt_payplus_callback_accept_paid": false,
-    "hunt_supplier_order_live": false,
+    "hunt_supplier_live_order": false,
     "sellable_true": 0,
     "production_effect_true": 0
   }
