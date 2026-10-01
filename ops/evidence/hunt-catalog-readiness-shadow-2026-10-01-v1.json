@@ -106,9 +106,9 @@
     "No readiness score increase until these gates have evidence"
   ],
   "safety_controls_verified": {
-    "hunt_payment_live": false,
-    "hunt_payplus_callback_accept_paid": false,
-    "hunt_supplier_live_order": false,
+    "hunt_payment_live": {"enabled": false, "owner_approved": false},
+    "hunt_payplus_callback_accept_paid": {"enabled": false, "owner_approved": false},
+    "hunt_supplier_order_live": {"enabled": false, "owner_approved": false},
     "sellable_true": 0,
     "production_effect_true": 0
   }
