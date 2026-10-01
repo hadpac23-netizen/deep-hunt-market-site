@@ -10,6 +10,7 @@ function displayHoldReason(title:string,department:string,shelf:string):string|n
   if(s==="belts"&&/\b(shoe|shoes|sandal|sandals|slipper|slippers|sneaker|sneakers|boot|boots)\b/.test(t))return "FOOTWEAR_IN_BELTS";
   if(d==="beauty"&&s==="nails"&&/\b(bathroom|rack|suction cup|shelf)\b/.test(t))return "HOME_FIXTURE_IN_BEAUTY";
   if(d==="pets"&&s==="pet-houses"&&!pet.test(t)&&/\b(mat|floor|fly trap|pest|household|kitchen)\b/.test(t))return "NON_PET_PRODUCT_IN_PET_HOUSES";
+  if(d==="kids"&&s==="kids-swimwear"&&/\b(inflatable|seat ring|swim(?:ming)? ring|float(?:ing)?|snorkel|mask|nose clip|swim belt|pool toy)\b/.test(t))return "NON_APPAREL_IN_KIDS_SWIMWEAR";
   if(/\b(batman|bts|marvel|disney|pokemon|star wars|hello kitty|gucci|chanel|dior|prada|hermes|nike|adidas)\b/i.test(title))return "IP_REVIEW";
   return null;
 }
