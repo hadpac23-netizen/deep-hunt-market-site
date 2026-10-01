@@ -72,7 +72,7 @@
     "eprolo_destination_tax_blocker": "No verified transaction-level destination-tax/DDP value exists for the audited EPROLO launch cohort. Do not infer customs duty or convert reserve-only tax assumptions into Final Profit Verified."
   },
   "pdp_readiness": {
-    "status": "BLOCKED_RUNTIME_DB_PATH",
+    "status": "BLOCKED_LIVE_RUNTIME_PR26_RPC_FIX_STAGED",
     "strict_eprolo": 826,
     "pdp_detail_pass": 517,
     "latest_private_qa_pass": 266,
@@ -98,8 +98,24 @@
       ],
       "pooler_specific_secret_presence_directly_verified": false,
       "most_likely_failure_point": "DB_CLIENT_PATH_MISSING_OR_NOT_OPERATIONAL_BEFORE_QUERY",
-      "confidence": "HIGH"
-    }
+      "confidence": "HIGH",
+      "pr26_strict_pdp_uses_eproloSqlClient": false,
+      "pr26_rpc_function": "hunt_eprolo_strict_pdp_candidate_v1",
+      "pr26_rpc_service_role_only": true,
+      "pr26_rpc_search_path_locked": true,
+      "live_runtime_fix_applied": false,
+      "owner_gate_required_for_apply_and_deploy": true
+    },
+    "pr26_rpc_fix_staged": true,
+    "pr26_rpc_migration": "supabase/migrations/20261001034500_hunt_eprolo_strict_pdp_rpc_v1.sql",
+    "pr26_strict_pdp_db_connection_mode": "supabase_rpc",
+    "pr26_raw_postgres_dependency_removed": true,
+    "pr26_edge_secrets_required": [
+      "HUNT_EPROLO_API_KEY",
+      "HUNT_EPROLO_API_SECRET"
+    ],
+    "live_runtime_unchanged": true,
+    "live_runtime_still_returns_404": true
   },
   "freshness_automation": {
     "status": "BLOCKED",
@@ -181,16 +197,16 @@
     }
   },
   "reliability": {
-    "status": "PARTIAL_CANONICAL_RPC_PASS_PDP_BLOCKED",
+    "status": "PARTIAL_CANONICAL_RPC_PASS_PDP_RPC_FIX_STAGED_NOT_LIVE",
     "storefront_runtime_version": 140,
     "storefront_latest_observed_http_status": 200,
     "canonical_shelves_rpc_path": "PASS",
     "strict_eprolo_pdp_runtime": "BLOCKED_RUNTIME_DB_PATH",
     "eprolo_storefront_raw_postgres_required": true,
     "eprolo_storefront_transaction_pooler_required": false,
-    "strict_pdp_db_client_required": true,
+    "strict_pdp_db_client_required": false,
     "canonical_shelves_db_connection_mode": "supabase_rpc",
-    "strict_pdp_db_connection_mode": "UNVERIFIED",
+    "strict_pdp_db_connection_mode": "PR26_SUPABASE_RPC_STAGED_LIVE_OLD_RUNTIME",
     "legacy_custom_pooler_on_critical_path": false,
     "pooler_auth_failures_observed_after_v140": 0,
     "blocks_real_money": true,
@@ -237,7 +253,8 @@
     "github_actions": {
       "immutable_action_pins": true,
       "workflow_node_version": "24"
-    }
+    },
+    "strict_pdp_pr26_pooler_dependency_removed": true
   },
   "security": {
     "status": "PARTIAL",
@@ -317,10 +334,13 @@
     "canonical_drift_test": "tests/canonical-pdp-predicate-drift.test.js",
     "checkout_regression": "PASS",
     "catalog_integrity": "PASS",
-    "final_coderabbit_re_review_required": false
+    "final_coderabbit_re_review_required": false,
+    "strict_pdp_pooler_dependency_removed_in_pr26": true,
+    "strict_pdp_rpc_contract_test": "tests/eprolo-storefront-launch-gate.test.js",
+    "strict_pdp_rpc_local_contract_tests": "39/39 PASS"
   },
   "remaining_external_or_runtime_blockers": [
-    "Restore or replace the strict EPROLO PDP DB-client path; canonical shelves RPC is healthy but live strict PDP returned HTTP 404 for 8/8 rows that satisfy the PR26 PDP SQL predicate.",
+    "After explicit Owner Gate: apply the PR26 strict-PDP RPC migration, configure HUNT_EPROLO_API_KEY/HUNT_EPROLO_API_SECRET as Edge Function secrets, deploy the PR26 storefront runtime, then rerun the strict EPROLO PDP canary. Live runtime remains unchanged and still has the prior 8/8 HTTP 404 evidence.",
     "Resolve EPROLO destination-tax/DDP truth for the audited launch cohort; Final Profit Verified remains 0.",
     "Complete and validate the separately disabled stock/price/shipping freshness automation before real-money launch.",
     "After explicit Owner Gate, deploy PR26 order-orchestrator hardening and complete CJ authenticated Admin sandbox E2E through supplier order, tracking and shipped evidence.",

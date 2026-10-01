@@ -9,6 +9,7 @@ const edge=fs.readFileSync(path.join(root,"supabase/functions/hunt-eprolo-shelve
 const runtime=fs.readFileSync(path.join(root,"supabase/functions/hunt-storefront/runtime.ts"),"utf8");
 const moduleSrc=fs.readFileSync(path.join(root,"supabase/functions/hunt-storefront/eprolo-shelves.ts"),"utf8");
 const rpcMigration=fs.readFileSync(path.join(root,"supabase/migrations/20260930165643_hunt_eprolo_canonical_shelves_rpc_v1.sql"),"utf8");
+const pdpRpcMigration=fs.readFileSync(path.join(root,"supabase/migrations/20261001034500_hunt_eprolo_strict_pdp_rpc_v1.sql"),"utf8");
 
 test("category loads the EPROLO shelf bridge before category logic",()=>{
   const bridgePos=html.indexOf("eprolo-shelves-bridge.js");
@@ -38,9 +39,28 @@ test("legacy fallback endpoint requires the same public storefront key contract"
 
 test("storefront integrates canonical EPROLO shelves without outranking live verified sources",()=>{
   assert.match(runtime,/import \{ eproloCanonicalMarketShelves \} from "\.\/eprolo-shelves\.ts"/);
-  assert.match(runtime,/eproloCanonicalMarketShelves\(eproloSqlClient\(\), eproloDbConnectionMode\(\)\)/);
+  assert.match(runtime,/eproloCanonicalMarketShelves\(null, "supabase_rpc"\)/);
+  assert.doesNotMatch(runtime,/eproloSqlClient|HUNT_DB_POOLER_URL|SUPABASE_DB_POOLER_URL/);
   assert.match(runtime,/mergeMarketShelves\(priorityCjShelves, cjShelves, persistedShelves, eproloCanonical\.shelves/);
   assert.match(runtime,/eprolo_canonical_shelves: eproloCanonical\.meta/);
+});
+
+test("strict EPROLO PDP is RPC-only and service-role protected",()=>{
+  assert.match(runtime,/hunt_eprolo_strict_pdp_candidate_v1/);
+  assert.match(runtime,/HUNT_EPROLO_API_KEY/);
+  assert.match(runtime,/HUNT_EPROLO_API_SECRET/);
+  assert.doesNotMatch(runtime,/npm:postgres|eproloSqlClient|HUNT_DB_POOLER_URL|SUPABASE_DB_POOLER_URL|vault\.decrypted_secrets/);
+  assert.match(pdpRpcMigration,/security definer/i);
+  assert.match(pdpRpcMigration,/set search_path = ''/i);
+  assert.match(pdpRpcMigration,/from public/i);
+  assert.match(pdpRpcMigration,/from anon/i);
+  assert.match(pdpRpcMigration,/from authenticated/i);
+  assert.match(pdpRpcMigration,/to service_role/i);
+  assert.match(pdpRpcMigration,/production_effect=false/);
+  assert.match(pdpRpcMigration,/catalog_safety_status/);
+  assert.match(pdpRpcMigration,/image_technical_status/);
+  assert.match(pdpRpcMigration,/latest_market5_all_pass/);
+  assert.match(pdpRpcMigration,/profit_gate_v2/);
 });
 
 test("EPROLO shelf cards remain display-only and never claim final profit",()=>{

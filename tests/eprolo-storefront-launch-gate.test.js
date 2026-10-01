@@ -6,6 +6,7 @@ const root=path.resolve(__dirname,"..");
 const entry=fs.readFileSync(path.join(root,"supabase/functions/hunt-storefront/index.ts"),"utf8");
 const runtime=fs.readFileSync(path.join(root,"supabase/functions/hunt-storefront/runtime.ts"),"utf8");
 const src=entry+"\n"+runtime;
+const pdpRpcMigration=fs.readFileSync(path.join(root,"supabase/migrations/20261001034500_hunt_eprolo_strict_pdp_rpc_v1.sql"),"utf8");
 
 test("EPROLO PDP blocks only obvious taxonomy conflicts before launch",()=>{
   assert.match(src,/function eproloObviousTaxonomyConflict/);
@@ -31,19 +32,33 @@ test("phone-case guard excludes keychains and passport/document covers",()=>{
 });
 
 
-test("EPROLO PDP reuses one DB client and prefers the configured transaction pooler",()=>{
+test("EPROLO PDP uses a service-role RPC and Edge secrets instead of a raw Postgres pooler",()=>{
   assert.doesNotMatch(entry,/Deno\.env\.set/);
-  assert.match(runtime,/HUNT_DB_POOLER_URL/);
-  assert.match(runtime,/return env\("HUNT_DB_POOLER_URL"\) \|\| env\("SUPABASE_DB_POOLER_URL"\) \|\| env\("SUPABASE_DB_URL"\)/);
-  assert.match(runtime,/if \(env\("HUNT_DB_POOLER_URL"\) \|\| env\("SUPABASE_DB_POOLER_URL"\)\) return "transaction_pooler"/);
-  assert.match(runtime,/let eproloSqlClientInstance/);
-  assert.match(runtime,/if \(eproloSqlClientInstance\) return eproloSqlClientInstance/);
-  assert.match(runtime,/prepare:false/);
-  assert.match(runtime,/max:1/);
-  assert.match(runtime,/connect_timeout:10/);
-  assert.match(runtime,/max_lifetime:600/);
-  assert.doesNotMatch(runtime,/await sql\.end\(/);
-  assert.doesNotMatch(runtime,/connect_timeout:20,idle_timeout:3,max_lifetime:60/);
+  assert.doesNotMatch(runtime,/npm:postgres/);
+  assert.doesNotMatch(runtime,/eproloSqlClient/);
+  assert.doesNotMatch(runtime,/HUNT_DB_POOLER_URL|SUPABASE_DB_POOLER_URL/);
+  assert.doesNotMatch(runtime,/vault\.decrypted_secrets/);
+  assert.match(runtime,/hunt_eprolo_strict_pdp_candidate_v1/);
+  assert.match(runtime,/HUNT_EPROLO_API_KEY/);
+  assert.match(runtime,/HUNT_EPROLO_API_SECRET/);
+  assert.match(runtime,/mode:"supabase_rpc"/);
+});
+
+test("strict PDP RPC is service-role-only, search-path locked, and preserves launch gates",()=>{
+  assert.match(pdpRpcMigration,/security definer/i);
+  assert.match(pdpRpcMigration,/set search_path = ''/i);
+  assert.match(pdpRpcMigration,/revoke all on function public\.hunt_eprolo_strict_pdp_candidate_v1\(text\) from public/i);
+  assert.match(pdpRpcMigration,/from anon/i);
+  assert.match(pdpRpcMigration,/from authenticated/i);
+  assert.match(pdpRpcMigration,/grant execute on function public\.hunt_eprolo_strict_pdp_candidate_v1\(text\) to service_role/i);
+  for(const signature of [
+    "provider='EPROLO'","production_effect=false","availability_verified=true",
+    "catalog_safety_status","image_technical_status","latest_market5_all_pass",
+    "taxonomy_gate_v2","profit_gate_v2","PROFIT_REVIEW",
+    "MARKET5_READY_STYLE_PHYSICAL_PENDING",
+    "MARKET5_READY_STYLE_PASS_PHYSICAL_EVIDENCE_PENDING",
+    "MARKET5_READY_STYLE_PASS_PHYSICAL_METADATA_VERIFIED"
+  ]) assert.ok(pdpRpcMigration.includes(signature),`RPC migration missing ${signature}`);
 });
 
 

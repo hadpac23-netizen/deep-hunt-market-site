@@ -1,5 +1,4 @@
 import { createClient } from "jsr:@supabase/supabase-js@2";
-import postgres from "npm:postgres@3.4.5";
 import { createHash } from "node:crypto";
 import matterhornSnapshot from "./matterhorn_snapshot.json" with { type: "json" };
 import surveySnapshot from "./survey_snapshot.json" with { type: "json" };
@@ -41,32 +40,6 @@ function env(name: string): string {
 
 function enabled(name: string): boolean {
   return ["1", "true", "yes", "on"].includes(env(name).toLowerCase());
-}
-
-let eproloSqlClientInstance: ReturnType<typeof postgres> | null = null;
-
-function eproloDbUrl(): string {
-  return env("HUNT_DB_POOLER_URL") || env("SUPABASE_DB_POOLER_URL") || env("SUPABASE_DB_URL");
-}
-
-function eproloDbConnectionMode(): "transaction_pooler" | "fallback_direct_or_session" | "missing" {
-  if (env("HUNT_DB_POOLER_URL") || env("SUPABASE_DB_POOLER_URL")) return "transaction_pooler";
-  if (env("SUPABASE_DB_URL")) return "fallback_direct_or_session";
-  return "missing";
-}
-
-function eproloSqlClient(): ReturnType<typeof postgres> | null {
-  if (eproloSqlClientInstance) return eproloSqlClientInstance;
-  const dbUrl=eproloDbUrl();
-  if (!dbUrl) return null;
-  eproloSqlClientInstance=postgres(dbUrl,{
-    prepare:false,
-    max:1,
-    connect_timeout:10,
-    idle_timeout:20,
-    max_lifetime:600
-  });
-  return eproloSqlClientInstance;
 }
 
 const BLOCKED_TERMS = [
@@ -1074,30 +1047,28 @@ function eproloObviousTaxonomyConflict(title:string,shelf:string){
 
   return false;
 }
+async function eproloStrictCandidateViaRpc(productId:string){
+  const db=await merchantDb();
+  if(!db)return null;
+  const {data,error}=await db.rpc("hunt_eprolo_strict_pdp_candidate_v1",{p_item_id:productId});
+  if(error){
+    console.error("EPROLO_PDP_RPC_ERROR",{code:error.code||"unknown"});
+    return null;
+  }
+  return data&&typeof data==="object"?data:null;
+}
+
+function eproloRuntimeCredentials(){
+  const apiKey=env("HUNT_EPROLO_API_KEY");
+  const apiSecret=env("HUNT_EPROLO_API_SECRET");
+  return apiKey&&apiSecret?{apiKey,apiSecret}:null;
+}
+
 async function eproloStrictProductDetail(productId:string){
-  const sql=eproloSqlClient();
-  if(!sql)return null;
   try{
-    const rows=await sql`
-      select item_id,title,image_url,verified_inventory,source_payload
-      from public.hunt_shelf_candidates
-      where provider='EPROLO'
-        and item_id=${productId}
-        and production_effect=false
-        and availability_verified=true
-        and coalesce(verified_inventory,0)>0
-        and coalesce(source_payload->'taxonomy_gate_v2'->>'status','')='REMAP'
-        and coalesce(source_payload->>'catalog_safety_status','')='PASS'
-        and coalesce(source_payload->>'image_technical_status','')='PASS'
-        and coalesce((source_payload->>'latest_market5_all_pass')::boolean,false)=true
-        and coalesce(source_payload->'profit_gate_v2'->>'status','')='PROFIT_REVIEW'
-        and coalesce((source_payload->'profit_gate_v2'->>'target_retail_usd')::numeric,0)>0
-        and coalesce((source_payload->'profit_gate_v2'->>'projected_product_contribution_usd')::numeric,0)>0
-        and candidate_status in ('MARKET5_READY_STYLE_PHYSICAL_PENDING','MARKET5_READY_STYLE_PASS_PHYSICAL_EVIDENCE_PENDING','MARKET5_READY_STYLE_PASS_PHYSICAL_METADATA_VERIFIED')
-      order by updated_at desc limit 1
-    `;
-    if(!rows.length)return null;
-    const row:any=rows[0],source=row.source_payload||{},title=cleanText(row.title);
+    const row:any=await eproloStrictCandidateViaRpc(productId);
+    if(!row)return null;
+    const source=row.source_payload||{},title=cleanText(row.title);
     if(!allowedTitle(title)||/\b(adult|erotic|fetish|sexy|lingerie)\b/i.test(title))return null;
     const launchShelf=cleanText(source?.taxonomy_gate_v2?.canonical_shelf);
     if(eproloObviousTaxonomyConflict(title,launchShelf))return null;
@@ -1105,23 +1076,25 @@ async function eproloStrictProductDetail(productId:string){
     const targetRetail=Number(source?.profit_gate_v2?.target_retail_usd);
     if(!exactId||!Number.isFinite(targetRetail)||targetRetail<=0)return null;
 
-    const secrets=await sql`select name,decrypted_secret from vault.decrypted_secrets where name in ('hunt_eprolo_api_key','hunt_eprolo_api_secret')`;
-    const sec=Object.fromEntries(secrets.map((x:any)=>[x.name,x.decrypted_secret]));
-    if(!sec.hunt_eprolo_api_key||!sec.hunt_eprolo_api_secret)return null;
+    const creds=eproloRuntimeCredentials();
+    if(!creds){
+      console.error("EPROLO_PDP_API_SECRET_CONFIG_MISSING");
+      return null;
+    }
 
     let catalogRaw:any=null;
     const sourcePage=Math.max(1,Number(source?.page)||1);
     const sourceCategory=Number(source?.category_id);
     if(Number.isFinite(sourceCategory)&&sourceCategory>0){
       try{
-        const cat=await eproloGet(String(sec.hunt_eprolo_api_key),String(sec.hunt_eprolo_api_secret),"eprolo_product_list.html",{page:sourcePage,page_size:50,wareTypeTwoId:Math.trunc(sourceCategory)});
+        const cat=await eproloGet(creds.apiKey,creds.apiSecret,"eprolo_product_list.html",{page:sourcePage,page_size:50,wareTypeTwoId:Math.trunc(sourceCategory)});
         if(cat.http===200&&String(cat.body?.code)==="0"&&Array.isArray(cat.body?.data)){
           catalogRaw=cat.body.data.find((x:any)=>cleanText(x?.product_id||x?.id)===productId)||null;
         }
       }catch{}
     }
 
-    const q=await eproloGet(String(sec.hunt_eprolo_api_key),String(sec.hunt_eprolo_api_secret),"get_product_shiping_fees.html",{productid:productId,countrycode:"US"});
+    const q=await eproloGet(creds.apiKey,creds.apiSecret,"get_product_shiping_fees.html",{productid:productId,countrycode:"US"});
     if(q.http!==200||String(q.body?.code)!=="0")return null;
     const raw=(Array.isArray(q.body?.data?.variantlist)?q.body.data.variantlist:[]).filter((v:any)=>{
       const id=cleanText(v?.id||v?.variantsid||v?.variantId||v?.variant_id||v?.variants_id);
@@ -1190,8 +1163,8 @@ async function eproloStrictProductDetail(productId:string){
       size_data_source:"PROVIDER_VARIANTS",price_truth_mode:"PREPAYMENT_VERIFIED_TARGET",production_effect:false
     };
   }catch(error){
-    console.error("EPROLO_PDP_DB_OR_PROVIDER_ERROR", {
-      mode:eproloDbConnectionMode(),
+    console.error("EPROLO_PDP_RPC_OR_PROVIDER_ERROR", {
+      mode:"supabase_rpc",
       name:error instanceof Error?error.name:"unknown"
     });
     return null;
@@ -1762,8 +1735,8 @@ Deno.serve(async (req: Request) => {
       withProviderTimeout(gootenMarketShelves(), {}, 8000),
       withProviderTimeout(persistedCatalogShelves(), {}, 3500),
       withProviderTimeout(
-        eproloCanonicalMarketShelves(eproloSqlClient(), eproloDbConnectionMode()),
-        { shelves:{}, meta:{ source:"CANONICAL_PDP_READY", canonical_count:0, display_eligible_count:0, quarantined_count:0, quarantine_reasons:{}, final_profit_verified:0, purchasable:false, production_effect:false, db_connection_mode:eproloDbConnectionMode() } },
+        eproloCanonicalMarketShelves(null, "supabase_rpc"),
+        { shelves:{}, meta:{ source:"CANONICAL_PDP_READY", canonical_count:0, display_eligible_count:0, quarantined_count:0, quarantine_reasons:{}, final_profit_verified:0, purchasable:false, production_effect:false, db_connection_mode:"supabase_rpc" } },
         5500
       ),
       priorityCjPromise
