@@ -28,6 +28,13 @@ test('shadow taxonomy guard blocks both deletion and silent remap of canonical t
   assert.match(migration, /jsonb_set\([\s\S]*?'\{taxonomy_gate_v2\}'[\s\S]*?old_gate[\s\S]*?true[\s\S]*?\)/i);
 });
 
+test('taxonomy guard pins an empty search_path', () => {
+  assert.match(
+    migration,
+    /create\s+or\s+replace\s+function\s+public\.hunt_preserve_shadow_taxonomy_gate_v2\(\)[\s\S]*?language\s+plpgsql[\s\S]*?set\s+search_path\s*=\s*''[\s\S]*?as\s+\$function\$/i
+  );
+});
+
 test('taxonomy writer patch stays shadow-only and does not activate commerce paths', () => {
   assert.doesNotMatch(migration, /hunt_payment_live/i);
   assert.doesNotMatch(migration, /hunt_payplus_callback_accept_paid/i);
