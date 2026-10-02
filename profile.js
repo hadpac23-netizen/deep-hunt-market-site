@@ -27,8 +27,8 @@
         <a href="${H.esc(productHref(row))}">${H.esc(row.title||"Product")}</a>
         <small>HUNT SAVED</small>
         <div class="hd-profile-product-flags">
-          ${row.liked?'<span>♥ Liked</span>:""}
-          ${row.saved?'<span>🔖 Saved</span>:""}
+          ${row.liked?'<span>♥ Liked</span>':""}
+          ${row.saved?'<span>🔖 Saved</span>':""}
         </div>
       </div>
     </article>`;
