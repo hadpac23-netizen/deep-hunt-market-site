@@ -9,6 +9,7 @@ const profile = fs.readFileSync("profile.js", "utf8");
 const profileHtml = fs.readFileSync("profile.html", "utf8");
 const deal = fs.readFileSync("hunt-deal.js", "utf8");
 const home = fs.readFileSync("index.html", "utf8");
+const wow = fs.readFileSync("hunt-wow.js", "utf8");
 
 test("customer storefront loads the supplier privacy guard", () => {
   assert.match(pwa, /storefront-privacy\.js/);
@@ -96,4 +97,11 @@ test("PDP source routing fails closed and uses opaque source codes for supplier-
   assert.match(productJs,/sourceCodeForProvider\(product\.provider \|\| provider/);
   assert.doesNotMatch(productJs,/providerName\.includes\(\"printful\"\)/);
   assert.doesNotMatch(productJs,/providerName\.includes\(\"cj\"\)/);
+});
+
+
+test("wow product cards never render raw provider identity", () => {
+  assert.doesNotMatch(wow, /<small>\$\{H\.esc\(item\.provider/);
+  assert.match(wow, /<small>HUNT SOURCE<\/small>/);
+  assert.match(home, /hunt-wow\.js\?v=redteam2/);
 });

@@ -135,7 +135,7 @@
     return `<article class="hd-wow-product" role="listitem" data-category="${H.esc(item.category || "")}">
       <a class="hd-wow-product-media" href="${H.esc(href)}">${image}<span>${H.esc(label)}</span></a>
       <div class="hd-wow-product-body">
-        <small>${H.esc(item.provider || "CATALOG SOURCE")}</small>
+        <small>HUNT SOURCE</small>
         <a href="${H.esc(href)}">${H.esc(item.title || "Product")}</a>
         <div class="hd-wow-price"><strong>${price}</strong><em>${retailReady ? "HUNT retail" : "price pending"}</em></div>
       </div>
