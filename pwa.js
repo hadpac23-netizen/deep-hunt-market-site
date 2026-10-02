@@ -8,6 +8,6 @@
 
   if(!("serviceWorker" in navigator))return;
   window.addEventListener("load",()=>{
-    navigator.serviceWorker.register("./service-worker.js?v=pwa6",{scope:"./"}).catch(()=>{});
+    navigator.serviceWorker.register("./service-worker.js?v=pwa7",{scope:"./"}).catch(()=>{});
   },{once:true});
 })();
