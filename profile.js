@@ -10,7 +10,11 @@
   }
 
   function productHref(row){
-    return `product.html?provider=${encodeURIComponent(row.provider)}&id=${encodeURIComponent(row.item_id)}`;
+    const src=H.sourceCodeForProvider?.(row.provider)||"";
+    const q=new URLSearchParams();
+    if(src)q.set("src",src);
+    q.set("id",String(row.item_id||""));
+    return `product.html?${q.toString()}`;
   }
 
   function productCard(row){
@@ -21,10 +25,10 @@
       <a class="hd-profile-product-media" href="${H.esc(productHref(row))}">${image}</a>
       <div class="hd-profile-product-body">
         <a href="${H.esc(productHref(row))}">${H.esc(row.title||"Product")}</a>
-        <small>${H.esc(row.provider||"")}</small>
+        <small>HUNT SAVED</small>
         <div class="hd-profile-product-flags">
-          ${row.liked?'<span>♥ Liked</span>':""}
-          ${row.saved?'<span>🔖 Saved</span>':""}
+          ${row.liked?'<span>♥ Liked</span>:""}
+          ${row.saved?'<span>🔖 Saved</span>:""}
         </div>
       </div>
     </article>`;
@@ -49,7 +53,7 @@
     </li>`).join("");
     return `<article class="hd-order-card glass">
       <div class="hd-order-head">
-        <div><small>${H.esc(order.provider)}</small><h3>${H.esc(statusLabel(order.status))}</h3></div>
+        <div><small>HUNT ORDER</small><h3>${H.esc(statusLabel(order.status))}</h3></div>
         <div><strong>${H.esc(total)}</strong><span>#${H.esc(order.external_order_id)}</span></div>
       </div>
       <div class="hd-order-meta">
@@ -57,7 +61,7 @@
         ${order.tracking_number?`<span>Tracking <strong>${H.esc(order.tracking_number)}</strong></span>`:""}
         ${order.estimated_delivery_at?`<span>Estimated <strong>${new Date(order.estimated_delivery_at).toLocaleDateString()}</strong></span>`:""}
       </div>
-      ${timeline?`<ol class="hd-order-timeline">${timeline}</ol>`:'<p class="hd-order-no-events">Waiting for the connected provider to report shipment events.</p>'}
+      ${timeline?`<ol class="hd-order-timeline">${timeline}</ol>`:'<p class="hd-order-no-events">Waiting for HUNT fulfillment updates.</p>'}
       ${tracking}
     </article>`;
   }
@@ -109,7 +113,7 @@
     const rows=orders||[];
     $("#hd-order-count").textContent=String(rows.length);
     if(!rows.length){
-      $("#hd-profile-orders").innerHTML='<div class="hd-review-empty">No connected orders yet. Orders will appear here only after a real checkout/provider integration creates them.</div>';
+      $("#hd-profile-orders").innerHTML='<div class="hd-review-empty">No connected orders yet. Orders will appear here only after a real checkout creates them.</div>';
       return;
     }
 
