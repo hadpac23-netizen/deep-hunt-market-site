@@ -5,6 +5,7 @@ import fs from "node:fs";
 const privacy = fs.readFileSync("storefront-privacy.js", "utf8");
 const pwa = fs.readFileSync("pwa.js", "utf8");
 const product = fs.readFileSync("product.html", "utf8");
+const profile = fs.readFileSync("profile.js", "utf8");
 
 test("customer storefront loads the supplier privacy guard", () => {
   assert.match(pwa, /storefront-privacy\.js/);
@@ -29,6 +30,15 @@ test("privacy guard aliases known fulfillment sources in product links", () => {
   assert.match(privacy, /MutationObserver/);
 });
 
+test("profile hides fulfillment provider identity from saved items and orders", () => {
+  assert.match(profile, /sourceCodeForProvider/);
+  assert.match(profile, /q\.set\("src",src\)/);
+  assert.doesNotMatch(profile, /product\.html\?provider=/);
+  assert.doesNotMatch(profile, /<small>\$\{H\.esc\(row\.provider/);
+  assert.doesNotMatch(profile, /<small>\$\{H\.esc\(order\.provider/);
+  assert.match(profile, /HUNT SAVED/);
+  assert.match(profile, /HUNT ORDER/);
+});
 
 test("PWA cache cannot pin pre-red-team customer scripts", () => {
   const sw=fs.readFileSync("service-worker.js","utf8");
