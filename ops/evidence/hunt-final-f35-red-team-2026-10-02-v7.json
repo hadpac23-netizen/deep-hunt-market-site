@@ -1,0 +1,223 @@
+{
+  "observed_at": "2026-10-02T19:28:08.088954+00:00",
+  "code_head": "0e688573b9ee5da3ca7808a491b9d35e28d9b7bb",
+  "counts": {
+    "PASS": 5,
+    "PARTIAL": 10,
+    "BLOCKED": 12,
+    "UNVERIFIED": 3,
+    "FAIL": 5
+  },
+  "rows": [
+    {
+      "number": 1,
+      "area": "Payment",
+      "status": "PASS",
+      "evidence": "Fresh SQL: hunt_payment_live=false; owner_approved=false."
+    },
+    {
+      "number": 2,
+      "area": "Supplier Live",
+      "status": "PASS",
+      "evidence": "Fresh SQL: hunt_supplier_order_live=false; owner_approved=false."
+    },
+    {
+      "number": 3,
+      "area": "Profit Release",
+      "status": "PASS",
+      "evidence": "Fresh SQL: hunt_finance_profit_release=false; owner_approved=false."
+    },
+    {
+      "number": 4,
+      "area": "Paid callback",
+      "status": "PASS",
+      "evidence": "Fresh SQL: hunt_payplus_callback_accept_paid=false; accepted_paid=0."
+    },
+    {
+      "number": 5,
+      "area": "Owner Gate",
+      "status": "PASS",
+      "evidence": "PR26 Draft/open/unmerged; no live activation, merge, production deploy or cron change."
+    },
+    {
+      "number": 6,
+      "area": "Exact variants",
+      "status": "PARTIAL",
+      "evidence": "TAX8 exact item/variant matrix re-queried; adversarial mismatches fail in branch. Current supplier freshness/order namespace proof incomplete."
+    },
+    {
+      "number": 7,
+      "area": "Stock",
+      "status": "BLOCKED",
+      "evidence": "TAX8 quote snapshots from Sep 28; no current 30-minute provider observations or completed runtime rotations."
+    },
+    {
+      "number": 8,
+      "area": "Shipping",
+      "status": "BLOCKED",
+      "evidence": "Exact destination/service guard fixed; current shipping recheck and landed-cost proof absent."
+    },
+    {
+      "number": 9,
+      "area": "Retail price",
+      "status": "BLOCKED",
+      "evidence": "Historical price/floor does not prove market-valid approved retail; no price was inflated or activated."
+    },
+    {
+      "number": 10,
+      "area": "Supplier cost",
+      "status": "FAIL",
+      "evidence": "Current public shard exposes supplier cost and margin. Branch public boundary and 53 artifacts sanitized; not deployed."
+    },
+    {
+      "number": 11,
+      "area": "Profit",
+      "status": "BLOCKED",
+      "evidence": "Final-profit true count=0. New guard and actual handler attacks pass; real TAX8 final profit remains unproved."
+    },
+    {
+      "number": 12,
+      "area": "COO",
+      "status": "BLOCKED",
+      "evidence": "0/8 verified exact origin proof in current TAX8 payload; no origin inferred."
+    },
+    {
+      "number": 13,
+      "area": "Tax",
+      "status": "BLOCKED",
+      "evidence": "40 open destination-tax exceptions. Supplier taxesFee and null-to-zero cannot establish tax truth."
+    },
+    {
+      "number": 14,
+      "area": "Customs",
+      "status": "BLOCKED",
+      "evidence": "No verified exact classification/landed quote for TAX8. Wrong/stale/destination/amount/service evidence is rejected by branch."
+    },
+    {
+      "number": 15,
+      "area": "Taxonomy",
+      "status": "PARTIAL",
+      "evidence": "Shared canonical branch matcher exists; old public preview has contamination and a failing exact shelf. Branch visual retest unavailable."
+    },
+    {
+      "number": 16,
+      "area": "Home",
+      "status": "FAIL",
+      "evidence": "Public Home includes supplier-price promotions and old script versions; branch cost guards tested."
+    },
+    {
+      "number": 17,
+      "area": "Category",
+      "status": "PARTIAL",
+      "evidence": "Women category and legacy dresses fallback render; filter action works. Live fetch and exact canonical route fail."
+    },
+    {
+      "number": 18,
+      "area": "Exact shelf",
+      "status": "FAIL",
+      "evidence": "women -> women-dresses remained 0 products / Failed to fetch; screenshot captured. Legacy dresses returned fallback products."
+    },
+    {
+      "number": 19,
+      "area": "PDP",
+      "status": "PARTIAL",
+      "evidence": "Printful 329 loaded images and 7 variants, Price pending and disabled checkout. This is no TAX8 pricing/stock proof."
+    },
+    {
+      "number": 20,
+      "area": "Variants",
+      "status": "PARTIAL",
+      "evidence": "Size M selected and quantity control exercised. Durable quantity/session/stock consistency not proven; live purchase stays disabled."
+    },
+    {
+      "number": 21,
+      "area": "Sizing",
+      "status": "UNVERIFIED",
+      "evidence": "Size labels observed; measurement chart, regional sizing and fit correctness not exercised."
+    },
+    {
+      "number": 22,
+      "area": "Filters",
+      "status": "PARTIAL",
+      "evidence": "Min=10/Max=25 applied on legacy dresses; no proof of verified retail range or complete canonical/live results."
+    },
+    {
+      "number": 23,
+      "area": "Search",
+      "status": "FAIL",
+      "evidence": "denim jacket showed Unexpected token HTML/JSON parser error on public preview. Branch user-facing error copy improved; routing still needs runtime proof."
+    },
+    {
+      "number": 24,
+      "area": "Recommendations",
+      "status": "FAIL",
+      "evidence": "Public PDP recommendations render supplier base amounts. Branch rejects old cached supplier prices."
+    },
+    {
+      "number": 25,
+      "area": "Saved/Likes",
+      "status": "UNVERIFIED",
+      "evidence": "Authenticated persistence and cross-account privacy were not exercised."
+    },
+    {
+      "number": 26,
+      "area": "Auth",
+      "status": "PARTIAL",
+      "evidence": "Passwordless sign-in shell observed, no password input. Magic Link/OAuth account completion was not exercised."
+    },
+    {
+      "number": 27,
+      "area": "Profile",
+      "status": "PARTIAL",
+      "evidence": "Guest profile redirects to auth; authenticated account/profile behavior unverified."
+    },
+    {
+      "number": 28,
+      "area": "Address",
+      "status": "UNVERIFIED",
+      "evidence": "Form visible; no customer PII submitted and no address-to-session/provider E2E."
+    },
+    {
+      "number": 29,
+      "area": "Checkout",
+      "status": "PARTIAL",
+      "evidence": "Empty cart verification fails safely and Payment activation pending remains disabled. No complete payment session E2E."
+    },
+    {
+      "number": 30,
+      "area": "Orders",
+      "status": "BLOCKED",
+      "evidence": "10 test orders, 0 non-test orders; no successful supplier-order proof and no authenticated Orders journey."
+    },
+    {
+      "number": 31,
+      "area": "Tracking",
+      "status": "BLOCKED",
+      "evidence": "0 supplier order IDs, 0 tracking, 0 shipped in fresh fulfillment truth."
+    },
+    {
+      "number": 32,
+      "area": "Returns",
+      "status": "PARTIAL",
+      "evidence": "Approved prelaunch workflow and public route HTTP 200 retained; transactional refund/return E2E absent."
+    },
+    {
+      "number": 33,
+      "area": "Freshness",
+      "status": "BLOCKED",
+      "evidence": "Runner/watcher undeployed; 0 matching freshness cron; no two rotations/failure/recovery proof."
+    },
+    {
+      "number": 34,
+      "area": "Payment/fulfillment E2E",
+      "status": "BLOCKED",
+      "evidence": "0 sandbox payment sessions/status observations; CJ provider-order proof absent; EPROLO execution contract remains blocked."
+    },
+    {
+      "number": 35,
+      "area": "Legal/security/git/runtime",
+      "status": "BLOCKED",
+      "evidence": "Business identity draft/unapproved; real-money disclosures pending; classic branch protection 403; public cost P0 and runtime drift remain."
+    }
+  ]
+}

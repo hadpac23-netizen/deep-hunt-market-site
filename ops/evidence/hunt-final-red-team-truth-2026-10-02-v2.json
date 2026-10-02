@@ -1,0 +1,192 @@
+{
+  "code_head": "0e688573b9ee5da3ca7808a491b9d35e28d9b7bb",
+  "tree": "503b6bde7135f5e3e9cb74e215bf077f9c6d9ad0",
+  "local_tests": 371,
+  "checkout_local": 195,
+  "catalog_local": 98,
+  "code_ci": [
+    {
+      "id": 37054129653,
+      "name": "HUNT Catalog Integrity",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 373,
+      "jobs_url": "https://api.github.com/repos/hadpac23-netizen/deep-hunt-market-site/actions/runs/37054129653/jobs",
+      "logs_url": "https://api.github.com/repos/hadpac23-netizen/deep-hunt-market-site/actions/runs/37054129653/logs",
+      "workflow_id": 367875838
+    },
+    {
+      "id": 37054129609,
+      "name": "HUNT checkout regression",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 358,
+      "jobs_url": "https://api.github.com/repos/hadpac23-netizen/deep-hunt-market-site/actions/runs/37054129609/jobs",
+      "logs_url": "https://api.github.com/repos/hadpac23-netizen/deep-hunt-market-site/actions/runs/37054129609/logs",
+      "workflow_id": 367838452
+    }
+  ],
+  "coderabbit": [
+    {
+      "context": "CodeRabbit",
+      "state": "success",
+      "target_url": null
+    }
+  ],
+  "review_threads_total": 15,
+  "unresolved_review_threads": 0,
+  "closing_truth": {
+    "orders": {
+      "total": 10,
+      "shipped": 0,
+      "non_test": 0,
+      "tracking": 0
+    },
+    "catalog": {
+      "total": 26375,
+      "sellable": 0,
+      "final_profit_true": 0,
+      "production_effect": 0
+    },
+    "payment": {
+      "paid": 0,
+      "total": 33,
+      "sandbox": 0,
+      "live_paid": 0
+    },
+    "payplus": {
+      "signed": 0,
+      "ipn_full": 0,
+      "observations": 0,
+      "accepted_paid": 0
+    },
+    "pricing": {
+      "total": 2960,
+      "sellable": 0,
+      "production_effect": 0
+    },
+    "controls": [
+      {
+        "key": "hunt_finance_profit_release",
+        "enabled": false,
+        "updated_at": "2026-09-15T14:08:51.619289+00:00",
+        "owner_approved": false
+      },
+      {
+        "key": "hunt_payment_live",
+        "enabled": false,
+        "updated_at": "2026-09-15T16:45:25.384442+00:00",
+        "owner_approved": false
+      },
+      {
+        "key": "hunt_payplus_callback_accept_paid",
+        "enabled": false,
+        "updated_at": "2026-09-15T08:42:23.478304+00:00",
+        "owner_approved": false
+      },
+      {
+        "key": "hunt_payplus_sandbox_evidence",
+        "enabled": false,
+        "updated_at": "2026-09-19T15:15:20.105122+00:00",
+        "owner_approved": false
+      },
+      {
+        "key": "hunt_supplier_order_live",
+        "enabled": false,
+        "updated_at": "2026-09-15T08:42:23.478304+00:00",
+        "owner_approved": false
+      },
+      {
+        "key": "hunt_supplier_order_sandbox",
+        "enabled": true,
+        "updated_at": "2026-09-15T08:42:23.478304+00:00",
+        "owner_approved": true
+      },
+      {
+        "key": "hunt_tracking_sync_sandbox",
+        "enabled": true,
+        "updated_at": "2026-09-15T08:42:23.478304+00:00",
+        "owner_approved": true
+      }
+    ],
+    "exceptions": [
+      {
+        "count": 40,
+        "reason_code": "DESTINATION_TAX_NOT_VERIFIED"
+      },
+      {
+        "count": 1,
+        "reason_code": "FINAL_PROFIT_NOT_VERIFIED"
+      }
+    ],
+    "fulfillment": {
+      "total": 10,
+      "shipped": 0,
+      "tracking": 0,
+      "supplier_order": 0
+    },
+    "observed_at": "2026-10-02T19:28:08.088954+00:00",
+    "observations": [
+      {
+        "count": 8827,
+        "latest": "2026-09-29T09:31:58.648+00:00",
+        "provider": "CJdropshipping",
+        "within_30_minutes": 0
+      },
+      {
+        "count": 27120,
+        "latest": "2026-10-01T22:49:50.836468+00:00",
+        "provider": "EPROLO",
+        "within_30_minutes": 0
+      },
+      {
+        "count": 19,
+        "latest": "2026-09-27T20:44:33.130114+00:00",
+        "provider": "Gooten",
+        "within_30_minutes": 0
+      },
+      {
+        "count": 22,
+        "latest": "2026-09-22T13:30:18.951241+00:00",
+        "provider": "Printful",
+        "within_30_minutes": 0
+      }
+    ],
+    "freshness_cron": {
+      "total": 22,
+      "active": 2,
+      "matching": 0,
+      "matching_active": 0
+    },
+    "business_identity": [
+      {
+        "status": "draft",
+        "approved_at": null,
+        "entity_present": true,
+        "owner_approved": false,
+        "address_present": true,
+        "privacy_present": true,
+        "support_present": true,
+        "registration_present": true
+      }
+    ],
+    "fulfillment_states": [
+      {
+        "count": 7,
+        "status": "failed",
+        "supplier_status": "sandbox_create_failed"
+      },
+      {
+        "count": 3,
+        "status": "processing",
+        "supplier_status": "sandbox_submitting"
+      }
+    ],
+    "hunt_public_rls_off": 0,
+    "admin_session_metadata": {
+      "admin_profiles": 1,
+      "usable_test_jwt_verified": false,
+      "admin_sessions_unexpired_last30d": 1
+    }
+  }
+}
