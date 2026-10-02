@@ -221,16 +221,7 @@
     $("#hd-commission").textContent = money(commerce.net_confirmed_commission_usd || 0);
   }
 
-  const legacyShelfAliases = Object.freeze({
-    dresses:"women-dresses",
-    tops:"women-tops",
-    bottoms:"women-bottoms",
-    sleepwear:"women-nightwear",
-    womenunderwear:"women-underwear",
-    menunderwear:"men-underwear",
-    suits:"men-tailoring",
-    wallart:"wall-art"
-  });
+  const legacyShelfAliases = Object.freeze(window.HuntCore?.canonicalTaxonomy?.legacyAliases || {});
   const departmentLabels = Object.freeze({
     women:"Women",men:"Men",kids:"Kids",baby:"Baby",home:"Home & Living",
     tech:"Tech",sports:"Sports & Outdoor",accessories:"Accessories"

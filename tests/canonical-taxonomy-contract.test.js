@@ -137,8 +137,8 @@ test('Home consumes the exported canonical taxonomy instead of a legacy shelf un
   const home = fs.readFileSync(new URL('../hunt-deal.js', import.meta.url),'utf8');
   const html = fs.readFileSync(new URL('../index.html', import.meta.url),'utf8');
   assert.match(canonical,/H\.canonicalTaxonomy\s*=\s*Object\.freeze/);
-  assert.match(canonical,/version:"canonical50-v2"/);
-  assert.ok(html.indexOf('canonical-taxonomy.js?v=canon2') < html.indexOf('hunt-deal.js?v=stable3'));
+  assert.match(canonical,/version:"canonical50-v3"/);
+  assert.ok(html.indexOf('canonical-taxonomy.js?v=canon3') < html.indexOf('hunt-deal.js?v=stable4'));
   assert.doesNotMatch(home,/const shelfMeta\s*=\s*\{/);
   assert.doesNotMatch(home,/const shelfDepartments\s*=\s*\[/);
   assert.doesNotMatch(home,/function isWomenShelfItem/);
@@ -147,12 +147,48 @@ test('Home consumes the exported canonical taxonomy instead of a legacy shelf un
   assert.match(home,/item\?\._hunt_canonical_shelf/);
 });
 
-test('Home legacy slugs are compatibility aliases only and cannot create Kids Socks shelf 51', () => {
+test('Home legacy slugs come only from shared canonical compatibility aliases and cannot create Kids Socks shelf 51', () => {
+  const canonical = fs.readFileSync(new URL('../canonical-taxonomy.js', import.meta.url),'utf8');
   const home = fs.readFileSync(new URL('../hunt-deal.js', import.meta.url),'utf8');
-  assert.match(home,/dresses:"women-dresses"/);
-  assert.match(home,/sleepwear:"women-nightwear"/);
-  assert.match(home,/womenunderwear:"women-underwear"/);
-  assert.match(home,/menunderwear:"men-underwear"/);
-  assert.match(home,/suits:"men-tailoring"/);
-  assert.doesNotMatch(home,/socks:"/);
+  assert.match(home,/canonicalTaxonomy\?\.legacyAliases/);
+  assert.doesNotMatch(home,/const legacyShelfAliases = Object\.freeze\(\{/);
+  assert.match(canonical,/dresses:"women-dresses"/);
+  assert.match(canonical,/sleepwear:"women-nightwear"/);
+  assert.match(canonical,/womenunderwear:"women-underwear"/);
+  assert.match(canonical,/menunderwear:"men-underwear"/);
+  assert.match(canonical,/suits:"men-tailoring"/);
+  assert.doesNotMatch(canonical,/socks:"/);
+});
+
+
+test('canonical taxonomy owns the conservative runtime source bridge', () => {
+  const HuntCore = loadCanonicalTaxonomy();
+  const aliases = HuntCore.canonicalTaxonomy.sourceAliases;
+  assert.equal(aliases['women-dresses'], 'dresses');
+  assert.equal(aliases['women-tops'], 'tops');
+  assert.equal(aliases['women-underwear'], 'womenunderwear');
+  assert.equal(aliases['men-underwear'], 'menunderwear');
+  assert.equal(aliases['men-tailoring'], 'suits');
+  assert.equal(aliases['wall-art'], 'wallart');
+  assert.equal(aliases['kids-schoolwear'], undefined, 'unsafe broad aliases must stay absent');
+  assert.equal(aliases['women-occasionwear'], undefined, 'occasionwear must not silently reuse dresses');
+});
+
+test('Category resolves canonical exact shelves through the shared source bridge and fails closed', () => {
+  const category = fs.readFileSync(new URL('../category.js', import.meta.url),'utf8');
+  const html = fs.readFileSync(new URL('../category.html', import.meta.url),'utf8');
+  assert.match(category,/canonicalSourceAlias = shelf => H\.canonicalTaxonomy\?\.sourceAliases/);
+  assert.match(category,/const sourceSlug = exactCanonicalShelf \? canonicalSourceAlias\(exactCanonicalShelf\)/);
+  assert.match(category,/if \(exactCanonicalShelf\) \{[\s\S]*applyRows\(\[\], "exact-source-empty"\)/);
+  assert.doesNotMatch(category,/exactCanonicalShelf[\s\S]{0,200}H\.search\(subDef/);
+  assert.match(html,/canonical-taxonomy\.js\?v=canon3/);
+  assert.match(html,/category\.js\?v=redteam3/);
+});
+
+
+test('Category browser script parses and canonical Dresses excludes swimwear false positives', () => {
+  const category = fs.readFileSync(new URL('../category.js', import.meta.url),'utf8');
+  assert.doesNotThrow(()=>new Function(category));
+  assert.match(category,/exactShelf==="women-dresses"/);
+  assert.match(category,/swimsuit\|swimwear\|bikini\|rash guard/);
 });

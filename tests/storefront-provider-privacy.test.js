@@ -61,7 +61,7 @@ test("deal storefront never renders raw provider identity into customer-visible 
 });
 
 test("home cache-busts privacy-hardened deal storefront and current PWA", () => {
-  assert.match(home, /hunt-deal\.js\?v=stable3/);
+  assert.match(home, /hunt-deal\.js\?v=stable4/);
   assert.match(home, /pwa\.js\?v=pwa7/);
 });
 
@@ -104,4 +104,10 @@ test("wow product cards never render raw provider identity", () => {
   assert.doesNotMatch(wow, /<small>\$\{H\.esc\(item\.provider/);
   assert.match(wow, /<small>HUNT SOURCE<\/small>/);
   assert.match(home, /hunt-wow\.js\?v=redteam2/);
+});
+
+
+test("PDP loads canonical taxonomy before product runtime so exact shelf context survives", () => {
+  assert.ok(product.indexOf('canonical-taxonomy.js?v=canon3') > 0);
+  assert.ok(product.indexOf('canonical-taxonomy.js?v=canon3') < product.indexOf('product.js?v=redteam2'));
 });

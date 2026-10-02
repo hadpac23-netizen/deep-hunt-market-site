@@ -1,10 +1,18 @@
 (() => {
   const H = window.HuntCore;
   const params = new URLSearchParams(location.search);
-  const requested = params.get("c") || "women";
-  const slug = H.categoryDefs[requested] ? requested : "women";
-  const sub = params.get("sub") || "";
+  const requested = String(params.get("c") || "women").toLowerCase();
+  const requestedDef = H.categoryDefs[requested];
+  const directCanonical = requestedDef?.canonical === true && requestedDef?.parent && requestedDef.parent !== requested;
+  const slug = directCanonical ? requestedDef.parent : (H.categoryDefs[requested] ? requested : "women");
+  const requestedSub = String(params.get("sub") || "").toLowerCase();
+  const subCandidate = directCanonical ? requested : requestedSub;
+  const subDefCandidate = subCandidate ? H.categoryDefs[subCandidate] : null;
+  const canonicalSub = subDefCandidate?.canonical === true && subDefCandidate?.parent === slug;
+  const legacyGenderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats"].includes(subCandidate);
+  const sub = canonicalSub || legacyGenderSub ? subCandidate : "";
   const def = H.categoryDefs[slug];
+  const canonicalSourceAlias = shelf => H.canonicalTaxonomy?.sourceAliases?.[shelf] || shelf;
   const mainCategories = ["women","men","kids","beauty","home","kitchen","tech","sports","gifts"];
   let rawResults = [];
   let resultOrder = new Map();
@@ -80,8 +88,9 @@
         .map(key => {
           const value = H.categoryDefs[key];
           const genderSub = ["women","men"].includes(slug) && ["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats"].includes(key);
-          const href = genderSub ? `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}` : H.categoryUrl(key);
-          const active = genderSub ? sub===key : key===slug;
+          const exactCanonicalSub = value?.canonical === true && value?.parent === slug;
+          const href = exactCanonicalSub ? H.categoryUrl(key) : (genderSub ? `category.html?c=${encodeURIComponent(slug)}&sub=${encodeURIComponent(key)}` : H.categoryUrl(key));
+          const active = exactCanonicalSub ? sub===key : (genderSub ? sub===key : key===slug);
           return `<a class="${active?"active":""}" href="${href}">${value.icon} ${H.esc(value.title)}</a>`;
         }).join("");
       return `<section class="hd-category-side-group"><strong>${H.esc(group.title)}</strong><div>${links}</div></section>`;
@@ -89,9 +98,12 @@
   }
 
   function matchesSub(product) {
-    if (!sub || !["women","men"].includes(slug)) return true;
+    if (!sub) return true;
     const title = String(product?.title || "").toLowerCase();
+    if (sub === "women-dresses" && !/\bdress(?:es)?\b/.test(title)) return false;
+    const matchSlug = canonicalSourceAlias(sub);
     const patterns = {
+      dresses:/\b(dress|dresses|skirt|skirts)\b/,
       tops:/shirt|tee|t-shirt|top|tank|polo|blouse/,
       bottoms:/pants|trouser|shorts|jeans|joggers|leggings/,
       hoodies:/hoodie|sweatshirt/,
@@ -99,6 +111,16 @@
       knitwear:/sweater|cardigan|knit/,
       activewear:/sport|athletic|fitness|yoga|running|rash guard/,
       swimwear:/swim|swimsuit|bikini|board shorts/,
+      sleepwear:/pajama|pyjama|sleepwear|nightwear|nightgown|nightdress/,
+      mensleepwear:/pajama|pyjama|sleepwear|nightwear|robe/,
+      loungewear:/lounge|loungewear|homewear|home wear/,
+      maternity:/maternity|nursing|pregnan/,
+      womenunderwear:/underwear|lingerie|bra|brief|panty|panties/,
+      menunderwear:/underwear|boxer|brief|trunk/,
+      suits:/suit|blazer|tuxedo|tailor|waistcoat|formal/,
+      kidsunderwear:/underwear|brief|boxer|base layer|thermal/,
+      wallart:/wall art|canvas|poster|print/,
+      outdoors:/outdoor|camp|hiking|garden|patio/,
       shoes:/shoe|sneaker|heel|loafer|boot|sandal|slide/,
       bags:/bag|handbag|purse|crossbody|tote|backpack/,
       jewelry:/jewelry|jewellery|necklace|bracelet|earring|pendant|ring/,
@@ -107,7 +129,8 @@
       beauty:/beauty|skincare|makeup|cosmetic|serum|cream/,
       perfume:/perfume|fragrance|eau de|parfum/
     };
-    return patterns[sub] ? patterns[sub].test(title) : true;
+    const pattern = patterns[matchSlug] || patterns[sub];
+    return pattern ? pattern.test(title) : true;
   }
 
   function matchesGenderScope(product) {
@@ -137,7 +160,10 @@
     if (slug === "jewelry" && /\b(parrot|bird toy|pet toy|toy set|handbag belt|bag belt|strap buckle|key findings)\b/.test(title)) return false;
     const exactShelf=(sub||slug).toLowerCase();
     if (["dresses","women-dresses"].includes(exactShelf)) {
-      if (/\b(dress pants?|dress trousers?|trousers?|pants?)\b/.test(title) && !/\b(dress|dresses|skirt|skirts)\b/.test(title.replace(/dress pants?|dress trousers?/g,""))) return false;
+      const withoutDressPants=title.replace(/dress pants?|dress trousers?/g,"");
+      const exactTerm=exactShelf==="women-dresses" ? /\bdress(?:es)?\b/ : /\b(dress|dresses|skirt|skirts)\b/;
+      if (!exactTerm.test(withoutDressPants)) return false;
+      if (exactShelf==="women-dresses" && /\b(swimsuit|swimwear|bikini|rash guard)\b/.test(title)) return false;
       if (/\bmen(?:'s|s)?|male|gentlemen\b/.test(title)) return false;
     }
     return true;
@@ -221,11 +247,11 @@
 
   async function load() {
     const subDef = sub && H.categoryDefs[sub] ? H.categoryDefs[sub] : null;
-    const pageTitle = subDef && ["women","men"].includes(slug) ? `${def.title} · ${subDef.title}` : def.title;
+    const pageTitle = subDef ? `${def.title} · ${subDef.title}` : def.title;
     document.title = `${pageTitle} — HUNT DEAL`;
     $("#hd-cat-title").textContent = pageTitle;
     $("#hd-cat-breadcrumb").textContent = pageTitle;
-    $("#hd-cat-copy").textContent = subDef && ["women","men"].includes(slug) ? `${subDef.title} filtered inside ${def.title}.` : def.description;
+    $("#hd-cat-copy").textContent = subDef ? `${subDef.title} filtered inside ${def.title}.` : def.description;
     renderCategories();
     applyViewMode(viewMode);
     H.recordSignal(slug,"category");
@@ -234,7 +260,8 @@
     H.updateCartBadges();
     setupGridObserver();
 
-    const sourceSlug = sub && ["women","men"].includes(slug) && H.categoryDefs[sub] ? sub : slug;
+    const exactCanonicalShelf = subDef?.canonical === true && subDef?.parent === slug ? sub : "";
+    const sourceSlug = exactCanonicalShelf ? canonicalSourceAlias(exactCanonicalShelf) : (sub || slug);
 
     const mergeProductRecord = (base, fresh) => {
       if (!base) return fresh || {};
@@ -273,9 +300,10 @@
         rawResults = [...incoming].sort((a,b)=>listingReadiness(b)-listingReadiness(a));
       }
       const sourceCount = new Set(rawResults.map(p=>p.provider).filter(Boolean)).size;
-      $("#hd-cat-provider-state").textContent = rawResults.length
-        ? `${rawResults.length} catalog products ready · ${sourceCount || 1} HUNT source${sourceCount===1?"":"s"}${label==="live"?" · live refresh merged":""}`
-        : "No HUNT catalog source returned a product for this category yet.";
+      const matchingCount = rawResults.filter(p=>matchesCategoryTruth(p)&&matchesGenderScope(p)&&matchesSub(p)).length;
+      $("#hd-cat-provider-state").textContent = matchingCount
+        ? `${matchingCount} matching catalog products · ${sourceCount || 1} HUNT source${sourceCount===1?"":"s"}${label==="live"?" · live refresh merged":""}`
+        : "No HUNT catalog source returned an exact match for this category yet.";
       resultOrder = new Map(rawResults.map((p,i)=>[productKey(p),i]));
       window.HuntAnalytics?.category(slug, rawResults.length);
       renderGrid();
@@ -323,6 +351,12 @@
     } catch {}
 
     if (!rendered) {
+      // Canonical exact shelves fail closed when their exact/approved source has no rows.
+      // Never broaden an empty exact shelf into an unrelated parent-category search.
+      if (exactCanonicalShelf) {
+        applyRows([], "exact-source-empty");
+        return;
+      }
       const data = await H.search(def.query,24);
       const results = Array.isArray(data.results) ? data.results : [];
       applyRows(results, "discovery");

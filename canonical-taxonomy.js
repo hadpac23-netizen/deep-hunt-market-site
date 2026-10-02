@@ -88,10 +88,39 @@
     sports: ["sports","sports-outdoor","outdoors","travel"],
     accessories: ["accessories","wallets-small-accessories","bags","hats","hairaccessories","jewelry"]
   };
+  const canonicalSourceAliases = Object.freeze({
+    "women-dresses":"dresses",
+    "women-tops":"tops",
+    "women-bottoms":"bottoms",
+    "women-loungewear":"loungewear",
+    "women-maternity":"maternity",
+    "women-nightwear":"sleepwear",
+    "women-underwear":"womenunderwear",
+    "men-loungewear":"loungewear",
+    "men-nightwear":"mensleepwear",
+    "men-swimwear":"swimwear",
+    "men-tailoring":"suits",
+    "men-underwear":"menunderwear",
+    "kids-underwear":"kidsunderwear",
+    "wall-art":"wallart",
+    "sports-outdoor":"outdoors"
+  });
+  const legacyCanonicalAliases = Object.freeze({
+    dresses:"women-dresses",
+    tops:"women-tops",
+    bottoms:"women-bottoms",
+    sleepwear:"women-nightwear",
+    womenunderwear:"women-underwear",
+    menunderwear:"men-underwear",
+    suits:"men-tailoring",
+    wallart:"wall-art"
+  });
   H.canonicalTaxonomy = Object.freeze({
-    version:"canonical50-v2",
+    version:"canonical50-v3",
     defs:Object.freeze({...canonicalDefs}),
-    groups:Object.freeze(Object.fromEntries(Object.entries(groupFor).map(([k,v])=>[k,Object.freeze([...v])])))
+    groups:Object.freeze(Object.fromEntries(Object.entries(groupFor).map(([k,v])=>[k,Object.freeze([...v])]))),
+    sourceAliases:canonicalSourceAliases,
+    legacyAliases:legacyCanonicalAliases
   });
 
   const originalCategoryUrl = H.categoryUrl.bind(H);
