@@ -133,9 +133,9 @@ test('canonical shelf URLs preserve department hierarchy and exact-shelf routing
 });
 
 test('Home consumes the exported canonical taxonomy instead of a legacy shelf universe', () => {
-  const canonical = fs.readFileSync(path.resolve(__dirname,'../canonical-taxonomy.js'),'utf8');
-  const home = fs.readFileSync(path.resolve(__dirname,'../hunt-deal.js'),'utf8');
-  const html = fs.readFileSync(path.resolve(__dirname,'../index.html'),'utf8');
+  const canonical = fs.readFileSync(new URL('../canonical-taxonomy.js', import.meta.url),'utf8');
+  const home = fs.readFileSync(new URL('../hunt-deal.js', import.meta.url),'utf8');
+  const html = fs.readFileSync(new URL('../index.html', import.meta.url),'utf8');
   assert.match(canonical,/H\.canonicalTaxonomy\s*=\s*Object\.freeze/);
   assert.match(canonical,/version:"canonical50-v2"/);
   assert.ok(html.indexOf('canonical-taxonomy.js?v=canon2') < html.indexOf('hunt-deal.js?v=stable3'));
@@ -148,7 +148,7 @@ test('Home consumes the exported canonical taxonomy instead of a legacy shelf un
 });
 
 test('Home legacy slugs are compatibility aliases only and cannot create Kids Socks shelf 51', () => {
-  const home = fs.readFileSync(path.resolve(__dirname,'../hunt-deal.js'),'utf8');
+  const home = fs.readFileSync(new URL('../hunt-deal.js', import.meta.url),'utf8');
   assert.match(home,/dresses:"women-dresses"/);
   assert.match(home,/sleepwear:"women-nightwear"/);
   assert.match(home,/womenunderwear:"women-underwear"/);
