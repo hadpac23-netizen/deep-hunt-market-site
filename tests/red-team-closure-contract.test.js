@@ -20,13 +20,16 @@ test("PayPlus callback identity comes only from the signed POST body",()=>{
   assert.match(src,/verifyWithPayPlus\(session,callbackTx\)/);
 });
 
-test("EPROLO audits require exact IDs and tax evidence before resolving tax exceptions",()=>{
+test("EPROLO audits require exact IDs, COO and landed-cost evidence before resolving tax exceptions",()=>{
   const country=read("supabase/functions/hunt-eprolo-country-shadow/index.ts");
   const one=read("supabase/functions/hunt-eprolo-variant-country-audit-shadow/index.ts");
   const all=read("supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/index.ts");
   assert.doesNotMatch(country,/variantList\.length===1\?variantList\[0\]:null/);
   assert.doesNotMatch(one,/list\.length===1\?list\[0\]:null/);
-  assert.match(all,/else if\(rows\.some\(x=>x\.taxes_verified===true\)\)/);
+  assert.match(one,/customs_truth_v1/);
+  assert.match(all,/destination_tax_duty_verified===true/);
+  assert.match(all,/COUNTRY_OF_ORIGIN_NOT_VERIFIED/);
+  assert.doesNotMatch(all,/rows\.some\(x=>x\.taxes_verified===true\)/);
 });
 
 test("CJ live checks never erase catalog price when supplier price is missing",()=>{

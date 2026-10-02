@@ -31,6 +31,19 @@ function options(v:any){
   out.sort((a,b)=>a.shipping_usd-b.shipping_usd);
   return out;
 }
+function customsTruth(source:any,variantId:string,country:string){
+  const root=source?.customs_truth_v1||{};
+  const variants=root?.variants&&typeof root.variants==="object"?root.variants:{};
+  const direct=clean(root?.variant_id)===variantId?root:null;
+  const node=(variants&&variants[variantId])||direct||null;
+  const origin=clean(node?.country_of_origin).toUpperCase();
+  const originVerified=Boolean(node&&node.country_of_origin_verified===true&&/^[A-Z]{2}$/.test(origin));
+  const market=node?.markets&&typeof node.markets==="object"?node.markets[country]:null;
+  const landedCostVerified=Boolean(market&&market.landed_cost_verified===true);
+  const dutyTaxUsd=landedCostVerified?num(market?.duty_tax_usd):null;
+  const destinationTaxDutyVerified=Boolean(landedCostVerified&&dutyTaxUsd!==null&&dutyTaxUsd>=0);
+  return {country_of_origin:origin||null,country_of_origin_verified:originVerified,landed_cost_verified:landedCostVerified,destination_tax_duty_verified:destinationTaxDutyVerified,duty_tax_usd:destinationTaxDutyVerified?Number(dutyTaxUsd):null};
+}
 function econ(p:any,sale:number,cost:number,ship:number,tax:number){
   const pay=Math.max(0,Number(p?.payment_rate||0.04)),ref=Math.max(0,Number(p?.refund_reserve_rate||0.05)),vr=Math.max(0,Number(p?.platform_variable_rate||0)),fixed=Math.max(0,Number(p?.platform_fixed_per_order||0)),minC=Math.max(0,Number(p?.min_contribution_per_unit||4)),minM=Math.max(0,Number(p?.min_margin_rate||0.20)),r=pay+ref+vr;
   const gross=sale+ship,contribution=gross-cost-ship-tax-(gross*r)-fixed,margin=sale>0?contribution/sale:0;
@@ -54,7 +67,7 @@ Deno.serve(async(req:Request)=>{
     const u=new URL(req.url),itemId=clean(u.searchParams.get("item_id")),country=clean(u.searchParams.get("country")).toUpperCase();
     if(!itemId||!/^[A-Z]{2}$/.test(country))return reply({error:"item_id and ISO country required"},400);
 
-    const cand=await sql`select title from public.hunt_shelf_candidates where provider='EPROLO' and item_id=${itemId} limit 1`;
+    const cand=await sql`select title,source_payload from public.hunt_shelf_candidates where provider='EPROLO' and item_id=${itemId} limit 1`;
     if(!cand?.[0])return reply({item_id:itemId,country,status:"HOLD",reason:"CANDIDATE_NOT_FOUND",production_effect:false},404);
     const profiles=await sql`select * from public.hunt_profit_profiles where status='active' and owner_approved=true order by updated_at desc limit 1`;
     if(!profiles?.[0])return reply({error:"PROFIT_PROFILE_NOT_ACTIVE",production_effect:false},500);
@@ -69,24 +82,26 @@ Deno.serve(async(req:Request)=>{
     for(const v of list.slice(0,250)){
       const variantId=vid(v),inventory=Math.max(0,Number(v?.inventory_quantity||0)),cost=num(v?.cost),opts=options(v),ship=opts[0]||null;
       let status="HOLD",reason:string|null=null,sale:number|null=null,economics:any=null,finalProfit=false,taxesVerified=false,taxUsd:number|null=null;
+      let customs={country_of_origin:null as string|null,country_of_origin_verified:false,landed_cost_verified:false,destination_tax_duty_verified:false,duty_tax_usd:null as number|null};
       if(!variantId) {reason="VARIANT_ID_MISSING";}
       else if(!(cost!==null&&cost>0)){reason="NO_VARIANT_COST";}
       else if(inventory<1){status="OUT_OF_STOCK";reason="EXACT_VARIANT_ZERO_INVENTORY";}
       else if(!ship){reason="NO_VERIFIED_SHIPPING";}
       else {
         taxesVerified=ship.tax_usd!==null; taxUsd=ship.tax_usd;
-        const tax=taxesVerified?Number(taxUsd):0;
+        customs=customsTruth(cand[0].source_payload,variantId,country);
+        const tax=customs.destination_tax_duty_verified?Number(customs.duty_tax_usd):0;
         sale=floorPrice(p,cost,ship.shipping_usd,tax);
         economics=econ(p,sale,cost,ship.shipping_usd,tax);
-        finalProfit=taxesVerified&&economics.gate==="PASS";
+        finalProfit=customs.country_of_origin_verified&&customs.destination_tax_duty_verified&&economics.gate==="PASS";
         status=finalProfit?"COUNTRY_PASS":"PROFIT_REVIEW";
-        reason=finalProfit?null:(taxesVerified?"ECONOMICS_NOT_PASS":"DESTINATION_TAX_NOT_VERIFIED");
+        reason=finalProfit?null:(!customs.country_of_origin_verified?"COUNTRY_OF_ORIGIN_NOT_VERIFIED":(!customs.destination_tax_duty_verified?"DESTINATION_TAX_NOT_VERIFIED":"ECONOMICS_NOT_PASS"));
       }
       rows.push({
         variant_id:variantId,variant_title:v?.title||null,color:v?.option1||null,size:v?.option2||null,
         inventory_quantity:inventory,stock_available:inventory>0,supplier_cost_usd:cost,
         shipping_verified:Boolean(ship),shipping_method:ship?.method||null,shipping_usd:ship?.shipping_usd??null,shipping_eta:ship?.eta||null,
-        taxes_verified:taxesVerified,tax_usd:taxUsd,shadow_retail_floor_usd:sale,economics,final_profit_verified:finalProfit,status,reason
+        supplier_tax_observed:taxesVerified,supplier_tax_usd:taxUsd,...customs,shadow_retail_floor_usd:sale,economics,final_profit_verified:finalProfit,status,reason
       });
     }
 
@@ -103,7 +118,7 @@ Deno.serve(async(req:Request)=>{
             inventory_quantity:x.inventory_quantity,stock_available:x.stock_available,
             supplier_cost_usd:x.supplier_cost_usd,shipping_verified:x.shipping_verified,
             shipping_method:x.shipping_method,shipping_usd:x.shipping_usd,shipping_eta:x.shipping_eta,
-            taxes_verified:x.taxes_verified,tax_usd:x.tax_usd,shadow_retail_floor_usd:x.shadow_retail_floor_usd,
+            supplier_tax_observed:x.supplier_tax_observed,supplier_tax_usd:x.supplier_tax_usd,country_of_origin:x.country_of_origin,country_of_origin_verified:x.country_of_origin_verified,landed_cost_verified:x.landed_cost_verified,destination_tax_duty_verified:x.destination_tax_duty_verified,duty_tax_usd:x.duty_tax_usd,shadow_retail_floor_usd:x.shadow_retail_floor_usd,
             economics:x.economics,final_profit_verified:x.final_profit_verified,readiness_status:x.status,reason:x.reason,
             production_effect:false,sellable:false
           })},${checkedAt}::timestamptz
@@ -124,6 +139,7 @@ Deno.serve(async(req:Request)=>{
     }
 
     const taxMissing=rows.filter(x=>x.reason==="DESTINATION_TAX_NOT_VERIFIED").length;
+    const originMissing=rows.filter(x=>x.reason==="COUNTRY_OF_ORIGIN_NOT_VERIFIED").length;
     if(taxMissing>0){
       await sql`
         insert into private.hunt_ops_exceptions
@@ -134,13 +150,32 @@ Deno.serve(async(req:Request)=>{
         where status <> 'resolved'
         do update set last_checked_at=now(),evidence=excluded.evidence,updated_at=now()
       `;
-    } else if(rows.some(x=>x.taxes_verified===true)) {
+    } else if(rows.some(x=>x.destination_tax_duty_verified===true)) {
       await sql`
         update private.hunt_ops_exceptions
-        set status='resolved',resolved_at=now(),resolution='Destination tax/economics verified for all audited variants',
+        set status='resolved',resolved_at=now(),resolution='Destination landed-cost/tax-duty evidence verified for audited variants',
             last_checked_at=now(),updated_at=now()
         where entity_type='product' and entity_id=${itemId} and provider='EPROLO'
           and destination_country=${country} and reason_code='DESTINATION_TAX_NOT_VERIFIED' and status<>'resolved'
+      `;
+    }
+    if(originMissing>0){
+      await sql`
+        insert into private.hunt_ops_exceptions
+        (entity_type,entity_id,provider,destination_country,reason_code,severity,owner_role,status,last_checked_at,evidence,updated_at)
+        values('product',${itemId},'EPROLO',${country},'COUNTRY_OF_ORIGIN_NOT_VERIFIED','warning','operations_finance','open',now(),
+        ${sql.json({item_id:itemId,checked_at:checkedAt,affected_variants:originMissing,total_variants:rows.length})},now())
+        on conflict (entity_type,entity_id,coalesce(provider,''),coalesce(destination_country,''),reason_code)
+        where status <> 'resolved'
+        do update set last_checked_at=now(),evidence=excluded.evidence,updated_at=now()
+      `;
+    } else if(rows.some(x=>x.country_of_origin_verified===true)) {
+      await sql`
+        update private.hunt_ops_exceptions
+        set status='resolved',resolved_at=now(),resolution='Exact-variant country of origin evidence verified',
+            last_checked_at=now(),updated_at=now()
+        where entity_type='product' and entity_id=${itemId} and provider='EPROLO'
+          and destination_country=${country} and reason_code='COUNTRY_OF_ORIGIN_NOT_VERIFIED' and status<>'resolved'
       `;
     }
 
@@ -153,7 +188,8 @@ Deno.serve(async(req:Request)=>{
       final_profit_verified:rows.filter(x=>x.final_profit_verified).length,
       profit_review:rows.filter(x=>x.status==="PROFIT_REVIEW").length,
       holds:rows.filter(x=>x.status==="HOLD").length,
-      destination_tax_missing:taxMissing
+      destination_tax_missing:taxMissing,
+      country_of_origin_missing:originMissing
     };
 
     return reply({checked_at:checkedAt,provider:"EPROLO",item_id:itemId,product_title:cand[0].title,country,summary,variants:rows,production_effect:false,sellable:false});
