@@ -1,10 +1,12 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import postgres from "npm:postgres@3.4.5";
 import { createHash } from "node:crypto";
+import { finiteAmount, finalProfitTruth, completeCustomsCoverage } from "../_shared/final-profit-truth.mjs";
+
 
 const API="https://openapi.eprolo.com/";
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
-const num=(v:any)=>{const n=Number(v);return Number.isFinite(n)?n:null};
+const num=finiteAmount;
 const reply=(x:any,s=200)=>new Response(JSON.stringify(x),{status:s,headers:{"content-type":"application/json","cache-control":"no-store"}});
 
 function sig(k:string,s:string){
@@ -30,24 +32,6 @@ function options(v:any){
   }
   out.sort((a,b)=>a.shipping_usd-b.shipping_usd);
   return out;
-}
-function customsTruth(source:any,variantId:string,country:string){
-  const root=source?.customs_truth_v1||{};
-  const variants=root?.variants&&typeof root.variants==="object"?root.variants:{};
-  const direct=clean(root?.variant_id)===variantId?root:null;
-  const node=(variants&&variants[variantId])||direct||null;
-  const origin=clean(node?.country_of_origin).toUpperCase();
-  const originVerified=Boolean(node&&node.country_of_origin_verified===true&&/^[A-Z]{2}$/.test(origin));
-  const market=node?.markets&&typeof node.markets==="object"?node.markets[country]:null;
-  const landedCostVerified=Boolean(market&&market.landed_cost_verified===true);
-  const dutyTaxUsd=landedCostVerified?num(market?.duty_tax_usd):null;
-  const destinationTaxDutyVerified=Boolean(landedCostVerified&&dutyTaxUsd!==null&&dutyTaxUsd>=0);
-  return {country_of_origin:origin||null,country_of_origin_verified:originVerified,landed_cost_verified:landedCostVerified,destination_tax_duty_verified:destinationTaxDutyVerified,duty_tax_usd:destinationTaxDutyVerified?Number(dutyTaxUsd):null};
-}
-function econ(p:any,sale:number,cost:number,ship:number,tax:number){
-  const pay=Math.max(0,Number(p?.payment_rate||0.04)),ref=Math.max(0,Number(p?.refund_reserve_rate||0.05)),vr=Math.max(0,Number(p?.platform_variable_rate||0)),fixed=Math.max(0,Number(p?.platform_fixed_per_order||0)),minC=Math.max(0,Number(p?.min_contribution_per_unit||4)),minM=Math.max(0,Number(p?.min_margin_rate||0.20)),r=pay+ref+vr;
-  const gross=sale+ship,contribution=gross-cost-ship-tax-(gross*r)-fixed,margin=sale>0?contribution/sale:0;
-  return {contribution:Number(contribution.toFixed(2)),margin:Number(margin.toFixed(4)),gate:contribution>=minC&&margin>=minM?"PASS":contribution>0?"REVIEW":"BLOCK"};
 }
 function floorPrice(p:any,cost:number,ship:number,tax:number){
   const pay=Math.max(0,Number(p?.payment_rate||0.04)),ref=Math.max(0,Number(p?.refund_reserve_rate||0.05)),vr=Math.max(0,Number(p?.platform_variable_rate||0)),fixed=Math.max(0,Number(p?.platform_fixed_per_order||0)),minC=Math.max(0,Number(p?.min_contribution_per_unit||4)),minM=Math.max(0,Number(p?.min_margin_rate||0.20)),r=pay+ref+vr,c=cost+tax+fixed+r*ship;
@@ -78,28 +62,31 @@ Deno.serve(async(req:Request)=>{
 
     const list=Array.isArray(q.body?.data?.variantlist)?q.body.data.variantlist:[];
     const checkedAt=new Date().toISOString();
+    const auditComplete=list.length>0&&list.length<=250&&list.every((v:any)=>Boolean(vid(v)))&&new Set(list.map(vid)).size===list.length;
     const rows:any[]=[];
     for(const v of list.slice(0,250)){
-      const variantId=vid(v),inventory=Math.max(0,Number(v?.inventory_quantity||0)),cost=num(v?.cost),opts=options(v),ship=opts[0]||null;
+      const variantId=vid(v),inventory=num(v?.inventory_quantity),cost=num(v?.cost),opts=options(v),ship=opts[0]||null;
       let status="HOLD",reason:string|null=null,sale:number|null=null,economics:any=null,finalProfit=false,taxesVerified=false,taxUsd:number|null=null;
-      let customs={country_of_origin:null as string|null,country_of_origin_verified:false,landed_cost_verified:false,destination_tax_duty_verified:false,duty_tax_usd:null as number|null};
+      let customs:any={country_of_origin:null,country_of_origin_verified:false,landed_cost_verified:false,destination_tax_duty_verified:false,duty_tax_usd:null,retail_price_verified:false,current_retail_usd:null};
       if(!variantId) {reason="VARIANT_ID_MISSING";}
       else if(!(cost!==null&&cost>0)){reason="NO_VARIANT_COST";}
-      else if(inventory<1){status="OUT_OF_STOCK";reason="EXACT_VARIANT_ZERO_INVENTORY";}
+      else if(!Number.isSafeInteger(inventory)||inventory<1){status="OUT_OF_STOCK";reason="EXACT_VARIANT_ZERO_INVENTORY";}
       else if(!ship){reason="NO_VERIFIED_SHIPPING";}
       else {
         taxesVerified=ship.tax_usd!==null; taxUsd=ship.tax_usd;
-        customs=customsTruth(cand[0].source_payload,variantId,country);
+        customs=finalProfitTruth(cand[0].source_payload,{provider:"EPROLO",item_id:itemId,variant_id:variantId,country,
+          cost_usd:cost,shipping_usd:ship.shipping_usd,shipping_method:ship.method,stock_quantity:inventory},p,Date.parse(checkedAt));
         const tax=customs.destination_tax_duty_verified?Number(customs.duty_tax_usd):0;
+        // A floor is a proposal only; economics uses verified retail, never this floor.
         sale=floorPrice(p,cost,ship.shipping_usd,tax);
-        economics=econ(p,sale,cost,ship.shipping_usd,tax);
-        finalProfit=customs.country_of_origin_verified&&customs.destination_tax_duty_verified&&economics.gate==="PASS";
-        status=finalProfit?"COUNTRY_PASS":"PROFIT_REVIEW";
-        reason=finalProfit?null:(!customs.country_of_origin_verified?"COUNTRY_OF_ORIGIN_NOT_VERIFIED":(!customs.destination_tax_duty_verified?"DESTINATION_TAX_NOT_VERIFIED":"ECONOMICS_NOT_PASS"));
+        economics=customs.economics;
+        finalProfit=customs.final_profit_verified;
+        status=finalProfit?"COUNTRY_PASS":"HOLD";
+        reason=customs.reason;
       }
       rows.push({
         variant_id:variantId,variant_title:v?.title||null,color:v?.option1||null,size:v?.option2||null,
-        inventory_quantity:inventory,stock_available:inventory>0,supplier_cost_usd:cost,
+        inventory_quantity:inventory,stock_available:Number.isSafeInteger(inventory)&&inventory>0,supplier_cost_usd:cost,
         shipping_verified:Boolean(ship),shipping_method:ship?.method||null,shipping_usd:ship?.shipping_usd??null,shipping_eta:ship?.eta||null,
         supplier_tax_observed:taxesVerified,supplier_tax_usd:taxUsd,...customs,shadow_retail_floor_usd:sale,economics,final_profit_verified:finalProfit,status,reason
       });
@@ -119,7 +106,7 @@ Deno.serve(async(req:Request)=>{
             supplier_cost_usd:x.supplier_cost_usd,shipping_verified:x.shipping_verified,
             shipping_method:x.shipping_method,shipping_usd:x.shipping_usd,shipping_eta:x.shipping_eta,
             supplier_tax_observed:x.supplier_tax_observed,supplier_tax_usd:x.supplier_tax_usd,country_of_origin:x.country_of_origin,country_of_origin_verified:x.country_of_origin_verified,landed_cost_verified:x.landed_cost_verified,destination_tax_duty_verified:x.destination_tax_duty_verified,duty_tax_usd:x.duty_tax_usd,shadow_retail_floor_usd:x.shadow_retail_floor_usd,
-            economics:x.economics,final_profit_verified:x.final_profit_verified,readiness_status:x.status,reason:x.reason,
+            retail_price_verified:x.retail_price_verified,current_retail_usd:x.current_retail_usd,economics:x.economics,final_profit_verified:x.final_profit_verified,readiness_status:x.status,reason:x.reason,
             production_effect:false,sellable:false
           })},${checkedAt}::timestamptz
         )
@@ -138,8 +125,8 @@ Deno.serve(async(req:Request)=>{
       }
     }
 
-    const taxMissing=rows.filter(x=>x.reason==="DESTINATION_TAX_NOT_VERIFIED").length;
-    const originMissing=rows.filter(x=>x.reason==="COUNTRY_OF_ORIGIN_NOT_VERIFIED").length;
+    const taxMissing=rows.filter(x=>x.destination_tax_duty_verified!==true).length;
+    const originMissing=rows.filter(x=>x.country_of_origin_verified!==true).length;
     if(taxMissing>0){
       await sql`
         insert into private.hunt_ops_exceptions
@@ -150,7 +137,7 @@ Deno.serve(async(req:Request)=>{
         where status <> 'resolved'
         do update set last_checked_at=now(),evidence=excluded.evidence,updated_at=now()
       `;
-    } else if(rows.some(x=>x.destination_tax_duty_verified===true)) {
+    } else if(completeCustomsCoverage(rows,auditComplete,"destination_tax_duty_verified")) {
       await sql`
         update private.hunt_ops_exceptions
         set status='resolved',resolved_at=now(),resolution='Destination landed-cost/tax-duty evidence verified for audited variants',
@@ -169,7 +156,7 @@ Deno.serve(async(req:Request)=>{
         where status <> 'resolved'
         do update set last_checked_at=now(),evidence=excluded.evidence,updated_at=now()
       `;
-    } else if(rows.some(x=>x.country_of_origin_verified===true)) {
+    } else if(completeCustomsCoverage(rows,auditComplete,"country_of_origin_verified")) {
       await sql`
         update private.hunt_ops_exceptions
         set status='resolved',resolved_at=now(),resolution='Exact-variant country of origin evidence verified',
@@ -192,7 +179,7 @@ Deno.serve(async(req:Request)=>{
       country_of_origin_missing:originMissing
     };
 
-    return reply({checked_at:checkedAt,provider:"EPROLO",item_id:itemId,product_title:cand[0].title,country,summary,variants:rows,production_effect:false,sellable:false});
+    return reply({checked_at:checkedAt,provider:"EPROLO",item_id:itemId,product_title:cand[0].title,country,audit_complete:auditComplete,summary,variants:rows,production_effect:false,sellable:false});
   }catch(e){
     return reply({ok:false,error:e instanceof Error?e.message:String(e),production_effect:false,sellable:false},500);
   }finally{await sql.end({timeout:1}).catch(()=>{});}

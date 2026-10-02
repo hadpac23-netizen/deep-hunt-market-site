@@ -1,4 +1,4 @@
-const CACHE="hunt-shell-pwa7";
+const CACHE="hunt-shell-pwa7-costprivacy1";
 const CORE=[
   "./",
   "./index.html",
@@ -55,6 +55,10 @@ self.addEventListener("fetch",event=>{
   if(request.method!=="GET")return;
   const url=new URL(request.url);
   if(url.origin!==self.location.origin)return;
+  if(/\/boom-promotions\.js$/i.test(url.pathname) || /\/catalog-(?:home|snapshot|shards\/[^/]+)\.json$/i.test(url.pathname)){
+    event.respondWith(networkFirst(request));
+    return;
+  }
   if(request.mode==="navigate" || /\/(?:storefront-privacy|market-core|product|product-flow|category|profile|hunt-deal|hunt-wow)\.js$/i.test(url.pathname)){
     event.respondWith(networkFirst(request));
     return;

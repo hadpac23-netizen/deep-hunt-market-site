@@ -1,5 +1,15 @@
 const enc=new TextEncoder();
 
+export function callbackSessionWindow(session,now=Date.now()){
+  const expiry=typeof session?.expires_at==="string"?Date.parse(session.expires_at):NaN;
+  if(!Number.isFinite(expiry))return {valid:false,reason:"PAYMENT_SESSION_EXPIRY_UNVERIFIED"};
+  if(expiry<=now)return {valid:false,reason:"PAYMENT_SESSION_EXPIRED"};
+  if(["expired","cancelled","canceled","failed"].includes(String(session?.status||"").toLowerCase())){
+    return {valid:false,reason:"PAYMENT_SESSION_INACTIVE"};
+  }
+  return {valid:true,reason:"PAYMENT_SESSION_CURRENT"};
+}
+
 export function constantTimeEqual(a,b){
   const aa=enc.encode(String(a??""));
   const bb=enc.encode(String(b??""));

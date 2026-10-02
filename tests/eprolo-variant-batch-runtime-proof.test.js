@@ -17,7 +17,7 @@ test("batch proof uses current retail and exact variant final economics",()=>{
   assert.match(src,/current_retail_usd:retail/);
   assert.match(src,/final_profit_verified:finalProfit/);
   assert.match(src,/variantIdOf\(x\)===variantId/);
-  assert.match(src,/DESTINATION_TAX_NOT_VERIFIED/);
+  assert.match(src,/reason:truth\.reason/);
   assert.match(src,/FRESH_FINAL_PASS/);
   assert.doesNotMatch(src,/list\.length===1\?list\[0\]/);
 });

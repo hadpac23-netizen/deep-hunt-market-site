@@ -16,7 +16,9 @@
   function key(item){return H.sourceCodeForProvider(item?.provider)+":"+String(item?.item_id||"")}
   function safeHttps(value){try{return new URL(value).protocol==="https:"}catch{return false}}
   function price(item){
-    const n=Number(item?.price_amount);
+    const merchant=String(item?.price_basis||"").toUpperCase()==="MERCHANT_RETAIL";
+    const verified=item?.retail_price_verified===true&&String(item?.profit_gate_status||"").toUpperCase()==="PASS";
+    const n=Number(merchant?item.price_amount:verified?item.retail_price_amount:null);
     return Number.isFinite(n)&&n>0?H.money(n,item.currency||"USD"):"View product";
   }
   function categoryTitle(slug){return H.categoryDefs?.[slug]?.title||slug||"More"}

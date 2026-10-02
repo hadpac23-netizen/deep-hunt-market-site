@@ -1,10 +1,12 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import postgres from "npm:postgres@3.4.5";
 import { createHash } from "node:crypto";
+import { finiteAmount, finalProfitTruth } from "../_shared/final-profit-truth.mjs";
+
 
 const API="https://openapi.eprolo.com/";
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
-const num=(v:any)=>{const n=Number(v);return Number.isFinite(n)?n:null};
+const num=finiteAmount;
 const reply=(x:any,s=200)=>new Response(JSON.stringify(x),{status:s,headers:{"content-type":"application/json","cache-control":"no-store"}});
 
 function sig(k:string,s:string){
@@ -31,31 +33,6 @@ function shippingOptions(v:any){
   }
   out.sort((a,b)=>a.shipping_usd-b.shipping_usd);
   return out;
-}
-function customsTruth(source:any,variantId:string,country:string){
-  const root=source?.customs_truth_v1||{};
-  const variants=root?.variants&&typeof root.variants==="object"?root.variants:{};
-  const direct=clean(root?.variant_id)===variantId?root:null;
-  const node=(variants&&variants[variantId])||direct||null;
-  const origin=clean(node?.country_of_origin).toUpperCase();
-  const originVerified=Boolean(node&&node.country_of_origin_verified===true&&/^[A-Z]{2}$/.test(origin));
-  const market=node?.markets&&typeof node.markets==="object"?node.markets[country]:null;
-  const landedCostVerified=Boolean(market&&market.landed_cost_verified===true);
-  const dutyTaxUsd=landedCostVerified?num(market?.duty_tax_usd):null;
-  const destinationTaxDutyVerified=Boolean(landedCostVerified&&dutyTaxUsd!==null&&dutyTaxUsd>=0);
-  return {country_of_origin:origin||null,country_of_origin_verified:originVerified,landed_cost_verified:landedCostVerified,destination_tax_duty_verified:destinationTaxDutyVerified,duty_tax_usd:destinationTaxDutyVerified?Number(dutyTaxUsd):null};
-}
-function economics(p:any,sale:number,cost:number,ship:number,tax:number){
-  const payment=Math.max(0,Number(p?.payment_rate||0.04));
-  const refund=Math.max(0,Number(p?.refund_reserve_rate||0.05));
-  const variable=Math.max(0,Number(p?.platform_variable_rate||0));
-  const fixed=Math.max(0,Number(p?.platform_fixed_per_order||0));
-  const minC=Math.max(0,Number(p?.min_contribution_per_unit||4));
-  const minM=Math.max(0,Number(p?.min_margin_rate||0.20));
-  const r=payment+refund+variable,gross=sale+ship;
-  const contribution=gross-cost-ship-tax-(gross*r)-fixed;
-  const margin=sale>0?contribution/sale:0;
-  return {contribution:Number(contribution.toFixed(2)),margin:Number(margin.toFixed(4)),min_required_contribution:minC,min_required_margin:minM,gate:contribution>=minC&&margin>=minM?"PASS":contribution>0?"REVIEW":"BLOCK"};
 }
 function retailFloor(p:any,cost:number,ship:number,tax:number){
   const payment=Math.max(0,Number(p?.payment_rate||0.04));
@@ -90,7 +67,7 @@ async function workerPool<T,R>(items:T[],concurrency:number,fn:(x:T)=>Promise<R>
   return out;
 }
 async function auditOne(row:any,country:string,p:any,key:string,secret:string){
-  const itemId=clean(row.item_id),variantId=clean(row.variant_id),retail=num(row.retail_usd);
+  const itemId=clean(row.item_id),variantId=clean(row.variant_id);
   const base={provider:"EPROLO",item_id:itemId,variant_id:variantId,country,production_effect:false,sellable:false};
   try{
     const q=await apiGet(key,secret,"get_product_shiping_fees.html",{productid:itemId,variantId,countrycode:country});
@@ -98,19 +75,22 @@ async function auditOne(row:any,country:string,p:any,key:string,secret:string){
     const list=Array.isArray(q.body?.data?.variantlist)?q.body.data.variantlist:[];
     const v=list.find((x:any)=>variantIdOf(x)===variantId);
     if(!v)return {...base,status:"HOLD",reason:"EXACT_VARIANT_NOT_RETURNED"};
-    const inventory=Math.max(0,Number(v?.inventory_quantity||0)),cost=num(v?.cost);
+    const inventory=num(v?.inventory_quantity),cost=num(v?.cost);
     if(!(cost!==null&&cost>0))return {...base,status:"HOLD",reason:"NO_VARIANT_COST",inventory_quantity:inventory};
-    if(inventory<1)return {...base,status:"OUT_OF_STOCK",reason:"EXACT_VARIANT_ZERO_INVENTORY",supplier_cost_usd:cost,inventory_quantity:inventory};
+    if(!Number.isSafeInteger(inventory)||inventory<1)return {...base,status:"OUT_OF_STOCK",reason:"EXACT_VARIANT_ZERO_INVENTORY",supplier_cost_usd:cost,inventory_quantity:inventory};
     const opts=shippingOptions(v),ship=opts[0]||null;
     if(!ship)return {...base,status:"HOLD",reason:"NO_VERIFIED_SHIPPING",supplier_cost_usd:cost,inventory_quantity:inventory};
     const supplierTaxObserved=ship.tax_usd!==null;
-    const customs=customsTruth(row.source_payload,variantId,country);
-    const tax=customs.destination_tax_duty_verified?Number(customs.duty_tax_usd):0;
-    const floor=retailFloor(p,cost,ship.shipping_usd,tax);
-    if(!(retail!==null&&retail>0))return {...base,status:"HOLD",reason:"RETAIL_PRICE_UNVERIFIED",supplier_cost_usd:cost,inventory_quantity:inventory,shipping_usd:ship.shipping_usd,supplier_tax_observed:supplierTaxObserved,supplier_tax_usd:ship.tax_usd,...customs,shadow_retail_floor_usd:floor};
-    const econ=economics(p,retail,cost,ship.shipping_usd,tax);
-    const finalProfit=customs.country_of_origin_verified&&customs.destination_tax_duty_verified&&econ.gate==="PASS";
-    return {...base,checked_at:new Date().toISOString(),product_title:row.title||null,current_retail_usd:retail,variant_title:v?.title||null,color:v?.option1||null,size:v?.option2||null,stock_verified:true,inventory_quantity:inventory,stock_available:true,supplier_cost_usd:cost,shipping_verified:true,shipping_method:ship.method||null,shipping_usd:ship.shipping_usd,shipping_eta:ship.eta||null,supplier_tax_observed:supplierTaxObserved,supplier_tax_usd:ship.tax_usd,...customs,shadow_retail_floor_usd:floor,economics:econ,final_profit_verified:finalProfit,readiness_status:finalProfit?"COUNTRY_PASS":"PROFIT_REVIEW",status:finalProfit?"FRESH_FINAL_PASS":"HOLD",reason:finalProfit?null:(!customs.country_of_origin_verified?"COUNTRY_OF_ORIGIN_NOT_VERIFIED":(!customs.destination_tax_duty_verified?"DESTINATION_TAX_NOT_VERIFIED":(econ.gate==="REVIEW"?"PROFIT_REVIEW":"PROFIT_BLOCK")))};
+    const truth=finalProfitTruth(row.source_payload,{provider:"EPROLO",item_id:itemId,variant_id:variantId,country,
+      cost_usd:cost,shipping_usd:ship.shipping_usd,shipping_method:ship.method,stock_quantity:inventory},p);
+    const finalProfit=truth.final_profit_verified,retail=truth.current_retail_usd;
+    const floor=retailFloor(p,cost,ship.shipping_usd,truth.duty_tax_usd??0);
+    return {...base,checked_at:new Date().toISOString(),product_title:row.title||null,current_retail_usd:retail,
+      variant_title:v?.title||null,color:v?.option1||null,size:v?.option2||null,stock_verified:true,inventory_quantity:inventory,
+      stock_available:true,supplier_cost_usd:cost,shipping_verified:true,shipping_method:ship.method||null,
+      shipping_usd:ship.shipping_usd,shipping_eta:ship.eta||null,supplier_tax_observed:supplierTaxObserved,supplier_tax_usd:ship.tax_usd,
+      ...truth,shadow_retail_floor_usd:floor,final_profit_verified:finalProfit,readiness_status:finalProfit?"COUNTRY_PASS":"PROFIT_REVIEW",
+      status:finalProfit?"FRESH_FINAL_PASS":"HOLD",reason:truth.reason};
   }catch(e){return {...base,status:"RETRY",reason:"AUDIT_EXCEPTION",error:clean(e instanceof Error?e.message:String(e))};}
 }
 
@@ -143,7 +123,7 @@ Deno.serve(async(req:Request)=>{
         from private.hunt_pdp_qa_runs where provider='EPROLO'
         order by provider,item_id,coalesce(checked_at,requested_at) desc,id desc
       )
-      select c.item_id,c.title,c.source_payload->>'variant_id' as variant_id,c.source_payload->'profit_gate_v2'->>'target_retail_usd' as retail_usd,c.source_payload->'taxonomy_gate_v2'->>'canonical_shelf' as shelf
+      select c.item_id,c.title,c.source_payload,c.source_payload->>'variant_id' as variant_id,c.source_payload->'profit_gate_v2'->>'target_retail_usd' as retail_usd,c.source_payload->'taxonomy_gate_v2'->>'canonical_shelf' as shelf
       from public.hunt_shelf_candidates c join latest_qa q using(provider,item_id)
       where c.provider='EPROLO' and c.production_effect=false and c.availability_verified=true and coalesce(c.verified_inventory,0)>0
         and nullif(trim(c.source_payload->>'variant_id'),'') is not null and coalesce(c.source_payload->>'catalog_safety_status','')='PASS'

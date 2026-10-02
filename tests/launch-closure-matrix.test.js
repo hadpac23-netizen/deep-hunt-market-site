@@ -41,7 +41,9 @@ test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(current.security.advisor_warning_confirmed,true);
   assert.equal(current.security.project_plan_verified,false);
   assert.equal(current.security.customer_ui_password_auth_present,false);
-  assert.equal(current.security.blocks_real_money,false);
+  assert.equal(current.security.leaked_password_protection_blocks_real_money,false);
+  assert.equal(current.security.public_cost_privacy_blocks_real_money,true);
+  assert.equal(current.security.blocks_real_money,true);
   assert.equal(current.git_governance.status,"UNVERIFIED_PERMISSION_LIMIT");
   assert.equal(current.git_governance.branch_protection_verified,false);
   assert.equal(current.git_governance.branch_protection_enabled,null);
@@ -50,11 +52,13 @@ test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(current.supplier_privacy.strict_network_anonymity_blocks_real_money,false);
   assert.equal(current.runtime.pooler_blocker_status,"CLOSED_STALE_AS_INDEPENDENT_BLOCKER");
   assert.equal(current.runtime.storefront_branch_raw_pooler_reference,false);
-  assert.equal(current.runtime.storefront_live_raw_pooler_reference,false);
+  assert.equal(current.runtime.storefront_live_raw_pooler_reference,null);
+  assert.equal(current.runtime.critical_paths_current_run_verified,false);
   assert.equal(current.runtime.freshness_runner_branch_raw_pooler_reference,true);
-  assert.equal(current.browser_red_team.home_exact_shelf_contamination_found_and_fixed,true);
-  assert.equal(current.browser_red_team.customer_visible_supplier_name_hits,0);
-  assert.equal(current.browser_red_team.mobile_global_horizontal_overflow,false);
+  assert.equal(current.browser_red_team.preview_current_branch_equivalence,false);
+  assert.equal(current.browser_red_team.public_api_baseline_errors,30);
+  assert.equal(current.browser_red_team.mobile_390_current_run_verified,false);
+  assert.equal(current.browser_red_team.blocks_real_money,true);
 });
 
 test("CJ and EPROLO readiness are never conflated",()=>{

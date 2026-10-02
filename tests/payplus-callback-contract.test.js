@@ -17,6 +17,8 @@ test("callback verifies signature and re-queries PayPlus before accepting eviden
   assert.match(src,/PAYPLUS_AMOUNT_MISMATCH/);
   assert.match(src,/PAYPLUS_CURRENCY_MISMATCH/);
   assert.match(src,/PAYPLUS_REQUEST_UID_MISMATCH/);
+  assert.match(src,/provider_transaction_uid,expires_at/);
+  assert.ok(src.indexOf("const window=callbackSessionWindow(session)")<src.indexOf("const verified=await verifyWithPayPlus(session,callbackTx)"));
 });
 
 test("callback remains kill-switch gated and cannot write paid state",()=>{

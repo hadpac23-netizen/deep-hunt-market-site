@@ -22,7 +22,7 @@ on:
       - "supabase/functions/hunt-supplier-ops-watch-shadow/**"
       - "supabase/functions/hunt-freshness-shadow-runner/**"
       - "supabase/functions/hunt-refund-preview/**"
-      - "supabase/functions/_shared/order-lifecycle.mjs"
+      - "supabase/functions/_shared/**"
       - "supabase/functions/_shared/hunt-fulfillment-provider.mjs"
       - "tests/**"
       - "ops/**"
@@ -43,7 +43,7 @@ on:
       - "supabase/functions/hunt-payplus-sandbox-evidence/**"
       - "supabase/functions/hunt-order-orchestrator/**"
       - "supabase/functions/hunt-refund-preview/**"
-      - "supabase/functions/_shared/order-lifecycle.mjs"
+      - "supabase/functions/_shared/**"
       - "tests/**"
       - ".github/workflows/hunt-checkout-regression.yml"
 

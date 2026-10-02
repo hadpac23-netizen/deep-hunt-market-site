@@ -3,6 +3,11 @@ import { createHash } from "node:crypto";
 import matterhornSnapshot from "./matterhorn_snapshot.json" with { type: "json" };
 import surveySnapshot from "./survey_snapshot.json" with { type: "json" };
 import { eproloCanonicalMarketShelves } from "./eprolo-shelves.ts";
+import { publicStorefrontPayload } from "../_shared/public-price-privacy.mjs";
+
+function publicJson(payload:unknown):string {
+  return JSON.stringify(publicStorefrontPayload(payload));
+}
 
 const PUBLIC_KEY = "sb_publishable_SCGT8rsQsVrAt5CtlKVMzA_wGjT2I6X";
 
@@ -1700,13 +1705,13 @@ Deno.serve(async (req: Request) => {
   const headers = cors(req);
   if (req.method === "OPTIONS") return new Response("ok", { headers });
   if (req.method !== "GET") {
-    return new Response(JSON.stringify({ error: "method not allowed" }), {
+    return new Response(publicJson({ error: "method not allowed" }), {
       status: 405,
       headers,
     });
   }
   if (!authorized(req)) {
-    return new Response(JSON.stringify({ error: "unauthorized" }), {
+    return new Response(publicJson({ error: "unauthorized" }), {
       status: 401,
       headers,
     });
@@ -1756,7 +1761,7 @@ Deno.serve(async (req: Request) => {
       }
     }
     const uniqueProducts = uniqueKeys.size;
-    return new Response(JSON.stringify({
+    return new Response(publicJson({
       shelves,
       eprolo_canonical_shelves: {...eproloCanonical.meta, public_display_enabled:false, public_hold_reason:"PDP_RUNTIME_CREDENTIALS_NOT_READY"},
       visible_product_count: uniqueProducts,
@@ -1792,9 +1797,9 @@ Deno.serve(async (req: Request) => {
     if (providerLower === "hunt merchant" || providerLower === "merchant") {
       const product = await merchantProductDetail(productId);
       if (!product) {
-        return new Response(JSON.stringify({ error: "product not found" }), { status:404, headers });
+        return new Response(publicJson({ error: "product not found" }), { status:404, headers });
       }
-      return new Response(JSON.stringify({
+      return new Response(publicJson({
         product,
         provider_checkout,
         checkout:{
@@ -1808,9 +1813,9 @@ Deno.serve(async (req: Request) => {
     if (providerLower === "matterhorn wholesale" || providerLower === "matterhorn") {
       const product = matterhornProductDetail(productId);
       if (!product) {
-        return new Response(JSON.stringify({ error: "product not found" }), { status: 404, headers });
+        return new Response(publicJson({ error: "product not found" }), { status: 404, headers });
       }
-      return new Response(JSON.stringify({
+      return new Response(publicJson({
         product,
         provider_checkout,
         checkout: {
@@ -1825,12 +1830,12 @@ Deno.serve(async (req: Request) => {
     if (providerLower === "cjdropshipping" || providerLower === "cj") {
       const product = await cjProductDetail(productId);
       if (!product) {
-        return new Response(JSON.stringify({ error: "product not found" }), {
+        return new Response(publicJson({ error: "product not found" }), {
           status: 404,
           headers,
         });
       }
-      return new Response(JSON.stringify({
+      return new Response(publicJson({
         product,
         provider_checkout,
         checkout: {
@@ -1845,9 +1850,9 @@ Deno.serve(async (req: Request) => {
     if (providerLower === "eprolo") {
       const product = await eproloStrictProductDetail(productId);
       if (!product) {
-        return new Response(JSON.stringify({ error: "product not found" }), { status:404, headers });
+        return new Response(publicJson({ error: "product not found" }), { status:404, headers });
       }
-      return new Response(JSON.stringify({
+      return new Response(publicJson({
         product,
         provider_checkout,
         checkout:{mode:"ONSITE_FIRST",external_purchase_links_enabled:false,public_checkout_enabled:false},
@@ -1857,12 +1862,12 @@ Deno.serve(async (req: Request) => {
     if (providerLower === "gooten") {
       const product = await gootenProductDetail(productId);
       if (!product) {
-        return new Response(JSON.stringify({ error: "product not found" }), {
+        return new Response(publicJson({ error: "product not found" }), {
           status: 404,
           headers,
         });
       }
-      return new Response(JSON.stringify({
+      return new Response(publicJson({
         product,
         provider_checkout,
         checkout: {
@@ -1875,19 +1880,19 @@ Deno.serve(async (req: Request) => {
       }), { headers });
     }
     if (productProvider && providerLower !== "printful") {
-      return new Response(JSON.stringify({
+      return new Response(publicJson({
         error: "product detail provider is not live yet",
         provider: productProvider,
       }), { status: 404, headers });
     }
     const product = await printfulProductDetail(productId);
     if (!product) {
-      return new Response(JSON.stringify({ error: "product not found" }), {
+      return new Response(publicJson({ error: "product not found" }), {
         status: 404,
         headers,
       });
     }
-    return new Response(JSON.stringify({
+    return new Response(publicJson({
       product,
       provider_checkout,
       checkout: {
@@ -1908,7 +1913,7 @@ Deno.serve(async (req: Request) => {
   );
 
   return new Response(
-    JSON.stringify({
+    publicJson({
       deals: [],
       merchant_products,
       commerce: {

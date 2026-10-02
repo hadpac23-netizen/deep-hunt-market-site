@@ -631,7 +631,7 @@
       });
       renderLiveSearch(data);
     } catch (err) {
-      if (status) status.textContent = err.message || "Live search unavailable";
+      if (status) status.textContent = "Search is temporarily unavailable. Please try again shortly.";
       const grid = $("#hd-search-grid");
       if (grid) grid.innerHTML = "";
     }

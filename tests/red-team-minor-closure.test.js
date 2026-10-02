@@ -43,15 +43,13 @@ test("freshness exceptions use the existing partial unique index atomically",()=
   assert.doesNotMatch(s,/select id from private\.hunt_ops_exceptions/);
 });
 
-test("EPROLO audit economics uses checkout gross including shipping",()=>{
-  for(const p of [
-    "supabase/functions/hunt-eprolo-variant-country-audit-shadow/index.ts",
-    "supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/index.ts"
-  ]){
-    const s=read(p);
-    assert.match(s,/gross=sale\+ship|const gross=sale\+ship/);
-    assert.match(s,/gross-cost-ship-tax-\(gross\*r\)-fixed/);
+test("EPROLO audit economics uses verified customer shipping charged",()=>{
+  for(const p of ["supabase/functions/hunt-eprolo-variant-country-audit-shadow/index.ts","supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/index.ts"]){
+    assert.match(read(p),/finalProfitTruth\(/);
   }
+  const shared=read("supabase/functions/_shared/final-profit-truth.mjs");
+  assert.match(shared,/const gross = sale \+ chargedShipping/);
+  assert.match(shared,/gross - cost - ship - tax/);
 });
 
 test("CJ quote caches only verified truth and has bounded global plus per-IP budgets",()=>{

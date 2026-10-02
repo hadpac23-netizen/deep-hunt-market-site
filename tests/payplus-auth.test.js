@@ -34,3 +34,19 @@ test("constant-time comparator handles equal and unequal strings",async()=>{
   assert.equal(mod.constantTimeEqual("abc","abd"),false);
   assert.equal(mod.constantTimeEqual("abc","abcx"),false);
 });
+
+test("callbacks for expired, missing-expiry and withdrawn sessions cannot enter evidence verification",async()=>{
+  const {callbackSessionWindow}=await import("../supabase/functions/hunt-payplus-callback/payplus-auth.mjs");
+  const now=Date.parse("2026-10-02T19:00:00Z");
+  const future={status:"pending",expires_at:"2026-10-02T19:01:00Z"};
+  assert.equal(callbackSessionWindow(future,now).valid,true);
+  for(const expiry of ["2026-10-02T18:59:59Z","2026-10-02T19:00:00Z"]){
+    assert.equal(callbackSessionWindow({...future,expires_at:expiry},now).reason,"PAYMENT_SESSION_EXPIRED");
+  }
+  for(const expiry of [null,undefined,"",true,"invalid"]){
+    assert.equal(callbackSessionWindow({...future,expires_at:expiry},now).reason,"PAYMENT_SESSION_EXPIRY_UNVERIFIED");
+  }
+  for(const status of ["expired","cancelled","canceled","failed"]){
+    assert.equal(callbackSessionWindow({...future,status},now).reason,"PAYMENT_SESSION_INACTIVE");
+  }
+});

@@ -26,8 +26,8 @@ test("EPROLO audits require exact IDs, COO and landed-cost evidence before resol
   const all=read("supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/index.ts");
   assert.doesNotMatch(country,/variantList\.length===1\?variantList\[0\]:null/);
   assert.doesNotMatch(one,/list\.length===1\?list\[0\]:null/);
-  assert.match(one,/customs_truth_v1/);
-  assert.match(all,/destination_tax_duty_verified===true/);
+  assert.match(one,/finalProfitTruth/);
+  assert.match(all,/completeCustomsCoverage\(rows,auditComplete,"destination_tax_duty_verified"\)/);
   assert.match(all,/COUNTRY_OF_ORIGIN_NOT_VERIFIED/);
   assert.doesNotMatch(all,/rows\.some\(x=>x\.taxes_verified===true\)/);
 });
@@ -60,3 +60,5 @@ require("./red-team-storefront-context.test.js");
 require("./legal-readiness-contract.test.js");
 require("./security-governance-readiness.test.js");
 require("./payplus-prelaunch-url-gate.test.js");
+
+require("./final-profit-truth.test.js");

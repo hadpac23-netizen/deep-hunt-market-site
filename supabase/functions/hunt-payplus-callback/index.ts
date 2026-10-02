@@ -1,5 +1,5 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { verifyPayPlusCallbackHeaders } from "./payplus-auth.mjs";
+import { verifyPayPlusCallbackHeaders, callbackSessionWindow } from "./payplus-auth.mjs";
 import { classifyPayPlusStatus } from "./payplus-status-map.mjs";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
@@ -140,7 +140,7 @@ Deno.serve(async(req:Request)=>{
     const requestUid=clean(callbackTx.requestUid);
     if(!requestUid)return json({ok:false,error:"PAYMENT_REQUEST_UID_REQUIRED"},400);
     const {data:session,error}=await supabase.from("hunt_payment_sessions")
-      .select("id,user_id,order_id,mode,status,total_amount,currency,provider_request_uid,provider_transaction_uid")
+      .select("id,user_id,order_id,mode,status,total_amount,currency,provider_request_uid,provider_transaction_uid,expires_at")
       .eq("provider_request_uid",requestUid)
       .maybeSingle();
     if(error||!session)return json({ok:false,error:"PAYMENT_SESSION_NOT_FOUND"},404);
@@ -155,6 +155,8 @@ Deno.serve(async(req:Request)=>{
       },409);
     }
 
+    const window=callbackSessionWindow(session);
+    if(!window.valid)return json({ok:false,error:window.reason},409);
     const verified=await verifyWithPayPlus(session,callbackTx);
     const mapping=classifyPayPlusStatus(verified.body);
     const providerEventId=verified.transactionUid||verified.requestUid;

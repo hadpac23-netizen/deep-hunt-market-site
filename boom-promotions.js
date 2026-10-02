@@ -41,6 +41,7 @@
   }
 
   function money(item){
+    if(String(item?.price_basis||"").toUpperCase()!=="MERCHANT_RETAIL")return "Price pending";
     const n=Number(item?.price_amount);
     return Number.isFinite(n)&&n>0?H.money(n,item.currency||"USD"):"View product";
   }
@@ -48,8 +49,7 @@
   function priceBasis(item){
     const basis=String(item?.price_basis||"").toUpperCase();
     if(basis==="MERCHANT_RETAIL")return "Retail price";
-    if(basis==="SUPPLIER_BASE")return "Supplier price";
-    return "Current catalog price";
+    return "Pricing under review";
   }
 
   function productCard(item){
