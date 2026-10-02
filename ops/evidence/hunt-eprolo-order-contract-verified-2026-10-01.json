@@ -1,0 +1,44 @@
+{
+  "evidence_id": "HUNT-EPROLO-ORDER-CONTRACT-VERIFIED-2026-10-01-V1",
+  "scope": "DOCUMENTATION_ONLY_NO_SUPPLIER_MUTATION",
+  "source": {
+    "source_type": "ACCOUNT_SUPPORT_REP_SUPPLIED_SHOWDOC",
+    "project_name": "EPROLO-API-DOC",
+    "showdoc_project_id": "1196052652818927",
+    "showdoc_url": "https://www.showdoc.com.cn/1196052652818927/6042185641524205",
+    "received_from": "EPROLO Account Support Rep",
+    "credentials_recorded_in_repo": false
+  },
+  "authentication_contract": {
+    "base_url": "https://openapi.eprolo.com/",
+    "api_key_header": "apiKey",
+    "signature": "MD5(apiKey + timestamp + apiSecret)",
+    "timestamp": "13-digit milliseconds, GMT+00, current within 1 day",
+    "content_type": "application/json",
+    "credential_values_stored": false
+  },
+  "documented_endpoints": {
+    "new_order": "POST add_order.html",
+    "order_query": "GET order_list.html",
+    "order_price_quote": "GET getCostByProduct.html",
+    "cancel_order": "POST cancel_orders.html",
+    "webhook_setup": "POST add_shop_webhook.html",
+    "webhook_order_push": "POST to configured merchant URL"
+  },
+  "tracking_contract_verified": true,
+  "tax_quote_field_documented": true,
+  "merchant_order_idempotency_signal": "order_id documented as unique customer order ID; provider-side duplicate behavior has not been executed/tested",
+  "execution": {
+    "mutating_call_made": false,
+    "supplier_order_created": false,
+    "live_order_tested": false,
+    "tracking_e2e_tested": false
+  },
+  "safety": {
+    "supplier_live_order": false,
+    "payment_live": false,
+    "production_effect": false,
+    "merge": false,
+    "production_deploy": false
+  }
+}

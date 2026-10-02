@@ -1,0 +1,76 @@
+{
+  "evidence_id": "HUNT-EPROLO-COST-API-RUNTIME-PROBE-2026-10-01-V1",
+  "scope": "READ_ONLY_PROVIDER_PRICING_PROBE_NO_ORDER_MUTATION",
+  "endpoint": "getCostByProduct.html",
+  "official_documentation": {
+    "method": "GET",
+    "returns_tax_cost": true,
+    "source_page_id": "7664594074445455"
+  },
+  "runtime_observation": {
+    "GET": {
+      "http_status": 405,
+      "provider_message": "The request method is not supported. Current method: GET, Supported method: POST"
+    },
+    "POST_empty": {
+      "http_status": 200,
+      "api_code": "-1",
+      "message": "Parameter is empty"
+    },
+    "POST_variant_probes": [
+      {
+        "productid": "28086613",
+        "variantsid": "670476207",
+        "result": "VARIANTS_NOT_FOUND"
+      },
+      {
+        "productid": "19034207",
+        "variantsid": "561267768",
+        "result": "VARIANTS_NOT_FOUND"
+      },
+      {
+        "productid": "30723602",
+        "variantsid": "701619308",
+        "result": "VARIANTS_NOT_FOUND"
+      },
+      {
+        "productid": "32872079",
+        "variantsid": "733697951",
+        "result": "VARIANTS_NOT_FOUND"
+      }
+    ],
+    "product_list_crosscheck": [
+      {
+        "productid": "19034207",
+        "variantsid": "561267768",
+        "confirmed_in_product_list": true
+      },
+      {
+        "productid": "28086613",
+        "variantsid": "670476207",
+        "confirmed_in_product_list": true
+      }
+    ]
+  },
+  "decision": "KEEP_DESTINATION_TAX_AND_FINAL_PROFIT_UNVERIFIED; DO_NOT_GUESS MORE FORMATS; VERIFY STORE-IMPORT NAMESPACE ONLY IN OWNER-APPROVED NON-LIVE MODE",
+  "safety": {
+    "supplier_order_created": false,
+    "supplier_state_mutated": false,
+    "supplier_live_order": false,
+    "payment_live": false,
+    "production_effect": false
+  },
+  "store_import_contract_context": {
+    "official_page_title": "Import Products from platform to Store API",
+    "page_id": "7664581926527720",
+    "path": "add_product.html",
+    "method": "POST",
+    "request_shape": {
+      "ids": "array of EPROLO platform product ids"
+    },
+    "returns": "store-side product objects with variantlist ids",
+    "executed_by_hunt": false,
+    "reason_not_executed": "MUTATING_SUPPLIER_STATE_REQUIRES_OWNER_GATE",
+    "hypothesis_only": "Order/pricing endpoints may require Store-imported product/variant namespace; this is not yet proven."
+  }
+}

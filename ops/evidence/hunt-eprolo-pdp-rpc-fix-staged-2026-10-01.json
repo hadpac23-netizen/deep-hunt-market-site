@@ -1,0 +1,44 @@
+{
+  "evidence_id": "HUNT-EPROLO-PDP-RPC-FIX-STAGED-2026-10-01-V1",
+  "scope": "PR26_CODE_ONLY_NO_LIVE_CHANGE",
+  "branch": "launch/hunt-candidate-2026-09-29-v1",
+  "base_commit": "b5d99f20aa3dc39efdf9da50a88553eb219a975c",
+  "problem": "Live strict EPROLO PDP returned 404 for 8/8 canaries while canonical shelves RPC was healthy; storefront strict PDP still depended on raw Postgres/pooler.",
+  "staged_fix": {
+    "raw_postgres_removed_from_hunt_storefront_runtime": true,
+    "candidate_source": "service-role-only RPC public.hunt_eprolo_strict_pdp_candidate_v1(text)",
+    "rpc_security_definer": true,
+    "rpc_search_path_locked": true,
+    "anon_execute": false,
+    "authenticated_execute": false,
+    "service_role_execute": true,
+    "eprolo_credentials_source": "Edge Function secrets HUNT_EPROLO_API_KEY/HUNT_EPROLO_API_SECRET",
+    "pooler_dependency_removed_in_pr26": true
+  },
+  "local_validation": {
+    "catalog_integrity_contract_tests": "39/39 PASS",
+    "deno_check": "NOT_AVAILABLE_ON_LOCAL_MAC",
+    "catalog_integrity_current_workflow_tests": "31/31 PASS",
+    "checkout_regression_tests": "113/113 PASS",
+    "combined_rpc_specific_tests": "20/20 PASS"
+  },
+  "live_state": {
+    "migration_applied": false,
+    "edge_secrets_configured_by_this_change": false,
+    "storefront_deployed": false,
+    "live_canary_rerun": false
+  },
+  "owner_gate_required_before": [
+    "apply migration",
+    "configure Edge secrets",
+    "deploy storefront runtime",
+    "run post-deploy canary"
+  ],
+  "safety": {
+    "payment_live": false,
+    "supplier_live_order": false,
+    "merge": false,
+    "production_deploy": false,
+    "readiness_increase": false
+  }
+}

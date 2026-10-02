@@ -9,6 +9,13 @@
     try { return new Intl.NumberFormat("en", {style:"currency",currency}).format(Number(value)); }
     catch { return String(value); }
   };
+  const providerKind = value => {
+    const provider=String(value||"").trim().toLowerCase();
+    if (provider.includes("eprolo")) return "eprolo";
+    if (provider.includes("cj")) return "cj";
+    return "other";
+  };
+  const maxQtyFor = item => providerKind(item?.provider)==="eprolo" ? 1 : 5;
   const read = () => {
     try {
       const raw=JSON.parse(localStorage.getItem(key)||"[]");
@@ -22,20 +29,104 @@
           price_amount:amount,
           price_basis:amount!==null?"HUNT_RETAIL_PROFIT_GATE":"PRICE_PENDING",
           retail_price_verified:amount!==null,
-          qty:Math.max(1,Math.min(5,Number(item?.qty)||1))
+          qty:Math.max(1,Math.min(maxQtyFor(item),Math.trunc(Number(item?.qty)||1)))
         };
       });
     } catch { return []; }
   };
   const write = cart => localStorage.setItem(key, JSON.stringify(cart));
+  const addressKey = "hunt_checkout_address_v1";
+  const addressApi = window.HuntCheckoutAddress;
   let checkoutTracked = false;
   let quoteVerified = false;
+  let lastSessionId = "";
+  let lastIdempotencyKey = "";
+  let lastSessionOwnerToken = "";
 
   function resetQuote(message="Verify price and shipping before payment.") {
     quoteVerified = false;
+    lastSessionId = "";
+    lastIdempotencyKey = "";
+    lastSessionOwnerToken = "";
     if ($("#hd-checkout-shipping")) $("#hd-checkout-shipping").textContent = "PENDING";
     if ($("#hd-checkout-total")) $("#hd-checkout-total").textContent = "PRE-LAUNCH";
     if ($("#hd-checkout-status")) $("#hd-checkout-status").textContent = message;
+    if ($("#hd-order-preview-status")) $("#hd-order-preview-status").textContent = "Order readiness check has not run yet.";
+  }
+
+  const addressFields = {
+    customer_name:"#hd-ship-name",
+    email:"#hd-ship-email",
+    address1:"#hd-ship-address1",
+    address2:"#hd-ship-address2",
+    city:"#hd-ship-city",
+    province:"#hd-ship-province",
+    postal_code:"#hd-ship-postal",
+    phone:"#hd-ship-phone"
+  };
+
+  function collectAddress() {
+    if (!addressApi?.validate) return {ok:false,errors:{form:"Shipping address validator is unavailable."},value:null};
+    const raw = Object.fromEntries(Object.entries(addressFields).map(([key,selector])=>[key,$(selector)?.value||""]));
+    const result = addressApi.validate(raw,$("#hd-checkout-market")?.value||"");
+    for (const [field,selector] of Object.entries(addressFields)) {
+      const el=$(selector);
+      if (el) el.setAttribute("aria-invalid",result.errors?.[field]?"true":"false");
+    }
+    return result;
+  }
+
+  function saveAddress(value) {
+    try {
+      if ($("#hd-ship-save")?.checked) localStorage.setItem(addressKey,JSON.stringify(value));
+      else localStorage.removeItem(addressKey);
+    } catch {}
+  }
+
+  function loadSavedAddress() {
+    try {
+      const saved=JSON.parse(localStorage.getItem(addressKey)||"null");
+      if (!saved || typeof saved!=="object") return;
+      for (const [field,selector] of Object.entries(addressFields)) {
+        if ($(selector) && saved[field]) $(selector).value=String(saved[field]);
+      }
+      if (saved.country_code && $("#hd-checkout-market")?.querySelector('option[value="'+String(saved.country_code)+'"]')) {
+        $("#hd-checkout-market").value=String(saved.country_code);
+      }
+      if ($("#hd-ship-save")) $("#hd-ship-save").checked=true;
+    } catch {}
+  }
+
+  async function runOrderPreview(sessionId,idempotencyKey,sessionOwnerToken) {
+    const host=$("#hd-order-preview-status");
+    if (!host || !sessionId || !idempotencyKey) return;
+    host.textContent="Checking address + fulfillment readiness…";
+    try {
+      const res=await fetch(functionsBase+"/hunt-order-preview",{
+        method:"POST",
+        headers:{apikey:publishableKey,"content-type":"application/json"},
+        body:JSON.stringify({payment_session_id:sessionId,idempotency_key:idempotencyKey,session_owner_token:sessionOwnerToken||undefined}),
+        cache:"no-store"
+      });
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok||data?.ok!==true) throw new Error(String(data?.error||"ORDER_PREVIEW_FAILED"));
+      const blockers=Array.isArray(data.blockers)?data.blockers:[];
+      const addressReady=data.shipping_address_ready===true && !blockers.includes("SHIPPING_ADDRESS_NOT_COLLECTED");
+      const expectedPrelaunch=new Set([
+        "PAYMENT_ACCOUNT_NOT_ACTIVE",
+        "PAYMENT_NOT_CONFIRMED",
+        "EPROLO_ORDER_EXECUTION_NOT_VERIFIED",
+        "SUPPLIER_ORDER_CREATION_DISABLED"
+      ]);
+      const materialBlockers=blockers.filter(code=>!expectedPrelaunch.has(String(code)));
+      host.textContent=!addressReady
+        ? "Shipping address is still incomplete. No supplier order was created."
+        : materialBlockers.length
+          ? "Shipping address accepted, but one or more fulfillment checks still need review. No payment or supplier order was attempted."
+          : "Shipping address, product and shipping checks passed. Payment and order submission remain disabled during pre-launch.";
+    } catch {
+      host.textContent="Order readiness check could not run. No supplier order was created.";
+    }
   }
 
   function friendlyQuoteError(code) {
@@ -50,7 +141,9 @@
       CURRENCY_REVIEW_REQUIRED:"This item needs a currency review before checkout.",
       SHIPPING_RECHECK_FAILED:"Shipping could not be rechecked right now.",
       OUT_OF_STOCK:"One or more selected items are currently out of stock.",
-      SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination."
+      SHIPPING_UNAVAILABLE:"No verified shipping route is currently available for this destination.",
+      SHIPPING_ADDRESS_INVALID:"Complete the shipping details before verification.",
+      EPROLO_MULTI_QTY_RECHECK_REQUIRED:"This item currently requires quantity 1 so shipping can be verified. Adjust the quantity and retry."
     };
     return messages[code] || "We could not verify this cart right now. No payment was attempted.";
   }
@@ -60,11 +153,20 @@
     const status = $("#hd-checkout-status");
     const cart = read();
     const country = String($("#hd-checkout-market")?.value || "").toUpperCase();
+    const address = collectAddress();
 
     if (!cart.length) {
       resetQuote("Your cart is empty.");
       return;
     }
+    if (!address.ok) {
+      const firstError=Object.values(address.errors||{})[0]||"Complete the shipping details before verification.";
+      resetQuote(String(firstError));
+      const firstField=Object.keys(address.errors||{}).find(key=>addressFields[key]);
+      if (firstField) $(addressFields[firstField])?.focus();
+      return;
+    }
+
     const invalid = cart.find(item =>
       !item?.provider ||
       !item?.item_id ||
@@ -86,12 +188,14 @@
     try {
       const payload = {
         country_code: country,
+        customer_email: address.value.email,
+        shipping_address: address.value,
         idempotency_key: `hunt-quote-${Date.now()}-${crypto.randomUUID()}`,
         items: cart.map(item => ({
           provider:item.provider,
           item_id:item.item_id,
           variant_id:item.variant_id,
-          qty:Math.max(1,Math.min(5,Number(item.qty)||1))
+          qty:Math.max(1,Math.min(maxQtyFor(item),Math.trunc(Number(item.qty)||1)))
         }))
       };
       const res = await fetch(functionsBase + "/hunt-payment-session", {
@@ -114,6 +218,10 @@
       $("#hd-checkout-shipping").textContent = money(session.shipping_amount,currency);
       $("#hd-checkout-total").textContent = money(session.total_amount,currency);
       quoteVerified = true;
+      lastSessionId = String(session.id || "");
+      lastIdempotencyKey = String(data.idempotency_key || "");
+      lastSessionOwnerToken = String(data.session_owner_token || "");
+      saveAddress(address.value);
 
       if (status) {
         status.textContent = data.payment_ready === true
@@ -127,6 +235,7 @@
         shippingAmount:Number(session.shipping_amount||0),
         totalAmount:Number(session.total_amount||0)
       });
+      await runOrderPreview(lastSessionId,lastIdempotencyKey,lastSessionOwnerToken);
     } catch (err) {
       resetQuote(friendlyQuoteError(String(err?.message || "QUOTE_FAILED")));
     } finally {
@@ -149,11 +258,14 @@
       const priceCopy = ready
         ? `HUNT retail ${money(item.price_amount,item.currency||"USD")}`
         : "Price verification pending";
+      const maxQty=maxQtyFor(item);
+      const qty=Math.max(1,Math.min(maxQty,Number(item.qty)||1));
+      const plusDisabled=maxQty===1 ? ' disabled aria-label="Quantity 1 required for verified shipping" title="Quantity 1 required for verified shipping"' : "";
       return `
       <article class="hd-checkout-item" data-key="${esc(item.key)}">
         ${item.image_url ? `<img src="${esc(item.image_url)}" alt="${esc(item.title)}">` : `<div class="hd-checkout-thumb">◇</div>`}
-        <div class="hd-checkout-item-copy"><small>${esc(item.provider)} · ${ready ? "HUNT RETAIL" : "PRICE PENDING"}</small><h3>${esc(item.title)}</h3><p>${item.variant_label ? `Selected: ${esc(item.variant_label)} · ` : ""}${priceCopy}</p></div>
-        <div class="hd-qty"><button type="button" data-delta="-1">−</button><span>${Math.max(1,Number(item.qty)||1)}</span><button type="button" data-delta="1">+</button></div>
+        <div class="hd-checkout-item-copy"><small>${ready ? "HUNT RETAIL" : "PRICE PENDING"}</small><h3>${esc(item.title)}</h3><p>${item.variant_label ? `Selected: ${esc(item.variant_label)} · ` : ""}${priceCopy}</p></div>
+        <div class="hd-qty"><button type="button" data-delta="-1">−</button><span>${qty}</span><button type="button" data-delta="1"${plusDisabled}>+</button></div>
         <button class="hd-remove" type="button" aria-label="Remove item">×</button>
       </article>`;
     }).join("");
@@ -182,7 +294,7 @@
     if (index < 0) return;
     if (event.target.matches(".hd-remove")) cart.splice(index,1);
     else if (event.target.matches("[data-delta]")) {
-      cart[index].qty = Math.max(1,Math.min(5,(Number(cart[index].qty)||1)+Number(event.target.dataset.delta||0)));
+      cart[index].qty = Math.max(1,Math.min(maxQtyFor(cart[index]),(Number(cart[index].qty)||1)+Number(event.target.dataset.delta||0)));
     } else return;
     write(cart);
     resetQuote("Cart changed. Recheck price and shipping.");
@@ -198,5 +310,11 @@
     window.HuntAnalytics?.checkoutMarket(event.currentTarget.value || "");
   });
   $("#hd-checkout-verify")?.addEventListener("click",verifyPriceAndShipping);
+  document.querySelectorAll(".hd-checkout-address input").forEach(input=>{
+    input.addEventListener("input",()=>{
+      if (quoteVerified) resetQuote("Shipping details changed. Recheck price and shipping.");
+    });
+  });
+  loadSavedAddress();
   render();
 })();

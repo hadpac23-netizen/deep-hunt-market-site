@@ -1,0 +1,72 @@
+{
+  "schema_version": "HUNT_EPROLO_PDP_BULK_SHADOW_V7",
+  "observed_at": "2026-09-30T20:49:00Z",
+  "provider": "EPROLO",
+  "destination": "IL",
+  "mode": "SUPPLIER_DIRECT_SHADOW_EVIDENCE",
+  "production_effect": false,
+  "sellable": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "database_activation_writes": 0,
+  "source_payload_updates": 0,
+  "private_pdp_qa_rows_written": 0,
+  "summary": {
+    "targets": 212,
+    "supplier_http_200": 212,
+    "exact_variant_found": 212,
+    "positive_inventory": 212,
+    "positive_supplier_cost": 212,
+    "shipping_to_il_verified": 212,
+    "pretax_profit_pass": 114,
+    "pretax_profit_review": 98,
+    "pretax_profit_block": 0,
+    "destination_tax_verified": 0,
+    "final_profit_verified": 0,
+    "canonical_readiness_promotions": 0
+  },
+  "batch_12": {
+    "targets": 13,
+    "shelves": ["keychains","entryway","storage","men-accessories","men-shoes","fitness-accessories","women-bottoms","women-dresses","women-hoodies","women-jeans","women-outerwear","women-socks","women-suits"],
+    "pretax_pass": 9,
+    "pretax_review": 4,
+    "request_id_range": [18205,18217]
+  },
+  "verified_shelf_depth": {
+    "covered_shelves": 53,
+    "shelves_ge_5": 22,
+    "shelves_2_to_4": 18,
+    "shelves_eq_1": 13,
+    "priority": "Strengthen 2-4 item and 1-item shelves before adding more depth to already strong shelves."
+  },
+  "top_verified_depth": [
+    {"department":"women","shelf":"women-shoes","verified_items":10},
+    {"department":"accessories","shelf":"keychains","verified_items":9},
+    {"department":"kids","shelf":"baby","verified_items":9},
+    {"department":"accessories","shelf":"bags","verified_items":8},
+    {"department":"accessories","shelf":"hats","verified_items":8},
+    {"department":"accessories","shelf":"jewelry-bracelets","verified_items":8},
+    {"department":"kitchen","shelf":"kitchen-tools","verified_items":8},
+    {"department":"accessories","shelf":"jewelry-necklaces","verified_items":7}
+  ],
+  "red_team_hold_classes": [
+    "seasonal_halloween_or_christmas",
+    "known_or_unverified_ip_brand_reference",
+    "taxonomy_false_positive",
+    "cosmetic_or_material_claim_without_truth_evidence",
+    "demographic_cross_mix_or_ambiguous_title",
+    "baby_sleep_or_device_safety_claim_requiring_additional_evidence"
+  ],
+  "safety_gate": {
+    "status": "HOLD",
+    "owner_gate_required_before_live_readiness_write": true,
+    "reason": "Shadow evidence only. No QA/readiness promotion writes were made because they can alter live canonical/storefront eligibility."
+  },
+  "tax_ddp_status": "DESTINATION_TAX_NOT_VERIFIED",
+  "do_not_claim": [
+    "Do not claim the 212 products are Canonical PDP Ready.",
+    "Do not claim destination tax or DDP is verified.",
+    "Do not claim Final Profit Verified.",
+    "Do not promote readiness or sellable state without Owner Gate and live-impact review."
+  ]
+}

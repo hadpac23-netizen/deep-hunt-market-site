@@ -135,7 +135,7 @@
     return `<article class="hd-wow-product" role="listitem" data-category="${H.esc(item.category || "")}">
       <a class="hd-wow-product-media" href="${H.esc(href)}">${image}<span>${H.esc(label)}</span></a>
       <div class="hd-wow-product-body">
-        <small>${H.esc(item.provider || "CATALOG SOURCE")}</small>
+        <small>HUNT SOURCE</small>
         <a href="${H.esc(href)}">${H.esc(item.title || "Product")}</a>
         <div class="hd-wow-price"><strong>${price}</strong><em>${retailReady ? "HUNT retail" : "price pending"}</em></div>
       </div>
@@ -217,7 +217,7 @@
     showcase.innerHTML = `
       <div class="hd-wow-head">
         <div><div class="hd-kicker hd-kicker-small">SHOP BY DEPARTMENT</div><h2>Everything is easier to find now.</h2>
-        <p>Large departments first, detailed subcategories inside. Real images come from the live supplier catalog.</p></div>
+        <p>Large departments first, detailed subcategories inside. Real product images come from the live HUNT catalog.</p></div>
         <span class="hd-wow-live" aria-live="polite"><i></i>${liveCount.toLocaleString()} LIVE</span>
       </div>
       <div class="hd-dept-grid">${departments.map(dep => departmentCard(dep,shelves)).join("")}</div>
@@ -230,7 +230,7 @@
         </div>
         <div class="hd-wow-track" id="hd-for-you-products"></div>
       </section>
-      ${cj.length ? `<section class="hd-fresh-source"><div class="hd-wow-rail-head"><div><small>FRESH SOURCE</small><h3>New from CJdropshipping</h3></div><span>LIVE API</span></div><div class="hd-wow-track" role="list">${cj.map(x => productCard(x,"CJ LIVE")).join("")}</div></section>` : ""}`;
+      ${cj.length ? `<section class="hd-fresh-source"><div class="hd-wow-rail-head"><div><small>FRESH SOURCE</small><h3>Fresh arrivals from the HUNT network</h3></div><span>LIVE API</span></div><div class="hd-wow-track" role="list">${cj.map(x => productCard(x,"HUNT LIVE")).join("")}</div></section>` : ""}`;
     renderPersonalized(shelves);
   }  document.addEventListener("click", event => {
     const button = event.target.closest?.("[data-shop-mode]");

@@ -1,0 +1,36 @@
+{
+  "schema_version": "HUNT_PAYPLUS_PRELAUNCH_URL_GATE_V1",
+  "status": "READY_TO_SHARE_PRELAUNCH_URL",
+  "candidate_url": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
+  "candidate_url_current_deploy_accepted": true,
+  "payment_live_required": false,
+  "supplier_live_order_required": false,
+  "must_remain_off_during_provider_review": [
+    "hunt_payment_live",
+    "hunt_payplus_callback_accept_paid",
+    "hunt_supplier_order_live"
+  ],
+  "required_before_sharing": [
+    "Public HTTPS deploy is built from the approved PR26 pre-launch commit",
+    "RT01 session replay/expiry/price/kill-switch fix is live",
+    "RT02 signed-in and guest session ownership proof is live",
+    "RT03 public EPROLO economics request is rejected and tax-unknown remains HOLD",
+    "RT08 support/return customer permissions are hardened",
+    "RT09 fractional quantity is rejected server-side",
+    "RT10 supplier names are absent and Women->Dresses->PDP context is preserved",
+    "Verified support email, privacy email and Owner-approved returns workflow are in place",
+    "Terms, Privacy, Returns/Refunds and Shipping/Delivery pages are reviewed and public",
+    "Desktop and mobile browser QA passes on the exact deploy",
+    "Checkout clearly remains pre-launch and does not create a real payment or supplier order"
+  ],
+  "post_deploy_evidence": {
+    "deploy_commit": "58c5a293e40239bdc5d6b70423459fcaf28836b3",
+    "deploy_id": "6abe34d4d8549f28722b413d",
+    "browser_qa": "PASS_EXISTING_FLOW_PLUS_CURRENT_LEGAL_DEPLOY_QA",
+    "public_economics_probe": "PASS_BLOCKED_NO_SUPPLIER_ECONOMICS",
+    "session_adversarial_runtime": "PARTIAL_RT03_RT09_LIVE_RT01_RT02_CODE_CI_PASS",
+    "legal_pages": "PASS_4_OF_4_HTTP_200_PRELAUNCH_SAFE",
+    "internal_path_exposure": "PASS_OPS_TESTS_SUPABASE_404",
+    "checkout_payment_state": "PASS_PRELAUNCH_PAYMENT_DISABLED"
+  }
+}

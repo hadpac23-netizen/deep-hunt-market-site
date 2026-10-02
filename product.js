@@ -2,8 +2,15 @@
   const H = window.HuntCore;
   const $ = q => document.querySelector(q);
   const params = new URLSearchParams(location.search);
-  const provider = params.get("provider") || "Printful";
+  const legacyProvider = params.get("provider") || "";
+  const provider = H.providerForSourceCode(params.get("src")) || legacyProvider;
   const id = params.get("id") || "";
+  if (legacyProvider && !params.get("src")) {
+    const cleanUrl = new URL(location.href);
+    cleanUrl.searchParams.delete("provider");
+    cleanUrl.searchParams.set("src", H.sourceCodeForProvider(provider));
+    history.replaceState(null,"",cleanUrl.pathname+cleanUrl.search+cleanUrl.hash);
+  }
   let product = null;
   let variants = [];
   let selectedColor = null;
@@ -13,13 +20,41 @@
   let zoomScale = 1;
 
   function cachedProduct() {
-    try { return JSON.parse(sessionStorage.getItem(`hunt_product_${provider}:${id}`) || "null"); }
+    try { return JSON.parse(sessionStorage.getItem(`hunt_product_${H.sourceCodeForProvider(provider)}:${id}`) || "null"); }
     catch { return null; }
   }
 
   function uniqueBy(items,key) {
     const seen = new Set();
     return items.filter(item=>{ const v=String(item[key]||""); if(!v||seen.has(v))return false; seen.add(v); return true; });
+  }
+
+  function customerSafeDescription(value) {
+    const raw=String(value||"");
+    if(!raw)return "";
+    let text=raw;
+    try { text=new DOMParser().parseFromString(raw,"text/html").body.textContent||raw; } catch {}
+    return text
+      .replace(/&nbsp;|\u00a0/gi," ")
+      .replace(/\b(?:CJ\s*Dropshipping|CJdropshipping|EPROLO|Printful|Gooten|Matterhorn(?:\s+Wholesale)?)\b/gi,"HUNT Network")
+      .replace(/\bplease\s+contact\s+(?:our\s+)?customer\s+service\.?/gi,"")
+      .replace(/\bproduct\s+image\s*:?/gi,"")
+      .replace(/\s+/g," ")
+      .trim()
+      .slice(0,4000);
+  }
+
+  function customerSafeBrand(value) {
+    const brand=String(value||"").trim();
+    if(!brand)return "";
+    if(H.providerAlias?.(brand))return "";
+    return brand;
+  }
+
+  function customerSafeType(value) {
+    const type=String(value||"").trim();
+    if(!type||/supplier|provider|fulfillment/i.test(type))return "";
+    return type;
   }
 
   function variantsForColor(color) {
@@ -77,9 +112,11 @@
       "url":location.href.split("#")[0]
     };
     if(images.length)payload.image=images;
-    if(product.description)payload.description=String(product.description).slice(0,4000);
-    if(product.sku)payload.sku=String(product.sku);
-    if(product.brand)payload.brand={"@type":"Brand","name":String(product.brand)};
+    const safeDescription=customerSafeDescription(product.description);
+    const safeBrand=customerSafeBrand(product.brand);
+    if(safeDescription)payload.description=safeDescription;
+    if(product.sku && !H.providerAlias?.(product.sku))payload.sku=String(product.sku);
+    if(safeBrand)payload.brand={"@type":"Brand","name":safeBrand};
     script.textContent=JSON.stringify(payload);
 
     let canonical=document.querySelector('link[rel="canonical"]');
@@ -105,12 +142,12 @@
     chooseVariant();
     $("#hd-product-title").textContent = product.title || "Product";
     $("#hd-product-breadcrumb").textContent = product.title || "Product";
-    $("#hd-product-provider").textContent = product.provider || provider;
-    const providerName = String(product.provider || provider || "").toLowerCase();
-    const podCatalog = providerName.includes("printful") || providerName.includes("gooten");
+    $("#hd-product-provider").textContent = "HUNT SOURCE";
+    const sourceCode = H.sourceCodeForProvider(product.provider || provider || "");
+    const podCatalog = sourceCode === "s3" || sourceCode === "s4";
     const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
     const retail = currentRetailState();
-    const quoteAtCheckout = providerName.includes("cj") && variants.length > 0 && retail.ready;
+    const quoteAtCheckout = sourceCode === "s1" && variants.length > 0 && retail.ready;
     $("#hd-product-stock").textContent = quoteVerified
       ? "QUOTE VERIFIED"
       : podCatalog
@@ -122,19 +159,34 @@
     $("#hd-product-price").textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
     syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);
-    $("#hd-product-description").textContent = product.description || "The provider has not supplied a full description to HUNT DEAL yet.";
-    $("#hd-product-gaps").innerHTML = (product.gaps || ["Provider variant feed is incomplete."]).map(x=>`<li>${H.esc(x)}</li>`).join("");
+    const safeDescription=customerSafeDescription(product.description);
+    $("#hd-product-description").textContent = safeDescription || "Full product detail is still being verified by HUNT DEAL.";
+    $("#hd-product-gaps").innerHTML = (product.gaps || ["Product variant detail is still being verified."]).map(x=>`<li>${H.esc(x)}</li>`).join("");
+    const safeBrand=customerSafeBrand(product.brand);
+    const safeType=customerSafeType(product.type_name);
     const facts = [
-      ["Brand",product.brand],["Type",product.type_name],["Model",product.model],["Origin",product.origin_country],
+      ["Brand",safeBrand],["Type",safeType],["Origin",product.origin_country],
       ["Live variants",product.variant_count],["Fulfillment",product.avg_fulfillment_time]
     ].filter(([,v])=>v!==null&&v!==undefined&&v!=="");
     $("#hd-product-facts").innerHTML = facts.map(([k,v])=>`<div><span>${H.esc(k)}</span><strong>${H.esc(v)}</strong></div>`).join("");
-    const cat=H.inferCategory(product); const def=H.categoryDefs[cat] || H.categoryDefs.women;
-    $("#hd-product-category-link").href=H.categoryUrl(cat); $("#hd-product-category-link").textContent=def.title;
+    const contextParent=String(params.get("c")||"").toLowerCase();
+    const contextSub=String(params.get("sub")||"").toLowerCase();
+    const genderContextSubs=new Set(["dresses","tops","bottoms","hoodies","jackets","knitwear","activewear","swimwear","shoes","bags","jewelry","accessories","hats"]);
+    const contextAllowed=Boolean(contextSub&&H.categoryDefs[contextSub]&&(
+      H.categoryDefs[contextSub]?.parent===contextParent ||
+      (["women","men"].includes(contextParent)&&genderContextSubs.has(contextSub))
+    ));
+    const contextDef=contextAllowed?H.categoryDefs[contextSub]:null;
+    const cat=contextDef?contextSub:H.inferCategory(product);
+    const def=contextDef||H.categoryDefs[cat]||H.categoryDefs.women;
+    $("#hd-product-category-link").href=contextDef
+      ? `category.html?c=${encodeURIComponent(contextParent)}&sub=${encodeURIComponent(contextSub)}`
+      : H.categoryUrl(cat);
+    $("#hd-product-category-link").textContent=contextDef?`${H.categoryDefs[contextParent]?.title||contextParent} · ${def.title}`:def.title;
     document.title=`${product.title || "Product"} — HUNT DEAL`;
     renderOptions(); renderGallery(); renderProductStructuredData();
     const externalVisit = typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
-    const cjCheckoutReady = String(product.provider || provider || "").toLowerCase().includes("cj");
+    const cjCheckoutReady = H.sourceCodeForProvider(product.provider || provider || "") === "s1";
     const readyForCart = variants.length > 0 && retail.ready && cjCheckoutReady;
     const storeName = product?.store?.name || "partner store";
     const add = $("#hd-product-add");
@@ -219,14 +271,14 @@
     }
     if (!selectedVariant) return;
     const retail = currentRetailState();
-    const cjCheckoutReady = String(product.provider || provider || "").toLowerCase().includes("cj");
+    const cjCheckoutReady = H.sourceCodeForProvider(product.provider || provider || "") === "s1";
     if (!retail.ready || !cjCheckoutReady) return;
     H.addCart(product, selectedVariant, quantity);
     location.href = "checkout.html";
   }
 
   function renderFallback(cached) {
-    product = {...cached, gallery:[cached.image_url].filter(Boolean), variants:[], variant_count:0, description:"Full provider detail and variant feed are not connected yet."};
+    product = {...cached, gallery:[cached.image_url].filter(Boolean), variants:[], variant_count:0, description:"Full product detail and variant feed are not connected yet."};
     variants=[];
     renderBuybox();
     $("#hd-product-add").disabled=true;
@@ -239,6 +291,7 @@
 
   async function load() {
     if (!id) throw new Error("Missing product id");
+    if (!provider) throw new Error("Missing product source");
     H.updateCartBadges();
     try {
       const cached=cachedProduct();

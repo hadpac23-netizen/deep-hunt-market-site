@@ -1,13 +1,45 @@
 import { createSupabaseContext } from "npm:@supabase/server";
+import { requireIntegerQuantity, pricingSnapshotMatches, sessionReuseState, sha256Hex, guestOwnerProofMatches } from "../_shared/hunt-session-security.mjs";
 
 const ALLOWED_ORIGINS=new Set([
   "https://deep-hunt-market.netlify.app",
   "https://hadpac23-netizen.github.io",
+  "https://raw.githack.com",
   "http://127.0.0.1:8767",
   "http://localhost:8767"
 ]);
+const EPROLO_QUOTE_TIMEOUT_MS=8_000;
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const num=(v:unknown)=>Number.isFinite(Number(v))?Number(v):null;
+
+function normalizeShipping(body:any,country:string){
+  const raw=body?.shipping_address&&typeof body.shipping_address==="object"?body.shipping_address:{};
+  const snapshot={
+    version:1,
+    customer_name:clean(raw?.customer_name).replace(/\s+/g," ").slice(0,120),
+    email:clean(raw?.email||body?.customer_email).toLowerCase().slice(0,180),
+    address1:clean(raw?.address1).replace(/\s+/g," ").slice(0,180),
+    address2:clean(raw?.address2).replace(/\s+/g," ").slice(0,180),
+    city:clean(raw?.city).replace(/\s+/g," ").slice(0,100),
+    province:clean(raw?.province).replace(/\s+/g," ").slice(0,100),
+    postal_code:clean(raw?.postal_code).replace(/\s+/g," ").slice(0,24),
+    phone:clean(raw?.phone).replace(/\s+/g," ").slice(0,30),
+    country_code:country
+  };
+  const suppliedCountry=clean(raw?.country_code).toUpperCase();
+  const phoneDigits=snapshot.phone.replace(/\D/g,"");
+  const valid=
+    snapshot.customer_name.length>=2 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(snapshot.email) &&
+    snapshot.address1.length>=4 &&
+    snapshot.city.length>=2 &&
+    snapshot.province.length>=2 &&
+    snapshot.postal_code.length>=2 &&
+    phoneDigits.length>=7 && phoneDigits.length<=15 &&
+    (!suppliedCountry||suppliedCountry===country);
+  if(!valid)throw new Error("SHIPPING_ADDRESS_INVALID");
+  return snapshot;
+}
 
 function cors(req:Request){
   const origin=req.headers.get("origin")||"";
@@ -55,7 +87,35 @@ async function getCjQuote(base:string,key:string,vid:string,country:string,qty:n
   if(!res.ok)throw new Error("SHIPPING_RECHECK_FAILED");
   return body;
 }
-async function validateCart(base:string,key:string,body:any){
+async function getEproloQuote(base:string,key:string,internalToken:string,itemId:string,variantId:string,country:string,qty:number){
+  if(qty!==1)throw new Error("EPROLO_MULTI_QTY_RECHECK_REQUIRED");
+  const url=new URL(base+"/functions/v1/hunt-eprolo-country-shadow");
+  url.searchParams.set("item_id",itemId);
+  url.searchParams.set("variant_id",variantId);
+  url.searchParams.set("country",country);
+  if(!internalToken)throw new Error("EPROLO_INTERNAL_TOKEN_MISSING");
+  const controller=new AbortController();
+  const timeout=setTimeout(()=>controller.abort(),EPROLO_QUOTE_TIMEOUT_MS);
+  try{
+    const res=await fetch(url,{headers:{apikey:key,"x-hunt-internal-token":internalToken},cache:"no-store",signal:controller.signal});
+    const body=await res.json().catch((error)=>{
+      if(controller.signal.aborted)throw error;
+      return {};
+    });
+    if(!res.ok)throw new Error(clean(body?.reason||body?.error)||"SHIPPING_RECHECK_FAILED");
+    if(body?.stock_verified!==true||body?.stock_available!==true)throw new Error("OUT_OF_STOCK");
+    const shippingUsd=typeof body?.shipping_usd==="number"?body.shipping_usd:null;
+    if(body?.shipping_verified!==true||shippingUsd===null||!Number.isFinite(shippingUsd)||shippingUsd<0)throw new Error("SHIPPING_UNAVAILABLE");
+    if(clean(body?.readiness_status)!=="COUNTRY_PASS"||clean(body?.economics?.gate)!=="PASS")throw new Error("PROFIT_RECHECK_FAILED");
+    return {...body,shipping_usd:shippingUsd};
+  }catch(error){
+    if(controller.signal.aborted)throw new Error("EPROLO_QUOTE_TIMEOUT");
+    throw error;
+  }finally{
+    clearTimeout(timeout);
+  }
+}
+async function validateCart(base:string,key:string,eproloInternalToken:string,body:any){
   const country=clean(body?.country_code).toUpperCase();
   if(!/^[A-Z]{2}$/.test(country))throw new Error("COUNTRY_REQUIRED");
   const items=Array.isArray(body?.items)?body.items:[];
@@ -68,9 +128,10 @@ async function validateCart(base:string,key:string,body:any){
     const provider=clean(raw?.provider);
     const itemId=clean(raw?.item_id);
     const variantId=clean(raw?.variant_id);
-    const qty=Math.max(1,Math.min(5,Number(raw?.qty||1)||1));
+    const qty=requireIntegerQuantity(raw?.qty,{min:1,max:5});
     if(!provider||!itemId||!variantId)throw new Error("INVALID_LINE_ITEM");
-    if(!provider.toLowerCase().includes("cj"))throw new Error("PROVIDER_PAYMENT_NOT_READY");
+    const providerLower=provider.toLowerCase();
+    if(!providerLower.includes("cj")&&!providerLower.includes("eprolo"))throw new Error("PROVIDER_PAYMENT_NOT_READY");
     const product=await getProduct(base,key,provider,itemId,country);
     const variants=Array.isArray(product?.variants)?product.variants:[];
     const variant=variants.find((v:any)=>clean(v?.variant_id)===variantId);
@@ -79,26 +140,42 @@ async function validateCart(base:string,key:string,body:any){
     const retailVerified=(variant?.retail_price_verified??product?.retail_price_verified)===true;
     const profitPass=clean(variant?.profit_gate_status||product?.profit_gate_status)==="PASS";
     const retailAmount=num(variant?.retail_price_amount??product?.retail_price_amount);
+    const supplierCost=providerLower.includes("cj")?num(variant?.price_amount??product?.price_amount):null;
     const retailCurrency=clean(variant?.retail_currency||product?.retail_currency||"").toUpperCase();
     if(!retailVerified||!profitPass||!(retailAmount&&retailAmount>0))throw new Error("RETAIL_PRICE_NOT_READY");
+    if(providerLower.includes("cj")&&!(supplierCost&&supplierCost>0))throw new Error("SUPPLIER_COST_RECHECK_FAILED");
     if(retailCurrency!=="USD")throw new Error("CURRENCY_REVIEW_REQUIRED");
 
-    const quote=await getCjQuote(base,key,variantId,country,qty);
-    const shipping=Array.isArray(quote?.shipping_options)?quote.shipping_options[0]:null;
-    if(quote?.stock_verified!==true||quote?.stock_available!==true)throw new Error("OUT_OF_STOCK");
-    if(quote?.shipping_verified!==true||!shipping||!(num(shipping?.price_usd)>=0))throw new Error("SHIPPING_UNAVAILABLE");
+    let lineShipping=0;
+    let shippingMethod="";
+    let originCountry:string|null=null;
+    if(providerLower.includes("cj")){
+      const quote=await getCjQuote(base,key,variantId,country,qty);
+      const shipping=Array.isArray(quote?.shipping_options)?quote.shipping_options[0]:null;
+      if(quote?.stock_verified!==true||quote?.stock_available!==true)throw new Error("OUT_OF_STOCK");
+      const priceUsd=typeof shipping?.price_usd==="number"?shipping.price_usd:null;
+      if(quote?.shipping_verified!==true||!shipping||priceUsd===null||!Number.isFinite(priceUsd)||priceUsd<0)throw new Error("SHIPPING_UNAVAILABLE");
+      lineShipping=priceUsd;
+      shippingMethod=clean(shipping?.name).slice(0,120);
+      originCountry=clean(quote?.selected_origin?.country_code).toUpperCase()||null;
+    }else{
+      const quote=await getEproloQuote(base,key,eproloInternalToken,itemId,variantId,country,qty);
+      lineShipping=Number(quote.shipping_usd);
+      shippingMethod=clean(quote?.shipping_method).slice(0,120);
+    }
 
     const lineProduct=retailAmount*qty;
     productAmount+=lineProduct;
-    shippingAmount+=Number(shipping.price_usd);
+    shippingAmount+=lineShipping;
     lines.push({
       provider,item_id:itemId,variant_id:variantId,qty,
       title:clean(product?.title).slice(0,180),
       unit_retail_amount:Number(retailAmount.toFixed(2)),
+      supplier_cost_amount:supplierCost===null?null:Number(supplierCost.toFixed(2)),
       currency:"USD",
-      shipping_amount:Number(Number(shipping.price_usd).toFixed(2)),
-      shipping_method:clean(shipping?.name).slice(0,120),
-      origin_country_code:clean(quote?.selected_origin?.country_code).toUpperCase()||null,
+      shipping_amount:Number(lineShipping.toFixed(2)),
+      shipping_method:shippingMethod,
+      origin_country_code:originCountry,
       quote_checked_at:new Date().toISOString()
     });
   }
@@ -110,11 +187,19 @@ async function validateCart(base:string,key:string,body:any){
     line_items:lines
   };
 }
-async function createPayPlusSession(sessionId:string,pricing:any){
+async function runtimeControl(ctx:any,key:string){
+  const {data,error}=await ctx.supabaseAdmin
+    .from("hunt_runtime_controls")
+    .select("enabled,owner_approved")
+    .eq("key",key)
+    .maybeSingle();
+  if(error)throw new Error("RUNTIME_CONTROL_READ_FAILED");
+  return data?.enabled===true&&data?.owner_approved===true;
+}
+async function createPayPlusSession(sessionId:string,pricing:any,mode:string){
   const apiKey=clean(Deno.env.get("PAYPLUS_API_KEY"));
   const secretKey=clean(Deno.env.get("PAYPLUS_SECRET_KEY"));
   const pageUid=clean(Deno.env.get("PAYPLUS_PAYMENT_PAGE_UID"));
-  const mode=clean(Deno.env.get("HUNT_PAYMENT_MODE")).toLowerCase()||"prelaunch";
   if(!apiKey||!secretKey||!pageUid||!["sandbox","live"].includes(mode))return null;
 
   const base=mode==="live"
@@ -167,45 +252,82 @@ Deno.serve(async(req:Request)=>{
     const base=clean(Deno.env.get("SUPABASE_URL"));
     const key=publishableKey();
     if(!base||!key)throw new Error("SERVER_CONFIG_MISSING");
-    const pricing=await validateCart(base,key,body);
+    const eproloInternalToken=clean(Deno.env.get("HUNT_EPROLO_INTERNAL_TOKEN"));
+    const pricing=await validateCart(base,key,eproloInternalToken,body);
+    const shippingSnapshot=normalizeShipping(body,pricing.country_code);
     const requestedIdem=clean(body?.idempotency_key).slice(0,120);
     const idempotencyKey=requestedIdem||crypto.randomUUID();
     const normalized=JSON.stringify({
       country:pricing.country_code,
+      shipping:{
+        customer_name:shippingSnapshot.customer_name,
+        email:shippingSnapshot.email,
+        address1:shippingSnapshot.address1,
+        address2:shippingSnapshot.address2,
+        city:shippingSnapshot.city,
+        province:shippingSnapshot.province,
+        postal_code:shippingSnapshot.postal_code,
+        phone:shippingSnapshot.phone,
+        country_code:shippingSnapshot.country_code
+      },
       items:pricing.line_items.map((x:any)=>[
-        x.provider,x.item_id,x.variant_id,x.qty,x.origin_country_code,x.shipping_method
+        x.provider,x.item_id,x.variant_id,x.qty,x.origin_country_code,x.shipping_method,
+        x.unit_retail_amount,x.shipping_amount,x.currency
       ])
     });
     const cartDigest=await sha256(normalized);
-
-    const {data:existing}=await ctx.supabaseAdmin
-      .from("hunt_payment_sessions")
-      .select("id,status,mode,country_code,currency,product_amount,shipping_amount,total_amount,provider_hosted_fields_uid,provider_redirect_url,expires_at,cart_digest")
-      .eq("idempotency_key",idempotencyKey)
-      .maybeSingle();
-    if(existing){
-      if(clean(existing.cart_digest)!==cartDigest){
-        return json(req,{ok:false,error:"IDEMPOTENCY_CONFLICT"},409);
-      }
-      return json(req,{
-        ok:true,reused:true,
-        payment_ready:existing.status!=="prelaunch",
-        idempotency_key:idempotencyKey,
-        session:existing
-      });
-    }
-
     const requestedMode=clean(Deno.env.get("HUNT_PAYMENT_MODE")).toLowerCase();
     const configured=Boolean(
       clean(Deno.env.get("PAYPLUS_API_KEY"))&&
       clean(Deno.env.get("PAYPLUS_SECRET_KEY"))&&
       clean(Deno.env.get("PAYPLUS_PAYMENT_PAGE_UID"))
     );
-    const initialMode=configured&&["sandbox","live"].includes(requestedMode)?requestedMode:"prelaunch";
+    const liveApproved=requestedMode==="live"
+      ? await runtimeControl(ctx,"hunt_payment_live")
+      : false;
+    const initialMode=configured&&requestedMode==="sandbox"
+      ? "sandbox"
+      : configured&&requestedMode==="live"&&liveApproved
+        ? "live"
+        : "prelaunch";
+
+    const callerUserId=clean(ctx.userClaims?.sub||ctx.userClaims?.id);
+    const guestOwnerToken=callerUserId?"":clean(body?.session_owner_token);
+    const {data:existing}=await ctx.supabaseAdmin
+      .from("hunt_payment_sessions")
+      .select("id,user_id,guest_owner_token_hash,status,mode,country_code,currency,product_amount,shipping_amount,total_amount,provider_hosted_fields_uid,provider_redirect_url,expires_at,cart_digest")
+      .eq("idempotency_key",idempotencyKey)
+      .maybeSingle();
+    if(existing){
+      if(existing.user_id){
+        if(!callerUserId)return json(req,{ok:false,error:"SIGNED_IN_SESSION_AUTH_REQUIRED"},403);
+        if(clean(existing.user_id)!==callerUserId)return json(req,{ok:false,error:"SESSION_OWNER_MISMATCH"},403);
+      }else if(!(await guestOwnerProofMatches(guestOwnerToken,existing.guest_owner_token_hash))){
+        return json(req,{ok:false,error:"SESSION_OWNER_PROOF_REQUIRED"},403);
+      }
+      if(clean(existing.cart_digest)!==cartDigest||!pricingSnapshotMatches(existing,pricing)){
+        return json(req,{ok:false,error:"PRICE_OR_CART_SNAPSHOT_CHANGED"},409);
+      }
+      const reuse=sessionReuseState(existing,{expectedMode:initialMode,liveApproved});
+      if(!reuse.ok)return json(req,{ok:false,error:reuse.reason},409);
+      return json(req,{
+        ok:true,reused:true,
+        payment_ready:reuse.paymentReady===true,
+        idempotency_key:idempotencyKey,
+        session:existing
+      });
+    }
+
+    const newGuestOwnerToken=callerUserId?"":crypto.randomUUID()+crypto.randomUUID();
+    const newGuestOwnerTokenHash=newGuestOwnerToken?await sha256Hex(newGuestOwnerToken):null;
+    const prelaunchReason=requestedMode==="live"&&configured&&!liveApproved
+      ? "PAYMENT_LIVE_KILL_SWITCH_OFF"
+      : "AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED";
     const {data:inserted,error:insertError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
       .insert({
-        user_id:ctx.userClaims?.sub||null,
+        user_id:callerUserId||null,
+        guest_owner_token_hash:newGuestOwnerTokenHash,
         provider:"payplus",
         mode:initialMode,
         status:initialMode==="prelaunch"?"prelaunch":"created",
@@ -215,6 +337,8 @@ Deno.serve(async(req:Request)=>{
         shipping_amount:pricing.shipping_amount,
         total_amount:pricing.total_amount,
         line_items:pricing.line_items,
+        customer_email:shippingSnapshot.email,
+        shipping_snapshot:shippingSnapshot,
         cart_digest:cartDigest,
         idempotency_key:idempotencyKey
       })
@@ -226,13 +350,14 @@ Deno.serve(async(req:Request)=>{
       return json(req,{
         ok:true,
         payment_ready:false,
-        reason:"AUTHORIZED_PAYMENT_ACCOUNT_REQUIRED",
+        reason:prelaunchReason,
         idempotency_key:idempotencyKey,
+        session_owner_token:newGuestOwnerToken||undefined,
         session:inserted
       });
     }
 
-    const providerSession=await createPayPlusSession(inserted.id,pricing);
+    const providerSession=await createPayPlusSession(inserted.id,pricing,initialMode);
     if(!providerSession)throw new Error("PAYMENT_PROVIDER_NOT_CONFIGURED");
     const {data:updated,error:updateError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
@@ -259,6 +384,7 @@ Deno.serve(async(req:Request)=>{
       ok:true,
       payment_ready:true,
       idempotency_key:idempotencyKey,
+      session_owner_token:newGuestOwnerToken||undefined,
       integration:updated.provider_hosted_fields_uid?"hosted_fields":"hosted_page",
       session:updated
     });

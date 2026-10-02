@@ -1,0 +1,28 @@
+{
+  "schema_version": "HUNT_GIT_GOVERNANCE_PLAN_V1",
+  "current": {
+    "launch_candidate_pr": 26,
+    "draft": true,
+    "head_commit_signed": false,
+    "full_coderabbit_review_completed": false,
+    "branch_protection_verified": false,
+    "branch_protection_verification_note": "GitHub app returned 403 for branch-protection read; do not assume protected or unprotected from this check."
+  },
+  "required_before_merge": [
+    "stable PR26 head",
+    "Catalog Integrity PASS",
+    "Checkout Regression PASS",
+    "full CodeRabbit review completed or explicitly waived by Owner",
+    "main branch protection / required checks verified by an account with permission",
+    "Owner Gate approval"
+  ],
+  "recommended_required_checks": [
+    "HUNT Catalog Integrity",
+    "HUNT checkout regression"
+  ],
+  "merge_policy": {
+    "merge_before_owner_gate": false,
+    "deploy_before_owner_gate": false,
+    "signed_commits_or_signed_merge_recommended": true
+  }
+}

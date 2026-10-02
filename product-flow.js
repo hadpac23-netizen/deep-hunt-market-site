@@ -9,11 +9,16 @@
   let loading=false;
   let observer=null;
   const seen=new Set();
+  const pageParams=new URLSearchParams(location.search);
+  const pageParent=String(pageParams.get("c")||"").toLowerCase();
+  const pageSub=String(pageParams.get("sub")||"").toLowerCase();
 
-  function key(item){return String(item?.provider||"")+":"+String(item?.item_id||"")}
+  function key(item){return H.sourceCodeForProvider(item?.provider)+":"+String(item?.item_id||"")}
   function safeHttps(value){try{return new URL(value).protocol==="https:"}catch{return false}}
   function price(item){
-    const n=Number(item?.price_amount);
+    const merchant=String(item?.price_basis||"").toUpperCase()==="MERCHANT_RETAIL";
+    const verified=item?.retail_price_verified===true&&String(item?.profit_gate_status||"").toUpperCase()==="PASS";
+    const n=Number(merchant?item.price_amount:verified?item.retail_price_amount:null);
     return Number.isFinite(n)&&n>0?H.money(n,item.currency||"USD"):"View product";
   }
   function categoryTitle(slug){return H.categoryDefs?.[slug]?.title||slug||"More"}
@@ -71,9 +76,12 @@
   }
 
   async function buildPool(product){
-    const currentCategory=String(product?.category||H.inferCategory(product)||"");
+    const contextualShelf=pageSub&&H.categoryDefs?.[pageSub]?pageSub:"";
+    const currentCategory=contextualShelf||String(product?.category||H.inferCategory(product)||"");
     const prefs=H.shoppingPreferences?.()||{};
-    const requested=[currentCategory,...siblingSlugs(currentCategory),...(prefs.categories||[]).slice(0,3)]
+    const requested=(contextualShelf
+      ? [contextualShelf]
+      : [currentCategory,...siblingSlugs(currentCategory),...(prefs.categories||[]).slice(0,3)])
       .filter(Boolean)
       .filter((slug,index,array)=>array.indexOf(slug)===index)
       .slice(0,8);
@@ -83,7 +91,7 @@
         const res=await fetch("catalog-shards/"+encodeURIComponent(slug)+".json?v=catalog30k1",{cache:"force-cache"});
         if(!res.ok)return [];
         const data=await res.json();
-        return (Array.isArray(data?.products)?data.products:[]).map(item=>({...item,category:item.category||slug}));
+        return (Array.isArray(data?.products)?data.products:[]).map(item=>({...item,category:contextualShelf?slug:(item.category||slug)}));
       }catch{return []}
     }));
 
@@ -92,7 +100,7 @@
       return item?.item_id&&k!==key(product)&&!seen.has(k);
     });
 
-    if(!all.length){
+    if(!all.length&&!contextualShelf){
       const res=await fetch("catalog-home.json?v=platform1",{cache:"force-cache"});
       if(!res.ok)throw new Error("Catalog unavailable");
       const data=await res.json();
@@ -118,6 +126,7 @@
 
     pool=deduped
       .filter(item=>{
+        if(contextualShelf&&String(item.category||"")!==contextualShelf)return false;
         if(currentGender==="women"&&["men"].includes(String(item.category)))return false;
         if(currentGender==="men"&&["women","dresses"].includes(String(item.category)))return false;
         return true;
@@ -129,7 +138,7 @@
   }
 
   function card(item){
-    const href=H.productUrl(item);
+    const href=H.productUrl(item,{c:pageParent,sub:pageSub});
     const img=safeHttps(item.image_url)
       ? '<img src="'+H.esc(item.image_url)+'" alt="'+H.esc(item.title||"Product")+'" loading="lazy">'
       : '<div class="hd-profile-product-placeholder">H</div>';
@@ -139,7 +148,7 @@
       '<div class="hd-shelf-body">'+
         '<a class="hd-shelf-title" href="'+H.esc(href)+'">'+H.esc(item.title||"Product")+'</a>'+
         '<span class="hd-shelf-price">'+H.esc(price(item))+'</span>'+
-        '<div class="hd-shelf-meta"><span>'+H.esc(categoryTitle(slug))+'</span><span>'+H.esc(item.provider||"HUNT")+'</span></div>'+
+        '<div class="hd-shelf-meta"><span>'+H.esc(categoryTitle(slug))+'</span><span>HUNT SOURCE</span></div>'+
       '</div>'+
     '</article>';
   }
@@ -201,11 +210,11 @@
           (thumb?'<img src="'+H.esc(thumb)+'" alt="" loading="lazy">':"")+
           '<span class="hd-product-video-play" aria-hidden="true">▶</span>'+
         '</button>'+
-        '<div class="hd-product-video-copy"><strong>Product video</strong><small>'+H.esc(media.source_name||"Verified product source")+'</small></div>'+
+        '<div class="hd-product-video-copy"><strong>Product video</strong><small>'+"HUNT VERIFIED MEDIA"+'</small></div>'+
       '</article>';
     }
     if(/\.mp4(?:$|\?)/i.test(media.media_url)&&safeHttps(media.media_url)){
-      return '<article class="hd-product-video-card"><video controls preload="metadata" playsinline src="'+H.esc(media.media_url)+'"></video><div class="hd-product-video-copy"><strong>Product video</strong><small>'+H.esc(media.source_name||"Verified product source")+'</small></div></article>';
+      return '<article class="hd-product-video-card"><video controls preload="metadata" playsinline src="'+H.esc(media.media_url)+'"></video><div class="hd-product-video-copy"><strong>Product video</strong><small>'+"HUNT VERIFIED MEDIA"+'</small></div></article>';
     }
     return "";
   }

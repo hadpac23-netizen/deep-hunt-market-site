@@ -1,0 +1,545 @@
+{
+  "schema_version": "HUNT_LAUNCH_CLOSURE_MATRIX_V1",
+  "observed_at": "2026-10-01T09:22:51Z",
+  "source_of_truth": {
+    "status": "PRELAUNCH_BACKEND_AND_PROVIDER_REVIEW_SITE_READY_EXTERNAL_BLOCKERS_REMAIN",
+    "evidence": "Backend hardening is live; PR26 legal policy pages are deployed to the Netlify pre-launch alias and passed HTTP/content/privacy QA. Production remains unchanged; real-money launch is still blocked by payment sandbox, tax/final-profit, supplier E2E, freshness, governance/security and final Owner Gate.",
+    "blocks_real_money": true,
+    "storefront_source_layout_fixed": true,
+    "storefront_sidecars_separate": true,
+    "runtime_git_comparison": {
+      "storefront_runtime": "LIVE_V142_EXACT_PR26_SOURCE",
+      "payment_session_runtime": "LIVE_V27_EXACT_PR26",
+      "order_preview_runtime": "LIVE_V16_EXACT_PR26",
+      "order_orchestrator_runtime": "LIVE_V26_EXACT_PR26",
+      "eprolo_country_shadow_runtime": "LIVE_V13_QUARANTINED_EXACT_SOURCE",
+      "runtime_reconciliation_complete": true
+    },
+    "canonical_pdp_predicate_drift_guard": true,
+    "stale_snapshot_precedence_fixed_in_pr26": true,
+    "latest_runtime_evidence": "ops/evidence/hunt-red-team-remediation-2026-10-01-v1.json",
+    "no_op_migration_history_parity": {
+      "versions": [
+        "20261001083757",
+        "20261001083817",
+        "20261001083835",
+        "20261001084154"
+      ],
+      "effect": "SELECT 1 only; no schema/data/permission change",
+      "git_parity_files_added": true
+    },
+    "non_launch_critical_runtime_source_gap": {
+      "slug": "hunt-business-identity",
+      "live_version": 13,
+      "relationship": "LIVE_SOURCE_NOT_IN_GIT",
+      "current_pr26_callers": 0,
+      "action": "Do not deploy/replace this function until source contract is recovered or explicitly redesigned."
+    }
+  },
+  "catalog": {
+    "status": "PARTIAL",
+    "cj_exact_variant_refresh_pool": 63,
+    "cj_live_il_audit": {
+      "total": 63,
+      "fresh_pretax_pass": 30,
+      "profit_review": 32,
+      "profit_block": 1,
+      "out_of_stock": 0,
+      "no_shipping": 0,
+      "retry": 0
+    },
+    "cj_exact_variant_spot_recheck_2026_09_30": {
+      "variant_id": "2411070956331619201",
+      "destination": "IL",
+      "origin": "CN",
+      "stock_verified": true,
+      "stock_available": true,
+      "inventory": 10168,
+      "shipping_verified": true,
+      "selected_logistics": "CJPacket Liquid Line",
+      "shipping_usd": 4.2,
+      "aging": "9-23"
+    },
+    "eprolo_canonical_pdp_ready": 261,
+    "eprolo_live_fresh_truth_status": "QUARANTINED_SAFE_RUNTIME_PENDING_TAX_AND_PDP_CREDENTIALS",
+    "blocks_real_money": true,
+    "eprolo_destination_tax_patch_in_pr26": true,
+    "eprolo_final_profit_requires_provider_tax_truth": true,
+    "eprolo_live_runtime_proof": {
+      "status": "PASS_WITH_TAX_BLOCKER",
+      "canonical_core_audited": 261,
+      "exact_variant_missing": 0,
+      "api_retry": 0,
+      "out_of_stock": 0,
+      "no_shipping": 0,
+      "tax_unverified": 261,
+      "pretax_profit_pass": 132,
+      "pretax_profit_review": 129,
+      "pretax_profit_block": 0,
+      "final_profit_verified": 0
+    },
+    "eprolo_storefront_rpc_runtime": {
+      "runtime_version": 140,
+      "db_connection_mode": "supabase_rpc",
+      "canonical_count": 258,
+      "display_eligible_count": 247,
+      "quarantined_count": 11,
+      "final_profit_verified": 0,
+      "purchasable": false,
+      "production_effect": false,
+      "observed_at": "2026-10-01T00:36:49Z"
+    },
+    "eprolo_destination_tax_blocker": "No verified transaction-level destination-tax/DDP value exists for the audited EPROLO launch cohort. Do not infer customs duty or convert reserve-only tax assumptions into Final Profit Verified.",
+    "eprolo_public_display_enabled": false,
+    "eprolo_country_shadow_runtime_version": 13
+  },
+  "pdp_readiness": {
+    "status": "BLOCKED_EPROLO_PDP_EDGE_CREDENTIALS_MISSING_PUBLIC_HOLD",
+    "strict_eprolo": 826,
+    "pdp_detail_pass": 517,
+    "latest_private_qa_pass": 266,
+    "canonical_pdp_ready": 261,
+    "blocks_real_money": true,
+    "historical_counts_are_not_live_runtime_proof": true,
+    "live_strict_eprolo_canary": {
+      "requests": 8,
+      "http_200": 0,
+      "http_404": 8,
+      "response": "product not found",
+      "rows_satisfying_pr26_strict_sql_predicate": 8,
+      "same_exact_variants_verified_at_provider": true,
+      "provider_api_failure_explains_404": false,
+      "evidence": "ops/evidence/hunt-eprolo-pdp-runtime-blocker-2026-10-01.json"
+    },
+    "runtime_db_path": {
+      "strict_pdp_uses_eproloSqlClient": false,
+      "db_url_precedence": [
+        "HUNT_DB_POOLER_URL",
+        "SUPABASE_DB_POOLER_URL",
+        "SUPABASE_DB_URL"
+      ],
+      "pooler_specific_secret_presence_directly_verified": false,
+      "most_likely_failure_point": "DB_CLIENT_PATH_MISSING_OR_NOT_OPERATIONAL_BEFORE_QUERY",
+      "confidence": "HIGH",
+      "pr26_strict_pdp_uses_eproloSqlClient": false,
+      "pr26_rpc_function": "hunt_eprolo_strict_pdp_candidate_v1",
+      "pr26_rpc_service_role_only": true,
+      "pr26_rpc_search_path_locked": true,
+      "live_runtime_fix_applied": true,
+      "owner_gate_required_for_apply_and_deploy": false
+    },
+    "pr26_rpc_fix_staged": false,
+    "pr26_rpc_migration": "supabase/migrations/20261001034500_hunt_eprolo_strict_pdp_rpc_v1.sql",
+    "pr26_strict_pdp_db_connection_mode": "supabase_rpc",
+    "pr26_raw_postgres_dependency_removed": true,
+    "pr26_edge_secrets_required": [
+      "HUNT_EPROLO_API_KEY",
+      "HUNT_EPROLO_API_SECRET"
+    ],
+    "live_runtime_unchanged": false,
+    "live_runtime_still_returns_404": true,
+    "eprolo_public_display_enabled": false,
+    "live_runtime_fix_applied": true,
+    "owner_gate_required_for_apply_and_deploy": false,
+    "current_public_hold_reason": "PDP_RUNTIME_CREDENTIALS_NOT_READY",
+    "storefront_runtime_version": 142,
+    "public_shelf_canary": {
+      "shelf": "dresses",
+      "http_status": 200,
+      "rows": 47,
+      "eprolo_rows": 0,
+      "cj_rows": 37,
+      "printful_rows": 10
+    }
+  },
+  "freshness_automation": {
+    "status": "BLOCKED_NO_LIVE_SCHEDULE_OR_ROTATION_PROOF",
+    "runner_in_pr26": true,
+    "schedule_plan_in_pr26": true,
+    "live_cron_enabled": false,
+    "freshness_runner_secret_present": false,
+    "storefront_pooler_dependency_removed": true,
+    "canonical_shelves_pooler_dependency_removed": true,
+    "strict_pdp_db_client_dependency_remaining": false,
+    "reason": "PR26 contains a shadow-only runner, watcher and disabled schedule plan. Live has 22 cron jobs / 2 active but 0 supplier freshness jobs; both freshness/watch secrets are absent and neither new function is deployed. Closure requires Owner-Gated deployment plus two measured rotations and a failure/recovery test.",
+    "blocks_real_money": true,
+    "initial_plan": {
+      "enabled": false,
+      "destination": "IL",
+      "cj_batch": 10,
+      "cj_interval_minutes": 2,
+      "cj_full_rotation_minutes_max": 14,
+      "eprolo_batch": 25,
+      "eprolo_interval_minutes": 2,
+      "eprolo_full_rotation_minutes_max": 22,
+      "stale_after_minutes": 90
+    },
+    "ops_watch_secret_present": false,
+    "runner_live_deployed": false,
+    "watcher_live_deployed": false,
+    "runner_preferred_db_secret": "HUNT_DB_POOLER_URL"
+  },
+  "fulfillment": {
+    "status": "PARTIAL",
+    "cj_presupplier_recheck_in_pr26": true,
+    "cj_presupplier_recheck_in_live_runtime": true,
+    "cj_full_sandbox_e2e_proven": false,
+    "eprolo_order_tracking_contract_verified": true,
+    "blocks_real_money": true,
+    "live_evidence": {
+      "cj_records_total": 10,
+      "failed": 7,
+      "processing_stale": 3,
+      "tracking": 0,
+      "shipped": 0,
+      "full_tracking_shipped_e2e_proven": false,
+      "last_observed_failures": "2026-09-15"
+    },
+    "cj_sandbox_e2e_runtime_blocker": {
+      "status": "BLOCKED_NO_AUTH_SESSION_AND_NO_TRACKING_SHIPPED_PROOF",
+      "orchestrator_runtime_version": 26,
+      "signed_in_admin_test_user_exists": true,
+      "active_admin_auth_session": false,
+      "active_admin_auth_session_count_observed": 0,
+      "admin_auth_session_required_blocker_closed": false,
+      "pr26_presupplier_recheck_not_live": false,
+      "blocker": "Live orchestrator is v25 and includes the hardened source baseline, but there is no active authenticated Admin session and live evidence is 7 failed + 3 stale processing, 0 tracking, 0 shipped. Do not submit a supplier order without Owner Gate and sandbox confirmation.",
+      "full_tracking_shipped_e2e_proven": false,
+      "admin_authorization_source": "public.profiles.is_admin",
+      "supplier_sandbox_control_enabled_owner_approved": true,
+      "supabase_vault_cj_auth_secret_present": false,
+      "supabase_vault_scope_note": "Vault absence does not prove that no runtime environment credential exists elsewhere.",
+      "observed_at": "2026-10-01T08:02:21Z"
+    },
+    "eprolo_contract_blocker": {
+      "status": "OFFICIAL_CONTRACT_DOCUMENTED_RUNTIME_COST_VARIANT_MISMATCH_EXECUTION_BLOCKED",
+      "official_account_rep_showdoc_verified": true,
+      "create_order": {
+        "method": "POST",
+        "path": "add_order.html",
+        "executed": false
+      },
+      "order_query": {
+        "method": "GET",
+        "path": "order_list.html",
+        "executed": false,
+        "tracking_fields_documented": true
+      },
+      "order_price_quote": {
+        "path": "getCostByProduct.html",
+        "documented_method": "GET",
+        "runtime_supported_method": "POST",
+        "method_contract_mismatch": true,
+        "canonical_variant_lookup_verified": false,
+        "tax_cost_field_documented": true,
+        "tax_truth_verified": false
+      },
+      "cancel_order": {
+        "method": "POST",
+        "path": "cancel_orders.html",
+        "executed": false
+      },
+      "webhook": {
+        "setup_path": "add_shop_webhook.html",
+        "tracking_push_documented": true,
+        "configured": false
+      },
+      "endpoint_guessing_allowed": false,
+      "supplier_submission_allowed": false,
+      "remaining": "Resolve pricing/order variant runtime mapping. Official docs expose a mutating Store-import API that returns store-side variant IDs, but HUNT has not called it; verify the namespace bridge only in an Owner-approved non-live mode. Sandbox/non-billable execution proof remains required.",
+      "store_import_context": {
+        "path": "add_product.html",
+        "method": "POST",
+        "mutating": true,
+        "executed": false,
+        "possible_namespace_bridge": "UNVERIFIED_HYPOTHESIS",
+        "owner_gate_required": true
+      }
+    }
+  },
+  "payment": {
+    "status": "BLOCKED_EXTERNAL_SANDBOX_CREDENTIALS_AND_E2E_PROOF",
+    "payment_live": false,
+    "payplus_callback_accept_paid": false,
+    "payplus_sandbox_evidence_enabled": false,
+    "payplus_sandbox_credentials_present": false,
+    "payplus_sandbox_missing": [
+      "PAYPLUS_API_KEY",
+      "PAYPLUS_SECRET_KEY",
+      "PAYPLUS_PAYMENT_PAGE_UID"
+    ],
+    "blocks_real_money": true,
+    "live_evidence": {
+      "prelaunch_session_count": 32,
+      "payplus_payment_event_count": 23,
+      "payplus_status_observation_count": 0,
+      "paid_session_count": 0,
+      "callback_status_mapping_proven": false,
+      "signed_callback_evidence_proven": false,
+      "accepted_paid_evidence_proven": false
+    },
+    "payplus_sandbox_credentials_scope": "NOT_PRESENT_IN_SUPABASE_VAULT_CURRENT_EVIDENCE",
+    "payplus_account_onboarding_exists": true,
+    "payplus_provider_requested_site_url": true,
+    "payplus_sandbox_request_draft_prepared": true,
+    "payplus_sandbox_request_sent": false,
+    "payplus_sandbox_request_requires_owner_send_approval": true,
+    "observed_at": "2026-10-01T08:02:21Z",
+    "official_api_contract_verified": true,
+    "official_api_contract_checked_at": "2026-10-01T08:06:16Z",
+    "official_staging_base_verified": "https://restapidev.payplus.co.il/api/v1.0/",
+    "generate_link_contract_verified": true,
+    "generate_link_method": "POST",
+    "generate_link_path": "/PaymentPages/generateLink",
+    "generate_link_required_contract": [
+      "payment_page_uid",
+      "api-key",
+      "secret-key"
+    ],
+    "server_side_only_required": true,
+    "callback_auth_contract_verified": true,
+    "callback_auth_user_agent": "PayPlus",
+    "callback_auth_hmac": "HMAC-SHA256(secret-key, JSON.stringify(body)) -> base64",
+    "ipn_full_contract_verified": true,
+    "ipn_full_method": "POST",
+    "ipn_full_path": "/PaymentPages/ipn-full",
+    "pr26_code_matches_official_contract": true,
+    "sandbox_e2e_proven": false
+  },
+  "reliability": {
+    "status": "PARTIAL_CANONICAL_RPC_PASS_PDP_RPC_FIX_STAGED_NOT_LIVE",
+    "storefront_runtime_version": 140,
+    "storefront_latest_observed_http_status": 200,
+    "canonical_shelves_rpc_path": "PASS",
+    "strict_eprolo_pdp_runtime": "BLOCKED_RUNTIME_DB_PATH",
+    "eprolo_storefront_raw_postgres_required": true,
+    "eprolo_storefront_transaction_pooler_required": false,
+    "strict_pdp_db_client_required": false,
+    "canonical_shelves_db_connection_mode": "supabase_rpc",
+    "strict_pdp_db_connection_mode": "PR26_SUPABASE_RPC_STAGED_LIVE_OLD_RUNTIME",
+    "legacy_custom_pooler_on_critical_path": false,
+    "pooler_auth_failures_observed_after_v140": 0,
+    "blocks_real_money": true,
+    "current_live_canonical_snapshot": {
+      "canonical_count": 258,
+      "display_eligible_count": 247,
+      "quarantined_count": 11,
+      "final_profit_verified": 0,
+      "purchasable": false,
+      "production_effect": false
+    },
+    "strict_pdp_live_canary": {
+      "requests": 8,
+      "ok_200_product": 0,
+      "http_404_product_not_found": 8,
+      "selected_from_current_pr26_sql_predicate": true,
+      "provider_exact_variant_crosscheck": "PASS",
+      "most_likely_failure_point": "DB_CLIENT_PATH_MISSING_OR_NOT_OPERATIONAL_BEFORE_QUERY",
+      "confidence": "HIGH"
+    },
+    "post_rpc_live_baseline": {
+      "total_requests": 30,
+      "ok_200_product": 30,
+      "concurrency": 3,
+      "timeouts": 0,
+      "errors": 0,
+      "edge_log_latency_sample": {
+        "ingested_at_measurement": 19,
+        "p50_ms": 1204,
+        "p95_ms": 5944,
+        "max_ms": 5944,
+        "note": "Historical canonical-shelf RPC correctness baseline. It does not prove the strict EPROLO PDP path."
+      }
+    },
+    "previous_live_baseline": {
+      "total_requests": 30,
+      "ok_200_product": 30,
+      "p95_ms": 3762,
+      "max_ms": 3915,
+      "concurrency": 3,
+      "timeouts": 0
+    },
+    "runtime_validation_still_required": true,
+    "github_actions": {
+      "immutable_action_pins": true,
+      "workflow_node_version": "24"
+    },
+    "strict_pdp_pr26_pooler_dependency_removed": true
+  },
+  "security": {
+    "status": "PARTIAL",
+    "critical_profile_privilege_escalation_fixed": true,
+    "profile_privileged_insert_fields_locked": true,
+    "profile_update_policies_hardened": true,
+    "private_shadow_pricing_rls_no_policy": false,
+    "private_shadow_pricing_explicit_deny_policy": true,
+    "hunt_public_tables_without_rls": 0,
+    "hunt_policies_using_user_metadata_for_authorization": 0,
+    "eprolo_rpc_security_definer": true,
+    "eprolo_rpc_search_path_locked": true,
+    "eprolo_rpc_anon_execute": false,
+    "eprolo_rpc_authenticated_execute": false,
+    "eprolo_rpc_service_role_execute": true,
+    "security_advisor_info_count": 0,
+    "security_advisor_warn_count": 1,
+    "leaked_password_protection": false,
+    "leaked_password_protection_note": "Supabase project is on Free; current Supabase documentation states leaked-password protection is available on Pro and above.",
+    "blocks_real_money": true,
+    "applied_migrations": [
+      "20260930160010_lock_profile_privileged_insert_fields",
+      "20260930160053_deny_client_access_shadow_pricing",
+      "20260930160138_harden_profile_update_policies",
+      "20260930165643_hunt_eprolo_canonical_shelves_rpc_v1",
+      "20261001013000_hunt_taxonomy_writer_guard_v3",
+      "20261001034500_hunt_eprolo_strict_pdp_rpc_v1",
+      "20261001082701_harden_customer_case_permissions_rt08"
+    ],
+    "customer_ui_password_auth_present": false,
+    "customer_ui_auth_modes": [
+      "MAGIC_LINK",
+      "OAUTH",
+      "GOOGLE_ID_TOKEN"
+    ],
+    "leaked_password_risk_ui_mitigation": "HUNT customer UI exposes no password-auth path; project-level leaked-password protection remains disabled and is not claimed fixed.",
+    "rt08_customer_case_privileges_hardened": true
+  },
+  "legal": {
+    "status": "PRELAUNCH_POLICY_PAGES_DEPLOYED_REAL_MONEY_DISCLOSURES_PENDING",
+    "verified_operating_entity_fields_complete": true,
+    "verified_fields": {
+      "legal_entity_name": true,
+      "registration_number": true,
+      "registered_country": true,
+      "business_address": true
+    },
+    "customer_contact_fields_complete": true,
+    "missing_verified_fields": [],
+    "customer_policy_pages_verified": true,
+    "secure_runtime_identity_status": "verified_identity_private_values_not_committed",
+    "owner_approved": false,
+    "blocks_real_money": true,
+    "standalone_policy_page_files_found_in_pr26": true,
+    "policy_filename_scan_scope": "repo_depth_2_privacy_terms_returns_refund_shipping_cookie",
+    "observed_at": "2026-10-01T10:15:00Z",
+    "draft_policy_templates_in_pr26": false,
+    "draft_policy_templates_customer_visible": false,
+    "legal_publication_gate": "PRELAUNCH_POLICY_PUBLICATION_APPROVED",
+    "company_mailbox_candidate_exists": true,
+    "company_mailbox_designated_as_support_privacy": true,
+    "returns_solution_complete": true,
+    "returns_address": null,
+    "returns_workflow_owner_approved": true,
+    "returns_workflow_status": "OWNER_APPROVED_OPERATIONAL_WORKFLOW",
+    "policy_publication_owner_approved": true,
+    "real_money_business_address_disclosure_pending": true,
+    "prelaunch_policy_deploy_id": "6abe34d4d8549f28722b413d",
+    "prelaunch_policy_deploy_commit": "58c5a293e40239bdc5d6b70423459fcaf28836b3",
+    "prelaunch_policy_http_qa": "PASS_4_OF_4"
+  },
+  "git_governance": {
+    "status": "BLOCKED_MAIN_UNPROTECTED",
+    "pr26_draft": true,
+    "pr26_merged": false,
+    "ci_catalog_integrity": "PASS",
+    "ci_catalog_integrity_run": 286,
+    "ci_checkout_regression": "PASS",
+    "ci_checkout_regression_run": 296,
+    "coderabbit_status": "success",
+    "branch_protection_verified": true,
+    "rulesets_count": 0,
+    "blocks_real_money": true,
+    "branch_protection_check_note": "Authenticated read-only GitHub CLI request returned HTTP 404 Branch not protected for main, and repository rulesets count is 0. Do not enable protection without Owner Gate.",
+    "branch_protection_enabled": false,
+    "default_branch": "main",
+    "required_status_checks_enforced": false,
+    "verification_source": "LOCAL_GH_CLI_READ_ONLY_REPO_SCOPE",
+    "observed_at": "2026-10-01T08:08:06Z",
+    "pr26_head_before_current_docs_commit": "de6e1b361f5e419b58a9f747c58622156c32b158"
+  },
+  "legacy_snapshots": {
+    "status": "PASS",
+    "marked_non_authoritative": true,
+    "ci_guard_present": true,
+    "blocks_real_money": false
+  },
+  "launch_rule": "No real-money launch. Payment Live OFF and Supplier Live Order OFF until all blockers are proven and explicit Owner Gate approves.",
+  "red_team_review": {
+    "coderabbit_major_findings_total": 13,
+    "coderabbit_major_findings_fixed_in_pr26": 13,
+    "coderabbit_minor_findings_total": 12,
+    "coderabbit_minor_findings_fixed_in_pr26": 12,
+    "canonical_predicate_drift_guard_added": true,
+    "major_contract_test": "tests/red-team-closure-contract.test.js",
+    "minor_contract_test": "tests/red-team-minor-closure.test.js",
+    "canonical_drift_test": "tests/canonical-pdp-predicate-drift.test.js",
+    "checkout_regression": "PASS",
+    "catalog_integrity": "PASS",
+    "final_coderabbit_re_review_required": false,
+    "strict_pdp_pooler_dependency_removed_in_pr26": true,
+    "strict_pdp_rpc_contract_test": "tests/eprolo-storefront-launch-gate.test.js",
+    "strict_pdp_rpc_local_contract_tests": "39/39 PASS",
+    "strict_pdp_rpc_local_catalog_integrity_tests": "31/31 PASS",
+    "strict_pdp_rpc_local_checkout_regression_tests": "113/113 PASS"
+  },
+  "remaining_external_or_runtime_blockers": [
+    "Owner Gate: apply staged guest-session/support-return migration and deploy PR26 payment-session/order-preview/EPROLO country-shadow/storefront sources, then rerun adversarial tests against live runtime.",
+    "Freshness: configure HUNT_FRESHNESS_SHADOW_SECRET/HUNT_OPS_WATCH_SECRET and DB path, deploy runner/watcher, enable only the approved shadow cron plan, prove two rotations plus failure/recovery; live currently has 0 supplier freshness jobs.",
+    "EPROLO: resolve getCostByProduct/store-import variant namespace in an approved non-live path; Final Profit Verified remains 0 until destination tax truth is proven.",
+    "CJ: establish an authenticated Admin sandbox session and prove supplier order -> tracking -> shipped; current evidence is 7 failed + 3 stale processing, 0 tracking, 0 shipped.",
+    "PayPlus: obtain Sandbox/Test credentials and prove signed callback/status/idempotent paid transition while Payment Live remains OFF.",
+    "Git governance: main is verified unprotected with 0 rulesets; enable required checks only after Owner Gate.",
+    "Security: complete final review and account for leaked-password protection limitation.",
+    "Owner Gate before merge, public pre-launch deploy, Payment Live or Supplier Live.",
+    "Legal real-money gate: publish the registered business address and any market-specific transaction disclosures before enabling paid checkout; pre-launch policy pages are ready for provider review."
+  ],
+  "red_team_2026_10_01": {
+    "status": "PRELAUNCH_BROWSER_QA_PASS_EXTERNAL_BLOCKERS_REMAIN",
+    "source_report": "user-provided HUNT DEAL red team 2026-10-01",
+    "rt01": "LIVE_V27_REPLAY_EXPIRY_PRICE_KILLSWITCH_HARDENED",
+    "rt02": "LIVE_V27_V16_OWNER_PROOF_HARDENED",
+    "rt03": "LIVE_V13_QUARANTINED_NO_PUBLIC_ECONOMICS",
+    "rt04": "BLOCKED_NO_LIVE_SCHEDULE_OR_ROTATION_PROOF",
+    "rt05": "BLOCKED_FINAL_PROFIT_VERIFIED_0",
+    "rt06": "BLOCKED_NO_TRACKING_SHIPPED_E2E",
+    "rt07": "BLOCKED_PAYPLUS_SANDBOX_E2E",
+    "rt08": "LIVE_MIGRATION_APPLIED_PRIVILEGES_HARDENED",
+    "rt09": "LIVE_V27_INTEGER_QTY_ENFORCED",
+    "rt10": "PRELAUNCH_BROWSER_PASS_PRIVACY_CONTEXT_MOBILE_390",
+    "rt11": "PRELAUNCH_POLICY_PAGES_DEPLOYED_REAL_MONEY_DISCLOSURES_PENDING",
+    "rt12": "SOURCE_OF_TRUTH_REFRESHED_MAIN_VERIFIED_UNPROTECTED",
+    "local_tests": {
+      "checkout_red_team": "137/137 PASS",
+      "catalog": "35/35 PASS"
+    },
+    "github_ci_on_core_fix": {
+      "checkout_run": 296,
+      "catalog_run": 286,
+      "status": "PASS"
+    },
+    "payment_live": false,
+    "supplier_live_order": false,
+    "merge": false,
+    "production_deploy": false,
+    "github_ci_on_browser_fix": {
+      "commit": "d0d6772a6804070707a3481f6a861c1f74d34118",
+      "checkout_run": 302,
+      "catalog_run": 297,
+      "status": "PASS"
+    },
+    "prelaunch_netlify": {
+      "deploy_id": "6abe34d4d8549f28722b413d",
+      "alias": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
+      "browser_qa": "PASS",
+      "mobile_390": "PASS_PREVIOUS_FLOW_UNCHANGED_LEGAL_STATIC",
+      "production_promoted": false
+    }
+  },
+  "payplus_prelaunch_url_gate": {
+    "status": "READY_TO_SHARE_PRELAUNCH_URL",
+    "candidate_url": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
+    "current_deploy_accepted": true,
+    "payment_live_required": false,
+    "supplier_live_required": false,
+    "source": "ops/hunt-payplus-prelaunch-url-gate.json"
+  }
+}

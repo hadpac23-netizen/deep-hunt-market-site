@@ -1,0 +1,60 @@
+{
+  "schema_version": "HUNT_EPROLO_PDP_DIRECT_QA_V1",
+  "observed_at": "2026-09-30",
+  "scope": "PR26_TARGET_9",
+  "provider": "EPROLO",
+  "destination": "IL",
+  "mode": "SUPPLIER_DIRECT_SHADOW_EVIDENCE",
+  "production_effect": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "summary": {
+    "targets": 9,
+    "supplier_http_200": 9,
+    "supplier_code_0": 9,
+    "exact_variant_found": 9,
+    "positive_inventory": 9,
+    "positive_supplier_cost": 9,
+    "primary_https_image": 9,
+    "image_technical_pass": 9,
+    "positive_target_retail": 9,
+    "market5_all_pass": 9,
+    "private_qa_pass": 9,
+    "source_payload_pdp_gate_promoted": 0,
+    "public_storefront_activated": 0
+  },
+  "evidence_contract": {
+    "supplier_endpoint": "EPROLO official exact product shipping/variant endpoint",
+    "exact_variant_required": true,
+    "inventory_required_gt": 0,
+    "supplier_cost_required_gt": 0,
+    "gallery_count_claim": 1,
+    "gallery_note": "Only the existing verified primary HTTPS image is counted. No additional gallery images are inferred.",
+    "options_note": "Exact supplier variants returned populated option fields used for size/color presence evidence.",
+    "retail_note": "Retail evidence is the existing positive HUNT target retail from profit_gate_v2; Final Profit Verified remains separate and is not claimed here."
+  },
+  "targets": [
+    {"item_id":"23148359","exact_variant_id":"613779727","supplier_inventory":791,"supplier_cost_usd":6.03,"qa_status":"PASS","activation":"HOLD"},
+    {"item_id":"31247128","exact_variant_id":"710085999","supplier_inventory":500,"supplier_cost_usd":15.76,"qa_status":"PASS","activation":"HOLD"},
+    {"item_id":"31247156","exact_variant_id":"710086177","supplier_inventory":500,"supplier_cost_usd":14.91,"qa_status":"PASS","activation":"HOLD"},
+    {"item_id":"31249023","exact_variant_id":"710100547","supplier_inventory":500,"supplier_cost_usd":7.88,"qa_status":"PASS","activation":"HOLD"},
+    {"item_id":"31265662","exact_variant_id":"710490096","supplier_inventory":983,"supplier_cost_usd":7.88,"qa_status":"PASS","activation":"HOLD"},
+    {"item_id":"31265690","exact_variant_id":"710490240","supplier_inventory":996,"supplier_cost_usd":28.54,"qa_status":"PASS","activation":"HOLD"},
+    {"item_id":"31265710","exact_variant_id":"710490347","supplier_inventory":968,"supplier_cost_usd":36.00,"qa_status":"PASS","activation":"HOLD"},
+    {"item_id":"31265732","exact_variant_id":"710490710","supplier_inventory":870,"supplier_cost_usd":13.20,"qa_status":"PASS","activation":"HOLD"},
+    {"item_id":"32354540","exact_variant_id":"727214143","supplier_inventory":998,"supplier_cost_usd":9.19,"qa_status":"PASS","activation":"HOLD"}
+  ],
+  "runtime_drift": {
+    "legacy_public_pdp_qa_attempt_targets": 9,
+    "legacy_public_pdp_qa_http_404": 9,
+    "interpretation": "The public storefront PDP route is not a valid bootstrap QA source for these non-promoted candidates in the current runtime. Supplier-direct evidence is authoritative for the shadow QA pass.",
+    "root_cause_proven": false,
+    "do_not_claim": "Do not attribute the 404s to a specific Pooler/database fault without direct evidence."
+  },
+  "activation_gate": {
+    "status": "HOLD",
+    "reason": "Do not update source_payload.pdp_detail_gate on the live database during PR26 shadow work because that could alter live storefront display eligibility.",
+    "owner_gate_required_before_production_change": true
+  },
+  "remaining_profit_blocker": "Destination tax/DDP truth is still unverified; this evidence does not change Final Profit Verified."
+}

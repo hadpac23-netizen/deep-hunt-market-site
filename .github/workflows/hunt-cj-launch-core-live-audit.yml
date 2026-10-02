@@ -1,0 +1,27 @@
+name: HUNT CJ launch core live audit
+
+on:
+  push:
+    branches:
+      - "launch/hunt-candidate-2026-09-29-v1"
+    paths:
+      - "scripts/hunt-cj-launch-core-live-audit.mjs"
+      - ".github/workflows/hunt-cj-launch-core-live-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "24"
+      - name: Audit 63 CJ exact variants read-only
+        run: node scripts/hunt-cj-launch-core-live-audit.mjs

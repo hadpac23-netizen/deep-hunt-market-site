@@ -1,0 +1,143 @@
+{
+  "evidence_id": "HUNT-CATALOG-READINESS-SHADOW-2026-10-01-V1",
+  "scope": "SHADOW_ONLY",
+  "merge": false,
+  "production_deploy": false,
+  "payment_live": false,
+  "payplus_paid_callback": false,
+  "supplier_live_order": false,
+  "catalog_snapshot": {
+    "total_candidates": 26375,
+    "taxonomy_gate_key_rows": 22386,
+    "taxonomy_canonical_shelf_rows": 21978,
+    "taxonomy_gate_key_without_canonical_shelf": 408,
+    "sellable_true": 0,
+    "production_effect_true": 0
+  },
+  "economics_materialization": {
+    "eprolo_new_rows": 0,
+    "cj_new_rows": 767,
+    "note": "Materialization used existing verified shadow observations only; no supplier order or payment action was invoked."
+  },
+  "verified_unit_economics": {
+    "EPROLO": {
+      "IL_pass_products": 2529,
+      "DE_pass_products": 2615,
+      "GB_pass_products": 2618,
+      "AE_pass_products": 2585,
+      "US_pass_products": 2628
+    },
+    "CJdropshipping": {
+      "IL_pass_products": 306,
+      "DE_pass_products": 270,
+      "GB_pass_products": 323,
+      "AE_pass_products": 333,
+      "US_pass_products": 209
+    },
+    "interpretation": "These are verified stock/shipping/cost unit-economics PASS records. They are not final transaction-tax profit verification."
+  },
+  "tax_reserve_truth": {
+    "IL": {"mode": "RESERVE_ONLY", "standard_rate": 0.18, "tax_verified": false},
+    "DE": {"mode": "RESERVE_ONLY", "standard_rate": 0.19, "tax_verified": false},
+    "GB": {"mode": "RESERVE_ONLY", "standard_rate": 0.20, "tax_verified": false},
+    "AE": {"mode": "RESERVE_ONLY", "standard_rate": 0.05, "tax_verified": false},
+    "US": {"mode": "HOLD", "reason": "ADDRESS_LEVEL_STATE_LOCAL_TAX_AND_NEXUS_REQUIRED", "tax_verified": false},
+    "stripe_tax_test_key_ready": false,
+    "stripe_tax_calculation_executed": false,
+    "final_profit_eligible_from_reserve_only": false
+  },
+  "reserve_safe_launch_shadow": {
+    "truth_products": 54,
+    "marked_products": 54,
+    "safe_markets": ["IL", "DE", "GB", "AE"],
+    "hold_markets": ["US"],
+    "market5_pass_products": 35,
+    "image_technical_pass_products": 54,
+    "final_visual_pass_products": 27,
+    "final_visual_review_products": 17,
+    "final_visual_hold_products": 8,
+    "final_visual_unreviewed_products": 2,
+    "sensitive_manual_review_required_products": 2,
+    "physical_metadata_verified_products_within_reserve_safe_set": 15,
+    "market5_visual_pass_physical_metadata_overlap": 11,
+    "physical_quality_pass_products": 0,
+    "final_profit_verified_products": 0,
+    "metadata_status": "RESERVE_SAFE_4_MARKETS_US_HOLD",
+    "tax_truth_mode": "RESERVE_ONLY",
+    "final_profit_verified": false
+  },
+  "physical_evidence_session": {
+    "dispatch_attempts": 62,
+    "fresh_verified_metadata": 61,
+    "fresh_timeout_count": 1,
+    "eprolo_physical_metadata_verified_status_total": 286,
+    "eprolo_physical_evidence_pending_total": 1,
+    "reserve_safe_preexisting_style_gate_reconciled": 2,
+    "reserve_safe_manual_pixel_pass_reconciled": 11,
+    "reserve_safe_targeted_metadata_verified_total": 13,
+    "physical_quality_policy": "UNVERIFIED_UNTIL_SAMPLE_OR_REVIEW_EVIDENCE",
+    "quality_signal_snapshot": {
+      "EPROLO_reserve_safe_products": 43,
+      "EPROLO_with_review_or_rating_signal": 0,
+      "CJ_reserve_safe_products": 11,
+      "CJ_with_existing_review_observation": 0,
+      "CJ_official_reviews_api_exists": true,
+      "CJ_reviews_connector_path_available_without_code_change": false
+    },
+    "timeout_item": {
+      "provider": "EPROLO",
+      "item_id": "21544182",
+      "variant_id": "594029038",
+      "fresh_request_result": "HTTP_RESPONSE_NULL_TIMEOUT",
+      "fresh_verified": false,
+      "historical_same_variant_metadata": {
+        "checked_at": "2026-09-26T09:03:42.195Z",
+        "evidence_status": "VERIFIED_METADATA",
+        "weight_g": 150,
+        "inventory_quantity": 798,
+        "supplier_cost_usd": 5.37
+      },
+      "policy": "KEEP_PENDING_NO_IMMEDIATE_RETRY"
+    }
+  },
+  "taxonomy_and_dispatch_repairs": {
+    "kids_underwear_missing_taxonomy_fixed": 4,
+    "kids_underwear_target": "kids -> kids-underwear",
+    "kids_underwear_physical_metadata_verified_after_fix": 4,
+    "dispatcher_excluded_ambiguous_rows_moved_to_hold": 4,
+    "dispatcher_excluded_reason": "CANONICAL_ROUTE_REVIEW_REQUIRED_BEFORE_PHYSICAL_DISPATCH",
+    "men_swimwear_title_pixel_taxonomy_fix": 1,
+    "men_swimwear_fixed_item_id": "2506050801591602700",
+    "reserve_safe_missing_image_technical_qa_backfilled": 4
+  },
+  "visual_truth": {
+    "technical_image_pass_is_not_pixel_pass": true,
+    "semantic_pixel_review_available": true,
+    "pixel_review_runner": "HUNT_MANUAL_PIXEL_QA_V1",
+    "exact_cdn_images_reviewed": 52,
+    "pixel_pass": 27,
+    "pixel_review": 17,
+    "pixel_hold": 8,
+    "pixel_unreviewed": 2,
+    "sensitive_apparel_manual_review_required": 2,
+    "external_browser_attempted": true,
+    "external_browser_result": "WALLET_INSUFFICIENT_NO_RUN",
+    "local_authorized_device_exact_cdn_review": "SUCCESS",
+    "policy": "DO_NOT_MARK_FINAL_VISUAL_PASS_WITHOUT_TRUE_PIXEL_CONTENT_REVIEW"
+  },
+  "next_gates": [
+    "Manual sensitive-apparel visual review remains for two reserve-safe rows; no automatic pixel pass was assigned",
+    "Physical quality/sample or official review evidence beyond supplier metadata; current reserve-safe quality PASS remains zero",
+    "Transaction-level tax truth; Stripe Tax test secret is not configured and US requires address-level state/local tax plus nexus determination",
+    "CJ official Product Reviews API can provide review evidence, but no existing HUNT read-only connector exposes it and no new Production function was deployed",
+    "Fresh retry of EPROLO item 21544182 only after cooldown or explicit targeted recheck",
+    "No readiness score increase until remaining gates have evidence"
+  ],
+  "safety_controls_verified": {
+    "hunt_payment_live": {"enabled": false, "owner_approved": false},
+    "hunt_payplus_callback_accept_paid": {"enabled": false, "owner_approved": false},
+    "hunt_supplier_order_live": {"enabled": false, "owner_approved": false},
+    "sellable_true": 0,
+    "production_effect_true": 0
+  }
+}

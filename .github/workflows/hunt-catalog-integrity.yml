@@ -1,0 +1,99 @@
+name: HUNT Catalog Integrity
+
+on:
+  push:
+    paths:
+      - 'supabase/functions/hunt-eprolo-catalog-fill-readonly/**'
+      - 'supabase/functions/hunt-eprolo-shelves-readonly/**'
+      - 'supabase/functions/_shared/final-profit-truth.mjs'
+      - 'supabase/functions/hunt-eprolo-variant-country-audit-shadow/**'
+      - 'supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/**'
+      - 'tests/final-profit-truth.test.js'
+      - 'ops/hunt-current-truth-overrides.json'
+      - 'ops/evidence/hunt-final-f35-red-team-*'
+      - 'tests/public-price-privacy.test.js'
+      - 'supabase/functions/_shared/public-price-privacy.mjs'
+      - 'supabase/functions/hunt-deals-hunt/**'
+      - 'product-flow.js'
+      - 'boom-promotions.js'
+      - 'catalog-home.json'
+      - 'catalog-snapshot.json'
+      - 'catalog-shards/**'
+      - 'supabase/functions/hunt-storefront/runtime.ts'
+      - 'supabase/functions/hunt-storefront/eprolo-shelves.ts'
+      - 'supabase/migrations/20261001013000_hunt_taxonomy_writer_guard_v3.sql'
+      - 'eprolo-shelves-bridge.js'
+      - 'canonical-taxonomy.js'
+      - 'category.html'
+      - 'product.html'
+      - 'profile.html'
+      - 'profile.js'
+      - 'hunt-deal.js'
+      - 'auth.js'
+      - 'pwa.js'
+      - 'service-worker.js'
+      - 'storefront-privacy.js'
+      - 'tests/eprolo-catalog-fill-integrity.test.js'
+      - 'tests/eprolo-live-shelves-bridge.test.js'
+      - 'tests/storefront-provider-privacy.test.js'
+      - 'tests/storefront-shell-readiness.test.js'
+      - 'tests/canonical-taxonomy-ui.test.js'
+      - 'tests/canonical-taxonomy-contract.test.js'
+      - 'tests/taxonomy-writer-guard-contract.test.js'
+      - '.github/workflows/hunt-catalog-integrity.yml'
+  pull_request:
+    paths:
+      - 'supabase/functions/hunt-eprolo-catalog-fill-readonly/**'
+      - 'supabase/functions/hunt-eprolo-shelves-readonly/**'
+      - 'supabase/functions/_shared/final-profit-truth.mjs'
+      - 'supabase/functions/hunt-eprolo-variant-country-audit-shadow/**'
+      - 'supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/**'
+      - 'tests/final-profit-truth.test.js'
+      - 'ops/hunt-current-truth-overrides.json'
+      - 'ops/evidence/hunt-final-f35-red-team-*'
+      - 'tests/public-price-privacy.test.js'
+      - 'supabase/functions/_shared/public-price-privacy.mjs'
+      - 'supabase/functions/hunt-deals-hunt/**'
+      - 'product-flow.js'
+      - 'boom-promotions.js'
+      - 'catalog-home.json'
+      - 'catalog-snapshot.json'
+      - 'catalog-shards/**'
+      - 'supabase/functions/hunt-storefront/runtime.ts'
+      - 'supabase/functions/hunt-storefront/eprolo-shelves.ts'
+      - 'supabase/migrations/20261001013000_hunt_taxonomy_writer_guard_v3.sql'
+      - 'eprolo-shelves-bridge.js'
+      - 'canonical-taxonomy.js'
+      - 'category.html'
+      - 'product.html'
+      - 'profile.html'
+      - 'profile.js'
+      - 'hunt-deal.js'
+      - 'auth.js'
+      - 'pwa.js'
+      - 'service-worker.js'
+      - 'storefront-privacy.js'
+      - 'tests/eprolo-catalog-fill-integrity.test.js'
+      - 'tests/eprolo-live-shelves-bridge.test.js'
+      - 'tests/storefront-provider-privacy.test.js'
+      - 'tests/storefront-shell-readiness.test.js'
+      - 'tests/canonical-taxonomy-ui.test.js'
+      - 'tests/canonical-taxonomy-contract.test.js'
+      - 'tests/taxonomy-writer-guard-contract.test.js'
+      - '.github/workflows/hunt-catalog-integrity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "24"
+      - run: node --check auth.js && node --check profile.js && node --check hunt-deal.js && node --check pwa.js && node --check service-worker.js && node --check storefront-privacy.js && node --check canonical-taxonomy.js
+      - run: node --test tests/public-price-privacy.test.js tests/final-profit-truth.test.js tests/eprolo-catalog-fill-integrity.test.js tests/eprolo-live-shelves-bridge.test.js tests/storefront-provider-privacy.test.js tests/storefront-shell-readiness.test.js tests/canonical-taxonomy-ui.test.js tests/canonical-taxonomy-contract.test.js tests/taxonomy-writer-guard-contract.test.js

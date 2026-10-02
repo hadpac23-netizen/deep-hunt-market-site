@@ -1,0 +1,88 @@
+{
+  "evidence_id": "HUNT-EPROLO-PDP-RUNTIME-BLOCKER-2026-10-01-V1",
+  "scope": "READ_ONLY_LIVE_CANARY",
+  "merge": false,
+  "production_deploy": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "runtime": {
+    "edge_function": "hunt-storefront",
+    "live_version": 140,
+    "canonical_shelves_http_status": 200,
+    "canonical_shelves_db_connection_mode": "supabase_rpc",
+    "canonical_shelves_count": 258,
+    "canonical_shelves_display_eligible": 247,
+    "canonical_shelves_quarantined": 11,
+    "canonical_shelves_final_profit_verified": 0,
+    "canonical_shelves_purchasable": false
+  },
+  "strict_pdp_canary": {
+    "provider": "EPROLO",
+    "requests": 8,
+    "http_200": 0,
+    "http_404": 8,
+    "response_body": "product not found",
+    "all_8_selected_by_pr26_strict_sql_predicate": true,
+    "sql_predicates_verified": [
+      "provider=EPROLO",
+      "production_effect=false",
+      "availability_verified=true",
+      "verified_inventory>0",
+      "taxonomy_gate_v2.status=REMAP",
+      "catalog_safety_status=PASS",
+      "image_technical_status=PASS",
+      "latest_market5_all_pass=true",
+      "profit_gate_v2.status=PROFIT_REVIEW",
+      "target_retail_usd>0",
+      "projected_product_contribution_usd>0",
+      "candidate_status allowed by eproloStrictProductDetail"
+    ],
+    "sample_item_ids": [
+      "19034207",
+      "28086613",
+      "32872079",
+      "30728767",
+      "31453966",
+      "30923638",
+      "32451883",
+      "28515385"
+    ]
+  },
+  "provider_truth_crosscheck": {
+    "same_exact_variants_verified_via_eprolo_api": true,
+    "exact_variant_metadata_calls_returned_http_200": true,
+    "supplier_cost_inventory_weight_verified_for_canary_items": true,
+    "provider_api_failure_explains_404": false
+  },
+  "code_path": {
+    "canonical_shelves": "Supabase REST RPC hunt_eprolo_canonical_shelves_rows",
+    "strict_pdp": "eproloStrictProductDetail -> eproloSqlClient -> raw Postgres URL",
+    "db_url_precedence": [
+      "HUNT_DB_POOLER_URL",
+      "SUPABASE_DB_POOLER_URL",
+      "SUPABASE_DB_URL"
+    ],
+    "early_null_behavior": "If eproloSqlClient() is null, eproloStrictProductDetail returns null before SQL and the endpoint responds 404.",
+    "error_log_behavior": "Caught DB/provider exceptions log EPROLO_PDP_DB_OR_PROVIDER_ERROR. No such event was observed for the canary window."
+  },
+  "assessment": {
+    "canonical_shelves_rpc_path": "PASS",
+    "strict_eprolo_pdp_runtime": "BLOCKED",
+    "most_likely_failure_point": "DB_CLIENT_PATH_MISSING_OR_NOT_OPERATIONAL_BEFORE_QUERY",
+    "confidence": "HIGH",
+    "pooler_specific_secret_presence_directly_verified": false,
+    "real_money_blocker": true,
+    "reason": "Strict EPROLO PDP returns 404 for 8/8 rows that satisfy its database predicate while the same exact variants are live and verified at the provider."
+  },
+  "source_of_truth_correction": {
+    "previous_closure_matrix_pdp_status": "PASS_CANONICALIZED",
+    "current_verified_pdp_status": "BLOCKED_RUNTIME_DB_PATH",
+    "closure_matrix_requires_refresh": true
+  },
+  "safety": {
+    "sellable_enabled": false,
+    "production_effect_enabled": false,
+    "payment_or_order_action_invoked": false
+  },
+  "next_action_requires_owner_gate": "Restore/replace the strict PDP DB path (prefer RPC or correctly configured transaction pooler) and redeploy/validate only after explicit Owner Gate."
+}

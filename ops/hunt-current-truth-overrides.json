@@ -1,0 +1,101 @@
+{
+  "schema_version": "HUNT_CURRENT_TRUTH_OVERRIDES_V1",
+  "observed_at": "2026-10-02T19:06:13.985807+00:00",
+  "purpose": "Authoritative overrides for facts re-verified after the 2026-10-01 launch-closure snapshot. Historical evidence is preserved but must not override newer direct verification.",
+  "git_governance": {
+    "status": "UNVERIFIED_PERMISSION_LIMIT",
+    "branch_protection_verified": false,
+    "branch_protection_enabled": null,
+    "rulesets_count": 0,
+    "required_status_checks_enforced": null,
+    "verification_note": "Current GitHub integration can read rulesets and observed zero rulesets, but classic branch-protection read returned an integration-permission error. Do not infer protected or unprotected from that result.",
+    "blocks_real_money": true
+  },
+  "security": {
+    "leaked_password_protection": false,
+    "advisor_warning_confirmed": true,
+    "project_plan_verified": false,
+    "setting_scope": "SUPABASE_AUTH_DASHBOARD_OR_MANAGEMENT",
+    "code_fix_available_in_pr26": false,
+    "customer_ui_password_auth_present": false,
+    "auth_code_paths": [
+      "MAGIC_LINK",
+      "OAUTH",
+      "GOOGLE_ID_TOKEN"
+    ],
+    "recent_auth_log_password_flow_observed": false,
+    "blocks_real_money": true,
+    "priority": "POST_LAUNCH_PROJECT_SECURITY_HARDENING_UNLESS_PASSWORD_AUTH_IS_INTRODUCED",
+    "note": "The advisor proves leaked-password protection is disabled but does not prove the project's subscription plan. HUNT currently exposes no password-auth customer flow, and recent auth logs showed only settings reads, so this warning remains open hardening rather than a HUNT payment/fulfillment launch blocker. Re-evaluate immediately if password auth is introduced.",
+    "public_supplier_cost_exposure": "FAIL_PUBLIC_PRELAUNCH",
+    "public_margin_exposure": "FAIL_PUBLIC_PRELAUNCH",
+    "public_cost_privacy_fix": "BRANCH_ONLY_TESTED_NOT_DEPLOYED",
+    "leaked_password_protection_blocks_real_money": false,
+    "public_cost_privacy_blocks_real_money": true
+  },
+  "legal": {
+    "customer_contacts_complete": true,
+    "returns_solution_complete": true,
+    "returns_workflow_owner_approved": true,
+    "customer_policy_pages_verified": true,
+    "real_money_business_address_disclosure_pending": true,
+    "active_market_transaction_disclosures_pending": true,
+    "blocks_real_money": true
+  },
+  "supplier_privacy": {
+    "customer_visible_supplier_names": "PARTIAL_CURRENT_DESKTOP_SAMPLE_NO_NAME_HITS_FULL_FLOW_UNVERIFIED",
+    "opaque_product_source_codes": true,
+    "raw_provider_query_parameter_removed_from_customer_product_urls": true,
+    "strict_network_anonymity": "PARTIAL",
+    "strict_network_anonymity_reason": "Supplier/CDN domains or internal provider metadata can remain discoverable to a technical user through DevTools/network paths until server-side API/media proxying is introduced.",
+    "strict_network_anonymity_blocks_real_money": false,
+    "strict_network_anonymity_priority": "POST_LAUNCH_HARDENING",
+    "supplier_cost_or_margin_exposure": true,
+    "cost_privacy_blocks_real_money": true
+  },
+  "safety": {
+    "payment_live": false,
+    "supplier_live_order": false,
+    "profit_release": false,
+    "payplus_paid_acceptance": false,
+    "merge_allowed": false,
+    "production_deploy_allowed": false
+  },
+  "runtime": {
+    "storefront_branch_db_mode": "SUPABASE_RPC",
+    "storefront_live_version": 142,
+    "storefront_live_source_commit": "60df8153d4414aa95f6536c69ca9ecc76c630757",
+    "storefront_branch_raw_pooler_reference": false,
+    "storefront_live_raw_pooler_reference": null,
+    "payment_session_raw_pooler_reference": false,
+    "order_preview_raw_pooler_reference": false,
+    "order_orchestrator_raw_pooler_reference": false,
+    "eprolo_country_shadow_raw_pooler_reference": false,
+    "freshness_runner_branch_raw_pooler_reference": true,
+    "pooler_blocker_status": "CLOSED_STALE_AS_INDEPENDENT_BLOCKER",
+    "pooler_note": "Branch storefront/payment/order paths use Supabase RPC or HTTP; no independent raw Pooler blocker is inferred. Undeployed freshness runner retains Postgres/Pooler dependency and requires its own controlled shadow runtime proof.",
+    "blocks_real_money": true,
+    "storefront_live_source_comparison": "WRAPPER_READ_MODULE_CONTENTS_NOT_RETURNED_BY_TOOL",
+    "critical_paths_current_run_verified": false
+  },
+  "browser_red_team": {
+    "status": "FAIL_PUBLIC_PRELAUNCH_RUNTIME",
+    "source_head_before_fixes": "12b8b16f870c36269d1620f5cc743de371a4f4c6",
+    "preview_url": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
+    "preview_current_branch_equivalence": false,
+    "exact_shelf_failed_fetch": true,
+    "public_api_baseline_requests": 30,
+    "public_api_baseline_errors": 30,
+    "mobile_390_current_run_verified": false,
+    "authenticated_flow_verified": false,
+    "blocks_real_money": true
+  },
+  "supplier_e2e": {
+    "status": "BLOCKED",
+    "admin_session_metadata_unexpired_last30d": 1,
+    "usable_test_jwt_verified": false,
+    "supplier_order_ids": 0,
+    "tracking": 0,
+    "shipped": 0
+  }
+}

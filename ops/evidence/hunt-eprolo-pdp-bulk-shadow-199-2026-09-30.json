@@ -1,0 +1,84 @@
+{
+  "schema_version": "HUNT_EPROLO_PDP_BULK_SHADOW_V6",
+  "observed_at": "2026-09-30T20:45:00Z",
+  "provider": "EPROLO",
+  "destination": "IL",
+  "mode": "SUPPLIER_DIRECT_SHADOW_EVIDENCE",
+  "production_effect": false,
+  "sellable": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "database_activation_writes": 0,
+  "source_payload_updates": 0,
+  "private_pdp_qa_rows_written": 0,
+  "summary": {
+    "targets": 199,
+    "supplier_http_200": 199,
+    "exact_variant_found": 199,
+    "positive_inventory": 199,
+    "positive_supplier_cost": 199,
+    "shipping_to_il_verified": 199,
+    "pretax_profit_pass": 105,
+    "pretax_profit_review": 94,
+    "pretax_profit_block": 0,
+    "destination_tax_verified": 0,
+    "final_profit_verified": 0,
+    "existing_pdp_detail_pass": 174,
+    "canonical_readiness_promotions": 0
+  },
+  "new_batches": [
+    {
+      "name": "BATCH_9_ACCESSORIES_BEAUTY_TRAVEL",
+      "targets": 24,
+      "shelves": ["bag-accessories","beauty-tools","hair","luggage","socks"],
+      "pretax_pass": 10,
+      "pretax_review": 14,
+      "request_id_range": [18145,18168]
+    },
+    {
+      "name": "BATCH_10_TECH_KIDS_KNITWEAR",
+      "targets": 19,
+      "shelves": ["chargers-cables","kids-accessories","men-hoodies","men-knitwear","women-knitwear"],
+      "pretax_pass": 12,
+      "pretax_review": 7,
+      "request_id_range": [18169,18187]
+    },
+    {
+      "name": "BATCH_11_SHOES_DENIM_OUTERWEAR_CAMERA_SUNGLASSES",
+      "targets": 17,
+      "shelves": ["kids-shoes","men-jeans","men-outerwear","cameras","sunglasses","camp-cooking","baby","kitchen-tools","men-shirts"],
+      "pretax_pass": 8,
+      "pretax_review": 9,
+      "request_id_range": [18188,18204]
+    }
+  ],
+  "red_team_rejections": [
+    {"reason":"MAKEUP_HORROR_HALLOWEEN_IP_OR_INGREDIENT_TRUTH_NOT_SUITABLE_FOR_CORE_FILL"},
+    {"reason":"WOMEN_TOPS_UNISEX_ITEMS_HELD_TO_AVOID_DEMOGRAPHIC_CROSS_MIX"},
+    {"reason":"GIFT_DECOR_SEASONAL_CHRISTMAS_HELD_OUT_OF_CORE_FILL"},
+    {"reason":"PET_CLOTHING_SEASONAL_COSTUME_OR_HUMAN_DRESS_FALSE_POSITIVE"},
+    {"reason":"PHONE_CASES_FALSE_POSITIVE_ARM_BAG_KEYCHAIN_OR_SHOWER_HOLDER"},
+    {"reason":"MEN_KNITWEAR_AMBIGUOUS_CHILDRENS_TITLE_HELD"},
+    {"reason":"BATH_SEASONAL_OR_GARFIELD_IP_HELD"},
+    {"reason":"MIRRORS_FALSE_POSITIVE_EYEGLASS_FRAME_OR_FLOWER_POT"},
+    {"reason":"HAIR_ACCESSORY_HALLOWEEN_COSPLAY_HELD"},
+    {"reason":"MEN_OUTERWEAR_WOMEN_LIKE_GODDESS_TITLE_FALSE_POSITIVE_HELD"},
+    {"reason":"BELT_DESIGNER_BRAND_CLAIM_UNVERIFIED_HELD"},
+    {"reason":"BABY_CLOTHING_MATERNITY_OR_NAIL_CARE_MISCLASSIFICATION_HELD"},
+    {"reason":"KITCHEN_AVENGERS_JUSTICE_LEAGUE_IP_EXCLUDED"},
+    {"reason":"MEN_SHIRT_ANIME_PRINT_HELD_FOR_IP_REVIEW"},
+    {"reason":"PET_GROOMING_CLOTHING_OR_HALLOWEEN_FALSE_POSITIVE_HELD"}
+  ],
+  "safety_gate": {
+    "status": "HOLD",
+    "reason": "One hundred seventy-four audited rows already have PDP detail PASS. Writing private PDP QA PASS could satisfy the live canonical readiness intersection and alter storefront display eligibility. No readiness DB writes were made.",
+    "owner_gate_required_before_live_readiness_write": true
+  },
+  "tax_ddp_status": "DESTINATION_TAX_NOT_VERIFIED",
+  "do_not_claim": [
+    "Do not claim the 199 products are Canonical PDP Ready.",
+    "Do not claim destination tax or DDP is verified.",
+    "Do not claim Final Profit Verified.",
+    "Do not make private PDP QA or source-payload readiness writes without evaluating live RPC impact and Owner Gate."
+  ]
+}

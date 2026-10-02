@@ -1,0 +1,28 @@
+{
+  "schema_version": "HUNT_MAIN_BRANCH_PROTECTION_PLAN_V1",
+  "current_state": "VERIFIED_UNPROTECTED",
+  "default_branch": "main",
+  "rulesets_count": 0,
+  "apply_now": false,
+  "owner_gate_required": true,
+  "required_pull_request": {
+    "enabled": true,
+    "dismiss_stale_reviews": true,
+    "require_code_owner_reviews": false,
+    "required_approving_review_count": 1
+  },
+  "required_status_checks": [
+    "HUNT checkout regression",
+    "HUNT Catalog Integrity"
+  ],
+  "require_conversation_resolution": true,
+  "require_linear_history": false,
+  "allow_force_pushes": false,
+  "allow_deletions": false,
+  "admin_enforcement": "OWNER_DECISION_REQUIRED",
+  "post_apply_verification": [
+    "Read branch protection back through an admin-authorized account",
+    "Confirm both HUNT checks are required before merge",
+    "Open a test PR and verify merge is blocked while either required check is pending or failing"
+  ]
+}

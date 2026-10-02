@@ -1,0 +1,89 @@
+{
+  "evidence_version": "HUNT_EPROLO_CANONICAL_CORE_RUNTIME_PROOF_V1",
+  "observed_at": "2026-09-30",
+  "provider": "EPROLO",
+  "destination_country": "IL",
+  "runtime_function": "hunt-eprolo-variant-country-audit-shadow",
+  "runtime_version": 2,
+  "mode": "BATCH_SHADOW_READONLY",
+  "canonical_core_total": 261,
+  "audit_batches": [
+    {
+      "offset": 0,
+      "request_id": 17846,
+      "selected": 25
+    },
+    {
+      "offset": 25,
+      "request_id": 17847,
+      "selected": 25
+    },
+    {
+      "offset": 50,
+      "request_id": 17848,
+      "selected": 25
+    },
+    {
+      "offset": 75,
+      "request_id": 17849,
+      "selected": 25
+    },
+    {
+      "offset": 100,
+      "request_id": 17850,
+      "selected": 25
+    },
+    {
+      "offset": 125,
+      "request_id": 17851,
+      "selected": 25
+    },
+    {
+      "offset": 150,
+      "request_id": 17852,
+      "selected": 25
+    },
+    {
+      "offset": 175,
+      "request_id": 17853,
+      "selected": 25
+    },
+    {
+      "offset": 200,
+      "request_id": 17854,
+      "selected": 25
+    },
+    {
+      "offset": 225,
+      "request_id": 17855,
+      "selected": 25
+    },
+    {
+      "offset": 250,
+      "request_id": 17856,
+      "selected": 11
+    }
+  ],
+  "verified": {
+    "audited": 261,
+    "exact_variant_missing": 0,
+    "retry": 0,
+    "out_of_stock": 0,
+    "no_shipping": 0,
+    "tax_unverified": 261,
+    "final_profit_verified": 0,
+    "pretax_profit_pass": 132,
+    "pretax_profit_review": 129,
+    "pretax_profit_block": 0,
+    "min_inventory": 81,
+    "max_inventory": 99999977,
+    "average_shipping_usd": 14.38,
+    "average_supplier_cost_usd": 7.91
+  },
+  "conclusion": "All 261 canonical exact variants returned live stock, supplier cost and an IL shipping route without API retry or exact-variant mismatch. Provider tax truth was absent for all 261, so Final Profit remains unverified and every item stays fail-closed HOLD for real-money readiness.",
+  "writes": false,
+  "sellable_changed": false,
+  "payment_changed": false,
+  "supplier_order_changed": false,
+  "production_effect": false
+}

@@ -1,0 +1,107 @@
+{
+  "schema_version": "HUNT_SHADOW_FILL_317_V1",
+  "observed_date": "2026-10-01",
+  "mode": "SHADOW_SUPPLIER_AND_CATALOG_DEPTH_EVIDENCE",
+  "production_effect": false,
+  "sellable_changes": 0,
+  "canonical_readiness_promotions": 0,
+  "source_payload_readiness_writes": 0,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "baseline": {
+    "evidence_file": "ops/evidence/hunt-shadow-fill-296-market5-depth-2026-09-30.json",
+    "supplier_verified_total": 296,
+    "shelves_ge_5_projected": 43,
+    "thin_shelves_2_to_4_projected": 9,
+    "single_item_shelves_projected": 1
+  },
+  "new_supplier_checks": {
+    "attempted": 22,
+    "supplier_verified": 21,
+    "no_verified_shipping": 1,
+    "pretax_pass": 4,
+    "pretax_review": 8,
+    "retail_price_unverified": 9,
+    "pretax_block": 0
+  },
+  "updated_supplier_summary": {
+    "supplier_verified_total": 317,
+    "eprolo_supplier_verified": 316,
+    "cj_live_verified_pass": 1,
+    "direct_pretax_pass": 155,
+    "direct_pretax_review": 149,
+    "retail_price_unverified": 13,
+    "direct_pretax_block": 0,
+    "destination_tax_verified": 0,
+    "final_profit_verified": 0
+  },
+  "new_image_qa": {
+    "tested": 5,
+    "pass": 4,
+    "review": 1,
+    "pass_items": ["30844944","31416660","30791567","32020531"],
+    "review_items": ["9381266"]
+  },
+  "new_market5": {
+    "markets": ["US","DE","GB","IL","AE"],
+    "products_tested": 8,
+    "all_5_pass": 7,
+    "partial": 1,
+    "all_5_pass_items": ["30844944","19030212","31416660","30791567","30916109","31488083","9381266"],
+    "partial_items": [{"item_id":"32020531","pass_count":3,"requested_count":5}],
+    "note": "Market5 uses shadow retail floors and does not replace source retail verification, destination-tax truth, or Final Profit verification."
+  },
+  "shelf_depth_projection": {
+    "covered_shelves": 53,
+    "shelves_ge_5": 51,
+    "shelves_2_to_4": [
+      {"department":"women","shelf":"women-socks","verified_items":4,"status":"SOURCING_GAP"}
+    ],
+    "shelves_eq_1": [
+      {"department":"home","shelf":"entryway","verified_items":1,"status":"SOURCING_GAP"}
+    ],
+    "status": "PROJECTED_NOT_CURRENT",
+    "reason": "Projection assumes correct branch-only taxonomy/evidence integration for newly verified true-match items. No live taxonomy or readiness writes were made."
+  },
+  "entryway_red_team": {
+    "accepted_as_near_candidates": [
+      {"item_id":"9381266","title":"Vortex Illusion Doormat","supplier_truth":"PASS_EXCEPT_RETAIL_UNVERIFIED","image":"REVIEW","market5":"5_OF_5_PASS","counted_in_depth":false},
+      {"item_id":"32020531","title":"Home Multi-Layer Shoe Shelf, Doorway Entrance","supplier_truth":"NO_VERIFIED_SHIPPING_TO_IL","image":"PASS","market5":"3_OF_5_PASS","counted_in_depth":false}
+    ],
+    "rejected_patterns": [
+      "bathroom/shower mats used as entryway fillers",
+      "picnic/camping mats",
+      "pendant lights that merely mention entryway",
+      "tissue boxes that merely mention entryway",
+      "EDC/car key organizers",
+      "ozone/air-freshener products mentioning shoe cabinets",
+      "apparel false positives from the phrase coat stand collar"
+    ],
+    "cj_entryway": {
+      "route_candidates": 4,
+      "product_detail_true_match_found": "Combination Type Simple Shoe Rack",
+      "country_readiness_result": "UNVERIFIED_500",
+      "other_results": ["UNVERIFIED_500","NO_LIVE_COSTED_VARIANT_WITH_SHIPPING","NO_LIVE_COSTED_VARIANT_WITH_SHIPPING"],
+      "counted": 0
+    }
+  },
+  "red_team": {
+    "women_bottoms": "Swimwear items were excluded from Women Bottoms.",
+    "women_dresses": "Nightwear/robes and Halloween/costume items were excluded from Dresses.",
+    "women_jeans": "Men+Women/unisex denim was excluded from the women-only shelf.",
+    "entryway": "No product was counted solely because its title contained the word entryway."
+  },
+  "holds": [
+    "Women Socks remains at projected depth 4; no new clean EPROLO or CJ candidate was found without cross-mix.",
+    "Entryway remains at projected depth 1; near-candidates failed image/shipping completeness and are not counted.",
+    "Destination tax/DDP remains unverified; Final Profit Verified remains 0.",
+    "No live taxonomy, storefront visibility, sellable, payment, or supplier-order changes were made."
+  ],
+  "do_not_claim": [
+    "Do not claim 317 products are Canonical PDP Ready.",
+    "Do not claim 317 products are live or sellable.",
+    "Do not claim 51 shelves currently have 5+ live products; this is projected branch-only depth after correct integration.",
+    "Do not claim Women Socks or Entryway have 5+ verified products.",
+    "Do not claim destination tax/DDP or Final Profit is verified."
+  ]
+}

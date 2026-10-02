@@ -1,0 +1,271 @@
+{
+  "schema_version": "HUNT_EPROLO_ORDER_CONTRACT_V2",
+  "provider": "EPROLO",
+  "state": "OFFICIAL_ORDER_AND_TRACKING_CONTRACT_DOCUMENTED_EXECUTION_BLOCKED",
+  "official_source": {
+    "source_type": "ACCOUNT_SUPPORT_REP_SUPPLIED_SHOWDOC",
+    "project_name": "EPROLO-API-DOC",
+    "showdoc_project_id": "1196052652818927",
+    "showdoc_url": "https://www.showdoc.com.cn/1196052652818927/6042185641524205",
+    "received_from": "EPROLO Account Support Rep",
+    "credentials_recorded_in_repo": false
+  },
+  "authentication_contract": {
+    "base_url": "https://openapi.eprolo.com/",
+    "api_key_header": "apiKey",
+    "signature": "MD5(apiKey + timestamp + apiSecret)",
+    "timestamp": "13-digit milliseconds, GMT+00, current within 1 day",
+    "content_type": "application/json",
+    "credential_values_stored": false
+  },
+  "verified_readonly_api": {
+    "endpoints": [
+      {
+        "name": "product_list",
+        "path": "eprolo_product_list.html",
+        "verified_in_runtime": true
+      },
+      {
+        "name": "exact_variant_shipping_cost_stock",
+        "path": "get_product_shiping_fees.html",
+        "verified_in_runtime": true
+      },
+      {
+        "name": "order_list",
+        "path": "order_list.html",
+        "method": "GET",
+        "contract_documented": true,
+        "executed_by_hunt": false
+      },
+      {
+        "name": "order_price_by_products",
+        "path": "getCostByProduct.html",
+        "method": "GET",
+        "contract_documented": true,
+        "executed_by_hunt": false
+      }
+    ]
+  },
+  "official_order_contract": {
+    "new_order": {
+      "page_id": "6042190105076667",
+      "path": "add_order.html",
+      "method": "POST",
+      "mutating": true,
+      "required_fields": [
+        "tax_cost",
+        "order_id",
+        "shipping_country",
+        "shipping_country_code",
+        "shipping_province",
+        "shipping_province_code",
+        "shipping_post_code",
+        "shipping_city",
+        "shipping_name",
+        "shipping_address",
+        "order_number",
+        "orderItemlist[].variantsid",
+        "orderItemlist[].quantity"
+      ],
+      "merchant_order_reference": "order_id is documented as customer order ID and unique value",
+      "variant_rule": "variantsid must come from Get Product Detail, not Get All Products on EPROLO",
+      "example_only_fields_not_marked_required_in_parameter_table": [
+        "shipping_taxNumber",
+        "logistics_id"
+      ],
+      "executed_by_hunt": false
+    },
+    "order_query": {
+      "page_id": "6042189651596360",
+      "path": "order_list.html",
+      "method": "GET",
+      "mutating": false,
+      "required_fields": [
+        "status"
+      ],
+      "query_fields": [
+        "eOrderCodes",
+        "order_id",
+        "order_number",
+        "page",
+        "page_size",
+        "begin_time",
+        "end_time",
+        "begin_update_time",
+        "end_update_time",
+        "status_exception"
+      ],
+      "status_map": {
+        "0": "all",
+        "1": "unpaid",
+        "2": "paid",
+        "3": "refunded",
+        "4": "sourcing",
+        "6": "shipped",
+        "7": "partially delivered",
+        "8": "cancelled"
+      },
+      "tracking_fields": [
+        "tracking_number",
+        "tracking_company",
+        "tracking_url",
+        "stock_status",
+        "line_items_ids"
+      ],
+      "executed_by_hunt": false
+    },
+    "order_price_quote": {
+      "page_id": "7664594074445455",
+      "path": "getCostByProduct.html",
+      "method": "GET",
+      "mutating": false,
+      "required_fields": [
+        "shipping_country_code",
+        "skulist[].variantsid",
+        "skulist[].quantity"
+      ],
+      "returns": [
+        "currency",
+        "skulist",
+        "logistics_cost_list[].logistics_id",
+        "logistics_cost_list[].ship_cost_basic",
+        "logistics_cost_list[].tax_cost",
+        "logistics_cost_list[].branding_cost",
+        "logistics_cost_list[].cost_total",
+        "logistics_cost_list[].pay_subtotal",
+        "logistics_cost_list[].ship_method",
+        "logistics_cost_list[].shiptime"
+      ],
+      "tax_semantics": "tax_cost documented as tax fee, e.g. IOSS in EU",
+      "executed_by_hunt": false,
+      "documented_method": "GET",
+      "runtime_observed_supported_method": "POST",
+      "method_contract_mismatch": true,
+      "runtime_probe_2026_10_01": {
+        "get_request": "HTTP_405_SUPPORTED_METHOD_POST",
+        "post_empty_body": "HTTP_200_API_CODE_-1_PARAMETER_IS_EMPTY",
+        "post_exact_variant_without_productid": "API_CODE_-1_VARIANTS_NOT_FOUND",
+        "post_exact_variant_with_productid": "API_CODE_-1_VARIANTS_NOT_FOUND",
+        "canonical_variants_probed": [
+          "561267768",
+          "670476207",
+          "701619308",
+          "733697951"
+        ],
+        "supplier_mutation_performed": false,
+        "tax_truth_verified": false
+      },
+      "product_list_crosscheck": {
+        "19034207": {
+          "variant_id": "561267768",
+          "product_list_match": true
+        },
+        "28086613": {
+          "variant_id": "670476207",
+          "product_list_match": true
+        },
+        "30723602": {
+          "variant_id": "701619308",
+          "product_list_match": "NOT_RECONFIRMED_PAGE_MOVED_NO_DATA"
+        },
+        "32872079": {
+          "variant_id": "733697951",
+          "product_list_match": "NOT_FOUND_ON_REPROBED_PAGE"
+        }
+      }
+    },
+    "cancel_order": {
+      "page_id": "6042192295381694",
+      "path": "cancel_orders.html",
+      "method": "POST",
+      "mutating": true,
+      "required_fields": [
+        "ids"
+      ],
+      "optional_fields": [
+        "remark"
+      ],
+      "executed_by_hunt": false
+    },
+    "webhook_setup": {
+      "page_id": "11558857033516663",
+      "path": "add_shop_webhook.html",
+      "method": "POST",
+      "mutating": true,
+      "required_fields": [
+        "url",
+        "sign_key",
+        "type"
+      ],
+      "types": {
+        "0": "Order shipped",
+        "1": "Quotation successful"
+      },
+      "executed_by_hunt": false
+    },
+    "webhook_order_push": {
+      "page_id": "11558857072809916",
+      "delivery": "POST to merchant-configured webhook URL",
+      "mutating_supplier_state": false,
+      "fields": [
+        "order_id",
+        "line_items_ids",
+        "tracking_number",
+        "tracking_company",
+        "tracking_url",
+        "createtime",
+        "stock_status"
+      ],
+      "signature_header": "md5sign = MD5(Body + sign_key)",
+      "received_by_hunt": false
+    },
+    "error_codes": {
+      "page_id": "6042186085199696",
+      "documented": {
+        "0": "Succeed",
+        "-1": "Fail",
+        "-10000": "(Add/Edit) failed"
+      }
+    },
+    "store_import_context": {
+      "path": "add_product.html",
+      "method": "POST",
+      "mutating": true,
+      "request": "ids[] of EPROLO platform product ids",
+      "returns_store_product_and_variant_ids": true,
+      "executed_by_hunt": false,
+      "possible_order_namespace_prerequisite": "UNVERIFIED_HYPOTHESIS"
+    }
+  },
+  "execution_proof": {
+    "new_order_called": false,
+    "cancel_order_called": false,
+    "webhook_configured": false,
+    "order_list_called_by_hunt": false,
+    "get_cost_by_product_called_by_hunt": true,
+    "supplier_submission_performed": false,
+    "sandbox_or_non_billable_mode_verified": false,
+    "tracking_e2e_verified": false,
+    "get_cost_by_product_readonly_probe_only": true,
+    "get_cost_by_product_tax_truth_verified": false
+  },
+  "remaining_before_supplier_order_enable": [
+    "resolve getCostByProduct runtime contract mismatch: docs say GET, live API requires POST, and current canonical variants are rejected by pricing lookup",
+    "verify whether Store import via add_product.html is the required namespace bridge for getCostByProduct/order variants, using only an Owner-approved non-live path",
+    "verify whether EPROLO offers a sandbox or explicitly non-billable order mode",
+    "implement and review fail-closed request/response mapping in PR26 without enabling submission",
+    "prove read-only order_list/getCostByProduct behavior before any mutating supplier call",
+    "Owner Gate before any mutating supplier API call",
+    "prove end-to-end order/tracking only in an approved non-live mode"
+  ],
+  "rules": {
+    "guess_endpoint": false,
+    "supplier_submission_allowed": false,
+    "supplier_live_order_allowed": false,
+    "dry_run_shadow_contract_allowed": true,
+    "mutating_supplier_api_calls_allowed": false,
+    "prepayment_fresh_variant_recheck_required": true,
+    "presupplier_fresh_variant_recheck_required": true,
+    "owner_gate_required": true
+  }
+}

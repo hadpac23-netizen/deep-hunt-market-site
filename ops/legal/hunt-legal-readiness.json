@@ -1,0 +1,40 @@
+{
+  "schema_version": "HUNT_LEGAL_READINESS_V1",
+  "status": "PRELAUNCH_POLICIES_READY_REAL_MONEY_DISCLOSURES_PENDING",
+  "owner_approved": false,
+  "verified_operating_entity_fields_complete": true,
+  "public_contacts": {
+    "support_email": "hacoachle@gmail.com",
+    "privacy_contact_email": "hacoachle@gmail.com",
+    "returns_address": null
+  },
+  "company_mailbox_candidate_exists": true,
+  "company_mailbox_candidate_designated_for_customer_support": true,
+  "policies": {
+    "terms": "PRELAUNCH_PUBLIC_REVIEWED",
+    "privacy": "PRELAUNCH_PUBLIC_REVIEWED",
+    "returns_refunds": "PRELAUNCH_PUBLIC_REVIEWED",
+    "shipping_delivery": "PRELAUNCH_PUBLIC_REVIEWED"
+  },
+  "publication_gate": "PRELAUNCH_POLICY_PUBLICATION_APPROVED",
+  "note": "Support/privacy contacts and the Return Authorization workflow are approved. Pre-launch policy pages may be public. Real-money launch remains blocked until full transaction disclosures, including registered business address where required, and all payment/tax/fulfillment gates are complete.",
+  "returns_workflow_draft_ready": true,
+  "returns_workflow_owner_approved": true,
+  "returns_workflow_file": "ops/legal/hunt-returns-workflow-draft.json",
+  "returns_workflow_status": "OWNER_APPROVED_OPERATIONAL_WORKFLOW",
+  "policy_publication_owner_approved": true,
+  "public_policy_pages": {
+    "terms": "terms.html",
+    "privacy": "privacy.html",
+    "returns_refunds": "returns.html",
+    "shipping_delivery": "shipping.html"
+  },
+  "real_money_business_address_disclosure_pending": true,
+  "customer_policy_pages_verified": true,
+  "policy_review_basis": [
+    "Israel Consumer Protection and Fair Trade Authority distance-sale guidance",
+    "Israel Privacy Protection Authority Amendment 13 guidance",
+    "HUNT verified runtime/data-handling behavior"
+  ],
+  "money_live_disclosure_gate": "REGISTERED_BUSINESS_ADDRESS_AND_ACTIVE_MARKET_TRANSACTION_DISCLOSURES_REQUIRED"
+}

@@ -1,0 +1,60 @@
+{
+  "evidence_id": "HUNT-PAYPLUS-OFFICIAL-API-CONTRACT-AUDIT-2026-10-01-V1",
+  "observed_at": "2026-10-01T08:06:16Z",
+  "scope": "OFFICIAL_PUBLIC_DOCUMENTATION_VS_PR26_CODE_NO_PAYMENT_CALLS",
+  "official_contract": {
+    "environments": {
+      "staging": "https://restapidev.payplus.co.il/api/v1.0/",
+      "production": "https://restapi.payplus.co.il/api/v1.0/"
+    },
+    "generate_link": {
+      "method": "POST",
+      "path": "/PaymentPages/generateLink",
+      "requires": [
+        "payment_page_uid",
+        "api-key",
+        "secret-key"
+      ],
+      "callback_parameter": "refURL_callback"
+    },
+    "ipn_full": {
+      "method": "POST",
+      "path": "/PaymentPages/ipn-full",
+      "requires_auth_headers": [
+        "api-key",
+        "secret-key"
+      ]
+    },
+    "callback_auth": {
+      "required_user_agent": "PayPlus",
+      "algorithm": "HMAC-SHA256",
+      "message": "JSON.stringify(body)",
+      "digest_encoding": "base64"
+    },
+    "server_side_only": true
+  },
+  "pr26_code_check": {
+    "sandbox_base_matches_staging": true,
+    "generate_link_method_path_match": true,
+    "generate_link_auth_headers_match": true,
+    "payment_page_uid_supplied_from_secret": true,
+    "callback_hmac_sha256_base64_match": true,
+    "callback_user_agent_check_match": true,
+    "ipn_full_requery_present": true,
+    "paid_acceptance_kill_switch_remains_off_in_live_evidence": true
+  },
+  "remaining_blockers": [
+    "Sandbox credentials are not present in current Supabase Vault evidence.",
+    "Sandbox evidence runtime control is disabled.",
+    "No signed callback/IPN/idempotent paid-transition sandbox E2E proof exists yet."
+  ],
+  "safety": {
+    "payment_api_called": false,
+    "payment_created": false,
+    "payment_live": false,
+    "payplus_accept_paid": false,
+    "supplier_live_order": false,
+    "production_deploy": false
+  },
+  "readiness_change": false
+}

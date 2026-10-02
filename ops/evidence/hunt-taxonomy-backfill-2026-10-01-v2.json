@@ -1,0 +1,66 @@
+{
+  "evidence_id": "HUNT-TAXONOMY-BACKFILL-2026-10-01-V2",
+  "scope": "SHADOW_ONLY",
+  "merge": false,
+  "production_deploy": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "catalog_truth": {
+    "total_candidates": 26375,
+    "taxonomy_mapped": 21973,
+    "raw_unmapped": 4402,
+    "base_valid_noncanonical": 4210,
+    "true_semantic_qa": 192,
+    "qa_hold_review": 192,
+    "qa_needing_active_decision": 0,
+    "sellable_true": 0,
+    "production_effect_true": 0
+  },
+  "repairs": {
+    "taxonomy_hold_resolution_v1": 28,
+    "canonical50_exact_route_backfill_v1": 7305,
+    "canonical50_lifestyle_parent_backfill_v1": 687,
+    "canonical_alias_backfill_v1": 100,
+    "safe_exact_alias_v2": 16,
+    "safe_semantic_alias_v3": 38,
+    "blank_title_high_confidence_v2": 17,
+    "fashion_pattern_manual_title_qa_v1": 12,
+    "singleton_manual_title_qa_v2": 12,
+    "beauty_aroma_safe_split_v1": 19,
+    "semantic_title_qa_v4": 12,
+    "blocked_false_positive_taxonomy_v1": 5,
+    "semantic_title_qa_v5": 8,
+    "semantic_title_qa_v6": 9,
+    "semantic_title_qa_v7": 4,
+    "semantic_title_qa_v8": 5,
+    "semantic_title_qa_v9": 9,
+    "shadow_sellable_residue_reset": 1
+  },
+  "taxonomy_triage": {
+    "newly_triaged_rows": 49,
+    "new_blocked_rows": 2,
+    "new_review_rows": 9,
+    "new_hold_rows": 38,
+    "remaining_unresolved_rows": 192,
+    "remaining_active_decisions": 0,
+    "policy": "HOLD_NO_GUESS"
+  },
+  "global_status_snapshot": {
+    "blocked_category_review": 450,
+    "category_review_required": 162,
+    "hold_market_readiness": 584
+  },
+  "safety_controls_verified": {
+    "hunt_payment_live": false,
+    "hunt_payplus_callback_accept_paid": false,
+    "hunt_supplier_order_live": false
+  },
+  "notes": [
+    "34.9K product observations are observations, not unique products.",
+    "Current shelf candidate pool is 26,375 rows.",
+    "4,210 raw-unmapped rows already use valid HUNT base-taxonomy shelves and should not be forced into canonical-50.",
+    "All 192 remaining true semantic QA rows are explicitly HOLD, REVIEW, or BLOCK; zero unresolved rows remain in an active undecided state.",
+    "Restricted, dangerous, medical, health, surveillance, weapon-adjacent, chemical/tool-heavy, or otherwise ambiguous rows are not auto-mapped into storefront shelves.",
+    "No readiness score, sellable flag, production effect, payment control, or supplier live-order control was enabled by these taxonomy repairs."
+  ]
+}

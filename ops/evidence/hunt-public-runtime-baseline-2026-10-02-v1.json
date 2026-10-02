@@ -1,0 +1,253 @@
+{
+  "observed_at": "2026-10-02T19:04:58.692670+00:00",
+  "target": "https://hunt-pr26-prelaunch--deep-hunt-market.netlify.app",
+  "concurrency": 3,
+  "requests": 30,
+  "p50_ms": 6645.4400000000005,
+  "p95_ms": 13766.23,
+  "errors": 30,
+  "timeouts": 0,
+  "limits": "Public prelaunch GET baseline only. Does not validate undeployed branch, freshness runner, Pooler, authenticated checkout or successful provider contracts.",
+  "rows": [
+    {
+      "i": 1,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 13773.41,
+      "timeout": false
+    },
+    {
+      "i": 2,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 13766.23,
+      "timeout": false
+    },
+    {
+      "i": 3,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 13731.31,
+      "timeout": false
+    },
+    {
+      "i": 4,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 6357.68,
+      "timeout": false
+    },
+    {
+      "i": 5,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 6357.96,
+      "timeout": false
+    },
+    {
+      "i": 6,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 6356.81,
+      "timeout": false
+    },
+    {
+      "i": 7,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 6261.91,
+      "timeout": false
+    },
+    {
+      "i": 8,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 6278.13,
+      "timeout": false
+    },
+    {
+      "i": 9,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 6300.2,
+      "timeout": false
+    },
+    {
+      "i": 10,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 6306.61,
+      "timeout": false
+    },
+    {
+      "i": 11,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 6312.02,
+      "timeout": false
+    },
+    {
+      "i": 12,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 6313.26,
+      "timeout": false
+    },
+    {
+      "i": 13,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 6497.84,
+      "timeout": false
+    },
+    {
+      "i": 14,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 6470.47,
+      "timeout": false
+    },
+    {
+      "i": 15,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 6478.95,
+      "timeout": false
+    },
+    {
+      "i": 16,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 7524.81,
+      "timeout": false
+    },
+    {
+      "i": 17,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 7510.09,
+      "timeout": false
+    },
+    {
+      "i": 18,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 7535.67,
+      "timeout": false
+    },
+    {
+      "i": 19,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 6890.99,
+      "timeout": false
+    },
+    {
+      "i": 20,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 6797.72,
+      "timeout": false
+    },
+    {
+      "i": 21,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 6793.04,
+      "timeout": false
+    },
+    {
+      "i": 22,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 7094.77,
+      "timeout": false
+    },
+    {
+      "i": 23,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 7133.97,
+      "timeout": false
+    },
+    {
+      "i": 24,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 7087.44,
+      "timeout": false
+    },
+    {
+      "i": 25,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 8115.37,
+      "timeout": false
+    },
+    {
+      "i": 26,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 8039.28,
+      "timeout": false
+    },
+    {
+      "i": 27,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 7991.19,
+      "timeout": false
+    },
+    {
+      "i": 28,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 6467.36,
+      "timeout": false
+    },
+    {
+      "i": 29,
+      "path": "pdp",
+      "status": 404,
+      "json": false,
+      "ms": 6485.93,
+      "timeout": false
+    },
+    {
+      "i": 30,
+      "path": "shelves",
+      "status": 404,
+      "json": false,
+      "ms": 6458.99,
+      "timeout": false
+    }
+  ]
+}

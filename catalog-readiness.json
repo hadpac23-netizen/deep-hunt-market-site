@@ -43,5 +43,9 @@
     "private_fulfillment_credentials_required": true,
     "customer_price_status": "PRICE_PENDING_UNTIL_HUNT_RETAIL"
   },
-  "safety_cleanup": "TACTICAL_TERM_REMOVED_V1"
+  "safety_cleanup": "TACTICAL_TERM_REMOVED_V1",
+  "legacy_snapshot_only": true,
+  "launch_authoritative": false,
+  "launch_source_of_truth": "SUPABASE_LIVE_DB",
+  "launch_note": "Historical snapshot retained for reference only. Do not use for launch readiness, checkout eligibility, or sellable decisions."
 }

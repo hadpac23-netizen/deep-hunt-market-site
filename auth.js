@@ -76,10 +76,12 @@
 
   async function initGoogle(enabled) {
     if(!googleContainer||!googleStatus)return;
+    const host=googleContainer.closest(".hd-google-auth");
     if(!enabled){
-      googleStatus.textContent="SETUP REQUIRED";
+      if(host)host.hidden=true;
       return;
     }
+    if(host)host.hidden=false;
     googleStatus.textContent="LOADING…";
     try{
       await loadGoogleIdentity();
@@ -122,7 +124,7 @@
       googleStatus.textContent="CONNECTED";
       googleReady=true;
     }catch(error){
-      googleStatus.textContent="GOOGLE UNAVAILABLE";
+      if(host)host.hidden=true;
       setStatus(error?.message||"Google sign-in is unavailable.","error");
     }
   }
@@ -130,19 +132,23 @@
   async function loadProviders() {
     try {
       const res=await fetch(supabaseUrl+"/auth/v1/settings",{headers:{apikey:H.publishableKey},cache:"no-store"});
+      if(!res.ok)throw new Error("AUTH_SETTINGS_UNAVAILABLE");
       const data=await res.json();
       const external=data.external||{};
       providerButtons.forEach(button=>{
         const provider=button.dataset.oauth;
         const enabled=external[provider]===true;
+        button.hidden=!enabled;
         button.disabled=!enabled;
         button.dataset.enabled=String(enabled);
-        button.querySelector("small").textContent=enabled?"CONNECTED":"SETUP REQUIRED";
+        const note=button.querySelector("small");
+        if(note)note.textContent=enabled?"CONNECTED":"";
       });
       await initGoogle(external.google===true);
     } catch {
-      providerButtons.forEach(button=>{button.disabled=true;button.querySelector("small").textContent="STATUS UNAVAILABLE";});
-      if(googleStatus)googleStatus.textContent="STATUS UNAVAILABLE";
+      providerButtons.forEach(button=>{button.hidden=true;button.disabled=true;});
+      const host=googleContainer?.closest(".hd-google-auth");
+      if(host)host.hidden=true;
     }
   }
 
@@ -157,7 +163,7 @@
   });
 
   providerButtons.forEach(button=>button.addEventListener("click",async()=>{
-    if(button.disabled||button.dataset.enabled!=="true")return;
+    if(button.hidden||button.disabled||button.dataset.enabled!=="true")return;
     if(!supabase){setStatus("Auth library unavailable.","error");return;}
     const provider=button.dataset.oauth;
     setStatus("Opening "+button.querySelector("span").textContent+"…");

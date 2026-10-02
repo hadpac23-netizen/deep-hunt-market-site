@@ -1,0 +1,46 @@
+{
+  "schema_version": "HUNT_FINAL_SHELF_RESCUE_SHADOW_V1",
+  "observed_at": "2026-09-30",
+  "provider": "EPROLO",
+  "destination": "IL",
+  "production_effect": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "summary": {
+    "true_match_candidates": 8,
+    "exact_variant_verified": 8,
+    "positive_inventory": 8,
+    "shipping_verified": 8,
+    "profit_gate_pass": 8,
+    "private_pdp_qa_pass": 8,
+    "live_taxonomy_promotions": 0,
+    "live_source_payload_promotions": 0
+  },
+  "targets": [
+    {"target_shelf":"dinnerware","item_id":"29616684","variant_id":"688616683","supplier_cost_usd":1.50,"shipping_usd":8.78,"retail_floor_usd":6.99,"contribution_usd":4.07,"margin":0.5824,"profit_gate":"PASS","pdp_qa":"PASS","activation":"HOLD"},
+    {"target_shelf":"glassware","item_id":"30723537","variant_id":"701618633","supplier_cost_usd":3.51,"shipping_usd":16.14,"retail_floor_usd":9.99,"contribution_usd":4.13,"margin":0.4132,"profit_gate":"PASS","pdp_qa":"PASS","activation":"HOLD"},
+    {"target_shelf":"glassware","item_id":"30723550","variant_id":"701618734","supplier_cost_usd":3.77,"shipping_usd":19.95,"retail_floor_usd":10.99,"contribution_usd":4.44,"margin":0.4036,"profit_gate":"PASS","pdp_qa":"PASS","activation":"HOLD"},
+    {"target_shelf":"kids-schoolwear","item_id":"32884413","variant_id":"733879698","supplier_cost_usd":14.78,"shipping_usd":27.61,"retail_floor_usd":24.99,"contribution_usd":5.48,"margin":0.2191,"profit_gate":"PASS","pdp_qa":"PASS","activation":"HOLD"},
+    {"target_shelf":"kids-schoolwear","item_id":"31955589","variant_id":"719657797","supplier_cost_usd":5.59,"shipping_usd":12.35,"retail_floor_usd":11.99,"contribution_usd":4.21,"margin":0.3511,"profit_gate":"PASS","pdp_qa":"PASS","activation":"HOLD"},
+    {"target_shelf":"wall-art","item_id":"21184931","variant_id":"589521490","supplier_cost_usd":3.96,"shipping_usd":14.06,"retail_floor_usd":10.99,"contribution_usd":4.78,"margin":0.4345,"profit_gate":"PASS","pdp_qa":"PASS","activation":"HOLD"},
+    {"target_shelf":"wall-art","item_id":"32539794","variant_id":"729504584","supplier_cost_usd":3.60,"shipping_usd":25.22,"retail_floor_usd":10.99,"contribution_usd":4.13,"margin":0.3759,"profit_gate":"PASS","pdp_qa":"PASS","activation":"HOLD"},
+    {"target_shelf":"wall-art","item_id":"31686217","variant_id":"716489575","supplier_cost_usd":5.49,"shipping_usd":15.92,"retail_floor_usd":12.99,"contribution_usd":4.90,"margin":0.3771,"profit_gate":"PASS","pdp_qa":"PASS","activation":"HOLD"}
+  ],
+  "excluded": {
+    "ip_or_brand_risk_candidates": "excluded",
+    "keyword_false_positives": "excluded",
+    "wrong_product_type_candidates": "excluded"
+  },
+  "promotion_gate": {
+    "status": "HOLD",
+    "reason": "The rescued candidates still require canonical taxonomy/source_payload promotion. No live database promotion is performed during PR26 shadow work because it could alter storefront display eligibility.",
+    "owner_gate_required": true
+  },
+  "remaining_empty_shelf_classes_after_future_promotion": [
+    "kids-underwear",
+    "men-loungewear",
+    "men-nightwear",
+    "men-swimwear"
+  ],
+  "final_profit_note": "Destination tax/DDP remains a separate launch blocker. These are pre-tax shadow economics and do not claim Final Profit Verified."
+}

@@ -71,5 +71,9 @@
   },
   "readiness_updated_at": "2026-09-13T19:06:28.284061+00:00",
   "printful_public_catalog_added": 206,
-  "safety_cleanup": "TACTICAL_TERM_REMOVED_V1"
+  "safety_cleanup": "TACTICAL_TERM_REMOVED_V1",
+  "legacy_snapshot_only": true,
+  "launch_authoritative": false,
+  "launch_source_of_truth": "SUPABASE_LIVE_DB",
+  "launch_note": "Historical snapshot retained for reference only. Do not use for launch readiness, checkout eligibility, or sellable decisions."
 }

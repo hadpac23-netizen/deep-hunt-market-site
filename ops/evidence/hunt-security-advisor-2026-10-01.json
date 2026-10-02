@@ -1,0 +1,49 @@
+{
+  "evidence_id": "HUNT-SECURITY-ADVISOR-2026-10-01-V1",
+  "scope": "READ_ONLY_LIVE_AUDIT_PLUS_PR26_FIX",
+  "observed_at": "2026-10-01T00:46:13.370Z",
+  "production_change_applied": false,
+  "merge": false,
+  "live_security_advisor": {
+    "warning_classes": 2,
+    "warnings": [
+      {
+        "name": "function_search_path_mutable",
+        "count": 1,
+        "object": "public.hunt_preserve_shadow_taxonomy_gate_v2",
+        "live_status": "OPEN",
+        "live_security_definer": false,
+        "live_proconfig": null,
+        "pr26_fix_status": "READY_NOT_APPLIED",
+        "pr26_fix": "set search_path = ''",
+        "migration_file": "supabase/migrations/20261001013000_hunt_taxonomy_writer_guard_v3.sql",
+        "migration_commit": "50b97d03053e4444a2fb35e8ecbe457e7aeea91c",
+        "contract_test_commit": "7fd10830b2e74c918fb0f6d70a71d7de8bf90821",
+        "catalog_integrity_run": 272,
+        "catalog_integrity_result": "PASS",
+        "checkout_regression_run": 284,
+        "checkout_regression_result": "PASS"
+      },
+      {
+        "name": "auth_leaked_password_protection",
+        "count": 1,
+        "live_status": "OPEN",
+        "enabled": false,
+        "code_fix_available": false,
+        "requires_auth_setting_or_plan_change": true
+      }
+    ]
+  },
+  "safety": {
+    "payment_live_changed": false,
+    "supplier_live_order_changed": false,
+    "sellable_enabled": false,
+    "production_effect_enabled": false,
+    "database_ddl_applied": false
+  },
+  "next_actions": [
+    "After explicit Owner Gate, apply the pinned-search-path migration and rerun Supabase security advisor.",
+    "Decide separately whether to enable leaked-password protection through the supported Supabase Auth plan/settings path.",
+    "Until then security remains PARTIAL and blocks real-money launch."
+  ]
+}

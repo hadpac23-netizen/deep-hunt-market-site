@@ -1,0 +1,65 @@
+{
+  "schema_version": "HUNT_EPROLO_PDP_BULK_SHADOW_V5",
+  "observed_at": "2026-09-30T20:36:00Z",
+  "provider": "EPROLO",
+  "destination": "IL",
+  "mode": "SUPPLIER_DIRECT_SHADOW_EVIDENCE",
+  "production_effect": false,
+  "sellable": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "database_activation_writes": 0,
+  "source_payload_updates": 0,
+  "private_pdp_qa_rows_written": 0,
+  "summary": {
+    "targets": 139,
+    "supplier_http_200": 139,
+    "exact_variant_found": 139,
+    "positive_inventory": 139,
+    "positive_supplier_cost": 139,
+    "shipping_to_il_verified": 139,
+    "pretax_profit_pass": 75,
+    "pretax_profit_review": 64,
+    "pretax_profit_block": 0,
+    "destination_tax_verified": 0,
+    "final_profit_verified": 0,
+    "existing_pdp_detail_pass": 114,
+    "canonical_readiness_promotions": 0
+  },
+  "new_batches": [
+    {
+      "name": "BATCH_7_MEN_WATCHES_WOMEN",
+      "targets": 24,
+      "shelves": ["men-shirts","men-tops","watches","cushions-throws","women-evening","women-suits"],
+      "pretax_pass": 19,
+      "pretax_review": 5,
+      "request_id_range": [18107,18130]
+    },
+    {
+      "name": "BATCH_8_JEWELRY_LEFTOVERS",
+      "targets": 14,
+      "shelves": ["jewelry","jewelry-bracelets","jewelry-earrings","jewelry-necklaces","jewelry-rings"],
+      "pretax_pass": 12,
+      "pretax_review": 2,
+      "request_id_range": [18131,18144]
+    }
+  ],
+  "red_team_rejections": [
+    {"reason":"CUSHIONS_THROWS_FALSE_POSITIVE_FOOTWEAR_OR_APPAREL"},
+    {"reason":"ANIME_OR_UNVERIFIED_IP_REFERENCE_EXCLUDED"},
+    {"reason":"JEWELRY_GIFT_BOX_OR_HAIR_ACCESSORY_NOT_USED_FOR_JEWELRY_FILL"},
+    {"reason":"DIAMOND_18K_LAB_GROWN_MATERIAL_CLAIM_HELD_PENDING_MATERIAL_AUTHENTICITY_EVIDENCE"}
+  ],
+  "safety_gate": {
+    "status": "HOLD",
+    "reason": "One hundred fourteen audited rows already have PDP detail PASS. Writing private PDP QA PASS could satisfy the live canonical readiness intersection and alter storefront display eligibility. No readiness DB writes were made.",
+    "owner_gate_required_before_live_readiness_write": true
+  },
+  "tax_ddp_status": "DESTINATION_TAX_NOT_VERIFIED",
+  "do_not_claim": [
+    "Do not claim the 139 products are Canonical PDP Ready.",
+    "Do not claim destination tax or DDP is verified.",
+    "Do not claim Final Profit Verified.",
+    "Do not make private PDP QA or source-payload readiness writes without evaluating live RPC impact and Owner Gate."
+  ]
+}

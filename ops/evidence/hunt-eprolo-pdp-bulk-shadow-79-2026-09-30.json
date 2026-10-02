@@ -1,0 +1,91 @@
+{
+  "schema_version": "HUNT_EPROLO_PDP_BULK_SHADOW_V3",
+  "observed_at": "2026-09-30T20:31:29Z",
+  "provider": "EPROLO",
+  "destination": "IL",
+  "mode": "SUPPLIER_DIRECT_SHADOW_EVIDENCE",
+  "production_effect": false,
+  "sellable": false,
+  "payment_live": false,
+  "supplier_live_order": false,
+  "database_activation_writes": 0,
+  "source_payload_updates": 0,
+  "private_pdp_qa_rows_written": 0,
+  "summary": {
+    "targets": 79,
+    "supplier_http_200": 79,
+    "exact_variant_found": 79,
+    "positive_inventory": 79,
+    "positive_supplier_cost": 79,
+    "shipping_to_il_verified": 79,
+    "pretax_profit_pass": 37,
+    "pretax_profit_review": 42,
+    "pretax_profit_block": 0,
+    "destination_tax_verified": 0,
+    "final_profit_verified": 0,
+    "existing_pdp_detail_pass": 54,
+    "canonical_readiness_promotions": 0
+  },
+  "batches": [
+    {
+      "name": "BATCH_1_2",
+      "targets": 32,
+      "shelves": ["baby", "bags", "hats", "keychains"],
+      "pretax_pass": 12,
+      "pretax_review": 20,
+      "existing_pdp_detail_pass": 7,
+      "request_id_range": [18006, 18037]
+    },
+    {
+      "name": "BATCH_3_NEAR_READY",
+      "targets": 16,
+      "shelves": ["baby-clothing", "hair-accessories", "men-bottoms", "women-shoes"],
+      "pretax_pass": 11,
+      "pretax_review": 5,
+      "existing_pdp_detail_pass": 16,
+      "request_id_range": [18038, 18053]
+    },
+    {
+      "name": "BATCH_4_NEAR_READY_JEWELRY",
+      "targets": 24,
+      "shelves": ["hair-accessories", "men-bottoms", "women-shoes", "jewelry-bracelets", "jewelry-earrings", "jewelry-necklaces", "jewelry-rings"],
+      "pretax_pass": 13,
+      "pretax_review": 11,
+      "existing_pdp_detail_pass": 24,
+      "request_id_range": [18054, 18077]
+    },
+    {
+      "name": "BATCH_5_PETS",
+      "targets": 7,
+      "shelves": ["pet-accessories", "pet-clothing", "pet-grooming"],
+      "pretax_pass": 1,
+      "pretax_review": 6,
+      "existing_pdp_detail_pass": 7,
+      "request_id_range": [18078, 18084]
+    }
+  ],
+  "red_team_rejections": [
+    {"item_id":"10710026","reason":"MATERNITY_SHIRT_MISCLASSIFIED_AS_BABY_CLOTHING"},
+    {"item_id":"555663","reason":"NAIL_CARE_SET_NOT_BABY_CLOTHING"},
+    {"item_id":"31964053","reason":"HALLOWEEN_COSPLAY_HEADBAND_EXCLUDED"},
+    {"item_id":"32842504","reason":"JEWELRY_GIFT_BOX_NOT_JEWELRY_PRODUCT"},
+    {"item_id":"25969934","reason":"HAIR_HOOP_NOT_GENERIC_JEWELRY"},
+    {"item_id":"19740314","reason":"HAIR_RING_NOT_GENERIC_JEWELRY"},
+    {"item_id":"29801873","reason":"HUMAN_BRIDESMAID_DRESS_MISCLASSIFIED_AS_PET_CLOTHING"},
+    {"item_id":"5560673","reason":"PET_COSTUME_PARTY_ITEM_EXCLUDED"},
+    {"item_id":"5560796","reason":"PET_COSTUME_PARTY_ITEM_EXCLUDED"},
+    {"item_id":"32096972","reason":"HALLOWEEN_PET_COSTUME_ROBE_EXCLUDED"}
+  ],
+  "safety_gate": {
+    "status": "HOLD",
+    "reason": "Fifty-four audited rows already have PDP detail PASS. Writing private PDP QA PASS could satisfy the live canonical readiness intersection and alter storefront display eligibility. No readiness DB writes were made.",
+    "owner_gate_required_before_live_readiness_write": true
+  },
+  "tax_ddp_status": "DESTINATION_TAX_NOT_VERIFIED",
+  "do_not_claim": [
+    "Do not claim the 79 products are Canonical PDP Ready.",
+    "Do not claim destination tax or DDP is verified.",
+    "Do not claim Final Profit Verified.",
+    "Do not make private PDP QA or source-payload readiness writes without evaluating live RPC impact and Owner Gate."
+  ]
+}

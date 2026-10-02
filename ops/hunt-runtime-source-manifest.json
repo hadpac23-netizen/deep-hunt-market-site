@@ -1,0 +1,109 @@
+{
+  "generated_at": "2026-10-01T09:22:51Z",
+  "project_ref": "zszlnahjqmwozwubetkm",
+  "note": "Pre-Launch backend runtime reconciled on 2026-10-01. Launch-critical payment, preview, orchestrator, storefront and EPROLO quarantine sources are deployed from PR26 source. No secrets stored.",
+  "functions": [
+    {
+      "slug": "hunt-payment-session",
+      "live_version": 27,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-payment-session/index.ts",
+      "relationship": "EXACT_MATCH"
+    },
+    {
+      "slug": "hunt-order-preview",
+      "live_version": 16,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-order-preview/index.ts",
+      "relationship": "EXACT_MATCH"
+    },
+    {
+      "slug": "hunt-order-orchestrator",
+      "live_version": 26,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-order-orchestrator/index.ts",
+      "relationship": "EXACT_MATCH"
+    },
+    {
+      "slug": "hunt-storefront",
+      "live_version": 142,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-storefront/index.ts",
+      "relationship": "EXACT_MATCH",
+      "note": "v142 imports immutable PR26 commit 60df8153d4414aa95f6536c69ca9ecc76c630757; EPROLO canonical data remains audit-only and public display is held."
+    },
+    {
+      "slug": "hunt-cj-quote",
+      "live_version": 16,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-cj-quote/index.ts",
+      "relationship": "EXACT_MATCH"
+    },
+    {
+      "slug": "hunt-cj-live-check",
+      "live_version": 13,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-cj-live-check/index.ts",
+      "relationship": "EXACT_MATCH"
+    },
+    {
+      "slug": "hunt-eprolo-country-shadow",
+      "live_version": 13,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-eprolo-country-shadow/index.ts",
+      "relationship": "EXACT_MATCH",
+      "note": "Live v13 is fail-closed quarantine: internal-only, no supplier economics, destination tax and final profit remain unverified."
+    },
+    {
+      "slug": "hunt-eprolo-readonly-pilot",
+      "live_version": 11,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-eprolo-readonly-pilot/index.ts",
+      "relationship": "EXACT_MATCH"
+    },
+    {
+      "slug": "hunt-eprolo-variant-country-audit-shadow",
+      "live_version": 9,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-eprolo-variant-country-audit-shadow/index.ts",
+      "relationship": "EXACT_MATCH"
+    },
+    {
+      "slug": "hunt-eprolo-product-country-variants-audit-shadow",
+      "live_version": 8,
+      "live_status": "ACTIVE",
+      "git_path": "supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/index.ts",
+      "relationship": "EXACT_MATCH"
+    },
+    {
+      "slug": "hunt-eprolo-shelves-readonly",
+      "live_version": null,
+      "live_status": "NOT_DEPLOYED",
+      "git_path": "supabase/functions/hunt-eprolo-shelves-readonly/index.ts",
+      "relationship": "PR26_BRANCH_ONLY"
+    },
+    {
+      "slug": "hunt-freshness-shadow-runner",
+      "live_version": null,
+      "live_status": "NOT_DEPLOYED",
+      "git_path": "supabase/functions/hunt-freshness-shadow-runner/index.ts",
+      "relationship": "PR26_BRANCH_ONLY"
+    },
+    {
+      "slug": "hunt-supplier-ops-watch-shadow",
+      "live_version": null,
+      "live_status": "NOT_DEPLOYED",
+      "git_path": "supabase/functions/hunt-supplier-ops-watch-shadow/index.ts",
+      "relationship": "PR26_BRANCH_ONLY"
+    },
+    {
+      "slug": "hunt-business-identity",
+      "live_version": 13,
+      "live_status": "ACTIVE",
+      "git_path": null,
+      "relationship": "LIVE_SOURCE_NOT_IN_GIT",
+      "launch_critical": false,
+      "note": "Live function exists, but no caller or source file exists in PR26. Do not claim source parity; recover/rewrite contract before any future deployment of this slug."
+    }
+  ]
+}

@@ -1,6 +1,20 @@
 import { createSupabaseContext } from "npm:@supabase/server";
+import { classifyProvider, buildEproloShadowOrderContract } from "../_shared/hunt-fulfillment-provider.mjs";
+import { requireIntegerQuantity, guestOwnerProofMatches } from "../_shared/hunt-session-security.mjs";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
+function shippingAddressReady(snapshot:any,country:string){
+  if(!snapshot||typeof snapshot!=="object")return false;
+  const phoneDigits=clean(snapshot?.phone).replace(/\D/g,"");
+  return clean(snapshot?.customer_name).length>=2 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(snapshot?.email)) &&
+    clean(snapshot?.address1).length>=4 &&
+    clean(snapshot?.city).length>=2 &&
+    clean(snapshot?.province).length>=2 &&
+    clean(snapshot?.postal_code).length>=2 &&
+    phoneDigits.length>=7 && phoneDigits.length<=15 &&
+    clean(snapshot?.country_code).toUpperCase()===country;
+}
 const json=(req:Request,body:unknown,status=200)=>new Response(JSON.stringify(body),{
   status,
   headers:{
@@ -28,29 +42,34 @@ Deno.serve(async(req:Request)=>{
 
     const {data:session,error:sessionError}=await ctx.supabaseAdmin
       .from("hunt_payment_sessions")
-      .select("id,user_id,provider,mode,status,country_code,currency,product_amount,shipping_amount,total_amount,line_items,idempotency_key,provider_request_uid,expires_at,created_at")
+      .select("id,user_id,guest_owner_token_hash,provider,mode,status,country_code,currency,product_amount,shipping_amount,total_amount,line_items,idempotency_key,provider_request_uid,expires_at,created_at,customer_email,shipping_snapshot")
       .eq("id",sessionId)
       .eq("idempotency_key",idempotencyKey)
       .maybeSingle();
 
     if(sessionError||!session) return json(req,{ok:false,error:"SESSION_NOT_FOUND"},404);
 
-    const userSub=clean(ctx.userClaims?.sub);
-    if(session.user_id && userSub && session.user_id!==userSub) {
-      return json(req,{ok:false,error:"SESSION_OWNER_MISMATCH"},403);
+    const userSub=clean(ctx.userClaims?.sub||ctx.userClaims?.id);
+    if(session.user_id){
+      if(!userSub)return json(req,{ok:false,error:"SIGNED_IN_SESSION_AUTH_REQUIRED"},403);
+      if(session.user_id!==userSub)return json(req,{ok:false,error:"SESSION_OWNER_MISMATCH"},403);
+    }else if(!(await guestOwnerProofMatches(body?.session_owner_token,session.guest_owner_token_hash))){
+      return json(req,{ok:false,error:"SESSION_OWNER_PROOF_REQUIRED"},403);
     }
 
     const lines=Array.isArray(session.line_items)?session.line_items:[];
-    const groups:Record<string,{provider:string,origin_country_code:string,shipping_method:string,line_items:any[]}>= {};
+    const groups:Record<string,{provider:string,provider_kind:string,origin_country_code:string,shipping_method:string,line_items:any[]}>= {};
 
     for(const line of lines){
       const provider=clean(line?.provider)||"unknown";
+      const providerKind=classifyProvider(provider);
       const origin=clean(line?.origin_country_code).toUpperCase();
       const shippingMethod=clean(line?.shipping_method);
-      const groupKey=[provider,origin||"missing-origin",shippingMethod||"missing-logistics"].join("|");
+      const groupKey=[providerKind,origin||"missing-origin",shippingMethod||"missing-logistics"].join("|");
       if(!groups[groupKey]){
         groups[groupKey]={
           provider,
+          provider_kind:providerKind,
           origin_country_code:origin,
           shipping_method:shippingMethod,
           line_items:[]
@@ -59,37 +78,67 @@ Deno.serve(async(req:Request)=>{
       groups[groupKey].line_items.push({
         item_id:clean(line?.item_id),
         variant_id:clean(line?.variant_id),
-        qty:Math.max(1,Math.min(5,Number(line?.qty||1)||1)),
+        qty:requireIntegerQuantity(line?.qty,{min:1,max:5}),
         unit_retail_amount:Number(line?.unit_retail_amount||0),
         currency:clean(line?.currency)||session.currency,
         shipping_amount:Number(line?.shipping_amount||0),
-        quote_checked_at:clean(line?.quote_checked_at)||null
+        quote_checked_at:clean(line?.quote_checked_at)||null,
+        eprolo_order_variant_verified:line?.eprolo_order_variant_verified===true,
+        eprolo_tax_cost_verified:line?.eprolo_tax_cost_verified===true,
+        eprolo_tax_cost_usd:line?.eprolo_tax_cost_usd??null
       });
     }
 
+    const shippingReady=shippingAddressReady(session.shipping_snapshot,clean(session.country_code).toUpperCase());
+    const providerKinds=[...new Set(lines.map((x:any)=>classifyProvider(x?.provider)))];
+    const hasEprolo=providerKinds.includes("eprolo");
     const blockers:string[]=[];
     if(session.mode==="prelaunch") blockers.push("PAYMENT_ACCOUNT_NOT_ACTIVE");
     if(!["paid","succeeded","completed"].includes(clean(session.status).toLowerCase())) blockers.push("PAYMENT_NOT_CONFIRMED");
     if(!lines.length) blockers.push("EMPTY_LINE_ITEMS");
-    if(lines.some((x:any)=>!clean(x?.provider).toLowerCase().includes("cj"))) blockers.push("NON_CJ_FULFILLMENT_NOT_READY");
-    if(lines.some((x:any)=>!clean(x?.origin_country_code))) blockers.push("ORIGIN_NOT_PERSISTED");
+    if(providerKinds.includes("unsupported")) blockers.push("UNSUPPORTED_FULFILLMENT_PROVIDER");
+    if(lines.some((x:any)=>classifyProvider(x?.provider)==="cj"&&!clean(x?.origin_country_code))) blockers.push("ORIGIN_NOT_PERSISTED");
+    if(lines.some((x:any)=>classifyProvider(x?.provider)==="eprolo"&&(Number(x?.qty||1)||1)!==1)) blockers.push("EPROLO_MULTI_QTY_RECHECK_REQUIRED");
     if(lines.some((x:any)=>!clean(x?.shipping_method))) blockers.push("LOGISTICS_NOT_PERSISTED");
-    blockers.push("SHIPPING_ADDRESS_NOT_COLLECTED");
+    if(!shippingReady) blockers.push("SHIPPING_ADDRESS_NOT_COLLECTED");
+    if(hasEprolo) blockers.push("EPROLO_ORDER_EXECUTION_NOT_VERIFIED");
     blockers.push("SUPPLIER_ORDER_CREATION_DISABLED");
 
+    const normalizedShipping={
+      shippingCustomerName:clean(session.shipping_snapshot?.customer_name),
+      shippingAddress:clean(session.shipping_snapshot?.address1),
+      shippingCity:clean(session.shipping_snapshot?.city),
+      shippingProvince:clean(session.shipping_snapshot?.province),
+      shippingProvinceCode:clean(session.shipping_snapshot?.province_code),
+      shippingZip:clean(session.shipping_snapshot?.postal_code),
+      shippingPhone:clean(session.shipping_snapshot?.phone)
+    };
     const fulfillmentPreview=Object.values(groups).map(group=>({
       provider:group.provider,
+      provider_kind:group.provider_kind,
       origin_country_code:group.origin_country_code||null,
       shipping_method:group.shipping_method||null,
       line_count:group.line_items.length,
       line_items:group.line_items,
-      cj_create_order_v2_payload_preview:group.provider.toLowerCase().includes("cj") ? {
+      eprolo_order_shadow_contract_preview:group.provider_kind==="eprolo"
+        ? buildEproloShadowOrderContract({
+            sessionId:session.id,idempotencyKey,countryCode:session.country_code,
+            shipping:normalizedShipping,group
+          })
+        : null,
+      cj_create_order_v2_payload_preview:group.provider_kind==="cj" ? {
         orderNumber:"<generated_at_live_checkout>",
         shippingCountryCode:session.country_code,
         fromCountryCode:group.origin_country_code||"<missing_origin>",
         logisticName:group.shipping_method||"<missing_logistics>",
         payType:3,
         isSandbox:1,
+        shippingCustomerName:shippingReady?"<collected>":"<missing>",
+        shippingAddress:shippingReady?"<collected>":"<missing>",
+        shippingCity:shippingReady?"<collected>":"<missing>",
+        shippingProvince:shippingReady?"<collected>":"<missing>",
+        shippingZip:shippingReady?"<collected>":"<missing>",
+        shippingPhone:shippingReady?"<collected>":"<missing>",
         products:group.line_items.map((line:any)=>({
           vid:line.variant_id,
           quantity:line.qty
@@ -120,6 +169,7 @@ Deno.serve(async(req:Request)=>{
         total_amount:session.total_amount
       },
       fulfillment_preview:fulfillmentPreview,
+      shipping_address_ready:shippingReady,
       ready_for_live_payment:session.mode==="live" && !blockers.includes("PAYMENT_ACCOUNT_NOT_ACTIVE"),
       ready_for_supplier_order:false,
       blockers
