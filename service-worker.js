@@ -1,4 +1,4 @@
-const CACHE="hunt-shell-pwa6";
+const CACHE="hunt-shell-pwa7";
 const CORE=[
   "./",
   "./index.html",
@@ -55,7 +55,7 @@ self.addEventListener("fetch",event=>{
   if(request.method!=="GET")return;
   const url=new URL(request.url);
   if(url.origin!==self.location.origin)return;
-  if(request.mode==="navigate" || /\/(?:storefront-privacy|market-core|product|product-flow|category|hunt-wow)\.js$/i.test(url.pathname)){
+  if(request.mode==="navigate" || /\/(?:storefront-privacy|market-core|product|product-flow|category|profile|hunt-wow)\.js$/i.test(url.pathname)){
     event.respondWith(networkFirst(request));
     return;
   }
