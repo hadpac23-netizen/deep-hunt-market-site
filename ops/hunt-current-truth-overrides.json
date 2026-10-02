@@ -18,7 +18,11 @@
     "setting_scope": "SUPABASE_AUTH_DASHBOARD_OR_MANAGEMENT",
     "code_fix_available_in_pr26": false,
     "customer_ui_password_auth_present": false,
-    "auth_code_paths": ["MAGIC_LINK", "OAUTH", "GOOGLE_ID_TOKEN"],
+    "auth_code_paths": [
+      "MAGIC_LINK",
+      "OAUTH",
+      "GOOGLE_ID_TOKEN"
+    ],
     "recent_auth_log_password_flow_observed": false,
     "blocks_real_money": false,
     "priority": "POST_LAUNCH_PROJECT_SECURITY_HARDENING_UNLESS_PASSWORD_AUTH_IS_INTRODUCED",
@@ -49,5 +53,35 @@
     "payplus_paid_acceptance": false,
     "merge_allowed": false,
     "production_deploy_allowed": false
+  },
+  "runtime": {
+    "storefront_branch_db_mode": "SUPABASE_RPC",
+    "storefront_live_version": 142,
+    "storefront_live_source_commit": "60df8153d4414aa95f6536c69ca9ecc76c630757",
+    "storefront_branch_raw_pooler_reference": false,
+    "storefront_live_raw_pooler_reference": false,
+    "payment_session_raw_pooler_reference": false,
+    "order_preview_raw_pooler_reference": false,
+    "order_orchestrator_raw_pooler_reference": false,
+    "eprolo_country_shadow_raw_pooler_reference": false,
+    "freshness_runner_branch_raw_pooler_reference": true,
+    "pooler_blocker_status": "CLOSED_STALE_AS_INDEPENDENT_BLOCKER",
+    "pooler_note": "Raw Postgres/pooler dependency remains only in the undeployed branch-only freshness runner and is part of the freshness runtime Owner Gate, not a separate storefront/payment launch blocker.",
+    "blocks_real_money": false
+  },
+  "browser_red_team": {
+    "status": "PASS_WITH_OPEN_NONBLOCKING_UX_ITEMS",
+    "head": "5607ef4cd189be771b2c6673b727c0f7249bfca5",
+    "home_exact_shelf_contamination_found_and_fixed": true,
+    "shared_canonical_item_matcher": "canonical50-v4",
+    "customer_visible_supplier_name_hits": 0,
+    "pdp_supplier_fingerprint_facts_removed": true,
+    "desktop_home_category_pdp_verified": true,
+    "mobile_390_home_category_pdp_verified": true,
+    "mobile_global_horizontal_overflow": false,
+    "category_live_count_variance": "PARTIAL_SNAPSHOT_TO_LIVE_MERGE",
+    "category_live_count_variance_blocks_real_money": false,
+    "pdp_copy_polish": "PARTIAL_NONBLOCKING",
+    "blocks_real_money": false
   }
 }
