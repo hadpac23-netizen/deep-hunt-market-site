@@ -91,13 +91,7 @@
     return "tech";
   }
 
-  function glyphFor(provider) {
-    const p = String(provider || "").toLowerCase();
-    if (p.includes("amazon")) return "a";
-    if (p.includes("walmart")) return "✦";
-    if (p.includes("etsy")) return "E";
-    if (p.includes("temu")) return "T";
-    if (p.includes("shein")) return "S";
+  function glyphFor() {
     return "◇";
   }
 
@@ -127,14 +121,14 @@
         : `<button class="hd-retailer" type="button" disabled title="${esc(checkout.note || checkoutPolicy.rule || "")}">${esc(dict.onsitePending || "On-site checkout pending")}</button>`;
     const productVisual = typeof c.image_url === "string" && c.image_url.startsWith("https://")
       ? `<div class="hd-product-visual has-image"><img src="${esc(c.image_url)}" alt="${esc(c.title || "Product")}" loading="lazy"></div>`
-      : `<div class="hd-product-visual" aria-hidden="true">${esc(glyphFor(c.provider))}</div>`;
+      : `<div class="hd-product-visual" aria-hidden="true">${glyphFor()}</div>`;
     return `
-      <article class="hd-deal-card" data-category="${category}" data-search="${esc((c.title||"")+" "+(c.provider||""))}">
+      <article class="hd-deal-card" data-category="${category}" data-search="${esc(c.title||"")}">
         <div class="hd-deal-top"><span class="hd-verdict ${verdict==="SELL"?"sell":""}">${esc(verdict)}</span><span class="hd-heart">♡</span></div>
         ${productVisual}
         <h3>${esc(c.title || "Verified product")}</h3>
         <div class="hd-price">${(() => { const r=retailState(c); return r.ready ? money(r.amount,r.currency) : "Price pending"; })()}</div>
-        <div class="hd-provider">${esc(c.provider || "Provider")} · ${m.outbound_clicks||0} clicks · ${m.conversions||0} conversions</div>
+        <div class="hd-provider">HUNT NETWORK · ${m.outbound_clicks||0} clicks · ${m.conversions||0} conversions</div>
         <div class="hd-why"><b>${esc(dict.why || "Why this deal?")}</b>${esc(verified || "Evidence review passed the minimum public gate.")}</div>
         <div class="hd-red-note">● ${esc(dict.redTeam || "Red Team note")}: ${esc(gaps || "No recorded evidence gap.")}</div>
         ${cta}
@@ -167,7 +161,6 @@
     applyFilters();
   }
 
-
   function renderCatalog(products) {
     const grid = $("#hd-catalog-grid");
     const count = $("#hd-catalog-count");
@@ -187,7 +180,7 @@
         <article class="hd-catalog-card glass">
           <div class="hd-catalog-media">${image}<span class="hd-catalog-badge">${esc(item.verdict || "CATALOG")}</span></div>
           <div class="hd-catalog-body">
-            <div class="hd-provider">${esc(item.provider || "Provider")} · VERIFIED SOURCE</div>
+            <div class="hd-provider">HUNT VERIFIED SOURCE</div>
             <h3><a class="hd-catalog-title-link" href="${esc(detailUrl)}">${esc(item.title || "Catalog product")}</a></h3>
             <div class="hd-catalog-price"><small>${retail.ready ? "HUNT retail" : "Customer price"}</small><strong>${priceLabel}</strong></div>
             <ul class="hd-catalog-gaps">${gaps}</ul>
@@ -207,7 +200,7 @@
     if (candidate) {
       $("#hd-best-title").textContent = candidate.title || dict.noBest;
       const retail = retailState(candidate);
-      $("#hd-best-copy").textContent = [candidate.provider, retail.ready ? money(retail.amount,retail.currency) : "Price pending"].filter(Boolean).join(" · ");
+      $("#hd-best-copy").textContent = ["HUNT NETWORK", retail.ready ? money(retail.amount,retail.currency) : "Price pending"].filter(Boolean).join(" · ");
       $("#hd-best-status").textContent = String(top.verdict || "TEST").toUpperCase();
     }
     if (testCandidate) {
@@ -326,7 +319,7 @@
     return `<article class="hd-shelf-card" role="listitem" data-category="${esc(item.category || "")}">
       <a class="hd-shelf-media" href="${esc(detailUrl)}">${image}<span>${esc(truthBadge)}</span></a>
       <div class="hd-shelf-card-body">
-        <small>${esc(item.provider || "Provider")}</small>
+        <small>HUNT SOURCE</small>
         <a class="hd-shelf-title" href="${esc(detailUrl)}">${esc(item.title || "Product")}</a>
         <p>${esc(detailLine)}</p>
         <a class="hd-shelf-open" href="${esc(detailUrl)}">View product →</a>
@@ -335,7 +328,6 @@
   }
 
   function renderLowSourceShelf() {
-    // Supplier economics are internal-only and never rendered to customers.
     return;
   }
 
@@ -405,7 +397,7 @@
       shelves,
       visible_product_count: unique.size,
       shelf_entry_count: Object.values(shelves).reduce((sum, rows) => sum + rows.length, 0),
-      source: "Verified catalog snapshot + live supplier refresh",
+      source: "Verified catalog snapshot + live fulfillment refresh",
       _hunt_merged: true
     };
   }
@@ -543,7 +535,7 @@
     counter.textContent = `${count.toLocaleString()} ${label}`;
     counter.title = fullCatalogCount
       ? "BOOM quality catalog across category pages; home shelves remain curated for speed."
-      : (mode === "hybrid" ? "Verified catalog with live supplier refresh merged in" : (mode === "live" ? "Live supplier refresh" : "Verified catalog snapshot while live suppliers refresh"));
+      : (mode === "hybrid" ? "Verified catalog with live fulfillment refresh merged in" : (mode === "live" ? "Live fulfillment refresh" : "Verified catalog snapshot while live sources refresh"));
     return true;
   }
 
@@ -582,8 +574,6 @@
       if (!res.ok) throw new Error(data.error || "Market shelves unavailable");
       const merged = snapshotData ? mergeShelfData(snapshotData, data) : data;
       if (snapshotData && renderedFallback) {
-        // Fast snapshot first, then one quality-ranked hybrid refresh when live suppliers return.
-        // This keeps first paint fast without permanently hiding better live inventory.
         renderMarketShelvesData(merged, "hybrid");
         window.dispatchEvent(new CustomEvent("hunt:shelves-refreshed", {detail:merged}));
       } else {
@@ -606,15 +596,15 @@
     const host = $("#hd-provider-badges");
     if (!host) return;
     const items = Array.isArray(providers) ? providers : [];
-    host.innerHTML = items.map(item => {
+    host.innerHTML = items.map((item,index) => {
       const state = String(item.state || "UNKNOWN").toUpperCase();
       const tone = /READY|LIVE|CONFIGURED|CATALOG_LIVE/.test(state)
         ? "ready"
         : /AUTH_REQUIRED|APPROVAL_REQUIRED|MANUAL_PROGRAM|VERIFYING/.test(state)
           ? "waiting"
           : "neutral";
-      return `<span class="hd-provider-pill ${tone}"><b>${esc(item.provider || "Provider")}</b><small>${esc(state.replaceAll("_", " "))}</small></span>`;
-    }).join("") || "<span>No provider state yet.</span>";
+      return `<span class="hd-provider-pill ${tone}"><b>HUNT SOURCE ${index+1}</b><small>${esc(state.replaceAll("_", " "))}</small></span>`;
+    }).join("") || "<span>No source state yet.</span>";
   }
 
   async function load() {
@@ -644,9 +634,9 @@
     if (!section || !grid || !status) return;
     const results = data.results || [];
     searchItems = results;
-    const states = (data.providers || []).map(p => {
+    const states = (data.providers || []).map((p,index) => {
       const count = p.result_count ? " (" + p.result_count + ")" : "";
-      return p.provider + ": " + p.state + count;
+      return "HUNT source " + (index+1) + ": " + p.state + count;
     }).join(" · ");
     section.hidden = false;
     status.textContent = results.length
@@ -662,7 +652,7 @@
     const section = $("#live-search");
     const status = $("#hd-live-search-status");
     if (section) section.hidden = false;
-    if (status) status.textContent = dict.searching || "Searching ready providers…";
+    if (status) status.textContent = dict.searching || "Searching verified HUNT sources…";
     try {
       const res = await fetch(publicApiUrl("hunt-deals-hunt"), {
         method: "POST",
