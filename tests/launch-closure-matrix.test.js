@@ -40,6 +40,8 @@ test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(current.security.leaked_password_protection,false);
   assert.equal(current.security.advisor_warning_confirmed,true);
   assert.equal(current.security.project_plan_verified,false);
+  assert.equal(current.security.customer_ui_password_auth_present,false);
+  assert.equal(current.security.blocks_real_money,false);
   assert.equal(current.git_governance.status,"UNVERIFIED_PERMISSION_LIMIT");
   assert.equal(current.git_governance.branch_protection_verified,false);
   assert.equal(current.git_governance.branch_protection_enabled,null);
