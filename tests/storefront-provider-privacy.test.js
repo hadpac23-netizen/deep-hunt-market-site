@@ -8,6 +8,7 @@ const product = fs.readFileSync("product.html", "utf8");
 const profile = fs.readFileSync("profile.js", "utf8");
 const profileHtml = fs.readFileSync("profile.html", "utf8");
 const deal = fs.readFileSync("hunt-deal.js", "utf8");
+const home = fs.readFileSync("index.html", "utf8");
 
 test("customer storefront loads the supplier privacy guard", () => {
   assert.match(pwa, /storefront-privacy\.js/);
@@ -58,12 +59,17 @@ test("deal storefront never renders raw provider identity into customer-visible 
   assert.match(deal, /HUNT SOURCE/);
 });
 
+test("home cache-busts privacy-hardened deal storefront and current PWA", () => {
+  assert.match(home, /hunt-deal\.js\?v=stable2/);
+  assert.match(home, /pwa\.js\?v=pwa7/);
+});
+
 test("PWA cache cannot pin pre-red-team customer scripts", () => {
   const sw=fs.readFileSync("service-worker.js","utf8");
   const pwaSrc=fs.readFileSync("pwa.js","utf8");
   assert.match(sw,/hunt-shell-pwa7/);
   assert.match(pwaSrc,/service-worker\.js\?v=pwa7/);
-  assert.match(sw,/storefront-privacy\|market-core\|product\|product-flow\|category\|profile\|hunt-wow/);
+  assert.match(sw,/storefront-privacy\|market-core\|product\|product-flow\|category\|profile\|hunt-deal\|hunt-wow/);
   assert.doesNotMatch(sw,/hunt-shell-pwa6/);
 });
 
