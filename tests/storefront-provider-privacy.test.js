@@ -7,6 +7,7 @@ const pwa = fs.readFileSync("pwa.js", "utf8");
 const product = fs.readFileSync("product.html", "utf8");
 const profile = fs.readFileSync("profile.js", "utf8");
 const profileHtml = fs.readFileSync("profile.html", "utf8");
+const deal = fs.readFileSync("hunt-deal.js", "utf8");
 
 test("customer storefront loads the supplier privacy guard", () => {
   assert.match(pwa, /storefront-privacy\.js/);
@@ -43,6 +44,18 @@ test("profile hides fulfillment provider identity from saved items and orders", 
   assert.match(profile, /HUNT ORDER/);
   assert.match(profileHtml, /profile\.js\?v=profile2/);
   assert.doesNotMatch(profileHtml, /checkout\/provider systems/i);
+});
+
+test("deal storefront never renders raw provider identity into customer-visible copy", () => {
+  assert.doesNotMatch(deal, /<div class=\"hd-provider\">\$\{esc\(c\.provider/);
+  assert.doesNotMatch(deal, /<div class=\"hd-provider\">\$\{esc\(item\.provider/);
+  assert.doesNotMatch(deal, /<small>\$\{esc\(item\.provider/);
+  assert.doesNotMatch(deal, /candidate\.provider, retail/);
+  assert.doesNotMatch(deal, /p\.provider \+ \": \" \+ p\.state/);
+  assert.doesNotMatch(deal, /data-search=\"\$\{esc\(\(c\.title\|\|\"\"\)\+\" \"\+\(c\.provider/);
+  assert.match(deal, /HUNT NETWORK/);
+  assert.match(deal, /HUNT VERIFIED SOURCE/);
+  assert.match(deal, /HUNT SOURCE/);
 });
 
 test("PWA cache cannot pin pre-red-team customer scripts", () => {
