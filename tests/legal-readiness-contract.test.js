@@ -4,6 +4,7 @@ const fs=require("node:fs");
 const path=require("node:path");
 const root=path.resolve(__dirname,"..");
 const profile=JSON.parse(fs.readFileSync(path.join(root,"ops/legal/hunt-legal-readiness.json"),"utf8"));
+const blockers=JSON.parse(fs.readFileSync(path.join(root,"ops/hunt-legal-launch-blockers.json"),"utf8"));
 const build=fs.readFileSync(path.join(root,"scripts/build-legal-pages.mjs"),"utf8");
 
 test("RT11 prelaunch legal pages are approved without claiming real-money disclosure closure",()=>{
@@ -15,6 +16,21 @@ test("RT11 prelaunch legal pages are approved without claiming real-money disclo
   assert.equal(profile.customer_policy_pages_verified,true);
   assert.equal(profile.real_money_business_address_disclosure_pending,true);
   assert.equal(profile.publication_gate,"PRELAUNCH_POLICY_PUBLICATION_APPROVED");
+});
+
+test("legal readiness and launch-blocker sources cannot contradict customer-contact or returns truth",()=>{
+  assert.equal(blockers.real_money_launch_allowed,false);
+  assert.equal(blockers.customer_contact_fields_complete,true);
+  assert.equal(blockers.returns_solution_complete,true);
+  assert.equal(blockers.returns_workflow_owner_approved,profile.returns_workflow_owner_approved);
+  assert.equal(blockers.customer_policy_pages_verified,profile.customer_policy_pages_verified);
+  assert.equal(blockers.policy_publication_owner_approved,profile.policy_publication_owner_approved);
+  assert.equal(blockers.real_money_business_address_disclosure_pending,profile.real_money_business_address_disclosure_pending);
+  assert.equal(blockers.public_contacts.returns_address,profile.public_contacts.returns_address);
+  assert.ok(blockers.remaining_required_fields.includes("real_money_business_address_disclosure_where_required"));
+  assert.ok(!blockers.remaining_required_fields.includes("support_email"));
+  assert.ok(!blockers.remaining_required_fields.includes("privacy_contact_email"));
+  assert.ok(!blockers.remaining_required_fields.includes("returns_address"));
 });
 
 test("all four reviewed public policy pages exist and stay prelaunch-safe",()=>{
