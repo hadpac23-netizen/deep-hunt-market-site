@@ -6,11 +6,14 @@ const privacy = fs.readFileSync("storefront-privacy.js", "utf8");
 const pwa = fs.readFileSync("pwa.js", "utf8");
 const product = fs.readFileSync("product.html", "utf8");
 const profile = fs.readFileSync("profile.js", "utf8");
+const profileHtml = fs.readFileSync("profile.html", "utf8");
 
 test("customer storefront loads the supplier privacy guard", () => {
   assert.match(pwa, /storefront-privacy\.js/);
   assert.match(product, /storefront-privacy\.js/);
   assert.match(product, /data-hunt-privacy/);
+  assert.match(profileHtml, /storefront-privacy\.js\?v=source-privacy4/);
+  assert.match(profileHtml, /data-hunt-privacy/);
 });
 
 test("product page does not expose supplier wording in static customer copy", () => {
@@ -38,15 +41,17 @@ test("profile hides fulfillment provider identity from saved items and orders", 
   assert.doesNotMatch(profile, /<small>\$\{H\.esc\(order\.provider/);
   assert.match(profile, /HUNT SAVED/);
   assert.match(profile, /HUNT ORDER/);
+  assert.match(profileHtml, /profile\.js\?v=profile2/);
+  assert.doesNotMatch(profileHtml, /checkout\/provider systems/i);
 });
 
 test("PWA cache cannot pin pre-red-team customer scripts", () => {
   const sw=fs.readFileSync("service-worker.js","utf8");
   const pwaSrc=fs.readFileSync("pwa.js","utf8");
-  assert.match(sw,/hunt-shell-pwa6/);
-  assert.match(pwaSrc,/service-worker\.js\?v=pwa6/);
-  assert.match(sw,/storefront-privacy\|market-core\|product\|product-flow\|category\|hunt-wow/);
-  assert.doesNotMatch(sw,/hunt-shell-pwa3/);
+  assert.match(sw,/hunt-shell-pwa7/);
+  assert.match(pwaSrc,/service-worker\.js\?v=pwa7/);
+  assert.match(sw,/storefront-privacy\|market-core\|product\|product-flow\|category\|profile\|hunt-wow/);
+  assert.doesNotMatch(sw,/hunt-shell-pwa6/);
 });
 
 test("product navigation uses opaque source codes and preserves category context", () => {
