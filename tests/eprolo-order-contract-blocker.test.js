@@ -28,6 +28,10 @@ test("EPROLO official order/query/tracking contract is documented but execution 
   assert.equal(contract.rules.guess_endpoint,false);
   assert.equal(contract.rules.mutating_supplier_api_calls_allowed,false);
   assert.equal(contract.rules.supplier_submission_allowed,false);
+  const required=contract.official_order_contract.new_order.required_fields;
+  for(const field of ["tax_cost","shipping_province_code","orderItemlist[].variantsid","orderItemlist[].quantity"]){
+    assert.ok(required.includes(field));
+  }
 });
 
 test("orchestrator remains fail-closed for EPROLO supplier order",()=>{

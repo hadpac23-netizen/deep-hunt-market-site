@@ -115,7 +115,7 @@
       const expectedPrelaunch=new Set([
         "PAYMENT_ACCOUNT_NOT_ACTIVE",
         "PAYMENT_NOT_CONFIRMED",
-        "EPROLO_ORDER_ENDPOINT_NOT_VERIFIED",
+        "EPROLO_ORDER_EXECUTION_NOT_VERIFIED",
         "SUPPLIER_ORDER_CREATION_DISABLED"
       ]);
       const materialBlockers=blockers.filter(code=>!expectedPrelaunch.has(String(code)));

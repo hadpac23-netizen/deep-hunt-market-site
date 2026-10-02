@@ -278,7 +278,10 @@ function groupsFromLines(lines:any[]){
       unit_retail_amount:Number(raw?.unit_retail_amount),
       supplier_cost_amount:Number(raw?.supplier_cost_amount),
       shipping_amount:Number(raw?.shipping_amount),
-      quote_checked_at:clean(raw?.quote_checked_at)
+      quote_checked_at:clean(raw?.quote_checked_at),
+      eprolo_order_variant_verified:raw?.eprolo_order_variant_verified===true,
+      eprolo_tax_cost_verified:raw?.eprolo_tax_cost_verified===true,
+      eprolo_tax_cost_usd:raw?.eprolo_tax_cost_usd??null
     });
   }
   return Object.values(groups);
@@ -291,6 +294,7 @@ function normalizeShippingSnapshot(snapshot:any,sessionCountry:string){
     shippingAddress2:clean(raw.shippingAddress2||raw.address2),
     shippingCity:clean(raw.shippingCity||raw.city),
     shippingProvince:clean(raw.shippingProvince||raw.province),
+    shippingProvinceCode:clean(raw.shippingProvinceCode||raw.province_code),
     shippingZip:clean(raw.shippingZip||raw.postal_code),
     shippingPhone:clean(raw.shippingPhone||raw.phone),
     shippingCountryCode:clean(raw.shippingCountryCode||raw.country_code||sessionCountry).toUpperCase()
@@ -390,13 +394,15 @@ Deno.serve(async(req:Request)=>{
           request_digest:await sha256(JSON.stringify(contract))
         });
       }
+      const eproloContractsReady=!hasEprolo||eproloShadowContracts.every((x:any)=>x.official_request_ready===true);
+      const eproloContractBlockers=[...new Set(eproloShadowContracts.flatMap((x:any)=>x.official_required_fields_missing||[]))];
       const evidenceProvider=hasEprolo&&hasCj?"MULTI":hasEprolo?"EPROLO":"CJdropshipping";
       const evidence=await addPipelineRun(ctx,{
         payment_session_id:session.id,
         order_id:session.order_id||null,
         run_mode:"dry_run",
         stage:"validated",
-        status:pass?"pass":"hold",
+        status:(pass&&eproloContractsReady)?"pass":"hold",
         provider:evidenceProvider,
         evidence:{
           line_count:lines.length,
@@ -406,6 +412,7 @@ Deno.serve(async(req:Request)=>{
           payment_mode:session.mode,
           payment_status:session.status,
           eprolo_shadow_contracts:eproloShadowContracts,
+          eprolo_contract_blockers:eproloContractBlockers,
           supplier_submission_performed:false,
           blockers
         },
@@ -414,8 +421,11 @@ Deno.serve(async(req:Request)=>{
       return json(req,{
         ok:true,dry_run:true,
         ready_for_supplier_sandbox:pass&&Boolean(session.user_id)&&!hasEprolo,
-        ready_for_eprolo_shadow:pass&&hasEprolo,
-        eprolo_supplier_submission_status:hasEprolo?"BLOCKED_UNTIL_OFFICIAL_ORDER_ENDPOINT_VERIFIED":null,
+        ready_for_eprolo_shadow:pass&&hasEprolo&&eproloContractsReady,
+        eprolo_supplier_submission_status:hasEprolo
+          ?(eproloContractsReady?"REQUEST_SHAPE_READY_EXECUTION_BLOCKED":"OFFICIAL_REQUEST_FIELDS_INCOMPLETE")
+          :null,
+        eprolo_contract_blockers:eproloContractBlockers,
         requires_signed_in_test_session:!session.user_id,
         blockers,
         groups:groups.map((g:any)=>({

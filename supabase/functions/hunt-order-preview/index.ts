@@ -82,7 +82,10 @@ Deno.serve(async(req:Request)=>{
         unit_retail_amount:Number(line?.unit_retail_amount||0),
         currency:clean(line?.currency)||session.currency,
         shipping_amount:Number(line?.shipping_amount||0),
-        quote_checked_at:clean(line?.quote_checked_at)||null
+        quote_checked_at:clean(line?.quote_checked_at)||null,
+        eprolo_order_variant_verified:line?.eprolo_order_variant_verified===true,
+        eprolo_tax_cost_verified:line?.eprolo_tax_cost_verified===true,
+        eprolo_tax_cost_usd:line?.eprolo_tax_cost_usd??null
       });
     }
 
@@ -98,7 +101,7 @@ Deno.serve(async(req:Request)=>{
     if(lines.some((x:any)=>classifyProvider(x?.provider)==="eprolo"&&(Number(x?.qty||1)||1)!==1)) blockers.push("EPROLO_MULTI_QTY_RECHECK_REQUIRED");
     if(lines.some((x:any)=>!clean(x?.shipping_method))) blockers.push("LOGISTICS_NOT_PERSISTED");
     if(!shippingReady) blockers.push("SHIPPING_ADDRESS_NOT_COLLECTED");
-    if(hasEprolo) blockers.push("EPROLO_ORDER_ENDPOINT_NOT_VERIFIED");
+    if(hasEprolo) blockers.push("EPROLO_ORDER_EXECUTION_NOT_VERIFIED");
     blockers.push("SUPPLIER_ORDER_CREATION_DISABLED");
 
     const normalizedShipping={
@@ -106,6 +109,7 @@ Deno.serve(async(req:Request)=>{
       shippingAddress:clean(session.shipping_snapshot?.address1),
       shippingCity:clean(session.shipping_snapshot?.city),
       shippingProvince:clean(session.shipping_snapshot?.province),
+      shippingProvinceCode:clean(session.shipping_snapshot?.province_code),
       shippingZip:clean(session.shipping_snapshot?.postal_code),
       shippingPhone:clean(session.shipping_snapshot?.phone)
     };
