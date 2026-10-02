@@ -196,7 +196,10 @@
     const items = rawResults.filter(p => {
       const retail = retailState(p);
       const priceMatch = hasPriceFilter ? retail.ready && retail.amount >= min && retail.amount <= max : true;
-      return matchesCategoryTruth(p) && matchesGenderScope(p) && matchesSub(p) && priceMatch;
+      const sharedCanonicalMatch = sub && H.canonicalTaxonomy?.defs?.[sub]?.canonical === true
+        ? H.canonicalTaxonomy?.itemMatchesShelf?.(sub,p) !== false
+        : true;
+      return sharedCanonicalMatch && matchesCategoryTruth(p) && matchesGenderScope(p) && matchesSub(p) && priceMatch;
     });
     if (sort === "price-low") items.sort((a,b)=>(retailState(a).amount??Infinity)-(retailState(b).amount??Infinity));
     else if (sort === "price-high") items.sort((a,b)=>(retailState(b).amount??-Infinity)-(retailState(a).amount??-Infinity));

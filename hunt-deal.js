@@ -403,7 +403,9 @@
   }
 
   function isShelfFit(slug,item) {
-    return String(item?._hunt_canonical_shelf||"")===String(slug||"");
+    if (String(item?._hunt_canonical_shelf||"")!==String(slug||"")) return false;
+    const matcher=canonicalTaxonomy().itemMatchesShelf;
+    return typeof matcher!=="function" || matcher(slug,item)!==false;
   }
 
   function shelfQualityScore(item) {

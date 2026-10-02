@@ -137,8 +137,8 @@ test('Home consumes the exported canonical taxonomy instead of a legacy shelf un
   const home = fs.readFileSync(new URL('../hunt-deal.js', import.meta.url),'utf8');
   const html = fs.readFileSync(new URL('../index.html', import.meta.url),'utf8');
   assert.match(canonical,/H\.canonicalTaxonomy\s*=\s*Object\.freeze/);
-  assert.match(canonical,/version:"canonical50-v3"/);
-  assert.ok(html.indexOf('canonical-taxonomy.js?v=canon3') < html.indexOf('hunt-deal.js?v=stable4'));
+  assert.match(canonical,/version:"canonical50-v4"/);
+  assert.ok(html.indexOf('canonical-taxonomy.js?v=canon4') < html.indexOf('hunt-deal.js?v=stable4'));
   assert.doesNotMatch(home,/const shelfMeta\s*=\s*\{/);
   assert.doesNotMatch(home,/const shelfDepartments\s*=\s*\[/);
   assert.doesNotMatch(home,/function isWomenShelfItem/);
@@ -181,10 +181,29 @@ test('Category resolves canonical exact shelves through the shared source bridge
   assert.match(category,/const sourceSlug = exactCanonicalShelf \? canonicalSourceAlias\(exactCanonicalShelf\)/);
   assert.match(category,/if \(exactCanonicalShelf\) \{[\s\S]*applyRows\(\[\], "exact-source-empty"\)/);
   assert.doesNotMatch(category,/exactCanonicalShelf[\s\S]{0,200}H\.search\(subDef/);
-  assert.match(html,/canonical-taxonomy\.js\?v=canon3/);
+  assert.match(html,/canonical-taxonomy\.js\?v=canon4/);
   assert.match(html,/category\.js\?v=redteam3/);
 });
 
+
+
+test('shared canonical matcher rejects cross-category and cross-demographic Home contamination', () => {
+  const HuntCore = loadCanonicalTaxonomy();
+  const match = HuntCore.canonicalTaxonomy.itemMatchesShelf;
+  assert.equal(match('women-dresses',{title:"Elegant Women's Long Sleeve Midi Dress",gender:'women'}),true);
+  assert.equal(match('women-dresses',{title:'Heavy Duty Garment Rack for Dresses and Coats'}),false);
+  assert.equal(match('women-dresses',{title:"2pcs Dress Suit for Women Top and Pleated Skirt",gender:'women'}),false);
+  assert.equal(match('women-tops',{title:'Kitchen Trash Can with Touch Top Lid'}),false);
+  assert.equal(match('women-tops',{title:"Women's Pleated Chiffon Blouse",gender:'women'}),true);
+  assert.equal(match('women-bottoms',{title:'Two Piece Dinosaur Vest Shorts for Boys'}),false);
+  assert.equal(match('women-bottoms',{title:"Women's High Waist Straight Leg Pants",gender:'women'}),true);
+  assert.equal(match('women-bottoms',{title:"Men's Casual Trousers",gender:'men'}),false);
+  assert.equal(match('women-bottoms',{title:"Women's Yoga Jumpsuit Shorts",gender:'women'}),false);
+  assert.equal(match('women-tops',{title:"Women's Top and Pants Two Piece Outfit Set",gender:'women'}),false);
+  assert.equal(match('wall-art',{title:'Colorful Wall Art (TikTok, temu pick-up service)'}),false);
+  assert.equal(match('men-underwear',{title:"Men's Cotton Boxer Briefs",gender:'men'}),true);
+  assert.equal(match('men-underwear',{title:"Women's Seamless Briefs",gender:'women'}),false);
+});
 
 test('Category browser script parses and canonical Dresses excludes swimwear false positives', () => {
   const category = fs.readFileSync(new URL('../category.js', import.meta.url),'utf8');

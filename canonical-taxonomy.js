@@ -115,12 +115,76 @@
     suits:"men-tailoring",
     wallart:"wall-art"
   });
+
+  const titleOf = item => String(item?.title || "").toLowerCase().replace(/\s+/g," ").trim();
+  const explicitWomen = text => /\b(women(?:'s)?|woman|female|ladies)\b/.test(text);
+  const explicitMen = text => /\b(men(?:'s)?|man|male|gentlemen)\b/.test(text);
+  const childTerms = /\b(baby|newborn|toddler|kid|kids|child|children|boys?|girls?|youth)\b/;
+  const nonApparel = /\b(rack|hanger|wardrobe|cabinet|organizer|storage|trash|garbage|umbrella|carport|patio|toilet|furniture|drawer|table|shelf|bungee|dispenser)\b/;
+  const unsafeMarketplaceOps = /\b(temu|tiktok|self[- ]?pickup|pick[- ]?up service|shipment from walmart|logistics only)\b/;
+  const patterns = Object.freeze({
+    "women-dresses": /\bdress(?:es)?\b/,
+    "women-tops": /\b(shirt|shirts|tee|t-shirt|top|tops|tank|polo|blouse|blouses|camisole)\b/,
+    "women-bottoms": /\b(pants?|trousers?|shorts?|jeans?|joggers?|leggings?|skirts?)\b/,
+    "women-jumpsuits": /\b(jumpsuit|playsuit|romper)\b/,
+    "women-loungewear": /\b(lounge|loungewear|homewear|home wear)\b/,
+    "women-maternity": /\b(maternity|nursing|pregnan)\b/,
+    "women-nightwear": /\b(pajama|pyjama|sleepwear|nightwear|nightgown|nightdress|robe)\b/,
+    "women-occasionwear": /\b(evening|gown|formal|cocktail|occasion|party dress)\b/,
+    "women-tailoring": /\b(suit|blazer|tailor|waistcoat|formal jacket)\b/,
+    "women-underwear": /\b(underwear|lingerie|bra|brief|panty|panties)\b/,
+    "men-tops": /\b(shirt|shirts|tee|t-shirt|top|tops|tank|polo)\b/,
+    "men-shirts": /\b(shirt|shirts|overshirt)\b/,
+    "men-bottoms": /\b(pants?|trousers?|joggers?|chinos?)\b/,
+    "men-jeans": /\b(jeans?|denim pants?)\b/,
+    "men-shorts": /\bshorts?\b/,
+    "men-loungewear": /\b(lounge|loungewear|homewear|home wear)\b/,
+    "men-nightwear": /\b(pajama|pyjama|sleepwear|nightwear|robe)\b/,
+    "men-swimwear": /\b(swim|swimsuit|board shorts?|swim shorts?|trunks?)\b/,
+    "men-tailoring": /\b(suit|blazer|tuxedo|tailor|waistcoat|formal)\b/,
+    "men-underwear": /\b(underwear|boxer|brief|trunk)\b/,
+    "kids-underwear": /\b(underwear|brief|boxer|base layer|thermal)\b/,
+    "kids-nightwear": /\b(pajama|pyjama|sleepwear|nightwear|nightgown)\b/,
+    "kids-occasionwear": /\b(occasion|formal|party|ceremony|wedding)\b/,
+    "kids-schoolwear": /\b(school|uniform|shirt|blouse|trouser|pants|skirt|cardigan|sweater)\b/,
+    "kids-swimwear": /\b(swim|swimsuit|rash guard|bathing suit)\b/,
+    "wall-art": /\b(wall art|canvas|poster|wall print|art print)\b/,
+    "sports-outdoor": /\b(outdoor|camp|hiking|trek|sport)\b/
+  });
+
+  function itemMatchesShelf(slug,item) {
+    const defn=canonicalDefs[slug];
+    if(!defn?.canonical) return true;
+    const text=titleOf(item);
+    if(!text || unsafeMarketplaceOps.test(text)) return false;
+    if(nonApparel.test(text) && ["women","men","kids"].includes(defn.parent)) return false;
+    const gender=String(item?.gender || "").toLowerCase();
+    if(defn.parent==="women") {
+      if(childTerms.test(text) || explicitMen(text) || gender==="men" || gender==="kids") return false;
+      if(gender && !["women","female"].includes(gender) && !explicitWomen(text)) return false;
+    }
+    if(defn.parent==="men") {
+      if(childTerms.test(text) || explicitWomen(text) || gender==="women" || gender==="kids") return false;
+      if(gender && !["men","male"].includes(gender) && !explicitMen(text)) return false;
+    }
+    if(defn.parent==="kids") {
+      if(explicitMen(text) || explicitWomen(text)) return false;
+      if(!childTerms.test(text) && gender && !["kids","boy","boys","girl","girls","child","children"].includes(gender)) return false;
+    }
+    if(slug==="women-dresses" && /\b(swimsuit|swimwear|bikini|rash guard|dress pants?|dress trousers?|two[- ]?piece|2[- ]?piece|dress suit|skirt suit|top and skirt|top & skirt)\b/.test(text)) return false;
+    if(slug==="women-tops" && /\b(jumpsuit|romper|playsuit|outfit|two[- ]?piece|2[- ]?piece|set|dress)\b/.test(text)) return false;
+    if(slug==="women-bottoms" && /\b(jumpsuit|romper|playsuit|outfit|two[- ]?piece|2[- ]?piece|set|suit)\b/.test(text)) return false;
+    const pattern=patterns[slug];
+    return pattern ? pattern.test(text) : true;
+  }
+
   H.canonicalTaxonomy = Object.freeze({
-    version:"canonical50-v3",
+    version:"canonical50-v4",
     defs:Object.freeze({...canonicalDefs}),
     groups:Object.freeze(Object.fromEntries(Object.entries(groupFor).map(([k,v])=>[k,Object.freeze([...v])]))),
     sourceAliases:canonicalSourceAliases,
-    legacyAliases:legacyCanonicalAliases
+    legacyAliases:legacyCanonicalAliases,
+    itemMatchesShelf
   });
 
   const originalCategoryUrl = H.categoryUrl.bind(H);

@@ -29,6 +29,34 @@
     return items.filter(item=>{ const v=String(item[key]||""); if(!v||seen.has(v))return false; seen.add(v); return true; });
   }
 
+  function customerSafeDescription(value) {
+    const raw=String(value||"");
+    if(!raw)return "";
+    let text=raw;
+    try { text=new DOMParser().parseFromString(raw,"text/html").body.textContent||raw; } catch {}
+    return text
+      .replace(/&nbsp;|\u00a0/gi," ")
+      .replace(/\b(?:CJ\s*Dropshipping|CJdropshipping|EPROLO|Printful|Gooten|Matterhorn(?:\s+Wholesale)?)\b/gi,"HUNT Network")
+      .replace(/\bplease\s+contact\s+(?:our\s+)?customer\s+service\.?/gi,"")
+      .replace(/\bproduct\s+image\s*:?/gi,"")
+      .replace(/\s+/g," ")
+      .trim()
+      .slice(0,4000);
+  }
+
+  function customerSafeBrand(value) {
+    const brand=String(value||"").trim();
+    if(!brand)return "";
+    if(H.providerAlias?.(brand))return "";
+    return brand;
+  }
+
+  function customerSafeType(value) {
+    const type=String(value||"").trim();
+    if(!type||/supplier|provider|fulfillment/i.test(type))return "";
+    return type;
+  }
+
   function variantsForColor(color) {
     return variants.filter(v => !color || v.color === color);
   }
@@ -84,9 +112,11 @@
       "url":location.href.split("#")[0]
     };
     if(images.length)payload.image=images;
-    if(product.description)payload.description=String(product.description).slice(0,4000);
-    if(product.sku)payload.sku=String(product.sku);
-    if(product.brand)payload.brand={"@type":"Brand","name":String(product.brand)};
+    const safeDescription=customerSafeDescription(product.description);
+    const safeBrand=customerSafeBrand(product.brand);
+    if(safeDescription)payload.description=safeDescription;
+    if(product.sku && !H.providerAlias?.(product.sku))payload.sku=String(product.sku);
+    if(safeBrand)payload.brand={"@type":"Brand","name":safeBrand};
     script.textContent=JSON.stringify(payload);
 
     let canonical=document.querySelector('link[rel="canonical"]');
@@ -129,10 +159,13 @@
     $("#hd-product-price").textContent = retail.ready ? H.money(retail.amount, retail.currency) : "Price pending";
     syncMobilePrice();
     $("#hd-product-boom").textContent = H.personalReason(product);
-    $("#hd-product-description").textContent = product.description || "Full product detail is still being verified by HUNT DEAL.";
+    const safeDescription=customerSafeDescription(product.description);
+    $("#hd-product-description").textContent = safeDescription || "Full product detail is still being verified by HUNT DEAL.";
     $("#hd-product-gaps").innerHTML = (product.gaps || ["Product variant detail is still being verified."]).map(x=>`<li>${H.esc(x)}</li>`).join("");
+    const safeBrand=customerSafeBrand(product.brand);
+    const safeType=customerSafeType(product.type_name);
     const facts = [
-      ["Brand",product.brand],["Type",product.type_name],["Model",product.model],["Origin",product.origin_country],
+      ["Brand",safeBrand],["Type",safeType],["Origin",product.origin_country],
       ["Live variants",product.variant_count],["Fulfillment",product.avg_fulfillment_time]
     ].filter(([,v])=>v!==null&&v!==undefined&&v!=="");
     $("#hd-product-facts").innerHTML = facts.map(([k,v])=>`<div><span>${H.esc(k)}</span><strong>${H.esc(v)}</strong></div>`).join("");

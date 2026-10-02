@@ -108,6 +108,16 @@ test("wow product cards never render raw provider identity", () => {
 
 
 test("PDP loads canonical taxonomy before product runtime so exact shelf context survives", () => {
-  assert.ok(product.indexOf('canonical-taxonomy.js?v=canon3') > 0);
-  assert.ok(product.indexOf('canonical-taxonomy.js?v=canon3') < product.indexOf('product.js?v=redteam2'));
+  assert.ok(product.indexOf('canonical-taxonomy.js?v=canon4') > 0);
+  assert.ok(product.indexOf('canonical-taxonomy.js?v=canon4') < product.indexOf('product.js?v=redteam3'));
+});
+
+
+test("PDP removes supplier fingerprint facts and sanitizes provider copy before DOM and JSON-LD", () => {
+  const js=fs.readFileSync(new URL("../product.js", import.meta.url),"utf8");
+  assert.match(js,/function customerSafeDescription\(/);
+  assert.match(js,/function customerSafeType\(/);
+  assert.doesNotMatch(js,/\["Model",product\.model\]/);
+  assert.match(js,/safeDescription=customerSafeDescription\(product\.description\)/);
+  assert.match(product,/product\.js\?v=redteam3/);
 });

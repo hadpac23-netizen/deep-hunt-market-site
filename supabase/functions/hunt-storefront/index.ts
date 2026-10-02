@@ -1,2 +1,2 @@
-// Runtime reads HUNT_DB_POOLER_URL directly; no runtime environment mutation is performed.
+// Storefront runtime uses the Supabase client/RPC path; runtime.ts has no raw Postgres pooler dependency.
 await import("./runtime.ts");

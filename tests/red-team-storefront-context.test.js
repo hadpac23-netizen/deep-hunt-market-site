@@ -12,8 +12,8 @@ test("RT10 PDP never renders raw supplier identity",()=>{
 
 test("RT10 PDP loads canonical taxonomy before product runtime",()=>{
   const html=read("product.html");
-  assert.ok(html.indexOf('canonical-taxonomy.js?v=canon3')>0);
-  assert.ok(html.indexOf('canonical-taxonomy.js?v=canon3')<html.indexOf('product.js?v=redteam2'));
+  assert.ok(html.indexOf('canonical-taxonomy.js?v=canon4')>0);
+  assert.ok(html.indexOf('canonical-taxonomy.js?v=canon4')<html.indexOf('product.js?v=redteam3'));
 });
 
 test("RT10 product links preserve department and exact shelf context",()=>{
