@@ -18,8 +18,11 @@
     "setting_scope": "SUPABASE_AUTH_DASHBOARD_OR_MANAGEMENT",
     "code_fix_available_in_pr26": false,
     "customer_ui_password_auth_present": false,
-    "blocks_real_money": true,
-    "note": "The warning proves the feature is disabled. It does not prove the project's subscription plan."
+    "auth_code_paths": ["MAGIC_LINK", "OAUTH", "GOOGLE_ID_TOKEN"],
+    "recent_auth_log_password_flow_observed": false,
+    "blocks_real_money": false,
+    "priority": "POST_LAUNCH_PROJECT_SECURITY_HARDENING_UNLESS_PASSWORD_AUTH_IS_INTRODUCED",
+    "note": "The advisor proves leaked-password protection is disabled but does not prove the project's subscription plan. HUNT currently exposes no password-auth customer flow, and recent auth logs showed only settings reads, so this warning remains open hardening rather than a HUNT payment/fulfillment launch blocker. Re-evaluate immediately if password auth is introduced."
   },
   "legal": {
     "customer_contacts_complete": true,
