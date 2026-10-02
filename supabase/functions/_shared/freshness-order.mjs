@@ -5,6 +5,6 @@ export function freshnessEvidenceDisposition(latestObservedAt,latestEvidenceVers
     return "IDEMPOTENT_REPLAY";
   }
   const latest=Date.parse(String(latestObservedAt||""));
-  if(Number.isFinite(latest)&&latest>incoming)return "STALE_EVIDENCE_REJECTED";
+  if(Number.isFinite(latest)&&latest>=incoming)return "STALE_EVIDENCE_REJECTED";
   return "APPLY";
 }
