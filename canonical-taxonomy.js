@@ -88,10 +88,11 @@
     sports: ["sports","sports-outdoor","outdoors","travel"],
     accessories: ["accessories","wallets-small-accessories","bags","hats","hairaccessories","jewelry"]
   };
-  const focused = groupFor[parent];
-  if (focused) {
-    H.categoryGroups.unshift({title:`${H.categoryDefs[parent]?.title || parent} · Exact shelves`,items:focused});
-  }
+  H.canonicalTaxonomy = Object.freeze({
+    version:"canonical50-v2",
+    defs:Object.freeze({...canonicalDefs}),
+    groups:Object.freeze(Object.fromEntries(Object.entries(groupFor).map(([k,v])=>[k,Object.freeze([...v])])))
+  });
 
   const originalCategoryUrl = H.categoryUrl.bind(H);
   H.categoryUrl = slug => {
@@ -102,6 +103,15 @@
     }
     return `category.html?c=${encodeURIComponent(slug)}`;
   };
+
+  // Home and other surfaces may load this file to consume the canonical map and URL contract.
+  // Category-specific group injection and storefront behavior stay scoped to category.html.
+  if (!/(^|\/)category\.html$/.test(location.pathname)) return;
+
+  const focused = groupFor[parent];
+  if (focused) {
+    H.categoryGroups.unshift({title:`${H.categoryDefs[parent]?.title || parent} · Exact shelves`,items:focused});
+  }
 
   // category.js natively understands nested exact shelves only for women/men.
   // For other departments, temporarily normalize the runtime URL to the exact shelf

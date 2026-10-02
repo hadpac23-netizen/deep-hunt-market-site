@@ -52,5 +52,52 @@ test("runner contains per-item persistence failures and uses internal EPROLO aut
   assert.match(src,/persist_error=clean/);
   assert.match(src,/HUNT_EPROLO_INTERNAL_TOKEN/);
   assert.match(src,/x-hunt-internal-token/);
-  assert.match(src,/try\{[\s\S]*persistObservation[\s\S]*syncException[\s\S]*\}catch/);
+  assert.match(src,/try\{[\s\S]*persistTransition[\s\S]*\}catch/);
+});
+
+test("freshness transition is atomic and serialized per variant route",()=>{
+  assert.match(src,/sql\(\)\.begin\(async tx=>/);
+  assert.match(src,/pg_advisory_xact_lock/);
+  assert.match(src,/payload->>'evidence_version'/);
+  assert.match(src,/persistTransition/);
+  assert.doesNotMatch(src,/await persistObservation[\s\S]*await syncException/);
+});
+
+test("older PASS cannot supersede a newer HOLD",async()=>{
+  const {freshnessEvidenceDisposition}=await import("../supabase/functions/_shared/freshness-order.mjs");
+  assert.equal(
+    freshnessEvidenceDisposition("2026-10-02T05:01:00.000Z","new-hold","2026-10-02T05:00:00.000Z","old-pass"),
+    "STALE_EVIDENCE_REJECTED"
+  );
+});
+
+test("older HOLD cannot supersede a newer PASS",async()=>{
+  const {freshnessEvidenceDisposition}=await import("../supabase/functions/_shared/freshness-order.mjs");
+  assert.equal(
+    freshnessEvidenceDisposition("2026-10-02T05:01:00.000Z","new-pass","2026-10-02T05:00:00.000Z","old-hold"),
+    "STALE_EVIDENCE_REJECTED"
+  );
+});
+
+test("identical evidence replay is idempotent",async()=>{
+  const {freshnessEvidenceDisposition}=await import("../supabase/functions/_shared/freshness-order.mjs");
+  assert.equal(
+    freshnessEvidenceDisposition("2026-10-02T05:01:00.000Z","same-v1","2026-10-02T05:01:00.000Z","same-v1"),
+    "IDEMPOTENT_REPLAY"
+  );
+});
+
+test("equal-time different evidence fails closed instead of racing",async()=>{
+  const {freshnessEvidenceDisposition}=await import("../supabase/functions/_shared/freshness-order.mjs");
+  assert.equal(
+    freshnessEvidenceDisposition("2026-10-02T05:01:00.000Z","winner","2026-10-02T05:01:00.000Z","loser"),
+    "STALE_EVIDENCE_REJECTED"
+  );
+});
+
+test("persistence failure is explicit and dry-run still has zero mutation",()=>{
+  assert.match(src,/persist_status="PERSISTENCE_INCOMPLETE"/);
+  assert.match(src,/const persist=body\?\.persist===true/);
+  assert.match(src,/if\(persist\)\{/);
+  assert.match(src,/mode:persist\?"SHADOW_PERSIST":"DRY_RUN"/);
 });

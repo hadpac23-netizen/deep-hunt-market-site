@@ -60,7 +60,7 @@ test("deal storefront never renders raw provider identity into customer-visible 
 });
 
 test("home cache-busts privacy-hardened deal storefront and current PWA", () => {
-  assert.match(home, /hunt-deal\.js\?v=stable2/);
+  assert.match(home, /hunt-deal\.js\?v=stable3/);
   assert.match(home, /pwa\.js\?v=pwa7/);
 });
 
@@ -86,4 +86,14 @@ test("product navigation uses opaque source codes and preserves category context
   assert.match(productJs,/H\.providerForSourceCode\(params\.get\("src"\)\)/);
   assert.match(productJs,/hunt_product_\$\{H\.sourceCodeForProvider\(provider\)\}:\$\{id\}/);
   assert.match(productJs,/cleanUrl\.searchParams\.delete\("provider"\)/);
+});
+
+test("PDP source routing fails closed and uses opaque source codes for supplier-specific behavior", () => {
+  const productJs=fs.readFileSync("product.js","utf8");
+  assert.doesNotMatch(productJs,/\|\| \"Printful\"/);
+  assert.match(productJs,/Missing product source/);
+  assert.match(productJs,/sourceCode === \"s3\" \|\| sourceCode === \"s4\"/);
+  assert.match(productJs,/sourceCodeForProvider\(product\.provider \|\| provider/);
+  assert.doesNotMatch(productJs,/providerName\.includes\(\"printful\"\)/);
+  assert.doesNotMatch(productJs,/providerName\.includes\(\"cj\"\)/);
 });

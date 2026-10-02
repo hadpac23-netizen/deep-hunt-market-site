@@ -221,72 +221,71 @@
     $("#hd-commission").textContent = money(commerce.net_confirmed_commission_usd || 0);
   }
 
-  const shelfMeta = {
-    women: ["Women's Fashion", "women"],
-    men: ["Men's Fashion", "men"],
-    dresses: ["Dresses & Skirts", "dresses"],
-    tops: ["Tops & T-Shirts", "tops"],
-    bottoms: ["Bottoms", "bottoms"],
-    hoodies: ["Hoodies & Sweatshirts", "hoodies"],
-    knitwear: ["Knitwear", "knitwear"],
-    jackets: ["Jackets & Outerwear", "jackets"],
-    activewear: ["Activewear", "activewear"],
-    bags: ["Bags & Totes", "bags"],
-    shoes: ["Shoes", "shoes"],
-    accessories: ["Accessories", "accessories"],
-    travel: ["Travel Picks", "travel"],
-    home: ["Home Finds", "home"],
-    storage: ["Storage & Organization", "storage"],
-    bedding: ["Bedding", "bedding"],
-    cleaning: ["Cleaning & Laundry", "cleaning"],
-    tech: ["Phone & Tech", "tech"],
-    phonecases: ["Premium Phone Cases", "phonecases"],
-    phoneaccessories: ["Phone Accessories", "phoneaccessories"],
-    hairaccessories: ["Hair Accessories", "hairaccessories"],
-    plussize: ["Plus Size", "plussize"],
-    suits: ["Suits & Tailoring", "suits"],
-    sets: ["Matching Sets", "sets"],
-    sleepwear: ["Sleepwear", "sleepwear"],
-    womenunderwear: ["Women's Essentials", "womenunderwear"],
-    menunderwear: ["Men's Essentials", "menunderwear"],
-    gaming: ["Gaming Accessories", "gaming"],
-    sports: ["Sports & Fitness", "sports"],
-    outdoors: ["Outdoor & Garden", "outdoors"],
-    beauty: ["Beauty & Skincare", "beauty"],
-    perfume: ["Perfume & Fragrance", "perfume"],
-    jewelry: ["Jewelry", "jewelry"],
-    kitchen: ["Kitchen", "kitchen"],
-    toys: ["Toys & Play", "toys"],
-    crafts: ["Arts & Crafts", "crafts"],
-    party: ["Party & Celebration", "party"],
-    lighting: ["Lighting", "lighting"],
-    bath: ["Bath & Bathroom", "bath"],
-    gifts: ["Gift Ideas", "gifts"],
-    kids: ["Kids & Youth", "kids"],
-    hats: ["Hats & Caps", "hats"],
-    drinkware: ["Drinkware", "drinkware"],
-    wallart: ["Wall Art", "wallart"],
-    blankets: ["Blankets & Towels", "blankets"],
-    stickers: ["Stickers", "stickers"],
-    stationery: ["Stationery", "stationery"],
-    pets: ["Pets", "pets"],
-    socks: ["Socks", "socks"],
-    swimwear: ["Swimwear", "swimwear"],
-    office: ["Office & Desk", "office"],
-    pillows: ["Pillows", "pillows"],
-    ornaments: ["Ornaments", "ornaments"],
-  };
+  const legacyShelfAliases = Object.freeze({
+    dresses:"women-dresses",
+    tops:"women-tops",
+    bottoms:"women-bottoms",
+    sleepwear:"women-nightwear",
+    womenunderwear:"women-underwear",
+    menunderwear:"men-underwear",
+    suits:"men-tailoring",
+    wallart:"wall-art"
+  });
+  const departmentLabels = Object.freeze({
+    women:"Women",men:"Men",kids:"Kids",baby:"Baby",home:"Home & Living",
+    tech:"Tech",sports:"Sports & Outdoor",accessories:"Accessories"
+  });
 
-  const shelfDepartments = [
-    ["Women · Clothing", ["women","dresses","tops","bottoms","sets","plussize","hoodies","jackets","knitwear","activewear","swimwear","sleepwear","womenunderwear"]],
-    ["Women · Shoes & Accessories", ["bags","hairaccessories","jewelry","accessories","shoes","hats"]],
-    ["Men", ["men","suits","menunderwear","socks"]],
-    ["Premium Phone & Tech", ["phonecases","phoneaccessories","tech","gaming","office"]],
-    ["Home & Living", ["home","lighting","kitchen","storage","bedding","bath"]],
-    ["Sports & Everyday", ["sports","travel","kids","toys","pets"]],
-    ["Beauty", ["beauty"]],
-    ["Creative & Gifts", ["crafts","party","gifts","stationery"]],
-  ];
+  function canonicalTaxonomy() {
+    const t=window.HuntCore?.canonicalTaxonomy;
+    return t?.defs && t?.groups ? t : {defs:{},groups:{}};
+  }
+
+  function canonicalShelfSlug(raw) {
+    const slug=String(raw||"").trim().toLowerCase();
+    return legacyShelfAliases[slug] || slug;
+  }
+
+  function canonicalAllowedShelves() {
+    return new Set(Object.keys(canonicalTaxonomy().defs || {}));
+  }
+
+  function shelfMetaFor(slug) {
+    const def=window.HuntCore?.categoryDefs?.[slug] || canonicalTaxonomy().defs?.[slug];
+    return def ? [def.title || slug,slug] : null;
+  }
+
+  function canonicalCategoryHref(slug) {
+    const def=window.HuntCore?.categoryDefs?.[slug] || canonicalTaxonomy().defs?.[slug];
+    if (def?.canonical && def?.parent) {
+      return `category.html?c=${encodeURIComponent(def.parent)}&sub=${encodeURIComponent(slug)}`;
+    }
+    return window.HuntCore ? window.HuntCore.categoryUrl(slug) : `category.html?c=${encodeURIComponent(slug)}`;
+  }
+
+  function normalizeCanonicalShelfData(data) {
+    const source=data?.shelves || {};
+    const allowed=canonicalAllowedShelves();
+    const shelves={};
+    for (const [rawSlug,rawRows] of Object.entries(source)) {
+      for (const item of Array.isArray(rawRows) ? rawRows : []) {
+        const declaredRaw=item?.canonical_shelf || item?.taxonomy_shelf || item?.category_slug || rawSlug;
+        const canonical=canonicalShelfSlug(declaredRaw);
+        if (!allowed.has(canonical)) continue;
+        if (!shelves[canonical]) shelves[canonical]=[];
+        shelves[canonical].push({...item,_hunt_canonical_shelf:canonical});
+      }
+    }
+    return {...(data||{}),shelves,_hunt_canonical_taxonomy:canonicalTaxonomy().version || "unknown"};
+  }
+
+  function canonicalDepartments() {
+    const {defs,groups}=canonicalTaxonomy();
+    return Object.entries(groups || {}).map(([department,slugs])=>{
+      const exact=(Array.isArray(slugs)?slugs:[]).filter(slug=>defs?.[slug]?.canonical===true && defs?.[slug]?.parent===department);
+      return [departmentLabels[department] || window.HuntCore?.categoryDefs?.[department]?.title || department,exact];
+    }).filter(([,slugs])=>slugs.length);
+  }
 
   function shelfCard(item) {
     const detailUrl = window.HuntCore
@@ -295,8 +294,8 @@
     const image = typeof item.image_url === "string" && item.image_url.startsWith("https://")
       ? `<img src="${esc(item.image_url)}" alt="${esc(item.title || "Product")}" loading="lazy">`
       : '<div class="hd-shelf-placeholder">◇</div>';
-    const providerName = String(item.provider || "").toLowerCase();
-    const podSetupRequired = providerName.includes("printful") || providerName.includes("gooten");
+    const sourceCode = window.HuntCore?.sourceCodeForProvider?.(item.provider) || "s0";
+    const podSetupRequired = sourceCode === "s3" || sourceCode === "s4";
     const quoteVerified = String(item?.quote_verification_status || "").toUpperCase() === "PASS";
     const detailRecheckRequired = item?.checkout_status === "PRODUCT_DETAIL_RECHECK_REQUIRED"
       || Boolean(item?.detail_recheck_status);
@@ -358,6 +357,8 @@
   }
 
   function mergeShelfData(snapshot, live) {
+    snapshot = normalizeCanonicalShelfData(snapshot);
+    live = normalizeCanonicalShelfData(live);
     const snapShelves = snapshot?.shelves || {};
     const liveShelves = live?.shelves || {};
     const slugs = new Set([...Object.keys(snapShelves), ...Object.keys(liveShelves)]);
@@ -404,42 +405,14 @@
 
   function orderedShelfDepartments() {
     const signals = window.HuntCore?.signals?.() || {};
-    return shelfDepartments
-      .map((entry, index) => ({entry, index, score: entry[1].reduce((sum, slug) => sum + Number(signals[slug] || 0), 0)}))
-      .sort((a,b) => (b.score - a.score) || (a.index - b.index))
-      .map(row => row.entry);
+    return canonicalDepartments()
+      .map((entry,index)=>({entry,index,score:entry[1].reduce((sum,slug)=>sum+Number(signals[slug]||0),0)}))
+      .sort((a,b)=>(b.score-a.score)||(a.index-b.index))
+      .map(row=>row.entry);
   }
 
-  function isWomenShelfItem(item) {
-    const title=String(item?.title||"").toLowerCase();
-    if (String(item?.gender||"").toLowerCase()==="women") return true;
-    if (/\bunisex\b/.test(title)) return false;
-    const hasWomen=/\b(women(?:'s)?|woman|female|ladies)\b/.test(title);
-    const hasMen=/\b(men(?:'s)?|man|male|gentlemen)\b/.test(title);
-    return hasWomen && !hasMen;
-  }
-
-  function isShelfFit(slug, item) {
-    const title = String(item?.title || "").toLowerCase();
-    const rules = {
-      women: /\b(dress|skirt|shirt|t-shirt|tee|top|tank|blouse|hoodie|sweatshirt|jacket|coat|windbreaker|jogger|pants|trousers|leggings|shorts|swim|pajama|sleepwear|activewear|sports bra|cardigan|sweater|bodysuit)\b/i,
-      men: /\b(men(?:'s)?|male|gentlemen)\b.*\b(shirt|tee|top|jacket|coat|pants|trousers|shorts|hoodie|suit|blazer|activewear|swim|underwear)\b|\b(shirt|tee|top|jacket|coat|pants|trousers|shorts|hoodie|suit|blazer|activewear|swim|underwear)\b.*\b(men(?:'s)?|male|gentlemen)\b/i,
-      bags: /\b(bag|backpack|tote|handbag|purse|crossbody|duffle|weekender)\b/i,
-      hairaccessories: /\b(hair|headband|hairpin|barrette|scrunchie|comb|claw clip|shark clip)\b/i,
-      phonecases: /\b(case|cover)\b.*\b(phone|iphone|samsung|magsafe)\b|\b(phone|iphone|samsung|magsafe)\b.*\b(case|cover)\b/i,
-      sets: /\b(two[- ]?piece|2[- ]?piece|matching|co[- ]?ord|coord)\b.*\b(top|shirt|blouse|vest|hoodie|sweater|cardigan|jacket|dress|skirt|shorts|pants|trousers|pajama|outfit|clothing)\b/i,
-      home: /\b(blanket|pillow|rug|mat|poster|canvas|decor|coaster|towel|placemat|tablecloth|runner|cutting board|wall art|home|curtain|lamp|lighting)\b/i,
-      office: /\b(desk|calendar|journal|notebook|mouse pad|mousepad|office|acrylic desk)\b/i,
-      sports: /\b(yoga|sport|fitness|running|cycling|gym|racket|towel|bottle|mat)\b/i,
-    };
-    if (rules[slug] && !rules[slug].test(title)) return false;
-    if (slug === "women" && !isWomenShelfItem(item)) return false;
-    if (slug === "women" && /\b(boy|boys|kid|kids|child|children|baby|toddler)\b/i.test(title)) return false;
-    if (slug === "women" && /\b(hair|clip|headband|jewelry|bag|purse|shoe|case|phone|wig|extension)\b/i.test(title)) return false;
-    if (slug === "hairaccessories" && /\b(shorts|pants|trousers|jeans|shirt|tee|dress|hoodie|jacket|coat)\b/i.test(title)) return false;
-    if (slug === "sets" && /\b(necklace|bracelet|earring|earrings|jewelry|jewellery|gift|bedding|sheet|duvet|toy|tool|kitchen|bath|towel|baby|toddler|kid|kids|child|children|boys?|girls?|pet|dog|cat)\b/i.test(title)) return false;
-    if (slug === "home" && /\b(hair|clip|headband|handbag|purse|phone case|halloween|witch|costume)\b/i.test(title)) return false;
-    return true;
+  function isShelfFit(slug,item) {
+    return String(item?._hunt_canonical_shelf||"")===String(slug||"");
   }
 
   function shelfQualityScore(item) {
@@ -499,6 +472,7 @@
   }
 
   function renderMarketShelvesData(data, mode = "live") {
+    data = normalizeCanonicalShelfData(data);
     const root = $("#hd-shelves-root");
     const counter = $("#hd-shelf-count");
     if (!root || !counter) return false;
@@ -513,15 +487,12 @@
     const limit = shelfItemLimit();
     const html = orderedShelfDepartments().map(([department, slugs]) => {
       const sections = slugs.map(slug => {
-        const meta = shelfMeta[slug];
+        const meta = shelfMetaFor(slug);
         let items = Array.isArray(shelves[slug]) ? shelves[slug].filter(item => isShelfFit(slug, item)) : [];
-        if (department.startsWith("Women") && slug !== "women") items = items.filter(isWomenShelfItem);
         if (!meta || items.length < 4) return "";
         const selected = selectShelfItems(items, limit, renderedKeys);
         const cards = selected.map(shelfCard).join("");
-        const categoryHref = department.startsWith("Women") && slug !== "women"
-          ? `category.html?c=women&sub=${encodeURIComponent(slug)}`
-          : (window.HuntCore ? window.HuntCore.categoryUrl(meta[1]) : `category.html?c=${encodeURIComponent(meta[1])}`);
+        const categoryHref = canonicalCategoryHref(slug);
         return `<section class="hd-market-shelf"><div class="hd-market-shelf-head"><div><small>${mode === "live" ? "LIVE CATEGORY" : "VERIFIED CATALOG"}</small><h3>${esc(meta[0])}</h3><p>${items.length} real catalog products ready to inspect.</p></div><a href="${esc(categoryHref)}">View all →</a></div><div class="hd-shelf-track" role="list" tabindex="0" aria-label="${esc(meta[0])} products">${cards}</div></section>`;
       }).filter(Boolean).join("");
       if (!sections) return "";

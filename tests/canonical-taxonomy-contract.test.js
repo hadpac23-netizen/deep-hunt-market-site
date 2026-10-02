@@ -131,3 +131,28 @@ test('canonical shelf URLs preserve department hierarchy and exact-shelf routing
     assert.equal(HuntCore.categoryUrl(shelf), expectedUrl, `${shelf} route must preserve canonical hierarchy`);
   }
 });
+
+test('Home consumes the exported canonical taxonomy instead of a legacy shelf universe', () => {
+  const canonical = fs.readFileSync(path.resolve(__dirname,'../canonical-taxonomy.js'),'utf8');
+  const home = fs.readFileSync(path.resolve(__dirname,'../hunt-deal.js'),'utf8');
+  const html = fs.readFileSync(path.resolve(__dirname,'../index.html'),'utf8');
+  assert.match(canonical,/H\.canonicalTaxonomy\s*=\s*Object\.freeze/);
+  assert.match(canonical,/version:"canonical50-v2"/);
+  assert.ok(html.indexOf('canonical-taxonomy.js?v=canon2') < html.indexOf('hunt-deal.js?v=stable3'));
+  assert.doesNotMatch(home,/const shelfMeta\s*=\s*\{/);
+  assert.doesNotMatch(home,/const shelfDepartments\s*=\s*\[/);
+  assert.doesNotMatch(home,/function isWomenShelfItem/);
+  assert.match(home,/function normalizeCanonicalShelfData\(data\)/);
+  assert.match(home,/function canonicalDepartments\(\)/);
+  assert.match(home,/item\?\._hunt_canonical_shelf/);
+});
+
+test('Home legacy slugs are compatibility aliases only and cannot create Kids Socks shelf 51', () => {
+  const home = fs.readFileSync(path.resolve(__dirname,'../hunt-deal.js'),'utf8');
+  assert.match(home,/dresses:"women-dresses"/);
+  assert.match(home,/sleepwear:"women-nightwear"/);
+  assert.match(home,/womenunderwear:"women-underwear"/);
+  assert.match(home,/menunderwear:"men-underwear"/);
+  assert.match(home,/suits:"men-tailoring"/);
+  assert.doesNotMatch(home,/socks:"/);
+});

@@ -1,4 +1,5 @@
 import postgres from "npm:postgres@3.4.5";
+import {freshnessEvidenceDisposition} from "../_shared/freshness-order.mjs";
 
 const clean=(v:unknown)=>typeof v==="string"?v.trim():"";
 const num=(v:unknown)=>{const n=Number(v);return Number.isFinite(n)?n:null};
@@ -203,75 +204,93 @@ async function eproloRefresh(row:any,country:string,p:any){
     inventory_quantity:num(b.inventory_quantity),shipping_verified:b.shipping_verified===true,
     shipping_method:clean(b.shipping_method),economics:null,http:{country_shadow:res.http}};
 }
-async function persistObservation(provider:string,result:any){
-  const now=new Date().toISOString();
-  await sql()`
-    insert into public.hunt_product_observations
-      (provider,item_id,observation_type,price_amount,currency,availability_verified,
-       shipping_amount,destination_country,payload,observed_at)
-    values (
-      ${provider},${result.item_id},'freshness',${result.retail_usd},'USD',
-      ${result.stock_verified===true&&result.stock_available===true},
-      ${result.shipping_usd},${result.country},
-      ${sql().json({
-        runner:"hunt-freshness-shadow-runner-v1",
-        variant_id:result.variant_id,
-        classification:result.classification,
-        reason:result.reason,
-        supplier_cost_usd:result.supplier_cost_usd,
-        stock_verified:result.stock_verified,
-        stock_available:result.stock_available,
-        inventory_quantity:result.inventory_quantity??null,
-        shipping_verified:result.shipping_verified,
-        shipping_method:result.shipping_method||null,
-        selected_origin:result.selected_origin||null,
-        economics:result.economics,
-        destination_tax_verified:false,
-        final_profit_verified:false,
-        http:result.http,
-        production_effect:false
-      })},
-      ${now}
-    )
-  `;
-}
-async function syncException(provider:string,result:any){
+type EvidenceMeta={observed_at:string;run_id:string;evidence_version:string};
+async function persistTransition(provider:string,result:any,evidence:EvidenceMeta){
   const activeReasons=["OUT_OF_STOCK","NO_SHIPPING","SUPPLIER_COST_UNVERIFIED","RETAIL_PRICE_UNVERIFIED","PROFIT_REVIEW","PROFIT_BLOCK"];
   const retryReason=result.classification==="RETRY"?"SUPPLIER_API_RETRY":null;
   const reason=retryReason||(activeReasons.includes(result.reason)?result.reason:null);
   const entityId=clean(result.variant_id)||clean(result.item_id);
-  if(result.classification==="FRESH_PRETAX_PASS"){
-    await sql()`
-      update private.hunt_ops_exceptions
-      set status='resolved',resolved_at=now(),resolution='Freshness runner PASS',
-          last_checked_at=now(),updated_at=now()
-      where entity_type='variant' and entity_id=${entityId}
-        and coalesce(provider,'')=${provider}
+  const lockKey=`freshness:${provider}:${entityId}:${result.country}`;
+  const storedEvidence={
+    ...result,
+    runner:"hunt-freshness-shadow-runner-v2",
+    observed_at:evidence.observed_at,
+    run_id:evidence.run_id,
+    evidence_version:evidence.evidence_version,
+    destination_tax_verified:false,
+    final_profit_verified:false,
+    production_effect:false
+  };
+
+  return await sql().begin(async tx=>{
+    await tx`select pg_advisory_xact_lock(hashtext(${lockKey}))`;
+    const latestRows=await tx`
+      select observed_at,payload->>'evidence_version' as evidence_version
+      from public.hunt_product_observations
+      where provider=${provider}
+        and item_id=${result.item_id}
+        and observation_type='freshness'
         and coalesce(destination_country,'')=${result.country}
-        and reason_code in ('OUT_OF_STOCK','NO_SHIPPING','SUPPLIER_COST_UNVERIFIED',
-                            'RETAIL_PRICE_UNVERIFIED','PROFIT_REVIEW','PROFIT_BLOCK','SUPPLIER_API_RETRY')
-        and status<>'resolved'
+        and coalesce(payload->>'variant_id','')=${clean(result.variant_id)}
+      order by observed_at desc,id desc
+      limit 1
     `;
-    return;
-  }
-  if(!reason)return;
-  const severity=result.classification==="RETRY"?"warning":(reason==="OUT_OF_STOCK"||reason==="NO_SHIPPING"?"warning":"critical");
-  const ownerRole=result.classification==="RETRY"?"developer":"operations";
-  await sql()`
-    insert into private.hunt_ops_exceptions
-      (entity_type,entity_id,provider,destination_country,reason_code,severity,owner_role,status,
-       opened_at,last_checked_at,evidence,created_at,updated_at)
-    values ('variant',${entityId},${provider},${result.country},${reason},${severity},${ownerRole},'open',
-            now(),now(),${sql().json({...result,production_effect:false})},now(),now())
-    on conflict (entity_type,entity_id,coalesce(provider,''),coalesce(destination_country,''),reason_code)
-    where status <> 'resolved'
-    do update set
-      severity=excluded.severity,
-      owner_role=excluded.owner_role,
-      last_checked_at=now(),
-      evidence=excluded.evidence,
-      updated_at=now()
-  `;
+    const latest=latestRows?.[0]||{};
+    const disposition=freshnessEvidenceDisposition(
+      latest.observed_at,latest.evidence_version,
+      evidence.observed_at,evidence.evidence_version
+    );
+    if(disposition==="INVALID_EVIDENCE_TIME")throw new Error("INVALID_EVIDENCE_TIME");
+    if(disposition!=="APPLY")return {status:disposition};
+
+    await tx`
+      insert into public.hunt_product_observations
+        (provider,item_id,observation_type,price_amount,currency,availability_verified,
+         shipping_amount,destination_country,payload,observed_at)
+      values (
+        ${provider},${result.item_id},'freshness',${result.retail_usd},'USD',
+        ${result.stock_verified===true&&result.stock_available===true},
+        ${result.shipping_usd},${result.country},${tx.json(storedEvidence)},${evidence.observed_at}
+      )
+    `;
+
+    if(result.classification==="FRESH_PRETAX_PASS"){
+      await tx`
+        update private.hunt_ops_exceptions
+        set status='resolved',resolved_at=${evidence.observed_at},
+            resolution=${`Freshness runner PASS ${evidence.evidence_version}`},
+            last_checked_at=${evidence.observed_at},updated_at=now()
+        where entity_type='variant' and entity_id=${entityId}
+          and coalesce(provider,'')=${provider}
+          and coalesce(destination_country,'')=${result.country}
+          and reason_code in ('OUT_OF_STOCK','NO_SHIPPING','SUPPLIER_COST_UNVERIFIED',
+                              'RETAIL_PRICE_UNVERIFIED','PROFIT_REVIEW','PROFIT_BLOCK','SUPPLIER_API_RETRY')
+          and status<>'resolved'
+      `;
+      return {status:"APPLIED"};
+    }
+
+    if(reason){
+      const severity=result.classification==="RETRY"?"warning":(reason==="OUT_OF_STOCK"||reason==="NO_SHIPPING"?"warning":"critical");
+      const ownerRole=result.classification==="RETRY"?"developer":"operations";
+      await tx`
+        insert into private.hunt_ops_exceptions
+          (entity_type,entity_id,provider,destination_country,reason_code,severity,owner_role,status,
+           opened_at,last_checked_at,evidence,created_at,updated_at)
+        values ('variant',${entityId},${provider},${result.country},${reason},${severity},${ownerRole},'open',
+                ${evidence.observed_at},${evidence.observed_at},${tx.json(storedEvidence)},now(),now())
+        on conflict (entity_type,entity_id,coalesce(provider,''),coalesce(destination_country,''),reason_code)
+        where status <> 'resolved'
+        do update set
+          severity=excluded.severity,
+          owner_role=excluded.owner_role,
+          last_checked_at=excluded.last_checked_at,
+          evidence=excluded.evidence,
+          updated_at=now()
+      `;
+    }
+    return {status:"APPLIED"};
+  });
 }
 
 Deno.serve(async(req:Request)=>{
@@ -286,6 +305,8 @@ Deno.serve(async(req:Request)=>{
   const batchSize=Math.max(1,Math.min(25,Number(body?.batch_size||10)||10));
   const offset=Math.max(0,Number(body?.offset||0)||0);
   const persist=body?.persist===true;
+  const runId=crypto.randomUUID();
+  let evidenceSeq=0;
   if(!["all","CJdropshipping","EPROLO"].includes(provider))return json({error:"invalid provider"},400);
   if(!/^[A-Z]{2}$/.test(country))return json({error:"invalid country"},400);
 
@@ -315,12 +336,19 @@ Deno.serve(async(req:Request)=>{
         economics:null,error:clean(error instanceof Error?error.message:String(error))
       };
     }
+    const observedAt=new Date().toISOString();
+    const evidence={
+      observed_at:observedAt,run_id:runId,
+      evidence_version:`${runId}:${String(++evidenceSeq).padStart(4,"0")}`
+    };
+    result={...result,...evidence};
     results.push({provider:task.provider,...result});
     if(persist){
       try{
-        await persistObservation(task.provider,result);
-        await syncException(task.provider,result);
+        const persisted=await persistTransition(task.provider,result,evidence);
+        results[results.length-1].persist_status=persisted.status;
       }catch(e){
+        results[results.length-1].persist_status="PERSISTENCE_INCOMPLETE";
         results[results.length-1].persist_error=clean(e instanceof Error?e.message:String(e));
       }
     }
@@ -332,7 +360,7 @@ Deno.serve(async(req:Request)=>{
     retry:results.filter(x=>x.classification==="RETRY").length
   };
   return json({
-    ok:true,mode:persist?"SHADOW_PERSIST":"DRY_RUN",country,batch_size:batchSize,offset,
+    ok:true,mode:persist?"SHADOW_PERSIST":"DRY_RUN",run_id:runId,country,batch_size:batchSize,offset,
     providers:provider==="all"?["CJdropshipping","EPROLO"]:[provider],
     selected:results.length,counts,results,
     payment_changed:false,supplier_order_changed:false,catalog_visibility_changed:false,

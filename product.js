@@ -3,7 +3,7 @@
   const $ = q => document.querySelector(q);
   const params = new URLSearchParams(location.search);
   const legacyProvider = params.get("provider") || "";
-  const provider = H.providerForSourceCode(params.get("src")) || legacyProvider || "Printful";
+  const provider = H.providerForSourceCode(params.get("src")) || legacyProvider;
   const id = params.get("id") || "";
   if (legacyProvider && !params.get("src")) {
     const cleanUrl = new URL(location.href);
@@ -113,11 +113,11 @@
     $("#hd-product-title").textContent = product.title || "Product";
     $("#hd-product-breadcrumb").textContent = product.title || "Product";
     $("#hd-product-provider").textContent = "HUNT SOURCE";
-    const providerName = String(product.provider || provider || "").toLowerCase();
-    const podCatalog = providerName.includes("printful") || providerName.includes("gooten");
+    const sourceCode = H.sourceCodeForProvider(product.provider || provider || "");
+    const podCatalog = sourceCode === "s3" || sourceCode === "s4";
     const quoteVerified = String(product?.quote_verification_status || "").toUpperCase() === "PASS";
     const retail = currentRetailState();
-    const quoteAtCheckout = providerName.includes("cj") && variants.length > 0 && retail.ready;
+    const quoteAtCheckout = sourceCode === "s1" && variants.length > 0 && retail.ready;
     $("#hd-product-stock").textContent = quoteVerified
       ? "QUOTE VERIFIED"
       : podCatalog
@@ -153,7 +153,7 @@
     document.title=`${product.title || "Product"} — HUNT DEAL`;
     renderOptions(); renderGallery(); renderProductStructuredData();
     const externalVisit = typeof product.external_visit_url === "string" && product.external_visit_url.startsWith("https://");
-    const cjCheckoutReady = String(product.provider || provider || "").toLowerCase().includes("cj");
+    const cjCheckoutReady = H.sourceCodeForProvider(product.provider || provider || "") === "s1";
     const readyForCart = variants.length > 0 && retail.ready && cjCheckoutReady;
     const storeName = product?.store?.name || "partner store";
     const add = $("#hd-product-add");
@@ -238,14 +238,14 @@
     }
     if (!selectedVariant) return;
     const retail = currentRetailState();
-    const cjCheckoutReady = String(product.provider || provider || "").toLowerCase().includes("cj");
+    const cjCheckoutReady = H.sourceCodeForProvider(product.provider || provider || "") === "s1";
     if (!retail.ready || !cjCheckoutReady) return;
     H.addCart(product, selectedVariant, quantity);
     location.href = "checkout.html";
   }
 
   function renderFallback(cached) {
-    product = {...cached, gallery:[cached.image_url].filter(Boolean), variants:[], variant_count:0, description:"Full provider detail and variant feed are not connected yet."};
+    product = {...cached, gallery:[cached.image_url].filter(Boolean), variants:[], variant_count:0, description:"Full product detail and variant feed are not connected yet."};
     variants=[];
     renderBuybox();
     $("#hd-product-add").disabled=true;
@@ -258,6 +258,7 @@
 
   async function load() {
     if (!id) throw new Error("Missing product id");
+    if (!provider) throw new Error("Missing product source");
     H.updateCartBadges();
     try {
       const cached=cachedProduct();
