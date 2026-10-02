@@ -1,0 +1,50 @@
+{
+  "schema_version": "HUNT_CURRENT_TRUTH_OVERRIDES_V1",
+  "observed_at": "2026-10-02",
+  "purpose": "Authoritative overrides for facts re-verified after the 2026-10-01 launch-closure snapshot. Historical evidence is preserved but must not override newer direct verification.",
+  "git_governance": {
+    "status": "UNVERIFIED_PERMISSION_LIMIT",
+    "branch_protection_verified": false,
+    "branch_protection_enabled": null,
+    "rulesets_count": 0,
+    "required_status_checks_enforced": null,
+    "verification_note": "Current GitHub integration can read rulesets and observed zero rulesets, but classic branch-protection read returned an integration-permission error. Do not infer protected or unprotected from that result.",
+    "blocks_real_money": true
+  },
+  "security": {
+    "leaked_password_protection": false,
+    "advisor_warning_confirmed": true,
+    "project_plan_verified": false,
+    "setting_scope": "SUPABASE_AUTH_DASHBOARD_OR_MANAGEMENT",
+    "code_fix_available_in_pr26": false,
+    "customer_ui_password_auth_present": false,
+    "blocks_real_money": true,
+    "note": "The warning proves the feature is disabled. It does not prove the project's subscription plan."
+  },
+  "legal": {
+    "customer_contacts_complete": true,
+    "returns_solution_complete": true,
+    "returns_workflow_owner_approved": true,
+    "customer_policy_pages_verified": true,
+    "real_money_business_address_disclosure_pending": true,
+    "active_market_transaction_disclosures_pending": true,
+    "blocks_real_money": true
+  },
+  "supplier_privacy": {
+    "customer_visible_supplier_names": "PASS_ZERO_VISIBLE_HITS_IN_BROWSER_RED_TEAM",
+    "opaque_product_source_codes": true,
+    "raw_provider_query_parameter_removed_from_customer_product_urls": true,
+    "strict_network_anonymity": "PARTIAL",
+    "strict_network_anonymity_reason": "Supplier/CDN domains or internal provider metadata can remain discoverable to a technical user through DevTools/network paths until server-side API/media proxying is introduced.",
+    "strict_network_anonymity_blocks_real_money": false,
+    "strict_network_anonymity_priority": "POST_LAUNCH_HARDENING"
+  },
+  "safety": {
+    "payment_live": false,
+    "supplier_live_order": false,
+    "profit_release": false,
+    "payplus_paid_acceptance": false,
+    "merge_allowed": false,
+    "production_deploy_allowed": false
+  }
+}
