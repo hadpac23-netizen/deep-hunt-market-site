@@ -1,8 +1,8 @@
 {
   "schema_version": "HUNT_LEGAL_LAUNCH_BLOCKERS_V1",
-  "status": "PARTIAL_VERIFIED_REVIEW_REQUIRED",
+  "status": "PRELAUNCH_POLICIES_READY_REAL_MONEY_DISCLOSURES_PENDING",
   "real_money_launch_allowed": false,
-  "reason": "Operating entity identity is verified in secure runtime data, but customer support/privacy/returns contacts and jurisdiction-specific customer-policy review are still incomplete.",
+  "reason": "Operating entity identity is verified in secure runtime data, customer support/privacy contacts and the Owner-approved returns workflow are complete for pre-launch policy publication, but real-money launch still requires the registered business-address disclosure where required plus active-market transaction disclosures and the remaining payment/tax/fulfillment gates.",
   "verified_fields": {
     "legal_entity_name": true,
     "registration_number": true,
@@ -15,10 +15,22 @@
     "independent_historical_business_document": true,
     "payplus_business_onboarding_context": true
   },
+  "customer_contact_fields_complete": true,
+  "public_contacts": {
+    "support_email_configured": true,
+    "privacy_contact_email_configured": true,
+    "universal_public_returns_address_required": false,
+    "returns_address": null
+  },
+  "returns_solution_complete": true,
+  "returns_workflow_owner_approved": true,
+  "returns_workflow_status": "OWNER_APPROVED_OPERATIONAL_WORKFLOW",
+  "customer_policy_pages_verified": true,
+  "policy_publication_owner_approved": true,
+  "real_money_business_address_disclosure_pending": true,
   "remaining_required_fields": [
-    "support_email",
-    "privacy_contact_email",
-    "returns_address"
+    "real_money_business_address_disclosure_where_required",
+    "active_market_transaction_disclosures"
   ],
   "required_pages": [
     "terms",
@@ -31,6 +43,7 @@
     "invent_business_identity": false,
     "commit_private_business_contact_values_to_public_repo": false,
     "publish_placeholder_legal_text": false,
+    "treat_business_address_as_universal_returns_address": false,
     "remove_noindex_before_public_launch_only_after_review": true
   },
   "owner_gate_required": true
