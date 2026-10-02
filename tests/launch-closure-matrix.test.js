@@ -3,6 +3,7 @@ const assert=require("node:assert/strict");
 const fs=require("node:fs");
 const path=require("node:path");
 const m=JSON.parse(fs.readFileSync(path.resolve(__dirname,"../ops/hunt-launch-closure-matrix.json"),"utf8"));
+const current=JSON.parse(fs.readFileSync(path.resolve(__dirname,"../ops/hunt-current-truth-overrides.json"),"utf8"));
 
 test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(m.payment.payment_live,false);
@@ -33,11 +34,18 @@ test("launch closure matrix keeps real-money blockers explicit",()=>{
   assert.equal(m.legal.customer_policy_pages_verified,true);
   assert.equal(m.legal.policy_publication_owner_approved,true);
   assert.equal(m.legal.real_money_business_address_disclosure_pending,true);
-  assert.equal(m.security.status,"PARTIAL");
-  assert.equal(m.git_governance.branch_protection_verified,true);
-  assert.equal(m.git_governance.branch_protection_enabled,false);
-  assert.equal(m.git_governance.rulesets_count,0);
-  assert.equal(m.git_governance.required_status_checks_enforced,false);
+  assert.equal(current.legal.customer_contacts_complete,true);
+  assert.equal(current.legal.returns_solution_complete,true);
+  assert.equal(current.legal.real_money_business_address_disclosure_pending,true);
+  assert.equal(current.security.leaked_password_protection,false);
+  assert.equal(current.security.advisor_warning_confirmed,true);
+  assert.equal(current.security.project_plan_verified,false);
+  assert.equal(current.git_governance.status,"UNVERIFIED_PERMISSION_LIMIT");
+  assert.equal(current.git_governance.branch_protection_verified,false);
+  assert.equal(current.git_governance.branch_protection_enabled,null);
+  assert.equal(current.git_governance.rulesets_count,0);
+  assert.equal(current.git_governance.required_status_checks_enforced,null);
+  assert.equal(current.supplier_privacy.strict_network_anonymity_blocks_real_money,false);
 });
 
 test("CJ and EPROLO readiness are never conflated",()=>{
@@ -49,7 +57,6 @@ test("CJ and EPROLO readiness are never conflated",()=>{
   assert.equal(m.catalog.eprolo_live_runtime_proof.tax_unverified,261);
   assert.equal(m.catalog.eprolo_live_runtime_proof.final_profit_verified,0);
 });
-
 
 test("2026-10-01 red-team closure distinguishes staged fixes from live proof",()=>{
   assert.equal(m.red_team_2026_10_01.status,"PRELAUNCH_BROWSER_QA_PASS_EXTERNAL_BLOCKERS_REMAIN");
