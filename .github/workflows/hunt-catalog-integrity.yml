@@ -5,10 +5,14 @@ on:
     paths:
       - 'supabase/functions/hunt-eprolo-catalog-fill-readonly/**'
       - 'supabase/functions/hunt-eprolo-shelves-readonly/**'
+      - 'supabase/functions/hunt-1688-readonly-pilot/**'
       - 'supabase/functions/_shared/final-profit-truth.mjs'
       - 'supabase/functions/hunt-eprolo-variant-country-audit-shadow/**'
       - 'supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/**'
       - 'tests/final-profit-truth.test.js'
+      - 'tests/hunt-1688-shadow-contract.test.js'
+      - 'ops/hunt-1688-api-contract.json'
+      - 'docs/HUNT-1688-INTEGRATION.md'
       - 'ops/hunt-current-truth-overrides.json'
       - 'ops/evidence/hunt-final-f35-red-team-*'
       - 'tests/public-price-privacy.test.js'
@@ -45,10 +49,14 @@ on:
     paths:
       - 'supabase/functions/hunt-eprolo-catalog-fill-readonly/**'
       - 'supabase/functions/hunt-eprolo-shelves-readonly/**'
+      - 'supabase/functions/hunt-1688-readonly-pilot/**'
       - 'supabase/functions/_shared/final-profit-truth.mjs'
       - 'supabase/functions/hunt-eprolo-variant-country-audit-shadow/**'
       - 'supabase/functions/hunt-eprolo-product-country-variants-audit-shadow/**'
       - 'tests/final-profit-truth.test.js'
+      - 'tests/hunt-1688-shadow-contract.test.js'
+      - 'ops/hunt-1688-api-contract.json'
+      - 'docs/HUNT-1688-INTEGRATION.md'
       - 'ops/hunt-current-truth-overrides.json'
       - 'ops/evidence/hunt-final-f35-red-team-*'
       - 'tests/public-price-privacy.test.js'
@@ -96,4 +104,4 @@ jobs:
         with:
           node-version: "24"
       - run: node --check auth.js && node --check profile.js && node --check hunt-deal.js && node --check pwa.js && node --check service-worker.js && node --check storefront-privacy.js && node --check canonical-taxonomy.js
-      - run: node --test tests/public-price-privacy.test.js tests/final-profit-truth.test.js tests/eprolo-catalog-fill-integrity.test.js tests/eprolo-live-shelves-bridge.test.js tests/storefront-provider-privacy.test.js tests/storefront-shell-readiness.test.js tests/canonical-taxonomy-ui.test.js tests/canonical-taxonomy-contract.test.js tests/taxonomy-writer-guard-contract.test.js
+      - run: node --test tests/public-price-privacy.test.js tests/final-profit-truth.test.js tests/eprolo-catalog-fill-integrity.test.js tests/eprolo-live-shelves-bridge.test.js tests/storefront-provider-privacy.test.js tests/storefront-shell-readiness.test.js tests/canonical-taxonomy-ui.test.js tests/canonical-taxonomy-contract.test.js tests/taxonomy-writer-guard-contract.test.js tests/hunt-1688-shadow-contract.test.js
